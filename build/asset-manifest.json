@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5b6957f4.css",
+    "main.js": "/static/js/main.243e4fc1.js",
+    "static/media/orbitmines.logo.3000x1000.png": "/static/media/orbitmines.logo.3000x1000.e3b652e472c9565f6f93.png",
+    "static/media/JetBrainsMono-Bold.ttf": "/static/media/JetBrainsMono-Bold.a490f58c0f460cdc1a8d.ttf",
+    "static/media/JetBrainsMono-SemiBold.ttf": "/static/media/JetBrainsMono-SemiBold.6c00e23bc7910a97f8e8.ttf",
+    "static/media/JetBrainsMono-Regular.ttf": "/static/media/JetBrainsMono-Regular.73fb7b7f0e68b372adfe.ttf",
+    "static/media/blueprint-icons-20.eot?": "/static/media/blueprint-icons-20.d317d8e9664636080ad2.eot",
+    "static/media/blueprint-icons-20.ttf?": "/static/media/blueprint-icons-20.c6dea603c58a0bcb5512.ttf",
+    "static/media/blueprint-icons-16.eot?": "/static/media/blueprint-icons-16.4c64ca9bc9382d8efa79.eot",
+    "static/media/blueprint-icons-16.ttf?": "/static/media/blueprint-icons-16.f0580acd64437597aef0.ttf",
+    "static/media/blueprint-icons-20.woff?": "/static/media/blueprint-icons-20.4fa4ec6a6fab211c90e6.woff",
+    "static/media/blueprint-icons-16.woff?": "/static/media/blueprint-icons-16.3e75e0c04e6091d48f69.woff",
+    "static/media/blueprint-icons-20.woff2?": "/static/media/blueprint-icons-20.8bee0c372f0cf4399089.woff2",
+    "static/media/blueprint-icons-16.woff2?": "/static/media/blueprint-icons-16.f81c5e3e118a3659abda.woff2",
+    "index.html": "/index.html",
+    "main.5b6957f4.css.map": "/static/css/main.5b6957f4.css.map",
+    "main.243e4fc1.js.map": "/static/js/main.243e4fc1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5b6957f4.css",
+    "static/js/main.243e4fc1.js"
+  ]
+}
