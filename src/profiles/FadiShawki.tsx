@@ -218,16 +218,16 @@ export const BOOKS: ContentCategory = {
 };
 
 export const SOFTWARE_DEVELOPER_AT_BREACHLOCK_INC: Content = { reference: {
-  title: "Software Developer at BreachLock Inc.",
+  title: "Software Developer, BreachLock Inc.",
 }, status: Viewed.VIEWED, viewed_at: "November, 2021 - May, 2022" };
 export const CONTRACTOR_AT_MARTI_ORBAK_SOFTWARE: Content = { reference: {
-  title: "Contractor at MartiOrbak Software",
+  title: "Contractor, MartiOrbak Software",
 }, status: Viewed.VIEWED, viewed_at: "November, 2020 - March 2021" };
 export const BACKEND_DEVELOPER_AT_MOBIEL_NL: Content = { reference: {
-  title: "Backend Developer at Mobiel.nl",
+  title: "Backend Developer, Mobiel.nl",
 }, status: Viewed.VIEWED, viewed_at: "November, 2018 - August, 2019", description: "My first interaction working at a SME." };
 export const FOUNDER_AT_ORBITMINES_MINECRAFT: Content = { reference: {
-  title: "Founder at OrbitMines Minecraft",
+  title: "Founder, OrbitMines Minecraft",
 }, status: Viewed.VIEWED, viewed_at: "October, 2013 - May, 2019", description: "I introduced myself to software engineering during this period by designing and maintaining my own Minecraft game server, which had a small community of concurrent players." };
 
 export const HISTORY: ContentCategory = {
