@@ -17,6 +17,12 @@ import CodeBlock from '../lib/syntax-highlighting/CodeBlock';
 import JetBrainsMono from "../lib/font/fonts/JetBrainsMono/JetBrainsMono";
 import {Col, Row} from '../lib/layout/flexbox';
 import {Divider, H3} from "@blueprintjs/core";
+import {
+  A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
+  FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
+  GODEL_ESCHER_BACH,
+  QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY
+} from "../profiles/FadiShawki";
 
 
 const OnIntelligibility = () => {
@@ -68,31 +74,13 @@ const OnIntelligibility = () => {
 
         <BR/>
 
-        One such a term I'll use is a system (or rather: the perception of one). Abstractly, I'll define this as some arbitrary level of description at which computation happens. So in some sense it's the idea of modelling interactions. To put it into perspective some random examples are: Two 'isolated' particles colliding, a singular logic gate, a computer, a function, a keyboard, the internet, a human, a planet, the universe. Note that this perception of a system happens within a system we could call an (intelligent) observer; systems can be polymorphic, overlapping, approximate, recursive, mutable, ..., and as such their interpretation is non-trivial <Reference is="reference" 
-        index={referenceCounter()}
-        title="Fluid concepts and creative analogies: Computer models of the fundamental mechanisms of thought"
-        author="Hofstadter, Douglas R"
-        journal="Basic books"
-        year="1995"
-        link="https://en.wikipedia.org/wiki/Fluid_Concepts_and_Creative_Analogies"
-      /> <Reference is="reference" 
-        index={referenceCounter()}
-        title="Gödel, escher, bach"
-        author="Hofstadter, Douglas R"
-        journal="New York: Basic books"
-        year="1979"
-        link="https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach"
-      />.
+        One such a term I'll use is a system (or rather: the perception of one). Abstractly, I'll define this as some arbitrary level of description at which computation happens. So in some sense it's the idea of modelling interactions. To put it into perspective some random examples are: Two 'isolated' particles colliding, a singular logic gate, a computer, a function, a keyboard, the internet, a human, a planet, the universe. Note that this perception of a system happens within a system we could call an (intelligent) observer; systems can be polymorphic, overlapping, approximate, recursive, mutable, ..., and as such their interpretation is non-trivial <Reference is="reference" index={referenceCounter()} {...FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES.reference}/> <Reference is="reference" index={referenceCounter()} {...GODEL_ESCHER_BACH.reference} />.
 
         <BR/>
 
         Conceivably, the only way to understand systems, or at the very least to 'do useful things', is to interact with them. Note that when I say 'interact', I mean so in a way that observing (by whatever means) falls within that definition. If if any way information/interactions can be transferred between two conceived systems, they will fall under what I'd incorrectly call 'interaction'.  Which is quite related to the old debate that is the possibility of a 'non interacting' observer <Footnote is="footnote"  index={referenceCounter()}>While reading <Reference is="reference" 
         index={referenceCounter()}
-        title="Quantum: Einstein, Bohr and the great debate about the nature of reality"
-        author="Kumar, Manjit"
-        journal="Icon Books Ltd"
-        year="2008"
-        link="https://en.wikipedia.org/wiki/Quantum_(book)"
+        {...QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY.reference}
         inline
       /> I realized that this dichotomy between Bohr & Einstein is incredibly relevant, even for 'high-level' systems. To my mind summarized as the things knowable against some objective reality. And how incredibly interdependable systems are (whether our universe or any other conceivable one).</Footnote>. Others have gone to great length discussing these issues <Footnote is="footnote"  index={referenceCounter()}><Reference is="reference" 
         index={referenceCounter()}
@@ -124,11 +112,7 @@ const OnIntelligibility = () => {
           inline
         /> & <Reference is="reference" 
         index={referenceCounter()}
-        title="A Project to Find the Fundamental Theory of Physics"
-        author="Wolfram, Stephen"
-        journal="Wolfram Media, Inc."
-        year="2020"
-        link="https://www.wolframphysics.org/"
+        {...A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS.reference}
         inline
       />
       </Footnote>. This has all kinds of conceptual consequences which are central to this paper's approach. One of the critical ones being that extremes such as 'proof', 'real' or 'truth' invoke things that are generally unknowable, and that a claim like this is incredibly self-referential. Following from that is that in a certain light; for our perceived purposes many extremes (; or unknowable things) don't matter to us, unless edging toward them is deemed useful.
@@ -205,7 +189,7 @@ const OnIntelligibility = () => {
 
         <BR/>
 
-        These implementations are operating in the world of functional equivalence, compilers and notably as a practical first milestone an attempt at the <Reference is="reference"  title="Hutter Prize" author="Hutter, Marcus" index={referenceCounter()} link="https://en.wikipedia.org/wiki/Hutter_Prize" inline />. These seem like obvious successors to clear first. I'm hoping to share my progress on this in the coming year of 2023.
+        These implementations are operating in the world of functional equivalence, compilers and notably as a practical first milestone an attempt at the <Reference is="reference" title="Hutter Prize" author="Hutter, Marcus" index={referenceCounter()} link="https://en.wikipedia.org/wiki/Hutter_Prize" inline />. These seem like obvious successors to clear first. I'm hoping to share my progress on this in the coming year of 2023.
 
         <BR/>
 

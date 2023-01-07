@@ -8,7 +8,9 @@ export type ISocialProfile = {
     link: string;
 }
 
-export type Socials = { [key: string]: ISocialProfile };
+export type Socials = {
+    [key: string]: ISocialProfile
+};
 
 /**
  *

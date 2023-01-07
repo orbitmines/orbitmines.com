@@ -125,14 +125,14 @@ export const getFootnotes = (node: ReactNode): JSX.Element[] => {
 
 export type ReferenceProps = {
   title: string,
-  author: string,
+  author?: string,
   journal?: string,
   year?: string,
   link?: string,
   page?: string,
   inline?: boolean
 };
-export const Reference = (props: ReferenceProps & FootnoteProps & { is?: 'reference' }) => {
+export const Reference = (props: ReferenceProps & FootnoteProps & { is?: 'reference' } & { simple?: boolean }) => {
   const {
     inline = false, index
   } = props;
@@ -142,15 +142,19 @@ export const Reference = (props: ReferenceProps & FootnoteProps & { is?: 'refere
   return inline ? reference : <Footnote index={index}>{reference}</Footnote>
 }
 
-export const ReferenceContent = (props: ReferenceProps & FootnoteProps) => {
+export const ReferenceContent = (props: ReferenceProps & FootnoteProps & { simple?: boolean }) => {
   const {
-    title, author, journal, year, link, page
+    title, author, journal, year, link, page, simple
   } = props;
+
+  const display = simple
+    ? _.compact([title, year ? `(${year})` : '']).join(' ')
+    : _.compact([`${author}.`, `"${title}"`, journal, year ? `(${year})` : '', page]).join(' ')
 
   return React.createElement(link ? 'a' : 'span', {
     ...(link ? { href: link, target: '_blank' } : {}),
     children: <>
-      {_.compact([`${author}.`, `"${title}"`, journal, year ? `(${year})` : '', page]).join(' ')}
+      {display}
     </>
   });
 }
