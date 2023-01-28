@@ -1,16 +1,21 @@
 import React from 'react';
-import { Row } from './lib/layout/flexbox';
-import OnIntelligibility from "./papers/2022.OnIntelligibility";
-import OnFunctionalEquivalence from "./papers/2023.OnFunctionalEquivalence";
-import FadiShawki from "./profiles/FadiShawki/FadiShawki";
+import {Row} from './lib/layout/flexbox';
+import {Route, Routes} from "react-router-dom";
+import Root from "./routes/Root";
+import Paper from "./routes/Paper";
 
 function App() {
   return (
     <div className="bp4-dark">
       <Row center="xs">
-        <OnIntelligibility/>
-        {/*<OnFunctionalEquivalence/>*/}
-        {/*<FadiShawki/>*/}
+
+          <Routes>
+              <Route path="*" element={<Root/>} errorElement={<Root/>} />
+              <Route path="papers">
+                  <Route path=":paper" element={<Paper />} />
+              </Route>
+          </Routes>
+
       </Row>
     </div>
   );

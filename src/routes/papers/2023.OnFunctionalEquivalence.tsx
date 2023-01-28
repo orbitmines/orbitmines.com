@@ -8,11 +8,11 @@ import Paper, {
   Subtitle,
   Title,
   useCounter
-} from "../lib/pdf/paper/Paper";
-import fadishawki from "../lib/profiles/fadishawki";
-import logo from "../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
-import JetBrainsMono from "../lib/font/fonts/JetBrainsMono/JetBrainsMono";
-import {Col, Row} from '../lib/layout/flexbox';
+} from "../../lib/pdf/paper/Paper";
+import fadishawki from "../../lib/profiles/fadishawki";
+import logo from "../../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
+import JetBrainsMono from "../../lib/font/fonts/JetBrainsMono/JetBrainsMono";
+import {Col, Row} from '../../lib/layout/flexbox';
 import {Divider, H3} from "@blueprintjs/core";
 
 

@@ -423,6 +423,30 @@ const Category = (props: { category: ContentCategory, archival_functions?: boole
   </div>
 }
 
+export const pageStyles = {
+  // width: '1240px',
+  // height: '1754px',
+  width: '100%',
+  maxWidth: '100vw',
+  minHeight: '100vh',
+  // fontSize: '1.1rem'
+};
+
+export const Layer = ({zIndex, children, ...props}: any) => {
+  return <div
+      {...props}
+      className={classNames("py-35 px-50 child-pb-15" , props.className)}
+      style={{
+        ...pageStyles,
+        position: 'absolute',
+        zIndex: zIndex,
+        ...(props.style ?? {})
+      }}
+  >
+    {children}
+  </div>;
+}
+
 const FadiShawki = () => {
   // @ts-ignore
   const profile: Profile = {
@@ -449,29 +473,6 @@ const FadiShawki = () => {
     history: HISTORY,
     formal_education: FORMAL_EDUCATION,
     familiar_tools: FAMILIAR_TOOLS,
-  }
-
-  const pageStyles = {
-    // width: '1240px',
-    // height: '1754px',
-    width: '100vw',
-    height: '100vh',
-    // fontSize: '1.1rem'
-  };
-
-  const Layer = ({zIndex, children, ...props}: any) => {
-    return <div
-      {...props}
-      className={classNames("py-35 px-50 child-pb-15" , props.className)}
-      style={{
-        ...pageStyles,
-        position: 'absolute',
-        zIndex: zIndex,
-        ...(props.style ?? {})
-      }}
-    >
-      {children}
-    </div>;
   }
 
   return <div style={{

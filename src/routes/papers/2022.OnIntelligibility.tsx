@@ -10,19 +10,19 @@ import Paper, {
   Subtitle,
   Title,
   useCounter
-} from "../lib/pdf/paper/Paper";
-import fadishawki from "../lib/profiles/fadishawki";
-import logo from "../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
-import CodeBlock from '../lib/syntax-highlighting/CodeBlock';
-import JetBrainsMono from "../lib/font/fonts/JetBrainsMono/JetBrainsMono";
-import {Col, Row} from '../lib/layout/flexbox';
+} from "../../lib/pdf/paper/Paper";
+import fadishawki from "../../lib/profiles/fadishawki";
+import logo from "../../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
+import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
+import JetBrainsMono from "../../lib/font/fonts/JetBrainsMono/JetBrainsMono";
+import {Col, Row} from '../../lib/layout/flexbox';
 import {Divider, H3} from "@blueprintjs/core";
 import {
   A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
   GODEL_ESCHER_BACH,
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY
-} from "../profiles/FadiShawki/FadiShawki";
+} from "../../profiles/FadiShawki/FadiShawki";
 
 
 const OnIntelligibility = () => {

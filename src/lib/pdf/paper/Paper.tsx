@@ -9,6 +9,7 @@ import Children from "../../typescript/Children";
 import PdfPaper, {PdfProps} from "./PdfPaper";
 import {Popover2, Tooltip2} from '@blueprintjs/popover2';
 import {toJpeg, toPng} from "html-to-image";
+import {useNavigate} from "react-router-dom";
 
 export type OrganizationProps = {
   name: ReactNode
@@ -235,6 +236,8 @@ export const Subtitle = ({children}: Children) => {
 }
 
 export const ExportFunctionality = ({children}: Children) => {
+  const navigate = useNavigate();
+
   const ref = useRef<any>(null);
 
   const exportJpeg = useCallback(() => {
@@ -254,7 +257,11 @@ export const ExportFunctionality = ({children}: Children) => {
   }, [ref]);
 
   return <div>
-    <Button text="JPEG" icon="export" onClick={exportJpeg} />
+    {/* TODO: */}
+    <Row between="xs" className="py-10 px-15" style={{width: '100%'}}>
+      <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
+      <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
+    </Row>
     <div ref={ref}>
       {children}
     </div>
