@@ -1,6 +1,6 @@
 import Children from "../../typescript/Children";
-import React, {Fragment, ReactNode, useCallback, useState} from "react";
-import {BrowserPaper, PaperProps, PaperView} from "./Paper";
+import React, {Fragment, ReactNode, useCallback, useRef, useState} from "react";
+import {BrowserPaper, ExportFunctionality, PaperProps, PaperView} from "./Paper";
 import _ from "lodash";
 import {Document, Font, Image, Link, Page, Path, PDFViewer, Svg, Text, View} from "@react-pdf/renderer";
 import Dereference from "../Dereference";
@@ -152,7 +152,7 @@ const PdfPaper = (props: PaperProps & Children) => {
   const paper = <BrowserPaper>{children}</BrowserPaper>;
 
   if (view === PaperView.Browser)
-    return paper;
+    return <ExportFunctionality>{paper}</ExportFunctionality>;
 
   if (!dereferenced || view === PaperView.DereferencedHtml)
     return <Dereference

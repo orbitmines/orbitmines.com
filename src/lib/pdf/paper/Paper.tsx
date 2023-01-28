@@ -1,13 +1,14 @@
 import React, {ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Socials} from "../../profiles/fadishawki";
 import {Col, Grid, Row} from "../../layout/flexbox";
-import {Divider, H1, H3, H4, Tag} from "@blueprintjs/core";
+import {Button, Divider, H1, H3, H4, Tag} from "@blueprintjs/core";
 import _ from "lodash";
 import brands from "../../external/brands";
 import CustomIcon from '../../icons/CustomIcon';
 import Children from "../../typescript/Children";
 import PdfPaper, {PdfProps} from "./PdfPaper";
 import {Popover2, Tooltip2} from '@blueprintjs/popover2';
+import {toJpeg, toPng} from "html-to-image";
 
 export type OrganizationProps = {
   name: ReactNode
@@ -217,7 +218,8 @@ export const Section = ({ head, children }: SectionProps & Children) => {
 export enum PaperView {
   Browser,
   DereferencedHtml,
-  Pdf,
+
+  Png
 }
 
 export const Title = ({children}: Children) => {
@@ -230,6 +232,33 @@ export const Subtitle = ({children}: Children) => {
   return <Row center="xs">
     <H4 className="bp4-text-muted" style={{maxWidth: '80%'}}>{children}</H4>
   </Row>
+}
+
+export const ExportFunctionality = ({children}: Children) => {
+  const ref = useRef<any>(null);
+
+  const exportJpeg = useCallback(() => {
+    if (ref === null)
+      return;
+
+    toJpeg(ref.current, { cacheBust: true, backgroundColor: '#1C2127' })
+      .then((dataUrl) => {
+        const link = document.createElement('a')
+        link.download = '2022.On_the_Intelligibility_of_(dynamic)_Systems_and_Conceptual_Uncertainty.jpeg'
+        link.href = dataUrl
+        link.click()
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  }, [ref]);
+
+  return <div>
+    <Button text="JPEG" icon="export" onClick={exportJpeg} />
+    <div ref={ref}>
+      {children}
+    </div>
+  </div>
 }
 
 export const BrowserPaper = ({ children }: Children) => {

@@ -1,12 +1,12 @@
 import React, {ReactNode} from 'react';
-import { Row } from '../lib/layout/flexbox';
-import fadishawki, {Socials} from "../lib/profiles/fadishawki";
-import {Col} from "../lib/layout/flexbox";
-import fadishawki_profile_picture from '../../../../personal/profile/fadishawki.profile-picture.png'
-import Children from "../lib/typescript/Children";
+import { Row } from '../../lib/layout/flexbox';
+import fadishawki, {Socials} from "../../lib/profiles/fadishawki";
+import {Col} from "../../lib/layout/flexbox";
+import fadishawki_profile_picture from './fadishawki.profile-picture.png'
+import Children from "../../lib/typescript/Children";
 import classNames from "classnames";
 import {Divider, H3, H4, Intent, Tag} from "@blueprintjs/core";
-import {Reference, ReferenceProps} from "../lib/pdf/paper/Paper";
+import {Reference, ReferenceProps} from "../../lib/pdf/paper/Paper";
 
 enum Viewed {
   FOUND, IN_PROGRESS, VIEWED

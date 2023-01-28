@@ -22,7 +22,7 @@ import {
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
   GODEL_ESCHER_BACH,
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY
-} from "../profiles/FadiShawki";
+} from "../profiles/FadiShawki/FadiShawki";
 
 
 const OnIntelligibility = () => {
