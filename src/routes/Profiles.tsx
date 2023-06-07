@@ -1,0 +1,23 @@
+import React from 'react';
+import {useParams} from "react-router-dom";
+import Error from "./Error";
+import FadiShawki from "./papers/2023.FadiShawki";
+
+const PROFILES: { [key: string]: Function } = {
+    'fadi-shawki': FadiShawki,
+}
+
+const Profile = () => {
+    const params = useParams();
+    console.log(params)
+    const { profile } = params;
+
+    const Element = profile ? PROFILES[profile] : undefined;
+
+    if (!Element)
+        return <Error/>
+
+    return <Element />
+};
+
+export default Profile;

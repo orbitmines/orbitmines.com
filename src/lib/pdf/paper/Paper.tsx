@@ -1,14 +1,13 @@
-import React, {ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {ReactNode, useCallback, useRef} from 'react';
 import {Socials} from "../../profiles/fadishawki";
 import {Col, Grid, Row} from "../../layout/flexbox";
-import {Button, Divider, H1, H3, H4, Tag} from "@blueprintjs/core";
+import {Button, Divider, H1, H3, H4, Intent, Popover, Tag} from "@blueprintjs/core";
 import _ from "lodash";
 import brands from "../../external/brands";
 import CustomIcon from '../../icons/CustomIcon';
 import Children from "../../typescript/Children";
 import PdfPaper, {PdfProps} from "./PdfPaper";
-import {Popover2, Tooltip2} from '@blueprintjs/popover2';
-import {toJpeg, toPng} from "html-to-image";
+import {toJpeg} from "html-to-image";
 import {useNavigate} from "react-router-dom";
 
 export type OrganizationProps = {
@@ -38,27 +37,22 @@ export const Author = (props: AuthorProps) => {
 
   return <Col>
     <Row center="xs"><H3>{title}</H3></Row>
-    <Row center="xs"><H4 className="bp4-text-muted">{subtitle}</H4></Row>
+    <Row center="xs"><H4 className="bp5-text-muted">{subtitle}</H4></Row>
     <Row center="xs" className="child-px-2">
       {_.values(socials)
-        .filter(profile => [
-          brands.github.key,
-          brands.twitter.key,
-          brands.discord.key,
-        ].includes(profile.brand.key))
-        .map(profile => <Col>
-          <a href={profile.link} target="_blank">
-            <Tag
-              icon={<CustomIcon icon={profile.brand.key} size={20}/>}
-              minimal
-              interactive
-            >
-              <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
-                {profile.display}
-              </Row>
-            </Tag>
-          </a>
-        </Col>)}
+          .map(profile => <Col>
+            <a href={profile.link} target="_blank">
+              <Tag
+                  icon={<CustomIcon icon={profile.brand.key} size={20}/>}
+                  minimal
+                  interactive
+              >
+                <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
+                  {profile.display}
+                </Row>
+              </Tag>
+            </a>
+          </Col>)}
     </Row>
   </Col>
 }
@@ -82,14 +76,14 @@ export const Footnote = (props: FootnoteProps & Children & { is?: 'footnote' }) 
   const { index } = props;
 
   return <span style={{fontSize: '12px'}}>
-    <Popover2
-      interactionKind="hover"
-      content={<div style={{maxWidth: '400px'}}>
-        <FootnoteContent {...props} index={index} />
-      </div>}
+    <Popover
+        interactionKind="hover"
+        content={<div style={{maxWidth: '400px'}}>
+          <FootnoteContent {...props} index={index} />
+        </div>}
     >
-      <span className="bp4-text-muted" style={{fontWeight: 'bold'}}>[{index}]</span>
-    </Popover2>
+      <span className="bp5-text-muted" style={{fontWeight: 'bold'}}>[{index}]</span>
+    </Popover>
   </span>
 }
 
@@ -98,7 +92,7 @@ export const FootnoteContent = (props: FootnoteProps & Children & { index: numbe
 
   return <div className="p-4">
     <span style={{display: 'inline'}} className="p-4">
-      <span className="bp4-text-muted" style={{display: 'inline'}}>[{index}] </span>
+      <span className="bp5-text-muted" style={{display: 'inline'}}>[{index}] </span>
       {children}
     </span>
   </div>;
@@ -150,8 +144,8 @@ export const ReferenceContent = (props: ReferenceProps & FootnoteProps & { simpl
   } = props;
 
   const display = simple
-    ? _.compact([title, year ? `(${year})` : '']).join(' ')
-    : _.compact([`${author}.`, `"${title}"`, journal, year ? `(${year})` : '', page]).join(' ')
+      ? _.compact([title, year ? `(${year})` : '']).join(' ')
+      : _.compact([author ? `${author}.` : author, title ? `"${title}"` : '', journal, year ? `(${year})` : '', page]).join(' ')
 
   return React.createElement(link ? 'a' : 'span', {
     ...(link ? { href: link, target: '_blank' } : {}),
@@ -177,8 +171,8 @@ export const Paragraph = ({ children }: Children & { block?: boolean }): JSX.Ele
 
   React.Children.forEach(children, child => {
     const inline = (_.isString(child)
-      || (child as any)?.props?.is === 'reference' // TODO THROUGH PROPS
-      || (child as any)?.props?.is === 'footnote' // TODO THROUGH PROPS
+        || (child as any)?.props?.is === 'reference' // TODO THROUGH PROPS
+        || (child as any)?.props?.is === 'footnote' // TODO THROUGH PROPS
     );
 
     if (!inline) {
@@ -203,6 +197,44 @@ export const Paragraph = ({ children }: Children & { block?: boolean }): JSX.Ele
 
 export type SectionProps = {
   head: ReactNode
+}
+
+export const Arc = ({ head, children }: SectionProps & Children) => {
+
+  return <>
+    <Row center="xs">
+      <Divider style={{width: '80%'}}/>
+    </Row>
+
+    <Row center="xs">
+      <Row center="xs" className={"mt-12 pb-3"}>
+        <H3 className="bp5-text-muted">{head}</H3>
+      </Row>
+
+      <Paragraph>{children}</Paragraph>
+    </Row>
+  </>;
+}
+
+export const TODO = ({ children }: Children) => {
+  return (
+      <Row className="bp5-text-muted" start="xs">TODO: [{children}]</Row>
+  )
+}
+
+export const Link = ({link, icon, intent }: { link: string, icon: string, intent?: Intent }) => {
+  return (<a href={link} target="_blank">
+    <Tag
+        icon={<CustomIcon intent={intent} icon={icon} size={20}/>}
+        intent={intent}
+        minimal
+        interactive
+    >
+      <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
+        {link.replaceAll('https://', '')}
+      </Row>
+    </Tag>
+  </a>);
 }
 
 export const Section = ({ head, children }: SectionProps & Children) => {
@@ -231,7 +263,7 @@ export const Title = ({children}: Children) => {
 
 export const Subtitle = ({children}: Children) => {
   return <Row center="xs">
-    <H4 className="bp4-text-muted" style={{maxWidth: '80%'}}>{children}</H4>
+    <H4 className="bp5-text-muted" style={{maxWidth: '80%'}}>{children}</H4>
   </Row>
 }
 
@@ -245,18 +277,18 @@ export const ExportFunctionality = ({children}: Children) => {
       return;
 
     toJpeg(ref.current, { cacheBust: true, backgroundColor: '#1C2127' })
-      .then((dataUrl) => {
-        const link = document.createElement('a')
-        link.download = '2022.On_the_Intelligibility_of_(dynamic)_Systems_and_Conceptual_Uncertainty.jpeg'
-        link.href = dataUrl
-        link.click()
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+        .then((dataUrl) => {
+          const link = document.createElement('a')
+          link.download = '2022.On_the_Intelligibility_of_(dynamic)_Systems_and_Conceptual_Uncertainty.jpeg'
+          link.href = dataUrl
+          link.click()
+        })
+        .catch((err) => {
+          console.log(err)
+        });
   }, [ref]);
 
-  return <div>
+  return <Row center="xs">
     {/* TODO: */}
     <Row between="xs" className="py-10 px-15" style={{width: '100%'}}>
       <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
@@ -265,10 +297,10 @@ export const ExportFunctionality = ({children}: Children) => {
     <div ref={ref}>
       {children}
     </div>
-  </div>
+  </Row>
 }
 
-export const BrowserPaper = ({ children }: Children) => {
+export const BrowserPaper = ({ children, exclude_footnotes }: Children & { exclude_footnotes: boolean }) => {
   const footnotes = getFootnotes(children);
 
   return <Grid fluid className="py-35 px-50 child-pb-15" style={{
@@ -284,14 +316,15 @@ export const BrowserPaper = ({ children }: Children) => {
     </Row>
     <Row/>
 
-    <Section head="Footnotes & References">
+    {!exclude_footnotes ? <Section head="Footnotes & References">
       {footnotes}
-    </Section>
+    </Section> : <></>}
   </Grid>
 }
 
 export type PaperProps = {
   pdf: PdfProps,
+  exclude_footnotes?: boolean
   view: PaperView
 }
 

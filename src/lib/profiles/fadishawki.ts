@@ -21,7 +21,7 @@ const fadishawki: Socials = _.fromPairs([
     { brand: brands.github, display: 'FadiShawki', link: 'https://github.com/FadiShawki' },
     { brand: brands.gitlab, link: 'https://gitlab.com/FadiShawki' },
     { brand: brands.twitter, display: '@_FadiShawki', link: 'https://twitter.com/_FadiShawki' },
-    { brand: brands.linkedin, link: 'https://www.linkedin.com/in/fadishawki/' },
+    { brand: brands.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/' },
     { brand: brands.instagram, link: 'https://www.instagram.com/f._shawki/' },
     { brand: brands.ipfs, link: 'https://discuss.ipfs.tech/u/fadishawki' },
     { brand: brands.nixos, link: 'https://discourse.nixos.org/u/fadishawki' },

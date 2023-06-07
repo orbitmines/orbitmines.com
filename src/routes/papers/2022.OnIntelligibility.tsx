@@ -11,22 +11,41 @@ import Paper, {
   Title,
   useCounter
 } from "../../lib/pdf/paper/Paper";
-import fadishawki from "../../lib/profiles/fadishawki";
+import fadishawki, {Socials} from "../../lib/profiles/fadishawki";
 import logo from "../../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
 import JetBrainsMono from "../../lib/font/fonts/JetBrainsMono/JetBrainsMono";
 import {Col, Row} from '../../lib/layout/flexbox';
 import {Divider, H3} from "@blueprintjs/core";
 import {
-  A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
+  A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS, Content,
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
   GODEL_ESCHER_BACH,
-  QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY
+  QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY,
+  Viewed
 } from "../../profiles/FadiShawki/FadiShawki";
+import _ from "lodash";
+import brands from "../../lib/external/brands";
+import {useNavigate} from "react-router-dom";
 
+export const ON_INTELLIGIBILITY: Content = { reference: {
+    title: "On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty",
+    author: "Shawki, Fadi",
+    journal: "OrbitMines Research",
+    year: "2022",
+    link: "https://orbitmines.com/papers/on-intelligibility",
+  }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022" }
 
 const OnIntelligibility = () => {
+  const navigate = useNavigate();
+
   const referenceCounter = useCounter();
+
+  const socials: Socials = _.pickBy(fadishawki, (value, key) => [
+      brands.github.key,
+      brands.twitter.key,
+      brands.discord.key,
+  ].includes(key));
 
   return <Paper view={PaperView.Browser} pdf={{
     fonts: [ JetBrainsMono ],
@@ -43,9 +62,9 @@ const OnIntelligibility = () => {
       </Col>
       <Col>
         <Author
-          title="Fadi Shawki"
-          subtitle={<a href="mailto:shawkifadi@gmail.com" target="_blank">shawkifadi@gmail.com</a>}
-          socials={fadishawki}
+          title={<a onClick={() => navigate("/profiles/fadi-shawki")}>Fadi Shawki</a>}
+          subtitle={<a href="mailto:fadi.shawki@orbitmines.com" target="_blank">fadi.shawki@orbitmines.com</a>}
+          socials={socials}
         />
       </Col>
     </Row>

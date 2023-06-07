@@ -57,9 +57,9 @@ const renderPdfRendererElement: DereferencedElementRenderer = (element: Element,
   //   return false;
 
   const renderChildren = () => initialProps.children?.map((child: string | ReactNode, index: number) => _.isString(child)
-    // @ts-ignore
-    ? (isText ? child : <Text key={index}>{child}</Text>)
-    : <Fragment key={index}>{child}</Fragment>
+      // @ts-ignore
+      ? (isText ? child : <Text key={index}>{child}</Text>)
+      : <Fragment key={index}>{child}</Fragment>
   ) ?? undefined;
 
   const props = {
@@ -149,16 +149,16 @@ const PdfPaper = (props: PaperProps & Children) => {
 
   pdf.fonts?.forEach(registerFont);
 
-  const paper = <BrowserPaper>{children}</BrowserPaper>;
+  const paper = <BrowserPaper exclude_footnotes={props.exclude_footnotes}>{children}</BrowserPaper>;
 
   if (view === PaperView.Browser)
     return <ExportFunctionality>{paper}</ExportFunctionality>;
 
   if (!dereferenced || view === PaperView.DereferencedHtml)
     return <Dereference
-      onDereference={setDereferenced}
-      renderElement={renderElement}
-      element={paper}
+        onDereference={setDereferenced}
+        renderElement={renderElement}
+        element={paper}
     />;
 
   // console.log(renderToStaticMarkup(dereferenced))

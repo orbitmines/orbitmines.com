@@ -1,9 +1,8 @@
-import theme from 'prism-react-renderer/themes/dracula'
-import Highlight, {defaultProps} from "prism-react-renderer";
+import {Highlight, Prism, themes} from "prism-react-renderer";
 
 const highlight = (code: string) => (
   // @ts-ignore
-  <Highlight {...defaultProps} theme={theme} code={code} language="typescript">
+  <Highlight prism={Prism} theme={themes.dracula} code={code} language="typescript">
     {({className, style, tokens, getLineProps, getTokenProps}) => (
       <>
         {tokens.map((line, i) => (
@@ -23,7 +22,7 @@ export type CodeBlockProps = {
 const CodeBlock = (props: CodeBlockProps) => {
   const {code} = props;
 
-  return <pre className="bp4-code-block" style={{fontSize: '1.1rem', width: '80%'}}>
+  return <pre className="bp5-code-block" style={{fontSize: '1.1rem', width: '80%'}}>
     {highlight(code)}
   </pre>;
 };
