@@ -1,10 +1,30 @@
 {
   "files": {
-    "main.js": "/static/js/main.73346d4f.js",
+    "main.css": "/static/css/main.f0d76091.css",
+    "main.js": "/static/js/main.9b82ecb6.js",
+    "static/js/529.98a96f0b.chunk.js": "/static/js/529.98a96f0b.chunk.js",
+    "static/media/orbitmines.logo.3000x1000.png": "/static/media/orbitmines.logo.3000x1000.e3b652e472c9565f6f93.png",
+    "static/media/blueprint-icons-20.svg?": "/static/media/blueprint-icons-20.427fd0e891d2f22f9b9c.svg",
+    "static/media/blueprint-icons-16.svg?": "/static/media/blueprint-icons-16.314b7752314ee7fc94bd.svg",
+    "static/media/JetBrainsMono-Bold.ttf": "/static/media/JetBrainsMono-Bold.a490f58c0f460cdc1a8d.ttf",
+    "static/media/JetBrainsMono-SemiBold.ttf": "/static/media/JetBrainsMono-SemiBold.6c00e23bc7910a97f8e8.ttf",
+    "static/media/JetBrainsMono-Regular.ttf": "/static/media/JetBrainsMono-Regular.73fb7b7f0e68b372adfe.ttf",
+    "static/media/fadishawki.profile-picture.png": "/static/media/fadishawki.profile-picture.32136156f1765e68a652.png",
+    "static/media/blueprint-icons-20.eot?": "/static/media/blueprint-icons-20.5e4c0405ed6ed9b8dccd.eot",
+    "static/media/blueprint-icons-20.ttf?": "/static/media/blueprint-icons-20.12e371e97427623c5364.ttf",
+    "static/media/blueprint-icons-16.eot?": "/static/media/blueprint-icons-16.0a3e913af17fc72a69cf.eot",
+    "static/media/blueprint-icons-16.ttf?": "/static/media/blueprint-icons-16.f48c674917140edc3135.ttf",
+    "static/media/blueprint-icons-20.woff?": "/static/media/blueprint-icons-20.fb8f4957d362b96448dc.woff",
+    "static/media/blueprint-icons-16.woff?": "/static/media/blueprint-icons-16.9bd12ab178a554d2f53a.woff",
+    "static/media/blueprint-icons-20.woff2?": "/static/media/blueprint-icons-20.3ab530512ec0659585f0.woff2",
+    "static/media/blueprint-icons-16.woff2?": "/static/media/blueprint-icons-16.79a4001b654c178d82ff.woff2",
     "index.html": "/index.html",
-    "main.73346d4f.js.map": "/static/js/main.73346d4f.js.map"
+    "main.f0d76091.css.map": "/static/css/main.f0d76091.css.map",
+    "main.9b82ecb6.js.map": "/static/js/main.9b82ecb6.js.map",
+    "529.98a96f0b.chunk.js.map": "/static/js/529.98a96f0b.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.73346d4f.js"
+    "static/css/main.f0d76091.css",
+    "static/js/main.9b82ecb6.js"
   ]
 }

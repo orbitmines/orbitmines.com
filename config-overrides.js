@@ -171,15 +171,15 @@ module.exports = function override(config, env) {
     // https://github.com/webpack/webpack/blob/main/lib/hmr/lazyCompilationBackend.js
     // https://webpack.js.org/configuration/experiments/#experimentslazycompilation
     // Fix: https://github.com/webpack/webpack/compare/main...FadiShawki:webpack:fix-lazy-compilation-client-option
-    lazyCompilation: {
-      backend: lazyCompilationBackend({
-        client: process.env.LAZY_COMPILATION_CLIENT_URL,
-        listen: {
-          host: '0.0.0.0',
-          port: parseInt(process.env.LAZY_COMPILATION_PORT) || 40000,
-        }
-      })
-    },
+    // lazyCompilation: {
+    //   backend: lazyCompilationBackend({
+    //     client: process.env.LAZY_COMPILATION_CLIENT_URL,
+    //     listen: {
+    //       host: '0.0.0.0',
+    //       port: parseInt(process.env.LAZY_COMPILATION_PORT) || 40000,
+    //     }
+    //   })
+    // },
 
     syncWebAssembly: true,
     topLevelAwait: true,
