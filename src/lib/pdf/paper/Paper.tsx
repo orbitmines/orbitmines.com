@@ -222,7 +222,7 @@ export const TODO = ({ children }: Children) => {
   )
 }
 
-export const Link = ({link, icon, intent }: { link: string, icon: string, intent?: Intent }) => {
+export const Link = ({link, icon, intent, ...props }: { link: string, icon: string, intent?: Intent } & any) => {
   return (<a href={link} target="_blank">
     <Tag
         icon={<CustomIcon intent={intent} icon={icon} size={20}/>}
@@ -230,8 +230,8 @@ export const Link = ({link, icon, intent }: { link: string, icon: string, intent
         minimal
         interactive
     >
-      <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
-        {link.replaceAll('https://', '')}
+      <Row middle="xs" className="px-5" {...props} style={{fontSize: '1.1rem'}}>
+        <span {...props}>{link.replaceAll('https://', '')}</span>
       </Row>
     </Tag>
   </a>);

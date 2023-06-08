@@ -109,19 +109,19 @@ const FadiShawki = () => {
         Feel free to contact me on the socials specified above.
       </Section>
       <Section head="Building a (ray-like hypergraph) graphical interface">
-        <Link link="https://github.com/orbitmines/explorer" icon={brands.github.key} intent={Intent.DANGER} />
+        <Link link="https://github.com/orbitmines/explorer" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}}/>
 
       </Section>
       <Section head="Modelling WebAssembly">
-        <Link link="https://github.com/orbitmines/wasm" icon={brands.github.key} intent={Intent.DANGER} />
+        <Link link="https://github.com/orbitmines/wasm" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
 
       </Section>
       <Section head="Trying to compress enwik9 (Hutter Prize)">
-        <Link link="https://github.com/orbitmines/enwik9" icon={brands.github.key} intent={Intent.DANGER} />
+        <Link link="https://github.com/orbitmines/enwik9" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
 
       </Section>
       <Section head="Writing a paper on most of the above">
-        <Link link="https://orbitmines.com/papers/on-orbits" icon={brands.github.key} intent={Intent.DANGER}/>
+        <Link link="https://orbitmines.com/papers/on-orbits" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}}/>
       </Section>
     </Arc>
 
