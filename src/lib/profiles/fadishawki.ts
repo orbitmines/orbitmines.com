@@ -27,7 +27,7 @@ const fadishawki: Socials = _.fromPairs([
     { brand: brands.nixos, link: 'https://discourse.nixos.org/u/fadishawki' },
     { brand: brands.fission, link: 'https://talk.fission.codes/u/fadishawki/' },
     { brand: brands.mastodon, link: 'https://sigmoid.social/@FadiShawki' },
-    { brand: brands.discord, display: 'Fadi#2854', link: 'https://discord.orbitmines.com' }, // TODO: Behind proxy?
+    { brand: brands.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com' }, // TODO: Behind proxy?
 ].map(profile => [profile.brand.key, profile]));
 
 export default fadishawki;

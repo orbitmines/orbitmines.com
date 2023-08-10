@@ -7,8 +7,8 @@ import Paper, {
   Reference,
   ReferenceProps,
   Section,
-    Link,
-    TODO,
+  Link,
+  TODO,
   Subtitle,
   Title,
   useCounter
@@ -16,11 +16,13 @@ import Paper, {
 import fadishawki, {Socials} from "../../lib/profiles/fadishawki";
 import JetBrainsMono from "../../lib/font/fonts/JetBrainsMono/JetBrainsMono";
 import {Col, Row} from '../../lib/layout/flexbox';
-import {Divider, H3, Icon, Intent} from "@blueprintjs/core";
+import {Divider, H3, Icon, Intent, Tag} from "@blueprintjs/core";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {
   ARTICLES_2021,
-  ARTICLES_2022, ARTICLES_2023,
+  ARTICLES_2022, ARTICLES_2023, ATTENDED_EVENTS,
+
+
   BOOKS,
   Category,
   ContentFocus,
@@ -78,6 +80,7 @@ const FadiShawki = () => {
     books: BOOKS,
     history: HISTORY,
     formal_education: FORMAL_EDUCATION,
+    attended_events: ATTENDED_EVENTS,
     familiar_tools: FAMILIAR_TOOLS,
   }
 
@@ -99,7 +102,7 @@ const FadiShawki = () => {
 
     <Row center="xs" middle="xs" className="child-px-10">
       <Col>
-        <H3>June, 2023</H3>
+        <H3>August, 2023</H3>
       </Col>
     </Row>
     <Row/>
@@ -109,7 +112,7 @@ const FadiShawki = () => {
         Feel free to contact me on the socials specified above.
       </Section>
       <Section head="Building a (ray-like hypergraph) graphical interface">
-        <Link link="https://github.com/orbitmines/explorer" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}}/>
+        <Link link="https://github.com/orbitmines/explorer" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
 
       </Section>
       <Section head="Modelling WebAssembly">
@@ -121,7 +124,7 @@ const FadiShawki = () => {
 
       </Section>
       <Section head="Writing a paper on most of the above">
-        <Link link="https://orbitmines.com/papers/on-orbits" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}}/>
+        <Link link="https://orbitmines.com/papers/on-orbits" icon={brands.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
       </Section>
     </Arc>
 
@@ -140,6 +143,10 @@ const FadiShawki = () => {
 
       <Section head="Formal Education">
         <Category category={profile.formal_education} archival_functions={false} focus={ContentFocus.ALL} />
+      </Section>
+
+      <Section head="Attended Events">
+        <Category category={profile.attended_events} archival_functions={false} focus={ContentFocus.ALL} />
       </Section>
     </Arc>
 
