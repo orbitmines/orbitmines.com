@@ -77,7 +77,7 @@ const OnIntelligibility = () => {
 
     <Row center="xs" middle="xs" className="child-px-10">
       <Col>
-        <Link name="Discussion Channel & Additional Commentary" link="https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108" icon={brands.discord.key} intent={Intent.PRIMARY} />
+        <Link name="Discussion Channel" link="https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108" icon={brands.discord.key} intent={Intent.PRIMARY} />
       </Col>
     </Row>
 
