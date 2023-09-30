@@ -1,32 +1,21 @@
 import React from 'react';
-import Paper, {
-  Author,
-  BR,
-  Footnote, Link,
-  Organization,
-  PaperView,
-  Reference,
-  Section,
-  Subtitle,
-  Title,
-  useCounter
-} from "../../lib/pdf/paper/Paper";
-import fadishawki, {Socials} from "../../lib/profiles/fadishawki";
-import logo from "../../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
-import JetBrainsMono from "../../lib/font/fonts/JetBrainsMono/JetBrainsMono";
-import {Col, Row} from '../../lib/layout/flexbox';
-import {Divider, H3, Intent} from "@blueprintjs/core";
+import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
+import {Row} from '../../lib/layout/flexbox';
 import {
-  A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS, Content,
+  A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
   GODEL_ESCHER_BACH,
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY,
-  Viewed
 } from "../../profiles/FadiShawki/FadiShawki";
-import _ from "lodash";
-import brands from "../../lib/external/brands";
+import ORGANIZATIONS, { Content, Viewed } from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
+import Paper, {PaperProps, PView} from "../../lib/paper/Paper";
+import BR from "../../lib/paper/layout/BR";
+import Section from "../../lib/paper/layout/Section";
+import Reference, {Footnote, useCounter} from "../../lib/paper/layout/Reference";
+import {renderable} from "../../lib/typescript/React";
+import {PROFILES} from "../../profiles/profiles";
 
 export const ON_INTELLIGIBILITY: Content = { reference: {
     title: "On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty",
@@ -41,51 +30,29 @@ const OnIntelligibility = () => {
 
   const referenceCounter = useCounter();
 
-  const socials: Socials = _.pickBy(fadishawki, (value, key) => [
-    brands.github.key,
-    brands.twitter.key,
-    brands.discord.key,
-  ].includes(key));
+  const paper: PaperProps = {
+    title: renderable<string>("On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty"),
+    subtitle: renderable<string>("A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps)."),
+    date: "2022-12-31",
+    view: PView.Browser,
+    pdf: {
+      fonts: [ JetBrainsMono ],
+    },
+    external: {
+      discord: {serverId: '1055502602365845534', channelId: '1105246681915732108', link: () => "https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108"}
+    },
+    organizations: [ORGANIZATIONS.orbitmines_research],
+    authors: [{
+      ...PROFILES.fadi_shawki,
+      external: PROFILES.fadi_shawki.external?.filter((profile) => [
+        ORGANIZATIONS.github.key,
+        ORGANIZATIONS.twitter.key,
+        ORGANIZATIONS.discord.key,
+      ].includes(profile.organization.key))
+    }]
+  }
 
-  return <Paper view={PaperView.Browser} pdf={{
-    fonts: [ JetBrainsMono ],
-  }}>
-    <Title>On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty</Title>
-    <Subtitle>A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps).</Subtitle>
-
-    <Row center="xs" middle="xs" className="child-px-20">
-      <Col>
-        <Organization name="OrbitMines Research" logo={logo} />
-      </Col>
-      <Col className="hidden-xs hidden-sm hidden-md">
-        <Divider style={{height: '80px'}}/>
-      </Col>
-      <Col>
-        <Author
-          title={<a onClick={() => navigate("/profiles/fadi-shawki")}>Fadi Shawki</a>}
-          subtitle={<a href="mailto:fadi.shawki@orbitmines.com" target="_blank">fadi.shawki@orbitmines.com</a>}
-          socials={socials}
-        />
-      </Col>
-    </Row>
-
-    <Row center="xs" middle="xs" className="child-px-10">
-      <Col>
-        <H3>December, 2022</H3>
-      </Col>
-    </Row>
-
-    <Row center="xs" middle="xs" className="child-px-10">
-      <Col>
-        <Link name="Discussion Channel" link="https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108" icon={brands.discord.key} intent={Intent.PRIMARY} />
-      </Col>
-    </Row>
-
-    <Row center="xs">
-      <Divider style={{width: '80%'}}/>
-    </Row>
-    <Row/>
-
+  return <Paper {...paper}>
     <Row center="xs">
       <Section head="Abstract">
         Central to the theme of this paper lies the conceptual framework of framing all ideas and concepts (or generally; information) as perceived superpositions. Building on prior ideas of an observer's limitations and how such a framework is a necessity. One might believe there is such a thing as objective reality, but perfect knowledge of such a thing seems to lie in the space of impossibilities. I consider this mentioning of 'perfect' and other extremes quite susceptible to misinterpretation, which I believe are necessary conditions and imperfections of observers.
@@ -104,41 +71,41 @@ const OnIntelligibility = () => {
         <BR/>
 
         Conceivably, the only way to understand systems, or at the very least to 'do useful things', is to interact with them. Note that when I say 'interact', I mean so in a way that observing (by whatever means) falls within that definition. If in any way information/interactions can be transferred between two conceived systems, they will fall under what I'd incorrectly call 'interaction'.  Which is quite related to the old debate that is the possibility of a 'non interacting' observer <Footnote is="footnote"  index={referenceCounter()}>While reading <Reference is="reference"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          index={referenceCounter()}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          {...QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY.reference}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          inline
-      /> I realized that this dichotomy between Bohr & Einstein is incredibly relevant, even for 'high-level' systems. To my mind summarized as the things knowable against some objective reality. And how incredibly interdependable systems are (whether our universe or any other conceivable one).</Footnote>. Others have gone to great length discussing these issues <Footnote is="footnote"  index={referenceCounter()}><Reference is="reference"
-                                                                                                                                                                                                                                                                                                                                                                                                                                            index={referenceCounter()}
-                                                                                                                                                                                                                                                                                                                                                                                                                                            title="On the einstein podolsky rosen paradox"
-                                                                                                                                                                                                                                                                                                                                                                                                                                            author="Bell, John S."
-                                                                                                                                                                                                                                                                                                                                                                                                                                            journal="Physics Physique Fizika 1.3"
-                                                                                                                                                                                                                                                                                                                                                                                                                                            year="1964"
-                                                                                                                                                                                                                                                                                                                                                                                                                                            page="p. 195"
-                                                                                                                                                                                                                                                                                                                                                                                                                                            link="https://link.aps.org/pdf/10.1103/PhysicsPhysiqueFizika.1.195"
-                                                                                                                                                                                                                                                                                                                                                                                                                                            inline
+        index={referenceCounter()}
+        {...QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY.reference}
+        inline
+      /> I realized that this dichotomy between Bohr & Einstein is incredibly relevant, even for 'high-level' systems. To my mind summarized as the things knowable against some objective reality. And how incredibly interdependable systems are (whether our universe or any other conceivable one).</Footnote>. Others have gone to great length discussing these issues <Footnote is="footnote"  index={referenceCounter()}><Reference is="reference" 
+        index={referenceCounter()}
+        title="On the einstein podolsky rosen paradox"
+        author="Bell, John S."
+        journal="Physics Physique Fizika 1.3"
+        year="1964"
+        page="p. 195"
+        link="https://link.aps.org/pdf/10.1103/PhysicsPhysiqueFizika.1.195"
+        inline
       /> & relevant discussions.</Footnote>. For our purposes I'd thus wrongly assume that any system always exists within another system <Footnote is="footnote"  index={referenceCounter()}>A possibly unanswerable paradox lies within that assumption, however. Namely that of a paradoxical universe; or more accurately the unknowable properties of its existence. And for practical purposes of systems that doesn't matter much (except of course in the case of wanting to figure more out about it; if that is deemed useful).</Footnote>. Therefore, a practical view on this is merely: if systems cannot interact with one-and-other, they won't ever know of each-other's existence. But I don't consider this approach as rigorous.
       </Section>
       <Section head="II. Equivalence & Extremes">
-        A seductive take on equivalence, is that the best (; or only perfect) description of a system is that system itself <Reference is="reference"
-                                                                                                                                       index={referenceCounter()}
-                                                                                                                                       title="What is a knowledge representation?"
-                                                                                                                                       author="Davis, Randall, Howard Shrobe, and Peter Szolovits"
-                                                                                                                                       journal="AI magazine 14.1"
-                                                                                                                                       year="1993"
-                                                                                                                                       link="https://ojs.aaai.org/index.php/aimagazine/article/download/1029/947"
+        A seductive take on equivalence, is that the best (; or only perfect) description of a system is that system itself <Reference is="reference" 
+        index={referenceCounter()}
+        title="What is a knowledge representation?"
+        author="Davis, Randall, Howard Shrobe, and Peter Szolovits"
+        journal="AI magazine 14.1"
+        year="1993"
+        link="https://ojs.aaai.org/index.php/aimagazine/article/download/1029/947"
       />. Any perception of a system, any description of a system, is necessarily flawed. When we try and describe a way in which something is equivalent, we aim for an approximate seemingly useful solution. This is the pocket in which we can operate on intelligibility <Footnote is="footnote"  index={referenceCounter()}>
-        Similar to Wolfram's idea of computational (ir)reducibility: <Reference is="reference"
-                                                                                index={referenceCounter()}
-                                                                                title="A new kind of science?"
-                                                                                author="Wolfram, Stephen, and M. Gad-el-Hak"
-                                                                                journal="Appl. Mech. Rev. 56.2"
-                                                                                year="2003"
-                                                                                link="https://www.wolframscience.com/nks/"
-                                                                                inline
-      /> & <Reference is="reference"
-                      index={referenceCounter()}
-                      {...A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS.reference}
-                      inline
+        Similar to Wolfram's idea of computational (ir)reducibility: <Reference is="reference" 
+          index={referenceCounter()}
+          title="A new kind of science?"
+          author="Wolfram, Stephen, and M. Gad-el-Hak"
+          journal="Appl. Mech. Rev. 56.2"
+          year="2003"
+          link="https://www.wolframscience.com/nks/"
+          inline
+        /> & <Reference is="reference" 
+        index={referenceCounter()}
+        {...A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS.reference}
+        inline
       />
       </Footnote>. This has all kinds of conceptual consequences which are central to this paper's approach. One of the critical ones being that extremes such as 'proof', 'real' or 'truth' invoke things that are generally unknowable, and that a claim like this is incredibly self-referential. Following from that is that in a certain light; for our perceived purposes many extremes (; or unknowable things) don't matter to us, unless edging toward them is deemed useful.
 
@@ -166,15 +133,15 @@ const OnIntelligibility = () => {
 
         <CodeBlock code="A = A | Uncertainty"/>
 
-        Note that, like unknowable extremes, there's a difference between perceived uncertainty and 'actual (unknowable) uncertainty' <Footnote is="footnote"  index={referenceCounter()}>Usually when people refer to uncertainty, they mean perceived uncertainty of a system. I reframe uncertainty as inherent and the perception of it more separately. As an example: <Reference is="reference"
-                                                                                                                                                                                                                                                                                                                                                                                       index={referenceCounter()}
-                                                                                                                                                                                                                                                                                                                                                                                       title="On the measure of intelligence"
-                                                                                                                                                                                                                                                                                                                                                                                       author="Chollet, François"
-                                                                                                                                                                                                                                                                                                                                                                                       journal="arXiv preprint arXiv:1911.01547"
-                                                                                                                                                                                                                                                                                                                                                                                       year="2019"
-                                                                                                                                                                                                                                                                                                                                                                                       link="https://arxiv.org/abs/1911.01547"
-                                                                                                                                                                                                                                                                                                                                                                                       inline
-      /></Footnote>.
+        Note that, like unknowable extremes, there's a difference between perceived uncertainty and 'actual (unknowable) uncertainty' <Footnote is="footnote"  index={referenceCounter()}>Usually when people refer to uncertainty, they mean perceived uncertainty of a system. I reframe uncertainty as inherent and the perception of it more separately. As an example: <Reference is="reference" 
+          index={referenceCounter()}
+          title="On the measure of intelligence"
+          author="Chollet, François"
+          journal="arXiv preprint arXiv:1911.01547"
+          year="2019"
+          link="https://arxiv.org/abs/1911.01547"
+          inline
+        /></Footnote>.
 
         <BR/>
 

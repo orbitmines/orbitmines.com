@@ -1,34 +1,35 @@
 import React from 'react';
 import {Layer, pageStyles} from "../profiles/FadiShawki/FadiShawki";
 import {Col, Row} from "../lib/layout/flexbox";
-import logo from "../lib/images/orbitmines/logo/orbitmines.logo.3000x1000.png";
-import {Author} from "../lib/pdf/paper/Paper";
-import fadishawki, {Socials} from "../lib/profiles/fadishawki";
-import {Button, Divider, H3, Icon, Tag} from "@blueprintjs/core";
+import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
+import {Divider, H3, Icon, Tag} from "@blueprintjs/core";
 import {useNavigate} from "react-router-dom";
-import CustomIcon from "../lib/icons/CustomIcon";
-import brands from "../lib/external/brands";
-import _ from "lodash";
+import CustomIcon from "../lib/layout/icons/CustomIcon";
+import ORGANIZATIONS from "../lib/organizations/ORGANIZATIONS";
+import Author from "../lib/paper/layout/Author";
+import {PROFILES} from "../profiles/profiles";
+import {Helmet} from "react-helmet";
 
 const Root = () => {
-    const navigate = useNavigate();
-
-    const socials: Socials = _.pickBy(fadishawki, (value, key) => [
-        brands.github.key,
-        brands.twitter.key,
-        brands.discord.key,
-    ].includes(key));
-
     return <div style={{
         ...pageStyles
     }}>
+        <Helmet>
+            <title lang="en">OrbitMines Research</title>
+            <meta property="og:type" content="website" />
+            <meta name="description" content="Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems." />
+            <meta property="og:image" content="https://orbitmines.com/logo.png" />
+            <meta property="og:image:type" content="image/jpeg" />
+
+        </Helmet>
+
         <Layer zIndex="0">
             <Row center="xs">
                 <Col xs={12}><Row center="xs"><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Row></Col>
                 <Col xs={12}> <Row center="xs" className="child-px-2">
                     <a href="https://discord.orbitmines.com" target="_blank">
                         <Tag
-                            icon={<CustomIcon icon={brands.discord.key} size={20}/>}
+                            icon={<CustomIcon icon={ORGANIZATIONS.discord.key} size={20}/>}
                             minimal
                             interactive
                         >
@@ -39,7 +40,7 @@ const Root = () => {
                     </a>
                     <a href="https://github.com/orbitmines" target="_blank">
                         <Tag
-                            icon={<CustomIcon icon={brands.github.key} size={20}/>}
+                            icon={<CustomIcon icon={ORGANIZATIONS.github.key} size={20}/>}
                             minimal
                             interactive
                         >
@@ -56,7 +57,7 @@ const Root = () => {
             </Row>
 
             <Row center="xs">
-                <a onClick={() => navigate("/papers/on-intelligibility")}>
+                <a href="/papers/on-intelligibility">
                     <Icon icon="link" /> 2022. On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty
                 </a>
             </Row>
@@ -65,11 +66,11 @@ const Root = () => {
                 <Divider style={{width: '80%'}}/>
             </Row>
 
-            <Author
-                title={<a onClick={() => navigate("/profiles/fadi-shawki")}>Fadi Shawki</a>}
-                subtitle={<a href="mailto:fadi.shawki@orbitmines.com" target="_blank">fadi.shawki@orbitmines.com</a>}
-                socials={socials}
-            />
+            <Author {...PROFILES.fadi_shawki} filter={(profile) => [
+                ORGANIZATIONS.github.key,
+                ORGANIZATIONS.twitter.key,
+                ORGANIZATIONS.discord.key,
+            ].includes(profile.organization.key)}/>
         </Layer>
     </div>
 };

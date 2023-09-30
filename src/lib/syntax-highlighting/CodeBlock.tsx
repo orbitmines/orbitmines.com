@@ -1,4 +1,7 @@
 import {Highlight, Prism, themes} from "prism-react-renderer";
+import { Children } from "../typescript/React";
+import * as React from "react";
+import classNames from "classnames";
 
 const highlight = (code: string) => (
   // @ts-ignore
@@ -19,12 +22,24 @@ export type CodeBlockProps = {
   code: string
 }
 
+export const Block = ({children, className, style = {}, ...props}: Children & React.HTMLAttributes<HTMLElement>) => {
+  return (
+    <pre {...props} className={classNames(className, 'bp5-code-block')} style={{
+      fontSize: '1.1rem',
+      width: '80%',
+      ...style,
+    }}>
+      {children}
+    </pre>
+  )
+}
+
 const CodeBlock = (props: CodeBlockProps) => {
   const {code} = props;
 
-  return <pre className="bp5-code-block" style={{fontSize: '1.1rem', width: '80%'}}>
+  return <Block>
     {highlight(code)}
-  </pre>;
+  </Block>;
 };
 
 export default CodeBlock;

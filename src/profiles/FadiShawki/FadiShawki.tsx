@@ -1,42 +1,11 @@
-import React, {ReactNode} from 'react';
-import { Row } from '../../lib/layout/flexbox';
-import fadishawki, {Socials} from "../../lib/profiles/fadishawki";
-import {Col} from "../../lib/layout/flexbox";
-import fadishawki_profile_picture from './fadishawki.profile-picture.png'
-import Children from "../../lib/typescript/Children";
+import React from 'react';
+import {Col, Row} from '../../lib/layout/flexbox';
 import classNames from "classnames";
-import {Divider, H3, H4, Intent, Tag} from "@blueprintjs/core";
-import {Reference, ReferenceProps} from "../../lib/pdf/paper/Paper";
+import {Intent, Tag} from "@blueprintjs/core";
+import Reference from "../../lib/paper/layout/Reference";
+import {Content, ContentCategory, Viewed} from '../../lib/organizations/ORGANIZATIONS';
 
-// TODO: Just a crude initial setup while the interface is not yet workable
-
-export enum Viewed {
-  FOUND, IN_PROGRESS, VIEWED
-}
-
-export type Content = {
-  status: Viewed,
-  reference: ReferenceProps,
-  archived?: boolean,
-  found_at?: string,
-  viewed_at?: string,
-  description?: string
-}
-
-export type ContentCategory = {
-  name: string,
-  items: Content[]
-}
-
-export type Profile = {
-  title: ReactNode,
-  subtitle: ReactNode,
-  profile_picture: string,
-  socials: Socials,
-  summary: ReactNode
-} & {
-  [name: string]: ContentCategory
-}
+// TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const DUNE = { reference: {
     title: 'Dune',
@@ -868,6 +837,50 @@ export const REMEMBERING_THE_IMPROBABLE_LIFE_OF_ED_FREDKIN: Content = { referenc
     link: "https://writings.stephenwolfram.com/2023/08/remembering-the-improbable-life-of-ed-fredkin-1934-2023-and-his-world-of-ideas-and-stories/",
   }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023"  };
 
+export const REMEMBERING_DOUG_LENAT: Content = { reference: {
+    title: "Remembering Doug Lenat (1950–2023) and His Quest to Capture the World with Logic",
+    author: "Wolfram, Stephen",
+    journal: "",
+    year: "2023",
+    link: "https://writings.stephenwolfram.com/2023/09/remembering-doug-lenat-1950-2023-and-his-quest-to-capture-the-world-with-logic/",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
+
+export const THE_ALEXANDRIA_PROJECT_WHAT_HAS_BEEN_ACCOMPLISHED: Content = { reference: {
+    title: "The ALEXANDRIA Project: what has been accomplished?",
+    author: "Paulson, Lawrence C.",
+    journal: "",
+    year: "2023",
+    link: "https://lawrencecpaulson.github.io/2023/04/27/ALEXANDRIA_outcomes.html",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
+export const THE_END_OF_THE_ALEXANDRIA_PROJECT: Content = { reference: {
+    title: "The End (?) of the ALEXANDRIA Project",
+    author: "Paulson, Lawrence C.",
+    journal: "",
+    year: "2023",
+    link: "https://lawrencecpaulson.github.io/2023/08/31/ALEXANDRIA_finished.html",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
+export const WHEN_IS_A_COMPUTER_PROOF_A_PROOF: Content = { reference: {
+    title: "When is a computer proof a proof?",
+    author: "Paulson, Lawrence C.",
+    journal: "",
+    year: "2023",
+    link: "https://lawrencecpaulson.github.io/2023/08/09/computer_proof.html",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
+export const ALEXANDRIA_LARGE_SCALE_FORMAL_PROOF_FOR_THE_WORKING_MATHEMATICIAN: Content = { reference: {
+    title: "ALEXANDRIA: Large-Scale Formal Proof for the Working Mathematician",
+    author: "Paulson, Lawrence C.",
+    journal: "",
+    year: "2021",
+    link: "https://lawrencecpaulson.github.io/2021/12/08/ALEXANDRIA.html",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
+export const THE_ORIGINS_AND_MOTIVATIONS_OF_UNIVALENT_FOUNDATIONS: Content = { reference: {
+    title: "The Origins and Motivations of Univalent Foundations",
+    author: "Voevodsky, Vladimir",
+    journal: "",
+    year: "2014",
+    link: "https://www.ias.edu/ideas/2014/voevodsky-origins",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
+
 export const WILL_COMPUTERS_REDEFINE_THE_ROOTS_OF_MATH: Content = { reference: {
     title: "Will Computers Redefine the Roots of Math?",
     author: "Hartnett, Kevin",
@@ -930,6 +943,13 @@ export const WIKIPEDIA_ARTICLES: Content = { reference: {
 export const ARTICLES_2023: ContentCategory = {
   name: '2023',
   items: [
+    THE_ORIGINS_AND_MOTIVATIONS_OF_UNIVALENT_FOUNDATIONS,
+    THE_END_OF_THE_ALEXANDRIA_PROJECT,
+    WHEN_IS_A_COMPUTER_PROOF_A_PROOF,
+    THE_ALEXANDRIA_PROJECT_WHAT_HAS_BEEN_ACCOMPLISHED,
+    ALEXANDRIA_LARGE_SCALE_FORMAL_PROOF_FOR_THE_WORKING_MATHEMATICIAN,
+    REMEMBERING_DOUG_LENAT,
+
     CATEGORY_THEORY_I,
     CATEGORY_THEORY_II,
     CATEGORY_THEORY_III,
@@ -1063,6 +1083,8 @@ export const ARTICLES_2022: ContentCategory = {
     UNCERTAINTY_BELIEF_AND_PROBABILITY,
     ON_DEFINING_ARTIFICAL_INTELLIGENCE,
     ROBUST_SPEECH_RECOGNITION_VIA_LARGE_SCALE_WEAK_SUPERVISION,
+
+
   ]
 };
 
@@ -1303,8 +1325,11 @@ export const category = (content: ContentCategory) => {
   };
 }
 
-export const Category = (props: { category: ContentCategory, archival_functions?: boolean, inline?: boolean, focus?: ContentFocus, simple?: boolean }) => {
+export const Category = (props: { category?: ContentCategory, archival_functions?: boolean, inline?: boolean, focus?: ContentFocus, simple?: boolean }) => {
   const { archival_functions, inline, focus = ContentFocus.CURRENT, simple = false } = props;
+
+  if (!props.category)
+    return <></>;
 
   const { name, items } = props.category;
 
@@ -1360,69 +1385,3 @@ export const Layer = ({zIndex, children, ...props}: any) => {
     {children}
   </div>;
 }
-
-const FadiShawki = () => {
-  // @ts-ignore
-  const profile: Profile = {
-    title: 'Fadi Shawki',
-    subtitle: <Row className="child-px-3" middle="xs">
-      <Col>
-        <a href="mailto:fadi.shawki@orbitmines.com" target="_blank">fadi.shawki@orbitmines.com</a>
-      </Col>
-      <Col>
-        <Divider style={{height: '0.8rem'}}/>
-      </Col>
-      <Col>
-        22 SY old
-      </Col>
-    </Row>,
-    profile_picture: fadishawki_profile_picture,
-    socials: fadishawki,
-
-    summary: <span>
-      👋 The year is 2023 and ripe for the continued exploration of the universe by an allegedly self-proclaimed engineer, researcher, ..., scientist with an unkeenly interest in all things computational.
-    </span>,
-
-    books: BOOKS,
-    history: HISTORY,
-    formal_education: FORMAL_EDUCATION,
-    familiar_tools: FAMILIAR_TOOLS,
-  }
-
-  return <div style={{
-    ...pageStyles,
-    border: 'solid 2px darkgray'
-  }}>
-    <Layer zIndex="0">
-      <Row style={{height: '100%'}}>
-        <Col xs={12}>
-          <Row center="xs">
-            <Col xs={6}>
-              <img src={profile.profile_picture} width="200px" />
-
-              <Row center="xs"><H3>{profile.title}</H3></Row>
-              <Row center="xs"><H4 className="bp5-text-muted">{profile.subtitle}</H4></Row>
-            </Col>
-            <Col xs={6} style={{textAlign: 'start'}}>
-              <Row middle="xs" style={{height: '100%'}}>{profile.summary}</Row>
-            </Col>
-          </Row>
-        </Col>
-        <Col xs={6}>
-          <Category category={profile.books} archival_functions />
-        </Col>
-        <Col xs={6}>
-          <Category category={profile.history} archival_functions focus={ContentFocus.FINISHED} />
-        </Col>
-        <Col xs={6}>
-          <Category category={profile.formal_education} focus={ContentFocus.ALL} />
-        </Col>
-        <Col xs={12}>
-          <Category category={profile.familiar_tools} focus={ContentFocus.ALL} inline />
-        </Col>
-      </Row>
-    </Layer>
-  </div>
-};
-
-export default FadiShawki;
