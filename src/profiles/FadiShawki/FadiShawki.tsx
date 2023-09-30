@@ -202,6 +202,14 @@ export const THE_NAKED_SUN: Content = { reference: {
     link: "https://en.wikipedia.org/wiki/The_Naked_Sun",
   }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023"  };
 
+export const THE_ROBOTS_OF_DAWN: Content = { reference: {
+    title: "The Robots of Dawn",
+    author: "Asimov, Isaac",
+    journal: "Doubleday",
+    year: "1983",
+    link: "https://en.wikipedia.org/wiki/The_Robots_of_Dawn",
+  }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "September, 2023"  };
+
 export const THE_RISE_AND_FALL_OF_THE_THIRD_REICH: Content = { reference: {
     title: "The Rise and Fall of the Third Reich",
     author: "Shirer, William L",
@@ -984,6 +992,7 @@ export const ARTICLES_2023: ContentCategory = {
     THE_COMPLETE_ROBOT,
     THE_CAVES_OF_STEEL,
     THE_NAKED_SUN,
+    THE_ROBOTS_OF_DAWN,
 
     THE_RISE_AND_FALL_OF_THE_THIRD_REICH,
 

@@ -75,7 +75,7 @@ export const Metadata = ({children}: Children) => {
 function App() {
   return (
     <Metadata>
-      // HotkeysProvider: https://blueprintjs.com/docs/#core/context/hotkeys-provider
+      {/*// HotkeysProvider: https://blueprintjs.com/docs/#core/context/hotkeys-provider*/}
       <HotkeysProvider>
         <Modules>
           <Router/>
