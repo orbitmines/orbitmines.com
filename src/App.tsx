@@ -4,11 +4,12 @@ import IModule from "./lib/react-hooks/modules/IModule";
 import useHoveringModule from "./lib/react-hooks/modules/useHovering";
 import useHotkeysModule from "./lib/react-hooks/modules/useHotkeys";
 import {mergeListeners} from "./lib/react-hooks/IEventListener";
-import Children from "./lib/typescript/Children";
+import { Children } from "./lib/typescript/React";
 import {Route, Routes} from 'react-router-dom';
 import Root from "./routes/Root";
 import Paper from "./routes/Paper";
 import Profile from "./routes/Profiles";
+import {Helmet} from "react-helmet";
 
 export const ModulesContext = createContext<IModule<any>[]>([]);
 
@@ -58,15 +59,31 @@ export const Router = () => {
   </Routes>
 }
 
+export const Metadata = ({children}: Children) => {
+  return <>
+    <Helmet>
+      <meta property="og:site_name" content="OrbitMines" />
+
+      {/* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards */}
+      <meta property="twitter:site" content="@OrbitMines" />
+    </Helmet>
+
+    {children}
+  </>
+}
+
 function App() {
   return (
-    // HotkeysProvider: https://blueprintjs.com/docs/#core/context/hotkeys-provider
-    <HotkeysProvider>
-      <Modules>
-        <Router/>
-       </Modules>
-    </HotkeysProvider>
+    <Metadata>
+      // HotkeysProvider: https://blueprintjs.com/docs/#core/context/hotkeys-provider
+      <HotkeysProvider>
+        <Modules>
+          <Router/>
+        </Modules>
+      </HotkeysProvider>
+    </Metadata>
   );
 }
 
 export default App;
+
