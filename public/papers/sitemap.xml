@@ -15,4 +15,8 @@
             <image:loc>https://orbitmines.com/papers/on-intelligibility.jpeg</image:loc>
         </image:image>
     </url>
+    <url>
+        <loc>https://orbitmines.com/papers/on-intelligibility.pdf</loc>
+        <lastmod>2022-12-31</lastmod>
+    </url>
 </urlset>
