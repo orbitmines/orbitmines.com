@@ -210,6 +210,14 @@ export const THE_ROBOTS_OF_DAWN: Content = { reference: {
     link: "https://en.wikipedia.org/wiki/The_Robots_of_Dawn",
   }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "September, 2023"  };
 
+export const ROBOTS_AND_EMPIRE: Content = { reference: {
+    title: "Robots and Empire",
+    author: "Asimov, Isaac",
+    journal: "Doubleday",
+    year: "1985",
+    link: "https://en.wikipedia.org/wiki/Robots_and_Empire",
+  }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "October, 2023"  };
+
 export const THE_RISE_AND_FALL_OF_THE_THIRD_REICH: Content = { reference: {
     title: "The Rise and Fall of the Third Reich",
     author: "Shirer, William L",
@@ -889,6 +897,28 @@ export const THE_ORIGINS_AND_MOTIVATIONS_OF_UNIVALENT_FOUNDATIONS: Content = { r
     link: "https://www.ias.edu/ideas/2014/voevodsky-origins",
   }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"  };
 
+export const ZENBLEED: Content = { reference: {
+    title: "Zenbleed",
+    author: "Ormandy, Tavis",
+    journal: "",
+    year: "2023",
+    link: "https://lock.cmpxchg8b.com/zenbleed.html",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "October, 2023" };
+export const DOWNFALL: Content = { reference: {
+    title: "Downfall: Exploiting Speculative Data Gathering",
+    author: "Moghimi, Daniel",
+    journal: "",
+    year: "2023",
+    link: "https://downfall.page/media/downfall.pdf",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "October, 2023" };
+export const ASSEMBLY_THEORY_EXPLAINS_AND_QUANTIFIES_SELECTION_AND_EVOLUTION: Content = { reference: {
+    title: "Assembly theory explains and quantifies selection and evolution",
+    author: "Abhishek Sharma, Dániel Czégel, Michael Lachmann, Christopher P. Kempes, Sara I. Walker and Leroy Cronin",
+    journal: "",
+    year: "2023",
+    link: "https://www.nature.com/articles/s41586-023-06600-9",
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "October, 2023" };
+
 export const WILL_COMPUTERS_REDEFINE_THE_ROOTS_OF_MATH: Content = { reference: {
     title: "Will Computers Redefine the Roots of Math?",
     author: "Hartnett, Kevin",
@@ -951,6 +981,9 @@ export const WIKIPEDIA_ARTICLES: Content = { reference: {
 export const ARTICLES_2023: ContentCategory = {
   name: '2023',
   items: [
+    ZENBLEED,
+    DOWNFALL,
+    ASSEMBLY_THEORY_EXPLAINS_AND_QUANTIFIES_SELECTION_AND_EVOLUTION,
     THE_ORIGINS_AND_MOTIVATIONS_OF_UNIVALENT_FOUNDATIONS,
     THE_END_OF_THE_ALEXANDRIA_PROJECT,
     WHEN_IS_A_COMPUTER_PROOF_A_PROOF,
@@ -993,6 +1026,7 @@ export const ARTICLES_2023: ContentCategory = {
     THE_CAVES_OF_STEEL,
     THE_NAKED_SUN,
     THE_ROBOTS_OF_DAWN,
+    ROBOTS_AND_EMPIRE,
 
     THE_RISE_AND_FALL_OF_THE_THIRD_REICH,
 
