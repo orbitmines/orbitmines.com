@@ -77,6 +77,7 @@ export type TProfile = {
 
 };
 
+
 const ORGANIZATIONS = {
   orbitmines_research: <TOrganization>{
     key: 'orbitmines-research',

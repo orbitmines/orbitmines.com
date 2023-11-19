@@ -10,6 +10,7 @@ import Root from "./routes/Root";
 import Paper from "./routes/Paper";
 import Profile from "./routes/Profiles";
 import {Helmet} from "react-helmet";
+import OrbitMinesExplorer from "./@orbitmines/explorer/OrbitMinesExplorer";
 
 export const ModulesContext = createContext<IModule<any>[]>([]);
 
@@ -53,6 +54,7 @@ export const Router = () => {
     <Route path="papers">
       <Route path=":paper" element={<Paper />} />
     </Route>
+    <Route path=":explorer" element={<OrbitMinesExplorer />} />
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>

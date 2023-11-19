@@ -30,7 +30,7 @@ const OnIntelligibility = () => {
 
   const referenceCounter = useCounter();
 
-  const paper: PaperProps = {
+  const paper: Omit<PaperProps, 'children'> = {
     title: renderable<string>("On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty"),
     subtitle: renderable<string>("A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps)."),
     date: "2022-12-31",
@@ -49,7 +49,8 @@ const OnIntelligibility = () => {
         ORGANIZATIONS.twitter.key,
         ORGANIZATIONS.discord.key,
       ].includes(profile.organization.key))
-    }]
+    }],
+    references: referenceCounter
   }
 
   return <Paper {...paper}>

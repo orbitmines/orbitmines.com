@@ -5,11 +5,14 @@ import {TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
 import {Children, Renderable} from "../typescript/React";
 import Browser from "./views/Browser";
 import {useLocation} from "react-router-dom";
+import {ReferenceCounter} from "./layout/Reference";
 
 export type PaperProps = {
   title: Renderable<string>,
   subtitle?: Renderable<string>,
   date: string,
+
+  draft?: boolean,
 
   pdf: PdfProps,
   exclude_footnotes?: boolean
@@ -18,9 +21,11 @@ export type PaperProps = {
   organizations?: [TOrganization]
   authors?: [TProfile]
 
-  external: {
+  external?: {
     discord?: { serverId: string, channelId?: string, link: () => string },
-  }
+  },
+
+  references?: ReferenceCounter
 } & Children;
 
 export enum PView {

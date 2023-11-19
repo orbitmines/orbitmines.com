@@ -9,7 +9,7 @@ export type FootnoteProps = {
 }
 
 export type Counter = () => number;
-export const useCounter = (): Counter => {
+export const useCounter = (): ReferenceCounter => {
   const index = useRef(0);
 
   return (): number => {
@@ -18,6 +18,8 @@ export const useCounter = (): Counter => {
     return index.current;
   };
 }
+
+export type ReferenceCounter = Counter;
 
 export const Footnote = (props: FootnoteProps & Children & { is?: 'footnote' }) => {
   const { index } = props;
@@ -60,6 +62,7 @@ export const getFootnotes = (node: ReactNode): JSX.Element[] => {
       return;
     }
 
+    // footnotes.push(..._.flatMap(child.props, (value) => getFootnotes(value)));
     footnotes.push(...getFootnotes(child.props.children));
   });
 

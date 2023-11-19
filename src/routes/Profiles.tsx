@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import Error from "./Error";
 import FadiShawki from "./papers/2023.FadiShawki";
 
-const PROFILES: { [key: string]: Function } = {
+const PROFILES: { [key: string]: any } = {
     'fadi-shawki': FadiShawki,
 }
 

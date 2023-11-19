@@ -5,10 +5,6 @@ import {PaperProps, PaperView, PView} from "../lib/paper/Paper";
 import JetBrainsMono from "../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {TProfile} from "../lib/organizations/ORGANIZATIONS";
 import {Children, renderable} from "../lib/typescript/React";
-import {Col, Row} from "../lib/layout/flexbox";
-import JetBrainsMonoRegular from "../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import JetBrainsMonoSemiBold from "../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-SemiBold.ttf";
-import JetBrainsMonoBold from "../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
 
 import BlueprintIcons16 from '@blueprintjs/icons/lib/css/blueprint-icons-16.ttf';
 import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf';
@@ -16,7 +12,7 @@ import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf'
 const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const location = useLocation();
 
-  const paper: PaperProps = {
+  const paper: Omit<PaperProps, 'children'> = {
     title: profile.title ?? renderable(profile.name),
     subtitle: profile.subtitle,
     date: profile.date,

@@ -1,0 +1,189 @@
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {Arbitrary, Extreme, from_iterable} from "./Ray";
+import Visualization from "./Visualization";
+import {Center, Circle, QuadraticBezierLine, Torus, Text} from "@react-three/drei";
+import {ThreeEvent, useFrame, useThree, Vector3} from "@react-three/fiber";
+import {useDrag} from "@use-gesture/react";
+import { useSpring, animated } from '@react-spring/three'
+import {useHotkeys} from "../../lib/react-hooks/modules/useHotkeys";
+import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
+import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
+import {Raycaster, Vector3 as THREEVector3, WebGLRenderTarget} from "three";
+import {Option} from "../js/utils/Option";
+
+const Test = () => {
+  // const set = useContext(context);
+  // const state = useMemo(() => ({ position: pos, connectedTo }), [pos, connectedTo])
+  // // Register this node on mount, unregister on unmount
+  //
+  // useLayoutEffect(() => {
+  //   set((nodes) => [...nodes, state])
+  //   return () => void set((nodes) => nodes.filter((n) => n !== state))
+  // }, [state, pos])
+  //
+  // const [pos, setPos] = useState(() => new THREE.Vector3(...position))
+  // const { size, camera } = useThree()
+  //
+  // const bind = useDrag(({ down, xy: [x, y] }) => {
+  //   document.body.style.cursor = down ? 'grabbing' : 'grab'
+  //   setPos(new THREE.Vector3((x / size.width) * 2 - 1, -(y / size.height) * 2 + 1, 0).unproject(camera).multiply({ x: 1, y: 1, z: 0 }).clone())
+  // });
+
+  const ref = useRef<any>();
+
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
+
+  const [position, setPosition] = useState([0, 0, 0]);
+  const [movement, setMovement] = useState([0, 0, 0]);
+
+  // Set the drag hook and define component movement based on gesture data.
+  const bind = useDrag(({ down, movement: [mx, my] }) => {
+    api.start({ x: down ? mx : 0, y: down ? my : 0, immediate: down });
+    if (down) {
+      setMovement([x.get(), -y.get(), 0]);
+    } else {
+      setPosition([position[0] + x.get(), position[1] - y.get(), 0]);
+      setMovement([0, 0, 0])
+    }
+  });
+
+  const circle = {
+    radius: 3,
+    color: "orange",
+    segments: 30,
+    position: [0, 0, 0] as [number, number, number]
+  }
+
+  const torus = {
+    // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
+    radius: 3,
+    color: "orange",
+    tube: {
+      width: 1,
+      segments: 200
+    },
+    segments: 200,
+
+    initial: {
+      position: [circle.position[0] - 25 + 5, circle.position[1], circle.position[2]] as [number, number, number]
+    },
+    terminal: {
+      position: [circle.position[0] + 25 - 5, circle.position[1], circle.position[2]] as [number, number, number]
+    }
+  }
+  const line = {
+    width: 2,
+    length: 1,
+    color: "orange",
+
+    initial: {
+      position: [torus.initial.position[0] + torus.radius, torus.initial.position[1], torus.initial.position[2]] as [number, number, number]
+    },
+    vertex: {
+      position: circle.position,
+    },
+    terminal: {
+      position: [torus.terminal.position[0] - torus.radius, torus.terminal.position[1], torus.terminal.position[2]] as [number, number, number]
+    }
+  }
+
+  const scale = 1.5;
+
+  let props: any = {};
+  return (
+    <group ref={ref} {...bind()} scale={scale} position={[position[0] + movement[0], position[1] + movement[1], position[2] + movement[2]]} {...props}>
+      <Torus args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]} material-color="orange" position={torus.initial.position} />
+      <Circle position={circle.position} material-color={circle.color} args={[circle.radius, circle.segments]} />
+      <QuadraticBezierLine start={line.initial.position} mid={line.vertex.position} end={line.terminal.position} color={line.color} lineWidth={line.width * scale} />
+      <Torus ref={ref} args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]} {...bind()} material-color="orange" position={torus.terminal.position} {...props} />
+
+      {/*<group rotation={[0, 0, Math.PI / 2]}>*/}
+      {/*  <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={30.0}>*/}
+      {/*    O*/}
+      {/*  </Text>*/}
+      {/*</group>*/}
+      <group position={[0, 15, 0]}>
+        <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={20.0}>
+          O
+        </Text>
+      </group>
+    </group>
+  )
+}
+
+class InterfaceObject {
+
+
+  /**
+   * As long as the setup cannot itself render objects and have access to that level of the stack, it will merely be an inaccessible translation layer between the two.
+   */
+  render = () => {
+
+  }
+
+
+}
+
+const Co = () => {
+  const { gl: renderer, camera, scene, raycaster } = useThree();
+
+  const renderTarget = new WebGLRenderTarget(renderer.domElement.width, renderer.domElement.height);
+
+  // From a position, retrieve a directionality which defines what is at that position.
+  const position = (position: Vector3): Arbitrary<Option<Extreme>> => {
+    // const ray = new Raycaster(new THREEVector3(0, 0, 0), new THREEVector3(0, 0, 1))
+    // const intersections = ray.intersectObjects(scene.children, true);
+    // console.log(intersections.length)
+    // intersections.forEach(intersection => console.log(intersection.object.id))
+
+    return Arbitrary.Ref(Option.None);
+  }
+
+  useFrame(() => {
+    renderer.setRenderTarget(renderTarget);
+    renderer.render(scene, camera)
+    renderer.setRenderTarget(null)
+
+    const canvasX = (0 + 1) / 2 * renderTarget.width;
+    const canvasY = (-0 + 1) / 2 * renderTarget.height;
+
+    const pixelBuffer = new Uint8Array(4);
+    renderer.readRenderTargetPixels(renderTarget, canvasX, canvasY, 1, 1, pixelBuffer);
+
+    // Access pixel values
+    const red = pixelBuffer[0];
+    const green = pixelBuffer[1];
+    const blue = pixelBuffer[2];
+    const alpha = pixelBuffer[3];
+
+    const pos = position([0, 0, 0]);
+  });
+
+  return <>
+  </>
+}
+
+const OrbitMinesExplorer = () => {
+  // const link = document.createElement('a')
+  // link.setAttribute('download', 'canvas.png')
+  // link.setAttribute('href', gl.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
+  // link.click()
+
+
+  const ray = from_iterable([0, 1, 0, 1, 1]).resolve().force();
+
+  // One could abstractly realize hotkeys, or any kind of control system as a possible temporal directionality.
+  const hotkeys = useHotkeys();
+
+  return (
+    <Visualization style={{height: '100vh'}}>
+      <Co/>
+
+      <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white" />
+      <Test/>
+
+    </Visualization>
+  );
+};
+
+export default OrbitMinesExplorer;
