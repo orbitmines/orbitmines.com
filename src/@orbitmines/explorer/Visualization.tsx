@@ -14,7 +14,7 @@ const Visualization = ({ children, ...props }: React.HTMLAttributes<HTMLElement>
   if (!isWebGLAvailable())
     return <NoWebGL/>;
 
-  console.log('webgl2', isWebGLAvailable());
+  // console.log('webgl2', isWebGLAvailable());
 
   return (
     // ThreeJS: https://threejs.org/

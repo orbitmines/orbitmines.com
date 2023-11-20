@@ -1,6 +1,8 @@
 // Rust-like enum pattern matching: <3 https://github.com/suchipi/safety-match
 // ~ also added some additional functionality to define functions at the union level.
 
+import _ from "lodash";
+
 export const none = Symbol();
 
 export type None = typeof none;
@@ -23,7 +25,7 @@ type DataMap<DefObj extends DefObjSuper> = {
             : DefObj[Property];
 };
 
-type CasesObjFull<DefObj extends DefObjSuper> = {
+export type CasesObjFull<DefObj extends DefObjSuper> = {
     [Property in keyof DataMap<DefObj>]: DataMap<DefObj>[Property] extends None
         ? () => any
         : (data: DataMap<DefObj>[Property]) => any;
@@ -38,7 +40,7 @@ type if_you_are_seeing_this_then_your_match_didnt_either_handle_all_cases_or_pro
     ) => any;
 };
 
-type MatchConfiguration<DefObj extends DefObjSuper> =
+export type MatchConfiguration<DefObj extends DefObjSuper> =
     | CasesObjFull<DefObj>
     | if_you_are_seeing_this_then_your_match_didnt_either_handle_all_cases_or_provide_a_default_handler_using_underscore<DefObj>;
 
@@ -47,7 +49,7 @@ type MemberObject<
     DefImpl
 > = MemberImpl<DefObj, DefImpl> & {
     match<C extends MatchConfiguration<DefObj>>(
-        casesObj: C
+      casesObj: C
     ): ReturnType<Exclude<C[keyof C], undefined>>;
     variant: keyof DefObj;
     data: DataMap<DefObj>[keyof DefObj];
@@ -67,11 +69,6 @@ export type MemberImpl<DefObj extends DefObjSuper, DefImpl> = {
         : never;
 }
 
-export type UnionImpl<DefObj extends DefObjSuper, DefImpl> = {
-    [Property in keyof DefImpl]: DefImpl[Property] extends (...args: infer TArgs) => infer TResult
-        ? (obj: MemberObject<DefObj, DefImpl>, ...args: TArgs) => TResult
-        : never;
-};
 
 const MemberObjectImpl = class MemberObjectImpl {
     variant: any;
@@ -98,18 +95,24 @@ const MemberObjectImpl = class MemberObjectImpl {
 Object.defineProperty(MemberObjectImpl, "name", { value: "MemberObject" });
 
 
-export function makeTaggedUnion<DefObj extends DefObjSuper, DefImpl = {}>(
-    defObj: DefObj,
-    defImpl?: UnionImpl<DefObj, DefImpl>
-): TaggedUnion<DefObj, DefImpl> {
-    const createImpl = (variant: any, data: any) => {
-        const impl = new MemberObjectImpl(variant, data);
-        if (defImpl === undefined)
+export const enumeration = <
+  DefObj extends DefObjSuper,
+  DefImpl extends object
+>(
+  mapping: DefObj,
+  constructor?: (self: MemberObject<DefObj, DefImpl>) => (new () => DefImpl),
+): TaggedUnion<DefObj, DefImpl> => {
+
+    const createImpl = (variant: keyof DefObj, data: any) => {
+        const impl = new MemberObjectImpl(variant, data) as any;
+        if (constructor === undefined)
             return impl;
+
+        const defImpl = new (constructor(impl))();
 
         Object.keys(defImpl).forEach((methodName) => {
             // @ts-ignore
-            const method: ((member: MemberObjectImpl, ...args: any[]) => any) = defImpl[methodName];
+            const method: ((...args: any[]) => any) = defImpl[methodName];
 
             Object.defineProperty(impl, methodName, {
                 value: (...args: any[]) => method(impl, ...args)
@@ -119,20 +122,21 @@ export function makeTaggedUnion<DefObj extends DefObjSuper, DefImpl = {}>(
         return impl;
     }
 
-    const matchObj: any = {};
 
-    Object.keys(defObj).forEach((matchType) => {
-        const value = defObj[matchType];
+    const enumeration: any = {};
 
-        if (typeof value === "function") {
-            matchObj[matchType] = (...args: any) => {
+    Object.keys(mapping).forEach((key) => {
+        const value = mapping[key];
+
+        if (_.isFunction(value)) {
+            enumeration[key] = (...args: any) => {
                 const data = value(...args);
-                return createImpl(matchType, data);
+                return createImpl(key, data);
             };
         } else {
-            matchObj[matchType] = createImpl(matchType, undefined);
+            enumeration[key] = createImpl(key, undefined);
         }
     });
 
-    return matchObj;
+    return enumeration;
 }

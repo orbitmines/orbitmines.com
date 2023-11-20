@@ -1,54 +1,50 @@
-import {makeTaggedUnion, MemberType, none, TaggedUnion} from "./match";
-import {Arbitrary} from "../../explorer/Ray";
+import {enumeration, MemberType, none, TaggedUnion} from "./match";
 
 /**
  * Rust-like Option
  *
  * <3 https://github.com/suchipi/safety-match/issues/15#issuecomment-1384721329
  */
-export type Option<T = any> = MemberType<
-    TaggedUnion<{
-        Some: (some: T) => T;
-        None: typeof none;
-    }, {
-        force: () => T,
-        none_or: <Result>(or: (obj: T) => Result) => Option<Result>,
-        default: (fn: () => T) => T,
-        is_some: () => boolean,
-        is_none: () => boolean,
-    }>
->;
-export const Option = makeTaggedUnion<{
-    Some: (some: any) => any;
-    None: typeof none;
-}, {
-    force: () => any,
-    none_or: (or: (obj: any) => any) => any,
-    default: (fn: () => any) => any,
-    is_some: () => boolean,
-    is_none: () => boolean
-}>({
+export type OptionObj<T> = {
+  Some: (some: T) => T;
+  None: typeof none;
+}
+export type OptionImpl<T> = {
+  force: () => T,
+  none_or: <Result>(or: (obj: T) => Result) => Option<Result>,
+  default: (fn: () => T) => T,
+  is_some: () => boolean,
+  is_none: () => boolean,
+}
+export type Option<T = any> = MemberType<TaggedUnion<OptionObj<T>, OptionImpl<T>>>;
+
+export const Option = enumeration<OptionObj<any>, OptionImpl<any>>({
     Some: (some: any) => some,
     None: none,
-}, {
-    force: (obj: Option<any>): any => obj.match({
+}, self => class {
+    force = (): any => self.match({
         Some: (a) => a,
         None: () => { throw new Error('aaa') }
-    }),
-    default: (obj: Option<any>, fn: () => any): any => obj.match({
+    });
+
+    default = (fn: () => any): any => self.match({
         Some: (a) => a,
         None: () => fn()
-    }),
-    none_or: (obj: Option<any>, or: (obj: any) => any): Option<any> => obj.match({
+    })
+
+    none_or = (or: (obj: any) => any): Option<any> => self.match({
         Some: (some: any) => Option.Some(or(some)),
         None: () => Option.None
-    }),
-    is_some: (obj: Option<any>): boolean => obj.match({
+    })
+
+    is_some = (): boolean => self.match({
         Some: (_) => true,
         None: () => false
-    }),
-    is_none: (obj: Option<any>): boolean => obj.match({
+    })
+
+    is_none = (): boolean => self.match({
         Some: (_) => false,
         None: () => true
-    }),
+    })
+
 });

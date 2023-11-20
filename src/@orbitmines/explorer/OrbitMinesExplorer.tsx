@@ -1,14 +1,13 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Arbitrary, Extreme, from_iterable} from "./Ray";
+import React, {useEffect, useRef, useState} from 'react';
+import {from_iterable, JS} from "./Ray";
 import Visualization from "./Visualization";
-import {Center, Circle, QuadraticBezierLine, Torus, Text} from "@react-three/drei";
-import {ThreeEvent, useFrame, useThree, Vector3} from "@react-three/fiber";
+import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
+import {useFrame, useThree, Vector3} from "@react-three/fiber";
 import {useDrag} from "@use-gesture/react";
-import { useSpring, animated } from '@react-spring/three'
+import {useSpring} from '@react-spring/three'
 import {useHotkeys} from "../../lib/react-hooks/modules/useHotkeys";
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import {Raycaster, Vector3 as THREEVector3, WebGLRenderTarget} from "three";
+import {WebGLRenderTarget} from "three";
 import {Option} from "../js/utils/Option";
 
 const Test = () => {
@@ -130,34 +129,34 @@ const Co = () => {
   const renderTarget = new WebGLRenderTarget(renderer.domElement.width, renderer.domElement.height);
 
   // From a position, retrieve a directionality which defines what is at that position.
-  const position = (position: Vector3): Arbitrary<Option<Extreme>> => {
-    // const ray = new Raycaster(new THREEVector3(0, 0, 0), new THREEVector3(0, 0, 1))
-    // const intersections = ray.intersectObjects(scene.children, true);
-    // console.log(intersections.length)
-    // intersections.forEach(intersection => console.log(intersection.object.id))
-
-    return Arbitrary.Ref(Option.None);
-  }
-
-  useFrame(() => {
-    renderer.setRenderTarget(renderTarget);
-    renderer.render(scene, camera)
-    renderer.setRenderTarget(null)
-
-    const canvasX = (0 + 1) / 2 * renderTarget.width;
-    const canvasY = (-0 + 1) / 2 * renderTarget.height;
-
-    const pixelBuffer = new Uint8Array(4);
-    renderer.readRenderTargetPixels(renderTarget, canvasX, canvasY, 1, 1, pixelBuffer);
-
-    // Access pixel values
-    const red = pixelBuffer[0];
-    const green = pixelBuffer[1];
-    const blue = pixelBuffer[2];
-    const alpha = pixelBuffer[3];
-
-    const pos = position([0, 0, 0]);
-  });
+  // const position = (position: Vector3): Extreme> => {
+  //   // const ray = new Raycaster(new THREEVector3(0, 0, 0), new THREEVector3(0, 0, 1))
+  //   // const intersections = ray.intersectObjects(scene.children, true);
+  //   // console.log(intersections.length)
+  //   // intersections.forEach(intersection => console.log(intersection.object.id))
+  //
+  //   return Arbitrary.Ref(Option.None);
+  // }
+  //
+  // useFrame(() => {
+  //   renderer.setRenderTarget(renderTarget);
+  //   renderer.render(scene, camera)
+  //   renderer.setRenderTarget(null)
+  //
+  //   const canvasX = (0 + 1) / 2 * renderTarget.width;
+  //   const canvasY = (-0 + 1) / 2 * renderTarget.height;
+  //
+  //   const pixelBuffer = new Uint8Array(4);
+  //   renderer.readRenderTargetPixels(renderTarget, canvasX, canvasY, 1, 1, pixelBuffer);
+  //
+  //   // Access pixel values
+  //   const red = pixelBuffer[0];
+  //   const green = pixelBuffer[1];
+  //   const blue = pixelBuffer[2];
+  //   const alpha = pixelBuffer[3];
+  //
+  //   const pos = position([0, 0, 0]);
+  // });
 
   return <>
   </>
@@ -170,7 +169,14 @@ const OrbitMinesExplorer = () => {
   // link.click()
 
 
-  const ray = from_iterable([0, 1, 0, 1, 1]).resolve().force();
+  const ray = JS.Iterable([0, 1, 2, 3, 4, 5]).as_ray();
+  // console.log(ray)
+  useEffect(() => {
+    for (let vertex of ray.force().traverse()) {
+      // console.log()
+
+    }
+  }, [])
 
   // One could abstractly realize hotkeys, or any kind of control system as a possible temporal directionality.
   const hotkeys = useHotkeys();
