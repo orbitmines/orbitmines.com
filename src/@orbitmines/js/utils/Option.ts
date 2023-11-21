@@ -24,7 +24,7 @@ export const Option = enumeration<OptionObj<any>, OptionImpl<any>>({
 }, self => class {
     force = (): any => self.match({
         Some: (a) => a,
-        None: () => { throw new Error('aaa') }
+        None: () => { throw new Error('Expected Some(value) to be present but found None.') }
     });
 
     default = (fn: () => any): any => self.match({
@@ -32,10 +32,12 @@ export const Option = enumeration<OptionObj<any>, OptionImpl<any>>({
         None: () => fn()
     })
 
-    none_or = (or: (obj: any) => any): Option<any> => self.match({
+    none_or = (or: (obj: any) => any): Option<any> => {
+      return self.match({
         Some: (some: any) => Option.Some(or(some)),
         None: () => Option.None
-    })
+      })
+    }
 
     is_some = (): boolean => self.match({
         Some: (_) => true,

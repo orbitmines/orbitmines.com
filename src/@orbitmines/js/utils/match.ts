@@ -115,7 +115,7 @@ export const enumeration = <
             const method: ((...args: any[]) => any) = defImpl[methodName];
 
             Object.defineProperty(impl, methodName, {
-                value: (...args: any[]) => method(impl, ...args)
+                value: (...args: any[]) => method(...args)
             })
         });
 

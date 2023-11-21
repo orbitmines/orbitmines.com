@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {from_iterable, JS} from "./Ray";
+import {from_iterable, JS, Ray} from "./Ray";
 import Visualization from "./Visualization";
 import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {useFrame, useThree, Vector3} from "@react-three/fiber";
@@ -169,24 +169,115 @@ const OrbitMinesExplorer = () => {
   // link.click()
 
 
-  const ray = JS.Iterable([0, 1, 2, 3, 4, 5]).as_ray();
+  const ray = JS.Iterable([false, true, [[0, 1], 1], 1, 2, 3, 4, 5, false, true]).as_ray();
   // console.log(ray)
-  useEffect(() => {
-    for (let vertex of ray.force().traverse()) {
-      // console.log()
-
-    }
-  }, [])
+  // useEffect(() => {
+  //   for (let vertex of ray.force().traverse()) {
+  //     /**
+  //      * In this case should be a reference and thus
+  //      * [--|--]
+  //      *
+  //      * So in the case of [0, 1], this would be a reference to the Iterator, in the case of 1/2/3/4/5, a reference to their respective values.
+  //      */
+  //     const reference = vertex.vertex();
+  //
+  //     if (reference.is_some()) {
+  //       if (reference.force().vertex().is_none())
+  //         continue;
+  //
+  //       // This would be the Iterator, or the numbers respectively.
+  //       const dereferenced = reference.force().vertex().force();
+  //       /**
+  //        * Can again be any of these:
+  //        * [--|--]
+  //        * [--|  ]
+  //        * [  |--]
+  //        *
+  //        */
+  //
+  //       console.log('type:', reference.force().type());
+  //       console.log('structure at', dereferenced.js().force())
+  //
+  //       console.log('           traversing nested reference');
+  //       for (let nested of reference.force().traverse()) {
+  //         const nested_reference = nested.vertex();
+  //
+  //         if (nested_reference.is_some()) {
+  //           if (nested_reference.force().vertex().is_none())
+  //             continue;
+  //
+  //           const nested_dereferenced = nested_reference.force().vertex().force();
+  //
+  //           console.log('type:', nested_reference.force().toString());
+  //           console.log('structure at', nested_dereferenced.js().force())
+  //         }
+  //       }
+  //       console.log('           done');
+  //     }
+  //   }
+  // }, [])
 
   // One could abstractly realize hotkeys, or any kind of control system as a possible temporal directionality.
   const hotkeys = useHotkeys();
+
+  const [selection, setSelection] = useState<Option<Ray>>(ray.force().next());
+
+  console.log('ray', ray.force().as_array())
+  console.log('...', [...selection.force().traverse({ steps: 1 })].map(ray => ray.vertex().force().js().force()))
+  console.log('as_array', selection.force().as_array())
+  // for (let element of selection.force().traverse()) {
+  //
+  //   console.log(element.as_array())
+  //
+  // }
+
+  // visualization_config
+  // hotkey/interface_config
+
+  const Test2 = ({ ray, position }: { ray: Ray, position: [number, number, number] }) => {
+    const circle = {
+      radius: 3,
+      color: "orange",
+      segments: 30
+    }
+    const torus = {
+      // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
+      radius: 3,
+      color: "orange",
+      tube: {
+        width: 1,
+        segments: 200
+      },
+      segments: 200,
+    }
+
+    if (ray.is_terminal() || ray.is_initial()) {
+      return (
+        <group>
+          <Torus args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]} material-color="orange" position={position} />
+          {[...ray.traverse()].map((vertex, i) => (
+            <Test2 key={i} ray={vertex.vertex().force()} position={[position[0] + (20 * (i + 1)), position[1], position[2]]} />
+          ))}
+        </group>
+      )
+    }
+
+    return (
+      <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]} />
+    )
+  }
+
+  const scale = 1.5;
 
   return (
     <Visualization style={{height: '100vh'}}>
       <Co/>
 
       <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white" />
-      <Test/>
+      {/*<Test/>*/}
+      <group scale={scale}>
+        <Test2 ray={ray.force()} position={[0, 0, 0]} />
+      </group>
 
     </Visualization>
   );

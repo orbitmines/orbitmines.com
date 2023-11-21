@@ -48,6 +48,8 @@ export interface AbstractDirectionality<T> {
  */
 export class Ray implements AsyncIterable<Ray> {
 
+  js: () => Option<any>;
+
   initial: () => Option<Ray>;
   vertex: () => Option<Ray>;
   terminal: () => Option<Ray>;
@@ -55,26 +57,41 @@ export class Ray implements AsyncIterable<Ray> {
   constructor({
     initial,
     vertex,
-    terminal
-  }: Partial<AbstractDirectionality<Option<Ray>>> = {}) {
+    terminal,
+    js,
+  }: { js?: () => Option<any> } & Partial<AbstractDirectionality<Option<Ray>>> = {}) {
     this.initial = initial ?? (() => Option.None);
     this.vertex = vertex ?? (() => Option.None);
     this.terminal = terminal ?? (() => Option.None);
+    this.js = js ?? (() => Option.None);
   }
 
-  *previous(): Generator<Ray> {
-    // 1-step traversal
-  }
-  *next(): Generator<Ray> {
-    // 1-step traversal
-  }
+  /**
+   * Returns a reference to a Ray to the first vertex found in the directionality which this Ray defines (as a reference).
+   * Note: Returns [  |--] in case of arbitrarily many possible first values - simply call `.traverse` on the reference to traverse possibilities.
+   */
+  next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
 
-  *traverse(options?: {
+  previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, reverse: true })).as_ray();
+
+  *traverse(options: {
     steps?: number
-  }): Generator<Ray> {
+
+    /**
+     * This could be set from within some place which is navigating here? ; Basically just "the reversal of arrows" as referred to in some mathematics - assuming consistency (which is likely garanteed to not generally hold - certainly not in this implementation - which is to say that previous().next() is never actually garanteed to return "the same result" - and if one has some construction like a type that necessarily means it's an assumption: what am I doing to prevent violations of that assumption?).
+     */
+    reverse?: boolean
+  } = {}): Generator<Ray> {
+    if (options.steps !== undefined && options.steps === 0) { // TODO: Could also base 'reverse' on a negative number of steps.
+      // console.log('no step - no continuation');
+      return;
+    }
+
+    // TODO Does not by default check for equivalences in the from of "deduplication" - this means without checking this traversal will not halt in circular.
+
     // Nothing to traverse.
     if (this.vertex().is_none()) {
-      console.log('Nothing to traverse')
+      // console.log('Nothing to traverse')
       return;
     }
 
@@ -85,28 +102,43 @@ export class Ray implements AsyncIterable<Ray> {
      */
     let vertex = this.vertex().force();
 
-    // [--|  ]
-    if (this.is_terminal()) {
-      console.log(this.toString(), 'Traversing continuations')
-      for (let step of vertex.traverse(options)) {
+    if (vertex.js().is_some()) {
+      // console.log('found js value:', vertex.js())
+    }
+
+    if (options.reverse ? this.is_initial() : this.is_terminal()) {
+      // [--|  ]
+
+      // console.log(this.type(), 'Traversing continuations (both initial&terminal)')
+      for (let step of vertex.traverse({...options, reverse: !!options.reverse })) {
         // [  |--]
-        if (step.is_initial())
+        if (options.reverse ? step.is_terminal() : step.is_initial())
+          yield *step.traverse(options);
+      }
+      for (let step of vertex.traverse({...options, reverse: !options.reverse })) {
+        // [  |--]
+        if (options.reverse ? step.is_terminal() : step.is_initial())
           yield *step.traverse(options);
       }
       
       return;
     }
 
-    // [--|--]
-    if (!this.is_initial()) {
-      yield vertex;
-      console.log(this.toString(), 'yielded vertex')
+    if (options.reverse ? !this.is_terminal() : !this.is_initial()) {
+      // [--|--]
+
+      yield vertex; // TODO: Should yield at which step it was found (or only yield through groups ..., depending on one's traversal strategy)
+      // console.log(this.type(), 'yielded vertex')
+
+      if (options.steps !== undefined) {
+        // Found one in this directionality, remove a step for further traversals.
+        options.steps -= 1;
+      }
     } else {
       // [  |--]
-      console.log(this.toString(), 'moving to vertex')
     }
 
-    const terminal = vertex.terminal();
+    const terminal = options.reverse ? vertex.initial() : vertex.terminal();
 
     /**
      * [--|--]
@@ -117,10 +149,14 @@ export class Ray implements AsyncIterable<Ray> {
      *
      * Just loop from back up.
      */
-    if (terminal.is_some())
+    if (terminal.is_some()) {
+      const reference = terminal.force().as_reference();
+      // console.log(this.type(), '->', reference.type(), 'moving to terminal as vertex')
+
       // We could conceptualize that whatever this ray is, is connected to the higher-level reference one. - Basically the path we're taking - assuming that our vertices are ignorant of our traversal.
       // TODO: Could also do a while loop here, and just yield it.
-      yield *(terminal.force().as_reference()).traverse();
+      yield* reference.traverse({...options});
+    }
   }
 
   async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
@@ -137,15 +173,27 @@ export class Ray implements AsyncIterable<Ray> {
 
   as_reference = (): Ray => new Ray({ vertex: () => Option.Some(this) }) // A ray whose vertex references this Ray (ignorantly).
 
+  as_option = (): Option<Ray> => Option.Some(this);
+
+  // as_iterable
+  // as_async_generator
+  // ...
+
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
-  toString = (): string => {
+  type = (): string => {
     if (this.is_initial())
       return '  |--'
     if (this.is_terminal())
       return '--|  '
 
     return '--|--'
+  }
+
+  as_array = (): any[] => [...this.traverse()];
+
+  toString = (): string => {
+    return this.as_array().toString()
   }
 }
 
@@ -209,12 +257,13 @@ export class Ray implements AsyncIterable<Ray> {
 export type JSObj<Target = Option<Ray>> = {
   Iterable: <T>(iterable: Iterable<T>) => typeof iterable,
   Iterator: <T>(iterator: Iterator<T>) => typeof iterator,
-  // Boolean: (boolean: boolean) => typeof boolean,
+  Boolean: (boolean: boolean) => typeof boolean,
   // // AsyncGenerator
   // // ..
   // Number: (number: number) => typeof number,
   // Function: (func: ParameterlessFunction) => typeof func,
   // Object: (object: object) => typeof object,
+  Any: (any: any) => typeof any,
   None: typeof none;
 }
 export type JSImpl<Target = Option<Ray>> = {
@@ -225,19 +274,21 @@ export type JS<Target = Option<Ray>> = MemberType<TaggedUnion<JSObj<Target>, JSI
 export const JS = enumeration<JSObj, JSImpl>({
   Iterable: <T>(iterable: Iterable<T>) => iterable,
   Iterator: <T>(iterator: Iterator<T>) => iterator,
-  // Boolean: (boolean: boolean) => boolean,
+  Boolean: (boolean: boolean) => boolean,
   // Number: (number: number) => number,
   // Function: (func: ParameterlessFunction) => func,
   // Object: (object: object) => object,
+  Any: (any: any) => any,
   None: none,
 }, self => class {
   as_ray = (): Option<Ray> => self.match({
     Iterable: <T>(iterable: Iterable<T>): Option<Ray> => from_iterable(iterable),
     Iterator: <T>(iterator: Iterator<T>): Option<Ray> => from_iterator(iterator),
-    // Boolean: (boolean: boolean): Option<Ray> => from_boolean(boolean),
+    Boolean: (boolean: boolean): Option<Ray> => from_boolean(boolean),
     // Number: (number: number): Option<Ray> => from_number(number),
     // Function: (func: ParameterlessFunction): Option<Ray> => from_function(func),
     // Object: (object: object): Option<Ray> => from_object(object),
+    Any: (any: any): Option<Ray> => Option.Some(new Ray({ js: () => Option.Some(any) })),
     None: (): Option<Ray> => Option.None
   })
 });
@@ -248,10 +299,10 @@ export const JS = enumeration<JSObj, JSImpl>({
 
 export const from_any = (any: any): JS => {
   if (any === null || any === undefined)
-    return JS.None;
+    return JS.Any(any);
 
-  // if (is_boolean(any))
-  //   return JS.Boolean(any);
+  if (is_boolean(any))
+    return JS.Boolean(any);
   // if (is_number(any))
   //   return JS.Number(any);
   if (is_iterable(any))// || is_array(any))
@@ -261,7 +312,7 @@ export const from_any = (any: any): JS => {
   // if (is_object(any))
   //   return JS.Object(any);
 
-  return JS.None;
+  return JS.Any(any);
 }
 
 export const from_iterable = <T = any>(iterable: Iterable<T>): Option<Ray> => from_iterator(iterable[Symbol.iterator]());
@@ -270,18 +321,21 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
 
   const next = (initial: Option<Ray>): Option<Ray> => {
     const iterator_result = iterator.next();
-    const is_last_element = iterator_result.done === true;
+    const is_terminal = iterator_result.done === true;
 
-    console.log(iterator_result)
-    if (is_last_element)
-      return Option.None; // Already not coherent, should return the Option<Ray> reference on the right
+    if (is_terminal) {
+      // We're done, this is the end of the iterator
+      return Option.Some(new Ray({
+        initial: () => initial
+        // vertex: could have something at the vertex which defines the "end of the iterator" - but we don't here.
+      }));
+    }
 
     const current: Option<Ray> = Option.Some(new Ray({
+      js: () => Option.Some(iterator_result.value),
       initial: () => initial,
       vertex: () => from_any(iterator_result.value).as_ray(),
-      terminal: () => is_last_element
-        ? Option.None // Last element, so assume there's no more going in this direction.
-        : next(current)
+      terminal: () => next(current)
     }));
 
     if (initial.is_some())
@@ -290,16 +344,19 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
     return current;
   }
 
-  const ray_iterator = new Ray();
+  const ray_iterator = new Ray({ js: () => Option.Some(iterator)});
   ray_iterator.terminal = () => next(Option.Some(ray_iterator));
 
   // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
-  return Option.Some(ray_iterator.as_reference());
+  return ray_iterator.as_reference().as_option();
+}
+export const from_generator = <T = any>(generator: Generator<T>): Option<Ray> => {
+  // [  |--]
+  return from_iterable(generator);
 }
 
+export const empty = (): Option<Ray> => Option.Some(new Ray({ }));
 
-// export const empty = (): Ray => (new Ray({ initial: Arbitrary.Ref(Option.None), vertex: Arbitrary.Ref(Option.None), terminal: Arbitrary.Ref(Option.None) }));
-//
 // export const length = (of: number, value: any = undefined): Option<Ray> => {
 //   return from_iterable(Array(of).fill(value));
 // }
@@ -307,10 +364,37 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
 //   return Arbitrary.Fn(() => length(of, value).resolve().force().at_terminal(index));
 // }
 //
-// export const from_boolean = (boolean: boolean): Option<Ray> => {
-//   const false = empty();
-//   const true = empty();
+export const from_boolean = (boolean: boolean): Option<Ray> => {
+  // |-false->-true-| (could of course also be reversed)
+
+  // from_iterable([false, true])
+
+  const _false = new Ray({ initial: empty, js: () => Option.Some(false) });
+  const _true  = new Ray({ terminal: empty, js: () => Option.Some(true) });
+  _false.terminal = () => _true.as_option();
+  _true.initial = () => _false.as_option();
+
+  return (boolean ? _true : _false).as_reference().as_option();
+}
+
+
+// // Full permutation
+// export const SuperPosition = (ray: Ray<any>) => {
+//
 // }
+//
+//
+// export const permutation = (permutation: number | undefined, of: number): Arbitrary<Ray<any>> => at(
+//   // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
+//   permutation ?? 0,
+//   // In the case of a bit: Either |-*-| if no bit or |-*->-*-| if a bit.
+//   permutation === undefined ? 1 : of
+// )
+//
+// export const bit = (bit?: boolean): Arbitrary<Ray<any>> => permutation(bit ? 1 : 0, 2);
+// export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
+
+
 // export const from_number = (number: number): Option<Ray> => {
 //
 // }
