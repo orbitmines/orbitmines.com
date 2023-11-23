@@ -46,6 +46,8 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
         ORGANIZATIONS.instagram.key,
         ORGANIZATIONS.youtube.key,
         ORGANIZATIONS.twitch.key,
+        ORGANIZATIONS.mastodon.key,
+        ORGANIZATIONS.facebook.key,
       ].includes(profile.organization.key))
     }],
     exclude_footnotes: true

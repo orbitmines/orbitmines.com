@@ -42,13 +42,13 @@ export const PROFILES = {
       { organization: ORGANIZATIONS.instagram, display: '@f._shawki', link: 'https://www.instagram.com/f._shawki/' },
       { organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki' },
       { organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki' },
+      { organization: ORGANIZATIONS.mastodon, display: '@fadishawki', link: 'https://mastodon.orbitmines.com/@fadishawki' },
+      { organization: ORGANIZATIONS.facebook, display: 'Fadi Shawki', link: 'https://www.facebook.com/profile.php?id=100094496444130' },
       { organization: ORGANIZATIONS.orcid, display: '0009-0009-9288-992X', link: 'https://orcid.org/0009-0009-9288-992X' },
-
 
       { organization: ORGANIZATIONS.ipfs, link: 'https://discuss.ipfs.tech/u/fadishawki' },
       { organization: ORGANIZATIONS.nixos, link: 'https://discourse.nixos.org/u/fadishawki' },
       { organization: ORGANIZATIONS.fission, link: 'https://talk.fission.codes/u/fadishawki/' },
-      { organization: ORGANIZATIONS.mastodon, link: 'https://sigmoid.social/@FadiShawki' },
     ]
   }
 }

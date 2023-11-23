@@ -11,6 +11,8 @@ import Paper from "./routes/Paper";
 import Profile from "./routes/Profiles";
 import {Helmet} from "react-helmet";
 import OrbitMinesExplorer from "./@orbitmines/explorer/OrbitMinesExplorer";
+import Legacy from "./lib/layout/experimental-designs/Legacy";
+import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 
 export const ModulesContext = createContext<IModule<any>[]>([]);
 
@@ -57,6 +59,10 @@ export const Router = () => {
     <Route path=":explorer" element={<OrbitMinesExplorer />} />
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
+    </Route>
+    <Route path="experimental">
+      <Route path="legacy" element={<Legacy />} />
+      <Route path="blueprintjs" element={<BlueprintJS />} />
     </Route>
   </Routes>
 }

@@ -1,6 +1,7 @@
 import {enumeration, MemberType, none, TaggedUnion} from "../../@orbitmines/js/utils/match";
 import {Option} from "../js/utils/Option";
 import _ from "lodash";
+import {compile} from "sass";
 
 export type ParameterlessFunction<T = any> = () => T;
 
@@ -39,6 +40,14 @@ export interface AbstractDirectionality<T> {
   initial(): T
   vertex(): T
   terminal(): T
+}
+
+// SHOULDNT CLASSIFY THESE?
+export enum RayType {
+  REFERENCE = '  |  ',
+  INITIAL = '  |--',
+  TERMINAL = '--|  ',
+  VERTEX = '--|--',
 }
 
 /**
@@ -171,6 +180,8 @@ export class Ray implements AsyncIterable<Ray> {
     None: () => false
   });
 
+  is_reference = (): boolean => this.initial().is_none() && this.terminal().is_none();
+
   as_reference = (): Ray => new Ray({ vertex: () => Option.Some(this) }) // A ray whose vertex references this Ray (ignorantly).
 
   as_option = (): Option<Ray> => Option.Some(this);
@@ -181,13 +192,15 @@ export class Ray implements AsyncIterable<Ray> {
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
-  type = (): string => {
-    if (this.is_initial())
-      return '  |--'
-    if (this.is_terminal())
-      return '--|  '
+  type = (): RayType => {
+    if (this.is_reference())
+      return RayType.REFERENCE;
+    if (this.as_reference().is_initial())
+      return RayType.INITIAL;
+    if (this.as_reference().is_terminal())
+      return RayType.TERMINAL;
 
-    return '--|--'
+    return RayType.VERTEX;
   }
 
   as_array = (): any[] => [...this.traverse()];
@@ -195,7 +208,54 @@ export class Ray implements AsyncIterable<Ray> {
   toString = (): string => {
     return this.as_array().toString()
   }
+
+  // TODO: Important to easily allow compilation for everything (also I suppose the 2D/3D explorative frames --..
+  // TODO: This is just dumb compilation for now, this should be much smarter - spotting infinities, parallel, much more that could be done here
+  compile = <
+    Vertex,
+    Directionality = Vertex
+  >(options: {
+    directionality: {
+      new: () => Directionality,
+      push_back: (directionality: Directionality, ray: Option<Vertex>) => void,
+      // push_front: (directionality: Directionality, ray: Option<Vertex>) => void,
+    },
+    get: (vertex: Option<Ray>) => Option<Vertex>,
+    convert: (ray: Option<Ray>) => Option<Vertex>,
+  }): Option<Vertex> => {
+    const existing = options.get(this.as_option());
+    if (existing.is_some())
+      return existing;
+
+    const converted = options.convert(Option.Some(this));
+
+    // Always a new directionality if we're not already on one
+    // context.directionality ??= options.directionality.new();
+    // options.directionality.push_back(context.directionality, converted);
+
+    const ray = options.directionality.new();
+
+    if (this.initial().is_some()) {
+      options.directionality.push_back(ray, this.initial().force().compile(options));
+    }
+    if (this.vertex().is_some()) {
+      const vertex = this.vertex().force().compile(options);
+      options.directionality.push_back(ray, vertex);
+
+      // {
+      //   const ref = options.directionality.new();
+      //   options.directionality.push_back(ref, options.get(this.as_option()));
+      //   options.directionality.push_back(ref, vertex);
+      // }
+    }
+    if (this.terminal().is_some()) {
+      options.directionality.push_back(ray, this.terminal().force().compile(options));
+    }
+
+    return converted;
+  }
 }
+
 
 
 

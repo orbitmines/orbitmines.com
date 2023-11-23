@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {from_iterable, JS, Ray} from "./Ray";
+import {from_iterable, JS, Ray, RayType} from "./Ray";
 import Visualization from "./Visualization";
 import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {useFrame, useThree, Vector3} from "@react-three/fiber";
@@ -9,6 +9,7 @@ import {useHotkeys} from "../../lib/react-hooks/modules/useHotkeys";
 import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
 import {WebGLRenderTarget} from "three";
 import {Option} from "../js/utils/Option";
+import _ from "lodash";
 
 const Test = () => {
   // const set = useContext(context);
@@ -162,14 +163,79 @@ const Co = () => {
   </>
 }
 
+// declare namespace OrbitMines {
+
 const OrbitMinesExplorer = () => {
   // const link = document.createElement('a')
   // link.setAttribute('download', 'canvas.png')
   // link.setAttribute('href', gl.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
   // link.click()
 
+  const ray = JS.Iterable([false, true, [[0, 1], 1], 1, 2, 3, 4, 5, false]).as_ray();
 
-  const ray = JS.Iterable([false, true, [[0, 1], 1], 1, 2, 3, 4, 5, false, true]).as_ray();
+  const hyperEdges: string[][] = [];
+  const options: any = {};
+  let label = 0;
+
+  const vertexStyle = (vertex: Option<Ray>): string => {
+    switch (vertex.force().type()) {
+      case RayType.INITIAL:{
+        return 'Darker@Red'
+      }
+      case RayType.TERMINAL: {
+        return 'Lighter@Red'
+      }
+      case RayType.REFERENCE: {
+        return 'Orange'
+      }
+      case RayType.VERTEX: {
+        return 'Lighter@Blue'
+      }
+    }
+  }
+
+  ray.force().compile<string, string[]>({
+    directionality: {
+      new: () => {
+        const edge: string[] = [];
+        hyperEdges.push(edge);
+        return edge;
+      },
+      push_back: function (directionality: string[], ray: Option<string>): void {
+        if (ray.is_some())
+          directionality.push(ray.force());
+      }
+    },
+    convert: function (vertex: Option<Ray>): Option<string> {
+      if (vertex.is_none())
+        return Option.None;
+
+      label++;
+
+      const name: string = `"${vertex.force().js().match({
+        Some: (js) => js.toString(),
+        None: () => `?`
+      })} (${label})"`;
+
+      (options['VertexStyle'] ??= {})[name] = vertexStyle(vertex);
+
+      Object.defineProperty(vertex.force(), "__label", {value: name});
+
+      return Option.Some(name);
+    },
+    get: function (vertex: Option<Ray>): Option<string> {
+      if (vertex.is_some() && (vertex.force() as any)["__label"] !== undefined)
+        return Option.Some((vertex.force() as any)["__label"] as string);
+
+      return Option.None;
+    }
+  });
+  console.log(`HypergraphPlot[{${hyperEdges
+    .filter(hyperEdge => hyperEdge.length !== 0)
+    .map(hyperEdge =>
+      `{${hyperEdge.join(',')}}`
+    ).join(',')}},VertexLabels->All,${_.map(options, (mapping, option) => `${option} -> <|${_.map(mapping, (value, key) => `${key} -> ${value}`).join(',')}|>`).join(',')}]`)
+
   // console.log(ray)
   // useEffect(() => {
   //   for (let vertex of ray.force().traverse()) {
