@@ -81,62 +81,78 @@ export class Ray implements AsyncIterable<Ray> {
    */
   next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
 
-  previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, reverse: true })).as_ray();
+  previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
 
   *traverse(options: {
     steps?: number
 
-    /**
-     * This could be set from within some place which is navigating here? ; Basically just "the reversal of arrows" as referred to in some mathematics - assuming consistency (which is likely garanteed to not generally hold - certainly not in this implementation - which is to say that previous().next() is never actually garanteed to return "the same result" - and if one has some construction like a type that necessarily means it's an assumption: what am I doing to prevent violations of that assumption?).
-     */
-    reverse?: boolean
+    // filter?: (ray: Ray) => boolean,
+    direction?: MapOptions,
   } = {}): Generator<Ray> {
     if (options.steps !== undefined && options.steps === 0) { // TODO: Could also base 'reverse' on a negative number of steps.
+      // TODO: Abstractly, one would sometimes yield the current vertex; in the sense of "doing nothing" being someway "the identity". - Important to consider how this 'doing nothing' is inconsistent - and this functionality should be expanded upon later.
       // console.log('no step - no continuation');
       return;
     }
 
-    // TODO Does not by default check for equivalences in the from of "deduplication" - this means without checking this traversal will not halt in circular.
+    // TODO Does not by default check for equivalences in the from of "deduplication" - this means without checking this traversal will not halt in circular. - Though circular should also be allowed at some configurable clockcycle/interval - whether some native speed, or a slower one..
+
+    const mapped = this.map(options.direction);
+
+    if (mapped.is_none()) {
+      // console.log('Empty reference')
+      return;
+    }
+
+    const ray = mapped.force();
 
     // Nothing to traverse.
-    if (this.vertex().is_none()) {
+    if (ray.is_empty()) {
       // console.log('Nothing to traverse')
       return;
     }
+
+    const vertex = ray.vertex().force();
 
     /**
      * [--|--]
      * [--|  ]
      * [  |--]
      */
-    let vertex = this.vertex().force();
 
     if (vertex.js().is_some()) {
       // console.log('found js value:', vertex.js())
     }
 
-    if (options.reverse ? this.is_initial() : this.is_terminal()) {
-      // [--|  ]
+    if (ray.is_terminal()) {
+      /**
+       * [--|  ]
+       *
+       * We're basically finding initial matches for our terminal ray at its vertex:
+       *
+       * [--|  ]
+       * Along the '|' -> Find others which match [  |--], wherever they are arbitrarily defined along that 'equivalence frame/ray'.
+       */
 
       // console.log(this.type(), 'Traversing continuations (both initial&terminal)')
-      for (let step of vertex.traverse({...options, reverse: !!options.reverse })) {
+      for (let step of vertex.traverse({...options})) {
         // [  |--]
-        if (options.reverse ? step.is_terminal() : step.is_initial())
+        if (step.is_initial())
           yield *step.traverse(options);
       }
-      for (let step of vertex.traverse({...options, reverse: !options.reverse })) {
+      for (let step of vertex.traverse({...options})) {
         // [  |--]
-        if (options.reverse ? step.is_terminal() : step.is_initial())
+        if (step.is_initial())
           yield *step.traverse(options);
       }
       
       return;
     }
 
-    if (options.reverse ? !this.is_terminal() : !this.is_initial()) {
+    if (!this.is_initial()) {
       // [--|--]
 
-      yield vertex; // TODO: Should yield at which step it was found (or only yield through groups ..., depending on one's traversal strategy)
+      yield vertex.as_reference(); // TODO: Should yield at which step it was found (or only yield through groups ..., depending on one's traversal strategy)
       // console.log(this.type(), 'yielded vertex')
 
       if (options.steps !== undefined) {
@@ -147,7 +163,7 @@ export class Ray implements AsyncIterable<Ray> {
       // [  |--]
     }
 
-    const terminal = options.reverse ? vertex.initial() : vertex.terminal();
+    const terminal = vertex.terminal();
 
     /**
      * [--|--]
@@ -180,7 +196,9 @@ export class Ray implements AsyncIterable<Ray> {
     None: () => false
   });
 
-  is_reference = (): boolean => this.initial().is_none() && this.terminal().is_none();
+  is_reference = (): boolean => this.is_initial() && this.is_terminal();
+
+  is_empty = (): boolean => this.vertex().is_none();
 
   as_reference = (): Ray => new Ray({ vertex: () => Option.Some(this) }) // A ray whose vertex references this Ray (ignorantly).
 
@@ -195,9 +213,9 @@ export class Ray implements AsyncIterable<Ray> {
   type = (): RayType => {
     if (this.is_reference())
       return RayType.REFERENCE;
-    if (this.as_reference().is_initial())
+    if (this.is_initial())
       return RayType.INITIAL;
-    if (this.as_reference().is_terminal())
+    if (this.is_terminal())
       return RayType.TERMINAL;
 
     return RayType.VERTEX;
@@ -209,11 +227,35 @@ export class Ray implements AsyncIterable<Ray> {
     return this.as_array().toString()
   }
 
+  map = (direction?: MapOptions): Option<Ray> => {
+    if (direction === undefined)
+      return this.as_option();
+
+    // TODO: Any of these options could eventually be encoded at the vertices
+
+    if (is_function(direction))
+      return direction(this.as_option());
+
+    if (this.vertex().is_none())
+      return Option.None;
+
+    const originalDirection = this.vertex().force();
+
+    if (is_object(direction)) {
+      const { reverse } = direction;
+
+      if (reverse)
+        return new Ray({ initial: originalDirection.terminal, vertex: originalDirection.vertex, terminal: originalDirection.initial }).as_reference().as_option();
+    }
+
+    return this.as_option();
+  };
+
   // TODO: Important to easily allow compilation for everything (also I suppose the 2D/3D explorative frames --..
   // TODO: This is just dumb compilation for now, this should be much smarter - spotting infinities, parallel, much more that could be done here
   compile = <
     Vertex,
-    Directionality = Vertex
+    Directionality = Vertex, // Though abstractly we're using a construction where we don't differentiate between a Vertex and its Directionality, it's possible to do so, so allow for that construction.
   >(options: {
     directionality: {
       new: () => Directionality,
@@ -223,40 +265,54 @@ export class Ray implements AsyncIterable<Ray> {
     get: (vertex: Option<Ray>) => Option<Vertex>,
     convert: (ray: Option<Ray>) => Option<Vertex>,
   }): Option<Vertex> => {
-    const existing = options.get(this.as_option());
-    if (existing.is_some())
-      return existing;
 
-    const converted = options.convert(Option.Some(this));
+    // const ray = options.directionality.new();
+    // for (let vertex of this.traverse()) {
+    //   options.directionality.push_back(ray, options.convert(vertex.as_option()));
+    // }
 
-    // Always a new directionality if we're not already on one
-    // context.directionality ??= options.directionality.new();
-    // options.directionality.push_back(context.directionality, converted);
+    if (this.vertex().is_none())
+      return Option.None;
+
+    const vertex = this.vertex().force();
 
     const ray = options.directionality.new();
 
-    if (this.initial().is_some()) {
-      options.directionality.push_back(ray, this.initial().force().compile(options));
+    if (!this.is_initial()) {
+      options.directionality.push_back(ray, vertex.initial().force().as_reference().compile(options));
     }
-    if (this.vertex().is_some()) {
-      const vertex = this.vertex().force().compile(options);
-      options.directionality.push_back(ray, vertex);
 
-      // {
-      //   const ref = options.directionality.new();
-      //   options.directionality.push_back(ref, options.get(this.as_option()));
-      //   options.directionality.push_back(ref, vertex);
-      // }
-    }
-    if (this.terminal().is_some()) {
-      options.directionality.push_back(ray, this.terminal().force().compile(options));
+    // if (vertex.vertex().is_some()) {
+    const converted: Vertex = options.get(vertex.as_option()).match({
+      Some: (converted) => converted,
+      None: () => options.convert(vertex.as_option())
+    });
+
+    const existing = options.get(vertex.as_option());
+      // if (existing.is_some())
+      //   return existing;
+
+
+      // const vertex = vertex.force().compile(options);
+      // options.directionality.push_back(ray, vertex.vertex().force().as_reference().compile(options));
+
+    // }
+
+    if (!this.is_terminal()) {
+      options.directionality.push_back(ray, vertex.terminal().force().as_reference().compile(options));
     }
 
     return converted;
   }
 }
 
-
+export type MapOptions = ((direction: Option<Ray>) => Option<Ray>)
+  | {
+  /**
+   * This could be set from within some place which is navigating here? ; Basically just "the reversal of arrows" as referred to in some mathematics - assuming consistency (which is likely garanteed to not generally hold - certainly not in this implementation - which is to say that previous().next() is never actually garanteed to return "the same result" - and if one has some construction like a type that necessarily means it's an assumption: what am I doing to prevent violations of that assumption?).
+   */
+  reverse?: boolean
+}
 
 
 

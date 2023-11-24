@@ -177,8 +177,8 @@ const OrbitMinesExplorer = () => {
   const options: any = {};
   let label = 0;
 
-  const vertexStyle = (vertex: Option<Ray>): string => {
-    switch (vertex.force().type()) {
+  const vertexStyle = (reference: Option<Ray>): string => {
+    switch (reference.force().type()) {
       case RayType.INITIAL:{
         return 'Darker@Red'
       }
@@ -206,18 +206,20 @@ const OrbitMinesExplorer = () => {
           directionality.push(ray.force());
       }
     },
-    convert: function (vertex: Option<Ray>): Option<string> {
-      if (vertex.is_none())
+    convert: function (reference: Option<Ray>): Option<string> {
+      if (reference.is_none() || reference.force().vertex().is_none())
         return Option.None;
 
       label++;
+
+      const vertex = reference.force().vertex();
 
       const name: string = `"${vertex.force().js().match({
         Some: (js) => js.toString(),
         None: () => `?`
       })} (${label})"`;
 
-      (options['VertexStyle'] ??= {})[name] = vertexStyle(vertex);
+      (options['VertexStyle'] ??= {})[name] = vertexStyle(reference);
 
       Object.defineProperty(vertex.force(), "__label", {value: name});
 
@@ -230,7 +232,7 @@ const OrbitMinesExplorer = () => {
       return Option.None;
     }
   });
-  console.log(`HypergraphPlot[{${hyperEdges
+  console.log(`ResourceFunction["WolframModelPlot"][{${hyperEdges
     .filter(hyperEdge => hyperEdge.length !== 0)
     .map(hyperEdge =>
       `{${hyperEdge.join(',')}}`
@@ -287,6 +289,19 @@ const OrbitMinesExplorer = () => {
   const hotkeys = useHotkeys();
 
   const [selection, setSelection] = useState<Option<Ray>>(ray.force().next());
+
+  // hotkeys.set(
+  //   { combo: "arrowright",  global: true, label: "Refresh data", onKeyDown: () => {
+  //       selected.next().match({
+  //         Some: (ray) => setSelected(ray),
+  //         None: () => console.log('no more')
+  //       })
+  //     }}, { combo: "arrowleft",  global: true, label: "Refresh data", onKeyDown: () => {
+  //       selected.previous().match({
+  //         Some: (ray) => setSelected(ray),
+  //         None: () => console.log('no more')
+  //       })
+  //     }});
 
   console.log('ray', ray.force().as_array())
   console.log('...', [...selection.force().traverse({ steps: 1 })].map(ray => ray.vertex().force().js().force()))
