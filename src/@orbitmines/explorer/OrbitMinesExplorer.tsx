@@ -171,7 +171,9 @@ const OrbitMinesExplorer = () => {
   // link.setAttribute('href', gl.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
   // link.click()
 
-  const ray = JS.Iterable([false, true, [[0, 1], 1], 1, 2, 3, 4, 5, false]).as_ray();
+  const ray = JS.Iterable([false, true, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, false]).as_ray();
+  // const ray = JS.Iterable([false]).as_ray();
+  // const ray = JS.Iterable([1]).as_ray();
 
   const hyperEdges: string[][] = [];
   const options: any = {};
@@ -193,6 +195,13 @@ const OrbitMinesExplorer = () => {
       }
     }
   }
+  const get = (reference: Option<Ray>): Option<string> => {
+    const vertex = reference.match({ Some: (ref) => ref.vertex(), None: () => Option.None });
+    if (vertex.is_some() && (vertex.force() as any)["__label"] !== undefined)
+      return Option.Some((vertex.force() as any)["__label"] as string);
+
+    return Option.None;
+  }
 
   ray.force().compile<string, string[]>({
     directionality: {
@@ -207,6 +216,10 @@ const OrbitMinesExplorer = () => {
       }
     },
     convert: function (reference: Option<Ray>): Option<string> {
+      const existing = get(reference);
+      if (existing.is_some())
+        return existing;
+
       if (reference.is_none() || reference.force().vertex().is_none())
         return Option.None;
 
@@ -225,12 +238,7 @@ const OrbitMinesExplorer = () => {
 
       return Option.Some(name);
     },
-    get: function (vertex: Option<Ray>): Option<string> {
-      if (vertex.is_some() && (vertex.force() as any)["__label"] !== undefined)
-        return Option.Some((vertex.force() as any)["__label"] as string);
-
-      return Option.None;
-    }
+    get,
   });
   console.log(`ResourceFunction["WolframModelPlot"][{${hyperEdges
     .filter(hyperEdge => hyperEdge.length !== 0)
