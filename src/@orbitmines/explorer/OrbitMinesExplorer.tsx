@@ -171,7 +171,7 @@ const OrbitMinesExplorer = () => {
   // link.setAttribute('href', gl.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
   // link.click()
 
-  const ray = JS.Iterable([false, true, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, false]).as_ray();
+  const ray = JS.Iterable([14, 15, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, 16]).as_ray();
   // const ray = JS.Iterable([false]).as_ray();
   // const ray = JS.Iterable([1]).as_ray();
 
