@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon, Intent} from "@blueprintjs/core";
+import {Icon, Intent, Tag} from "@blueprintjs/core";
 import {
   ARTICLES_2021,
   ARTICLES_2022,
@@ -14,6 +14,11 @@ import Arc from "../../lib/paper/layout/Arc";
 import Link from '../../lib/paper/layout/Link';
 import {PROFILES} from "../../profiles/profiles";
 import Profile from "../../profiles/Profile";
+import BR from "../../lib/paper/layout/BR";
+import {Reference2} from "../../lib/paper/layout/Reference";
+import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
+import Col from "../../lib/layout/flexbox/Col";
+import {Row} from "../../lib/layout/flexbox";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -24,8 +29,12 @@ const FadiShawki = () => {
         Feel free to contact me on the socials specified above.
       </Section>
       <Section head="Building a (ray-like hypergraph) graphical interface">
-        <Link link="https://github.com/orbitmines/explorer" icon={ORGANIZATIONS.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
-
+        <Link
+          link="https://github.com/orbitmines/orbitmines.com/pull/1"
+          name={<span>
+        OrbitMines Explorer - <Tag intent={Intent.WARNING} minimal multiline style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
+      </span>}
+          icon={ORGANIZATIONS.github.key} />
       </Section>
       <Section head="Modelling WebAssembly">
         <Link link="https://github.com/orbitmines/wasm" icon={ORGANIZATIONS.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
@@ -36,15 +45,16 @@ const FadiShawki = () => {
 
       </Section>
       <Section head="Writing a paper on most of the above">
-        <Link link="https://orbitmines.com/papers/on-orbits" icon={ORGANIZATIONS.github.key} intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
+        <Link link="https://orbitmines.com/papers/on-orbits" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />
       </Section>
     </Arc>
 
     <Arc head="Writings">
       <Section head="Theoretics">
-        <a href="https://orbitmines.com/papers/on-intelligibility">
-          <Icon icon="link" /> 2022. On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty
-        </a>
+        <Reference2 index={0} {...ON_INTELLIGIBILITY.reference} start="xs" style={{
+          // maxWidth: '600px',
+          fontSize: '0.8rem'
+        }} />
       </Section>
     </Arc>
 

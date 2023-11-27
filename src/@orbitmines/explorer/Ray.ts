@@ -54,11 +54,16 @@ export enum RayType {
  * JavaScript wrapper for a mutable value. It is important to realize that this is merely some simple JavaScript abstraction, and anything is assumed to be inherently mutable.
  *
  * All the methods defined here should be considered deprecated, are there to help with JavaScript implementation only.
+ *
+ * TODO:
+ * - Homotopy equivalence merely as some direction/reversibility constraint on some direction, ignoring additional structure (or incorporating it into the equiv) at the vertices. (Could be loosened where certain vertex-equivalences are also part of the homotopy)
+ * - Induced ignorance/equivalence along arbitrary rays.
  */
 export class Ray implements AsyncIterable<Ray> {
 
   js: () => Option<any>;
 
+  // TODO: Could make a case that setting the terminal is more of a map, defaulting/first checking the terminal before additional functionality is mapped over that.
   initial: () => Option<Ray>;
   vertex: () => Option<Ray>;
   terminal: () => Option<Ray>;
@@ -279,6 +284,8 @@ export class Ray implements AsyncIterable<Ray> {
     convert: (ray: Option<Ray>) => Option<Vertex>,
     direction?: MapOptions,
   }): void => {
+    // TODO: Traversal is always a compilation?? (where traversal only 'compiles' the vertices to other vertices)
+
     // if (options.steps !== undefined && options.steps === 0) { // TODO: Could also base 'reverse' on a negative number of steps.
     //   // TODO: Abstractly, one would sometimes yield the current vertex; in the sense of "doing nothing" being someway "the identity". - Important to consider how this 'doing nothing' is inconsistent - and this functionality should be expanded upon later.
     //   // console.log('no step - no continuation');

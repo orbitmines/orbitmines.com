@@ -60,6 +60,7 @@ const OnOrbits = () => {
         ORGANIZATIONS.discord.key,
       ].includes(profile.organization.key))
     }],
+    Reference: (props: {}) => (<></>),
     references: referenceCounter
   }
 
@@ -129,7 +130,7 @@ const OnOrbits = () => {
 
     <Arc head="Wrapping up">
       <Section head="On self-publishing and referencing" sub="Edited personal journeys/histories/... and literary exposure">
-        I suspect that this sort of self-(reporting/publishing), necessitates the highlighting of its possible adversarial/game-theoretic properties. With myself and my archives possibly being forgetful or deceitful players, this certainly makes for an interesting dynamic. Consider this quick paragraph as an acknowledgement that I am aware of that, and that I think my attempts aim for accuracy.
+        I suspect that this sort of self-(reporting/publishing), necessitates the highlighting of its possible adversarial/game-theoretic properties. With myself and my archives possibly being forgetful or deceitful players, this certainly makes for an interesting dynamic. Consider this quick paragraph as an acknowledgement that I am aware of that, and that I think my attempts aim for accuracy - whether that's actually successful or not -.
 
         <BR/>
 

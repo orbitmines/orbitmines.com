@@ -19,6 +19,7 @@ import {PROFILES} from "../../profiles/profiles";
 
 export const ON_INTELLIGIBILITY: Content = { reference: {
     title: "On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty",
+    subtitle: "A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps).",
     author: "Shawki, Fadi",
     journal: "OrbitMines Research",
     year: "2022",
@@ -50,6 +51,7 @@ const OnIntelligibility = () => {
         ORGANIZATIONS.discord.key,
       ].includes(profile.organization.key))
     }],
+    Reference: (props: {}) => (<></>),
     references: referenceCounter
   }
 

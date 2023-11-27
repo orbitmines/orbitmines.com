@@ -67,7 +67,7 @@ const PaperContent = (props: PaperProps) => {
           year: "numeric"})}</H3>
       </Col>
       {draft ? <Col>
-        <Tag intent={Intent.DANGER} minimal style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
+        <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
       </Col> : <></>}
     </Row>
 
@@ -86,7 +86,7 @@ const PaperContent = (props: PaperProps) => {
 
   const footnotes = getFootnotes(Content);
 
-  return <Grid fluid className="py-35 px-50 child-pb-15" style={{
+  return <Grid fluid className="py-35 child-pb-15" style={{
     // border: 'solid rgba(143, 153, 168, 0.15) 2px',
     //     height={1754} width={1240}
     maxWidth: '1240px',

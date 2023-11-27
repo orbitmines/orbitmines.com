@@ -32,6 +32,7 @@ const Root = () => {
                             icon={<CustomIcon icon={ORGANIZATIONS.discord.key} size={20}/>}
                             minimal
                             interactive
+                            multiline
                         >
                             <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
                                 discord.orbitmines.com
@@ -43,6 +44,7 @@ const Root = () => {
                             icon={<CustomIcon icon={ORGANIZATIONS.github.key} size={20}/>}
                             minimal
                             interactive
+                            multiline
                         >
                             <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
                                 github.com/orbitmines

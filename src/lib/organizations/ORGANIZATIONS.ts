@@ -1,4 +1,5 @@
 import logo from "../../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
+import orbitmines_icon from "../../lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
 
@@ -15,7 +16,8 @@ export type TOrganization<TKey = string> = {
   name: string,
   assets: {
     logo?: any,
-    icon?: SVG
+    icon?: SVG,
+    icon_png?: any
   }
 }
 
@@ -83,7 +85,8 @@ const ORGANIZATIONS = {
     key: 'orbitmines-research',
     name: "OrbitMines Research",
     assets: {
-      logo: logo
+      logo: logo,
+      icon_png: orbitmines_icon,
     }
   },
   github: <TOrganization>{

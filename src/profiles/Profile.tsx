@@ -50,6 +50,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
         ORGANIZATIONS.facebook.key,
       ].includes(profile.organization.key))
     }],
+    Reference: (props: {}) => (<></>),
     exclude_footnotes: true
   }
 

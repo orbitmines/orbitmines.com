@@ -25,6 +25,8 @@ export type PaperProps = {
     discord?: { serverId: string, channelId?: string, link: () => string },
   },
 
+  Reference: (props: {}) => JSX.Element,
+
   references?: ReferenceCounter
 } & Children;
 

@@ -1398,9 +1398,9 @@ export const Category = (props: { category?: ContentCategory, archival_functions
       </Col>
     </Row>)}
     {archival_functions ? <Row center="xs" className="mt-5 child-px-2">
-      <Col><Tag intent={Intent.WARNING} minimal>Archive</Tag></Col>
-      <Col><Tag intent={Intent.PRIMARY} minimal>Future</Tag></Col>
-      <Col><Tag intent={Intent.DANGER} minimal>Forgotten</Tag></Col>
+      <Col><Tag intent={Intent.WARNING} minimal multiline>Archive</Tag></Col>
+      <Col><Tag intent={Intent.PRIMARY} minimal multiline>Future</Tag></Col>
+      <Col><Tag intent={Intent.DANGER} minimal multiline>Forgotten</Tag></Col>
     </Row> : null}
   </div>
 }
@@ -1417,7 +1417,7 @@ export const pageStyles = {
 export const Layer = ({zIndex, children, ...props}: any) => {
   return <div
     {...props}
-    className={classNames("py-35 px-50 child-pb-15" , props.className)}
+    className={classNames("py-35 child-pb-15" , props.className)}
     style={{
       ...pageStyles,
       position: 'absolute',

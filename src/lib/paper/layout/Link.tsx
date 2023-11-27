@@ -12,6 +12,7 @@ const Link = ({name, link, icon, intent, ...props }: { name?: ReactNode, link: s
       intent={intent}
       minimal
       interactive
+      multiline
     >
       <Row middle="xs" className="px-5" {...props} style={{fontSize: '1.1rem'}}>
         <span {...props}>{name ? name : link.replaceAll('https://', '')}</span>

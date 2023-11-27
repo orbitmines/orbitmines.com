@@ -378,7 +378,7 @@ function BlueprintJS() {
       </Row>
 
       <Row>
-        <Tag intent={Intent.WARNING} icon={<Icon icon="add-clip"/>}>Tag</Tag>
+        <Tag intent={Intent.WARNING} multiline icon={<Icon icon="add-clip"/>}>Tag</Tag>
       </Row>
 
       <Row>
