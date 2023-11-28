@@ -4,8 +4,9 @@ import {Document, Font, Image, Link, Page, Path, PDFViewer, Svg, Text, View} fro
 import DereferenceHtml from "../../pdf/DereferenceHtml";
 import {FontFamily} from "../../layout/font/Font";
 import {DereferencedElementRenderer} from "../../pdf/dereferenceHtmlElement";
-import {PaperProps, PView} from "../Paper";
+import {PaperProps} from "../Paper";
 import PaperContent from "../PaperContent";
+import {useSearchParams} from "react-router-dom";
 
 const renderPdfRendererElement: DereferencedElementRenderer = (element: Element, parent: Element | undefined, initialProps: any) => {
   const isTopLevel = parent === undefined;
@@ -143,14 +144,16 @@ export const registerFont = (font: FontFamily) => {
 const ExportablePaper = (paper: PaperProps) => {
   const [dereferenced, setDereferenced] = useState<JSX.Element | undefined>();
   const renderElement = useCallback(renderPdfRendererElement, []);
+  const [params] = useSearchParams();
+  const generate = params.get('generate');
 
-  const { pdf, view } = paper;
+  const { pdf } = paper;
 
   pdf.fonts?.forEach(registerFont);
 
   const content = <PaperContent {...paper}/>;
 
-  if (!dereferenced || view === PView.DereferencedHtml)
+  if (!dereferenced || generate === 'dereferenced_html')
     return <DereferenceHtml
         onDereference={setDereferenced}
         renderElement={renderElement}

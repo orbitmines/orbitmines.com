@@ -3,7 +3,7 @@ import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMo
 import {Row} from '../../lib/layout/flexbox';
 import ORGANIZATIONS from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps, PView} from "../../lib/paper/Paper";
+import Paper, {PaperProps} from "../../lib/paper/Paper";
 import BR from "../../lib/paper/layout/BR";
 import Section from "../../lib/paper/layout/Section";
 import Reference, {useCounter} from "../../lib/paper/layout/Reference";
@@ -28,7 +28,6 @@ const OnOrbits = () => {
     </>),
     draft: true,
     date: "2023-12-31",
-    view: PView.Browser,
     pdf: {
       fonts: [ JetBrainsMono ],
     },
@@ -43,6 +42,7 @@ const OnOrbits = () => {
         ORGANIZATIONS.github.key,
         ORGANIZATIONS.twitter.key,
         ORGANIZATIONS.discord.key,
+        ORGANIZATIONS.orcid.key,
       ].includes(profile.organization.key))
     }],
     Reference: (props: {}) => (<></>),

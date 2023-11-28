@@ -6,7 +6,7 @@ import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps, PView} from "../../lib/paper/Paper";
+import Paper, {PaperProps} from "../../lib/paper/Paper";
 import BR from "../../lib/paper/layout/BR";
 import Section from "../../lib/paper/layout/Section";
 import Reference, {useCounter} from "../../lib/paper/layout/Reference";
@@ -59,7 +59,6 @@ const OnIntelligibility = () => {
 
   const paper: Omit<PaperProps, 'children'> = {
     ...ON_INTELLIGIBILITY.reference,
-    view: PView.Browser,
     pdf: {
       fonts: [ JetBrainsMono ],
     },

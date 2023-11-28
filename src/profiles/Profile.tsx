@@ -1,7 +1,7 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import {useLocation} from "react-router-dom";
-import {PaperProps, PaperView, PView} from "../lib/paper/Paper";
+import {PaperProps, PaperView} from "../lib/paper/Paper";
 import JetBrainsMono from "../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {TProfile} from "../lib/organizations/ORGANIZATIONS";
 import {Children, value} from "../lib/typescript/React";
@@ -16,7 +16,6 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
     title: profile.title ?? profile.name,
     subtitle: profile.subtitle,
     date: profile.date,
-    view: PView.Browser,
     pdf: {
       fonts: [
         JetBrainsMono,

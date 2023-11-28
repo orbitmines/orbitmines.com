@@ -1,5 +1,5 @@
 import {Children, value} from "../../typescript/React";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import React, {useCallback, useRef} from "react";
 import {toJpeg} from "html-to-image";
 import {Col, Row} from "../../layout/flexbox";
@@ -9,8 +9,11 @@ import {PaperProps} from "../Paper";
 const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
 
   const ref = useRef<any>(null);
+
+  const generate = params.get('generate');
 
   const exportJpeg = useCallback(() => {
     if (ref === null)
@@ -36,9 +39,12 @@ const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
       <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
 
       <Col>
-        {/*<Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />*/}
-        <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
-        <a href={`${location.pathname.replace(/\/$/, "")}.pdf`} target="_blank"><Button text=".pdf" icon="document" minimal /></a>
+        {generate === 'button' ? <>
+          <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
+        </> : <>
+          <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
+          <a href={`${location.pathname.replace(/\/$/, "")}.pdf`} target="_blank"><Button text=".pdf" icon="document" minimal /></a>
+        </>}
       </Col>
     </Row>
     <div ref={ref}>

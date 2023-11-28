@@ -3,33 +3,27 @@ import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
 import {Children, value} from "../typescript/React";
 import Browser from "./views/Browser";
-import {useLocation} from "react-router-dom";
+import {useLocation, useSearchParams} from "react-router-dom";
 import {ReferenceCounter, ReferenceProps} from "./layout/Reference";
 
 export type PaperProps = ReferenceProps & {
   pdf: PdfProps,
   exclude_footnotes?: boolean
-  view: PView
 
   Reference: (props: {}) => JSX.Element,
 
   references?: ReferenceCounter
 } & Children;
 
-export enum PView {
-  Browser,
-  DereferencedHtml,
-
-  Pdf,
-}
-
 export const PaperView = (paper: PaperProps) => {
-  const { view } = paper;
+  const [params] = useSearchParams();
 
-  if (view === PView.Browser)
-    return <Browser paper={paper} />;
+  const generate = params.get('generate');
 
-  return <ExportablePaper {...paper} />
+  if (generate === 'pdf')
+    return <ExportablePaper {...paper} />
+
+  return <Browser paper={paper} />;
 };
 
 const Paper = (props: PaperProps) => {
