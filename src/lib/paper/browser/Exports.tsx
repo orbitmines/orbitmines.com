@@ -1,4 +1,4 @@
-import {Children} from "../../typescript/React";
+import {Children, value} from "../../typescript/React";
 import {useLocation, useNavigate} from "react-router-dom";
 import React, {useCallback, useRef} from "react";
 import {toJpeg} from "html-to-image";
@@ -21,7 +21,7 @@ const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
       cacheBust: true, backgroundColor: '#1C2127' })
       .then((dataUrl) => {
         const link = document.createElement('a')
-        link.download = `${paper.title.value.replaceAll(" ", "_")}.jpeg`
+        link.download = `${value(paper.title).replaceAll(" ", "_")}.jpeg`
         link.href = dataUrl
         link.click()
       })

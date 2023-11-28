@@ -1,9 +1,8 @@
 import React from 'react';
-import {Layer, pageStyles} from "../profiles/FadiShawki/FadiShawki";
+import {Layer, pageStyles} from "../profiles/FadiShawki/FadiShawki2";
 import {Col, Row} from "../lib/layout/flexbox";
 import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import {Divider, H3, Icon, Tag} from "@blueprintjs/core";
-import {useNavigate} from "react-router-dom";
 import CustomIcon from "../lib/layout/icons/CustomIcon";
 import ORGANIZATIONS from "../lib/organizations/ORGANIZATIONS";
 import Author from "../lib/paper/layout/Author";

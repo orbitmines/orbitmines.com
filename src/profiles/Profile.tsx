@@ -4,7 +4,7 @@ import {useLocation} from "react-router-dom";
 import {PaperProps, PaperView, PView} from "../lib/paper/Paper";
 import JetBrainsMono from "../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {TProfile} from "../lib/organizations/ORGANIZATIONS";
-import {Children, renderable} from "../lib/typescript/React";
+import {Children, value} from "../lib/typescript/React";
 
 import BlueprintIcons16 from '@blueprintjs/icons/lib/css/blueprint-icons-16.ttf';
 import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf';
@@ -13,7 +13,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const location = useLocation();
 
   const paper: Omit<PaperProps, 'children'> = {
-    title: profile.title ?? renderable(profile.name),
+    title: profile.title ?? profile.name,
     subtitle: profile.subtitle,
     date: profile.date,
     view: PView.Browser,
@@ -60,7 +60,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
     base: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}`,
     pdf: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.pdf`,
   };
-  const description = subtitle?.value;
+  const description = value(subtitle);
 
   // Google Scholar: https://scholar.google.com.au/intl/en/scholar/inclusion.html#indexing
 
@@ -68,7 +68,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const OpenGraph = () => (
     <Helmet>
       <meta property="og:type" content="profile" />
-      <meta property="og:title" content={title.value} />
+      <meta property="og:title" content={value(title)} />
       <meta property="og:url" content={url.base} />
       <meta property="og:description" content={description} />
 
@@ -131,14 +131,14 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const Twitter = () => (<Helmet>
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:creator" content="@_FadiShawki" />
-    <meta property="twitter:title" content={title.value} />
+    <meta property="twitter:title" content={value(title)} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={profile.picture} />
   </Helmet>);
 
   return <div>
     <Helmet>
-      <title lang="en">{title.value}</title>
+      <title lang="en">{value(title)}</title>
       <meta name="description" content={description} />
     </Helmet>
     <OpenGraph/>

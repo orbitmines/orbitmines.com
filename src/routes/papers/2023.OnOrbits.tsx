@@ -1,44 +1,29 @@
 import React from 'react';
-import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import {Row} from '../../lib/layout/flexbox';
-import {
-  A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
-  FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
-  GODEL_ESCHER_BACH,
-  QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY,
-} from "../../profiles/FadiShawki/FadiShawki";
-import ORGANIZATIONS, { Content, Viewed } from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {PaperProps, PView} from "../../lib/paper/Paper";
 import BR from "../../lib/paper/layout/BR";
 import Section from "../../lib/paper/layout/Section";
-import Reference, {Footnote, useCounter} from "../../lib/paper/layout/Reference";
-import {renderable} from "../../lib/typescript/React";
+import Reference, {useCounter} from "../../lib/paper/layout/Reference";
 import {PROFILES} from "../../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import Arc from "../../lib/paper/layout/Arc";
 import TODO from "../../lib/paper/layout/TODO";
 import Link from "../../lib/paper/layout/Link";
-
-// export const ON_INTELLIGIBILITY: Content = { reference: {
-//     title: "On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty",
-//     author: "Shawki, Fadi",
-//     journal: "OrbitMines Research",
-//     year: "2022",
-//     link: "https://orbitmines.com/papers/on-intelligibility",
-//   }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022" }
+import {renderable} from "../../lib/typescript/React";
 
 const OnOrbits = () => {
   const navigate = useNavigate();
 
   const referenceCounter = useCounter();
 
-  const OnIntelligibilityReference = <Reference is="reference" index={referenceCounter()} {...ON_INTELLIGIBILITY.reference} />;
+  const OnIntelligibilityReference = <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} />;
 
   const paper: Omit<PaperProps, 'children'> = {
     title: renderable<string>("On Orbits:"),
-    subtitle: renderable<string>("", (value) => <>
+    subtitle: renderable<string>("", (value: any) => <>
       Originally intended as a more technical continuation of earlier thoughts on intelligibility {OnIntelligibilityReference}.
     </>),
     draft: true,
@@ -101,13 +86,20 @@ const OnOrbits = () => {
       </Section>
 
       <Section head={<>
-        <Reference is="reference" index={referenceCounter()} title="LEB128" link="https://en.wikipedia.org/wiki/LEB128" simple inline />
+        <Reference
+          index={referenceCounter()}
+          reference={{
+            title: "LEB128",
+            link: "https://en.wikipedia.org/wiki/LEB128"
+          }}
+          simple inline
+        />
       </>} sub="Little Endian Base 128 encoding">
         <TODO> </TODO>
       </Section>
 
       <Section head={<>
-        <Reference is="reference" index={referenceCounter()} title="Unicode" link="https://www.unicode.org/versions/latest/" simple inline />
+        <Reference index={referenceCounter()} reference={{title: "Unicode", link: "https://www.unicode.org/versions/latest/"}} simple inline />
       </>} sub="UTF-8 encoding">
         {/*Before getting further complexity in, it will probably help to construct the interface by which characters will be used, so we can use more familiar text-like symbols in the structures. For historical reasons and the choice of WebAssembly, I'll initially use UTF-8 for this. Just to simplify, I'll for now ignore the visualization of the Unicode scalar values.*/}
 
@@ -117,7 +109,18 @@ const OnOrbits = () => {
       </Section>
 
       <Section head={<>
-        <Reference is="reference" index={referenceCounter()} title="IEEE 754" link="https://ieeexplore.ieee.org/document/8766229" simple inline journal="IEEE Std 754-2019 (Revision of IEEE 754-2008)" year="2019" page="1-84" />
+        <Reference
+          simple
+          inline
+          index={referenceCounter()}
+          reference={{
+            title: "IEEE 754",
+            link: "https://ieeexplore.ieee.org/document/8766229",
+            published: [{name: 'IEEE Std 754-2019 (Revision of IEEE 754-2008)'} as any],
+            year: "2019",
+            pointer: "1-84"
+          }}
+        />
       </>} sub="Floating-Point Arithmetic">
         <TODO> </TODO>
       </Section>

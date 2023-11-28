@@ -29,7 +29,7 @@ const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>}) => {
               interactive
               multiline
             >
-              <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
+              <Row middle="xs" className="px-2" style={{fontSize: '0.8rem'}}>
                 {profile.display}
               </Row>
             </Tag>

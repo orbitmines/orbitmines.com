@@ -1,5 +1,14 @@
 import logo from "../../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import orbitmines_icon from "../../lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png";
+import strangeloop_icon from "../../lib/organizations/strange-loop/strange_loop_logo_final_color_no_year_square2.png";
+import semf_icon from "../../lib/organizations/semf/semf_icon.jpg";
+import webassembly_icon from "../../lib/organizations/wasm/webassembly-icon.png";
+import topos_institute_icon from "././topos.institute/topos_favicon.ico";
+import mindscape_icon from "././preposterous-universe/download.jpeg";
+import criticalthinking_icon from "././critical-thinking/https___s3.us-west-1.amazonaws.com_redwood-labs_showpage_uploads_images_403b35d6-ec76-4cd9-a70d-bd1c5d825460.png";
+import hoc_icon from "././hoc/92327702.png";
+import mlst_icon from "././mlst/channels4_profile.jpg";
+import ngi_icon from "././ngi/Logo-NGI_Icon-circle-NGI-rgb.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
 
@@ -87,6 +96,70 @@ const ORGANIZATIONS = {
     assets: {
       logo: logo,
       icon_png: orbitmines_icon,
+    }
+  },
+  semf: <TOrganization>{
+    key: 'semf',
+    name: "SEMF",
+    assets: {
+      logo: logo,
+      icon_png: semf_icon,
+    }
+  },
+  ngi: <TOrganization>{
+    key: 'ngi',
+    name: "NGI",
+    assets: {
+      icon_png: ngi_icon,
+    }
+  },
+  strangeloop: <TOrganization>{
+    key: 'strangeloop',
+    name: "Strange Loop",
+    assets: {
+      icon_png: strangeloop_icon,
+    }
+  },
+  wasm: <TOrganization>{
+    key: 'wasm',
+    name: "WebAssembly",
+    assets: {
+      icon_png: webassembly_icon,
+    }
+  },
+  topos_institute: <TOrganization>{
+    key: 'topos_institute',
+    name: "Topos Institute",
+    assets: {
+      icon_png: topos_institute_icon,
+    }
+  },
+  mlst: <TOrganization>{
+    key: 'mlst',
+    name: "MLST",
+    assets: {
+      icon_png: mlst_icon,
+    }
+  },
+  hoc: <TOrganization>{
+    key: 'hoc',
+    name: "Higher Order Company",
+    assets: {
+      icon_png: hoc_icon,
+    }
+  },
+  preposterous_universe: <TOrganization>{
+    key: 'preposterous_universe',
+    name: "Preposterous Universe",
+    assets: {
+      icon_png: mindscape_icon,
+    }
+  },
+  criticalthinkingpodcast: <TOrganization>{
+    key: 'criticalthinkingpodcast',
+    name: "Critical Thinking Podcast",
+    assets: {
+      icon_png: criticalthinking_icon,
     }
   },
   github: <TOrganization>{

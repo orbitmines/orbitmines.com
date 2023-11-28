@@ -44,28 +44,28 @@ const PaperContent = (props: PaperProps) => {
 
     <Row center="xs" middle="xs" className="child-px-20">
       {organizations ? <>
-        {organizations.map((organization) => (<Col>
+        {organizations.map((organization) => (<Col md={4} xs={12}>
           <Organization {...organization} />
         </Col>))}
 
-        <Col className="hidden-xs hidden-sm hidden-md">
+        <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
           <Divider style={{height: '80px'}}/>
         </Col>
       </> : <></>}
 
-      {(authors || []).map((author) => (<Col>
+      {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
     </Row>
 
     <Row center="xs" middle="xs" className="child-px-10">
-      <Col>
+      {date ? <Col>
         <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
           day: "numeric",
           month: "long",
           year: "numeric"})}</H3>
-      </Col>
+      </Col> : <></>}
       {draft ? <Col>
         <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
       </Col> : <></>}
@@ -86,7 +86,7 @@ const PaperContent = (props: PaperProps) => {
 
   const footnotes = getFootnotes(Content);
 
-  return <Grid fluid className="py-35 child-pb-15" style={{
+  return <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
     // border: 'solid rgba(143, 153, 168, 0.15) 2px',
     //     height={1754} width={1240}
     maxWidth: '1240px',

@@ -1,7 +1,5 @@
 import ORGANIZATIONS, {ExternalProfile, TProfile} from "../lib/organizations/ORGANIZATIONS";
-import {renderable} from "../lib/typescript/React";
 import {ATTENDED_EVENTS, FORMAL_EDUCATION, HISTORY} from "./FadiShawki/FadiShawki";
-
 
 export const PROFILES = {
   fadi_shawki: <TProfile>{
@@ -17,8 +15,8 @@ export const PROFILES = {
 
     email: 'fadi.shawki@orbitmines.com',
 
-    title: renderable<string>("2023. Fadi Shawki"),
-    subtitle: renderable<string>("A self-profile by some 23-solar-orbiting explorer."),
+    title: "2023. Fadi Shawki",
+    subtitle: "A self-profile by some 23-solar-orbiting explorer.",
 
     reference: {
       // title: renderable<string>("2023. Fadi Shawki"),
