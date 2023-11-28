@@ -3,3 +3,11 @@
 # orbitmines.com
 *A public repository for [orbitmines.com](https://orbitmines.com). The hub for OrbitMines' (research) projects.*
 
+---
+
+#### Discussion
+
+Feel free to discuss this project on this GitHub repository or preferably the [OrbitMines Community Discord](https://discord.orbitmines.com).
+
+---
+

@@ -56,14 +56,14 @@ export const Router = () => {
     <Route path="papers">
       <Route path=":paper" element={<Paper />} />
     </Route>
-    <Route path=":explorer" element={<OrbitMinesExplorer />} />
+    {/*<Route path=":explorer" element={<OrbitMinesExplorer />} />*/}
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>
-    <Route path="experimental">
-      <Route path="legacy" element={<Legacy />} />
-      <Route path="blueprintjs" element={<BlueprintJS />} />
-    </Route>
+    {/*<Route path="experimental">*/}
+    {/*  <Route path="legacy" element={<Legacy />} />*/}
+    {/*  <Route path="blueprintjs" element={<BlueprintJS />} />*/}
+    {/*</Route>*/}
   </Routes>
 }
 
