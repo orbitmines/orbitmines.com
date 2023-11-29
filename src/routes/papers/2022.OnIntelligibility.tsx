@@ -2,42 +2,28 @@ import React from 'react';
 import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import {Row} from '../../lib/layout/flexbox';
-import {
+import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
+
+import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import {useNavigate} from "react-router-dom";
+import Paper, {PaperProps} from "../../lib/paper/Paper";
+import BR from "../../lib/paper/layout/BR";
+import Section from "../../lib/paper/layout/Section";
+import Reference, {useCounter} from "../../lib/paper/layout/Reference";
+import {PROFILES} from "../../profiles/profiles";
+
+const {
   A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES,
   GODEL_ESCHER_BACH,
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY,
-} from "../../profiles/FadiShawki/FadiShawki";
-import ORGANIZATIONS, { Content, Viewed } from "../../lib/organizations/ORGANIZATIONS";
-import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps, PView} from "../../lib/paper/Paper";
-import BR from "../../lib/paper/layout/BR";
-import Section from "../../lib/paper/layout/Section";
-import Reference, {Footnote, useCounter} from "../../lib/paper/layout/Reference";
-import {renderable} from "../../lib/typescript/React";
-import {PROFILES} from "../../profiles/profiles";
+} = REFERENCES;
 
 export const ON_INTELLIGIBILITY: Content = { reference: {
     title: "On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty",
-    author: "Shawki, Fadi",
-    journal: "OrbitMines Research",
-    year: "2022",
-    link: "https://orbitmines.com/papers/on-intelligibility",
-  }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022" }
-
-const OnIntelligibility = () => {
-  const navigate = useNavigate();
-
-  const referenceCounter = useCounter();
-
-  const paper: PaperProps = {
-    title: renderable<string>("On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty"),
-    subtitle: renderable<string>("A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps)."),
+    subtitle:"A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps).",
     date: "2022-12-31",
-    view: PView.Browser,
-    pdf: {
-      fonts: [ JetBrainsMono ],
-    },
+    year: "2022",
     external: {
       discord: {serverId: '1055502602365845534', channelId: '1105246681915732108', link: () => "https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108"}
     },
@@ -48,8 +34,36 @@ const OnIntelligibility = () => {
         ORGANIZATIONS.github.key,
         ORGANIZATIONS.twitter.key,
         ORGANIZATIONS.discord.key,
+        ORGANIZATIONS.orcid.key,
       ].includes(profile.organization.key))
+    }],
+    published: [ORGANIZATIONS.orbitmines_research],
+    link: "https://orbitmines.com/papers/on-intelligibility",
+    notes: [{
+      date: '2023-11-27',
+      render: () => <span>
+        I started distilling a years' worth of thoughts/explorations on 2023-12-11. Already - on the first day -, distributing them within the buckets of two titles: "On the intelligibility of (dynamic) systems and associated uncertainty" and "On Functional Equivalence and Compression". Though I initially didn't intend to publish these thoughts quickly, that changed on 2023-12-22. While exploring Melanie Mitchell's Mastodon account, I found her <a href="https://sigmoid.social/@melaniemitchell/109303350293539759" target="_blank">post</a> on the Lab42 essay competition, which prompted me to accelerate my timeline.
+      </span>
+    }, {
+      date: '2023-08-03',
+      render: () => <span>
+        It's probably worth noting that I currently take issue with a lot of phrasings I use here. I've noticed that many of the ideas I'm thinking about rarely hold the same viewpoint for over a few months. But as an exercise it was quite useful to distill a year of thoughts into a few pages. It has helped quite tremendously in me working through some confusions.
+      </span>
     }]
+  }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022" }
+
+const OnIntelligibility = () => {
+  const navigate = useNavigate();
+
+  const referenceCounter = useCounter();
+
+  const paper: Omit<PaperProps, 'children'> = {
+    ...ON_INTELLIGIBILITY.reference,
+    pdf: {
+      fonts: [ JetBrainsMono ],
+    },
+    Reference: (props: {}) => (<></>),
+    references: referenceCounter
   }
 
   return <Paper {...paper}>
@@ -66,48 +80,25 @@ const OnIntelligibility = () => {
 
         <BR/>
 
-        One such a term I'll use is a system (or rather: the perception of one). Abstractly, I'll define this as some arbitrary level of description at which computation happens. So in some sense it's the idea of modelling interactions. To put it into perspective some random examples are: Two 'isolated' particles colliding, a singular logic gate, a computer, a function, a keyboard, the internet, a human, a planet, the universe. Note that this perception of a system happens within a system we could call an (intelligent) observer; systems can be polymorphic, overlapping, approximate, recursive, mutable, ..., and as such their interpretation is non-trivial <Reference is="reference" index={referenceCounter()} {...FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES.reference}/> <Reference is="reference" index={referenceCounter()} {...GODEL_ESCHER_BACH.reference} />.
+        One such a term I'll use is a system (or rather: the perception of one). Abstractly, I'll define this as some arbitrary level of description at which computation happens. So in some sense it's the idea of modelling interactions. To put it into perspective some random examples are: Two 'isolated' particles colliding, a singular logic gate, a computer, a function, a keyboard, the internet, a human, a planet, the universe. Note that this perception of a system happens within a system we could call an (intelligent) observer; systems can be polymorphic, overlapping, approximate, recursive, mutable, ..., and as such their interpretation is non-trivial <Reference is="footnote" index={referenceCounter()} reference={{ ...FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{ ...GODEL_ESCHER_BACH.reference}} />.
 
         <BR/>
 
-        Conceivably, the only way to understand systems, or at the very least to 'do useful things', is to interact with them. Note that when I say 'interact', I mean so in a way that observing (by whatever means) falls within that definition. If in any way information/interactions can be transferred between two conceived systems, they will fall under what I'd incorrectly call 'interaction'.  Which is quite related to the old debate that is the possibility of a 'non interacting' observer <Footnote is="footnote"  index={referenceCounter()}>While reading <Reference is="reference"
-        index={referenceCounter()}
-        {...QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY.reference}
+        Conceivably, the only way to understand systems, or at the very least to 'do useful things', is to interact with them. Note that when I say 'interact', I mean so in a way that observing (by whatever means) falls within that definition. If in any way information/interactions can be transferred between two conceived systems, they will fall under what I'd incorrectly call 'interaction'.  Which is quite related to the old debate that is the possibility of a 'non interacting' observer <Reference is="footnote" index={referenceCounter()}>While reading <Reference index={referenceCounter()} reference={{ ...QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY.reference}}
         inline
-      /> I realized that this dichotomy between Bohr & Einstein is incredibly relevant, even for 'high-level' systems. To my mind summarized as the things knowable against some objective reality. And how incredibly interdependable systems are (whether our universe or any other conceivable one).</Footnote>. Others have gone to great length discussing these issues <Footnote is="footnote"  index={referenceCounter()}><Reference is="reference" 
-        index={referenceCounter()}
-        title="On the einstein podolsky rosen paradox"
-        author="Bell, John S."
-        journal="Physics Physique Fizika 1.3"
-        year="1964"
-        page="p. 195"
-        link="https://link.aps.org/pdf/10.1103/PhysicsPhysiqueFizika.1.195"
+      /> I realized that this dichotomy between Bohr & Einstein is incredibly relevant, even for 'high-level' systems. To my mind summarized as the things knowable against some objective reality. And how incredibly interdependable systems are (whether our universe or any other conceivable one).</Reference>. Others have gone to great length discussing these issues <Reference is="footnote"  index={referenceCounter()}><Reference index={referenceCounter()} reference={{ ...REFERENCES.ON_THE_EINSTEIN_PODOLSKY_ROSEN_PARADOX.reference}}
         inline
-      /> & relevant discussions.</Footnote>. For our purposes I'd thus wrongly assume that any system always exists within another system <Footnote is="footnote"  index={referenceCounter()}>A possibly unanswerable paradox lies within that assumption, however. Namely that of a paradoxical universe; or more accurately the unknowable properties of its existence. And for practical purposes of systems that doesn't matter much (except of course in the case of wanting to figure more out about it; if that is deemed useful).</Footnote>. Therefore, a practical view on this is merely: if systems cannot interact with one-and-other, they won't ever know of each-other's existence. But I don't consider this approach as rigorous.
+      /> & relevant discussions.</Reference>. For our purposes I'd thus wrongly assume that any system always exists within another system <Reference is="footnote" index={referenceCounter()}>A possibly unanswerable paradox lies within that assumption, however. Namely that of a paradoxical universe; or more accurately the unknowable properties of its existence. And for practical purposes of systems that doesn't matter much (except of course in the case of wanting to figure more out about it; if that is deemed useful).</Reference>. Therefore, a practical view on this is merely: if systems cannot interact with one-and-other, they won't ever know of each-other's existence. But I don't consider this approach as rigorous.
       </Section>
       <Section head="II. Equivalence & Extremes">
-        A seductive take on equivalence, is that the best (; or only perfect) description of a system is that system itself <Reference is="reference" 
-        index={referenceCounter()}
-        title="What is a knowledge representation?"
-        author="Davis, Randall, Howard Shrobe, and Peter Szolovits"
-        journal="AI magazine 14.1"
-        year="1993"
-        link="https://ojs.aaai.org/index.php/aimagazine/article/download/1029/947"
-      />. Any perception of a system, any description of a system, is necessarily flawed. When we try and describe a way in which something is equivalent, we aim for an approximate seemingly useful solution. This is the pocket in which we can operate on intelligibility <Footnote is="footnote"  index={referenceCounter()}>
-        Similar to Wolfram's idea of computational (ir)reducibility: <Reference is="reference" 
-          index={referenceCounter()}
-          title="A new kind of science?"
-          author="Wolfram, Stephen, and M. Gad-el-Hak"
-          journal="Appl. Mech. Rev. 56.2"
-          year="2003"
-          link="https://www.wolframscience.com/nks/"
+        A seductive take on equivalence, is that the best (; or only perfect) description of a system is that system itself <Reference is="footnote" index={referenceCounter()} reference={{ ...REFERENCES.WHAT_IS_A_KNOWLEDGE_REPRESENTATION.reference}}
+      />. Any perception of a system, any description of a system, is necessarily flawed. When we try and describe a way in which something is equivalent, we aim for an approximate seemingly useful solution. This is the pocket in which we can operate on intelligibility <Reference is="footnote"  index={referenceCounter()}>
+        Similar to Wolfram's idea of computational (ir)reducibility: <Reference index={referenceCounter()} reference={{ ...REFERENCES.A_NEW_KIND_OF_SCIENCE.reference}}
           inline
-        /> & <Reference is="reference" 
-        index={referenceCounter()}
-        {...A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS.reference}
+        /> & <Reference index={referenceCounter()} reference={{ ...A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS.reference}}
         inline
       />
-      </Footnote>. This has all kinds of conceptual consequences which are central to this paper's approach. One of the critical ones being that extremes such as 'proof', 'real' or 'truth' invoke things that are generally unknowable, and that a claim like this is incredibly self-referential. Following from that is that in a certain light; for our perceived purposes many extremes (; or unknowable things) don't matter to us, unless edging toward them is deemed useful.
+      </Reference>. This has all kinds of conceptual consequences which are central to this paper's approach. One of the critical ones being that extremes such as 'proof', 'real' or 'truth' invoke things that are generally unknowable, and that a claim like this is incredibly self-referential. Following from that is that in a certain light; for our perceived purposes many extremes (; or unknowable things) don't matter to us, unless edging toward them is deemed useful.
 
         <BR/>
 
@@ -115,14 +106,14 @@ const OnIntelligibility = () => {
 
         <CodeBlock code="Sequence: [ A, B, ... ] = AB..."/>
 
-        Like many concepts in our languages, the nature of its abstractness allows for the creation of something 'ideally/perfectly/truly' arbitrary. Which following my arguments don't exist in reality other than their perception. It is only arbitrary, conceptually. Some system generated this seemingly arbitrary sequence. 'Arbitrary' like many concepts, hold up only in a certain frame of reference <Footnote is="footnote"  index={referenceCounter()}>Note that in the cases of both for and against determinism the same arguments can be made: Notably that either is generally unknowable to the observer. The same can be said of the concept of infinity: For the observer's purposes, infinity is only so conceptually. It would make little difference to the observer even if infinite things can exist beyond their conception; either perceived infinities keep computing, or they are halted.</Footnote>. There is a certain complex ambiguity related to concepts which seems context-dependant.
+        Like many concepts in our languages, the nature of its abstractness allows for the creation of something 'ideally/perfectly/truly' arbitrary. Which following my arguments don't exist in reality other than their perception. It is only arbitrary, conceptually. Some system generated this seemingly arbitrary sequence. 'Arbitrary' like many concepts, hold up only in a certain frame of reference <Reference is="footnote"  index={referenceCounter()}>Note that in the cases of both for and against determinism the same arguments can be made: Notably that either is generally unknowable to the observer. The same can be said of the concept of infinity: For the observer's purposes, infinity is only so conceptually. It would make little difference to the observer even if infinite things can exist beyond their conception; either perceived infinities keep computing, or they are halted.</Reference>. There is a certain complex ambiguity related to concepts which seems context-dependant.
       </Section>
       <Section head="III. Ambiguity: Conceptual Superpositions">
         The possibility of perceived ambiguity demands a solution, in some ways this problem seems the most critical to me. In part because of its closeness to concepts like modelling, (conflicted) types, states of flux, symmetries and superpositions. If one tries to observe some phenomenon which continuously changes its state; a dynamic system, through time a non-trivial superposition arises.
 
         <CodeBlock code="SuperPosition: AB... = A | B | ..."/>
 
-        Generalizing these ideas and using the term superposition for this, seems quite intuitive. Quite nicely following from this when one tries to disambiguate (; when one tries to collapse the superposition), one gets a representation which seems more actionable, but is necessarily a simplification <Footnote is="footnote"  index={referenceCounter()}>This is fairly analogous to mapping a complex visual superposition to a single (numeric & low-cardinality) symbol. Doing so is useful, but hides the fact that such visual mapping is faulty. Another more concrete example of this is asking the question: 'What is the best X?', Any definite answer to such a prompt is a simplification and is not 'perfectly' representative of the underlying system.</Footnote>.
+        Generalizing these ideas and using the term superposition for this, seems quite intuitive. Quite nicely following from this when one tries to disambiguate (; when one tries to collapse the superposition), one gets a representation which seems more actionable, but is necessarily a simplification <Reference is="footnote" index={referenceCounter()}>This is fairly analogous to mapping a complex visual superposition to a single (numeric & low-cardinality) symbol. Doing so is useful, but hides the fact that such visual mapping is faulty. Another more concrete example of this is asking the question: 'What is the best X?', Any definite answer to such a prompt is a simplification and is not 'perfectly' representative of the underlying system.</Reference>.
 
         <BR/>
 
@@ -133,22 +124,16 @@ const OnIntelligibility = () => {
 
         <CodeBlock code="A = A | Uncertainty"/>
 
-        Note that, like unknowable extremes, there's a difference between perceived uncertainty and 'actual (unknowable) uncertainty' <Footnote is="footnote"  index={referenceCounter()}>Usually when people refer to uncertainty, they mean perceived uncertainty of a system. I reframe uncertainty as inherent and the perception of it more separately. As an example: <Reference is="reference" 
-          index={referenceCounter()}
-          title="On the measure of intelligence"
-          author="Chollet, François"
-          journal="arXiv preprint arXiv:1911.01547"
-          year="2019"
-          link="https://arxiv.org/abs/1911.01547"
+        Note that, like unknowable extremes, there's a difference between perceived uncertainty and 'actual (unknowable) uncertainty' <Reference is="footnote"  index={referenceCounter()}>Usually when people refer to uncertainty, they mean perceived uncertainty of a system. I reframe uncertainty as inherent and the perception of it more separately. As an example: <Reference index={referenceCounter()} reference={{ ...REFERENCES.ON_THE_MEASURE_OF_INTELLIGENCE.reference}}
           inline
-        /></Footnote>.
+        /></Reference>.
 
         <BR/>
 
         Unfortunately, having such inherent properties, since they are self-referential, leads to infinite regression. And doesn't help with decidability; or practicality. How then, does one approach infinities like uncertainty?
       </Section>
       <Section head="V. Collapsing Infinities with Extremes">
-        A useful extreme to point out here is 'trust'. If verification of uncertainty results into uncertainty, then trust is the point at which we simply cut off the infinite regression and say: "Let's just trust this output". Important to note here is that this 'trusting' can be as non-trivial as the thing it's being ascribed to. It can be temporary, it can have random 'patrol checks', one can later realize this 'trust' was incorrectly placed, but importantly, it cannot be perfect; it can only be useful <Footnote is="footnote"  index={referenceCounter()}>'Useful' in an incredibly bare sense, a shorthand for "this just seems to work", or even worse: "it doesn't fail completely which I otherwise would've been aware of".</Footnote>.
+        A useful extreme to point out here is 'trust'. If verification of uncertainty results into uncertainty, then trust is the point at which we simply cut off the infinite regression and say: "Let's just trust this output". Important to note here is that this 'trusting' can be as non-trivial as the thing it's being ascribed to. It can be temporary, it can have random 'patrol checks', one can later realize this 'trust' was incorrectly placed, but importantly, it cannot be perfect; it can only be useful <Reference is="footnote" index={referenceCounter()}>'Useful' in an incredibly bare sense, a shorthand for "this just seems to work", or even worse: "it doesn't fail completely which I otherwise would've been aware of".</Reference>.
 
         <BR/>
 
@@ -156,7 +141,7 @@ const OnIntelligibility = () => {
 
         <BR/>
 
-        This example seems incredibly relevant: If we take a neutral position on information processing, we'd say that there is no such thing as noise. When we invoke the concept of noise, we invoke a bias to filter for a specific kind of information we deem relevant. When later deemed that process was 'incorrect' (concluded using similar systems), we could call it ignorant, naive or any number of other things <Footnote is="footnote"  index={referenceCounter()}>Without making a distinction between the differences of 'ignorance' and 'naivety', for the purposes of my argument they are the same.</Footnote>. But what we are doing when filtering out noise is removing information: "There might have been a reason for that noise and it's perhaps worth exploring."
+        This example seems incredibly relevant: If we take a neutral position on information processing, we'd say that there is no such thing as noise. When we invoke the concept of noise, we invoke a bias to filter for a specific kind of information we deem relevant. When later deemed that process was 'incorrect' (concluded using similar systems), we could call it ignorant, naive or any number of other things <Reference is="footnote" index={referenceCounter()}>Without making a distinction between the differences of 'ignorance' and 'naivety', for the purposes of my argument they are the same.</Reference>. But what we are doing when filtering out noise is removing information: "There might have been a reason for that noise and it's perhaps worth exploring."
 
         <BR/>
 
@@ -181,7 +166,7 @@ const OnIntelligibility = () => {
 
         <BR/>
 
-        These implementations are operating in the world of functional equivalence, compilers and notably as a practical first milestone an attempt at the <Reference is="reference" title="Hutter Prize" author="Hutter, Marcus" index={referenceCounter()} link="https://en.wikipedia.org/wiki/Hutter_Prize" inline />. These seem like obvious successors to clear first. I'm hoping to share my progress on this in the coming year of 2023.
+        These implementations are operating in the world of functional equivalence, compilers and notably as a practical first milestone an attempt at the <Reference is="footnote" index={referenceCounter()} reference={{ ...REFERENCES.HUTTER_PRIZE.reference}} inline />. These seem like obvious successors to clear first. I'm hoping to share my progress on this in the coming year of 2023.
 
         <BR/>
 

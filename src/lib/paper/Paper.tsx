@@ -1,42 +1,29 @@
-import React, {Fragment, ReactNode} from 'react';
+import React from 'react';
 import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
-import {TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
-import {Children, Renderable} from "../typescript/React";
+import {Children, value} from "../typescript/React";
 import Browser from "./views/Browser";
-import {useLocation} from "react-router-dom";
+import {useLocation, useSearchParams} from "react-router-dom";
+import {ReferenceCounter, ReferenceProps} from "./layout/Reference";
 
-export type PaperProps = {
-  title: Renderable<string>,
-  subtitle?: Renderable<string>,
-  date: string,
-
+export type PaperProps = ReferenceProps & {
   pdf: PdfProps,
   exclude_footnotes?: boolean
-  view: PView
 
-  organizations?: [TOrganization]
-  authors?: [TProfile]
+  Reference: (props: {}) => JSX.Element,
 
-  external: {
-    discord?: { serverId: string, channelId?: string, link: () => string },
-  }
+  references?: ReferenceCounter
 } & Children;
 
-export enum PView {
-  Browser,
-  DereferencedHtml,
-
-  Pdf,
-}
-
 export const PaperView = (paper: PaperProps) => {
-  const { view } = paper;
+  const [params] = useSearchParams();
 
-  if (view === PView.Browser)
-    return <Browser paper={paper} />;
+  const generate = params.get('generate');
 
-  return <ExportablePaper {...paper} />
+  if (generate === 'pdf')
+    return <ExportablePaper {...paper} />
+
+  return <Browser paper={paper} />;
 };
 
 const Paper = (props: PaperProps) => {
@@ -49,7 +36,7 @@ const Paper = (props: PaperProps) => {
     jpeg: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.jpeg`,
     pdf: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.pdf`,
   };
-  const description = subtitle?.value;
+  const description = value(subtitle);
 
   // Google Scholar: https://scholar.google.com.au/intl/en/scholar/inclusion.html#indexing
 
@@ -57,7 +44,7 @@ const Paper = (props: PaperProps) => {
   const OpenGraph = () => (
     <Helmet>
       <meta property="og:type" content="article" />
-      <meta property="og:title" content={title.value} />
+      <meta property="og:title" content={value(title)} />
       <meta property="og:url" content={url.base} />
       <meta property="og:description" content={description} />
 
@@ -98,7 +85,7 @@ const Paper = (props: PaperProps) => {
         }],
         "dateModified": date,
         "datePublished:": date,
-        "headline": title.value,
+        "headline": value(title),
         "image": url.jpeg,
         // "articleBody": "",
         // "articleSection": "", // Technology, ..
@@ -140,7 +127,7 @@ const Paper = (props: PaperProps) => {
         },{
           "@type": "ListItem",
           "position": 2,
-          "name": title.value
+          "name": value(title)
         }]
 
         // TODO  https://developers.google.com/search/docs/appearance/structured-data/dataset
@@ -157,7 +144,7 @@ const Paper = (props: PaperProps) => {
   const Twitter = () => (<Helmet>
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:creator" content="@_FadiShawki" />
-    <meta property="twitter:title" content={title.value} />
+    <meta property="twitter:title" content={value(title)} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={url.jpeg} />
   </Helmet>);
@@ -170,8 +157,8 @@ const Paper = (props: PaperProps) => {
     <meta name="citation_public_url" content={url.base} />
     <meta name="citation_pdf_url" content={url.pdf} />
 
-    <meta name="citation_title" content={title.value}/>
-    {/*<meta name="citation_doi" content={title.value}/>*/}
+    <meta name="citation_title" content={value(title)}/>
+    {/*<meta name="citation_doi" content={value(title)}/>*/}
 
     {(authors || []).map(author => (<meta name="citation_author" content={author.formal_citation_name} />))}
     {(authors || []).map(author => (<meta name="citation_author_email" content={author.email} />))}
@@ -185,7 +172,7 @@ const Paper = (props: PaperProps) => {
 
   // https://en.wikipedia.org/wiki/Dublin_Core
   const DublinCore = () => (<Helmet>
-    <meta name="dc.title" content={title.value}/>
+    <meta name="dc.title" content={value(title)}/>
     <meta name="dc.publisher" content="OrbitMines"/>
     <meta name="dc.date" content={date} />
     {/*<meta name="dc.identifier" content="" />*/}
@@ -195,7 +182,7 @@ const Paper = (props: PaperProps) => {
 
   // https://en.wikipedia.org/wiki/Publishing_Requirements_for_Industry_Standard_Metadata
   const Prism = () => (<Helmet>
-    <meta name="prism.title" content={title.value}/>
+    <meta name="prism.title" content={value(title)}/>
     <meta name="prism.publicationDate" content={date} />
     {/*<meta name="prism.doi" content="" />*/}
     <meta name="prism.url" content={url.base} />
@@ -203,7 +190,7 @@ const Paper = (props: PaperProps) => {
 
   // http://wiki.eprints.org/w/Metadata
   const Eprints = () => (<Helmet>
-    <meta name="eprints.title" content={title.value}/>
+    <meta name="eprints.title" content={value(title)}/>
     <meta name="eprints.date" content={date} />
     <meta name="eprints.official_url" content={url.base} />
 
@@ -212,7 +199,7 @@ const Paper = (props: PaperProps) => {
 
   return <div>
     <Helmet>
-      <title lang="en">{title.value}</title>
+      <title lang="en">{value(title)}</title>
       <meta name="description" content={description} />
     </Helmet>
     <OpenGraph/>

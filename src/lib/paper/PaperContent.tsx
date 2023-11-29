@@ -1,5 +1,5 @@
 import {Col, Grid, Row} from "../layout/flexbox";
-import {Divider, H1, H3, H4, Intent} from "@blueprintjs/core";
+import {Divider, H1, H3, H4, Intent, Tag} from "@blueprintjs/core";
 import React from "react";
 import {Children, Rendered} from "../typescript/React";
 import {getFootnotes} from "./layout/Reference";
@@ -10,6 +10,7 @@ import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
 import Section from "./layout/Section";
 import {PaperProps} from "./Paper";
 import {PROFILES} from "../../profiles/profiles";
+import _ from "lodash";
 
 export const Title = ({children}: Children) => {
   return <Row center="xs">
@@ -30,46 +31,44 @@ export const HorizontalLine = () => <>
   <Row/>
 </>
 
-const PaperContent = ({title, subtitle, date, organizations, authors, children, external, exclude_footnotes }: PaperProps) => {
-  const footnotes = getFootnotes(children);
+const PaperContent = (props: PaperProps) => {
+  const {title, subtitle, date, draft, organizations, authors, children, external, exclude_footnotes } = props;
 
   const {discord} = external || {};
 
   const external_links = !!discord;
 
-  return <Grid fluid className="py-35 px-50 child-pb-15" style={{
-    // border: 'solid rgba(143, 153, 168, 0.15) 2px',
-    //     height={1754} width={1240}
-    maxWidth: '1240px',
-    fontSize: '1.1rem'
-  }}>
+  const Content = <>
     <Title><Rendered renderable={title}/></Title>
     {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
 
     <Row center="xs" middle="xs" className="child-px-20">
       {organizations ? <>
-        {organizations.map((organization) => (<Col>
+        {organizations.map((organization) => (<Col md={4} xs={12}>
           <Organization {...organization} />
         </Col>))}
 
-        <Col className="hidden-xs hidden-sm hidden-md">
+        <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
           <Divider style={{height: '80px'}}/>
         </Col>
       </> : <></>}
 
-      {(authors || []).map((author) => (<Col>
+      {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
     </Row>
 
     <Row center="xs" middle="xs" className="child-px-10">
-      <Col>
-        <H3>{new Date(date).toLocaleString("en-GB", {
+      {date ? <Col>
+        <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
           day: "numeric",
           month: "long",
           year: "numeric"})}</H3>
-      </Col>
+      </Col> : <></>}
+      {draft ? <Col>
+        <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
+      </Col> : <></>}
     </Row>
 
     {external_links ? <Row center="xs" middle="xs" className="child-px-10">
@@ -83,6 +82,17 @@ const PaperContent = ({title, subtitle, date, organizations, authors, children, 
     {children}
 
     <HorizontalLine/>
+  </>
+
+  const footnotes = getFootnotes(Content);
+
+  return <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
+    // border: 'solid rgba(143, 153, 168, 0.15) 2px',
+    //     height={1754} width={1240}
+    maxWidth: '1240px',
+    fontSize: '1.1rem'
+  }}>
+    {Content}
 
     {!exclude_footnotes ? <Section head="Footnotes & References">
       {footnotes}

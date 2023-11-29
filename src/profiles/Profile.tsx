@@ -1,14 +1,10 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import {useLocation} from "react-router-dom";
-import {PaperProps, PaperView, PView} from "../lib/paper/Paper";
+import {PaperProps, PaperView} from "../lib/paper/Paper";
 import JetBrainsMono from "../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {TProfile} from "../lib/organizations/ORGANIZATIONS";
-import {Children, renderable} from "../lib/typescript/React";
-import {Col, Row} from "../lib/layout/flexbox";
-import JetBrainsMonoRegular from "../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import JetBrainsMonoSemiBold from "../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-SemiBold.ttf";
-import JetBrainsMonoBold from "../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
+import {Children, value} from "../lib/typescript/React";
 
 import BlueprintIcons16 from '@blueprintjs/icons/lib/css/blueprint-icons-16.ttf';
 import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf';
@@ -16,11 +12,10 @@ import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf'
 const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const location = useLocation();
 
-  const paper: PaperProps = {
-    title: profile.title ?? renderable(profile.name),
+  const paper: Omit<PaperProps, 'children'> = {
+    title: profile.title ?? profile.name,
     subtitle: profile.subtitle,
     date: profile.date,
-    view: PView.Browser,
     pdf: {
       fonts: [
         JetBrainsMono,
@@ -50,8 +45,11 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
         ORGANIZATIONS.instagram.key,
         ORGANIZATIONS.youtube.key,
         ORGANIZATIONS.twitch.key,
+        ORGANIZATIONS.mastodon.key,
+        ORGANIZATIONS.facebook.key,
       ].includes(profile.organization.key))
     }],
+    Reference: (props: {}) => (<></>),
     exclude_footnotes: true
   }
 
@@ -61,7 +59,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
     base: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}`,
     pdf: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.pdf`,
   };
-  const description = subtitle?.value;
+  const description = value(subtitle);
 
   // Google Scholar: https://scholar.google.com.au/intl/en/scholar/inclusion.html#indexing
 
@@ -69,7 +67,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const OpenGraph = () => (
     <Helmet>
       <meta property="og:type" content="profile" />
-      <meta property="og:title" content={title.value} />
+      <meta property="og:title" content={value(title)} />
       <meta property="og:url" content={url.base} />
       <meta property="og:description" content={description} />
 
@@ -132,14 +130,14 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const Twitter = () => (<Helmet>
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:creator" content="@_FadiShawki" />
-    <meta property="twitter:title" content={title.value} />
+    <meta property="twitter:title" content={value(title)} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={profile.picture} />
   </Helmet>);
 
   return <div>
     <Helmet>
-      <title lang="en">{title.value}</title>
+      <title lang="en">{value(title)}</title>
       <meta name="description" content={description} />
     </Helmet>
     <OpenGraph/>

@@ -2,8 +2,8 @@ import { Children } from "../../typescript/React";
 import {Row} from "../../layout/flexbox";
 import {Divider, H3} from "@blueprintjs/core";
 import React from "react";
-import {SectionProps} from "../pdf/paper/PaperView";
 import Paragraph from "./Paragraph";
+import {SectionProps} from "./Section";
 
 const Arc = ({ head, children }: SectionProps & Children) => {
 

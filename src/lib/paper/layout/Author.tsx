@@ -27,8 +27,9 @@ const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>}) => {
               icon={<CustomIcon icon={profile.organization.key} size={20}/>}
               minimal
               interactive
+              multiline
             >
-              <Row middle="xs" className="px-5" style={{fontSize: '1.1rem'}}>
+              <Row middle="xs" className="px-2" style={{fontSize: '0.8rem'}}>
                 {profile.display}
               </Row>
             </Tag>

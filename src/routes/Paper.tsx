@@ -3,7 +3,7 @@ import OnIntelligibility from "./papers/2022.OnIntelligibility";
 import {useParams} from "react-router-dom";
 import Error from "./Error";
 
-const PAPERS: { [key: string]: Function } = {
+const PAPERS: { [key: string]: any } = {
     'on-intelligibility': OnIntelligibility
 }
 

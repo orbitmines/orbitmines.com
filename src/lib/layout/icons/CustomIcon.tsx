@@ -2,7 +2,7 @@ import React from 'react';
 import {Classes, Icon, IconSize} from "@blueprintjs/core";
 import classNames from 'classnames';
 import {uniqueId} from "lodash";
-import ORGANIZATIONS, {SVG} from "../../organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {SVG, TOrganization} from "../../organizations/ORGANIZATIONS";
 import {SVGIconProps} from "@blueprintjs/icons";
 import {IntentProps, Props} from "@blueprintjs/core/src/common";
 
@@ -39,11 +39,13 @@ const CustomIcon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "
   } = props;
 
   const RenderedIcon = () => {
-    if (!ORGANIZATIONS[icon]) {
+    const organization = (ORGANIZATIONS as any)[icon] as TOrganization | undefined;
+    const svg = organization?.assets?.icon;
+
+    if (!organization || !svg) {
       // @ts-ignore
       return <Icon {...props} />
     }
-    const svg = ORGANIZATIONS[icon].assets.icon;
     // render path elements, or nothing if icon name is unknown.
     const paths = renderSvgPaths(svg);
 
