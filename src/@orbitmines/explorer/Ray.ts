@@ -80,6 +80,74 @@ export class Ray implements AsyncIterable<Ray> {
     this.js = js ?? (() => Option.None);
   }
 
+  continues_with = (continuation: () => Option<Ray>) => {
+    if (this.vertex().is_none())
+      return;
+
+    // if (this.is_initial())
+    //   throw 'Not Implemented: Ambiguity in equivalencing to an Initial.' // This one's a little ambigious what to do; probably better to leave it out of the initial setup.
+
+    if (!this.is_terminal()) {
+      this.vertex().force().terminal().force().continues_with(continuation);
+      return;
+    }
+
+    /**
+     * [--|  ]
+     *
+     * So this could be
+     * [--|  ]    [--|  ]    [--|  ]
+     * [  |--]    [--|--]    [--|  ]
+     *    ^This being the thing deemed as an actual continuation.
+     */
+    this.vertex().force().terminal = (): Option<Ray> => {
+      const reference = continuation();
+      if (reference.is_none())
+        return Option.None;
+
+      if (reference.force().is_initial()) {
+        /**
+         * [--|  ]
+         * [  |--]
+         */
+        return reference.force().vertex();
+      }
+
+      if (reference.force().is_terminal()) {
+        /**
+         * [--|  ]
+         * [--|  ]
+         */
+
+        // No continuation, but just equivalence them anyway. (ambiguity here, could also not do that)
+        return reference.force().vertex();
+      }
+
+      if (reference.force().is_reference()) {
+        /**
+         * [--|  ]
+         * [  |  ]
+         */
+        const next = reference.force().vertex().force();
+        next.initial = () => this.vertex();
+
+        return next.as_reference().as_option();
+      }
+
+      /**
+       * [--|  ]
+       * [--|--]
+       *
+       * Again some ambiguity here, just for now ignore
+       */
+      throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Vertex.'
+    };
+  }
+
+  // push_back = (vertex: Option<Ray>): Option<Ray> => {
+  //
+  // }
+
   /**
    * Returns a reference to a Ray to the first vertex found in the directionality which this Ray defines (as a reference).
    * Note: Returns [  |--] in case of arbitrarily many possible first values - simply call `.traverse` on the reference to traverse possibilities.
@@ -537,7 +605,7 @@ export type JSObj<Target = Option<Ray>> = {
   // // ..
   // Number: (number: number) => typeof number,
   // Function: (func: ParameterlessFunction) => typeof func,
-  // Object: (object: object) => typeof object,
+  Object: (object: object) => typeof object,
   Any: (any: any) => typeof any,
   None: typeof none;
 }
@@ -552,7 +620,7 @@ export const JS = enumeration<JSObj, JSImpl>({
   Boolean: (boolean: boolean) => boolean,
   // Number: (number: number) => number,
   // Function: (func: ParameterlessFunction) => func,
-  // Object: (object: object) => object,
+  Object: (object: object) => object,
   Any: (any: any) => any,
   None: none,
 }, self => class {
@@ -562,7 +630,7 @@ export const JS = enumeration<JSObj, JSImpl>({
     Boolean: (boolean: boolean): Option<Ray> => from_boolean(boolean),
     // Number: (number: number): Option<Ray> => from_number(number),
     // Function: (func: ParameterlessFunction): Option<Ray> => from_function(func),
-    // Object: (object: object): Option<Ray> => from_object(object),
+    Object: (object: object): Option<Ray> => from_object(object),
     Any: (any: any): Option<Ray> => Option.Some(new Ray({ js: () => Option.Some(any) })),
     None: (): Option<Ray> => Option.None
   })
@@ -584,8 +652,8 @@ export const from_any = (any: any): JS => {
     return JS.Iterable(any);
   // if (is_function(any))
   //   return JS.Function(any);
-  // if (is_object(any))
-  //   return JS.Object(any);
+  if (is_object(any))
+    return JS.Object(any);
 
   return JS.Any(any);
 }
@@ -676,9 +744,9 @@ export const from_boolean = (boolean: boolean): Option<Ray> => {
 // export const from_function = (func: ParameterlessFunction): Option<Ray> => {
 //
 // }
-// export const from_object = (object: object): Option<Ray> => {
-//
-// }
+export const from_object = (object: object): Option<Ray> => {
+
+}
 //
 // export const from_async_generator = <T>(generator: AsyncGenerator<T>): Option<Ray> => {}
 // export const from_generator = <T>(generator: Generator<T>): Option<Ray> => {}

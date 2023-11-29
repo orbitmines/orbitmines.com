@@ -114,12 +114,26 @@ const Test = () => {
 class InterfaceObject {
 
 
+  // position = (): Vector3 => {}
+  //
+  // pixels = (): Vector3 => {}
+
   /**
    * As long as the setup cannot itself render objects and have access to that level of the stack, it will merely be an inaccessible translation layer between the two.
    */
   render = () => {
-
+    // Translates to ThreeJS (
   }
+
+  /**
+   * - ThreeJS layer
+   * - 3D layer
+   * - camera position
+   *
+   * Generalize these
+   * - Any layer
+   * - Any "camera"/observer, different rays.
+   */
 
 
 }
@@ -299,12 +313,12 @@ const OrbitMinesExplorer = () => {
   const [selection, setSelection] = useState<Option<Ray>>(ray.force().next());
 
   // hotkeys.set(
-  //   { combo: "arrowright",  global: true, label: "Refresh data", onKeyDown: () => {
+  //   { combo: "arrowright", global: true, label: "Refresh data", onKeyDown: () => {
   //       selected.next().match({
   //         Some: (ray) => setSelected(ray),
   //         None: () => console.log('no more')
   //       })
-  //     }}, { combo: "arrowleft",  global: true, label: "Refresh data", onKeyDown: () => {
+  //     }}, { combo: "arrowleft", global: true, label: "Refresh data", onKeyDown: () => {
   //       selected.previous().match({
   //         Some: (ray) => setSelected(ray),
   //         None: () => console.log('no more')
