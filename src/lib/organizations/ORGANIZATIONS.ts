@@ -9,6 +9,9 @@ import criticalthinking_icon from "././critical-thinking/https___s3.us-west-1.am
 import hoc_icon from "././hoc/92327702.png";
 import mlst_icon from "././mlst/channels4_profile.jpg";
 import ngi_icon from "././ngi/Logo-NGI_Icon-circle-NGI-rgb.png";
+import santa_fe_icon from "././santa-fe-institute/0_OgRM7UU-SsqK46La.png";
+import papers_we_love_icon from "././papers-we-love/6187757.png";
+import wolfram_institute_icon from "././wolfram-institute/channels4_profile.jpg";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
 
@@ -160,6 +163,27 @@ const ORGANIZATIONS = {
     name: "Critical Thinking Podcast",
     assets: {
       icon_png: criticalthinking_icon,
+    }
+  },
+  santa_fe_institute: <TOrganization>{
+    key: 'santa_fe_institute',
+    name: "Santa Fe Institute",
+    assets: {
+      icon_png: santa_fe_icon,
+    }
+  },
+  papers_we_love: <TOrganization>{
+    key: 'papers_we_love',
+    name: "Papers we love",
+    assets: {
+      icon_png: papers_we_love_icon,
+    }
+  },
+  wolfram_institute: <TOrganization>{
+    key: 'wolfram_institute',
+    name: "Wolfram Institute",
+    assets: {
+      icon_png: wolfram_institute_icon,
     }
   },
   github: <TOrganization>{
