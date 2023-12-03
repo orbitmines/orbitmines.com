@@ -4,6 +4,223 @@ import ORGANIZATIONS, {Content, ContentCategory, Viewed} from '../../lib/organiz
 
 const REFERENCES = {
 
+  STRING_DIAGRAM_REWRITE_THEORY_I: <Content>{
+    reference: {
+      title: 'String Diagram Rewrite Theory I: Rewriting with Frobenius Structure',
+      authors: [{name: 'Filippo Bonchi'},{name: 'Fabio Gadducci'},{name: 'Aleks Kissinger'},{name: 'Pawel Sobocinski'},{name: 'Fabio Zanasi'},],
+      year: '2023',
+      link: "https://arxiv.org/abs/2012.01847"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  REPTAR: <Content>{
+    reference: {
+      title: 'Reptar',
+      authors: [{name: 'Tavis Ormandy'}],
+      year: '2023',
+      link: "https://lock.cmpxchg8b.com/reptar.html"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  AGGREGATION_AND_TILING_AS_MULTICOMPUTATIONAL_PROCESSES: <Content>{
+    reference: {
+      title: 'Aggregation and Tiling as Multicomputational Processes',
+      authors: [{name: 'Stephen Wolfram'}],
+      year: '2023',
+      link: "https://writings.stephenwolfram.com/2023/11/aggregation-and-tiling-as-multicomputational-processes/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  PHYSICS_AND_ECONOMICS_SEMF_COMMUNITY_LIVESTREAM: <Content>{
+    reference: {
+      title: 'Physics & Economics | SEMF Community Livestream',
+      authors: [],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=enR68VVQPtY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  WOLFRAM_INSTITUTES_INFRAGEOMETRY_LIVESTREAMS: <Content>{
+    reference: {
+      title: 'Wolfram Institute\'s Infrageometry Project Livestreams',
+      authors: [{name: 'Jonathan Gorard'},{name: 'Carlos Zapata-Carratalá'},{name: 'Nikolay Murzin'},{name: 'Utkarsh Bajaj'},],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+      year: '2023',
+      link: "https://www.youtube.com/playlist?list=PLtbvsohNkWeVO_PMxoZfDEiiY8tuYOjgf"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  HYPERMATRIX_WORKSHOP: <Content>{
+    reference: {
+      title: 'HyperMatrix Workshop',
+      authors: [{name: 'Edinah Koffi Gnang'},{name: 'Richard Kerner'},{name: 'Luke Oeding'},{name: 'Joshua Grochow'},{name: 'Harm Derksen'},{name: 'Tali Beynon'},{name: 'Michel Rausch'},{name: 'Carlos Zapata-Carratalá'},],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=E8s9Daqy_2A"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  WOLFRAM_PHYSICS_PROJECT_RELATIONS_TO_CATEGORY_THEORY: <Content>{
+    reference: {
+      title: 'Wolfram Physics Project: Relations to Category Theory',
+      authors: [{name: 'Stephen Wolfram'}, {name: 'Fabrizio Remano Genovese'}, {name: 'Matteo Capucci'}, {name: 'Jonathan Gorard'}, {name: 'Tali Beynon'}, ],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2020',
+      link: "https://www.youtube.com/watch?v=0LAtNXo9rbE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  ALL_CONCEPTS_ARE_CAT_SHARP: <Content>{
+    reference: {
+      title: 'All Concepts are Cat#',
+      authors: [{name: 'David Spivak'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=_1-rueSZMGc"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  HIGHER_CATEGORY_THEORY_IN_CAT_SHARP: <Content>{
+    reference: {
+      title: '(Higher) category theory in Cat^#',
+      authors: [{name: 'Brandon Shapiro'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=AKyHHykroWg"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  ABSTRACTION_ENGINEERING_WITH_THE_PVS: <Content>{
+    reference: {
+      title: 'Abstraction Engineering with the Prototype Verification System (PVS)',
+      authors: [{name: 'Nat Shankar'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=MHf07noO9KA"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  CAUSAL_VS_ACAUSAL_MODELING_BY_EXAMPLE: <Content>{
+    reference: {
+      title: 'Causal vs Acausal Modeling By Example: Why Julia ModelingToolkit.jl Scales',
+      authors: [{name: 'Chris Rackauckas'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=ZYkojUozeC4"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  RP_159: <Content>{
+    reference: {
+      title: 'Entropic Gravity, Black Holes, and the Holographic Principle | RP#159',
+      authors: [{name: 'Erik Verlinde'}, {name: 'Robinson Erhardt'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=TgQg1Oy37r0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  RP_118: <Content>{
+    reference: {
+      title: 'Quantum Physics, the Multiverse, and Time Travel | RP #118',
+      authors: [{name: 'Slavoj Žižek'}, {name: 'Sean Carroll'}, {name: 'Robinson Erhardt'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=735mYcl3Lrg"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  MINDSCAPE_256: <Content>{
+    reference: {
+      title: 'Mindscape 256 | Kelly & Zach Weinersmith on Building Cities on the Moon and Mars',
+      authors: [{name: 'Kelly & Zach Weinersmith'}, {name: 'Sean Carroll'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.preposterous_universe],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=dJqr_cCi9tM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  THIS_WEEKS_FINDS_15: <Content>{
+    reference: {
+      title: 'This Week\'s Finds 15: combinatorics, groupoid cardinality and species',
+      authors: [{name: 'John Baez'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=yLtgs7Fz8aw"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  THIS_WEEKS_FINDS_14: <Content>{
+    reference: {
+      title: 'This Week\'s Finds 14: the 3-strand braid group',
+      authors: [{name: 'John Baez'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=MnS4hduP5xg"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  SCALES_AND_SCIENCE_FICTION_WITH_BIOLOGIST_MICHAEL_LEVIN: <Content>{
+    reference: {
+      title: 'Scales and Science Fiction with Biologist Michael Levin',
+      authors: [{name: 'Michael Levi'}, {name: 'Andrea Hiott'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=n15xS4YcyG0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  DELIMITED_CONTINUATIONS_FOR_EVERYONE: <Content>{
+    reference: {
+      title: 'Delimited Continuations for Everyone',
+      authors: [{name: 'Kenichi Asai'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.papers_we_love],
+      year: '2017',
+      link: "https://www.youtube.com/watch?v=QNM-njddhIw"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  HOMOTOPY_TYPE_THEORY_101: <Content>{
+    reference: {
+      title: 'Homotopy Type Theory 101',
+      authors: [{name: 'Carlo Angiuli'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=VMqF06fDljU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  FROM_CATEGORICAL_SYSTEMS_THEORY_TO_CATEGORICAL_CYBERNETICS: <Content>{
+    reference: {
+      title: 'From categorical systems theory to categorical cybernetics',
+      authors: [{name: 'Matteo Capucci'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2022',
+      link: "https://www.youtube.com/watch?v=wtgfyjFIHBQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  THE_SEARCH_FOR_THE_PERFECT_DOOR: <Content>{
+    reference: {
+      title: 'The Search for the Perfect Door',
+      authors: [{name: 'Deviant Ollam'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2016',
+      link: "https://www.youtube.com/watch?v=4YYvBLAF4T8"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
+  EVOLVING_BRAINS_SOLID_LIQUID_AND_SYNTHETIC: <Content>{
+    reference: {
+      title: 'Evolving Brains: Solid, Liquid and Synthetic',
+      authors: [{name: 'Ricard Solé'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.santa_fe_institute],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=EIb5-LJbcIM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, November"
+  },
+
   CRITICAL_THINKING_1: <Content>{
     reference: {
       title: 'Critical Thinking - Episode 1: Introductions, Bug Bounty Reports, and BB Tips',
@@ -1782,6 +1999,29 @@ export const BOOKS: ContentCategory = {
 export const ARTICLES_2023: ContentCategory = {
   name: '2023',
   items: [
+    REFERENCES.STRING_DIAGRAM_REWRITE_THEORY_I,
+    REFERENCES.REPTAR,
+    REFERENCES.AGGREGATION_AND_TILING_AS_MULTICOMPUTATIONAL_PROCESSES,
+    REFERENCES.PHYSICS_AND_ECONOMICS_SEMF_COMMUNITY_LIVESTREAM,
+    REFERENCES.WOLFRAM_INSTITUTES_INFRAGEOMETRY_LIVESTREAMS,
+    REFERENCES.HYPERMATRIX_WORKSHOP,
+    REFERENCES.WOLFRAM_PHYSICS_PROJECT_RELATIONS_TO_CATEGORY_THEORY,
+    REFERENCES.ALL_CONCEPTS_ARE_CAT_SHARP,
+    REFERENCES.HIGHER_CATEGORY_THEORY_IN_CAT_SHARP,
+    REFERENCES.ABSTRACTION_ENGINEERING_WITH_THE_PVS,
+    REFERENCES.CAUSAL_VS_ACAUSAL_MODELING_BY_EXAMPLE,
+    REFERENCES.RP_159,
+    REFERENCES.RP_118,
+    REFERENCES.MINDSCAPE_256,
+    REFERENCES.THIS_WEEKS_FINDS_15,
+    REFERENCES.THIS_WEEKS_FINDS_14,
+    REFERENCES.SCALES_AND_SCIENCE_FICTION_WITH_BIOLOGIST_MICHAEL_LEVIN,
+    REFERENCES.DELIMITED_CONTINUATIONS_FOR_EVERYONE,
+    REFERENCES.HOMOTOPY_TYPE_THEORY_101,
+    REFERENCES.FROM_CATEGORICAL_SYSTEMS_THEORY_TO_CATEGORICAL_CYBERNETICS,
+    REFERENCES.THE_SEARCH_FOR_THE_PERFECT_DOOR,
+    REFERENCES.EVOLVING_BRAINS_SOLID_LIQUID_AND_SYNTHETIC,
+
     REFERENCES.ZENBLEED,
     REFERENCES.DOWNFALL,
     REFERENCES.ASSEMBLY_THEORY_EXPLAINS_AND_QUANTIFIES_SELECTION_AND_EVOLUTION,
