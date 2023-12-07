@@ -746,6 +746,7 @@ export const from_boolean = (boolean: boolean): Option<Ray> => {
 // }
 export const from_object = (object: object): Option<Ray> => {
 
+  return Option.None;
 }
 //
 // export const from_async_generator = <T>(generator: AsyncGenerator<T>): Option<Ray> => {}
