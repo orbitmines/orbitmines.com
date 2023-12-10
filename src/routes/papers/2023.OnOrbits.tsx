@@ -23,9 +23,14 @@ const OnOrbits = () => {
   const OnIntelligibilityReference = <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} />;
 
   const paper: Omit<PaperProps, 'children'> = {
-    title: renderable<string>("On Orbits:"),
+    /**
+     * Orbits: Equivalence at Continuations
+     * Equivalence: Variance made Invariant (Ignored Variance)
+     * Inconsistencies: Variance
+     */
+    title: renderable<string>("On Orbits, Equivalence and Inconsistencies"),
     subtitle: renderable<string>("", (value: any) => <>
-      Originally intended as a more technical continuation of earlier thoughts on intelligibility {OnIntelligibilityReference}.
+      A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility {OnIntelligibilityReference}.
     </>),
     draft: true,
     date: "2023-12-31",
@@ -58,7 +63,20 @@ const OnOrbits = () => {
     </Row>
 
     <Arc head="Arc: Theoretics">
-      <Section head="Violating Assumptions" sub="Unknown inconsistencies and enforcing global coherence">
+      <Section head="On Inconsistencies" sub={<span>
+       Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Variance
+      </span>}>
+      </Section>
+      <Section head="On Equivalence" sub={<span>
+       Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Invariance
+      </span>}>
+      </Section>
+      <Section head="On Orbits" sub="Infinities, ...">
+      </Section>
+
+      <Section head="Coarse-graining" sub="Unintended/Accidental/Irrelevant Variance">
+      </Section>
+      <Section head="Violating Assumptions" sub="(Variance) Unknown inconsistencies and enforcing global coherence">
 
       </Section>
       <Section head="Compression">
@@ -75,6 +93,10 @@ const OnOrbits = () => {
     </Arc>
 
     <Arc head="Wrapping up">
+      <Section head="A yearly excerpt of thoughts">
+        In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found a proper language to do so.
+
+      </Section>
       <Section head="On self-publishing and referencing" sub="Edited personal journeys/histories/... and literary exposure">
         I suspect that this sort of self-(reporting/publishing), necessitates the highlighting of its possible adversarial/game-theoretic properties. With myself and my archives possibly being forgetful or deceitful players, this certainly makes for an interesting dynamic. Consider this quick paragraph as an acknowledgement that I am aware of that, and that I think my attempts aim for accuracy - whether that's actually successful or not -.
 
