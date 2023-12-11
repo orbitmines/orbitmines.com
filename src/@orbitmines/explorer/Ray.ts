@@ -102,6 +102,74 @@ export class Ray
   next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
   previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
 
+  // continues_with = (continuation: () => Option<Ray>) => {
+  //   if (this.vertex().is_none())
+  //     return;
+  //
+  //   // if (this.is_initial())
+  //   //   throw 'Not Implemented: Ambiguity in equivalencing to an Initial.' // This one's a little ambigious what to do; probably better to leave it out of the initial setup.
+  //
+  //   if (!this.is_terminal()) {
+  //     this.vertex().force().terminal().force().continues_with(continuation);
+  //     return;
+  //   }
+  //
+  //   /**
+  //    * [--|  ]
+  //    *
+  //    * So this could be
+  //    * [--|  ]    [--|  ]    [--|  ]
+  //    * [  |--]    [--|--]    [--|  ]
+  //    *    ^This being the thing deemed as an actual continuation.
+  //    */
+  //   this.vertex().force().terminal = (): Option<Ray> => {
+  //     const reference = continuation();
+  //     if (reference.is_none())
+  //       return Option.None;
+  //
+  //     if (reference.force().is_initial()) {
+  //       /**
+  //        * [--|  ]
+  //        * [  |--]
+  //        */
+  //       return reference.force().vertex();
+  //     }
+  //
+  //     if (reference.force().is_terminal()) {
+  //       /**
+  //        * [--|  ]
+  //        * [--|  ]
+  //        */
+  //
+  //       // No continuation, but just equivalence them anyway. (ambiguity here, could also not do that)
+  //       return reference.force().vertex();
+  //     }
+  //
+  //     if (reference.force().is_reference()) {
+  //       /**
+  //        * [--|  ]
+  //        * [  |  ]
+  //        */
+  //       const next = reference.force().vertex().force();
+  //       next.initial = () => this.vertex();
+  //
+  //       return next.as_reference().as_option();
+  //     }
+  //
+  //     /**
+  //      * [--|  ]
+  //      * [--|--]
+  //      *
+  //      * Again some ambiguity here, just for now ignore
+  //      */
+  //     throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Vertex.'
+  //   };
+  // }
+
+  // push_back = (vertex: Option<Ray>): Option<Ray> => {
+  //
+  // }
+
   *traverse(options: {
     steps?: number
 
@@ -280,7 +348,8 @@ export class Ray
       new: () => Directionality,
       push_back: (directionality: Directionality, ray: Option<Vertex>) => void,
       // push_front: (directionality: Directionality, ray: Option<Vertex>) => void,
-      current?: Directionality
+      currentInterpretation?: Directionality,
+      currentDescription?: Ray
     },
     get: (vertex: Option<Ray>) => Option<Vertex>,
     convert: (ray: Option<Ray>) => Option<Vertex>,
@@ -319,22 +388,19 @@ export class Ray
     const vertex = ray.vertex().force();
     const exists = options.get(vertex.as_reference().as_option()).is_some();
 
-    options.directionality.current ??= options.directionality.new();
-    options.directionality.push_back(options.directionality.current, options.convert(vertex.as_reference().as_option()));
-
     if (!exists) {
       const reference = vertex.vertex();
       if (reference.is_some() && reference.force().vertex().is_some()) {
-        const dereferenced = reference.force().vertex().force();
-
-        const vertexDirectionality = options.directionality.new();
-        options.directionality.push_back(vertexDirectionality, options.convert(vertex.as_reference().as_option()));
-
-        dereferenced.as_reference().compile({
-          ...options,
-          directionality: {...options.directionality, current: vertexDirectionality},
-          direction: {reverse: false},
-        });
+        // const dereferenced = reference.force().vertex().force();
+        //
+        // const vertexDirectionality = options.directionality.new();
+        // options.directionality.push_back(vertexDirectionality, options.convert(vertex.as_reference().as_option()));
+        //
+        // dereferenced.as_reference().compile({
+        //   ...options,
+        //   directionality: {...options.directionality, current: vertexDirectionality},
+        //   direction: {reverse: false},
+        // });
         // dereferenced.as_reference().compile({
         //   ...options,
         //   directionality: {...options.directionality, current: vertexDirectionality},
@@ -373,6 +439,38 @@ export class Ray
     if (!this.is_initial()) {
       // [--|--]
 
+      const initial = new Ray();
+      const vertex2 = new Ray({ initial: () => new Ray().as_option(), terminal: () => new Ray().as_option()});
+      const terminal = new Ray();
+
+      if (options.directionality.currentDescription) {
+        // options.directionality.push_back(options.directionality.currentDescription, options.convert(initial.as_reference().as_option()));
+      }
+
+      // const descriptionEdge = options.directionality.new();
+      // const edge = new Ray();
+      // options.directionality.push_back(descriptionEdge, options.convert(edge.as_reference().as_option()))
+      // options.directionality.push_back(descriptionEdge, options.convert((options.directionality.currentDescription ?? initial).as_reference().as_option()));
+
+      const description = options.directionality.new();
+      options.directionality.push_back(description, options.convert((options.directionality.currentDescription ?? initial).as_reference().as_option()));
+      // options.directionality.push_back(description, options.convert(vertex.as_reference().as_option()));
+      options.directionality.push_back(description, options.convert(vertex2.as_reference().as_option()));
+      options.directionality.push_back(description, options.convert(terminal.as_reference().as_option()));
+
+      options.directionality.currentDescription = terminal;
+
+      options.directionality.currentInterpretation ??= options.directionality.new();
+      options.directionality.push_back(options.directionality.currentInterpretation, options.convert(vertex.as_reference().as_option()));
+
+
+      const description2 = options.directionality.new();
+      // options.directionality.push_back(description2, options.convert(new Ray().as_reference().as_option()));
+      options.directionality.push_back(description2, options.convert(vertex2.as_reference().as_option()));
+      // options.directionality.push_back(description2, options.convert(new Ray().as_reference().as_option()));
+      options.directionality.push_back(description2, options.convert(vertex.as_reference().as_option()));
+      // options.directionality.push_back(description2, options.convert(new Ray().as_reference().as_option()));
+
       // TODO: Should yield at which step it was found (or only yield through groups ..., depending on one's traversal strategy)
       // console.log(this.type(), 'yielded vertex')
 
@@ -380,6 +478,14 @@ export class Ray
       //   // Found one in this directionality, remove a step for further traversals.
       //   options.steps -= 1;
       // }
+      if (!exists) {
+        const reference = vertex.vertex();
+        if (reference.is_some() && reference.force().vertex().is_some()) {
+          const dereferenced = reference.force().vertex().force();
+
+          reference.force().compile({...options, directionality: { ...options.directionality, currentDescription: undefined, currentInterpretation: description2 }});
+        }
+      }
     } else {
       // [  |--]
 
@@ -622,19 +728,28 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
 
     if (is_terminal) {
       // We're done, this is the end of the iterator
-      return Option.Some(new Ray({
+
+      // vertex: could have something at the vertex which defines the "end of the iterator" - but we don't here.
+      const terminal = new Ray({
         initial: () => initial
-        // vertex: could have something at the vertex which defines the "end of the iterator" - but we don't here.
-      }));
+      });
+      // initial.force().continues_with(() => terminal.as_reference().as_option());
+
+      // if (initial.is_some())
+      //   initial.force().terminal = () => terminal; // TODO REPEAT FROM BELOW
+
+      return terminal.as_option();
     }
 
     const current: Option<Ray> = Option.Some(new Ray({
       js: () => Option.Some(iterator_result.value),
+      // initial: () => new Ray().as_option(),
       initial: () => initial,
       vertex: () => from_any(iterator_result.value).as_ray(),
       terminal: () => next(current)
     }));
 
+    // initial.force().continues_with(() => current.force().as_reference().as_option());
     if (initial.is_some())
       initial.force().terminal = () => current;
 
@@ -642,7 +757,7 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
   }
 
   const ray_iterator = new Ray({ js: () => Option.Some(iterator)});
-  ray_iterator.terminal = () => next(Option.Some(ray_iterator));
+  ray_iterator.terminal = () => next(ray_iterator.as_option());
 
   // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
   return ray_iterator.as_reference().as_option();
