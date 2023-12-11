@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {from_iterable, JS, Ray, RayType} from "./Ray";
+import {from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
 import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {useFrame, useThree, Vector3} from "@react-three/fiber";
@@ -185,7 +185,7 @@ const OrbitMinesExplorer = () => {
   // link.setAttribute('href', gl.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
   // link.click()
 
-  const ray = JS.Iterable([14, 15, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, 16]).as_ray();
+  const ray = JS.Iterable([14, 15, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, 16, false]).as_ray();
   // const ray = JS.Iterable([false]).as_ray();
   // const ray = JS.Iterable([1]).as_ray();
 

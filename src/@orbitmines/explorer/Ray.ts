@@ -102,69 +102,83 @@ export class Ray
   next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
   previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
 
-  // continues_with = (continuation: () => Option<Ray>) => {
-  //   if (this.vertex().is_none())
-  //     return;
-  //
-  //   // if (this.is_initial())
-  //   //   throw 'Not Implemented: Ambiguity in equivalencing to an Initial.' // This one's a little ambigious what to do; probably better to leave it out of the initial setup.
-  //
-  //   if (!this.is_terminal()) {
-  //     this.vertex().force().terminal().force().continues_with(continuation);
-  //     return;
-  //   }
-  //
-  //   /**
-  //    * [--|  ]
-  //    *
-  //    * So this could be
-  //    * [--|  ]    [--|  ]    [--|  ]
-  //    * [  |--]    [--|--]    [--|  ]
-  //    *    ^This being the thing deemed as an actual continuation.
-  //    */
-  //   this.vertex().force().terminal = (): Option<Ray> => {
-  //     const reference = continuation();
-  //     if (reference.is_none())
-  //       return Option.None;
-  //
-  //     if (reference.force().is_initial()) {
-  //       /**
-  //        * [--|  ]
-  //        * [  |--]
-  //        */
-  //       return reference.force().vertex();
-  //     }
-  //
-  //     if (reference.force().is_terminal()) {
-  //       /**
-  //        * [--|  ]
-  //        * [--|  ]
-  //        */
-  //
-  //       // No continuation, but just equivalence them anyway. (ambiguity here, could also not do that)
-  //       return reference.force().vertex();
-  //     }
-  //
-  //     if (reference.force().is_reference()) {
-  //       /**
-  //        * [--|  ]
-  //        * [  |  ]
-  //        */
-  //       const next = reference.force().vertex().force();
-  //       next.initial = () => this.vertex();
-  //
-  //       return next.as_reference().as_option();
-  //     }
-  //
-  //     /**
-  //      * [--|  ]
-  //      * [--|--]
-  //      *
-  //      * Again some ambiguity here, just for now ignore
-  //      */
-  //     throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Vertex.'
-  //   };
-  // }
+  continues_with = (continuation_reference: () => Option<Ray>): Option<Ray> => {
+    if (this.self().is_none())
+      return Option.None;
+
+    // if (this.is_initial())
+    //   throw 'Not Implemented: Ambiguity in equivalencing to an Initial.' // This one's a little ambigious what to do; probably better to leave it out of the initial setup.
+
+    const self = this.self().force();
+
+    if (!this.is_terminal()) {
+      self.terminal().force().as_reference().continues_with(continuation_reference);
+      return Option.None;
+    }
+
+    /**
+     * [--|  ]
+     *
+     * So this could be
+     * [--|  ]    [--|  ]    [--|  ]
+     * [  |--]    [--|--]    [--|  ]
+     *    ^This being the thing deemed as an actual continuation.
+     */
+    const possibly_continues_with: Option<Ray> = (() => {
+      const possible_reference = continuation_reference();
+      if (possible_reference.is_none())
+        return Option.None;
+
+      const reference = possible_reference.force();
+
+      if (reference.is_initial()) {
+        /**
+         * [--|  ]
+         * [  |--]
+         */
+        return reference.vertex();
+      }
+
+      if (reference.is_terminal()) {
+        /**
+         * [--|  ]
+         * [--|  ]
+         */
+
+        // No continuation, but just equivalence them anyway. (ambiguity here, could also not do that)
+        // return reference.vertex();
+        throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Terminal.'
+      }
+
+      if (reference.is_reference()) {
+        /**
+         * [--|  ]
+         * [  |  ]
+         */
+        // const next = reference.vertex().force();
+        // next.initial = () => this.self();
+        //
+        // return next.as_reference().as_option();
+        throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Reference.'
+      }
+
+      /**
+       * [--|  ]
+       * [--|--]
+       *
+       * Again some ambiguity here, just for now ignore
+       */
+      throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Vertex.'
+    })();
+
+    if (possibly_continues_with.is_none())
+      return Option.None;
+
+    self.terminal = () => possibly_continues_with;
+    // two-way
+
+    return possibly_continues_with;
+  }
 
   // push_back = (vertex: Option<Ray>): Option<Ray> => {
   //
@@ -244,7 +258,7 @@ export class Ray
         if (reference.is_initial())
           yield *reference.traverse(options);
       }
-      
+
       return;
     }
 
@@ -300,6 +314,7 @@ export class Ray
   as_reference = (): Ray => new Ray({ vertex: () => Option.Some(this) }) // A ray whose vertex references this Ray (ignorantly).
 
   as_option = (): Option<Ray> => Option.Some(this);
+  as_arbitrary = (): Arbitrary<Ray> => () => this.as_option();
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
@@ -438,6 +453,8 @@ export class Ray
 
     if (!this.is_initial()) {
       // [--|--]
+
+      // description
 
       const initial = new Ray();
       const vertex2 = new Ray({ initial: () => new Ray().as_option(), terminal: () => new Ray().as_option()});
@@ -767,7 +784,24 @@ export const from_generator = <T = any>(generator: Generator<T>): Option<Ray> =>
   return from_iterable(generator);
 }
 
-export const empty = (): Option<Ray> => Option.Some(new Ray({ }));
+export const empty = (): Ray => new Ray({ });
+export const empty_vertex = (): Ray => {
+  const initial = empty();
+  const terminal = empty();
+  const vertex = new Ray({ initial: initial.as_arbitrary(), terminal: terminal.as_arbitrary() });
+
+  initial.terminal = vertex.as_arbitrary();
+  terminal.initial = vertex.as_arbitrary();
+
+  return vertex;
+}
+
+export const js = (value: any): Ray => {
+  const vertex = empty_vertex();
+  vertex.js = () => Option.Some(value);
+
+  return vertex;
+}
 
 // export const length = (of: number, value: any = undefined): Option<Ray> => {
 //   return from_iterable(Array(of).fill(value));
@@ -781,10 +815,14 @@ export const from_boolean = (boolean: boolean): Option<Ray> => {
 
   // from_iterable([false, true])
 
-  const _false = new Ray({ initial: empty, js: () => Option.Some(false) });
-  const _true  = new Ray({ terminal: empty, js: () => Option.Some(true) });
-  _false.terminal = () => _true.as_option();
-  _true.initial = () => _false.as_option();
+  const _false = js(false);
+  const _true = js(true);
+  // const two = _false.continues_with(_true);
+
+  _false.as_reference()
+    .continues_with(() =>
+      _true.initial().force().as_reference().as_option()
+    );
 
   return (boolean ? _true : _false).as_reference().as_option();
 }
