@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {from_iterable, JS, Ray, RayType} from "./Ray";
-import Visualization from "./Visualization";
+import {VisualizationCanvas} from "./Visualization";
 import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {useFrame, useThree, Vector3} from "@react-three/fiber";
 import {useDrag} from "@use-gesture/react";
@@ -373,7 +373,7 @@ const OrbitMinesExplorer = () => {
   const scale = 1.5;
 
   return (
-    <Visualization style={{height: '100vh'}}>
+    <VisualizationCanvas style={{height: '100vh'}}>
       <Co/>
 
       <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white" />
@@ -382,7 +382,7 @@ const OrbitMinesExplorer = () => {
         <Test2 ray={ray.force()} position={[0, 0, 0]} />
       </group>
 
-    </Visualization>
+    </VisualizationCanvas>
   );
 };
 

@@ -4,12 +4,19 @@ import {ACESFilmicToneMapping, SRGBColorSpace} from "three";
 import WEBGL from "three/examples/jsm/capabilities/WebGL";
 import {Children} from "../../lib/typescript/React";
 import isWebGLAvailable = WEBGL.isWebGLAvailable;
+import {Ray} from "./Ray";
 
 export const NoWebGL = () => {
   return <div>No WebGL</div>
 }
 
-const Visualization = ({ children, ...props }: React.HTMLAttributes<HTMLElement> & Children) => {
+const Visualization = ({ ray }: { ray: Ray }) => {
+    return <VisualizationCanvas>
+
+    </VisualizationCanvas>
+}
+
+export const VisualizationCanvas = ({ children, ...props }: React.HTMLAttributes<HTMLElement> & Children) => {
   // https://threejs.org/docs/#manual/en/introduction/WebGL-compatibility-check
   if (!isWebGLAvailable())
     return <NoWebGL/>;

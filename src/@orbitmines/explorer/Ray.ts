@@ -5,33 +5,33 @@ import {compile} from "sass";
 
 export type ParameterlessFunction<T = any> = () => T;
 
-/**
- * Defines some flexibility to ignore a lot of the JavaScript specifics (we're not trying to model JavaScript here).
- */
-export type ArbitraryObj<T> = {
-  Ref: (ref: Option<T>) => typeof ref,
-  Fn: (fn: ParameterlessFunction<Option<T>>) => typeof fn,
-};
-export type ArbitraryImpl<T> = {
-  none_or: <Result>(or: (obj: T) => Result) => Arbitrary<Result>,
-  resolve: () => Option<T>,
-}
-export type Arbitrary<T> = MemberType<TaggedUnion<ArbitraryObj<T>, ArbitraryImpl<T>>>;
-
-export const Arbitrary = enumeration<ArbitraryObj<any>, ArbitraryImpl<any>>({
-  Ref: (ref: Option<any>) => ref,
-  Fn: (fn: ParameterlessFunction<Option<any>>) => fn,
-}, self => class {
-  resolve = (): any => self.match({
-    Ref: (ref) => ref,
-    Fn: (fn) => fn(),
-  })
-
-  none_or = (or: (obj: any) => any): Arbitrary<any> => self.resolve().match({
-    Some: (obj) => or(obj),
-    None: () => Arbitrary.Ref(Option.None)
-  })
-});
+// /**
+//  * Defines some flexibility to ignore a lot of the JavaScript specifics (we're not trying to model JavaScript here).
+//  */
+// export type ArbitraryObj<T> = {
+//   Ref: (ref: Option<T>) => typeof ref,
+//   Fn: (fn: ParameterlessFunction<Option<T>>) => typeof fn,
+// };
+// export type ArbitraryImpl<T> = {
+//   none_or: <Result>(or: (obj: T) => Result) => Arbitrary<Result>,
+//   resolve: () => Option<T>,
+// }
+// export type Arbitrary<T> = MemberType<TaggedUnion<ArbitraryObj<T>, ArbitraryImpl<T>>>;
+//
+// export const Arbitrary = enumeration<ArbitraryObj<any>, ArbitraryImpl<any>>({
+//   Ref: (ref: Option<any>) => ref,
+//   Fn: (fn: ParameterlessFunction<Option<any>>) => fn,
+// }, self => class {
+//   resolve = (): any => self.match({
+//     Ref: (ref) => ref,
+//     Fn: (fn) => fn(),
+//   })
+//
+//   none_or = (or: (obj: any) => any): Arbitrary<any> => self.resolve().match({
+//     Some: (obj) => or(obj),
+//     None: () => Arbitrary.Ref(Option.None)
+//   })
+// });
 
 /**
  * Replace "Ray" for "AbstractDirectionality" in case "Ray" doesn't suit you.
@@ -50,6 +50,17 @@ export enum RayType {
   VERTEX = '--|--',
 }
 
+export type Arbitrary<T> = () => Option<T>;
+
+/**
+ * https://en.wikipedia.org/wiki/Homoiconicity
+ */
+export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
+  self: Arbitrary<T>
+  is_reference: () => boolean
+  as_reference: () => T
+}
+
 /**
  * JavaScript wrapper for a mutable value. It is important to realize that this is merely some simple JavaScript abstraction, and anything is assumed to be inherently mutable.
  *
@@ -59,7 +70,13 @@ export enum RayType {
  * - Homotopy equivalence merely as some direction/reversibility constraint on some direction, ignoring additional structure (or incorporating it into the equiv) at the vertices. (Could be loosened where certain vertex-equivalences are also part of the homotopy)
  * - Induced ignorance/equivalence along arbitrary rays.
  */
-export class Ray implements AsyncIterable<Ray> {
+export class Ray
+  implements
+      PossiblyHomoiconic<Ray>,
+
+      AsyncIterable<Ray>,
+      Iterable<Ray>
+{
 
   js: () => Option<any>;
 
@@ -67,6 +84,8 @@ export class Ray implements AsyncIterable<Ray> {
   initial: () => Option<Ray>;
   vertex: () => Option<Ray>;
   terminal: () => Option<Ray>;
+
+  self = (): Option<Ray> => this.vertex();
 
   constructor({
     initial,
@@ -80,80 +99,7 @@ export class Ray implements AsyncIterable<Ray> {
     this.js = js ?? (() => Option.None);
   }
 
-  continues_with = (continuation: () => Option<Ray>) => {
-    if (this.vertex().is_none())
-      return;
-
-    // if (this.is_initial())
-    //   throw 'Not Implemented: Ambiguity in equivalencing to an Initial.' // This one's a little ambigious what to do; probably better to leave it out of the initial setup.
-
-    if (!this.is_terminal()) {
-      this.vertex().force().terminal().force().continues_with(continuation);
-      return;
-    }
-
-    /**
-     * [--|  ]
-     *
-     * So this could be
-     * [--|  ]    [--|  ]    [--|  ]
-     * [  |--]    [--|--]    [--|  ]
-     *    ^This being the thing deemed as an actual continuation.
-     */
-    this.vertex().force().terminal = (): Option<Ray> => {
-      const reference = continuation();
-      if (reference.is_none())
-        return Option.None;
-
-      if (reference.force().is_initial()) {
-        /**
-         * [--|  ]
-         * [  |--]
-         */
-        return reference.force().vertex();
-      }
-
-      if (reference.force().is_terminal()) {
-        /**
-         * [--|  ]
-         * [--|  ]
-         */
-
-        // No continuation, but just equivalence them anyway. (ambiguity here, could also not do that)
-        return reference.force().vertex();
-      }
-
-      if (reference.force().is_reference()) {
-        /**
-         * [--|  ]
-         * [  |  ]
-         */
-        const next = reference.force().vertex().force();
-        next.initial = () => this.vertex();
-
-        return next.as_reference().as_option();
-      }
-
-      /**
-       * [--|  ]
-       * [--|--]
-       *
-       * Again some ambiguity here, just for now ignore
-       */
-      throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Vertex.'
-    };
-  }
-
-  // push_back = (vertex: Option<Ray>): Option<Ray> => {
-  //
-  // }
-
-  /**
-   * Returns a reference to a Ray to the first vertex found in the directionality which this Ray defines (as a reference).
-   * Note: Returns [  |--] in case of arbitrarily many possible first values - simply call `.traverse` on the reference to traverse possibilities.
-   */
   next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
-
   previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
 
   *traverse(options: {
@@ -269,29 +215,23 @@ export class Ray implements AsyncIterable<Ray> {
     }
   }
 
-  async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
-
-  is_initial = (): boolean => this.vertex().match({
-    Some: (vertex) => vertex.initial().is_none(),
+  is_initial = (): boolean => this.self().match({
+    Some: (self) => self.initial().is_none(),
     None: () => false
   });
   is_vertex = (): boolean => !this.is_initial() && !this.is_terminal();
-  is_terminal = (): boolean => this.vertex().match({
-    Some: (vertex) => vertex.terminal().is_none(),
+  is_terminal = (): boolean => this.self().match({
+    Some: (self) => self.terminal().is_none(),
     None: () => false
   });
 
   is_reference = (): boolean => this.is_initial() && this.is_terminal();
 
-  is_empty = (): boolean => this.vertex().is_none();
+  is_empty = (): boolean => this.self().is_none();
 
   as_reference = (): Ray => new Ray({ vertex: () => Option.Some(this) }) // A ray whose vertex references this Ray (ignorantly).
 
   as_option = (): Option<Ray> => Option.Some(this);
-
-  // as_iterable
-  // as_async_generator
-  // ...
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
@@ -306,12 +246,6 @@ export class Ray implements AsyncIterable<Ray> {
     return RayType.VERTEX;
   }
 
-  as_array = (): any[] => [...this.traverse()];
-
-  toString = (): string => {
-    return this.as_array().toString()
-  }
-
   map = (direction?: MapOptions): Option<Ray> => {
     if (direction === undefined)
       return this.as_option();
@@ -321,10 +255,10 @@ export class Ray implements AsyncIterable<Ray> {
     if (is_function(direction))
       return direction(this.as_option());
 
-    if (this.vertex().is_none())
+    if (this.self().is_none())
       return Option.None;
 
-    const originalDirection = this.vertex().force();
+    const originalDirection = this.self().force();
 
     if (is_object(direction)) {
       const { reverse } = direction;
@@ -503,12 +437,10 @@ export class Ray implements AsyncIterable<Ray> {
 
 
 
-
-
-    // if (this.vertex().is_none())
+    // if (this.self().is_none())
     //   return Option.None;
 
-    // const vertex = this.vertex().force();
+    // const vertex = this.self().force();
     //
     // const ray = options.directionality.new();
     //
@@ -531,6 +463,28 @@ export class Ray implements AsyncIterable<Ray> {
     //
     // return options.convert(this.as_option());
   }
+
+
+  /**
+   * JavaScript, possible compilations
+   */
+    // JS.AsyncGenerator
+    async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
+    // JS.Generator
+    *[Symbol.iterator](): Generator<Ray> { yield *this.traverse(); }
+    // JS.AsyncGenerator
+    as_async_generator = (): AsyncGenerator<Ray> => this[Symbol.asyncIterator]();
+    // JS.AsyncIterator
+    as_async_iterator = (): AsyncIterator<Ray> => this.as_async_generator();
+    // JS.Iterator
+    as_generator = (): Generator<Ray> => this[Symbol.iterator]();
+    // JS.AsyncIterator
+    as_iterator = (): Iterator<Ray> => this.as_generator();
+    // JS.Array
+    as_array = (): any[] => [...this];
+    // JS.String
+    toString = (): string => this.as_array().toString();
+    as_string = () => this.toString();
 }
 
 export type MapOptions = ((direction: Option<Ray>) => Option<Ray>)
