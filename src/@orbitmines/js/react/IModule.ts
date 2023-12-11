@@ -1,6 +1,6 @@
-import IEventListener, {AllDOMAttributes} from "../IEventListener";
+import IEventListener, {AllDOMAttributes} from "./IEventListener";
 import {useContext} from "react";
-import {ModulesContext} from "../../../App";
+import {ModulesContext} from "./Modules";
 
 export const useModule = (identifier: string): IModule => {
   const modules = useContext(ModulesContext);

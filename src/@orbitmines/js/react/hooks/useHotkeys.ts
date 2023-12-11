@@ -1,4 +1,4 @@
-import IModule, {useModule} from "./IModule";
+import IModule, {useModule} from "../IModule";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import {useHotkeys as useBlueprintJSHotkeys} from '@blueprintjs/core';
 import {useState} from "react";

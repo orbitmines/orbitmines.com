@@ -16,7 +16,12 @@ const Visualization = ({ ray }: { ray: Ray }) => {
     </VisualizationCanvas>
 }
 
-export const VisualizationCanvas = ({ children, ...props }: React.HTMLAttributes<HTMLElement> & Children) => {
+export const VisualizationCanvas = (
+  {
+    children,
+    ...props
+  }: React.HTMLAttributes<HTMLElement> & Children
+) => {
   // https://threejs.org/docs/#manual/en/introduction/WebGL-compatibility-check
   if (!isWebGLAvailable())
     return <NoWebGL/>;
