@@ -2,15 +2,18 @@ import React, {useEffect, useRef, useState} from 'react';
 import {empty, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
 import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
-import {GroupProps, useFrame, useThree, Vector3} from "@react-three/fiber";
+import {GroupProps, useFrame, useThree,} from "@react-three/fiber";
 import {useDrag} from "@use-gesture/react";
 import {useSpring} from '@react-spring/three'
 import {useHotkeys} from "../js/react/hooks/useHotkeys";
 import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import {WebGLRenderTarget} from "three";
+import {Box3, Vector3, WebGLRenderTarget} from "three";
 import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import IEventListener, {mergeListeners} from "../js/react/IEventListener";
+import {toJpeg, toPng} from "html-to-image";
+import {value} from "../../lib/typescript/React";
+import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 
 const InterfaceObject = ({
   scale = 1,
@@ -18,7 +21,12 @@ const InterfaceObject = ({
 }: any) => {
   const ref = useRef<any>();
 
-  const [selection, setSelection] = useState<Option<Ray>>(empty().as_reference().as_option());
+  const [selection, setSelection] = useState<Option<Ray>>(
+    empty().as_reference().as_option()
+  );
+  const [controls, setControls] = useState<Option<Ray>>(
+    empty().as_reference().as_option()
+  );
 
   const {
     gl: renderer,
@@ -29,14 +37,80 @@ const InterfaceObject = ({
 
   // One could abstractly realize hotkeys, or any kind of control system as a possible temporal directionality.
   const hotkeys = useHotkeys();
-  // hotkeys.set({
-  //   combo: "shift + d", global: true, label: "", onKeyDown: () => {
-  //     const link = document.createElement('a')
-  //     link.setAttribute('download', `canvas.png`)
-  //     link.setAttribute('href', renderer.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
-  //     link.click()
-  //   }
-  // });
+  hotkeys.set({
+    combo: "shift + d", global: true, label: "", onKeyDown: () => {
+      // const link = document.createElement('a')
+      // link.setAttribute('download', `canvas.png`)
+      // link.setAttribute('href', renderer.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
+      // link.click()
+
+      // const box = new Box3().setFromObject(ref.current);
+      // const size = box.getSize(new Vector3());
+      //
+      // const width = Math.ceil(size.x);
+      // const height = Math.ceil(size.y);
+      // const width = 500;
+      // const height = 500;
+      //
+      // const renderTarget = new WebGLRenderTarget(renderer.domElement.width, renderer.domElement.height);
+      //
+      // renderer.setRenderTarget(renderTarget);
+      // renderer.render(scene, camera);
+      // renderer.setRenderTarget(null);
+      //
+      // const canvasX = (0 + 1) / 2 * renderTarget.width;
+      // const canvasY = (-0 + 1) / 2 * renderTarget.height;
+      // // const canvasX = Math.ceil(box.min.x + 1) - Math.ceil(renderTarget.width / 2);
+      // // const canvasY = Math.ceil(-box.min.y + 1) - Math.ceil(renderTarget.height / 2);
+      //
+      // const pixels = new Uint8Array(width * height * 4);
+      // renderer.readRenderTargetPixels(renderTarget, canvasX, canvasY, width, height, pixels);
+      //
+      // const imageData = new ImageData(new Uint8ClampedArray(pixels), width, height);
+      //
+      // const image = document.createElement('canvas');
+      // image.width = width;
+      // image.height = height;
+      // image.getContext('2d')!.putImageData(imageData, 0, 0);
+      //
+      // const link = document.createElement('a')
+      // link.download = 'test.png';
+      // link.href = image.toDataURL('test.png');
+      // link.click();
+
+
+      toPng(renderer.domElement, {
+        cacheBust: true,
+        backgroundColor: '#1C2127'
+      })
+        .then((dataUrl) => {
+          const link = document.createElement('a')
+          link.download = `${new Date().toISOString()}.png`
+          link.href = dataUrl
+          link.click()
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
+  });
+
+  const addHotkey = (hotkey: HotkeyConfig) => {
+
+  }
+
+  useEffect(() => {
+
+    const A = new Ray({ js: () => Option.Some("A") });
+
+    console.log(
+      A.as_reference()
+        .continues_with(new Ray({ js: () => Option.Some("B") }).as_reference())
+        .continues_with(new Ray({ js: () => Option.Some("C") }).as_reference())
+        .debug([])
+    )
+
+  }, [])
 
   // hotkeys.set(
   //   { combo: "arrowright", global: true, label: "Refresh data", onKeyDown: () => {
@@ -98,6 +172,42 @@ const InterfaceObject = ({
     //   const pos = position([0, 0, 0]);
   });
 
+  // In principle, this should be anything, this is just for the initial setup
+  const RenderedRay = (
+    { position, reference }: { reference: Option<Ray> } & any
+  ) => {
+    if (reference.is_none())
+      return <></>
+
+    const circle = { radius: 3,  color: "orange", segments: 30, }
+    const Vertex = ({ }: any) =>
+      <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]} />
+
+    const torus = {
+      // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
+      radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
+    }
+    const Continuation = ({ }: any) =>
+      <Torus
+        args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+        material-color={torus.color}
+        position={position}
+      />
+
+    // const line = { width: 2,  length: 1,  color: "orange", }
+    // const Line = ({ start, end }: any) =>
+    //   <QuadraticBezierLine
+    //     start={line.initial.position}
+    //     // mid={line.vertex.position}
+    //     end={line.terminal.position}
+    //     color={line.color}
+    //     lineWidth={line.width * scale}
+    //   />
+
+
+
+    return <Vertex/>
+  }
 
   return (
     <group
@@ -108,11 +218,12 @@ const InterfaceObject = ({
 
       {...props}
     >
-      <group position={[0, 15, 0]}>
-        <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={20.0}>
-          O
-        </Text>
-      </group>
+      <RenderedRay reference={selection} />
+      {/*<group position={[0, 15, 0]}>*/}
+      {/*  <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={20.0}>*/}
+      {/*    O*/}
+      {/*  </Text>*/}
+      {/*</group>*/}
     </group>
   )
 }
@@ -290,8 +401,8 @@ const OrbitMinesExplorer = (
     listeners?: IEventListener<any, any>[],
   }
 ) => {
-  const ray = JS.Iterable([14, 15, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, 16, false]).as_ray();
-  console.log(ray.force().to_wolfram_language())
+  // const ray = JS.Iterable([14, 15, [[6, 7, 8, 9, 10, 11], 100], 1, 2, 3, 4, 5, 16, false]).as_ray();
+  // console.log(ray.force().to_wolfram_language())
 
   // visualization_config
   // hotkey/interface_config
@@ -308,7 +419,7 @@ const OrbitMinesExplorer = (
     >
 
       <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white" />
-      <InterfaceObject/>
+      <InterfaceObject scale={1.5}/>
 
     </VisualizationCanvas>
   );

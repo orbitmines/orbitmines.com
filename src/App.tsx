@@ -11,6 +11,7 @@ import OrbitMinesExplorer from "./@orbitmines/explorer/OrbitMinesExplorer";
 import Legacy from "./lib/layout/experimental-designs/Legacy";
 import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 import Modules from "./@orbitmines/js/react/Modules";
+import Icons from "./lib/layout/experimental-designs/Icons";
 
 export const Router = () => {
 
@@ -26,6 +27,7 @@ export const Router = () => {
     <Route path="experimental">
       <Route path="legacy" element={<Legacy />} />
       <Route path="blueprintjs" element={<BlueprintJS />} />
+      <Route path="icons" element={<Icons />} />
     </Route>
   </Routes>
 }

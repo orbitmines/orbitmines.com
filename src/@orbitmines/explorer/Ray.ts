@@ -99,202 +99,49 @@ export class Ray
     this.js = js ?? (() => Option.None);
   }
 
-  next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
-  previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
+  continues_with = (continues_with: Ray): Ray => {
+    if (!this.as_reference().is_reference())
+      throw 'NotImplemented: Preventing implementation bug; continues_with not called on a reference';
+    if (!continues_with.as_reference().is_reference())
+      throw 'NotImplemented: Preventing implementation bug; continues_with not called with a reference';
 
-  continues_with = (continuation_reference: () => Option<Ray>): Option<Ray> => {
-    if (this.self().is_none())
-      return Option.None;
+    if (!continues_with.is_reference())
+      throw 'NotImplemented: Preventing implementation bug; continues_with not called as a reference';
 
-    // if (this.is_initial())
-    //   throw 'Not Implemented: Ambiguity in equivalencing to an Initial.' // This one's a little ambigious what to do; probably better to leave it out of the initial setup.
+    // TODO: For now just puts it at the vertex, could be done more intelligently
+    const next_vertex = new Ray({
+      initial: empty().as_arbitrary(),
+      vertex: () => continues_with.vertex(),
+      terminal: empty().as_arbitrary()
+    });
 
-    const self = this.self().force();
+    const vertex = this.self().force();
 
-    if (!this.is_terminal()) {
-      self.terminal().force().as_reference().continues_with(continuation_reference);
-      return Option.None;
+    if (vertex.is_empty()) {
+      console.log('first element')
+      this.vertex = next_vertex.as_arbitrary();
+      return this;
     }
 
-    /**
-     * [--|  ]
-     *
-     * So this could be
-     * [--|  ]    [--|  ]    [--|  ]
-     * [  |--]    [--|--]    [--|  ]
-     *    ^This being the thing deemed as an actual continuation.
-     */
-    const possibly_continues_with: Option<Ray> = (() => {
-      const possible_reference = continuation_reference();
-      if (possible_reference.is_none())
-        return Option.None;
+    if (!this.is_vertex())
+      throw 'NotImplemented: Preventing implementation bug; continues_with not called on a vertex';
 
-      const reference = possible_reference.force();
+    const terminal = vertex.terminal().force();
+    if (!terminal.is_empty())
+      throw 'NotImplemented: Preventing implementation bug; continues_with should be added to the vertex';
 
-      if (reference.is_initial()) {
-        /**
-         * [--|  ]
-         * [  |--]
-         */
-        return reference.vertex();
-      }
+    // [  |--]
+    const connection = new Ray({
+      vertex: this.as_arbitrary(),
+      terminal: next_vertex.as_arbitrary()
+    }).as_arbitrary();
 
-      if (reference.is_terminal()) {
-        /**
-         * [--|  ]
-         * [--|  ]
-         */
+    this.terminal = connection;
+    next_vertex.initial = connection;
 
-        // No continuation, but just equivalence them anyway. (ambiguity here, could also not do that)
-        // return reference.vertex();
-        throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Terminal.'
-      }
+    console.log('continues')
 
-      if (reference.is_reference()) {
-        /**
-         * [--|  ]
-         * [  |  ]
-         */
-        // const next = reference.vertex().force();
-        // next.initial = () => this.self();
-        //
-        // return next.as_reference().as_option();
-        throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Reference.'
-      }
-
-      /**
-       * [--|  ]
-       * [--|--]
-       *
-       * Again some ambiguity here, just for now ignore
-       */
-      throw 'Not Implemented: Ambiguity in equivalencing a Terminal and Vertex.'
-    })();
-
-    if (possibly_continues_with.is_none())
-      return Option.None;
-
-    self.terminal = () => possibly_continues_with;
-    // two-way
-
-    return possibly_continues_with;
-  }
-
-  // push_back = (vertex: Option<Ray>): Option<Ray> => {
-  //
-  // }
-
-  *traverse(options: {
-    steps?: number
-
-    // filter?: (ray: Ray) => boolean,
-    direction?: MapOptions,
-  } = {}): Generator<Ray> {
-    if (options.steps !== undefined && options.steps === 0) { // TODO: Could also base 'reverse' on a negative number of steps.
-      // TODO: Abstractly, one would sometimes yield the current vertex; in the sense of "doing nothing" being someway "the identity". - Important to consider how this 'doing nothing' is inconsistent - and this functionality should be expanded upon later.
-      // console.log('no step - no continuation');
-      return;
-    }
-
-    // TODO Does not by default check for equivalences in the from of "deduplication" - this means without checking this traversal will not halt in circular. - Though circular should also be allowed at some configurable clockcycle/interval - whether some native speed, or a slower one..
-
-    const mapped = this.map(options.direction);
-
-    if (mapped.is_none()) {
-      // console.log('Empty reference')
-      return;
-    }
-
-    const ray = mapped.force();
-
-    // Nothing to traverse.
-    if (ray.is_empty()) {
-      // console.log('Nothing to traverse')
-      return;
-    }
-
-    const vertex = ray.vertex().force();
-
-    /**
-     * [--|--]
-     * [--|  ]
-     * [  |--]
-     */
-
-    if (vertex.js().is_some()) {
-      // console.log('found js value:', vertex.js())
-    }
-
-    if (ray.is_terminal()) {
-      /**
-       * [--|  ]
-       *
-       * We're basically finding initial matches for our terminal ray at its vertex:
-       *
-       * [--|  ]
-       * Along the '|' -> Find others which match [  |--], wherever they are arbitrarily defined along that 'equivalence frame/ray'.
-       *
-       *
-       *  Up and down the terminal vertex (could be arbitrarily defined, scanning for continuations
-       *
-       *      |
-       *    --|--     (<- Some vertex on our terminal vertex which defines some reference/additional structure,
-       *      |           possibly some more continuations hidden in there) ; TODO: This one needs some better defining
-       *      |--     (<- A continuation we're looking for)
-       *    --|       (<- Our terminal vertex)
-       *      |
-       *      |--     (<- A continuation we're looking for)
-       *      |
-       */
-
-      // console.log(this.type(), 'Traversing continuations (both initial&terminal)')
-      for (let reference of vertex.traverse({...options, direction: { reverse: false }})) {
-        // [  |--]
-        if (reference.is_initial())
-          yield *reference.traverse(options);
-      }
-      for (let reference of vertex.traverse({...options, direction: { reverse: true } })) {
-        // [  |--]
-        if (reference.is_initial())
-          yield *reference.traverse(options);
-      }
-
-      return;
-    }
-
-    if (!this.is_initial()) {
-      // [--|--]
-
-      yield vertex.as_reference(); // TODO: Should yield at which step it was found (or only yield through groups ..., depending on one's traversal strategy)
-      // console.log(this.type(), 'yielded vertex')
-
-      if (options.steps !== undefined) {
-        // Found one in this directionality, remove a step for further traversals.
-        options.steps -= 1;
-      }
-    } else {
-      // [  |--]
-    }
-
-    const terminal = vertex.terminal(); // TODO, LAST TERMINAL MIGHT BE EMPTY OIN CURRENT SETUP
-
-    /**
-     * [--|--]
-     * [--|  ]
-     * [  |--] (- so this one would be negated/impossible if we're assuming consistency)
-     *
-     * We're moving to the terminal side, which from this perspective means the actual vertex we're interested in.
-     *
-     * Just loop from back up.
-     */
-    if (terminal.is_some()) {
-      const reference = terminal.force().as_reference();
-      // console.log(this.type(), '->', reference.type(), 'moving to terminal as vertex')
-
-      // We could conceptualize that whatever this ray is, is connected to the higher-level reference one. - Basically the path we're taking - assuming that our vertices are ignorant of our traversal.
-      // TODO: Could also do a while loop here, and just yield it.
-      yield* reference.traverse({...options});
-    }
+    return next_vertex.as_reference();
   }
 
   is_initial = (): boolean => this.self().match({
@@ -329,264 +176,7 @@ export class Ray
     return RayType.VERTEX;
   }
 
-  map = (direction?: MapOptions): Option<Ray> => {
-    if (direction === undefined)
-      return this.as_option();
-
-    // TODO: Any of these options could eventually be encoded at the vertices
-
-    if (is_function(direction))
-      return direction(this.as_option());
-
-    if (this.self().is_none())
-      return Option.None;
-
-    const originalDirection = this.self().force();
-
-    if (is_object(direction)) {
-      const { reverse } = direction;
-
-      if (reverse)
-        return new Ray({ initial: originalDirection.terminal, vertex: originalDirection.vertex, terminal: originalDirection.initial }).as_reference().as_option();
-    }
-
-    return this.as_option();
-  };
-
-  // TODO: Important to easily allow compilation for everything (also I suppose the 2D/3D explorative frames --..
-  // TODO: This is just dumb compilation for now, this should be much smarter - spotting infinities, parallel, much more that could be done here
-  compile = <
-    Vertex,
-    Directionality = Vertex, // Though abstractly we're using a construction where we don't differentiate between a Vertex and its Directionality, it's possible to do so, so allow for that construction.
-  >(options: {
-    directionality: {
-      new: () => Directionality,
-      push_back: (directionality: Directionality, ray: Option<Vertex>) => void,
-      // push_front: (directionality: Directionality, ray: Option<Vertex>) => void,
-      currentInterpretation?: Directionality,
-      currentDescription?: Ray
-    },
-    get: (vertex: Option<Ray>) => Option<Vertex>,
-    convert: (ray: Option<Ray>) => Option<Vertex>,
-    direction?: MapOptions,
-  }): void => {
-    // TODO: Traversal is always a compilation?? (where traversal only 'compiles' the vertices to other vertices)
-
-    // if (options.steps !== undefined && options.steps === 0) { // TODO: Could also base 'reverse' on a negative number of steps.
-    //   // TODO: Abstractly, one would sometimes yield the current vertex; in the sense of "doing nothing" being someway "the identity". - Important to consider how this 'doing nothing' is inconsistent - and this functionality should be expanded upon later.
-    //   // console.log('no step - no continuation');
-    //   return;
-    // }
-
-    // TODO Does not by default check for equivalences in the from of "deduplication" - this means without checking this traversal will not halt in circular. - Though circular should also be allowed at some configurable clockcycle/interval - whether some native speed, or a slower one..
-
-    const mapped = this.map(options.direction);
-
-    if (mapped.is_none()) {
-      // console.log('Empty reference')
-      return;
-    }
-
-    const ray = mapped.force();
-
-    // Nothing to traverse.
-    if (ray.is_empty()) {
-      // console.log('Nothing to traverse')
-      return;
-    }
-
-    /**
-     * [--|--]
-     * [--|  ]
-     * [  |--]
-     */
-    const vertex = ray.vertex().force();
-    const exists = options.get(vertex.as_reference().as_option()).is_some();
-
-    if (!exists) {
-      const reference = vertex.vertex();
-      if (reference.is_some() && reference.force().vertex().is_some()) {
-        // const dereferenced = reference.force().vertex().force();
-        //
-        // const vertexDirectionality = options.directionality.new();
-        // options.directionality.push_back(vertexDirectionality, options.convert(vertex.as_reference().as_option()));
-        //
-        // dereferenced.as_reference().compile({
-        //   ...options,
-        //   directionality: {...options.directionality, current: vertexDirectionality},
-        //   direction: {reverse: false},
-        // });
-        // dereferenced.as_reference().compile({
-        //   ...options,
-        //   directionality: {...options.directionality, current: vertexDirectionality},
-        //   direction: {reverse: true},
-        // });
-      }
-    }
-
-    if (ray.is_terminal()) {
-      /**
-       * [--|  ]
-       *
-       * We're basically finding initial matches for our terminal ray at its vertex:
-       *
-       * [--|  ]
-       * Along the '|' -> Find others which match [  |--], wherever they are arbitrarily defined along that 'equivalence frame/ray'.
-       *
-       *
-       *  Up and down the terminal vertex (could be arbitrarily defined, scanning for continuations
-       *
-       *      |
-       *    --|--     (<- Some vertex on our terminal vertex which defines some reference/additional structure,
-       *      |           possibly some more continuations hidden in there) ; TODO: This one needs some better defining
-       *      |--     (<- A continuation we're looking for)
-       *    --|       (<- Our terminal vertex)
-       *      |
-       *      |--     (<- A continuation we're looking for)
-       *      |
-       */
-
-      // console.log(this.type(), 'Traversing continuations (both initial&terminal)')
-
-      return;
-    }
-
-    if (!this.is_initial()) {
-      // [--|--]
-
-      // description
-
-      const initial = new Ray();
-      const vertex2 = new Ray({ initial: () => new Ray().as_option(), terminal: () => new Ray().as_option()});
-      const terminal = new Ray();
-
-      if (options.directionality.currentDescription) {
-        // options.directionality.push_back(options.directionality.currentDescription, options.convert(initial.as_reference().as_option()));
-      }
-
-      // const descriptionEdge = options.directionality.new();
-      // const edge = new Ray();
-      // options.directionality.push_back(descriptionEdge, options.convert(edge.as_reference().as_option()))
-      // options.directionality.push_back(descriptionEdge, options.convert((options.directionality.currentDescription ?? initial).as_reference().as_option()));
-
-      const description = options.directionality.new();
-      options.directionality.push_back(description, options.convert((options.directionality.currentDescription ?? initial).as_reference().as_option()));
-      // options.directionality.push_back(description, options.convert(vertex.as_reference().as_option()));
-      options.directionality.push_back(description, options.convert(vertex2.as_reference().as_option()));
-      options.directionality.push_back(description, options.convert(terminal.as_reference().as_option()));
-
-      options.directionality.currentDescription = terminal;
-
-      options.directionality.currentInterpretation ??= options.directionality.new();
-      options.directionality.push_back(options.directionality.currentInterpretation, options.convert(vertex.as_reference().as_option()));
-
-
-      const description2 = options.directionality.new();
-      // options.directionality.push_back(description2, options.convert(new Ray().as_reference().as_option()));
-      options.directionality.push_back(description2, options.convert(vertex2.as_reference().as_option()));
-      // options.directionality.push_back(description2, options.convert(new Ray().as_reference().as_option()));
-      options.directionality.push_back(description2, options.convert(vertex.as_reference().as_option()));
-      // options.directionality.push_back(description2, options.convert(new Ray().as_reference().as_option()));
-
-      // TODO: Should yield at which step it was found (or only yield through groups ..., depending on one's traversal strategy)
-      // console.log(this.type(), 'yielded vertex')
-
-      // if (options.steps !== undefined) {
-      //   // Found one in this directionality, remove a step for further traversals.
-      //   options.steps -= 1;
-      // }
-      if (!exists) {
-        const reference = vertex.vertex();
-        if (reference.is_some() && reference.force().vertex().is_some()) {
-          const dereferenced = reference.force().vertex().force();
-
-          reference.force().compile({...options, directionality: { ...options.directionality, currentDescription: undefined, currentInterpretation: description2 }});
-        }
-      }
-    } else {
-      // [  |--]
-
-    }
-
-    const terminal = vertex.terminal(); // TODO, LAST TERMINAL MIGHT BE EMPTY OIN CURRENT SETUP
-
-    /**
-     * [--|--]
-     * [--|  ]
-     * [  |--] (- so this one would be negated/impossible if we're assuming consistency)
-     *
-     * We're moving to the terminal side, which from this perspective means the actual vertex we're interested in.
-     *
-     * Just loop from back up.
-     */
-    if (terminal.is_some()) {
-      const reference = terminal.force().as_reference();
-      // console.log(this.type(), '->', reference.type(), 'moving to terminal as vertex')
-
-      // We could conceptualize that whatever this ray is, is connected to the higher-level reference one. - Basically the path we're taking - assuming that our vertices are ignorant of our traversal.
-      // TODO: Could also do a while loop here, and just yield it.
-      reference.compile({...options});
-    }
-
-    return;
-
-
-    // const ray = options.directionality.new();
-    // for (let reference of this.traverse()) {
-    //   const vertexRay = options.directionality.new();
-    //
-    //   let existing = options.get(reference.as_option());
-    //   options.directionality.push_back(ray,
-    //     existing.is_some() ? existing : options.convert(reference.as_option()));
-    //
-    //   const { initial, terminal } = reference.vertex().force();
-    //
-    //   // if (initial().is_some() )
-    //   //   options.directionality.push_back(vertexRay, options.convert(initial().force().as_reference().as_option()));
-    //   options.directionality.push_back(vertexRay, options.get(reference.as_option()));
-    //   // if (terminal().is_some())
-    //   //   options.directionality.push_back(vertexRay, options.convert(terminal().force().as_reference().as_option()));
-    //
-    //   if (existing.is_none()) {
-    //     const dereferenced = reference.vertex();
-    //     const additionalStructureReference = dereferenced.force().vertex();
-    //
-    //     if (additionalStructureReference.is_some())
-    //       additionalStructureReference.force().compile(options)
-    //   }
-    // }
-    //
-    // return Option.None;
-
-
-
-    // if (this.self().is_none())
-    //   return Option.None;
-
-    // const vertex = this.self().force();
-    //
-    // const ray = options.directionality.new();
-    //
-    // const converted = options.get(this.as_option());
-    // if (converted.is_some())
-    //   return converted;
-
-
-    // if (!this.is_initial()) {
-    //   options.directionality.push_back(ray, vertex.initial().force().as_reference().compile(options));
-    // }
-    //
-    // if (vertex.vertex().is_some())
-    //   options.directionality.push_back(ray, vertex.vertex().force().as_reference().compile(options));
-    //
-    // if (!this.is_terminal()) {
-    //   options.directionality.push_back(ray, vertex.terminal().force().as_reference().compile(options));
-    // }
-    //
-    //
-    // return options.convert(this.as_option());
-  }
-
+  *traverse(): Generator<Ray> {}
 
   /**
    * JavaScript, possible compilations
@@ -609,146 +199,35 @@ export class Ray
     toString = (): string => this.as_array().toString();
     as_string = () => this.toString();
 
+    debug = (c: string[]): string => {
+      if (c.includes(this.label))
+        return 'circular';
+
+      c.push(this.label)
+
+      return `\n[${[
+        this.initial().match({ Some: (ray) => ray.debug(c), None: () => '|' }),
+        this.vertex().match({ Some: (ray) => ray.debug(c), None: () => '' }),
+        this.terminal().match({ Some: (ray) => ray.debug(c), None: () => '|' }),
+      ].join(',')}] -> ${this.js().match({ Some: (ray) => ray.toString(), None: () => '?'})}\n`
+    }
   /**
    * Quick dirty compilation
    */
-  to_wolfram_language = (): string => {
-    const hyperEdges: string[][] = [];
-    const options: any = {};
-    let label = 0;
 
-    const vertexStyle = (reference: Option<Ray>): string => {
-      switch (reference.force().type()) {
-        case RayType.INITIAL:{
-          return 'Darker@Red'
-        }
-        case RayType.TERMINAL: {
-          return 'Lighter@Red'
-        }
-        case RayType.REFERENCE: {
-          return 'Orange'
-        }
-        case RayType.VERTEX: {
-          return 'Lighter@Blue'
-        }
-      }
-    }
-    const get = (reference: Option<Ray>): Option<string> => {
-      const vertex = reference.match({ Some: (ref) => ref.vertex(), None: () => Option.None });
-      if (vertex.is_some() && (vertex.force() as any)["__label"] !== undefined)
-        return Option.Some((vertex.force() as any)["__label"] as string);
-
-      return Option.None;
-    }
-
-    this.compile<string, string[]>({
-      directionality: {
-        new: () => {
-          const edge: string[] = [];
-          hyperEdges.push(edge);
-          return edge;
-        },
-        push_back: function (directionality: string[], ray: Option<string>): void {
-          if (ray.is_some())
-            directionality.push(ray.force());
-        }
-      },
-      convert: function (reference: Option<Ray>): Option<string> {
-        const existing = get(reference);
-        if (existing.is_some())
-          return existing;
-
-        if (reference.is_none() || reference.force().vertex().is_none())
-          return Option.None;
-
-        label++;
-
-        const vertex = reference.force().vertex();
-
-        const name: string = `"${vertex.force().js().match({
-          Some: (js) => js.toString(),
-          None: () => `?`
-        })} (${label})"`;
-
-        (options['VertexStyle'] ??= {})[name] = vertexStyle(reference);
-
-        Object.defineProperty(vertex.force(), "__label", {value: name});
-
-        return Option.Some(name);
-      },
-      get,
-    });
-
-    return `ResourceFunction["WolframModelPlot"][{${hyperEdges
-      .filter(hyperEdge => hyperEdge.length !== 0)
-      .map(hyperEdge =>
-        `{${hyperEdge.join(',')}}`
-      ).join(',')}},VertexLabels->All,${
-        _.map(options, (mapping, option) =>
-          `${option} -> <|${
-            _.map(mapping, (value, key) => `${key} -> ${value}`)
-              .join(',')}|>`)
-          .join(',')}]`;
-  }
-}
-
-export type MapOptions = ((direction: Option<Ray>) => Option<Ray>)
-  | {
   /**
-   * This could be set from within some place which is navigating here? ; Basically just "the reversal of arrows" as referred to in some mathematics - assuming consistency (which is likely garanteed to not generally hold - certainly not in this implementation - which is to say that previous().next() is never actually garanteed to return "the same result" - and if one has some construction like a type that necessarily means it's an assumption: what am I doing to prevent violations of that assumption?).
+   * TODO: This should be constructed at the vertex and in general unsolvable
    */
-  reverse?: boolean
+  static _label: number = 0;
+  __label: number | undefined;
+  get label(): string {
+    if (this.__label !== undefined)
+      return `${this.__label}`;
+
+    return `${this.__label = Ray._label++}`;
+  }
+
 }
-
-
-
-  // traverse = (options: {
-  //   steps?: number,
-  //   // filter
-  //   //
-  //   direction: Option<Ray> // TODO: That I'm using this here perhaps indicates I need to switch up the Ray/Option<Ray> setup a bit. - perhaps that *this* as ray, necessarily already is the direction?
-  // }): Option<Ray> => {
-  //   const { steps, direction } = options;
-  //
-  //   // previous: Assuming we can reverse the direction. - this is a bit complicated and needs to be phrased properly, but for now just assume we can.
-  //
-  //   // TODO, RESTRUCTURE: This shows that this method would be defined at "Option<Ray>"
-  //   return direction.none_or((Option<Ray>) => Option<Ray>.match({
-  //       // opposite of terminal one
-  //       Initial: (ray) => {},
-  //
-  //       Vertex: (ray) => { throw '' },
-  //         // ray.vertex.resolve().none_or(vertex => vertex.match({
-  //         //   Initial: () => {},
-  //         //   Vertex: () => {}, // same
-  //         //   Terminal: () => {},
-  //         // })),
-  //
-  //       Terminal: (ray) =>
-  //     }),
-  //   );
-  // }
-
-  // TODO: What's the best name for traversing the structure of the vertex ? - Superposition/context/definition/structure/value/node/.. ; basically different directionalities which define what this thing means>?
-  // next = (options: {
-  //   steps?: number,
-  // }): Option<Ray> => this.traverse({...options, direction: this.vertex_ref() });
-
-  // loop = (next: (current: Option<Ray>) => Option<Ray>) => {
-  //   let current: Option<Ray> = this.vertex_ref();
-  //
-  //   let _next: Option<Ray>;
-  //   while ((_next = next(current)).resolve().is_some()) {
-  //     _next.resolve().force().match({
-  //       Initial: (ray) => ray,
-  //       Vertex: (ray) => ray,
-  //       Terminal: (ray) => ray,
-  //     })
-  //     current = _next;
-  //   }
-  //
-  //   return current;
-  // }
 
 /**
  *
@@ -901,10 +380,10 @@ export const from_boolean = (boolean: boolean): Option<Ray> => {
   const _true = js(true);
   // const two = _false.continues_with(_true);
 
-  _false.as_reference()
-    .continues_with(() =>
-      _true.initial().force().as_reference().as_option()
-    );
+  // _false.as_reference()
+  //   .continues_with(() =>
+  //     _true.initial().force().as_reference().as_option()
+  //   );
 
   return (boolean ? _true : _false).as_reference().as_option();
 }
