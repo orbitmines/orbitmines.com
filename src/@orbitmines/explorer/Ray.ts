@@ -99,6 +99,9 @@ export class Ray
     this.js = js ?? (() => Option.None);
   }
 
+  as_initial_reference = () => new Ray({ vertex: this.initial, terminal: this.vertex, js: () => Option.Some('initial ref') }).as_reference();
+  as_terminal_reference = () => new Ray({ initial: this.vertex, vertex: this.terminal, js: () => Option.Some('terminal ref') }).as_reference();
+
   continues_with = (continues_with: Ray): Ray => {
     if (!this.as_reference().is_reference())
       throw 'NotImplemented: Preventing implementation bug; continues_with not called on a reference';
@@ -131,15 +134,38 @@ export class Ray
       throw 'NotImplemented: Preventing implementation bug; continues_with should be added to the vertex';
 
     // [  |--]
-    const connection = new Ray({
-      vertex: this.as_arbitrary(),
-      terminal: next_vertex.as_arbitrary()
-    }).as_arbitrary();
+    const next_connection = new Ray({
+      initial: vertex.as_arbitrary(),
+      vertex: terminal.as_arbitrary(),
+      js: () => Option.Some('terminal ref')
+    });
 
-    this.terminal = connection;
-    next_vertex.initial = connection;
+    // console.log(initial_connection.label)
+    vertex.terminal = next_connection.as_arbitrary();
 
-    console.log('continues')
+    const initial = next_vertex.initial();
+    const previous_connection = new Ray({
+      vertex: () => initial,
+      terminal: next_vertex.as_arbitrary(),
+      js: () => Option.Some('initial ref')
+    });
+
+    next_vertex.initial = previous_connection.as_arbitrary();
+
+    next_connection.vertex = previous_connection.as_arbitrary();
+    previous_connection.vertex = next_connection.as_arbitrary();
+
+    // next_vertex.initial = connection.vertex().force().as_arbitrary();
+
+    // const connection = new Ray({
+    //   vertex: this.as_arbitrary(),
+    //   terminal: next_vertex.as_arbitrary()
+    // }).as_arbitrary();
+    //
+    // this.terminal = connection;
+    // next_vertex.initial = connection;
+    //
+    // console.log('continues')
 
     return next_vertex.as_reference();
   }
@@ -199,32 +225,103 @@ export class Ray
     toString = (): string => this.as_array().toString();
     as_string = () => this.toString();
 
-    debug = (c: string[]): string => {
-      if (c.includes(this.label))
-        return 'circular';
-
-      c.push(this.label)
-
-      return `\n[${[
-        this.initial().match({ Some: (ray) => ray.debug(c), None: () => '|' }),
-        this.vertex().match({ Some: (ray) => ray.debug(c), None: () => '' }),
-        this.terminal().match({ Some: (ray) => ray.debug(c), None: () => '|' }),
-      ].join(',')}] -> ${this.js().match({ Some: (ray) => ray.toString(), None: () => '?'})}\n`
-    }
   /**
    * Quick dirty compilation
    */
+  static dirty_store: { [label: string]: object } = {}
+  get store(): any { return Ray.dirty_store[this.label] ??= {} }
+
+  debug = (c: { [label: string]: object | undefined }): object => {
+    if (c[this.label] !== undefined)
+      return c[this.label]!;
+
+    const of = (option: Option<Ray>): string => option.match({
+      Some: (ray) => {
+        ray.debug(c) ;
+        return ray.label;
+      },
+      None: () => 'None'
+    });
+
+    const obj: any = { label: this.label };
+    c[this.label] = obj;
+
+    obj.initial = of(this.initial());
+    obj.vertex = of(this.vertex());
+    obj.terminal = of(this.terminal());
+    obj.type = this.as_reference().type();
+
+    return obj;
+  }
+  to_wolfram_language = (): string => {
+    const hyperEdges: string[][] = [];
+    const options: any = {};
+
+    const debug = {};
+    this.debug(debug);
+
+    const vertexStyle = (ray: any): string => {
+      switch (ray.type) {
+        case RayType.INITIAL:{
+          return 'Darker@Red'
+        }
+        case RayType.TERMINAL: {
+          return 'Lighter@Red'
+        }
+        case RayType.REFERENCE: {
+          if (ray.vertex === 'None') // empty reference
+            return 'Lighter@Orange';
+
+          return 'Orange'
+        }
+        case RayType.VERTEX: {
+          return 'Lighter@Blue'
+        }
+        default: {
+          throw '??'
+        }
+      }
+    }
+
+    _.valuesIn(debug).forEach((ray: any) => {
+      console.log(ray)
+
+      if (ray.initial !== 'None' && ray.terminal !== 'None') {
+        const edge: string[] = [ray.initial, ray.label, ray.terminal].filter(vertex => vertex !== 'None');
+        hyperEdges.push(edge);
+      }
+
+      if (ray.vertex !== 'None') {
+        hyperEdges.push([ray.label, ray.vertex]);
+
+        (options['EdgeStyle'] ??= {})[`{${[ray.label, ray.vertex].join(',')}}`] = 'Orange'
+      }
+
+      (options['VertexStyle'] ??= {})[ray.label] = vertexStyle(ray);
+    })
+
+    return `ResourceFunction["WolframModelPlot"][{${hyperEdges
+      .filter(hyperEdge => hyperEdge.length !== 0)
+      .map(hyperEdge =>
+        `{${hyperEdge.join(',')}}`
+      ).join(',')}},VertexLabels->All,${
+      _.map(options, (mapping, option) =>
+        `${option} -> <|${
+          _.map(mapping, (value, key) => `${key} -> ${value}`)
+            .join(',')}|>`)
+        .join(',')}]`;
+  }
 
   /**
    * TODO: This should be constructed at the vertex and in general unsolvable
    */
   static _label: number = 0;
-  __label: number | undefined;
+  __label: string | undefined;
   get label(): string {
     if (this.__label !== undefined)
-      return `${this.__label}`;
+      return this.__label;
 
-    return `${this.__label = Ray._label++}`;
+    return this.__label = `"${Ray._label++} (${this.js().match({ Some: (js) => js.toString(), None: () => '?' })})"`;
   }
 
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {empty, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
+import {empty, empty_vertex, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
 import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {GroupProps, useFrame, useThree,} from "@react-three/fiber";
@@ -15,6 +15,108 @@ import {toJpeg, toPng} from "html-to-image";
 import {value} from "../../lib/typescript/React";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 
+const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+
+// In principle, this should be anything, this is just for the initial setup
+const RenderedRay = (
+  props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, }
+) => {
+  const {
+    position = [0, 0, 0],
+    reference,
+    scale = 1
+  } = props;
+
+  if (reference.is_none() || reference.force().self().is_none())
+    return <></>
+
+  const vertex = reference.force().self().force();
+
+  const Rendered = () => {
+    const circle = { radius: 3,  color: "orange", segments: 30, }
+    const Vertex = ({ }: any) =>
+      <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]} />
+
+    const torus = {
+      // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
+      radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
+    }
+    const Continuation = ({ color = torus.color }: any) =>
+      <Torus
+        args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+        material-color={color}
+        position={position}
+      />
+
+    const line = { width: 2,  length: 1,  color: "orange", }
+    const Line = ({ start, end }: any) =>
+      <QuadraticBezierLine
+        start={start}
+        // mid={line.vertex.position}
+        end={end}
+        color={line.color}
+        lineWidth={line.width * scale}
+      />
+
+    const type = vertex.as_reference().type();
+    switch (type) {
+      case RayType.INITIAL: {
+        /**
+         * [  |--]
+         */
+        if (vertex.vertex().is_none()) {
+          return <Continuation color="pink"/>
+        } else {
+          const possible_continuations = vertex.vertex().force();
+
+          if (!possible_continuations.as_reference().is_terminal())
+            return <Continuation color="blue"/>
+          //
+          // if (vertex.terminal().force().store.rendered)
+          //   return <></>
+
+          return <RenderedRay {...props} reference={possible_continuations.initial().force().as_reference().as_option()} />
+        }
+      }
+      case RayType.TERMINAL: {
+        if (vertex.vertex().is_none()) {
+          return <Continuation color="purple"/>
+        } else {
+          if (vertex.initial().force().store.rendered)
+            return <></>
+
+          return <RenderedRay {...props} reference={vertex.initial()} />
+        }
+      }
+      case RayType.REFERENCE: {
+        if (vertex.is_empty()) // empty reference
+          return <Continuation color="red" />
+
+        // throw 'Not Implemented'
+        return <RenderedRay {...props} reference={vertex.self().match({ Some: (ray) => ray.as_reference().as_option(), None: () => Option.None })} />
+      }
+      case RayType.VERTEX: {
+        const left = add(position, [-20, 0, 0]);
+        const right = add(position, [20, 0, 0]);
+
+        return <>
+          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left}/>
+
+          {/* Line now starts in the center of the torus tube */}
+          <Line start={add(left, [torus.radius, 0, 0])} end={position} />
+          <Vertex/>
+          <Line start={position} end={add(right, [-torus.radius, 0, 0])} />
+          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right}/>
+        </>
+      }
+    }
+  }
+
+  const render = <Rendered/>
+  vertex.store.rendered = render;
+  return render;
+}
+
 const InterfaceObject = ({
   scale = 1,
   ...props
@@ -22,7 +124,7 @@ const InterfaceObject = ({
   const ref = useRef<any>();
 
   const [selection, setSelection] = useState<Option<Ray>>(
-    empty().as_reference().as_option()
+    empty_vertex().as_reference().as_option()
   );
   const [controls, setControls] = useState<Option<Ray>>(
     empty().as_reference().as_option()
@@ -37,79 +139,124 @@ const InterfaceObject = ({
 
   // One could abstractly realize hotkeys, or any kind of control system as a possible temporal directionality.
   const hotkeys = useHotkeys();
-  hotkeys.set({
-    combo: "shift + d", global: true, label: "", onKeyDown: () => {
-      // const link = document.createElement('a')
-      // link.setAttribute('download', `canvas.png`)
-      // link.setAttribute('href', renderer.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
-      // link.click()
+  hotkeys.set(
+    {
+      combo: "shift + d", global: true, label: "", onKeyDown: () => {
+        // const link = document.createElement('a')
+        // link.setAttribute('download', `canvas.png`)
+        // link.setAttribute('href', renderer.domElement.toDataURL('image/png').replace('image/png', 'image/octet-stream'))
+        // link.click()
 
-      // const box = new Box3().setFromObject(ref.current);
-      // const size = box.getSize(new Vector3());
-      //
-      // const width = Math.ceil(size.x);
-      // const height = Math.ceil(size.y);
-      // const width = 500;
-      // const height = 500;
-      //
-      // const renderTarget = new WebGLRenderTarget(renderer.domElement.width, renderer.domElement.height);
-      //
-      // renderer.setRenderTarget(renderTarget);
-      // renderer.render(scene, camera);
-      // renderer.setRenderTarget(null);
-      //
-      // const canvasX = (0 + 1) / 2 * renderTarget.width;
-      // const canvasY = (-0 + 1) / 2 * renderTarget.height;
-      // // const canvasX = Math.ceil(box.min.x + 1) - Math.ceil(renderTarget.width / 2);
-      // // const canvasY = Math.ceil(-box.min.y + 1) - Math.ceil(renderTarget.height / 2);
-      //
-      // const pixels = new Uint8Array(width * height * 4);
-      // renderer.readRenderTargetPixels(renderTarget, canvasX, canvasY, width, height, pixels);
-      //
-      // const imageData = new ImageData(new Uint8ClampedArray(pixels), width, height);
-      //
-      // const image = document.createElement('canvas');
-      // image.width = width;
-      // image.height = height;
-      // image.getContext('2d')!.putImageData(imageData, 0, 0);
-      //
-      // const link = document.createElement('a')
-      // link.download = 'test.png';
-      // link.href = image.toDataURL('test.png');
-      // link.click();
+        // const box = new Box3().setFromObject(ref.current);
+        // const size = box.getSize(new Vector3());
+        //
+        // const width = Math.ceil(size.x);
+        // const height = Math.ceil(size.y);
+        // const width = 500;
+        // const height = 500;
+        //
+        // const renderTarget = new WebGLRenderTarget(renderer.domElement.width, renderer.domElement.height);
+        //
+        // renderer.setRenderTarget(renderTarget);
+        // renderer.render(scene, camera);
+        // renderer.setRenderTarget(null);
+        //
+        // const canvasX = (0 + 1) / 2 * renderTarget.width;
+        // const canvasY = (-0 + 1) / 2 * renderTarget.height;
+        // // const canvasX = Math.ceil(box.min.x + 1) - Math.ceil(renderTarget.width / 2);
+        // // const canvasY = Math.ceil(-box.min.y + 1) - Math.ceil(renderTarget.height / 2);
+        //
+        // const pixels = new Uint8Array(width * height * 4);
+        // renderer.readRenderTargetPixels(renderTarget, canvasX, canvasY, width, height, pixels);
+        //
+        // const imageData = new ImageData(new Uint8ClampedArray(pixels), width, height);
+        //
+        // const image = document.createElement('canvas');
+        // image.width = width;
+        // image.height = height;
+        // image.getContext('2d')!.putImageData(imageData, 0, 0);
+        //
+        // const link = document.createElement('a')
+        // link.download = 'test.png';
+        // link.href = image.toDataURL('test.png');
+        // link.click();
 
 
-      toPng(renderer.domElement, {
-        cacheBust: true,
-        backgroundColor: '#1C2127'
-      })
-        .then((dataUrl) => {
-          const link = document.createElement('a')
-          link.download = `${new Date().toISOString()}.png`
-          link.href = dataUrl
-          link.click()
+        toPng(renderer.domElement, {
+          cacheBust: true,
+          backgroundColor: '#1C2127'
         })
-        .catch((err) => {
-          console.log(err)
-        });
+          .then((dataUrl) => {
+            const link = document.createElement('a')
+            link.download = `${new Date().toISOString()}.png`
+            link.href = dataUrl
+            link.click()
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+      }
+    }, {
+      combo: "arrowright", global: true, label: "", onKeyDown: () => {
+        const next = selection.force().continues_with(
+          new Ray({ js: () => Option.Some("A") }).as_reference()
+        ).as_option();
+
+        setSelection(next)
+      }
     }
-  });
+  );
 
   const addHotkey = (hotkey: HotkeyConfig) => {
 
   }
 
   useEffect(() => {
+    console.log(selection.force().to_wolfram_language())
+  }, [selection]);
 
-    const A = new Ray({ js: () => Option.Some("A") });
+  useEffect(() => {
 
-    console.log(
-      A.as_reference()
-        .continues_with(new Ray({ js: () => Option.Some("B") }).as_reference())
-        .continues_with(new Ray({ js: () => Option.Some("C") }).as_reference())
-        .debug([])
-    )
+    // const debug = {};
+    // A.as_reference()
+    //   .continues_with(new Ray({ js: () => Option.Some("B") }).as_reference())
+    //   .continues_with(new Ray({ js: () => Option.Some("C") }).as_reference())
+    //   .debug(debug)
 
+    // console.log(debug)
+
+    // console.log(
+    //   new Ray({ js: () => Option.Some('empty')})
+    //     .as_reference()
+    //     .continues_with(new Ray({ js: () => Option.Some("A") }).as_reference())
+    //     // .continues_with(new Ray({ js: () => Option.Some("B") }).as_reference())
+    //     // .continues_with(new Ray({ js: () => Option.Some("C") }).as_reference())
+    //     .to_wolfram_language()
+    // )
+    //
+    // const A = new Ray({ js: () => Option.Some('empty')})
+    //   .as_reference()
+    //   .continues_with(new Ray({ js: () => Option.Some("A") }).as_reference());
+    //
+    // A
+    //   .continues_with(new Ray({ js: () => Option.Some("B") }).as_reference())
+    //   .continues_with(new Ray({ js: () => Option.Some("C") }).as_reference())
+
+    // console.log(
+    //   A.to_wolfram_language()
+    // )
+    // console.log(
+    //   new Ray({ js: () => Option.Some('empty')})
+    //     .as_reference()
+    //     .continues_with(new Ray({ js: () => Option.Some("A") }).as_reference())
+    //     .continues_with(new Ray({ js: () => Option.Some("B") }).as_reference())
+    //     .continues_with(new Ray({ js: () => Option.Some("C") }).as_reference())
+    //     .to_wolfram_language()
+    // )
+
+    // console.log(
+    //   A.as_reference().to_wolfram_language()
+    // )
   }, [])
 
   // hotkeys.set(
@@ -172,53 +319,18 @@ const InterfaceObject = ({
     //   const pos = position([0, 0, 0]);
   });
 
-  // In principle, this should be anything, this is just for the initial setup
-  const RenderedRay = (
-    { position, reference }: { reference: Option<Ray> } & any
-  ) => {
-    if (reference.is_none())
-      return <></>
-
-    const circle = { radius: 3,  color: "orange", segments: 30, }
-    const Vertex = ({ }: any) =>
-      <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]} />
-
-    const torus = {
-      // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
-      radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
-    }
-    const Continuation = ({ }: any) =>
-      <Torus
-        args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
-        material-color={torus.color}
-        position={position}
-      />
-
-    // const line = { width: 2,  length: 1,  color: "orange", }
-    // const Line = ({ start, end }: any) =>
-    //   <QuadraticBezierLine
-    //     start={line.initial.position}
-    //     // mid={line.vertex.position}
-    //     end={line.terminal.position}
-    //     color={line.color}
-    //     lineWidth={line.width * scale}
-    //   />
-
-
-
-    return <Vertex/>
-  }
+  const currentPosition = add(position, movement);
 
   return (
     <group
       ref={ref}
       {...drag()}
       scale={scale}
-      position={[position[0] + movement[0], position[1] + movement[1], position[2] + movement[2]]}
+      position={currentPosition}
 
       {...props}
     >
-      <RenderedRay reference={selection} />
+      <RenderedRay reference={selection} scale={scale} />
       {/*<group position={[0, 15, 0]}>*/}
       {/*  <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={20.0}>*/}
       {/*    O*/}
