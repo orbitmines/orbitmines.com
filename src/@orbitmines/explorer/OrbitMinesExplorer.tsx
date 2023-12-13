@@ -1,13 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {empty, empty_vertex, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
-import {Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
+import {CatmullRomLine, Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {GroupProps, useFrame, useThree,} from "@react-three/fiber";
 import {useDrag} from "@use-gesture/react";
 import {useSpring} from '@react-spring/three'
 import {useHotkeys} from "../js/react/hooks/useHotkeys";
 import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import {Box3, Vector3, WebGLRenderTarget} from "three";
+import {Box3, SplineCurve, Vector3, WebGLRenderTarget} from "three";
 import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import IEventListener, {mergeListeners} from "../js/react/IEventListener";
@@ -16,6 +16,83 @@ import {value} from "../../lib/typescript/React";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 
 const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+
+const torus = {
+  // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
+  radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
+}
+const Continuation = ({ color = torus.color, position }: any) =>
+  <Torus
+    args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+    material-color={color}
+    position={position}
+  />
+
+const line = { width: 2,  length: 1,  color: "orange", }
+const Line = ({ start, mid, end, scale, color = line.color }: any) =>
+  <QuadraticBezierLine
+    start={start}
+    mid={mid}
+    end={end}
+    color={color}
+    lineWidth={line.width * scale}
+  />
+
+const circle = { radius: 3,  color: "orange", segments: 30, }
+const Vertex = ({ position }: any) =>
+  <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]} />
+
+const BinarySuperposition = ({ position }: any) => {
+  const halfTorus = (torus.radius + (torus.tube.width / 2));
+
+  const up = add(position, [0, 20 + halfTorus, 0]);
+  const down = add(position, [0, -20, 0]);
+
+  const left = add(down, [-halfTorus, 0, 0]);
+  const right = add(down, [+halfTorus, 0, 0]);
+
+  return <>
+    {/*<CatmullRomLine*/}
+    {/*  points={[*/}
+    {/*    add(left, [0, torus.radius, 0]),*/}
+    {/*    add(left, [0, torus.radius + halfTorus * 2, 0]),*/}
+    {/*    position,*/}
+    {/*    add(up, [+halfTorus, -(torus.radius + halfTorus * 2), 0]),*/}
+    {/*    add(up, [(line.width / 2), 0, 0]),*/}
+
+    {/*    add(up, [-(line.width / 2), 0, 0]),*/}
+    {/*    add(up, [-halfTorus, -(torus.radius + halfTorus * 2), 0]),*/}
+    {/*    position,*/}
+    {/*    add(right, [0, torus.radius + halfTorus * 2, 0]),*/}
+    {/*    add(right, [0, torus.radius, 0])*/}
+    {/*  ]}*/}
+    {/*  color="#FF5555"*/}
+    {/*  lineWidth={line.width * 1.5}*/}
+    {/*/>*/}
+
+    <CatmullRomLine points={[
+      add(left, [0, torus.radius, 0]),
+      add(left, [0, torus.radius + halfTorus * 1.5, 0]),
+      position,
+      add(up, [+halfTorus, -(torus.radius + halfTorus), 0]),
+      add(up, [(line.width / 4), 0, 0]),
+    ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+    <CatmullRomLine points={[
+      add(right, [0, torus.radius, 0]),
+      add(right, [0, torus.radius + halfTorus * 1.5, 0]),
+      position,
+      add(up, [-halfTorus, -(torus.radius + halfTorus), 0]),
+      add(up, [-(line.width / 4), 0, 0])
+    ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+
+    <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]}/>
+    <Continuation color="#FF5555" position={left} />
+
+    <Continuation color="#5555FF" position={right} />
+
+    <Circle position={up} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+  </>
+}
 
 // In principle, this should be anything, this is just for the initial setup
 const RenderedRay = (
@@ -33,30 +110,7 @@ const RenderedRay = (
   const vertex = reference.force().self().force();
 
   const Rendered = () => {
-    const circle = { radius: 3,  color: "orange", segments: 30, }
-    const Vertex = ({ }: any) =>
-      <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]} />
 
-    const torus = {
-      // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
-      radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
-    }
-    const Continuation = ({ color = torus.color }: any) =>
-      <Torus
-        args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
-        material-color={color}
-        position={position}
-      />
-
-    const line = { width: 2,  length: 1,  color: "orange", }
-    const Line = ({ start, end }: any) =>
-      <QuadraticBezierLine
-        start={start}
-        // mid={line.vertex.position}
-        end={end}
-        color={line.color}
-        lineWidth={line.width * scale}
-      />
 
     const type = vertex.as_reference().type();
     switch (type) {
@@ -65,32 +119,41 @@ const RenderedRay = (
          * [  |--]
          */
         if (vertex.vertex().is_none()) {
-          return <Continuation color="pink"/>
+          return <Continuation color="orange" position={position} />
         } else {
           const possible_continuations = vertex.vertex().force();
 
           if (!possible_continuations.as_reference().is_terminal())
-            return <Continuation color="blue"/>
+            return <Continuation color="orange" position={position} />
           //
           // if (vertex.terminal().force().store.rendered)
           //   return <></>
 
-          return <RenderedRay {...props} reference={possible_continuations.initial().force().as_reference().as_option()} />
+          return <RenderedRay
+            {...props}
+            reference={possible_continuations.initial().force().as_reference().as_option()}
+          />
         }
       }
       case RayType.TERMINAL: {
         if (vertex.vertex().is_none()) {
-          return <Continuation color="purple"/>
+          return <Continuation color="orange" position={position} />
         } else {
-          if (vertex.initial().force().store.rendered)
-            return <></>
+          const possible_continuations = vertex.vertex().force();
 
-          return <RenderedRay {...props} reference={vertex.initial()} />
+          // if (!possible_continuations.as_reference().is_initial())
+          //   return <Continuation color="orange" position={position} />
+          return <></>
+
+          // return <RenderedRay
+          //   {...props}
+          //   reference={possible_continuations.terminal().force().as_reference().as_option()}
+          // />
         }
       }
       case RayType.REFERENCE: {
         if (vertex.is_empty()) // empty reference
-          return <Continuation color="red" />
+          return <Continuation color="red" position={position} />
 
         // throw 'Not Implemented'
         return <RenderedRay {...props} reference={vertex.self().match({ Some: (ray) => ray.as_reference().as_option(), None: () => Option.None })} />
@@ -100,13 +163,34 @@ const RenderedRay = (
         const right = add(position, [20, 0, 0]);
 
         return <>
-          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left}/>
+          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
 
           {/* Line now starts in the center of the torus tube */}
-          <Line start={add(left, [torus.radius, 0, 0])} end={position} />
-          <Vertex/>
-          <Line start={position} end={add(right, [-torus.radius, 0, 0])} />
-          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right}/>
+          <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
+          <Vertex position={position} />
+          {/*<BinarySuperposition position={position} />*/}
+          <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
+          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
+
+          {/*<Torus*/}
+          {/*  args={[15, torus.tube.width, torus.segments, torus.tube.segments]}*/}
+          {/*  material-color="orange"*/}
+          {/*  position={add(position, [0, 15, 0])}*/}
+          {/*/>*/}
+          {/*<Torus*/}
+          {/*  args={[15, torus.tube.width, torus.segments, torus.tube.segments]}*/}
+          {/*  material-color="orange"*/}
+          {/*  position={add(position, [0, -15, 0])}*/}
+          {/*/>*/}
+          {/* SHOULD BE SMOOTH */}
+          {/*<CatmullRomLine points={[*/}
+          {/*  position,*/}
+          {/*  add(position, [12.5, -12.5, 0]),*/}
+          {/*  add(position, [0, -25, 0]),*/}
+          {/*  add(position, [-12.5, -12.5, 0]),*/}
+          {/*  position,*/}
+          {/*]} color="orange" lineWidth={line.width * 1.5}/>*/}
+
         </>
       }
     }
@@ -338,65 +422,6 @@ const InterfaceObject = ({
       {/*</group>*/}
     </group>
   )
-}
-
-const Test = () => {
-  const circle = {
-    radius: 3,
-    color: "orange",
-    segments: 30,
-    position: [0, 0, 0] as [number, number, number]
-  }
-
-  const torus = {
-    // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
-    radius: 3,
-    color: "orange",
-    tube: {
-      width: 1,
-      segments: 200
-    },
-    segments: 200,
-
-    initial: {
-      position: [circle.position[0] - 25 + 5, circle.position[1], circle.position[2]] as [number, number, number]
-    },
-    terminal: {
-      position: [circle.position[0] + 25 - 5, circle.position[1], circle.position[2]] as [number, number, number]
-    }
-  }
-  const line = {
-    width: 2,
-    length: 1,
-    color: "orange",
-
-    initial: {
-      position: [torus.initial.position[0] + torus.radius, torus.initial.position[1], torus.initial.position[2]] as [number, number, number]
-    },
-    vertex: {
-      position: circle.position,
-    },
-    terminal: {
-      position: [torus.terminal.position[0] - torus.radius, torus.terminal.position[1], torus.terminal.position[2]] as [number, number, number]
-    }
-  }
-
-  return <>
-     {/*<group ref={ref} {...bind()} scale={scale} position={[position[0] + movement[0], position[1] + movement[1], position[2] + movement[2]]} {...props}>*/}
-      {/*<Torus args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]} material-color="orange" position={torus.initial.position} />*/}
-      {/*<Circle position={circle.position} material-color={circle.color} args={[circle.radius, circle.segments]} />*/}
-      {/*<QuadraticBezierLine start={line.initial.position} mid={line.vertex.position} end={line.terminal.position} color={line.color} lineWidth={line.width * scale} />*/}
-      {/*<Torus ref={ref} args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]} {...bind()} material-color="orange" position={torus.terminal.position} {...props} />*/}
-
-      {/*<group rotation={[0, 0, Math.PI / 2]}>*/}
-      {/*  <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={30.0}>*/}
-      {/*    O*/}
-      {/*  </Text>*/}
-      {/*</group>*/}
-
-    {/*</group>*/}
-
-  </>
 }
 
 class InterfaceObjec {
