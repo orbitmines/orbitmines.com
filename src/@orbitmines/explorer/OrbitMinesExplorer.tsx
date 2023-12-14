@@ -160,158 +160,171 @@ const RenderedRay = (
       }
       case RayType.VERTEX: {
         const tilt = -10; // TODO; Generally should use some equivalencing in the 3d-frames for this once setup is in place (perpsective/camera) if in threejs..
-        const left = add(position, [-80 + tilt, 0, 0]);
-        const right = add(position, [80 - tilt, 0, 0]);
+        // const left = add(position, [-80 + tilt, 0, 0]);
+        // const right = add(position, [80 - tilt, 0, 0]);
 
-        const initial_side = {
-          continuation: add(left, [tilt, 0, 0]),
-          initial: add(left, [30 + tilt, 15, 0]),
-          terminal: add(left, [30 - tilt, -15, 0]),
-
-          initial_continuation: add(left, [30 + tilt * 2, 15 + 15, 0]),
-          terminal_continuation: add(left, [30 - tilt * 2, -15 - 15, 0]),
-        }
-        const terminal_side = {
-          continuation: add(right, [-tilt, 0, 0]),
-          initial: add(right, [-30 + tilt, 15, 0]),
-          terminal: add(right, [-30 - tilt, -15, 0]),
-
-          initial_continuation: add(right, [-30 + tilt * 2, 15 + 15, 0]),
-          terminal_continuation: add(right, [-30 - tilt * 2, -15 - 15, 0]),
-        }
-
-        const Sup = ({ position }: any) => {
-
-          const left = add(position, [-20, 0, 0]);
-          const right = add(position, [20, 0, 0]);
-
-          return <>
-            <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
-
-            {/* Line now starts in the center of the torus tube */}
-            <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
-            {/*<Vertex position={position} />*/}
-            <BinarySuperposition position={position} />
-            <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
-            <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
-          </>
-        }
+        // const initial_side = {
+        //   continuation: add(left, [tilt, 0, 0]),
+        //   initial: add(left, [30 + tilt, 15, 0]),
+        //   terminal: add(left, [30 - tilt, -15, 0]),
+        //
+        //   initial_continuation: add(left, [30 + tilt * 2, 15 + 15, 0]),
+        //   terminal_continuation: add(left, [30 - tilt * 2, -15 - 15, 0]),
+        // }
+        // const terminal_side = {
+        //   continuation: add(right, [-tilt, 0, 0]),
+        //   initial: add(right, [-30 + tilt, 15, 0]),
+        //   terminal: add(right, [-30 - tilt, -15, 0]),
+        //
+        //   initial_continuation: add(right, [-30 + tilt * 2, 15 + 15, 0]),
+        //   terminal_continuation: add(right, [-30 - tilt * 2, -15 - 15, 0]),
+        // }
+        //
+        // const Sup = ({ position }: any) => {
+        //
+        //   const left = add(position, [-20, 0, 0]);
+        //   const right = add(position, [20, 0, 0]);
+        //
+        //   return <>
+        //     <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
+        //
+        //     {/* Line now starts in the center of the torus tube */}
+        //     <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
+        //     {/*<Vertex position={position} />*/}
+        //     <BinarySuperposition position={position} />
+        //     <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
+        //     <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
+        //   </>
+        // }
 
         // 55FF55
+        // return <>
+        //   <Sup position={[100, 70, 0]} />
+        //
+        //   <Continuation color="#55FF55" position={initial_side.continuation} />
+        //
+        //   <CatmullRomLine points={[
+        //     add(initial_side.continuation, [0, torus.radius, 0]),
+        //     initial_side.initial,
+        //     terminal_side.initial,
+        //     add(terminal_side.continuation, [0, torus.radius, 0])
+        //   ]} color="#55FF55" lineWidth={line.width * 1.5}/>
+        //
+        //   <CatmullRomLine points={[
+        //     add(initial_side.continuation, [0, -torus.radius, 0]),
+        //     initial_side.terminal,
+        //     terminal_side.terminal,
+        //     add(terminal_side.continuation, [0, -torus.radius, 0])
+        //   ]} color="#55FF55" lineWidth={line.width * 1.5}/>
+        //
+        //
+        //   <Vertex position={initial_side.initial} color="#55FF55" />
+        //   <Vertex position={initial_side.terminal} color="#55FF55" />
+        //
+        //   <Continuation color="#55FF55" position={terminal_side.continuation} />
+        //
+        //   <>
+        //     <CatmullRomLine points={[
+        //       initial_side.initial_continuation,
+        //       add(initial_side.initial, [0, 0, 0]),
+        //       add(initial_side.terminal, [0, 0, 0]),
+        //       initial_side.terminal_continuation,
+        //     ]} color="orange" lineWidth={line.width * 1.5}/>
+        //
+        //     <Vertex position={initial_side.initial_continuation} color="#1C2127" />
+        //     <Continuation position={initial_side.initial_continuation} color="orange" />
+        //     <Vertex position={initial_side.terminal_continuation} color="#1C2127" />
+        //     <Continuation position={initial_side.terminal_continuation} color="orange" />
+        //
+        //     {/* 1C2127 quick for background */}
+        //     <Vertex position={initial_side.initial} color="#1C2127" />
+        //     <Vertex position={initial_side.initial} color="#FF5555" />
+        //
+        //     <CatmullRomLine points={[
+        //       add(initial_side.initial, [0, -15, 0]),
+        //       initial_side.initial,
+        //       add(initial_side.initial, [0, 15, 0]),
+        //     ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+        //
+        //     <Vertex position={add(initial_side.initial, [0, -15, 0])} color="#1C2127" />
+        //     <Continuation position={add(initial_side.initial, [0, -15, 0])} color="#FF5555" />
+        //
+        //     <Vertex position={initial_side.terminal} color="#1C2127" />
+        //     <Vertex position={initial_side.terminal} color="orange" />
+        //
+        //     <CatmullRomLine points={[
+        //       add(initial_side.initial, [0, 15, 0]),
+        //       add(initial_side.initial, [0, 30, 0]),
+        //       add(initial_side.initial, [0, 45, 0]),
+        //     ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+        //
+        //     <Vertex position={add(initial_side.initial, [0, 30, 0])} color="#5555FF" />
+        //     <Circle position={add(initial_side.initial, [0, 15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+        //
+        //     <Vertex position={add(initial_side.initial, [0, 45, 0])} color="#1C2127" />
+        //     <Continuation position={add(initial_side.initial, [0, 45, 0])} color="#5555FF" />
+        //
+        //   </>
+        //
+        //  <>
+        //    <CatmullRomLine points={[
+        //      terminal_side.initial_continuation,
+        //      add(terminal_side.initial, [0, 0, 0]),
+        //      add(terminal_side.terminal, [0, 0, 0]),
+        //      terminal_side.terminal_continuation,
+        //    ]} color="orange" lineWidth={line.width * 1.5}/>
+        //
+        //    <Vertex position={terminal_side.initial_continuation} color="#1C2127" />
+        //    <Continuation position={terminal_side.initial_continuation} color="orange" />
+        //    <Vertex position={terminal_side.terminal_continuation} color="#1C2127" />
+        //    <Continuation position={terminal_side.terminal_continuation} color="orange" />
+        //
+        //    {/* 1C2127 quick for background */}
+        //    <Vertex position={terminal_side.initial} color="#1C2127" />
+        //    <Vertex position={terminal_side.initial} color="#FF5555" />
+        //
+        //    <Continuation position={add(terminal_side.continuation, [tilt - 10, 15, 0])} color="#FF5555" />
+        //
+        //    <CatmullRomLine points={[
+        //      add(terminal_side.continuation, [tilt - 10 - torus.radius, 15, 0]),
+        //      terminal_side.initial,
+        //      add(terminal_side.initial, [tilt, -7.5, 0]),
+        //      add(terminal_side.initial, [tilt, -15, 0]),
+        //    ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+        //
+        //    <Vertex position={terminal_side.terminal} color="#1C2127" />
+        //    <Vertex position={terminal_side.terminal} color="#5555FF" />
+        //
+        //    <CatmullRomLine points={[
+        //      add(terminal_side.continuation, [-tilt - 10 - torus.radius, -15, 0]),
+        //      terminal_side.terminal,
+        //      add(terminal_side.initial, [tilt + 6, -22.5, 0]),
+        //      add(terminal_side.initial, [tilt, -15, 0]),
+        //    ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+        //
+        //    <Circle position={add(terminal_side.initial, [tilt, -15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+        //
+        //    <Continuation position={add(terminal_side.continuation, [-tilt - 10, -15, 0])} color="#5555FF" />
+        //  </>
+        // </>
+
+        const left = add(position, [-20, 0, 0]);
+        const right = add(position, [20, 0, 0]);
+
         return <>
-          <Sup position={[100, 70, 0]} />
+          {/*<Line start={add(left, [-40, 0, 0])} end={add(left, [-40, 60, 0])} scale={scale} />*/}
 
-          <Continuation color="#55FF55" position={initial_side.continuation} />
+          {/*<Vertex position={add(left, [-40, 0, 0])} color="#1C2127" />*/}
+          {/*<Vertex position={add(left, [-40, 20, 0])} color="#1C2127" />*/}
+          {/*<Vertex position={add(left, [0, 20, 0])} color="#1C2127" />*/}
+          {/*<Vertex position={add(left, [-40, 60, 0])} color="#1C2127" />*/}
 
-          <CatmullRomLine points={[
-            add(initial_side.continuation, [0, torus.radius, 0]),
-            initial_side.initial,
-            terminal_side.initial,
-            add(terminal_side.continuation, [0, torus.radius, 0])
-          ]} color="#55FF55" lineWidth={line.width * 1.5}/>
+          {/*<Continuation color="orange" position={add(left, [-40, 0, 0])} />*/}
+          {/*<Continuation color="red" position={add(left, [-40, 20, 0])} />*/}
+          {/*<Continuation color="red" position={add(left, [0, 20, 0])} />*/}
+          {/*<Continuation color="orange" position={add(left, [-40, 60, 0])} />*/}
 
-          <CatmullRomLine points={[
-            add(initial_side.continuation, [0, -torus.radius, 0]),
-            initial_side.terminal,
-            terminal_side.terminal,
-            add(terminal_side.continuation, [0, -torus.radius, 0])
-          ]} color="#55FF55" lineWidth={line.width * 1.5}/>
-
-
-          <Vertex position={initial_side.initial} color="#55FF55" />
-          <Vertex position={initial_side.terminal} color="#55FF55" />
-
-          <Continuation color="#55FF55" position={terminal_side.continuation} />
-
-          <>
-            <CatmullRomLine points={[
-              initial_side.initial_continuation,
-              add(initial_side.initial, [0, 0, 0]),
-              add(initial_side.terminal, [0, 0, 0]),
-              initial_side.terminal_continuation,
-            ]} color="orange" lineWidth={line.width * 1.5}/>
-
-            <Vertex position={initial_side.initial_continuation} color="#1C2127" />
-            <Continuation position={initial_side.initial_continuation} color="orange" />
-            <Vertex position={initial_side.terminal_continuation} color="#1C2127" />
-            <Continuation position={initial_side.terminal_continuation} color="orange" />
-
-            {/* 1C2127 quick for background */}
-            <Vertex position={initial_side.initial} color="#1C2127" />
-            <Vertex position={initial_side.initial} color="#FF5555" />
-
-            <CatmullRomLine points={[
-              add(initial_side.initial, [0, -15, 0]),
-              initial_side.initial,
-              add(initial_side.initial, [0, 15, 0]),
-            ]} color="#FF5555" lineWidth={line.width * 1.5}/>
-
-            <Vertex position={add(initial_side.initial, [0, -15, 0])} color="#1C2127" />
-            <Continuation position={add(initial_side.initial, [0, -15, 0])} color="#FF5555" />
-
-            <Vertex position={initial_side.terminal} color="#1C2127" />
-            <Vertex position={initial_side.terminal} color="orange" />
-
-            <CatmullRomLine points={[
-              add(initial_side.initial, [0, 15, 0]),
-              add(initial_side.initial, [0, 30, 0]),
-              add(initial_side.initial, [0, 45, 0]),
-            ]} color="#5555FF" lineWidth={line.width * 1.5}/>
-
-            <Vertex position={add(initial_side.initial, [0, 30, 0])} color="#5555FF" />
-            <Circle position={add(initial_side.initial, [0, 15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
-
-            <Vertex position={add(initial_side.initial, [0, 45, 0])} color="#1C2127" />
-            <Continuation position={add(initial_side.initial, [0, 45, 0])} color="#5555FF" />
-
-          </>
-
-         <>
-           <CatmullRomLine points={[
-             terminal_side.initial_continuation,
-             add(terminal_side.initial, [0, 0, 0]),
-             add(terminal_side.terminal, [0, 0, 0]),
-             terminal_side.terminal_continuation,
-           ]} color="orange" lineWidth={line.width * 1.5}/>
-
-           <Vertex position={terminal_side.initial_continuation} color="#1C2127" />
-           <Continuation position={terminal_side.initial_continuation} color="orange" />
-           <Vertex position={terminal_side.terminal_continuation} color="#1C2127" />
-           <Continuation position={terminal_side.terminal_continuation} color="orange" />
-
-           {/* 1C2127 quick for background */}
-           <Vertex position={terminal_side.initial} color="#1C2127" />
-           <Vertex position={terminal_side.initial} color="#FF5555" />
-
-           <Continuation position={add(terminal_side.continuation, [tilt - 10, 15, 0])} color="#FF5555" />
-
-           <CatmullRomLine points={[
-             add(terminal_side.continuation, [tilt - 10 - torus.radius, 15, 0]),
-             terminal_side.initial,
-             add(terminal_side.initial, [tilt, -7.5, 0]),
-             add(terminal_side.initial, [tilt, -15, 0]),
-           ]} color="#FF5555" lineWidth={line.width * 1.5}/>
-
-           <Vertex position={terminal_side.terminal} color="#1C2127" />
-           <Vertex position={terminal_side.terminal} color="#5555FF" />
-
-           <CatmullRomLine points={[
-             add(terminal_side.continuation, [-tilt - 10 - torus.radius, -15, 0]),
-             terminal_side.terminal,
-             add(terminal_side.initial, [tilt + 6, -22.5, 0]),
-             add(terminal_side.initial, [tilt, -15, 0]),
-           ]} color="#5555FF" lineWidth={line.width * 1.5}/>
-
-           <Circle position={add(terminal_side.initial, [tilt, -15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
-
-           <Continuation position={add(terminal_side.continuation, [-tilt - 10, -15, 0])} color="#5555FF" />
-         </>
-        </>
-
-        // const left = add(position, [-20, 0, 0]);
-        // const right = add(position, [20, 0, 0]);
-
-        return <>
+          {/*<RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={add(left, [-20, 20, 0])} />*/}
           <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
 
           {/* Line now starts in the center of the torus tube */}
@@ -564,12 +577,12 @@ const InterfaceObject = ({
       {...props}
     >
       <RenderedRay reference={selection} scale={scale} />
-      <group position={[0, -80, 0]}>
-        <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={8.0}>
-          Rewriting a Binary Superposition to a specific value
+      {/*<group position={[0, -80, 0]}>*/}
+      {/*  <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={8.0}>*/}
+      {/*    Rewriting a Binary Superposition to a specific value*/}
 
-        </Text>
-      </group>
+      {/*  </Text>*/}
+      {/*</group>*/}
     </group>
   )
 }
