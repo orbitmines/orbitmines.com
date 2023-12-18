@@ -1,7 +1,7 @@
 import React from 'react';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import {Row} from '../../lib/layout/flexbox';
-import ORGANIZATIONS from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {PaperProps} from "../../lib/paper/Paper";
 import BR from "../../lib/paper/layout/BR";
@@ -10,33 +10,23 @@ import Reference, {useCounter} from "../../lib/paper/layout/Reference";
 import {PROFILES} from "../../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import Arc from "../../lib/paper/layout/Arc";
-import TODO from "../../lib/paper/layout/TODO";
 import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
 import {Intent, Tag} from "@blueprintjs/core";
 
-const OnOrbits = () => {
-  const navigate = useNavigate();
-
-  const referenceCounter = useCounter();
-
-  const OnIntelligibilityReference = <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} />;
-
-  const paper: Omit<PaperProps, 'children'> = {
+export const ON_ORBITS: Content = {
+  reference: {
     /**
      * Orbits: Equivalence at Continuations
      * Equivalence: Variance made Invariant (Ignored Variance)
      * Inconsistencies: Variance
      */
-    title: renderable<string>("On Orbits, Equivalence and Inconsistencies"),
-    subtitle: renderable<string>("", (value: any) => <>
-      A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility {OnIntelligibilityReference}.
-    </>),
+    title: "On Orbits, Equivalence and Inconsistencies",
+    subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility.",
     draft: true,
+    link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies',
+    year: "2023",
     date: "2023-12-31",
-    pdf: {
-      fonts: [ JetBrainsMono ],
-    },
     external: {
       // TODO;
       // discord: {serverId: '1055502602365845534', channelId: '1105246681915732108', link: () => "https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108"}
@@ -51,6 +41,24 @@ const OnOrbits = () => {
         ORGANIZATIONS.orcid.key,
       ].includes(profile.organization.key))
     }],
+  }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "December, 2023"
+}
+
+const OnOrbits = () => {
+  const navigate = useNavigate();
+
+  const referenceCounter = useCounter();
+
+  const OnIntelligibilityReference = <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} />;
+
+  const paper: Omit<PaperProps, 'children'> = {
+    ...ON_ORBITS.reference,
+    subtitle: renderable<string>("", (value: any) => <>
+      A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility {OnIntelligibilityReference}.
+    </>),
+    pdf: {
+      fonts: [ JetBrainsMono ],
+    },
     Reference: (props: {}) => (<></>),
     references: referenceCounter
   }

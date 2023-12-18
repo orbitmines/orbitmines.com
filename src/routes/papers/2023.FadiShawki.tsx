@@ -10,6 +10,7 @@ import Profile from "../../profiles/Profile";
 import {Reference} from "../../lib/paper/layout/Reference";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
+import {ON_ORBITS} from "./2023.OnOrbits";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -36,13 +37,15 @@ const FadiShawki = () => {
 
       {/*</Section>*/}
       {/*<Section head="Writing a paper on most of the above">*/}
-      {/*  <Link link="https://orbitmines.com/papers/on-orbits" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />*/}
+      {/*  <Link link="https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />*/}
       {/*</Section>*/}
     </Arc>
 
     <Arc head="Writings">
       <Section head="Theoretics">
-        <Reference index={0} reference={{...ON_INTELLIGIBILITY.reference}} start="xs" style={{fontSize: '0.8rem'}} />
+        {[ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+          <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
+        ))}
       </Section>
     </Arc>
 

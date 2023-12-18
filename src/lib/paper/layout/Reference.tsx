@@ -113,6 +113,7 @@ export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttr
 
     published,
 
+    date,
     year,
     link,
 
@@ -146,7 +147,7 @@ export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttr
     : _.compact([author ? `${author}.` : author, title ? `"${title}"` : '', journal, year ? `(${year})` : '', pointer]).join(' ')
 
   const inline_reference = () => React.createElement(link ? 'a' : 'span', {
-    ...(link ? { href: link, target: '_blank' } : {}),
+    ...(link ? { href: link.replace("https://orbitmines.com", ""), target: '_blank' } : {}),
     children: <>
       {display}
     </>
@@ -160,7 +161,7 @@ export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttr
       <Row>
         <Col xs={12}>
           {React.createElement(link ? 'a' : 'span', {
-            ...(link ? { href: link, target: '_blank', className: 'child-mr-2' } : {}),
+            ...(link ? { href: link.replace("https://orbitmines.com", ""), target: '_blank', className: 'child-mr-2' } : {}),
             children: <>
               {(organizations ?? []).map(organization => {
                 if (organization?.assets?.icon_png)
@@ -177,7 +178,7 @@ export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttr
         </Col>
         <Col xs={12}>
           <Row start="xs" className="bp5-text-muted" style={{display: 'inline'}}>
-            {_.compact([year ? `${year}.` : '', author]).join(' ')}
+            {_.compact([(year || date) ? `${date ?? year}.` : '', author]).join(' ')}
           </Row>
         </Col>
         {subtitle ? <Col xs={12}>
