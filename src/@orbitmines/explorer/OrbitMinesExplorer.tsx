@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {empty, empty_vertex, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
 import {CatmullRomLine, Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
@@ -41,6 +41,37 @@ const Line = ({ start, mid, end, scale, color = line.color }: any) =>
 const circle = { radius: 3,  color: "orange", segments: 30, }
 const Vertex = ({ position, color = circle.color }: any) =>
   <Circle position={position} material-color={color} args={[circle.radius, circle.segments]} />
+
+const BinaryValue = ({ boolean, position }: any) => {
+  if (boolean)
+    return <BinaryValue boolean={false} position={add(position, [0, -40, 0])}/>
+
+  const halfTorus = (torus.radius + (torus.tube.width / 2));
+
+  const up = add(position, [0, 60, 0]);
+  const middle = add(position, [0, 20, 0]);
+  const down = add(position, [0, -20, 0]);
+
+  return <>
+    <CatmullRomLine points={[
+      add(down, [0, halfTorus, 0]),
+      middle
+    ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+    <CatmullRomLine points={[
+      middle,
+      add(up, [0, -halfTorus, 0]),
+    ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+
+    <Circle position={middle} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+
+    <Circle position={position} material-color="#FF5555" args={[circle.radius, circle.segments]}/>
+    <Circle position={add(position, [0, 40, 0])} material-color="#5555FF" args={[circle.radius, circle.segments]}/>
+
+    <Continuation color="#FF5555" position={down} />
+    <Continuation color="#5555FF" position={up} />
+
+  </>
+}
 
 const BinarySuperposition = ({ position }: any) => {
   const halfTorus = (torus.radius + (torus.tube.width / 2));
@@ -308,6 +339,9 @@ const RenderedRay = (
         //  </>
         // </>
 
+        // const left = add(position, [-20, 0, 0]);
+        // const right = add(position, [20, 0, 0]);
+
         const left = add(position, [-20, 0, 0]);
         const right = add(position, [20, 0, 0]);
 
@@ -329,9 +363,38 @@ const RenderedRay = (
 
           {/* Line now starts in the center of the torus tube */}
           <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
-          <Vertex position={position} />
+
+          {/*<Vertex position={position} />*/}
           {/*<BinarySuperposition position={position} />*/}
           <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
+
+          {_.sample([true, false])
+            ? <BinarySuperposition position={position} />
+            : <BinaryValue position={position} boolean={_.sample([false, true])} />
+          }
+
+          <group rotation={[0, 0, Math.PI / 2]}>
+
+          </group>
+          {/*{<>*/}
+          {/*  <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />*/}
+
+          {/*  /!* Line now starts in the center of the torus tube *!/*/}
+          {/*  <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />*/}
+
+          {/*  /!*<Vertex position={position} />*!/*/}
+          {/*  /!*<BinarySuperposition position={position} />*!/*/}
+          {/*  <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />*/}
+
+          {/*  {_.sample([true, false])*/}
+          {/*    ? <BinarySuperposition position={position} />*/}
+          {/*    : <BinaryValue position={position} boolean={_.sample([false, true])} />*/}
+          {/*  }*/}
+
+          {/*  <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />*/}
+
+          {/*</>}*/}
+
           <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
 
           {/*<Torus*/}
@@ -718,9 +781,20 @@ const OrbitMinesExplorer = (
       {...mergeListeners(...listeners, listener)}
     >
 
-      <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white" />
+      <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white"/>
       <InterfaceObject scale={1.5}/>
 
+      {/*<group scale={1.5}>*/}
+      {/*  <Line start={add([20, -60, 0], [0, torus.radius, 0])} end={add([20, 193, 0], [0, -torus.radius, 0])} scale={1.5} />*/}
+
+      {/*  <Vertex position={[20, 0, 0]} color="#1C2127" />*/}
+      {/*  <Vertex position={[20, 133, 0]} color="#1C2127" />*/}
+      {/*  <Continuation color="orange" position={[20, -60, 0]}/>*/}
+      {/*  <Continuation color="orange" position={[20, 193, 0]}/>*/}
+      {/*</group>*/}
+      {/*<group position={[0, 200, 0]}>*/}
+      {/*  <InterfaceObject scale={1.5}/>*/}
+      {/*</group>*/}
     </VisualizationCanvas>
   );
 };
