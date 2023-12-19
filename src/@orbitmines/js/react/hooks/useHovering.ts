@@ -1,5 +1,5 @@
 import {useState} from "react";
-import IModule, {useModule} from "./IModule";
+import IModule, {useModule} from "../IModule";
 
 export const HOVERING_MODULE = 'hovering';
 

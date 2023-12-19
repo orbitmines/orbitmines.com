@@ -1,10 +1,7 @@
 import {HotkeysProvider} from '@blueprintjs/core';
-import React, {createContext} from 'react';
-import IModule from "./lib/react-hooks/modules/IModule";
-import useHoveringModule from "./lib/react-hooks/modules/useHovering";
-import useHotkeysModule from "./lib/react-hooks/modules/useHotkeys";
-import {mergeListeners} from "./lib/react-hooks/IEventListener";
-import { Children } from "./lib/typescript/React";
+import React from 'react';
+import IEventListener from "./@orbitmines/js/react/IEventListener";
+import {Children} from "./lib/typescript/React";
 import {Route, Routes} from 'react-router-dom';
 import Root from "./routes/Root";
 import Paper from "./routes/Paper";
@@ -13,41 +10,8 @@ import {Helmet} from "react-helmet";
 import OrbitMinesExplorer from "./@orbitmines/explorer/OrbitMinesExplorer";
 import Legacy from "./lib/layout/experimental-designs/Legacy";
 import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
-
-export const ModulesContext = createContext<IModule<any>[]>([]);
-
-export const Modules = ({children}: Children) => {
-  const modules: IModule<any>[] = [
-    useHoveringModule(),
-    useHotkeysModule({
-      combo: "R",
-      global: true,
-      label: "Refresh data",
-      onKeyDown: () => console.info("Refreshing data..."),
-    }, {
-      combo: "mod + shift + a",
-      global: true,
-      label: "asd",
-      onKeyDown: () => console.info("Holding ctrl..."),
-    }, {
-      combo: "mod + scroll",
-      global: true,
-      label: "asd",
-      onKeyDown: () => console.info("Holding ctrl + scroll..."),
-    })
-  ];
-
-  return <ModulesContext.Provider value={modules}>
-    <div
-      className="bp5-dark"
-
-      tabIndex={0}
-      {...mergeListeners(...modules)}
-    >
-      {children}
-    </div>
-  </ModulesContext.Provider>
-}
+import Modules from "./@orbitmines/js/react/Modules";
+import Icons from "./lib/layout/experimental-designs/Icons";
 
 export const Router = () => {
 
@@ -63,6 +27,7 @@ export const Router = () => {
     <Route path="experimental">
       <Route path="legacy" element={<Legacy />} />
       <Route path="blueprintjs" element={<BlueprintJS />} />
+      <Route path="icons" element={<Icons />} />
     </Route>
   </Routes>
 }
@@ -81,11 +46,17 @@ export const Metadata = ({children}: Children) => {
 }
 
 function App() {
+  const listener: IEventListener<any> = {
+    onKeyDown: (event): void => {
+      console.log(event.key)
+    }
+  }
+
   return (
     <Metadata>
       {/*// HotkeysProvider: https://blueprintjs.com/docs/#core/context/hotkeys-provider*/}
       <HotkeysProvider>
-        <Modules>
+        <Modules className="bp5-dark" listeners={[listener]}>
           <Router/>
         </Modules>
       </HotkeysProvider>
