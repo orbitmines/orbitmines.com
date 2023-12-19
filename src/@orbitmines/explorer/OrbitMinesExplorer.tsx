@@ -39,7 +39,7 @@ const Line = ({ start, mid, end, scale, color = line.color }: any) =>
   />
 
 const circle = { radius: 3,  color: "orange", segments: 30, }
-const Vertex = ({ position, color = circle.color }: any) =>
+export const Vertex = ({ position, color = circle.color }: any) =>
   <Circle position={position} material-color={color} args={[circle.radius, circle.segments]} />
 
 const BinaryValue = ({ boolean, position }: any) => {
@@ -126,7 +126,7 @@ const BinarySuperposition = ({ position }: any) => {
 }
 
 // In principle, this should be anything, this is just for the initial setup
-const RenderedRay = (
+export const RenderedRay = (
   props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, }
 ) => {
   const {
@@ -364,14 +364,14 @@ const RenderedRay = (
           {/* Line now starts in the center of the torus tube */}
           <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
 
-          {/*<Vertex position={position} />*/}
+          <Vertex position={position} />
           {/*<BinarySuperposition position={position} />*/}
           <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
 
-          {_.sample([true, false])
-            ? <BinarySuperposition position={position} />
-            : <BinaryValue position={position} boolean={_.sample([false, true])} />
-          }
+          {/*{_.sample([true, false])*/}
+          {/*  ? <BinarySuperposition position={position} />*/}
+          {/*  : <BinaryValue position={position} boolean={_.sample([false, true])} />*/}
+          {/*}*/}
 
           <group rotation={[0, 0, Math.PI / 2]}>
 

@@ -13,6 +13,12 @@ import Arc from "../../lib/paper/layout/Arc";
 import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
 import {Intent, Tag} from "@blueprintjs/core";
+import Visualization, {VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import {Circle} from "@react-three/drei";
+import {Block} from "../../lib/syntax-highlighting/CodeBlock";
+import {RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
+import {empty_vertex, Ray} from "../../@orbitmines/explorer/Ray";
+import {Option} from "../../@orbitmines/js/utils/Option";
 
 export const ON_ORBITS: Content = {
   reference: {
@@ -65,8 +71,43 @@ const OnOrbits = () => {
 
   return <Paper {...paper}>
     <Row center="xs">
-      <Section head="A quick Introduction">
+      <Section head="A quick gently introduction">
+        <span style={{textAlign: 'left'}}>
+        It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span className="bp5-text-muted">single thing, node, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.
+        </span>
 
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas>
+            <group scale={1.5}><Vertex color="orange" /></group>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Clear enough, this could represent any (single) thing. Quite useful, like any abstraction, but there's something incredibly easy to ignore - or miss, that it could be a possible question to ask.
+
+        <BR/>
+
+        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it was before, it has become part of another structure: The line you just imagined. The easy thing to miss being, that this was already the case. In order for your possibility to - point out - this point, you had already constructed this line. It was simply ignored, it was simply deemed irrelevant.
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas>
+            <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
+            <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        This is in short, what this string of text is about. Things, ignored context, and a slightly different way of thinking about them.
+
+        <BR/>
+
+        It's quite likely that these ideas are the culmination of having abstracted so far, - blurred together so many concepts -, that it might not be too obvious why thinking along these lines could be useful. Allow me to take you through this wilderness, and perhaps we might discover something of interest:
       </Section>
     </Row>
 
