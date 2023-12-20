@@ -1,3 +1,6 @@
 [submodule "src/@orbitmines/external/github.com/ncatlab/nlab"]
 	path = src/@orbitmines/external/github.com/ncatlab/nlab
 	url = https://github.com/ncatlab/nlab
+[submodule "src/@orbitmines/external/github.com/JonathanGorard/Categorica"]
+	path = src/@orbitmines/external/github.com/JonathanGorard/Categorica
+	url = git@github.com:JonathanGorard/Categorica.git
