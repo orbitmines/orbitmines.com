@@ -1,0 +1,3 @@
+[submodule "src/@orbitmines/external/github.com/titzer/wizard-engine"]
+	path = src/@orbitmines/external/github.com/titzer/wizard-engine
+	url = git@github.com:titzer/wizard-engine.git
