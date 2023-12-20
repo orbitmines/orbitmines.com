@@ -1,0 +1,3 @@
+[submodule "src/@orbitmines/external/github.com/ncatlab/nlab"]
+	path = src/@orbitmines/external/github.com/ncatlab/nlab
+	url = https://github.com/ncatlab/nlab
