@@ -1,0 +1,12 @@
+[submodule "src/@orbitmines/external/github.com/HigherOrderCO/HVM"]
+	path = src/@orbitmines/external/github.com/HigherOrderCO/HVM
+	url = https://github.com/HigherOrderCO/HVM
+[submodule "src/@orbitmines/external/github.com/HigherOrderCO/Kind"]
+	path = src/@orbitmines/external/github.com/HigherOrderCO/Kind
+	url = https://github.com/HigherOrderCO/Kind
+[submodule "src/@orbitmines/external/github.com/HigherOrderCO/hvm-lang"]
+	path = src/@orbitmines/external/github.com/HigherOrderCO/hvm-lang
+	url = https://github.com/HigherOrderCO/hvm-lang
+[submodule "src/@orbitmines/external/github.com/HigherOrderCO/hvm-core"]
+	path = src/@orbitmines/external/github.com/HigherOrderCO/hvm-core
+	url = https://github.com/HigherOrderCO/hvm-core
