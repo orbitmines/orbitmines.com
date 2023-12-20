@@ -1,0 +1,3 @@
+[submodule "src/@orbitmines/external/github.com/quantomatic/pyzx"]
+	path = src/@orbitmines/external/github.com/quantomatic/pyzx
+	url = git@github.com:Quantomatic/pyzx.git
