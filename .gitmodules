@@ -1,0 +1,3 @@
+[submodule "src/@orbitmines/external/github.com/tinygrad/tinygrad"]
+	path = src/@orbitmines/external/github.com/tinygrad/tinygrad
+	url = git@github.com:tinygrad/tinygrad.git
