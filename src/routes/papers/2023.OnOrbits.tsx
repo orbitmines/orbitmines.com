@@ -14,7 +14,7 @@ import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
 import {Intent, Tag} from "@blueprintjs/core";
 import Visualization, {VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
-import {Circle} from "@react-three/drei";
+import {Center, Circle} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
 import {RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {empty_vertex, Ray} from "../../@orbitmines/explorer/Ray";
@@ -90,13 +90,12 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it was before, it has become part of another structure: The line you just imagined. The easy thing to miss being, that this was already the case. In order for your possibility to - point out - this point, you had already constructed this line. It was simply ignored, it was simply deemed irrelevant.
+        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it was before, it has become part of another structure: The line you just imagined. The easy thing to miss being, that this was already the case. In order to - point out - this point, you had already constructed this line. It was simply ignored, it was simply deemed irrelevant.
 
         <BR/>
 
         <Block>
           <VisualizationCanvas>
-            <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
             <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
           </VisualizationCanvas>
         </Block>
@@ -111,7 +110,145 @@ const OnOrbits = () => {
       </Section>
     </Row>
 
-    <Arc head="Arc: Theoretics">
+    <Arc head="Arc: Theoretics - An Introduction to Rays">
+      Let's slowly take apart why that example might be a gateway into an incredibly complicated world. Take for instance, that point, but visualized in this unusual way.
+
+      <BR/>
+
+      <Block>
+        <VisualizationCanvas>
+          <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
+        </VisualizationCanvas>
+      </Block>
+
+      <BR/>
+
+      From the perspective of the visualization, you could think of it this way: I don't know exactly what this point is or how I know about it, but I have a way to 'point' to it. But this isn't quite enough. You might like to say more about its structure - or what that thing is.
+
+      <BR/>
+
+      <Section head="On Continuations">
+        <span style={{textAlign: 'left'}}>Consider the following: If I have a way of pointing to some node. I could take that pointer and ask: What if there were more points in that direction? This could mean quite a few things. <span className="bp5-text-muted">Whether there's additional points behind the point, or between my eyes and the point. Whether I mean a(n) array, set, line, path, hyperedge, ..., list.</span> As a way of saying: "Whenever I have 'one' of something, I can always say: What if I had more of that thing?".</span>
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas>
+            <Center>
+              <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
+                .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                .as_option()} scale={1.5}/></group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        This raises several questions. () How do you even construct a continuation like that? () What does it mean to have something in between two points? () What does it mean for a continuation to go in a loop? () () ()
+      </Section>
+      <Section sub="Constructing Continuations - Continuations as Equivalence">
+        There's already something we could say about continuing a line, even without much rigor on how to actually construct it. Say we have two points,
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        In order to connect them together we simply say that the "end" of one point, is the same as the "beginning" of the other point <Reference is="footnote" index={referenceCounter()}>This is, in essence, category theory.</Reference>.
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        But it's not entirely obvious what one even means by that. Let's already assume I have something with which I can construct a line like that. I could say that the two points I'm interested in regarding as "the same" are on a line.
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        If I add my two 'ends' on it which I want to regard as "the same",
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={empty_vertex().as_reference()
+                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                  .as_option()} scale={1.5}/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
+                    .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                    .as_option()} scale={1.5}/></group>
+                  <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
+                    .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
+                    .as_option()} scale={1.5}/></group>
+                </group>
+
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Alright, this is already showing something interesting. Imagine this: I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.
+
+      </Section>
+
+
       <Section head="On Inconsistencies" sub={<span>
        Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Variance
       </span>}>
