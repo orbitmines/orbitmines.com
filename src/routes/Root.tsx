@@ -95,15 +95,17 @@ const Root = () => {
         <H3 className="m-0">Papers</H3>
       </Row>
 
-      {papers.map(paper => (<Row center="xs" className="child-px-3">
-        <Col xs={12} sm={10} md={8} lg={6} xl={5}>
-          <Reference index={0} reference={{...paper.reference, notes: undefined}} center="xs"
-                     style={{fontSize: '0.8rem'}}/>
-          {/*<a href={paper.reference.link?.replace("https://orbitmines.com/papers", "")}>*/}
-          {/*    <Icon icon="link" /> {paper.reference.year}. <Rendered renderable={paper.reference.title} />*/}
-          {/*</a>*/}
-        </Col>
-      </Row>))}
+      <div className="child-px-2">
+        {papers.map(paper => (<Row center="xs">
+          <Col xs={12} sm={10} md={8} lg={6} xl={5}>
+            <Reference index={0} reference={{...paper.reference, notes: undefined}} center="xs"
+                       style={{fontSize: '0.8rem'}} target="_self"/>
+            {/*<a href={paper.reference.link?.replace("https://orbitmines.com/papers", "")}>*/}
+            {/*    <Icon icon="link" /> {paper.reference.year}. <Rendered renderable={paper.reference.title} />*/}
+            {/*</a>*/}
+          </Col>
+        </Row>))}
+      </div>
 
       <Row center="xs">
         <Divider style={{width: '80%'}}/>

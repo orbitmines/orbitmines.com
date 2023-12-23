@@ -90,9 +90,10 @@ export type ReferenceProps = {
   notes?: { render: () => ReactNode, date: string }[]
 };
 
-export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttributes<HTMLElement> & RowProps & ReferenceStyle & FootnoteProps) => {
+export const Reference = (props: { reference?: ReferenceProps, target?: string } & React.HTMLAttributes<HTMLElement> & RowProps & ReferenceStyle & FootnoteProps) => {
   const {
     reference,
+    target = "_blank",
 
     simple,
     inline = false,
@@ -147,7 +148,7 @@ export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttr
     : _.compact([author ? `${author}.` : author, title ? `"${title}"` : '', journal, year ? `(${year})` : '', pointer]).join(' ')
 
   const inline_reference = () => React.createElement(link ? 'a' : 'span', {
-    ...(link ? { href: link.replace("https://orbitmines.com", ""), target: '_blank' } : {}),
+    ...(link ? { href: link.replace("https://orbitmines.com", ""), target } : {}),
     children: <>
       {display}
     </>
@@ -161,7 +162,7 @@ export const Reference = (props: { reference?: ReferenceProps } & React.HTMLAttr
       <Row>
         <Col xs={12}>
           {React.createElement(link ? 'a' : 'span', {
-            ...(link ? { href: link.replace("https://orbitmines.com", ""), target: '_blank', className: 'child-mr-2' } : {}),
+            ...(link ? { href: link.replace("https://orbitmines.com", ""), target, className: 'child-mr-2' } : {}),
             children: <>
               {(organizations ?? []).map(organization => {
                 if (organization?.assets?.icon_png)
