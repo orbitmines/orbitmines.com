@@ -73,7 +73,7 @@ const BinaryValue = ({ boolean, position }: any) => {
   </>
 }
 
-const BinarySuperposition = ({ position }: any) => {
+export const BinarySuperposition = ({ position }: any) => {
   const halfTorus = (torus.radius + (torus.tube.width / 2));
 
   const up = add(position, [0, 20 + halfTorus, 0]);

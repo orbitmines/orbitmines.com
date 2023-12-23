@@ -16,7 +16,7 @@ import {Intent, Tag} from "@blueprintjs/core";
 import {VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
 import {Center} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
-import {Continuation, RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
+import {BinarySuperposition, Continuation, RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {length} from "../../@orbitmines/explorer/Ray";
 
 export const ON_ORBITS: Content = {
@@ -71,7 +71,7 @@ const OnOrbits = () => {
   return <Paper {...paper}>
     <Row center="xs">
       <Section head="A quick gently introduction">
-        <span style={{textAlign: 'left'}}>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>
         It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.
         </span>
 
@@ -109,7 +109,7 @@ const OnOrbits = () => {
       </Section>
     </Row>
 
-    <Arc head="Arc: Theoretics - An Introduction to Rays">
+    <Arc head="Arc: A Visual Introduction to Rays">
       Let's slowly take apart why that example might be a gateway into an incredibly complicated world. Take for instance, that point, but visualized in this unusual way.
 
       <BR/>
@@ -126,8 +126,8 @@ const OnOrbits = () => {
 
       <BR/>
 
-      <Section head="On Continuations">
-        <span style={{textAlign: 'left'}}>Consider the following: If I have a way of pointing to some node. I could take that pointer and ask: What if there were more points in that direction? This could mean quite a few things. <span className="bp5-text-muted">Whether there's additional points behind the point, or between my eyes and the point. Whether I mean a(n) array, set, line, path, hyperedge, ..., list.</span> As a way of saying: "Whenever I have 'one' of something, I can always say: What if I had more of that thing?".</span>
+      <Section head="On Continuations" sub="Constructing Continuations - Continuations as Equivalence">
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Consider the following: If I have a way of pointing to some node. I could take that pointer and ask: What if there were more points in that direction? This could mean quite a few things. <span className="bp5-text-muted">Whether there's additional points behind the point, or between my eyes and the point. Whether I mean a(n) array, set, line, path, hyperedge, collection, ..., list.</span> As a way of saying: "Whenever I have 'one' of something, I can always say: What if I had more of that thing?".</span>
 
         <BR/>
 
@@ -142,8 +142,7 @@ const OnOrbits = () => {
         <BR/>
 
         This raises several questions. () How do you even construct a continuation like that? () What does it mean to have something in between two points? () What does it mean for a continuation to go in a loop? () () ()
-      </Section>
-      <Section sub="Constructing Continuations - Continuations as Equivalence">
+
         There's already something we could say about continuing a line, even without much rigor on how to actually
         construct it. Say we have two points,
 
@@ -231,18 +230,18 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left'}}>Alright, this is already showing something interesting. Imagine this: <span
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Alright, this is already showing something interesting. Imagine this: <span
           className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference
           is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
 
         <BR/>
 
-        <span style={{textAlign: 'left'}}>We could keep <span className="bp5-text-muted">expanding, growing, adding, ..., equivalencing continuations</span>, like we did here,</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>We could keep <span className="bp5-text-muted">expanding, growing, adding, ..., equivalencing continuations</span>, like we did here,</span>
 
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <VisualizationCanvas style={{height: '120px'}}>
             <Center>
               <group>
                 <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -340,8 +339,8 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left'}}>A more interesting thing we can do, is instead to continue the line which defines what we're seeing as possible <span
-          className="bp5-text-muted">continuations, ..., branches</span>.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>A more interesting thing we can do, is instead to continue the line which defines what we're seeing as possible <span
+          className="bp5-text-muted">continuations, merges, ..., branches</span>.</span>
 
         <BR/>
 
@@ -374,7 +373,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        This more abstractly, is just the same thing as we did above. We're just adding equivalences on continuations. What makes it different is the context defined around it. Hence, we get something which looks more like branching, than just adding to a line, even though they can be abstractly realized as the same kind of thing.
+        This more abstractly, is just the same thing as we did above. We're just adding equivalences on continuations. What makes it different is the context defined around it. Hence, we get something which looks more like branching, even though they can be abstractly realized as the same kind of thing.
 
         <BR/>
 
@@ -401,6 +400,128 @@ const OnOrbits = () => {
 
         <BR/>
       </Section>
+      <Section head="On Combinatorics" sub="Constructing Combinatorics - Combinatorics as Equivalence">
+        Before we continue elaborating on what kind of exotic things we can do with the continuations. Let's take a quick step back. Since we'd like to be able to describe anything we might find at each of these points, we'll quickly turn to that first.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>If we'd like to construct things like <span className="bp5-text-muted">numbers, symbols, names, labels, tokens, combinations, ..., permutations</span>. We'll need some way to select a particular value (; point) from a collection of points. For that, we don't actually need anything other than what we've already seen.</span>
+
+        <BR/>
+
+        If we take our simple example of two points,
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        we only need to put another direction on one of them, in order to select between the two.
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Or selecting the other point,
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        And suddenly we have a binary number.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Actually, we could put arbitrarily complicated <span
+          className="bp5-text-muted">graphs, categories, states, ..., structures</span> at each of the points like this, simply by creating arbitrary continuations. And then again at each of those points define even more arbitrary structures.</span>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>One of them could even be putting both our points on our selection, as a sort of <span
+          className="bp5-text-muted">binary superposition, self-loop, identity, boolean, ..., type</span>.</span>
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '80px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group scale={1.5}><BinarySuperposition position={[0, 0, 0]}/></group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Or something interesting like this.
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Though, it's not necessarily obvious how to interpret what it means when one finds additional structure at each of the points.
+      </Section>
+    </Arc>
+    <Arc head="Arc: Theoretics">
+      This next arc will try to elaborate a bit further on some more abstract concepts. Hopefully you'll have gained a slight intuition of these visualizations, so that they'll serve as a guide.
 
       <Section head="On Inconsistencies" sub={<span>
        Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Variance
