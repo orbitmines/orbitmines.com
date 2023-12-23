@@ -553,9 +553,19 @@ const OnOrbits = () => {
     </Arc>
 
     <Arc head="Wrapping up">
-      <Section head="A yearly excerpt of thoughts">
-        In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found a proper language to do so.
+      <Section>
+        What I think this will turn out to be; Is that in the process of trying to understand programming languages, compilation and compression. That I ended up abstracting so far away from them. That aided by having some intuitive notion of hyperedges, I stumbled upon this formulation of Rays.
 
+        <BR/>
+
+        Which is likely either a rediscovery of concepts in category theory, or an even more general, possibly more easily programmable and reprogrammable (; possibly homoiconic) variant of its ideas. Being this general, quite certainly concepts from all kinds of fields should be phrase-able in this (possibly) more visually intuitive way of manipulating concepts.
+      </Section>
+      <Section head="Future inquiries">
+        There are several projects I'm currently expecting to implement within this framing. (1) Category Theory and homotopy type theory, as a handle on more abstract mathematics and computer science. (2) CHYP, as a simple concrete example. (3) (possibly through Chyp) the ZX-calculus or its variants, as a handle on diagrammatic quantum physics. (4) Tinygrad, as a handle on tensor operations. (5) WebAssembly, as a practical tool into the worlds' ecosystem.
+
+        <BR/>
+
+        I expect to along the way encounter, or possibly also implement, LLVM,  HVM & Kind ecosystem, GPU archs, CPU archs, Lean, Agda,
       </Section>
       <Section head="On self-publishing and referencing" sub="Edited personal journeys/histories/... and literary exposure">
         I suspect that this sort of self-(reporting/publishing), necessitates the highlighting of its possible adversarial/game-theoretic properties. With myself and my archives possibly being forgetful or deceitful players, this certainly makes for an interesting dynamic. Consider this quick paragraph as an acknowledgement that I am aware of that, and that I think my attempts aim for accuracy - whether that's actually successful or not -.
@@ -578,6 +588,10 @@ const OnOrbits = () => {
         <BR/>
 
         In this sense, I don't necessarily care about the accuracy of any particular sentence. Whether in this language, or one it's translated to. I care whether the more abstract pattern of ideas which I'm trying to communicate is sufficiently transferred through that language. And the ability to - through time, through correction -, adjust the ideas as deemed by me/you as particularly inconsistent to warrant its change.
+
+      </Section>
+      <Section head="A yearly excerpt of thoughts">
+        In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found - or am starting to find - a proper language to do so.
 
       </Section>
     </Arc>
