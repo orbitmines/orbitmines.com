@@ -13,12 +13,11 @@ import Arc from "../../lib/paper/layout/Arc";
 import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
 import {Intent, Tag} from "@blueprintjs/core";
-import Visualization, {VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
-import {Center, Circle} from "@react-three/drei";
+import {VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import {Center} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
-import {RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
-import {empty_vertex, Ray} from "../../@orbitmines/explorer/Ray";
-import {Option} from "../../@orbitmines/js/utils/Option";
+import {Continuation, RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
+import {length} from "../../@orbitmines/explorer/Ray";
 
 export const ON_ORBITS: Content = {
   reference: {
@@ -73,7 +72,7 @@ const OnOrbits = () => {
     <Row center="xs">
       <Section head="A quick gently introduction">
         <span style={{textAlign: 'left'}}>
-        It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span className="bp5-text-muted">single thing, node, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.
+        It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.
         </span>
 
         <BR/>
@@ -96,7 +95,7 @@ const OnOrbits = () => {
 
         <Block>
           <VisualizationCanvas>
-            <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
+            <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>
           </VisualizationCanvas>
         </Block>
 
@@ -117,7 +116,7 @@ const OnOrbits = () => {
 
       <Block>
         <VisualizationCanvas>
-          <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference().continues_with(new Ray({ js: () => Option.Some("A") }).as_reference()).as_option()} scale={1.5} /></group>
+          <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>
         </VisualizationCanvas>
       </Block>
 
@@ -135,11 +134,7 @@ const OnOrbits = () => {
         <Block>
           <VisualizationCanvas>
             <Center>
-              <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
-                .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                .as_option()} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay reference={length(3)} scale={1.5}/></group>
             </Center>
           </VisualizationCanvas>
         </Block>
@@ -157,12 +152,8 @@ const OnOrbits = () => {
           <VisualizationCanvas>
             <Center>
               <group>
-                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
-                <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555" /></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF" /></group>
               </group>
             </Center>
           </VisualizationCanvas>
@@ -178,12 +169,9 @@ const OnOrbits = () => {
           <VisualizationCanvas>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
-                <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555" /></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF" /></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
           </VisualizationCanvas>
@@ -199,12 +187,8 @@ const OnOrbits = () => {
           <VisualizationCanvas style={{height: '140px'}}>
             <Center>
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
-                <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
               </group>
             </Center>
           </VisualizationCanvas>
@@ -220,21 +204,13 @@ const OnOrbits = () => {
           <VisualizationCanvas style={{height: '140px'}}>
             <Center>
               <group>
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555" /></group>
 
-                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={empty_vertex().as_reference()
-                  .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                  .as_option()} scale={1.5}/></group>
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF" /></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={empty_vertex().as_reference()
-                    .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                    .as_option()} scale={1.5}/></group>
-                  <group scale={1.5}><RenderedRay reference={empty_vertex().as_reference()
-                    .continues_with(new Ray({js: () => Option.Some("A")}).as_reference())
-                    .as_option()} scale={1.5}/></group>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
                 </group>
 
               </group>
@@ -244,7 +220,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Alright, this is already showing something interesting. Imagine this: I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.
+        <span style={{textAlign: 'left'}}>Alright, this is already showing something interesting. Imagine this: <span className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
 
       </Section>
 

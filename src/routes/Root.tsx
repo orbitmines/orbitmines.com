@@ -95,7 +95,7 @@ const Root = () => {
         <H3 className="m-0">Papers</H3>
       </Row>
 
-      {papers.map(paper => (<Row center="xs">
+      {papers.map(paper => (<Row center="xs" className="child-px-2">
         <Col xs={12} sm={10} md={8} lg={6} xl={5}>
           <Reference index={0} reference={{...paper.reference, notes: undefined}} center="xs"
                      style={{fontSize: '0.8rem'}}/>

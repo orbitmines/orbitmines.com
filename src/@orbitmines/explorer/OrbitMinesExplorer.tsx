@@ -21,7 +21,7 @@ const torus = {
   // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
   radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
 }
-const Continuation = ({ color = torus.color, position }: any) =>
+export const Continuation = ({ color = torus.color, position }: any) =>
   <Torus
     args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
     material-color={color}
@@ -127,12 +127,13 @@ const BinarySuperposition = ({ position }: any) => {
 
 // In principle, this should be anything, this is just for the initial setup
 export const RenderedRay = (
-  props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, }
+  props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, color?: string }
 ) => {
   const {
     position = [0, 0, 0],
     reference,
-    scale = 1
+    scale = 1,
+    color = 'orange'
   } = props;
 
   if (reference.is_none() || reference.force().self().is_none())
@@ -184,7 +185,7 @@ export const RenderedRay = (
       }
       case RayType.REFERENCE: {
         if (vertex.is_empty()) // empty reference
-          return <Continuation color="red" position={position} />
+          return <Continuation color={color} position={position} />
 
         // throw 'Not Implemented'
         return <RenderedRay {...props} reference={vertex.self().match({ Some: (ray) => ray.as_reference().as_option(), None: () => Option.None })} />
@@ -359,14 +360,14 @@ export const RenderedRay = (
           {/*<Continuation color="orange" position={add(left, [-40, 60, 0])} />*/}
 
           {/*<RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={add(left, [-20, 20, 0])} />*/}
-          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
+          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} color={color} />
 
           {/* Line now starts in the center of the torus tube */}
-          <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
+          <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} color={color} />
 
-          <Vertex position={position} />
+          <Vertex position={position} color={color} />
           {/*<BinarySuperposition position={position} />*/}
-          <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
+          <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} color={color} />
 
           {/*{_.sample([true, false])*/}
           {/*  ? <BinarySuperposition position={position} />*/}
@@ -395,7 +396,7 @@ export const RenderedRay = (
 
           {/*</>}*/}
 
-          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
+          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} color={color} />
 
           {/*<Torus*/}
           {/*  args={[15, torus.tube.width, torus.segments, torus.tube.segments]}*/}
