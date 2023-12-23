@@ -127,14 +127,18 @@ const BinarySuperposition = ({ position }: any) => {
 
 // In principle, this should be anything, this is just for the initial setup
 export const RenderedRay = (
-  props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, color?: string }
+  props: { reference: Option<Ray> } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
 ) => {
   const {
     position = [0, 0, 0],
     reference,
     scale = 1,
-    color = 'orange'
+    color = 'orange',
+    initial = add(position, [-20, 0, 0]),
+    terminal = add(position, [20, 0, 0]),
   } = props;
+  const left = initial;
+  const right = terminal;
 
   if (reference.is_none() || reference.force().self().is_none())
     return <></>
@@ -343,8 +347,7 @@ export const RenderedRay = (
         // const left = add(position, [-20, 0, 0]);
         // const right = add(position, [20, 0, 0]);
 
-        const left = add(position, [-20, 0, 0]);
-        const right = add(position, [20, 0, 0]);
+        const isVertical = position[1] !== left[1];
 
         return <>
           {/*<Line start={add(left, [-40, 0, 0])} end={add(left, [-40, 60, 0])} scale={scale} />*/}
@@ -363,7 +366,11 @@ export const RenderedRay = (
           <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} color={color} />
 
           {/* Line now starts in the center of the torus tube */}
-          <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} color={color} />
+          {isVertical
+            ? <Line end={add(left, [0, torus.radius * (position[1] < left[1] ? -1 : 1), 0])} start={position} scale={scale} color={color} />
+            : <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} color={color} />
+          }
+
 
           <Vertex position={position} color={color} />
           {/*<BinarySuperposition position={position} />*/}

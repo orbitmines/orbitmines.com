@@ -144,7 +144,8 @@ const OnOrbits = () => {
         This raises several questions. () How do you even construct a continuation like that? () What does it mean to have something in between two points? () What does it mean for a continuation to go in a loop? () () ()
       </Section>
       <Section sub="Constructing Continuations - Continuations as Equivalence">
-        There's already something we could say about continuing a line, even without much rigor on how to actually construct it. Say we have two points,
+        There's already something we could say about continuing a line, even without much rigor on how to actually
+        construct it. Say we have two points,
 
         <BR/>
 
@@ -152,8 +153,9 @@ const OnOrbits = () => {
           <VisualizationCanvas>
             <Center>
               <group>
-                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555" /></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF" /></group>
+                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
               </group>
             </Center>
           </VisualizationCanvas>
@@ -161,7 +163,9 @@ const OnOrbits = () => {
 
         <BR/>
 
-        In order to connect them together we simply say that the "end" of one point, is the same as the "beginning" of the other point <Reference is="footnote" index={referenceCounter()}>This is, in essence, category theory.</Reference>.
+        In order to connect them together we simply say that the "end" of one point, is the same as the "beginning" of
+        the other point <Reference is="footnote" index={referenceCounter()}>This is, in essence, category
+        theory.</Reference>.
 
         <BR/>
 
@@ -169,8 +173,9 @@ const OnOrbits = () => {
           <VisualizationCanvas>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555" /></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF" /></group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -179,7 +184,9 @@ const OnOrbits = () => {
 
         <BR/>
 
-        But it's not entirely obvious what one even means by that. Let's already assume I have something with which I can construct a line like that. I could say that the two points I'm interested in regarding as "the same" are on a line.
+        But it's not entirely obvious what one even means by that. Let's already assume I have something with which I
+        can construct a line like that. I could say that the two points I'm interested in regarding as "the same" are on
+        a line.
 
         <BR/>
 
@@ -187,8 +194,9 @@ const OnOrbits = () => {
           <VisualizationCanvas style={{height: '140px'}}>
             <Center>
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF55FF"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
               </group>
             </Center>
           </VisualizationCanvas>
@@ -196,7 +204,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        If I add my two 'ends' on it which I want to regard as "the same",
+        <span style={{textAlign: 'left', minWidth: '100%'}}>If I add my two '<span className="bp5-text-muted">ends, extremes, ..., boundaries</span>', which I want to regard as "the same" to this line,</span>
 
         <BR/>
 
@@ -204,13 +212,16 @@ const OnOrbits = () => {
           <VisualizationCanvas style={{height: '140px'}}>
             <Center>
               <group>
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555" /></group>
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
 
-                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF" /></group>
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#5555FF"/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF" /></group>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
                 </group>
 
               </group>
@@ -220,10 +231,176 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left'}}>Alright, this is already showing something interesting. Imagine this: <span className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
+        <span style={{textAlign: 'left'}}>Alright, this is already showing something interesting. Imagine this: <span
+          className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference
+          is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
 
+        <BR/>
+
+        <span style={{textAlign: 'left'}}>We could keep <span className="bp5-text-muted">expanding, growing, adding, ..., equivalencing continuations</span>, like we did here,</span>
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+
+                <group position={[55, 23, 0]}>
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <group scale={1.5} position={[-60, 0, 0]}>
+                      <RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/>
+                    </group>
+                  </group>
+                  <group scale={1.5} position={[30, -60, 0]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/>
+                  </group>
+                </group>
+
+                <group rotation={[0, 0, Math.PI / 8]} position={[55, -6, 0]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#AA00AA"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#AA00AA"/></group>
+                </group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                </group>
+
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        or keep doing the same thing by adding to the line,
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '140px'}}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#5555FF"/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                </group>
+
+
+                <group scale={1.5} position={[90, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#55FF55"/></group>
+                <group rotation={[0, 0, Math.PI / 2]} position={[60, 0, 0]}>
+
+                  <group scale={1.5}><RenderedRay position={[-40, 0, 0]} reference={length(1)} scale={1.5}
+                                                  color="#55FFFF"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FFFF"/></group>
+                </group>
+
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        which would correspond to this line,
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#55FF55"/></group>
+                <group scale={1.5}><Continuation position={[20, 0, 0]} color="#55FFFF"/></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        but it doesn't necessarily get us anywhere on its own. So let's ignore those expansions for now.
+
+        <BR/>
+
+        <span style={{textAlign: 'left'}}>A more interesting thing we can do, is instead to continue the line which defines what we're seeing as possible <span
+          className="bp5-text-muted">continuations, ..., branches</span>.</span>
+
+        <BR/>
+
+        <Block>
+          <VisualizationCanvas style={{height: '200px'}}>
+            <Center>
+              <group>
+
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#5555FF"/></group>
+
+                <group scale={1.5} position={[30, 60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#3030FC"/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#FF55FF"/></group>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                </group>
+
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        This more abstractly, is just the same thing as we did above. We're just adding equivalences on continuations. What makes it different is the context defined around it. Hence, we get something which looks more like branching, than just adding to a line, even though they can be abstractly realized as the same kind of thing.
+
+        <BR/>
+
+
+        <Block>
+          <VisualizationCanvas style={{height: '90px'}}>
+            <Center>
+              <group>
+
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+
+                <group scale={1.5} position={[30, -30, 0]}><RenderedRay initial={[-20, 20, 0]} reference={length(1)} scale={1.5}
+                                                                        color="#5555FF"/></group>
+
+                <group scale={1.5} position={[30, 30, 0]}><RenderedRay initial={[-20, -20, 0]} reference={length(1)} scale={1.5}
+                                                                       color="#3030FC"/></group>
+
+                <group scale={1.5}><Continuation color="#FF55FF" /></group>
+              </group>
+            </Center>
+          </VisualizationCanvas>
+        </Block>
+
+        <BR/>
       </Section>
-
 
       <Section head="On Inconsistencies" sub={<span>
        Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Variance
