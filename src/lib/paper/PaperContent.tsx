@@ -31,45 +31,60 @@ export const HorizontalLine = () => <>
   <Row/>
 </>
 
+export const PaperHeader = (props: PaperProps) => {
+  const {
+    title,
+    subtitle,
+    date,
+    draft,
+    organizations,
+    authors
+  } = props;
+
+  return <>
+      <Title><Rendered renderable={title}/></Title>
+      {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
+
+      <Row center="xs" middle="xs" className="child-px-20">
+        {organizations ? <>
+          {organizations.map((organization) => (<Col md={4} xs={12}>
+            <Organization {...organization} />
+          </Col>))}
+
+          <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
+            <Divider style={{height: '80px'}}/>
+          </Col>
+        </> : <></>}
+
+        {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
+          <Author {...author} />
+
+        </Col>))}
+      </Row>
+
+      <Row center="xs" middle="xs" className="child-px-10">
+        {date ? <Col>
+          <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"})}</H3>
+        </Col> : <></>}
+        {draft ? <Col>
+          <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
+        </Col> : <></>}
+      </Row>
+    </>
+}
+
 const PaperContent = (props: PaperProps) => {
-  const {title, subtitle, date, draft, organizations, authors, children, external, exclude_footnotes } = props;
+  const { children, external, exclude_footnotes } = props;
 
   const {discord} = external || {};
 
   const external_links = !!discord;
 
   const Content = <>
-    <Title><Rendered renderable={title}/></Title>
-    {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
-
-    <Row center="xs" middle="xs" className="child-px-20">
-      {organizations ? <>
-        {organizations.map((organization) => (<Col md={4} xs={12}>
-          <Organization {...organization} />
-        </Col>))}
-
-        <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
-          <Divider style={{height: '80px'}}/>
-        </Col>
-      </> : <></>}
-
-      {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
-        <Author {...author} />
-
-      </Col>))}
-    </Row>
-
-    <Row center="xs" middle="xs" className="child-px-10">
-      {date ? <Col>
-        <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
-          day: "numeric",
-          month: "long",
-          year: "numeric"})}</H3>
-      </Col> : <></>}
-      {draft ? <Col>
-        <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
-      </Col> : <></>}
-    </Row>
+    <PaperHeader {...props} />
 
     {external_links ? <Row center="xs" middle="xs" className="child-px-10">
       {discord ? <Col>

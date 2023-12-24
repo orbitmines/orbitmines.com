@@ -5,6 +5,8 @@ import {Children, value} from "../typescript/React";
 import Browser from "./views/Browser";
 import {useLocation, useSearchParams} from "react-router-dom";
 import {ReferenceCounter, ReferenceProps} from "./layout/Reference";
+import {PaperHeader} from "./PaperContent";
+import {Grid, Row} from "../layout/flexbox";
 
 export type PaperProps = ReferenceProps & {
   pdf: PdfProps,
@@ -25,6 +27,32 @@ export const PaperView = (paper: PaperProps) => {
 
   return <Browser paper={paper} />;
 };
+
+export const PaperThumbnail = (
+  { size, ...props }: PaperProps & { size?: { width: number, height: number} }
+) => {
+  const { width = 1920, height = 1080 } = size ?? {};
+
+  const scale = (width / 1240) * 1.1;
+
+  return <div style={{
+    width: `${width}px`,
+    height: `${height}px`,
+  }}>
+    <Row center="xs" middle="xs" style={{height: '100%', width: '100%'}}>
+      <div style={{transform: `scale(${scale})`}}>
+        <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
+          // border: 'solid rgba(143, 153, 168, 0.15) 2px',
+          //     height={1754} width={1240}
+          maxWidth: '1240px',
+          fontSize: '1.1rem'
+        }}>
+          <PaperHeader {...props} />
+        </Grid>
+      </div>
+    </Row>
+  </div>
+}
 
 const Paper = (props: PaperProps) => {
   const location = useLocation();
