@@ -13,7 +13,7 @@ import Arc from "../../lib/paper/layout/Arc";
 import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
 import {Intent, Tag} from "@blueprintjs/core";
-import {VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
 import {Center} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
 import {BinarySuperposition, Continuation, RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
@@ -78,9 +78,9 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas>
+          <CachedVisualizationCanvas alt="naked_point" context={paper} >
             <group scale={1.5}><Vertex color="orange" /></group>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -94,9 +94,9 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas>
+          <CachedVisualizationCanvas alt="empty_vertex" context={paper} >
             <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -115,9 +115,9 @@ const OnOrbits = () => {
       <BR/>
 
       <Block>
-        <VisualizationCanvas>
+        <CachedVisualizationCanvas alt="empty_vertex" context={paper} >
           <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>
-        </VisualizationCanvas>
+        </CachedVisualizationCanvas>
       </Block>
 
       <BR/>
@@ -132,11 +132,11 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas>
+          <CachedVisualizationCanvas alt="3" context={paper} >
             <Center>
               <group scale={1.5}><RenderedRay reference={length(3)} scale={1.5}/></group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -149,7 +149,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas>
+          <CachedVisualizationCanvas alt="two_vertices" context={paper} >
             <Center>
               <group>
                 <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -157,7 +157,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -169,7 +169,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas>
+          <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper} >
             <Center>
               <group>
                 <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -178,7 +178,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -190,7 +190,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_vertical_pink" context={paper}  style={{height: '140px'}}>
             <Center>
               <group rotation={[0, 0, Math.PI / 2]}>
                 <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -198,7 +198,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -208,7 +208,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_expanded_continuation" context={paper}  style={{height: '140px'}}>
             <Center>
               <group>
                 <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -225,7 +225,7 @@ const OnOrbits = () => {
 
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -241,7 +241,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '120px'}}>
+          <CachedVisualizationCanvas alt="2_double_expanded_continuation" context={paper}  style={{height: '120px'}}>
             <Center>
               <group>
                 <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -270,7 +270,7 @@ const OnOrbits = () => {
 
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -280,7 +280,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="3_expanded_continuation" context={paper}  style={{height: '140px'}}>
             <Center>
               <group>
                 <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -307,7 +307,7 @@ const OnOrbits = () => {
 
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -317,7 +317,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas>
+          <CachedVisualizationCanvas alt="3_tertiary" context={paper} >
             <Center>
               <group>
                 <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -330,7 +330,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation position={[20, 0, 0]} color="#55FFFF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -345,7 +345,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '200px'}}>
+          <CachedVisualizationCanvas alt="branch_expanded" context={paper}  style={{height: '200px'}}>
             <Center>
               <group>
 
@@ -368,7 +368,7 @@ const OnOrbits = () => {
 
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -379,7 +379,7 @@ const OnOrbits = () => {
 
 
         <Block>
-          <VisualizationCanvas style={{height: '90px'}}>
+          <CachedVisualizationCanvas alt="branch" context={paper}  style={{height: '90px'}}>
             <Center>
               <group>
 
@@ -395,7 +395,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation color="#FF55FF" /></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -414,7 +414,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_vertical_binary" context={paper}  style={{height: '140px'}}>
             <Center>
               <group rotation={[0, 0, Math.PI / 2]}>
                 <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -423,7 +423,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -433,7 +433,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_select_1" context={paper}  style={{height: '140px'}}>
             <Center>
               <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
 
@@ -444,7 +444,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -454,7 +454,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_select_0" context={paper}  style={{height: '140px'}}>
             <Center>
               <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
 
@@ -465,12 +465,13 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
 
-        And suddenly we have a binary number.
+        <span style={{textAlign: 'left', minWidth: '100%'}}>And suddenly we have a binary number. Note that we can't actually construct what a binary number is, without defining both <span
+          className="bp5-text-muted">our "red" point and our "blue point", ..., or 0/1</span> We need to define additional context, in order to differentiate between the two.</span>
 
         <BR/>
 
@@ -485,13 +486,13 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '80px'}}>
+          <CachedVisualizationCanvas alt="2_superposition" context={paper} style={{height: '80px'}}>
             <Center>
               <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
 
               <group scale={1.5}><BinarySuperposition position={[0, 0, 0]}/></group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -501,7 +502,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <VisualizationCanvas style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_edge" context={paper}  style={{height: '140px'}}>
             <Center>
               <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={length(1)} scale={1.5}/></group>
 
@@ -512,7 +513,7 @@ const OnOrbits = () => {
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
-          </VisualizationCanvas>
+          </CachedVisualizationCanvas>
         </Block>
 
         <BR/>
@@ -522,6 +523,19 @@ const OnOrbits = () => {
     </Arc>
     <Arc head="Arc: Theoretics">
       This next arc will try to elaborate a bit further on some more abstract concepts. Hopefully you'll have gained a slight intuition of these visualizations, so that they'll serve as a guide.
+
+      <Section head="On Equivalences & Inconsistencies">
+        Though there's much not to like about the way I wrote down some thoughts on intelligibility a year ago {OnIntelligibilityReference}. There's one thing in particular that stands out. If I have one thing and I make a perfect copy, surely I now have two things which are perfectly "the same", right? - The idea being that, if you can even point and say that there are "two things" and you can distinguish between them, that shows exactly at least one way in which they are not the same. And if you'd like to be able to say they are "the same" - you need to ignore that difference.
+
+        <BR/>
+
+        Alright, that's all well and good. But what does that actually usefully mean without being so vague?
+
+        <BR/>
+
+        Let's take two copies of our binary number.
+
+      </Section>
 
       <Section head="On Inconsistencies" sub={<span>
        Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Variance
