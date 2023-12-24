@@ -650,11 +650,21 @@ const OnOrbits = () => {
         Which is likely either a rediscovery of concepts in category theory, or an even more general, possibly more easily programmable and reprogrammable (; possibly homoiconic) variant of its ideas. Being this general, quite certainly concepts from all kinds of fields should be phrase-able in this (possibly) more visually intuitive way of manipulating concepts.
       </Section>
       <Section head="Future inquiries">
+        <span style={{textAlign: 'left', minWidth: '100%'}}>One thing that has become quite clear to me. Is that the best solutions in this line of projects, will necessarily be the interface with which someone interacts with abstract ideas. <span
+          className="bp5-text-muted">This could be a language, ..., something of the tooling around such a language (which itself might be conceptualized as another language)</span>. Which one, doesn't actually really matter much. Understanding the details of specific kinds of languages, don't matter much. Constructing a <span
+          className="bp5-text-muted">platform, language, ..., interface</span>, as general as possible so that others have a way of implementing theirs as conveniently as possible. That is an important idea in this project.</span>
+
+        <BR/>
+
         There are several projects I'm currently expecting to implement within this framing. (1) Category Theory and homotopy type theory, as a handle on more abstract mathematics and computer science. (2) CHYP, as a simple concrete example. (3) (possibly through Chyp) the ZX-calculus or its variants, as a handle on diagrammatic quantum physics. (4) Tinygrad, as a handle on tensor operations. (5) WebAssembly, as a practical tool into the worlds' ecosystem.
 
         <BR/>
 
         I expect to along the way encounter, or possibly also implement, LLVM,  HVM & Kind ecosystem, GPU archs, CPU archs, Lean, Agda,
+
+        <BR/>
+
+        Clearly, I'm trying to be a little far-reaching and extend into any field I could possibly imagine which manages to peak my curiosity. There is much to explore - if only I now had some better tools to apply to everything.
       </Section>
       <Section head="On self-publishing and referencing" sub="Edited personal journeys/histories/... and literary exposure">
         I suspect that this sort of self-(reporting/publishing), necessitates the highlighting of its possible adversarial/game-theoretic properties. With myself and my archives possibly being forgetful or deceitful players, this certainly makes for an interesting dynamic. Consider this quick paragraph as an acknowledgement that I am aware of that, and that I think my attempts aim for accuracy - whether that's actually successful or not -.
