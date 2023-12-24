@@ -62,6 +62,8 @@ $xl-viewport: 1200px;
     flex: 0 1 auto;
     flex-direction: row;
     flex-wrap: wrap;
+
+    overflow-x: hidden; // TODO, temp fix for smaller screens (gutter)
     // TODO:
     //margin-right: var(--gutter-compensation, -08px);
     //margin-left: var(--gutter-compensation, -08px);

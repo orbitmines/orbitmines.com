@@ -11,7 +11,7 @@ const Organization = (props: AllowReact<TOrganization>) => {
 
   return <Col>
     <Row center="xs">
-      <img src={logo} alt={_.isString(name) ? name : 'logo'} width="200px"/>
+      <img src={logo} alt={_.isString(name) ? name : 'logo'} style={{maxWidth: '200px'}}/>
     </Row>
     <H3>{name}</H3>
   </Col>
