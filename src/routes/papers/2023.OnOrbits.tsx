@@ -471,7 +471,7 @@ const OnOrbits = () => {
         <BR/>
 
         <span style={{textAlign: 'left', minWidth: '100%'}}>And suddenly we have a binary number. Note that we can't actually construct what a binary number is, without defining both <span
-          className="bp5-text-muted">our "red" point and our "blue point", ..., or 0/1</span> We need to define additional context, in order to differentiate between the two.</span>
+          className="bp5-text-muted">our "red" point and our "blue point", ..., or 0/1</span>. We need to define additional context, in order to differentiate between the two.</span>
 
         <BR/>
 
@@ -525,7 +525,12 @@ const OnOrbits = () => {
       This next arc will try to elaborate a bit further on some more abstract concepts. Hopefully you'll have gained a slight intuition of these visualizations, so that they'll serve as a guide.
 
       <Section head="On Equivalences & Inconsistencies">
-        Though there's much not to like about the way I wrote down some thoughts on intelligibility a year ago {OnIntelligibilityReference}. There's one thing in particular that stands out. If I have one thing and I make a perfect copy, surely I now have two things which are perfectly "the same", right? - The idea being that, if you can even point and say that there are "two things" and you can distinguish between them, that shows exactly at least one way in which they are not the same. And if you'd like to be able to say they are "the same" - you need to ignore that difference.
+        Though there's much not to like about the way I wrote down some thoughts on intelligibility a year
+        ago {OnIntelligibilityReference}. There's one thing in particular that stands out. If I have one thing and I
+        make a perfect copy, surely I now have two things which are perfectly "the same", right? - The idea being that,
+        if you can even point and say that there are "two things" and you can distinguish between them, that shows
+        exactly at least one way in which they are not the same. And if you'd like to be able to say they are "the same"
+        - you need to ignore that difference.
 
         <BR/>
 
@@ -534,6 +539,74 @@ const OnOrbits = () => {
         <BR/>
 
         Let's take two copies of our binary number.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_2" context={paper} style={{height: '140px'}}>
+            <Center>
+              <group>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+              <group position={[60, 0, 0]}>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Are they the same? Well - no, not really. Clearly they're different with respect to the yellow direction. Are
+        they different? Well - no, not really that different. Only on the yellow direction.
+
+        <BR/>
+
+        If I couldn't see a difference between "the two", I would just see this.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_select_0" context={paper} style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Alright, this might start to give you an impression. But let's keep expanding on this kind of idea. What I'm basically saying here, is that in order to point out some <span
+          className="bp5-text-muted">symmetry, invariance, ..., equivalence</span>, I need access to some <span
+          className="bp5-text-muted">asymmetry, variance, ..., inconsistency</span>. Or again this thing of, in order to point out some way in which they're the same, I need access to some way in which they're not.</span>
+
+        <BR/>
+        <BR/>
+        <BR/>
+        <BR/>
+        <BR/>
+        <BR/>
 
       </Section>
 
