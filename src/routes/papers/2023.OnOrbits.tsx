@@ -71,10 +71,7 @@ const OnOrbits = () => {
   return <Paper {...paper}>
     <Row center="xs">
       <Section head="A quick gently introduction">
-        <span style={{textAlign: 'left', minWidth: '100%'}}>
-        It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span
-          className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.
-        </span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.</span>
 
         <BR/>
 
@@ -86,15 +83,11 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Clear enough, this could represent any (single) thing. Quite useful, like any abstraction, but there's something
-        incredibly easy to ignore - or miss, that it could be a possible question to ask.
+        Clear enough, this could represent any (single) thing. Quite useful, like any abstraction, but there's something incredibly easy to ignore - or miss, that it could be a possible question to ask.
 
         <BR/>
 
-        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it
-        was before, it has become part of another structure: The line you just imagined. The easy thing to miss being,
-        that this was already the case. In order to - point out - this point, you had already constructed this line. It
-        was simply ignored, it was simply deemed irrelevant.
+        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it was before, it has become part of another structure: The line you just imagined. The easy thing to miss being, that this was already the case. In order to - point out - this point, you had already constructed this line. It was simply ignored, it was simply deemed irrelevant.
 
         <BR/>
 
@@ -106,14 +99,11 @@ const OnOrbits = () => {
 
         <BR/>
 
-        This is in short, what this string of text is about. Things, ignored context, and a slightly different way of
-        thinking about them.
+        This is in short, what this string of text is about. Things, ignored context, and a slightly different way of thinking about them.
 
         <BR/>
 
-        It's quite likely that these ideas are the culmination of having abstracted so far, - blurred together so many
-        concepts -, that it might not be too obvious why thinking along these lines could be useful. Allow me to take
-        you through this wilderness, and perhaps we might discover something of interest:
+        It's quite likely that these ideas are the culmination of having abstracted so far, - blurred together so many concepts -, that it might not be too obvious why thinking along these lines could be useful. Allow me to take you through this wilderness, and perhaps we might discover something of interest:
 
         <BR/>
 
@@ -124,8 +114,7 @@ const OnOrbits = () => {
     </Row>
 
     <Arc head="Arc: A Visual Introduction to Rays">
-      Let's slowly take apart why that example might be a gateway into an incredibly complicated world. Take for
-      instance, that point, but visualized in this unusual way.
+      Let's slowly take apart why that example might be a gateway into an incredibly complicated world. Take for instance, that point, but visualized in this unusual way.
 
       <BR/>
 
@@ -158,8 +147,9 @@ const OnOrbits = () => {
 
         This raises several questions. () How do you even construct a continuation like that? () What does it mean to have something in between two points? () What does it mean for a continuation to go in a loop? () () ()
 
-        There's already something we could say about continuing a line, even without much rigor on how to actually
-        construct it. Say we have two points,
+        <BR/>
+
+        There's already something we could say about continuing a line, even without much rigor on how to actually construct it. Say we have two points,
 
         <BR/>
 
@@ -177,9 +167,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        In order to connect them together we simply say that the "end" of one point, is the same as the "beginning" of
-        the other point <Reference is="footnote" index={referenceCounter()}>This is, in essence, category
-        theory.</Reference>.
+        In order to connect them together we simply say that the "end" of one point, is the same as the "beginning" of the other point <Reference is="footnote" index={referenceCounter()}>This is, in essence, category theory.</Reference>.
 
         <BR/>
 
@@ -198,9 +186,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        But it's not entirely obvious what one even means by that. Let's already assume I have something with which I
-        can construct a line like that. I could say that the two points I'm interested in regarding as "the same" are on
-        a line.
+        But it's not entirely obvious what one even means by that. Let's already assume I have something with which I can construct a line like that. I could say that the two points I'm interested in regarding as "the same" are on a line.
 
         <BR/>
 
@@ -245,9 +231,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>Alright, this is already showing something interesting. Imagine this: <span
-          className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference
-          is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Alright, this is already showing something interesting. Imagine this: <span className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
 
         <BR/>
 
@@ -350,13 +334,11 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>but it doesn't necessarily get us anywhere on its own <span
-          className="bp5-text-muted">(Since we can just keep making the line bigger)</span>. So let's ignore those expansions for now.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>but it doesn't necessarily get us anywhere on its own <span className="bp5-text-muted">(Since we can just keep making the line bigger)</span>. So let's ignore those expansions for now.</span>
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>A more interesting thing we can do, is instead to continue the line which defines what we're seeing as possible <span
-          className="bp5-text-muted">continuations, merges, ..., branches</span>.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>A more interesting thing we can do, is instead to continue the line which defines what we're seeing as possible <span className="bp5-text-muted">continuations, merges, ..., branches</span>.</span>
 
         <BR/>
 
@@ -486,18 +468,15 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>And suddenly we have a binary number. Note that we can't actually construct what a binary number is, without defining both <span
-          className="bp5-text-muted">our "red" point and our "blue point", ..., or 0/1</span>. We need to define additional context, in order to differentiate between the two.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>And suddenly we have a binary number. Note that we can't actually construct what a binary number is, without defining both <span className="bp5-text-muted">our "red" point and our "blue point", ..., or 0/1</span>. We need to define additional context, in order to differentiate between the two.</span>
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>Actually, we could put arbitrarily complicated <span
-          className="bp5-text-muted">graphs, categories, states, ..., structures</span> at each of the points like this, simply by creating arbitrary continuations. And then again at each of those points define even more arbitrary structures.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Actually, we could put arbitrarily complicated <span className="bp5-text-muted">graphs, categories, states, ..., structures</span> at each of the points like this, simply by creating arbitrary continuations. And then again at each of those points define even more arbitrary structures.</span>
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>One of them could even be putting both our points on our selection, as a sort of <span
-          className="bp5-text-muted">binary superposition, self-loop, identity, boolean, ..., type</span>.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>One of them could even be putting both our points on our selection, as a sort of <span className="bp5-text-muted">binary superposition, self-loop, identity, boolean, ..., type</span>.</span>
 
         <BR/>
 
@@ -543,10 +522,10 @@ const OnOrbits = () => {
       <Section head="On Equivalences & Inconsistencies">
         Though there's much not to like about the way I wrote down some thoughts on intelligibility a year
         ago {OnIntelligibilityReference}. There's one thing in particular that stands out. If I have one thing and I
-        make a perfect copy, surely I now have two things which are perfectly "the same", right? - The idea being that,
-        if you can even point and say that there are "two things" and you can distinguish between them, that shows
-        exactly at least one way in which they are not the same. And if you'd like to be able to say they are "the same"
-        - you need to ignore that difference.
+        make a perfect copy. Surely I now have two things which are perfectly "the same", right? The idea being that, if
+        you can even point and say that there are "two things" and you can distinguish between them. That shows exactly
+        at least one way in which they are not the same. And if you'd like to be able to say they are "the same" - you
+        need to ignore that difference.
 
         <BR/>
 
@@ -592,7 +571,11 @@ const OnOrbits = () => {
 
         <BR/>
 
-        If I couldn't see a difference between "the two", I would just see this <Reference index={referenceCounter()} is="footnote">You could say the same for differences in color perception (e.g. color blindness), different ways of perceiving spatial information, non-distinguishability between some dimension say left/right, ..., generalized to any kind of distinguishability.</Reference>.
+        If I couldn't see a difference between "the two", I would just see this <Reference index={referenceCounter()}
+                                                                                           is="footnote">You could say
+        the same for differences in color perception (e.g. color blindness), different ways of perceiving spatial
+        information, non-distinguishability between some dimension say left/right, ..., generalized to any kind of
+        distinguishability.</Reference>.
 
         <BR/>
 
@@ -618,6 +601,9 @@ const OnOrbits = () => {
           className="bp5-text-muted">asymmetry, variance, ..., inconsistency</span>. Or again this thing of, in order to point out some way in which they're the same, I need access to some way in which they're not. Or slightly rephrased; if I cannot see a difference, it will look the same to me.</span>
 
         <BR/>
+
+        <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>An example of this might be a tautology. A tautology doesn't generally hold up. In setting up a tautology, there must be an asymmetry in order for me to point out which two things are supposed to represent the same thing. The reason why that doesn't matter for most things considered tautologies, is that this inconsistency is just deemed an irrelevant detail. This asymmetry can be ignored. And hence, if we allow for the ignorance of this difference, a tautology holds: "of course they are the same" - if you ignore the difference, that is.</span>
+
         <BR/>
         <BR/>
         <BR/>
