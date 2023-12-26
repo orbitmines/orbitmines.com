@@ -74,10 +74,74 @@ const OnOrbits = () => {
     references: referenceCounter
   }
 
-  return <Paper {...paper}>
+  const s2 = 1;
+
+  return <Paper
+    {...paper}
+    header={<div style={{height: '140px'}}>
+      <CachedVisualizationCanvas alt="header" context={paper} style={{
+        // position: 'absolute',
+        // left: '0',
+        // right: '0',
+        maxWidth: '100vw',
+        height: '140px',
+      }}>
+        <Center>
+          <group scale={s2}>
+            <group position={[0, 0, 0]}>
+
+              <group scale={1.5}>
+                <RenderedRay reference={length(1)} scale={1.5 * s2} color="#555555" initial={[-500, 0, 0]}
+                             terminal={[500, 0, 0]}/>
+              </group>
+
+
+              <group position={[100, -10, 0]}>
+                <group position={[30, 45, 0]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5 * s2}
+                                                                         color="#555555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#555555"/></group>
+                </group>
+
+                <group scale={1.5}>
+                  <Continuation position={[-20, 30, 0]} color="orange" scale={1.5}/>
+                  <Continuation position={[20, 30, 0]} color="orange" scale={1.5}/>
+
+                  <group rotation={[Math.PI, 0, 0]}>
+                    <Continuation position={[0, -30 + torus.radius, 0]} color="orange" scale={1.5} arc={Math.PI}
+                                  radius={20}/>
+                  </group>
+
+                  <Vertex color="orange" position={[0, 7, 0]}/>
+                </group>
+              </group>
+              <group>
+                <group scale={1.5} position={[300, 0, 0]}>
+                  <Loop position={[0, 15, 0]} radius={15} color="orange" scale={1.5 * s2}/>
+                </group>
+              </group>
+
+              <group rotation={[0, 0, Math.PI / 2]} position={[-100, 60, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5 * s2}
+                                                                       color="orange"/></group>
+              </group>
+
+              <group rotation={[0, 0, Math.PI / 2]} position={[-300, 60, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><Vertex scale={1.5}
+                                                                  color="orange"/></group>
+              </group>
+
+            </group>
+
+          </group>
+        </Center>
+      </CachedVisualizationCanvas>
+    </div>}
+  >
     <Row center="xs">
       <Section head="A quick gently introduction">
-        <span style={{textAlign: 'left', minWidth: '100%'}}>It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span
+          className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.</span>
 
         <BR/>
 
@@ -89,11 +153,15 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Clear enough, this could represent any (single) thing. Quite useful, like any abstraction, but there's something incredibly easy to ignore - or miss, that it could be a possible question to ask.
+        Clear enough, this could represent any (single) thing. Quite useful, like any abstraction, but there's something
+        incredibly easy to ignore - or miss, that it could be a possible question to ask.
 
         <BR/>
 
-        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it was before, it has become part of another structure: The line you just imagined. The easy thing to miss being, that this was already the case. In order to - point out - this point, you had already constructed this line. It was simply ignored, it was simply deemed irrelevant.
+        Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it
+        was before, it has become part of another structure: The line you just imagined. The easy thing to miss being,
+        that this was already the case. In order to - point out - this point, you had already constructed this line. It
+        was simply ignored, it was simply deemed irrelevant.
 
         <BR/>
 
@@ -105,11 +173,14 @@ const OnOrbits = () => {
 
         <BR/>
 
-        This is in short, what this string of text is about. Things, ignored context, and a slightly different way of thinking about them.
+        This is in short, what this string of text is about. Things, ignored context, and a slightly different way of
+        thinking about them.
 
         <BR/>
 
-        It's quite likely that these ideas are the culmination of having abstracted so far, - blurred together so many concepts -, that it might not be too obvious why thinking along these lines could be useful. Allow me to take you through this wilderness, and perhaps we might discover something of interest:
+        It's quite likely that these ideas are the culmination of having abstracted so far, - blurred together so many
+        concepts -, that it might not be too obvious why thinking along these lines could be useful. Allow me to take
+        you through this wilderness, and perhaps we might discover something of interest:
 
         <BR/>
 

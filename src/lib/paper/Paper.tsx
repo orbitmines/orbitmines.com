@@ -13,6 +13,7 @@ import {length} from "../../@orbitmines/explorer/Ray";
 import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
 
 export type PaperProps = ReferenceProps & {
+  header?: any //
   pdf: PdfProps,
   exclude_footnotes?: boolean
 
@@ -44,70 +45,10 @@ export const PaperThumbnail = (
 
   const scale = (width / 1240) * 1.1;
 
-  const s2 = scale;
-
-
   return <div style={{
     width: `${width}px`,
     height: `${height}px`,
   }}>
-    <VisualizationCanvas style={{
-      position: 'absolute',
-      // height: '100px',
-      width: `${width}px`,
-      height: `${height}px`,
-    }}>
-
-      <group scale={s2}>
-
-        <group position={[3, -225, 0]}>
-
-          <group scale={1.5}>
-            <RenderedRay reference={length(1)} scale={1.5 * s2} color="#555555" initial={[-500, 0, 0]}
-                         terminal={[500, 0, 0]}/>
-          </group>
-
-
-          <group position={[100, -10, 0]}>
-            <group position={[30, 45, 0]}>
-              <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5 * s2}
-                                                                     color="#555555"/></group>
-              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5 * s2} color="#555555"/></group>
-            </group>
-
-            <group scale={1.5}>
-              <Continuation position={[-20, 30, 0]} color="orange" scale={1.5}/>
-              <Continuation position={[20, 30, 0]} color="orange" scale={1.5}/>
-
-              <group rotation={[Math.PI, 0, 0]}>
-                <Continuation position={[0, -30 + torus.radius, 0]} color="orange" scale={1.5} arc={Math.PI}
-                              radius={20}/>
-              </group>
-
-              <Vertex color="orange" position={[0, 7, 0]}/>
-            </group>
-          </group>
-          <group>
-            <group scale={1.5} position={[300, 0, 0]}>
-              <Loop position={[0, 15, 0]} radius={15} color="orange" scale={1.5 * s2}/>
-            </group>
-          </group>
-
-          <group rotation={[0, 0, Math.PI / 2]} position={[-100, 60, 0]}>
-            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5 * s2}
-                                                                   color="orange"/></group>
-          </group>
-
-          <group rotation={[0, 0, Math.PI / 2]} position={[-300, 60, 0]}>
-            <group scale={1.5} position={[-60, 0, 0]}><Vertex scale={1.5}
-                                                              color="orange"/></group>
-          </group>
-
-        </group>
-
-      </group>
-    </VisualizationCanvas>
-
     <Row center="xs" middle="xs" style={{height: '100%', width: '100%'}}>
       <div style={{transform: `scale(${scale})`}}>
         <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{

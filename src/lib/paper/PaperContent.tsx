@@ -89,7 +89,7 @@ const PaperContent = (props: PaperProps) => {
   if (generate === 'thumbnail')
     return <PaperThumbnail {...props}/>
 
-  const { children, external, exclude_footnotes } = props;
+  const {header, children, external, exclude_footnotes } = props;
 
   const {discord} = external || {};
 
@@ -104,7 +104,7 @@ const PaperContent = (props: PaperProps) => {
       </Col> : <></>}
     </Row> : <></>}
 
-    <HorizontalLine/>
+    {header ? header : <HorizontalLine/>}
 
     {children}
 
