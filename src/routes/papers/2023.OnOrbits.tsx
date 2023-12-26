@@ -875,6 +875,53 @@ const OnOrbits = () => {
 
           <BR/>
 
+          Take a simple point.
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="empty_vertex_green" context={paper}>
+              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          <BR/>
+
+          Make its beginning and end equivalent by acknowledging an inconsistency.
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="1_loop_expanded" context={paper} style={{height: '60px'}}>
+              <Center>
+                <group position={[30, 45, 0]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#00AA00"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#00AA00"/></group>
+                </group>
+
+                <group scale={1.5}>
+                  <Continuation position={[-20, 30, 0]} color="#55FF55" scale={1.5}/>
+                  <Continuation position={[20, 30, 0]} color="#55FF55" scale={1.5}/>
+
+                  <group rotation={[Math.PI, 0, 0]}>
+                    <Continuation position={[0, -30 + torus.radius, 0]} color="#55FF55" scale={1.5} arc={Math.PI}
+                                  radius={20}/>
+                  </group>
+
+                  <Vertex color="#55FF55" position={[0, 7, 0]}/>
+                </group>
+              </Center>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>And there we have it, an <span
+            className="bp5-text-muted">infinity, loop, ..., orbit</span>  if we ignore the difference.</span>
+
+          <BR/>
+
           <Block>
             <CachedVisualizationCanvas alt="1_loop" context={paper} style={{height: '60px'}}>
               <Center>
@@ -903,28 +950,6 @@ const OnOrbits = () => {
 
           <BR/>
 
-          <Block>
-            <CachedVisualizationCanvas alt="1_loop_expanded" context={paper} style={{height: '60px'}}>
-              <Center>
-                <group position={[30, 45, 0]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
-                                                                         color="#00AA00"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#00AA00"/></group>
-                </group>
-
-                <group scale={1.5}>
-                  <Continuation position={[-20, 30, 0]} color="#55FF55" scale={1.5} />
-                  <Continuation position={[20, 30, 0]} color="#55FF55" scale={1.5} />
-
-                  <group rotation={[Math.PI, 0, 0]}>
-                    <Continuation position={[0, -30 + torus.radius, 0]} color="#55FF55" scale={1.5} arc={Math.PI} radius={20} />
-                  </group>
-
-                  <Vertex color="#55FF55" position={[0, 7, 0]} />
-                </group>
-              </Center>
-            </CachedVisualizationCanvas>
-          </Block>
 
           <BR/>
           <BR/>
