@@ -34,7 +34,7 @@ export const ON_ORBITS: Content = {
      */
     title: "On Orbits, Equivalence and Inconsistencies",
     subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility.",
-    draft: true,
+    draft: false,
     link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies',
     year: "2023",
     date: "2023-12-31",
@@ -928,8 +928,6 @@ const OnOrbits = () => {
                 <group scale={1.5}>
                   <Loop position={[0, 15, 0]} radius={15} color="#55FF55"/>
                 </group>
-
-                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>*/}
               </Center>
             </CachedVisualizationCanvas>
           </Block>

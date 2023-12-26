@@ -15,9 +15,10 @@ const Exports = (
   const [params] = useSearchParams();
 
   const ref = useRef<any>(null);
-  const thumbnailRef = useRef<any>(null);
 
   const generate = params.get('generate');
+  const width = parseInt(params.get('width') ?? '1920');
+  const height = parseInt(params.get('height') ?? '1080');
 
   const exportJpeg = useCallback(() => {
     if (ref === null)
@@ -28,7 +29,11 @@ const Exports = (
       cacheBust: true, backgroundColor: '#1C2127' })
       .then((dataUrl) => {
         const link = document.createElement('a')
-        link.download = `${value(paper.title).toLowerCase().replaceAll(" ", "-").replaceAll(",", "")}.jpeg`
+
+        link.download =
+          generate === 'thumbnail'
+            ? `${width}x${height}.jpeg`
+            : `${value(paper.title).toLowerCase().replaceAll(" ", "-").replaceAll(",", "")}.jpeg`
         link.href = dataUrl
         link.click()
       })
@@ -37,46 +42,13 @@ const Exports = (
       });
   }, [ref]);
 
-  const exportThumbnailJpeg = useCallback(({width, height}: { width: number, height: number}) => {
-    if (ref === null)
-      return;
-
-    const root = ReactDOM.createRoot(thumbnailRef.current);
-    root.render(<PaperThumbnail {...paper} size={{width, height}} />);
-
-    console.log(thumbnailRef.current)
-
-    setInterval(() => {
-      toJpeg(thumbnailRef.current, {
-        cacheBust: true, backgroundColor: '#1C2127'
-      })
-        .then((dataUrl) => {
-          const link = document.createElement('a')
-          link.download = `${width}x${height}.jpeg`
-          link.href = dataUrl
-          link.click()
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    }, 1)
-  }, [thumbnailRef]);
-
   return <Row center="xs">
     {/* TODO: */}
     <Row between="xs" className="py-10 px-15" style={{width: '100%'}}>
       <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
 
       <Col>
-        {generate === 'button' ? <>
-          {[
-            [3840, 2160],
-            [1920, 1080],
-          ].map(([width, height]) => (
-            <Button text={`${width}x${height}.jpeg`} icon="media" minimal
-                    onClick={() => exportThumbnailJpeg({width, height})}
-            />
-          ))}
+        {generate && ['button', 'thumbnail'].includes(generate) ? <>
          <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
         </> : <>
           <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
@@ -86,9 +58,6 @@ const Exports = (
     </Row>
     <div ref={ref}>
       {children}
-    </div>
-    <div ref={thumbnailRef}>
-
     </div>
   </Row>
 }

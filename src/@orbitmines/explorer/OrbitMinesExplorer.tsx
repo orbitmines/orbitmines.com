@@ -58,7 +58,7 @@ export const Loop = (
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
 
-    if (i > 5 && i < segments - 6)
+    if (i > 7 && i < segments - 8)
       points.push([x, y, 0])
   }
   console.log(points)
@@ -67,7 +67,7 @@ export const Loop = (
   const continuation = add(position, [0, radius, 0]);
 
   return <group>
-    <CatmullRomLine position={position} points={points} color={color} lineWidth={line.width * 1.5}/>
+    <CatmullRomLine position={position} points={points} color={color} lineWidth={line.width * scale}/>
     <Continuation position={continuation} color={color}/>
     <Vertex position={vertex} color={color} />
   </group>

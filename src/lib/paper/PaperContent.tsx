@@ -1,6 +1,6 @@
 import {Col, Grid, Row} from "../layout/flexbox";
 import {Divider, H1, H3, H4, Intent, Tag} from "@blueprintjs/core";
-import React from "react";
+import React, {useRef} from "react";
 import {Children, Rendered} from "../typescript/React";
 import {getFootnotes} from "./layout/Reference";
 import Organization from "./layout/Organization";
@@ -8,9 +8,14 @@ import Author from "./layout/Author";
 import Link from "./layout/Link";
 import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
 import Section from "./layout/Section";
-import {PaperProps} from "./Paper";
+import {PaperProps, PaperThumbnail} from "./Paper";
 import {PROFILES} from "../../profiles/profiles";
 import _ from "lodash";
+import {CachedVisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import {Center} from "@react-three/drei";
+import {Continuation, RenderedRay, torus, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
+import {length} from "../../@orbitmines/explorer/Ray";
+import {useSearchParams} from "react-router-dom";
 
 export const Title = ({children}: Children) => {
   return <Row center="xs">
@@ -77,6 +82,13 @@ export const PaperHeader = (props: PaperProps) => {
 }
 
 const PaperContent = (props: PaperProps) => {
+  const [params] = useSearchParams();
+
+  const generate = params.get('generate');
+
+  if (generate === 'thumbnail')
+    return <PaperThumbnail {...props}/>
+
   const { children, external, exclude_footnotes } = props;
 
   const {discord} = external || {};
