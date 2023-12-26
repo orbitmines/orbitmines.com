@@ -845,6 +845,10 @@ const OnOrbits = () => {
 
         <BR/>
 
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Another way of thinking about this, is that an equivalence and an inconsistency aren't actually different things at all. And that concepts like <span
+                    className="bp5-text-muted">equivalence, ignorance, <Reference is="reference" index={referenceCounter()} reference={{title: "renormalization", link: "https://en.wikipedia.org/wiki/Renormalization"}} simple inline />, <Reference is="reference" index={referenceCounter()} reference={{title: "coarse-graining", link: "https://en.wikipedia.org/wiki/Coarse-grained_modeling"}} simple inline />, ..., inconsistency</span> can all be used somewhat interchangeably. And I need additional structure to distinguish between them. They don't generally hold up. This might fly a bit in the face of how you usually use words, but let's entertain it for a moment, and see if we can disentangle what I could possible mean by that - without descending into vague madness.</span>
+
+
         <span style={{textAlign: 'left', minWidth: '100%'}}> <span
           className="bp5-text-muted"></span></span>
         <span style={{textAlign: 'left', minWidth: '100%'}}> <span
@@ -860,11 +864,6 @@ const OnOrbits = () => {
 
         {/*  Always, Never, All, None, Every, Constants, Modularity, Identity, Bounded/Unbounded, Limit/Unlimited, Discrete/Continuous */}
         <Section head="On Orbits" sub="Infinities, Loops, Self-Reference, Fixed Points, Halting, ..., Abstractions">
-          Another way of thinking about this, is that an equivalence and an inconsistency aren't actually that different
-          things at all. And that concepts like equivalence, ignorance, ..., inconsistency can all be used somewhat
-          interchangeably. This might fly a bit in the face of how you usually use words, but let's entertain it for a
-          moment, and see if we can disentangle what I could possible mean by that - without descending into vague
-          madness.
 
         </Section>
 
