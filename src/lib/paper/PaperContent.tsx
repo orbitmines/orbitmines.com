@@ -45,7 +45,7 @@ export const PaperHeader = (props: PaperProps) => {
       <Title><Rendered renderable={title}/></Title>
       {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
 
-      <Row center="xs" middle="xs" className="child-px-20">
+      <Row center="xs" middle="xs" className="child-px-20-sm">
         {organizations ? <>
           {organizations.map((organization) => (<Col md={4} xs={12}>
             <Organization {...organization} />
@@ -105,7 +105,8 @@ const PaperContent = (props: PaperProps) => {
     // border: 'solid rgba(143, 153, 168, 0.15) 2px',
     //     height={1754} width={1240}
     maxWidth: '1240px',
-    fontSize: '1.1rem'
+    fontSize: '1.1rem',
+    width: '100vw'
   }}>
     {Content}
 

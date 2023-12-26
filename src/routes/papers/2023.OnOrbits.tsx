@@ -119,7 +119,7 @@ const OnOrbits = () => {
       <BR/>
 
       <Block>
-      <CachedVisualizationCanvas alt="empty_vertex" context={paper} >
+        <CachedVisualizationCanvas alt="empty_vertex" context={paper} >
           <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>
         </CachedVisualizationCanvas>
       </Block>
@@ -403,7 +403,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>If we'd like to construct things like <span className="bp5-text-muted">numbers, symbols, names, labels, tokens, combinations, ..., permutations</span>. We'll need some way to select a particular value (; point) from a collection of points. For that, we don't actually need anything other than what we've already seen.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>If we'd like to construct things like <span className="bp5-text-muted">numbers, symbols, names, labels, tokens, combinations, ..., permutations</span>. We'll need some way to select a particular value (; point) from a collection of points. For that, we don't actually need anything other than what we've already seen <Reference index={referenceCounter()} is="footnote">Which might show that it's pretty much the same thing to describe the structures themselves. And saying something like 'only concerns itself with connectivity' - just means that one is ignoring certain kinds of structures, and not others.</Reference>.</span>
 
         <BR/>
 
@@ -605,6 +605,270 @@ const OnOrbits = () => {
         <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>An example of this might be a tautology. A tautology doesn't generally hold up. In setting up a tautology, there must be an asymmetry in order for me to point out which two things are supposed to represent the same thing. The reason why that doesn't matter for most things considered tautologies, is that this inconsistency is just deemed an irrelevant detail. This asymmetry can be ignored. And hence, if we allow for the ignorance of this difference, a tautology holds: "of course they are the same" - if you ignore the difference, that is.</span>
 
         <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>It's quite easy (in general) from either perspective, to ask what it would mean to change perspective, as it were. Since changing perspective is just <span
+          className="bp5-text-muted">adding, removing, ..., changing</span> structure. From the perspective which only sees a binary number, we could ask: "What if I saw this thing as three possible options?"</span>
+
+        <BR/>
+
+
+        <Block>
+          <CachedVisualizationCanvas alt="3_select_0" context={paper} style={{height: '200px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#55FF55"/></group>
+                <group scale={1.5}><Continuation position={[20, 0, 0]} color="#55FFFF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>The <span className="bp5-text-muted">consequences, accuracy, implementing, ..., finding</span> (of) such a change however - for some other thing one is interested in, is not at all trivial. Why is that the case?</span>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Take again, the example of two points <span
+          className="bp5-text-muted">without structure, whose structure we don't have access to, ..., whose structure we're ignorant of</span>.</span>
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_orange" context={paper} style={{height: '30px'}}>
+            <Center>
+              <group>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              </group>
+              <group position={[60, 0, 0]}>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>From this perspective it seems simple to <span
+          className="bp5-text-muted">equivalence, assume (simultaneity, ..., invariance), ..., ignore the difference between</span> the two. The only thing we need to destroy is one connection, and we get:</span>
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="empty_vertex" context={paper}>
+            <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Similarly, from this perspective it seems quite simple to grow back to the other structure. We only need to introduce some <span
+          className="bp5-text-muted">inconsistency, assumption of (non-simultaneity, ..., variance), ..., difference</span>.</span>
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_orange" context={paper} style={{height: '30px'}}>
+            <Center>
+              <group>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              </group>
+              <group position={[60, 0, 0]}>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>These two perspective are obviously already possibly inconsistent with each other. But why this is a hard problem, is because one might find <span
+          className="bp5-text-muted">additional structure, ..., ignored structure</span> at each of the points. And it's not necessarily obvious what to do with that.</span>
+
+        <BR/>
+
+        Say we wanted to assume some equivalency between these two.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="0_1" context={paper} style={{height: '200px'}}>
+            <Center>
+              <group>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+              <group position={[60, 0, 0]}>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+
+                <group position={[0, -60, 0]} rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        There are many things I could mean or want to do with that.
+
+        <BR/>
+
+        I could still have access to this same structure, but only accessible from a different perspective.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="0_1_tilted" context={paper} style={{height: '110px'}}>
+            <Center>
+
+              <group>
+                <group rotation={[0, 0, -(Math.PI / 4)]}>
+                  <group>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#FF5555"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                  </group>
+                </group>
+                <group position={[0, 0, 0]} rotation={[0, 0, -(Math.PI / 4) * 3]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+
+              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        I could say, "oh, the one is red, the other is blue", and they must be *the same kind* of red and blue. And so surely that could be interpreted as a superposition.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_superposition" context={paper} style={{height: '80px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group scale={1.5}><BinarySuperposition position={[0, 0, 0]}/></group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>I could just destroy one of them completely, as I would have done from the perspective of being ignorant of additional structure. <span
+          className="bp5-text-disabled">(The two yellow points above, which I just merged to one)</span></span>
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_select_1" context={paper}  style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        This could frankly be anything. If it can be constructed, this is valid way of equivalencing the two. So this, is a perfectly reasonable way of equivalencing our red and blue points:
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="some_structure" context={paper}  style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}>
+                <group>
+                  <RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/>
+                  <RenderedRay position={[-40, 0, 0]} reference={length(1)} scale={1.5}/>
+                  <RenderedRay position={[-80, 0, 0]} reference={length(1)} scale={1.5}/>
+                </group>
+
+                <group position={[0, 40, 0]}>
+                  <RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5} color="#FF55FF"/>
+                  <RenderedRay position={[-40, 0, 0]} reference={length(1)} scale={1.5} color="#FF55FF"/>
+                  <RenderedRay position={[-80, 0, 0]} reference={length(1)} scale={1.5} color="#FF55FF"/>
+                </group>
+              </group>
+              <group position={[-120, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#55FF55"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#55FF55"/></group>
+              </group>
+              <group position={[-60, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#55FF55"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#55FF55"/></group>
+              </group>
+              <group position={[0, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#55FF55"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#55FF55"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
+          className="bp5-text-muted"></span></span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
+          className="bp5-text-muted"></span></span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
+          className="bp5-text-muted"></span></span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
+          className="bp5-text-muted"></span></span>
+
+        <BR/>
+        <BR/>
+        <BR/>
+
+        {/*  Always, Never, All, None, Every, Constants, Modularity, Identity, Bounded/Unbounded, Limit/Unlimited, Discrete/Continuous */}
+        <Section head="On Orbits" sub="Infinities, Loops, Self-Reference, Fixed Points, Halting, ..., Abstractions">
+          Another way of thinking about this, is that an equivalence and an inconsistency aren't actually that different
+          things at all. And that concepts like equivalence, ignorance, ..., inconsistency can all be used somewhat
+          interchangeably. This might fly a bit in the face of how you usually use words, but let's entertain it for a
+          moment, and see if we can disentangle what I could possible mean by that - without descending into vague
+          madness.
+
+        </Section>
+
+        <BR/>
         <BR/>
         <BR/>
         <BR/>
@@ -619,8 +883,6 @@ const OnOrbits = () => {
       <Section head="On Equivalence" sub={<span>
        Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Invariance
       </span>}>
-      </Section>
-      <Section head="On Orbits" sub="Infinities, ...">
       </Section>
 
       <Section head="Coarse-graining" sub="Unintended/Accidental/Irrelevant Variance">

@@ -57,6 +57,30 @@ $xl-viewport: 1200px;
       .#{$abbrev}l-#{$size}-xs {
         #{$prop}-left: $spacing !important;
       }
+
+      .child-#{$abbrev}-#{$size}-xs > * {
+        #{$prop}: $spacing !important;
+      }
+      .child-#{$abbrev}x-#{$size}-xs > * {
+        #{$prop}-left: $spacing !important;
+        #{$prop}-right: $spacing !important;
+      }
+      .child-#{$abbrev}y-#{$size}-xs > * {
+        #{$prop}-top: $spacing !important;
+        #{$prop}-bottom: $spacing !important;
+      }
+      .child-#{$abbrev}t-#{$size}-xs > * {
+        #{$prop}-top: $spacing !important;
+      }
+      .child-#{$abbrev}r-#{$size}-xs > * {
+        #{$prop}-right: $spacing !important;
+      }
+      .child-#{$abbrev}b-#{$size}-xs > * {
+        #{$prop}-bottom: $spacing !important;
+      }
+      .child-#{$abbrev}l-#{$size}-xs > * {
+        #{$prop}-left: $spacing !important;
+      }
     }
 
     @media only screen and (min-width: $sm-viewport) {
@@ -81,6 +105,30 @@ $xl-viewport: 1200px;
         #{$prop}-bottom: $spacing !important;
       }
       .#{$abbrev}l-#{$size}-sm {
+        #{$prop}-left: $spacing !important;
+      }
+
+      .child-#{$abbrev}-#{$size}-sm > * {
+        #{$prop}: $spacing !important;
+      }
+      .child-#{$abbrev}x-#{$size}-sm > * {
+        #{$prop}-left: $spacing !important;
+        #{$prop}-right: $spacing !important;
+      }
+      .child-#{$abbrev}y-#{$size}-sm > * {
+        #{$prop}-top: $spacing !important;
+        #{$prop}-bottom: $spacing !important;
+      }
+      .child-#{$abbrev}t-#{$size}-sm > * {
+        #{$prop}-top: $spacing !important;
+      }
+      .child-#{$abbrev}r-#{$size}-sm > * {
+        #{$prop}-right: $spacing !important;
+      }
+      .child-#{$abbrev}b-#{$size}-sm > * {
+        #{$prop}-bottom: $spacing !important;
+      }
+      .child-#{$abbrev}l-#{$size}-sm > * {
         #{$prop}-left: $spacing !important;
       }
     }
