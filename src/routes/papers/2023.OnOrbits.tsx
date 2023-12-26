@@ -16,7 +16,13 @@ import {Intent, Tag} from "@blueprintjs/core";
 import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
 import {Center} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
-import {BinarySuperposition, Continuation, RenderedRay, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
+import {
+  BinarySuperposition,
+  Continuation,
+  Curve, Loop,
+  RenderedRay, torus,
+  Vertex
+} from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {length} from "../../@orbitmines/explorer/Ray";
 
 export const ON_ORBITS: Content = {
@@ -763,7 +769,8 @@ const OnOrbits = () => {
 
         <BR/>
 
-        I could say, "oh, the one is red, the other is blue", and they must be *the same kind* of red and blue. And so surely that could be interpreted as a superposition.
+        I could say, "oh, the one is red, the other is blue", and they must be *the same kind* of red and blue. And so
+        surely that could be interpreted as a superposition.
 
         <BR/>
 
@@ -785,7 +792,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <CachedVisualizationCanvas alt="2_select_1" context={paper}  style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="2_select_1" context={paper} style={{height: '140px'}}>
             <Center>
               <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
 
@@ -801,12 +808,13 @@ const OnOrbits = () => {
 
         <BR/>
 
-        This could frankly be anything. If it can be constructed, this is valid way of equivalencing the two. So this, is a perfectly reasonable way of equivalencing our red and blue points:
+        This could frankly be anything. If it can be constructed, this is valid way of equivalencing the two. So this,
+        is a perfectly reasonable way of equivalencing our red and blue points:
 
         <BR/>
 
         <Block>
-          <CachedVisualizationCanvas alt="some_structure" context={paper}  style={{height: '140px'}}>
+          <CachedVisualizationCanvas alt="some_structure" context={paper} style={{height: '140px'}}>
             <Center>
               <group scale={1.5}>
                 <group>
@@ -846,28 +854,89 @@ const OnOrbits = () => {
         <BR/>
 
         <span style={{textAlign: 'left', minWidth: '100%'}}>Another way of thinking about this, is that an equivalence and an inconsistency aren't actually different things at all. And that concepts like <span
-                    className="bp5-text-muted">equivalence, ignorance, <Reference is="reference" index={referenceCounter()} reference={{title: "renormalization", link: "https://en.wikipedia.org/wiki/Renormalization"}} simple inline />, <Reference is="reference" index={referenceCounter()} reference={{title: "coarse-graining", link: "https://en.wikipedia.org/wiki/Coarse-grained_modeling"}} simple inline />, ..., inconsistency</span> can all be used somewhat interchangeably. And I need additional structure to distinguish between them. They don't generally hold up. This might fly a bit in the face of how you usually use words, but let's entertain it for a moment, and see if we can disentangle what I could possible mean by that - without descending into vague madness.</span>
+          className="bp5-text-muted">equivalence, ignorance, <Reference is="reference" index={referenceCounter()}
+                                                                        reference={{
+                                                                          title: "renormalization",
+                                                                          link: "https://en.wikipedia.org/wiki/Renormalization"
+                                                                        }} simple inline/>, <Reference is="reference"
+                                                                                                       index={referenceCounter()}
+                                                                                                       reference={{
+                                                                                                         title: "coarse-graining",
+                                                                                                         link: "https://en.wikipedia.org/wiki/Coarse-grained_modeling"
+                                                                                                       }} simple
+                                                                                                       inline/>, ..., inconsistency</span> can all be used somewhat interchangeably. And I need additional structure to distinguish between them. They don't generally hold up. This might fly a bit in the face of how you usually use words, but let's entertain it for a moment, and see if we can disentangle what I could possible mean by that - without descending into vague madness.</span>
 
-
-        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
-          className="bp5-text-muted"></span></span>
-        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
-          className="bp5-text-muted"></span></span>
-        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
-          className="bp5-text-muted"></span></span>
-        <span style={{textAlign: 'left', minWidth: '100%'}}> <span
-          className="bp5-text-muted"></span></span>
-
-        <BR/>
-        <BR/>
         <BR/>
 
         {/*  Always, Never, All, None, Every, Constants, Modularity, Identity, Bounded/Unbounded, Limit/Unlimited, Discrete/Continuous */}
         <Section head="On Orbits" sub="Infinities, Loops, Self-Reference, Fixed Points, Halting, ..., Abstractions">
+          <span style={{textAlign: 'left', minWidth: '100%'}}>If I wanted to phrase that something was <span
+            className="bp5-text-muted">consistent, equivalent, ..., invariant</span> - in general -. One way of doing that, is saying that irrespective of some direction, it will always stay the same. Or in other words, there is some loop. There is some way in which it holds, infinitely.</span>
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="1_loop" context={paper} style={{height: '60px'}}>
+              <Center>
+                <group scale={1.5}>
+                  <Loop position={[0, 15, 0]} radius={15} color="#55FF55"/>
+                </group>
+
+                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>*/}
+              </Center>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          {/*<BR/>*/}
+
+          {/*<Block>*/}
+          {/*  <CachedVisualizationCanvas alt="1_loop_selected" context={paper} style={{height: '60px'}}>*/}
+          {/*    <Center>*/}
+          {/*      <group scale={1.5}>*/}
+          {/*        <Loop position={[0, 15, 0]} radius={15} color="#55FF55"/>*/}
+          {/*      </group>*/}
+
+          {/*      <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>*/}
+          {/*    </Center>*/}
+          {/*  </CachedVisualizationCanvas>*/}
+          {/*</Block>*/}
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="1_loop_expanded" context={paper} style={{height: '60px'}}>
+              <Center>
+                <group position={[30, 45, 0]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#00AA00"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#00AA00"/></group>
+                </group>
+
+                <group scale={1.5}>
+                  <Continuation position={[-20, 30, 0]} color="#55FF55" scale={1.5} />
+                  <Continuation position={[20, 30, 0]} color="#55FF55" scale={1.5} />
+
+                  <group rotation={[Math.PI, 0, 0]}>
+                    <Continuation position={[0, -30 + torus.radius, 0]} color="#55FF55" scale={1.5} arc={Math.PI} radius={20} />
+                  </group>
+
+                  <Vertex color="#55FF55" position={[0, 7, 0]} />
+                </group>
+              </Center>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+
 
         </Section>
 
         <BR/>
+
         <BR/>
         <BR/>
         <BR/>

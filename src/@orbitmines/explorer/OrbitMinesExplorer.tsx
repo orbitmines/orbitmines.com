@@ -1,13 +1,13 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {empty, empty_vertex, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
-import {CatmullRomLine, Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
+import {CatmullRomLine, Circle, CubicBezierLine, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {GroupProps, useFrame, useThree,} from "@react-three/fiber";
 import {useDrag} from "@use-gesture/react";
 import {useSpring} from '@react-spring/three'
 import {useHotkeys} from "../js/react/hooks/useHotkeys";
 import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import {Box3, SplineCurve, Vector3, WebGLRenderTarget} from "three";
+import {Box3, SplineCurve, TorusGeometry, Vector3, WebGLRenderTarget} from "three";
 import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import IEventListener, {mergeListeners} from "../js/react/IEventListener";
@@ -17,16 +17,86 @@ import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 
 const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
-const torus = {
+export const torus = {
   // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
   radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
 }
-export const Continuation = ({ color = torus.color, position }: any) =>
+export const Continuation = (
+  {
+    color = torus.color,
+    radius = torus.radius,
+    arc = Math.PI * 2,
+    position
+  }: any) =>
   <Torus
-    args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+    args={[radius, torus.tube.width, torus.segments, torus.tube.segments, arc]}
     material-color={color}
     position={position}
   />
+
+export const Loop = (
+  { color = "#FFFF55",
+    on = "orange",
+    position = [0, 0, 0],
+    initial = position,
+    terminal = add(position, [0, 30, 0]),
+    scale = 1.5,
+    radius = 15,
+    segments = 200
+  }: any
+) => {
+  // const geometry = new TorusGeometry(radius, torus.tube.width, torus.segments, torus.tube.segments, Math.PI * 4);
+  //
+  // const vertices = geometry.getAttribute('position').array;
+  // const points: any = [];
+  // for (let i = 0; i < vertices.length; i += 3) {
+  //   points.push([vertices[i], vertices[i + 1], vertices[i + 2]]);
+  // }
+  const points: [number, number, number][] = [];
+  for (let i = 0; i < segments; i++) {
+    const angle = ((i / segments) * Math.PI * 2) + Math.PI / 2; // STARTS AT THE TOP
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+
+    if (i > 5 && i < segments - 6)
+      points.push([x, y, 0])
+  }
+  console.log(points)
+
+  const vertex = add(position, [0, -radius, 0]);
+  const continuation = add(position, [0, radius, 0]);
+
+  return <group>
+    <CatmullRomLine position={position} points={points} color={color} lineWidth={line.width * 1.5}/>
+    <Continuation position={continuation} color={color}/>
+    <Vertex position={vertex} color={color} />
+  </group>
+}
+export const Curve = (
+  { color = "#FFFF55",
+    position = [0, 0, 0],
+    initial = position,
+    terminal = add(position, [0, 30, 0]),
+    scale = 1.5 }: any) => {
+  const radius = 15;
+
+  return <group position={[0, 0, 0]}>
+    {/*<Torus*/}
+    {/*  args={[radius, torus.tube.width, torus.segments, torus.tube.segments, Math.PI]}*/}
+    {/*  material-color={color}*/}
+    {/*  position={position}*/}
+    {/*/>*/}
+    <CubicBezierLine
+      start={initial}
+      // mid={mid}
+      midA={add(initial, [radius * 1.25, radius - radius / 1.5, 0])}
+      midB={add(initial, [radius * 1.25, radius + radius / 1.5, 0])}
+      end={terminal}
+      color={color}
+      lineWidth={line.width * scale}
+    />
+  </group>
+}
 
 const line = { width: 2,  length: 1,  color: "orange", }
 const Line = ({ start, mid, end, scale, color = line.color }: any) =>
