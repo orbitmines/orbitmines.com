@@ -939,246 +939,278 @@ const OnOrbits = () => {
 
         <BR/>
 
-        {/*  Always, Never, All, None, Every, Constants, Modularity, Identity, Bounded/Unbounded, Limit/Unlimited, Discrete/Continuous */}
-        <Section head="On Orbits" sub="Infinities, Loops, Self-Reference, Fixed Points, Halting, ..., Abstractions">
+      </Section>
+
+      {/*  Always, Never, All, None, Every, Constants, Modularity, Identity, Bounded/Unbounded, Limit/Unlimited, Discrete/Continuous */}
+      <Section head="On Orbits" sub="Infinities, Loops, Self-Reference, Fixed Points, Halting, ..., Abstractions">
           <span style={{textAlign: 'left', minWidth: '100%'}}>If I wanted to phrase that something was <span
             className="bp5-text-muted">consistent, equivalent, ..., invariant</span> - in general -. One way of doing that, is saying that irrespective of some direction, it will always stay the same. Or in other words, there is some loop. There is some way in which it holds, infinitely.</span>
 
-          <BR/>
+        <BR/>
 
-          Take a simple point.
+        Take a simple point.
 
-          <BR/>
+        <BR/>
 
-          <Block>
-            <CachedVisualizationCanvas alt="empty_vertex_green" context={paper}>
-              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
-            </CachedVisualizationCanvas>
-          </Block>
+        <Block>
+          <CachedVisualizationCanvas alt="empty_vertex_green" context={paper}>
+            <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+          </CachedVisualizationCanvas>
+        </Block>
 
-          <BR/>
+        <BR/>
 
-          Make its beginning and end equivalent by acknowledging an inconsistency.
+        Make its beginning and end equivalent by acknowledging an inconsistency.
 
-          <BR/>
+        <BR/>
 
-          <Block>
-            <CachedVisualizationCanvas alt="1_loop_expanded" context={paper} style={{height: '60px'}}>
-              <Center>
-                <group position={[30, 45, 0]}>
+        <Block>
+          <CachedVisualizationCanvas alt="1_loop_expanded" context={paper} style={{height: '60px'}}>
+            <Center>
+              <group position={[30, 45, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#00AA00"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#00AA00"/></group>
+              </group>
+
+              <group scale={1.5}>
+                <Continuation position={[-20, 30, 0]} color="#55FF55" scale={1.5}/>
+                <Continuation position={[20, 30, 0]} color="#55FF55" scale={1.5}/>
+
+                <group rotation={[Math.PI, 0, 0]}>
+                  <Continuation position={[0, -30 + torus.radius, 0]} color="#55FF55" scale={1.5} arc={Math.PI}
+                                radius={20}/>
+                </group>
+
+                <Vertex color="#55FF55" position={[0, 7, 0]}/>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>And there we have it, an <span
+          className="bp5-text-muted">infinity, loop, ..., orbit</span>  if we ignore the difference.</span>
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="1_loop" context={paper} style={{height: '60px'}}>
+            <Center>
+              <group scale={1.5}>
+                <Loop position={[0, 15, 0]} radius={15} color="#55FF55"/>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        The problem with a loop being, that in order to remain consistent. Anything found at the point must never
+        change. You cannot distinguish between each iteration of the loop - there must be no asymmetry on each
+        iteration.
+
+        <BR/>
+
+        But it's much worse than that. Take for instance an infinite line of a selected binary number.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="1_loop_2_select_1" context={paper} style={{height: '170px'}}>
+            <Center>
+              <group scale={1.5}>
+                <Loop position={[0, 20, 0]} radius={20} color="orange"/>
+              </group>
+              <group>
+                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                <group rotation={[0, 0, Math.PI / 2]}>
                   <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
-                                                                         color="#00AA00"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#00AA00"/></group>
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
-
-                <group scale={1.5}>
-                  <Continuation position={[-20, 30, 0]} color="#55FF55" scale={1.5}/>
-                  <Continuation position={[20, 30, 0]} color="#55FF55" scale={1.5}/>
-
-                  <group rotation={[Math.PI, 0, 0]}>
-                    <Continuation position={[0, -30 + torus.radius, 0]} color="#55FF55" scale={1.5} arc={Math.PI}
-                                  radius={20}/>
-                  </group>
-
-                  <Vertex color="#55FF55" position={[0, 7, 0]}/>
-                </group>
-              </Center>
-            </CachedVisualizationCanvas>
-          </Block>
-
-          <BR/>
-
-          <span style={{textAlign: 'left', minWidth: '100%'}}>And there we have it, an <span
-            className="bp5-text-muted">infinity, loop, ..., orbit</span>  if we ignore the difference.</span>
-
-          <BR/>
-
-          <Block>
-            <CachedVisualizationCanvas alt="1_loop" context={paper} style={{height: '60px'}}>
-              <Center>
-                <group scale={1.5}>
-                  <Loop position={[0, 15, 0]} radius={15} color="#55FF55"/>
-                </group>
-              </Center>
-            </CachedVisualizationCanvas>
-          </Block>
-
-          <BR/>
-
-          The problem with a loop being, that in order to remain consistent. Anything found at the point must never
-          change. You cannot distinguish between each iteration of the loop - there must be no asymmetry on each
-          iteration.
-
-          <BR/>
-
-          But it's much worse than that. Take for instance an infinite line of a selected binary number.
-
-          <BR/>
-
-          <Block>
-            <CachedVisualizationCanvas alt="1_loop_2_select_1" context={paper} style={{height: '170px'}}>
-              <Center>
-                <group scale={1.5}>
-                  <Loop position={[0, 20, 0]} radius={20} color="orange"/>
-                </group>
-                <group>
-                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
-
-                  <group rotation={[0, 0, Math.PI / 2]}>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
-                                                                           color="#FF5555"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
-                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
-                  </group>
-                </group>
-              </Center>
-            </CachedVisualizationCanvas>
-          </Block>
-
-          <BR/>
-
-          There is no possible way for me to distinguish between each iteration. The only ways to do so, is to introduce
-          some difference,
-
-          <BR/>
-
-          <Block>
-            <CachedVisualizationCanvas alt="2_loop_2_select_1" context={paper} style={{height: '170px'}}>
-              <Center>
-                <group scale={1.5}>
-                  <Line start={[0, 0, 0]} end={[20 - torus.radius, 0, 0]} scale={1.5} color="orange"/>
-                  <Line start={[20 + torus.radius, 0, 0]} end={[40, 0, 0]} scale={1.5} color="orange"/>
-                  <Continuation position={[20, 0, 0]} color="orange"/>
-                </group>
-                <group scale={1.5}>
-                  <Line start={[0, 40, 0]} end={[20 - torus.radius, 40, 0]} scale={1.5} color="orange"/>
-                  <Line start={[20 + torus.radius, 40, 0]} end={[40, 40, 0]} scale={1.5} color="orange"/>
-                  <Continuation position={[20, 40, 0]} color="orange"/>
-                </group>
-                <group scale={1.5} rotation={[0, 0, Math.PI / 2]}>
-                  <Continuation position={[20, 0, 0]} radius={20} color="orange"
-                                arc={Math.PI - 0.12}/> {/* close enough hack */}
-                </group>
-                <group scale={1.5} position={[60, 30, 0]} rotation={[0, 0, -(Math.PI / 2) + 0.12]}>
-                  <Continuation radius={20} color="orange" arc={Math.PI}/>
-                </group>
-
-                <group>
-                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
-
-                  <group rotation={[0, 0, Math.PI / 2]}>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
-                                                                           color="#FF5555"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
-                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
-                  </group>
-                </group>
-                <group position={[60, 0, 0]}>
-                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
-
-                  <group rotation={[0, 0, Math.PI / 2]}>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
-                                                                           color="#FF5555"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
-                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
-                  </group>
-                </group>
-              </Center>
-            </CachedVisualizationCanvas>
-          </Block>
-
-          <BR/>
-
-          which would break the consistency of the loop.
-
-          <BR/>
-
-          Or for the loop to be ignorant of my introduced variance - which means it's back to this.
-
-          <BR/>
-
-          <Block>
-            <CachedVisualizationCanvas alt="1_loop_2_select_1" context={paper} style={{height: '170px'}}>
-              <Center>
-                <group scale={1.5}>
-                  <Loop position={[0, 20, 0]} radius={20} color="orange"/>
-                </group>
-                <group>
-                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
-
-                  <group rotation={[0, 0, Math.PI / 2]}>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
-                                                                           color="#FF5555"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
-                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
-                  </group>
-                </group>
-              </Center>
-            </CachedVisualizationCanvas>
-          </Block>
-
-          <BR/>
-
-          In which case, the loop isn't perfectly repeating, but merely an ignorant one.
-
-          <BR/>
-
-          <span style={{textAlign: 'left', minWidth: '100%'}}>Or in other words: Whenever you have an <span
-            className="bp5-text-muted">infinity, loop, ..., orbit</span>, either you actually have a loop, and there's nothing you can do about it. Or you are <span
-            className="bp5-text-muted">ignoring, ..., missing</span> the information on how it's not one.</span>
-
-          <BR/>
-
-          This is I think, a good definition of an abstraction.
-
-          <BR/>
-
-          {/*<BR/>*/}
-
-          {/*<Block>*/}
-          {/*  <CachedVisualizationCanvas alt="1_loop_selected" context={paper} style={{height: '60px'}}>*/}
-          {/*    <Center>*/}
-          {/*      <group scale={1.5}>*/}
-          {/*        <Loop position={[0, 15, 0]} radius={15} color="#55FF55"/>*/}
-          {/*      </group>*/}
-
-          {/*      <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>*/}
-          {/*    </Center>*/}
-          {/*  </CachedVisualizationCanvas>*/}
-          {/*</Block>*/}
-
-          <BR/>
-
-
-          <BR/>
-          <BR/>
-          <BR/>
-          <BR/>
-          <BR/>
-
-
-        </Section>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
 
         <BR/>
 
-        <BR/>
-        <BR/>
-        <BR/>
+        There is no possible way for me to distinguish between each iteration. The only ways to do so, is to introduce
+        some difference,
+
         <BR/>
 
+        <Block>
+          <CachedVisualizationCanvas alt="2_loop_2_select_1" context={paper} style={{height: '170px'}}>
+            <Center>
+              <group scale={1.5}>
+                <Line start={[0, 0, 0]} end={[20 - torus.radius, 0, 0]} scale={1.5} color="orange"/>
+                <Line start={[20 + torus.radius, 0, 0]} end={[40, 0, 0]} scale={1.5} color="orange"/>
+                <Continuation position={[20, 0, 0]} color="orange"/>
+              </group>
+              <group scale={1.5}>
+                <Line start={[0, 40, 0]} end={[20 - torus.radius, 40, 0]} scale={1.5} color="orange"/>
+                <Line start={[20 + torus.radius, 40, 0]} end={[40, 40, 0]} scale={1.5} color="orange"/>
+                <Continuation position={[20, 40, 0]} color="orange"/>
+              </group>
+              <group scale={1.5} rotation={[0, 0, Math.PI / 2]}>
+                <Continuation position={[20, 0, 0]} radius={20} color="orange"
+                              arc={Math.PI - 0.12}/> {/* close enough hack */}
+              </group>
+              <group scale={1.5} position={[60, 30, 0]} rotation={[0, 0, -(Math.PI / 2) + 0.12]}>
+                <Continuation radius={20} color="orange" arc={Math.PI}/>
+              </group>
+
+              <group>
+                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+              <group position={[60, 0, 0]}>
+                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        which would break the consistency of the loop.
+
+        <BR/>
+
+        Or for the loop to be ignorant of my introduced variance - which means it's back to this.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="1_loop_2_select_1" context={paper} style={{height: '170px'}}>
+            <Center>
+              <group scale={1.5}>
+                <Loop position={[0, 20, 0]} radius={20} color="orange"/>
+              </group>
+              <group>
+                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        In which case, the loop isn't perfectly repeating, but merely an ignorant one.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Or in other words: Whenever you have an <span
+          className="bp5-text-muted">infinity, loop, ..., orbit</span>, either you actually have a loop, and there's nothing you can do about it. Or you are <span
+          className="bp5-text-muted">ignoring, ..., missing</span> the information on how it's not one.</span>
+
+        <BR/>
+
+        This is I think, a good definition of an abstraction.
+
+        <span
+          className="bp5-text-disabled" style={{textAlign: 'left', minWidth: '100%'}}>Another example of this is reversibility. The only way to construct perfect reversibility, is if there's no distinguishability between the iteration 'before' and 'after' the reversing. And that practically, when one thinks about reversibility (say for instance a number line, ..., or some dimension), one is only interested in a particular kind of reversibility. Reversibility after ignoring some difference.</span>
+
+        <BR/>
+
+        Take for instance, the abstraction of two possible values.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        What does it mean to say, that it's *just* this structure? And nothing more defined around it? How, for example,
+        do I know it's two, and not more?
+
+        <BR/>
+
+        Quite similarly to the loops, I could be ignorant of additional structure by assuming it's not there.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>And if I wanted to guarantee it's *just* this structure, I would need to assume some consistency of it, infinitely. <span
+          className="bp5-text-muted">"It never changes", "There will never be anything additional to find here", ..., "It halts here"</span>. And I could do such a thing anywhere on the structure.</span>
+
+        <BR/>
+
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_horizontal_binary_loops" context={paper} style={{height: '50px'}}>
+            <Center>
+              <group>
+                <group scale={1.5}>
+                  <Loop position={[0, 7.5, 0]} radius={7.5} segments={100} color="orange"/>
+                </group>
+                <group scale={1.5}>
+                  <Loop position={[20, 7.5, 0]} radius={7.5} segments={100} color="orange"/>
+                </group>
+                <group scale={1.5}>
+                  <Loop position={[-20, 7.5, 0]} radius={7.5} segments={100} color="orange"/>
+                </group>
+                <group scale={1.5}>
+                  <Loop position={[-40, 7.5, 0]} radius={7.5} segments={100} color="orange"/>
+                </group>
+                <group scale={1.5}>
+                  <Loop position={[-60, 7.5, 0]} radius={7.5} segments={100} color="orange"/>
+                </group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>And similarly, that would actually be the case. Or I'm again, <span
+          className="bp5-text-muted">ignoring, ..., missing</span> some structure.</span>
+
+        <BR/>
+
+        Which is essentially saying, that an idea like self-reference can only be maintained abstractly by ignoring aspects which would make each iteration of self-reference different.
       </Section>
 
-      <Section head="On Inconsistencies" sub={<span>
-       Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Variance
-      </span>}>
-      </Section>
-      <Section head="On Equivalence" sub={<span>
-       Some <span className="bp5-text-disabled">[seeming non-trivial (perceived) directional]</span> Invariance
-      </span>}>
-      </Section>
 
-      <Section head="Coarse-graining" sub="Unintended/Accidental/Irrelevant Variance">
-      </Section>
       <Section head="Violating Assumptions" sub="(Variance) Unknown inconsistencies and enforcing global coherence">
 
       </Section>
@@ -1188,8 +1220,8 @@ const OnOrbits = () => {
     </Arc>
     <Arc head="Arc: OrbitMines Explorer: The Project">
       <Link
-          link="https://github.com/orbitmines/orbitmines.com/pull/1"
-          name={<span>
+        link="https://github.com/orbitmines/orbitmines.com/pull/1"
+        name={<span>
         OrbitMines Explorer - <Tag intent={Intent.WARNING} minimal multiline style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
       </span>}
           icon={ORGANIZATIONS.github.key} />
@@ -1207,6 +1239,10 @@ const OnOrbits = () => {
         <span style={{textAlign: 'left', minWidth: '100%'}}>One thing that has become quite clear to me. Is that the best solutions in this line of projects, will necessarily be the interface with which someone interacts with abstract ideas. <span
           className="bp5-text-muted">This could be a language, ..., something of the tooling around such a language (which itself might be conceptualized as another language)</span>. Which one, doesn't actually really matter much. Understanding the details of specific kinds of languages, don't matter much. Constructing a <span
           className="bp5-text-muted">platform, language, ..., interface</span>, as general as possible so that others have a way of implementing theirs as conveniently as possible. That is an important idea in this project.</span>
+
+        <BR/>
+
+        Though this current setup is quite intuitive to me, I still need to link a lot of it to existing concepts.
 
         <BR/>
 
