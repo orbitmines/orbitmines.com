@@ -1134,7 +1134,7 @@ const OnOrbits = () => {
         This is I think, a good definition of an abstraction.
 
         <span
-          className="bp5-text-disabled" style={{textAlign: 'left', minWidth: '100%'}}>Another example of this is reversibility. The only way to construct perfect reversibility, is if there's no distinguishability between the iteration 'before' and 'after' the reversing. And that practically, when one thinks about reversibility (say for instance a number line, ..., or some dimension), one is only interested in a particular kind of reversibility. Reversibility after ignoring some difference.</span>
+          className="bp5-text-disabled" style={{textAlign: 'left', minWidth: '100%'}}>Another example of this is reversibility. The only way to construct perfect reversibility, is if there's no distinguishability between the iteration 'before' and 'after' the reversing. And that practically, when one thinks about reversibility (say for instance a number line, ..., or some dimension), one is only interested in a particular kind of consistency, ..., reversibility. Consistency, ..., Reversibility after ignoring some difference.</span>
 
         <BR/>
 
@@ -1211,7 +1211,7 @@ const OnOrbits = () => {
       </Section>
 
 
-      <Section head="Violating Assumptions" sub="(Variance) Unknown inconsistencies and enforcing global coherence">
+      <Section head="Assumptions & Violating Assumptions" sub="A step towards more practicality">
 
       </Section>
       <Section head="Compression">
