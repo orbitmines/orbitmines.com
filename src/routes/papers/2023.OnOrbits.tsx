@@ -19,7 +19,7 @@ import {Block} from "../../lib/syntax-highlighting/CodeBlock";
 import {
   BinarySuperposition,
   Continuation,
-  Curve, Loop,
+  Curve, Line, Loop,
   RenderedRay, torus,
   Vertex
 } from "../../@orbitmines/explorer/OrbitMinesExplorer";
@@ -1002,6 +1002,126 @@ const OnOrbits = () => {
               </Center>
             </CachedVisualizationCanvas>
           </Block>
+
+          <BR/>
+
+          The problem with a loop being, that in order to remain consistent. Anything found at the point must never change. You cannot distinguish between each iteration of the loop - there must be no asymmetry on each iteration.
+
+          <BR/>
+
+          But it's much worse than that. Take for instance an infinite line of a selected binary number.
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="1_loop_2_select_1" context={paper} style={{height: '170px'}}>
+              <Center>
+                <group scale={1.5}>
+                  <Loop position={[0, 20, 0]} radius={20} color="orange"/>
+                </group>
+                <group>
+                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#FF5555"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                  </group>
+                </group>
+              </Center>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          <BR/>
+
+          There is no possible way for me to distinguish between each iteration. The only ways to do so, is to introduce some difference,
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="2_loop_2_select_1" context={paper} style={{height: '170px'}}>
+              <Center>
+                <group scale={1.5}>
+                  <Line start={[0, 0, 0]} end={[20 - torus.radius, 0, 0]} scale={1.5} color="orange" />
+                  <Line start={[20 + torus.radius, 0, 0]} end={[40, 0, 0]} scale={1.5} color="orange" />
+                  <Continuation position={[20, 0, 0]} color="orange"/>
+                </group>
+                <group scale={1.5}>
+                  <Line start={[0, 40, 0]} end={[20 - torus.radius, 40, 0]} scale={1.5} color="orange" />
+                  <Line start={[20 + torus.radius, 40, 0]} end={[40, 40, 0]} scale={1.5} color="orange" />
+                  <Continuation position={[20, 40, 0]} color="orange"/>
+                </group>
+                <group scale={1.5} rotation={[0, 0, Math.PI / 2]}>
+                  <Continuation position={[20, 0, 0]} radius={20} color="orange" arc={Math.PI - 0.12}/>     {/* close enough hack */}
+                </group>
+                <group scale={1.5} position={[60, 30, 0]} rotation={[0, 0, -(Math.PI / 2) + 0.12]}>
+                  <Continuation radius={20} color="orange" arc={Math.PI}/>
+                </group>
+
+                <group>
+                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#FF5555"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                  </group>
+                </group>
+                <group position={[60, 0, 0]}>
+                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#FF5555"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                  </group>
+                </group>
+              </Center>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          <BR/>
+
+          which would break the consistency of the loop.
+
+          <BR/>
+
+          Or for the loop to be ignorant of my introduced variance - which means it's back to this.
+
+          <BR/>
+
+          <Block>
+            <CachedVisualizationCanvas alt="1_loop_2_select_1" context={paper} style={{height: '170px'}}>
+              <Center>
+                <group scale={1.5}>
+                  <Loop position={[0, 20, 0]} radius={20} color="orange"/>
+                </group>
+                <group>
+                  {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#FF5555"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                  </group>
+                </group>
+              </Center>
+            </CachedVisualizationCanvas>
+          </Block>
+
+          <BR/>
+
+          In which case, the loop isn't perfectly repeating, but merely an ignorant one.
+
+          <BR/>
+
+          This is I think, a good definition of an abstraction.
+
+          <BR/>
 
           {/*<BR/>*/}
 

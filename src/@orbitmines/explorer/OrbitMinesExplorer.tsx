@@ -58,7 +58,7 @@ export const Loop = (
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
 
-    if (i > 7 && i < segments - 8)
+    if (i > 5 && i < segments - 6)
       points.push([x, y, 0])
   }
   console.log(points)
@@ -99,7 +99,7 @@ export const Curve = (
 }
 
 const line = { width: 2,  length: 1,  color: "orange", }
-const Line = ({ start, mid, end, scale, color = line.color }: any) =>
+export const Line = ({ start, mid, end, scale, color = line.color }: any) =>
   <QuadraticBezierLine
     start={start}
     mid={mid}
