@@ -34,7 +34,7 @@ export const ON_ORBITS: Content = {
      */
     title: "On Orbits, Equivalence and Inconsistencies",
     subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility.",
-    draft: false,
+    draft: true,
     link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies',
     year: "2023",
     date: "2023-12-31",
