@@ -1208,6 +1208,29 @@ const OnOrbits = () => {
 
         <span style={{textAlign: 'left', minWidth: '100%'}}>And similarly, that would actually be the case. Or I'm again, <span
           className="bp5-text-muted">ignoring, ..., missing</span> some structure.</span>
+      </Section>
+      <Section head="Assumptions & Violating Assumptions" sub="A step towards more practicality">
+        <span style={{textAlign: 'left', minWidth: '100%'}}>One might as well - more practically - say that some <span
+          className="bp5-text-muted">consistency, ..., well-defined property</span> could be more vaguely restated as: "Can rely on some assumptions without the/much need to correct them if they are violated". Where violated just means some inconsistency with respect to what was expected according to that assumption.</span>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Whenever you have an assumption like that. You don't necessarily need to draw conclusions as to its <span
+          className="bp5-text-muted">usefulness, ..., correctness</span>. If it can evidently be constructed and can persist however fleetingly, that is enough.</span>
+
+        <BR/>
+
+        <span
+          className="bp5-text-disabled" style={{textAlign: 'left', minWidth: '100%'}}>Basically: it's not whether "2 + 2 = 4". It's whether you can notice if that, in the process of wanting to calculate '2 + 2'. That the result does(/ not) match your more abstract idea of what addition should look like. If it doesn't - which you could say was inconsistent according to your (ignorant) abstract model - will you notice? Could you understand its effects, ..., consequences if it doesn't? - This seems a much harder problem to solve. One which is much easier to ignore, practically.</span>
+
+        <BR/>
+
+        Note that it then wouldn't be entirely obvious what would happen. Both from the perspective of the abstraction, or that of the inconsistency. Perhaps you could draw some loose analogies between acceleration/gravity in a case like this, but again, this isn't obvious at all - and probably a hard problem.
+      </Section>
+      {/* "in between" */}
+      <Section head="Fractals" sub="Transduction, Reducing, Super-, Sub-, ..., Fractions">
+        All of this is essentially saying, that an idea like self-reference can only be maintained abstractly by
+        ignoring aspects which would make each iteration of self-reference different.
 
         <BR/>
         <Row center="xs" style={{width: '100%'}}>
@@ -1215,17 +1238,13 @@ const OnOrbits = () => {
         </Row>
         <BR/>
 
-        All of this is essentially saying, that an idea like self-reference can only be maintained abstractly by ignoring aspects which would make each iteration of self-reference different.
-      </Section>
-      {/* "in between" */}
-      <Section head="Fractals" sub="Transduction, Reducing, Super-, Sub-, ..., Fractions">
         What if we wanted a way to describe what was in between two points? We already have a way of connecting them
         together.
 
         <BR/>
 
         <Block>
-          <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
+        <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
             <Center>
               <group>
                 <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -1528,9 +1547,6 @@ const OnOrbits = () => {
       </Section>
       <Section head="Movement & Teleporting">
       </Section>
-      <Section head="Assumptions & Violating Assumptions" sub="A step towards more practicality">
-
-      </Section>
       <Section head="Compression">
 
       </Section>
@@ -1630,12 +1646,6 @@ const OnOrbits = () => {
         In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found - or am starting to find - a proper language to do so.
       </Section>
     </Arc>
-    <Arc head="Arc: OrbitMines' Timeline (2013-2023)">
-      <Section head="A quick journey of getting here">
-
-      </Section>
-    </Arc>
-
   </Paper>;
 }
 
