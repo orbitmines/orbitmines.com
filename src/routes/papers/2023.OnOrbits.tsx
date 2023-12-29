@@ -309,7 +309,9 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>Alright, this is already showing something interesting. Imagine this: <span className="bp5-text-muted">Tilt, ignore, ..., collapse</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
+        <span style={{textAlign: 'left'}}>Alright, this is already showing something interesting. Imagine this: <span
+          className="bp5-text-muted">Tilt, ignore, collapse ..., superpose</span> the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above <Reference
+          is="footnote" index={referenceCounter()}>(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)</Reference>.</span>
 
         <BR/>
 
@@ -318,7 +320,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-          <CachedVisualizationCanvas alt="2_double_expanded_continuation" context={paper}  style={{height: '120px'}}>
+          <CachedVisualizationCanvas alt="2_double_expanded_continuation" context={paper} style={{height: '120px'}}>
             <Center>
               <group>
                 <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -1448,8 +1450,62 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-muted">A simple way of phrasing this, is one path takes you from 0 to 1. Another path takes you from 0 to 0.5 to 1.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-muted">A simple way of phrasing this, is one path takes you from 0 to 1. Another path takes you from 0 to 0.5 to 1. And just like any structure, we can put another direction on it as a possible way to select '0.5'.</span>
 
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived_selected" context={paper} style={{height: '200px'}}>
+            <Center>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group position={[30, 0, 0]}>
+                  <group scale={1.5} position={[-90, 0, 0]}>
+                    <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  </group>
+                  <group scale={1.5}>
+                    <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                                 color="#5555FF"/>
+                  </group>
+                  <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+                </group>
+
+                <group position={[0, 0, 0]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"
+                                                                         terminal={[20, -15, 0]}/></group>
+                  {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                  <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#5555FF" initial={[-20, -15, 0]}/>
+                  </group>
+
+                  <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                  color="#FF55FF"/></group>
+
+                </group>
+              </group>
+              <group rotation={[0, 0, Math.PI / 4]} position={[7, -15, 0]}>
+                <group scale={1.5}><RenderedRay position={[15, 0, 0]} reference={length(1)} scale={1.5} color="orange"/>
+                </group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        This then also being one of the ways in which one can both have the original structure in tact, and describe
+        existing continuations in another 'layer'.
+
+        <BR/>
+
+        <span
+          style={{textAlign: 'left', minWidth: '100%'}}>This sort of thing gives rise to many interesting cases: <span
+          className="bp5-text-muted">inconsistently describing continuations after some infinity in between, ..., arbitrary additional complexity which happens in between two points (which one is possibly ignorant of)</span>.</span>
+
+        <BR/>
+        <div style={{width: '100%'}}><HorizontalLine/></div>
         <BR/>
 
         Probably the reason why one usually doesn't ask what's between two fractions, is that this question is already
@@ -1462,7 +1518,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-disabled">Again, what one means by saying that "following both paths end up at the same point". Is that this can only actually be the case, if one can ignore which path is taken.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-disabled">Again, what one means by saying that "following both paths end up at the same point". Is that this can only actually be the case, if one can ignore/ignores which path is taken.</span>
 
         <BR/>
 
