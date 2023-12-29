@@ -12,7 +12,7 @@ import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import Arc from "../../lib/paper/layout/Arc";
 import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
-import {Intent, Tag} from "@blueprintjs/core";
+import {Divider, Intent, Tag} from "@blueprintjs/core";
 import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
 import {Center} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
@@ -24,6 +24,7 @@ import {
   Vertex
 } from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {length} from "../../@orbitmines/explorer/Ray";
+import {HorizontalLine} from "../../lib/paper/PaperContent";
 
 export const ON_ORBITS: Content = {
   reference: {
@@ -840,8 +841,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        I could say, "oh, the one is red, the other is blue", and they must be *the same kind* of red and blue. And so
-        surely that could be interpreted as a superposition.
+        I could say, "oh, the one is red, the other is blue", and they must be *the same kind* of red and blue. And so surely, if we ignore the difference between the two, that could be interpreted as a superposition.
 
         <BR/>
 
@@ -1206,11 +1206,270 @@ const OnOrbits = () => {
           className="bp5-text-muted">ignoring, ..., missing</span> some structure.</span>
 
         <BR/>
+        <Row center="xs" style={{width: '100%'}}>
+          <Divider style={{width: '80%'}}/>
+        </Row>
+        <BR/>
 
-        Which is essentially saying, that an idea like self-reference can only be maintained abstractly by ignoring aspects which would make each iteration of self-reference different.
+        All of this is essentially saying, that an idea like self-reference can only be maintained abstractly by ignoring aspects which would make each iteration of self-reference different.
       </Section>
+      {/* "in between" */}
+      <Section head="Fractals" sub="Transduction, Reducing, Super-, Sub-, ..., Fractions">
+        What if we wanted a way to describe what was in between two points? We already have a way of connecting them
+        together.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        There are probably many ways of doing this, one could be adding structure on the connection.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_expanded_continuation_selected" context={paper} style={{height: '200px'}}>
+            <Center>
+              <group>
+
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="#5555FF"/></group>
+
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group scale={1.5} position={[-120, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                          color="#FF55FF"/></group>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                </group>
+
+                <group scale={1.5} position={[0, -120, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                        color="orange"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Which could basically be this thing we've seen before.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge" context={paper} style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={length(1)} scale={1.5}/></group>
+
+              <group rotation={[0, 0, Math.PI / 2]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Another could be simply saying, there's a different way of looking at this thing, which includes something in
+        the middle.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="3_fractal" context={paper}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF"/></group>
+
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        But like this, we don't really have access to say the added point is "in between" our other two points, we just
+        have three points. One way of thinking about it, is that we want two ways of describing the same thing. One
+        which means our usual two points, and the other, us asking what's "in between" them.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal" context={paper} style={{height: '90px'}}>
+            <Center>
+              <group position={[30, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, -60, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF"/></group>
+
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Among the many possible ways of doing this, one could be to draw equivalences between points (and depending on
+        perspective, possibly continuations).
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_with_equivs" context={paper} style={{height: '120px'}}>
+            <Center>
+              <group position={[0, -7, 0]}>
+                <group position={[-60, 0, 0]} rotation={[0, 0, 60 * (Math.PI / 180)]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF5555"/></group>
+                </group>
+                <group position={[-30, 0, 0]} rotation={[0, 0, 60 * (Math.PI / 180)]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF5555"/></group>
+                </group>
+
+                <group position={[30, 0, 0]}>
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                         color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+                </group>
+
+                <group position={[90, -60 + 7, 0]}>
+                  <group position={[-30, 0, 0]} rotation={[0, 0, -60 * (Math.PI / 180)]}>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#5555FF"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#5555FF"/></group>
+                  </group>
+                </group>
+                <group position={[120, -60 + 7, 0]}>
+                  <group position={[-30, 0, 0]} rotation={[0, 0, -60 * (Math.PI / 180)]}>
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                           color="#5555FF"/></group>
+                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#5555FF"/></group>
+                  </group>
+                </group>
+              </group>
+
+              <group position={[0, -60, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF"/></group>
+
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Which could be phrased as:
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived" context={paper} style={{height: '60px'}}>
+            <Center>
 
 
+              <group position={[30, 0, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                </group>
+                <group scale={1.5}>
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#5555FF"/>
+                </group>
+                <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                                                                       terminal={[20, -15, 0]}/></group>
+                {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF" initial={[-20, -15, 0]}/></group>
+
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                color="#FF55FF"/></group>
+
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-muted">A simple way of phrasing this, is one path takes you from 0 to 1. Another path takes you from 0 to 0.5 to 1.</span>
+
+        <BR/>
+
+        Probably the reason why one usually doesn't ask what's between two fractions, is that this question is already
+        self-referentially answered. And deemed "not interesting". As a way of saying: "You can always keep asking what
+        is between two points, and that answer is always the same." <Reference is="footnote" index={referenceCounter()}>Though,
+        you could say something interesting as, the first 100 decimals places are this kind of fractal expansion, the
+        next 60 this kind, and any arbitrary thing that follows this other kind. - Quite funky constructions can be
+        made, but are probably usually ignored for a simpler pattern like this.</Reference>. Which is an example of how
+        a simple pattern, which likely inconsistently is assumed to infinitely hold, takes preference.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-disabled">Again, what one means by saying that "following both paths end up at the same point". Is that this can only actually be the case, if one can ignore which path is taken.</span>
+
+        <BR/>
+
+
+      </Section>
+      <Section head="Movement & Teleporting">
+      </Section>
       <Section head="Assumptions & Violating Assumptions" sub="A step towards more practicality">
 
       </Section>
@@ -1222,7 +1481,8 @@ const OnOrbits = () => {
       <Link
         link="https://github.com/orbitmines/orbitmines.com/pull/1"
         name={<span>
-        OrbitMines Explorer - <Tag intent={Intent.WARNING} minimal multiline style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
+        OrbitMines Explorer - <Tag intent={Intent.WARNING} minimal multiline
+                                   style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
       </span>}
           icon={ORGANIZATIONS.github.key} />
     </Arc>

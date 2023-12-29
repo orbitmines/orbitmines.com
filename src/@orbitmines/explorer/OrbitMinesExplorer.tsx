@@ -436,15 +436,17 @@ export const RenderedRay = (
           <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} color={color} />
 
           {/* Line now starts in the center of the torus tube */}
-          {isVertical
-            ? <Line end={add(left, [0, torus.radius * (position[1] < left[1] ? -1 : 1), 0])} start={position} scale={scale} color={color} />
+          {/*{isVertical*/}
+          {/*  ? <Line end={add(left, [0, torus.radius * (position[1] < left[1] ? -1 : 1), 0])} start={position} scale={scale} color={color} />*/}
             : <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} color={color} />
-          }
+          {/*}*/}
 
 
           <Vertex position={position} color={color} />
           {/*<BinarySuperposition position={position} />*/}
-          <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} color={color} />
+
+          {/*<Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} color={color} />*/}
+          <Line start={add(right, [-torus.radius, 0, 0])} end={position} scale={scale} color={color} />
 
           {/*{_.sample([true, false])*/}
           {/*  ? <BinarySuperposition position={position} />*/}
