@@ -51,15 +51,15 @@ const FadiShawki = () => {
 
     <Arc head="Formal History">
       <Section head="Projects">
-        <Category category={profile.content.history} focus={ContentFocus.FINISHED} />
+        <Category category={profile.content!.history} focus={ContentFocus.FINISHED} />
       </Section>
 
       <Section head="Formal Education">
-        <Category category={profile.content.formal_education} focus={ContentFocus.ALL} inline />
+        <Category category={profile.content!.formal_education} focus={ContentFocus.ALL} inline />
       </Section>
 
       <Section head="Attended Events">
-        <Category category={profile.content.attended_events} focus={ContentFocus.ALL} />
+        <Category category={profile.content!.attended_events} focus={ContentFocus.ALL} />
       </Section>
     </Arc>
 

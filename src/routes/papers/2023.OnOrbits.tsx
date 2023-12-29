@@ -25,6 +25,8 @@ import {
 } from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {length} from "../../@orbitmines/explorer/Ray";
 import {HorizontalLine} from "../../lib/paper/PaperContent";
+import CustomIcon from "../../lib/layout/icons/CustomIcon";
+import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 
 export const ON_ORBITS: Content = {
   reference: {
@@ -1550,6 +1552,10 @@ const OnOrbits = () => {
         <BR/>
 
         Which is likely either a rediscovery of concepts in category theory, or an even more general, possibly more easily programmable and reprogrammable (; possibly homoiconic) variant of its ideas. Being this general, quite certainly concepts from all kinds of fields should be phrase-able in this (possibly) more visually intuitive way of manipulating concepts.
+
+        <BR/>
+
+        Though this current setup is quite intuitive to me, I still need to link a lot of it to existing concepts. And quite deliberately, I've not necessarily gone into the details of any particular interpretation/implementation. As this thing is incredibly flexible - and it's not yet at all obvious to me what the resulting implementation will look like.
       </Section>
       <Section head="Future inquiries">
         <span style={{textAlign: 'left', minWidth: '100%'}}>One thing that has become quite clear to me. Is that the best solutions in this line of projects, will necessarily be the interface with which someone interacts with abstract ideas. <span
@@ -1558,15 +1564,40 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Though this current setup is quite intuitive to me, I still need to link a lot of it to existing concepts.
+        <span style={{textAlign: 'left', minWidth: '100%'}}>There are many projects I'm currently expecting to <span className="bp5-text-muted">implement, ..., encounter</span> within this framing. I expect I'll be able provide more detail on these throughout 2024.</span>
 
         <BR/>
-
-        There are several projects I'm currently expecting to implement within this framing. (1) Category Theory and homotopy type theory, as a handle on more abstract mathematics and computer science. (2) CHYP, as a simple concrete example. (3) (possibly through Chyp) the ZX-calculus or its variants, as a handle on diagrammatic quantum physics. (4) Tinygrad, as a handle on tensor operations. (5) WebAssembly, as a practical tool into the worlds' ecosystem.
-
+        <div style={{width: '100%'}}><HorizontalLine/></div>
         <BR/>
 
-        I expect to along the way encounter, or possibly also implement, LLVM,  HVM & Kind ecosystem, GPU archs, CPU archs, Lean, Agda,
+        As a simple concrete example:
+        <BR/>
+        - (1) <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'CHYP (Cospans of HYPergraphs)', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />
+        <BR/>
+        <BR/>
+        As a practical handle on the world's ecosystem:
+        <BR/>
+        - (2) <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'WebAssembly', link: 'https://webassembly.github.io/spec/core/'}} />, (3) <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Tinygrad', link: 'https://github.com/tinygrad/tinygrad'}} />
+        <BR/>
+        <BR/>
+        As a handle on more abstract mathematics and computer science:
+        <BR/>
+        - (4) <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Category Theory', link: 'https://ncatlab.org/nlab/show/category+theory'}} />, (5) <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Homotopy Type Theory', link: 'https://homotopytypetheory.org/'}} />
+
+        <BR/>
+        <BR/>
+        As a handle on physics:
+        <BR/>
+        - (6) <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'ZX-calculus', link: 'https://zxcalculus.com/ '}} />
+        <BR/>
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>I expect to along the way encounter a wide range of other projects: <span className="bp5-text-muted">Programming Languages, Theorem Provers, ..., Theories</span>. I might publish a long list of those I'm interested in 2024. To keep this list short I've only mentioned the ones I'm more certain of.</span>
+        <BR/>
+        <div style={{width: '100%'}}><HorizontalLine/></div>
+        <BR/>
+
+        Additionally, currently the Wolfram Institute's Infrageometry project <Reference is="footnote" index={referenceCounter()} reference={REFERENCES.WOLFRAM_INSTITUTES_INFRAGEOMETRY_LIVESTREAMS.reference} /> is going through a lot of similar-looking ideas. Though its current goals - as far as I understand it - are quite different from mine (<Reference is="reference" inline index={referenceCounter()} reference={{title: "Possible connections to the Wolfram Institute's Infrageometry project", date: '2023-11-25', link: 'https://discord.com/channels/1055502602365845534/1177982001979064340', organizations: [ORGANIZATIONS.discord, ORGANIZATIONS.orbitmines_research, ORGANIZATIONS.wolfram_institute]}} />).
 
         <BR/>
 
@@ -1597,7 +1628,6 @@ const OnOrbits = () => {
       </Section>
       <Section head="A yearly excerpt of thoughts">
         In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found - or am starting to find - a proper language to do so.
-
       </Section>
     </Arc>
     <Arc head="Arc: OrbitMines' Timeline (2013-2023)">

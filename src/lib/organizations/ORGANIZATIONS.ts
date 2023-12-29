@@ -60,17 +60,17 @@ export type ContentCategory = {
 }
 
 export type TProfile = {
-  first_name: string,
-  last_name: string,
+  first_name?: string,
+  last_name?: string,
   name: string,
-  formal_citation_name: string,
+  formal_citation_name?: string,
 
-  date: string,
+  date?: string,
 
-  profile: string,
-  email: string,
+  profile?: string,
+  email?: string,
 
-  picture: string,
+  picture?: string,
 
   orcid?: string,
 
@@ -84,7 +84,7 @@ export type TProfile = {
 
   external?: ExternalProfiles,
 
-  content: {
+  content?: {
     history?: ContentCategory
     formal_education?: ContentCategory
     attended_events?: ContentCategory,
