@@ -36,12 +36,12 @@ export const ON_ORBITS: Content = {
      * Inconsistencies: Variance
      *
      *
-     * Equivalence ; Pattern matching, Assumption, Variance made Invariant (Ignored/Deemed Irrelevant/../Dropping/pruning/deleting Variance), Symmetry, Invariance, Consistency, Equality, Equivalence, Superposition, Well-defined/Ignored Ambiguity, Duplication, Parallel, Persistence, Coherence, Same, Similar, Complete, Memory, Inertia, Intuition, Fidelity, Reproducibility, Stability, Isomorphism, Reversibility, Deterministic (Identifiably mechanistic/Predictable/High-fidelity - Decreasing Perceived Randomness/Arbitrariness - Perhaps eliminating/Reducing superpositions/../ambiguity), Holonomic system, Constant, Fixed Point, Halting, Orbits, Copy, Redundancy, Caching, (Ignored implementation details), Translation, Compiling/Supercompilation/.../Meta-Compilation - differently ignorant on certain scales, Undirected, (multi-/arbitrarily complex structured-/)Computational,Non-distinguishability, Analogy, Distill, Confluence, Termination, Predictability (High fidelity), Lossless, Compression, Attention - Ignorance of something, Ignorance, Survivability, Cast, Interpretability, Fidelity Checking, Dimension, Continuation
+     * Equivalence ; Pattern matching, Assumption, Variance made Invariant (Ignored/Deemed Irrelevant/../Dropping/pruning/deleting Variance), Symmetry, Invariance, Consistency, Equality, Equivalence, Superposition, Well-defined/Ignored Ambiguity, Duplication, Parallel, Persistence, Coherence, Same, Similar, Complete, Memory, Inertia, Intuition, Fidelity, Reproducibility, Stability, Isomorphism, Reversibility, Deterministic (Identifiably mechanistic/Predictable/High-fidelity - Decreasing Perceived Randomness/Arbitrariness - Perhaps eliminating/Reducing superpositions/../ambiguity), Holonomic system, Constant, Fixed Point, Halting, Orbits, Copy, Redundancy, Caching, (Ignored implementation details), Translation, Compiling/Supercompilation/.../Meta-Compilation - differently ignorant on certain scales, Undirected, (multi-/arbitrarily complex structured-/)Computational,Non-distinguishability, Analogy, Distill, Confluence, Termination, Predictability (High fidelity), Lossless, Compression, Attention - Ignorance of something, Ignorance, Survivability, Cast, Interpretability, Fidelity Checking, Dimension, Continuation, Generalize, Universal
      *
-     * Inconsistency ; Variance, Assumption Violation, Hacking/Vulnerability, Divergence, Anomaly, Separability, Forgetting ((Realized) temporal non-trivial inability to resolve references), Refuting, Deleting, Evolution, Unintended/Accidental/Irrelevant Variance, Non-consistency, Non-modelled effects, Unknowns, Uncertainty, Asymmetry, Inequality, Sequence, Time/Temporary, Incoherence, Difference, Incomplete, Non-deterministic (if assumption violated), Non-holonomic system, Gravity, Curvature [ref; Inability to categorize with some small set of variables - Jonathan Gorard's tweet], Change, Selection, Ill-defined, Ambiguous, Confusion, Undefined, Sparsity?, Transformation, Describing, Separability, Directed, Movement, Propagation, Distinguishability, Inhibition, Pointer, Encapsulation, Transduction, Lacking access, Furthering, Obsoleting, Enhancing, Fallibility, View,
+     * Inconsistency ; Variance, Assumption Violation, Hacking/Vulnerability, Divergence, Anomaly, Separability, Forgetting ((Realized) temporal non-trivial inability to resolve references), Refuting, Deleting, Evolution, Unintended/Accidental/Irrelevant Variance, Non-consistency, Non-modelled effects, Unknowns, Uncertainty, Asymmetry, Inequality, Sequence, Time/Temporary, Incoherence, Difference, Incomplete, Non-deterministic (if assumption violated), Non-holonomic system, Gravity, Curvature [ref; Inability to categorize with some small set of variables - Jonathan Gorard's tweet], Change, Selection, Ill-defined, Ambiguous, Confusion, Undefined, Sparsity?, Transformation, Describing, Separability, Directed, Movement, Propagation, Distinguishability, Inhibition, Pointer, Encapsulation, Transduction, Lacking access, Furthering, Obsoleting, Enhancing, Fallibility, View, Traversal
      *
      * Structure, Configuration, Selection, Symbol, Token, Connection, Communication, Possibilities, Enumeration, Spatially/Space, Time, Arbitrary Naming / Labelling, Functions, Morphisms, Rewrite Rule, Rays, Dynamics, Movement, Processes, Systems, Generative, Generators, Superposition, Encoding, Property, Value, Path, Hierarchy, Tree, Program, History, Causality, Version-Control, Instance, Object, Phrasings, States, Constructions, Worlds, Universe, Background, (Non-/)Context, Frame, Reference, Overlap, Merge, Cardinality, Node, Strategy, Tactic, Sheaf, Foliation, Slice, Type, Static/Dynamic, Knowledge, Squared, Defaults, Extreme, Abstraction, Simulation, Emulation, Projection, Heuristics, Inhibition, Regulation, Conjecture, Redundancy, Density, Property, Relation, What-if, Phase, Definition, Encompass, (Positional) Encodings, "Different levels of description", Levels, Scales, Complexity, Data, Runtime, Vibration, Arbitrary, Random, Limited/Limit/Limitations, Constraints, Resources, Pressure, Priority, Interpreted, Interacted, Observed, Initial, Terminal, Result, Conclusion, Fluidity
-     * Distance, Locality, CLoseness, Approximation, "Practical Equivalencing/.../Ignoring", Effort, Complexity, Relevance, Non-trivival superposition (e.g. any equivalence), Impreciseness, Less Actionability, Trivial/Non-trivial
+     * Distance, Locality, Closeness, Approximation, "Practical Equivalencing/.../Ignoring", Effort, Complexity, Relevance, Non-trivival superposition (e.g. any equivalence), Impreciseness, Less Actionability, Trivial/Non-trivial
      *
      * ; These are just the same sort of thing from different perspectives, you need additional context for separation of concepts/.../duals - And separation is likely somewhat arbitrary and inconsistent - but that doesn't prevent them from being useful.
      */
@@ -1221,7 +1221,7 @@ const OnOrbits = () => {
           className="bp5-text-muted">halt, ..., continue</span>. I can only assume it's the case.</span>
       </Section>
 
-      <Section head="Assumptions & Violating Assumptions">
+      <Section head="On Assumptions & Assumption Violation">
         <span style={{textAlign: 'left', minWidth: '100%'}}>One might as well - more practically - say that some <span
           className="bp5-text-muted">consistency, ..., well-defined property</span> could be more vaguely restated as: <span
           className="bp5-text-muted">"Can rely on some assumptions without the/much need to correct them if they are violated", ... "Even though I'm not actually accurate, it might not matter for this other thing."</span>. Where violated just means some inconsistency with respect to what was expected according to that assumption.</span>
@@ -1247,7 +1247,7 @@ const OnOrbits = () => {
           className="bp5-text-muted">visualization, computation, ..., process</span>, and ask: "What if this wasn't the case?" - "What if that didn't actually happen?". </span>
       </Section>
       {/* "in between" */}
-      <Section head="Fractals" sub="Transduction, Reducing, Super-, Sub-, ..., Fractions">
+      <Section head="On Fractals" sub="Transduction, Reducing, Super-, Sub-, ..., Fractions">
         All of this is essentially saying, that an idea like self-reference can only be maintained abstractly by
         ignoring aspects which would make each iteration of self-reference different.
 
@@ -1263,7 +1263,7 @@ const OnOrbits = () => {
         <BR/>
 
         <Block>
-        <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
+          <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
             <Center>
               <group>
                 <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
@@ -1542,7 +1542,7 @@ const OnOrbits = () => {
 
         <span
           style={{textAlign: 'left', minWidth: '100%'}}>This sort of thing gives rise to many interesting cases: <span
-          className="bp5-text-muted">inconsistently describing continuations after some infinity in between, ..., arbitrary additional complexity which happens in between two points (which one is possibly ignorant of)</span>.</span>
+          className="bp5-text-muted">inconsistently describing continuations after some infinity in between as 'bigger infinities', ..., arbitrary additional complexity which happens in between two points (which one is possibly ignorant of)</span>. You could even leap to something interesting of phrasing abstraction with more structure/complexity, as being bigger infinities.</span>
 
         <BR/>
         <div style={{width: '100%'}}><HorizontalLine/></div>
@@ -1562,10 +1562,354 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Note that this is the idea behind something continuous/continuity. A simple, likely inconsistent loop which holds, or merely the inability to even ask the question of what's in between two things.
+        Note that this is the idea behind something continuous/continuity. A simple, likely inconsistent loop which holds, or merely the inability to even ask the question of what's in between two things, infinitely.
 
       </Section>
-      <Section head="Movement & Teleporting">
+      <Section head="On Movement & Teleporting">
+        Quite similar to fractals (or any concept really). We could say that movement and teleporting are the same kind
+        of thing. But I need both concepts in order to tell the difference between them.
+
+        <BR/>
+
+        Take our fractal example, for instance:
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived" context={paper} style={{height: '60px'}}>
+            <Center>
+
+
+              <group position={[30, 0, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                </group>
+                <group scale={1.5}>
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#5555FF"/>
+                </group>
+                <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                                                                       terminal={[20, -15, 0]}/></group>
+                {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF" initial={[-20, -15, 0]}/></group>
+
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                color="#FF55FF"/></group>
+
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Where the shorter path could be considered teleporting. If I knew only how to teleport:
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+        <BR/>
+
+        If I only knew how to move:
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="3_fractal" context={paper}>
+            <Center>
+              <group>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                       color="#FF5555"/></group>
+                <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF"/></group>
+
+                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        I need to be able to say from the perspective of teleporting: This would've been the slower path. And from the
+        perspective of moving: This teleported me across the distance I otherwise needed to slowly move through. - If I
+        can't, they're the same thing.
+
+        <BR/>
+
+        But either way, they're more abstractly just the same thing. We're just moving along some (possibly more
+        complicated) path.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>This concept is quite generalizable. We can say the same thing for <span className="bp5-text-muted">local/non-local, linear/non-linear, ..., close/distant</span>. This is just an extension of the idea: They're not generally some way, it depends on the other context one is able to access.</span>
+
+        <BR/>
+
+        Say I had some selection,
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived_select_0" context={paper} style={{height: '80px'}}>
+            <Center>
+              <group position={[30, 0, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                </group>
+                <group scale={1.5}>
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#5555FF"/>
+                </group>
+                <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                                                                       terminal={[20, -15, 0]}/></group>
+                {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF" initial={[-20, -15, 0]}/></group>
+
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                color="#FF55FF"/></group>
+
+              </group>
+
+              <group scale={1.5} position={[-60, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group rotation={[0, 0, -0.4]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+              </group>
+
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        And I wanted to teleport that over,
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived_select_0_teleporting" context={paper} style={{height: '160px'}}>
+            <Center>
+              <group position={[30, 60, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+                  <group position={[-20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#55FF55"/>
+                </group>
+                <group scale={1.5}>
+                  <group position={[20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+                  <group position={[40, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#55FF55"/>
+
+                </group>
+                <group scale={1.5}>
+                  <group position={[-20, 15, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+
+                  <Continuation position={[-20, 15, 0]} color="#55FF55"/>
+                </group>
+
+
+              </group>
+
+              <group scale={1.5} position={[-60, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group rotation={[0, 0, -0.5]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+              </group>
+
+              <group position={[30, 0, 0]}>
+              <group scale={1.5} position={[-90, 0, 0]}>
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                </group>
+                <group scale={1.5}>
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#5555FF"/>
+                </group>
+                <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                                                                       terminal={[20, -15, 0]}/></group>
+                {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF" initial={[-20, -15, 0]}/></group>
+
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                color="#FF55FF"/></group>
+
+              </group>
+
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        The only way to actually do that, is to introduce some inconsistency along some direction. Or: have some structure (our selection in this case), travel across that direction.
+
+        <BR/>
+
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived_select_1_teleporting" context={paper} style={{height: '160px'}}>
+            <Center>
+              <group position={[30, 60, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <group rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+                  <group position={[-20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#55FF55"/>
+                </group>
+                <group scale={1.5}>
+                  <group position={[20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+                  <group position={[40, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#55FF55"/>
+
+                </group>
+                <group scale={1.5}>
+                  <group position={[-20, 15, 0]} rotation={[0, 0, Math.PI / 2]}>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                  </group>
+
+                  <Continuation position={[-20, 15, 0]} color="#55FF55"/>
+                </group>
+
+
+              </group>
+
+              <group scale={1.5} position={[60, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group rotation={[0, 0, -0.5]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+              </group>
+
+              <group position={[30, 0, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                </group>
+                <group scale={1.5}>
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#5555FF"/>
+                </group>
+                <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                                                                       terminal={[20, -15, 0]}/></group>
+                {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF" initial={[-20, -15, 0]}/></group>
+
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                color="#FF55FF"/></group>
+
+              </group>
+
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Or in other words, some equivalent structure needs to be inconsistent in some way. Or: We draw an equivalency which needs to be ignorant in the direction in which it's drawn.
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="2_edge_3_fractal_equived_select_1" context={paper} style={{height: '80px'}}>
+            <Center>
+              <group position={[30, 0, 0]}>
+                <group scale={1.5} position={[-90, 0, 0]}>
+                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                </group>
+                <group scale={1.5}>
+                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                               color="#5555FF"/>
+                </group>
+                <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
+              </group>
+
+              <group position={[0, 0, 0]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                                                                       terminal={[20, -15, 0]}/></group>
+                {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
+
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                                      color="#5555FF" initial={[-20, -15, 0]}/></group>
+
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                                                color="#FF55FF"/></group>
+
+              </group>
+
+              <group scale={1.5} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
+                <group rotation={[0, 0, -0.4]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+              </group>
+
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Similarly, <span className="bp5-text-muted">traversal, rewriting, computation, equivalences, ..., functions, and pretty much every concept</span> can be categorized as this.</span>
       </Section>
       <Section head="Compression">
 
@@ -1578,7 +1922,7 @@ const OnOrbits = () => {
         OrbitMines Explorer - <Tag intent={Intent.WARNING} minimal multiline
                                    style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
       </span>}
-          icon={ORGANIZATIONS.github.key} />
+        icon={ORGANIZATIONS.github.key}/>
     </Arc>
 
     <Arc head="Wrapping up">
