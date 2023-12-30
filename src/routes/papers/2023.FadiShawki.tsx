@@ -11,6 +11,8 @@ import {Reference} from "../../lib/paper/layout/Reference";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
 import {ON_ORBITS} from "./2023.OnOrbits";
+import { Block } from '../../lib/syntax-highlighting/CodeBlock';
+import {CachedVisualizationCanvas, CanvasContainer} from "../../@orbitmines/explorer/Visualization";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -21,6 +23,18 @@ const FadiShawki = () => {
         Feel free to contact me on the socials specified above.
       </Section>
       <Section head="Building a (ray-like hypergraph) graphical interface">
+        <CanvasContainer style={{height: '140px'}}>
+          <canvas
+            style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+        </CanvasContainer>
+
         <Link
           link="https://github.com/orbitmines/orbitmines.com/pull/1"
           name={<span>

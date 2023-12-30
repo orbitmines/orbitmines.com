@@ -35,10 +35,15 @@ export const CachedVisualizationCanvas = (
   }: React.HTMLAttributes<HTMLElement> & Children & VisualizationProps
 ) => {
   const ref = useRef<any>(null);
-  const [params] = useSearchParams();
   const [useImage, setUseImage] = useState<boolean>(true);
+  let generate;
+  try {
+    const [params] = useSearchParams();
 
-  const generate = params.get('generate');
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
 
   const exportPng = useCallback(() => {
     if (ref === null)
@@ -101,7 +106,7 @@ export const CachedVisualizationCanvas = (
   </div>
 }
 
-const CanvasContainer = ({
+export const CanvasContainer = ({
                            children,
                            ...props
                          }: React.HTMLAttributes<HTMLElement> & Children) => (<div

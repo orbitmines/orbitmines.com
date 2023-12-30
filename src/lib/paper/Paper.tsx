@@ -23,9 +23,14 @@ export type PaperProps = ReferenceProps & {
 } & Children;
 
 export const PaperView = (paper: PaperProps) => {
-  const [params] = useSearchParams();
+  let generate;
+  try {
+    const [params] = useSearchParams();
 
-  const generate = params.get('generate');
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
 
   if (generate === 'pdf')
     return <ExportablePaper {...paper} />

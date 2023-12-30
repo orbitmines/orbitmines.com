@@ -50,13 +50,12 @@ export const ON_ORBITS: Content = {
      */
     title: "On Orbits, Equivalence and Inconsistencies",
     subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility.",
-    draft: true,
+    draft: false,
     link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies',
     year: "2023",
     date: "2023-12-31",
     external: {
-      // TODO;
-      // discord: {serverId: '1055502602365845534', channelId: '1105246681915732108', link: () => "https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108"}
+      discord: {serverId: '1055502602365845534', channelId: '1190719376085766195', link: () => "https://discord.com/channels/1055502602365845534/1190719376085766195/1190719376085766195"}
     },
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
@@ -1246,7 +1245,7 @@ const OnOrbits = () => {
         <BR/>
 
         <span style={{textAlign: 'left', minWidth: '100%'}}>Any abstraction, or just one of the ray visualizations shown here, is more accurately phrased by throwing some <span
-          className="bp5-text-muted">vagueness, ..., ambiguity</span> in the mix. By saying, that 'this would be the case', if 'all these assumptions hold'. This way you allow for some possibly uncertainty. And allow one to abstractly hook into any step of the <span
+          className="bp5-text-muted">vagueness, ..., ambiguity</span> in the mix. By saying, that 'this would be the case', if 'all these assumptions hold'. This way you allow for some possible uncertainty. And allow one to abstractly hook into any step of the <span
           className="bp5-text-muted">visualization, computation, ..., process</span>, and ask: "What if this wasn't the case?" - "What if that didn't actually happen?". </span>
       </Section>
       {/* "in between" */}
@@ -1612,7 +1611,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Where the shorter path could be considered teleporting. If I knew only how to teleport:
+        Where the shorter path could be considered teleporting. If I knew only how to teleport, I would just see this:
 
         <BR/>
 
@@ -1979,7 +1978,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        or something like a 4 bits in a grid
+        or something like 4 bits in a grid
 
         <BR/>
 
@@ -2024,13 +2023,13 @@ const OnOrbits = () => {
 
         <BR/>
 
-        Suddenly a concept like entropy becomes entirely obvious: Just visualize the compressor and possibly the order (or more generally: the structure) in which information is received, as additional structure. Necessarily, that (relative) structure is additional information. Necessarily, certain things are easier with, or easier without those structures.
+        Suddenly a concept like entropy becomes entirely clear: Just visualize the compressor and possibly the order (or more generally: the structure) in which information is received, as additional structure. Necessarily, that (relative) structure is additional information. Necessarily, certain things are easier with, or easier without those structures.
 
         <BR/>
         <div style={{width: '100%'}}><HorizontalLine/></div>
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>And then, depending on the compressor. You can have interesting things like <span className="bp5-text-muted">locally, spatially, ..., temporally</span> forgetting structures. Which would rely on strategies like easy re-discoverability for things forgotten. Such expectations however, as a prediction relying on some invariance, is an assumption at risk of being violated. And the mode of rediscovering itself, is subject to being forgotten (and then perhaps rediscovered).</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>And then, depending on the compressor. You can have interesting things like <span className="bp5-text-muted">locally, spatially, ..., temporally</span> forgetting structures. Which would rely on strategies like easy re-discoverability for things forgotten. Such expectations however, as a prediction relying on some invariance. Is an assumption at risk of being violated. And the mode of rediscovering itself, is subject to being forgotten (and then perhaps rediscovered).</span>
       </Section>
     </Arc>
     <Arc head="Arc: OrbitMines Explorer: The Project">
@@ -2113,7 +2112,7 @@ const OnOrbits = () => {
         I might also fail to mention relevant works (or personal interactions) which have either had impact on my line of thinking more non-trivially, or whose ideas aren't mentioned here, or in my other writing, directly. My current practical approach to this has therefore been to publish many kinds of information I expose myself to (during the time I'm working on these projects). Which hopefully support the more explicit referencing done here. I hope to further expand on this concept in future works.
       </Section>
       <Section head="On language and my bending of it">
-        In my - albeit limited - number of radians around our particular sun, I have found that I myself am (and likely by extension others are) quite inconsistent. Quite regularly I would like to rephrase certain (historical) expressions, dissatisfied by their vagueness or inaccuracy. Or to make the conceptual leap and guess that the only way my memory is even slightly functional is the apparent ability to infer or remember by resolving pointers from context somewhat consistently. A form of permeating uncertain caution seems appropriate when thinking through these abstract concepts: This could be interpreted as a reference carried forward in time with the potential to modify any particular assumption.
+        In my - albeit limited - number of orbits around our particular sun, I have found that I myself am (and likely by extension others are) quite inconsistent. Quite regularly I would like to rephrase certain (historical) expressions, dissatisfied by their vagueness or inaccuracy. Or to make the conceptual leap and guess that the only way my memory is even slightly functional is the apparent ability to infer or remember by resolving pointers from context somewhat consistently. A form of permeating uncertain caution seems appropriate when thinking through these abstract concepts: This could be interpreted as a reference carried forward in time with the potential to modify any particular assumption.
 
         <BR/>
 

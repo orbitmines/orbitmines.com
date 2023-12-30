@@ -81,10 +81,16 @@ export const PaperHeader = (props: PaperProps) => {
     </>
 }
 
-const PaperContent = (props: PaperProps) => {
-  const [params] = useSearchParams();
 
-  const generate = params.get('generate');
+const PaperContent = (props: PaperProps) => {
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
 
   if (generate === 'thumbnail')
     return <PaperThumbnail {...props}/>
