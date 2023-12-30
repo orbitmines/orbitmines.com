@@ -40,8 +40,10 @@ export const ON_ORBITS: Content = {
      *
      * Inconsistency ; Variance, Assumption Violation, Hacking/Vulnerability, Divergence, Anomaly, Separability, Forgetting ((Realized) temporal non-trivial inability to resolve references), Refuting, Deleting, Evolution, Unintended/Accidental/Irrelevant Variance, Non-consistency, Non-modelled effects, Unknowns, Uncertainty, Asymmetry, Inequality, Sequence, Time/Temporary, Incoherence, Difference, Incomplete, Non-deterministic (if assumption violated), Non-holonomic system, Gravity, Curvature [ref; Inability to categorize with some small set of variables - Jonathan Gorard's tweet], Change, Selection, Ill-defined, Ambiguous, Confusion, Undefined, Sparsity?, Transformation, Describing, Separability, Directed, Movement, Propagation, Distinguishability, Inhibition, Pointer, Encapsulation, Transduction, Lacking access, Furthering, Obsoleting, Enhancing, Fallibility, View, Traversal
      *
-     * Structure, Configuration, Selection, Symbol, Token, Connection, Communication, Possibilities, Enumeration, Spatially/Space, Time, Arbitrary Naming / Labelling, Functions, Morphisms, Rewrite Rule, Rays, Dynamics, Movement, Processes, Systems, Generative, Generators, Superposition, Encoding, Property, Value, Path, Hierarchy, Tree, Program, History, Causality, Version-Control, Instance, Object, Phrasings, States, Constructions, Worlds, Universe, Background, (Non-/)Context, Frame, Reference, Overlap, Merge, Cardinality, Node, Strategy, Tactic, Sheaf, Foliation, Slice, Type, Static/Dynamic, Knowledge, Squared, Defaults, Extreme, Abstraction, Simulation, Emulation, Projection, Heuristics, Inhibition, Regulation, Conjecture, Redundancy, Density, Property, Relation, What-if, Phase, Definition, Encompass, (Positional) Encodings, "Different levels of description", Levels, Scales, Complexity, Data, Runtime, Vibration, Arbitrary, Random, Limited/Limit/Limitations, Constraints, Resources, Pressure, Priority, Interpreted, Interacted, Observed, Initial, Terminal, Result, Conclusion, Fluidity
-     * Distance, Locality, Closeness, Approximation, "Practical Equivalencing/.../Ignoring", Effort, Complexity, Relevance, Non-trivival superposition (e.g. any equivalence), Impreciseness, Less Actionability, Trivial/Non-trivial
+     * Structure, Configuration, Selection, Symbol, Token, Connection, Communication, Possibilities, Enumeration, Spatially/Space, Time, Arbitrary Naming / Labelling, Functions, Morphisms, Rewrite Rule, Rays, Dynamics, Movement, Processes, Systems, Generative, Generators, Superposition, Encoding, Property, Value, Path, Hierarchy, Tree, Program, History, Causality, Version-Control, Instance, Object, Phrasings, States, Constructions, Worlds, Universe, Background, (Non-/)Context, Frame, Reference, Overlap, Merge, Cardinality, Node, Strategy, Tactic, Sheaf, Foliation, Slice, Type, Static/Dynamic, Knowledge, Squared, Defaults, Extreme, Abstraction, Simulation, Emulation, Projection, Heuristics, Inhibition, Regulation, Conjecture, Redundancy, Density, Property, Relation, What-if, Phase, Definition, Encompass, (Positional) Encodings, "Different levels of description", Levels, Scales, Complexity, Data, Runtime, Vibration, Arbitrary, Random, Limited/Limit/Limitations, Constraints, Resources, Pressure, Priority, Interpreted, Interacted, Observed, Initial, Terminal, Result, Conclusion, Fluidity, Output (Realized change by the system),
+     * Distance, Locality, Closeness, Approximation, "Practical Equivalencing/.../Ignoring", (Computational) Effort, Complexity, Relevance, Non-trivival superposition (e.g. any equivalence), Impreciseness, Less Actionability, Trivial/Non-trivial, Conditionally (Circular), Guarded, Partial, Skipping, Teleporting, Encryption, Disambiguation
+     *
+     * TODO ; Composability is Non-locality?
      *
      * ; These are just the same sort of thing from different perspectives, you need additional context for separation of concepts/.../duals - And separation is likely somewhat arbitrary and inconsistent - but that doesn't prevent them from being useful.
      */
@@ -1662,7 +1664,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>This concept is quite generalizable. We can say the same thing for <span className="bp5-text-muted">local/non-local, linear/non-linear, ..., close/distant</span>. This is just an extension of the idea: They're not generally some way, it depends on the other context one is able to access.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>This concept is quite generalizable. We can say the same thing for <span className="bp5-text-muted">local/non-local, linear/non-linear, close/distant, ..., trivial/non-trivial</span>. This is just an extension of the idea: They're not generally some way, it depends on the other context one is able to access.</span>
 
         <BR/>
 
@@ -1909,10 +1911,122 @@ const OnOrbits = () => {
 
         <BR/>
 
-        <span style={{textAlign: 'left', minWidth: '100%'}}>Similarly, <span className="bp5-text-muted">traversal, rewriting, computation, equivalences, ..., functions, and pretty much every concept</span> can be categorized as this.</span>
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Similarly, <span className="bp5-text-muted">traversal, rewriting, computation, equivalences, ..., functions, and pretty much every concept</span> can be categorized as this. More usefully: How much do I need to change/ignore before they're the same to me?</span>
       </Section>
-      <Section head="Compression">
+      <Section head="Encoding" sub="Encoding as Ignorant Structures">
 
+      </Section>
+      <Section head="On Compression">
+        <span style={{textAlign: 'left', minWidth: '100%'}}>The task with compression - or any equivalence really - is that necessarily you need to recover structural information. Without structure, you cannot point to <span className="bp5-text-muted">"two things", a sequence of things, probability of things, ..., arbitrarily structured things</span>.</span>
+
+        <BR/>
+
+        A simple example of this could be the difference between 4 bits in sequence,
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="4_bits" context={paper} style={{height: '80px'}}>
+            <Center>
+              <group scale={1.5}>
+                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[40, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[80, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[120, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        4 bits whose structure I've ignored through another layer of abstraction (Or basically any unordered structure)
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="4_bits_unordered" context={paper} style={{height: '80px'}}>
+            <Center>
+              <group scale={1.5}>
+                <group rotation={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"
+                                                         position={[0, 0, 0]}/></group>
+
+                <group rotation={[0, 0, 1]}><BinarySuperposition/></group>
+                <group rotation={[0, 0, -1]}><BinarySuperposition/></group>
+                <group rotation={[0, 0, 0.3]}><BinarySuperposition/></group>
+                <group rotation={[0, 0, -0.3]}><BinarySuperposition/></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}} className="bp5-text-disabled">(in a slightly less clustered rendering)</span>
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="4_bits_seperated" context={paper} style={{height: '80px'}}>
+            <Center>
+              <group scale={1.5}>
+                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[120, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[180, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        or something like a 4 bits in a grid
+
+        <BR/>
+
+        <Block>
+          <CachedVisualizationCanvas alt="4_bits_grid" context={paper} style={{height: '140px'}}>
+            <Center>
+              <group scale={1.5}>
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                  <group position={[0, -40, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                </group>
+                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                         color="orange"/>
+                  <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
+                </group>
+                <group position={[40, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                          color="orange"/>
+                  <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
+                </group>
+              </group>
+              <group scale={1.5} position={[0, 60, 0]}>
+                <group rotation={[0, 0, Math.PI / 2]}>
+                  <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                  <group position={[0, -40, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                </group>
+                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                         color="orange"/>
+                  <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
+                </group>
+                <group position={[40, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                                                          color="orange"/>
+                  <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
+                </group>
+              </group>
+            </Center>
+          </CachedVisualizationCanvas>
+        </Block>
+
+        <BR/>
+
+        Quite obviously, if I didn't know which one, I would need additional information to distinguish between them.
+
+        <BR/>
+
+        And then suddenly a concept like entropy becomes entirely obvious: Just visualize the compressor and possibly the order (or more generally: the structure) in which information is received, as additional structure. Necessarily, that (relative) structure is additional information. Necessarily, certain things are easier with, or easier without those structures.
       </Section>
     </Arc>
     <Arc head="Arc: OrbitMines Explorer: The Project">
