@@ -10,3 +10,15 @@
 
 ---
 
+## Contributing & Discussion
+
+Feel free to discuss this project on this GitHub repository or preferably the [OrbitMines Community Discord](https://discord.orbitmines.com).
+
+---
+
+## Security
+
+> [!WARNING]
+> No proper security audit has yet been done on its current iteration (TODO: link to thread for contributions & discussions).
+
+---

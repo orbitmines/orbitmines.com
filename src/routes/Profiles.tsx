@@ -9,7 +9,6 @@ const PROFILES: { [key: string]: any } = {
 
 const Profile = () => {
     const params = useParams();
-    console.log(params)
     const { profile } = params;
 
     const Element = profile ? PROFILES[profile] : undefined;

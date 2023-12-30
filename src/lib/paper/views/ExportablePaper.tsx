@@ -100,6 +100,15 @@ const renderPdfRendererElement: DereferencedElementRenderer = (element: Element,
     // }
     // @ts-ignore
     return <Image {...props} />
+  } else if (['canvas'].includes(tagName)) {
+    if (props.style.backgroundImage.startsWith('url(')) {
+      const url = props.style.backgroundImage.replace(/^url\("/, '').replace(/"\)$/, '');
+      console.log(url)
+      console.log(props)
+      return <Image {...props} style={{...props.style, width: '992px'}} src={url} /> // TODO FIX
+    }
+
+    return <View {...props} />
   } else if (['svg'].includes(tagName)) {
     // @ts-ignore
     return <Svg {...props} />
@@ -144,8 +153,15 @@ export const registerFont = (font: FontFamily) => {
 const ExportablePaper = (paper: PaperProps) => {
   const [dereferenced, setDereferenced] = useState<JSX.Element | undefined>();
   const renderElement = useCallback(renderPdfRendererElement, []);
-  const [params] = useSearchParams();
-  const generate = params.get('generate');
+
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
 
   const { pdf } = paper;
 
