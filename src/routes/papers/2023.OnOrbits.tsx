@@ -34,6 +34,16 @@ export const ON_ORBITS: Content = {
      * Orbits: Equivalence at Continuations
      * Equivalence: Variance made Invariant (Ignored Variance)
      * Inconsistencies: Variance
+     *
+     *
+     * Equivalence ; Pattern matching, Assumption, Variance made Invariant (Ignored/Deemed Irrelevant/../Dropping/pruning/deleting Variance), Symmetry, Invariance, Consistency, Equality, Equivalence, Superposition, Well-defined/Ignored Ambiguity, Duplication, Parallel, Persistence, Coherence, Same, Similar, Complete, Memory, Inertia, Intuition, Fidelity, Reproducibility, Stability, Isomorphism, Reversibility, Deterministic (Identifiably mechanistic/Predictable/High-fidelity - Decreasing Perceived Randomness/Arbitrariness - Perhaps eliminating/Reducing superpositions/../ambiguity), Holonomic system, Constant, Fixed Point, Halting, Orbits, Copy, Redundancy, Caching, (Ignored implementation details), Translation, Compiling/Supercompilation/.../Meta-Compilation - differently ignorant on certain scales, Undirected, (multi-/arbitrarily complex structured-/)Computational,Non-distinguishability, Analogy, Distill, Confluence, Termination, Predictability (High fidelity), Lossless, Compression, Attention - Ignorance of something, Ignorance, Survivability, Cast, Interpretability, Fidelity Checking, Dimension, Continuation
+     *
+     * Inconsistency ; Variance, Assumption Violation, Hacking/Vulnerability, Divergence, Anomaly, Separability, Forgetting ((Realized) temporal non-trivial inability to resolve references), Refuting, Deleting, Evolution, Unintended/Accidental/Irrelevant Variance, Non-consistency, Non-modelled effects, Unknowns, Uncertainty, Asymmetry, Inequality, Sequence, Time/Temporary, Incoherence, Difference, Incomplete, Non-deterministic (if assumption violated), Non-holonomic system, Gravity, Curvature [ref; Inability to categorize with some small set of variables - Jonathan Gorard's tweet], Change, Selection, Ill-defined, Ambiguous, Confusion, Undefined, Sparsity?, Transformation, Describing, Separability, Directed, Movement, Propagation, Distinguishability, Inhibition, Pointer, Encapsulation, Transduction, Lacking access, Furthering, Obsoleting, Enhancing, Fallibility, View,
+     *
+     * Structure, Configuration, Selection, Symbol, Token, Connection, Communication, Possibilities, Enumeration, Spatially/Space, Time, Arbitrary Naming / Labelling, Functions, Morphisms, Rewrite Rule, Rays, Dynamics, Movement, Processes, Systems, Generative, Generators, Superposition, Encoding, Property, Value, Path, Hierarchy, Tree, Program, History, Causality, Version-Control, Instance, Object, Phrasings, States, Constructions, Worlds, Universe, Background, (Non-/)Context, Frame, Reference, Overlap, Merge, Cardinality, Node, Strategy, Tactic, Sheaf, Foliation, Slice, Type, Static/Dynamic, Knowledge, Squared, Defaults, Extreme, Abstraction, Simulation, Emulation, Projection, Heuristics, Inhibition, Regulation, Conjecture, Redundancy, Density, Property, Relation, What-if, Phase, Definition, Encompass, (Positional) Encodings, "Different levels of description", Levels, Scales, Complexity, Data, Runtime, Vibration, Arbitrary, Random, Limited/Limit/Limitations, Constraints, Resources, Pressure, Priority, Interpreted, Interacted, Observed, Initial, Terminal, Result, Conclusion, Fluidity
+     * Distance, Locality, CLoseness, Approximation, "Practical Equivalencing/.../Ignoring", Effort, Complexity, Relevance, Non-trivival superposition (e.g. any equivalence), Impreciseness, Less Actionability, Trivial/Non-trivial
+     *
+     * ; These are just the same sort of thing from different perspectives, you need additional context for separation of concepts/.../duals - And separation is likely somewhat arbitrary and inconsistent - but that doesn't prevent them from being useful.
      */
     title: "On Orbits, Equivalence and Inconsistencies",
     subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility.",
@@ -225,7 +235,7 @@ const OnOrbits = () => {
 
         <BR/>
 
-        This raises several questions. () How do you even construct a continuation like that? () What does it mean to have something in between two points? () What does it mean for a continuation to go in a loop? () () ()
+        This raises several questions. (1) How do you even construct a continuation like that? (2) What does it mean for a continuation to go in a loop? (3) What does it mean to have something in between two points?, ...
 
         <BR/>
 
@@ -1207,11 +1217,14 @@ const OnOrbits = () => {
         <BR/>
 
         <span style={{textAlign: 'left', minWidth: '100%'}}>And similarly, that would actually be the case. Or I'm again, <span
-          className="bp5-text-muted">ignoring, ..., missing</span> some structure.</span>
+          className="bp5-text-muted">ignoring, ..., missing</span> some structure. I can't actually give a guarantee that any direction will <span
+          className="bp5-text-muted">halt, ..., continue</span>. I can only assume it's the case.</span>
       </Section>
-      <Section head="Assumptions & Violating Assumptions" sub="A step towards more practicality">
+
+      <Section head="Assumptions & Violating Assumptions">
         <span style={{textAlign: 'left', minWidth: '100%'}}>One might as well - more practically - say that some <span
-          className="bp5-text-muted">consistency, ..., well-defined property</span> could be more vaguely restated as: "Can rely on some assumptions without the/much need to correct them if they are violated". Where violated just means some inconsistency with respect to what was expected according to that assumption.</span>
+          className="bp5-text-muted">consistency, ..., well-defined property</span> could be more vaguely restated as: <span
+          className="bp5-text-muted">"Can rely on some assumptions without the/much need to correct them if they are violated", ... "Even though I'm not actually accurate, it might not matter for this other thing."</span>. Where violated just means some inconsistency with respect to what was expected according to that assumption.</span>
 
         <BR/>
 
@@ -1221,11 +1234,17 @@ const OnOrbits = () => {
         <BR/>
 
         <span
-          className="bp5-text-disabled" style={{textAlign: 'left', minWidth: '100%'}}>Basically: it's not whether "2 + 2 = 4". It's whether you can notice if that, in the process of wanting to calculate '2 + 2'. That the result does(/ not) match your more abstract idea of what addition should look like. If it doesn't - which you could say was inconsistent according to your (ignorant) abstract model - will you notice? Could you understand its effects, ..., consequences if it doesn't? - This seems a much harder problem to solve. One which is much easier to ignore, practically.</span>
+          className="bp5-text-disabled" style={{textAlign: 'left', minWidth: '100%'}}>Basically: it's not whether "2 + 2 = 4". It's whether you can notice if that, in the process of wanting to calculate '2 + 2'. That the result does(/ not) match your more abstract idea of what addition should look like. If it doesn't - which you could say was inconsistent according to your (ignorant) abstract model - will you notice? Could you understand its effects, ..., consequences if it doesn't? Even if you do, can you find out why? - This seems a much harder problem. One which is much easier to ignore, practically.</span>
 
         <BR/>
 
-        Note that it then wouldn't be entirely obvious what would happen. Both from the perspective of the abstraction, or that of the inconsistency. Perhaps you could draw some loose analogies between acceleration/gravity in a case like this, but again, this isn't obvious at all - and probably a hard problem.
+        Note that it then wouldn't be entirely obvious what would happen. Both from the perspective of the abstraction, or that of the inconsistency. Perhaps you could draw some loose analogies between acceleration/gravity in a case like this, but again, this isn't obvious at all - and probably a hard problem. Possibly arbitrary complexity might follow after some assumption is violated - you need to know more about a system in order to answer a thing like this.
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>Any abstraction, or just one of the ray visualizations shown here, is more accurately phrased by throwing some <span
+          className="bp5-text-muted">vagueness, ..., ambiguity</span> in the mix. By saying, that 'this would be the case', if 'all these assumptions hold'. This way you allow for some possibly uncertainty. And allow one to abstractly hook into any step of the <span
+          className="bp5-text-muted">visualization, computation, ..., process</span>, and ask: "What if this wasn't the case?" - "What if that didn't actually happen?". </span>
       </Section>
       {/* "in between" */}
       <Section head="Fractals" sub="Transduction, Reducing, Super-, Sub-, ..., Fractions">
@@ -1543,6 +1562,7 @@ const OnOrbits = () => {
 
         <BR/>
 
+        Note that this is the idea behind something continuous/continuity. A simple, likely inconsistent loop which holds, or merely the inability to even ask the question of what's in between two things.
 
       </Section>
       <Section head="Movement & Teleporting">
