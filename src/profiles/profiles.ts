@@ -11,11 +11,11 @@ export const PROFILES = {
 
     picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.jpg',
 
-    date: '2023-12-01',
+    date: '2024-01-01',
 
     email: 'fadi.shawki@orbitmines.com',
 
-    title: "2023. Fadi Shawki",
+    title: "2024. Fadi Shawki",
     subtitle: "A self-profile by some 23-solar-orbiting explorer.",
 
     reference: {

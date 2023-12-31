@@ -12,6 +12,9 @@ import ngi_icon from "././ngi/Logo-NGI_Icon-circle-NGI-rgb.png";
 import santa_fe_icon from "././santa-fe-institute/0_OgRM7UU-SsqK46La.png";
 import papers_we_love_icon from "././papers-we-love/6187757.png";
 import wolfram_institute_icon from "././wolfram-institute/channels4_profile.jpg";
+import tinycorp_icon from "././tinycorp/132956020.jpeg";
+import lex_fridman_podcast_icon from "././lexfridman-podcast/download.jpeg";
+import _3b1b_icon from "././3b1b/3B1B_Logo.svg.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
 
@@ -101,6 +104,30 @@ const ORGANIZATIONS = {
       logo: logo,
       icon_png: orbitmines_icon,
     },
+  },
+  lex_fridman_podcast: <TOrganization>{
+    key: 'lex_fridman_podcast',
+    name: "lex_fridman_podcast",
+    assets: {
+      logo: logo,
+      icon_png: lex_fridman_podcast_icon,
+    }
+  },
+  tinycorp: <TOrganization>{
+    key: 'tinycorp',
+    name: "tinycorp",
+    assets: {
+      logo: logo,
+      icon_png: tinycorp_icon,
+    }
+  },
+  '3b1b': <TOrganization>{
+    key: '3b1b',
+    name: "3b1b",
+    assets: {
+      logo: logo,
+      icon_png: _3b1b_icon,
+    }
   },
   semf: <TOrganization>{
     key: 'semf',
