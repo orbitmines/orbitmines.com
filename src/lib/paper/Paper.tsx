@@ -1,16 +1,20 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
-import {Children, value} from "../typescript/React";
+import {Children, renderable, value} from "../typescript/React";
 import Browser from "./views/Browser";
 import {useLocation, useSearchParams} from "react-router-dom";
-import {ReferenceCounter, ReferenceProps} from "./layout/Reference";
+import {ReferenceCounter, ReferenceProps, useCounter} from "./layout/Reference";
 import {PaperHeader} from "./PaperContent";
 import {Grid, Row} from "../layout/flexbox";
 import {Center} from "@react-three/drei";
 import {Continuation, Loop, RenderedRay, torus, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {length} from "../../@orbitmines/explorer/Ray";
 import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
+import {ON_ORBITS} from "../../routes/papers/2023.OnOrbits";
+import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
+import {PROFILES} from "../../profiles/profiles";
 
 export type PaperProps = ReferenceProps & {
   header?: any //
@@ -37,6 +41,43 @@ export const PaperView = (paper: PaperProps) => {
 
   return <Browser paper={paper}/>;
 };
+
+export const ThumbnailPage = () => {
+  const [params] = useSearchParams();
+
+  const title = params.get('title') ?? 'OrbitMines - Stream';
+  const subtitle = params.get('subtitle') ?? '';
+
+  const referenceCounter = useCounter();
+
+  const paper: Omit<PaperProps, 'children'> = {
+    title,
+    subtitle,
+    pdf: {
+      fonts: [ JetBrainsMono ],
+    },
+    organizations: [ORGANIZATIONS.orbitmines_research],
+    authors: [{
+      ...PROFILES.fadi_shawki,
+      external: PROFILES.fadi_shawki.external?.filter((profile) => [
+        ORGANIZATIONS.github.key,
+        ORGANIZATIONS.twitter.key,
+        ORGANIZATIONS.discord.key,
+        ORGANIZATIONS.youtube.key,
+        ORGANIZATIONS.twitch.key,
+      ].includes(profile.organization.key))
+    }],
+    draft: false,
+    Reference: (props: {}) => (<></>),
+    references: referenceCounter
+  }
+
+  return <div>
+    <PaperThumbnail {...paper}>
+      <></>
+    </PaperThumbnail>
+  </div>
+}
 
 export const PaperThumbnail = (
   {size, ...props}: PaperProps & { size?: { width: number, height: number } }
