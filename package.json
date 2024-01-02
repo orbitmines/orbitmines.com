@@ -42,6 +42,9 @@
     "react-dev-utils": "^12.0.1",
     "schema-dts": "^1.1.2",
     "schema-dts-gen": "^1.1.2",
+    "tree-sitter": "^0.20.6",
+    "tree-sitter-python": "^0.20.4",
+    "tree-sitter-typescript": "^0.20.3",
     "typescript": "^5.0.4"
   },
   "scripts": {

@@ -12,6 +12,7 @@ import Legacy from "./lib/layout/experimental-designs/Legacy";
 import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 import Modules from "./@orbitmines/js/react/Modules";
 import Icons from "./lib/layout/experimental-designs/Icons";
+import Chyp from "./@orbitmines/external/implementations/chyp/Chyp";
 
 export const Router = () => {
 
@@ -20,11 +21,19 @@ export const Router = () => {
     <Route path="papers">
       <Route path=":paper" element={<Paper />} />
     </Route>
-    <Route path=":explorer" element={<OrbitMinesExplorer />} />
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>
+    <Route path="explorer">
+      <Route path="github.com">
+        <Route path="akissinger">
+          <Route path="chyp" element={<Chyp />} />
+        </Route>
+      </Route>
+    </Route>
     <Route path="experimental">
+      <Route path="explorer" element={<OrbitMinesExplorer />} />
+
       <Route path="legacy" element={<Legacy />} />
       <Route path="blueprintjs" element={<BlueprintJS />} />
       <Route path="icons" element={<Icons />} />

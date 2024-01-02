@@ -211,19 +211,19 @@ export class Ray
     async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
     // JS.Generator
     *[Symbol.iterator](): Generator<Ray> { yield *this.traverse(); }
-    // JS.AsyncGenerator
-    as_async_generator = (): AsyncGenerator<Ray> => this[Symbol.asyncIterator]();
-    // JS.AsyncIterator
-    as_async_iterator = (): AsyncIterator<Ray> => this.as_async_generator();
-    // JS.Iterator
-    as_generator = (): Generator<Ray> => this[Symbol.iterator]();
-    // JS.AsyncIterator
-    as_iterator = (): Iterator<Ray> => this.as_generator();
-    // JS.Array
-    as_array = (): any[] => [...this];
-    // JS.String
-    toString = (): string => this.as_array().toString();
-    as_string = () => this.toString();
+  // JS.AsyncGenerator
+  as_async_generator = (): AsyncGenerator<Ray> => this[Symbol.asyncIterator]();
+  // JS.AsyncIterator
+  as_async_iterator = (): AsyncIterator<Ray> => this.as_async_generator();
+  // JS.Iterator
+  as_generator = (): Generator<Ray> => this[Symbol.iterator]();
+  // JS.AsyncIterator
+  as_iterator = (): Iterator<Ray> => this.as_generator();
+  // JS.Array
+  as_array = (): any[] => [...this];
+  // JS.String
+  toString = (): string => this.as_array().toString();
+  as_string = () => this.toString();
 
   /**
    * Quick dirty compilation

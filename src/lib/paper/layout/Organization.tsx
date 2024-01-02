@@ -5,7 +5,7 @@ import React from "react";
 import {AllowReact} from "../../typescript/React";
 import {TOrganization} from "../../organizations/ORGANIZATIONS";
 
-const Organization = (props: AllowReact<TOrganization>) => {
+const Organization = (props: AllowReact<TOrganization> & { only_logo?: boolean }) => {
   const { name, assets } = props;
   const { logo } = assets;
 
@@ -13,7 +13,7 @@ const Organization = (props: AllowReact<TOrganization>) => {
     <Row center="xs">
       <img src={logo} alt={_.isString(name) ? name : 'logo'} width="200px"/>
     </Row>
-    <H3>{name}</H3>
+    {props.only_logo ? <></> : <H3>{name}</H3>}
   </Col>
 }
 

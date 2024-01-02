@@ -12,6 +12,7 @@ import ngi_icon from "././ngi/Logo-NGI_Icon-circle-NGI-rgb.png";
 import santa_fe_icon from "././santa-fe-institute/0_OgRM7UU-SsqK46La.png";
 import papers_we_love_icon from "././papers-we-love/6187757.png";
 import wolfram_institute_icon from "././wolfram-institute/channels4_profile.jpg";
+import akissinger_icon from "././akissinger/881183.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
 
@@ -99,6 +100,14 @@ const ORGANIZATIONS = {
     assets: {
       logo: logo,
       icon_png: orbitmines_icon,
+    }
+  },
+  chyp: <TOrganization>{
+    key: 'chypr',
+    name: "chyp",
+    assets: {
+      logo: akissinger_icon,
+      icon_png: akissinger_icon,
     }
   },
   semf: <TOrganization>{
