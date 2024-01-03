@@ -12,7 +12,7 @@ import Legacy from "./lib/layout/experimental-designs/Legacy";
 import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 import Modules from "./@orbitmines/js/react/Modules";
 import Icons from "./lib/layout/experimental-designs/Icons";
-import Chyp from "./@orbitmines/external/implementations/chyp/Chyp";
+import ChypCanvas, {ChypExplorer} from "./@orbitmines/external/implementations/chyp/ChypCanvas";
 
 export const Router = () => {
 
@@ -27,7 +27,7 @@ export const Router = () => {
     <Route path="explorer">
       <Route path="github.com">
         <Route path="akissinger">
-          <Route path="chyp" element={<Chyp />} />
+          <Route path="chyp" element={<ChypExplorer />} />
         </Route>
       </Route>
     </Route>

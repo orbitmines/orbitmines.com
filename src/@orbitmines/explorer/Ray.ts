@@ -191,7 +191,7 @@ export class Ray
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
-  type = (): RayType => {
+  get type(): RayType {
     if (this.is_reference())
       return RayType.REFERENCE;
     if (this.is_initial())
@@ -249,7 +249,7 @@ export class Ray
     obj.initial = of(this.initial());
     obj.vertex = of(this.vertex());
     obj.terminal = of(this.terminal());
-    obj.type = this.as_reference().type();
+    obj.type = this.as_reference().type;
 
     return obj;
   }

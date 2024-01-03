@@ -12,8 +12,9 @@ import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import IEventListener, {mergeListeners} from "../js/react/IEventListener";
 import {toJpeg, toPng} from "html-to-image";
-import {value} from "../../lib/typescript/React";
+import {Children, value} from "../../lib/typescript/React";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
+import {NotImplementedError} from "./errors/errors";
 
 const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
@@ -94,6 +95,104 @@ const BinarySuperposition = ({ position }: any) => {
   </>
 }
 
+/**
+ * Temporary Ray visualization till the visualization is incorporated into the editor (Basically when Visualization = Ray)
+ *
+ * TODO; Generalize to Ray - should be embedded on the vertex, or on another layer of description, where the interface is a rewrite rule
+ */
+type InterfaceOptions = {
+  position?: [number, number, number],
+  rotation?: [number, number, number],
+  scale?: number,
+  color?: string
+}
+type Options = {
+  initial?: InterfaceOptions,
+  vertex?: InterfaceOptions,
+  terminal?: InterfaceOptions,
+}
+
+export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions) => {
+  const _default: Required<InterfaceOptions> = {
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    scale: 1,
+    color: 'orange',
+    // ..._.pick(ray.vertex, 'position', 'rotation', 'scale', 'color'),
+    ..._.pick(ray, 'position', 'rotation', 'scale', 'color')
+  }
+
+  const initial: Required<InterfaceOptions> = { ..._default, position: [-20 * _default.scale, 0, 0], ...ray.initial };
+
+  // Vertex as the origin for rotation
+  const vertex: Required<InterfaceOptions> = { ..._default, position: [0, 0, 0] } //, ...ray.vertex };
+  const terminal: Required<InterfaceOptions> = { ..._default, position: [20 * _default.scale, 0, 0], ...ray.terminal };
+
+  const Group = ({ children }: Children) => {
+    return <group position={_default.position} rotation={vertex.rotation}>
+      {children}
+    </group>
+  }
+
+  return <Group>
+    <SimpleRenderedRay type={RayType.INITIAL} {...initial} terminal={vertex} />
+    <SimpleRenderedRay type={RayType.VERTEX} {...vertex} initial={initial} terminal={terminal} />
+    <SimpleRenderedRay type={RayType.TERMINAL} {...terminal} initial={vertex} />
+  </Group>
+}
+export const SimpleRenderedRay = (
+  ray: Pick<Ray, 'type'>
+    & Options // Relative options to other rays
+    & InterfaceOptions // Default options
+) => {
+  const _default: Required<InterfaceOptions> = {
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    scale: 1,
+    color: 'orange',
+    ..._.pick(ray, 'position', 'rotation', 'scale', 'color')
+  }
+
+  console.log(_default)
+  const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
+    <Torus
+      args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+      material-color={color}
+      {...options}
+    />
+  const _Vertex = ({ color = circle.color, ...options }: any) =>
+    <Circle
+      args={[circle.radius, circle.segments]}
+      material-color={color}
+      {...options}
+    />
+
+  const initial: Required<InterfaceOptions> = { ..._default, ...ray.initial };
+  const vertex: Required<InterfaceOptions> = { ..._default, ...ray.vertex };
+  const terminal: Required<InterfaceOptions> = { ..._default, ...ray.terminal };
+  const { type } = ray;
+
+  switch (type) {
+    case RayType.REFERENCE:
+      throw new NotImplementedError();
+    case RayType.INITIAL: {
+      return <>
+        <Line start={terminal.position} end={add(vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+        <_Continuation {...vertex} />
+      </>
+    }
+    case RayType.TERMINAL: {
+      return <>
+        <Line start={initial.position} end={add(vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+        <_Continuation {...vertex} />
+      </>
+    }
+    case RayType.VERTEX: {
+      return <_Vertex {...vertex} />
+    }
+  }
+}
+
 // In principle, this should be anything, this is just for the initial setup
 const RenderedRay = (
   props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, }
@@ -112,7 +211,7 @@ const RenderedRay = (
   const Rendered = () => {
 
 
-    const type = vertex.as_reference().type();
+    const type = vertex.as_reference().type;
     switch (type) {
       case RayType.INITIAL: {
         /**
@@ -659,7 +758,7 @@ const Test2 = ({ ray, position }: { ray: Ray, position: [number, number, number]
 //        *
 //        */
 //
-//       console.log('type:', reference.force().type());
+//       console.log('type:', reference.force().type);
 //       console.log('structure at', dereferenced.js().force())
 //
 //       console.log('           traversing nested reference');
