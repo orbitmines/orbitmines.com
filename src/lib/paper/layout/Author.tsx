@@ -3,11 +3,20 @@ import {Col, Row} from "../../layout/flexbox";
 import {H3, H4, Tag} from "@blueprintjs/core";
 import CustomIcon from "../../layout/icons/CustomIcon";
 import {ExternalProfile, TProfile} from "../../organizations/ORGANIZATIONS";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {Predicate, Rendered} from "../../typescript/React";
 
 
 const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>}) => {
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
+
   const { reference, name, email, profile, external, filter } = props;
 
   const { title, subtitle } = reference || {};
@@ -17,7 +26,7 @@ const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>}) => {
       <Col><img src={`/profiles/${props.profile}/profile-picture.jpg`} alt="Profile picture" style={{
         maxWidth: '32px', clipPath: 'circle()'}}
       /></Col>
-      <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={`/profiles/${profile}`}>{name}</a>}</H3>
+      <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a>}</H3>
     </Row>
     <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row>
     <Row center="xs" className="child-px-2">

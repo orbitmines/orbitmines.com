@@ -12,6 +12,7 @@ import Legacy from "./lib/layout/experimental-designs/Legacy";
 import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 import Modules from "./@orbitmines/js/react/Modules";
 import Icons from "./lib/layout/experimental-designs/Icons";
+import {ThumbnailPage} from "./lib/paper/Paper";
 import ChypCanvas, {ChypExplorer} from "./@orbitmines/external/implementations/chyp/ChypCanvas";
 
 export const Router = () => {
@@ -24,6 +25,7 @@ export const Router = () => {
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>
+    <Route path="thumbnail" element={<ThumbnailPage />} />
     <Route path="explorer">
       <Route path="github.com">
         <Route path="akissinger">

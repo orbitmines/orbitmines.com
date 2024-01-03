@@ -1,6 +1,6 @@
 import {Col, Grid, Row} from "../layout/flexbox";
 import {Divider, H1, H3, H4, Intent, Tag} from "@blueprintjs/core";
-import React from "react";
+import React, {useRef} from "react";
 import {Children, Rendered} from "../typescript/React";
 import {getFootnotes} from "./layout/Reference";
 import Organization from "./layout/Organization";
@@ -8,9 +8,14 @@ import Author from "./layout/Author";
 import Link from "./layout/Link";
 import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
 import Section from "./layout/Section";
-import {PaperProps} from "./Paper";
+import {PaperProps, PaperThumbnail} from "./Paper";
 import {PROFILES} from "../../profiles/profiles";
 import _ from "lodash";
+import {CachedVisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import {Center} from "@react-three/drei";
+import {Continuation, RenderedRay, torus, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
+import {length} from "../../@orbitmines/explorer/Ray";
+import {useSearchParams} from "react-router-dom";
 
 export const Title = ({children}: Children) => {
   return <Row center="xs">
@@ -31,45 +36,73 @@ export const HorizontalLine = () => <>
   <Row/>
 </>
 
+export const PaperHeader = (props: PaperProps) => {
+  const {
+    title,
+    subtitle,
+    date,
+    draft,
+    organizations,
+    authors
+  } = props;
+
+  return <>
+      <Title><Rendered renderable={title}/></Title>
+      {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
+
+      <Row center="xs" middle="xs" className="child-px-20-sm">
+        {organizations ? <>
+          {organizations.map((organization) => (<Col md={4} xs={12}>
+            <Organization {...organization} />
+          </Col>))}
+
+          <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
+            <Divider style={{height: '80px'}}/>
+          </Col>
+        </> : <></>}
+
+        {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
+          <Author {...author} />
+
+        </Col>))}
+      </Row>
+
+      <Row center="xs" middle="xs" className="child-px-10">
+        {date ? <Col>
+          <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"})}</H3>
+        </Col> : <></>}
+        {draft ? <Col>
+          <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
+        </Col> : <></>}
+      </Row>
+    </>
+}
+
+
 const PaperContent = (props: PaperProps) => {
-  const {title, subtitle, date, draft, organizations, authors, children, external, exclude_footnotes } = props;
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
+
+  if (generate === 'thumbnail')
+    return <PaperThumbnail {...props}/>
+
+  const {header, children, external, exclude_footnotes } = props;
 
   const {discord} = external || {};
 
   const external_links = !!discord;
 
   const Content = <>
-    <Title><Rendered renderable={title}/></Title>
-    {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
-
-    <Row center="xs" middle="xs" className="child-px-20">
-      {organizations ? <>
-        {organizations.map((organization) => (<Col md={4} xs={12}>
-          <Organization {...organization} />
-        </Col>))}
-
-        <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
-          <Divider style={{height: '80px'}}/>
-        </Col>
-      </> : <></>}
-
-      {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
-        <Author {...author} />
-
-      </Col>))}
-    </Row>
-
-    <Row center="xs" middle="xs" className="child-px-10">
-      {date ? <Col>
-        <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
-          day: "numeric",
-          month: "long",
-          year: "numeric"})}</H3>
-      </Col> : <></>}
-      {draft ? <Col>
-        <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
-      </Col> : <></>}
-    </Row>
+    <PaperHeader {...props} />
 
     {external_links ? <Row center="xs" middle="xs" className="child-px-10">
       {discord ? <Col>
@@ -77,7 +110,7 @@ const PaperContent = (props: PaperProps) => {
       </Col> : <></>}
     </Row> : <></>}
 
-    <HorizontalLine/>
+    {header ? header : <HorizontalLine/>}
 
     {children}
 
@@ -90,7 +123,8 @@ const PaperContent = (props: PaperProps) => {
     // border: 'solid rgba(143, 153, 168, 0.15) 2px',
     //     height={1754} width={1240}
     maxWidth: '1240px',
-    fontSize: '1.1rem'
+    fontSize: '1.1rem',
+    width: '100vw'
   }}>
     {Content}
 

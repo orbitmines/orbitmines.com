@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {empty, empty_vertex, from_boolean, from_iterable, JS, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
-import {CatmullRomLine, Circle, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
+import {CatmullRomLine, Circle, CubicBezierLine, QuadraticBezierLine, Text, Torus} from "@react-three/drei";
 import {GroupProps, useFrame, useThree,} from "@react-three/fiber";
 import {useDrag} from "@use-gesture/react";
 import {useSpring} from '@react-spring/three'
 import {useHotkeys} from "../js/react/hooks/useHotkeys";
 import JetBrainsMonoRegular from "../../lib/layout/font/fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import {Box3, SplineCurve, Vector3, WebGLRenderTarget} from "three";
+import {Box3, SplineCurve, TorusGeometry, Vector3, WebGLRenderTarget} from "three";
 import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import IEventListener, {mergeListeners} from "../js/react/IEventListener";
@@ -18,19 +18,89 @@ import {NotImplementedError} from "./errors/errors";
 
 const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
-const torus = {
+export const torus = {
   // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
   radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
 }
-const Continuation = ({ color = torus.color, position }: any) =>
+export const Continuation = (
+  {
+    color = torus.color,
+    radius = torus.radius,
+    arc = Math.PI * 2,
+    position
+  }: any) =>
   <Torus
-    args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+    args={[radius, torus.tube.width, torus.segments, torus.tube.segments, arc]}
     material-color={color}
     position={position}
   />
 
+export const Loop = (
+  { color = "#FFFF55",
+    on = "orange",
+    position = [0, 0, 0],
+    initial = position,
+    terminal = add(position, [0, 30, 0]),
+    scale = 1.5,
+    radius = 15,
+    segments = 200
+  }: any
+) => {
+  // const geometry = new TorusGeometry(radius, torus.tube.width, torus.segments, torus.tube.segments, Math.PI * 4);
+  //
+  // const vertices = geometry.getAttribute('position').array;
+  // const points: any = [];
+  // for (let i = 0; i < vertices.length; i += 3) {
+  //   points.push([vertices[i], vertices[i + 1], vertices[i + 2]]);
+  // }
+  const points: [number, number, number][] = [];
+  for (let i = 0; i < segments; i++) {
+    const angle = ((i / segments) * Math.PI * 2) + Math.PI / 2; // STARTS AT THE TOP
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+
+    if (i > 5 && i < segments - 6)
+      points.push([x, y, 0])
+  }
+  console.log(points)
+
+  const vertex = add(position, [0, -radius, 0]);
+  const continuation = add(position, [0, radius, 0]);
+
+  return <group>
+    <CatmullRomLine position={position} points={points} color={color} lineWidth={line.width * scale}/>
+    <Continuation position={continuation} color={color}/>
+    <Vertex position={vertex} color={color} />
+  </group>
+}
+export const Curve = (
+  { color = "#FFFF55",
+    position = [0, 0, 0],
+    initial = position,
+    terminal = add(position, [0, 30, 0]),
+    scale = 1.5 }: any) => {
+  const radius = 15;
+
+  return <group position={[0, 0, 0]}>
+    {/*<Torus*/}
+    {/*  args={[radius, torus.tube.width, torus.segments, torus.tube.segments, Math.PI]}*/}
+    {/*  material-color={color}*/}
+    {/*  position={position}*/}
+    {/*/>*/}
+    <CubicBezierLine
+      start={initial}
+      // mid={mid}
+      midA={add(initial, [radius * 1.25, radius - radius / 1.5, 0])}
+      midB={add(initial, [radius * 1.25, radius + radius / 1.5, 0])}
+      end={terminal}
+      color={color}
+      lineWidth={line.width * scale}
+    />
+  </group>
+}
+
 const line = { width: 2,  length: 1,  color: "orange", }
-const Line = ({ start, mid, end, scale, color = line.color }: any) =>
+export const Line = ({ start, mid, end, scale, color = line.color }: any) =>
   <QuadraticBezierLine
     start={start}
     mid={mid}
@@ -40,10 +110,41 @@ const Line = ({ start, mid, end, scale, color = line.color }: any) =>
   />
 
 const circle = { radius: 3,  color: "orange", segments: 30, }
-const Vertex = ({ position, color = circle.color }: any) =>
+export const Vertex = ({ position, color = circle.color }: any) =>
   <Circle position={position} material-color={color} args={[circle.radius, circle.segments]} />
 
-const BinarySuperposition = ({ position }: any) => {
+const BinaryValue = ({ boolean, position }: any) => {
+  if (boolean)
+    return <BinaryValue boolean={false} position={add(position, [0, -40, 0])}/>
+
+  const halfTorus = (torus.radius + (torus.tube.width / 2));
+
+  const up = add(position, [0, 60, 0]);
+  const middle = add(position, [0, 20, 0]);
+  const down = add(position, [0, -20, 0]);
+
+  return <>
+    <CatmullRomLine points={[
+      add(down, [0, halfTorus, 0]),
+      middle
+    ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+    <CatmullRomLine points={[
+      middle,
+      add(up, [0, -halfTorus, 0]),
+    ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+
+    <Circle position={middle} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+
+    <Circle position={position} material-color="#FF5555" args={[circle.radius, circle.segments]}/>
+    <Circle position={add(position, [0, 40, 0])} material-color="#5555FF" args={[circle.radius, circle.segments]}/>
+
+    <Continuation color="#FF5555" position={down} />
+    <Continuation color="#5555FF" position={up} />
+
+  </>
+}
+
+export const BinarySuperposition = ({ position = [0, 0, 0] }: any) => {
   const halfTorus = (torus.radius + (torus.tube.width / 2));
 
   const up = add(position, [0, 20 + halfTorus, 0]);
@@ -194,14 +295,19 @@ export const SimpleRenderedRay = (
 }
 
 // In principle, this should be anything, this is just for the initial setup
-const RenderedRay = (
-  props: { reference: Option<Ray> } & { position?: [number, number, number], scale?: number, }
+export const RenderedRay = (
+  props: { reference: Option<Ray> } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
 ) => {
   const {
     position = [0, 0, 0],
     reference,
-    scale = 1
+    scale = 1,
+    color = 'orange',
+    initial = add(position, [-20, 0, 0]),
+    terminal = add(position, [20, 0, 0]),
   } = props;
+  const left = initial;
+  const right = terminal;
 
   if (reference.is_none() || reference.force().self().is_none())
     return <></>
@@ -252,173 +358,223 @@ const RenderedRay = (
       }
       case RayType.REFERENCE: {
         if (vertex.is_empty()) // empty reference
-          return <Continuation color="red" position={position} />
+          return <Continuation color={color} position={position} />
 
         // throw 'Not Implemented'
         return <RenderedRay {...props} reference={vertex.self().match({ Some: (ray) => ray.as_reference().as_option(), None: () => Option.None })} />
       }
       case RayType.VERTEX: {
         const tilt = -10; // TODO; Generally should use some equivalencing in the 3d-frames for this once setup is in place (perpsective/camera) if in threejs..
-        const left = add(position, [-80 + tilt, 0, 0]);
-        const right = add(position, [80 - tilt, 0, 0]);
+        // const left = add(position, [-80 + tilt, 0, 0]);
+        // const right = add(position, [80 - tilt, 0, 0]);
 
-        const initial_side = {
-          continuation: add(left, [tilt, 0, 0]),
-          initial: add(left, [30 + tilt, 15, 0]),
-          terminal: add(left, [30 - tilt, -15, 0]),
-
-          initial_continuation: add(left, [30 + tilt * 2, 15 + 15, 0]),
-          terminal_continuation: add(left, [30 - tilt * 2, -15 - 15, 0]),
-        }
-        const terminal_side = {
-          continuation: add(right, [-tilt, 0, 0]),
-          initial: add(right, [-30 + tilt, 15, 0]),
-          terminal: add(right, [-30 - tilt, -15, 0]),
-
-          initial_continuation: add(right, [-30 + tilt * 2, 15 + 15, 0]),
-          terminal_continuation: add(right, [-30 - tilt * 2, -15 - 15, 0]),
-        }
-
-        const Sup = ({ position }: any) => {
-
-          const left = add(position, [-20, 0, 0]);
-          const right = add(position, [20, 0, 0]);
-
-          return <>
-            <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
-
-            {/* Line now starts in the center of the torus tube */}
-            <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
-            {/*<Vertex position={position} />*/}
-            <BinarySuperposition position={position} />
-            <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
-            <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
-          </>
-        }
+        // const initial_side = {
+        //   continuation: add(left, [tilt, 0, 0]),
+        //   initial: add(left, [30 + tilt, 15, 0]),
+        //   terminal: add(left, [30 - tilt, -15, 0]),
+        //
+        //   initial_continuation: add(left, [30 + tilt * 2, 15 + 15, 0]),
+        //   terminal_continuation: add(left, [30 - tilt * 2, -15 - 15, 0]),
+        // }
+        // const terminal_side = {
+        //   continuation: add(right, [-tilt, 0, 0]),
+        //   initial: add(right, [-30 + tilt, 15, 0]),
+        //   terminal: add(right, [-30 - tilt, -15, 0]),
+        //
+        //   initial_continuation: add(right, [-30 + tilt * 2, 15 + 15, 0]),
+        //   terminal_continuation: add(right, [-30 - tilt * 2, -15 - 15, 0]),
+        // }
+        //
+        // const Sup = ({ position }: any) => {
+        //
+        //   const left = add(position, [-20, 0, 0]);
+        //   const right = add(position, [20, 0, 0]);
+        //
+        //   return <>
+        //     <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
+        //
+        //     {/* Line now starts in the center of the torus tube */}
+        //     <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
+        //     {/*<Vertex position={position} />*/}
+        //     <BinarySuperposition position={position} />
+        //     <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
+        //     <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
+        //   </>
+        // }
 
         // 55FF55
-        return <>
-          <Sup position={[100, 70, 0]} />
-
-          <Continuation color="#55FF55" position={initial_side.continuation} />
-
-          <CatmullRomLine points={[
-            add(initial_side.continuation, [0, torus.radius, 0]),
-            initial_side.initial,
-            terminal_side.initial,
-            add(terminal_side.continuation, [0, torus.radius, 0])
-          ]} color="#55FF55" lineWidth={line.width * 1.5}/>
-
-          <CatmullRomLine points={[
-            add(initial_side.continuation, [0, -torus.radius, 0]),
-            initial_side.terminal,
-            terminal_side.terminal,
-            add(terminal_side.continuation, [0, -torus.radius, 0])
-          ]} color="#55FF55" lineWidth={line.width * 1.5}/>
-
-
-          <Vertex position={initial_side.initial} color="#55FF55" />
-          <Vertex position={initial_side.terminal} color="#55FF55" />
-
-          <Continuation color="#55FF55" position={terminal_side.continuation} />
-
-          <>
-            <CatmullRomLine points={[
-              initial_side.initial_continuation,
-              add(initial_side.initial, [0, 0, 0]),
-              add(initial_side.terminal, [0, 0, 0]),
-              initial_side.terminal_continuation,
-            ]} color="orange" lineWidth={line.width * 1.5}/>
-
-            <Vertex position={initial_side.initial_continuation} color="#1C2127" />
-            <Continuation position={initial_side.initial_continuation} color="orange" />
-            <Vertex position={initial_side.terminal_continuation} color="#1C2127" />
-            <Continuation position={initial_side.terminal_continuation} color="orange" />
-
-            {/* 1C2127 quick for background */}
-            <Vertex position={initial_side.initial} color="#1C2127" />
-            <Vertex position={initial_side.initial} color="#FF5555" />
-
-            <CatmullRomLine points={[
-              add(initial_side.initial, [0, -15, 0]),
-              initial_side.initial,
-              add(initial_side.initial, [0, 15, 0]),
-            ]} color="#FF5555" lineWidth={line.width * 1.5}/>
-
-            <Vertex position={add(initial_side.initial, [0, -15, 0])} color="#1C2127" />
-            <Continuation position={add(initial_side.initial, [0, -15, 0])} color="#FF5555" />
-
-            <Vertex position={initial_side.terminal} color="#1C2127" />
-            <Vertex position={initial_side.terminal} color="orange" />
-
-            <CatmullRomLine points={[
-              add(initial_side.initial, [0, 15, 0]),
-              add(initial_side.initial, [0, 30, 0]),
-              add(initial_side.initial, [0, 45, 0]),
-            ]} color="#5555FF" lineWidth={line.width * 1.5}/>
-
-            <Vertex position={add(initial_side.initial, [0, 30, 0])} color="#5555FF" />
-            <Circle position={add(initial_side.initial, [0, 15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
-
-            <Vertex position={add(initial_side.initial, [0, 45, 0])} color="#1C2127" />
-            <Continuation position={add(initial_side.initial, [0, 45, 0])} color="#5555FF" />
-
-          </>
-
-         <>
-           <CatmullRomLine points={[
-             terminal_side.initial_continuation,
-             add(terminal_side.initial, [0, 0, 0]),
-             add(terminal_side.terminal, [0, 0, 0]),
-             terminal_side.terminal_continuation,
-           ]} color="orange" lineWidth={line.width * 1.5}/>
-
-           <Vertex position={terminal_side.initial_continuation} color="#1C2127" />
-           <Continuation position={terminal_side.initial_continuation} color="orange" />
-           <Vertex position={terminal_side.terminal_continuation} color="#1C2127" />
-           <Continuation position={terminal_side.terminal_continuation} color="orange" />
-
-           {/* 1C2127 quick for background */}
-           <Vertex position={terminal_side.initial} color="#1C2127" />
-           <Vertex position={terminal_side.initial} color="#FF5555" />
-
-           <Continuation position={add(terminal_side.continuation, [tilt - 10, 15, 0])} color="#FF5555" />
-
-           <CatmullRomLine points={[
-             add(terminal_side.continuation, [tilt - 10 - torus.radius, 15, 0]),
-             terminal_side.initial,
-             add(terminal_side.initial, [tilt, -7.5, 0]),
-             add(terminal_side.initial, [tilt, -15, 0]),
-           ]} color="#FF5555" lineWidth={line.width * 1.5}/>
-
-           <Vertex position={terminal_side.terminal} color="#1C2127" />
-           <Vertex position={terminal_side.terminal} color="#5555FF" />
-
-           <CatmullRomLine points={[
-             add(terminal_side.continuation, [-tilt - 10 - torus.radius, -15, 0]),
-             terminal_side.terminal,
-             add(terminal_side.initial, [tilt + 6, -22.5, 0]),
-             add(terminal_side.initial, [tilt, -15, 0]),
-           ]} color="#5555FF" lineWidth={line.width * 1.5}/>
-
-           <Circle position={add(terminal_side.initial, [tilt, -15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
-
-           <Continuation position={add(terminal_side.continuation, [-tilt - 10, -15, 0])} color="#5555FF" />
-         </>
-        </>
+        // return <>
+        //   <Sup position={[100, 70, 0]} />
+        //
+        //   <Continuation color="#55FF55" position={initial_side.continuation} />
+        //
+        //   <CatmullRomLine points={[
+        //     add(initial_side.continuation, [0, torus.radius, 0]),
+        //     initial_side.initial,
+        //     terminal_side.initial,
+        //     add(terminal_side.continuation, [0, torus.radius, 0])
+        //   ]} color="#55FF55" lineWidth={line.width * 1.5}/>
+        //
+        //   <CatmullRomLine points={[
+        //     add(initial_side.continuation, [0, -torus.radius, 0]),
+        //     initial_side.terminal,
+        //     terminal_side.terminal,
+        //     add(terminal_side.continuation, [0, -torus.radius, 0])
+        //   ]} color="#55FF55" lineWidth={line.width * 1.5}/>
+        //
+        //
+        //   <Vertex position={initial_side.initial} color="#55FF55" />
+        //   <Vertex position={initial_side.terminal} color="#55FF55" />
+        //
+        //   <Continuation color="#55FF55" position={terminal_side.continuation} />
+        //
+        //   <>
+        //     <CatmullRomLine points={[
+        //       initial_side.initial_continuation,
+        //       add(initial_side.initial, [0, 0, 0]),
+        //       add(initial_side.terminal, [0, 0, 0]),
+        //       initial_side.terminal_continuation,
+        //     ]} color="orange" lineWidth={line.width * 1.5}/>
+        //
+        //     <Vertex position={initial_side.initial_continuation} color="#1C2127" />
+        //     <Continuation position={initial_side.initial_continuation} color="orange" />
+        //     <Vertex position={initial_side.terminal_continuation} color="#1C2127" />
+        //     <Continuation position={initial_side.terminal_continuation} color="orange" />
+        //
+        //     {/* 1C2127 quick for background */}
+        //     <Vertex position={initial_side.initial} color="#1C2127" />
+        //     <Vertex position={initial_side.initial} color="#FF5555" />
+        //
+        //     <CatmullRomLine points={[
+        //       add(initial_side.initial, [0, -15, 0]),
+        //       initial_side.initial,
+        //       add(initial_side.initial, [0, 15, 0]),
+        //     ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+        //
+        //     <Vertex position={add(initial_side.initial, [0, -15, 0])} color="#1C2127" />
+        //     <Continuation position={add(initial_side.initial, [0, -15, 0])} color="#FF5555" />
+        //
+        //     <Vertex position={initial_side.terminal} color="#1C2127" />
+        //     <Vertex position={initial_side.terminal} color="orange" />
+        //
+        //     <CatmullRomLine points={[
+        //       add(initial_side.initial, [0, 15, 0]),
+        //       add(initial_side.initial, [0, 30, 0]),
+        //       add(initial_side.initial, [0, 45, 0]),
+        //     ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+        //
+        //     <Vertex position={add(initial_side.initial, [0, 30, 0])} color="#5555FF" />
+        //     <Circle position={add(initial_side.initial, [0, 15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+        //
+        //     <Vertex position={add(initial_side.initial, [0, 45, 0])} color="#1C2127" />
+        //     <Continuation position={add(initial_side.initial, [0, 45, 0])} color="#5555FF" />
+        //
+        //   </>
+        //
+        //  <>
+        //    <CatmullRomLine points={[
+        //      terminal_side.initial_continuation,
+        //      add(terminal_side.initial, [0, 0, 0]),
+        //      add(terminal_side.terminal, [0, 0, 0]),
+        //      terminal_side.terminal_continuation,
+        //    ]} color="orange" lineWidth={line.width * 1.5}/>
+        //
+        //    <Vertex position={terminal_side.initial_continuation} color="#1C2127" />
+        //    <Continuation position={terminal_side.initial_continuation} color="orange" />
+        //    <Vertex position={terminal_side.terminal_continuation} color="#1C2127" />
+        //    <Continuation position={terminal_side.terminal_continuation} color="orange" />
+        //
+        //    {/* 1C2127 quick for background */}
+        //    <Vertex position={terminal_side.initial} color="#1C2127" />
+        //    <Vertex position={terminal_side.initial} color="#FF5555" />
+        //
+        //    <Continuation position={add(terminal_side.continuation, [tilt - 10, 15, 0])} color="#FF5555" />
+        //
+        //    <CatmullRomLine points={[
+        //      add(terminal_side.continuation, [tilt - 10 - torus.radius, 15, 0]),
+        //      terminal_side.initial,
+        //      add(terminal_side.initial, [tilt, -7.5, 0]),
+        //      add(terminal_side.initial, [tilt, -15, 0]),
+        //    ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+        //
+        //    <Vertex position={terminal_side.terminal} color="#1C2127" />
+        //    <Vertex position={terminal_side.terminal} color="#5555FF" />
+        //
+        //    <CatmullRomLine points={[
+        //      add(terminal_side.continuation, [-tilt - 10 - torus.radius, -15, 0]),
+        //      terminal_side.terminal,
+        //      add(terminal_side.initial, [tilt + 6, -22.5, 0]),
+        //      add(terminal_side.initial, [tilt, -15, 0]),
+        //    ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+        //
+        //    <Circle position={add(terminal_side.initial, [tilt, -15, 0])} material-color="#FF55FF" args={[circle.radius / 2, circle.segments]} />
+        //
+        //    <Continuation position={add(terminal_side.continuation, [-tilt - 10, -15, 0])} color="#5555FF" />
+        //  </>
+        // </>
 
         // const left = add(position, [-20, 0, 0]);
         // const right = add(position, [20, 0, 0]);
 
+        const isVertical = position[1] !== left[1];
+
         return <>
-          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
+          {/*<Line start={add(left, [-40, 0, 0])} end={add(left, [-40, 60, 0])} scale={scale} />*/}
+
+          {/*<Vertex position={add(left, [-40, 0, 0])} color="#1C2127" />*/}
+          {/*<Vertex position={add(left, [-40, 20, 0])} color="#1C2127" />*/}
+          {/*<Vertex position={add(left, [0, 20, 0])} color="#1C2127" />*/}
+          {/*<Vertex position={add(left, [-40, 60, 0])} color="#1C2127" />*/}
+
+          {/*<Continuation color="orange" position={add(left, [-40, 0, 0])} />*/}
+          {/*<Continuation color="red" position={add(left, [-40, 20, 0])} />*/}
+          {/*<Continuation color="red" position={add(left, [0, 20, 0])} />*/}
+          {/*<Continuation color="orange" position={add(left, [-40, 60, 0])} />*/}
+
+          {/*<RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={add(left, [-20, 20, 0])} />*/}
+          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} color={color} />
 
           {/* Line now starts in the center of the torus tube */}
-          <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
-          <Vertex position={position} />
+          {/*{isVertical*/}
+          {/*  ? <Line end={add(left, [0, torus.radius * (position[1] < left[1] ? -1 : 1), 0])} start={position} scale={scale} color={color} />*/}
+            : <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} color={color} />
+          {/*}*/}
+
+
+          <Vertex position={position} color={color} />
           {/*<BinarySuperposition position={position} />*/}
-          <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
-          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
+
+          {/*<Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} color={color} />*/}
+          <Line start={add(right, [-torus.radius, 0, 0])} end={position} scale={scale} color={color} />
+
+          {/*{_.sample([true, false])*/}
+          {/*  ? <BinarySuperposition position={position} />*/}
+          {/*  : <BinaryValue position={position} boolean={_.sample([false, true])} />*/}
+          {/*}*/}
+
+          <group rotation={[0, 0, Math.PI / 2]}>
+
+          </group>
+          {/*{<>*/}
+          {/*  <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />*/}
+
+          {/*  /!* Line now starts in the center of the torus tube *!/*/}
+          {/*  <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />*/}
+
+          {/*  /!*<Vertex position={position} />*!/*/}
+          {/*  /!*<BinarySuperposition position={position} />*!/*/}
+          {/*  <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />*/}
+
+          {/*  {_.sample([true, false])*/}
+          {/*    ? <BinarySuperposition position={position} />*/}
+          {/*    : <BinaryValue position={position} boolean={_.sample([false, true])} />*/}
+          {/*  }*/}
+
+          {/*  <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />*/}
+
+          {/*</>}*/}
+
+          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} color={color} />
 
           {/*<Torus*/}
           {/*  args={[15, torus.tube.width, torus.segments, torus.tube.segments]}*/}
@@ -663,12 +819,12 @@ const InterfaceObject = ({
       {...props}
     >
       <RenderedRay reference={selection} scale={scale} />
-      <group position={[0, -80, 0]}>
-        <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={8.0}>
-          Rewriting a Binary Superposition to a specific value
+      {/*<group position={[0, -80, 0]}>*/}
+      {/*  <Text color="white" font={JetBrainsMonoRegular} anchorX="center" anchorY="middle" scale={8.0}>*/}
+      {/*    Rewriting a Binary Superposition to a specific value*/}
 
-        </Text>
-      </group>
+      {/*  </Text>*/}
+      {/*</group>*/}
     </group>
   )
 }
@@ -804,9 +960,20 @@ const OrbitMinesExplorer = (
       {...mergeListeners(...listeners, listener)}
     >
 
-      <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white" />
+      <Circle args={[1, 10]} position={[0, 0, 0]} material-color="white"/>
       <InterfaceObject scale={1.5}/>
 
+      {/*<group scale={1.5}>*/}
+      {/*  <Line start={add([20, -60, 0], [0, torus.radius, 0])} end={add([20, 193, 0], [0, -torus.radius, 0])} scale={1.5} />*/}
+
+      {/*  <Vertex position={[20, 0, 0]} color="#1C2127" />*/}
+      {/*  <Vertex position={[20, 133, 0]} color="#1C2127" />*/}
+      {/*  <Continuation color="orange" position={[20, -60, 0]}/>*/}
+      {/*  <Continuation color="orange" position={[20, 193, 0]}/>*/}
+      {/*</group>*/}
+      {/*<group position={[0, 200, 0]}>*/}
+      {/*  <InterfaceObject scale={1.5}/>*/}
+      {/*</group>*/}
     </VisualizationCanvas>
   );
 };

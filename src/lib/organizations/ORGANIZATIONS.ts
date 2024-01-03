@@ -12,6 +12,9 @@ import ngi_icon from "././ngi/Logo-NGI_Icon-circle-NGI-rgb.png";
 import santa_fe_icon from "././santa-fe-institute/0_OgRM7UU-SsqK46La.png";
 import papers_we_love_icon from "././papers-we-love/6187757.png";
 import wolfram_institute_icon from "././wolfram-institute/channels4_profile.jpg";
+import tinycorp_icon from "././tinycorp/132956020.jpeg";
+import lex_fridman_podcast_icon from "././lexfridman-podcast/download.jpeg";
+import _3b1b_icon from "././3b1b/3B1B_Logo.svg.png";
 import akissinger_icon from "././akissinger/881183.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
@@ -32,6 +35,7 @@ export type TOrganization<TKey = string> = {
     icon?: SVG,
     icon_png?: any
   }
+  profile?: Partial<TProfile>,
 }
 
 export type ExternalProfile<TKey = string> = {
@@ -60,17 +64,17 @@ export type ContentCategory = {
 }
 
 export type TProfile = {
-  first_name: string,
-  last_name: string,
+  first_name?: string,
+  last_name?: string,
   name: string,
-  formal_citation_name: string,
+  formal_citation_name?: string,
 
-  date: string,
+  date?: string,
 
-  profile: string,
-  email: string,
+  profile?: string,
+  email?: string,
 
-  picture: string,
+  picture?: string,
 
   orcid?: string,
 
@@ -84,7 +88,7 @@ export type TProfile = {
 
   external?: ExternalProfiles,
 
-  content: {
+  content?: {
     history?: ContentCategory
     formal_education?: ContentCategory
     attended_events?: ContentCategory,
@@ -100,6 +104,30 @@ const ORGANIZATIONS = {
     assets: {
       logo: logo,
       icon_png: orbitmines_icon,
+    },
+  },
+  lex_fridman_podcast: <TOrganization>{
+    key: 'lex_fridman_podcast',
+    name: "lex_fridman_podcast",
+    assets: {
+      logo: logo,
+      icon_png: lex_fridman_podcast_icon,
+    }
+  },
+  tinycorp: <TOrganization>{
+    key: 'tinycorp',
+    name: "tinycorp",
+    assets: {
+      logo: logo,
+      icon_png: tinycorp_icon,
+    }
+  },
+  '3b1b': <TOrganization>{
+    key: '3b1b',
+    name: "3b1b",
+    assets: {
+      logo: logo,
+      icon_png: _3b1b_icon,
     }
   },
   chyp: <TOrganization>{
@@ -395,6 +423,22 @@ const ORGANIZATIONS = {
     }
   },
 
+}
+
+ORGANIZATIONS.orbitmines_research.profile = {
+  email: 'fadi.shawki@orbitmines.com',
+  external: <ExternalProfile[]>[
+    { organization: ORGANIZATIONS.github, display: 'orbitmines', link: 'https://github.com/orbitmines' },
+    { organization: ORGANIZATIONS.twitter, display: '@OrbitMines', link: 'https://twitter.com/OrbitMines' },
+    { organization: ORGANIZATIONS.linkedin, display: 'orbitmines', link: 'https://www.linkedin.com/company/orbitmines/' },
+    { organization: ORGANIZATIONS.discord, display: 'discord.orbitmines.com', link: 'https://discord.orbitmines.com' },
+    { organization: ORGANIZATIONS.gitlab, display: '@orbitmines', link: 'https://gitlab.com/orbitmines' },
+    { organization: ORGANIZATIONS.instagram, display: '@orbitmines', link: 'https://www.instagram.com/orbitmines/' },
+    { organization: ORGANIZATIONS.youtube, display: '@OrbitMines', link: 'https://www.youtube.com/@OrbitMines' },
+    { organization: ORGANIZATIONS.twitch, display: '@orbitmines', link: 'https://www.twitch.tv/orbitmines' },
+    { organization: ORGANIZATIONS.mastodon, display: '@orbitmines', link: 'https://mastodon.orbitmines.com/@orbitmines' },
+    { organization: ORGANIZATIONS.facebook, display: 'OrbitMines', link: 'https://www.facebook.com/profile.php?id=61550528503885' },
+  ]
 }
 
 export default ORGANIZATIONS;

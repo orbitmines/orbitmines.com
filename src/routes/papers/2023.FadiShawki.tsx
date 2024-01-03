@@ -10,6 +10,9 @@ import Profile from "../../profiles/Profile";
 import {Reference} from "../../lib/paper/layout/Reference";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
+import {ON_ORBITS} from "./2023.OnOrbits";
+import { Block } from '../../lib/syntax-highlighting/CodeBlock';
+import {CachedVisualizationCanvas, CanvasContainer} from "../../@orbitmines/explorer/Visualization";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -20,6 +23,18 @@ const FadiShawki = () => {
         Feel free to contact me on the socials specified above.
       </Section>
       <Section head="Building a (ray-like hypergraph) graphical interface">
+        <CanvasContainer style={{height: '140px'}}>
+          <canvas
+            style={{
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+        </CanvasContainer>
+
         <Link
           link="https://github.com/orbitmines/orbitmines.com/pull/1"
           name={<span>
@@ -36,27 +51,29 @@ const FadiShawki = () => {
 
       {/*</Section>*/}
       {/*<Section head="Writing a paper on most of the above">*/}
-      {/*  <Link link="https://orbitmines.com/papers/on-orbits" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />*/}
+      {/*  <Link link="https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />*/}
       {/*</Section>*/}
     </Arc>
 
     <Arc head="Writings">
       <Section head="Theoretics">
-        <Reference index={0} reference={{...ON_INTELLIGIBILITY.reference}} start="xs" style={{fontSize: '0.8rem'}} />
+        {[ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+          <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
+        ))}
       </Section>
     </Arc>
 
     <Arc head="Formal History">
       <Section head="Projects">
-        <Category category={profile.content.history} focus={ContentFocus.FINISHED} />
+        <Category category={profile.content!.history} focus={ContentFocus.FINISHED} />
       </Section>
 
       <Section head="Formal Education">
-        <Category category={profile.content.formal_education} focus={ContentFocus.ALL} inline />
+        <Category category={profile.content!.formal_education} focus={ContentFocus.ALL} inline />
       </Section>
 
       <Section head="Attended Events">
-        <Category category={profile.content.attended_events} focus={ContentFocus.ALL} />
+        <Category category={profile.content!.attended_events} focus={ContentFocus.ALL} />
       </Section>
     </Arc>
 

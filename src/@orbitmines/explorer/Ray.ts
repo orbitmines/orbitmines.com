@@ -461,9 +461,14 @@ export const js = (value: any): Ray => {
   return vertex;
 }
 
-// export const length = (of: number, value: any = undefined): Option<Ray> => {
-//   return from_iterable(Array(of).fill(value));
-// }
+export const length = (of: number, value: any = undefined): Option<Ray> => {
+  let current = empty_vertex().as_reference();
+  for (let i = 0; i < of; i++) {
+    current = current.continues_with(new Ray({js: () => Option.Some(value)}).as_reference())
+  }
+
+  return current.as_option();
+}
 // export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
 //   return Arbitrary.Fn(() => length(of, value).resolve().force().at_terminal(index));
 // }

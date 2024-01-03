@@ -6,7 +6,7 @@ import OnOrbits from "./papers/2023.OnOrbits";
 
 const PAPERS: { [key: string]: any } = {
     'on-intelligibility': OnIntelligibility,
-    'on-orbits': OnOrbits
+    'on-orbits-equivalence-and-inconsistencies': OnOrbits
 }
 
 const Paper = () => {

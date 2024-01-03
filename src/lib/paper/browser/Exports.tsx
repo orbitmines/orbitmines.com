@@ -4,9 +4,12 @@ import React, {useCallback, useRef} from "react";
 import {toJpeg} from "html-to-image";
 import {Col, Row} from "../../layout/flexbox";
 import {Button} from "@blueprintjs/core";
-import {PaperProps} from "../Paper";
+import {PaperProps, PaperThumbnail} from "../Paper";
+import ReactDOM from "react-dom/client";
 
-const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
+const Exports = (
+  {paper, children}: { paper: PaperProps } & Children
+) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -14,6 +17,8 @@ const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
   const ref = useRef<any>(null);
 
   const generate = params.get('generate');
+  const width = parseInt(params.get('width') ?? '1920');
+  const height = parseInt(params.get('height') ?? '1080');
 
   const exportJpeg = useCallback(() => {
     if (ref === null)
@@ -24,7 +29,11 @@ const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
       cacheBust: true, backgroundColor: '#1C2127' })
       .then((dataUrl) => {
         const link = document.createElement('a')
-        link.download = `${value(paper.title).replaceAll(" ", "_")}.jpeg`
+
+        link.download =
+          generate === 'thumbnail'
+            ? `${width}x${height}.jpeg`
+            : `${value(paper.title).toLowerCase().replaceAll(" ", "-").replaceAll(",", "")}.jpeg`
         link.href = dataUrl
         link.click()
       })
@@ -39,8 +48,8 @@ const Exports = ({paper, children}: { paper: PaperProps} & Children) => {
       <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
 
       <Col>
-        {generate === 'button' ? <>
-          <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
+        {generate && ['button', 'thumbnail'].includes(generate) ? <>
+         <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
         </> : <>
           <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
           <a href={`${location.pathname.replace(/\/$/, "")}.pdf`} target="_blank"><Button text=".pdf" icon="document" minimal /></a>

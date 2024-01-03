@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>https://orbitmines.com</loc>
-        <lastmod>2023-10-04</lastmod>
+        <lastmod>2023-12-31</lastmod>
         <image:image>
             <image:loc>https://orbitmines.com/logo.png</image:loc>
         </image:image>
@@ -12,6 +12,7 @@
         <loc>https://discord.orbitmines.com</loc>
         <lastmod>2023-10-04</lastmod>
     </url>
+
     <url>
         <loc>https://orbitmines.com/papers/on-intelligibility</loc>
         <lastmod>2022-12-31</lastmod>
@@ -22,5 +23,17 @@
     <url>
         <loc>https://orbitmines.com/papers/on-intelligibility.pdf</loc>
         <lastmod>2022-12-31</lastmod>
+    </url>
+
+    <url>
+        <loc>https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies</loc>
+        <lastmod>2023-12-31</lastmod>
+        <image:image>
+            <image:loc>https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies.jpeg</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies.pdf</loc>
+        <lastmod>2023-12-31</lastmod>
     </url>
 </urlset>
