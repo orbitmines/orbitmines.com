@@ -213,7 +213,12 @@ type Options = {
   terminal?: InterfaceOptions,
 }
 
-export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions) => {
+export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
+  length?: number // basically .length
+}) => {
+  const {
+    length = 1
+  } = ray;
   const _default: Required<InterfaceOptions> = {
     position: [0, 0, 0],
     rotation: [0, 0, 0],
@@ -228,6 +233,11 @@ export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions)
   // Vertex as the origin for rotation
   const vertex: Required<InterfaceOptions> = { ..._default, position: [0, 0, 0] } //, ...ray.vertex };
   const terminal: Required<InterfaceOptions> = { ..._default, position: [20 * _default.scale, 0, 0], ...ray.terminal };
+
+
+  if (length > 1) // TODO, currently rotates around each vertex individually
+    return <group>{[...Array(length)]
+      .map(((_, i) => <AutoRenderedRay {...ray} length={1} position={add(_default.position, [60 * i, 0, 0])} />))}</group>
 
   const Group = ({ children }: Children) => {
     return <group position={_default.position} rotation={vertex.rotation}>

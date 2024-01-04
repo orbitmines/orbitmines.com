@@ -3,6 +3,7 @@ import IEventListener, {mergeListeners} from "../../../js/react/IEventListener";
 import {VisualizationCanvas} from "../../../explorer/Visualization";
 import {AutoRenderedRay, SimpleRenderedRay} from "../../../explorer/OrbitMinesExplorer";
 import {RayType} from "../../../explorer/Ray";
+import {Center} from "@react-three/drei";
 
 
 const ChypCanvas = (
@@ -29,13 +30,25 @@ const ChypCanvas = (
 
       {...mergeListeners(...listeners, listener)}
     >
-      <AutoRenderedRay scale={scale} position={[0, 0, 0]} />
-      <AutoRenderedRay scale={scale} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <AutoRenderedRay scale={scale} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <AutoRenderedRay scale={scale} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 4]} />
-      <AutoRenderedRay scale={scale} position={[60, 0, 0]} rotation={[0, 0, -(Math.PI / 4)]} />
-      <AutoRenderedRay scale={scale} position={[0, -60, 0]} rotation={[0, 0, Math.PI / 2]} />
-      <AutoRenderedRay scale={scale} position={[60, 0, 0]} />
+      <Center>
+        <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={10} />
+
+        <AutoRenderedRay scale={scale} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={10} />
+
+        <AutoRenderedRay scale={scale} position={[0, 60, 0]} length={10} />
+
+        <AutoRenderedRay scale={scale} position={[0, 60, 0]} rotation={[0, 0, Math.PI / 2]} length={10} />
+
+        <AutoRenderedRay scale={scale} position={[0, 60, 0]} rotation={[0, 0, Math.PI / 4]} length={10} color="#FF5555" />
+
+        <AutoRenderedRay scale={scale} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={10} color="#5555FF" />
+
+      </Center>
+      {/*<AutoRenderedRay scale={scale} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2]} />*/}
+      {/*<AutoRenderedRay scale={scale} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 4]} />*/}
+      {/*<AutoRenderedRay scale={scale} position={[60, 0, 0]} rotation={[0, 0, -(Math.PI / 4)]} />*/}
+      {/*<AutoRenderedRay scale={scale} position={[0, -60, 0]} rotation={[0, 0, Math.PI / 2]} />*/}
+      {/*<AutoRenderedRay scale={scale} position={[60, 0, 0]} />*/}
 
     </VisualizationCanvas>
   </div>

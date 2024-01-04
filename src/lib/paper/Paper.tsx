@@ -10,7 +10,11 @@ import {Grid, Row} from "../layout/flexbox";
 import {Center} from "@react-three/drei";
 import {Continuation, Loop, RenderedRay, torus, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
 import {length} from "../../@orbitmines/explorer/Ray";
-import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
+import {
+  CachedVisualizationCanvas,
+  CanvasContainer,
+  VisualizationCanvas
+} from "../../@orbitmines/explorer/Visualization";
 import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import {ON_ORBITS} from "../../routes/papers/2023.OnOrbits";
 import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
@@ -47,12 +51,14 @@ export const ThumbnailPage = () => {
 
   const title = params.get('title') ?? 'OrbitMines - Stream';
   const subtitle = params.get('subtitle') ?? '';
+  const date = params.get('date') ?? new Date().toISOString().split('T')[0];
 
   const referenceCounter = useCounter();
 
   const paper: Omit<PaperProps, 'children'> = {
     title,
     subtitle,
+    date,
     pdf: {
       fonts: [ JetBrainsMono ],
     },
@@ -69,7 +75,18 @@ export const ThumbnailPage = () => {
     }],
     draft: false,
     Reference: (props: {}) => (<></>),
-    references: referenceCounter
+    references: referenceCounter,
+    header: <CanvasContainer style={{height: '140px', paddingBottom: 0}}>
+      <canvas
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+    </CanvasContainer>
   }
 
   return <div>
@@ -80,7 +97,7 @@ export const ThumbnailPage = () => {
 }
 
 export const PaperThumbnail = (
-  {size, ...props}: PaperProps & { size?: { width: number, height: number } }
+  {size, header, ...props}: PaperProps & { size?: { width: number, height: number } }
 ) => {
   const [params] = useSearchParams();
 
@@ -97,7 +114,7 @@ export const PaperThumbnail = (
   }}>
     <Row center="xs" middle="xs" style={{height: '100%', width: '100%'}}>
       <div style={{transform: `scale(${scale})`}}>
-        <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
+        <Grid fluid className="pt-35 child-pb-15 px-50-lg" style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}
           maxWidth: '1240px',
@@ -106,6 +123,8 @@ export const PaperThumbnail = (
 
           <PaperHeader {...props} />
         </Grid>
+
+        {header}
       </div>
     </Row>
   </div>
