@@ -92,7 +92,7 @@ function generateTypeScriptTypes(classesAndMethods) {
     const typeScriptCode = [];
 
     classesAndMethods.forEach((classInfo) => {
-        typeScriptCode.push(`export type ${classInfo.name} = {`);
+        typeScriptCode.push(`export class ${classInfo.name} extends Ray {`);
 
         classInfo.methods.forEach((method) => {
             const params = method.arguments.map((arg) => `${arg.name}: ${
@@ -102,7 +102,7 @@ function generateTypeScriptTypes(classesAndMethods) {
                     .replaceAll(/<(.*)>,/g, "$1[],")
                     .split('.'))
             }`).join(', ');
-            typeScriptCode.push(`  ${method.name}(${params}): ${method.returnType};`);
+            typeScriptCode.push(`  ${method.name} = (${params}): ${method.returnType} => { throw new NotImplementedError(); }`);
         });
 
         typeScriptCode.push('}\n');
@@ -127,4 +127,4 @@ ${generateTypeScriptTypes(classesAndMethods)}
 `;
 
 
-fs.writeFileSync('../src/@orbitmines/external/implementations/chyp/ChypCanvas.ts', typeScriptCode)
+fs.writeFileSync('../src/@orbitmines/external/implementations/chyp/Chyp.ts', typeScriptCode)

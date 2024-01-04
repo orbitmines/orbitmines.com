@@ -2,6 +2,7 @@ import {enumeration, MemberType, none, TaggedUnion} from "../../@orbitmines/js/u
 import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import {compile} from "sass";
+import {NotImplementedError} from "./errors/errors";
 
 export type ParameterlessFunction<T = any> = () => T;
 
@@ -201,6 +202,9 @@ export class Ray
 
     return RayType.VERTEX;
   }
+
+  count = (): Ray => { throw new NotImplementedError() }
+  copy = (): Ray => { throw new NotImplementedError() }
 
   *traverse(): Generator<Ray> {}
 

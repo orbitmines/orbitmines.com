@@ -144,7 +144,7 @@ const BinaryValue = ({ boolean, position }: any) => {
   </>
 }
 
-export const BinarySuperposition = ({ position = [0, 0, 0] }: any) => {
+export const BinarySuperposition = ({ position = [0, 0, 0], scale = 1.5 }: any) => {
   const halfTorus = (torus.radius + (torus.tube.width / 2));
 
   const up = add(position, [0, 20 + halfTorus, 0]);
@@ -174,18 +174,18 @@ export const BinarySuperposition = ({ position = [0, 0, 0] }: any) => {
 
     <CatmullRomLine points={[
       add(left, [0, torus.radius, 0]),
-      add(left, [0, torus.radius + halfTorus * 1.5, 0]),
+      add(left, [0, torus.radius + halfTorus * scale, 0]),
       position,
       add(up, [+halfTorus, -(torus.radius + halfTorus), 0]),
       add(up, [(line.width / 4), 0, 0]),
-    ]} color="#FF5555" lineWidth={line.width * 1.5}/>
+    ]} color="#FF5555" lineWidth={line.width * scale}/>
     <CatmullRomLine points={[
       add(right, [0, torus.radius, 0]),
-      add(right, [0, torus.radius + halfTorus * 1.5, 0]),
+      add(right, [0, torus.radius + halfTorus * scale, 0]),
       position,
       add(up, [-halfTorus, -(torus.radius + halfTorus), 0]),
       add(up, [-(line.width / 4), 0, 0])
-    ]} color="#5555FF" lineWidth={line.width * 1.5}/>
+    ]} color="#5555FF" lineWidth={line.width * scale}/>
 
     <Circle position={position} material-color={circle.color} args={[circle.radius, circle.segments]}/>
     <Continuation color="#FF5555" position={left} />
@@ -215,9 +215,10 @@ type Options = {
 
 export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
   length?: number // basically .length
-}) => {
+} & Partial<Children>) => {
   const {
-    length = 1
+    length = 1,
+    children
   } = ray;
   const _default: Required<InterfaceOptions> = {
     position: [0, 0, 0],
@@ -249,6 +250,8 @@ export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions 
     <SimpleRenderedRay type={RayType.INITIAL} {...initial} terminal={vertex} />
     <SimpleRenderedRay type={RayType.VERTEX} {...vertex} initial={initial} terminal={terminal} />
     <SimpleRenderedRay type={RayType.TERMINAL} {...terminal} initial={vertex} />
+
+    <group scale={vertex.scale} position={vertex.position}>{children}</group>
   </Group>
 }
 export const SimpleRenderedRay = (
