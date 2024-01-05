@@ -1,9 +1,19 @@
-import {JS, Ray} from "../../../explorer/Ray";
+import {Arbitrary, JS, Ray} from "../../../explorer/Ray";
 import { NotImplementedError } from "../../../explorer/errors/errors";
 import {Option} from "../../../js/utils/Option";
 
 /**
- * Probably want all these types at runtime, to display them
+ * An interface from Aleks Kissinger's Chyp (Cospans of HYPergraphs) to Rays.
+ * GitHub: https://github.com/akissinger/chyp
+ *
+ * NOTE:
+ * This is just here for reference to the existing Chyp codebase - for anyone who understands that structure, to quickly translate that knowledge into how Rays work. - Other than that functionality, everything here should be considered as deprecated.
+ *
+ * TODO: There's a lot of duplicate code, unnecessary documentation and non-generality in Chyp. It was probably developed as a proof of concept?
+ *
+ * TODO: Probably want all these types at runtime, to display them
+ *
+ * TODO: Graph boundary is automatic with this structure?
  */
 
 export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
@@ -90,18 +100,80 @@ export class VData extends Ray {
   get y(): Ray { throw new NotImplementedError(); }
 
   // TODO: Just some boolean
-  get hightlight(): Ray { throw new NotImplementedError(); }
+  get highlight(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (): any => { throw new NotImplementedError(); }
+  get value(): Ray { throw new NotImplementedError(); }
 
+  /**
+   * Integer identifiers of input and output hyperedges of this vertex - useful for finding neighbouring hyperedges.
+   *
+   * TODO ; // set[int] = set()
+   */
+  get in_edges(): Ray { throw new NotImplementedError(); }
+  get out_edges(): Ray { throw new NotImplementedError(); }
+
+  /**
+   * Indices (if any) where this vertex occurs in the input and output lists of the hypergraph.
+   */
+  get in_indices(): Ray { throw new NotImplementedError(); }
+  get out_indices(): Ray { throw new NotImplementedError(); }
+
+  /**
+   * Initialize a VData instance.
+   */
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+
+
+  is_input = (): Ray => this.in_indices.count() > 0;
+  is_output = (): Ray => this.out_indices.count() > 0;
+  is_boundary = (): Ray => this.is_input() || this.is_output();
+
+  // TODO: Probably generalizable
+
+  /**
+   * Initial
+   * @param other
+   */
+  merge = (other: VData): Ray => {
+    // TODO: other is destroyed
+    // TODO: Vertices
+    // this.initial().force().equivalent(other.initial().force());
+    // this.terminal().force().equivalent(other.initial().force());
+
+    throw new NotImplementedError();
+  }
 }
 
 export class EData extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  __repr__ = (): any => { throw new NotImplementedError(); }
-  box_size = (): any => { throw new NotImplementedError(); }
 
-  toString = (): string => this.__repr__();
+  get s(): Ray { throw new NotImplementedError(); }
+  get t(): Ray { throw new NotImplementedError(); }
+  get x(): Ray { throw new NotImplementedError(); }
+  get y(): Ray { throw new NotImplementedError(); }
+  get fg(): Ray { throw new NotImplementedError(); }
+  get bg(): Ray { throw new NotImplementedError(); }
+  get highlight(): Ray { throw new NotImplementedError(); }
+  get hyper(): Ray { throw new NotImplementedError(); }
+  get value(): Ray { throw new NotImplementedError(); }
+
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  __repr__ = (): Ray => { throw new NotImplementedError(); }
+  box_size = (): Ray => { throw new NotImplementedError(); }
+
+  toString = (): string => this.__repr__().as_string(); // TODO; FOR ALL
+
+  get source() { return this.s };
+  get target() { return this.t };
+
+  // TODO: Shouldn't be here, this should either be implemented on Ray if it's general enough, of just remain here as an artifact
+  protected ___domain = (ray: Ray) => ray.map(_ => {
+    const vertex: VData = _.cast();
+    return [vertex.vtype, vertex.size];
+  });
+
+  domain = (): Ray => this.___domain(this.source);
+  codomain = (): Ray => this.___domain(this.target);
+
 }
 
 /**
@@ -128,199 +200,260 @@ export class Graph extends Ray {
   get vindex(): Ray { throw new NotImplementedError(); }
   get eindex(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
 
   // Implemented on Ray
-  // copy = (): any => { throw new NotImplementedError(); }
+  // copy = (): Ray => { throw new NotImplementedError(); }
 
-  vertices = (): any => { throw new NotImplementedError(); }
-  edges = (): any => { throw new NotImplementedError(); }
-  num_vertices = (): any => { throw new NotImplementedError(); }
-  num_edges = (): any => { throw new NotImplementedError(); }
-  domain = (): any => { throw new NotImplementedError(); }
-  codomain = (): any => { throw new NotImplementedError(); }
-  vertex_data = (v = int): any => { throw new NotImplementedError(); }
-  edge_data = (e = int): any => { throw new NotImplementedError(); }
-  edge_domain = (edge_id = int): any => { throw new NotImplementedError(); }
-  edge_codomain = (edge_id = int): any => { throw new NotImplementedError(); }
-  in_edges = (v = int): any => { throw new NotImplementedError(); }
-  out_edges = (v = int): any => { throw new NotImplementedError(); }
-  source = (e = int): any => { throw new NotImplementedError(); }
-  target = (e = int): any => { throw new NotImplementedError(); }
-  add_vertex = (): any => { throw new NotImplementedError(); }
-  add_edge = (s = list(int), t = list(int)): any => { throw new NotImplementedError(); }
-  remove_vertex = (v = int): any => { throw new NotImplementedError(); }
-  remove_edge = (e = int): any => { throw new NotImplementedError(); }
-  add_inputs = (inp = list(int)): any => { throw new NotImplementedError(); }
-  add_outputs = (outp = list(int)): any => { throw new NotImplementedError(); }
-  set_inputs = (inp = list(int)): any => { throw new NotImplementedError(); }
-  set_outputs = (outp = list(int)): any => { throw new NotImplementedError(); }
+  // TODO .keys
+  vertices = (): Ray => this.vdata;
+  edges = (): Ray => this.edata;
+
+  // TODO: Shouldn't be here, this should either be implemented on Ray if it's general enough, of just remain here as an artifact
+  protected ___domain = (ray: Ray) => ray.map(_ => {
+    const vertex: VData = _.cast();
+    return [vertex.vtype, vertex.size];
+  });
+
+  /**
+   * Return the domain of the graph.
+   *
+   * This consists of a list of pairs (vertex type, register size) corresponding to each input vertex.
+   */
+  domain = (): Ray => this.___domain(this.inputs());
+
+  /**
+   * Return the domain of the graph.
+   *
+   * This consists of a list of pairs (vertex type, register size) corresponding to each output vertex.
+   */
+  codomain = (): Ray => this.___domain(this.outputs());
+
+  /**
+   * Return the :class:`VData` associated with vertex id `v`.
+   *
+   * @param v Integer identifier of the vertex.
+   */
+  vertex_data = (v = int): VData => this.vertices().at(v).cast();
+
+  /**
+   * Return the :class:`EData` associated with edge id `e`.
+   *
+   * @param e Integer identifier of the edge.
+   */
+  edge_data = (e = int): EData => this.edges().at(e).cast();
+
+  add_vertex = (): Ray => { throw new NotImplementedError(); }
+  add_edge = (s = list(int), t = list(int)): Ray => { throw new NotImplementedError(); }
+  remove_vertex = (v = int): Ray => { throw new NotImplementedError(); }
+  remove_edge = (e = int): Ray => { throw new NotImplementedError(); }
+  add_inputs = (inp = list(int)): Ray => { throw new NotImplementedError(); }
+  add_outputs = (outp = list(int)): Ray => { throw new NotImplementedError(); }
+  set_inputs = (inp = list(int)): Ray => { throw new NotImplementedError(); }
+  set_outputs = (outp = list(int)): Ray => { throw new NotImplementedError(); }
   // Return the list of vertex ids of the graph inputs.
-  inputs = (): any => { throw new NotImplementedError(); }
+  inputs = (): Ray => { throw new NotImplementedError(); }
   // Return the list of vertex ids of the graph outputs.
-  outputs = (): any => { throw new NotImplementedError(); }
+  outputs = (): Ray => { throw new NotImplementedError(); }
+
+  // TODO: These are just one possibly ignorant ray through the initial/terminal ends which aren't matched - could just generate these on the fly, or similar to chyp add when added.
   _inputs = this.inputs;
   _outputs = this.outputs;
-  is_input = (v = int): any => { throw new NotImplementedError(); }
-  is_output = (v = int): any => { throw new NotImplementedError(); }
-  is_boundary = (v = int): any => { throw new NotImplementedError(); }
-  successors = (vs = Iterable(int)): any => { throw new NotImplementedError(); }
-  merge_vertices = (v = int, w = int): any => { throw new NotImplementedError(); }
-  explode_vertex = (v = int): any => { throw new NotImplementedError(); }
-  insert_id_after = (v = int): any => { throw new NotImplementedError(); }
-  tensor = (other = Graph): any => { throw new NotImplementedError(); }
-  __mul__ = (other = Graph): any => { throw new NotImplementedError(); }
-  compose = (other = Graph): any => { throw new NotImplementedError(); }
-  __rshift__ = (other = Graph): any => { throw new NotImplementedError(); }
-  highlight = (vertices = set(int), edges = set(int)): any => { throw new NotImplementedError(); }
-  unhighlight = (): any => { throw new NotImplementedError(); }
+
+  // TODO: Move these to a "reference-like" structure, need to be on VData..
+
+  /**
+   * All these are just delegations from some Vertex/Edge structure.
+   */
+  // .vertices
+  num_vertices = (): Ray => this.vertices().count();
+
+  // .edges
+  num_edges = (): Ray => this.edges().count();
+
+  // .vertex_data
+  is_input = (v = int): Ray => this.vertex_data(v).is_input();
+  is_output = (v = int): Ray => this.vertex_data(v).is_output();
+  is_boundary = (v = int): Ray => this.vertex_data(v).is_boundary();
+  in_edges = (v = int): Ray => this.vertex_data(v).in_edges;
+  out_edges = (v = int): Ray => this.vertex_data(v).out_edges;
+
+  // .edge_data
+  source = (e = int): Ray => this.edge_data(e).source;
+  target = (e = int): Ray => this.edge_data(e).target;
+  edge_domain = (edge_id = int): Ray => this.edge_data(edge_id).domain();
+  edge_codomain = (edge_id = int): Ray => this.edge_data(edge_id).codomain();
+
+
+  successors = (vs = Iterable(int)): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Form the quotient of the graph by identifying v with w. Afterwards, the quotiented vertex will be have integer identifier `v`.
+   *
+   * @param v Integer identifier of the vertex into which to merge `w`.
+   * @param w Integer identifier of the vertex to merge into `v`.
+   */
+  merge_vertices = (v = int, w = int): Ray => this.vertex_data(v).merge(this.vertex_data(w));
+
+  explode_vertex = (v = int): Ray => { throw new NotImplementedError(); }
+  insert_id_after = (v = int): Ray => { throw new NotImplementedError(); }
+  tensor = (other = Graph): Ray => { throw new NotImplementedError(); }
+  __mul__ = (other = Graph): Ray => { throw new NotImplementedError(); }
+  compose = (other = Graph): Ray => { throw new NotImplementedError(); }
+  __rshift__ = (other = Graph): Ray => { throw new NotImplementedError(); }
+  highlight = (vertices = set(int), edges = set(int)): Ray => { throw new NotImplementedError(); }
+  unhighlight = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class Chyp extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class CodeView extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  popup_visible = (): any => { throw new NotImplementedError(); }
-  set_completions = (completions = Iterable(str)): any => { throw new NotImplementedError(); }
-  ident_at_cursor = (): any => { throw new NotImplementedError(); }
-  insert_completion = (completion = str): any => { throw new NotImplementedError(); }
-  keyPressEvent = (e = QKeyEvent): any => { throw new NotImplementedError(); }
-  set_current_region = (region = Optional(Tuple(int,int))): any => { throw new NotImplementedError(); }
-  add_line_below = (text = str): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  popup_visible = (): Ray => { throw new NotImplementedError(); }
+  set_completions = (completions = Iterable(str)): Ray => { throw new NotImplementedError(); }
+  ident_at_cursor = (): Ray => { throw new NotImplementedError(); }
+  insert_completion = (completion = str): Ray => { throw new NotImplementedError(); }
+  keyPressEvent = (e = QKeyEvent): Ray => { throw new NotImplementedError(); }
+  set_current_region = (region = Optional(Tuple(int,int))): Ray => { throw new NotImplementedError(); }
+  add_line_below = (text = str): Ray => { throw new NotImplementedError(); }
 }
 
 export class CodeCompletionModel extends Ray {
-  __init__ = (parent = QObject): any => { throw new NotImplementedError(); }
-  set_completions = (completions = Iterable(str)): any => { throw new NotImplementedError(); }
-  data = (index = Union(QModelIndex, QPersistentModelIndex)): any => { throw new NotImplementedError(); }
-  rowCount = (): any => { throw new NotImplementedError(); }
+  __init__ = (parent = QObject): Ray => { throw new NotImplementedError(); }
+  set_completions = (completions = Iterable(str)): Ray => { throw new NotImplementedError(); }
+  data = (index = Union(QModelIndex, QPersistentModelIndex)): Ray => { throw new NotImplementedError(); }
+  rowCount = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class ChypDocument extends Ray {
-  __init__ = (parent = QWidget): any => { throw new NotImplementedError(); }
-  confirm_close = (): any => { throw new NotImplementedError(); }
-  add_to_recent_files = (file_name = str): any => { throw new NotImplementedError(); }
-  open = (file_name = str): any => { throw new NotImplementedError(); }
-  save = (): any => { throw new NotImplementedError(); }
-  save_as = (): any => { throw new NotImplementedError(); }
+  __init__ = (parent = QWidget): Ray => { throw new NotImplementedError(); }
+  confirm_close = (): Ray => { throw new NotImplementedError(); }
+  add_to_recent_files = (file_name = str): Ray => { throw new NotImplementedError(); }
+  open = (file_name = str): Ray => { throw new NotImplementedError(); }
+  save = (): Ray => { throw new NotImplementedError(); }
+  save_as = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class Editor extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  title = (): any => { throw new NotImplementedError(); }
-  reset_state = (): any => { throw new NotImplementedError(); }
-  invalidate_text = (): any => { throw new NotImplementedError(); }
-  next_part = (): any => { throw new NotImplementedError(); }
-  jump_to_error = (): any => { throw new NotImplementedError(); }
-  show_errors = (): any => { throw new NotImplementedError(); }
-  show_at_cursor = (): any => { throw new NotImplementedError(); }
-  next_rewrite_at_cursor = (): any => { throw new NotImplementedError(); }
-  repeat_step_at_cursor = (): any => { throw new NotImplementedError(); }
-  update_state = (): any => { throw new NotImplementedError(); }
-  import_at_cursor = (): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  title = (): Ray => { throw new NotImplementedError(); }
+  reset_state = (): Ray => { throw new NotImplementedError(); }
+  invalidate_text = (): Ray => { throw new NotImplementedError(); }
+  next_part = (): Ray => { throw new NotImplementedError(); }
+  jump_to_error = (): Ray => { throw new NotImplementedError(); }
+  show_errors = (): Ray => { throw new NotImplementedError(); }
+  show_at_cursor = (): Ray => { throw new NotImplementedError(); }
+  next_rewrite_at_cursor = (): Ray => { throw new NotImplementedError(); }
+  repeat_step_at_cursor = (): Ray => { throw new NotImplementedError(); }
+  update_state = (): Ray => { throw new NotImplementedError(); }
+  import_at_cursor = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class CheckThread extends Ray {
-  __init__ = (rw = RewriteState): any => { throw new NotImplementedError(); }
-  run = (): any => { throw new NotImplementedError(); }
+  __init__ = (rw = RewriteState): Ray => { throw new NotImplementedError(); }
+  run = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class ErrorListModel extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  set_errors = (errors = List(Tuple(str, int, str))): any => { throw new NotImplementedError(); }
-  data = (index = Union(QModelIndex, QPersistentModelIndex)): any => { throw new NotImplementedError(); }
-  headerData = (section = int, orientation = Orientation): any => { throw new NotImplementedError(); }
-  index = (row = int, column = int): any => { throw new NotImplementedError(); }
-  columnCount = (): any => { throw new NotImplementedError(); }
-  rowCount = (): any => { throw new NotImplementedError(); }
-  parent = (): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  set_errors = (errors = List(Tuple(str, int, str))): Ray => { throw new NotImplementedError(); }
+  data = (index = Union(QModelIndex, QPersistentModelIndex)): Ray => { throw new NotImplementedError(); }
+  headerData = (section = int, orientation = Orientation): Ray => { throw new NotImplementedError(); }
+  index = (row = int, column = int): Ray => { throw new NotImplementedError(); }
+  columnCount = (): Ray => { throw new NotImplementedError(); }
+  rowCount = (): Ray => { throw new NotImplementedError(); }
+  parent = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class EItem extends Ray {
-  __init__ = (g = Graph, e = int): any => { throw new NotImplementedError(); }
-  paint = (painter = QPainter, option = QStyleOptionGraphicsItem): any => { throw new NotImplementedError(); }
+  __init__ = (g = Graph, e = int): Ray => { throw new NotImplementedError(); }
+  paint = (painter = QPainter, option = QStyleOptionGraphicsItem): Ray => { throw new NotImplementedError(); }
 }
 
 export class VItem extends Ray {
-  __init__ = (g = Graph, v = int): any => { throw new NotImplementedError(); }
-  refresh = (): any => { throw new NotImplementedError(); }
+  __init__ = (g = Graph, v = int): Ray => { throw new NotImplementedError(); }
+  refresh = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class TItem extends Ray {
-  __init__ = (vitem = VItem, eitem = EItem, i = int, src = bool): any => { throw new NotImplementedError(); }
-  refresh = (): any => { throw new NotImplementedError(); }
+  __init__ = (vitem = VItem, eitem = EItem, i = int, src = bool): Ray => { throw new NotImplementedError(); }
+  refresh = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class GraphScene extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  set_graph = (g = Graph): any => { throw new NotImplementedError(); }
-  add_items = (): any => { throw new NotImplementedError(); }
-  mousePressEvent = (e = QGraphicsSceneMouseEvent): any => { throw new NotImplementedError(); }
-  mouseMoveEvent = (e = QGraphicsSceneMouseEvent): any => { throw new NotImplementedError(); }
-  mouseReleaseEvent = (_ = QGraphicsSceneMouseEvent): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  set_graph = (g = Graph): Ray => { throw new NotImplementedError(); }
+  add_items = (): Ray => { throw new NotImplementedError(); }
+  mousePressEvent = (e = QGraphicsSceneMouseEvent): Ray => { throw new NotImplementedError(); }
+  mouseMoveEvent = (e = QGraphicsSceneMouseEvent): Ray => { throw new NotImplementedError(); }
+  mouseReleaseEvent = (_ = QGraphicsSceneMouseEvent): Ray => { throw new NotImplementedError(); }
 }
 
 export class GraphView extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  set_graph = (g = Graph): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  set_graph = (g = Graph): Ray => { throw new NotImplementedError(); }
 }
 
 export class ChypHighlighter extends Ray {
-  __init__ = (doc = QTextDocument): any => { throw new NotImplementedError(); }
-  set_current_region = (region = Optional(Tuple(int,int)), status = int): any => { throw new NotImplementedError(); }
-  highlightBlock = (text = str): any => { throw new NotImplementedError(); }
+  __init__ = (doc = QTextDocument): Ray => { throw new NotImplementedError(); }
+  set_current_region = (region = Optional(Tuple(int,int)), status = int): Ray => { throw new NotImplementedError(); }
+  highlightBlock = (text = str): Ray => { throw new NotImplementedError(); }
 }
 
 export class MainWindow extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  remove_empty_editor = (): any => { throw new NotImplementedError(); }
-  update_file_name = (): any => { throw new NotImplementedError(); }
-  tab_changed = (i = int): any => { throw new NotImplementedError(); }
-  update_themes = (): any => { throw new NotImplementedError(); }
-  recent_files = (): any => { throw new NotImplementedError(); }
-  update_recent_files = (): any => { throw new NotImplementedError(); }
-  add_tab = (ed = Editor, title = str): any => { throw new NotImplementedError(); }
-  close_tab = (): any => { throw new NotImplementedError(); }
-  new = (): any => { throw new NotImplementedError(); }
-  open = (): any => { throw new NotImplementedError(); }
-  save = (): any => { throw new NotImplementedError(); }
-  save_as = (): any => { throw new NotImplementedError(); }
-  undo = (): any => { throw new NotImplementedError(); }
-  redo = (): any => { throw new NotImplementedError(); }
-  show_errors = (): any => { throw new NotImplementedError(); }
-  add_rewrite_step = (): any => { throw new NotImplementedError(); }
-  repeat_rewrite_step = (): any => { throw new NotImplementedError(); }
-  next_rewrite = (): any => { throw new NotImplementedError(); }
-  next_part = (): any => { throw new NotImplementedError(); }
-  previous_part = (): any => { throw new NotImplementedError(); }
-  next_tab = (): any => { throw new NotImplementedError(); }
-  previous_tab = (): any => { throw new NotImplementedError(); }
-  goto_import = (): any => { throw new NotImplementedError(); }
-  closeEvent = (e = QCloseEvent): any => { throw new NotImplementedError(); }
-  build_menu = (): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  remove_empty_editor = (): Ray => { throw new NotImplementedError(); }
+  update_file_name = (): Ray => { throw new NotImplementedError(); }
+  tab_changed = (i = int): Ray => { throw new NotImplementedError(); }
+  update_themes = (): Ray => { throw new NotImplementedError(); }
+  recent_files = (): Ray => { throw new NotImplementedError(); }
+  update_recent_files = (): Ray => { throw new NotImplementedError(); }
+  add_tab = (ed = Editor, title = str): Ray => { throw new NotImplementedError(); }
+  close_tab = (): Ray => { throw new NotImplementedError(); }
+  new = (): Ray => { throw new NotImplementedError(); }
+  open = (): Ray => { throw new NotImplementedError(); }
+  save = (): Ray => { throw new NotImplementedError(); }
+  save_as = (): Ray => { throw new NotImplementedError(); }
+  undo = (): Ray => { throw new NotImplementedError(); }
+  redo = (): Ray => { throw new NotImplementedError(); }
+  show_errors = (): Ray => { throw new NotImplementedError(); }
+  add_rewrite_step = (): Ray => { throw new NotImplementedError(); }
+  repeat_rewrite_step = (): Ray => { throw new NotImplementedError(); }
+  next_rewrite = (): Ray => { throw new NotImplementedError(); }
+  next_part = (): Ray => { throw new NotImplementedError(); }
+  previous_part = (): Ray => { throw new NotImplementedError(); }
+  next_tab = (): Ray => { throw new NotImplementedError(); }
+  previous_tab = (): Ray => { throw new NotImplementedError(); }
+  goto_import = (): Ray => { throw new NotImplementedError(); }
+  closeEvent = (e = QCloseEvent): Ray => { throw new NotImplementedError(); }
+  build_menu = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class Match extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  __str__ = (): any => { throw new NotImplementedError(); }
-  copy = (): any => { throw new NotImplementedError(); }
-  try_add_vertex = (domain_vertex = int, codomain_vertex = int): any => { throw new NotImplementedError(); }
-  try_add_edge = (domain_edge = int, codomain_edge = int): any => { throw new NotImplementedError(); }
-  domain_neighbourhood_mapped = (vertex = int): any => { throw new NotImplementedError(); }
-  map_scalars = (): any => { throw new NotImplementedError(); }
-  more = (): any => { throw new NotImplementedError(); }
-  is_total = (): any => { throw new NotImplementedError(); }
-  is_surjective = (): any => { throw new NotImplementedError(); }
-  is_injective = (): any => { throw new NotImplementedError(); }
-  is_convex = (): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  __str__ = (): Ray => { throw new NotImplementedError(); }
+
+  // Implemented on Ray
+  // TODO; doesnt copy the graphs at domain/codomain
+  // copy = (): Ray => { throw new NotImplementedError(); }
+
+  try_add_vertex = (domain_vertex = int, codomain_vertex = int): Ray => { throw new NotImplementedError(); }
+  try_add_edge = (domain_edge = int, codomain_edge = int): Ray => { throw new NotImplementedError(); }
+  domain_neighbourhood_mapped = (vertex = int): Ray => { throw new NotImplementedError(); }
+  map_scalars = (): Ray => { throw new NotImplementedError(); }
+  more = (): Ray => { throw new NotImplementedError(); }
+  is_total = (): Ray => { throw new NotImplementedError(); }
+  is_surjective = (): Ray => { throw new NotImplementedError(); }
+  is_injective = (): Ray => { throw new NotImplementedError(); }
+  is_convex = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class Matches extends Ray {
-  __init__ = (domain = Graph, codomain = Graph): any => { throw new NotImplementedError(); }
-  __iter__ = (): any => { throw new NotImplementedError(); }
-  __next__ = (): any => { throw new NotImplementedError(); }
+  __init__ = (domain = Graph, codomain = Graph): Ray => { throw new NotImplementedError(); }
+  __iter__ = (): Ray => { throw new NotImplementedError(); }
+  __next__ = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class RuleError extends Ray {
@@ -336,82 +469,82 @@ export class Rule extends Ray {
   get name(): Ray { throw new NotImplementedError(); }
   get equiv(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (lhs = Graph, rhs = Graph, name = str(''), equiv = bool(True)): any => { throw new NotImplementedError(); }
-  copy = (): any => { throw new NotImplementedError(); }
-  converse = (): any => { throw new NotImplementedError(); }
-  is_left_linear = (): any => { throw new NotImplementedError(); }
+  __init__ = (lhs = Graph, rhs = Graph, name = str(''), equiv = bool(True)): Ray => { throw new NotImplementedError(); }
+  copy = (): Ray => { throw new NotImplementedError(); }
+  converse = (): Ray => { throw new NotImplementedError(); }
+  is_left_linear = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class RewriteState extends Ray {
-  __init__ = (sequence = int, state = State): any => { throw new NotImplementedError(); }
-  check = (): any => { throw new NotImplementedError(); }
+  __init__ = (sequence = int, state = State): Ray => { throw new NotImplementedError(); }
+  check = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class State extends Ray {
-  __init__ = (): any => { throw new NotImplementedError(); }
-  part_with_index_at = (pos = int): any => { throw new NotImplementedError(); }
-  part_at = (pos = int): any => { throw new NotImplementedError(); }
-  var = (items = List(Any)): any => { throw new NotImplementedError(); }
-  module_name = (items = List(Any)): any => { throw new NotImplementedError(); }
-  num = (items = List(Any)): any => { throw new NotImplementedError(); }
-  type_element = (items = list(Any)): any => { throw new NotImplementedError(); }
-  type_term = (items = list(JS.Iterable([tuple(JS.Iterable([str, None]), int), None]))): any => { throw new NotImplementedError(); }
-  id = (items = list(Any)): any => { throw new NotImplementedError(); }
-  id0 = (_ = List(Any)): any => { throw new NotImplementedError(); }
-  eq = (_ = List(Any)): any => { throw new NotImplementedError(); }
-  le = (_ = List(Any)): any => { throw new NotImplementedError(); }
-  perm_indices = (items = list(int)): any => { throw new NotImplementedError(); }
-  size_list = (items = list(int)): any => { throw new NotImplementedError(); }
-  par = (items = List(Any)): any => { throw new NotImplementedError(); }
-  gen_color = (items = List(Any)): any => { throw new NotImplementedError(); }
-  color = (items = List(Any)): any => { throw new NotImplementedError(); }
-  import_let = (items = List(Any)): any => { throw new NotImplementedError(); }
-  tactic = (items = List(Any)): any => { throw new NotImplementedError(); }
-  nested_term = (items = List(Any)): any => { throw new NotImplementedError(); }
+  __init__ = (): Ray => { throw new NotImplementedError(); }
+  part_with_index_at = (pos = int): Ray => { throw new NotImplementedError(); }
+  part_at = (pos = int): Ray => { throw new NotImplementedError(); }
+  var = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  module_name = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  num = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  type_element = (items = list(Any)): Ray => { throw new NotImplementedError(); }
+  type_term = (items = list(JS.Iterable([tuple(JS.Iterable([str, None]), int), None]))): Ray => { throw new NotImplementedError(); }
+  id = (items = list(Any)): Ray => { throw new NotImplementedError(); }
+  id0 = (_ = List(Any)): Ray => { throw new NotImplementedError(); }
+  eq = (_ = List(Any)): Ray => { throw new NotImplementedError(); }
+  le = (_ = List(Any)): Ray => { throw new NotImplementedError(); }
+  perm_indices = (items = list(int)): Ray => { throw new NotImplementedError(); }
+  size_list = (items = list(int)): Ray => { throw new NotImplementedError(); }
+  par = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  gen_color = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  color = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  import_let = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  tactic = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+  nested_term = (items = List(Any)): Ray => { throw new NotImplementedError(); }
 }
 
 export class Tactic extends Ray {
-  __init__ = (local_state = RewriteState, args = List(str)): any => { throw new NotImplementedError(); }
-  repeat = (rw = Callable([str], bool), rules = List(str)): any => { throw new NotImplementedError(); }
-  error = (message = str): any => { throw new NotImplementedError(); }
-  has_goal = (): any => { throw new NotImplementedError(); }
-  global_rules = (): any => { throw new NotImplementedError(); }
-  lookup_rule = (rule_expr = str): any => { throw new NotImplementedError(); }
-  add_refl_to_context = (graph = Graph, ident = str): any => { throw new NotImplementedError(); }
-  add_rule_to_context = (rule_name = str): any => { throw new NotImplementedError(); }
-  __lhs = (target = str): any => { throw new NotImplementedError(); }
-  __rhs = (target = str): any => { throw new NotImplementedError(); }
-  __set_lhs = (target = str, graph = Graph): any => { throw new NotImplementedError(); }
-  __set_rhs = (target = str, graph = Graph): any => { throw new NotImplementedError(); }
-  rewrite_lhs = (rule_expr = str): any => { throw new NotImplementedError(); }
-  rewrite_rhs = (rule_expr = str): any => { throw new NotImplementedError(); }
-  rewrite_lhs1 = (rule_expr = str): any => { throw new NotImplementedError(); }
-  rewrite_rhs1 = (rule_expr = str): any => { throw new NotImplementedError(); }
-  validate_goal = (): any => { throw new NotImplementedError(); }
-  lhs = (): any => { throw new NotImplementedError(); }
-  rhs = (): any => { throw new NotImplementedError(); }
-  lhs_size = (): any => { throw new NotImplementedError(); }
-  rhs_size = (): any => { throw new NotImplementedError(); }
-  highlight_lhs = (vertices = Set(int), edges = Set(int)): any => { throw new NotImplementedError(); }
-  highlight_rhs = (vertices = Set(int), edges = Set(int)): any => { throw new NotImplementedError(); }
-  __reset = (): any => { throw new NotImplementedError(); }
-  next_rhs = (current = str): any => { throw new NotImplementedError(); }
-  run_check = (): any => { throw new NotImplementedError(); }
-  name = (): any => { throw new NotImplementedError(); }
-  check = (): any => { throw new NotImplementedError(); }
-  make_rhs = (): any => { throw new NotImplementedError(); }
+  __init__ = (local_state = RewriteState, args = List(str)): Ray => { throw new NotImplementedError(); }
+  repeat = (rw = Callable([str], bool), rules = List(str)): Ray => { throw new NotImplementedError(); }
+  error = (message = str): Ray => { throw new NotImplementedError(); }
+  has_goal = (): Ray => { throw new NotImplementedError(); }
+  global_rules = (): Ray => { throw new NotImplementedError(); }
+  lookup_rule = (rule_expr = str): Ray => { throw new NotImplementedError(); }
+  add_refl_to_context = (graph = Graph, ident = str): Ray => { throw new NotImplementedError(); }
+  add_rule_to_context = (rule_name = str): Ray => { throw new NotImplementedError(); }
+  __lhs = (target = str): Ray => { throw new NotImplementedError(); }
+  __rhs = (target = str): Ray => { throw new NotImplementedError(); }
+  __set_lhs = (target = str, graph = Graph): Ray => { throw new NotImplementedError(); }
+  __set_rhs = (target = str, graph = Graph): Ray => { throw new NotImplementedError(); }
+  rewrite_lhs = (rule_expr = str): Ray => { throw new NotImplementedError(); }
+  rewrite_rhs = (rule_expr = str): Ray => { throw new NotImplementedError(); }
+  rewrite_lhs1 = (rule_expr = str): Ray => { throw new NotImplementedError(); }
+  rewrite_rhs1 = (rule_expr = str): Ray => { throw new NotImplementedError(); }
+  validate_goal = (): Ray => { throw new NotImplementedError(); }
+  lhs = (): Ray => { throw new NotImplementedError(); }
+  rhs = (): Ray => { throw new NotImplementedError(); }
+  lhs_size = (): Ray => { throw new NotImplementedError(); }
+  rhs_size = (): Ray => { throw new NotImplementedError(); }
+  highlight_lhs = (vertices = Set(int), edges = Set(int)): Ray => { throw new NotImplementedError(); }
+  highlight_rhs = (vertices = Set(int), edges = Set(int)): Ray => { throw new NotImplementedError(); }
+  __reset = (): Ray => { throw new NotImplementedError(); }
+  next_rhs = (current = str): Ray => { throw new NotImplementedError(); }
+  run_check = (): Ray => { throw new NotImplementedError(); }
+  name = (): Ray => { throw new NotImplementedError(); }
+  check = (): Ray => { throw new NotImplementedError(); }
+  make_rhs = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class RuleTac extends Ray {
-  name = (): any => { throw new NotImplementedError(); }
-  make_rhs = (): any => { throw new NotImplementedError(); }
-  check = (): any => { throw new NotImplementedError(); }
+  name = (): Ray => { throw new NotImplementedError(); }
+  make_rhs = (): Ray => { throw new NotImplementedError(); }
+  check = (): Ray => { throw new NotImplementedError(); }
 }
 
 export class SimpTac extends Ray {
-  name = (): any => { throw new NotImplementedError(); }
-  __prepare_rules = (): any => { throw new NotImplementedError(); }
-  make_rhs = (): any => { throw new NotImplementedError(); }
-  check = (): any => { throw new NotImplementedError(); }
+  name = (): Ray => { throw new NotImplementedError(); }
+  __prepare_rules = (): Ray => { throw new NotImplementedError(); }
+  make_rhs = (): Ray => { throw new NotImplementedError(); }
+  check = (): Ray => { throw new NotImplementedError(); }
 }
 

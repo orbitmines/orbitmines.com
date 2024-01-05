@@ -51,7 +51,9 @@ export enum RayType {
   VERTEX = '--|--',
 }
 
-export type Arbitrary<T> = () => Option<T>;
+// TODO: Option = Ray
+
+export type Arbitrary<T> = (...args: any[]) => Option<T> | T;
 
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
@@ -70,6 +72,12 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
  * TODO:
  * - Homotopy equivalence merely as some direction/reversibility constraint on some direction, ignoring additional structure (or incorporating it into the equiv) at the vertices. (Could be loosened where certain vertex-equivalences are also part of the homotopy)
  * - Induced ignorance/equivalence along arbitrary rays.
+ * - Usual way of thinking about vertices is what the coninuations are here - phrase that somewhjere
+ *
+ * TODO: Any javascript class, allow warpper of function names around any ray, as a possible match
+ * TODO: All the methods defined here should be implemented in some Ray structure at some point
+ * TODO: Easy method to create initial/terminal, right now it's a bit obscure
+ *
  */
 export class Ray
   implements
@@ -77,6 +85,7 @@ export class Ray
 
       AsyncIterable<Ray>,
       Iterable<Ray>
+  // TODO: Array, Dictionary...
 {
 
   js: () => Option<any>;
@@ -87,6 +96,8 @@ export class Ray
   terminal: () => Option<Ray>;
 
   self = (): Option<Ray> => this.vertex();
+
+  [index: number]: Ray;
 
   constructor({
     initial,
@@ -192,6 +203,8 @@ export class Ray
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
+  equivalent = (other: Ray) => { throw new NotImplementedError(); }
+
   get type(): RayType {
     if (this.is_reference())
       return RayType.REFERENCE;
@@ -205,6 +218,15 @@ export class Ray
 
   count = (): Ray => { throw new NotImplementedError() }
   copy = (): Ray => { throw new NotImplementedError() }
+  at = (steps: Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Cast to some JavaScript object
+   */
+  cast = <T extends Ray>(): T => { throw new NotImplementedError(); };
+
+  // TODO: Should give the program that does the mapping, not the result
+  map = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
 
   *traverse(): Generator<Ray> {}
 
