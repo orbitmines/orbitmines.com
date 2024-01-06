@@ -228,8 +228,10 @@ export class Ray
    */
   cast = <T extends Ray>(): T => { throw new NotImplementedError(); };
 
-  // TODO: Should give the program that does the mapping, not the result
+  // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
   map = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
+  all = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
+  filter = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
 
   *traverse(): Generator<Ray> {}
 

@@ -23,6 +23,8 @@ import {Option} from "../../../js/utils/Option";
  *
  * TODO: Can just move the terminal which holds the oointer to the boundary
  *
+ * TODO: Automatically generate visual examples of all the methods
+ *
  */
 
 export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
@@ -212,6 +214,7 @@ export class Graph extends Ray {
   // Mapping from integer identifiers of each hyperedge to its data.
   get edata(): Ray { throw new NotImplementedError(); }
 
+  // TODO: Can probably generate these on the fly, or cache them automatically
   get vindex(): Ray { throw new NotImplementedError(); }
   get eindex(): Ray { throw new NotImplementedError(); }
 
@@ -392,12 +395,136 @@ export class Graph extends Ray {
   __mul__ = (other = Graph): Ray => { throw new NotImplementedError(); }
   compose = (other = Graph): Ray => { throw new NotImplementedError(); }
   __rshift__ = (other = Graph): Ray => { throw new NotImplementedError(); }
-  highlight = (vertices = set(int), edges = set(int)): Ray => { throw new NotImplementedError(); }
-  unhighlight = (): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Set the `highlight` flag for a set of vertices and edges.
+   *
+   * This tells the GUI to visually highlight a set of vertices/edges, e.g. by drawing them in bold. Any vertices/edges not in the sets provided will be un-highlighted.
+   *
+   * @param vertices A set of vertices to highlight.
+   * @param edges A set of edges to highlight.
+   */
+  highlight = (vertices = set(int), edges = set(int)): Ray => {
+    // TODO Again, these could be merged
+    this.vdata
+      .filter(vertex => vertices.includes(vertex))
+      .all(vertex => vertex.cast<VData>().highlight = bool(true));
+    this.edata
+      .filter(edge => edges.includes(edge))
+      .all(edge => edge.cast<EData>().highlight = bool(true));
+  }
+
+  /**
+   * Clear the `highlight` flag for all vertices/edges.
+   *
+   * This is equivalent to calling :func:`highlight` with empty sets of vertices/edges.
+   */
+  unhighlight = (): Ray => {
+    // TODO: These could be merged
+    this.vdata
+      .all(vertex => vertex.cast<VData>().highlight = bool(false));
+    this.edata
+      .all(edge => edge.cast<EData>().highlight = bool(false));
+  }
 }
 
 export class Chyp extends Ray {
   __init__ = (): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Load a .chyp graph file from the given path.
+   */
+  load_graph = (path = str) => {
+    // TODO: From localStorage for now?
+    // with open(path) as f:
+    // g = graph_from_json(f.read())
+  }
+
+  /**
+   * Return a graph corresponding to the identity map.
+   *
+   * This graph has a single vertex which is both an input and an output.
+   */
+  identity = (vertex: VData): Graph => {
+    const graph = new Graph();
+
+    vertex.x = 0; // TODO automatic>?
+    vertex.y = 0;
+    graph.add_vertex(int(-1), vertex);
+    // TODO synce input/output automatically?
+    //    g.set_inputs([v])
+    //     g.set_outputs([v])
+
+    return graph;
+  }
+
+
+  ___map_domain = (domain: Ray, _default: VData): Ray => {
+    return domain.map(([vtype, size], i) => {
+      const vertex: VData = _default.copy().cast();
+      // TODO: These should be automatic somewhere, again abstract the place where it's displayed elsewhere
+      vertex.x = -1.5;
+      vertex.y = i - (i-1) / 2;
+
+      return vertex;
+    })
+  }
+
+  /**
+   * Return a graph with one hyperedge and given domain and codomain.
+   *
+   * @param _default
+   * @param domain - A list of pairs (vertex type, register size) corresponding to each input vertex.
+   * @param codomain - A list of pairs (vertex type, register size) corresponding to each output vertex.
+   */
+  gen = (_default: VData, domain: Ray, codomain: Ray): Graph => {
+    const graph = new Graph();
+
+    const inputs = this.___map_domain(domain, _default)
+      .map(vertex => graph.add_vertex(vertex));
+    const outputs = this.___map_domain(codomain, _default)
+      .map(vertex => graph.add_vertex(vertex));
+
+    // TODO This is probably automatic at some point, remove
+    const edge = new EData();
+    edge.s = inputs;
+    edge.t = outputs;
+    graph.add_edge(int(-1), edge);
+    // g.set_inputs(inputs)
+    //     g.set_outputs(outputs)
+
+    return graph;
+  }
+
+  graph_from_json = (json_string = str): Graph => {
+    const json = JSON.parse(json_string().as_string()); // TODO
+
+    const graph = new Graph();
+
+    // TODO: Don't do this so naively
+    //         g.add_vertex(x=float(vd["x"] if "x" in vd else 0.0),
+    //                      y=float(vd["y"] if "y" in vd else 0.0),
+    //                      value=vd["value"] if "value" in vd else "",
+    //                      name=int(v))
+    //     for e, ed in j["edges"].items():
+    //         g.add_edge(s=[int(v) for v in ed["s"]],
+    //                    t=[int(v) for v in ed["t"]],
+    //                    value=ed["value"] if "value" in ed else "",
+    //                    x=float(ed["x"]) if "x" in ed else 0.0,
+    //                    y=float(ed["y"]) if "y" in ed else 0.0,
+    //                    hyper=bool(ed["hyper"]) if "hyper" in ed else True,
+    //                    name=int(e))
+    //
+    //     g.set_inputs([int(v) for v in j["inputs"]])
+    //     g.set_outputs([int(v) for v in j["outputs"]])
+    // json.vertices.forEach(((vertex, i) => graph.add_vertex(
+    //   i,
+    //   new VData()
+    // ));
+
+    return graph;
+  }
+
 }
 
 export class CodeView extends Ray {
