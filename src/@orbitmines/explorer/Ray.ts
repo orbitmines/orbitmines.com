@@ -220,6 +220,8 @@ export class Ray
   }
 
   count = (): Ray => { throw new NotImplementedError() }
+
+  // TODO; Could return the ignorant reference to both instances, or just the result., ..
   copy = (): Ray => { throw new NotImplementedError() }
   at = (steps: Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
 

@@ -1,4 +1,4 @@
-import {Arbitrary, JS, Ray} from "../../../explorer/Ray";
+import {Arbitrary, empty, JS, Ray} from "../../../explorer/Ray";
 import { NotImplementedError } from "../../../explorer/errors/errors";
 import {Option} from "../../../js/utils/Option";
 
@@ -11,7 +11,7 @@ import {Option} from "../../../js/utils/Option";
  * NOTE:
  * This is just here for reference to the existing Chyp codebase - for anyone who understands that structure, to quickly translate that knowledge into how Rays work. - Other than that functionality, everything here should be considered as deprecated.
  *
- * TODO: There's a lot of duplicate code, unnecessary documentation and non-generality in Chyp. It was probably developed as a proof of concept?
+ * TODO: There's a lot of duplicate code, unnecessary documentation and non-generality in Chyp. It was probably developed as a proof of concept? - Expecting that to be addressed in the projects Aleks Kissinger is currently setting up.
  *
  * TODO: Probably want all these types at runtime, to display them
  *
@@ -58,6 +58,8 @@ export const None = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplem
 export const state = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
 export const Callable = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
 export const Set = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
+
+export class ValueError extends Error {}
 
 /**
  * Non-default vertex types are identified by a string label
@@ -133,7 +135,13 @@ export class VData extends Ray {
   /**
    * Initialize a VData instance.
    */
-  __init__ = (): Ray => { throw new NotImplementedError(); }
+  __init__ = (): Ray => {
+    this.highlight = bool(False);
+    this.in_edges = set(int);
+    this.out_edges = set(int);
+    this.in_indices = set(int);
+    this.out_indices = set(int);
+  }
 
 
   is_input = (): Ray => this.in_indices.count() > 0;
@@ -143,7 +151,7 @@ export class VData extends Ray {
   // TODO: Probably generalizable
 
   /**
-   * Initial
+   *
    * @param other
    */
   merge = (other: VData): Ray => {
@@ -156,6 +164,9 @@ export class VData extends Ray {
   }
 }
 
+/**
+ * Data associated with a single edge.
+ */
 export class EData extends Ray {
 
   // TODO: this is just the initial frame
@@ -173,9 +184,25 @@ export class EData extends Ray {
   get hyper(): Ray { throw new NotImplementedError(); }
   get value(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (): Ray => { throw new NotImplementedError(); }
-  __repr__ = (): Ray => { throw new NotImplementedError(); }
-  box_size = (): Ray => { throw new NotImplementedError(); }
+  __init__ = (): Ray => {
+    this.s = empty();
+    this.t = empty();
+    this.highlight = bool(False);
+  }
+
+  __repr__ = (): Ray => { throw new NotImplementedError();
+  // TODO:   return f'Edge: {self.value} ({self.x}, {self.y})'
+  }
+
+  // TODO: More stuff to relate it to the screen that shouldnt be here.
+  /**
+   * Return how many width 'units' this box needs to display nicely.
+   *
+   * This uses a simple rule:
+   *  - If the number of inputs and outputs are both <= 1, draw as a small (1 width unit) box.
+   *  - Otherwise draw as a larger (size 2) box.
+   */
+  box_size = (): Ray => (this.s.count() <= 1 && this.t.count() <= 1) ? 1 : 2;
 
   toString = (): string => this.__repr__().as_string(); // TODO; FOR ALL
 
@@ -218,7 +245,10 @@ export class Graph extends Ray {
   get vindex(): Ray { throw new NotImplementedError(); }
   get eindex(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (): Ray => { throw new NotImplementedError(); }
+  __init__ = (): Ray => {
+    this.vindex = 0;
+    this.edindex = 0;
+  }
 
   // Implemented on Ray
   // copy = (): Ray => { throw new NotImplementedError(); }
@@ -303,7 +333,36 @@ export class Graph extends Ray {
   }
   // add_simple_edge - is automatically handled: Rays can disambiguate between one/multiple values for certain purposes.
 
-  remove_vertex = (v = int): Ray => { throw new NotImplementedError(); }
+  /**
+   * Remove a vertex from the graph.
+   *
+   * This removes a single vertex.
+   * - If `strict` is set to True, then the vertex must have no adjacent edges nor be a boundary vertex.
+   * - If `strict` is False, then `v` will be removed from the source/target list of all adjacent edges and removed from the boundaries, if applicable.
+   *
+   * @param v
+   * @param strict If True, require the vertex to have no adjacent edges and not be a boundary vertex.
+   */
+  remove_vertex = (v = int, strict: boolean = false): Ray => {
+    // TODO: destroy any reference of it (could just do this lazy)
+    // TODO: as delegation
+
+    if (strict) {
+      if (this.vertex_data(v).in_edges.count() > 0 || this.vertex_data(v).out_edges > 0) {
+        throw new ValueError('Attempting to remove vertex with adjacent'
+          + 'edges while strict == True.');
+      }
+
+      if (this.inputs().includes(v) || this.outputs.includes(v)) {
+        throw new ValueError('Attempting to remove boundary vertex while'
+          + 'strict == True.');
+
+      }// TODO CAN BE SIMPLIFIED
+    }
+
+    // in/out edges from all vertices
+    delete this.vdata[v];
+  }
 
   /**
    * Remove an edge from the graph.
@@ -378,8 +437,16 @@ export class Graph extends Ray {
   edge_domain = (edge_id = int): Ray => this.edge_data(edge_id).domain();
   edge_codomain = (edge_id = int): Ray => this.edge_data(edge_id).codomain();
 
+  /**
+   * Return vertices that lie on a directed path from any of `vs`.
+   * @param vs
+   */
+  successors = (vs = Iterable(int)): Ray => {
+    // TODO: Just traverse the rays, deduplicate using the index, where vs is one or more (so again which part of the ray is selected).
 
-  successors = (vs = Iterable(int)): Ray => { throw new NotImplementedError(); }
+
+    throw new NotImplementedError();
+  }
 
   /**
    * Form the quotient of the graph by identifying v with w. Afterwards, the quotiented vertex will be have integer identifier `v`.
