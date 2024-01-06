@@ -221,6 +221,7 @@ export class Ray
     return RayType.VERTEX;
   }
 
+  // TODO: Perhaps locally cache count?? - no way to ensure globally coherenct
   count = (): Ray => { throw new NotImplementedError() }
 
   // TODO; Could return the ignorant reference to both instances, or just the result., ..

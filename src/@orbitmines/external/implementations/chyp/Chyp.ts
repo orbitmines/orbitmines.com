@@ -79,6 +79,17 @@ export class GraphError extends Error {}
 export class RuleError extends Error {}
 
 /**
+ * Used for debugging (the matcher)
+ */
+const DEBUG = true; // TODO; Generalize
+const log = (s: string) => {
+  if (!DEBUG)
+    return;
+
+  console.log(s);
+}
+
+/**
  * Data associated with a single vertex.
  */
 export class VData extends Ray {
@@ -828,6 +839,70 @@ export class Rule extends Ray {
     // TODO, needs to implement splat and stuff? or by default, could be done smarter, but again no overloading
     return !JS.Iterable([...this.lhs.inputs, ...this.rhs.outputs]).as_ray().force()
       .has_duplicates() // TODO; This thing is basically asking whether any input is used twice, whether any output is used twice, or there's a circle between in/output? Basically: NO SELF-REFERENCE, this should be a very sikmple check whether any frame is used twice here - or some loop is found basically.
+  }
+
+  /**
+   * Do double-pushout rewriting
+   *
+   * Given a rule r and match of r.lhs into a graph, return a match of r.rhs into the rewritten graph.
+   * @param match
+   */
+  dpo = (match: Match): Ray => {
+    // if (!this.is_left_linear())
+    //   throw new NotImplementedError("Only left linear rules are supported for now")
+
+    const rewritten_graph: Graph = match.codomain.copy();
+
+    // TODO: This will definitely be rewritten, this is an ugly implementation. Just draw the lines and be ignorant in that direction ??? Probably just implement it as additional filtering on .copy()???
+
+    // Computes the push complement ?? (just the thing we're replacing right?)
+    // TODO: Removes the match from the copy?
+    this.lhs.edges().all(edge => rewritten_graph.remove_edge(match.edge_map(edge)));
+
+    const inputs = [];
+    const outputs = [];
+
+    this.lhs.vertices().all(rule_vertex => {
+      const match_vertex = match.vertex_map[rule_vertex];
+
+      if (!this.lhs.is_boundary(rule_vertex)) {
+        rewritten_graph.remove_vertex(match_vertex);
+        return;
+      }
+
+      const rule_input = this.lhs.vertex_data(rule_vertex).in_indices;
+      const rule_output = this.lhs.vertex_data(rule_vertex).out_indices;
+
+      if (rule_input.count() === 1 && rule_output === 1) {
+        const [match_input, match_output] = rewritten_graph.explode_vertex(match_vertex);
+
+        if (match_input.count() !== 1 && match_output.count() !== 1)
+          throw new NotImplementedError("Rewriting modulo Frobenius not yet supported.");
+
+        inputs[rule_vertex] = match_input[0];
+        outputs[rule_vertex] = match_output[0];
+      } else if (rule_input.count() > 1 || rule_output.count() > 1) {
+        throw new NotImplementedError("Rewriting modulo Frobenius not yet supported.");
+      }
+    })
+
+    // Embed Rule.rhs into rewritten_graph
+    const replacement = new Match(this.rhs, rewritten_graph);
+
+    return replacement;
+  }
+
+  /**
+   * Apply the given rewrite r to at match m and return the first result
+   *
+   * This is a convience wrapper for `dpo` for when the extra rewrite data isn't needed.
+   */
+  rewrite = (match: Match): Graph => {
+    // TODO:     except StopIteration:
+    //         raise RuntimeError("Rewrite has no valid context")
+
+    const result: Match = this.dpo(match).first().cast();
+    return result.codomain;
   }
 }
 
