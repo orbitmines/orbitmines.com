@@ -25,6 +25,8 @@ import {Option} from "../../../js/utils/Option";
  *
  * TODO: Automatically generate visual examples of all the methods
  *
+ * TODO: Runtime errors as rays
+ *
  */
 
 export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
@@ -73,7 +75,7 @@ export const VType = JS.Iterable([str, None]);
  *
  * TODO probably hooked as a boolean, one successful the other not
  */
-export class GraphError extends Ray {
+export class GraphError extends Error {
 }
 
 /**
@@ -560,6 +562,42 @@ export class Chyp extends Ray {
     // g.set_inputs(inputs)
     //     g.set_outputs(outputs)
 
+    return graph;
+  }
+
+  /**
+   * Return a graph corresponding to the given permutation.
+   *
+   * This takes a permution, given as a list [x0,..,x(n-1)], which is interpreted as the permutation { x0 -> 0, x1 -> 1, ..., x(n-1) -> n-1 }. It produces a graph consisting just of vertices, where input xj is mapped to the same vertex as output j, representing an identity wire connecting input xj to output j.
+   *
+   * Note this is one of two reasonable conventions for specifying a permutation as a list of numbers. This one has the property, e.g. for graphs aj : 0 -> 1, we have: (a0 * a1 * a2) >> perm([2, 0, 1]) = a2 * a0 * a1.
+   *
+   * @param p A permutation given as an n-element list of integers from 0 to n-1.
+   * @param domain The domain type of the permutation. This consists of a list of pairs (vertex type, register size) corresponding to each input vertex of the edge. If `None`, the domain is assumed to be the  appropriate number of default type vertices all with register size 1.
+   */
+  perm = (p = list(int), domain: Ray, _default: VData) => {
+
+    const graph = new Graph();
+    const num_wires = p.count();
+
+    if (num_wires !== domain.count())
+      throw new GraphError(`Domain ${domain} does not match length of permutation.`)
+
+    // TODO use ___map_domain
+    const inputs = domain.map(([vtype, size], i) => {
+        const vertex: VData = _default.copy().cast();
+        // TODO: These should be automatic somewhere, again abstract the place where it's displayed elsewhere
+        vertex.x = 0;
+        vertex.y = i - (num_wires - 1) / 2;
+
+        return vertex;
+      })
+      .map(vertex => graph.add_vertex(vertex));
+    // const outputs = num_wires.range(i => [inputs[p[i]])
+
+    // TODO Should be automatic
+    // g.set_inputs(inputs)
+    //  g.set_outputs(outputs)
     return graph;
   }
 
