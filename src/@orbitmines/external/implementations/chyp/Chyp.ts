@@ -6,6 +6,8 @@ import {Option} from "../../../js/utils/Option";
  * An interface from Aleks Kissinger's Chyp (Cospans of HYPergraphs) to Rays.
  * GitHub: https://github.com/akissinger/chyp
  *
+ * A simple way of phrasing this conversion, is that the concept of a 'Vertex', 'Edge', 'Graph', 'Rule', ..., 'Rewrite' are merged into one thing: a Ray.
+ *
  * NOTE:
  * This is just here for reference to the existing Chyp codebase - for anyone who understands that structure, to quickly translate that knowledge into how Rays work. - Other than that functionality, everything here should be considered as deprecated.
  *
@@ -14,6 +16,13 @@ import {Option} from "../../../js/utils/Option";
  * TODO: Probably want all these types at runtime, to display them
  *
  * TODO: Graph boundary is automatic with this structure?
+ *
+ * TODO: merging vertex, just drawinf that one equivalence between initial/terminal etc..?? just leave the vertex?
+ *
+ * TODO: Methods, files, as wealonry selectuon along some linez simple name above, ..
+ *
+ * TODO: Can just move the terminal which holds the oointer to the boundary
+ *
  */
 
 export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
@@ -108,6 +117,7 @@ export class VData extends Ray {
    * Integer identifiers of input and output hyperedges of this vertex - useful for finding neighbouring hyperedges.
    *
    * TODO ; // set[int] = set()
+   * TODO ; these are just the initial/terminal sides of a Ray. they're just duplicated
    */
   get in_edges(): Ray { throw new NotImplementedError(); }
   get out_edges(): Ray { throw new NotImplementedError(); }
@@ -146,8 +156,13 @@ export class VData extends Ray {
 
 export class EData extends Ray {
 
+  // TODO: this is just the initial frame
   get s(): Ray { throw new NotImplementedError(); }
+
+  // TODO: this is just the terminal frame
   get t(): Ray { throw new NotImplementedError(); }
+
+
   get x(): Ray { throw new NotImplementedError(); }
   get y(): Ray { throw new NotImplementedError(); }
   get fg(): Ray { throw new NotImplementedError(); }
@@ -243,24 +258,100 @@ export class Graph extends Ray {
    */
   edge_data = (e = int): EData => this.edges().at(e).cast();
 
-  add_vertex = (): Ray => { throw new NotImplementedError(); }
-  add_edge = (s = list(int), t = list(int)): Ray => { throw new NotImplementedError(); }
+  // TODO: Shouldnt be here
+  ___next_index = (name = int(-1), index: Ray): Ray => {
+    // TODO: This is definitely going to be buggy if '-1' and certain specific values are used. (Hence the note above add_vertex & add_edge)
+    const current = name === -1 ? index : Math.max(name, index);
+    return current + 1;
+  }
+
+  /**
+   * Add a new vertex to the graph.
+   *
+   * @param name The value carried by this vertex (currently unused).
+   *   TODO: Generally this is just additional structure at the vertex, rays just implement this generally.
+   * @param vertex The integer identifier to use for this vertex. If this is set to -1, the identifier is set automatically. (Note: no checks are currently made to ensure the identifier is not already in use).
+   */
+  add_vertex = (name = int(-1), vertex: VData): VData => {
+    this.vindex = this.___next_index(name, this.vindex);
+
+    this.vdata[this.vindex - 1] = vertex;
+    return vertex;
+  }
+
+  /**
+   * Add a new hyperedge to the graph.
+   *
+   * @param s
+   * @param t
+   */
+  add_edge = (name = int(-1), edge: EData): EData => {
+    this.eindex = this.___next_index(name, this.eindex);
+
+    this.edata[this.eindex - 1] = edge;
+
+    // TODO: Syncs the initial/terminal to the vertices (basically non-ignorant connection)
+    // for v in s:
+    // self.vdata[v].out_edges.add(e)
+    // for v in t:
+    // self.vdata[v].in_edges.add(e)
+
+    return edge;
+  }
+  // add_simple_edge - is automatically handled: Rays can disambiguate between one/multiple values for certain purposes.
+
   remove_vertex = (v = int): Ray => { throw new NotImplementedError(); }
-  remove_edge = (e = int): Ray => { throw new NotImplementedError(); }
-  add_inputs = (inp = list(int)): Ray => { throw new NotImplementedError(); }
-  add_outputs = (outp = list(int)): Ray => { throw new NotImplementedError(); }
-  set_inputs = (inp = list(int)): Ray => { throw new NotImplementedError(); }
-  set_outputs = (outp = list(int)): Ray => { throw new NotImplementedError(); }
-  // Return the list of vertex ids of the graph inputs.
-  inputs = (): Ray => { throw new NotImplementedError(); }
-  // Return the list of vertex ids of the graph outputs.
-  outputs = (): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Remove an edge from the graph.
+   *
+   * @param e Integer identifier of the edge to remove.
+   */
+  remove_edge = (e = int): Ray => {
+    // TODO: destroy any reference of it (could just do this lazy)
+    // in/out edges from all vertices
+    delete this.edata[e];
+  }
+
+  // TODO: Can these be overlaoded in properties using -=, += in TS?
+
+  /**
+   * Append `inp` to the inputs of the graph.
+   *
+   * @param inp The list of vertex integer identifiers of the appended inputs.
+   */
+  add_inputs = (inp = list(int)): Ray => {
+    this.inputs().continues_with(inp); // TODO: Perhaps splat
+  }
+  /**
+   * Append `outp` to the outputs of the graph.
+   *
+   * @param outp The list of vertex integer identifiers of the appended outputs.
+   */
+  add_outputs = (outp = list(int)): Ray => {
+    this.outputs().continues_with(outp); // TODO: Perhaps splat
+  }
+  // TODO; these are then again duplicated to    self.vdata[v].out_indices.add(i)
+
 
   // TODO: These are just one possibly ignorant ray through the initial/terminal ends which aren't matched - could just generate these on the fly, or similar to chyp add when added.
-  _inputs = this.inputs;
-  _outputs = this.outputs;
+
+  // Return the list of vertex ids of the graph inputs.
+  get inputs(): Ray { throw new NotImplementedError(); }
+  // Return the list of vertex ids of the graph outputs.
+  get outputs(): Ray { throw new NotImplementedError(); }
+
+  // TODO: Clears the matched in/out indices, then sets them to the ones found in in/outputs
+  set inputs(ray = list(int)) { throw new NotImplementedError(); }
+  set outputs(ray = list(int)) { throw new NotImplementedError(); }
 
   // TODO: Move these to a "reference-like" structure, need to be on VData..
+
+  /**
+   * These are all just slightly differently abstracted in TypeScript here to make them a little more native.
+   */
+  set_inputs = (inp = list(int)): Ray => this.inputs = inp;
+  set_outputs = (outp = list(int)): Ray => this.outputs = outp;
 
   /**
    * All these are just delegations from some Vertex/Edge structure.

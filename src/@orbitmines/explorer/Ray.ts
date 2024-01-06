@@ -78,6 +78,9 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
  * TODO: All the methods defined here should be implemented in some Ray structure at some point
  * TODO: Easy method to create initial/terminal, right now it's a bit obscure
  *
+ * TODO: Maybe want a way to destroy from one end, so that if other references try to look, they won't find additional structure. - More as a javascript implementation quirck if anything?
+ *
+ * TODO: Can do some workaround overloading through properties, at least for +/-
  */
 export class Ray
   implements
