@@ -75,8 +75,8 @@ export const VType = JS.Iterable([str, None]);
  *
  * TODO probably hooked as a boolean, one successful the other not
  */
-export class GraphError extends Error {
-}
+export class GraphError extends Error {}
+export class RuleError extends Error {}
 
 /**
  * Data associated with a single vertex.
@@ -270,14 +270,14 @@ export class Graph extends Ray {
    *
    * This consists of a list of pairs (vertex type, register size) corresponding to each input vertex.
    */
-  domain = (): Ray => this.___domain(this.inputs());
+  get domain(): Ray { return this.___domain(this.inputs()) };
 
   /**
    * Return the domain of the graph.
    *
    * This consists of a list of pairs (vertex type, register size) corresponding to each output vertex.
    */
-  codomain = (): Ray => this.___domain(this.outputs());
+  get codomain(): Ray { return this.___domain(this.outputs()) };
 
   /**
    * Return the :class:`VData` associated with vertex id `v`.
@@ -779,12 +779,9 @@ export class Matches extends Ray {
   __next__ = (): Ray => { throw new NotImplementedError(); }
 }
 
-export class RuleError extends Ray {
-}
-
 export class Rule extends Ray {
-  get lhs(): Ray { throw new NotImplementedError(); }
-  get rhs(): Ray { throw new NotImplementedError(); }
+  get lhs(): Graph { throw new NotImplementedError(); }
+  get rhs(): Graph { throw new NotImplementedError(); }
 
   /**
    * TODO: Put the name on each side of the rule, not the '-' hacky thing
@@ -792,10 +789,46 @@ export class Rule extends Ray {
   get name(): Ray { throw new NotImplementedError(); }
   get equiv(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (lhs = Graph, rhs = Graph, name = str(''), equiv = bool(True)): Ray => { throw new NotImplementedError(); }
+  __init__ = (name = str(''), equiv = bool(True)): Ray => {
+    // TODO: Maybe just move exception to a method on this thing
+
+    if (this.lhs.domain !== this.rhs.domain) // TODO: !==
+      throw new RuleError(`Inputs must match on LHS and RHS of rule (${this.rhs.domain} != ${this.lhs.domain})`);
+
+    if (this.lhs.codomain !== this.rhs.codomain)
+      throw new RuleError(`Outputs must match on LHS and RHS of rule (${this.rhs.codomain} != ${this.lhs.codomain})`)
+
+
+    throw new NotImplementedError();
+
+  }
+
   copy = (): Ray => { throw new NotImplementedError(); }
-  converse = (): Ray => { throw new NotImplementedError(); }
-  is_left_linear = (): Ray => { throw new NotImplementedError(); }
+
+  // TODO: Could put this on ray, generalize to swapping
+  converse = (): Rule => {
+    // TODO remove this hacky thing - just tries to us -a / a
+    const name = this.name.as_string().startsWith('-') ? this.name.substring(1) : `-${this.name}`;
+
+    const converse: Rule = this.copy().cast(); // TODO equiv=True?
+    converse.name = name;
+
+    // TODO: Wont work, we just should swap initial/terminal;\
+    //swap?? or change direction..
+    // const swap = converse.rhs;
+    // converse.rhs = converse.lhs;
+    // converse.lhs = swap;
+    return converse;
+  }
+
+  /**
+   * Returns True if boundary on lhs embeds injectively
+   */
+  is_left_linear = (): Ray => {
+    // TODO, needs to implement splat and stuff? or by default, could be done smarter, but again no overloading
+    return !JS.Iterable([...this.lhs.inputs, ...this.rhs.outputs]).as_ray().force()
+      .has_duplicates() // TODO; This thing is basically asking whether any input is used twice, whether any output is used twice, or there's a circle between in/output? Basically: NO SELF-REFERENCE, this should be a very sikmple check whether any frame is used twice here - or some loop is found basically.
+  }
 }
 
 export class RewriteState extends Ray {

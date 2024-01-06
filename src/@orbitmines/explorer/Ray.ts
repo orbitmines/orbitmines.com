@@ -81,6 +81,8 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
  * TODO: Maybe want a way to destroy from one end, so that if other references try to look, they won't find additional structure. - More as a javascript implementation quirck if anything?
  *
  * TODO: Can do some workaround overloading through properties, at least for +/-
+ *
+ * TODO: Singlke keybind for now to show/hide the ray disambiguation or 'dead edges/..'/
  */
 export class Ray
   implements
