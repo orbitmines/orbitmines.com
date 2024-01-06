@@ -175,6 +175,11 @@ export class VData extends Ray {
 
     throw new NotImplementedError();
   }
+
+  fresh = (): VData => {
+    // TODO: This is just a copy where this initial/terminal directionlaity is ignored. Only a copy of the vertex.
+
+  }
 }
 
 /**
@@ -469,7 +474,50 @@ export class Graph extends Ray {
    */
   merge_vertices = (v = int, w = int): Ray => this.vertex_data(v).merge(this.vertex_data(w));
 
-  explode_vertex = (v = int): Ray => { throw new NotImplementedError(); }
+  /**
+   * Split a vertex into copies for each input, output, and tentacle.
+   *
+   * This is used for computing pushout complements of rules that aren't left-linear.
+   * (See arXiv:2012.01847 Section 3.3 for definition of left-linear).
+   *
+   * Returns: A pair of lists containing the new input-like and output-like vertices, respectively.
+   *
+   * @param v Integer identifier of vertex to be exploded.
+   */
+  explode_vertex = (v = int): Ray => {
+    const vertex = this.vertex_data(v);
+
+    // TODO; This just seems like another copy which minor changes
+
+    const next_inputs = empty();
+    const next_outputs = empy();
+
+    const fresh = (j: VData) => {
+
+    }
+
+    // Replace any occurrences of the original vertex in the graph inputs with a new input-like vertex.
+    //  self.set_inputs([v1 if v1 != v else fresh(0) for v1 in self.inputs()])
+    // TODO: Basically a copy, and replace this one vertex
+
+    // Where the original vertex is the target of a hyperedge, replace its occurence in the hyperedge's target list with a new input-like vertex and register this with the new vertex's data instance.
+
+    vertex.in_edges.all(e => {
+      const edge: EData = e.cast();
+
+      edge.t = edge.t
+        .map(target => {
+          if (target === v)
+            return target;
+
+          next_inputs.add(this.add_vertex(vertex.fresh()))
+          this.vertex_data(target).in_edges.add(edge);
+        })
+    })
+
+  }
+
+
   insert_id_after = (v = int): Ray => { throw new NotImplementedError(); }
   tensor = (other = Graph): Ray => { throw new NotImplementedError(); }
   __mul__ = (other = Graph): Ray => { throw new NotImplementedError(); }
@@ -765,15 +813,105 @@ export class MainWindow extends Ray {
   build_menu = (): Ray => { throw new NotImplementedError(); }
 }
 
+// TODO ISNT A MATCH JUST AN IGNORANT COPY ON BOTH SIDES???
 export class Match extends Ray {
+
+  get domain(): Graph { throw new NotImplementedError(); }
+  get codomain(): Graph { throw new NotImplementedError(); }
+  get vertex_map(): Ray { throw new NotImplementedError(); }
+  get vertex_image(): Ray { throw new NotImplementedError(); }
+  get edge_map(): Ray { throw new NotImplementedError(); }
+  get edge_image(): Ray { throw new NotImplementedError(); }
+
   __init__ = (): Ray => { throw new NotImplementedError(); }
-  __str__ = (): Ray => { throw new NotImplementedError(); }
+  __str__ = (): Ray => {
+    // (f'\tVertex map: {str(self.vertex_map)}'
+    //                 + f'\n\tEdge map: {str(self.edge_map)}')
+    // TODO
+    throw new NotImplementedError(); }
 
   // Implemented on Ray
   // TODO; doesnt copy the graphs at domain/codomain
   // copy = (): Ray => { throw new NotImplementedError(); }
 
-  try_add_vertex = (domain_vertex = int, codomain_vertex = int): Ray => { throw new NotImplementedError(); }
+  /**
+   * Try to map `domain_vertex` to `codomain_vertex`.
+   *
+   * This map must satisfy various conditions, such as only being allowed to be non-injective on the boundary domain vertices.
+   *
+   * Returns: `True` if either a consistent map from `domain_vertex` to  already exists or the new map is consistent and satisfies the gluing conditions, otherwise `False`.
+   */
+  try_add_vertex = (domain_vertex: VData, codomain_vertex: VData): Ray => {
+
+    // If the vertex is already mapped, only check the new mapping is consistent with the current match.
+    if (this.vertex_map.includes(domain_vertex)) {
+      log(`Vertex already mapped to ${this.vertex_map[domain_vertex]}.`)
+      return this.vertex_map[domain_vertex] === codomain_vertex;
+    }
+
+    // TODO: ALL THESE SHOULD JUST BE AN EQUIVALENCY CHECK, JUST LIKE MATCHING/// - You can't actually guarantee consistency, it's just a simple ignorant check. - We can probably just remove this as soon as the equivalency check is implemented.
+    // TODO: This should all be redundant, probably removed ...
+
+    // Ensure the mapping preserves vertex type.
+    if (domain_vertex.vtype !== codomain_vertex.vtype) {
+      log(`Vertex failed: vtypes ${domain_vertex.vtype} != ${codomain_vertex.vtype} do not match.`);
+
+      return bool(False);
+    }
+
+    // Ensure the mapping preserves vertex size.
+    if (domain_vertex.size !== codomain_vertex.size) {
+      log(`Vertex failed: sizes ${domain_vertex.size} != ${codomain_vertex.size} do not match.`)
+      return bool(False);
+    }
+
+    // Ensure non-boundary vertices in the domain are not mapped to boundary vertices in the codomain.
+    if (!codomain_vertex.is_boundary() && !domain_vertex.is_boundary()) {
+      log('Vertex failed: codomain vertex is boundary but domain vertex is not.')
+      return bool(False);
+    }
+
+    // Matches must be injective everywhere except the boundary, so if the domain vertex is already mapped to another codomain vertex, check whether this non-injective mapping is permitted.
+    if (this.vertex_image.includes(codomain_vertex)) {
+      // If the domain vertex we are trying to add is not a boundary vertex, it cannot be used in a non-injective mapping.
+      if (!domain_vertex.is_boundary()) {
+        log('Vertex failed: non-injective on interior vertex.')
+        return bool(False);
+      }
+
+      // If any vertices already mapped to the codomain vertex, they must also be boundary vertices for an allowed non-injective mapping.
+      if (this.vertex_image.any(([mapped_vertex, image_vertex]) =>
+        image_vertex === codomain_vertex && !mapped_vertex.is_boundary() // TODO mapped_vertex on domain!!
+      )) {
+        log('Vertex failed: non-injective on interior vertex.')
+        return bool(False);
+      }
+
+      return bool(False);
+    }
+
+    // If a new and consistent map is found, add it to the vertex map of this match.
+    this.vertex_map[domain_vertex] = codomain_vertex
+    this.vertex_image.add(codomain_vertex)
+
+    // Unless the domain vertex is a boundary vertex, check that the number of adjacent edges of the codomain vertex is the same as the number for the domain vertex. Because matchings are required to be injective on edges, this will guarantee that the gluing conditions are satisfied.
+
+    if (!domain_vertex.is_boundary()) {
+      if (domain_vertex.in_edges.count() !== codomain_vertex.in_edges.count()) {
+        log('Vertex failed: in_edges cannot satisfy gluing conditions.')
+        return bool(False)
+      }
+      if (domain_vertex.out_edges.count() !== codomain_vertex.out_edges.count()) {
+        log('Vertex failed: in_edges cannot satisfy gluing conditions.')
+        return bool(False)
+      }
+    }
+
+    // If a new consistent map is added that satisfies the gluing conditions, we are successful.
+    log('Vertex success.')
+    return bool(True);
+  }
+
   try_add_edge = (domain_edge = int, codomain_edge = int): Ray => { throw new NotImplementedError(); }
   domain_neighbourhood_mapped = (vertex = int): Ray => { throw new NotImplementedError(); }
   map_scalars = (): Ray => { throw new NotImplementedError(); }
@@ -782,6 +920,14 @@ export class Match extends Ray {
   is_surjective = (): Ray => { throw new NotImplementedError(); }
   is_injective = (): Ray => { throw new NotImplementedError(); }
   is_convex = (): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * TODO Not implemented;;
+   *     # def cod_nhd_mapped(self, cod_v: int):
+   *     #     """Returns True if nhd(cod_v) is the range of emap"""
+   *     #     return (all(e in self.eimg for e in self.cod.in_edges(cod_v)) and
+   *     #             all(e in self.eimg for e in self.cod.out_edges(cod_v)))
+   */
 }
 
 export class Matches extends Ray {
