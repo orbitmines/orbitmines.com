@@ -96,9 +96,14 @@ export class Ray
   js: () => Option<any>;
 
   // TODO: Could make a case that setting the terminal is more of a map, defaulting/first checking the terminal before additional functionality is mapped over that.
-  initial: () => Option<Ray>;
-  vertex: () => Option<Ray>;
-  terminal: () => Option<Ray>;
+  // initial: () => Option<Ray>;
+  // vertex: () => Option<Ray>;
+  // terminal: () => Option<Ray>;
+
+  // TODO: Just temp for quick impl
+  get initial(): Ray {}
+  get vertex(): Ray {}
+  get terminal(): Ray {}
 
   self = (): Option<Ray> => this.vertex();
 
@@ -237,6 +242,7 @@ export class Ray
   map = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
   all = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
   filter = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
+  clear = (): Ray => { throw new NotImplementedError(); }
 
   *traverse(): Generator<Ray> {}
 

@@ -27,6 +27,7 @@ import {Option} from "../../../js/utils/Option";
  *
  * TODO: Runtime errors as rays
  *
+ * TODO: All the more complicated methods should be simply implemented in a ray which walks an arbitary graph
  */
 
 export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
@@ -173,11 +174,40 @@ export class VData extends Ray {
     // this.initial().force().equivalent(other.initial().force());
     // this.terminal().force().equivalent(other.initial().force());
 
+    /*
+
+            vd = self.vertex_data(v)
+        # print("merging %s <- %s" % (v, w))
+
+        # Where vertex `w` occurs as an edge target, replace it with `v`
+        for e in self.in_edges(w):
+            ed = self.edge_data(e)
+            ed.t = [v if x == w else x for x in ed.t]
+            vd.in_edges.add(e)
+
+        # Where vertex `w` occurs as an edge source, replace it with `v`
+        for e in self.out_edges(w):
+            ed = self.edge_data(e)
+            ed.s = [v if x == w else x for x in ed.s]
+            vd.out_edges.add(e)
+
+        # Wherever `w` occurs on the graph boundary, replace it with `v`
+        self.set_inputs([v if x == w else x for x in self.inputs()])
+        self.set_outputs([v if x == w else x for x in self.outputs()])
+
+        # Remove references to `w` from the graph
+        self.remove_vertex(w)
+
+     */
+
     throw new NotImplementedError();
   }
 
   fresh = (): VData => {
     // TODO: This is just a copy where this initial/terminal directionlaity is ignored. Only a copy of the vertex.
+
+      // vtype=vd.vtype, size=vd.size,
+      // x=vd.x, y=vd.y, value=vd.value
 
   }
 }
@@ -490,39 +520,101 @@ export class Graph extends Ray {
     // TODO; This just seems like another copy which minor changes
 
     const next_inputs = empty();
-    const next_outputs = empy();
+    const next_outputs = empty();
 
-    const fresh = (j: VData) => {
+    const __temp = ( // TODO This whole bit of code will definitely be reduced to one line at some point in this process
+      vertex: VData,
+      boundary: (vertex: VData) => Ray,
+      next_boundary: Ray
+    ) => {
+      // TODO: It's just a duplicated process for vertex/edge since their definition is separataed
+
+      // Replace any occurrences of the original vertex in the graph inputs with a new input-like vertex.
+      //  self.set_inputs([v1 if v1 != v else fresh(0) for v1 in self.inputs()])
+      // TODO: Basically a copy, and replace this one vertex
+
+      // Where the original vertex is the target of a hyperedge, replace its occurrence in the hyperedge's target list with a new input-like vertex and register this with the new vertex's data instance.
+      boundary(vertex).all(e => {
+        const edge: EData = e.cast();
+
+        edge.t = edge.t
+          .map(target => {
+            if (target === v)
+              return target;
+
+            const fresh_vertex = vertex.fresh();
+            next_boundary.add(this.add_vertex(fresh_vertex))
+            boundary(fresh_vertex).add(edge);
+          })
+      });
 
     }
 
-    // Replace any occurrences of the original vertex in the graph inputs with a new input-like vertex.
-    //  self.set_inputs([v1 if v1 != v else fresh(0) for v1 in self.inputs()])
-    // TODO: Basically a copy, and replace this one vertex
+    // TODO: It's always just duplicated for both ends,
+    __temp(vertex, (vertex) => vertex.in_edges, next_inputs);
+    __temp(vertex, (vertex) => vertex.out_edges, next_outputs);
 
-    // Where the original vertex is the target of a hyperedge, replace its occurence in the hyperedge's target list with a new input-like vertex and register this with the new vertex's data instance.
+    // Register the fact that `v` no longer occurs in as a source or target of any hyperedge.
+    vertex.in_edges.clear(); // TODO; Should basically just reset initial/terminal
+    vertex.out_edges.clear();
 
-    vertex.in_edges.all(e => {
-      const edge: EData = e.cast();
+    // Remove `v` from the hypergraph, using strict == True to catch any errors (no errors should be raised with current code).
+    this.remove_vertex(vertex, true);
 
-      edge.t = edge.t
-        .map(target => {
-          if (target === v)
-            return target;
-
-          next_inputs.add(this.add_vertex(vertex.fresh()))
-          this.vertex_data(target).in_edges.add(edge);
-        })
-    })
-
+    return [next_inputs, next_outputs];
   }
 
 
   insert_id_after = (v = int): Ray => { throw new NotImplementedError(); }
-  tensor = (other = Graph): Ray => { throw new NotImplementedError(); }
-  __mul__ = (other = Graph): Ray => { throw new NotImplementedError(); }
-  compose = (other = Graph): Ray => { throw new NotImplementedError(); }
-  __rshift__ = (other = Graph): Ray => { throw new NotImplementedError(); }
+
+
+  tensor = (other: Graph): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Sequentially compose this graph in-place with another.
+   *
+   * Calling g.compose(h) will turn g into g ; h, performing the operation in-place. Use the infix version `g >> h` to simply return the sequential composition without changing g.
+   */
+  compose = (other: Graph): Ray => {
+    // TODO Just matching outputs and inputs..
+
+    const a = this;
+    const b = other;
+
+    // TODO: Simply visualized, as a single thing "us composing this thing", where on the initial side, we have the outputs of one thing, which we're trying to one-to-one match to the terminal side"
+    const compose: Ray = new Ray(); // TODO: [initial = a.outputs, terminal = b.inputs]
+
+    // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
+
+    if (compose.initial.count() !== compose.terminal.count())
+      throw new GraphError(`Codomain ${a.codomain()} does not match domain ${b.domain()}`); // TODO ; a/b ref will be removed
+
+
+  }
+
+  /**
+   * Return the tensor product of this graph with another.
+   *
+   * This does not modify either of the original graphs. TODO: Again this sort of thing should be abstracted elsewhere on what to do with them
+   */
+  __mul__ = (other: Graph): Ray => this.___something_something_copy(other, (a, b) => a.tensor(b));
+
+  /**
+   * Return the composition of the current graph with `other`.
+   *
+   * Composition is done in diagram order (`other` comes after `self`), and neither of the two graphs are modified.
+   * @param other
+   */
+  __rshift__ = (other: Graph): Ray => this.___something_something_copy(other, (a, b) => a.compose(b));
+
+  /**
+   * TODO: These are just simple delegations of a single method on copies.. ; requires a nice abstraction layer
+   */
+  ___something_something_copy = (b: Graph, something: (a: Graph, b: Graph) => void): Ray => {
+    const a_copy: Graph = this.copy().cast(); // TODO: Here preferring copy, do this everywhere? / Depending on forgetful preference..
+    something(a_copy, b); // TODO: Chyp just assumes b to be copied at the other end here???
+    return a_copy; // Could generalize to either end
+  }
 
   /**
    * Set the `highlight` flag for a set of vertices and edges.
@@ -689,6 +781,36 @@ export class Chyp extends Ray {
     return graph;
   }
 
+  /**
+   * # def wide_id() -> Graph:
+   * #     return gen("id", 1, 1)
+   *
+   * # def id_perm(p: List[int]) -> Graph:
+   * #     g = Graph()
+   * #     size = len(p)
+   * #     inputs = [g.add_vertex(-1.5, i - (size-1)/2) for i in range(size)]
+   * #     outputs = [g.add_vertex(1.5, i - (size-1)/2) for i in range(size)]
+   *
+   * #     for i in range(size):
+   * #         y = i - (size-1)/2
+   * #         g.add_edge([inputs[i]], [outputs[p[i]]], "id", 0, y)
+   *
+   * #     g.set_inputs(inputs)
+   * #     g.set_outputs(outputs)
+   *
+   * #     return g
+   */
+
+  /**
+   * Return a graph corresponding to a vertex size redistribution.
+   *
+   * A specific case of this family of graphs are 'dividers', which split a vertex of some type and size into multiple size 1 vertices of the same type. Conversely, 'gatherers' bundle multiple vertices of the same type into a single vertex of the same type and size the sum of the individual input vertex sizes.
+   *
+   * More generally, a conversion can be done between different lists of sizes, for some vertex type.
+   */
+  redistributer = (domain = list, codomain = list) => {
+
+  }
 }
 
 export class CodeView extends Ray {
