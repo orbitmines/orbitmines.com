@@ -31,7 +31,6 @@ const ChypCanvas = (
     <VisualizationCanvas
       style={{height: '100vh'}}
 
-      {...mergeListeners(...listeners, listener)}
     >
       <Center>
 
@@ -57,6 +56,7 @@ const ChypCanvas = (
         {/*</group>*/}
 
 
+
         {/* Being able to reference any part from within the structure - self-compiling */}
         {/*<group>*/}
         {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1}/>*/}
@@ -65,16 +65,52 @@ const ChypCanvas = (
         {/*  /!*<AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={1} color="#FFFFFF" />*!/*/}
         {/*</group>*/}
 
-        <group>
-          <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} color="#5555FF"/>
+        {/* Continuation expanded */}
+        {/*<group>*/}
+        {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} color="#5555FF"/>*/}
 
-          <AutoRenderedRay scale={scale} position={[60, 60, 0]} length={1} color="#FF5555"/>
-          <AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={1}
-                           color="#FF55FF"/>
-          <AutoRenderedRay scale={scale} position={[30, 60, 0]} rotation={[0, 0, Math.PI / 2]} length={1}
-                           color="#FF55FF"/>
-          {/*<AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={1} color="#FFFFFF" />*/}
+        {/*  <AutoRenderedRay scale={scale} position={[60, 60, 0]} length={1} color="#FF5555"/>*/}
+        {/*  <AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={1}*/}
+        {/*                   color="#FF55FF"/>*/}
+        {/*  <AutoRenderedRay scale={scale} position={[30, 60, 0]} rotation={[0, 0, Math.PI / 2]} length={1}*/}
+        {/*                   color="#FF55FF"/>*/}
+        {/*  /!*<AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={1} color="#FFFFFF" />*!/*/}
+        {/*</group>*/}
+
+
+        <group>
+          <group rotation={[0, 0, Math.PI / 2]} position={[0, -240, 0]}>
+            <AutoRenderedRay scale={scale} position={[0, 100 + 30, 0]} length={4} rotation={[0, 0, Math.PI / 2]}
+                             color="#5555FF"/>
+            <AutoRenderedRay scale={scale} position={[0, 100, 0]} length={4} color="#5555FF"/>
+          </group>
+
+          <group rotation={[0, 0, Math.PI / 2]}>
+            <AutoRenderedRay scale={scale} position={[0, -100 - 30, 0]} length={4} rotation={[0, 0, Math.PI / 2]}
+                             color="#FF5555"/>
+            <AutoRenderedRay scale={scale} position={[0, -100, 0]} length={4} color="#FF5555"/>
+          </group>
+
+          <group>
+            <AutoRenderedRay scale={scale} position={[0, -30, 0]} initial={{position: [-100, 0, 0]}}
+                             terminal={{position: [100, 0, 0]}} length={1} color="orange"/>
+
+          </group>
+
         </group>
+
+        {/*<group>*/}
+        {/*  <group rotation={[0, 0, Math.PI / 2]}>*/}
+        {/*    <AutoRenderedRay scale={scale} position={[0,  30, 0]} length={4} rotation={[0, 0, Math.PI / 2]}*/}
+        {/*                     color="#5555FF"/>*/}
+        {/*  </group>*/}
+
+        {/*  <group rotation={[0, 0, Math.PI / 2]}>*/}
+        {/*    <AutoRenderedRay scale={scale} position={[0,  - 30, 0]} length={4} rotation={[0, 0, Math.PI / 2]}*/}
+        {/*                     color="#FF5555"/>*/}
+        {/*  </group>*/}
+        {/*</group>*/}
+
       </Center>
     </VisualizationCanvas>
   </div>
@@ -90,7 +126,7 @@ export const ChypExplorer = (
 
   const listener: IEventListener<any> = {}
 
-  return <ChypCanvas listeners={[...listeners, listener]}/>
+  return <ChypCanvas/>
 }
 
 export default ChypCanvas;
