@@ -244,6 +244,37 @@ export class Ray
   filter = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
   clear = (): Ray => { throw new NotImplementedError(); }
 
+  // TODO: Generalize these functions to:
+  //
+  // TODO: +default, in the case of Initial/Terminal = Option.None, to which the default sometimes is nothing. Or in the case of min/max it's 0.
+
+
+  // TODO: being called min.x needs to return the min value within that entire structure.
+
+  // [this.vertices().x.max(), this.edges().x.max()].max()
+  // [this.vertices().x.min(), this.edges().x.max()].max()
+  min = (_default: 0): Ray => { throw new NotImplementedError(); }
+  max = (_default: 0): Ray => { throw new NotImplementedError(); }
+
+  // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
+  apply = (func: Ray) => {
+
+    // TODO: Combine into generalized [x, min/max()] - preserve terminal/initial structure
+    // TODO: ray#apply.
+    // TODO: FROM COMPOSER
+    /**
+     *  const func = [min(), '', max()]
+     *
+     *      const [min_x, max_x] = [
+     *       // Compute the min x-coordinate of the edges and vertices in the other graph.
+     *       compose.terminal.x.min(), // min_other
+     *
+     *       // Compute the max x-coordinate of the edges and vertices in this graph.
+     *       compose.initial.x.max(), // max_self
+     *     ]
+     */
+  }
+
   *traverse(): Generator<Ray> {}
 
   /**

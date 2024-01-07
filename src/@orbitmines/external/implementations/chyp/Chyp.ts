@@ -586,8 +586,55 @@ export class Graph extends Ray {
 
     // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
 
-    if (compose.initial.count() !== compose.terminal.count())
-      throw new GraphError(`Codomain ${a.codomain()} does not match domain ${b.domain()}`); // TODO ; a/b ref will be removed
+    // TODO: This is just again an equivalence type check on the ends of the ray
+
+    {
+      if (compose.initial.count() !== compose.terminal.count())
+        throw new GraphError(`Codomain ${a.codomain()} does not match domain ${b.domain()}`); // TODO ; a/b ref will be removed
+
+      /**
+       *      for output_id, input_id in zip(self_outputs, other_inputs):
+       *             output_data = self.vertex_data(output_id)
+       *             input_data = other.vertex_data(input_id)
+       *             if output_data.vtype != input_data.vtype:
+       *                 if not (output_data.infer_type or input_data.infer_type):
+       *                     raise GraphError(
+       *                         f'Codomain {self.codomain()} does not '
+       *                         + f'match domain {other.domain()}'
+       *                     )
+       *             if output_data.size != input_data.size:
+       *                 if not (output_data.infer_size or input_data.infer_size):
+       *                     raise GraphError(
+       *                         f'Codomain {self.codomain()} does not '
+       *                         + f'match domain {other.domain()}'
+       *                     )
+       */
+    }
+
+    /**
+     * Basically, seeing the {compose} line x=0, and them moving outputs (left) to the negative x. And moving the inputs (right) to the positive x.
+     */
+
+    // Compute the max x-coordinate of the edges and vertices in this graph.
+
+    // TODO: Again, recursively going through everything defined on the initial side (outputs)
+    // Shift all vertices and edges of this graph below the x-axis.
+    compose.initial.x -=
+      compose.initial.x.max(); // max_self
+
+    // TODO: It's indeed copying here, as b_copy, abstract this away [SHOULD BE A COPY]
+    compose.terminal.x -=
+      compose.terminal.x.min(); // min_other
+
+    // TODO: This check in the Chyp code is just done after the [terminal].copy() which we haven't implemented yet.
+    /**
+     * plug1 = self.outputs()
+     * plug2 = [vmap[v] for v in other.inputs()]
+     *
+     * if len(plug1) != len(plug2):
+     *             raise GraphError(f'Attempting to plug a graph with {len(plug1)} '
+     *                              + f'outputs into one with {len(plug2)} inputs')
+     */
 
 
   }
