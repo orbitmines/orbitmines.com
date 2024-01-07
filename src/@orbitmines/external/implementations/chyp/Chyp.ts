@@ -567,8 +567,37 @@ export class Graph extends Ray {
 
   insert_id_after = (v = int): Ray => { throw new NotImplementedError(); }
 
+  /**
+   * Take the monoidal product of this graph in-place with another.
+   *
+   * Calling g.tensor(h) will turn g into g ⊗ h, performing the operation in-place. Use the infix version `g @ h` to simply return the tensor product without changing g.
+   *
+   * @param other
+   * @param layout If `True`, compute new y-coordinates of the vertices and edges of the resulting graph so that the two graphs in the tensor product are adjacent with no overlap in the y-direction.
+   */
+  tensor = (other: Graph, layout: boolean = true): Ray => {
 
-  tensor = (other: Graph): Ray => { throw new NotImplementedError(); }
+    const a = this;
+    const b = other;
+
+    const tensor: Ray = new Ray(); // TODO: [initial = a.outputs, terminal = b.inputs]
+
+    tensor.initial.y -=
+      tensor.initial.y.max(); // max_self
+
+    tensor.terminal.y -=
+      (layout ? tensor.terminal.y.min() : 0) + 1; // min_other TODO: Why + 1 ?
+
+    /**
+     *         # self.set_inputs(self.inputs() + [vmap[v] for v in other.inputs()])
+     *         # self.set_outputs(self.outputs() + [vmap[v] for v in other.outputs()])
+     *
+     *         # Add the inputs and outputs of the other graph to this one.
+     *         self.add_inputs([vmap[v] for v in other.inputs()])
+     *         self.add_outputs([vmap[v] for v in other.outputs()])
+     */
+    // TODO: Add equivalence/reference on the inputs/output extremes.
+  }
 
   /**
    * Sequentially compose this graph in-place with another.
@@ -587,6 +616,8 @@ export class Graph extends Ray {
     // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
 
     // TODO: This is just again an equivalence type check on the ends of the ray
+
+    // TODO: min/max needs to be on vertices/edges. Not necessarilyt outputs/inputs
 
     {
       if (compose.initial.count() !== compose.terminal.count())
