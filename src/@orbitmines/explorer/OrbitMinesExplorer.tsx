@@ -16,7 +16,7 @@ import {Children, value} from "../../lib/typescript/React";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import {NotImplementedError} from "./errors/errors";
 
-const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+export const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
 export const torus = {
   // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
@@ -201,7 +201,7 @@ export const BinarySuperposition = ({ position = [0, 0, 0], scale = 1.5 }: any) 
  *
  * TODO; Generalize to Ray - should be embedded on the vertex, or on another layer of description, where the interface is a rewrite rule
  */
-type InterfaceOptions = {
+export type InterfaceOptions = {
   position?: [number, number, number],
   rotation?: [number, number, number],
   scale?: number,
@@ -215,7 +215,8 @@ type Options = {
 
 export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
   length?: number // basically .length
-} & Partial<Children>) => {
+  children?: any
+}) => {
   const {
     length = 1,
     children
@@ -267,7 +268,6 @@ export const SimpleRenderedRay = (
     ..._.pick(ray, 'position', 'rotation', 'scale', 'color')
   }
 
-  console.log(_default)
   const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
     <Torus
       args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}

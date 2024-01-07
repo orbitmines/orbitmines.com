@@ -3,6 +3,7 @@ import {Option} from "../js/utils/Option";
 import _ from "lodash";
 import {compile} from "sass";
 import {NotImplementedError} from "./errors/errors";
+import {InterfaceOptions} from "./OrbitMinesExplorer";
 
 export type ParameterlessFunction<T = any> = () => T;
 
@@ -234,6 +235,17 @@ export class Ray
    */
   static dirty_store: { [label: string]: object } = {}
   get store(): any { return Ray.dirty_store[this.label] ??= {} }
+
+  o = (o: InterfaceOptions): Ray => { return this.with('options', o); }
+  get o_(): InterfaceOptions { return this.store['options'] ?? {
+
+  }
+  }
+
+  with = (key: string, any: any): Ray => {
+    this.store[key] = any;
+    return this;
+  }
 
   debug = (c: { [label: string]: object | undefined }): object => {
     if (c[this.label] !== undefined)
