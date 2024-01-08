@@ -1,6 +1,6 @@
-import {enumeration, MemberType, none, TaggedUnion} from "../../@orbitmines/js/utils/match";
 import _ from "lodash";
 import {NotImplementedError} from "./errors/errors";
+
 
 // SHOULDNT CLASSIFY THESE?
 export enum RayType {
@@ -49,8 +49,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       PossiblyHomoiconic<Ray>,
 
       AsyncIterable<Ray>,
-      Iterable<Ray>
-  // TODO: Array, Dictionary...
+      Iterable<Ray>,
+      Array<Ray>
+      // Dict<Ray>
 {
 
   js: Arbitrary<any>
@@ -115,19 +116,39 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    */
   is_none = (): boolean => this.self === this;
 
-  static None = (): Ray => {
-    const self = new Ray({});
+  /** [     ] */ static None = (): Ray => {
+    const self = Ray.empty(); // TODO: None, could also self-reference the ray on which it's defining to be None. Now it's just an ignorant loop.
     self.self = () => self;
     return self;
   }
 
   is_some = (): boolean => !this.is_none();
 
+  /** [     ] */ static empty = () => new Ray({ });
+  /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
+    /** [     ] */ const vertex = Ray.empty();
+    /** [--   ] */ vertex.initial = vertex.as_initial;
+    /** [  ?  ] */ vertex.vertex = value;
+    /** [   --] */ vertex.terminal = vertex.as_terminal;
+
+    /** [--?--] */ return vertex;
+  }
+  static js = (value: any) => { const vertex = Ray.vertex(); vertex.js = () => value; return vertex; }
+
+  static size = (of: number, value: any = undefined): Ray => {
+    let current = Ray.vertex().as_reference(); // TODO; This sort of thing should be lazy
+    for (let i = 0; i < of; i++) {
+      current = current.continues_with(Ray.js(value).as_reference());
+    }
+
+    return current;
+  }
+
   /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
-  /** [  |  ] -> [?????] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
-  /** [  |  ] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' }).as_reference();
-  /** [  |  ] -> [???  ] */ as_terminal = () =>
-    new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }).as_reference(); // TODO: These fields as DEBUG
+  /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
+  /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
+  /** [?????] -> [???  ] */ as_terminal = () =>
+    new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }); // TODO: These fields as DEBUG
 
   // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
@@ -143,13 +164,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       throw 'NotImplemented: Preventing implementation bug; continues_with not called as a reference';
 
     // TODO: For now just puts it at the vertex, could be done more intelligently
-    const next_vertex = new Ray({
-      initial: empty().as_arbitrary(),
-      vertex: () => continues_with.vertex,
-      terminal: empty().as_arbitrary()
-    });
+    const next_vertex = Ray.vertex(() => continues_with.vertex);
 
-    const vertex = this.self.force();
+    const vertex = this.self;
 
     if (vertex.is_empty()) {
       console.log('first element')
@@ -160,26 +177,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (!this.is_vertex())
       throw 'NotImplemented: Preventing implementation bug; continues_with not called on a vertex';
 
-    const terminal = vertex.terminal.force();
-    if (!terminal.is_empty())
+    if (!vertex.terminal.is_empty())
       throw 'NotImplemented: Preventing implementation bug; continues_with should be added to the vertex';
 
     // [  |--]
-    const next_connection = new Ray({
-      initial: vertex.as_arbitrary(),
-      vertex: terminal.as_arbitrary(),
-      js: () => Option.Some('terminal ref')
-    });
+    const next_connection = vertex.as_terminal();
 
     // console.log(initial_connection.label)
     vertex.terminal = next_connection.as_arbitrary();
 
-    const initial = next_vertex.initial;
-    const previous_connection = new Ray({
-      vertex: () => initial,
-      terminal: next_vertex.as_arbitrary(),
-      js: () => Option.Some('initial ref')
-    });
+    const previous_connection = next_vertex.as_initial();
 
     next_vertex.initial = previous_connection.as_arbitrary();
 
@@ -210,7 +217,21 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // TODO; Could return the ignorant reference to both instances, or just the result., ..
   copy = (): Ray => { throw new NotImplementedError() }
-  at = (steps: Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
+
+  // export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
+//   return Arbitrary.Fn(() => length(of, value).resolve().force().at_terminal(index));
+// }
+//
+  at = (steps: number | Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
+  //
+// export const permutation = (permutation: number | undefined, of: number): Arbitrary<Ray<any>> => at(
+//   // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
+//   permutation ?? 0,
+//   // In the case of a bit: Either |-*-| if no bit or |-*->-*-| if a bit.
+//   permutation === undefined ? 1 : of
+// )
+//
+  // export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
 
   /**
    * Cast to some JavaScript object
@@ -293,13 +314,12 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (c[this.label] !== undefined)
       return c[this.label]!;
 
-    const of = (option: Ray): string => option.match({
-      Some: (ray) => {
-        ray.debug(c) ;
-        return ray.label;
-      },
-      None: () => 'None'
-    });
+    const of = (ray: Ray): string => {
+      if (ray.is_none()) return 'None';
+
+      ray.debug(c);
+      return ray.label;
+    }
 
     const obj: any = { label: this.label };
     c[this.label] = obj;
@@ -379,7 +399,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (this.__label !== undefined)
       return this.__label;
 
-    return this.__label = `"${Ray._label++} (${this.js().match({ Some: (js) => js.toString(), None: () => '?' })})"`;
+    return this.__label = `"${Ray._label++} (${this.js()?.toString() ?? '?'})})"`;
   }
 
 }
@@ -406,203 +426,110 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
  *
  * Not to be considered as a perfect mapping of JavaScript functionality - merely a practical one.
  */
-export type JSObj<Target = Ray> = {
-  Iterable: <T>(iterable: Iterable<T>) => typeof iterable,
-  Iterator: <T>(iterator: Iterator<T>) => typeof iterator,
-  Boolean: (boolean: boolean) => typeof boolean,
-  // // AsyncGenerator
-  // // ..
+
   // Number: (number: number) => typeof number,
   // Function: (func: ParameterlessFunction) => typeof func,
-  Object: (object: object) => typeof object,
-  Any: (any: any) => typeof any,
-  None: typeof none;
-}
-export type JSImpl<Target = Ray> = {
-  as_ray: () => Target,
-}
-export type JS<Target = Ray> = MemberType<TaggedUnion<JSObj<Target>, JSImpl<Target>>>;
 
-export const JS = enumeration<JSObj, JSImpl>({
-  Iterable: <T>(iterable: Iterable<T>) => iterable,
-  Iterator: <T>(iterator: Iterator<T>) => iterator,
-  Boolean: (boolean: boolean) => boolean,
   // Number: (number: number) => number,
   // Function: (func: ParameterlessFunction) => func,
-  Object: (object: object) => object,
-  Any: (any: any) => any,
-  None: none,
-}, self => class {
-  as_ray = (): Ray => self.match({
-    Iterable: <T>(iterable: Iterable<T>): Ray => from_iterable(iterable),
-    Iterator: <T>(iterator: Iterator<T>): Ray => from_iterator(iterator),
-    Boolean: (boolean: boolean): Ray => from_boolean(boolean),
-    // Number: (number: number): Ray => from_number(number),
-    // Function: (func: ParameterlessFunction): Ray => from_function(func),
-    Object: (object: object): Ray => from_object(object),
-    Any: (any: any): Ray => Option.Some(new Ray({ js: () => Option.Some(any) })),
-    None: (): Ray => Ray.None
-  })
-});
 
-/**
- *
- */
 
-export const from_any = (any: any): JS => {
-  if (any === null || any === undefined)
-    return JS.Any(any);
+export namespace JS {
+  export const Boolean = (boolean: boolean): Ray => {
+    // |-false->-true-| (could of course also be reversed)
+    const _false = Ray.js(false);
+    const _true = Ray.js(true);
+    _false.continues_with(_true);
 
-  if (is_boolean(any))
-    return JS.Boolean(any);
-  // if (is_number(any))
-  //   return JS.Number(any);
-  if (is_iterable(any))// || is_array(any))
-    return JS.Iterable(any);
-  // if (is_function(any))
-  //   return JS.Function(any);
-  if (is_object(any))
-    return JS.Object(any);
+    return (boolean ? _true : _false).as_reference();
+  }
+  // export const bit = (bit?: boolean): Arbitrary<Ray<any>> => permutation(bit ? 1 : 0, 2);
+  export const Bit = Boolean;
 
-  return JS.Any(any);
-}
+  export const Iterable = <T = any>(iterable: Iterable<T>): Ray => JS.Iterator(iterable[Symbol.iterator]());
 
-export const from_iterable = <T = any>(iterable: Iterable<T>): Ray => from_iterator(iterable[Symbol.iterator]());
-export const from_iterator = <T = any>(iterator: Iterator<T>): Ray => {
-  // [  |--]
+  export const Iterator = <T = any>(iterator: Iterator<T>): Ray => {
+    // [  |--]
 
-  const next = (initial: Ray): Ray => {
-    const iterator_result = iterator.next();
-    const is_terminal = iterator_result.done === true;
+    const next = (initial: Ray): Ray => {
+      const iterator_result = iterator.next();
+      const is_terminal = iterator_result.done === true;
 
-    if (is_terminal) {
-      // We're done, this is the end of the iterator
+      if (is_terminal) {
+        // We're done, this is the end of the iterator
 
-      // vertex: could have something at the vertex which defines the "end of the iterator" - but we don't here.
-      const terminal = new Ray({
-        initial: () => initial
+        // vertex: could have something at the vertex which defines the "end of the iterator" - but we don't here.
+        const terminal = new Ray({
+          initial: () => initial
+        });
+        // initial.force().continues_with(() => terminal.as_reference());
+
+        // if (initial.is_some())
+        //   initial.force().terminal = () => terminal; // TODO REPEAT FROM BELOW
+
+        return terminal;
+      }
+
+      const current: Ray = new Ray({
+        js: () => iterator_result.value,
+        // initial: () => new Ray(),
+        initial: () => initial,
+        vertex: () => from_any(iterator_result.value).as_ray(),
+        terminal: () => next(current)
       });
-      // initial.force().continues_with(() => terminal.as_reference());
 
-      // if (initial.is_some())
-      //   initial.force().terminal = () => terminal; // TODO REPEAT FROM BELOW
+      // initial.force().continues_with(() => current.force().as_reference());
+      if (initial.is_some())
+        initial.terminal = () => current;
 
-      return terminal;
+      return current;
     }
 
-    const current: Ray = Option.Some(new Ray({
-      js: () => Option.Some(iterator_result.value),
-      // initial: () => new Ray(),
-      initial: () => initial,
-      vertex: () => from_any(iterator_result.value).as_ray(),
-      terminal: () => next(current)
-    }));
+    const ray_iterator = new Ray({ js: () => Option.Some(iterator)});
+    ray_iterator.terminal = () => next(ray_iterator);
 
-    // initial.force().continues_with(() => current.force().as_reference());
-    if (initial.is_some())
-      initial.force().terminal = () => current;
-
-    return current;
+    // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
+    return ray_iterator.as_reference();
   }
 
-  const ray_iterator = new Ray({ js: () => Option.Some(iterator)});
-  ray_iterator.terminal = () => next(ray_iterator);
+  export const Generator = <T = any>(generator: Generator<T>): Ray => JS.Iterable(generator);
 
-  // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
-  return ray_iterator.as_reference();
-}
-export const from_generator = <T = any>(generator: Generator<T>): Ray => {
-  // [  |--]
-  return from_iterable(generator);
-}
+  // export const AsyncGenerator = <T = any>(generator: AsyncGenerator<T>): Ray => {
+  //   // [  |--]
+  //   return JS.Iterable(generator);
+  // }
 
-export const empty = (): Ray => new Ray({ });
-export const empty_vertex = (): Ray => {
-  const initial = empty();
-  const terminal = empty();
-  const vertex = new Ray({ initial: initial.as_arbitrary(), terminal: terminal.as_arbitrary() });
-
-  initial.terminal = vertex.as_arbitrary();
-  terminal.initial = vertex.as_arbitrary();
-
-  return vertex;
-}
-
-export const js = (value: any): Ray => {
-  const vertex = empty_vertex();
-  vertex.js = () => Option.Some(value);
-
-  return vertex;
-}
-
-export const length = (of: number, value: any = undefined): Ray => {
-  let current = empty_vertex().as_reference();
-  for (let i = 0; i < of; i++) {
-    current = current.continues_with(new Ray({js: () => Option.Some(value)}).as_reference())
+  export const Number = (number: number): Ray => {
+    throw new NotImplementedError();
   }
 
-  return current;
+  export const Function = (func: Arbitrary<any>): Ray => {
+    throw new NotImplementedError();
+  }
+
+  export const Object = (object: object): Ray => {
+    throw new NotImplementedError();
+  }
+
+  export const Any = (any: any): Ray => {
+    if (any === null || any === undefined) return JS.Any(any);
+    if (JS.is_boolean(any)) return JS.Boolean(any);
+    if (JS.is_number(any)) return JS.Number(any);
+    if (JS.is_iterable(any)) return JS.Iterable(any); // || is_array(any))
+    if (JS.is_function(any)) return JS.Function(any);
+    if (JS.is_object(any)) return JS.Object(any);
+
+    return JS.Any(any);
+  }
+
+  export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);
+  export const is_number = (_object: any): _object is number => _.isNumber(_object);
+  export const is_object = (_object: any): _object is object => _.isObject(_object);
+  export const is_iterable = <T = any>(_object: any): _object is Iterable<T> => Symbol.iterator in Object(_object);
+  export const is_async_iterable = <T = any>(_object: any): _object is AsyncIterable<T> => Symbol.asyncIterator in Object(_object);
+  export const is_array = <T = any>(_object: any): _object is T[] => _.isArray(_object);
+  export const is_async = (_object: any) => _.has(_object, 'then') && is_function(_.get(_object, 'then')); // TODO, Just an ugly check
+
+  export const is_error = (_object: any): _object is Error => _.isError(_object);
+  export const is_function = (_object: any): _object is ((...args: any[]) => any) => _.isFunction(_object);
 }
-// export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
-//   return Arbitrary.Fn(() => length(of, value).resolve().force().at_terminal(index));
-// }
-//
-export const from_boolean = (boolean: boolean): Ray => {
-  // |-false->-true-| (could of course also be reversed)
-
-  // from_iterable([false, true])
-
-  const _false = js(false);
-  const _true = js(true);
-  // const two = _false.continues_with(_true);
-
-  // _false.as_reference()
-  //   .continues_with(() =>
-  //     _true.initial.force().as_reference()
-  //   );
-
-  return (boolean ? _true : _false).as_reference();
-}
-
-
-// // Full permutation
-// export const SuperPosition = (ray: Ray<any>) => {
-//
-// }
-//
-//
-// export const permutation = (permutation: number | undefined, of: number): Arbitrary<Ray<any>> => at(
-//   // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
-//   permutation ?? 0,
-//   // In the case of a bit: Either |-*-| if no bit or |-*->-*-| if a bit.
-//   permutation === undefined ? 1 : of
-// )
-//
-// export const bit = (bit?: boolean): Arbitrary<Ray<any>> => permutation(bit ? 1 : 0, 2);
-// export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
-
-
-// export const from_number = (number: number): Ray => {
-//
-// }
-// export const from_function = (func: ParameterlessFunction): Ray => {
-//
-// }
-export const from_object = (object: object): Ray => {
-
-  return Ray.None;
-}
-//
-// export const from_async_generator = <T>(generator: AsyncGenerator<T>): Ray => {}
-// export const from_generator = <T>(generator: Generator<T>): Ray => {}
-
-export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);
-export const is_number = (_object: any): _object is number => _.isNumber(_object);
-export const is_object = (_object: any): _object is object => _.isObject(_object);
-export const is_iterable = <T = any>(_object: any): _object is Iterable<T> => Symbol.iterator in Object(_object);
-export const is_async_iterable = <T = any>(_object: any): _object is AsyncIterable<T> => Symbol.asyncIterator in Object(_object);
-export const is_array = <T = any>(_object: any): _object is T[] => _.isArray(_object);
-export const is_async = (_object: any) => _.has(_object, 'then') && is_function(_.get(_object, 'then')); // TODO, Just an ugly check
-
-export const is_error = (_object: any): _object is Error => _.isError(_object);
-export const is_function = (_object: any): _object is ((...args: any[]) => any) => _.isFunction(_object);
