@@ -1,68 +1,28 @@
 import {enumeration, MemberType, none, TaggedUnion} from "../../@orbitmines/js/utils/match";
-import {Option} from "../js/utils/Option";
 import _ from "lodash";
-import {compile} from "sass";
 import {NotImplementedError} from "./errors/errors";
-
-export type ParameterlessFunction<T = any> = () => T;
-
-// /**
-//  * Defines some flexibility to ignore a lot of the JavaScript specifics (we're not trying to model JavaScript here).
-//  */
-// export type ArbitraryObj<T> = {
-//   Ref: (ref: Option<T>) => typeof ref,
-//   Fn: (fn: ParameterlessFunction<Option<T>>) => typeof fn,
-// };
-// export type ArbitraryImpl<T> = {
-//   none_or: <Result>(or: (obj: T) => Result) => Arbitrary<Result>,
-//   resolve: () => Option<T>,
-// }
-// export type Arbitrary<T> = MemberType<TaggedUnion<ArbitraryObj<T>, ArbitraryImpl<T>>>;
-//
-// export const Arbitrary = enumeration<ArbitraryObj<any>, ArbitraryImpl<any>>({
-//   Ref: (ref: Option<any>) => ref,
-//   Fn: (fn: ParameterlessFunction<Option<any>>) => fn,
-// }, self => class {
-//   resolve = (): any => self.match({
-//     Ref: (ref) => ref,
-//     Fn: (fn) => fn(),
-//   })
-//
-//   none_or = (or: (obj: any) => any): Arbitrary<any> => self.resolve().match({
-//     Some: (obj) => or(obj),
-//     None: () => Arbitrary.Ref(Option.None)
-//   })
-// });
-
-/**
- * Replace "Ray" for "AbstractDirectionality" in case "Ray" doesn't suit you.
- */
-export interface AbstractDirectionality<T> {
-  initial(): T
-  vertex(): T
-  terminal(): T
-}
 
 // SHOULDNT CLASSIFY THESE?
 export enum RayType {
   REFERENCE = '  |  ',
-  INITIAL = '  |--',
-  TERMINAL = '--|  ',
+  INITIAL = '  |-?',
+  TERMINAL = '?-|  ',
   VERTEX = '--|--',
 }
 
-// TODO: Option = Ray
-
-export type Arbitrary<T> = (...args: any[]) => Option<T> | T;
+export type ParameterlessFunction<T = any> = () => T;
+export type Arbitrary<T> = (...args: any[]) => T;
 
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
  */
 export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
-  self: Arbitrary<T>
+  get self(): T;
   is_reference: () => boolean
   as_reference: () => T
 }
+
+export interface AbstractDirectionality<T> { initial: Arbitrary<T>, vertex: Arbitrary<T>, terminal: Arbitrary<T> }
 
 /**
  * JavaScript wrapper for a mutable value. It is important to realize that this is merely some simple JavaScript abstraction, and anything is assumed to be inherently mutable.
@@ -84,7 +44,7 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
  *
  * TODO: Singlke keybind for now to show/hide the ray disambiguation or 'dead edges/..'/
  */
-export class Ray
+export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   implements
       PossiblyHomoiconic<Ray>,
 
@@ -93,36 +53,85 @@ export class Ray
   // TODO: Array, Dictionary...
 {
 
-  js: () => Option<any>;
+  js: Arbitrary<any>
 
   // TODO: Could make a case that setting the terminal is more of a map, defaulting/first checking the terminal before additional functionality is mapped over that.
-  // initial: () => Option<Ray>;
-  // vertex: () => Option<Ray>;
-  // terminal: () => Option<Ray>;
 
-  // TODO: Just temp for quick impl
-  get initial(): Ray {}
-  get vertex(): Ray {}
-  get terminal(): Ray {}
+  protected _initial: Arbitrary<Ray>; get initial(): Ray { return this._initial(); } set initial(initial: Arbitrary<Ray>) { this._initial = initial; }
+  protected _vertex: Arbitrary<Ray>; get vertex(): Ray { return this._vertex(); } set vertex(vertex: Arbitrary<Ray>) { this._vertex = vertex; }
+  protected _terminal: Arbitrary<Ray>; get terminal(): Ray { return this._terminal(); } set terminal(terminal: Arbitrary<Ray>) { this._terminal = terminal; }
 
-  self = (): Option<Ray> => this.vertex();
+  get self(): Ray {
+    if (!this.is_reference())
+      throw new NotImplementedError('Preventing bugs, .self is used for the assumption of a reference..');
+
+    return this.vertex;
+  };
+  set self(self: Arbitrary<Ray>) {
+    if (!this.is_reference())
+      throw new NotImplementedError('Preventing bugs, .self is used for the assumption of a reference..');
+
+    this.vertex = self;
+  }
 
   [index: number]: Ray;
 
-  constructor({
-    initial,
-    vertex,
-    terminal,
+  constructor({ initial, vertex, terminal,
     js,
-  }: { js?: () => Option<any> } & Partial<AbstractDirectionality<Option<Ray>>> = {}) {
-    this.initial = initial ?? (() => Option.None);
-    this.vertex = vertex ?? (() => Option.None);
-    this.terminal = terminal ?? (() => Option.None);
-    this.js = js ?? (() => Option.None);
+  }: { js?: Arbitrary<any> } & Partial<AbstractDirectionality<Ray>> = {}) {
+    this._initial = initial ?? Ray.None;
+    this._vertex = vertex ?? Ray.None;
+    this._terminal = terminal ?? Ray.None;
+    this.js = js ?? Ray.None;
   }
 
-  as_initial_reference = () => new Ray({ vertex: this.initial, terminal: this.vertex, js: () => Option.Some('initial ref') }).as_reference();
-  as_terminal_reference = () => new Ray({ initial: this.vertex, vertex: this.terminal, js: () => Option.Some('terminal ref') }).as_reference();
+  /** [  |-?] */ is_initial = (): boolean => this.self.is_some() && this.self.initial.is_none();
+  /** [--|--] */ is_vertex = (): boolean => !this.is_initial() && !this.is_terminal();
+  /** [?-|  ] */ is_terminal = (): boolean => this.self.is_some() && this.self.terminal.is_none();
+  /** [  |  ] */ is_reference = (): boolean => this.is_initial() && this.is_terminal();
+  /** [?- -?] */ is_empty = (): boolean => this.self.is_none();
+
+  get type(): RayType {
+    /** [  |  ] */ if (this.is_reference()) return RayType.REFERENCE;
+    /** [  |-?] */ if (this.is_initial()) return RayType.INITIAL;
+    /** [?-|  ] */ if (this.is_terminal()) return RayType.TERMINAL;
+    /** [--|--] */ return RayType.VERTEX;
+  }
+
+  /**
+   * This is basically what breaks the recursive nature of this structure. Imagine a Ray like this: [|--|--|]. There are several ways of interpreting it, either there's a boolean on initial, vertex, terminal; Some 'false' value, says there's nothing there. Some true value says there's something there. - Basically an Option, ..., Maybe as in certain languages.
+   *
+   * ---
+   *
+   * Another way of interpreting a possible way of implementing it, is no matter how much more detail we would like to ask, the only thing we ever see is the same structure again (if we ignore the difference of us asking about that additional structure, that's still a possible handle on some difference).
+   *
+   * As a way of saying/.../assuming: I only 'infinitely' assume it's only this structure, "it seems to halt here". Note that this is necessarily an assumption. No guarantee of this can be made. This is necessarily an equivalence, ..., ignorance.
+   *
+   * See more: https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Quite%20similarly%20to%20the%20loops%2C%20I%20could%20be%20ignorant%20of%20additional%20structure%20by%20assuming%20it%27s%20not%20there.
+   *
+   * ---
+   *
+   * Concretely, we use here "whatever the JavaScript engine run on" as the thing which has power over the equivalence assumption we use to halt programs. - The asymmetry which allows the engine to make a distinction between each object.
+   */
+  is_none = (): boolean => this.self === this;
+
+  static None = (): Ray => {
+    const self = new Ray({});
+    self.self = () => self;
+    return self;
+  }
+
+  is_some = (): boolean => !this.is_none();
+
+  /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
+  /** [  |  ] -> [?????] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
+  /** [  |  ] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' }).as_reference();
+  /** [  |  ] -> [???  ] */ as_terminal = () =>
+    new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }).as_reference(); // TODO: These fields as DEBUG
+
+  // as_option = (): Ray => Option.Some(this);
+  as_arbitrary = (): Arbitrary<Ray> => () => this;
+
 
   continues_with = (continues_with: Ray): Ray => {
     if (!this.as_reference().is_reference())
@@ -136,11 +145,11 @@ export class Ray
     // TODO: For now just puts it at the vertex, could be done more intelligently
     const next_vertex = new Ray({
       initial: empty().as_arbitrary(),
-      vertex: () => continues_with.vertex(),
+      vertex: () => continues_with.vertex,
       terminal: empty().as_arbitrary()
     });
 
-    const vertex = this.self().force();
+    const vertex = this.self.force();
 
     if (vertex.is_empty()) {
       console.log('first element')
@@ -151,7 +160,7 @@ export class Ray
     if (!this.is_vertex())
       throw 'NotImplemented: Preventing implementation bug; continues_with not called on a vertex';
 
-    const terminal = vertex.terminal().force();
+    const terminal = vertex.terminal.force();
     if (!terminal.is_empty())
       throw 'NotImplemented: Preventing implementation bug; continues_with should be added to the vertex';
 
@@ -165,7 +174,7 @@ export class Ray
     // console.log(initial_connection.label)
     vertex.terminal = next_connection.as_arbitrary();
 
-    const initial = next_vertex.initial();
+    const initial = next_vertex.initial;
     const previous_connection = new Ray({
       vertex: () => initial,
       terminal: next_vertex.as_arbitrary(),
@@ -177,7 +186,7 @@ export class Ray
     next_connection.vertex = previous_connection.as_arbitrary();
     previous_connection.vertex = next_connection.as_arbitrary();
 
-    // next_vertex.initial = connection.vertex().force().as_arbitrary();
+    // next_vertex.initial = connection.vertex.force().as_arbitrary();
 
     // const connection = new Ray({
     //   vertex: this.as_arbitrary(),
@@ -192,39 +201,9 @@ export class Ray
     return next_vertex.as_reference();
   }
 
-  is_initial = (): boolean => this.self().match({
-    Some: (self) => self.initial().is_none(),
-    None: () => false
-  });
-  is_vertex = (): boolean => !this.is_initial() && !this.is_terminal();
-  is_terminal = (): boolean => this.self().match({
-    Some: (self) => self.terminal().is_none(),
-    None: () => false
-  });
-
-  is_reference = (): boolean => this.is_initial() && this.is_terminal();
-
-  is_empty = (): boolean => this.self().is_none();
-
-  as_reference = (): Ray => new Ray({ vertex: () => Option.Some(this) }) // A ray whose vertex references this Ray (ignorantly).
-
-  as_option = (): Option<Ray> => Option.Some(this);
-  as_arbitrary = (): Arbitrary<Ray> => () => this.as_option();
-
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
   equivalent = (other: Ray) => { throw new NotImplementedError(); }
-
-  get type(): RayType {
-    if (this.is_reference())
-      return RayType.REFERENCE;
-    if (this.is_initial())
-      return RayType.INITIAL;
-    if (this.is_terminal())
-      return RayType.TERMINAL;
-
-    return RayType.VERTEX;
-  }
 
   // TODO: Perhaps locally cache count?? - no way to ensure globally coherenct
   count = (): Ray => { throw new NotImplementedError() }
@@ -246,15 +225,21 @@ export class Ray
 
   // TODO: Generalize these functions to:
   //
-  // TODO: +default, in the case of Initial/Terminal = Option.None, to which the default sometimes is nothing. Or in the case of min/max it's 0.
+  // TODO: +default, in the case of Initial/Terminal = Ray.None, to which the default sometimes is nothing. Or in the case of min/max it's 0.
 
 
   // TODO: being called min.x needs to return the min value within that entire structure.
 
   // [this.vertices().x.max(), this.edges().x.max()].max()
   // [this.vertices().x.min(), this.edges().x.max()].max()
+  // TODO: Indicies not corresponding the the directionality defined, are probably on another abstraction layer described this way. More accurately, they're directly connected, and on a separate layer with more stuff in between...
+  index = (): Ray => { throw new NotImplementedError(); }
   min = (_default: 0): Ray => { throw new NotImplementedError(); }
   max = (_default: 0): Ray => { throw new NotImplementedError(); }
+
+  // [a, b, c] zip [d, e, f] zip [g, h, i] ...
+  // [[a,d,g],[b,e,h],[c,f,i]]
+  zip = (): Ray => { throw new NotImplementedError(); }
 
   // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
   apply = (func: Ray) => {
@@ -284,19 +269,19 @@ export class Ray
     async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
     // JS.Generator
     *[Symbol.iterator](): Generator<Ray> { yield *this.traverse(); }
-  // JS.AsyncGenerator
-  as_async_generator = (): AsyncGenerator<Ray> => this[Symbol.asyncIterator]();
-  // JS.AsyncIterator
-  as_async_iterator = (): AsyncIterator<Ray> => this.as_async_generator();
-  // JS.Iterator
-  as_generator = (): Generator<Ray> => this[Symbol.iterator]();
-  // JS.AsyncIterator
-  as_iterator = (): Iterator<Ray> => this.as_generator();
-  // JS.Array
-  as_array = (): any[] => [...this];
-  // JS.String
-  toString = (): string => this.as_array().toString();
-  as_string = () => this.toString();
+    // JS.AsyncGenerator
+    as_async_generator = (): AsyncGenerator<Ray> => this[Symbol.asyncIterator]();
+    // JS.AsyncIterator
+    as_async_iterator = (): AsyncIterator<Ray> => this.as_async_generator();
+    // JS.Iterator
+    as_generator = (): Generator<Ray> => this[Symbol.iterator]();
+    // JS.AsyncIterator
+    as_iterator = (): Iterator<Ray> => this.as_generator();
+    // JS.Array
+    as_array = (): any[] => [...this];
+    // JS.String
+    toString = (): string => this.as_array().toString();
+    as_string = () => this.toString();
 
   /**
    * Quick dirty compilation
@@ -308,7 +293,7 @@ export class Ray
     if (c[this.label] !== undefined)
       return c[this.label]!;
 
-    const of = (option: Option<Ray>): string => option.match({
+    const of = (option: Ray): string => option.match({
       Some: (ray) => {
         ray.debug(c) ;
         return ray.label;
@@ -319,9 +304,9 @@ export class Ray
     const obj: any = { label: this.label };
     c[this.label] = obj;
 
-    obj.initial = of(this.initial());
-    obj.vertex = of(this.vertex());
-    obj.terminal = of(this.terminal());
+    obj.initial = of(this.initial);
+    obj.vertex = of(this.vertex);
+    obj.terminal = of(this.terminal);
     obj.type = this.as_reference().type;
 
     return obj;
@@ -398,6 +383,22 @@ export class Ray
   }
 
 }
+//     force = (): any => self.match({
+//         Some: (a) => a,
+//         None: () => { throw new Error('Expected Some(value) to be present but found None.') }
+//     });
+//
+//     default = (fn: () => any): any => self.match({
+//         Some: (a) => a,
+//         None: () => fn()
+//     })
+//
+//     none_or = (or: (obj: any) => any): Option<any> => {
+//       return self.match({
+//         Some: (some: any) => Option.Some(or(some)),
+//         None: () => Ray.None
+//       })
+//     }
 
 /**
  *
@@ -405,7 +406,7 @@ export class Ray
  *
  * Not to be considered as a perfect mapping of JavaScript functionality - merely a practical one.
  */
-export type JSObj<Target = Option<Ray>> = {
+export type JSObj<Target = Ray> = {
   Iterable: <T>(iterable: Iterable<T>) => typeof iterable,
   Iterator: <T>(iterator: Iterator<T>) => typeof iterator,
   Boolean: (boolean: boolean) => typeof boolean,
@@ -417,10 +418,10 @@ export type JSObj<Target = Option<Ray>> = {
   Any: (any: any) => typeof any,
   None: typeof none;
 }
-export type JSImpl<Target = Option<Ray>> = {
+export type JSImpl<Target = Ray> = {
   as_ray: () => Target,
 }
-export type JS<Target = Option<Ray>> = MemberType<TaggedUnion<JSObj<Target>, JSImpl<Target>>>;
+export type JS<Target = Ray> = MemberType<TaggedUnion<JSObj<Target>, JSImpl<Target>>>;
 
 export const JS = enumeration<JSObj, JSImpl>({
   Iterable: <T>(iterable: Iterable<T>) => iterable,
@@ -432,15 +433,15 @@ export const JS = enumeration<JSObj, JSImpl>({
   Any: (any: any) => any,
   None: none,
 }, self => class {
-  as_ray = (): Option<Ray> => self.match({
-    Iterable: <T>(iterable: Iterable<T>): Option<Ray> => from_iterable(iterable),
-    Iterator: <T>(iterator: Iterator<T>): Option<Ray> => from_iterator(iterator),
-    Boolean: (boolean: boolean): Option<Ray> => from_boolean(boolean),
-    // Number: (number: number): Option<Ray> => from_number(number),
-    // Function: (func: ParameterlessFunction): Option<Ray> => from_function(func),
-    Object: (object: object): Option<Ray> => from_object(object),
-    Any: (any: any): Option<Ray> => Option.Some(new Ray({ js: () => Option.Some(any) })),
-    None: (): Option<Ray> => Option.None
+  as_ray = (): Ray => self.match({
+    Iterable: <T>(iterable: Iterable<T>): Ray => from_iterable(iterable),
+    Iterator: <T>(iterator: Iterator<T>): Ray => from_iterator(iterator),
+    Boolean: (boolean: boolean): Ray => from_boolean(boolean),
+    // Number: (number: number): Ray => from_number(number),
+    // Function: (func: ParameterlessFunction): Ray => from_function(func),
+    Object: (object: object): Ray => from_object(object),
+    Any: (any: any): Ray => Option.Some(new Ray({ js: () => Option.Some(any) })),
+    None: (): Ray => Ray.None
   })
 });
 
@@ -466,11 +467,11 @@ export const from_any = (any: any): JS => {
   return JS.Any(any);
 }
 
-export const from_iterable = <T = any>(iterable: Iterable<T>): Option<Ray> => from_iterator(iterable[Symbol.iterator]());
-export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
+export const from_iterable = <T = any>(iterable: Iterable<T>): Ray => from_iterator(iterable[Symbol.iterator]());
+export const from_iterator = <T = any>(iterator: Iterator<T>): Ray => {
   // [  |--]
 
-  const next = (initial: Option<Ray>): Option<Ray> => {
+  const next = (initial: Ray): Ray => {
     const iterator_result = iterator.next();
     const is_terminal = iterator_result.done === true;
 
@@ -481,23 +482,23 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
       const terminal = new Ray({
         initial: () => initial
       });
-      // initial.force().continues_with(() => terminal.as_reference().as_option());
+      // initial.force().continues_with(() => terminal.as_reference());
 
       // if (initial.is_some())
       //   initial.force().terminal = () => terminal; // TODO REPEAT FROM BELOW
 
-      return terminal.as_option();
+      return terminal;
     }
 
-    const current: Option<Ray> = Option.Some(new Ray({
+    const current: Ray = Option.Some(new Ray({
       js: () => Option.Some(iterator_result.value),
-      // initial: () => new Ray().as_option(),
+      // initial: () => new Ray(),
       initial: () => initial,
       vertex: () => from_any(iterator_result.value).as_ray(),
       terminal: () => next(current)
     }));
 
-    // initial.force().continues_with(() => current.force().as_reference().as_option());
+    // initial.force().continues_with(() => current.force().as_reference());
     if (initial.is_some())
       initial.force().terminal = () => current;
 
@@ -505,12 +506,12 @@ export const from_iterator = <T = any>(iterator: Iterator<T>): Option<Ray> => {
   }
 
   const ray_iterator = new Ray({ js: () => Option.Some(iterator)});
-  ray_iterator.terminal = () => next(ray_iterator.as_option());
+  ray_iterator.terminal = () => next(ray_iterator);
 
   // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
-  return ray_iterator.as_reference().as_option();
+  return ray_iterator.as_reference();
 }
-export const from_generator = <T = any>(generator: Generator<T>): Option<Ray> => {
+export const from_generator = <T = any>(generator: Generator<T>): Ray => {
   // [  |--]
   return from_iterable(generator);
 }
@@ -534,19 +535,19 @@ export const js = (value: any): Ray => {
   return vertex;
 }
 
-export const length = (of: number, value: any = undefined): Option<Ray> => {
+export const length = (of: number, value: any = undefined): Ray => {
   let current = empty_vertex().as_reference();
   for (let i = 0; i < of; i++) {
     current = current.continues_with(new Ray({js: () => Option.Some(value)}).as_reference())
   }
 
-  return current.as_option();
+  return current;
 }
 // export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
 //   return Arbitrary.Fn(() => length(of, value).resolve().force().at_terminal(index));
 // }
 //
-export const from_boolean = (boolean: boolean): Option<Ray> => {
+export const from_boolean = (boolean: boolean): Ray => {
   // |-false->-true-| (could of course also be reversed)
 
   // from_iterable([false, true])
@@ -557,10 +558,10 @@ export const from_boolean = (boolean: boolean): Option<Ray> => {
 
   // _false.as_reference()
   //   .continues_with(() =>
-  //     _true.initial().force().as_reference().as_option()
+  //     _true.initial.force().as_reference()
   //   );
 
-  return (boolean ? _true : _false).as_reference().as_option();
+  return (boolean ? _true : _false).as_reference();
 }
 
 
@@ -581,19 +582,19 @@ export const from_boolean = (boolean: boolean): Option<Ray> => {
 // export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
 
 
-// export const from_number = (number: number): Option<Ray> => {
+// export const from_number = (number: number): Ray => {
 //
 // }
-// export const from_function = (func: ParameterlessFunction): Option<Ray> => {
+// export const from_function = (func: ParameterlessFunction): Ray => {
 //
 // }
-export const from_object = (object: object): Option<Ray> => {
+export const from_object = (object: object): Ray => {
 
-  return Option.None;
+  return Ray.None;
 }
 //
-// export const from_async_generator = <T>(generator: AsyncGenerator<T>): Option<Ray> => {}
-// export const from_generator = <T>(generator: Generator<T>): Option<Ray> => {}
+// export const from_async_generator = <T>(generator: AsyncGenerator<T>): Ray => {}
+// export const from_generator = <T>(generator: Generator<T>): Ray => {}
 
 export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);
 export const is_number = (_object: any): _object is number => _.isNumber(_object);

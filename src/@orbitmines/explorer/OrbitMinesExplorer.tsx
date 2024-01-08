@@ -309,7 +309,7 @@ export const SimpleRenderedRay = (
 
 // In principle, this should be anything, this is just for the initial setup
 export const RenderedRay = (
-  props: { reference: Option<Ray> } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
+  props: { reference: Ray } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
 ) => {
   const {
     position = [0, 0, 0],
@@ -336,28 +336,28 @@ export const RenderedRay = (
         /**
          * [  |--]
          */
-        if (vertex.vertex().is_none()) {
+        if (vertex.vertex.is_none()) {
           return <Continuation color="orange" position={position} />
         } else {
-          const possible_continuations = vertex.vertex().force();
+          const possible_continuations = vertex.vertex.force();
 
           if (!possible_continuations.as_reference().is_terminal())
             return <Continuation color="orange" position={position} />
           //
-          // if (vertex.terminal().force().store.rendered)
+          // if (vertex.terminal.force().store.rendered)
           //   return <></>
 
           return <RenderedRay
             {...props}
-            reference={possible_continuations.initial().force().as_reference().as_option()}
+            reference={possible_continuations.initial.force().as_reference()}
           />
         }
       }
       case RayType.TERMINAL: {
-        if (vertex.vertex().is_none()) {
+        if (vertex.vertex.is_none()) {
           return <Continuation color="orange" position={position} />
         } else {
-          const possible_continuations = vertex.vertex().force();
+          const possible_continuations = vertex.vertex.force();
 
           // if (!possible_continuations.as_reference().is_initial())
           //   return <Continuation color="orange" position={position} />
@@ -365,7 +365,7 @@ export const RenderedRay = (
 
           // return <RenderedRay
           //   {...props}
-          //   reference={possible_continuations.terminal().force().as_reference().as_option()}
+          //   reference={possible_continuations.terminal.force().as_reference()}
           // />
         }
       }
@@ -374,7 +374,7 @@ export const RenderedRay = (
           return <Continuation color={color} position={position} />
 
         // throw 'Not Implemented'
-        return <RenderedRay {...props} reference={vertex.self().match({ Some: (ray) => ray.as_reference().as_option(), None: () => Option.None })} />
+        return <RenderedRay {...props} reference={vertex.self().match({ Some: (ray) => ray.as_reference(), None: () => Ray.None })} />
       }
       case RayType.VERTEX: {
         const tilt = -10; // TODO; Generally should use some equivalencing in the 3d-frames for this once setup is in place (perpsective/camera) if in threejs..
@@ -404,14 +404,14 @@ export const RenderedRay = (
         //   const right = add(position, [20, 0, 0]);
         //
         //   return <>
-        //     <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />
+        //     <RenderedRay reference={vertex.initial.force().as_reference()} position={left} />
         //
         //     {/* Line now starts in the center of the torus tube */}
         //     <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />
         //     {/*<Vertex position={position} />*/}
         //     <BinarySuperposition position={position} />
         //     <Line start={position} end={add(right, [-torus.radius, 0, 0])} scale={scale} />
-        //     <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />
+        //     <RenderedRay reference={vertex.terminal.force().as_reference()} position={right} />
         //   </>
         // }
 
@@ -544,8 +544,8 @@ export const RenderedRay = (
           {/*<Continuation color="red" position={add(left, [0, 20, 0])} />*/}
           {/*<Continuation color="orange" position={add(left, [-40, 60, 0])} />*/}
 
-          {/*<RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={add(left, [-20, 20, 0])} />*/}
-          <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} color={color} />
+          {/*<RenderedRay reference={vertex.initial.force().as_reference()} position={add(left, [-20, 20, 0])} />*/}
+          <RenderedRay reference={vertex.initial.force().as_reference()} position={left} color={color} />
 
           {/* Line now starts in the center of the torus tube */}
           {/*{isVertical*/}
@@ -569,7 +569,7 @@ export const RenderedRay = (
 
           </group>
           {/*{<>*/}
-          {/*  <RenderedRay reference={vertex.initial().force().as_reference().as_option()} position={left} />*/}
+          {/*  <RenderedRay reference={vertex.initial.force().as_reference()} position={left} />*/}
 
           {/*  /!* Line now starts in the center of the torus tube *!/*/}
           {/*  <Line start={add(left, [torus.radius, 0, 0])} end={position} scale={scale} />*/}
@@ -583,11 +583,11 @@ export const RenderedRay = (
           {/*    : <BinaryValue position={position} boolean={_.sample([false, true])} />*/}
           {/*  }*/}
 
-          {/*  <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} />*/}
+          {/*  <RenderedRay reference={vertex.terminal.force().as_reference()} position={right} />*/}
 
           {/*</>}*/}
 
-          <RenderedRay reference={vertex.terminal().force().as_reference().as_option()} position={right} color={color} />
+          <RenderedRay reference={vertex.terminal.force().as_reference()} position={right} color={color} />
 
           {/*<Torus*/}
           {/*  args={[15, torus.tube.width, torus.segments, torus.tube.segments]}*/}
@@ -624,11 +624,11 @@ const InterfaceObject = ({
 }: any) => {
   const ref = useRef<any>();
 
-  const [selection, setSelection] = useState<Option<Ray>>(
-    empty_vertex().as_reference().as_option()
+  const [selection, setSelection] = useState<Ray>(
+    empty_vertex().as_reference()
   );
-  const [controls, setControls] = useState<Option<Ray>>(
-    empty().as_reference().as_option()
+  const [controls, setControls] = useState<Ray>(
+    empty().as_reference()
   );
 
   const {
@@ -701,7 +701,7 @@ const InterfaceObject = ({
       combo: "arrowright", global: true, label: "", onKeyDown: () => {
         const next = selection.force().continues_with(
           new Ray({ js: () => Option.Some("A") }).as_reference()
-        ).as_option();
+        );
 
         setSelection(next)
       }
@@ -891,7 +891,7 @@ const Test2 = ({ ray, position }: { ray: Ray, position: [number, number, number]
       <group>
         <Torus args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]} material-color="orange" position={position} />
         {[...ray.traverse()].map((vertex, i) => (
-          <Test2 key={i} ray={vertex.vertex().force()} position={[position[0] + (20 * (i + 1)), position[1], position[2]]} />
+          <Test2 key={i} ray={vertex.vertex.force()} position={[position[0] + (20 * (i + 1)), position[1], position[2]]} />
         ))}
       </group>
     )
@@ -911,14 +911,14 @@ const Test2 = ({ ray, position }: { ray: Ray, position: [number, number, number]
 //      *
 //      * So in the case of [0, 1], this would be a reference to the Iterator, in the case of 1/2/3/4/5, a reference to their respective values.
 //      */
-//     const reference = vertex.vertex();
+//     const reference = vertex.vertex;
 //
 //     if (reference.is_some()) {
-//       if (reference.force().vertex().is_none())
+//       if (reference.force().vertex.is_none())
 //         continue;
 //
 //       // This would be the Iterator, or the numbers respectively.
-//       const dereferenced = reference.force().vertex().force();
+//       const dereferenced = reference.force().vertex.force();
 //       /**
 //        * Can again be any of these:
 //        * [--|--]
@@ -932,13 +932,13 @@ const Test2 = ({ ray, position }: { ray: Ray, position: [number, number, number]
 //
 //       console.log('           traversing nested reference');
 //       for (let nested of reference.force().traverse()) {
-//         const nested_reference = nested.vertex();
+//         const nested_reference = nested.vertex;
 //
 //         if (nested_reference.is_some()) {
-//           if (nested_reference.force().vertex().is_none())
+//           if (nested_reference.force().vertex.is_none())
 //             continue;
 //
-//           const nested_dereferenced = nested_reference.force().vertex().force();
+//           const nested_dereferenced = nested_reference.force().vertex.force();
 //
 //           console.log('type:', nested_reference.force().toString());
 //           console.log('structure at', nested_dereferenced.js().force())

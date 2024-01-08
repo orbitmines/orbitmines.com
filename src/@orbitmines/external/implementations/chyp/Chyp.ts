@@ -11,6 +11,8 @@ import {Option} from "../../../js/utils/Option";
  * NOTE:
  * This is just here for reference to the existing Chyp codebase - for anyone who understands that structure, to quickly translate that knowledge into how Rays work. - Other than that functionality, everything here should be considered as deprecated.
  *
+ * - The .copy()'s are implemented on Ray.
+ *
  * TODO: There's a lot of duplicate code, unnecessary documentation and non-generality in Chyp. It was probably developed as a proof of concept? - Expecting that to be addressed in the projects Aleks Kissinger is currently setting up.
  *
  * TODO: Probably want all these types at runtime, to display them
@@ -143,7 +145,7 @@ export class VData extends Ray {
   /**
    * Indices (if any) where this vertex occurs in the input and output lists of the hypergraph.
    */
-  get in_indices(): Ray { throw new NotImplementedError(); }
+  get in_indices(): Ray { return this.initial } //
   get out_indices(): Ray { throw new NotImplementedError(); }
 
   /**
@@ -171,8 +173,8 @@ export class VData extends Ray {
   merge = (other: VData): Ray => {
     // TODO: other is destroyed
     // TODO: Vertices
-    // this.initial().force().equivalent(other.initial().force());
-    // this.terminal().force().equivalent(other.initial().force());
+    // this.initial.force().equivalent(other.initial.force());
+    // this.terminal.force().equivalent(other.initial.force());
 
     /*
 
@@ -290,16 +292,8 @@ export class Graph extends Ray {
   get edata(): Ray { throw new NotImplementedError(); }
 
   // TODO: Can probably generate these on the fly, or cache them automatically
-  get vindex(): Ray { throw new NotImplementedError(); }
-  get eindex(): Ray { throw new NotImplementedError(); }
-
-  __init__ = (): Ray => {
-    this.vindex = 0;
-    this.edindex = 0;
-  }
-
-  // Implemented on Ray
-  // copy = (): Ray => { throw new NotImplementedError(); }
+  get vindex(): Ray { return this.vdata.index.max(0); }
+  get eindex(): Ray { return this.edata.index.max(0); }
 
   // TODO .keys
   vertices = (): Ray => this.vdata;
@@ -316,6 +310,7 @@ export class Graph extends Ray {
    *
    * This consists of a list of pairs (vertex type, register size) corresponding to each input vertex.
    */
+  // TODO: Domain/Codmain is just the initial/terminal side (possibly typed) where the direction which is what defines what it itself is connected to, is ignored.
   get domain(): Ray { return this.___domain(this.inputs()) };
 
   /**
@@ -325,18 +320,7 @@ export class Graph extends Ray {
    */
   get codomain(): Ray { return this.___domain(this.outputs()) };
 
-  /**
-   * Return the :class:`VData` associated with vertex id `v`.
-   *
-   * @param v Integer identifier of the vertex.
-   */
   vertex_data = (v = int): VData => this.vertices().at(v).cast();
-
-  /**
-   * Return the :class:`EData` associated with edge id `e`.
-   *
-   * @param e Integer identifier of the edge.
-   */
   edge_data = (e = int): EData => this.edges().at(e).cast();
 
   // TODO: Shouldnt be here
@@ -665,9 +649,62 @@ export class Graph extends Ray {
      * if len(plug1) != len(plug2):
      *             raise GraphError(f'Attempting to plug a graph with {len(plug1)} '
      *                              + f'outputs into one with {len(plug2)} inputs')
+     *
+     *   self.set_outputs([vmap[v] for v in other.outputs()])
      */
 
+    // [outputs to inputs]
+    // Go through pairs of vertices from each plug
+    compose.zip().all(([input, output]) => {
+      /**
+       * While vertex currently assigned to p1 has already been merged into another vertex, repeatedly replace it with the vertex it was merged into until p1 is a vertex that has not already been merged. Vice versa for p2.
+       */
 
+      // TODO: does this ever happen???
+      // while p1 in quotient:
+      // p1 = quotient[p1]
+      // while p2 in quotient:
+      // p2 = quotient[p2]
+
+
+      // TODO, Again the same equivalence check for loops etc..
+      {
+        // If the resulting p1 and p2 are not the same vertex, merge them.
+        if (input === output)
+          return;
+
+        // TODO; DO this on the vertices;
+        // data_1 = self.vertex_data(p1) data_2 = self.vertex_data(p2)
+
+        // If both vertices have flexible types that are not equal, raise an error due to ambiguity.
+        // TODO: Basically, if we're assuming there could be ignorance here, which we wouldn't do on the types. Again, the types necessarily have ambiguity as well, it's just ignored in that instance.
+
+
+        // TODO: From here assumes same types, now just checking size (size should again be generalized to type), it's just structure.
+
+        ['vtype', 'size'].forEach(structure => {
+          const infer = `infer_${structure}`;
+
+          if (input[infer] && output[infer] && input[structure] !== output[structure]) {
+            throw GraphError(`Ambiguous vertex ${structure} during composition.`)
+
+          } else if (input[infer]) {
+            // Otherwise, if one vertex has a flexible type, ensure the vertex types match.
+            // TODO: Infer type = true, basically means, ignorant ambiguous type, which will just change to whatever it matched to it
+            // TODO: Again both sides same thing..
+            input[structure] = output[structure]; // TODO: Generalized structure
+            input[infer] = false;
+          } else if (output.infer_type) {
+            output[structure] = input[structure];
+            output[infer] = false;
+          }
+        });
+
+        input.merge(output);
+      // # Register than p2 has been merged into p1.
+      //   quotient[p2] = p1
+      }
+    });
   }
 
   /**
@@ -710,6 +747,8 @@ export class Graph extends Ray {
     this.edata
       .filter(edge => edges.includes(edge))
       .all(edge => edge.cast<EData>().highlight = bool(true));
+
+
   }
 
   /**
@@ -719,10 +758,8 @@ export class Graph extends Ray {
    */
   unhighlight = (): Ray => {
     // TODO: These could be merged
-    this.vdata
-      .all(vertex => vertex.cast<VData>().highlight = bool(false));
-    this.edata
-      .all(edge => edge.cast<EData>().highlight = bool(false));
+    this.vdata.highlight = false;
+    this.edata.highlight = false;
   }
 }
 
