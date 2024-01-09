@@ -4,7 +4,7 @@ import {VisualizationCanvas} from "../../explorer/Visualization";
 import {_Continuation, add, AutoVertex, InterfaceOptions, SimpleRenderedRay} from "../../explorer/OrbitMinesExplorer";
 import {Center} from "@react-three/drei";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
-import {DebugResult, Ray, RayType} from "../../explorer/Ray";
+import {DebugRay, DebugResult, Ray, RayType} from "../../explorer/Ray";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import _ from "lodash";
 import {Children} from "../../../lib/typescript/React";
@@ -23,7 +23,7 @@ const Interface = () => {
   const cursor: InterfaceOptions = {
     scale,
     rotation: [0, 0, Math.PI / 6 ],
-    color: '#FF5555'
+    color: '#555555'
   };
 
   // TODO: Direct call to rerender on change, now there's lag
@@ -133,11 +133,25 @@ const Interface = () => {
   const debug: DebugResult = {};
   selection.debug(debug);
 
-  if (DEBUG) {
-    // _.groupBy(_.values(debug), ray => ray.vertex);
+  const Debug = () => {
+    const groups: string[][] = [];
+    _.values(debug).forEach(ray => {
+      for (let group of groups) {
+        if (group.includes(ray.label) || group.includes(ray.vertex)) {
+          group.push(...[ray.label, ray.vertex].filter(l => l !== 'None'));
+          return;
+        }
+      }
+
+      groups.push([ray.label, ray.vertex].filter(l => l !== 'None'));
+    });
+
+    const group = (l: string): string[] => groups.find(group => group.includes(l))!;
+    const group_index = (l: string): number => groups.indexOf(group(l));
+    const index_in_group = (l: string): number => group(l).indexOf(l);
 
     return <>
-      <Center>
+      {/*<Center>*/}
         {_.values(debug).map(((_ray, index) => {
           let ray = {
             ...debug[_ray.label]
@@ -150,12 +164,21 @@ const Interface = () => {
             [RayType.REFERENCE]: '#555555',
           }[ray.type];
 
+          const group_x = _.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)).map(position => position[0])[0];
+          console.log(_.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)))
+
           ray = {
             ...ray,
             ...({
               color,
               scale: 1.5,
-              position: [0, index * 20, 0]
+              // rotation: ray.type == RayType.REFERENCE ? [0, 0, Math.PI / 6] : [0, 0, 0],
+              position: [
+                group_x ?? group_index(ray.label) * 20 * 1.5,
+                // (index_in_group(ray.label) + group_index(ray.label) + (group_x ? 0: 1)) * 30 * 1.5,
+                index * 20 * 1.5,
+                0
+              ]
             } as InterfaceOptions)
           }
 
@@ -169,7 +192,7 @@ const Interface = () => {
             ..._.pick(ray, 'position', 'rotation', 'scale', 'color'),
           }
 
-          console.log(ray.label, [ray.initial, ray.vertex, ray.terminal].toString())
+          // console.log(ray.label, [ray.initial, ray.vertex, ray.terminal].toString())
 
           const initial: Required<InterfaceOptions> = { ..._default, position: [-20 * _default.scale, 0, 0] };
 
@@ -209,7 +232,11 @@ const Interface = () => {
             <Extreme type={RayType.TERMINAL} />
           </Group>
         }))}
-      </Center>
+
+      {groups.map(group => <>
+        {group.map(l => <AutoVertex position={(debug[l] as InterfaceOptions).position} rotation={[0, 0, Math.PI / 2]} scale={0.75}  color={cursor.color} />)}
+      </>)}
+      {/*</Center>*/}
     </>
   }
 
@@ -228,6 +255,9 @@ const Interface = () => {
 
       {rays.map((ray: Ray) => <Rendered key={ray.label} ray={ray} />)}
 
+      <group position={[0, 60, 0]}>
+        <Debug/>
+      </group>
       {/*<AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} rotation={[0, 0, 0]} />*/}
     </Center>
   </>
