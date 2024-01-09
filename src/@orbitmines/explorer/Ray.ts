@@ -123,10 +123,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   /** [     ] */ static None = () => new Ray({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
+    // /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
+    // /** [?????] -> [???  ] */ as_terminal = () =>
+    //   new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }); // TODO: These fields as DEBUG
+
     /** [     ] */ const vertex = Ray.None();
-    /** [--   ] */ vertex.initial = vertex.as_initial;
+    /** [--   ] */ vertex.initial = new Ray({ vertex: Ray.None, terminal: vertex.as_arbitrary(), js: () => 'initial ref' }).as_arbitrary();
     /** [  ?  ] */ vertex.vertex = value;
-    /** [   --] */ vertex.terminal = vertex.as_terminal;
+    /** [   --] */ vertex.terminal = new Ray({ vertex: Ray.None, initial: vertex.as_arbitrary(), js: () => 'terminal ref' }).as_arbitrary()
 
     /** [--?--] */ return vertex;
   }
@@ -143,9 +147,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
-  /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
-  /** [?????] -> [???  ] */ as_terminal = () =>
-    new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }); // TODO: These fields as DEBUG
 
   // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
