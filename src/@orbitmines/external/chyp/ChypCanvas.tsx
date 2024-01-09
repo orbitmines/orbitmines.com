@@ -165,7 +165,7 @@ const Interface = () => {
           }[ray.type];
 
           const group_x = _.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)).map(position => position[0])[0];
-          console.log(_.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)))
+          // console.log(_.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)))
 
           ray = {
             ...ray,
