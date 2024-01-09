@@ -4,7 +4,7 @@ import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 
 // SHOULDNT CLASSIFY THESE?
 export enum RayType {
-  NONE = '     ',
+  // NONE = '     ',
   REFERENCE = '  |  ',
   INITIAL = '  |-?',
   TERMINAL = '?-|  ',
@@ -151,59 +151,47 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
 
+  continues_with = (b: Ray): Ray => {
+    // TODO: contiues_with is just composing vertices..
 
-  continues_with = (continues_with: Ray): Ray => {
-    if (!this.as_reference().is_reference())
-      throw 'NotImplemented: Preventing implementation bug; continues_with not called on a reference';
-    if (!continues_with.as_reference().is_reference())
-      throw 'NotImplemented: Preventing implementation bug; continues_with not called with a reference';
+    switch (this.type) {
+      case RayType.REFERENCE: {
+        // TODO: We could either go inside the reference and continue there, or expand the direction of reference
+        // TODO: We could move when a reference is on the vertex, set the type to vertex from the perspective of the reference
+        throw new PreventsImplementationBug();
+      }
+      case RayType.TERMINAL:
+      case RayType.INITIAL: {
+        // TODO: Could be each element found in this direction, or continue *after* the entire direction
+        throw new PreventsImplementationBug();
+      }
+      case RayType.VERTEX: {
+        const next_vertex = Ray.vertex(b.as_arbitrary()); // TODO: Could be a reference too, now just force as a next element
 
-    if (!continues_with.is_reference())
-      throw 'NotImplemented: Preventing implementation bug; continues_with not called as a reference';
+        if (this.is_none()) {
+          // 'Empty' vertex from this perspective.
 
-    // TODO: For now just puts it at the vertex, could be done more intelligently
-    const next_vertex = Ray.vertex(() => continues_with.vertex);
+          this.vertex = next_vertex.as_arbitrary();
+          console.log('first element');
+          return next_vertex.as_reference(); // TODO: Generally, return something which knows where all continuations are.
+        }
 
-    const vertex = this.self;
+        // this.self.terminal = next_vertex.initial; equivalence#
 
-    if (vertex.is_empty()) {
-      console.log('first element')
-      this.vertex = next_vertex.as_arbitrary();
-      return this;
+        // switch (b.type) {
+        //   case RayType.REFERENCE:
+        //     break;
+        //   case RayType.INITIAL:
+        //     break;
+        //   case RayType.TERMINAL:
+        //     break;
+        //   case RayType.VERTEX:
+        //     break;
+        // }
+
+        return next_vertex.as_reference();
+      }
     }
-
-    if (!this.is_vertex())
-      throw 'NotImplemented: Preventing implementation bug; continues_with not called on a vertex';
-
-    if (!vertex.terminal.is_empty())
-      throw 'NotImplemented: Preventing implementation bug; continues_with should be added to the vertex';
-
-    // [  |--]
-    const next_connection = vertex.as_terminal();
-
-    // console.log(initial_connection.label)
-    vertex.terminal = next_connection.as_arbitrary();
-
-    const previous_connection = next_vertex.as_initial();
-
-    next_vertex.initial = previous_connection.as_arbitrary();
-
-    next_connection.vertex = previous_connection.as_arbitrary();
-    previous_connection.vertex = next_connection.as_arbitrary();
-
-    // next_vertex.initial = connection.vertex.force().as_arbitrary();
-
-    // const connection = new Ray({
-    //   vertex: this.as_arbitrary(),
-    //   terminal: next_vertex.as_arbitrary()
-    // }).as_arbitrary();
-    //
-    // this.terminal = connection;
-    // next_vertex.initial = connection;
-    //
-    // console.log('continues')
-
-    return next_vertex.as_reference();
   }
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
