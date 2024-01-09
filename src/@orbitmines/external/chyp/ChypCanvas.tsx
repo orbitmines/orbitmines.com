@@ -25,6 +25,9 @@ const Interface = () => {
     color: '#FF5555'
   };
 
+  // TODO: Direct call to rerender on change, now there's lag
+
+
   const [Chyp] = useState<Ray>(Ray.vertex().o({
     selection: Ray
       .vertex().o({ position: [0, 0, 0], scale, color: 'orange' })
@@ -42,6 +45,10 @@ const Interface = () => {
             position: add(selection.any.position ?? [0, 0, 0], [i * 2, 0, 0]),
             scale
           });
+          // const next2 = Ray.js("A").as_reference().o({
+          //   position: add(selection.any.position ?? [0, 0, 0], [i * 2, -30, 0]),
+          //   scale
+          // });
 
           Chyp.any.selection = next;
           Chyp.any.rays = [...rays, next]
@@ -55,7 +62,16 @@ const Interface = () => {
           combo: "arrowleft", global: true, label: "", onKeyDown: () => {
             const { selection, rays } = Chyp.any;
 
+            if (rays.length === 0)
+              return;
+
             rays.pop();
+
+            if (rays.length === 0) {
+              Chyp.any.selection.any.position = [0, 0, 0]
+              return;
+            }
+
             Chyp.any.selection = rays[rays.length - 1];
 
             // selection.continues_with(
