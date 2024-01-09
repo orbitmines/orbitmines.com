@@ -242,7 +242,7 @@ export const AutoRay = (
     scale: 1.5,
     color: 'orange',
     ...defaults,
-    ...ray.any.o
+    ...ray.o
   });
 
   // Move to a layer of abstraction above what is passed to us - this way we can start describing it.

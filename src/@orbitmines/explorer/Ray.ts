@@ -302,17 +302,25 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   get any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
   cast = <T extends Ray>(): T => this.proxy<T>();
 
+  /**
+   * Used for chaining JavaScript-provided properties
+   */
+  o = (object: { [key: string | symbol]: any }): Ray => {
+    _.keys(object).forEach(key => this.any[key] = object[key]); // TODO: Can be prettier, TODO: map to Ray equivalents and add to vertices..
+    return this;
+  }
+
   protected property = (property: string | symbol, _default?: any): any => this.any[property] ??= _default; // TODO: Can this be prettier??
 
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
   protected proxy = <T = any>(constructor?: ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
     return this._proxy ??= new Proxy<Ray>(this, {
-      get(self: Ray, p: string | symbol, receiver: any): Arbitrary<Ray> {
+      get(self: Ray, p: string | symbol, receiver: any): any {
 
         // throw new NotImplementedError();
-        // return self._dirty_store[p];
-        return self.as_arbitrary();
+        return self._dirty_store[p];
+        // return self.as_arbitrary();
       },
       set(self: Ray, p: string | symbol, newValue: any, receiver: any): boolean {
         // throw new NotImplementedError();
@@ -678,9 +686,7 @@ export namespace JS {
     throw new NotImplementedError();
   }
 
-  export const Object = (object: object): Ray => {
-    throw new NotImplementedError();
-  }
+  export const Object = (object: object): Ray => Ray.vertex().o(object);
 
   export const Any = (any: any): Ray => {
     if (any === null || any === undefined) return JS.Any(any);

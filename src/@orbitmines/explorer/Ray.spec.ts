@@ -1,7 +1,36 @@
-import {Ray, RayType} from "./Ray";
+import {JS, Ray, RayType} from "./Ray";
 import {PreventsImplementationBug} from "./errors/errors";
 
+describe("JS", () => {
+  test(".Object", () => {
+    const ray = JS.Object({
+      a: 'b',
+      position: [0, 1, 2],
+      func: () => 'c'
+    });
+
+    expect(ray.any.a).toBe('b');
+    expect(ray.any.test).toBe(undefined);
+    expect(() => ray.any.undefinedFunction()).toThrow();
+    expect(ray.any.position).toEqual([0, 1, 2]);
+    expect(ray.any.func()).toBe('c');
+  })
+});
 describe("Ray", () => {
+  test(".o", () => {
+    const ray = Ray.vertex().o({
+      a: 'b',
+      position: [0, 1, 2],
+      func: () => 'c'
+    });
+
+    expect(ray.any.a).toBe('b');
+    expect(ray.any.test).toBe(undefined);
+    expect(() => ray.any.undefinedFunction()).toThrow();
+    expect(ray.any.position).toEqual([0, 1, 2]);
+    expect(ray.any.func()).toBe('c');
+  })
+
   test(".vertex.#", () => {
     /** [--|--] */ const vertex = Ray.vertex().as_reference();
 
