@@ -1,9 +1,10 @@
 import _ from "lodash";
-import {NotImplementedError} from "./errors/errors";
+import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 
 
 // SHOULDNT CLASSIFY THESE?
 export enum RayType {
+  NONE = '     ',
   REFERENCE = '  |  ',
   INITIAL = '  |-?',
   TERMINAL = '?-|  ',
@@ -63,15 +64,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   protected _terminal: Arbitrary<Ray>; get terminal(): Ray { return this._terminal(); } set terminal(terminal: Arbitrary<Ray>) { this._terminal = terminal; }
 
   get self(): Ray {
-    if (!this.is_reference())
-      throw new NotImplementedError('Preventing bugs, .self is used for the assumption of a reference..');
-
+    // if (!this.vertex.is_none())
+    //   throw new PreventsImplementationBug('Preventing bugs, .self is used for the assumption of a reference..');
+    //
     return this.vertex;
   };
   set self(self: Arbitrary<Ray>) {
-    if (!this.is_reference())
-      throw new NotImplementedError('Preventing bugs, .self is used for the assumption of a reference..');
-
+    // if (!this.is_reference())
+    //   throw new PreventsImplementationBug('Preventing bugs, .self is used for the assumption of a reference..');
+    //
     this.vertex = self;
   }
 
@@ -81,21 +82,21 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     js,
   }: { js?: Arbitrary<any> } & Partial<AbstractDirectionality<Ray>> = {}) {
     this._initial = initial ?? Ray.None;
-    this._vertex = vertex ?? Ray.None;
+    this._vertex = vertex ?? this.self_reference;
     this._terminal = terminal ?? Ray.None;
     this.js = js ?? Ray.None;
   }
 
-  /** [  |-?] */ is_initial = (): boolean => this.self.is_some() && this.self.initial.is_none();
+  /** [  |-?] */ is_initial = (): boolean => this.is_some() && this.self.initial.is_none();
   /** [--|--] */ is_vertex = (): boolean => !this.is_initial() && !this.is_terminal();
-  /** [?-|  ] */ is_terminal = (): boolean => this.self.is_some() && this.self.terminal.is_none();
+  /** [?-|  ] */ is_terminal = (): boolean => this.is_some() && this.self.terminal.is_none();
   /** [  |  ] */ is_reference = (): boolean => this.is_initial() && this.is_terminal();
-  /** [?- -?] */ is_empty = (): boolean => this.self.is_none();
 
   get type(): RayType {
     /** [  |  ] */ if (this.is_reference()) return RayType.REFERENCE;
     /** [  |-?] */ if (this.is_initial()) return RayType.INITIAL;
     /** [?-|  ] */ if (this.is_terminal()) return RayType.TERMINAL;
+    // /** [     ] */ if (this.is_empty()) return RayType.NONE;
     /** [--|--] */ return RayType.VERTEX;
   }
 
@@ -114,7 +115,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * Concretely, we use here "whatever the JavaScript engine run on" as the thing which has power over the equivalence assumption we use to halt programs. - The asymmetry which allows the engine to make a distinction between each object.
    */
-  is_none = (): boolean => this.self === this;
+  is_none = (): boolean => this.self === this.self.self;
+
+  protected self_reference = () => this;
 
   /** [     ] */ static None = (): Ray => {
     const self = Ray.empty(); // TODO: None, could also self-reference the ray on which it's defining to be None. Now it's just an ignorant loop.
