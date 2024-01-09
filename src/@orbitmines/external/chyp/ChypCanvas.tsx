@@ -1,9 +1,102 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import IEventListener, {mergeListeners} from "../../../js/react/IEventListener";
 import {VisualizationCanvas} from "../../../explorer/Visualization";
-import {AutoRenderedRay, BinarySuperposition, Loop, SimpleRenderedRay} from "../../../explorer/OrbitMinesExplorer";
-import {RayType} from "../../../explorer/Ray";
+import {add, AutoRenderedRay, BinarySuperposition, Loop, SimpleRenderedRay} from "../../../explorer/OrbitMinesExplorer";
+import {empty_vertex, js, Ray, RayType} from "../../../explorer/Ray";
 import {Center} from "@react-three/drei";
+import {Option} from "../../../js/utils/Option";
+import {useHotkeys} from "../../../js/react/hooks/useHotkeys";
+
+const Interface = () => {
+  const ref = useRef<any>();
+  const hotkeys = useHotkeys();
+
+  const scale = 1.5;
+  const i = 20 * scale;
+
+  const [selection, setSelection] = useState<Ray>(
+    empty_vertex().as_reference().o({
+      position: [0, 0, 0],
+      scale
+    })
+  );
+
+  const [rays, setRays] = useState<Ray[]>([selection]);
+
+  hotkeys.set(...[
+    {
+      combo: "arrowright", global: true, label: "", onKeyDown: () => {
+
+        const next = js("A").as_reference().o({
+          position: add(selection.o_.position ?? [0, 0, 0], [i * 2, 0, 0]),
+          scale
+        });
+        setSelection(next);
+        setRays([...rays, next]);
+
+        // selection.continues_with(
+
+        // );
+
+        console.log(rays);
+      }
+    },
+    {
+      combo: "arrowleft", global: true, label: "", onKeyDown: () => {
+
+        rays.pop();
+        setSelection(rays[rays.length - 1]);
+
+        // selection.continues_with(
+
+        // );
+
+        console.log(rays);
+      }
+    },
+    {
+      combo: "arrowup", global: true, label: "", onKeyDown: () => {
+
+        setRays(rays.flatMap(ray => [
+          ray,
+          js("A").as_reference().o({
+            ...ray.o_,
+            position: add(ray.o_.position ?? [0, 0, 0], [0, i * 2, 0])
+          }),
+          js("A").as_reference().o({
+            ...ray.o_,
+            position: ray.o_.position,
+            rotation: [0, 0, Math.PI / 2]
+          }),
+          js("A").as_reference().o({
+            ...ray.o_,
+            position: add(ray.o_.position ?? [0, 0, 0], [0, i * 2, 0]),
+            rotation: [0, 0, Math.PI / 2]
+          })
+        ]));
+
+        selection.o({...selection.o_, position: add(selection.o_.position ?? [0, 0, 0], [0, i * 2, 0])})
+        setSelection(selection)
+
+        // selection.continues_with(
+
+        // );
+
+        console.log(rays);
+      }
+    }
+  ]);
+
+  return <>
+    <Center>
+      <AutoRenderedRay position={selection.o_.position} rotation={[0, 0, Math.PI / 6 ]} color="#FF5555" scale={scale}/>
+
+      {rays.map(ray => <AutoRenderedRay {...ray.o_} />)}
+
+      {/*<AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} rotation={[0, 0, 0]} />*/}
+    </Center>
+  </>
+}
 
 /**
  * TODO: Import .chyp files
@@ -20,8 +113,6 @@ const ChypCanvas = (
 
   }
 
-  const scale = 1.5;
-
   return <div>
     {/*<Row>*/}
     {/*  <Organization {...ORGANIZATIONS.chyp} only_logo />*/}
@@ -30,52 +121,8 @@ const ChypCanvas = (
 
     <VisualizationCanvas
       style={{height: '100vh'}}
-
-      {...mergeListeners(...listeners, listener)}
     >
-      <Center>
-
-        {/* Iterator */}
-        {/*<group>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={5} />*/}
-        {/*  <AutoRenderedRay scale={scale} position={[180, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={1} color="#FF5555" />*/}
-        {/*</group>*/}
-
-        {/* Grid/Dictionary/... */}
-        {/*<group>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={5}/>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 60, 0]} length={5}/>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={5}/>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 60, 0]} rotation={[0, 0, Math.PI / 2]} length={5}/>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[180, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={1} color="#FF5555"/>*/}
-        {/*</group>*/}
-
-        {/* Loop memory */}
-        {/*<group>*/}
-        {/*  <group scale={scale}> <Loop scale={scale} position={[0, 15, 0]}/></group>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={4} rotation={[0, 0, 0]} />*/}
-        {/*</group>*/}
-
-
-        {/* Being able to reference any part from within the structure - self-compiling */}
-        {/*<group>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1}/>*/}
-        {/*  <AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={1}*/}
-        {/*                   color="#FF5555"/>*/}
-        {/*  /!*<AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={1} color="#FFFFFF" />*!/*/}
-        {/*</group>*/}
-
-        <group>
-          <AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} color="#5555FF"/>
-
-          <AutoRenderedRay scale={scale} position={[60, 60, 0]} length={1} color="#FF5555"/>
-          <AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 2]} length={1}
-                           color="#FF55FF"/>
-          <AutoRenderedRay scale={scale} position={[30, 60, 0]} rotation={[0, 0, Math.PI / 2]} length={1}
-                           color="#FF55FF"/>
-          {/*<AutoRenderedRay scale={scale} position={[30, 0, 0]} rotation={[0, 0, Math.PI / 4]} length={1} color="#FFFFFF" />*/}
-        </group>
-      </Center>
+      <Interface/>
     </VisualizationCanvas>
   </div>
 }
@@ -90,7 +137,7 @@ export const ChypExplorer = (
 
   const listener: IEventListener<any> = {}
 
-  return <ChypCanvas listeners={[...listeners, listener]}/>
+  return <ChypCanvas/>
 }
 
 export default ChypCanvas;
