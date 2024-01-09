@@ -17,6 +17,8 @@ export enum RayType {
 
 export type ParameterlessFunction<T = any> = () => T;
 export type Arbitrary<T> = (...args: any[]) => T;
+export type Constructor<T> = new (...args: any[]) => T;
+export type ParameterlessConstructor<T> = new () => T;
 
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
@@ -204,7 +206,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   equivalent = (other: Ray) => { throw new NotImplementedError(); }
 
   // TODO: Perhaps locally cache count?? - no way to ensure globally coherenct
-  count = (): Ray => { throw new NotImplementedError() }
+  get count(): Ray { throw new NotImplementedError() }
 
   // TODO; Could return the ignorant reference to both instances, or just the result., ..
   copy = (): Ray => { throw new NotImplementedError() }
@@ -224,16 +226,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 //
   // export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
 
-  /**
-   * Cast to some JavaScript object
-   */
-  cast = <T extends Ray>(): T => { throw new NotImplementedError(); };
-
   // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
-  // map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
+  map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   all = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   // filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
-  clear = (): Ray => { throw new NotImplementedError(); }
+  get clear(): Ray { throw new NotImplementedError(); }
 
   // TODO: Generalize these functions to:
   //
@@ -245,7 +242,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // [this.vertices().x.max(), this.edges().x.max()].max()
   // [this.vertices().x.min(), this.edges().x.max()].max()
   // TODO: Indicies not corresponding the the directionality defined, are probably on another abstraction layer described this way. More accurately, they're directly connected, and on a separate layer with more stuff in between...
-  index = (): Ray => { throw new NotImplementedError(); }
+  get index(): Ray { throw new NotImplementedError(); }
+  // TODO: Can probably generate these on the fly, or cache them automatically
   min = (_default: 0): Ray => { throw new NotImplementedError(); }
   max = (_default: 0): Ray => { throw new NotImplementedError(); }
 
@@ -275,7 +273,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   *traverse(): Generator<Ray> {}
 
   /**
-   * JavaScript, possible compilations
+   * JavaScript, possible compilations - TODO: Could have enumeratd possibilities, but just ignore that for now.
    */
     // JS.AsyncGenerator
     async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
@@ -295,19 +293,36 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     toString = (): string => this.as_array().toString();
     as_string = () => this.toString();
 
+    as_int = (): number => { throw new NotImplementedError(); }
+    as_number = this.as_int;
+
   /**
-   * Quick dirty compilation
+   * Move to a JavaScript object, which will handle any complexity of existing JavaScript objects, and allows one to abstract any values contained in the {vertex} to the usual JavaScript interface. - More usual to how one thinks about functions, ..., properties.
    */
-  static dirty_store: { [label: string]: object } = {}
-  get store(): any { return Ray.dirty_store[this.label] ??= {} }
+  get any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
+  cast = <T extends Ray>(): T => this.proxy<T>();
 
-  // TODO: This is just any object implementation, nest the objects into a separte field,
-  o = (o: InterfaceOptions): Ray => { return this.___with('options', o); }
-  get o_(): InterfaceOptions { return this.store['options'] ?? {} }
+  protected property = (property: string | symbol, _default?: any): any => this.any[property] ??= _default; // TODO: Can this be prettier??
 
-  ___with = (key: string, any: any): Ray => {
-    this.store[key] = any;
-    return this;
+  protected _proxy: any;
+  protected _dirty_store: { [key: string | symbol]: object } = {}
+  protected proxy = <T = any>(constructor?: ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
+    return this._proxy ??= new Proxy<Ray>(this, {
+      get(self: Ray, p: string | symbol, receiver: any): Arbitrary<Ray> {
+
+        // throw new NotImplementedError();
+        // return self._dirty_store[p];
+        return self.as_arbitrary();
+      },
+      set(self: Ray, p: string | symbol, newValue: any, receiver: any): boolean {
+        // throw new NotImplementedError();
+        self._dirty_store[p] = newValue;
+
+        return true;
+      }
+
+      // TODO: What do these other methods on Proxy do???
+    }) as T;
   }
 
   debug = (c: { [label: string]: object | undefined }): object => {
@@ -535,9 +550,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   //   return [];
   // }
   //
-  // includes(searchElement: Ray, fromIndex?: number): boolean {
-  //   return false;
-  // }
+  includes(searchElement: Ray, fromIndex?: number): boolean {
+    return false;
+  }
   //
   // toReversed(): Ray[] {
   //   return [];

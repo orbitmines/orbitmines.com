@@ -8,6 +8,7 @@ import {Ray} from "../../explorer/Ray";
 
 // TODO: Put the graphs setc at the top, invis lines, then draw them on hover, and maybe make surrounding stuff less visiable.
 // TODO: make some function which uses a custom input like position of the interface as the thing which breaks equivalences - ignorances. Basically a custom "equivalency function"
+// TODO; Key to output javascript compilation targets in console, array, .. etc.
 
 const Interface = () => {
   const ref = useRef<any>();
@@ -18,8 +19,8 @@ const Interface = () => {
 
   const [selection, setSelection] = useState<Ray>(
     Ray
-      .vertex().o({ position: [0, 0, 0], scale, color: 'orange' })
-      .as_reference().o({
+      .vertex().any.o({ position: [0, 0, 0], scale, color: 'orange' })
+      .as_reference().any.o({
         position: [0, 0, 0],
         scale,
         rotation: [0, 0, Math.PI / 6 ],
@@ -33,8 +34,8 @@ const Interface = () => {
     {
       combo: "arrowright", global: true, label: "", onKeyDown: () => {
 
-        const next = Ray.js("A").as_reference().o({
-          position: add(selection.o_.position ?? [0, 0, 0], [i * 2, 0, 0]),
+        const next = Ray.js("A").as_reference().any.o({
+          position: add(selection.any.o.position ?? [0, 0, 0], [i * 2, 0, 0]),
           scale
         });
         setSelection(next);
@@ -65,23 +66,23 @@ const Interface = () => {
 
         setRays(rays.flatMap(ray => [
           ray,
-          Ray.js("A").as_reference().o({
-            ...ray.o_,
-            position: add(ray.o_.position ?? [0, 0, 0], [0, i * 2, 0])
+          Ray.js("A").as_reference().any.o({
+            ...ray.any.o,
+            position: add(ray.any.o.position ?? [0, 0, 0], [0, i * 2, 0])
           }),
-          Ray.js("A").as_reference().o({
-            ...ray.o_,
-            position: ray.o_.position,
+          Ray.js("A").as_reference().any.o({
+            ...ray.any.o,
+            position: ray.any.o.position,
             rotation: [0, 0, Math.PI / 2]
           }),
-          Ray.js("A").as_reference().o({
-            ...ray.o_,
-            position: add(ray.o_.position ?? [0, 0, 0], [0, i * 2, 0]),
+          Ray.js("A").as_reference().any.o({
+            ...ray.any.o,
+            position: add(ray.any.o.position ?? [0, 0, 0], [0, i * 2, 0]),
             rotation: [0, 0, Math.PI / 2]
           })
         ]));
 
-        selection.o({...selection.o_, position: add(selection.o_.position ?? [0, 0, 0], [0, i * 2, 0])})
+        selection.any.o({...selection.any.o, position: add(selection.any.o.position ?? [0, 0, 0], [0, i * 2, 0])})
         setSelection(selection)
 
         // selection.continues_with(
@@ -98,10 +99,10 @@ const Interface = () => {
       <AutoRay ray={selection.self.initial} position={[-30, 0, 0]} />
       <AutoRay ray={selection.self.terminal} position={[30, 0, 0]} />
       <AutoRay ray={selection.self} />
-      {/*<AutoVertex {...selection.o_} />*/}
-      {/*<AutoVertex {...selection.self.o_} />*/}
+      {/*<AutoVertex {...selection.any.o} />*/}
+      {/*<AutoVertex {...selection.self.any.o} />*/}
 
-      {/*{rays.map(ray => <AutoVertex {...ray.o_} />)}*/}
+      {/*{rays.map(ray => <AutoVertex {...ray.any.o} />)}*/}
 
       {/*<AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} rotation={[0, 0, 0]} />*/}
     </Center>

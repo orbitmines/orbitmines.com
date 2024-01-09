@@ -1,6 +1,5 @@
-// import {Arbitrary, empty, JS, Ray} from "../../../explorer/Ray";
-// import { NotImplementedError } from "../../../explorer/errors/errors";
-// import {Option} from "../../../js/utils/Option";
+// import {JS, Ray} from "../../explorer/Ray";
+// import {NotImplementedError} from "../../explorer/errors/errors";
 //
 // /**
 //  * An interface from Aleks Kissinger's Chyp (Cospans of HYPergraphs) to Rays.
@@ -30,6 +29,10 @@
 //  * TODO: Runtime errors as rays
 //  *
 //  * TODO: All the more complicated methods should be simply implemented in a ray which walks an arbitary graph
+//  */
+// /**
+//  * TODO: These coordinates used for inferences?
+//  * - If not then this is probably a hack and should be interpreted as "on another layer of description which is the GUI"
 //  */
 //
 // export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
@@ -64,6 +67,8 @@
 // export const Callable = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
 // export const Set = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
 //
+// export const Color = (t1: Ray = str('')): Ray => { throw new NotImplementedError() };
+//
 // export class ValueError extends Error {}
 //
 // /**
@@ -96,42 +101,25 @@
 //  * Data associated with a single vertex.
 //  */
 // export class VData extends Ray {
-//
 //   // The vertex type.
-//   get vtype(): Ray { throw new NotImplementedError(); }
+//   vtype = this.property('vtype', None);
 //
-//   /**
-//    * The register size (number of bundled parallel wires) of the vertex.
-//    *
-//    * TODO: Just a counter over a line
-//    */
-//   get size(): Ray { throw new NotImplementedError(); }
+//   // The register size (number of bundled parallel wires) of the vertex.
+//   size = this.count; // Implemented on Ray.count
 //
-//   /**
-//    * Whether to infer the vertex type during composition. Used for special generators (identities, permutations, redistributers).
-//    */
-//   get infer_type(): Ray { throw new NotImplementedError(); }
-//
-//   /**
-//    * Whether to infer the vertex size during composition. Used for special generators (identities, permutations,  redistributers).
-//    */
-//   get infer_size(): Ray { throw new NotImplementedError(); }
-//
-//
-//   /**
-//    * TODO: These coordinates used for inferences?
-//    * - If not then this is probably a hack and should be interpreted as "on another layer of description which is the GUI"
-//    */
+//   // TODO: These infers will probably be removed?
+//   // Whether to infer the vertex type during composition. Used for special generators (identities, permutations, redistributers).
+//   infer_type = this.property('infer_type', bool(False))
+//   // Whether to infer the vertex size during composition. Used for special generators (identities, permutations,  redistributers).
+//   infer_size = this.property('infer_size', bool(False))
 //
 //   // x-coordinate at which to draw the vertex.
-//   get x(): Ray { throw new NotImplementedError(); }
+//   x = this.property('y', int(0))
 //   // y-coordinate at which to draw the vertex.
-//   get y(): Ray { throw new NotImplementedError(); }
+//   y = this.property('y', int(0))
 //
-//   // TODO: Just some boolean
-//   get highlight(): Ray { throw new NotImplementedError(); }
-//
-//   get value(): Ray { throw new NotImplementedError(); }
+//   highlight = this.property('highlight', bool(False))
+//   value = this.property('value')
 //
 //   /**
 //    * Integer identifiers of input and output hyperedges of this vertex - useful for finding neighbouring hyperedges.
@@ -148,20 +136,8 @@
 //   get in_indices(): Ray { return this.initial } //
 //   get out_indices(): Ray { throw new NotImplementedError(); }
 //
-//   /**
-//    * Initialize a VData instance.
-//    */
-//   __init__ = (): Ray => {
-//     this.highlight = bool(False);
-//     this.in_edges = set(int);
-//     this.out_edges = set(int);
-//     this.in_indices = set(int);
-//     this.out_indices = set(int);
-//   }
-//
-//
-//   is_input = (): Ray => this.in_indices.count() > 0;
-//   is_output = (): Ray => this.out_indices.count() > 0;
+//   is_input = (): Ray => this.in_indices.count.as_int() > 0;
+//   is_output = (): Ray => this.out_indices.count.as_int() > 0;
 //   is_boundary = (): Ray => this.is_input() || this.is_output();
 //
 //   // TODO: Probably generalizable
@@ -194,8 +170,8 @@
 //             vd.out_edges.add(e)
 //
 //         # Wherever `w` occurs on the graph boundary, replace it with `v`
-//         self.set_inputs([v if x == w else x for x in self.inputs()])
-//         self.set_outputs([v if x == w else x for x in self.outputs()])
+//         self.set_inputs([v if x == w else x for x in self.inputs])
+//         self.set_outputs([v if x == w else x for x in self.outputs])
 //
 //         # Remove references to `w` from the graph
 //         self.remove_vertex(w)
@@ -212,6 +188,10 @@
 //       // x=vd.x, y=vd.y, value=vd.value
 //
 //   }
+//
+//   // TODO: Shouldn't be here, this should be implemented on Ray if it's general enough
+//   get domain(): Ray { return JS.Iterable([this.vtype, this.size]) };
+//
 // }
 //
 // /**
@@ -219,26 +199,22 @@
 //  */
 // export class EData extends Ray {
 //
+//   get source() { return this.s };
+//   get target() { return this.t };
+//
 //   // TODO: this is just the initial frame
 //   get s(): Ray { throw new NotImplementedError(); }
-//
 //   // TODO: this is just the terminal frame
 //   get t(): Ray { throw new NotImplementedError(); }
 //
-//
-//   get x(): Ray { throw new NotImplementedError(); }
-//   get y(): Ray { throw new NotImplementedError(); }
-//   get fg(): Ray { throw new NotImplementedError(); }
-//   get bg(): Ray { throw new NotImplementedError(); }
-//   get highlight(): Ray { throw new NotImplementedError(); }
-//   get hyper(): Ray { throw new NotImplementedError(); }
-//   get value(): Ray { throw new NotImplementedError(); }
-//
-//   __init__ = (): Ray => {
-//     this.s = empty();
-//     this.t = empty();
-//     this.highlight = bool(False);
-//   }
+//   fg = this.property('bg', Color());
+//   bg = this.property('bg', Color());
+//   x = this.property('y', int(0));
+//   // y-coordinate at which to draw the vertex.
+//   y = this.property('y', int(0));
+//   highlight = this.property('highlight', bool(False))
+//   hyper = this.property('value', bool(True))
+//   value = this.property('value')
 //
 //   __repr__ = (): Ray => { throw new NotImplementedError();
 //   // TODO:   return f'Edge: {self.value} ({self.x}, {self.y})'
@@ -252,22 +228,12 @@
 //    *  - If the number of inputs and outputs are both <= 1, draw as a small (1 width unit) box.
 //    *  - Otherwise draw as a larger (size 2) box.
 //    */
-//   box_size = (): Ray => (this.s.count() <= 1 && this.t.count() <= 1) ? 1 : 2;
+//   box_size = (): Ray => JS.Number((this.s.count.as_int() <= 1 && this.t.count.as_int() <= 1) ? 1 : 2);
+//
+//   domain = (): Ray => this.source.cast<VData>().domain;
+//   codomain = (): Ray => this.target.cast<VData>().domain;
 //
 //   toString = (): string => this.__repr__().as_string(); // TODO; FOR ALL
-//
-//   get source() { return this.s };
-//   get target() { return this.t };
-//
-//   // TODO: Shouldn't be here, this should either be implemented on Ray if it's general enough, of just remain here as an artifact
-//   protected ___domain = (ray: Ray) => ray.map(_ => {
-//     const vertex: VData = _.cast();
-//     return [vertex.vtype, vertex.size];
-//   });
-//
-//   domain = (): Ray => this.___domain(this.source);
-//   codomain = (): Ray => this.___domain(this.target);
-//
 // }
 //
 // /**
@@ -286,18 +252,17 @@
 //  */
 // export class Graph extends Ray {
 //
-//   // Mapping from integer identifiers of each vertex to its data.
-//   get vdata(): Ray { throw new NotImplementedError(); }
-//   // Mapping from integer identifiers of each hyperedge to its data.
-//   get edata(): Ray { throw new NotImplementedError(); }
-//
-//   // TODO: Can probably generate these on the fly, or cache them automatically
 //   get vindex(): Ray { return this.vdata.index.max(0); }
 //   get eindex(): Ray { return this.edata.index.max(0); }
 //
+//   // Mapping from integer identifiers of each vertex to its data.
+//   vdata = this.property('vertices');
+//   // Mapping from integer identifiers of each hyperedge to its data.
+//   edata = this.property('edges');
+//
 //   // TODO .keys
-//   vertices = (): Ray => this.vdata;
-//   edges = (): Ray => this.edata;
+//   vertices = this.property('vertices');
+//   edges = this.property('edges');
 //
 //   // TODO: Shouldn't be here, this should either be implemented on Ray if it's general enough, of just remain here as an artifact
 //   protected ___domain = (ray: Ray) => ray.map(_ => {
@@ -311,14 +276,14 @@
 //    * This consists of a list of pairs (vertex type, register size) corresponding to each input vertex.
 //    */
 //   // TODO: Domain/Codmain is just the initial/terminal side (possibly typed) where the direction which is what defines what it itself is connected to, is ignored.
-//   get domain(): Ray { return this.___domain(this.inputs()) };
+//   get domain(): Ray { return this.___domain(this.inputs) };
 //
 //   /**
 //    * Return the domain of the graph.
 //    *
 //    * This consists of a list of pairs (vertex type, register size) corresponding to each output vertex.
 //    */
-//   get codomain(): Ray { return this.___domain(this.outputs()) };
+//   get codomain(): Ray { return this.___domain(this.outputs) };
 //
 //   vertex_data = (v = int): VData => this.vertices().at(v).cast();
 //   edge_data = (e = int): EData => this.edges().at(e).cast();
@@ -380,12 +345,12 @@
 //     // TODO: as delegation
 //
 //     if (strict) {
-//       if (this.vertex_data(v).in_edges.count() > 0 || this.vertex_data(v).out_edges > 0) {
+//       if (this.vertex_data(v).in_edges.count.as_int() > 0 || this.vertex_data(v).out_edges > 0) {
 //         throw new ValueError('Attempting to remove vertex with adjacent'
 //           + 'edges while strict == True.');
 //       }
 //
-//       if (this.inputs().includes(v) || this.outputs.includes(v)) {
+//       if (this.inputs.includes(v) || this.outputs.includes(v)) {
 //         throw new ValueError('Attempting to remove boundary vertex while'
 //           + 'strict == True.');
 //
@@ -415,7 +380,7 @@
 //    * @param inp The list of vertex integer identifiers of the appended inputs.
 //    */
 //   add_inputs = (inp = list(int)): Ray => {
-//     this.inputs().continues_with(inp); // TODO: Perhaps splat
+//     this.inputs.continues_with(inp); // TODO: Perhaps splat
 //   }
 //   /**
 //    * Append `outp` to the outputs of the graph.
@@ -423,7 +388,7 @@
 //    * @param outp The list of vertex integer identifiers of the appended outputs.
 //    */
 //   add_outputs = (outp = list(int)): Ray => {
-//     this.outputs().continues_with(outp); // TODO: Perhaps splat
+//     this.outputs.continues_with(outp); // TODO: Perhaps splat
 //   }
 //   // TODO; these are then again duplicated to    self.vdata[v].out_indices.add(i)
 //
@@ -451,10 +416,10 @@
 //    * All these are just delegations from some Vertex/Edge structure.
 //    */
 //   // .vertices
-//   num_vertices = (): Ray => this.vertices().count();
+//   num_vertices = (): Ray => this.vertices().count.as_int();
 //
 //   // .edges
-//   num_edges = (): Ray => this.edges().count();
+//   num_edges = (): Ray => this.edges().count.as_int();
 //
 //   // .vertex_data
 //   is_input = (v = int): Ray => this.vertex_data(v).is_input();
@@ -514,7 +479,7 @@
 //       // TODO: It's just a duplicated process for vertex/edge since their definition is separataed
 //
 //       // Replace any occurrences of the original vertex in the graph inputs with a new input-like vertex.
-//       //  self.set_inputs([v1 if v1 != v else fresh(0) for v1 in self.inputs()])
+//       //  self.set_inputs([v1 if v1 != v else fresh(0) for v1 in self.inputs])
 //       // TODO: Basically a copy, and replace this one vertex
 //
 //       // Where the original vertex is the target of a hyperedge, replace its occurrence in the hyperedge's target list with a new input-like vertex and register this with the new vertex's data instance.
@@ -566,19 +531,19 @@
 //
 //     const tensor: Ray = new Ray(); // TODO: [initial = a.outputs, terminal = b.inputs]
 //
-//     tensor.initial.y -=
-//       tensor.initial.y.max(); // max_self
+//     tensor.initial.any.y -=
+//       tensor.initial.any.y.max(); // max_self
 //
-//     tensor.terminal.y -=
-//       (layout ? tensor.terminal.y.min() : 0) + 1; // min_other TODO: Why + 1 ?
+//     tensor.terminal.any.y -=
+//       (layout ? tensor.terminal.any.y.min() : 0) + 1; // min_other TODO: Why + 1 ?
 //
 //     /**
-//      *         # self.set_inputs(self.inputs() + [vmap[v] for v in other.inputs()])
-//      *         # self.set_outputs(self.outputs() + [vmap[v] for v in other.outputs()])
+//      *         # self.set_inputs(self.inputs + [vmap[v] for v in other.inputs])
+//      *         # self.set_outputs(self.outputs + [vmap[v] for v in other.outputs])
 //      *
 //      *         # Add the inputs and outputs of the other graph to this one.
-//      *         self.add_inputs([vmap[v] for v in other.inputs()])
-//      *         self.add_outputs([vmap[v] for v in other.outputs()])
+//      *         self.add_inputs([vmap[v] for v in other.inputs])
+//      *         self.add_outputs([vmap[v] for v in other.outputs])
 //      */
 //     // TODO: Add equivalence/reference on the inputs/output extremes.
 //   }
@@ -604,7 +569,7 @@
 //     // TODO: min/max needs to be on vertices/edges. Not necessarilyt outputs/inputs
 //
 //     {
-//       if (compose.initial.count() !== compose.terminal.count())
+//       if (compose.initial.count.as_int() !== compose.terminal.count.as_int())
 //         throw new GraphError(`Codomain ${a.codomain()} does not match domain ${b.domain()}`); // TODO ; a/b ref will be removed
 //
 //       /**
@@ -634,23 +599,23 @@
 //
 //     // TODO: Again, recursively going through everything defined on the initial side (outputs)
 //     // Shift all vertices and edges of this graph below the x-axis.
-//     compose.initial.x -=
-//       compose.initial.x.max(); // max_self
+//     compose.initial.any.x -=
+//       compose.initial.any.x.max(); // max_self
 //
 //     // TODO: It's indeed copying here, as b_copy, abstract this away [SHOULD BE A COPY]
-//     compose.terminal.x -=
-//       compose.terminal.x.min(); // min_other
+//     compose.terminal.any.x -=
+//       compose.terminal.any.x.min(); // min_other
 //
 //     // TODO: This check in the Chyp code is just done after the [terminal].copy() which we haven't implemented yet.
 //     /**
-//      * plug1 = self.outputs()
-//      * plug2 = [vmap[v] for v in other.inputs()]
+//      * plug1 = self.outputs
+//      * plug2 = [vmap[v] for v in other.inputs]
 //      *
 //      * if len(plug1) != len(plug2):
 //      *             raise GraphError(f'Attempting to plug a graph with {len(plug1)} '
 //      *                              + f'outputs into one with {len(plug2)} inputs')
 //      *
-//      *   self.set_outputs([vmap[v] for v in other.outputs()])
+//      *   self.set_outputs([vmap[v] for v in other.outputs])
 //      */
 //
 //     // [outputs to inputs]
@@ -844,9 +809,9 @@
 //   perm = (p = list(int), domain: Ray, _default: VData) => {
 //
 //     const graph = new Graph();
-//     const num_wires = p.count();
+//     const num_wires = p.count.as_int();
 //
-//     if (num_wires !== domain.count())
+//     if (num_wires !== domain.count.as_int())
 //       throw new GraphError(`Domain ${domain} does not match length of permutation.`)
 //
 //     // TODO use ___map_domain
@@ -1134,11 +1099,11 @@
 //     // Unless the domain vertex is a boundary vertex, check that the number of adjacent edges of the codomain vertex is the same as the number for the domain vertex. Because matchings are required to be injective on edges, this will guarantee that the gluing conditions are satisfied.
 //
 //     if (!domain_vertex.is_boundary()) {
-//       if (domain_vertex.in_edges.count() !== codomain_vertex.in_edges.count()) {
+//       if (domain_vertex.in_edges.count.as_int() !== codomain_vertex.in_edges.count.as_int()) {
 //         log('Vertex failed: in_edges cannot satisfy gluing conditions.')
 //         return bool(False)
 //       }
-//       if (domain_vertex.out_edges.count() !== codomain_vertex.out_edges.count()) {
+//       if (domain_vertex.out_edges.count.as_int() !== codomain_vertex.out_edges.count.as_int()) {
 //         log('Vertex failed: in_edges cannot satisfy gluing conditions.')
 //         return bool(False)
 //       }
@@ -1256,15 +1221,15 @@
 //       const rule_input = this.lhs.vertex_data(rule_vertex).in_indices;
 //       const rule_output = this.lhs.vertex_data(rule_vertex).out_indices;
 //
-//       if (rule_input.count() === 1 && rule_output === 1) {
+//       if (rule_input.count.as_int() === 1 && rule_output === 1) {
 //         const [match_input, match_output] = rewritten_graph.explode_vertex(match_vertex);
 //
-//         if (match_input.count() !== 1 && match_output.count() !== 1)
+//         if (match_input.count.as_int() !== 1 && match_output.count.as_int() !== 1)
 //           throw new NotImplementedError("Rewriting modulo Frobenius not yet supported.");
 //
 //         inputs[rule_vertex] = match_input[0];
 //         outputs[rule_vertex] = match_output[0];
-//       } else if (rule_input.count() > 1 || rule_output.count() > 1) {
+//       } else if (rule_input.count.as_int() > 1 || rule_output.count.as_int() > 1) {
 //         throw new NotImplementedError("Rewriting modulo Frobenius not yet supported.");
 //       }
 //     })
