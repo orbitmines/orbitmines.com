@@ -24,6 +24,7 @@ describe("Ray", () => {
 
     expect(initial.self.terminal).toBe(vertex);
     expect(initial.self.terminal.self).not.toBe(vertex);
+    expect(initial.self.terminal.initial).toBe(initial.self);
 
     expect(initial.self.is_none()).toBe(false);
     expect(initial.self.self.is_none()).toBe(true);
@@ -46,6 +47,7 @@ describe("Ray", () => {
 
     expect(terminal.self.initial).toBe(vertex);
     expect(terminal.self.initial.self).not.toBe(vertex);
+    expect(terminal.self.initial.terminal).toBe(terminal.self);
 
     expect(terminal.self.is_none()).toBe(false);
     expect(terminal.self.self.is_none()).toBe(true);

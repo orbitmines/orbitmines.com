@@ -1,11 +1,10 @@
 import React, {useRef, useState} from "react";
-import IEventListener, {mergeListeners} from "../../../js/react/IEventListener";
-import {VisualizationCanvas} from "../../../explorer/Visualization";
-import {add, AutoRenderedRay, BinarySuperposition, Loop, SimpleRenderedRay} from "../../../explorer/OrbitMinesExplorer";
-import {empty_vertex, js, Ray, RayType} from "../../../explorer/Ray";
+import IEventListener from "../../js/react/IEventListener";
+import {VisualizationCanvas} from "../../explorer/Visualization";
+import {add, AutoRenderedRay} from "../../explorer/OrbitMinesExplorer";
 import {Center} from "@react-three/drei";
-import {Option} from "../../../js/utils/Option";
-import {useHotkeys} from "../../../js/react/hooks/useHotkeys";
+import {useHotkeys} from "../../js/react/hooks/useHotkeys";
+import {Ray} from "../../explorer/Ray";
 
 const Interface = () => {
   const ref = useRef<any>();
@@ -15,7 +14,7 @@ const Interface = () => {
   const i = 20 * scale;
 
   const [selection, setSelection] = useState<Ray>(
-    empty_vertex().as_reference().o({
+    Ray.vertex().as_reference().o({
       position: [0, 0, 0],
       scale
     })
@@ -27,7 +26,7 @@ const Interface = () => {
     {
       combo: "arrowright", global: true, label: "", onKeyDown: () => {
 
-        const next = js("A").as_reference().o({
+        const next = Ray.js("A").as_reference().o({
           position: add(selection.o_.position ?? [0, 0, 0], [i * 2, 0, 0]),
           scale
         });
@@ -59,16 +58,16 @@ const Interface = () => {
 
         setRays(rays.flatMap(ray => [
           ray,
-          js("A").as_reference().o({
+          Ray.js("A").as_reference().o({
             ...ray.o_,
             position: add(ray.o_.position ?? [0, 0, 0], [0, i * 2, 0])
           }),
-          js("A").as_reference().o({
+          Ray.js("A").as_reference().o({
             ...ray.o_,
             position: ray.o_.position,
             rotation: [0, 0, Math.PI / 2]
           }),
-          js("A").as_reference().o({
+          Ray.js("A").as_reference().o({
             ...ray.o_,
             position: add(ray.o_.position ?? [0, 0, 0], [0, i * 2, 0]),
             rotation: [0, 0, Math.PI / 2]

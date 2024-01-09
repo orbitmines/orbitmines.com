@@ -13,7 +13,7 @@ import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 import Modules from "./@orbitmines/js/react/Modules";
 import Icons from "./lib/layout/experimental-designs/Icons";
 import {ThumbnailPage} from "./lib/paper/Paper";
-import ChypCanvas, {ChypExplorer} from "./@orbitmines/external/implementations/chyp/ChypCanvas";
+import {ChypExplorer} from "./@orbitmines/external/chyp/ChypCanvas";
 
 export const Router = () => {
 

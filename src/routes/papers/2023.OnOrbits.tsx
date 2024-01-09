@@ -23,7 +23,7 @@ import {
   RenderedRay, torus,
   Vertex
 } from "../../@orbitmines/explorer/OrbitMinesExplorer";
-import {length} from "../../@orbitmines/explorer/Ray";
+import {Ray} from "../../@orbitmines/explorer/Ray";
 import {HorizontalLine} from "../../lib/paper/PaperContent";
 import CustomIcon from "../../lib/layout/icons/CustomIcon";
 import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
@@ -106,16 +106,16 @@ const OnOrbits = () => {
             <group position={[0, 0, 0]}>
 
               <group scale={1.5}>
-                <RenderedRay reference={length(1)} scale={1.5 * s2} color="#555555" initial={[-500, 0, 0]}
+                <RenderedRay reference={Ray.size(1)} scale={1.5 * s2} color="#555555" initial={[-500, 0, 0]}
                              terminal={[500, 0, 0]}/>
               </group>
 
 
               <group position={[100, -10, 0]}>
                 <group position={[30, 45, 0]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5 * s2}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5 * s2}
                                                                          color="#555555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#555555"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/></group>
                 </group>
 
                 <group scale={1.5}>
@@ -137,7 +137,7 @@ const OnOrbits = () => {
               </group>
 
               <group rotation={[0, 0, Math.PI / 2]} position={[-100, 60, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5 * s2}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5 * s2}
                                                                        color="orange"/></group>
               </group>
 
@@ -182,7 +182,7 @@ const OnOrbits = () => {
 
         <Block>
           <CachedVisualizationCanvas alt="empty_vertex" context={paper}>
-            <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>
           </CachedVisualizationCanvas>
         </Block>
 
@@ -212,7 +212,7 @@ const OnOrbits = () => {
 
       <Block>
         <CachedVisualizationCanvas alt="empty_vertex" context={paper} >
-          <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} /></group>
+          <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} /></group>
         </CachedVisualizationCanvas>
       </Block>
 
@@ -230,7 +230,7 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="3" context={paper} >
             <Center>
-              <group scale={1.5}><RenderedRay reference={length(3)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(3)} scale={1.5}/></group>
             </Center>
           </CachedVisualizationCanvas>
         </Block>
@@ -249,9 +249,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="two_vertices" context={paper} >
             <Center>
               <group>
-                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-100, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
               </group>
             </Center>
           </CachedVisualizationCanvas>
@@ -267,9 +267,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper} >
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -286,9 +286,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_vertical_pink" context={paper}  style={{height: '140px'}}>
             <Center>
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF55FF"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
               </group>
             </Center>
           </CachedVisualizationCanvas>
@@ -304,16 +304,16 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_expanded_continuation" context={paper}  style={{height: '140px'}}>
             <Center>
               <group>
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
 
-                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#5555FF"/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF55FF"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
                 </group>
 
               </group>
@@ -337,28 +337,28 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_double_expanded_continuation" context={paper} style={{height: '120px'}}>
             <Center>
               <group>
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
 
                 <group position={[55, 23, 0]}>
                   <group rotation={[0, 0, Math.PI / 2]}>
                     <group scale={1.5} position={[-60, 0, 0]}>
-                      <RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/>
+                      <RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/>
                     </group>
                   </group>
                   <group scale={1.5} position={[30, -60, 0]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/>
                   </group>
                 </group>
 
                 <group rotation={[0, 0, Math.PI / 8]} position={[55, -6, 0]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#AA00AA"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#AA00AA"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#AA00AA"/></group>
                 </group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
                 </group>
 
               </group>
@@ -376,26 +376,26 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="3_expanded_continuation" context={paper}  style={{height: '140px'}}>
             <Center>
               <group>
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
 
-                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#5555FF"/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF55FF"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
                 </group>
 
 
-                <group scale={1.5} position={[90, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[90, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#55FF55"/></group>
                 <group rotation={[0, 0, Math.PI / 2]} position={[60, 0, 0]}>
 
-                  <group scale={1.5}><RenderedRay position={[-40, 0, 0]} reference={length(1)} scale={1.5}
+                  <group scale={1.5}><RenderedRay position={[-40, 0, 0]} reference={Ray.size(1)} scale={1.5}
                                                   color="#55FFFF"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FFFF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#55FFFF"/></group>
                 </group>
 
               </group>
@@ -413,12 +413,12 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="3_tertiary" context={paper} >
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#55FF55"/></group>
                 <group scale={1.5}><Continuation position={[20, 0, 0]} color="#55FFFF"/></group>
               </group>
@@ -441,21 +441,21 @@ const OnOrbits = () => {
             <Center>
               <group>
 
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
 
-                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#5555FF"/></group>
 
-                <group scale={1.5} position={[30, 60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, 60, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#3030FC"/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#FF55FF"/></group>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF55FF"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
                 </group>
 
               </group>
@@ -475,13 +475,13 @@ const OnOrbits = () => {
             <Center>
               <group>
 
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
 
-                <group scale={1.5} position={[30, -30, 0]}><RenderedRay initial={[-20, 20, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, -30, 0]}><RenderedRay initial={[-20, 20, 0]} reference={Ray.size(1)} scale={1.5}
                                                                         color="#5555FF"/></group>
 
-                <group scale={1.5} position={[30, 30, 0]}><RenderedRay initial={[-20, -20, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, 30, 0]}><RenderedRay initial={[-20, -20, 0]} reference={Ray.size(1)} scale={1.5}
                                                                        color="#3030FC"/></group>
 
                 <group scale={1.5}><Continuation color="#FF55FF" /></group>
@@ -509,9 +509,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_vertical_binary" context={paper}  style={{height: '140px'}}>
             <Center>
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -527,12 +527,12 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_select_1" context={paper}  style={{height: '140px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -548,12 +548,12 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_select_0" context={paper}  style={{height: '140px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -577,7 +577,7 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_superposition" context={paper} style={{height: '80px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group scale={1.5}><BinarySuperposition position={[0, 0, 0]}/></group>
             </Center>
@@ -593,12 +593,12 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_edge" context={paper}  style={{height: '140px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -635,22 +635,22 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_2" context={paper} style={{height: '140px'}}>
             <Center>
               <group>
-                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
               <group position={[60, 0, 0]}>
-                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
@@ -676,12 +676,12 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_select_0" context={paper} style={{height: '140px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -709,15 +709,15 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="3_select_0" context={paper} style={{height: '200px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#55FF55"/></group>
                 <group scale={1.5}><Continuation position={[20, 0, 0]} color="#55FFFF"/></group>
               </group>
@@ -740,10 +740,10 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_orange" context={paper} style={{height: '30px'}}>
             <Center>
               <group>
-                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
               </group>
               <group position={[60, 0, 0]}>
-                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
               </group>
             </Center>
           </CachedVisualizationCanvas>
@@ -757,7 +757,7 @@ const OnOrbits = () => {
 
         <Block>
           <CachedVisualizationCanvas alt="empty_vertex" context={paper}>
-            <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>
           </CachedVisualizationCanvas>
         </Block>
 
@@ -772,10 +772,10 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_orange" context={paper} style={{height: '30px'}}>
             <Center>
               <group>
-                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
               </group>
               <group position={[60, 0, 0]}>
-                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
               </group>
             </Center>
           </CachedVisualizationCanvas>
@@ -796,22 +796,22 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="0_1" context={paper} style={{height: '200px'}}>
             <Center>
               <group>
-                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
               <group position={[60, 0, 0]}>
-                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={length(1)} scale={1.5}/></group>
+                <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
                 <group position={[0, -60, 0]} rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
@@ -836,21 +836,21 @@ const OnOrbits = () => {
               <group>
                 <group rotation={[0, 0, -(Math.PI / 4)]}>
                   <group>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                            color="#FF5555"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                     <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                   </group>
                 </group>
                 <group position={[0, 0, 0]} rotation={[0, 0, -(Math.PI / 4) * 3]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#5555FF"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
 
-              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
             </Center>
           </CachedVisualizationCanvas>
         </Block>
@@ -864,7 +864,7 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_superposition" context={paper} style={{height: '80px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group scale={1.5}><BinarySuperposition position={[0, 0, 0]}/></group>
             </Center>
@@ -881,12 +881,12 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_select_1" context={paper} style={{height: '140px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -905,33 +905,33 @@ const OnOrbits = () => {
             <Center>
               <group scale={1.5}>
                 <group>
-                  <RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5}/>
-                  <RenderedRay position={[-40, 0, 0]} reference={length(1)} scale={1.5}/>
-                  <RenderedRay position={[-80, 0, 0]} reference={length(1)} scale={1.5}/>
+                  <RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5}/>
+                  <RenderedRay position={[-40, 0, 0]} reference={Ray.size(1)} scale={1.5}/>
+                  <RenderedRay position={[-80, 0, 0]} reference={Ray.size(1)} scale={1.5}/>
                 </group>
 
                 <group position={[0, 40, 0]}>
-                  <RenderedRay position={[0, 0, 0]} reference={length(1)} scale={1.5} color="#FF55FF"/>
-                  <RenderedRay position={[-40, 0, 0]} reference={length(1)} scale={1.5} color="#FF55FF"/>
-                  <RenderedRay position={[-80, 0, 0]} reference={length(1)} scale={1.5} color="#FF55FF"/>
+                  <RenderedRay position={[0, 0, 0]} reference={Ray.size(1)} scale={1.5} color="#FF55FF"/>
+                  <RenderedRay position={[-40, 0, 0]} reference={Ray.size(1)} scale={1.5} color="#FF55FF"/>
+                  <RenderedRay position={[-80, 0, 0]} reference={Ray.size(1)} scale={1.5} color="#FF55FF"/>
                 </group>
               </group>
               <group position={[-120, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#55FF55"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#55FF55"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#55FF55"/></group>
               </group>
               <group position={[-60, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#55FF55"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#55FF55"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#55FF55"/></group>
               </group>
               <group position={[0, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#55FF55"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#55FF55"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#55FF55"/></group>
               </group>
             </Center>
@@ -970,7 +970,7 @@ const OnOrbits = () => {
 
         <Block>
           <CachedVisualizationCanvas alt="empty_vertex_green" context={paper}>
-            <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#55FF55"/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#55FF55"/></group>
           </CachedVisualizationCanvas>
         </Block>
 
@@ -984,9 +984,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="1_loop_expanded" context={paper} style={{height: '60px'}}>
             <Center>
               <group position={[30, 45, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#00AA00"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#00AA00"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#00AA00"/></group>
               </group>
 
               <group scale={1.5}>
@@ -1040,12 +1040,12 @@ const OnOrbits = () => {
                 <Loop position={[0, 20, 0]} radius={20} color="orange"/>
               </group>
               <group>
-                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+                {/*<group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>*/}
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
@@ -1082,22 +1082,22 @@ const OnOrbits = () => {
               </group>
 
               <group>
-                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+                {/*<group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>*/}
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
               <group position={[60, 0, 0]}>
-                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+                {/*<group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>*/}
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
@@ -1122,12 +1122,12 @@ const OnOrbits = () => {
                 <Loop position={[0, 20, 0]} radius={20} color="orange"/>
               </group>
               <group>
-                {/*<group scale={1.5}><RenderedRay reference={length(1)} scale={1.5}/></group>*/}
+                {/*<group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5}/></group>*/}
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
               </group>
@@ -1162,9 +1162,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -1207,9 +1207,9 @@ const OnOrbits = () => {
                 <group scale={1.5}>
                   <Loop position={[-60, 7.5, 0]} radius={7.5} segments={100} color="orange"/>
                 </group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -1268,9 +1268,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -1288,21 +1288,21 @@ const OnOrbits = () => {
             <Center>
               <group>
 
-                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-30, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
 
-                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[30, -60, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#5555FF"/></group>
 
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group scale={1.5} position={[-120, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-120, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                           color="#FF55FF"/></group>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF55FF"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
                 </group>
 
-                <group scale={1.5} position={[0, -120, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[0, -120, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="orange"/></group>
               </group>
             </Center>
@@ -1318,12 +1318,12 @@ const OnOrbits = () => {
         <Block>
           <CachedVisualizationCanvas alt="2_edge" context={paper} style={{height: '140px'}}>
             <Center>
-              <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={length(1)} scale={1.5}/></group>
+              <group scale={1.5}><RenderedRay position={[0, -20, 0]} reference={Ray.size(1)} scale={1.5}/></group>
 
               <group rotation={[0, 0, Math.PI / 2]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -1341,14 +1341,14 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="3_fractal" context={paper}>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF"/></group>
 
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
 
               </group>
             </Center>
@@ -1367,21 +1367,21 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_edge_3_fractal" context={paper} style={{height: '90px'}}>
             <Center>
               <group position={[30, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, -60, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF"/></group>
 
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
 
               </group>
             </Center>
@@ -1400,52 +1400,52 @@ const OnOrbits = () => {
             <Center>
               <group position={[0, -7, 0]}>
                 <group position={[-60, 0, 0]} rotation={[0, 0, 60 * (Math.PI / 180)]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF5555"/></group>
                 </group>
                 <group position={[-30, 0, 0]} rotation={[0, 0, 60 * (Math.PI / 180)]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF5555"/></group>
                 </group>
 
                 <group position={[30, 0, 0]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"/></group>
-                  <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                   <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
                 </group>
 
                 <group position={[90, -60 + 7, 0]}>
                   <group position={[-30, 0, 0]} rotation={[0, 0, -60 * (Math.PI / 180)]}>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                            color="#5555FF"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                     <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#5555FF"/></group>
                   </group>
                 </group>
                 <group position={[120, -60 + 7, 0]}>
                   <group position={[-30, 0, 0]} rotation={[0, 0, -60 * (Math.PI / 180)]}>
-                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                    <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                            color="#5555FF"/></group>
-                    <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                    <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                     <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#5555FF"/></group>
                   </group>
                 </group>
               </group>
 
               <group position={[0, -60, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF"/></group>
 
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
 
               </group>
             </Center>
@@ -1465,24 +1465,24 @@ const OnOrbits = () => {
 
               <group position={[30, 0, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                 </group>
                 <group scale={1.5}>
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#5555FF"/>
                 </group>
                 <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"
                                                                        terminal={[20, -15, 0]}/></group>
                 {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF" initial={[-20, -15, 0]}/></group>
 
-                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                 color="#FF55FF"/></group>
 
               </group>
@@ -1503,32 +1503,32 @@ const OnOrbits = () => {
               <group rotation={[0, 0, Math.PI / 2]}>
                 <group position={[30, 0, 0]}>
                   <group scale={1.5} position={[-90, 0, 0]}>
-                    <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                   </group>
                   <group scale={1.5}>
-                    <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                  color="#5555FF"/>
                   </group>
                   <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
                 </group>
 
                 <group position={[0, 0, 0]}>
-                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                          color="#FF5555"
                                                                          terminal={[20, -15, 0]}/></group>
                   {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                  <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                  <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                         color="#5555FF" initial={[-20, -15, 0]}/>
                   </group>
 
-                  <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                  <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                   color="#FF55FF"/></group>
 
                 </group>
               </group>
               <group rotation={[0, 0, Math.PI / 4]} position={[7, -15, 0]}>
-                <group scale={1.5}><RenderedRay position={[15, 0, 0]} reference={length(1)} scale={1.5} color="orange"/>
+                <group scale={1.5}><RenderedRay position={[15, 0, 0]} reference={Ray.size(1)} scale={1.5} color="orange"/>
                 </group>
               </group>
             </Center>
@@ -1584,24 +1584,24 @@ const OnOrbits = () => {
 
               <group position={[30, 0, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                 </group>
                 <group scale={1.5}>
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#5555FF"/>
                 </group>
                 <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"
                                                                        terminal={[20, -15, 0]}/></group>
                 {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF" initial={[-20, -15, 0]}/></group>
 
-                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                 color="#FF55FF"/></group>
 
               </group>
@@ -1619,9 +1619,9 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="2_horizontal_binary" context={paper}>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#5555FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
               </group>
             </Center>
@@ -1637,14 +1637,14 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="3_fractal" context={paper}>
             <Center>
               <group>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                        color="#FF5555"/></group>
                 <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF"/></group>
 
-                <group scale={1.5}><RenderedRay reference={length(1)} scale={1.5} color="#FF55FF"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF55FF"/></group>
 
               </group>
             </Center>
@@ -1677,30 +1677,30 @@ const OnOrbits = () => {
             <Center>
               <group position={[30, 0, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                 </group>
                 <group scale={1.5}>
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#5555FF"/>
                 </group>
                 <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"
                                                                        terminal={[20, -15, 0]}/></group>
                 {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF" initial={[-20, -15, 0]}/></group>
 
-                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                 color="#FF55FF"/></group>
 
               </group>
 
               <group scale={1.5} position={[-60, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group rotation={[0, 0, -0.4]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                <group rotation={[0, 0, -0.4]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
               </group>
 
             </Center>
@@ -1719,34 +1719,34 @@ const OnOrbits = () => {
               <group position={[30, 60, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
                   <group rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
                   <group position={[-20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
 
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#55FF55"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#55FF55"/>
                 </group>
                 <group scale={1.5}>
                   <group position={[20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
                   <group position={[40, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
 
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#55FF55"/>
 
                 </group>
                 <group scale={1.5}>
                   <group position={[-20, 15, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
 
                   <Continuation position={[-20, 15, 0]} color="#55FF55"/>
@@ -1756,29 +1756,29 @@ const OnOrbits = () => {
               </group>
 
               <group scale={1.5} position={[-60, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group rotation={[0, 0, -0.5]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                <group rotation={[0, 0, -0.5]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
               </group>
 
               <group position={[30, 0, 0]}>
               <group scale={1.5} position={[-90, 0, 0]}>
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                 </group>
                 <group scale={1.5}>
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#5555FF"/>
                 </group>
                 <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"
                                                                        terminal={[20, -15, 0]}/></group>
                 {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF" initial={[-20, -15, 0]}/></group>
 
-                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                 color="#FF55FF"/></group>
 
               </group>
@@ -1800,34 +1800,34 @@ const OnOrbits = () => {
               <group position={[30, 60, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
                   <group rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
                   <group position={[-20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
 
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#55FF55"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#55FF55"/>
                 </group>
                 <group scale={1.5}>
                   <group position={[20, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
                   <group position={[40, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
 
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#55FF55"/>
 
                 </group>
                 <group scale={1.5}>
                   <group position={[-20, 15, 0]} rotation={[0, 0, Math.PI / 2]}>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555"/>
-                    <RenderedRay reference={length(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555"/>
+                    <RenderedRay reference={Ray.size(1)} scale={1.5} color="#555555" position={[-40, 0, 0]}/>
                   </group>
 
                   <Continuation position={[-20, 15, 0]} color="#55FF55"/>
@@ -1837,29 +1837,29 @@ const OnOrbits = () => {
               </group>
 
               <group scale={1.5} position={[60, 60, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group rotation={[0, 0, -0.5]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                <group rotation={[0, 0, -0.5]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
               </group>
 
               <group position={[30, 0, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                 </group>
                 <group scale={1.5}>
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#5555FF"/>
                 </group>
                 <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"
                                                                        terminal={[20, -15, 0]}/></group>
                 {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF" initial={[-20, -15, 0]}/></group>
 
-                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                 color="#FF55FF"/></group>
 
               </group>
@@ -1879,30 +1879,30 @@ const OnOrbits = () => {
             <Center>
               <group position={[30, 0, 0]}>
                 <group scale={1.5} position={[-90, 0, 0]}>
-                  <RenderedRay reference={length(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} terminal={[40, 15, 0]} color="#FF5555"/>
                 </group>
                 <group scale={1.5}>
-                  <RenderedRay reference={length(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
+                  <RenderedRay reference={Ray.size(1)} scale={1.5} initial={[-20, 15, 0]} position={[20, 0, 0]}
                                color="#5555FF"/>
                 </group>
                 <group scale={1.5}><Continuation position={[-20, 15, 0]} color="#FF55FF"/></group>
               </group>
 
               <group position={[0, 0, 0]}>
-                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="#FF5555"
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#FF5555"
                                                                        terminal={[20, -15, 0]}/></group>
                 {/*<group scale={1.5}><Continuation position={[-, 0, 0]} color="#FF55FF"/></group>*/}
 
-                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                                       color="#5555FF" initial={[-20, -15, 0]}/></group>
 
-                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={length(1)} scale={1.5}
+                <group scale={1.5}><RenderedRay position={[0, -15, 0]} reference={Ray.size(1)} scale={1.5}
                                                 color="#FF55FF"/></group>
 
               </group>
 
               <group scale={1.5} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2]}>
-                <group rotation={[0, 0, -0.4]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                <group rotation={[0, 0, -0.4]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
               </group>
 
             </Center>
@@ -1926,10 +1926,10 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="4_bits" context={paper} style={{height: '80px'}}>
             <Center>
               <group scale={1.5}>
-                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
-                <group position={[40, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
-                <group position={[80, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
-                <group position={[120, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[40, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[80, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[120, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
               </group>
             </Center>
           </CachedVisualizationCanvas>
@@ -1945,7 +1945,7 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="4_bits_unordered" context={paper} style={{height: '80px'}}>
             <Center>
               <group scale={1.5}>
-                <group rotation={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"
+                <group rotation={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"
                                                          position={[0, 0, 0]}/></group>
 
                 <group rotation={[0, 0, 1]}><BinarySuperposition/></group>
@@ -1967,10 +1967,10 @@ const OnOrbits = () => {
           <CachedVisualizationCanvas alt="4_bits_seperated" context={paper} style={{height: '80px'}}>
             <Center>
               <group scale={1.5}>
-                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
-                <group position={[60, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
-                <group position={[120, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
-                <group position={[180, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[120, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
+                <group position={[180, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/><BinarySuperposition /></group>
               </group>
             </Center>
           </CachedVisualizationCanvas>
@@ -1987,28 +1987,28 @@ const OnOrbits = () => {
             <Center>
               <group scale={1.5}>
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
-                  <group position={[0, -40, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                  <group position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
+                  <group position={[0, -40, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
                 </group>
-                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                          color="orange"/>
                   <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
                 </group>
-                <group position={[40, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group position={[40, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                           color="orange"/>
                   <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
                 </group>
               </group>
               <group scale={1.5} position={[0, 60, 0]}>
                 <group rotation={[0, 0, Math.PI / 2]}>
-                  <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
-                  <group position={[0, -40, 0]}><RenderedRay reference={length(1)} scale={1.5} color="orange"/></group>
+                  <group position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
+                  <group position={[0, -40, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="orange"/></group>
                 </group>
-                <group position={[0, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                          color="orange"/>
                   <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
                 </group>
-                <group position={[40, 0, 0]}><RenderedRay reference={length(1)} scale={1.5}
+                <group position={[40, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
                                                           color="orange"/>
                   <group rotation={[0, 0, -(Math.PI / 4)]}><BinarySuperposition/></group>
                 </group>

@@ -1,10 +1,6 @@
 import _ from "lodash";
-import {compile} from "sass";
-import {NotImplementedError} from "./errors/errors";
-import {InterfaceOptions} from "./OrbitMinesExplorer";
-
-export type ParameterlessFunction<T = any> = () => T;
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
+import {InterfaceOptions} from "./OrbitMinesExplorer";
 
 
 // SHOULDNT CLASSIFY THESE?
@@ -210,7 +206,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   copy = (): Ray => { throw new NotImplementedError() }
 
   // export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
-//   return Arbitrary.Fn(() => length(of, value).resolve().force().at_terminal(index));
+//   return Arbitrary.Fn(() => length(of, value).resolve().at_terminal(index));
 // }
 //
   at = (steps: number | Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
@@ -230,9 +226,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   cast = <T extends Ray>(): T => { throw new NotImplementedError(); };
 
   // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
-  map = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
-  all = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
-  filter = (mapping: (ray: Ray) => Ray | JS | any): Ray => { throw new NotImplementedError(); }
+  map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
+  all = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
+  filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   clear = (): Ray => { throw new NotImplementedError(); }
 
   // TODO: Generalize these functions to:
@@ -302,10 +298,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   get store(): any { return Ray.dirty_store[this.label] ??= {} }
 
   o = (o: InterfaceOptions): Ray => { return this.with('options', o); }
-  get o_(): InterfaceOptions { return this.store['options'] ?? {
-
-  }
-  }
+  get o_(): InterfaceOptions { return this.store['options'] ?? {} }
 
   with = (key: string, any: any): Ray => {
     this.store[key] = any;
@@ -464,10 +457,10 @@ export namespace JS {
         const terminal = new Ray({
           initial: () => initial
         });
-        // initial.force().continues_with(() => terminal.as_reference());
+        // initial.continues_with(() => terminal.as_reference());
 
         // if (initial.is_some())
-        //   initial.force().terminal = () => terminal; // TODO REPEAT FROM BELOW
+        //   initial.terminal = () => terminal; // TODO REPEAT FROM BELOW
 
         return terminal;
       }
@@ -476,18 +469,18 @@ export namespace JS {
         js: () => iterator_result.value,
         // initial: () => new Ray(),
         initial: () => initial,
-        vertex: () => from_any(iterator_result.value).as_ray(),
+        vertex: () => JS.Any(iterator_result.value),
         terminal: () => next(current)
       });
 
-      // initial.force().continues_with(() => current.force().as_reference());
+      // initial.continues_with(() => current.as_reference());
       if (initial.is_some())
         initial.terminal = () => current;
 
       return current;
     }
 
-    const ray_iterator = new Ray({ js: () => Option.Some(iterator)});
+    const ray_iterator = new Ray({ js: () => iterator});
     ray_iterator.terminal = () => next(ray_iterator);
 
     // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
@@ -521,7 +514,9 @@ export namespace JS {
     if (JS.is_function(any)) return JS.Function(any);
     if (JS.is_object(any)) return JS.Object(any);
 
-    return JS.Any(any);
+    // TODO
+    // return JS.Any(any);
+    return Ray.js(any);
   }
 
   export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);

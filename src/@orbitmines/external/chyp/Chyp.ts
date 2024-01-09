@@ -173,8 +173,8 @@ export class VData extends Ray {
   merge = (other: VData): Ray => {
     // TODO: other is destroyed
     // TODO: Vertices
-    // this.initial.force().equivalent(other.initial.force());
-    // this.terminal.force().equivalent(other.initial.force());
+    // this.initial.equivalent(other.initial);
+    // this.terminal.equivalent(other.initial);
 
     /*
 
@@ -1220,7 +1220,7 @@ export class Rule extends Ray {
    */
   is_left_linear = (): Ray => {
     // TODO, needs to implement splat and stuff? or by default, could be done smarter, but again no overloading
-    return !JS.Iterable([...this.lhs.inputs, ...this.rhs.outputs]).as_ray().force()
+    return !JS.Iterable([...this.lhs.inputs, ...this.rhs.outputs]).as_ray()
       .has_duplicates() // TODO; This thing is basically asking whether any input is used twice, whether any output is used twice, or there's a circle between in/output? Basically: NO SELF-REFERENCE, this should be a very sikmple check whether any frame is used twice here - or some loop is found basically.
   }
 
