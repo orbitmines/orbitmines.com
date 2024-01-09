@@ -1,22 +1,14 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
-import {Children, renderable, value} from "../typescript/React";
+import {Children, value} from "../typescript/React";
 import Browser from "./views/Browser";
 import {useLocation, useSearchParams} from "react-router-dom";
 import {ReferenceCounter, ReferenceProps, useCounter} from "./layout/Reference";
 import {PaperHeader} from "./PaperContent";
 import {Grid, Row} from "../layout/flexbox";
-import {Center} from "@react-three/drei";
-import {Continuation, Loop, RenderedRay, torus, Vertex} from "../../@orbitmines/explorer/OrbitMinesExplorer";
-import {length} from "../../@orbitmines/explorer/Ray";
-import {
-  CachedVisualizationCanvas,
-  CanvasContainer,
-  VisualizationCanvas
-} from "../../@orbitmines/explorer/Visualization";
+import {CanvasContainer} from "../../@orbitmines/explorer/Visualization";
 import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import {ON_ORBITS} from "../../routes/papers/2023.OnOrbits";
 import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
 import {PROFILES} from "../../profiles/profiles";
 

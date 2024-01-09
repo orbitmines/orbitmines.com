@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Ray, RayType} from "./Ray";
+import {AbstractDirectionality, Ray, RayType} from "./Ray";
 import {VisualizationCanvas} from "./Visualization";
 import {CatmullRomLine, Circle, CubicBezierLine, QuadraticBezierLine, Torus} from "@react-three/drei";
 import {useFrame, useThree,} from "@react-three/fiber";
@@ -211,7 +211,96 @@ type Options = {
   terminal?: InterfaceOptions,
 }
 
-export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
+type RenderContext = Compiler; // Rendering is Compiling - Something which holds equivalences and ignores/shuts down self-referential structures.
+export type Compiler = {
+  coverage(ray: Ray): Ray, // Disallow dedups
+  covered_by(cover: Ray, ray: Ray): Compiler
+}
+
+class TempCompiler implements Compiler {
+  coverage(ray: Ray): Ray {
+    return Ray.None();
+  }
+  covered_by(cover: Ray, ray: Ray): Compiler {
+    return this;
+  }
+}
+
+export const AutoRay = (
+  { ray,
+    compiler,
+    initial: _default_initial,
+    terminal: _default_terminal,
+    ...options
+  }: { ray: Ray, compiler?: Compiler } & Omit<Options, 'vertex'> & InterfaceOptions
+) => {
+  compiler ??= new TempCompiler();
+
+  const o = (ray: Ray, defaults: InterfaceOptions = {}): Required<InterfaceOptions> => ({
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    scale: 1.5,
+    color: 'orange',
+    ...defaults,
+    ...ray.o_
+  });
+
+  // Move to a layer of abstraction above what is passed to us - this way we can start describing it.
+  const ref = { // TODO; This general pattern is probably worth abstracting somewhere.
+    initial: ray.initial.as_reference(),
+    vertex: ray.as_reference(),
+    terminal: ray.terminal.as_reference()
+  }
+
+  if (compiler.coverage(ray).is_some())
+    return <></>;
+
+  // console.log(ref.vertex.type)
+
+  compiler.covered_by(ref.vertex, ray);
+
+  const interface_options = { // TODO: See here again
+    initial: o(ray.initial, { ..._default_initial }),
+    vertex: o(ray, { ...options }),
+    terminal: o(ray.terminal, { ..._default_terminal }),
+  }
+
+  //
+  // switch (ref.vertex.type) {
+  //   case RayType.REFERENCE:
+  //     break;
+  //   case RayType.INITIAL:
+  //     break;
+  //   case RayType.TERMINAL:
+  //     break;
+  //   case RayType.VERTEX:
+  //     break;
+  // }
+  //
+
+  // const _default = { scale: 1.5 }
+  // //
+  // const map: { [type: string]: { [type: string]: Pick<Ray, 'type'> & InterfaceOptions }} = {
+  //   [RayType.INITIAL]: {
+  //     [RayType.INITIAL]: { type: RayType.INITIAL, position: [-20 * _default.scale, 0, 0] },
+  //     [RayType.VERTEX]: { type: RayType.VERTEX, position: [-20 * _default.scale, 0, 0], rotation: [0, 0, Math.PI / 2] },
+  //     [RayType.TERMINAL]: { type: RayType.TERMINAL },
+  //   }
+  // }
+  // const initial_op = map[RayType.INITIAL][ref.initial.type];
+
+  return <group>
+    {/*{ref.initial.is_none() ? <SimpleRenderedRay*/}
+    {/*    {...initial_op} initial={interface_options.initial} {...interface_options.vertex} terminal={interface_options.terminal}*/}
+    {/*/> : <AutoRay ray={ray.initial} compiler={compiler} />}*/}
+    <SimpleRenderedRay
+      type={ref.vertex.type} initial={interface_options.initial} {...interface_options.vertex} terminal={interface_options.terminal}
+    />
+    {/*<AutoRay ray={ray.terminal} compiler={compiler} />*/}
+  </group>
+}
+
+export const AutoVertex = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
   length?: number // basically .length
   children?: any
 }) => {
@@ -237,7 +326,7 @@ export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions 
 
   if (length > 1) // TODO, currently rotates around each vertex individually
     return <group>{[...Array(length)]
-      .map(((_, i) => <AutoRenderedRay {...ray} length={1} position={add(_default.position, [60 * i, 0, 0])} />))}</group>
+      .map(((_, i) => <AutoVertex {...ray} length={1} position={add(_default.position, [60 * i, 0, 0])} />))}</group>
 
   const Group = ({ children }: Children) => {
     return <group position={_default.position} rotation={vertex.rotation}>
@@ -253,6 +342,18 @@ export const AutoRenderedRay = (ray: Omit<Options, 'vertex'> & InterfaceOptions 
     <group scale={vertex.scale} position={vertex.position}>{children}</group>
   </Group>
 }
+const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
+  <Torus
+    args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
+    material-color={color}
+    {...options}
+  />
+const _Vertex = ({ color = circle.color, ...options }: any) =>
+  <Circle
+    args={[circle.radius, circle.segments]}
+    material-color={color}
+    {...options}
+  />
 export const SimpleRenderedRay = (
   ray: Pick<Ray, 'type'>
     & Options // Relative options to other rays
@@ -265,19 +366,6 @@ export const SimpleRenderedRay = (
     color: 'orange',
     ..._.pick(ray, 'position', 'rotation', 'scale', 'color')
   }
-
-  const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
-    <Torus
-      args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
-      material-color={color}
-      {...options}
-    />
-  const _Vertex = ({ color = circle.color, ...options }: any) =>
-    <Circle
-      args={[circle.radius, circle.segments]}
-      material-color={color}
-      {...options}
-    />
 
   const initial: Required<InterfaceOptions> = { ..._default, ...ray.initial };
   const vertex: Required<InterfaceOptions> = { ..._default, ...ray.vertex };

@@ -1,6 +1,9 @@
-import _ from "lodash";
+import _, {initial} from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
+import {value} from "../../lib/typescript/React";
+import {current} from "../../profiles/FadiShawki/FadiShawki2";
+import {debug} from "node:util";
 
 
 // SHOULDNT CLASSIFY THESE?
@@ -51,8 +54,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       PossiblyHomoiconic<Ray>,
 
       AsyncIterable<Ray>,
-      Iterable<Ray>,
-      Array<Ray>
+      Iterable<Ray>//,
+      // Array<Ray>
       // Dict<Ray>
 {
 
@@ -149,6 +152,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
 
+
   // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
 
@@ -226,9 +230,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   cast = <T extends Ray>(): T => { throw new NotImplementedError(); };
 
   // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
-  map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
+  // map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   all = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
-  filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
+  // filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   clear = (): Ray => { throw new NotImplementedError(); }
 
   // TODO: Generalize these functions to:
@@ -297,10 +301,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   static dirty_store: { [label: string]: object } = {}
   get store(): any { return Ray.dirty_store[this.label] ??= {} }
 
-  o = (o: InterfaceOptions): Ray => { return this.with('options', o); }
+  // TODO: This is just any object implementation, nest the objects into a separte field,
+  o = (o: InterfaceOptions): Ray => { return this.___with('options', o); }
   get o_(): InterfaceOptions { return this.store['options'] ?? {} }
 
-  with = (key: string, any: any): Ray => {
+  ___with = (key: string, any: any): Ray => {
     this.store[key] = any;
     return this;
   }
@@ -396,6 +401,162 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return this.__label = `"${Ray._label++} (${this.js()?.toString() ?? '?'})})"`;
   }
+
+  // length: number;
+  //
+  // concat(...items: ConcatArray<Ray>[]): Ray[];
+  // concat(...items: (ConcatArray<Ray> | Ray)[]): Ray[];
+  // concat(...items: (ConcatArray<Ray> | Ray)[]): Ray[] {
+  //   return [];
+  // }
+  //
+  // copyWithin(target: number, start: number, end?: number): this {
+  //   return undefined;
+  // }
+  //
+  // entries(): IterableIterator<[number, Ray]> {
+  //   return undefined;
+  // }
+  //
+  // every<S extends Ray>(predicate: (value: Ray, index: number, array: Ray[]) => value is S, thisArg?: any): this is S[];
+  // every(predicate: (value: Ray, index: number, array: Ray[]) => unknown, thisArg?: any): boolean;
+  // every(predicate, thisArg?: any): any {
+  // }
+  //
+  // fill(value: Ray, start?: number, end?: number): this {
+  //   return undefined;
+  // }
+  //
+  // filter<S extends Ray>(predicate: (value: Ray, index: number, array: Ray[]) => value is S, thisArg?: any): S[];
+  // filter(predicate: (value: Ray, index: number, array: Ray[]) => unknown, thisArg?: any): Ray[];
+  // filter(predicate, thisArg?: any): any {
+  // }
+  //
+  // find<S extends Ray>(predicate: (value: Ray, index: number, obj: Ray[]) => value is S, thisArg?: any): S | undefined;
+  // find(predicate: (value: Ray, index: number, obj: Ray[]) => unknown, thisArg?: any): Ray | undefined;
+  // find(predicate, thisArg?: any): any {
+  // }
+  //
+  // findIndex(predicate: (value: Ray, index: number, obj: Ray[]) => unknown, thisArg?: any): number {
+  //   return 0;
+  // }
+  //
+  // forEach(callbackfn: (value: Ray, index: number, array: Ray[]) => void, thisArg?: any): void {
+  // }
+  //
+  // indexOf(searchElement: Ray, fromIndex?: number): number {
+  //   return 0;
+  // }
+  //
+  // join(separator?: string): string {
+  //   return "";
+  // }
+  //
+  // keys(): IterableIterator<number> {
+  //   return undefined;
+  // }
+  //
+  // lastIndexOf(searchElement: Ray, fromIndex?: number): number {
+  //   return 0;
+  // }
+  //
+  // map<U>(callbackfn: (value: Ray, index: number, array: Ray[]) => U, thisArg?: any): U[] {
+  //   return [];
+  // }
+  //
+  // pop(): Ray | undefined {
+  //   return undefined;
+  // }
+  //
+  // push(...items: Ray[]): number {
+  //   return 0;
+  // }
+  //
+  // reduce(callbackfn: (previousValue: Ray, currentValue: Ray, currentIndex: number, array: Ray[]) => Ray): Ray;
+  // reduce(callbackfn: (previousValue: Ray, currentValue: Ray, currentIndex: number, array: Ray[]) => Ray, initialValue: Ray): Ray;
+  // reduce<U>(callbackfn: (previousValue: U, currentValue: Ray, currentIndex: number, array: Ray[]) => U, initialValue: U): U;
+  // reduce(callbackfn, initialValue?): any {
+  // }
+  //
+  // reduceRight(callbackfn: (previousValue: Ray, currentValue: Ray, currentIndex: number, array: Ray[]) => Ray): Ray;
+  // reduceRight(callbackfn: (previousValue: Ray, currentValue: Ray, currentIndex: number, array: Ray[]) => Ray, initialValue: Ray): Ray;
+  // reduceRight<U>(callbackfn: (previousValue: U, currentValue: Ray, currentIndex: number, array: Ray[]) => U, initialValue: U): U;
+  // reduceRight(callbackfn, initialValue?): any {
+  // }
+  //
+  // reverse(): Ray[] {
+  //   return [];
+  // }
+  //
+  // shift(): Ray | undefined {
+  //   return undefined;
+  // }
+  //
+  // slice(start?: number, end?: number): Ray[] {
+  //   return [];
+  // }
+  //
+  // some(predicate: (value: Ray, index: number, array: Ray[]) => unknown, thisArg?: any): boolean {
+  //   return false;
+  // }
+  //
+  // sort(compareFn?: (a: Ray, b: Ray) => number): this {
+  //   return undefined;
+  // }
+  //
+  // splice(start: number, deleteCount?: number): Ray[];
+  // splice(start: number, deleteCount: number, ...items: Ray[]): Ray[];
+  // splice(start: number, deleteCount?: number, ...items: Ray[]): Ray[] {
+  //   return [];
+  // }
+  //
+  // unshift(...items: Ray[]): number {
+  //   return 0;
+  // }
+  //
+  // values(): IterableIterator<Ray> {
+  //   return undefined;
+  // }
+  //
+  // findLast<S extends Ray>(predicate: (value: Ray, index: number, array: Ray[]) => value is S, thisArg?: any): S | undefined;
+  // findLast(predicate: (value: Ray, index: number, array: Ray[]) => unknown, thisArg?: any): Ray | undefined;
+  // findLast(predicate, thisArg?: any): any {
+  // }
+  //
+  // findLastIndex(predicate: (value: Ray, index: number, array: Ray[]) => unknown, thisArg?: any): number {
+  //   return 0;
+  // }
+  //
+  // flat<A, D = 1 extends number>(depth?: D): FlatArray<A, D>[] {
+  //   return [];
+  // }
+  //
+  // flatMap<U, This = undefined>(callback: (this: This, value: Ray, index: number, array: Ray[]) => (ReadonlyArray<U> | U), thisArg?: This): U[] {
+  //   return [];
+  // }
+  //
+  // includes(searchElement: Ray, fromIndex?: number): boolean {
+  //   return false;
+  // }
+  //
+  // toReversed(): Ray[] {
+  //   return [];
+  // }
+  //
+  // toSorted(compareFn?: (a: Ray, b: Ray) => number): Ray[] {
+  //   return [];
+  // }
+  //
+  // toSpliced(start: number, deleteCount: number, ...items: Ray[]): Ray[];
+  // toSpliced(start: number, deleteCount?: number): Ray[];
+  // toSpliced(start: number, deleteCount?: number, ...items: Ray[]): Ray[] {
+  //   return [];
+  // }
+  //
+  // with(index: number, value: Ray): Ray[] {
+  //   return [];
+  // }
+
 
 }
 //     force = (): any => self.match({
