@@ -2,9 +2,9 @@ import {Ray, RayType} from "./Ray";
 import {PreventsImplementationBug} from "./errors/errors";
 
 describe("Ray", () => {
-  test(".empty", () => {
+  test(".None", () => {
     /** [     ] */
-    const ray = Ray.empty();
+    const ray = Ray.None();
 
     expect(ray.self.is_none()).toBe(true);
     expect(ray.self.is_some()).toBe(false);
@@ -22,14 +22,14 @@ describe("Ray", () => {
     expect(ray.type).toBe(RayType.VERTEX);
 
   });
-  test(".empty.#", () => {
+  test(".None.#", () => {
     /**
      * [  |  ]
      *    |
      * [?????]
     */
 
-    const ray = Ray.empty().as_reference();
+    const ray = Ray.None().as_reference();
 
     expect(ray.self.is_none()).toBe(true);
     expect(ray.self.is_some()).toBe(false);
@@ -47,7 +47,7 @@ describe("Ray", () => {
     expect(ray.type).toBe(RayType.VERTEX);
 
   });
-  test(".empty.#.#", () => {
+  test(".None.#.#", () => {
     /**
      * [  |  ]
      *    |
@@ -55,7 +55,7 @@ describe("Ray", () => {
      *    |
      * [?????]
      */
-    const ray = Ray.empty().as_reference().as_reference();
+    const ray = Ray.None().as_reference().as_reference();
 
     expect(ray.self.is_none()).toBe(true);
     expect(ray.self.is_some()).toBe(false);
@@ -73,7 +73,7 @@ describe("Ray", () => {
     expect(ray.is_reference()).toBe(true);
     expect(ray.type).toBe(RayType.REFERENCE);
   });
-  test(".empty.#.#.#", () => {
+  test(".None.#.#.#", () => {
     /**
      *   ...
      *    |
@@ -85,7 +85,7 @@ describe("Ray", () => {
      *    |
      * [?????]
      */
-    let ray = Ray.empty().as_reference().as_reference().as_reference();
+    let ray = Ray.None().as_reference().as_reference().as_reference();
 
     expect(ray.self.is_none()).toBe(false);
     expect(ray.self.is_some()).toBe(true);
@@ -102,7 +102,7 @@ describe("Ray", () => {
     expect(ray.is_reference()).toBe(true);
     expect(ray.type).toBe(RayType.REFERENCE);
   });
-  test(".empty.#.#.#.#[4-15]", () => {
+  test(".None.#.#.#.#[4-15]", () => {
     /**
      * Basically the empty value is out of scope of our direct drill, and we expect this behavior 'infinitely' up the reference stack.
      *   ...
@@ -117,7 +117,7 @@ describe("Ray", () => {
      * [?????]
      */
     for (let i = 4; i <= 15; i++) {
-      let ray = Ray.empty();
+      let ray = Ray.None();
       for (let j = 0; j < i; j++) {
         ray = ray.as_reference();
       }

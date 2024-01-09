@@ -82,7 +82,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     js,
   }: { js?: Arbitrary<any> } & Partial<AbstractDirectionality<Ray>> = {}) {
     this._initial = initial ?? Ray.None;
-    this._vertex = vertex ?? this.self_reference;
+    this._vertex = vertex ?? this.self_reference; // TODO: None, could also self-reference the ray on which it's defining to be None. Now it's just an ignorant loop.
     this._terminal = terminal ?? Ray.None;
     this.js = js ?? Ray.None;
   }
@@ -101,7 +101,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   }
 
   /**
-   * This is basically what breaks the recursive nature of this structure. Imagine a Ray like this: [|--|--|]. There are several ways of interpreting it, either there's a boolean on initial, vertex, terminal; Some 'false' value, says there's nothing there. Some true value says there's something there. - Basically an Option, ..., Maybe as in certain languages.
+   * This is basically what breaks the recursive structure. Imagine a Ray like this: [|--|--|]. There are several ways of interpreting it, either there's a boolean on initial, vertex, terminal; Some 'false' value, says there's nothing there. Some true value says there's something there. - Basically an Option, ..., Maybe as in certain languages.
    *
    * ---
    *
@@ -119,17 +119,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   protected self_reference = () => this;
 
-  /** [     ] */ static None = (): Ray => {
-    const self = Ray.empty(); // TODO: None, could also self-reference the ray on which it's defining to be None. Now it's just an ignorant loop.
-    self.self = () => self;
-    return self;
-  }
-
   is_some = (): boolean => !this.is_none();
 
-  /** [     ] */ static empty = () => new Ray({ });
+  /** [     ] */ static None = () => new Ray({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
-    /** [     ] */ const vertex = Ray.empty();
+    /** [     ] */ const vertex = Ray.None();
     /** [--   ] */ vertex.initial = vertex.as_initial;
     /** [  ?  ] */ vertex.vertex = value;
     /** [   --] */ vertex.terminal = vertex.as_terminal;
