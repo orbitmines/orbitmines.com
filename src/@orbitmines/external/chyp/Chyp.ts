@@ -264,26 +264,20 @@
 //   vertices = this.property('vertices');
 //   edges = this.property('edges');
 //
-//   // TODO: Shouldn't be here, this should either be implemented on Ray if it's general enough, of just remain here as an artifact
-//   protected ___domain = (ray: Ray) => ray.map(_ => {
-//     const vertex: VData = _.cast();
-//     return [vertex.vtype, vertex.size];
-//   });
-//
 //   /**
 //    * Return the domain of the graph.
 //    *
 //    * This consists of a list of pairs (vertex type, register size) corresponding to each input vertex.
 //    */
 //   // TODO: Domain/Codmain is just the initial/terminal side (possibly typed) where the direction which is what defines what it itself is connected to, is ignored.
-//   get domain(): Ray { return this.___domain(this.inputs) };
+//   get domain(): Ray { return this.inputs.cast<VData>().domain; };
 //
 //   /**
 //    * Return the domain of the graph.
 //    *
 //    * This consists of a list of pairs (vertex type, register size) corresponding to each output vertex.
 //    */
-//   get codomain(): Ray { return this.___domain(this.outputs) };
+//   get codomain(): Ray { return this.outputs.cast<VData>().domain; };
 //
 //   vertex_data = (v = int): VData => this.vertices().at(v).cast();
 //   edge_data = (e = int): EData => this.edges().at(e).cast();

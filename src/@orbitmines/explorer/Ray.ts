@@ -31,6 +31,19 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
 
 export interface AbstractDirectionality<T> { initial: Arbitrary<T>, vertex: Arbitrary<T>, terminal: Arbitrary<T> }
 
+export type DebugResult = { [label: string]: DebugRay }
+export type DebugRay = {
+  label: string,
+  initial: string,
+  vertex: string,
+  terminal: string,
+  is_initial: boolean,
+  is_vertex: boolean,
+  is_terminal: boolean,
+  type: RayType,
+  _dirty_store: any
+}
+
 /**
  * JavaScript wrapper for a mutable value. It is important to realize that this is merely some simple JavaScript abstraction, and anything is assumed to be inherently mutable.
  *
@@ -60,9 +73,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       // Array<Ray>
       // Dict<Ray>
 {
-
-  js: Arbitrary<any>
-
   // TODO: Could make a case that setting the terminal is more of a map, defaulting/first checking the terminal before additional functionality is mapped over that.
 
   protected _initial: Arbitrary<Ray>; get initial(): Ray { return this._initial(); } set initial(initial: Arbitrary<Ray>) { this._initial = initial; }
@@ -84,13 +94,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   [index: number]: Ray;
 
-  constructor({ initial, vertex, terminal,
-    js,
-  }: { js?: Arbitrary<any> } & Partial<AbstractDirectionality<Ray>> = {}) {
+  constructor({ initial, vertex, terminal, }: Partial<AbstractDirectionality<Ray>> = {}) {
     this._initial = initial ?? Ray.None;
     this._vertex = vertex ?? this.self_reference; // TODO: None, could also self-reference the ray on which it's defining to be None. Now it's just an ignorant loop.
     this._terminal = terminal ?? Ray.None;
-    this.js = js ?? Ray.None;
   }
 
   /** [  |-?] */ is_initial = (): boolean => this.is_some() && this.self.initial.is_none();
@@ -134,18 +141,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     //   new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }); // TODO: These fields as DEBUG
 
     /** [     ] */ const vertex = Ray.None();
-    /** [--   ] */ vertex.initial = new Ray({ vertex: Ray.None, terminal: vertex.as_arbitrary(), js: () => 'initial ref' }).as_arbitrary();
+    /** [--   ] */ vertex.initial = new Ray({ vertex: Ray.None, terminal: vertex.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
     /** [  ?  ] */ vertex.vertex = value;
-    /** [   --] */ vertex.terminal = new Ray({ vertex: Ray.None, initial: vertex.as_arbitrary(), js: () => 'terminal ref' }).as_arbitrary()
+    /** [   --] */ vertex.terminal = new Ray({ vertex: Ray.None, initial: vertex.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary()
 
     /** [--?--] */ return vertex;
   }
-  static js = (value: any) => { const vertex = Ray.vertex(); vertex.js = () => value; return vertex; }
 
   static size = (of: number, value: any = undefined): Ray => {
     let current = Ray.vertex().as_reference(); // TODO; This sort of thing should be lazy
     for (let i = 0; i < of; i++) {
-      current = current.continues_with(Ray.js(value).as_reference());
+      current = current.continues_with(Ray.vertex(JS.Any(value).as_arbitrary()).as_reference());
     }
 
     return current;
@@ -183,18 +189,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           return next_vertex.as_reference(); // TODO: Generally, return something which knows where all continuations are.
         }
 
-        // this.self.terminal = next_vertex.initial; equivalence#
-
-        // switch (b.type) {
-        //   case RayType.REFERENCE:
-        //     break;
-        //   case RayType.INITIAL:
-        //     break;
-        //   case RayType.TERMINAL:
-        //     break;
-        //   case RayType.VERTEX:
-        //     break;
-        // }
+        switch (b.type) {
+          case RayType.REFERENCE:
+          case RayType.INITIAL:
+          case RayType.TERMINAL: {
+            throw new PreventsImplementationBug();
+          }
+          case RayType.VERTEX: {
+            this.self.terminal.equivalent(b.self.initial);
+            break;
+          }
+        }
 
         return next_vertex.as_reference();
       }
@@ -203,7 +208,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
-  equivalent = (other: Ray) => { throw new NotImplementedError(); }
+  protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
+    this.self = b.as_arbitrary();
+    b.self = this.as_arbitrary();
+  }
 
   // TODO: Perhaps locally cache count?? - no way to ensure globally coherenct
   get count(): Ray { throw new NotImplementedError() }
@@ -333,12 +341,12 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }) as T;
   }
 
-  debug = (c: { [label: string]: object | undefined }): object => {
+  debug = (c: DebugResult): DebugRay => {
     if (c[this.label] !== undefined)
       return c[this.label]!;
 
     const of = (ray: Ray): string => {
-      if (ray.is_none()) return 'None';
+      if (ray.as_reference().is_none()) return 'None';
 
       ray.debug(c);
       return ray.label;
@@ -347,10 +355,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     const obj: any = { label: this.label };
     c[this.label] = obj;
 
+    obj.label = this.label;
     obj.initial = of(this.initial);
     obj.vertex = of(this.vertex);
     obj.terminal = of(this.terminal);
     obj.type = this.as_reference().type;
+    obj.is_initial = this.as_reference().is_initial();
+    obj.is_vertex = this.as_reference().is_vertex();
+    obj.is_terminal = this.as_reference().is_terminal();
+    obj._dirty_store = this._dirty_store;
 
     return obj;
   }
@@ -422,7 +435,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (this.__label !== undefined)
       return this.__label;
 
-    return this.__label = `"${Ray._label++} (${this.js()?.toString() ?? '?'})})"`;
+    return this.__label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
 
   // length: number;
@@ -616,8 +629,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 export namespace JS {
   export const Boolean = (boolean: boolean): Ray => {
     // |-false->-true-| (could of course also be reversed)
-    const _false = Ray.js(false);
-    const _true = Ray.js(true);
+    const _false = Ray.vertex().o({ js: false });
+    const _true = Ray.vertex().o({ js: true });
     _false.continues_with(_true);
 
     return (boolean ? _true : _false).as_reference();
@@ -650,12 +663,11 @@ export namespace JS {
       }
 
       const current: Ray = new Ray({
-        js: () => iterator_result.value,
         // initial: () => new Ray(),
         initial: () => initial,
         vertex: () => JS.Any(iterator_result.value),
         terminal: () => next(current)
-      });
+      }).o({js: iterator_result.value});
 
       // initial.continues_with(() => current.as_reference());
       if (initial.is_some())
@@ -664,7 +676,7 @@ export namespace JS {
       return current;
     }
 
-    const ray_iterator = new Ray({ js: () => iterator});
+    const ray_iterator = Ray.None().o({ js: iterator });
     ray_iterator.terminal = () => next(ray_iterator);
 
     // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
@@ -698,7 +710,7 @@ export namespace JS {
 
     // TODO
     // return JS.Any(any);
-    return Ray.js(any);
+    return Ray.vertex().o({js: any});
   }
 
   export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);

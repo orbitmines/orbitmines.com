@@ -17,6 +17,16 @@ describe("JS", () => {
   })
 });
 describe("Ray", () => {
+  test(".vertex.#.debug", () => {
+    const a = Ray.vertex().as_reference();
+    const b = Ray.vertex().as_reference();
+    a.continues_with(b);
+
+    const debug = {};
+    a.debug(debug);
+
+    expect(debug).toEqual('')
+  })
   test(".o", () => {
     const ray = Ray.vertex().o({
       a: 'b',

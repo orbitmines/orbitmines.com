@@ -344,13 +344,13 @@ export const AutoVertex = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
     <group scale={vertex.scale} position={vertex.position}>{children}</group>
   </Group>
 }
-const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
+export const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
   <Torus
     args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
     material-color={color}
     {...options}
   />
-const _Vertex = ({ color = circle.color, ...options }: any) =>
+export const _Vertex = ({ color = circle.color, ...options }: any) =>
   <Circle
     args={[circle.radius, circle.segments]}
     material-color={color}
@@ -788,7 +788,7 @@ const InterfaceObject = ({
     }, {
       combo: "arrowright", global: true, label: "", onKeyDown: () => {
         const next = selection.continues_with(
-          Ray.js("A").as_reference()
+          Ray.vertex().as_reference()
         );
 
         setSelection(next)
