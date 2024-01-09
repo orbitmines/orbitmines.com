@@ -1,10 +1,12 @@
 import React, {useRef, useState} from "react";
 import IEventListener from "../../js/react/IEventListener";
 import {VisualizationCanvas} from "../../explorer/Visualization";
-import {add, AutoRay, AutoVertex} from "../../explorer/OrbitMinesExplorer";
+import {add, AutoRay, AutoVertex, InterfaceOptions} from "../../explorer/OrbitMinesExplorer";
 import {Center} from "@react-three/drei";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
 import {Ray} from "../../explorer/Ray";
+import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
+import {keys} from "lodash";
 
 // TODO: Put the graphs setc at the top, invis lines, then draw them on hover, and maybe make surrounding stuff less visiable.
 // TODO: make some function which uses a custom input like position of the interface as the thing which breaks equivalences - ignorances. Basically a custom "equivalency function"
@@ -12,99 +14,115 @@ import {Ray} from "../../explorer/Ray";
 
 const Interface = () => {
   const ref = useRef<any>();
-  const hotkeys = useHotkeys();
+  const hotkeyConfig = useHotkeys();
 
   const scale = 1.5;
   const i = 20 * scale;
 
-  const [selection, setSelection] = useState<Ray>(
-    Ray
+  const cursor: InterfaceOptions = {
+    scale,
+    rotation: [0, 0, Math.PI / 6 ],
+    color: '#FF5555'
+  };
+
+  const [Chyp] = useState<Ray>(Ray.vertex().o({
+    selection: Ray
       .vertex().o({ position: [0, 0, 0], scale, color: 'orange' })
       .as_reference().o({
         position: [0, 0, 0],
-        scale,
-        rotation: [0, 0, Math.PI / 6 ],
-        color: '#FF5555'
-      })
-  );
+        ...cursor
+      }),
+    rays: [] as Ray[],
+    controls: Ray.vertex().o({
+      hotkeys: [ {
+        combo: "arrowright", global: true, label: "", onKeyDown: () => {
+          const { selection, rays } = Chyp.any;
 
-  console.log(Ray.vertex().o({ color: 'red'}).any.color)
+          const next = Ray.js("A").as_reference().o({
+            position: add(selection.any.position ?? [0, 0, 0], [i * 2, 0, 0]),
+            scale
+          });
 
-  const [rays, setRays] = useState<Ray[]>([selection]);
+          Chyp.any.selection = next;
+          Chyp.any.rays = [...rays, next]
 
-  hotkeys.set(...[
-    {
-      combo: "arrowright", global: true, label: "", onKeyDown: () => {
+          // selection.continues_with(
 
-        const next = Ray.js("A").as_reference().o({
-          position: add(selection.any.position ?? [0, 0, 0], [i * 2, 0, 0]),
-          scale
-        });
-        setSelection(next);
-        setRays([...rays, next]);
+          // );
+        }
+      },
+        {
+          combo: "arrowleft", global: true, label: "", onKeyDown: () => {
+            const { selection, rays } = Chyp.any;
 
-        // selection.continues_with(
+            rays.pop();
+            Chyp.any.selection = rays[rays.length - 1];
 
-        // );
+            // selection.continues_with(
 
-        console.log(rays);
-      }
-    },
-    {
-      combo: "arrowleft", global: true, label: "", onKeyDown: () => {
+            // );
 
-        rays.pop();
-        setSelection(rays[rays.length - 1]);
+          }
+        },
+        {
+          combo: "arrowup", global: true, label: "", onKeyDown: () => {
+            const { selection, rays } = Chyp.any;
 
-        // selection.continues_with(
+            Chyp.any.rays = rays.flatMap((ray: Ray) => [
+              ray,
+              // Ray.js("A").as_reference().o({
+              //   // ...ray.o,
+              //   position: add(ray.any.position ?? [0, 0, 0], [0, i * 2, 0])
+              // }),
+              // Ray.js("A").as_reference().o({
+              //   // ...ray.o,
+              //   position: ray.any.position,
+              //   rotation: [0, 0, Math.PI / 2]
+              // }),
+              // Ray.js("A").as_reference().o({
+              //   // ...ray.o,
+              //   position: add(ray.any.position ?? [0, 0, 0], [0, i * 2, 0]),
+              //   rotation: [0, 0, Math.PI / 2]
+              // })
+            ]);
 
-        // );
+            // Chyp.any.selection = Chyp;
 
-        console.log(rays);
-      }
-    },
-    {
-      combo: "arrowup", global: true, label: "", onKeyDown: () => {
+            // selection.o({...selection.o, position: add(selection.any.position ?? [0, 0, 0], [0, i * 2, 0])})
 
-        setRays(rays.flatMap(ray => [
-          ray,
-          Ray.js("A").as_reference().o({
-            ...ray.o,
-            position: add(ray.any.position ?? [0, 0, 0], [0, i * 2, 0])
-          }),
-          Ray.js("A").as_reference().o({
-            ...ray.o,
-            position: ray.any.position,
-            rotation: [0, 0, Math.PI / 2]
-          }),
-          Ray.js("A").as_reference().o({
-            ...ray.o,
-            position: add(ray.any.position ?? [0, 0, 0], [0, i * 2, 0]),
-            rotation: [0, 0, Math.PI / 2]
-          })
-        ]));
+            // selection.continues_with(
 
-        selection.o({...selection.o, position: add(selection.any.position ?? [0, 0, 0], [0, i * 2, 0])})
-        setSelection(selection)
+            // );
+          }
+        }] as HotkeyConfig[]
+    })
+  }));
 
-        // selection.continues_with(
+  const { selection, controls, rays } = Chyp.any;
+  const { hotkeys } = controls.any;
 
-        // );
+  hotkeyConfig.set(...hotkeys);
 
-        console.log(rays);
-      }
-    }
-  ]);
+  const Rendered = ({ ray, ...options }: { ray: Ray } & InterfaceOptions) => {
+    const { position = options.position, rotation = options.rotation, scale = options.scale, color = options.color } = ray.any;
+    return <AutoVertex key={ray.label} {...{position, rotation, scale, color}} />;
+  }
+
 
   return <>
     <Center>
-      <AutoRay ray={selection.self.initial} position={[-30, 0, 0]} />
-      <AutoRay ray={selection.self.terminal} position={[30, 0, 0]} />
-      <AutoRay ray={selection.self} />
+      {/*<AutoRay ray={Chyp.any.selection.self.initial} position={[-30, 0, 0]} />*/}
+      {/*<AutoRay ray={Chyp.any.selection.self.terminal} position={[30, 0, 0]} />*/}
+      {/*<AutoRay ray={Chyp.any.selection.self} />*/}
+
+      {/*<AutoRay ray={selection} />*/}
+
       {/*<AutoVertex {...selection.o} />*/}
       {/*<AutoVertex {...selection.self.o} />*/}
+      <Rendered ray={selection} {...cursor} />
+      <AutoVertex position={[0, 0, 0]} scale={scale} />
 
-      {/*{rays.map(ray => <AutoVertex {...ray.o} />)}*/}
+      {rays.map((ray: Ray) => <Rendered key={ray.label} ray={ray} />)}
 
       {/*<AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} rotation={[0, 0, 0]} />*/}
     </Center>

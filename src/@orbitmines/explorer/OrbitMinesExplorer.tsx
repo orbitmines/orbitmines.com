@@ -236,14 +236,16 @@ export const AutoRay = (
 ) => {
   compiler ??= new TempCompiler();
 
-  const o = (ray: Ray, defaults: InterfaceOptions = {}): Required<InterfaceOptions> => ({
-    position: [0, 0, 0],
-    rotation: [0, 0, 0],
-    scale: 1.5,
-    color: 'orange',
-    ...defaults,
-    ...ray.o
-  });
+
+  const o = (ray: Ray, defaults: InterfaceOptions = {}): Required<InterfaceOptions> => {
+    const {
+      position = defaults.position ?? [0, 0, 0],
+      rotation = defaults.rotation ?? [0, 0, 0],
+      scale = defaults.scale ?? 1.5,
+      color = defaults.color ?? 'orange'
+    } = ray.any;
+    return ({ position, rotation, scale, color, })
+  };
 
   // Move to a layer of abstraction above what is passed to us - this way we can start describing it.
   const ref = { // TODO; This general pattern is probably worth abstracting somewhere.
