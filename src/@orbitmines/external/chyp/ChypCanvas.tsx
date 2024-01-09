@@ -4,7 +4,7 @@ import {VisualizationCanvas} from "../../explorer/Visualization";
 import {_Continuation, add, AutoVertex, InterfaceOptions, SimpleRenderedRay} from "../../explorer/OrbitMinesExplorer";
 import {Center} from "@react-three/drei";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
-import {DebugRay, DebugResult, Ray, RayType} from "../../explorer/Ray";
+import {DebugResult, Ray, RayType} from "../../explorer/Ray";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import _ from "lodash";
 import {Children} from "../../../lib/typescript/React";
@@ -134,59 +134,51 @@ const Interface = () => {
   selection.debug(debug);
 
   if (DEBUG) {
-    _.values(debug).forEach(ray => {
-
-    });
+    // _.groupBy(_.values(debug), ray => ray.vertex);
 
     return <>
       <Center>
         {_.values(debug).map(((_ray, index) => {
-          const scale = 1.5;
-
-          const options = (ray: DebugRay, expected: InterfaceOptions): DebugRay & Required<InterfaceOptions> => {
-            const color = {
-              [RayType.VERTEX]: 'orange',
-              [RayType.TERMINAL]: '#FF5555',
-              [RayType.INITIAL]: '#5555FF',
-              [RayType.REFERENCE]: '#555555',
-            }[ray.type];
-
-            console.log('-')
-            console.log('expected', expected)
-            console.log('ray', ray)
-            return {
-              position: [0, 0, 0],
-              rotation: [0, 0, 0],
-              color,
-              scale,
-
-              ...ray, // If set elsewhere, prefer that one instead
-              ...expected, // Expected based on current perspective
-            }
+          let ray = {
+            ...debug[_ray.label]
           }
 
-          const expected = (ref: string): InterfaceOptions => ref === 'None' ? {} : _.pick(debug[ref] as InterfaceOptions, 'position', 'rotation', 'color', 'scale');
-          const interface_options = (ray: InterfaceOptions): InterfaceOptions => _.pick(ray, 'position', 'rotation', 'color', 'scale');
+          const color = {
+            [RayType.VERTEX]: 'orange',
+            [RayType.TERMINAL]: '#FF5555',
+            [RayType.INITIAL]: '#5555FF',
+            [RayType.REFERENCE]: '#555555',
+          }[ray.type];
 
-          let ray = debug[_ray.label] = options(debug[_ray.label], {
-            position: [100, index * 20, 0],
-            // ...expected(debug[_ray.label].vertex)
-          });
-          let vertex: InterfaceOptions = ray.vertex !== 'None' ? (debug[ray.vertex] = options(debug[ray.vertex], {
-            position: [100, index * 20, 0],
-            // ...expected(ray.label)
-          })) : {};
-          let initial: InterfaceOptions = ray.initial !== 'None' ? (debug[ray.initial] = options(debug[ray.initial], {
-            position: add(ray.position, [-20 * scale, 0, 0]),
-            // ...expected(ray.label)
-          })) : {};
-          let terminal: InterfaceOptions = ray.terminal !== 'None' ? (debug[ray.terminal] = options(debug[ray.terminal], {
-            position: add(ray.position, [20 * scale, 0, 0]),
-            // ...expected(ray.label)
-          })) : {};
+          ray = {
+            ...ray,
+            ...({
+              color,
+              scale: 1.5,
+              position: [0, index * 20, 0]
+            } as InterfaceOptions)
+          }
 
-          const Group = ({ children }: Children) => { ///  position={_default.position} rotation={vertex.rotation}>
-            return <group>
+          debug[_ray.label] = ray;
+
+          const _default: Required<InterfaceOptions> = {
+            position: [0, 0, 0],
+            rotation: [0, 0, 0],
+            scale: 1,
+            color: 'orange',
+            ..._.pick(ray, 'position', 'rotation', 'scale', 'color'),
+          }
+
+          console.log(ray.label, [ray.initial, ray.vertex, ray.terminal].toString())
+
+          const initial: Required<InterfaceOptions> = { ..._default, position: [-20 * _default.scale, 0, 0] };
+
+          // Vertex as the origin for rotation
+          const vertex: Required<InterfaceOptions> = { ..._default, position: [0, 0, 0] } //, ...ray.vertex };
+          const terminal: Required<InterfaceOptions> = { ..._default, position: [20 * _default.scale, 0, 0] };
+
+          const Group = ({ children }: Children) => {
+            return <group position={_default.position} rotation={vertex.rotation}>
               {children}
             </group>
           }
@@ -194,15 +186,13 @@ const Interface = () => {
           const None = (options: InterfaceOptions) => (<_Continuation {...options} color="#AA0000" scale={1} />)
 
           const Extreme = ({type}: { type: RayType.INITIAL | RayType.TERMINAL }) => {
-            const options = interface_options(type === RayType.INITIAL ? initial : terminal);
+            const options = type === RayType.INITIAL ? initial : terminal;
 
             switch (ray.type) {
               case RayType.REFERENCE:
               case RayType.VERTEX: {
-                const vertex_options = interface_options(vertex);
-
-                const a = type === RayType.INITIAL ? { terminal: vertex_options } : { initial: vertex_options };
-                return <SimpleRenderedRay {...options} {...a} type={type} />;
+                const a = type === RayType.INITIAL ? { terminal: vertex } : { initial: vertex };
+                return <SimpleRenderedRay type={type} {...options} {...a} />;
               }
               case type: {
                 return <None {...options} />;
@@ -215,12 +205,7 @@ const Interface = () => {
 
           return <Group key={index}>
             <Extreme type={RayType.INITIAL} />
-            <SimpleRenderedRay
-              {...interface_options(vertex)}
-              initial={interface_options(initial)}
-              terminal={interface_options(terminal)}
-              type={ray.type === RayType.REFERENCE ? RayType.VERTEX : ray.type}
-            />
+            <SimpleRenderedRay type={ray.type === RayType.REFERENCE ? RayType.VERTEX : ray.type} {...vertex} initial={initial} terminal={terminal} />
             <Extreme type={RayType.TERMINAL} />
           </Group>
         }))}
