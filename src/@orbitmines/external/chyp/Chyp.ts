@@ -1279,11 +1279,135 @@ export class Match extends Ray {
     return true;
   }
 
+  /**
+   * Return whether all adjacent edges of a domain vertex are mapped.
+   */
+  domain_neighbourhood_mapped = (vertex: VData): Ray =>
+    ([vertex.in_edges + vertex.out_edges] as Ray).all(edge => this.edge_map.includes(edge));
 
-  domain_neighbourhood_mapped = (vertex = int): Ray => { throw new NotImplementedError(); }
-  map_scalars = (): Ray => { throw new NotImplementedError(); }
-  more = (): Ray => { throw new NotImplementedError(); }
+  /**
+   *     # def cod_nhd_mapped(self, cod_v: int):
+   *     #     """Returns True if nhd(cod_v) is the range of emap"""
+   *     #     return (all(e in self.eimg for e in self.cod.in_edges(cod_v)) and
+   *     #             all(e in self.eimg for e in self.cod.out_edges(cod_v)))
+   */
 
+  /**
+   * Try to extend the match by mapping all scalars (i.e. 0 -> 0 edges).
+   *
+   * Note that any matchings of scalars will yield isomorphic results under rewriting, so we don't return a list of all the possible matchings.
+   *
+   * Returns: `True` if all scalars in the domain are mapped injectively to scalars in the codomain, otherwise `False`.
+   */
+  map_scalars = (): Ray => {
+    //TODO WHAT'S A SCALAR HERE?
+    // TODO: Again same pattern for (co)domain - flipped, two dimensional
+    const ___scalars = (domain: Graph, reverse: boolean) => {
+      const is = (ray: Ray) => reverse ? ray.count !== 0 : ray.count === 0; // TODO: Should be easier to just .not this
+
+      return domain.edges
+        .filter((edge: EData) => this.is(edge.source) && this.is(edge.target));
+    }
+
+    const terminal = ___scalars(this.codomain, false);
+    const initial = ___scalars(this.domain, true);
+
+    // Greedily try to map scalar edges in the domain to scalar edges in the codomain with the same value.
+    initial.all((initial_edge: EData) => {
+      // TODO: Put initial/terminal edge on a ray and then apply funcitons
+
+      log(`Trying to map scalar edge ${initial_edge}`)
+
+      let found_match = false;
+
+      // TODO .enumerate??
+      terminal.all(([i, terminal_edge]) => {
+        if (initial_edge.value !== terminal_edge.value) // ANother equiv
+          return; // TODO continue;
+
+        // Map the domain scalar to the first codomain scalar available with the same value.
+        this.edge_map[initial_edge] = terminal_edge;
+        this.edge_image.add(terminal_edge); // TODO: Again map/image is just initial/terminal.. same as domain/codomain,,
+
+        found_match = true;
+
+        // Since the edge map must be injective, if a scalar in the codomain is mapped to, remove it from the list of candidates for future domain scalars to be mapped to.
+        terminal.pop(i); // TODO: ???
+
+        log(`Successfully mapped scalar ${initial_edge} -> ${terminal_edge}`)
+
+        // TODO: BREAK ; any??
+      });
+
+      if (!found_match) {
+        log(`Match failed: could not map scalar edge ${initial_edge}.`)
+        return false; // TODO DOESNT RETURN
+      }
+    });
+
+    return true;
+  }
+
+
+  // TODO: IF MORE JUST ADDS MORE MATCHES IN THIS DIRECTION, THAT SHOULD BE AUTOMATIC ON .match ...  ?
+  /**
+   * Return any matches extending `self` by a single vertex or edge.
+   */
+  more = (): Ray => {
+    // First, try to add an edge adjacent to any domain vertices that have already been matched.
+    this.vertex_map
+      // If all the edges adjacent to the current vertex have already been matched, continue. TODO: Could just be on the .vertex
+      .filter(initial_vertex => this.domain_neighbourhood_mapped(initial_vertex))
+      .all((initial_vertex: VData) => {
+        // TODO: AS ZIp or something
+        const terminal_vertex = this.vertex_map[initial_vertex];
+
+        const ___test = (boundary: (ray: Graph) => Ray): Ray => {
+          // Try to extend the match by mapping an adjacent source edge.
+          boundary(this.domain) // TODO: AGAIN SAME THING
+            // If the edge has already been matched, continue.
+            .filter(edge => !this.edge_map.includes(edge))
+            .all((initial_edge: EData) => {
+
+              // Otherwise, try to map this edge into the codomain graph.
+              return boundary(this.codomain).map(terminal_edge => {
+                const potential_new_match = this.copy();
+
+                // If the edge is successfully mapped to an edge in the codomain graph, extend the match with this mapping.
+                if (potential_new_match.try_add_edge(initial_edge, terminal_edge))
+                  return potential_new_match;
+
+                return NONE;//todo
+              }); // TODO REMOVE NON-ADDED_ONES, doesnt actually reutn either
+            })
+
+        }
+
+        ___test(ray => ray.in_edges);
+        ___test(ray => ray.out_edges);
+
+      });
+
+    // If all domain edges adjacent to matched domain vertices have already been matched, try to match an unmatched domain vertex.
+    this.domain.vertices
+      // If the vertex has already been matched into the codomain graph, continue. (Note we have looked at the edge-neighbourhood of these vertices above)
+      .filter(initial_vertex => this.vertex_map.includes(initial_vertex)) // TODO: THIS THING IS JUST A COPY, AGAIN FROM THE VERTEX/EDGE DIFFERENTIATION FROM ABOVE
+      .all(initial_vertex => {
+
+        // Try to map the current domain vertex to any of the codomain vertices, extending the current match with this map when successful.
+        return this.codomain.vertices.map((terminal_vertex: VData) => {
+          const potential_new_match = this.copy();
+
+          // If the edge is successfully mapped to an edge in the codomain graph, extend the match with this mapping.
+          if (potential_new_match.try_add_vertex(initial_edge, terminal_edge))
+            return potential_new_match;
+
+          return NONE;//todo
+        }); // TODO: AGAIN DOESNT RETURN
+      })
+
+    return [];
+  }
 
   // TODO: Total=surjective on another level of description ???
   ___defuq = (string: 'image' | 'map', domain) =>
