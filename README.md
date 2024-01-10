@@ -40,3 +40,6 @@ A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hype
 
 > [!WARNING]
 > No proper security audit has yet been done on its current iteration.
+
+> [!WARNING]
+> No proper performance optimizations have been done on its current iteration.
