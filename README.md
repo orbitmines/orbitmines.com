@@ -43,3 +43,19 @@ A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hype
 
 > [!WARNING]
 > No proper performance optimizations have been done on its current iteration.
+
+---
+
+### Local setup
+
+- Running `orbitmines.com` locally on `http://localhost:3000`:
+  - ```
+    npm install
+    ```
+  - ```
+    npm start
+    ```
+- Running tests.
+  - ```shell
+    npm run test -- --watchAll
+    ```
