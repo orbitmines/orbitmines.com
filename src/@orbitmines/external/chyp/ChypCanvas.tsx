@@ -128,6 +128,7 @@ const Interface = () => {
 
   }
 
+  
   const DEBUG = true;
 
   const debug: DebugResult = {};
@@ -150,6 +151,8 @@ const Interface = () => {
     const group_index = (l: string): number => groups.indexOf(group(l));
     const index_in_group = (l: string): number => group(l).indexOf(l);
 
+
+    //TODO: do the same for group in initial/yerminal
     return <>
       {/*<Center>*/}
         {_.values(debug).map(((_ray, index) => {

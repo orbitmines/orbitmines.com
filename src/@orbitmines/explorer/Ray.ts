@@ -206,6 +206,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
   }
 
+  /**
+   * next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
+   * previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
+   */
+  // TODO: These necessarily rever to something which allows you to ask the question of 'next' again. It could return many values (initial/terminal?), a single one: vertex; on which again more structure like a list or something could be defined...
+  get previous(): Ray { throw new NotImplementedError(); }
+  get next(): Ray { throw new NotImplementedError(); } // TODO: Could need equivalence/skip logic, "already was here", or say, necessarily, it should get visited again, ... again this thing is hard to say generally.
+  // TODO: This is the same with rewrite/compile/compose/dpo ...
+
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
   protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
@@ -367,75 +376,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return obj;
   }
-  to_wolfram_language = (): string => {
-    const hyperEdges: string[][] = [];
-    const options: any = {};
-
-    const debug = {};
-    this.debug(debug);
-
-    const vertexStyle = (ray: any): string => {
-      switch (ray.type) {
-        case RayType.INITIAL:{
-          return 'Darker@Red'
-        }
-        case RayType.TERMINAL: {
-          return 'Lighter@Red'
-        }
-        case RayType.REFERENCE: {
-          if (ray.vertex === 'None') // empty reference
-            return 'Lighter@Orange';
-
-          return 'Orange'
-        }
-        case RayType.VERTEX: {
-          return 'Lighter@Blue'
-        }
-        default: {
-          throw '??'
-        }
-      }
-    }
-
-    _.valuesIn(debug).forEach((ray: any) => {
-      console.log(ray)
-
-      if (ray.initial !== 'None' && ray.terminal !== 'None') {
-        const edge: string[] = [ray.initial, ray.label, ray.terminal].filter(vertex => vertex !== 'None');
-        hyperEdges.push(edge);
-      }
-
-      if (ray.vertex !== 'None') {
-        hyperEdges.push([ray.label, ray.vertex]);
-
-        (options['EdgeStyle'] ??= {})[`{${[ray.label, ray.vertex].join(',')}}`] = 'Orange'
-      }
-
-      (options['VertexStyle'] ??= {})[ray.label] = vertexStyle(ray);
-    })
-
-    return `ResourceFunction["WolframModelPlot"][{${hyperEdges
-      .filter(hyperEdge => hyperEdge.length !== 0)
-      .map(hyperEdge =>
-        `{${hyperEdge.join(',')}}`
-      ).join(',')}},VertexLabels->All,${
-      _.map(options, (mapping, option) =>
-        `${option} -> <|${
-          _.map(mapping, (value, key) => `${key} -> ${value}`)
-            .join(',')}|>`)
-        .join(',')}]`;
-  }
 
   /**
    * TODO: This should be constructed at the vertex and in general unsolvable
    */
   static _label: number = 0;
-  __label: string | undefined;
   get label(): string {
-    if (this.__label !== undefined)
-      return this.__label;
+    if (this.any.label !== undefined)
+      return this.any.label;
 
-    return this.__label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
+    return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
 
   // length: number;
