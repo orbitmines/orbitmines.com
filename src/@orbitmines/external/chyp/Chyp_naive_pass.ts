@@ -71,14 +71,6 @@ export class ValueError extends Error {}
 export const VType = JS.Iterable([str, None]);
 
 /**
- * An error occurred in the graph backend.
- *
- * TODO probably hooked as a boolean, one successful the other not
- */
-export class GraphError extends Error {}
-export class RuleError extends Error {}
-
-/**
  * Used for debugging (the matcher)
  */
 const DEBUG = true; // TODO; Generalize
@@ -114,15 +106,6 @@ export class VData extends Ray {
   value = this.property('value')
 
   /**
-   * Integer identifiers of input and output hyperedges of this vertex - useful for finding neighbouring hyperedges.
-   *
-   * TODO ; // set[int] = set()
-   * TODO ; these are just the initial/terminal sides of a Ray. they're just duplicated
-   */
-  get in_edges(): Ray { throw new NotImplementedError(); }
-  get out_edges(): Ray { throw new NotImplementedError(); }
-
-  /**
    * Indices (if any) where this vertex occurs in the input and output lists of the hypergraph.
    */
   get in_indices(): Ray { return this.initial } //
@@ -135,8 +118,7 @@ export class VData extends Ray {
   // TODO: Probably generalizable
 
   /**
-   *
-   * @param other
+   * Form the quotient of the graph by identifying v with w. Afterwards, the quotiented vertex will be have integer identifier `v`.
    */
   merge = (other: VData): Ray => {
     // TODO: other is destroyed
@@ -186,18 +168,7 @@ export class VData extends Ray {
 
 }
 
-/**
- * Data associated with a single edge.
- */
 export class EData extends Ray {
-
-  get source() { return this.s };
-  get target() { return this.t };
-
-  // TODO: this is just the initial frame
-  get s(): Ray { throw new NotImplementedError(); }
-  // TODO: this is just the terminal frame
-  get t(): Ray { throw new NotImplementedError(); }
 
   fg = this.property('bg', Color());
   bg = this.property('bg', Color());
@@ -374,45 +345,11 @@ export class Graph extends Ray {
   // also for add   // TODO; these are then again duplicated to    self.vdata[v].out_indices.add(i)
 
 
-
-
-  // TODO: Move these to a "reference-like" structure, need to be on VData..
-
-  /**
-   * All these are just delegations from some Vertex/Edge structure.
-   */
-  // .vertices
-  num_vertices = (): Ray => this.vertices().count.as_int();
-
-  // .edges
-  num_edges = (): Ray => this.edges().count.as_int();
-
-  // .vertex_data
-  is_input = (v = int): Ray => this.vertex_data(v).is_input();
-  is_output = (v = int): Ray => this.vertex_data(v).is_output();
-  is_boundary = (v = int): Ray => this.vertex_data(v).is_boundary();
-  in_edges = (v = int): Ray => this.vertex_data(v).in_edges;
-  out_edges = (v = int): Ray => this.vertex_data(v).out_edges;
-
-  // .edge_data
-  source = (e = int): Ray => this.edge_data(e).source;
-  target = (e = int): Ray => this.edge_data(e).target;
-  edge_domain = (edge_id = int): Ray => this.edge_data(edge_id).domain();
-  edge_codomain = (edge_id = int): Ray => this.edge_data(edge_id).codomain();
-
   /**
    * Return vertices that lie on a directed path from any of `vs`.
    * // TODO: Just traverse the rays, deduplicate using the index
    */
   successors = (ray: Ray): Ray => ray.next;
-
-  /**
-   * Form the quotient of the graph by identifying v with w. Afterwards, the quotiented vertex will be have integer identifier `v`.
-   *
-   * @param v Integer identifier of the vertex into which to merge `w`.
-   * @param w Integer identifier of the vertex to merge into `v`.
-   */
-  merge_vertices = (v = int, w = int): Ray => this.vertex_data(v).merge(this.vertex_data(w));
 
   /**
    * Split a vertex into copies for each input, output, and tentacle.
@@ -712,7 +649,6 @@ export class Graph extends Ray {
     this.edata
       .filter(edge => edges.includes(edge))
       .all(edge => edge.cast<EData>().highlight = bool(true));
-
 
   }
 
@@ -1083,14 +1019,11 @@ export class MainWindow extends Ray {
 // TODO ISNT A MATCH JUST AN IGNORANT COPY ON BOTH SIDES???
 export class Match extends Ray {
 
-  get domain(): Graph { throw new NotImplementedError(); }
-  get codomain(): Graph { throw new NotImplementedError(); }
   get vertex_map(): Ray { throw new NotImplementedError(); }
   get vertex_image(): Ray { throw new NotImplementedError(); }
   get edge_map(): Ray { throw new NotImplementedError(); }
   get edge_image(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (): Ray => { throw new NotImplementedError(); }
   __str__ = (): Ray => {
     // (f'\tVertex map: {str(self.vertex_map)}'
     //                 + f'\n\tEdge map: {str(self.edge_map)}')
@@ -1512,46 +1445,9 @@ export class Matches extends Ray {
 }
 
 export class Rule extends Ray {
-  get lhs(): Graph { throw new NotImplementedError(); }
-  get rhs(): Graph { throw new NotImplementedError(); }
 
-  /**
-   * TODO: Put the name on each side of the rule, not the '-' hacky thing
-   */
-  get name(): Ray { throw new NotImplementedError(); }
   get equiv(): Ray { throw new NotImplementedError(); }
 
-  __init__ = (name = str(''), equiv = bool(True)): Ray => {
-    // TODO: Maybe just move exception to a method on this thing
-
-    if (this.lhs.domain !== this.rhs.domain) // TODO: !==
-      throw new RuleError(`Inputs must match on LHS and RHS of rule (${this.rhs.domain} != ${this.lhs.domain})`);
-
-    if (this.lhs.codomain !== this.rhs.codomain)
-      throw new RuleError(`Outputs must match on LHS and RHS of rule (${this.rhs.codomain} != ${this.lhs.codomain})`)
-
-
-    throw new NotImplementedError();
-
-  }
-
-  copy = (): Ray => { throw new NotImplementedError(); }
-
-  // TODO: Could put this on ray, generalize to swapping
-  converse = (): Rule => {
-    // TODO remove this hacky thing - just tries to us -a / a
-    const name = this.name.as_string().startsWith('-') ? this.name.substring(1) : `-${this.name}`;
-
-    const converse: Rule = this.copy().cast(); // TODO equiv=True?
-    converse.name = name;
-
-    // TODO: Wont work, we just should swap initial/terminal;\
-    //swap?? or change direction..
-    // const swap = converse.rhs;
-    // converse.rhs = converse.lhs;
-    // converse.lhs = swap;
-    return converse;
-  }
 
   /**
    * Returns True if boundary on lhs embeds injectively
@@ -1591,8 +1487,8 @@ export class Rule extends Ray {
         return;
       }
 
-      const rule_input = this.lhs.vertex_data(rule_vertex).in_indices;
-      const rule_output = this.lhs.vertex_data(rule_vertex).out_indices;
+      const rule_input = rule_vertex.in_indices;
+      const rule_output = rule_vertex.out_indices;
 
       if (rule_input.count.as_int() === 1 && rule_output === 1) {
         const [match_input, match_output] = rewritten_graph.explode_vertex(match_vertex);
@@ -1661,25 +1557,19 @@ export class Rule extends Ray {
     return replacement;
   }
 
-  /**
-   * Apply the given rewrite r to at match m and return the first result
-   *
-   * This is a convience wrapper for `dpo` for when the extra rewrite data isn't needed.
-   */
-  rewrite = (match: Match): Graph => {
-    // TODO:     except StopIteration:
-    //         raise RuntimeError("Rewrite has no valid context")
-
-    const result: Match = this.dpo(match).first().cast();
-    return result.codomain;
-  }
-
   // TODO: Can probably just match Rule=Graph, and use only one of these methods??
   /**
    * Return matches of the left side of `rule` into `graph`.
    */
   match = (other: Graph, convex: boolean = true): Matches => new Matches(this.lhs, other, convex);
 
+  /**
+   * Apply the given rewrite r to at match m and return the first result
+   *
+   * This is a convenience wrapper for `dpo` for when the extra rewrite data isn't needed.
+   */
+  rewrite = (match: Match): Ray => this.dpo(match).first.terminal; // .first.codomain
+  // TODO; Though .first is used here, something like .any is more appropriate in the sense of: Don't care which one first, just something.
 }
 
 export class RewriteState extends Ray {

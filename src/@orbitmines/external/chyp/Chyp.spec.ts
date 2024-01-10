@@ -12,8 +12,19 @@ describe("Chyp", () => {
       expect(graph.initial.any.js).toBe('A');
       expect(graph.inputs.any.js).toBe(graph.initial.any.js);
       expect(graph.inputs).toBe(graph.initial);
-    })
+    });
 
+  });
+  describe(".Rule", () => {
+    test(".name", () => {
+      let rule = new Chyp.Rule();
+      rule.name = 'test';
+
+      expect(rule.name).toBe('test');
+      expect(rule.reverse.any.name).toBe('-test');
+      expect(rule.reverse.reverse.any.name).toBe('test');
+
+    });
   });
 });
 

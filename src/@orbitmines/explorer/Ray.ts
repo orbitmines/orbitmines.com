@@ -76,7 +76,7 @@ export type DebugRay = {
  * TODO: Singlke keybind for now to show/hide the ray disambiguation or 'dead edges/..'/
  *
  *
- * TODO: Automatically implement any function with paramters, as being callable from a ray of that size..
+ *
  *
  *
  * TODO: Consistency of Arbitrary vs non-arbitrary.
@@ -172,6 +172,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
 
+  // TODO AS += through property
   continues_with = (b: Ray): Ray => {
     // TODO: contiues_with is just composing vertices..
 
@@ -225,16 +226,40 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
 
+  get first(): Ray { throw new NotImplementedError(); }
+  get last(): Ray { throw new NotImplementedError(); }
+
   protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
     this.self = b.as_arbitrary();
     b.self = this.as_arbitrary();
   }
+  // TODO: I Don't like this name, but it needs to get across that any equivalency, or any equivalency check for that necessarily, is local. And I want more equivalences, I run more of this method.
+  // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex.
+  is_vertex_equivalent = (b: Ray) => {
+    // TODO; in the case of a list, each individually, again, additional structure...
+  }
+  // TODO: Ignore the connection between the two, say a.equiv(b) within some Rule [a,b], ignore the existing of the connection in the Rule? What does it mean not to???
+  is_equivalent = (b: Ray): boolean => { return false; } // TODOl: Current references assume you can't go inside vertex..
+  // TODO implement .not??
 
   // TODO: Perhaps locally cache count?? - no way to ensure globally coherenct
   get count(): Ray { throw new NotImplementedError() }
 
   // TODO; Could return the ignorant reference to both instances, or just the result., ..
   copy = (): Ray => { throw new NotImplementedError() }
+
+  // @alias('converse', 'opposite', 'swap')
+  get reverse(): Ray {
+    const copy = this;//TODO.copy();
+
+    // TODO: Do we do this lazy by default? Just using refs??? - Or abstract this elsewhere to decide what to do
+    const swap = copy.initial;
+    copy.initial = copy.terminal.as_arbitrary();
+    copy.terminal = swap.as_arbitrary();
+    // TODO: This doesn't actually work
+
+    return copy;
+  }
 
   // export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
 //   return Arbitrary.Fn(() => length(of, value).resolve().at_terminal(index));
@@ -295,6 +320,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      *     ]
      */
   }
+
+  // ___compute = ()
 
   *traverse(): Generator<Ray> {}
 
