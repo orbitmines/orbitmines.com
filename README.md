@@ -5,7 +5,7 @@
 
 *Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems.*
 
----
+![header](./public/papers/on-orbits-equivalence-and-inconsistencies/images/header.png)
 
 ## What is this?, What is OrbitMines?, What are Rays?
 
