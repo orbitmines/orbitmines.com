@@ -1469,10 +1469,74 @@ export class Match extends Ray {
    */
 }
 
+/**
+ * An iterator over matches of one graph into another.
+ *
+ * This class can be used to iterate over total matches of a graph into another, optionally requiring these matches to be convex.
+ *
+ * TODO: SUPPORT THIS/?:::
+ *     A class instance works by keeping a stack of partial or total matches.
+ *     When it is iterated over, it pops a match from its match stack if it is
+ *     non-empty, otherwise the iteration is stopped. If a match has been popped,
+ *     the instance returns the match if it is total (and convex if required).
+ *     Otherwise, the instance tries to extend the match and add any extended
+ *     matches to the stack, then continues this process of popping off the match
+ *     stack and extending if possible until a valid match is found and returned.
+ */
 export class Matches extends Ray {
-  __init__ = (domain = Graph, codomain = Graph): Ray => { throw new NotImplementedError(); }
+  __init__ = (domain = Graph, codomain = Graph): Ray => {
+    /**
+     * TODO
+     *         if initial_match is None:
+     *             initial_match = Match(domain=domain, codomain=codomain)
+     *         self.convex = convex
+     *
+     *         # Try to map scalars on the initial match.
+     *         if initial_match.map_scalars():
+     *             self.match_stack = [initial_match]
+     *         # If the scalars could not be mapped, set the match
+     *         # stack to be empty. This means that not suitable matches
+     *         # will be found by this class instance.
+     *         else:
+     *             self.match_stack = []
+     */
+    throw new NotImplementedError(); }
   __iter__ = (): Ray => { throw new NotImplementedError(); }
-  __next__ = (): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Return the next suitable match found.
+   *
+   * A 'suitable' match is one that is total and, if `self.convex == True`, convex.
+   */
+  __next__ = (): Ray => {
+    // TODO Like expected this, class can probably be dropped this just becomes
+
+    return this.match_stack.dont_check_for_convex_or.is_convex; // TODO: Just generalize these on functions
+
+    /**
+     *      while len(self.match_stack) > 0:
+     *             # Pop the match at the top of the match stack
+     *             m = self.match_stack.pop()
+     *             # If the match is total (and convex if required), return it.
+     *             if m.is_total():
+     *                 match_log("got successful match:\n" + str(m))
+     *                 if self.convex:
+     *                     if m.is_convex():
+     *                         match_log("match is convex, returning")
+     *                         return m
+     *                     else:
+     *                         match_log("match is not convex, dropping")
+     *                 else:
+     *                     return m
+     *             # If the match at the top of the match stack was not total
+     *             # (and convex if required), try to extend the match at the
+     *             # top of the stack and add the results to the match stack.
+     *             else:
+     *                 self.match_stack += m.more()
+     *         # If a suitable match was not found, stop the iteration.
+     *         raise StopIteration
+      */
+  }
 }
 
 export class Rule extends Ray {
