@@ -127,4 +127,4 @@ ${generateTypeScriptTypes(classesAndMethods)}
 `;
 
 
-fs.writeFileSync('../src/@orbitmines/external/implementations/chyp/Chyp.ts', typeScriptCode)
+fs.writeFileSync('../src/@orbitmines/external/implementations/chyp/Chyp_naieve_pass.ts', typeScriptCode)

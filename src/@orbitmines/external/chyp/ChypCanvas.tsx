@@ -102,7 +102,7 @@ const Interface = () => {
               // })
             ]);
 
-            // Chyp.any.selection = Chyp;
+            // Chyp_naieve_pass.any.selection = Chyp_naieve_pass;
 
             // selection.o({...selection.o, position: add(selection.any.position ?? [0, 0, 0], [0, i * 2, 0])})
 
@@ -128,7 +128,7 @@ const Interface = () => {
 
   }
 
-  
+
   const DEBUG = true;
 
   const debug: DebugResult = {};
@@ -245,9 +245,9 @@ const Interface = () => {
 
   return <>
     <Center>
-      {/*<AutoRay ray={Chyp.any.selection.self.initial} position={[-30, 0, 0]} />*/}
-      {/*<AutoRay ray={Chyp.any.selection.self.terminal} position={[30, 0, 0]} />*/}
-      {/*<AutoRay ray={Chyp.any.selection.self} />*/}
+      {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self.initial} position={[-30, 0, 0]} />*/}
+      {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self.terminal} position={[30, 0, 0]} />*/}
+      {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self} />*/}
 
       {/*<AutoRay ray={selection} />*/}
 

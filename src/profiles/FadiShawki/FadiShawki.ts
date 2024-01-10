@@ -14,7 +14,7 @@ const REFERENCES = {
   },
   CHYP_COMPOSING_HYPERGRAPHS_PROVING_THEOREMS: <Content>{
     reference: {
-      title: 'Chyp: Composing Hypergraphs, Proving Theorems',
+      title: 'Chyp_naieve_pass: Composing Hypergraphs, Proving Theorems',
       authors: [{name: 'Aleks Kissinger'}],
       organizations: [],
       year: '(2023)',
