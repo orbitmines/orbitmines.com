@@ -754,6 +754,46 @@ export class Graph extends Ray {
     this.vdata.highlight = false;
     this.edata.highlight = false;
   }
+
+  /**
+   * Return matches of domain into codomain.
+   */
+  match = (other: Graph, convex: boolean = true): Matches => new Matches(this, other, convex);
+
+  /**
+   * Return an isomorphism between graphs g and h if found, otherwise `None`.
+   *
+   * If found, the isomorphism is returned as a :py:class:`Matches` instance, whose vertex and edge maps are bijections.
+   */
+  find_iso = (other: Graph): Match => { // TODO | NONE
+
+    // TODO: Again, more equivalence checks
+    // First, check the domains and codomains are equal between the two graphs.
+    if (this.domain !== other.domain || this.codomain !== other.codomain)
+      return None; //TODO
+
+    // Try to find an initial match mapping one of the boundary vertices of the  domain graph to the corresponding boundary vertex (the vertex in the same input/output location) of the codomain graph. If no initial match is found, return `None`.
+    const initial_match = new Match(this, other);
+
+    const ___temp = (func: (ray: Graph) => Ray) => {
+      ([func(this), func(other)] as Ray).zip(([initial, terminal]) => {
+        if (!initial_match.try_add_vertex(initial, terminal))
+          return None; //TODO, DOESNT ACTUALLY RETURN THE FUNCTION HERE. Wait till matcher is abstracted to fix this
+      });
+    }
+
+    ___temp(ray => ray.inputs);
+    ___temp(ray => ray.outputs); // TODO: See again, the same pattern over and over again, same on both sides.
+
+    // If an initial match is found, try to find a total and surjective match of the domain graph into the codomain graph.
+
+    return new Matches(this, other, initial_match, false)
+      .filter(match => match.is_surjective()); // TODO; With this filter it should allow you to keep looking
+
+    // TODO::: Automatic??
+    //  If a total surjective match is not found, return `None`.
+    return None;
+  }
 }
 
 export class Chyp extends Ray {
@@ -937,6 +977,13 @@ export class Chyp extends Ray {
      */
     
   }
+
+  /**
+   * Some more delegations here
+   */
+  match_graph = (domain: Graph, codomain: Graph, convex: boolean = true): Matches => domain.match(codomain, convex);
+  match_rule = (rule: Rule, codomain: Graph, convex: boolean = true): Matches => rule.match(codomain, convex);
+  find_iso = (domain: Graph, codomain: Graph): Match => domain.find_iso(codomain);
 }
 
 export class CodeView extends Ray {
@@ -1160,14 +1207,134 @@ export class Match extends Ray {
     return bool(True);
   }
 
-  try_add_edge = (domain_edge = int, codomain_edge = int): Ray => { throw new NotImplementedError(); }
+  /**
+   * Try to map `domain_edge` to `codomain_edge`.
+   *
+   * This must satisfy certain conditions, such as being injective and having consistency with the vertex map.
+   *
+   * @param domain_edge
+   * @param codomain_edge
+   *
+   * `True` if a consistent match is found mapping `domain_edge` to `codomain_edge`, otherwise `False`.
+   */
+  try_add_edge = (initial: EData, terminal: EData): Ray => {
+    log(`Trying to add edge ${initial} -> ${terminal} to match:`);
+    log(this.toString());
+
+    // TODO: Again an equivalence
+    // Check the values of the domain and codomain edges match.
+    if (initial.value !== terminal.value) {
+      log(`Edge failed: values ${initial.value} != ${terminal.value}`)
+      return false;
+    }
+
+    // The edge map must be injective.
+    if (this.edge_image.includes(terminal)) {
+      console.log('Edge failed: the map would become non-injective.');
+      return false;
+    }
+
+    // If the values match and the codomain edge has not already been mapped to, map domain edge to codomain edge.
+    this.edge_map[initial] = terminal;
+    this.edge_image.add(terminal);
+
+    // Domain sources must match codomain sources and domain targets must match codomain targets.
+
+    // TODO: Again more equivalences, just to log - debug mode
+    {
+      // initial = preimg
+      // terminal = image
+
+      // Domain sources must match codomain sources and domain targets must match codomain targets.
+      if (initial.domain !== terminal.domain) {
+        log(`Edge domain ${initial.domain} does not match image domain ${terminal.domain}.`);
+      }
+
+      // TODO, again both sides
+      if (initial.codomain !== terminal.codomain) {
+        log(`Edge codomain ${initial.codomain} does not match image codomain ${terminal.codomain}.`);
+      }
+    }
+
+    // TODO: This too probably general pattern to extract
+    // Check a vertex map consistent with this edge pairing exists.
+    // TODO: + here is just concat, so that zip can easily match it
+    ([initial.source + initial.target, terminal.source + terminal.target] as Ray).zip(([initial_vertex, terminal_vertex]) => {
+      // Each vertex that is already mapped needs to be consistent.
+      // TODO: More equivlaency, could be on the vertecies themselves
+      if (this.vertex_map.includes(initial_vertex) && this.vertex_image[initial_vertex] !== terminal_vertex) {
+        log('Edge failed: inconsistent with previously mapped vertex.');
+        return false; // TODO: NOT RETURNING AGAIN
+      }
+
+      // Otherwise, a consistent match must be found vertex for unmapped source and target vertices.
+
+      if (!this.try_add_vertex(initial_vertex, terminal_vertex)) {
+        log('Edge failed: couldn\'t add a source or target vertex.');
+        return false;
+      }
+    });
+
+    log('Edge success.');
+    return true;
+  }
+
+
   domain_neighbourhood_mapped = (vertex = int): Ray => { throw new NotImplementedError(); }
   map_scalars = (): Ray => { throw new NotImplementedError(); }
   more = (): Ray => { throw new NotImplementedError(); }
-  is_total = (): Ray => { throw new NotImplementedError(); }
-  is_surjective = (): Ray => { throw new NotImplementedError(); }
-  is_injective = (): Ray => { throw new NotImplementedError(); }
-  is_convex = (): Ray => { throw new NotImplementedError(); }
+
+
+  // TODO: Total=surjective on another level of description ???
+  ___defuq = (string: 'image' | 'map', domain) =>
+    this[`vertex_${string}`].count === domain.vertices.count
+    && this[`edge_${string}`].count === domain.edges.count; // TODO: Again vertex/edge pattern, just collapse to one check
+
+  /**
+   * Return whether all domain vertices and edges have been mapped.
+   */
+  is_total = (): Ray => this.___defuq('map', this.domain);
+  /**
+   * Return whether the vertex and edge maps are surjective.
+   */
+  is_surjective = (): Ray => this.___defuq('image', this.codomain);
+
+  /**
+   * Return whether the vertex and edge maps are injective.
+   */
+  is_injective = (): Ray => {
+    // Since the edge map is always injective, we only need to check the vertex map is injective. TODO (GENERALIZE)
+    return this.vertex_map.count === this.vertex_image.count;
+  }
+
+  /**
+   * Return whether this match is convex.
+   *
+   * A match is convex if:
+   * - It is injective.
+   * - Its image in the codomain hypergraph is a convex sub-hypergraph. This means that for any two nodes in the sub-hypergraph and any path between these two nodes, every hyperedge along the path is also in the sub-hypergraph.
+   *
+   * TODO: Just no overlap??
+   */
+  is_convex = (): Ray => {
+    if (!this.is_injective()) { //TODO: WHY?
+      return false;
+    }
+
+
+    // Check that the image sub-hypergraph is convex. Get all successors of vertices in the image of the output of the domain graph.
+    const output_image_successors = this.codomain.successors(
+      this.domain.outputs
+        .filter(vertex => this.vertex_map[vertex]) // TODO INCLUDES
+    ); // TODO, Why search in codomain fromi these, ?? this must be easier
+
+    // Check there is no path from any vertices in the image of the domain outputs to a vertex in the image of the domain inputs.
+    this.domain.inputs
+      .filter(vertex => this.vertex_map.includes(vertex) && output_image_successors.includes(this.vertex_map[vertex]))
+      .any(() => { return false }) // TODO DOESNT ACTUALLY RETURNM
+
+    return true;
+  }
 
   /**
    * TODO Not implemented;;
@@ -1346,6 +1513,13 @@ export class Rule extends Ray {
     const result: Match = this.dpo(match).first().cast();
     return result.codomain;
   }
+
+  // TODO: Can probably just match Rule=Graph, and use only one of these methods??
+  /**
+   * Return matches of the left side of `rule` into `graph`.
+   */
+  match = (other: Graph, convex: boolean = true): Matches => new Matches(this.lhs, other, convex);
+
 }
 
 export class RewriteState extends Ray {
