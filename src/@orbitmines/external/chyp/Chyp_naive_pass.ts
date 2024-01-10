@@ -2,14 +2,6 @@ import {JS, Ray} from "../../explorer/Ray";
 import {NotImplementedError} from "../../explorer/errors/errors";
 
 /**
- * An interface from Aleks Kissinger's Chyp (Cospans of HYPergraphs) to Rays.
- * GitHub: https://github.com/akissinger/chyp
- *
- * A simple way of phrasing this conversion, is that the concept of a 'Vertex', 'Edge', 'Graph', 'Rule', ..., 'Rewrite' are merged into one thing: a Ray.
- *
- * NOTE:
- * This is just here for reference to the existing Chyp codebase - for anyone who understands that structure, to quickly translate that knowledge into how Rays work. - Other than that functionality, everything here should be considered as deprecated.
- *
  * - The .copy()'s are implemented on Ray.
  *
  * TODO: There's a lot of duplicate code, unnecessary documentation and non-generality in Chyp. It was probably developed as a proof of concept? - Expecting that to be addressed in the projects Aleks Kissinger is currently setting up.
@@ -368,43 +360,23 @@ export class Graph extends Ray {
 
   // TODO: Can these be overlaoded in properties using -=, += in TS?
 
-  /**
-   * Append `inp` to the inputs of the graph.
-   *
-   * @param inp The list of vertex integer identifiers of the appended inputs.
-   */
-  add_inputs = (inp = list(int)): Ray => {
-    this.inputs.continues_with(inp); // TODO: Perhaps splat
-  }
-  /**
-   * Append `outp` to the outputs of the graph.
-   *
-   * @param outp The list of vertex integer identifiers of the appended outputs.
-   */
-  add_outputs = (outp = list(int)): Ray => {
-    this.outputs.continues_with(outp); // TODO: Perhaps splat
-  }
-  // TODO; these are then again duplicated to    self.vdata[v].out_indices.add(i)
+
 
 
   // TODO: These are just one possibly ignorant ray through the initial/terminal ends which aren't matched - could just generate these on the fly, or similar to chyp add when added.
 
-  // Return the list of vertex ids of the graph inputs.
-  get inputs(): Ray { throw new NotImplementedError(); }
-  // Return the list of vertex ids of the graph outputs.
-  get outputs(): Ray { throw new NotImplementedError(); }
 
+
+  // set function:
   // TODO: Clears the matched in/out indices, then sets them to the ones found in in/outputs
-  set inputs(ray = list(int)) { throw new NotImplementedError(); }
-  set outputs(ray = list(int)) { throw new NotImplementedError(); }
+  // inputs =, outputs =
+  // for the add functions: // TODO: Perhaps splat
+  // also for add   // TODO; these are then again duplicated to    self.vdata[v].out_indices.add(i)
+
+
+
 
   // TODO: Move these to a "reference-like" structure, need to be on VData..
-
-  /**
-   * These are all just slightly differently abstracted in TypeScript here to make them a little more native.
-   */
-  set_inputs = (inp = list(int)): Ray => this.inputs = inp;
-  set_outputs = (outp = list(int)): Ray => this.outputs = outp;
 
   /**
    * All these are just delegations from some Vertex/Edge structure.
@@ -975,7 +947,7 @@ export class Chyp extends Ray {
      *
      *     return gen('_redistributer', domain, codomain)
      */
-    
+
   }
 
   /**

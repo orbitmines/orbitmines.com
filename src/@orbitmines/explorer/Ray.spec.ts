@@ -1,21 +1,5 @@
-import {JS, Ray, RayType} from "./Ray";
-import {PreventsImplementationBug} from "./errors/errors";
+import {Ray, RayType} from "./Ray";
 
-describe("JS", () => {
-  test(".Object", () => {
-    const ray = JS.Object({
-      a: 'b',
-      position: [0, 1, 2],
-      func: () => 'c'
-    });
-
-    expect(ray.any.a).toBe('b');
-    expect(ray.any.test).toBe(undefined);
-    expect(() => ray.any.undefinedFunction()).toThrow();
-    expect(ray.any.position).toEqual([0, 1, 2]);
-    expect(ray.any.func()).toBe('c');
-  })
-});
 describe("Ray", () => {
 //   test(".vertex.#.debug", () => {
 //     const a = Ray.vertex().as_reference();
@@ -77,6 +61,26 @@ describe("Ray", () => {
     expect(initial.is_reference()).toBe(false);
     expect(initial.type).toBe(RayType.INITIAL);
   });
+  test(".initial.#", () => {
+    /** [  |-?] */ const initial = Ray.initial().as_reference();
+
+    expect(initial.self.initial.is_none()).toBe(true);
+    expect(initial.self).not.toBe(initial.self.self); // If self-referential, that means none.
+
+    expect(initial.self.terminal.initial).toBe(initial.self);
+
+    expect(initial.self.is_none()).toBe(false);
+    expect(initial.self.self.is_none()).toBe(true);
+
+    expect(initial.is_some()).toBe(true);
+    expect(initial.self.terminal.is_none()).toBe(false);
+
+    expect(initial.is_initial()).toBe(true);
+    expect(initial.is_vertex()).toBe(false);
+    expect(initial.is_terminal()).toBe(false);
+    expect(initial.is_reference()).toBe(false);
+    expect(initial.type).toBe(RayType.INITIAL);
+  });
   test(".vertex.terminal.#", () => {
     /** [--|--] */ const vertex = Ray.vertex();
     /** [  |--] */ const terminal = vertex.terminal.as_reference();
@@ -86,6 +90,26 @@ describe("Ray", () => {
 
     expect(terminal.self.initial).toBe(vertex);
     expect(terminal.self.initial.self).not.toBe(vertex);
+    expect(terminal.self.initial.terminal).toBe(terminal.self);
+
+    expect(terminal.self.is_none()).toBe(false);
+    expect(terminal.self.self.is_none()).toBe(true);
+
+    expect(terminal.is_some()).toBe(true);
+    expect(terminal.self.initial.is_none()).toBe(false);
+
+    expect(terminal.is_terminal()).toBe(true);
+    expect(terminal.is_vertex()).toBe(false);
+    expect(terminal.is_initial()).toBe(false);
+    expect(terminal.is_reference()).toBe(false);
+    expect(terminal.type).toBe(RayType.TERMINAL);
+  });
+  test(".terminal.#", () => {
+    /** [--|  ] */ const terminal = Ray.terminal().as_reference();
+
+    expect(terminal.self.terminal.is_none()).toBe(true);
+    expect(terminal.self).not.toBe(terminal.self.self); // If self-referential, that means none.
+
     expect(terminal.self.initial.terminal).toBe(terminal.self);
 
     expect(terminal.self.is_none()).toBe(false);

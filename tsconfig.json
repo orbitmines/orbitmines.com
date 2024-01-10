@@ -19,7 +19,9 @@
     "isolatedModules": true,
     "suppressImplicitAnyIndexErrors": false,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": [
     "src"

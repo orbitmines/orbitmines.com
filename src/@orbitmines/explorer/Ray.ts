@@ -1,9 +1,5 @@
-import _, {initial} from "lodash";
+import _ from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
-import {InterfaceOptions} from "./OrbitMinesExplorer";
-import {value} from "../../lib/typescript/React";
-import {current} from "../../profiles/FadiShawki/FadiShawki2";
-import {debug} from "node:util";
 
 
 // SHOULDNT CLASSIFY THESE?
@@ -20,6 +16,20 @@ export type Arbitrary<T> = (...args: any[]) => T;
 export type Constructor<T> = new (...args: any[]) => T;
 export type ParameterlessConstructor<T> = new () => T;
 
+export function initial() {
+
+  return function (target: any, propertyKey: string): any {
+    Object.defineProperty(target, propertyKey, {
+      get: (): any => { return target.initial; },
+      set: (value) => {
+        target.initial = value;
+      },
+      // enumerable: true,
+      // configurable: true
+    });
+  }
+}
+
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
  */
@@ -31,6 +41,7 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
 
 export interface AbstractDirectionality<T> { initial: Arbitrary<T>, vertex: Arbitrary<T>, terminal: Arbitrary<T> }
 
+// TODO: better debug
 export type DebugResult = { [label: string]: DebugRay }
 export type DebugRay = {
   label: string,
@@ -63,6 +74,12 @@ export type DebugRay = {
  * TODO: Can do some workaround overloading through properties, at least for +/-
  *
  * TODO: Singlke keybind for now to show/hide the ray disambiguation or 'dead edges/..'/
+ *
+ *
+ * TODO: Automatically implement any function with paramters, as being callable from a ray of that size..
+ *
+ *
+ * TODO: Consistency of Arbitrary vs non-arbitrary.
  */
 export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   implements
@@ -79,18 +96,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   protected _vertex: Arbitrary<Ray>; get vertex(): Ray { return this._vertex(); } set vertex(vertex: Arbitrary<Ray>) { this._vertex = vertex; }
   protected _terminal: Arbitrary<Ray>; get terminal(): Ray { return this._terminal(); } set terminal(terminal: Arbitrary<Ray>) { this._terminal = terminal; }
 
-  get self(): Ray {
-    // if (!this.vertex.is_none())
-    //   throw new PreventsImplementationBug('Preventing bugs, .self is used for the assumption of a reference..');
-    //
-    return this.vertex;
-  };
-  set self(self: Arbitrary<Ray>) {
-    // if (!this.is_reference())
-    //   throw new PreventsImplementationBug('Preventing bugs, .self is used for the assumption of a reference..');
-    //
-    this.vertex = self;
-  }
+  get self(): Ray { return this.vertex; }; set self(self: Arbitrary<Ray>) { this.vertex = self; }
 
   [index: number]: Ray;
 
@@ -147,6 +153,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     /** [--?--] */ return vertex;
   }
+  /** [  |-?] */ static initial = () => Ray.vertex().initial;
+  /** [?-|  ] */ static terminal = () => Ray.vertex().terminal;
 
   static size = (of: number, value: any = undefined): Ray => {
     let current = Ray.vertex().as_reference(); // TODO; This sort of thing should be lazy
@@ -232,6 +240,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 //   return Arbitrary.Fn(() => length(of, value).resolve().at_terminal(index));
 // }
 //
+  // step = this.at; ???
   at = (steps: number | Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
   //
 // export const permutation = (permutation: number | undefined, of: number): Arbitrary<Ray<any>> => at(
@@ -327,7 +336,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return this;
   }
 
-  protected property = (property: string | symbol, _default?: any): any => this.any[property] ??= _default; // TODO: Can this be prettier??
+  protected property = (property: string | symbol, _default?: any): any => this.any[property] ??= (_default ?? Ray.None()); // TODO: Can this be prettier??
 
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
@@ -387,6 +396,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
+
+  push_back = (ray: Ray) => { throw new NotImplementedError(); }
+  push_front = (ray: Ray) => { throw new NotImplementedError(); }
 
   // length: number;
   //
