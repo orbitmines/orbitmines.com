@@ -86,7 +86,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       PossiblyHomoiconic<Ray>,
 
       AsyncIterable<Ray>,
-      Iterable<Ray>//,
+      Iterable<Ray>
       // Array<Ray>
       // Dict<Ray>
 {
@@ -134,8 +134,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * Concretely, we use here "whatever the JavaScript engine run on" as the thing which has power over the equivalence assumption we use to halt programs. - The asymmetry which allows the engine to make a distinction between each object.
    */
-  is_none = (): boolean => this.self === this.self.self;
+  is_none = (): boolean => this.is_orbit(this.self, this.self.self);
 
+  protected is_orbit = (a: Ray, b: Ray) => a === b; // is, ..., appears equal.
   protected self_reference = () => this;
 
   is_some = (): boolean => !this.is_none();
@@ -230,6 +231,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   get last(): Ray { throw new NotImplementedError(); }
 
   protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
+    switch (this.type) {
+      case RayType.REFERENCE:
+        break;
+      case RayType.INITIAL:
+        break;
+      case RayType.TERMINAL:
+        break;
+      case RayType.VERTEX:
+        break;
+    }
+
     this.self = b.as_arbitrary();
     b.self = this.as_arbitrary();
   }
@@ -301,6 +313,85 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
   // [[a,d,g],[b,e,h],[c,f,i]]
   zip = (): Ray => { throw new NotImplementedError(); }
+
+  /**
+   * Compose structures defined at .initial with those at .terminal, dropping the vertex. ; or if done non-ignorantly. Composing them on another level, ignoring to this vertex. TODO: Allow this freedom
+   */
+  get merge(): Ray {
+    // concat initial.a + initial.b, terminal.a + terminal.b
+    // then: either destroy a/b, merge structure... etc..
+    // Chyp: destroy b
+
+    // this.initial.equivalent(other.initial);
+    // this.terminal.equivalent(other.terminal);
+
+    /*
+
+            vd = self.vertex_data(v)
+        # print("merging %s <- %s" % (v, w))
+
+        # Where vertex `w` occurs as an edge target, replace it with `v`
+        for e in self.in_edges(w):
+            ed = self.edge_data(e)
+            ed.t = [v if x == w else x for x in ed.t]
+            vd.in_edges.add(e)
+
+        # Where vertex `w` occurs as an edge source, replace it with `v`
+        for e in self.out_edges(w):
+            ed = self.edge_data(e)
+            ed.s = [v if x == w else x for x in ed.s]
+            vd.out_edges.add(e)
+
+        # Wherever `w` occurs on the graph boundary, replace it with `v`
+        self.set_inputs([v if x == w else x for x in self.inputs])
+        self.set_outputs([v if x == w else x for x in self.outputs])
+
+        # Remove references to `w` from the graph
+        self.remove_vertex(w)
+
+     */
+    throw new NotImplementedError();
+  }
+  // @alias('merge') ??
+  get compose(): Ray {
+    switch (this.type) {
+      case RayType.REFERENCE:
+      case RayType.INITIAL:
+      case RayType.TERMINAL: {
+        throw new NotImplementedError();
+      }
+      case RayType.VERTEX: {
+        const vertex = this.self;
+
+        // TODO; Implement as restrictive case for Chyp
+        {
+          // if (this.self.initial.count.as_int() !== this.terminal.count.as_int())
+          //   throw new NotImplementedError(`Initial (Graph.Domain) does not match Terminal (Graph.Codomain)`);
+
+          // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
+          // if (this.self.initial.is_equivalent(this.self.terminal))
+          //   throw new NotImplementedError('Initial (Graph.Domain) does not match Terminal (Graph.Codomain) types.'); // TODO; Should take care of vtype/size matches at input/output
+        }
+
+        /**
+         * A simple case of what we want to solve here.
+         *
+         * Initial         Terminal
+         *   ...             ...
+         * [--|  ]         [  |--]
+         * [--|  ]         [  |--]
+         * [--|  ]         [  |--]
+         * [  |--] [--|--] [--|  ]
+         *         vertex
+         *
+         * And recursively (arbitrarily) match initial/terminal structures.
+         */
+
+        throw new NotImplementedError();
+      }
+    }
+    throw new NotImplementedError();
+  }
 
   // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
   apply = (func: Ray) => {

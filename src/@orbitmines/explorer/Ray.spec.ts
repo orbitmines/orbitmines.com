@@ -1,16 +1,16 @@
 import {Ray, RayType} from "./Ray";
 
 describe("Ray", () => {
-//   test(".vertex.#.debug", () => {
-//     const a = Ray.vertex().as_reference();
-//     const b = Ray.vertex().as_reference();
-//     a.continues_with(b);
-//
-//     const debug = {};
-//     a.debug(debug);
-//
-//     expect(debug).toEqual('')
-//   })
+  // test(".vertex.#.debug", () => {
+  //   const a = Ray.vertex().as_reference();
+  //   const b = Ray.vertex().as_reference();
+  //   a.continues_with(b);
+  //
+  //   const debug = {};
+  //   a.debug(debug);
+  //
+  //   expect(debug).toEqual('')
+  // })
   test(".o", () => {
     const ray = Ray.vertex().o({
       a: 'b',
@@ -25,6 +25,22 @@ describe("Ray", () => {
     expect(ray.any.func()).toBe('c');
   })
 
+  // test(".[vertex, vertex].#.compose", () => {
+  //   /** [--|--] */ const vertex = Ray.vertex().as_reference();
+  //   vertex.initial.o({ js: 'A' });
+  //   vertex.terminal.o({ js: 'B' });
+  //
+  //   expect(vertex.compose.)
+  // });
+  test(".vertex.#.continues_with(.vertex.#)", () => {
+    /** [--|--] */ const B =
+      Ray.vertex().o({ js: 'A' }).as_reference()
+        .continues_with(Ray.vertex().o({ js: 'B'}).as_reference());
+
+    expect(B.type).toBe(RayType.VERTEX);
+    expect(B.self.self.self.any.js).toBe('B');
+    // expect(B.self.self.self.initial.initial.any.js).toBe('A');
+  });
   test(".vertex.#", () => {
     /** [--|--] */ const vertex = Ray.vertex().as_reference();
 

@@ -119,39 +119,10 @@ export class VData extends Ray {
 
   /**
    * Form the quotient of the graph by identifying v with w. Afterwards, the quotiented vertex will be have integer identifier `v`.
+   *
+   * TODO; particular sort of composing
    */
   merge = (other: VData): Ray => {
-    // TODO: other is destroyed
-    // TODO: Vertices
-    // this.initial.equivalent(other.initial);
-    // this.terminal.equivalent(other.initial);
-
-    /*
-
-            vd = self.vertex_data(v)
-        # print("merging %s <- %s" % (v, w))
-
-        # Where vertex `w` occurs as an edge target, replace it with `v`
-        for e in self.in_edges(w):
-            ed = self.edge_data(e)
-            ed.t = [v if x == w else x for x in ed.t]
-            vd.in_edges.add(e)
-
-        # Where vertex `w` occurs as an edge source, replace it with `v`
-        for e in self.out_edges(w):
-            ed = self.edge_data(e)
-            ed.s = [v if x == w else x for x in ed.s]
-            vd.out_edges.add(e)
-
-        # Wherever `w` occurs on the graph boundary, replace it with `v`
-        self.set_inputs([v if x == w else x for x in self.inputs])
-        self.set_outputs([v if x == w else x for x in self.outputs])
-
-        # Remove references to `w` from the graph
-        self.remove_vertex(w)
-
-     */
-
     throw new NotImplementedError();
   }
 
@@ -493,40 +464,9 @@ export class Graph extends Ray {
   compose = (other: Graph): Ray => {
     // TODO Just matching outputs and inputs..
 
-    const a = this;
-    const b = other;
-
     // TODO: Simply visualized, as a single thing "us composing this thing", where on the initial side, we have the outputs of one thing, which we're trying to one-to-one match to the terminal side"
-    const compose: Ray = new Ray(); // TODO: [initial = a.outputs, terminal = b.inputs]
-
-    // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
-
-    // TODO: This is just again an equivalence type check on the ends of the ray
 
     // TODO: min/max needs to be on vertices/edges. Not necessarilyt outputs/inputs
-
-    {
-      if (compose.initial.count.as_int() !== compose.terminal.count.as_int())
-        throw new GraphError(`Codomain ${a.codomain()} does not match domain ${b.domain()}`); // TODO ; a/b ref will be removed
-
-      /**
-       *      for output_id, input_id in zip(self_outputs, other_inputs):
-       *             output_data = self.vertex_data(output_id)
-       *             input_data = other.vertex_data(input_id)
-       *             if output_data.vtype != input_data.vtype:
-       *                 if not (output_data.infer_type or input_data.infer_type):
-       *                     raise GraphError(
-       *                         f'Codomain {self.codomain()} does not '
-       *                         + f'match domain {other.domain()}'
-       *                     )
-       *             if output_data.size != input_data.size:
-       *                 if not (output_data.infer_size or input_data.infer_size):
-       *                     raise GraphError(
-       *                         f'Codomain {self.codomain()} does not '
-       *                         + f'match domain {other.domain()}'
-       *                     )
-       */
-    }
 
     /**
      * Basically, seeing the {compose} line x=0, and them moving outputs (left) to the negative x. And moving the inputs (right) to the positive x.
