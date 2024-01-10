@@ -7,7 +7,7 @@
 
 ---
 
-**What is this?, What is OrbitMines?, What are Rays?**
+## What is this?, What is OrbitMines?, What are Rays?
 
 A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hyper-/)'Edge', (hyper-/)'Graph', (hyper-/)'Rule', (hyper-/)'Tactic', (hyper-/)..., (hyper-/)'Rewrite' are merged into one thing: a [Ray](https://github.com/orbitmines/orbitmines.com/blob/main/src/%40orbitmines/explorer/Ray.ts). It handles surrounding context, ignorances, equivalences, ..., differentiation. (And if it cannot, then it offers a way of implementing it for all of the above)
 
@@ -24,6 +24,12 @@ A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hype
 
 
 - Or if prefer smashing your keyboard till there's something interesting on the screen. See a first implementation of this *explorational interface*: [orbitmines.com/explorer/github.com/akissinger/chyp](https://orbitmines.com/explorer/github.com/akissinger/chyp).
+
+---
+
+## Where is OrbitMines going with this? - i.e. Future inquiries
+
+
 
 ---
 
