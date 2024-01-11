@@ -100,7 +100,7 @@ export const Line = ({ start, mid, end, scale, color = line.color }: any) =>
     lineWidth={line.width * scale}
   />
 
-const circle = { radius: 3,  color: "orange", segments: 30, }
+export const circle = { radius: 3,  color: "orange", segments: 30, }
 export const Vertex = ({ position, color = circle.color }: any) =>
   <Circle position={position} material-color={color} args={[circle.radius, circle.segments]} />
 

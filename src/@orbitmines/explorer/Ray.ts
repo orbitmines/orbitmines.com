@@ -1,5 +1,6 @@
 import _ from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
+import {InterfaceOptions} from "./OrbitMinesExplorer";
 
 
 // SHOULDNT CLASSIFY THESE?
@@ -480,23 +481,53 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
 
   //TODO USED FOR DEBUG NOW
-  move = (func: (self: Ray) => Ray, traversed: Ray[]): Ray => {
+  move = (func: (self: Ray) => Ray, memory: boolean, Interface: Ray): Ray => {
     const target_ray = func(this.self);
     const target = target_ray.as_reference().o({
       ...this._dirty_store,
       position:
         target_ray.any.position
         ?? this.self.any.position
-        ?? [0, 0, 0]
+        ?? Ray.POSITION_OF_DOOM
     });
     console.log('move', `${this.self.label.split(' ')[0]} -> ${target.self.label.split(' ')[0]}`);
 
-    if (!target_ray.any.traversed) {
-      traversed.push(target);
-      target_ray.any.traversed = true;
+    if (memory) {
+      if (!target_ray.any.traversed) {
+        Interface.any.rays.push(target);
+        target_ray.any.traversed = true;
+      }
+    } else {
+      Interface.any.rays = [target];
     }
 
     return target;
+  }
+
+  static POSITION_OF_DOOM = [0, 300, 0]
+
+  // TODO: Abstract away as compilation
+  get render_options(): Required<InterfaceOptions> {
+    return ({
+      position:
+        this.self.any.position
+        ?? (this.is_none() ? Ray.POSITION_OF_DOOM : [0, 0, 0]),
+      rotation:
+        this.self.any.rotation
+        ?? [0, 0, 0],
+      scale:
+        this.self.any.scale
+        ?? (this.is_none() ? 1.5 : 1.5),
+      color:
+        this.self.any.color
+        ?? (this.is_none() ? 'red' : {
+            [RayType.VERTEX]: 'orange',
+            [RayType.TERMINAL]: '#FF5555',
+            [RayType.INITIAL]: '#5555FF',
+            [RayType.REFERENCE]: '#555555',
+          }[this.type]
+        )
+    });
   }
 
   debug = (c: DebugResult): DebugRay => {

@@ -7,7 +7,7 @@ import {
   _Continuation, _Vertex,
   add,
   AutoRay,
-  AutoVertex,
+  AutoVertex, circle,
   InterfaceOptions,
   Line,
   SimpleRenderedRay,
@@ -31,12 +31,14 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   } = useThree();
 
   const space_between = 20 * scale;
+  
+  const memory = true;
 
   const [Interface] = useState<Ray>(Ray.vertex().o({
     selection: Ray
-      .vertex().o({ position: [0, 0, 0], scale, color: 'orange' })
-      .initial.o({ position: [-space_between, 0, 0] }).terminal
-      .terminal.o({ position: [space_between, 0, 0 ]}).initial
+      .vertex().o({ position: [0, 0, 0], scale, color: '#FF55FF' })
+      .initial.o({ position: [-space_between, 0, 0], scale }).terminal
+      .terminal.o({ position: [space_between, 0, 0 ], scale }).initial
       .as_reference().o({
         position: [0, 0, 0],
         scale,
@@ -49,17 +51,17 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
       hotkeys: [
         {
           combo: "a", global: true, label: "", onKeyDown: () => {
-            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.initial, Interface.any.rays);
+            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.initial, memory, Interface);
           }
         },
         {
           combo: "d", global: true, label: "", onKeyDown: () => {
-            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.terminal, Interface.any.rays);
+            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.terminal, memory, Interface);
           }
         },
         {
           combo: "w", global: true, label: "", onKeyDown: () => {
-            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.self, Interface.any.rays);
+            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.self, memory, Interface);
           }
         },
         {
@@ -83,32 +85,23 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
 
   hotkeyConfig.set(...hotkeys);
 
-  const render: { [TKey in keyof InterfaceOptions]: (ray: Ray) => InterfaceOptions[TKey] } = {
-    position: (ray: Ray) => ray.self.any.position ?? (ray.is_none() ? [0, 400, 0] : [0, 0, 0]),
-    rotation: (ray: Ray) => ray.self.any.rotation ?? [0, 0, 0],
-    scale: (ray: Ray): number => ray.self.any.scale ?? (ray.is_none() ? 1.5 : 1.5),
-    color: (ray: Ray): string => ray.self.any.color ?? (ray.is_none() ? 'red' : 'orange'),
-  }
-
-  const options = (ray: Ray): Required<InterfaceOptions> => _.mapValues(render, (func: any) => func(ray)) as Required<InterfaceOptions>;
-
   const Render = ({ ray }: { ray: Ray }) => {
-    const initial: Required<InterfaceOptions> = options(ray.self.initial.as_reference());
-    const vertex: Required<InterfaceOptions> = options(ray);
-    const terminal: Required<InterfaceOptions> = options(ray.self.terminal.as_reference());
+    const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
+    const vertex: Required<InterfaceOptions> = ray.render_options;
+    const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
 
     switch (ray.type) {
       case RayType.REFERENCE:
-        return <AutoVertex position={Interface.any.selection.self.position} rotation={[0, 0, Math.PI / 2]} scale={0.75} color="#55FF55" />
+        return <AutoVertex position={Interface.any.selection.self.position} rotation={[0, 0, Math.PI / 2]} scale={scale / 2} color="#55FF55" />
       case RayType.INITIAL: {
         return <>
-          <Line start={terminal.position} end={add(vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+          <Line start={add(terminal.position, [-circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
           <_Continuation {...vertex} />
         </>
       }
       case RayType.TERMINAL: {
         return <>
-          <Line start={initial.position} end={add(vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+          <Line start={add(initial.position, [circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
           <_Continuation {...vertex} />
         </>
       }
@@ -121,7 +114,7 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   return <>
     {Interface.any.stats ? <StatsPanels/> : <></>}
 
-    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 5]} scale={0.75} color="#555555" />
+    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 5]} scale={scale / 2} color="#555555" />
 
     {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
     {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray} />)}
