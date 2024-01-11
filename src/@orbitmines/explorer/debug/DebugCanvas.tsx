@@ -17,18 +17,20 @@ const Render = ({ ray }: { ray: Ray }) => {
 
   switch (ray.type) {
     case RayType.REFERENCE:
-      return <AutoVertex position={vertex.position} rotation={[0, 0, Math.PI / 2]} scale={vertex.scale / 2} color="#55FF55" />
+      return <_Vertex position={vertex.position} rotation={[0, 0, Math.PI / 2]} scale={vertex.scale / 2} color="#555555" />
     case RayType.INITIAL: {
-      return <>
+
+      return <group rotation={vertex.rotation}>
         <Line start={add(terminal.position, [-circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
         <_Continuation {...vertex} />
-      </>
+      </group>
     }
     case RayType.TERMINAL: {
-      return <>
+      // TODO; Rotation like this will not be picked up upon by other thing, calculate on the fly??
+      return <group rotation={vertex.rotation}>
         <Line start={add(initial.position, [circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
         <_Continuation {...vertex} />
-      </>
+      </group>
     }
     case RayType.VERTEX: {
       return <_Vertex {...vertex} />
@@ -52,16 +54,20 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   const memory = true;
 
   const [Interface] = useState<Ray>(Ray.vertex().o({
-    selection: Ray
-      .vertex().o({ position: [0, 0, 0], scale, color: '#FF55FF' })
-      .initial.o({ position: [-space_between, 0, 0], scale }).terminal
-      .terminal.o({ position: [space_between, 0, 0 ], scale }).initial
-      .as_reference().o({
-        position: [0, 0, 0],
-        scale,
-        rotation: [0, 0, Math.PI / 6 ],
-        color: '#555555'
-      }),
+    selection: Ray.vertex(() => Ray.vertex().o2({
+        initial: { position: [-space_between, 0, 0], scale, rotation: [0, 0, Math.PI / 2] },
+        vertex: { position: [0, 0, 0], scale, color: '#FF55FF' },
+        terminal: { position: [space_between, 0, 0 ], scale, rotation: [0, 0, Math.PI / 2] }
+      })).o2({
+      initial: { position: [-space_between, 0, 0], scale },
+      vertex: { position: [0, 0, 0], scale, color: '#FF55FF' },
+      terminal: { position: [space_between, 0, 0 ], scale }
+    }).as_reference().o({
+      position: [0, 0, 0],
+      scale,
+      rotation: [0, 0, Math.PI / 6 ],
+      color: '#555555'
+    }),
     rays: [] as Ray[],
     stats: false,
     controls: Ray.vertex().o({
@@ -77,8 +83,35 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
           }
         },
         {
+          combo: ["delete"], global: true, label: "", onKeyDown: () => {
+            Interface.any.rays = Interface.any.rays.filter((ray: Ray) => ray.self.label !== Interface.any.selection.self.label); // Should be automatic, this sort of thing
+            Interface.any.selection = Interface.any.selection.delete;
+          }
+        },
+        {
           combo: ["w", "arrowup"], global: true, label: "", onKeyDown: () => {
+            // TODO SHOULD BE ANOTHER DIRECTION AT THE FRAME?
             Interface.any.selection = Interface.any.selection.move((self: Ray) => self.self, memory, Interface);
+          }
+        },
+        {
+          combo: ["e"], global: true, label: "", onKeyDown: () => {
+            const change = [0, 0, Math.PI / 10];
+            console.log(Interface.any.selection.self.initial.label)
+
+            Interface.any.selection = Interface.any.selection.self.o2({
+              initial: { rotation: add(Interface.any.selection.self.initial.any.rotation ?? [0, 0, 0], change) },
+              terminal: { rotation: add(Interface.any.selection.self.terminal.any.rotation ?? [0, 0, 0], change) },
+            })
+          }
+        },
+        {
+          combo: ["space"], global: true, label: "", onKeyDown: (e) => {
+            e.preventDefault();
+            Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
+              ray.any.traversed = true;
+              return ray.as_reference();
+            });
           }
         },
         // {
@@ -117,7 +150,10 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
     })
   }));
 
+  // useEffect(() => {
+  // TODO: Eventually goes over maximum size of react-debug callstack when updates each frame like this.
   hotkeyConfig.set(...Interface.any.controls.any.hotkeys);
+  // }, [Interface.any.controls.any.hotkeys]);
 
   return <>
     {Interface.any.stats ? <StatsPanels/> : <></>}

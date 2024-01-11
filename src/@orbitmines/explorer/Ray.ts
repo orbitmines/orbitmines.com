@@ -142,7 +142,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   is_some = (): boolean => !this.is_none();
 
-  /** [     ] */ static None = () => new Ray({ });
+  /** [     ] */ static None = () => new Ray({ }).o({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
     // /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
     // /** [?????] -> [???  ] */ as_terminal = () =>
@@ -455,6 +455,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return this;
   }
 
+  // All these are dirty
+  o2 = ({ initial, vertex, terminal }: any): Ray => {
+    if (initial) this.initial.o(initial);
+    if (vertex) this.o(vertex);
+    if (terminal) this.terminal.o(terminal);
+
+    return this;
+  }
+
   protected property = (property: string | symbol, _default?: any): any => this.any[property] ??= (_default ?? Ray.None()); // TODO: Can this be prettier??
 
   protected _proxy: any;
@@ -479,10 +488,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }) as T;
   }
 
+  get delete(): Ray {
+    this.self = Ray.None; // TODO; I made a lazy delete comment somewhere?
+    return this;
+  }
 
   //TODO USED FOR DEBUG NOW
   move = (func: (self: Ray) => Ray, memory: boolean, Interface: Ray): Ray => {
     const target_ray = func(this.self);
+
     const target = target_ray.as_reference().o({
       ...this._dirty_store,
       position:
@@ -511,7 +525,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return ({
       position:
         this.self.any.position
-        ?? (this.is_none() ? Ray.POSITION_OF_DOOM : [0, 0, 0]),
+        ?? (this.is_none() ? Ray.POSITION_OF_DOOM : Ray.POSITION_OF_DOOM),
       rotation:
         this.self.any.rotation
         ?? [0, 0, 0],
@@ -530,6 +544,24 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     });
   }
 
+  ___dirty_all(c: Ray[]): Ray[] {
+    if (c.filter(a => a.label === this.label).length !== 0) {
+      return c;
+    }
+
+    c.push(this);
+
+    if (this.initial.as_reference().is_some())
+      this.initial.___dirty_all(c);
+    if (this.vertex.as_reference().is_some())
+      this.vertex.___dirty_all(c);
+    if (this.terminal.as_reference().is_some())
+      this.terminal.___dirty_all(c);
+
+    return c;
+  }
+
+  // TODO: DOESNT DO ON .SELF
   debug = (c: DebugResult): DebugRay => {
     if (c[this.label] !== undefined)
       return c[this.label]!;
