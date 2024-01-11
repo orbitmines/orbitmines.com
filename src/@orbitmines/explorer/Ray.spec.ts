@@ -53,6 +53,10 @@ describe("Ray", () => {
     expect(vertex.is_vertex()).toBe(true);
     expect(vertex.is_terminal()).toBe(false);
     expect(vertex.is_reference()).toBe(false);
+
+    expect(vertex.self).toBe(vertex.self.initial.terminal);
+    expect(vertex.self).toBe(vertex.self.terminal.initial);
+    expect(vertex.self).toBe(vertex.self.initial.as_reference().self.terminal);
   });
   test(".vertex.initial.#", () => {
     /** [--|--] */ const vertex = Ray.vertex();
@@ -82,6 +86,9 @@ describe("Ray", () => {
 
     expect(initial.self.initial.is_none()).toBe(true);
     expect(initial.self).not.toBe(initial.self.self); // If self-referential, that means none.
+
+    expect(initial.self).toBe(initial.self.terminal.initial);
+    expect(initial.self.terminal).toBe(initial.self.terminal.terminal.initial);
 
     expect(initial.self.terminal.initial).toBe(initial.self);
 
@@ -125,6 +132,9 @@ describe("Ray", () => {
 
     expect(terminal.self.terminal.is_none()).toBe(true);
     expect(terminal.self).not.toBe(terminal.self.self); // If self-referential, that means none.
+
+    expect(terminal.self).toBe(terminal.self.initial.terminal);
+    expect(terminal.self.initial).toBe(terminal.self.initial.initial.terminal);
 
     expect(terminal.self.initial.terminal).toBe(terminal.self);
 

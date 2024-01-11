@@ -14,6 +14,7 @@ import Modules from "./@orbitmines/js/react/Modules";
 import Icons from "./lib/layout/experimental-designs/Icons";
 import {ThumbnailPage} from "./lib/paper/Paper";
 import {ChypExplorer} from "./@orbitmines/external/chyp/ChypCanvas";
+import {DebugExplorer} from "./@orbitmines/explorer/debug/DebugCanvas";
 
 export const Router = () => {
 
@@ -27,6 +28,9 @@ export const Router = () => {
     </Route>
     <Route path="thumbnail" element={<ThumbnailPage />} />
     <Route path="explorer">
+      <Route path="debug" element={<DebugExplorer />} />
+      {/*<Route path="explorer" element={<OrbitMinesExplorer />} />*/}
+
       <Route path="github.com">
         <Route path="akissinger">
           <Route path="chyp" element={<ChypExplorer />} />
@@ -34,8 +38,6 @@ export const Router = () => {
       </Route>
     </Route>
     <Route path="experimental">
-      <Route path="explorer" element={<OrbitMinesExplorer />} />
-
       <Route path="legacy" element={<Legacy />} />
       <Route path="blueprintjs" element={<BlueprintJS />} />
       <Route path="icons" element={<Icons />} />

@@ -28,7 +28,6 @@ const Interface = () => {
 
   // TODO: Direct call to rerender on change, now there's lag
 
-
   const [Chyp] = useState<Ray>(Ray.vertex().o({
     selection: Ray
       .vertex().o({ position: [0, 0, 0], scale, color: 'orange' })

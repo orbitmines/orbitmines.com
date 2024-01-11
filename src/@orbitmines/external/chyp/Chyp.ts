@@ -1,4 +1,5 @@
 import {Arbitrary, Ray} from "../../explorer/Ray";
+import {NotImplementedError} from "../../explorer/errors/errors";
 
 /**
  * An interface from Aleks Kissinger's [Chyp (Cospans of HYPergraphs)](https://github.com/akissinger/chyp) to (OrbitMines') Rays.
@@ -89,7 +90,7 @@ export namespace Chyp {
     }
 
     dpo = (match: Match): Ray => {
-
+      throw new NotImplementedError();
     }
 
   }

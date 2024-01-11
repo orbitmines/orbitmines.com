@@ -459,6 +459,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
   protected proxy = <T = any>(constructor?: ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
+    // TODO: IMPLEMENT SPLAT... {...ray.any}
     return this._proxy ??= new Proxy<Ray>(this, {
       get(self: Ray, p: string | symbol, receiver: any): any {
 
@@ -475,6 +476,27 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       // TODO: What do these other methods on Proxy do???
     }) as T;
+  }
+
+
+  //TODO USED FOR DEBUG NOW
+  move = (func: (self: Ray) => Ray, traversed: Ray[]): Ray => {
+    const target_ray = func(this.self);
+    const target = target_ray.as_reference().o({
+      ...this._dirty_store,
+      position:
+        target_ray.any.position
+        ?? this.self.any.position
+        ?? [0, 0, 0]
+    });
+    console.log('move', `${this.self.label.split(' ')[0]} -> ${target.self.label.split(' ')[0]}`);
+
+    if (!target_ray.any.traversed) {
+      traversed.push(target);
+      target_ray.any.traversed = true;
+    }
+
+    return target;
   }
 
   debug = (c: DebugResult): DebugRay => {
