@@ -2,7 +2,7 @@ import IEventListener from "../../js/react/IEventListener";
 import {VisualizationCanvas} from "../Visualization";
 import React, {useEffect, useReducer, useRef, useState} from "react";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
-import {Ray, RayType} from "../Ray";
+import {DebugResult, Ray, RayType} from "../Ray";
 import {_Continuation, _Vertex, add, AutoVertex, circle, InterfaceOptions, Line, torus} from "../OrbitMinesExplorer";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import {useThree} from "@react-three/fiber";
@@ -88,6 +88,8 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
         // },
         {
           combo: "/", global: true, label: "", onKeyDown: () => {
+            console.log('---------')
+            console.log(`Debugging: ${Interface.any.selection.self.label} (type=${Interface.any.selection.type})`)
             console.log(`rays.length at pos=[${Interface.any.selection.render_options.position}]: ${Interface.any.rays.filter((ray: Ray) => 
               _.isEqual(
                 Interface.any.selection.render_options.position,
@@ -96,6 +98,13 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
             ).length} / ${Interface.any.rays.length}`)
             console.log('ref', Interface.any.selection)
             console.log('ref.self', Interface.any.selection.self)
+
+            const debug: DebugResult = {};
+            Interface.any.selection.self.debug(debug);
+            console.log('ref.debug', debug);
+            Interface.any.rays.forEach((ray: Ray) => ray.debug(debug));
+            console.log('rays.debug', debug);
+
           }
         },
         {
