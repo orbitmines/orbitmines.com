@@ -312,32 +312,26 @@ export const AutoVertex = (ray: Omit<Options, 'vertex'> & InterfaceOptions & {
     ..._.pick(ray, 'position', 'rotation', 'scale', 'color')
   }
 
-  const initial: Required<InterfaceOptions> = { ..._default, position: [-20 * _default.scale, 0, 0], ...ray.initial };
+  const initial: Required<InterfaceOptions> = {..._default, position: [-20 * _default.scale, 0, 0], ...ray.initial};
 
   // Vertex as the origin for rotation
-  const vertex: Required<InterfaceOptions> = { ..._default, position: [0, 0, 0] } //, ...ray.vertex };
-  const terminal: Required<InterfaceOptions> = { ..._default, position: [20 * _default.scale, 0, 0], ...ray.terminal };
+  const vertex: Required<InterfaceOptions> = {..._default, position: [0, 0, 0]} //, ...ray.vertex };
+  const terminal: Required<InterfaceOptions> = {..._default, position: [20 * _default.scale, 0, 0], ...ray.terminal};
 
 
   if (length > 1) // TODO, currently rotates around each vertex individually
     return <group>{[...Array(length)]
-      .map(((_, i) => <AutoVertex {...ray} length={1} position={add(_default.position, [60 * i, 0, 0])} />))}</group>
+      .map(((_, i) => <AutoVertex {...ray} length={1} position={add(_default.position, [60 * i, 0, 0])}/>))}</group>
 
-  const Group = ({ children }: Children) => {
-    return <group position={_default.position} rotation={vertex.rotation}>
-      {children}
-    </group>
-  }
-
-  return <Group>
-    <SimpleRenderedRay type={RayType.INITIAL} {...initial} terminal={vertex} />
-    <SimpleRenderedRay type={RayType.VERTEX} {...vertex} initial={initial} terminal={terminal} />
-    <SimpleRenderedRay type={RayType.TERMINAL} {...terminal} initial={vertex} />
+  return <group position={_default.position} rotation={vertex.rotation}>
+    <SimpleRenderedRay type={RayType.INITIAL} {...initial} terminal={vertex}/>
+    <SimpleRenderedRay type={RayType.VERTEX} {...vertex} initial={initial} terminal={terminal}/>
+    <SimpleRenderedRay type={RayType.TERMINAL} {...terminal} initial={vertex}/>
 
     <group scale={vertex.scale} position={vertex.position}>{children}</group>
-  </Group>
+  </group>
 }
-export const _Continuation = ({ color = torus.color, ...options }: InterfaceOptions) =>
+export const _Continuation = ({color = torus.color, ...options }: InterfaceOptions) =>
   <Torus
     args={[torus.radius, torus.tube.width, torus.segments, torus.tube.segments]}
     material-color={color}

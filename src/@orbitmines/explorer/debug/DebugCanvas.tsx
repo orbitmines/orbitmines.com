@@ -3,21 +3,38 @@ import {VisualizationCanvas} from "../Visualization";
 import React, {useEffect, useReducer, useRef, useState} from "react";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
 import {Ray, RayType} from "../Ray";
-import {
-  _Continuation, _Vertex,
-  add,
-  AutoRay,
-  AutoVertex, circle,
-  InterfaceOptions,
-  Line,
-  SimpleRenderedRay,
-  torus
-} from "../OrbitMinesExplorer";
+import {_Continuation, _Vertex, add, AutoVertex, circle, InterfaceOptions, Line, torus} from "../OrbitMinesExplorer";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import {useThree} from "@react-three/fiber";
 import {Stats, StatsGl} from "@react-three/drei";
 import _ from "lodash";
-import {NotImplementedError} from "../errors/errors";
+
+// TODO: Could be a function on Ray (any func really)
+const Render = ({ ray }: { ray: Ray }) => {
+  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
+  const vertex: Required<InterfaceOptions> = ray.render_options;
+  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
+
+  switch (ray.type) {
+    case RayType.REFERENCE:
+      return <AutoVertex position={vertex.position} rotation={[0, 0, Math.PI / 2]} scale={vertex.scale / 2} color="#55FF55" />
+    case RayType.INITIAL: {
+      return <>
+        <Line start={add(terminal.position, [-circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+        <_Continuation {...vertex} />
+      </>
+    }
+    case RayType.TERMINAL: {
+      return <>
+        <Line start={add(initial.position, [circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+        <_Continuation {...vertex} />
+      </>
+    }
+    case RayType.VERTEX: {
+      return <_Vertex {...vertex} />
+    }
+  }
+}
 
 const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   const ref = useRef<any>();
@@ -64,8 +81,19 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
             Interface.any.selection = Interface.any.selection.move((self: Ray) => self.self, memory, Interface);
           }
         },
+        // {
+        //   combo: ["s", "arrowdown"], global: true, label: "", onKeyDown: () => {
+        //     Interface.any.selection = Interface.any.selection.move((self: Ray) => self.as_reference().as_reference(), memory, Interface);
+        //   }
+        // },
         {
           combo: "/", global: true, label: "", onKeyDown: () => {
+            console.log(`rays.length at pos=[${Interface.any.selection.render_options.position}]: ${Interface.any.rays.filter((ray: Ray) => 
+              _.isEqual(
+                Interface.any.selection.render_options.position,
+                ray.render_options.position
+              )
+            ).length} / ${Interface.any.rays.length}`)
             console.log('ref', Interface.any.selection)
             console.log('ref.self', Interface.any.selection.self)
           }
@@ -80,36 +108,7 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
     })
   }));
 
-  const { selection, controls, rays } = Interface.any;
-  const { hotkeys } = controls.any;
-
-  hotkeyConfig.set(...hotkeys);
-
-  const Render = ({ ray }: { ray: Ray }) => {
-    const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
-    const vertex: Required<InterfaceOptions> = ray.render_options;
-    const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
-
-    switch (ray.type) {
-      case RayType.REFERENCE:
-        return <AutoVertex position={Interface.any.selection.self.position} rotation={[0, 0, Math.PI / 2]} scale={scale / 2} color="#55FF55" />
-      case RayType.INITIAL: {
-        return <>
-          <Line start={add(terminal.position, [-circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
-          <_Continuation {...vertex} />
-        </>
-      }
-      case RayType.TERMINAL: {
-        return <>
-          <Line start={add(initial.position, [circle.radius * vertex.scale, 0, 0])} end={add(vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
-          <_Continuation {...vertex} />
-        </>
-      }
-      case RayType.VERTEX: {
-        return <_Vertex {...vertex} />
-      }
-    }
-  }
+  hotkeyConfig.set(...Interface.any.controls.any.hotkeys);
 
   return <>
     {Interface.any.stats ? <StatsPanels/> : <></>}

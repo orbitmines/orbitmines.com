@@ -504,7 +504,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return target;
   }
 
-  static POSITION_OF_DOOM = [0, 300, 0]
+  static POSITION_OF_DOOM = [0, 100, 0]
 
   // TODO: Abstract away as compilation
   get render_options(): Required<InterfaceOptions> {
