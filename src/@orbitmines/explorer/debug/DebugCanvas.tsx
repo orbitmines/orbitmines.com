@@ -50,17 +50,17 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
     controls: Ray.vertex().o({
       hotkeys: [
         {
-          combo: "a", global: true, label: "", onKeyDown: () => {
+          combo: ["a", "arrowleft"], global: true, label: "", onKeyDown: () => {
             Interface.any.selection = Interface.any.selection.move((self: Ray) => self.initial, memory, Interface);
           }
         },
         {
-          combo: "d", global: true, label: "", onKeyDown: () => {
+          combo: ["d", "arrowright"], global: true, label: "", onKeyDown: () => {
             Interface.any.selection = Interface.any.selection.move((self: Ray) => self.terminal, memory, Interface);
           }
         },
         {
-          combo: "w", global: true, label: "", onKeyDown: () => {
+          combo: ["w", "arrowup"], global: true, label: "", onKeyDown: () => {
             Interface.any.selection = Interface.any.selection.move((self: Ray) => self.self, memory, Interface);
           }
         },
