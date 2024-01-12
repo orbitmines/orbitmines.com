@@ -8,6 +8,13 @@ import {Children} from "../../lib/typescript/React";
 import {NotImplementedError} from "./errors/errors";
 
 // TODO, All this should be automatic through Ray
+export const add_ = (...a: number[][]): [number, number, number] => {
+  let res = a[0];
+  for (let i = 1; i < a.length; i++) {
+    res = add(res, a[i]);
+  }
+  return res as [number, number, number];
+}
 export const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 export const sub = (a: number[], b: number[]): [number, number, number] => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 

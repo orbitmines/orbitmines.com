@@ -1,13 +1,21 @@
 import React, {useRef, useState} from "react";
 import IEventListener from "../../js/react/IEventListener";
 import {VisualizationCanvas} from "../../explorer/Visualization";
-import {_Continuation, add, AutoVertex, InterfaceOptions, SimpleRenderedRay} from "../../explorer/OrbitMinesExplorer";
-import {Center} from "@react-three/drei";
+import {
+  _Continuation,
+  _Vertex,
+  add,
+  add_,
+  AutoVertex,
+  circle,
+  InterfaceOptions,
+  Line,
+  torus
+} from "../../explorer/OrbitMinesExplorer";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
-import {DebugRay, DebugResult, Ray, RayType} from "../../explorer/Ray";
+import {DebugResult, Ray, RayType} from "../../explorer/Ray";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import _ from "lodash";
-import {Children} from "../../../lib/typescript/React";
 import {useThree} from "@react-three/fiber";
 import {Render, StatsPanels} from "../../explorer/debug/DebugCanvas";
 
@@ -123,7 +131,112 @@ import {Render, StatsPanels} from "../../explorer/debug/DebugCanvas";
 //   </>
 // }
 
-export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
+const ___index = (ray: Ray): number => {
+  switch (ray.type) {
+    case RayType.REFERENCE:
+      return ray.self.any.index ?? 0;
+    case RayType.INITIAL:
+      return ray.self.terminal.any.index ?? 0;
+    case RayType.TERMINAL:
+      return ray.self.initial.any.index ?? 0;
+    case RayType.VERTEX:
+      return ray.self.any.index ?? 0;
+  }
+}
+
+export const Render2 = ({ ray, show =  { initial: true, terminal: true } }: { ray: Ray, index: number, show?: { initial: boolean, terminal: boolean } }) => {
+  const index = ___index(ray);
+  let added = [15 * index, 60 * index, 0];
+
+  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
+  initial.position = add_(initial.position, added);
+  const vertex: Required<InterfaceOptions> = ray.render_options;
+  vertex.position = add_(vertex.position, added);
+  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
+  terminal.position = add_(terminal.position, added);
+
+  switch (ray.type) {
+    case RayType.REFERENCE:
+      return <_Vertex position={vertex.position} rotation={[0, 0, Math.PI / 2]} scale={vertex.scale / 2} color="#555555" />
+    case RayType.INITIAL: {
+      const diff = [-15, -15, 0];
+
+      return <group>
+        {!show.initial ? <group></group> : <group>
+          <AutoVertex position={vertex.position} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+
+          <AutoVertex position={add_(diff, vertex.position)} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+
+          <AutoVertex position={add_(diff, terminal.position)} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+        </group>}
+
+        <AutoVertex position={terminal.position} rotation={[0, 0, Math.PI / 4]}
+                    scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+
+        <AutoVertex position={add_(diff, vertex.position)} rotation={[0, 0, -(Math.PI / 3) - 0.05]}
+                    scale={(vertex.scale / 2) * 1.1} color="#FF55FF"/>
+
+        <group>
+          <Line start={add(terminal.position, [-circle.radius * vertex.scale, 0, 0])}
+                end={add_(vertex.position, [torus.radius * vertex.scale, 0, 0], !show.initial && ray.type === RayType.INITIAL ? [-15, -15, 0] : [0, 0, 0])} {..._.pick(vertex, 'color', 'scale')} />
+          <_Continuation {...vertex} position={add_(vertex.position, !show.initial && ray.type === RayType.INITIAL ? [-15, -15, 0] : [0, 0, 0])} />
+        </group>
+
+        {!show.initial ? <group></group> : <group>
+          <Line start={add_(diff, terminal.position, [-circle.radius * vertex.scale, 0, 0])}
+                end={add_(diff, vertex.position, [torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')}
+                color="#FF5555"/>
+          <_Continuation {...vertex} position={add_(vertex.position, diff)} color="#FF5555"/>
+          <_Continuation {...vertex} position={add_(vertex.position, diff, [-30, 0, 0])} scale={vertex.scale / 3 * 2}
+                         color="#AA0000"/>
+        </group>}
+      </group>
+    }
+    case RayType.TERMINAL: {
+      const diff = [15, 15, 0];
+
+      return <group>
+        {!show.terminal ? <group></group> : <group>
+          <AutoVertex position={vertex.position} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+
+          <AutoVertex position={add_(diff, vertex.position)} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+
+          <AutoVertex position={initial.position} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+
+          <AutoVertex position={add_(diff, initial.position)} rotation={[0, 0, Math.PI / 4]}
+                      scale={(vertex.scale / 3) * 1.05} color="#555555"/>
+        </group>}
+
+        <AutoVertex position={add_(diff, vertex.position)} rotation={[0, 0, -(Math.PI / 3)  - 0.05]}
+                    scale={(vertex.scale / 2) * 1.1} color="#FF55FF"/>
+
+        <group>
+          <Line start={add(initial.position, [circle.radius * vertex.scale, 0, 0])}
+                end={add_(vertex.position, [-torus.radius * vertex.scale, 0, 0], !show.terminal && ray.type === RayType.TERMINAL ? [15, 15, 0] : [0, 0, 0])} {..._.pick(vertex, 'color', 'scale')} {..._.pick(vertex, 'color', 'scale')} />
+          <_Continuation {...vertex} position={add_(vertex.position, !show.terminal && ray.type === RayType.TERMINAL ? [15, 15, 0] : [0, 0, 0])} />
+        </group>
+
+        {!show.terminal ? <group></group> : <group>
+          <Line start={add_(diff, initial.position, [circle.radius * vertex.scale, 0, 0])}
+                end={add_(diff, vertex.position, [-torus.radius * vertex.scale, 0, 0])} {..._.pick(vertex, 'color', 'scale')} color="#5555FF" />
+          <_Continuation {...vertex} position={add_(vertex.position, diff)} color="#5555FF" />
+          <_Continuation {...vertex} position={add_(vertex.position, diff, [30, 0, 0])} scale={vertex.scale / 3 * 2} color="#AA0000"/>
+        </group>}
+      </group>
+    }
+    case RayType.VERTEX: {
+      return <_Vertex {...vertex} />
+    }
+  }
+}
+
+export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
   const ref = useRef<any>();
   const hotkeyConfig = useHotkeys();
 
@@ -139,8 +252,8 @@ export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
   const [Interface] = useState<Ray>(Ray.vertex().o({
     selection: Ray.vertex().o2({
       initial: { position: [-space_between, 0, 0], scale, color: 'orange' },
-      vertex: { position: [0, 0, 0], scale, color: 'orange' },
-      terminal: { position: [space_between, 0, 0 ], scale, color: 'orange' }
+      vertex: { index: 0, position: [0, 0, 0], scale, color: 'orange' },
+      terminal: { position: [space_between, 0, 0 ], scale, color: 'orange' },
     }).as_reference().o({
       position: [0, 0, 0],
       scale,
@@ -152,15 +265,15 @@ export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
     controls: Ray.vertex().o({
       hotkeys: [
         {
-          combo: "arrowright", global: true, label: "", onKeyDown: () => {
+          combo: ["d", "arrowright"], global: true, label: "", onKeyDown: () => {
             const { selection, rays } = Interface.any;
 
-            const current = Interface.any.selection.render_options
+            const current = Interface.any.selection.render_options;
 
             const next = Ray.vertex().o2({
-              initial: { position: add(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
-              vertex: { position: add(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
-              terminal: { position: add(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
+              initial: { position: add_(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
+              vertex: { index: Interface.any.selection.self.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
+              terminal: { position: add_(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
             }).as_reference().o({
               ...selection.as_reference().render_options,
               position: add(selection.any.position ?? [0, 0, 0], [space_between * 2, 0, 0])
@@ -175,11 +288,14 @@ export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
           }
         },
         {
-          combo: "arrowleft", global: true, label: "", onKeyDown: () => {
+          combo: ["a", "arrowleft"], global: true, label: "", onKeyDown: () => {
             if (Interface.any.rays.length === 0)
               return;
 
             Interface.any.selection = Interface.any.selection.pop();
+            Interface.any.selection.o({
+              position: Interface.any.selection.render_options.position
+            }); // TODO, Same with this.
             Interface.any.selection.self.terminal.o({
               position: add(Interface.any.selection.render_options.position, [space_between, 0, 0]), scale, color: 'orange'
             }); // TODO: The continues_with function doesn't persist the options, as they are ignored on the equivalency. Probably need some better way to deal with this kind of thing.
@@ -196,7 +312,7 @@ export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
           }
         },
         {
-          combo: "arrowup", global: true, label: "", onKeyDown: () => {
+          combo: ["w", "arrowup"], global: true, label: "", onKeyDown: () => {
             const { selection, rays } = Interface.any;
 
             Interface.any.rays = rays.flatMap((ray: Ray) => [
@@ -262,17 +378,67 @@ export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
   hotkeyConfig.set(...Interface.any.controls.any.hotkeys);
   // }, [Interface.any.controls.any.hotkeys]);
 
+  const index = ___index(Interface.any.selection);
+  const added = [15 * index, 60 * (index + 1), 0];
+
   return <>
     {Interface.any.stats ? <StatsPanels/> : <></>}
 
-    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 5]}
-                scale={scale / 2} color="#555555"/>
+    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 2]}
+                scale={scale / 1.5} color="#55FF55"/>
 
     {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
+
     {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray}/>)}
 
-    <group position={[0, 60, 0]}>
-      {/*<Debug/>*/}
+    <group position={[0, 0, 0]}>
+      <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}
+                  scale={scale / 1.5} color="#55FF55"/>
+      <group position={[0, 60, 0]}>
+        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index} show={{initial: false, terminal: false}} />)}
+      </group>
+    </group>
+    {/*<group position={[0, 120, 0]}>*/}
+    {/*  <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
+    {/*              scale={scale / 1.5} color="#55FF55"/>*/}
+    {/*  <group position={[0, 60, 0]}>*/}
+    {/*    {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index}/>)}*/}
+    {/*  </group>*/}
+    {/*</group>*/}
+
+    <group position={[0, 0, 0]}>
+      {[
+        Ray.vertex().o2({
+          initial: { position: [(-space_between / 1.5) - (space_between / 1.5) * 2, -140, 0], scale: scale / 1.5, color: '#FF5555' },
+          vertex: { index: 0, position: [0 - (space_between / 1.5) * 2, -140, 0], scale: scale / 1.5, color: '#FF5555' },
+          terminal: { position: [(space_between / 1.5) - (space_between / 1.5) * 2, -140, 0 ], scale: scale / 1.5, color: '#FF5555' },
+        }),
+        Ray.vertex().o2({
+          initial: { position: [(-space_between / 1.5) + (space_between / 1.5) * 2, -120, 0], scale: scale / 1.5, color: '#FF5555' },
+          vertex: { index: 0, position: [0 + (space_between / 1.5) * 2, -120, 0], scale: scale / 1.5, color: '#FF5555' },
+          terminal: { position: [(space_between / 1.5) + (space_between / 1.5) * 2, -120, 0 ], scale: scale / 1.5, color: '#FF5555' },
+        }),
+        Ray.vertex().o2({
+          initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },
+          vertex: { index: 0, position: [0, -120, 0], scale: scale / 1.5, color: '#FF5555' },
+          terminal: { position: [(space_between / 1.5), -120, 0 ], scale: scale / 1.5, color: '#FF5555' },
+        }),
+        Ray.vertex().o2({
+          initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },
+          vertex: { index: 0, position: [0, -140, 0], scale: scale / 1.5, color: '#FF5555' },
+          terminal: { position: [(space_between / 1.5), -120, 0 ], scale: scale / 1.5, color: '#FF5555' },
+        }),
+        Ray.vertex().o2({
+          initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },
+          vertex: { index: 0, position: [0, -160, 0], scale: scale / 1.5, color: '#FF5555' },
+          terminal: { position: [(space_between / 1.5), -160, 0 ], scale: scale / 1.5, color: '#FF5555' },
+        }),
+      ]
+        .flatMap(ray => [ray.initial.as_reference(), ray.as_reference(), ray.terminal.as_reference()])
+        .map(ray => <Render key={ray.self.label} ray={ray}/>)
+      }
+      {/*<AutoVertex position={[0, 0, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*/}
+      {/*<AutoVertex position={[0, -60, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*/}
     </group>
   </>
 }
