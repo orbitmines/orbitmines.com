@@ -3,7 +3,7 @@ import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 
 
-// SHOULDNT CLASSIFY THESE?
+// TODO: SHOULDNT CLASSIFY THESE?
 export enum RayType {
   // NONE = '     ',
   REFERENCE = '  |  ',
@@ -190,14 +190,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         throw new PreventsImplementationBug();
       }
       case RayType.VERTEX: {
-        const next_vertex = Ray.vertex(b.as_arbitrary()); // TODO: Could be a reference too, now just force as a next element
+        // const next_vertex = b; // TODO: Could be a reference too, now just force as a next element
 
         if (this.is_none()) {
           // 'Empty' vertex from this perspective.
 
-          this.vertex = next_vertex.as_arbitrary();
+          this.vertex = b.as_arbitrary();
           console.log('first element');
-          return next_vertex.as_reference(); // TODO: Generally, return something which knows where all continuations are.
+          return b; // TODO: Generally, return something which knows where all continuations are.
         }
 
         switch (b.type) {
@@ -212,7 +212,45 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           }
         }
 
-        return next_vertex.as_reference();
+        return b;
+      }
+    }
+  }
+
+  pop = (): Ray => {
+    switch (this.type) {
+      case RayType.REFERENCE: {
+        throw new PreventsImplementationBug();
+      }
+      case RayType.TERMINAL:
+      case RayType.INITIAL: {
+        throw new PreventsImplementationBug();
+      }
+      case RayType.VERTEX: {
+        const previous_vertex = this.self.initial.self.initial.as_reference();
+
+        if (this.is_none()) {
+          return this; // TODO; Already empty, perhaps throw
+        }
+
+        switch (previous_vertex.type) {
+          case RayType.REFERENCE: {
+            throw new PreventsImplementationBug();
+          }
+          case RayType.INITIAL: {
+            throw new PreventsImplementationBug();
+          }
+          case RayType.TERMINAL: {
+            throw new PreventsImplementationBug();
+          }
+          case RayType.VERTEX: {
+            console.log(previous_vertex)
+            // TODO: NONHACKY
+
+            previous_vertex.self.terminal = new Ray({ vertex: Ray.None, initial: previous_vertex.self.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary()
+            return previous_vertex;
+          }
+        }
       }
     }
   }

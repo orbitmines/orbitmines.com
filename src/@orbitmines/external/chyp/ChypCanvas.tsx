@@ -8,82 +8,198 @@ import {DebugRay, DebugResult, Ray, RayType} from "../../explorer/Ray";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import _ from "lodash";
 import {Children} from "../../../lib/typescript/React";
+import {useThree} from "@react-three/fiber";
+import {Render, StatsPanels} from "../../explorer/debug/DebugCanvas";
 
 // TODO: Put the graphs setc at the top, invis lines, then draw them on hover, and maybe make surrounding stuff less visiable.
 // TODO: make some function which uses a custom input like position of the interface as the thing which breaks equivalences - ignorances. Basically a custom "equivalency function"
 // TODO; Key to output javascript compilation targets in console, array, .. etc.
+// const Debug = () => {
+//   const groups: string[][] = [];
+//   _.values(debug).forEach(ray => {
+//     for (let group of groups) {
+//       if (group.includes(ray.label) || group.includes(ray.vertex)) {
+//         group.push(...[ray.label, ray.vertex].filter(l => l !== 'None'));
+//         return;
+//       }
+//     }
+//
+//     groups.push([ray.label, ray.vertex].filter(l => l !== 'None'));
+//   });
+//
+//   const group = (l: string): string[] => groups.find(group => group.includes(l))!;
+//   const group_index = (l: string): number => groups.indexOf(group(l));
+//   const index_in_group = (l: string): number => group(l).indexOf(l);
+//
+//
+//   //TODO: do the same for group in initial/yerminal
+//   return <>
+//     {/*<Center>*/}
+//     {_.values(debug).map(((_ray, index) => {
+//       let ray = {
+//         ...debug[_ray.label]
+//       }
+//
+//       const color = {
+//         [RayType.VERTEX]: 'orange',
+//         [RayType.TERMINAL]: '#FF5555',
+//         [RayType.INITIAL]: '#5555FF',
+//         [RayType.REFERENCE]: '#555555',
+//       }[ray.type];
+//
+//       const group_x = _.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)).map(position => position[0])[0];
+//       // console.log(_.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)))
+//
+//       ray = {
+//         ...ray,
+//         ...({
+//           color,
+//           scale: 1.5,
+//           // rotation: ray.type == RayType.REFERENCE ? [0, 0, Math.PI / 6] : [0, 0, 0],
+//           position: [
+//             group_x ?? group_index(ray.label) * 20 * 1.5,
+//             // (index_in_group(ray.label) + group_index(ray.label) + (group_x ? 0: 1)) * 30 * 1.5,
+//             index * 20 * 1.5,
+//             0
+//           ]
+//         } as InterfaceOptions)
+//       }
+//
+//       debug[_ray.label] = ray;
+//
+//       const _default: Required<InterfaceOptions> = {
+//         position: [0, 0, 0],
+//         rotation: [0, 0, 0],
+//         scale: 1,
+//         color: 'orange',
+//         ..._.pick(ray, 'position', 'rotation', 'scale', 'color'),
+//       }
+//
+//       // console.log(ray.label, [ray.initial, ray.vertex, ray.terminal].toString())
+//
+//       const initial: Required<InterfaceOptions> = { ..._default, position: [-20 * _default.scale, 0, 0] };
+//
+//       // Vertex as the origin for rotation
+//       const vertex: Required<InterfaceOptions> = { ..._default, position: [0, 0, 0] } //, ...ray.vertex };
+//       const terminal: Required<InterfaceOptions> = { ..._default, position: [20 * _default.scale, 0, 0] };
+//
+//       const Group = ({ children }: Children) => {
+//         return <group position={_default.position} rotation={vertex.rotation}>
+//           {children}
+//         </group>
+//       }
+//
+//       const None = (options: InterfaceOptions) => (<_Continuation {...options} color="#AA0000" scale={1} />)
+//
+//       const Extreme = ({type}: { type: RayType.INITIAL | RayType.TERMINAL }) => {
+//         const options = type === RayType.INITIAL ? initial : terminal;
+//
+//         switch (ray.type) {
+//           case RayType.REFERENCE:
+//           case RayType.VERTEX: {
+//             const a = type === RayType.INITIAL ? { terminal: vertex } : { initial: vertex };
+//             return <SimpleRenderedRay type={type} {...options} {...a} />;
+//           }
+//           case type: {
+//             return <None {...options} />;
+//           }
+//           case (type === RayType.INITIAL ? RayType.TERMINAL : RayType.INITIAL): {
+//             return <></>
+//           }
+//         }
+//       }
+//
+//       return <Group key={index}>
+//         <Extreme type={RayType.INITIAL} />
+//         <SimpleRenderedRay type={ray.type === RayType.REFERENCE ? RayType.VERTEX : ray.type} {...vertex} initial={initial} terminal={terminal} />
+//         <Extreme type={RayType.TERMINAL} />
+//       </Group>
+//     }))}
+//
+//     {groups.map(group => <>
+//       {group.map(l => <AutoVertex position={(debug[l] as InterfaceOptions).position} rotation={[0, 0, Math.PI / 2]} scale={0.75}  color={cursor.color} />)}
+//     </>)}
+//     {/*</Center>*/}
+//   </>
+// }
 
-const Interface = () => {
+export const DebugInterface2 = ({ scale = 1.5 }: InterfaceOptions) => {
   const ref = useRef<any>();
   const hotkeyConfig = useHotkeys();
 
-  const scale = 1.5;
-  const i = 20 * scale;
+  const {
+    gl: renderer,
+    camera,
+    scene,
+    raycaster
+  } = useThree();
 
-  const cursor: InterfaceOptions = {
-    scale,
-    rotation: [0, 0, Math.PI / 6 ],
-    color: '#555555'
-  };
+  const space_between = 20 * scale;
 
-  // TODO: Direct call to rerender on change, now there's lag
-
-  const [Chyp] = useState<Ray>(Ray.vertex().o({
-    selection: Ray
-      .vertex().o({ position: [0, 0, 0], scale, color: 'orange' })
-      .as_reference().o({
-        position: [0, 0, 0],
-        ...cursor
-      }),
+  const [Interface] = useState<Ray>(Ray.vertex().o({
+    selection: Ray.vertex().o2({
+      initial: { position: [-space_between, 0, 0], scale, color: 'orange' },
+      vertex: { position: [0, 0, 0], scale, color: 'orange' },
+      terminal: { position: [space_between, 0, 0 ], scale, color: 'orange' }
+    }).as_reference().o({
+      position: [0, 0, 0],
+      scale,
+      rotation: [0, 0, Math.PI / 6 ],
+      color: '#555555'
+    }),
     rays: [] as Ray[],
+    stats: false,
     controls: Ray.vertex().o({
-      hotkeys: [ {
-        combo: "arrowright", global: true, label: "", onKeyDown: () => {
-          const { selection, rays } = Chyp.any;
-
-          const next = Ray.vertex().as_reference().o({
-            position: add(selection.any.position ?? [0, 0, 0], [i * 2, 0, 0]),
-            scale
-          });
-          selection.continues_with(next);
-
-          // const next2 = Ray.js("A").as_reference().o({
-          //   position: add(selection.any.position ?? [0, 0, 0], [i * 2, -30, 0]),
-          //   scale
-          // });
-
-          Chyp.any.selection = next;
-          Chyp.any.rays = [...rays, next]
-
-        }
-      },
+      hotkeys: [
         {
-          combo: "arrowleft", global: true, label: "", onKeyDown: () => {
-            const { selection, rays } = Chyp.any;
+          combo: "arrowright", global: true, label: "", onKeyDown: () => {
+            const { selection, rays } = Interface.any;
 
-            if (rays.length === 0)
-              return;
+            const current = Interface.any.selection.render_options
 
-            rays.pop();
+            const next = Ray.vertex().o2({
+              initial: { position: add(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
+              vertex: { position: add(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
+              terminal: { position: add(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
+            }).as_reference().o({
+              ...selection.as_reference().render_options,
+              position: add(selection.any.position ?? [0, 0, 0], [space_between * 2, 0, 0])
+            });
 
-            if (rays.length === 0) {
-              Chyp.any.selection.any.position = [0, 0, 0]
-              return;
-            }
-
-            Chyp.any.selection = rays[rays.length - 1];
-
-            // selection.continues_with(
-
-            // );
+            Interface.any.selection = selection.continues_with(next);
+            Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
+              ray.any.traversed = true;
+              return ray.as_reference();
+            });
 
           }
         },
         {
-          combo: "arrowup", global: true, label: "", onKeyDown: () => {
-            const { selection, rays } = Chyp.any;
+          combo: "arrowleft", global: true, label: "", onKeyDown: () => {
+            if (Interface.any.rays.length === 0)
+              return;
 
-            Chyp.any.rays = rays.flatMap((ray: Ray) => [
+            Interface.any.selection = Interface.any.selection.pop();
+            Interface.any.selection.self.terminal.o({
+              position: add(Interface.any.selection.render_options.position, [space_between, 0, 0]), scale, color: 'orange'
+            }); // TODO: The continues_with function doesn't persist the options, as they are ignored on the equivalency. Probably need some better way to deal with this kind of thing.
+
+            Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
+              ray.any.traversed = true;
+              return ray.as_reference();
+            });
+
+            if (Interface.any.length === 0) {
+              Interface.any.selection.any.position = [0, 0, 0]
+              return;
+            }
+          }
+        },
+        {
+          combo: "arrowup", global: true, label: "", onKeyDown: () => {
+            const { selection, rays } = Interface.any;
+
+            Interface.any.rays = rays.flatMap((ray: Ray) => [
               ray,
               // Ray.js("A").as_reference().o({
               //   // ...ray.o,
@@ -109,161 +225,90 @@ const Interface = () => {
 
             // );
           }
-        }] as HotkeyConfig[]
+        },
+        {
+          combo: "/", global: true, label: "", onKeyDown: () => {
+            console.log('---------')
+            console.log(`Debugging: ${Interface.any.selection.self.label} (type=${Interface.any.selection.type})`)
+            console.log(`rays.length at pos=[${Interface.any.selection.render_options.position}]: ${Interface.any.rays.filter((ray: Ray) =>
+              _.isEqual(
+                Interface.any.selection.render_options.position,
+                ray.render_options.position
+              )
+            ).length} / ${Interface.any.rays.length}`)
+            console.log('ref', Interface.any.selection)
+            console.log('ref.self', Interface.any.selection.self)
+
+            const debug: DebugResult = {};
+            Interface.any.selection.self.debug(debug);
+            console.log('ref.debug', debug);
+            Interface.any.rays.forEach((ray: Ray) => ray.debug(debug));
+            console.log('rays.debug', debug);
+
+          }
+        },
+        {
+          combo: "f3", global: true, label: "Show stats Panel", onKeyDown: (e) => {
+            e.preventDefault();
+            Interface.any.stats = !Interface.any.stats;
+          }
+        },
+      ] as HotkeyConfig[]
     })
   }));
 
-  const { selection, controls, rays } = Chyp.any;
-  const { hotkeys } = controls.any;
-
-  hotkeyConfig.set(...hotkeys);
-
-  const Rendered = ({ ray, ...options }: { ray: Ray } & InterfaceOptions) => {
-    const { position = options.position, rotation = options.rotation, scale = options.scale, color = options.color } = ray.any;
-    return <AutoVertex key={ray.label} {...{position, rotation, scale, color}} />;
-  }
-
-  const render = () => {
-
-  }
-
-
-  const DEBUG = true;
-
-  const debug: DebugResult = {};
-  selection.debug(debug);
-
-  const Debug = () => {
-    const groups: string[][] = [];
-    _.values(debug).forEach(ray => {
-      for (let group of groups) {
-        if (group.includes(ray.label) || group.includes(ray.vertex)) {
-          group.push(...[ray.label, ray.vertex].filter(l => l !== 'None'));
-          return;
-        }
-      }
-
-      groups.push([ray.label, ray.vertex].filter(l => l !== 'None'));
-    });
-
-    const group = (l: string): string[] => groups.find(group => group.includes(l))!;
-    const group_index = (l: string): number => groups.indexOf(group(l));
-    const index_in_group = (l: string): number => group(l).indexOf(l);
-
-
-    //TODO: do the same for group in initial/yerminal
-    return <>
-      {/*<Center>*/}
-        {_.values(debug).map(((_ray, index) => {
-          let ray = {
-            ...debug[_ray.label]
-          }
-
-          const color = {
-            [RayType.VERTEX]: 'orange',
-            [RayType.TERMINAL]: '#FF5555',
-            [RayType.INITIAL]: '#5555FF',
-            [RayType.REFERENCE]: '#555555',
-          }[ray.type];
-
-          const group_x = _.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)).map(position => position[0])[0];
-          // console.log(_.compact(group(ray.label).map(l => (debug[l] as InterfaceOptions).position)))
-
-          ray = {
-            ...ray,
-            ...({
-              color,
-              scale: 1.5,
-              // rotation: ray.type == RayType.REFERENCE ? [0, 0, Math.PI / 6] : [0, 0, 0],
-              position: [
-                group_x ?? group_index(ray.label) * 20 * 1.5,
-                // (index_in_group(ray.label) + group_index(ray.label) + (group_x ? 0: 1)) * 30 * 1.5,
-                index * 20 * 1.5,
-                0
-              ]
-            } as InterfaceOptions)
-          }
-
-          debug[_ray.label] = ray;
-
-          const _default: Required<InterfaceOptions> = {
-            position: [0, 0, 0],
-            rotation: [0, 0, 0],
-            scale: 1,
-            color: 'orange',
-            ..._.pick(ray, 'position', 'rotation', 'scale', 'color'),
-          }
-
-          // console.log(ray.label, [ray.initial, ray.vertex, ray.terminal].toString())
-
-          const initial: Required<InterfaceOptions> = { ..._default, position: [-20 * _default.scale, 0, 0] };
-
-          // Vertex as the origin for rotation
-          const vertex: Required<InterfaceOptions> = { ..._default, position: [0, 0, 0] } //, ...ray.vertex };
-          const terminal: Required<InterfaceOptions> = { ..._default, position: [20 * _default.scale, 0, 0] };
-
-          const Group = ({ children }: Children) => {
-            return <group position={_default.position} rotation={vertex.rotation}>
-              {children}
-            </group>
-          }
-
-          const None = (options: InterfaceOptions) => (<_Continuation {...options} color="#AA0000" scale={1} />)
-
-          const Extreme = ({type}: { type: RayType.INITIAL | RayType.TERMINAL }) => {
-            const options = type === RayType.INITIAL ? initial : terminal;
-
-            switch (ray.type) {
-              case RayType.REFERENCE:
-              case RayType.VERTEX: {
-                const a = type === RayType.INITIAL ? { terminal: vertex } : { initial: vertex };
-                return <SimpleRenderedRay type={type} {...options} {...a} />;
-              }
-              case type: {
-                return <None {...options} />;
-              }
-              case (type === RayType.INITIAL ? RayType.TERMINAL : RayType.INITIAL): {
-                return <></>
-              }
-            }
-          }
-
-          return <Group key={index}>
-            <Extreme type={RayType.INITIAL} />
-            <SimpleRenderedRay type={ray.type === RayType.REFERENCE ? RayType.VERTEX : ray.type} {...vertex} initial={initial} terminal={terminal} />
-            <Extreme type={RayType.TERMINAL} />
-          </Group>
-        }))}
-
-      {groups.map(group => <>
-        {group.map(l => <AutoVertex position={(debug[l] as InterfaceOptions).position} rotation={[0, 0, Math.PI / 2]} scale={0.75}  color={cursor.color} />)}
-      </>)}
-      {/*</Center>*/}
-    </>
-  }
+  // useEffect(() => {
+  // TODO: Eventually goes over maximum size of react-debug callstack when updates each frame like this.
+  hotkeyConfig.set(...Interface.any.controls.any.hotkeys);
+  // }, [Interface.any.controls.any.hotkeys]);
 
   return <>
-    <Center>
-      {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self.initial} position={[-30, 0, 0]} />*/}
-      {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self.terminal} position={[30, 0, 0]} />*/}
-      {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self} />*/}
+    {Interface.any.stats ? <StatsPanels/> : <></>}
 
-      {/*<AutoRay ray={selection} />*/}
+    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 5]}
+                scale={scale / 2} color="#555555"/>
 
-      {/*<AutoVertex {...selection.o} />*/}
-      {/*<AutoVertex {...selection.self.o} />*/}
-      <Rendered ray={selection} {...cursor} />
-      <AutoVertex position={[0, 0, 0]} scale={scale} />
+    {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
+    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray}/>)}
 
-      {rays.map((ray: Ray) => <Rendered key={ray.label} ray={ray} />)}
-
-      <group position={[0, 60, 0]}>
-        <Debug/>
-      </group>
-      {/*<AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} rotation={[0, 0, 0]} />*/}
-    </Center>
+    <group position={[0, 60, 0]}>
+      {/*<Debug/>*/}
+    </group>
   </>
 }
+
+// const Interface = () => {
+//   // TODO: Direct call to rerender on change, now there's lag
+//
+//   const Rendered = ({ ray, ...options }: { ray: Ray } & InterfaceOptions) => {
+//     const { position = options.position, rotation = options.rotation, scale = options.scale, color = options.color } = ray.any;
+//     return <AutoVertex key={ray.label} {...{position, rotation, scale, color}} />;
+//   }
+//
+//   const DEBUG = true;
+//
+//   const debug: DebugResult = {};
+//   selection.debug(debug);
+//
+//   return <>
+//     <Center>
+//       {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self.initial} position={[-30, 0, 0]} />*/}
+//       {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self.terminal} position={[30, 0, 0]} />*/}
+//       {/*<AutoRay ray={Chyp_naieve_pass.any.selection.self} />*/}
+//
+//       {/*<AutoRay ray={selection} />*/}
+//
+//       {/*<AutoVertex {...selection.o} />*/}
+//       {/*<AutoVertex {...selection.self.o} />*/}
+//       <Rendered ray={selection} {...cursor} />
+//       <AutoVertex position={[0, 0, 0]} scale={scale} />
+//
+//       {rays.map((ray: Ray) => <Rendered key={ray.label} ray={ray} />)}
+//
+//       {/*<AutoRenderedRay scale={scale} position={[0, 0, 0]} length={1} rotation={[0, 0, 0]} />*/}
+//     </Center>
+//   </>
+// }
 
 /**
  * TODO: Import .chyp files
@@ -289,7 +334,7 @@ const ChypCanvas = (
     <VisualizationCanvas
       style={{height: '100vh'}}
     >
-      <Interface/>
+      <DebugInterface2/>
     </VisualizationCanvas>
   </div>
 }

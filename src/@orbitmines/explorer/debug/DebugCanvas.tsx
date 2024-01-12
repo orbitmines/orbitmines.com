@@ -13,7 +13,7 @@ import _ from "lodash";
 // TODO: It's, rende rboth draw equivalence, then ignore the difference from either perspective or take some middle thing. - Line from both ends, also vertex? (or take the pos, take the x from one/other, y from the other/..)
 
 // TODO: Could be a function on Ray (any func really)
-const Render = ({ ray }: { ray: Ray }) => {
+export const Render = ({ ray }: { ray: Ray }) => {
   const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
   const vertex: Required<InterfaceOptions> = ray.render_options;
   const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
@@ -41,7 +41,7 @@ const Render = ({ ray }: { ray: Ray }) => {
   }
 }
 
-const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
+export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   const ref = useRef<any>();
   const hotkeyConfig = useHotkeys();
 
@@ -57,11 +57,13 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   const memory = true;
 
   const [Interface] = useState<Ray>(Ray.vertex().o({
-    selection: Ray.vertex(() => Ray.vertex().o2({
-        initial: { position: [-space_between, 0, 0], scale, rotation: [0, 0, Math.PI / 2] },
-        vertex: { position: [0, 0, 0], scale, color: '#FF55FF' },
-        terminal: { position: [space_between, 0, 0 ], scale, rotation: [0, 0, Math.PI / 2] }
-      })).o2({
+    selection: Ray.vertex(
+      // () => Ray.vertex().o2({
+      //   initial: { position: [-space_between, 0, 0], scale, rotation: [0, 0, Math.PI / 2] },
+      //   vertex: { position: [0, 0, 0], scale, color: '#FF55FF' },
+      //   terminal: { position: [space_between, 0, 0 ], scale, rotation: [0, 0, Math.PI / 2] }
+      // })
+    ).o2({
       initial: { position: [-space_between, 0, 0], scale },
       vertex: { position: [0, 0, 0], scale, color: '#FF55FF' },
       terminal: { position: [space_between, 0, 0 ], scale }
@@ -168,7 +170,7 @@ const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   </>
 }
 
-const StatsPanels = () => {
+export const StatsPanels = () => {
   const [_, forceUpdate] = useReducer((x) => !x, false);
 
   const parent = useRef(document.createElement('div'));
@@ -192,7 +194,7 @@ const StatsPanels = () => {
   </>
 }
 
-const DebugCanvas = (
+export const DebugCanvas = (
   {
     listeners = [],
   }: {
