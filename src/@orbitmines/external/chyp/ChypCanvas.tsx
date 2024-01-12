@@ -391,13 +391,14 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
 
     {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray}/>)}
 
-    <group position={[0, 0, 0]}>
-      <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}
-                  scale={scale / 1.5} color="#55FF55"/>
-      <group position={[0, 60, 0]}>
-        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index} show={{initial: false, terminal: false}} />)}
-      </group>
-    </group>
+    {/*<group position={[0, 0, 0]}>*/}
+    {/*  <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
+    {/*              scale={scale / 1.5} color="#55FF55"/>*/}
+    {/*  <group position={[0, 60, 0]}>*/}
+    {/*    {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index} show={{initial: false, terminal: false}} />)}*/}
+    {/*  </group>*/}
+    {/*</group>*/}
+
     {/*<group position={[0, 120, 0]}>*/}
     {/*  <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
     {/*              scale={scale / 1.5} color="#55FF55"/>*/}
@@ -406,40 +407,40 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
     {/*  </group>*/}
     {/*</group>*/}
 
-    <group position={[0, 0, 0]}>
-      {[
-        Ray.vertex().o2({
-          initial: { position: [(-space_between / 1.5) - (space_between / 1.5) * 2, -140, 0], scale: scale / 1.5, color: '#FF5555' },
-          vertex: { index: 0, position: [0 - (space_between / 1.5) * 2, -140, 0], scale: scale / 1.5, color: '#FF5555' },
-          terminal: { position: [(space_between / 1.5) - (space_between / 1.5) * 2, -140, 0 ], scale: scale / 1.5, color: '#FF5555' },
-        }),
-        Ray.vertex().o2({
-          initial: { position: [(-space_between / 1.5) + (space_between / 1.5) * 2, -120, 0], scale: scale / 1.5, color: '#FF5555' },
-          vertex: { index: 0, position: [0 + (space_between / 1.5) * 2, -120, 0], scale: scale / 1.5, color: '#FF5555' },
-          terminal: { position: [(space_between / 1.5) + (space_between / 1.5) * 2, -120, 0 ], scale: scale / 1.5, color: '#FF5555' },
-        }),
-        Ray.vertex().o2({
-          initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },
-          vertex: { index: 0, position: [0, -120, 0], scale: scale / 1.5, color: '#FF5555' },
-          terminal: { position: [(space_between / 1.5), -120, 0 ], scale: scale / 1.5, color: '#FF5555' },
-        }),
-        Ray.vertex().o2({
-          initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },
-          vertex: { index: 0, position: [0, -140, 0], scale: scale / 1.5, color: '#FF5555' },
-          terminal: { position: [(space_between / 1.5), -120, 0 ], scale: scale / 1.5, color: '#FF5555' },
-        }),
-        Ray.vertex().o2({
-          initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },
-          vertex: { index: 0, position: [0, -160, 0], scale: scale / 1.5, color: '#FF5555' },
-          terminal: { position: [(space_between / 1.5), -160, 0 ], scale: scale / 1.5, color: '#FF5555' },
-        }),
-      ]
-        .flatMap(ray => [ray.initial.as_reference(), ray.as_reference(), ray.terminal.as_reference()])
-        .map(ray => <Render key={ray.self.label} ray={ray}/>)
-      }
-      {/*<AutoVertex position={[0, 0, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*/}
-      {/*<AutoVertex position={[0, -60, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*/}
-    </group>
+    {/*<group position={[0, 0, 0]}>*/}
+    {/*  {[*/}
+    {/*    Ray.vertex().o2({*/}
+    {/*      initial: { position: [(-space_between / 1.5) - (space_between / 1.5) * 2, -140, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      vertex: { index: 0, position: [0 - (space_between / 1.5) * 2, -140, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      terminal: { position: [(space_between / 1.5) - (space_between / 1.5) * 2, -140, 0 ], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*    }),*/}
+    {/*    Ray.vertex().o2({*/}
+    {/*      initial: { position: [(-space_between / 1.5) + (space_between / 1.5) * 2, -120, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      vertex: { index: 0, position: [0 + (space_between / 1.5) * 2, -120, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      terminal: { position: [(space_between / 1.5) + (space_between / 1.5) * 2, -120, 0 ], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*    }),*/}
+    {/*    Ray.vertex().o2({*/}
+    {/*      initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      vertex: { index: 0, position: [0, -120, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      terminal: { position: [(space_between / 1.5), -120, 0 ], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*    }),*/}
+    {/*    Ray.vertex().o2({*/}
+    {/*      initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      vertex: { index: 0, position: [0, -140, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      terminal: { position: [(space_between / 1.5), -120, 0 ], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*    }),*/}
+    {/*    Ray.vertex().o2({*/}
+    {/*      initial: { position: [(-space_between / 1.5), -140, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      vertex: { index: 0, position: [0, -160, 0], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*      terminal: { position: [(space_between / 1.5), -160, 0 ], scale: scale / 1.5, color: '#FF5555' },*/}
+    {/*    }),*/}
+    {/*  ]*/}
+    {/*    .flatMap(ray => [ray.initial.as_reference(), ray.as_reference(), ray.terminal.as_reference()])*/}
+    {/*    .map(ray => <Render key={ray.self.label} ray={ray}/>)*/}
+    {/*  }*/}
+    {/*  /!*<AutoVertex position={[0, 0, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*!/*/}
+    {/*  /!*<AutoVertex position={[0, -60, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*!/*/}
+    {/*</group>*/}
   </>
 }
 

@@ -54,7 +54,7 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
 
   const space_between = 20 * scale;
   
-  const memory = true;
+  const memory = false;
 
   const [Interface] = useState<Ray>(Ray.vertex().o({
     selection: Ray.vertex(
