@@ -391,21 +391,21 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
 
     {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray}/>)}
 
-    {/*<group position={[0, 0, 0]}>*/}
-    {/*  <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
-    {/*              scale={scale / 1.5} color="#55FF55"/>*/}
-    {/*  <group position={[0, 60, 0]}>*/}
-    {/*    {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index} show={{initial: false, terminal: false}} />)}*/}
-    {/*  </group>*/}
-    {/*</group>*/}
+    <group position={[0, 0, 0]}>
+      <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}
+                  scale={scale / 1.5} color="#55FF55"/>
+      <group position={[0, 60, 0]}>
+        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index} show={{initial: false, terminal: false}} />)}
+      </group>
+    </group>
 
-    {/*<group position={[0, 120, 0]}>*/}
-    {/*  <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
-    {/*              scale={scale / 1.5} color="#55FF55"/>*/}
-    {/*  <group position={[0, 60, 0]}>*/}
-    {/*    {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index}/>)}*/}
-    {/*  </group>*/}
-    {/*</group>*/}
+    <group position={[0, 120, 0]}>
+      <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}
+                  scale={scale / 1.5} color="#55FF55"/>
+      <group position={[0, 60, 0]}>
+        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index}/>)}
+      </group>
+    </group>
 
     {/*<group position={[0, 0, 0]}>*/}
     {/*  {[*/}
