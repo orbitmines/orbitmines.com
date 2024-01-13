@@ -45,6 +45,8 @@ describe("Ray", () => {
     expect(current.next.previous.self.any.js).toBe('A');
     expect(current.next.next.previous.self.any.js).toBe('B');
     expect(current.next.next.previous.previous.self.any.js).toBe('A');
+    expect(current.next.previous.next.next.previous.self.any.js).toBe('B');
+    expect(current.next.previous.next.next.previous.next.self.any.js).toBe('C');
   });
   // test(".next(ref => .continues_with(.vertex.#))", () => {
   //   let A = Ray.vertex().o({ js: 'A' }).as_reference();
