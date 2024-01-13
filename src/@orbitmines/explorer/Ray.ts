@@ -411,7 +411,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
    */
   // TODO: These necessarily rever to something which allows you to ask the question of 'next' again. It could return many values (initial/terminal?), a single one: vertex; on which again more structure like a list or something could be defined...
-  get previous(): Ray { throw new NotImplementedError(); }
+  get previous(): Ray { return Ray.___next(ref => ref.self.initial.as_reference())(this); }
+  // TODO: Could remove this as_reference... :thinking:
 
   /**
    *
@@ -421,45 +422,74 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     const method = Ray.___func(ref => {
       const { initial, terminal } = ref.self;
 
+      // const direction = terminal.type;
+
+      // throw new NotImplementedError(`'${direction}'`);
+
       return initial.switch({
         [RayType.VERTEX]: () => terminal.switch({
 
-          // Many possible continuations
-          [RayType.VERTEX]: () => {
-            throw new NotImplementedError()
-          },
+          /**
+           * If we're going in the initial direction (from the perspective of the initial = VERTEX)
+           * [  |--][--|--]         <-- terminal
+           */
+          [RayType.INITIAL]: (ref) => ref.self.switch({
+            // TODO REVERSE OF TERMINAL..
 
-          // No continuations, either a self-reference, or different ways of halting.
-          [RayType.TERMINAL]: () => Ray.None(),
-
-          // A possible continuation
-          [RayType.INITIAL]: (ref) =>
-            direction(ref).as_reference() // TODO Why is this reference needed?
-              .switch({ // TODO: This is applying the function again, should be separate?
-            // Found a next Vertex.
-            [RayType.VERTEX]: (self) => self,
-            // [RayType.VERTEX]: (self) => { throw new NotImplementedError(); },
-
-            // TODO: Same, but defined a step further
-            // [RayType.TERMINAL]: () => Ray.None(),
-            [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
-
-            // TODO: This switch could repeat infinitely, we need a way to hook into each step..
-            [RayType.INITIAL]: () => { throw new NotImplementedError(); },
-
-            // TODO: Similar to Initial, probably follow the reference, possibly infintely...
-            [RayType.REFERENCE]: (ref) => {
-              // throw new NotImplementedError(`${ref.type}/${ref.self.type} - ${ref.any.js}/${ref.self.any.js}`);
-              //
-              // if (ref.self.type === RayType.VERTEX)
-              //   return ref.self;
-
-              throw new NotImplementedError(`${ref.type} ${ref.self.type}`);
-            }
+            [RayType.TERMINAL]: (ref) =>  direction(ref).switch({ // TODO: This is applying the function again, should be separate?
+              // Found a next Vertex.
+              [RayType.VERTEX]: (self) => self,
+            }),
           }),
 
-          // TODO: Possibly follow infintely
-          [RayType.REFERENCE]: () => { throw new NotImplementedError(); }
+          /**
+           * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
+           *        [--|--][--|  ]  <-- terminal
+           */
+          [RayType.TERMINAL]: (ref) => ref.self.switch({
+
+            /**
+             * Many possible continuations (Vertical line is `ref.self`: Asking: 'What are the continuations at the terminal?`)
+             *
+             *           ?
+             * [--|--][--|  ]<-- ref superposed with ref.self
+             *           ?
+             */
+            [RayType.VERTEX]: () => {
+              throw new NotImplementedError()
+            },
+
+            // No continuations, either a self-reference, or different ways of halting.
+            [RayType.TERMINAL]: () => { throw new NotImplementedError() },
+
+            // A possible continuation
+            [RayType.INITIAL]: (ref) =>
+              direction(ref).switch({ // TODO: This is applying the function again, should be separate?
+                  // Found a next Vertex.
+                  [RayType.VERTEX]: (self) => self,
+                  // [RayType.VERTEX]: (self) => { throw new NotImplementedError(); },
+
+                  // TODO: Same, but defined a step further
+                  // [RayType.TERMINAL]: () => Ray.None(),
+                  [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
+
+                  // TODO: This switch could repeat infinitely, we need a way to hook into each step..
+                  [RayType.INITIAL]: () => { throw new NotImplementedError(); },
+
+                  // TODO: Similar to Initial, probably follow the reference, possibly infintely...
+                  [RayType.REFERENCE]: (ref) => {
+                    // throw new NotImplementedError(`${ref.type}/${ref.self.type} - ${ref.any.js}/${ref.self.any.js}`);
+                    //
+                    // if (ref.self.type === RayType.VERTEX)
+                    //   return ref.self;
+
+                    throw new NotImplementedError(`${ref.type} ${ref.self.type}`);
+                  }
+                }),
+
+            // TODO: Possibly follow infintely
+            [RayType.REFERENCE]: () => { throw new NotImplementedError(); }
+          }),
 
         })
       })
@@ -470,7 +500,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return (ref: Ray) => method(ref)(direction(ref)); // TODO: Merge __next into __func, make this cleaner...
   }
 
-  get next() { return Ray.___next(ref => ref.self.terminal)(this) }
+  get next() { return Ray.___next(ref => ref.self.terminal.as_reference())(this); }
   // TODO: Could need equivalence/skip logic, "already was here", or say, necessarily, it should get visited again, ... again this thing is hard to say generally.
   // TODO: This is the same with rewrite/compile/compose/dpo ...
 

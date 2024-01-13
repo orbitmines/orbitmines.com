@@ -20,16 +20,20 @@ describe("Ray", () => {
     expect(method(a)(b).terminal.self.any.js).toBe('B');
     expect(method(a)(b).type).toBe(RayType.VERTEX);
   });
-  test(".next", () => {
+  test("[A, B, C][.next, .previous]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
-    const B = Ray.vertex().o({ js: 'B'}).as_reference().o({ js: 'B.#' });
-    const C = Ray.vertex().o({ js: 'C'}).as_reference().o({ js: 'C.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
     let current = A;
 
     expect(() => current.next).toThrow(); // TODO: Should be empty..
+    expect(() => current.previous).toThrow(); // TODO: Should be empty..
 
     A.continues_with(B).continues_with(C);
+
+    expect(() => current.previous).toThrow(); // TODO: Should be ??..
+    expect(() => current.next.next.next).toThrow(); // TODO: Should be ??..
 
     expect(current.next.type).toBe(RayType.VERTEX);
     // expect(current.next.any.js).toBe('B.#');  TODO, maybe the ref??
@@ -37,7 +41,29 @@ describe("Ray", () => {
 
     expect(current.next.next.type).toBe(RayType.VERTEX);
     expect(current.next.next.self.any.js).toBe('C');
+
+    expect(current.next.previous.self.any.js).toBe('A');
+    expect(current.next.next.previous.self.any.js).toBe('B');
+    expect(current.next.next.previous.previous.self.any.js).toBe('A');
   });
+  // test(".next(ref => .continues_with(.vertex.#))", () => {
+  //   let A = Ray.vertex().o({ js: 'A' }).as_reference();
+  //   let B = Ray.vertex().o({ js: 'B'}).as_reference();
+  //
+  //   B = A.next(ref => ref.continues_with(B))
+  //
+  //   expect(B.type).toBe(RayType.VERTEX);
+  //   expect(B.self.any.js).toBe('B');
+  //   expect(B.self
+  //     .initial.self.initial
+  //     .any.js
+  //   ).toBe('A');
+  //   expect(B.self
+  //     .initial.self.initial
+  //     .terminal.self.terminal
+  //     .any.js
+  //   ).toBe('B');
+  // });
   test(".vertex.#.equivalent(.vertex.#)", () => {
     let A = Ray.vertex().o({js: 'A'})
       .as_reference().o({js: 'A.#'});
