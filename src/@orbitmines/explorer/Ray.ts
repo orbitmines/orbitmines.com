@@ -25,26 +25,12 @@ export type ArbitraryMethod<T = Ray> = (ref: T) => Method<T>;
 export type SwitchCases<
   T = Ray,
   SwitchCase extends string | symbol | number = RayType,
-  TResult = string | Arbitrary<T>
+  TResult = string | ((self: T) => T)
 > = {
   [TCase in SwitchCase]?: TResult
 }
 
 export type Implementation<T = Ray> = (ref: T) => T;
-
-// export function initial() {
-//
-//   return function (target: any, propertyKey: string): any {
-//     Object.defineProperty(target, propertyKey, {
-//       get: (): any => { return target.initial; },
-//       set: (value) => {
-//         target.initial = value;
-//       },
-//       // enumerable: true,
-//       // configurable: true
-//     });
-//   }
-// }
 
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
@@ -197,7 +183,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (_case === undefined || _.isString(_case))
       throw new PreventsImplementationBug(_case ?? `?? ${this.type}`);
 
-    return _case();
+    return _case(this);
   }
 
   /**
@@ -280,20 +266,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   });
   equivalent = Ray.equivalent(this);
   // protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
-  //   switch (this.type) {
-  //     case RayType.REFERENCE:
-  //       break;
-  //     case RayType.INITIAL:
-  //       break;
-  //     case RayType.TERMINAL:
-  //       break;
-  //     case RayType.VERTEX:
-  //       break;
-  //   }
-  //
-  //   this.self = b.as_arbitrary();
-  //   b.self = this.as_arbitrary();
-  // }
 
   // TODO AS += through property
   static continues_with = Ray.___func(ref => {
@@ -331,6 +303,44 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     });
   });
   continues_with = Ray.continues_with(this);
+
+  // @alias('merge') ?? TODO
+  static compose = Ray.___func(ref => {
+    const { initial, terminal } = ref.self;
+
+    return initial.switch({
+      [RayType.VERTEX]: () => {
+        const vertex = initial.self;
+
+        // TODO; Implement as restrictive case for Chyp
+        {
+          // if (this.self.initial.count.as_int() !== this.terminal.count.as_int())
+          //   throw new NotImplementedError(`Initial (Graph.Domain) does not match Terminal (Graph.Codomain)`);
+
+          // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
+          // if (this.self.initial.is_equivalent(this.self.terminal))
+          //   throw new NotImplementedError('Initial (Graph.Domain) does not match Terminal (Graph.Codomain) types.'); // TODO; Should take care of vtype/size matches at input/output
+        }
+
+        /**
+         * A simple case of what we want to solve here.
+         *
+         * Initial         Terminal
+         *   ...             ...
+         * [--|  ]         [  |--]
+         * [--|  ]         [  |--]
+         * [--|  ]         [  |--]
+         * [  |--] [--|--] [--|  ]
+         *         vertex
+         *
+         * And recursively (arbitrarily) match initial/terminal structures.
+         */
+
+        throw new NotImplementedError();
+      }
+    })
+  });
+  compose = Ray.compose(this);
 
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
@@ -375,47 +385,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      */
     throw new NotImplementedError();
   }
-  // @alias('merge') ??
-  get compose(): Ray {
-    switch (this.type) {
-      case RayType.REFERENCE:
-      case RayType.INITIAL:
-      case RayType.TERMINAL: {
-        throw new NotImplementedError();
-      }
-      case RayType.VERTEX: {
-        const vertex = this.self;
-
-        // TODO; Implement as restrictive case for Chyp
-        {
-          // if (this.self.initial.count.as_int() !== this.terminal.count.as_int())
-          //   throw new NotImplementedError(`Initial (Graph.Domain) does not match Terminal (Graph.Codomain)`);
-
-          // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
-          // if (this.self.initial.is_equivalent(this.self.terminal))
-          //   throw new NotImplementedError('Initial (Graph.Domain) does not match Terminal (Graph.Codomain) types.'); // TODO; Should take care of vtype/size matches at input/output
-        }
-
-        /**
-         * A simple case of what we want to solve here.
-         *
-         * Initial         Terminal
-         *   ...             ...
-         * [--|  ]         [  |--]
-         * [--|  ]         [  |--]
-         * [--|  ]         [  |--]
-         * [  |--] [--|--] [--|  ]
-         *         vertex
-         *
-         * And recursively (arbitrarily) match initial/terminal structures.
-         */
-
-        throw new NotImplementedError();
-      }
-    }
-    throw new NotImplementedError();
-  }
-
 
   pop = (): Ray => this.switch({
     [RayType.VERTEX]: () => {
@@ -443,7 +412,66 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    */
   // TODO: These necessarily rever to something which allows you to ask the question of 'next' again. It could return many values (initial/terminal?), a single one: vertex; on which again more structure like a list or something could be defined...
   get previous(): Ray { throw new NotImplementedError(); }
-  get next(): Ray { throw new NotImplementedError(); } // TODO: Could need equivalence/skip logic, "already was here", or say, necessarily, it should get visited again, ... again this thing is hard to say generally.
+
+  /**
+   *
+   * @param direction Generalized as 'some function'.
+   */
+  static ___next = (direction: (ray: Ray) => Ray) => {
+    const method = Ray.___func(ref => {
+      const { initial, terminal } = ref.self;
+
+      return initial.switch({
+        [RayType.VERTEX]: () => terminal.switch({
+
+          // Many possible continuations
+          [RayType.VERTEX]: () => {
+            throw new NotImplementedError()
+          },
+
+          // No continuations, either a self-reference, or different ways of halting.
+          [RayType.TERMINAL]: () => Ray.None(),
+
+          // A possible continuation
+          [RayType.INITIAL]: (ref) =>
+            direction(ref).as_reference() // TODO Why is this reference needed?
+              .switch({ // TODO: This is applying the function again, should be separate?
+            // Found a next Vertex.
+            [RayType.VERTEX]: (self) => self,
+            // [RayType.VERTEX]: (self) => { throw new NotImplementedError(); },
+
+            // TODO: Same, but defined a step further
+            // [RayType.TERMINAL]: () => Ray.None(),
+            [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
+
+            // TODO: This switch could repeat infinitely, we need a way to hook into each step..
+            [RayType.INITIAL]: () => { throw new NotImplementedError(); },
+
+            // TODO: Similar to Initial, probably follow the reference, possibly infintely...
+            [RayType.REFERENCE]: (ref) => {
+              // throw new NotImplementedError(`${ref.type}/${ref.self.type} - ${ref.any.js}/${ref.self.any.js}`);
+              //
+              // if (ref.self.type === RayType.VERTEX)
+              //   return ref.self;
+
+              throw new NotImplementedError(`${ref.type} ${ref.self.type}`);
+            }
+          }),
+
+          // TODO: Possibly follow infintely
+          [RayType.REFERENCE]: () => { throw new NotImplementedError(); }
+
+        })
+      })
+    });
+
+    // TODO Implemented as ___func, indicating terminal as the direction of next? as in 'this.next(this => this.self.terminal)' as default, basically, .next is generalizable to any function...
+
+    return (ref: Ray) => method(ref)(direction(ref)); // TODO: Merge __next into __func, make this cleaner...
+  }
+
+  get next() { return Ray.___next(ref => ref.self.terminal)(this) }
+  // TODO: Could need equivalence/skip logic, "already was here", or say, necessarily, it should get visited again, ... again this thing is hard to say generally.
   // TODO: This is the same with rewrite/compile/compose/dpo ...
 
   // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
