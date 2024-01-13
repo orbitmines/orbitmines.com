@@ -38,6 +38,27 @@ describe("Ray", () => {
       .any.js
     ).toBe('B');
   });
+  test("[.vertex.#, .vertex.#].#.continues_with", () => {
+    let A = Ray.vertex().o({ js: 'A' }).as_reference();
+    let B = Ray.vertex().o({ js: 'B'}).as_reference();
+
+    B = new Ray({
+      initial: A.as_arbitrary(),
+      terminal: B.as_arbitrary()
+    }).as_reference().continues_with();
+
+    expect(B.type).toBe(RayType.VERTEX);
+    expect(B.self.any.js).toBe('B');
+    expect(B.self
+      .initial.self.initial
+      .any.js
+    ).toBe('A');
+    expect(B.self
+      .initial.self.initial
+      .terminal.self.terminal
+      .any.js
+    ).toBe('B');
+  });
   // test(".vertex.#.debug", () => {
   //   const a = Ray.vertex().as_reference();
   //   const b = Ray.vertex().as_reference();
