@@ -3,7 +3,7 @@ import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 
 
-// TODO: SHOULDNT CLASSIFY THESE?
+// TODO: SHOULDNT CLASSIFY THESE? (And incorporate in Ray??)
 export enum RayType {
   // NONE = '     ',
   REFERENCE = '  |  ',
@@ -18,8 +18,19 @@ export type Constructor<T> = new (...args: any[]) => T;
 export type ParameterlessConstructor<T> = new () => T;
 
 // TODO: Merge with Arbitrary.
-export type Method<T = Ray> = (b?: T, ...other: T[]) => T;
+export type Recursive<T = Ray> = (T | Recursive<T | T[]>)[];
+export type Method<T = Ray> = (...other: Recursive<T>) => T;
 export type ArbitraryMethod<T = Ray> = (ref: T) => Method<T>;
+
+export type SwitchCases<
+  T = Ray,
+  SwitchCase extends string | symbol | number = RayType,
+  TResult = string | Arbitrary<T>
+> = {
+  [TCase in SwitchCase]?: TResult
+}
+
+export type Implementation<T = Ray> = (ref: T) => T;
 
 // export function initial() {
 //
@@ -179,12 +190,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_arbitrary = (): Arbitrary<Ray> => () => this;
 
   // TODO: Should also be abstracted into the Ray
-  switch = (cases: {
-    [RayType.REFERENCE]?: string | Arbitrary<Ray>,
-    [RayType.INITIAL]?: string | Arbitrary<Ray>,
-    [RayType.VERTEX]?: string | Arbitrary<Ray>, // TODO: Automatic opposite for initial/terminaL??
-    [RayType.TERMINAL]?: string | Arbitrary<Ray>,
-  }): Ray => {
+  // TODO: Automatic opposite for initial/terminaL??
+  switch = (cases: SwitchCases): Ray => {
     const _case = cases[this.type];
 
     if (_case === undefined || _.isString(_case))
@@ -193,57 +200,93 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return _case();
   }
 
-  continues_with2 = Ray.___func(
-
-  )(this);
-
   /**
    * Constructs a function accepting arbitrary structure based on one implementation of it.
    *
    * TODO: Is there some equivalent of this in computer science??? category theory??
    *
-   * a.compose(b).compose(c) = [a, b, c].compose = abc.compose = [[a1, a2], b, c].compose = [[a1, a2], b, [c1, c2]].compose = ...
+   * a.compose(b).compose(c) = [a, b, c].compose = abc.compose = [[a1, a2], b, c].compose = [[a1, a2], b, [c1, c2]].compose = [[a1, [[[a2]]], [[[[]]], []]], b, [[[]], [], [c]]].compose = ...
    */
   static ___func = (
-    a: any
+    func: Implementation
   ): ArbitraryMethod => {
-    return (ref: Ray): Method => (b?: Ray, ...other: Ray[]): Ray => {
 
+    /**
+     * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
+     */
+    return (ref: Ray): Method => (...any: Recursive): Ray => {
+      // TODO: This can be much better...
+      const first = (recursive?: Recursive): Ray | undefined => {
+        if (recursive === undefined) return;
+        // if (_.isObject(recursive)) return recursive as unknown as Ray;
+
+        for (let r of recursive) {
+          if (r === undefined) continue;
+          if (_.isObject(r)) return r as unknown as Ray;
+
+          // if (r instanceof Ray)
+          //   throw new PreventsImplementationBug();
+
+          // @ts-ignore
+          const _first = first(r);
+          if (_first)
+            return _first;
+        }
+      }
+
+      const _first = first(any);
+
+      if (_first === undefined)
+        return func(ref);
+
+      // TODO: ANY CASE
+      // if (any.length === 1) {
+        return func(new Ray({
+          initial: ref.as_arbitrary(),
+          terminal: _first.as_arbitrary() // TODO Can be lazy./.., generalize this to some way >
+        }).as_reference()); // TODO; ref here necessary? Probably...
+      // }
+      //
+      // throw new NotImplementedError();
     }
   }
 
   // TODO AS += through property
-  continues_with = (b: Ray): Ray => {
+  static continues_with = Ray.___func(ref => {
     // TODO: contiues_with is just composing vertices..
     // TODO: Should be: ([this, self_reference, b] as Ray).compose/../merge, dropping this middle vertex, connecting initial/terminal
     // TODO: Or otherwise: take everything at the vertex, compose it together??>?
 
-    return this.switch({
+    const { initial, terminal } = ref.self;
+
+    // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
+    return initial.switch({
       [RayType.REFERENCE]:
-        "We could either go inside the reference and continue there, or expand the direction of reference." +
-        "We could move when a reference is on the vertex, set the type to vertex from the perspective of the reference",
+      "We could either go inside the reference and continue there, or expand the direction of reference." +
+      "We could move when a reference is on the vertex, set the type to vertex from the perspective of the reference",
       [RayType.TERMINAL]: "",
       [RayType.INITIAL]: "Could be each element found in this direction, or continue *after* the entire direction",
       [RayType.VERTEX]: (): Ray => {
         // const next_vertex = b; // TODO: Could be a reference too, now just force as a next element
 
-        if (this.is_none()) {
+        if (initial.is_none()) {
           // 'Empty' vertex from this perspective.
 
-          this.vertex = b.as_arbitrary();
+          initial.vertex = terminal.as_arbitrary();
           console.log('first element');
-          return b; // TODO: Generally, return something which knows where all continuations are.
+          return terminal; // TODO: Generally, return something which knows where all continuations are.
         }
 
-        return b.switch({
+        return terminal.switch({
           [RayType.VERTEX]: () => {
-            this.self.terminal.equivalent(b.self.initial);
-            return b;
+            initial.self.terminal.equivalent(terminal.self.initial);
+            return terminal;
           }
         });
       }
     });
-  }
+  });
+  continues_with = Ray.continues_with(this);
 
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...

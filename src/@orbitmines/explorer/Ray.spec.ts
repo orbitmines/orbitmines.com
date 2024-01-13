@@ -1,6 +1,43 @@
 import {Ray, RayType} from "./Ray";
 
 describe("Ray", () => {
+  test(".___func(ref)", () => {
+    const method = Ray.___func((ref: Ray): Ray => new Ray({
+      initial: ref.self.initial.as_arbitrary(),
+      terminal: ref.self.terminal.as_arbitrary()
+    }).o({ js: ref.type }));
+
+    expect(method(Ray.vertex().as_reference().as_reference())().any.js).toBe(RayType.REFERENCE);
+    expect(method(Ray.vertex().as_reference())().any.js).toBe(RayType.VERTEX);
+    expect(method(Ray.initial().as_reference())().any.js).toBe(RayType.INITIAL);
+    expect(method(Ray.terminal().as_reference())().any.js).toBe(RayType.TERMINAL);
+
+    const a = Ray.vertex().o({ js: 'A'}).as_reference();
+    const b = Ray.vertex().o({ js: 'B'}).as_reference();
+
+    // TODO What about method(a)(b)(c)... :thinking:
+    expect(method(a)(b).initial.self.any.js).toBe('A');
+    expect(method(a)(b).terminal.self.any.js).toBe('B');
+    expect(method(a)(b).type).toBe(RayType.VERTEX);
+  });
+  test(".vertex.#.continues_with(.vertex.#)", () => {
+    let A = Ray.vertex().o({ js: 'A' }).as_reference();
+    let B = Ray.vertex().o({ js: 'B'}).as_reference();
+
+    B = A.continues_with(B);
+
+    expect(B.type).toBe(RayType.VERTEX);
+    expect(B.self.any.js).toBe('B');
+    expect(B.self
+      .initial.self.initial
+      .any.js
+    ).toBe('A');
+    expect(B.self
+      .initial.self.initial
+      .terminal.self.terminal
+      .any.js
+    ).toBe('B');
+  });
   // test(".vertex.#.debug", () => {
   //   const a = Ray.vertex().as_reference();
   //   const b = Ray.vertex().as_reference();
@@ -11,6 +48,9 @@ describe("Ray", () => {
   //
   //   expect(debug).toEqual('')
   // })
+  test(".as_arbitrary", () => {
+    expect(Ray.vertex().o({ js: 'A' }).as_arbitrary()().any.js).toBe('A');
+  });
   test(".o", () => {
     const ray = Ray.vertex().o({
       a: 'b',
@@ -32,15 +72,6 @@ describe("Ray", () => {
   //
   //   expect(vertex.compose.)
   // });
-  test(".vertex.#.continues_with(.vertex.#)", () => {
-    /** [--|--] */ const B =
-      Ray.vertex().o({ js: 'A' }).as_reference()
-        .continues_with(Ray.vertex().o({ js: 'B'}).as_reference());
-
-    expect(B.type).toBe(RayType.VERTEX);
-    expect(B.self.self.self.any.js).toBe('B');
-    // expect(B.self.self.self.initial.initial.any.js).toBe('A');
-  });
   test(".vertex.#", () => {
     /** [--|--] */ const vertex = Ray.vertex().as_reference();
 
