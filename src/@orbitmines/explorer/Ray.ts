@@ -489,7 +489,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
                 }),
 
             // TODO: Possibly follow infintely
-            [RayType.REFERENCE]: () => { throw new NotImplementedError(); }
+            [RayType.REFERENCE]: (ref) => { throw new NotImplementedError(ref.self.type); }
           }),
 
         })
@@ -596,7 +596,25 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // ___compute = ()
 
-  *traverse(): Generator<Ray> {}
+  *traverse(direction: ((ref: Ray) => Ray) = ((ref): Ray => ref.next)): Generator<Ray> {
+    // TODO: Also to ___func??
+
+    if (this.type !== RayType.VERTEX)
+      throw new NotImplementedError();
+
+    let current: Ray = this;
+
+    while (true) {
+      yield current;
+
+      try {
+        current = current.next;
+      } catch (e) {
+        console.error('stopped traversal through implementation error...', e)
+        break; // TODO: HACKY FOR NOW
+      }
+    }
+  }
 
   /**
    * JavaScript, possible compilations - TODO: Could have enumeratd possibilities, but just ignore that for now.
@@ -614,10 +632,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     // JS.AsyncIterator
     as_iterator = (): Iterator<Ray> => this.as_generator();
     // JS.Array
-    as_array = (): any[] => [...this];
+    as_array = (): Ray[] => [...this];
     // JS.String
-    toString = (): string => this.as_array().toString();
-    as_string = () => this.toString();
+    toString = (): string => this.as_string();
+    as_string = (): string => this.as_array().map(ref => ref.self.any.js).join(','); // TODO: PROPER
 
     as_int = (): number => { throw new NotImplementedError(); }
     as_number = this.as_int;
