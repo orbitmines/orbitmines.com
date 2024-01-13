@@ -195,7 +195,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     const _case = cases[this.type];
 
     if (_case === undefined || _.isString(_case))
-      throw new PreventsImplementationBug(_case ?? '??');
+      throw new PreventsImplementationBug(_case ?? `?? ${this.type}`);
 
     return _case();
   }
@@ -250,6 +250,50 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       // throw new NotImplementedError();
     }
   }
+
+  static equivalent= Ray.___func(ref => {
+    const { initial, terminal } = ref.self;
+
+    return initial.switch({
+      [RayType.REFERENCE]: () => terminal.switch({
+        [RayType.REFERENCE]: () => {
+          // TODO: IS THIS EVEN HOW THIS SHOULD WORK??
+          initial.self = terminal.as_arbitrary();
+          terminal.self = initial.as_arbitrary();
+
+          return ref;
+        }
+      }),
+      [RayType.VERTEX]: () => terminal.switch({
+        [RayType.VERTEX]: () => {
+          // TODO: COULD ADD?? - probably the case for all these equivalences.
+          initial.self.self = terminal.self.as_arbitrary();
+          terminal.self.self = initial.self.as_arbitrary();
+
+          return ref;
+        }
+      })
+    });
+
+    // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
+    // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
+  });
+  equivalent = Ray.equivalent(this);
+  // protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
+  //   switch (this.type) {
+  //     case RayType.REFERENCE:
+  //       break;
+  //     case RayType.INITIAL:
+  //       break;
+  //     case RayType.TERMINAL:
+  //       break;
+  //     case RayType.VERTEX:
+  //       break;
+  //   }
+  //
+  //   this.self = b.as_arbitrary();
+  //   b.self = this.as_arbitrary();
+  // }
 
   // TODO AS += through property
   static continues_with = Ray.___func(ref => {
@@ -407,21 +451,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   get first(): Ray { throw new NotImplementedError(); }
   get last(): Ray { throw new NotImplementedError(); }
 
-  protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
-    switch (this.type) {
-      case RayType.REFERENCE:
-        break;
-      case RayType.INITIAL:
-        break;
-      case RayType.TERMINAL:
-        break;
-      case RayType.VERTEX:
-        break;
-    }
-
-    this.self = b.as_arbitrary();
-    b.self = this.as_arbitrary();
-  }
   // TODO: I Don't like this name, but it needs to get across that any equivalency, or any equivalency check for that necessarily, is local. And I want more equivalences, I run more of this method.
   // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex.
   is_vertex_equivalent = (b: Ray) => {

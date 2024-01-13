@@ -20,6 +20,35 @@ describe("Ray", () => {
     expect(method(a)(b).terminal.self.any.js).toBe('B');
     expect(method(a)(b).type).toBe(RayType.VERTEX);
   });
+  test(".vertex.#.equivalent(.vertex.#)", () => {
+    let A = Ray.vertex().o({js: 'A'})
+      .as_reference().o({js: 'A.#'});
+    let B = Ray.vertex().o({js: 'B'})
+      .as_reference().o({js: 'B.#'});
+
+    expect(A.any.js).toBe('A.#');
+    expect(B.any.js).toBe('B.#');
+
+    let ref = A.equivalent(B);
+
+    expect(ref.self.initial).toBe(A);
+    expect(ref.self.terminal).toBe(B);
+    expect(ref.self.initial.any.js).toBe('A.#');
+    expect(ref.self.terminal.any.js).toBe('B.#');
+
+    expect(A.self.any.js).toBe('A');
+    expect(B.self.any.js).toBe('B');
+
+    expect(A.self.self).toBe(B.self);
+    expect(B.self.self).toBe(A.self);
+    expect(A.self.self.any.js).toBe('B');
+    expect(B.self.self.any.js).toBe('A');
+
+    expect(B.self.self.self).toBe(B.self);
+    expect(B.self.self.self.self).toBe(A.self);
+    expect(B.self.self.self.any.js).toBe('B');
+    expect(B.self.self.self.self.any.js).toBe('A');
+  });
   test(".vertex.#.continues_with(.vertex.#)", () => {
     let A = Ray.vertex().o({ js: 'A' }).as_reference();
     let B = Ray.vertex().o({ js: 'B'}).as_reference();
@@ -40,7 +69,7 @@ describe("Ray", () => {
   });
   test("[.vertex.#, .vertex.#].#.continues_with", () => {
     let A = Ray.vertex().o({ js: 'A' }).as_reference();
-    let B = Ray.vertex().o({ js: 'B'}).as_reference();
+    let B = Ray.vertex().o({ js: 'B' }).as_reference();
 
     B = new Ray({
       initial: A.as_arbitrary(),
