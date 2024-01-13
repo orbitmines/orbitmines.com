@@ -436,7 +436,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           [RayType.INITIAL]: (ref) => ref.self.switch({
             // TODO REVERSE OF TERMINAL..
 
-            [RayType.TERMINAL]: (ref) =>  direction(ref).switch({ // TODO: This is applying the function again, should be separate?
+            // TODO: direction(ref) is probably concidently the same here..
+            [RayType.TERMINAL]: (ref) => direction(ref).switch({ // TODO: This is applying the function again, should be separate?
               // Found a next Vertex.
               [RayType.VERTEX]: (self) => self,
             }),
