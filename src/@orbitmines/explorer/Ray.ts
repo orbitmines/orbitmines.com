@@ -257,7 +257,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return initial.switch({
       [RayType.REFERENCE]: () => terminal.switch({
         [RayType.REFERENCE]: () => {
-          // TODO: IS THIS EVEN HOW THIS SHOULD WORK??
+          // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
           initial.self = terminal.as_arbitrary();
           terminal.self = initial.as_arbitrary();
 
