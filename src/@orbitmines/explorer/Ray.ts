@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, {initial} from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 
@@ -6,10 +6,10 @@ import {InterfaceOptions} from "./OrbitMinesExplorer";
 // TODO: SHOULDNT CLASSIFY THESE? (And incorporate in Ray??)
 export enum RayType {
   // NONE = '     ',
-  REFERENCE = '  |  ',
-  INITIAL = '  |-?',
-  TERMINAL = '?-|  ',
-  VERTEX = '--|--',
+  REFERENCE = 'REFERENCE:  |  ',
+  INITIAL = 'INITIAL:  |-?',
+  TERMINAL = 'TERMINAL: ?-|  ',
+  VERTEX = 'VERTEX: --|--',
 }
 
 export type ParameterlessFunction<T = any> = () => T;
@@ -190,70 +190,76 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     // TODO: Disregards anything on this.self.self?? - or not with current??
 
-    return vertex.as_reference().continues_with(current.as_reference());
+    return vertex.as_reference();//.continues_with(current.as_reference());
   }
 
-  // TODO: Should also be abstracted into the Ray
-  // TODO: Automatic opposite for initial/terminaL??
-  switch = (cases: SwitchCases): Ray => {
-    const _case = cases[this.type];
-
-    if (_case === undefined || _.isString(_case))
-      throw new PreventsImplementationBug(_case ?? `?? ${this.type}`);
-
-    return _case(this);
-  }
 
   /**
-   * Constructs a function accepting arbitrary structure based on one implementation of it.
    *
-   * TODO: Is there some equivalent of this in computer science??? category theory??
    *
-   * a.compose(b).compose(c) = [a, b, c].compose = abc.compose = [[a1, a2], b, c].compose = [[a1, a2], b, [c1, c2]].compose = [[a1, [[[a2]]], [[[[]]], []]], b, [[[]], [], [c]]].compose = ...
+   * TODO: switch/match Should be abstracted into Ray?
    */
-  static ___func = (
-    func: Implementation
-  ): ArbitraryMethod => {
+  match = (cases: {
+    [RayType.VERTEX]: (self: Ray) => Ray,
+
+    CONTINUATION: (self: Ray) => Ray,
 
     /**
-     * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
+     * Can be used to override default dereference behavior.
+     * TODO: This should probably be configurable on a more global setting.
      */
-    return (ref: Ray): Method => (...any: Recursive): Ray => {
-      // TODO: This can be much better...
-      const first = (recursive?: Recursive): Ray | undefined => {
-        if (recursive === undefined) return;
-        // if (_.isObject(recursive)) return recursive as unknown as Ray;
+    [RayType.REFERENCE]?: (self: Ray) => Ray
+  }): Ray => {
+    const { CONTINUATION } = cases;
+    const { initial } = this.self;
 
-        for (let r of recursive) {
-          if (r === undefined) continue;
-          if (_.isObject(r)) return r as unknown as Ray;
+    return initial.___primitive_switch({
 
-          // if (r instanceof Ray)
-          //   throw new PreventsImplementationBug();
+      [RayType.VERTEX]: cases[RayType.VERTEX],
 
-          // @ts-ignore
-          const _first = first(r);
-          if (_first)
-            return _first;
-        }
-      }
+      [RayType.TERMINAL]: (self
+       // ,  disambiguate: { [RayType.INITIAL]: (), }
+      ) => CONTINUATION(self),
 
-      const _first = first(any);
+      [RayType.REFERENCE]: () => Ray.vertex(new Ray({
+        initial: () => initial.self,  // Dereference
+        terminal: initial._terminal   // Pass terminal without evaluating
+      }).as_arbitrary()),
 
-      if (_first === undefined)
-        return func(ref);
-
-      // TODO: ANY CASE
-      // if (any.length === 1) {
-        return func(new Ray({
-          initial: ref.as_arbitrary(),
-          terminal: _first.as_arbitrary() // TODO Can be lazy./.., generalize this to some way >
-        }).as_reference()); // TODO; ref here necessary? Probably...
-      // }
-      //
-      // throw new NotImplementedError();
-    }
+    })
   }
+    protected ___primitive_switch = (cases: SwitchCases): Ray => {
+      const _case = cases[this.type];
+  
+      if (_case === undefined || _.isString(_case))
+        throw new PreventsImplementationBug(_case ?? `Unhandled switch case; [${this.type}]`);
+  
+      return _case(this);
+    }
+
+  // @alias('merge, 'continues_with', 'compose')
+  /**
+   * Compose as "Equivalence at Continuations"
+   *
+   * `A.compose(B).compose(C)` = `A.`
+   *
+   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
+   */
+  static compose = Ray.___func(ref => ref.match({
+    [RayType.VERTEX]: () => { throw new NotImplementedError(); },
+    CONTINUATION: (self): Ray => {
+      
+    }
+  }));
+  compose = Ray.compose.as_method(this);
+
+  // static equivalent2 = Ray.___func(ref => {
+  //   let { initial, terminal} = ref.self;
+  //
+  //   return Ray.vertex(initial).compose(terminal);
+  // });
+  // equivalent2 = Ray.compose(this);
+
 
   static equivalent= Ray.___func(ref => {
     let { initial, terminal } = ref.self;
@@ -265,7 +271,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
 
     /**
-     * The type of equivalence so [initial.type, terminal.type], doesn't matter for us to do this equivalence. So we don't need an "initial.switch + terminal.switch" here, but instead we go directly to the things we're referencing: {initial.self} & {terminal.self} (TODO: is this actually the case??)
+     * The type of equivalence so [initial.type, terminal.type], doesn't matter for us to do this equivalence. So we don't need an "initial.___primitive_switch + terminal.___primitive_switch" here, but instead we go directly to the things we're referencing: {initial.self} & {terminal.self} (TODO: is this actually the case??)
      *
      *           initial / terminal             - Two ('references') to things we're equivalencing
      *      initial.self / terminal.self        - Two things/.../abstract directions/rays we actually want to connect
@@ -310,33 +316,28 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
 
     if (!(Ray.is_orbit(initial.self, initial.self.self.self) && Ray.is_orbit(terminal.self, terminal.self.self.self))) {
-      throw new PreventsImplementationBug('Just add?');
+      // throw new PreventsImplementationBug('Just add?');
+      initial.self.continues_with(terminal.self);
+      return ref;
     }
 
 
     // throw new PreventsImplementationBug(`[${initial.self.initial.any.js}]-[${initial.self.initial.as_reference().next.self.any.js}]/[${terminal.self.terminal.any.js}]`)
 
-    // TODO NEEDS THIS??)
-    // 'Unwrap the references to a line'
-
+    // TODO
     initial.self.as_vertex().continues_with(terminal.self.as_vertex())
 
     return ref;
   });
-  equivalent = Ray.equivalent(this);
+  equivalent = Ray.equivalent.as_method(this);
   // protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
 
   // TODO AS += through property
-  // @alias('merge, 'continues_with', 'compose')
   static continues_with = Ray.___func(ref => {
-    // TODO: contiues_with is just composing vertices..
-    // TODO: Should be: ([this, self_reference, b] as Ray).compose/../merge, dropping this middle vertex, connecting initial/terminal
-    // TODO: Or otherwise: take everything at the vertex, compose it together??>?
-
     const { initial, terminal } = ref.self;
 
     // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
-    return initial.switch({
+    return initial.___primitive_switch({
       [RayType.REFERENCE]:
       "We could either go inside the reference and continue there, or expand the direction of reference." +
       "We could move when a reference is on the vertex, set the type to vertex from the perspective of the reference",
@@ -357,7 +358,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           return terminal; // TODO: Generally, return something which knows where all continuations are.
         }
 
-        return terminal.switch({
+        return terminal.___primitive_switch({
           [RayType.VERTEX]: () => {
             initial.self.terminal.as_reference().equivalent(terminal.self.initial.as_reference());
             return terminal;
@@ -368,7 +369,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
             // TODO; This is probably incredibly hacky now
 
-            const terminals = [...terminal.self.terminal.as_reference()].map(vertex => vertex.switch({
+            const terminals = [...terminal.self.terminal.as_reference()].map(vertex => vertex.___primitive_switch({
               [RayType.VERTEX]: (ref) => {
 
                 // TODO: Currently takes the vertex, drops the initial/terminal sides and reassigns them to this structure
@@ -397,19 +398,19 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
             // TODO; Now a Ray/list of [--|  ] (terminal) connections.
 
             return ret.self.initial.as_reference(); // Ret the intial ref of this list TODO
-          }
+          },
         });
       }
     });
   });
-  continues_with = Ray.continues_with(this);
+  continues_with = Ray.continues_with.as_method(this);
 
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
   // [[a,d,g],[b,e,h],[c,f,i]]
   zip = (): Ray => { throw new NotImplementedError(); }
 
-  pop = (): Ray => this.switch({
+  pop = (): Ray => this.___primitive_switch({
     [RayType.VERTEX]: () => {
       const previous_vertex = this.self.initial.self.initial.as_reference();
 
@@ -417,7 +418,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         return this; // TODO; Already empty, perhaps throw
       }
 
-      return previous_vertex.switch({
+      return previous_vertex.___primitive_switch({
         [RayType.VERTEX]: () => {
           console.log(previous_vertex)
           // TODO: NONHACKY
@@ -430,11 +431,71 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   });
 
   /**
+   * Constructs a function accepting arbitrary structure based on one implementation of it.
+   *
+   * TODO: Is there some equivalent of this in computer science??? category theory??
+   *
+   * a.compose(b).compose(c) = [a, b, c].compose = abc.compose = [[a1, a2], b, c].compose = [[a1, a2], b, [c1, c2]].compose = [[a1, [[[a2]]], [[[[]]], []]], b, [[[]], [], [c]]].compose = ...
+   */
+  static ___func(
+    step: Implementation,
+  ): {
+    as_method: ArbitraryMethod
+  } {
+    // const func = new Ray({
+    //   terminal: (): Ray => {
+    //
+    //   }
+    // });
+
+    return {
+
+      /**
+       * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
+       */
+      as_method: (ref: Ray): Method => (...any: Recursive): Ray => {
+        // TODO: This can be much better...
+        const first = (recursive?: Recursive): Ray | undefined => {
+          if (recursive === undefined) return;
+          // if (_.isObject(recursive)) return recursive as unknown as Ray;
+
+          for (let r of recursive) {
+            if (r === undefined) continue;
+            if (_.isObject(r)) return r as unknown as Ray;
+
+            // if (r instanceof Ray)
+            //   throw new PreventsImplementationBug();
+
+            // @ts-ignore
+            const _first = first(r);
+            if (_first)
+              return _first;
+          }
+        }
+
+        const _first = first(any);
+
+        if (_first === undefined)
+          return step(ref);
+
+        return step(new Ray({
+          initial: ref.as_arbitrary(),
+          terminal: _first.as_arbitrary()
+        }).as_reference());
+
+        // TODO: ANY CASE
+        // if (any.length === 1) {
+        // }
+      }
+    }
+  }
+
+  /**
    * TODO: next/continues_with/compose all generalizable??
    *
    * @param direction Generalized as 'some function'.
    */
-  static ___next = (direction: (ray: Ray) => Ray) => {
+  static ___next = (step: Implementation) => {
     const method = Ray.___func(ref => {
       const { initial, terminal } = ref.self;
 
@@ -442,8 +503,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       // throw new NotImplementedError(`'${direction}'`);
 
-      return initial.switch({
-        [RayType.VERTEX]: () => terminal.switch({
+      return initial.___primitive_switch({
+        [RayType.VERTEX]: () => terminal.___primitive_switch({
 
           // TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
           [RayType.VERTEX]: (ref) => { throw new NotImplementedError(); },
@@ -452,14 +513,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
            * If we're going in the initial direction (from the perspective of the initial = VERTEX)
            * [  |--][--|--]         <-- terminal
            */
-          [RayType.INITIAL]: (ref) => ref.self.switch({
+          [RayType.INITIAL]: (ref) => ref.self.___primitive_switch({
             // TODO REVERSE OF TERMINAL..
 
-            // TODO: direction(ref) is probably concidently the same here..
+            // TODO: Implementation(ref) is probably concidently the same here..
             [RayType.TERMINAL]: (ref) =>
               // direction(ref) TODO
               ref.self.initial.as_reference()
-                .switch({ // TODO: This is applying the function again, should be separate?
+                .___primitive_switch({ // TODO: This is applying the function again, should be separate?
               // Found a next Vertex.
               [RayType.VERTEX]: (self) => self,
             }),
@@ -469,7 +530,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
            * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
            *        [--|--][--|  ]  <-- terminal
            */
-          [RayType.TERMINAL]: (ref) => ref.self.switch({
+          [RayType.TERMINAL]: (ref) => ref.self.___primitive_switch({
 
             /**
              * Many possible continuations (Vertical line is `ref.self`: Asking: 'What are the continuations at the terminal?`)
@@ -489,7 +550,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
             [RayType.INITIAL]: (ref) =>
               // direction(ref) TODO
                 ref.self.terminal.as_reference()
-                  .switch({ // TODO: This is applying the function again, should be separate?
+                  .___primitive_switch({ // TODO: This is applying the function again, should be separate?
                   // Found a next Vertex.
                   [RayType.VERTEX]: (self) => self,
                   // [RayType.VERTEX]: (self) => { throw new NotImplementedError(); },
@@ -518,30 +579,40 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
         })
       })
-    });
+    }).as_method;
 
     // TODO Implemented as ___func, indicating terminal as the direction of next? as in 'this.next(this => this.self.terminal)' as default, basically, .next is generalizable to any function...
 
-    return (ref: Ray) => method(ref)(direction(ref)); // TODO: Merge __next into __func, make this cleaner...
+    return (ref: Ray) => method(ref)(step(ref)); // TODO: Merge __next into __func, make this cleaner...
   }
 
   /**
-   * next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
-   * previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
+   * Helper methods for commonly used directions
+   *
+   * TODO: Link to step-wise walk as any function - lazy, not traversing certain paths, etc.. (for last/..)
    */
-  // TODO: These necessarily rever to something which allows you to ask the question of 'next' again. It could return many values (initial/terminal?), a single one: vertex; on which again more structure like a list or something could be defined...
-  get previous(): Ray { return Ray.___next(ref => ref.self.initial.as_reference())(this); }
-  // TODO: Could remove this as_reference... :thinking:
+    static directions = {
+      next: (ref: Ray) => ref.self.terminal.as_reference(),
+      previous: (ref: Ray) => ref.self.initial.as_reference(),
+    }
 
-  get next() { return Ray.___next(ref => ref.self.terminal.as_reference())(this); }
-  // TODO: Could need equivalence/skip logic, "already was here", or say, necessarily, it should get visited again, ... again this thing is hard to say generally.
-  // TODO: This is the same with rewrite/compile/compose/dpo ...
-
-  // TODO NEEDS TO CHECK IF THERE'S SOME INITIAL DEFIEND ; for defining if it has halted
-
-  get first(): Ray { throw new NotImplementedError(); }
-  get last(): Ray { throw new NotImplementedError(); }
-
+    /**
+     * .next
+     */
+      get next() { return Ray.___next(Ray.directions.next)(this); }
+      has_next = (step: Implementation = Ray.directions.next): boolean => step(this).is_none();
+      // @alias('end', 'result')
+      last = (step: Implementation = Ray.directions.next): Ray => {
+        const next = step(this);
+        return next.is_none() ? next.last(step) : this;
+      }
+    /**
+     * .previous
+     */
+      get previous(): Ray { return Ray.___next(Ray.directions.previous)(this); }
+      has_previous = (step: Implementation = Ray.directions.previous): boolean => this.has_next(step);
+      first = (step: Implementation = Ray.directions.previous): Ray => this.last(step);
+  
   // TODO: I Don't like this name, but it needs to get across that any equivalency, or any equivalency check for that necessarily, is local. And I want more equivalences, I run more of this method.
   // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex.
   is_vertex_equivalent = (b: Ray) => {
@@ -628,11 +699,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // ___compute = ()
 
-  *traverse(direction: ((ref: Ray) => Ray) = ((ref): Ray => ref.next)): Generator<Ray> {
+  *traverse(step: ((ref: Ray) => Ray) = ((ref): Ray => ref.next)): Generator<Ray> {
     // TODO: Also to ___func??
 
     if (this.type !== RayType.VERTEX)
-      throw new NotImplementedError();
+      throw new NotImplementedError(`[${this.type}]`);
 
     let current: Ray = this;
 

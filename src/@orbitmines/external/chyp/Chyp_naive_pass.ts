@@ -502,7 +502,7 @@
 // static compose = Ray.___func(ref => {
 //   const { initial, terminal } = ref.self;
 //
-//   return initial.switch({
+//   return initial.___primitive_switch({
 //     [RayType.VERTEX]: () => {
 //       const vertex = initial.self;
 //
