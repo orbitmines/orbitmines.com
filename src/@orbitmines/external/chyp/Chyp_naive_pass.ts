@@ -456,6 +456,86 @@
 //     // TODO: Add equivalence/reference on the inputs/output extremes.
 //   }
 //
+
+// Merge = compose..
+// /**
+//  * Compose structures defined at .initial with those at .terminal, dropping the vertex. ; or if done non-ignorantly. Composing them on another level, ignoring to this vertex. TODO: Allow this freedom
+//  */
+// get merge(): Ray {
+//   // concat initial.a + initial.b, terminal.a + terminal.b
+//   // then: either destroy a/b, merge structure... etc..
+//   // Chyp: destroy b
+//
+//   // this.initial.equivalent(other.initial);
+//   // this.terminal.equivalent(other.terminal);
+//
+//   /*
+//
+//           vd = self.vertex_data(v)
+//       # print("merging %s <- %s" % (v, w))
+//
+//       # Where vertex `w` occurs as an edge target, replace it with `v`
+//       for e in self.in_edges(w):
+//           ed = self.edge_data(e)
+//           ed.t = [v if x == w else x for x in ed.t]
+//           vd.in_edges.add(e)
+//
+//       # Where vertex `w` occurs as an edge source, replace it with `v`
+//       for e in self.out_edges(w):
+//           ed = self.edge_data(e)
+//           ed.s = [v if x == w else x for x in ed.s]
+//           vd.out_edges.add(e)
+//
+//       # Wherever `w` occurs on the graph boundary, replace it with `v`
+//       self.set_inputs([v if x == w else x for x in self.inputs])
+//       self.set_outputs([v if x == w else x for x in self.outputs])
+//
+//       # Remove references to `w` from the graph
+//       self.remove_vertex(w)
+//
+//    */
+//   throw new NotImplementedError();
+// }
+
+
+// @alias('merge') ?? TODO
+// static compose = Ray.___func(ref => {
+//   const { initial, terminal } = ref.self;
+//
+//   return initial.switch({
+//     [RayType.VERTEX]: () => {
+//       const vertex = initial.self;
+//
+//       // TODO; Implement as restrictive case for Chyp
+//       {
+//         // if (this.self.initial.count.as_int() !== this.terminal.count.as_int())
+//         //   throw new NotImplementedError(`Initial (Graph.Domain) does not match Terminal (Graph.Codomain)`);
+//
+//         // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
+//         // if (this.self.initial.is_equivalent(this.self.terminal))
+//         //   throw new NotImplementedError('Initial (Graph.Domain) does not match Terminal (Graph.Codomain) types.'); // TODO; Should take care of vtype/size matches at input/output
+//       }
+//
+//       /**
+//        * A simple case of what we want to solve here.
+//        *
+//        * Initial         Terminal
+//        *   ...             ...
+//        * [--|  ]         [  |--]
+//        * [--|  ]         [  |--]
+//        * [--|  ]         [  |--]
+//        * [  |--] [--|--] [--|  ]
+//        *         vertex
+//        *
+//        * And recursively (arbitrarily) match initial/terminal structures.
+//        */
+//
+//       throw new NotImplementedError();
+//     }
+//   })
+// });
+// compose = Ray.compose(this);
+
 //   /**
 //    * Sequentially compose this graph in-place with another.
 //    *
@@ -1393,7 +1473,7 @@
 //    * Returns True if boundary on lhs embeds injectively
 //    */
 //   is_left_linear = (): Ray => {
-//     // TODO, needs to implement splat and stuff? or by default, could be done smarter, but again no overloading
+//     // TODO, needs to implement splat and stuff? or by default, could be done smarter, but again no overloading - Or should just equivalence a copy??
 //     return !JS.Iterable([...this.lhs.inputs, ...this.rhs.outputs]).as_ray()
 //       .has_duplicates() // TODO; This thing is basically asking whether any input is used twice, whether any output is used twice, or there's a circle between in/output? Basically: NO SELF-REFERENCE, this should be a very sikmple check whether any frame is used twice here - or some loop is found basically.
 //   }

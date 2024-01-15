@@ -25,28 +25,104 @@ describe("Ray", () => {
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
-    let current = A;
-
-    expect(() => current.next).toThrow(); // TODO: Should be empty..
-    expect(() => current.previous).toThrow(); // TODO: Should be empty..
+    expect(() => A.next).toThrow(); // TODO: Should be empty..
+    expect(() => A.previous).toThrow(); // TODO: Should be empty..
 
     A.continues_with(B).continues_with(C);
 
-    expect(() => current.previous).toThrow(); // TODO: Should be ??..
-    expect(() => current.next.next.next).toThrow(); // TODO: Should be ??..
+    expect(() => A.previous).toThrow(); // TODO: Should be ??..
+    expect(() => A.next.next.next).toThrow(); // TODO: Should be ??..
 
-    expect(current.next.type).toBe(RayType.VERTEX);
+    expect(A.next.type).toBe(RayType.VERTEX);
     // expect(current.next.any.js).toBe('B.#');  TODO, maybe the ref??
-    expect(current.next.self.any.js).toBe('B');
+    expect(A.next.self.any.js).toBe('B');
 
-    expect(current.next.next.type).toBe(RayType.VERTEX);
-    expect(current.next.next.self.any.js).toBe('C');
+    expect(A.next.next.type).toBe(RayType.VERTEX);
+    expect(A.next.next.self.any.js).toBe('C');
 
-    expect(current.next.previous.self.any.js).toBe('A');
-    expect(current.next.next.previous.self.any.js).toBe('B');
-    expect(current.next.next.previous.previous.self.any.js).toBe('A');
-    expect(current.next.previous.next.next.previous.self.any.js).toBe('B');
-    expect(current.next.previous.next.next.previous.next.self.any.js).toBe('C');
+    expect(A.next.previous.self.any.js).toBe('A');
+    expect(A.next.next.previous.self.any.js).toBe('B');
+    expect(A.next.next.previous.previous.self.any.js).toBe('A');
+    expect(A.next.previous.next.next.previous.self.any.js).toBe('B');
+    expect(A.next.previous.next.next.previous.next.self.any.js).toBe('C');
+  });
+  test("[A, [X, Y, Z].initial, B, C][.next, .previous]", () => {
+    /**
+     *         |       |
+     * |-- A --|       |-- B --|-- C --|
+     *         |   \   |
+     *         |-- X --|
+     *         |   \   |
+     *         |-- Y --|
+     *         |   \   |
+     *         |-- Z --|
+     *         |   \   |               (Destroys the '\' connections) TODO: This should be optional/more complexly constructed
+     */
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    const X = Ray.vertex().o({ js: 'X' }).as_reference().o({ js: 'X.#' });
+    const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
+    const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
+
+    X.continues_with(Y).continues_with(Z);
+
+    const ret = A.continues_with(X.self.initial.as_reference());
+
+    /**
+     *         |
+     * |-- A --|
+     *         |       \  <-- '\' is 'ret'
+     *         |-- X --|
+     *         |       \
+     *         |-- Y --|
+     *         |       \
+     *         |-- Z --|
+     *         |       \
+     */
+    expect(ret.type).toBe(RayType.INITIAL);
+    expect(ret.self.terminal.as_reference().is_none()).toBe(false);
+    expect([...ret.self.terminal.as_reference()].map(
+      return_ref => return_ref.type
+    )).toEqual([RayType.VERTEX, RayType.VERTEX, RayType.VERTEX]);
+    expect([...ret.self.terminal.as_reference()].map(
+      return_ref => return_ref.self.type
+    )).toEqual([RayType.TERMINAL, RayType.TERMINAL, RayType.TERMINAL]);
+    expect([...ret.self.terminal.as_reference()].map(
+      return_ref => {
+        const return_vertex = return_ref.self;
+        const terminal = return_vertex.self;
+        const continued_vertex = terminal.initial;
+
+        return continued_vertex.any.js;
+      }
+    )).toEqual(['X', 'Y', 'Z']);
+    expect([...ret.self.terminal.as_reference()].map(
+      return_ref => {
+        const vertex = return_ref.self;
+        const terminal = vertex.self;
+
+        return terminal.self.as_reference().is_none();
+      }
+    )).toEqual([true, true, true]); // From the perspective of the 'terminal' it's ignorant of 'ret'.
+
+    expect(A.next.type).toBe(RayType.INITIAL);
+
+    /**
+     *         |       |
+     * |-- A --|       |-- B --|-- C --|
+     *         |       |
+     *         |-- X --|
+     *         |       |
+     *         |-- Y --|
+     *         |       |
+     *         |-- Z --|
+     *         |       |
+     */
+    ret.continues_with(B).continues_with(C);
+
+
   });
   test("[A, B, C][.as_array, ...]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });

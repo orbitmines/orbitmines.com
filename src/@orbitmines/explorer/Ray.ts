@@ -150,14 +150,18 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     //   new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }); // TODO: These fields as DEBUG
 
     /** [     ] */ const vertex = Ray.None();
-    /** [--   ] */ vertex.initial = new Ray({ vertex: Ray.None, terminal: vertex.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
+    /** [--   ] */ vertex.initial = vertex.___empty_initial();
     /** [  ?  ] */ vertex.vertex = value;
-    /** [   --] */ vertex.terminal = new Ray({ vertex: Ray.None, initial: vertex.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary()
+    /** [   --] */ vertex.terminal = vertex.___empty_terminal();
 
     /** [--?--] */ return vertex;
   }
   /** [  |-?] */ static initial = () => Ray.vertex().initial;
   /** [?-|  ] */ static terminal = () => Ray.vertex().terminal;
+
+  // TODO; Temp placeholders for now
+  ___empty_initial = () => new Ray({ vertex: Ray.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
+  ___empty_terminal = () => new Ray({ vertex: Ray.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
 
   static size = (of: number, value: any = undefined): Ray => {
     let current = Ray.vertex().as_reference(); // TODO; This sort of thing should be lazy
@@ -240,26 +244,24 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   static equivalent= Ray.___func(ref => {
     const { initial, terminal } = ref.self;
 
-    return initial.switch({
-      [RayType.REFERENCE]: () => terminal.switch({
-        [RayType.REFERENCE]: () => {
-          // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
-          initial.self = terminal.as_arbitrary();
-          terminal.self = initial.as_arbitrary();
+    // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
 
-          return ref;
-        }
-      }),
-      [RayType.VERTEX]: () => terminal.switch({
-        [RayType.VERTEX]: () => {
-          // TODO: COULD ADD?? - probably the case for all these equivalences.
-          initial.self.self = terminal.self.as_arbitrary();
-          terminal.self.self = initial.self.as_arbitrary();
+    if (initial.self.is_none()) {
+      initial.self = terminal.as_arbitrary();
+    } else {
+      // TODO: COULD ADD?? - probably the case for all these equivalences.
+      initial.self.self = terminal.self.as_arbitrary();
+      // throw new NotImplementedError();
+    }
 
-          return ref;
-        }
-      })
-    });
+    if (terminal.self.is_none()) {
+      terminal.self = initial.as_arbitrary();
+    } else {
+      terminal.self.self = initial.self.as_arbitrary();
+      // throw new NotImplementedError();
+    }
+
+    return ref;
 
     // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
     // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
@@ -268,6 +270,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
 
   // TODO AS += through property
+  // @alias('merge, 'continues_with', 'compose')
   static continues_with = Ray.___func(ref => {
     // TODO: contiues_with is just composing vertices..
     // TODO: Should be: ([this, self_reference, b] as Ray).compose/../merge, dropping this middle vertex, connecting initial/terminal
@@ -297,6 +300,42 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           [RayType.VERTEX]: () => {
             initial.self.terminal.equivalent(terminal.self.initial);
             return terminal;
+          },
+          [RayType.INITIAL]: () => {
+            // TODO: You could make a case of preserving the structure of this, or even superposing it on the continuations we're defining here, ... might need a better handle on this at some point
+            // TODO: Could even have a difference of destroying the connecting itself vs not..
+
+            // TODO; This is probably incredibly hacky now
+
+            const terminals = [...terminal.self.terminal.as_reference()].map(vertex => vertex.switch({
+              [RayType.VERTEX]: (ref) => {
+
+                // TODO: Currently takes the vertex, drops the initial/terminal sides and reassigns them to this structure
+                initial.self.terminal.equivalent(ref.self.initial);
+                ref.self.terminal = ref.self.___empty_terminal();
+
+                return ref.self.terminal;
+              }
+            }));
+
+            let ret: Ray | undefined;
+            let current: Ray;
+            terminals.forEach(terminal => {
+              const next = Ray.vertex(terminal.as_arbitrary()).as_reference();
+
+              if (ret === undefined) {
+                ret = current = next;
+              } else {
+                current = current.continues_with(next);
+              }
+            });
+
+            if (ret === undefined)
+              throw new PreventsImplementationBug();
+
+            // TODO; Now a Ray/list of [--|  ] (terminal) connections.
+
+            return ret.self.initial.as_reference(); // Ret the intial ref of this list TODO
           }
         });
       }
@@ -304,87 +343,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   });
   continues_with = Ray.continues_with(this);
 
-  // @alias('merge') ?? TODO
-  static compose = Ray.___func(ref => {
-    const { initial, terminal } = ref.self;
-
-    return initial.switch({
-      [RayType.VERTEX]: () => {
-        const vertex = initial.self;
-
-        // TODO; Implement as restrictive case for Chyp
-        {
-          // if (this.self.initial.count.as_int() !== this.terminal.count.as_int())
-          //   throw new NotImplementedError(`Initial (Graph.Domain) does not match Terminal (Graph.Codomain)`);
-
-          // Check that codomain of this graph matches the domain of the other: this is required for valid sequential composition.
-          // if (this.self.initial.is_equivalent(this.self.terminal))
-          //   throw new NotImplementedError('Initial (Graph.Domain) does not match Terminal (Graph.Codomain) types.'); // TODO; Should take care of vtype/size matches at input/output
-        }
-
-        /**
-         * A simple case of what we want to solve here.
-         *
-         * Initial         Terminal
-         *   ...             ...
-         * [--|  ]         [  |--]
-         * [--|  ]         [  |--]
-         * [--|  ]         [  |--]
-         * [  |--] [--|--] [--|  ]
-         *         vertex
-         *
-         * And recursively (arbitrarily) match initial/terminal structures.
-         */
-
-        throw new NotImplementedError();
-      }
-    })
-  });
-  compose = Ray.compose(this);
-
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
   // [[a,d,g],[b,e,h],[c,f,i]]
   zip = (): Ray => { throw new NotImplementedError(); }
-
-  /**
-   * Compose structures defined at .initial with those at .terminal, dropping the vertex. ; or if done non-ignorantly. Composing them on another level, ignoring to this vertex. TODO: Allow this freedom
-   */
-  get merge(): Ray {
-    // concat initial.a + initial.b, terminal.a + terminal.b
-    // then: either destroy a/b, merge structure... etc..
-    // Chyp: destroy b
-
-    // this.initial.equivalent(other.initial);
-    // this.terminal.equivalent(other.terminal);
-
-    /*
-
-            vd = self.vertex_data(v)
-        # print("merging %s <- %s" % (v, w))
-
-        # Where vertex `w` occurs as an edge target, replace it with `v`
-        for e in self.in_edges(w):
-            ed = self.edge_data(e)
-            ed.t = [v if x == w else x for x in ed.t]
-            vd.in_edges.add(e)
-
-        # Where vertex `w` occurs as an edge source, replace it with `v`
-        for e in self.out_edges(w):
-            ed = self.edge_data(e)
-            ed.s = [v if x == w else x for x in ed.s]
-            vd.out_edges.add(e)
-
-        # Wherever `w` occurs on the graph boundary, replace it with `v`
-        self.set_inputs([v if x == w else x for x in self.inputs])
-        self.set_outputs([v if x == w else x for x in self.outputs])
-
-        # Remove references to `w` from the graph
-        self.remove_vertex(w)
-
-     */
-    throw new NotImplementedError();
-  }
 
   pop = (): Ray => this.switch({
     [RayType.VERTEX]: () => {
@@ -407,14 +369,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   });
 
   /**
-   * next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
-   * previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
-   */
-  // TODO: These necessarily rever to something which allows you to ask the question of 'next' again. It could return many values (initial/terminal?), a single one: vertex; on which again more structure like a list or something could be defined...
-  get previous(): Ray { return Ray.___next(ref => ref.self.initial.as_reference())(this); }
-  // TODO: Could remove this as_reference... :thinking:
-
-  /**
+   * TODO: next/continues_with/compose all generalizable??
    *
    * @param direction Generalized as 'some function'.
    */
@@ -429,6 +384,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       return initial.switch({
         [RayType.VERTEX]: () => terminal.switch({
 
+          // TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
+          [RayType.VERTEX]: (ref) => { throw new NotImplementedError(); },
+
           /**
            * If we're going in the initial direction (from the perspective of the initial = VERTEX)
            * [  |--][--|--]         <-- terminal
@@ -437,7 +395,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
             // TODO REVERSE OF TERMINAL..
 
             // TODO: direction(ref) is probably concidently the same here..
-            [RayType.TERMINAL]: (ref) => direction(ref).switch({ // TODO: This is applying the function again, should be separate?
+            [RayType.TERMINAL]: (ref) =>
+              // direction(ref) TODO
+              ref.self.initial.as_reference()
+                .switch({ // TODO: This is applying the function again, should be separate?
               // Found a next Vertex.
               [RayType.VERTEX]: (self) => self,
             }),
@@ -465,7 +426,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
             // A possible continuation
             [RayType.INITIAL]: (ref) =>
-              direction(ref).switch({ // TODO: This is applying the function again, should be separate?
+              // direction(ref) TODO
+                ref.self.terminal.as_reference()
+                  .switch({ // TODO: This is applying the function again, should be separate?
                   // Found a next Vertex.
                   [RayType.VERTEX]: (self) => self,
                   // [RayType.VERTEX]: (self) => { throw new NotImplementedError(); },
@@ -500,6 +463,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return (ref: Ray) => method(ref)(direction(ref)); // TODO: Merge __next into __func, make this cleaner...
   }
+
+  /**
+   * next = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1 })).as_ray();
+   * previous = (): Option<Ray> => JS.Iterable(this.traverse({ steps: 1, direction: { reverse: true } })).as_ray();
+   */
+  // TODO: These necessarily rever to something which allows you to ask the question of 'next' again. It could return many values (initial/terminal?), a single one: vertex; on which again more structure like a list or something could be defined...
+  get previous(): Ray { return Ray.___next(ref => ref.self.initial.as_reference())(this); }
+  // TODO: Could remove this as_reference... :thinking:
 
   get next() { return Ray.___next(ref => ref.self.terminal.as_reference())(this); }
   // TODO: Could need equivalence/skip logic, "already was here", or say, necessarily, it should get visited again, ... again this thing is hard to say generally.
@@ -610,7 +581,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       try {
         current = current.next;
       } catch (e) {
-        console.error('stopped traversal through implementation error...', e)
+        // console.error('stopped traversal through implementation error...', e)
         break; // TODO: HACKY FOR NOW
       }
     }
