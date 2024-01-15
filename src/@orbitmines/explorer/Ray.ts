@@ -136,9 +136,12 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * Concretely, we use here "whatever the JavaScript engine run on" as the thing which has power over the equivalence assumption we use to halt programs. - The asymmetry which allows the engine to make a distinction between each object.
    */
-  is_none = (): boolean => this.is_orbit(this.self, this.self.self);
+  is_none = (): boolean => Ray.is_orbit(this.self, this.self.self);
 
-  protected is_orbit = (a: Ray, b: Ray) => a === b; // is, ..., appears equal.
+  /**
+   * Tries for "global coherence" - since we probably can't actually do that, practically this just means self-reference, were no change is assumed...
+   */
+  static is_orbit = (a: Ray, b: Ray) => a === b; // is, ..., appears equal.
   protected self_reference = () => this;
 
   is_some = (): boolean => !this.is_none();
@@ -178,6 +181,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
+
+  as_vertex = (): Ray => {
+    const vertex = Ray.vertex(this.self.as_arbitrary());
+    const current = this.self.self;
+
+    this.self.self = vertex.as_arbitrary();
+
+    // TODO: Disregards anything on this.self.self?? - or not with current??
+
+    return vertex.as_reference().continues_with(current.as_reference());
+  }
 
   // TODO: Should also be abstracted into the Ray
   // TODO: Automatic opposite for initial/terminaL??
@@ -242,29 +256,72 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   }
 
   static equivalent= Ray.___func(ref => {
-    const { initial, terminal } = ref.self;
+    let { initial, terminal } = ref.self;
 
     // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
 
-    if (initial.self.is_none()) {
-      initial.self = terminal.as_arbitrary();
-    } else {
-      // TODO: COULD ADD?? - probably the case for all these equivalences.
-      initial.self.self = terminal.self.as_arbitrary();
-      // throw new NotImplementedError();
-    }
-
-    if (terminal.self.is_none()) {
-      terminal.self = initial.as_arbitrary();
-    } else {
-      terminal.self.self = initial.self.as_arbitrary();
-      // throw new NotImplementedError();
-    }
-
-    return ref;
 
     // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
     // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
+
+    /**
+     * The type of equivalence so [initial.type, terminal.type], doesn't matter for us to do this equivalence. So we don't need an "initial.switch + terminal.switch" here, but instead we go directly to the things we're referencing: {initial.self} & {terminal.self} (TODO: is this actually the case??)
+     *
+     *           initial / terminal             - Two ('references') to things we're equivalencing
+     *      initial.self / terminal.self        - Two things/.../abstract directions/rays we actually want to connect
+     * initial.self.self / terminal.self.self   - The direction which defines what it's connected to (could be ignorant)
+     */
+
+    if (initial.self.is_none() || terminal.self.is_none()) {
+      /**
+       * Basically when [].self === [].self.self - See "{Ray.is_orbit}".
+       *
+       * TODO: "This is basically already the case, they're already equivalent. - Could take this to mean that we want a degree of separation between them??"
+       */
+      throw new PreventsImplementationBug(`Not expecting empty equivalences (for now)`); //TODO ?? What to do with these?
+    }
+
+    if (initial.type === RayType.REFERENCE || terminal.type === RayType.REFERENCE)
+      throw new PreventsImplementationBug(`Not expecting references? ${initial.type}/${terminal.type}`); // TODO REMOVE
+
+    if (initial.self.self.is_none() && terminal.self.self.is_none()) {
+      // throw new NotImplementedError('a');
+      /**
+       * i.e. initial.self.self.self === initial.self.self.self.self && terminal.self.self.self === terminal.self.self.self.self
+       * Or in other words: There's no connection currently defined on {initial.self} & {terminal.self}.
+       *
+       * Since that's the case, they can just reference each-other directly - Making a slightly larger orbit.
+       */
+      initial.self.self = terminal.self.as_arbitrary();
+      terminal.self.self = initial.self.as_arbitrary();
+      return ref;
+    }
+
+    if (initial.self.self.is_none() || terminal.self.self.is_none()) {
+      throw new PreventsImplementationBug('What is the case in which one side is ignorant and the other is not?');
+    }
+
+    /**
+     * If there currently exist structure on (initial/terminal).self.self (i.e. existing connections), we need to add to them.
+     */
+
+    // TODO: COULD ADD?? - probably the case for all these equivalences.
+    // TODO: Should do, one timesteap ahead, collapse one reference, and then recursively call continues_with on the vlaue at the reference, until it yields something.
+
+
+    if (!(Ray.is_orbit(initial.self, initial.self.self.self) && Ray.is_orbit(terminal.self, terminal.self.self.self))) {
+      throw new PreventsImplementationBug('Just add?');
+    }
+
+
+    // throw new PreventsImplementationBug(`[${initial.self.initial.any.js}]-[${initial.self.initial.as_reference().next.self.any.js}]/[${terminal.self.terminal.any.js}]`)
+
+    // TODO NEEDS THIS??)
+    // 'Unwrap the references to a line'
+
+    initial.self.as_vertex().continues_with(terminal.self.as_vertex())
+
+    return ref;
   });
   equivalent = Ray.equivalent(this);
   // protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
@@ -284,7 +341,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       "We could either go inside the reference and continue there, or expand the direction of reference." +
       "We could move when a reference is on the vertex, set the type to vertex from the perspective of the reference",
       [RayType.TERMINAL]: "",
-      [RayType.INITIAL]: "Could be each element found in this direction, or continue *after* the entire direction",
+      // [RayType.INITIAL]: () => {
+      //
+      // },
+
+      // "Could be each element found in this direction, or continue *after* the entire direction", ; TODO: This continue is probably more appropraite for vertex, then move to the last one, and compose there...
       [RayType.VERTEX]: (): Ray => {
         // const next_vertex = b; // TODO: Could be a reference too, now just force as a next element
 
@@ -298,7 +359,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
         return terminal.switch({
           [RayType.VERTEX]: () => {
-            initial.self.terminal.equivalent(terminal.self.initial);
+            initial.self.terminal.as_reference().equivalent(terminal.self.initial.as_reference());
             return terminal;
           },
           [RayType.INITIAL]: () => {
@@ -311,7 +372,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
               [RayType.VERTEX]: (ref) => {
 
                 // TODO: Currently takes the vertex, drops the initial/terminal sides and reassigns them to this structure
-                initial.self.terminal.equivalent(ref.self.initial);
+                initial.self.terminal.as_reference().equivalent(ref.self.initial.as_reference());
                 ref.self.terminal = ref.self.___empty_terminal();
 
                 return ref.self.terminal;
