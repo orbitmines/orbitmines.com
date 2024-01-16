@@ -1,5 +1,4 @@
 import {Ray, RayType} from "./Ray";
-import {previous} from "slate";
 
 describe("Ray", () => {
   test(".___func(ref)", () => {
