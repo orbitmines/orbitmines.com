@@ -365,31 +365,31 @@ describe("Ray", () => {
     A.continues_with(B).continues_with(C);
 
     expect(A.as_array().map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
-    // expect(B.as_array().map(ref => ref.self.any.js)).toEqual(['B', 'C']); // TODO: This may or may not be expected behavior, you could make a case for saying it should render both sides for .as_array. ???
-    // expect(C.as_array().map(ref => ref.self.any.js)).toEqual(['C']);
-    //
-    // expect([...A].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
-    // expect([...A.traverse()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
-    // expect([...A.as_generator()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
-    // expect(A.as_string()).toBe('A,B,C');
+    expect(B.as_array().map(ref => ref.self.any.js)).toEqual(['B', 'C']); // TODO: This may or may not be expected behavior, you could make a case for saying it should render both sides for .as_array. ???
+    expect(C.as_array().map(ref => ref.self.any.js)).toEqual(['C']);
 
-    // {
-    //
-    //   const iterator = A.as_iterator();
-    //
-    //   let array: Ray[] = [];
-    //
-    //   while (true) {
-    //     let current = iterator.next();
-    //     if (current.done)
-    //       break;
-    //
-    //     array.push(current.value);
-    //   }
-    //
-    //   expect(array.map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
-    //
-    // }
+    expect([...A].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+    expect([...A.traverse()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+    expect([...A.as_generator()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+    expect(A.as_string()).toBe('A,B,C');
+
+    {
+
+      const iterator = A.as_iterator();
+
+      let array: Ray[] = [];
+
+      while (true) {
+        let current = iterator.next();
+        if (current.done)
+          break;
+
+        array.push(current.value);
+      }
+
+      expect(array.map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+
+    }
 
     // TODO async_generator / async_iterator / for await *
   });
