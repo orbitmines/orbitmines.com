@@ -631,6 +631,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * TODO: All these should accept Ray values.
    *
    * .size, since .length is reserved by JavaScript.
+   * TODO: .size could be more tensor-like, arbitrary lengths..
    */
   // @alias('length', 'of_length')
   static size = (of: number, value: any = undefined): Ray => {
