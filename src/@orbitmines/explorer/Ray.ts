@@ -192,6 +192,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return vertex.as_reference();//.continues_with(current.as_reference());
   }
 
+  /**
+   * Can be used to override default dereference behavior.
+   *
+   * TODO: This should probably be configurable on a more global setting.
+   */
   get dereference() { return this.self.self.as_reference(); }
 
   /**
@@ -199,7 +204,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * TODO: switch/match Should be abstracted into Ray?
    */
-  static next2 = (ref: Ray) => {
+  static step = (ref: Ray) => {
     const { initial } = ref;
 
     /**
@@ -248,10 +253,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       [RayType.INITIAL]: (initial) => Ray.directions.next(terminal),
       [RayType.TERMINAL]: (initial) => Ray.directions.previous(terminal),
     }));
-
-    const found_vertex = (ref: Ray): Ray => {
-      throw new NotImplementedError();
-    }
 
     const boundary = (boundary: Boundary) => (terminal: Ray): Ray => terminal.___primitive_switch({
 
@@ -302,53 +303,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       [RayType.REFERENCE]: dereference,
     });
   }
-  next2 = Ray.___func(Ray.next2).as_method(this);
+  step= Ray.___func(Ray.step).as_method(this);
 
-  static step = (ref: Ray) => {
-    const { initial } = ref;
-  }
-  step = (cases: {
-    [RayType.VERTEX]: (self: Ray) => Ray,
-
-    CONTINUATION: (self: Ray) => Ray,
-
-    [RayType.REFERENCE]?: (self: Ray) => Ray
-  }): Ray => {
-    const { CONTINUATION } = cases;
-
-    /**
-     * INITIAL <-> TERMINAL
-     * MANY INITIAL <-> VERTEX <-> MANY TERMINAL
-     *
-     */
-
-    // TODO: These cases should be implemented as a moving cursor/selection
-    return this.___primitive_switch({
-
-      [RayType.VERTEX]: cases[RayType.VERTEX],
-
-      [RayType.TERMINAL]: (self// ,  disambiguate: { [RayType.INITIAL]: (), }
-      ) => CONTINUATION(self),
-      [RayType.INITIAL]: (self
-                          // ,  disambiguate: { [RayType.INITIAL]: (), }
-      ) => CONTINUATION(self),
-
-      /**
-       *
-       *
-       * - Can be followed infinitely - if there's an orbit formed somewhere.
-       */
-      [RayType.REFERENCE]:
-        /**
-         * Can be used to override default dereference behavior.
-         *
-         * TODO: This should probably be configurable on a more global setting.
-         */
-        cases[RayType.REFERENCE]
-        ?? (() => Ray.vertex(() => this.self.self).as_reference()), // Dereference
-
-    })
-  }
     protected ___primitive_switch = (cases: SwitchCases): Ray => {
       const _case = cases[this.type];
   
@@ -366,13 +322,13 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
    */
-  static compose = Ray.___func(ref => ref.step({
-    [RayType.VERTEX]: () => { throw new NotImplementedError(); },
-    CONTINUATION: (self): Ray => {
-      throw new NotImplementedError();
-    }
-  }));
-  compose = Ray.compose.as_method(this);
+  // static compose = Ray.___func(ref => ref.step({
+  //   [RayType.VERTEX]: () => { throw new NotImplementedError(); },
+  //   CONTINUATION: (self): Ray => {
+  //     throw new NotImplementedError();
+  //   }
+  // }));
+  // compose = Ray.compose.as_method(this);
 
   // static equivalent2 = Ray.___func(ref => {
   //   let { initial, terminal} = ref.self;
@@ -577,6 +533,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
        * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
        */
       as_method: (ref: Ray): Method => (...any: Recursive): Ray => {
+        if (any === undefined || any.length === 0)
+          return step(ref);
+
         // TODO: This can be much better...
         const first = (recursive?: Recursive): Ray | undefined => {
           if (recursive === undefined) return;
@@ -601,10 +560,12 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         if (_first === undefined)
           return step(ref);
 
-        return step(new Ray({
+        const pointer = new Ray({
           initial: ref.as_arbitrary(),
           terminal: _first.as_arbitrary()
-        }).as_reference());
+        });
+
+        return step(pointer);
 
         // TODO: ANY CASE
         // if (any.length === 1) {

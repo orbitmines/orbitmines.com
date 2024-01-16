@@ -26,7 +26,9 @@ describe("Ray", () => {
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
     A.continues_with(B).continues_with(C);
-    
+
+    // let pointer = A.step(Ray.directions.next(A));
+
     let pointer = new Ray({
       initial: () => A,
       terminal: () => Ray.directions.next(A),
@@ -40,7 +42,7 @@ describe("Ray", () => {
     expect(pointer.initial.type).toBe(RayType.VERTEX);
     expect(pointer.terminal.type).toBe(RayType.TERMINAL);
 
-    pointer = Ray.next2(pointer);
+    pointer = pointer.step();
     
     /**
      *             ______________
@@ -49,7 +51,8 @@ describe("Ray", () => {
      */
     expect(pointer.initial.type).toBe(RayType.TERMINAL);
     expect(pointer.terminal.type).toBe(RayType.INITIAL);
-    pointer = Ray.next2(pointer);
+
+    pointer = pointer.step();
 
     /**
      *                    ____________
@@ -60,7 +63,7 @@ describe("Ray", () => {
     expect(pointer.terminal.type).toBe(RayType.VERTEX);
     expect(pointer.terminal.self.any.js).toBe('B');
 
-    pointer = Ray.next2(pointer);
+    pointer = pointer.step();
     
     /**
      *                           ____________
@@ -70,7 +73,7 @@ describe("Ray", () => {
     expect(pointer.initial.type).toBe(RayType.VERTEX);
     expect(pointer.terminal.type).toBe(RayType.TERMINAL);
 
-    pointer = Ray.next2(pointer);
+    pointer = pointer.step();
     
     /**
      *                                ______________
@@ -80,7 +83,7 @@ describe("Ray", () => {
     expect(pointer.initial.type).toBe(RayType.TERMINAL);
     expect(pointer.terminal.type).toBe(RayType.INITIAL);
 
-    pointer = Ray.next2(pointer);
+    pointer = pointer.step();
     
     /**
      *                                       ____________
@@ -91,7 +94,7 @@ describe("Ray", () => {
     expect(pointer.terminal.type).toBe(RayType.VERTEX);
     expect(pointer.terminal.self.any.js).toBe('C');
 
-    pointer = Ray.next2(pointer);
+    pointer = pointer.step();
     
     /**
      *                                              ____________
@@ -101,7 +104,7 @@ describe("Ray", () => {
     expect(pointer.initial.type).toBe(RayType.VERTEX);
     expect(pointer.terminal.type).toBe(RayType.TERMINAL);
 
-    pointer = Ray.next2(pointer);
+    pointer = pointer.step();
 
     /**
      *                                                   _______
