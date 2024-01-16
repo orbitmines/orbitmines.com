@@ -655,6 +655,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   static at = (index: number, of: number, value: any = undefined): Ray => {
     return Ray.size(of, value).at(index);
   }
+  /**
+   * Just uses length/size for permutation. TODO: More complex permutation implementation should follow at some point. (@see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
+   */
   static permutation = (permutation: number | undefined, of: number): Ray => Ray.at(
     // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
     permutation ?? 0,
