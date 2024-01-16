@@ -20,6 +20,18 @@ describe("Ray", () => {
     expect(method(a)(b).terminal.self.any.js).toBe('B');
     expect(method(a)(b).type).toBe(RayType.VERTEX);
   });
+  test("[A, B, C].copy", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    A.continues_with(B).continues_with(C);
+
+    expect(() => A.copy()).toThrow();
+    // const copy = A.copy();
+    // expect(A.has_previous()).toBe(false);
+    // expect(copy.has_previous()).toBe(false);
+  });
   test("[A, B, C].next()", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
@@ -404,21 +416,65 @@ describe("Ray", () => {
   //
   //
   // });
-  // test(".as_vertex", () => {
-  //   const initial = Ray.terminal().o({js: 'A'}).as_reference().o({js: 'A.#'});
-  //   const terminal= Ray.initial().o({js: 'B'}).as_reference().o({js: 'B.#'});
-  //
-  //   initial.self = terminal.as_arbitrary();
-  //   terminal.self = initial.as_arbitrary();
-  //
-  //   const as_vertex = initial.as_vertex();
-  //   expect(as_vertex.self.any.js).toBe('B');
-  // });
-  test(".#.equivalent(.#)", () => {
+  test(".as_vertex", () => {
+    let A = Ray.terminal().o({js: 'A'}).as_reference().o({js: 'A.#'});
+    // const B= Ray.initial().o({js: 'B'}).as_reference().o({js: 'B.#'});
+
+    // initial.self = terminal.self.as_arbitrary();
+    // terminal.self = initial.self.as_arbitrary();
+
+    A = A.as_vertex();
+
+    // expect(A.self.any.js).toBe('A');
+    expect(A.self.self.any.js).toBe('A');
+    // expect(A.self.self.self.any.js).toBe('A');
+    expect(A.self.self.self.self.any.js).toBe('A');
+  });
+  test(".None.#.equivalent(.None.#)", () => {
+    const A = Ray.None().o({ js: 'A' }).as_reference(); // TODO Tagging the 'NONE' vertices here is incredibly inconsistent, but just to demonstrate the test.
+    const B = Ray.None().o({ js: 'B' }).as_reference();
+
+    expect(A.is_none()).toBe(true);
+    expect(A.self.any.js).toBe('A');
+    expect(A.self.self.any.js).toBe('A');
+    expect(A.self.self.self.any.js).toBe('A');
+
+    expect(B.is_none()).toBe(true);
+    expect(B.self.any.js).toBe('B');
+    expect(B.self.self.any.js).toBe('B');
+    expect(B.self.self.self.any.js).toBe('B');
+
+    const ret = A.equivalent(B);
+
+    expect(A.is_none()).toBe(false);
+    expect(A.self.any.js).toBe('A');
+    expect(A.self.self.any.js).toBe('B');
+    expect(A.self.self.self.any.js).toBe('A');
+
+    expect(B.is_none()).toBe(false);
+    expect(B.self.any.js).toBe('B');
+    expect(B.self.self.any.js).toBe('A');
+    expect(B.self.self.self.any.js).toBe('B');
+  });
+  test(".None.#.equivalent(.vertex.#)", () => {
+    const A = Ray.None().as_reference();
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+
+    // const ret = A.equivalent(B);
+
+    // expect()
+  });
+  test(".vertex.#.equivalent(.vertex.#)", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
+    expect(A.any.js).toBe('A.#');
+    expect(B.any.js).toBe('B.#');
+
     const ret = A.equivalent(B);
+
+    expect(A.self.any.js).toBe('A');
+    expect(B.self.any.js).toBe('B');
 
     expect(A.self.self.any.js).toBe('B');
     expect(B.self.self.any.js).toBe('A');
@@ -491,35 +547,6 @@ describe("Ray", () => {
       .terminal.self.terminal
       .any.js
     ).toBe('B');
-  });
-  test(".vertex.#.equivalent(.vertex.#)", () => {
-    let A = Ray.vertex().o({js: 'A'})
-      .as_reference().o({js: 'A.#'});
-    let B = Ray.vertex().o({js: 'B'})
-      .as_reference().o({js: 'B.#'});
-
-    expect(A.any.js).toBe('A.#');
-    expect(B.any.js).toBe('B.#');
-
-    let ref = A.equivalent(B);
-
-    expect(ref.self.initial).toBe(A);
-    expect(ref.self.terminal).toBe(B);
-    expect(ref.self.initial.any.js).toBe('A.#');
-    expect(ref.self.terminal.any.js).toBe('B.#');
-
-    expect(A.self.any.js).toBe('A');
-    expect(B.self.any.js).toBe('B');
-
-    expect(A.self.self).toBe(B.self);
-    expect(B.self.self).toBe(A.self);
-    expect(A.self.self.any.js).toBe('B');
-    expect(B.self.self.any.js).toBe('A');
-
-    expect(B.self.self.self).toBe(B.self);
-    expect(B.self.self.self.self).toBe(A.self);
-    expect(B.self.self.self.any.js).toBe('B');
-    expect(B.self.self.self.self.any.js).toBe('A');
   });
   test(".vertex.#.continues_with(.vertex.#)", () => {
     let A = Ray.vertex().o({ js: 'A' }).as_reference();

@@ -139,6 +139,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   /**
    * Tries for "global coherence" - since we probably can't actually do that, practically this just means self-reference, were no change is assumed...
+   *
+   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
    */
   static is_orbit = (a: Ray, b: Ray) => a === b; // is, ..., appears equal.
   protected self_reference = () => this;
@@ -151,6 +153,20 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * TODO: This should probably be configurable on a more global setting.
    */
   get dereference() { return this.self.self.as_reference(); }
+
+  /**
+   * Places the current structure inside a new non-ignorant vertex.
+   */
+  as_vertex = (): Ray => {
+    const vertex = Ray.vertex(this.self.as_arbitrary());
+    const current = this.self.self;
+
+    this.self.self = vertex.as_arbitrary();
+
+    // TODO: Disregards anything on this.self.self?? - or not with current??
+
+    return vertex.as_reference();//.continues_with(current.as_reference());
+  }
 
   /** [     ] */ static None = () => new Ray({ }).o({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
@@ -176,17 +192,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
 
   as_arbitrary = (): Arbitrary<Ray> => () => this;
-
-  as_vertex = (): Ray => {
-    const vertex = Ray.vertex(this.self.as_arbitrary());
-    const current = this.self.self;
-
-    this.self.self = vertex.as_arbitrary();
-
-    // TODO: Disregards anything on this.self.self?? - or not with current??
-
-    return vertex.as_reference();//.continues_with(current.as_reference());
-  }
 
   /**
    *
@@ -305,30 +310,44 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // @alias('merge, 'continues_with', 'compose')
   /**
-   * Compose as "Equivalence at Continuations"
+   * Compose as "Equivalence at Continuations": (can usually be done in parallel - not generally)
+   *  - `A.compose(B)`            = `(A.TERMINAL).equivalent(B.INITIAL)`
+   *  - `A.compose(B).compose(C)` = `(A.TERMINAL).equivalent(B.INITIAL) & (B.TERMINAL).equivalent(C.INITIAL)`
    *
-   * `A.compose(B).compose(C)` = `A.`
+   * Another interesting connection:
+   *  - `A.compose(B).compose(C)` = `(A.equivalent(B).equivalent(C)).dereference.(MISSING ALL FUNC).compose`
    *
-   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
+   * @see "Continuations as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
    */
-  // static compose = Ray.___func(ref => ref.step({
-  //   [RayType.VERTEX]: () => { throw new NotImplementedError(); },
-  //   CONTINUATION: (self): Ray => {
-  //     throw new NotImplementedError();
-  //   }
-  // }));
-  // compose = Ray.compose.as_method(this);
+  static compose = Ray.___func(ref => {
 
-  // static equivalent2 = Ray.___func(ref => {
-  //   let { initial, terminal} = ref.self;
-  //
-  //   return Ray.vertex(initial).compose(terminal);
-  // });
-  // equivalent2 = Ray.compose(this);
+  });
+  compose = Ray.compose.as_method(this);
+
+  /**
+   * Equivalence as "Composing Vertices"
+   *  - `A.equivalent(B)`               = `A.as_vertex().compose(B.as_vertex())`
+   *  - `A.equivalent(B).equivalent(C)` = `A.as_vertex().compose(B.as_vertex()).compose(C.as_vertex())`
+   *
+   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
+   */
+  static equivalent2 = Ray.___func(ref => {
+    let { initial, terminal} = ref.self;
+
+    initial.as_vertex().compose(terminal.as_vertex());
+
+    return ref;
+  });
+  equivalent2 = Ray.equivalent2.as_method(this);
 
 
+  /**
+   * Equivalence in this context, is best understood as the drawing of the line between two things. And ensures that the line can be found on the `.vertex/.self` of those two things. (Albeit in an arbitrary place on it).
+   */
   static equivalent= Ray.___func(ref => {
     let { initial, terminal } = ref.self;
+
+    // TODO: Can just move the terminal which holds the oointer to the boundary
 
     // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
 
@@ -343,6 +362,18 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      *      initial.self / terminal.self        - Two things/.../abstract directions/rays we actually want to connect
      * initial.self.self / terminal.self.self   - The direction which defines what it's connected to (could be ignorant)
      */
+
+    if (initial.self.is_none() && terminal.self.is_none()) {
+      /**
+       * Basically turns an Orbit which repeats on every step, to one which repeats every 2 steps.
+       * Or in textual terms something like: `(A.self = A) | (B.self = B)` to `(A.self = B) | (B.self = A)`.
+       */
+
+      initial.self.self = terminal.self.as_arbitrary();
+      terminal.self.self = initial.self.as_arbitrary();
+
+      return ref;
+    }
 
     if (initial.self.is_none() || terminal.self.is_none()) {
       /**
@@ -610,7 +641,28 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   get count(): Ray { throw new NotImplementedError() }
 
   // TODO; Could return the ignorant reference to both instances, or just the result., ..
-  copy = (): Ray => { throw new NotImplementedError() }
+
+  /**
+   * TODO: Need more control over the (non-/)lazyness of copy.
+   */
+  copy = (): Ray => {
+    throw new NotImplementedError();
+
+    // const copy = new Ray({
+    //   initial: this.self._initial().as_reference().none_or(ref => ref.copy()).as_arbitrary(),
+    //   vertex: this.self._vertex().as_reference().none_or(ref => ref.copy()).as_arbitrary(),
+    // }).o({ ___dirty_copy_buffer: {} });
+    // // copy._initial = () => copy.any.___dirty_copy_buffer._initial ??= this.self._initial().as_reference().copy();
+    // // copy._vertex = () => copy.any.___dirty_copy_buffer._vertex ??= this.self._vertex().as_reference().copy();
+    // // copy._terminal = () => copy.any.___dirty_copy_buffer._terminal ??= this.self._terminal().as_reference().copy();
+    //
+    //
+    // // TODO: Doesn't copy .any
+    //
+    // return copy.as_reference();
+  }
+
+  none_or = (arbitrary: Implementation): Ray => this.is_none() ? Ray.None() : arbitrary(this);
 
   // @alias('converse', 'opposite', 'swap')
   get reverse(): Ray {
@@ -658,6 +710,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   }
   /**
    * Just uses length/size for permutation. TODO: More complex permutation implementation should follow at some point. (@see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
+   *
+   * @see "Combinatorics as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Combinatorics%20%2D%20Combinatorics%20as%20Equivalence
    */
   static permutation = (permutation: number | undefined, of: number): Ray => Ray.at(
     // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
@@ -742,6 +796,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       current = current.next(step);
     }
+  }
+
+  *traverse2(step: Implementation = Ray.directions.next): Generator<Ray> {
+
   }
 
   /**
@@ -848,7 +906,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   static POSITION_OF_DOOM = [0, 100, 0]
 
   // TODO: Abstract away as compilation
-  get render_options(): Required<InterfaceOptions> {
+  render_options = (Interface: Ray): Required<InterfaceOptions> => {
     return ({
       position:
         this.self.any.position
@@ -860,14 +918,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         this.self.any.scale
         ?? (this.is_none() ? 1.5 : 1.5),
       color:
-        this.self.any.color
-        ?? (this.is_none() ? 'red' : {
-            [RayType.VERTEX]: 'orange',
-            [RayType.TERMINAL]: '#FF5555',
-            [RayType.INITIAL]: '#5555FF',
-            [RayType.REFERENCE]: '#555555',
-          }[this.type]
-        )
+        (Ray.is_orbit(Interface.any.selection.self, this.self) && Interface.any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
+          : (
+            this.self.any.color
+            ?? (this.is_none() ? 'red' : {
+                [RayType.VERTEX]: 'orange',
+                [RayType.TERMINAL]: '#FF5555',
+                [RayType.INITIAL]: '#5555FF',
+                [RayType.REFERENCE]: '#555555',
+              }[this.type]
+            )
+          )
     });
   }
 
@@ -1091,22 +1152,13 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
 
 }
-//     force = (): any => self.match({
-//         Some: (a) => a,
-//         None: () => { throw new Error('Expected Some(value) to be present but found None.') }
-//     });
-//
+
 //     default = (fn: () => any): any => self.match({
 //         Some: (a) => a,
 //         None: () => fn()
 //     })
 //
-//     none_or = (or: (obj: any) => any): Option<any> => {
-//       return self.match({
-//         Some: (some: any) => Option.Some(or(some)),
-//         None: () => Ray.None
-//       })
-//     }
+
 
 /**
  *
@@ -1173,6 +1225,7 @@ export namespace JS {
 
   export const Generator = <T = any>(generator: Generator<T>): Ray => JS.Iterable(generator);
 
+  // TODO Could have parallel threads in general.
   // export const AsyncGenerator = <T = any>(generator: AsyncGenerator<T>): Ray => {
   //   // [  |--]
   //   return JS.Iterable(generator);

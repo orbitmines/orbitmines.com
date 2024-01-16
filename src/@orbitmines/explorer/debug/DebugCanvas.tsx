@@ -13,10 +13,10 @@ import _ from "lodash";
 // TODO: It's, rende rboth draw equivalence, then ignore the difference from either perspective or take some middle thing. - Line from both ends, also vertex? (or take the pos, take the x from one/other, y from the other/..)
 
 // TODO: Could be a function on Ray (any func really)
-export const Render = ({ ray }: { ray: Ray }) => {
-  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
-  const vertex: Required<InterfaceOptions> = ray.render_options;
-  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
+export const Render = ({ ray, Interface }: { ray: Ray, Interface: Ray }) => {
+  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options(Interface);
+  const vertex: Required<InterfaceOptions> = ray.render_options(Interface);
+  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options(Interface);
 
   switch (ray.type) {
     case RayType.REFERENCE:
@@ -131,7 +131,7 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
             console.log(`rays.length at pos=[${Interface.any.selection.render_options.position}]: ${Interface.any.rays.filter((ray: Ray) => 
               _.isEqual(
                 Interface.any.selection.render_options.position,
-                ray.render_options.position
+                ray.render_options(Interface).position
               )
             ).length} / ${Interface.any.rays.length}`)
             console.log('ref', Interface.any.selection)
@@ -166,7 +166,7 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
     <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 5]} scale={scale / 2} color="#555555" />
 
     {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
-    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray} />)}
+    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray} Interface={Interface} />)}
   </>
 }
 

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import IEventListener from "../../js/react/IEventListener";
 import {VisualizationCanvas} from "../../explorer/Visualization";
 import {
@@ -144,15 +144,15 @@ const ___index = (ray: Ray): number => {
   }
 }
 
-export const Render2 = ({ ray, show =  { initial: true, terminal: true } }: { ray: Ray, index: number, show?: { initial: boolean, terminal: boolean } }) => {
+export const Render2 = ({ ray, Interface, show =  { initial: true, terminal: true } }: { ray: Ray, Interface: Ray, index: number, show?: { initial: boolean, terminal: boolean } }) => {
   const index = ___index(ray);
   let added = [15 * index, 60 * index, 0];
 
-  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options;
+  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options(Interface);
   initial.position = add_(initial.position, added);
-  const vertex: Required<InterfaceOptions> = ray.render_options;
+  const vertex: Required<InterfaceOptions> = ray.render_options(Interface);
   vertex.position = add_(vertex.position, added);
-  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options;
+  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options(Interface);
   terminal.position = add_(terminal.position, added);
 
   switch (ray.type) {
@@ -268,14 +268,14 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
           combo: ["d", "arrowright"], global: true, label: "", onKeyDown: () => {
             const { selection, rays } = Interface.any;
 
-            const current = Interface.any.selection.render_options;
+            const current = Interface.any.selection.render_options(Interface);
 
             const next = Ray.vertex().o2({
               initial: { position: add_(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
               vertex: { index: Interface.any.selection.self.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
               terminal: { position: add_(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
             }).as_reference().o({
-              ...selection.as_reference().render_options,
+              ...selection.as_reference().render_options(Interface),
               position: add(selection.any.position ?? [0, 0, 0], [space_between * 2, 0, 0])
             });
 
@@ -294,10 +294,10 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
 
             Interface.any.selection = Interface.any.selection.pop();
             Interface.any.selection.o({
-              position: Interface.any.selection.render_options.position
+              position: Interface.any.selection.render_options(Interface).position
             }); // TODO, Same with this.
             Interface.any.selection.self.terminal.o({
-              position: add(Interface.any.selection.render_options.position, [space_between, 0, 0]), scale, color: 'orange'
+              position: add(Interface.any.selection.render_options(Interface).position, [space_between, 0, 0]), scale, color: 'orange'
             }); // TODO: The continues_with function doesn't persist the options, as they are ignored on the equivalency. Probably need some better way to deal with this kind of thing.
 
             Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
@@ -346,10 +346,10 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
           combo: "/", global: true, label: "", onKeyDown: () => {
             console.log('---------')
             console.log(`Debugging: ${Interface.any.selection.self.label} (type=${Interface.any.selection.type})`)
-            console.log(`rays.length at pos=[${Interface.any.selection.render_options.position}]: ${Interface.any.rays.filter((ray: Ray) =>
+            console.log(`rays.length at pos=[${Interface.any.selection.render_options(Interface).position}]: ${Interface.any.rays.filter((ray: Ray) =>
               _.isEqual(
                 Interface.any.selection.render_options.position,
-                ray.render_options.position
+                ray.render_options(Interface).position
               )
             ).length} / ${Interface.any.rays.length}`)
             console.log('ref', Interface.any.selection)
@@ -389,13 +389,13 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
 
     {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
 
-    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray}/>)}
+    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} Interface={Interface} ray={ray}/>)}
 
     <group position={[0, 0, 0]}>
       <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}
                   scale={scale / 1.5} color="#55FF55"/>
       <group position={[0, 60, 0]}>
-        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index} show={{initial: false, terminal: false}} />)}
+        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} Interface={Interface} ray={ray} index={index} show={{initial: false, terminal: false}} />)}
       </group>
     </group>
 
@@ -403,7 +403,7 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
       <AutoVertex position={add((Interface.any.selection as Ray).any.position, added)} rotation={[0, 0, Math.PI / 2]}
                   scale={scale / 1.5} color="#55FF55"/>
       <group position={[0, 60, 0]}>
-        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} ray={ray} index={index}/>)}
+        {Interface.any.rays.map((ray: Ray, index: number) => <Render2 key={ray.self.label} Interface={Interface} ray={ray} index={index}/>)}
       </group>
     </group>
 
@@ -441,6 +441,168 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
     {/*  /!*<AutoVertex position={[0, 0, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*!/*/}
     {/*  /!*<AutoVertex position={[0, -60, 0]} rotation={[0, 0, 0]} scale={scale / 1.5} color="orange"/>*!/*/}
     {/*</group>*/}
+  </>
+}
+
+export const DebugInterface3 = ({scale = 1.5}: InterfaceOptions) => {
+  const ref = useRef<any>();
+  const hotkeyConfig = useHotkeys();
+
+  const {
+    gl: renderer,
+    camera,
+    scene,
+    raycaster
+  } = useThree();
+
+  const space_between = 20 * scale;
+
+  const [Interface] = useState<Ray>(Ray.vertex().o({
+    selection: Ray.vertex().o2({
+      initial: { position: [-space_between, 0, 0], scale, color: 'orange' },
+      vertex: { index: 0, position: [0, 0, 0], scale, color: 'orange' },
+      terminal: { position: [space_between, 0, 0 ], scale, color: 'orange' },
+    }).as_reference().o({
+      position: [0, 0, 0],
+      scale,
+      rotation: [0, 0, Math.PI / 6 ],
+      color: '#555555'
+    }),
+    rays: [] as Ray[],
+    stats: false,
+    cursor: {
+      tick: false
+    },
+    controls: Ray.vertex().o({
+      hotkeys: [
+        {
+          combo: ["d", "arrowright"], global: true, label: "", onKeyDown: () => {
+            const { selection, rays } = Interface.any;
+
+            const current = Interface.any.selection.render_options(Interface);
+
+            const next = Ray.vertex().o2({
+              initial: { position: add_(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
+              vertex: { index: Interface.any.selection.self.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
+              terminal: { position: add_(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
+            }).as_reference().o({
+              ...selection.as_reference().render_options(Interface),
+              position: add(selection.any.position ?? [0, 0, 0], [space_between * 2, 0, 0])
+            });
+
+            Interface.any.selection = selection.continues_with(next);
+            Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
+              ray.any.traversed = true;
+              return ray.as_reference();
+            });
+
+          }
+        },
+        {
+          combo: ["a", "arrowleft"], global: true, label: "", onKeyDown: () => {
+            if (Interface.any.rays.length === 0)
+              return;
+
+            Interface.any.selection = Interface.any.selection.pop();
+            Interface.any.selection.o({
+              position: Interface.any.selection.render_options(Interface).position
+            }); // TODO, Same with this.
+            Interface.any.selection.self.terminal.o({
+              position: add(Interface.any.selection.render_options(Interface).position, [space_between, 0, 0]), scale, color: 'orange'
+            }); // TODO: The continues_with function doesn't persist the options, as they are ignored on the equivalency. Probably need some better way to deal with this kind of thing.
+
+            Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
+              ray.any.traversed = true;
+              return ray.as_reference();
+            });
+
+            if (Interface.any.length === 0) {
+              Interface.any.selection.any.position = [0, 0, 0]
+              return;
+            }
+          }
+        },
+        {
+          combo: ["w", "arrowup"], global: true, label: "", onKeyDown: () => {
+            const { selection, rays } = Interface.any;
+
+            Interface.any.rays = rays.flatMap((ray: Ray) => [
+              ray,
+              // Ray.js("A").as_reference().o({
+              //   // ...ray.o,
+              //   position: add(ray.any.position ?? [0, 0, 0], [0, i * 2, 0])
+              // }),
+              // Ray.js("A").as_reference().o({
+              //   // ...ray.o,
+              //   position: ray.any.position,
+              //   rotation: [0, 0, Math.PI / 2]
+              // }),
+              // Ray.js("A").as_reference().o({
+              //   // ...ray.o,
+              //   position: add(ray.any.position ?? [0, 0, 0], [0, i * 2, 0]),
+              //   rotation: [0, 0, Math.PI / 2]
+              // })
+            ]);
+
+            // Chyp_naieve_pass.any.selection = Chyp_naieve_pass;
+
+            // selection.o({...selection.o, position: add(selection.any.position ?? [0, 0, 0], [0, i * 2, 0])})
+
+            // selection.continues_with(
+
+            // );
+          }
+        },
+        {
+          combo: "/", global: true, label: "", onKeyDown: () => {
+            console.log('---------')
+            console.log(`Debugging: ${Interface.any.selection.self.label} (type=${Interface.any.selection.type})`)
+            console.log(`rays.length at pos=[${Interface.any.selection.render_options(Interface).position}]: ${Interface.any.rays.filter((ray: Ray) =>
+              _.isEqual(
+                Interface.any.selection.render_options(Interface).position,
+                ray.render_options(Interface).position
+              )
+            ).length} / ${Interface.any.rays.length}`)
+            console.log('ref', Interface.any.selection)
+            console.log('ref.self', Interface.any.selection.self)
+
+            const debug: DebugResult = {};
+            Interface.any.selection.self.debug(debug);
+            console.log('ref.debug', debug);
+            Interface.any.rays.forEach((ray: Ray) => ray.debug(debug));
+            console.log('rays.debug', debug);
+          }
+        },
+        {
+          combo: "f3", global: true, label: "Show stats Panel", onKeyDown: (e) => {
+            e.preventDefault();
+            Interface.any.stats = !Interface.any.stats;
+          }
+        },
+      ] as HotkeyConfig[]
+    })
+  }));
+
+  // useEffect(() => {
+  // TODO: Eventually goes over maximum size of react-debug callstack when updates each frame like this.
+  hotkeyConfig.set(...Interface.any.controls.any.hotkeys);
+  // }, [Interface.any.controls.any.hotkeys]);
+
+  useEffect(() => {
+
+    setInterval(() => {
+      Interface.any.cursor.tick = !Interface.any.cursor.tick;
+
+      // TODO THIS NEEDS TO BE EASIER
+    }, 500); // TODO; On react reload interval is not destroyed
+  }, []);
+
+  return <>
+    {Interface.any.stats ? <StatsPanels/> : <></>}
+
+    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 2]} scale={scale / 1.5} color="#AAAAAA"/>
+
+    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} Interface={Interface} ray={ray} />)}
   </>
 }
 
@@ -501,7 +663,7 @@ const ChypCanvas = (
     <VisualizationCanvas
       style={{height: '100vh'}}
     >
-      <DebugInterface2/>
+      <DebugInterface3/>
     </VisualizationCanvas>
   </div>
 }
