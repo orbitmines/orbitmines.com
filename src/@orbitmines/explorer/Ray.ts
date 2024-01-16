@@ -229,8 +229,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      */
 
     const next_pointer = (ref: Ray, terminal: Ray, next: Arbitrary<Ray>) => new Ray({
-      initial: terminal.as_arbitrary(),
-      vertex: ref.as_arbitrary(),
+      initial: () => terminal,
+      vertex: () => ref,
       terminal: next,
     });
 
@@ -569,8 +569,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           return step(ref);
 
         const pointer = new Ray({
-          initial: ref.as_arbitrary(),
-          terminal: _first.as_arbitrary()
+          initial: () => ref,
+          terminal: () => _first
         });
 
         return step(pointer);
@@ -647,19 +647,19 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * .next
      */
       next = () => {
-        // let pointer = new Ray({
-        //   initial: () => this,
-        //   terminal: () => Ray.directions.next(this),
-        // });
-        //
-        // pointer = pointer.step().step();
-        //
-        // if (pointer.terminal.type !== RayType.VERTEX)
-        //   throw new NotImplementedError(pointer.terminal.type);
-        //
-        // return pointer.terminal;
+        let pointer = new Ray({
+          initial: () => this,
+          terminal: () => Ray.directions.next(this),
+        });
 
-        return Ray.___next(Ray.directions.next)(this);
+        pointer = pointer.step().step();
+
+        if (pointer.terminal.type !== RayType.VERTEX)
+          throw new NotImplementedError(pointer.terminal.type);
+
+        return pointer.terminal;
+
+        // return Ray.___next(Ray.directions.next)(this);
       }
       has_next = (step: Implementation = Ray.directions.next): boolean => step(this).is_none();
       // @alias('end', 'result')
@@ -670,7 +670,21 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .previous
      */
-      previous = (): Ray => { return Ray.___next(Ray.directions.previous)(this); }
+      previous = (): Ray => {
+        let pointer = new Ray({
+          initial: () => this,
+          terminal: () => Ray.directions.previous(this),
+        });
+
+        pointer = pointer.step().step();
+
+        if (pointer.terminal.type !== RayType.VERTEX)
+          throw new NotImplementedError(pointer.terminal.type);
+
+        return pointer.terminal;
+
+        // return Ray.___next(Ray.directions.previous)(this);
+      }
       has_previous = (step: Implementation = Ray.directions.previous): boolean => this.has_next(step);
       first = (step: Implementation = Ray.directions.previous): Ray => this.last(step);
   
