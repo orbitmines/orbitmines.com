@@ -583,8 +583,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   }
 
   static ___next = (step: Implementation) => {
+
     const method = Ray.___func(ref => {
       const { initial, terminal } = ref.self;
+
+      // let pointer = ref.self.step();
+      // let pointer2 = pointer.step();
+      // let pointer3 = pointer2.step();
+
+      // throw new NotImplementedError(`[${initial.type}/${terminal.type}] -> [${pointer.initial.type}/${pointer.terminal.type}] -> [${pointer2.initial.type}/${pointer2.terminal.type}] -> [${pointer3.initial.type}/${pointer3.terminal.type}] -- ${initial.self.any.js}/${pointer3.initial.self.any.js}`);
+
+      // return step2(ref);
 
       return initial.___primitive_switch({
         [RayType.VERTEX]: () => terminal.___primitive_switch({
@@ -637,7 +646,21 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .next
      */
-      next = () => { return Ray.___next(Ray.directions.next)(this); }
+      next = () => {
+        // let pointer = new Ray({
+        //   initial: () => this,
+        //   terminal: () => Ray.directions.next(this),
+        // });
+        //
+        // pointer = pointer.step().step();
+        //
+        // if (pointer.terminal.type !== RayType.VERTEX)
+        //   throw new NotImplementedError(pointer.terminal.type);
+        //
+        // return pointer.terminal;
+
+        return Ray.___next(Ray.directions.next)(this);
+      }
       has_next = (step: Implementation = Ray.directions.next): boolean => step(this).is_none();
       // @alias('end', 'result')
       last = (step: Implementation = Ray.directions.next): Ray => {
