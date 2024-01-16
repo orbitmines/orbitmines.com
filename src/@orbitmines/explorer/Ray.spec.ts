@@ -1,4 +1,5 @@
 import {Ray, RayType} from "./Ray";
+import {previous} from "slate";
 
 describe("Ray", () => {
   test(".___func(ref)", () => {
@@ -175,6 +176,49 @@ describe("Ray", () => {
     // expect(pointer.terminal.type).toBe(RayType.TERMINAL); ??
     expect(pointer.terminal.is_none()).toBe(true);
   });
+  test("[A, B, C][.has_next(), .has_previous()]", () => {
+    const A = Ray.vertex().o({js: 'A'}).as_reference().o({js: 'A.#'});
+    const B = Ray.vertex().o({js: 'B'}).as_reference().o({js: 'B.#'});
+    const C = Ray.vertex().o({js: 'C'}).as_reference().o({js: 'C.#'});
+
+    A.continues_with(B).continues_with(C);
+
+    expect(A.has_next()).toBe(true);
+    expect(A.has_next(Ray.directions.next)).toBe(true);
+    expect(A.has_next(Ray.directions.previous)).toBe(false);
+    expect(A.has_previous()).toBe(false);
+    expect(A.has_previous(Ray.directions.previous)).toBe(false);
+    expect(A.has_previous(Ray.directions.next)).toBe(true);
+
+    expect(B.has_next()).toBe(true);
+    expect(B.has_next(Ray.directions.next)).toBe(true);
+    expect(B.has_next(Ray.directions.previous)).toBe(true);
+    expect(B.has_previous()).toBe(true);
+    expect(B.has_previous(Ray.directions.previous)).toBe(true);
+    expect(B.has_previous(Ray.directions.next)).toBe(true);
+
+    expect(C.has_next()).toBe(false);
+    expect(C.has_next(Ray.directions.next)).toBe(false);
+    expect(C.has_next(Ray.directions.previous)).toBe(true);
+    expect(C.has_previous()).toBe(true);
+    expect(C.has_previous(Ray.directions.previous)).toBe(true);
+    expect(C.has_previous(Ray.directions.next)).toBe(false);
+  });
+  test("[A, B, C][.last(), .first()]", () => {
+    const A = Ray.vertex().o({js: 'A'}).as_reference().o({js: 'A.#'});
+    const B = Ray.vertex().o({js: 'B'}).as_reference().o({js: 'B.#'});
+    const C = Ray.vertex().o({js: 'C'}).as_reference().o({js: 'C.#'});
+
+    A.continues_with(B).continues_with(C);
+
+    expect(A.first().self.any.js).toBe('A');
+    expect(B.first().self.any.js).toBe('A');
+    expect(C.first().self.any.js).toBe('A');
+
+    expect(A.last().self.any.js).toBe('C');
+    expect(B.last().self.any.js).toBe('C');
+    expect(C.last().self.any.js).toBe('C');
+  });
   test("[A, B, C][.next(), .previous()]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
@@ -320,7 +364,7 @@ describe("Ray", () => {
 
     A.continues_with(B).continues_with(C);
 
-    // expect(A.as_array().map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+    expect(A.as_array().map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
     // expect(B.as_array().map(ref => ref.self.any.js)).toEqual(['B', 'C']); // TODO: This may or may not be expected behavior, you could make a case for saying it should render both sides for .as_array. ???
     // expect(C.as_array().map(ref => ref.self.any.js)).toEqual(['C']);
     //

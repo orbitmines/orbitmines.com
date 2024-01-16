@@ -646,10 +646,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .next
      */
-      next = () => {
+      next = (step: Implementation = Ray.directions.next) => {
         let pointer = new Ray({
           initial: () => this,
-          terminal: () => Ray.directions.next(this),
+          terminal: () => step(this),
         });
 
         pointer = pointer.step().step();
@@ -661,30 +661,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
         // return Ray.___next(Ray.directions.next)(this);
       }
-      has_next = (step: Implementation = Ray.directions.next): boolean => step(this).is_none();
+      has_next = (step: Implementation = Ray.directions.next): boolean => this.next(step).is_some();
       // @alias('end', 'result')
       last = (step: Implementation = Ray.directions.next): Ray => {
-        const next = step(this);
-        return next.is_none() ? next.last(step) : this;
+        const next = this.next(step);
+        return next.is_some() ? next.last(step) : this;
       }
     /**
      * .previous
      */
-      previous = (): Ray => {
-        let pointer = new Ray({
-          initial: () => this,
-          terminal: () => Ray.directions.previous(this),
-        });
-
-        pointer = pointer.step().step();
-
-        if (pointer.terminal.type !== RayType.VERTEX)
-          throw new NotImplementedError(pointer.terminal.type);
-
-        return pointer.terminal;
-
-        // return Ray.___next(Ray.directions.previous)(this);
-      }
+      previous = (step: Implementation = Ray.directions.previous): Ray => this.next(step);
       has_previous = (step: Implementation = Ray.directions.previous): boolean => this.has_next(step);
       first = (step: Implementation = Ray.directions.previous): Ray => this.last(step);
   
@@ -785,12 +771,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     while (true) {
       yield current;
 
-      try {
-        current = current.next();
-      } catch (e) {
-        // console.error('stopped traversal through implementation error...', e)
-        break; // TODO: HACKY FOR NOW
-      }
+      if (!current.has_next(step))
+        break;
+
+      current = current.next();
     }
   }
 
