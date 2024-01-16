@@ -525,6 +525,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     //   }
     // });
 
+    // const step: Implementation = (ref: Ray): Ray => {
+    //   const pointer = new Ray({
+    //     initial: ref.as_arbitrary(),
+    //     terminal: _first.as_arbitrary()
+    //   });
+    // }
+
+
     //  terminal: this._terminal   // Pass terminal without evaluating
 
     return {
@@ -574,11 +582,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
   }
 
-  /**
-   * TODO: next/continues_with/compose all generalizable??
-   *
-   * @param direction Generalized as 'some function'.
-   */
   static ___next = (step: Implementation) => {
     const method = Ray.___func(ref => {
       const { initial, terminal } = ref.self;
@@ -590,26 +593,26 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
           [RayType.INITIAL]: (ref) => ref.self.___primitive_switch({
 
             [RayType.TERMINAL]: (ref) => ref.self.initial.as_reference()
-                .___primitive_switch({
-              // Found a next Vertex.
-              [RayType.VERTEX]: (self) => self,
+              .___primitive_switch({
+                // Found a next Vertex.
+                [RayType.VERTEX]: (self) => self,
 
-            }),
+              }),
           }),
 
           [RayType.TERMINAL]: (ref) => ref.self.___primitive_switch({
 
             // A possible continuation
             [RayType.INITIAL]: (ref) => ref.self.terminal.as_reference()
-                  .___primitive_switch({ // TODO: This is applying the function again, should be separate?
-                  // Found a next Vertex.
-                  [RayType.VERTEX]: (self) => self,
+              .___primitive_switch({ // TODO: This is applying the function again, should be separate?
+                // Found a next Vertex.
+                [RayType.VERTEX]: (self) => self,
 
-                  // TODO: Same, but defined a step further
-                  // [RayType.TERMINAL]: () => Ray.None(),
-                  [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
+                // TODO: Same, but defined a step further
+                // [RayType.TERMINAL]: () => Ray.None(),
+                [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
 
-                }),
+              }),
 
           }),
 
@@ -619,6 +622,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return (ref: Ray) => method(ref)(step(ref));
   }
+
 
   /**
    * Helper methods for commonly used directions
@@ -633,7 +637,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .next
      */
-      get next() { return Ray.___next(Ray.directions.next)(this); }
+      next = () => { return Ray.___next(Ray.directions.next)(this); }
       has_next = (step: Implementation = Ray.directions.next): boolean => step(this).is_none();
       // @alias('end', 'result')
       last = (step: Implementation = Ray.directions.next): Ray => {
@@ -643,7 +647,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .previous
      */
-      get previous(): Ray { return Ray.___next(Ray.directions.previous)(this); }
+      previous = (): Ray => { return Ray.___next(Ray.directions.previous)(this); }
       has_previous = (step: Implementation = Ray.directions.previous): boolean => this.has_next(step);
       first = (step: Implementation = Ray.directions.previous): Ray => this.last(step);
   
@@ -733,7 +737,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // ___compute = ()
 
-  *traverse(step: ((ref: Ray) => Ray) = ((ref): Ray => ref.next)): Generator<Ray> {
+  *traverse(step: Implementation = Ray.directions.next): Generator<Ray> {
     // TODO: Also to ___func??
 
     if (this.type !== RayType.VERTEX)
@@ -745,7 +749,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       yield current;
 
       try {
-        current = current.next;
+        current = current.next();
       } catch (e) {
         // console.error('stopped traversal through implementation error...', e)
         break; // TODO: HACKY FOR NOW
