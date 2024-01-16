@@ -493,6 +493,17 @@ describe("Ray", () => {
   test(".as_arbitrary", () => {
     expect(Ray.vertex().o({ js: 'A' }).as_arbitrary()().any.js).toBe('A');
   });
+  test(".dereference", () => {
+    const A = Ray.vertex(
+      Ray.vertex().o({ js: "A.vertex" }).as_arbitrary()
+    ).o({ js: 'A' }).as_reference();
+
+    expect(A.dereference.self.any.js).toBe('A.vertex');
+    expect(A.as_reference().dereference.self.any.js).toBe('A');
+    expect(A.as_reference().as_reference().dereference.dereference.self.any.js).toBe('A');
+    expect(A.as_reference().as_reference().as_reference().dereference.dereference.dereference.self.any.js).toBe('A');
+    expect(A.as_reference().as_reference().as_reference().dereference.dereference.dereference.dereference.self.any.js).toBe('A.vertex');
+  });
   test(".o", () => {
     const ray = Ray.vertex().o({
       a: 'b',

@@ -145,6 +145,13 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   is_some = (): boolean => !this.is_none();
 
+  /**
+   * Can be used to override default dereference behavior.
+   *
+   * TODO: This should probably be configurable on a more global setting.
+   */
+  get dereference() { return this.self.self.as_reference(); }
+
   /** [     ] */ static None = () => new Ray({ }).o({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
     // /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
@@ -191,13 +198,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return vertex.as_reference();//.continues_with(current.as_reference());
   }
-
-  /**
-   * Can be used to override default dereference behavior.
-   *
-   * TODO: This should probably be configurable on a more global setting.
-   */
-  get dereference() { return this.self.self.as_reference(); }
 
   /**
    *
@@ -581,57 +581,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       }
     }
   }
-
-  static ___next = (step: Implementation) => {
-
-    const method = Ray.___func(ref => {
-      const { initial, terminal } = ref.self;
-
-      // let pointer = ref.self.step();
-      // let pointer2 = pointer.step();
-      // let pointer3 = pointer2.step();
-
-      // throw new NotImplementedError(`[${initial.type}/${terminal.type}] -> [${pointer.initial.type}/${pointer.terminal.type}] -> [${pointer2.initial.type}/${pointer2.terminal.type}] -> [${pointer3.initial.type}/${pointer3.terminal.type}] -- ${initial.self.any.js}/${pointer3.initial.self.any.js}`);
-
-      // return step2(ref);
-
-      return initial.___primitive_switch({
-        [RayType.VERTEX]: () => terminal.___primitive_switch({
-
-
-          [RayType.INITIAL]: (ref) => ref.self.___primitive_switch({
-
-            [RayType.TERMINAL]: (ref) => ref.self.initial.as_reference()
-              .___primitive_switch({
-                // Found a next Vertex.
-                [RayType.VERTEX]: (self) => self,
-
-              }),
-          }),
-
-          [RayType.TERMINAL]: (ref) => ref.self.___primitive_switch({
-
-            // A possible continuation
-            [RayType.INITIAL]: (ref) => ref.self.terminal.as_reference()
-              .___primitive_switch({ // TODO: This is applying the function again, should be separate?
-                // Found a next Vertex.
-                [RayType.VERTEX]: (self) => self,
-
-                // TODO: Same, but defined a step further
-                // [RayType.TERMINAL]: () => Ray.None(),
-                [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
-
-              }),
-
-          }),
-
-        })
-      })
-    }).as_method;
-
-    return (ref: Ray) => method(ref)(step(ref));
-  }
-
 
   /**
    * Helper methods for commonly used directions
