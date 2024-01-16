@@ -11,6 +11,8 @@ export enum RayType {
   TERMINAL = 'TERMINAL: ?-|  ',
   VERTEX = 'VERTEX: --|--',
 }
+export type Boundary = RayType.INITIAL | RayType.TERMINAL;
+const opposite = (boundary: Boundary): Boundary => boundary === RayType.INITIAL ? RayType.TERMINAL : RayType.INITIAL;
 
 export type ParameterlessFunction<T = any> = () => T;
 export type Arbitrary<T> = (...args: any[]) => T;
@@ -69,7 +71,6 @@ export type DebugRay = {
  *
  * TODO: Any javascript class, allow warpper of function names around any ray, as a possible match
  * TODO: All the methods defined here should be implemented in some Ray structure at some point
- * TODO: Easy method to create initial/terminal, right now it's a bit obscure
  *
  * TODO: Maybe want a way to destroy from one end, so that if other references try to look, they won't find additional structure. - More as a javascript implementation quirck if anything?
  *
@@ -99,8 +100,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   protected _terminal: Arbitrary<Ray>; get terminal(): Ray { return this._terminal(); } set terminal(terminal: Arbitrary<Ray>) { this._terminal = terminal; }
 
   get self(): Ray { return this.vertex; }; set self(self: Arbitrary<Ray>) { this.vertex = self; }
-
-  [index: number]: Ray;
 
   constructor({ initial, vertex, terminal, }: Partial<AbstractDirectionality<Ray>> = {}) {
     this._initial = initial ?? Ray.None;
@@ -193,38 +192,160 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return vertex.as_reference();//.continues_with(current.as_reference());
   }
 
+  get dereference() { return this.self.self.as_reference(); }
 
   /**
    *
    *
    * TODO: switch/match Should be abstracted into Ray?
    */
-  match = (cases: {
+  static next2 = (ref: Ray) => {
+    const { initial } = ref;
+
+    /**
+     * Should return vertex, for one possible next step
+     * Initial for many
+     * Terminal for none
+     * Reference for ???
+     */
+
+    /**
+     * Dereferencing is likely in many cases quickly subject to infinite stepping.
+     *
+     * REFERENCE          -> Dereference (this.self.self)
+     * INITIAL/INITIAL    -> Dereference (this.self.terminal)
+     * TERMINAL/TERMINAL  -> Dereference (this.self.initial)
+     * VERTEX/VERTEX      -> ???
+     *
+     * - Could be that this means that there's no continuation, a self-reference defined here, or it's some mechanism of halting.
+     *
+     * - TODO: Simple example of infinitely finding terminals, or a reference to 'nothing - infinitely'.
+     * - TODO: Could return both dereference sides as possible options
+     */
+
+    const next_pointer = (ref: Ray, terminal: Ray, next: Arbitrary<Ray>) => new Ray({
+      initial: terminal.as_arbitrary(),
+      vertex: ref.as_arbitrary(),
+      terminal: next,
+    });
+
+    /**
+     * INITIAL/TERMINAL -> possible previous  - TERMINAL.self.initial   (pass to step)
+     * TERMINAL/INITIAL -> possible next      - INITIAL.self.terminal   (pass to step)
+     */
+    const follow_direction = (terminal: Ray): Ray => next_pointer(ref, terminal, () => terminal.___primitive_switch({
+      [RayType.INITIAL]: Ray.directions.next,
+      [RayType.TERMINAL]: Ray.directions.previous,
+    }));
+
+    const dereference = (terminal: Ray) => next_pointer(ref, terminal, () => terminal.dereference);
+
+    /**
+     * TERMINAL -> VERTEX (next: VERTEX -> INITIAL)
+     * INITIAL -> VERTEX (next: VERTEX -> TERMINAL)
+     */
+    const arbitrary_continuations = (terminal: Ray): Ray => next_pointer(ref, terminal, () => initial.___primitive_switch({
+      [RayType.INITIAL]: (initial) => Ray.directions.next(terminal),
+      [RayType.TERMINAL]: (initial) => Ray.directions.previous(terminal),
+    }));
+
+    const found_vertex = (ref: Ray): Ray => {
+      throw new NotImplementedError();
+    }
+
+    const boundary = (boundary: Boundary) => (terminal: Ray): Ray => terminal.___primitive_switch({
+
+      /**
+       * Many possible continuations (from the perspective of initial = TERMINAL)
+       *
+       * From something, we arrived at some TERMINAL/INITIAL, which at its `.self`, holds a VERTEX.
+       *        [  ?  ]
+       * [--|--][--|  ]         <-- ref superposed with ref.self
+       *        [  ?  ]
+       */
+      [RayType.VERTEX]: arbitrary_continuations,
+
+      /**
+       * A possible continuation
+       *
+       * (INITIAL -> TERMINAL)
+       * (TERMINAL -> INITIAL)
+       */
+      [boundary]: follow_direction,
+      [opposite(boundary)]: follow_direction,
+
+      [RayType.REFERENCE]: dereference,
+    });
+
+    return initial.___primitive_switch({
+
+      /**
+       * VERTEX -> VERTEX
+       * TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
+       *
+       * VERTEX -> TERMINAL
+       * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
+       *        [--|--][--|  ]  <-- (VERTEX -> TERMINAL)
+       *
+       * VERTEX -> INITIAL
+       * If we're going in the initial direction (from the perspective of the initial = VERTEX)
+       * [  |--][--|--]         <-- (VERTEX -> INITIAL)
+       *
+       * VERTEX -> REFERENCE
+       * TODO ???
+       */
+      [RayType.VERTEX]: (initial) => dereference(ref.terminal),
+
+      [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL)(ref.terminal),
+      [RayType.TERMINAL]: (initial) => boundary(RayType.TERMINAL)(ref.terminal),
+
+      [RayType.REFERENCE]: dereference,
+    });
+  }
+  next2 = Ray.___func(Ray.next2).as_method(this);
+
+  static step = (ref: Ray) => {
+    const { initial } = ref;
+  }
+  step = (cases: {
     [RayType.VERTEX]: (self: Ray) => Ray,
 
     CONTINUATION: (self: Ray) => Ray,
 
-    /**
-     * Can be used to override default dereference behavior.
-     * TODO: This should probably be configurable on a more global setting.
-     */
     [RayType.REFERENCE]?: (self: Ray) => Ray
   }): Ray => {
     const { CONTINUATION } = cases;
-    const { initial } = this.self;
 
-    return initial.___primitive_switch({
+    /**
+     * INITIAL <-> TERMINAL
+     * MANY INITIAL <-> VERTEX <-> MANY TERMINAL
+     *
+     */
+
+    // TODO: These cases should be implemented as a moving cursor/selection
+    return this.___primitive_switch({
 
       [RayType.VERTEX]: cases[RayType.VERTEX],
 
-      [RayType.TERMINAL]: (self
-       // ,  disambiguate: { [RayType.INITIAL]: (), }
+      [RayType.TERMINAL]: (self// ,  disambiguate: { [RayType.INITIAL]: (), }
+      ) => CONTINUATION(self),
+      [RayType.INITIAL]: (self
+                          // ,  disambiguate: { [RayType.INITIAL]: (), }
       ) => CONTINUATION(self),
 
-      [RayType.REFERENCE]: () => Ray.vertex(new Ray({
-        initial: () => initial.self,  // Dereference
-        terminal: initial._terminal   // Pass terminal without evaluating
-      }).as_arbitrary()),
+      /**
+       *
+       *
+       * - Can be followed infinitely - if there's an orbit formed somewhere.
+       */
+      [RayType.REFERENCE]:
+        /**
+         * Can be used to override default dereference behavior.
+         *
+         * TODO: This should probably be configurable on a more global setting.
+         */
+        cases[RayType.REFERENCE]
+        ?? (() => Ray.vertex(() => this.self.self).as_reference()), // Dereference
 
     })
   }
@@ -245,10 +366,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
    */
-  static compose = Ray.___func(ref => ref.match({
+  static compose = Ray.___func(ref => ref.step({
     [RayType.VERTEX]: () => { throw new NotImplementedError(); },
     CONTINUATION: (self): Ray => {
-      
+      throw new NotImplementedError();
     }
   }));
   compose = Ray.compose.as_method(this);
@@ -448,6 +569,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     //   }
     // });
 
+    //  terminal: this._terminal   // Pass terminal without evaluating
+
     return {
 
       /**
@@ -499,91 +622,41 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     const method = Ray.___func(ref => {
       const { initial, terminal } = ref.self;
 
-      // const direction = terminal.type;
-
-      // throw new NotImplementedError(`'${direction}'`);
-
       return initial.___primitive_switch({
         [RayType.VERTEX]: () => terminal.___primitive_switch({
 
-          // TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
-          [RayType.VERTEX]: (ref) => { throw new NotImplementedError(); },
 
-          /**
-           * If we're going in the initial direction (from the perspective of the initial = VERTEX)
-           * [  |--][--|--]         <-- terminal
-           */
           [RayType.INITIAL]: (ref) => ref.self.___primitive_switch({
-            // TODO REVERSE OF TERMINAL..
 
-            // TODO: Implementation(ref) is probably concidently the same here..
-            [RayType.TERMINAL]: (ref) =>
-              // direction(ref) TODO
-              ref.self.initial.as_reference()
-                .___primitive_switch({ // TODO: This is applying the function again, should be separate?
+            [RayType.TERMINAL]: (ref) => ref.self.initial.as_reference()
+                .___primitive_switch({
               // Found a next Vertex.
               [RayType.VERTEX]: (self) => self,
+
             }),
           }),
 
-          /**
-           * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
-           *        [--|--][--|  ]  <-- terminal
-           */
           [RayType.TERMINAL]: (ref) => ref.self.___primitive_switch({
 
-            /**
-             * Many possible continuations (Vertical line is `ref.self`: Asking: 'What are the continuations at the terminal?`)
-             *
-             *           ?
-             * [--|--][--|  ]<-- ref superposed with ref.self
-             *           ?
-             */
-            [RayType.VERTEX]: () => {
-              throw new NotImplementedError()
-            },
-
-            // No continuations, either a self-reference, or different ways of halting.
-            [RayType.TERMINAL]: () => { throw new NotImplementedError() },
-
             // A possible continuation
-            [RayType.INITIAL]: (ref) =>
-              // direction(ref) TODO
-                ref.self.terminal.as_reference()
+            [RayType.INITIAL]: (ref) => ref.self.terminal.as_reference()
                   .___primitive_switch({ // TODO: This is applying the function again, should be separate?
                   // Found a next Vertex.
                   [RayType.VERTEX]: (self) => self,
-                  // [RayType.VERTEX]: (self) => { throw new NotImplementedError(); },
 
                   // TODO: Same, but defined a step further
                   // [RayType.TERMINAL]: () => Ray.None(),
                   [RayType.TERMINAL]: () => { throw new NotImplementedError(); },
 
-                  // TODO: This switch could repeat infinitely, we need a way to hook into each step..
-                  [RayType.INITIAL]: () => { throw new NotImplementedError(); },
-
-                  // TODO: Similar to Initial, probably follow the reference, possibly infintely...
-                  [RayType.REFERENCE]: (ref) => {
-                    // throw new NotImplementedError(`${ref.type}/${ref.self.type} - ${ref.any.js}/${ref.self.any.js}`);
-                    //
-                    // if (ref.self.type === RayType.VERTEX)
-                    //   return ref.self;
-
-                    throw new NotImplementedError(`${ref.type} ${ref.self.type}`);
-                  }
                 }),
 
-            // TODO: Possibly follow infintely
-            [RayType.REFERENCE]: (ref) => { throw new NotImplementedError(ref.self.type); }
           }),
 
         })
       })
     }).as_method;
 
-    // TODO Implemented as ___func, indicating terminal as the direction of next? as in 'this.next(this => this.self.terminal)' as default, basically, .next is generalizable to any function...
-
-    return (ref: Ray) => method(ref)(step(ref)); // TODO: Merge __next into __func, make this cleaner...
+    return (ref: Ray) => method(ref)(step(ref));
   }
 
   /**
@@ -904,6 +977,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   push_back = (ray: Ray) => { throw new NotImplementedError(); }
   push_front = (ray: Ray) => { throw new NotImplementedError(); }
+
+
+  // [index: number]: Ray;
 
   // length: number;
   //

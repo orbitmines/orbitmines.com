@@ -20,6 +20,98 @@ describe("Ray", () => {
     expect(method(a)(b).terminal.self.any.js).toBe('B');
     expect(method(a)(b).type).toBe(RayType.VERTEX);
   });
+  test(".next", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    A.continues_with(B).continues_with(C);
+    
+    let pointer = new Ray({
+      initial: () => A,
+      terminal: () => Ray.directions.next(A),
+    });
+
+    /**
+     *        ____________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.VERTEX);
+    expect(pointer.terminal.type).toBe(RayType.TERMINAL);
+
+    pointer = Ray.next2(pointer);
+    
+    /**
+     *             ______________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.TERMINAL);
+    expect(pointer.terminal.type).toBe(RayType.INITIAL);
+    pointer = Ray.next2(pointer);
+
+    /**
+     *                    ____________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.INITIAL);
+    expect(pointer.terminal.type).toBe(RayType.VERTEX);
+    expect(pointer.terminal.self.any.js).toBe('B');
+
+    pointer = Ray.next2(pointer);
+    
+    /**
+     *                           ____________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.VERTEX);
+    expect(pointer.terminal.type).toBe(RayType.TERMINAL);
+
+    pointer = Ray.next2(pointer);
+    
+    /**
+     *                                ______________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.TERMINAL);
+    expect(pointer.terminal.type).toBe(RayType.INITIAL);
+
+    pointer = Ray.next2(pointer);
+    
+    /**
+     *                                       ____________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.INITIAL);
+    expect(pointer.terminal.type).toBe(RayType.VERTEX);
+    expect(pointer.terminal.self.any.js).toBe('C');
+
+    pointer = Ray.next2(pointer);
+    
+    /**
+     *                                              ____________
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.VERTEX);
+    expect(pointer.terminal.type).toBe(RayType.TERMINAL);
+
+    pointer = Ray.next2(pointer);
+
+    /**
+     *                                                   _______
+     * [  |--]     [--|  ][  |--]     [--|  ][  |--]     [--|  ]
+     *       [--A--]            [--B--]            [--C--]
+     */
+    expect(pointer.initial.type).toBe(RayType.TERMINAL);
+    // expect(pointer.terminal.type).toBe(RayType.TERMINAL); ??
+    expect(pointer.terminal.is_none()).toBe(true);
+  });
   test("[A, B, C][.next, .previous]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
