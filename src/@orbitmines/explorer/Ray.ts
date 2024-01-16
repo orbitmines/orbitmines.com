@@ -172,15 +172,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   ___empty_initial = () => new Ray({ vertex: Ray.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
   ___empty_terminal = () => new Ray({ vertex: Ray.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
 
-  static size = (of: number, value: any = undefined): Ray => {
-    let current = Ray.vertex().as_reference(); // TODO; This sort of thing should be lazy
-    for (let i = 0; i < of; i++) {
-      current = current.continues_with(Ray.vertex(JS.Any(value).as_arbitrary()).as_reference());
-    }
-
-    return current;
-  }
-
   /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
 
@@ -639,9 +630,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * TODO: All these should accept Ray values.
    *
-   * of_length, since .length is reserved by JavaScript.
+   * .size, since .length is reserved by JavaScript.
    */
-  static of_length = (of: number, value: any = undefined): Ray => {
+  // @alias('length', 'of_length')
+  static size = (of: number, value: any = undefined): Ray => {
     let ret: Ray | undefined;
     let current: Ray | undefined;
     // TODO: Actual good implementation: Should be lazy
@@ -661,7 +653,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return ret;
   }
   static at = (index: number, of: number, value: any = undefined): Ray => {
-    return Ray.of_length(of, value).at(index);
+    return Ray.size(of, value).at(index);
   }
   static permutation = (permutation: number | undefined, of: number): Ray => Ray.at(
     // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
