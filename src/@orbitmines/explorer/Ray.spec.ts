@@ -218,6 +218,86 @@ describe("Ray", () => {
     expect(B.last().self.any.js).toBe('C');
     expect(C.last().self.any.js).toBe('C');
   });
+  test("[A, B, C][.at()]", () => {
+    const A = Ray.vertex().o({js: 'A'}).as_reference().o({js: 'A.#'});
+    const B = Ray.vertex().o({js: 'B'}).as_reference().o({js: 'B.#'});
+    const C = Ray.vertex().o({js: 'C'}).as_reference().o({js: 'C.#'});
+
+    A.continues_with(B).continues_with(C);
+
+    expect(A.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
+    expect(A.at(-100).is_none()).toBe(true);
+    expect(A.at(-1).is_none()).toBe(true);
+    expect(A.at(0).self.any.js).toBe('A');
+    expect(A.at(1).self.any.js).toBe('B');
+    expect(A.at(2).self.any.js).toBe('C');
+    expect(A.at(3).is_none()).toBe(true);
+    expect(A.at(100).is_none()).toBe(true);
+    expect(A.at(Number.MAX_VALUE.valueOf()).is_none()).toBe(true);
+
+    expect(B.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
+    expect(B.at(-100).is_none()).toBe(true);
+    expect(B.at(-2).is_none()).toBe(true);
+    expect(B.at(-1).self.any.js).toBe('A');
+    expect(B.at(0).self.any.js).toBe('B');
+    expect(B.at(1).self.any.js).toBe('C');
+    expect(B.at(2).is_none()).toBe(true);
+    expect(B.at(100).is_none()).toBe(true);
+    expect(B.at(Number.MAX_VALUE.valueOf()).is_none()).toBe(true);
+
+    expect(C.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
+    expect(C.at(-100).is_none()).toBe(true);
+    expect(C.at(-3).is_none()).toBe(true);
+    expect(C.at(-2).self.any.js).toBe('A');
+    expect(C.at(-1).self.any.js).toBe('B');
+    expect(C.at(0).self.any.js).toBe('C');
+    expect(C.at(1).is_none()).toBe(true);
+    expect(C.at(100).is_none()).toBe(true);
+    expect(C.at(Number.MAX_VALUE.valueOf()).is_none()).toBe(true);
+  });
+  test(".permutation", () => {
+    const A = Ray.permutation(0, 3);
+    const B = Ray.permutation(1, 3);
+    const C = Ray.permutation(2, 3);
+
+    expect(A.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
+    expect(A.at(-100).is_none()).toBe(true);
+    expect(A.at(-1).is_none()).toBe(true);
+
+    expect(A.at(0).is_some()).toBe(true);
+    expect(A.at(1).is_some()).toBe(true);
+    expect(A.at(2).is_some()).toBe(true);
+
+    expect(A.at(3).is_none()).toBe(true);
+    expect(A.at(100).is_none()).toBe(true);
+    expect(A.at(Number.MAX_VALUE.valueOf()).is_none()).toBe(true);
+
+
+    expect(B.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
+    expect(B.at(-100).is_none()).toBe(true);
+    expect(B.at(-2).is_none()).toBe(true);
+
+    expect(B.at(-1).is_some()).toBe(true);
+    expect(B.at(0).is_some()).toBe(true);
+    expect(B.at(1).is_some()).toBe(true);
+
+    expect(B.at(2).is_none()).toBe(true);
+    expect(B.at(100).is_none()).toBe(true);
+    expect(B.at(Number.MAX_VALUE.valueOf()).is_none()).toBe(true);
+
+
+    expect(C.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
+    expect(C.at(-100).is_none()).toBe(true);
+    expect(C.at(-3).is_none()).toBe(true);
+
+    expect(C.at(-2).is_some()).toBe(true);
+    expect(C.at(-1).is_some()).toBe(true);
+    expect(C.at(0).is_some()).toBe(true);
+
+    expect(C.at(1).is_none()).toBe(true);
+    expect(C.at(100).is_none()).toBe(true);
+    expect(C.at(Number.MAX_VALUE.valueOf()).is_none()).toBe(true);
+  });
   test("[A, B, C][.next(), .previous()]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });

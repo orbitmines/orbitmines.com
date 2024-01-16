@@ -184,8 +184,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
 
-
-  // as_option = (): Ray => Option.Some(this);
   as_arbitrary = (): Arbitrary<Ray> => () => this;
 
   as_vertex = (): Ray => {
@@ -519,22 +517,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   ): {
     as_method: ArbitraryMethod
   } {
-    // const func = new Ray({
-    //   terminal: (): Ray => {
-    //
-    //   }
-    // });
-
-    // const step: Implementation = (ref: Ray): Ray => {
-    //   const pointer = new Ray({
-    //     initial: ref.as_arbitrary(),
-    //     terminal: _first.as_arbitrary()
-    //   });
-    // }
-
-
-    //  terminal: this._terminal   // Pass terminal without evaluating
-
     return {
 
       /**
@@ -611,16 +593,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         // return Ray.___next(Ray.directions.next)(this);
       }
       has_next = (step: Implementation = Ray.directions.next): boolean => this.next(step).is_some();
-      // @alias('end', 'result')
+      // @alias('end', 'result', 'back')
       last = (step: Implementation = Ray.directions.next): Ray => {
         const next = this.next(step);
         return next.is_some() ? next.last(step) : this;
       }
     /**
-     * .previous
+     * .previous (Just .next with a `Ray.directions.previous` default)
      */
       previous = (step: Implementation = Ray.directions.previous): Ray => this.next(step);
       has_previous = (step: Implementation = Ray.directions.previous): boolean => this.has_next(step);
+      // @alias('beginning', 'front')
       first = (step: Implementation = Ray.directions.previous): Ray => this.last(step);
   
   // TODO: I Don't like this name, but it needs to get across that any equivalency, or any equivalency check for that necessarily, is local. And I want more equivalences, I run more of this method.
@@ -651,20 +634,58 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return copy;
   }
 
-  // export const at = (index: number, of: number, value: any = undefined): Arbitrary<Ray<any>> => {
-//   return Arbitrary.Fn(() => length(of, value).resolve().at_terminal(index));
-// }
-//
-  // step = this.at; ???
-  at = (steps: number | Ray | Arbitrary<Ray>): Ray => { throw new NotImplementedError(); }
-  //
-// export const permutation = (permutation: number | undefined, of: number): Arbitrary<Ray<any>> => at(
-//   // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
-//   permutation ?? 0,
-//   // In the case of a bit: Either |-*-| if no bit or |-*->-*-| if a bit.
-//   permutation === undefined ? 1 : of
-// )
-//
+  /**
+   * TODO - Better 'value' here. (Use JS.Any??)
+   *
+   * TODO: All these should accept Ray values.
+   *
+   * of_length, since .length is reserved by JavaScript.
+   */
+  static of_length = (of: number, value: any = undefined): Ray => {
+    let ret: Ray | undefined;
+    let current: Ray | undefined;
+    // TODO: Actual good implementation: Should be lazy
+    for (let i = 0; i < of; i++) {
+      const vertex = Ray.vertex().o({js: value}).as_reference();
+
+      if (!ret) {
+        current = ret = vertex;
+      } else {
+        current = current?.continues_with(vertex);
+      }
+    }
+
+    if (!ret)
+      return Ray.None();
+
+    return ret;
+  }
+  static at = (index: number, of: number, value: any = undefined): Ray => {
+    return Ray.of_length(of, value).at(index);
+  }
+  static permutation = (permutation: number | undefined, of: number): Ray => Ray.at(
+    // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
+    permutation ?? 0,
+    // In the case of a bit: Either |-*-| if no bit or |-*->-*-| if a bit.
+    permutation === undefined ? 1 : of
+  )
+
+  at = (steps: number | Ray | Arbitrary<Ray>): Ray => {
+    if (!JS.is_number(steps))
+      throw new NotImplementedError('Not yet implemented for Rays.');
+
+    // TODO: Actual good implementation - also doesn't support modular like this
+    const array = [...this.traverse(
+      steps < 0 ? Ray.directions.previous : Ray.directions.next
+    )];
+
+    steps = Math.abs(steps);
+
+    return array.length > steps && steps >= 0 ? (
+      array[steps] ?? Ray.None() // TODO FIX: Probably a JavaScript quirck with some weird numbers, just failsafe to None.
+    ) : Ray.None();
+  }
+
   // export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
 
   // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
@@ -723,7 +744,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       if (!current.has_next(step))
         break;
 
-      current = current.next();
+      current = current.next(step);
     }
   }
 
@@ -910,6 +931,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
 
+  // TODO: These are just (.back/.front) + .continues_with ??
   push_back = (ray: Ray) => { throw new NotImplementedError(); }
   push_front = (ray: Ray) => { throw new NotImplementedError(); }
 
@@ -1092,18 +1114,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
 /**
  *
- * Important to remember this is just one particular structure to which it can be mapped, there are probably many (infinitely?) others.
+ * Important to remember this is just one particular structure to which it can be mapped, there are probably many (TODO infinitely?) others.
  *
  * Not to be considered as a perfect mapping of JavaScript functionality - merely a practical one.
  */
-
-  // Number: (number: number) => typeof number,
-  // Function: (func: ParameterlessFunction) => typeof func,
-
-  // Number: (number: number) => number,
-  // Function: (func: ParameterlessFunction) => func,
-
-
 export namespace JS {
   export const Boolean = (boolean: boolean): Ray => {
     // |-false->-true-| (could of course also be reversed)
