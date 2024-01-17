@@ -596,7 +596,7 @@ describe("Ray", () => {
      * [--Q--][--R--][--S--]
      *           |
      */
-    B.equivalent(Y).equivalent(J)//;.equivalent(R);
+    B.equivalent(Y).equivalent(J).equivalent(R);
 
     // TODO: Bug is from one empty side.
     // TODO: Still one bug, J.# ->, makes the equiv(R) a parallel composition, so something is TERMINAL/INITIAL -> VERTEX
@@ -636,32 +636,130 @@ describe("Ray", () => {
       expect(B.dereference.self).not.toBe(B.self);
       expect(B.dereference.self.self.any.js).toBe('B');
       expect(B.dereference.self.any.js).toBe('___as_vertex');
-      expect([...B.dereference.traverse()].length).toBe(1);
-      expect([...B.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['B', 'Y', 'J', 'R']);
+      expect([...B.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['B']);
+      expect([...B.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['B', 'Y', 'J', 'R']);
 
       expect(Y.dereference.is_none()).toBe(false);
       expect(Y.dereference.type).toBe(RayType.VERTEX);
       expect(Y.dereference.self).not.toBe(Y.self);
       expect(Y.dereference.self.self.any.js).toBe('Y');
       expect(Y.dereference.self.any.js).toBe('___as_vertex');
-      expect([...Y.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['Y', 'B']);
-      expect([...Y.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['Y', 'J', 'R']);
+      expect([...Y.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['Y', 'B']);
+      expect([...Y.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['Y', 'J', 'R']);
 
       expect(J.dereference.is_none()).toBe(false);
       expect(J.dereference.type).toBe(RayType.VERTEX);
       expect(J.dereference.self).not.toBe(J.self);
       expect(J.dereference.self.self.any.js).toBe('J');
       expect(J.dereference.self.any.js).toBe('___as_vertex');
-      expect([...J.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['J', 'Y', 'B']);
-      expect([...J.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['J', 'R']);
+      expect([...J.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['J', 'Y', 'B']);
+      expect([...J.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['J', 'R']);
 
       expect(R.dereference.is_none()).toBe(false);
       expect(R.dereference.type).toBe(RayType.VERTEX);
       expect(R.dereference.self).not.toBe(R.self);
       expect(R.dereference.self.self.any.js).toBe('R');
       expect(R.dereference.self.any.js).toBe('___as_vertex');
-      expect([...R.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['R', 'J', 'Y', 'B']);
-      expect([...R.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['R']);
+      expect([...R.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['R', 'J', 'Y', 'B']);
+      expect([...R.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['R']);
+  });
+  test("([ABC], [XYZ], [IJK]]) ; B.equiv(Y).equiv(J)", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    const X = Ray.vertex().o({ js: 'X' }).as_reference().o({ js: 'X.#' });
+    const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
+    const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
+
+    const I = Ray.vertex().o({ js: 'I' }).as_reference().o({ js: 'I.#' });
+    const J = Ray.vertex().o({ js: 'J' }).as_reference().o({ js: 'J.#' });
+    const K = Ray.vertex().o({ js: 'K' }).as_reference().o({ js: 'K.#' });
+
+    A.compose(B).compose(C);
+    X.compose(Y).compose(Z);
+    I.compose(J).compose(K);
+
+    // BEFORE .equivalent
+      expect([...A.traverse()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+      expect([...A.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['A']);
+      expect([...B.traverse()].map(ref => ref.self.any.js)).toEqual(['B', 'C']);
+      expect([...B.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
+      expect([...C.traverse()].map(ref => ref.self.any.js)).toEqual(['C']);
+      expect([...C.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['C', 'B', 'A']);
+
+      expect([...X.traverse()].map(ref => ref.self.any.js)).toEqual(['X', 'Y', 'Z']);
+      expect([...X.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['X']);
+      expect([...Y.traverse()].map(ref => ref.self.any.js)).toEqual(['Y', 'Z']);
+      expect([...Y.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['Y', 'X']);
+      expect([...Z.traverse()].map(ref => ref.self.any.js)).toEqual(['Z']);
+      expect([...Z.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['Z', 'Y', 'X']);
+
+      expect([...I.traverse()].map(ref => ref.self.any.js)).toEqual(['I', 'J', 'K']);
+      expect([...I.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['I']);
+      expect([...J.traverse()].map(ref => ref.self.any.js)).toEqual(['J', 'K']);
+      expect([...J.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['J', 'I']);
+      expect([...K.traverse()].map(ref => ref.self.any.js)).toEqual(['K']);
+      expect([...K.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['K', 'J', 'I']);
+
+    /**
+     * Drawing an equivalence between `B -> Y -> J`. (Doesn't need to hold in some more abstract sense, it's just a line)
+     *           |
+     * [--A--][--B--][--C--]
+     *           |
+     * [--X--][--Y--][--Z--]
+     *           |
+     * [--I--][--J--][--K--]
+     *           |
+     */
+    B.equivalent(Y).equivalent(J);
+
+    // AFTER .equivalent (Ensure the composed vertices didn't change in their respective directions)
+      expect([...A.traverse()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
+      expect([...A.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['A']);
+      expect([...B.traverse()].map(ref => ref.self.any.js)).toEqual(['B', 'C']);
+      expect([...B.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
+      expect([...C.traverse()].map(ref => ref.self.any.js)).toEqual(['C']);
+      expect([...C.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['C', 'B', 'A']);
+
+      expect([...X.traverse()].map(ref => ref.self.any.js)).toEqual(['X', 'Y', 'Z']);
+      expect([...X.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['X']);
+      expect([...Y.traverse()].map(ref => ref.self.any.js)).toEqual(['Y', 'Z']);
+      expect([...Y.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['Y', 'X']);
+      expect([...Z.traverse()].map(ref => ref.self.any.js)).toEqual(['Z']);
+      expect([...Z.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['Z', 'Y', 'X']);
+
+      expect([...I.traverse()].map(ref => ref.self.any.js)).toEqual(['I', 'J', 'K']);
+      expect([...I.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['I']);
+      expect([...J.traverse()].map(ref => ref.self.any.js)).toEqual(['J', 'K']);
+      expect([...J.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['J', 'I']);
+      expect([...K.traverse()].map(ref => ref.self.any.js)).toEqual(['K']);
+      expect([...K.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['K', 'J', 'I']);
+
+    // But they should be connected through their .vertex/.self:
+      expect(B.dereference.is_none()).toBe(false);
+      expect(B.dereference.type).toBe(RayType.VERTEX);
+      expect(B.dereference.self).not.toBe(B.self);
+      expect(B.dereference.self.self.any.js).toBe('B');
+      expect(B.dereference.self.any.js).toBe('___as_vertex');
+      expect([...B.dereference.traverse(Ray.directions.previous)].length).toBe(1);
+      expect([...B.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['B', 'Y', 'J']);
+
+      expect(Y.dereference.is_none()).toBe(false);
+      expect(Y.dereference.type).toBe(RayType.VERTEX);
+      expect(Y.dereference.self).not.toBe(Y.self);
+      expect(Y.dereference.self.self.any.js).toBe('Y');
+      expect(Y.dereference.self.any.js).toBe('___as_vertex');
+      expect([...Y.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['Y', 'B']);
+      expect([...Y.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['Y', 'J']);
+
+      expect(J.dereference.is_none()).toBe(false);
+      expect(J.dereference.type).toBe(RayType.VERTEX);
+      expect(J.dereference.self).not.toBe(J.self);
+      expect(J.dereference.self.self.any.js).toBe('J');
+      expect(J.dereference.self.any.js).toBe('___as_vertex');
+      expect([...J.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['J', 'Y', 'B']);
+      expect([...J.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['J']);
   });
   test("([ABC], [XYZ], [IJK], [QRS]) ; B.equiv(Y) ; J.equiv(J) ; Y.equiv(J)", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
@@ -765,32 +863,32 @@ describe("Ray", () => {
       expect(B.dereference.self).not.toBe(B.self);
       expect(B.dereference.self.self.any.js).toBe('B');
       expect(B.dereference.self.any.js).toBe('___as_vertex');
-      expect([...B.dereference.traverse()].length).toBe(1);
-      expect([...B.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['B', 'Y', 'J', 'R']);
+      expect([...B.dereference.traverse(Ray.directions.previous)].length).toBe(1);
+      expect([...B.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['B', 'Y', 'J', 'R']);
 
       expect(Y.dereference.is_none()).toBe(false);
       expect(Y.dereference.type).toBe(RayType.VERTEX);
       expect(Y.dereference.self).not.toBe(Y.self);
       expect(Y.dereference.self.self.any.js).toBe('Y');
       expect(Y.dereference.self.any.js).toBe('___as_vertex');
-      expect([...Y.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['Y', 'B']);
-      expect([...Y.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['Y', 'J', 'R']);
+      expect([...Y.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['Y', 'B']);
+      expect([...Y.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['Y', 'J', 'R']);
 
       expect(J.dereference.is_none()).toBe(false);
       expect(J.dereference.type).toBe(RayType.VERTEX);
       expect(J.dereference.self).not.toBe(J.self);
       expect(J.dereference.self.self.any.js).toBe('J');
       expect(J.dereference.self.any.js).toBe('___as_vertex');
-      expect([...J.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['J', 'Y', 'B']);
-      expect([...J.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['J', 'R']);
+      expect([...J.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['J', 'Y', 'B']);
+      expect([...J.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['J', 'R']);
 
       expect(R.dereference.is_none()).toBe(false);
       expect(R.dereference.type).toBe(RayType.VERTEX);
       expect(R.dereference.self).not.toBe(R.self);
       expect(R.dereference.self.self.any.js).toBe('R');
       expect(R.dereference.self.any.js).toBe('___as_vertex');
-      expect([...R.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['R', 'J', 'Y', 'B']);
-      expect([...R.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['R']);
+      expect([...R.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['R', 'J', 'Y', 'B']);
+      expect([...R.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['R']);
   });
   test("(A:vertex.# = B:vertex.#) ; A.as_terminal", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
@@ -880,14 +978,136 @@ describe("Ray", () => {
     expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['___as_vertex', '___as_vertex']);
     expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
   });
-  test(".None.#.equivalent(.vertex.#)", () => {
-    const A = Ray.None().as_reference();
+  test("A.equiv(B) ; C.equiv(D) ; B.equiv(C)", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
 
-    // const ret = A.equivalent(B);
+    A.equivalent(B);
+    C.equivalent(D);
+    B.equivalent(C);
 
-    // expect()
+    expect(A.self.type).toBe(RayType.VERTEX);
+    expect(A.self.self.any.js).toBe('___as_vertex');
+    expect(A.self.self.self.any.js).toBe('A');
+
+    expect(B.self.type).toBe(RayType.VERTEX);
+    expect(B.self.self.any.js).toBe('___as_vertex');
+    expect(B.self.self.self.any.js).toBe('B');
+
+    expect(C.self.type).toBe(RayType.VERTEX);
+    expect(C.self.self.any.js).toBe('___as_vertex');
+    expect(C.self.self.self.any.js).toBe('C');
+
+    expect(D.self.type).toBe(RayType.VERTEX);
+    expect(D.self.self.any.js).toBe('___as_vertex');
+    expect(D.self.self.self.any.js).toBe('D');
+
+    expect([...A.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['A']);
+    expect([...A.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['A', 'B', 'C', 'D']);
+    expect([...B.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...B.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['B', 'C', 'D']);
+    expect([...C.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['C', 'B', 'A']);
+    expect([...C.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['C', 'D']);
+    expect([...D.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['D', 'C', 'B', 'A']);
+    expect([...D.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['D']);
   });
+  test("A.equiv(B).equiv(C)", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    A.equivalent(B).equivalent(C);
+
+    expect(A.self.type).toBe(RayType.VERTEX);
+    expect(A.self.self.any.js).toBe('___as_vertex');
+    expect(A.self.self.self.any.js).toBe('A');
+
+    expect(B.self.type).toBe(RayType.VERTEX);
+    expect(B.self.self.any.js).toBe('___as_vertex');
+    expect(B.self.self.self.any.js).toBe('B');
+
+    expect(C.self.type).toBe(RayType.VERTEX);
+    expect(C.self.self.any.js).toBe('___as_vertex');
+    expect(C.self.self.self.any.js).toBe('C');
+
+    expect([...A.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['A']);
+    expect([...A.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['A', 'B', 'C']);
+    expect([...B.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...B.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['B', 'C']);
+    expect([...C.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['C', 'B', 'A']);
+    expect([...C.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['C']);
+  });
+  test("A.equiv(B).equiv(C).equiv(D).equiv(E).equiv(F)", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
+    const E = Ray.vertex().o({ js: 'E' }).as_reference().o({ js: 'E.#' });
+    const F = Ray.vertex().o({ js: 'F' }).as_reference().o({ js: 'F.#' });
+    /**
+     *    |
+     * [--A--]
+     *    |
+     * [--B--]
+     *    |
+     * [--C--]
+     *    |
+     * [--D--]
+     *    |
+     * [--E--]
+     *    |
+     * [--F--]
+     *    |
+     */
+    A.equivalent(B).equivalent(C).equivalent(D).equivalent(E).equivalent(F);
+
+    expect(A.self.type).toBe(RayType.VERTEX);
+    expect(A.self.self.any.js).toBe('___as_vertex');
+    expect(A.self.self.self.any.js).toBe('A');
+
+    expect(B.self.type).toBe(RayType.VERTEX);
+    expect(B.self.self.any.js).toBe('___as_vertex');
+    expect(B.self.self.self.any.js).toBe('B');
+
+    expect(C.self.type).toBe(RayType.VERTEX);
+    expect(C.self.self.any.js).toBe('___as_vertex');
+    expect(C.self.self.self.any.js).toBe('C');
+
+    expect(D.self.type).toBe(RayType.VERTEX);
+    expect(D.self.self.any.js).toBe('___as_vertex');
+    expect(D.self.self.self.any.js).toBe('D');
+
+    expect(E.self.type).toBe(RayType.VERTEX);
+    expect(E.self.self.any.js).toBe('___as_vertex');
+    expect(E.self.self.self.any.js).toBe('E');
+
+    expect(F.self.type).toBe(RayType.VERTEX);
+    expect(F.self.self.any.js).toBe('___as_vertex');
+    expect(F.self.self.self.any.js).toBe('F');
+
+    expect([...A.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['A']);
+    expect([...A.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['A', 'B', 'C', 'D', 'E', 'F']);
+    expect([...B.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...B.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['B', 'C', 'D', 'E', 'F']);
+    expect([...C.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['C', 'B', 'A']);
+    expect([...C.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['C', 'D', 'E', 'F']);
+    expect([...D.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['D', 'C', 'B', 'A']);
+    expect([...D.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['D', 'E', 'F']);
+    expect([...E.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['E', 'D', 'C', 'B', 'A']);
+    expect([...E.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['F', 'E']);
+    expect([...F.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['F', 'E', 'D', 'C', 'B', 'A']);
+    expect([...F.dereference.traverse()].map(ref => ref.self.self.any.js)).toEqual(['F']);
+  });
+  // test(".None.#.equivalent(.vertex.#)", () => {
+  //   const A = Ray.None().as_reference();
+  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+  //
+  //   // const ret = A.equivalent(B);
+  //
+  //   // expect()
+  // });
   test("[A, B, C][.as_array, ...]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });

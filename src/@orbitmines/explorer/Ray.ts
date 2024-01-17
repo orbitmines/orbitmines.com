@@ -164,9 +164,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * ______ (<- initial pointer)
    */
   as_initial = (): Ray => {
-    if (this.is_none() || this.dereference.is_none()) {
+    if (this.is_none()) {
+      throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
+    }
+    if (this.dereference.is_none()) {
       // TODO: Need some intuition for this check
-      return Ray.vertex(this.as_arbitrary()).as_reference().follow(Ray.directions.previous);
+      const vertex = this.___as_vertex();
+
+      if (vertex.type !== RayType.VERTEX)
+        throw new PreventsImplementationBug();
+
+      return vertex.follow(Ray.directions.previous);
     }
 
     const [terminal_vertex, initial_vertex] = this.___as_vertices();
@@ -189,9 +197,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *                                         _____ (<- terminal pointer)
    */
   as_terminal = (): Ray => {
-    if (this.is_none() || this.dereference.is_none()) {
+    if (this.is_none()) {
+      throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
+    }
+    if (this.dereference.is_none()) {
       // TODO: Need some intuition for this check
-      return Ray.vertex(this.as_arbitrary()).as_reference().follow();
+      const vertex = this.___as_vertex();
+
+      if (vertex.type !== RayType.VERTEX)
+        throw new PreventsImplementationBug();
+
+      return vertex.follow();
     }
 
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
@@ -468,15 +484,27 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * - Then we're left with the 'beginning' of one iterator, and the 'end' of the other. And the only thing that's left to do, is draw a simple (ignorant) equivalence between the two. (Basically call this function again, and call {ignorant_equivalence}).
      *    TODO: This could also be a line with some debug information.
      */
-    const a = initial.as_initial();
-    const b = terminal.as_terminal();
+    const a = initial.as_terminal();
+    const b = terminal.as_initial();
 
-    if (a.type !== RayType.INITIAL)
+    if (a.type !== RayType.TERMINAL)
       throw new PreventsImplementationBug();
-    if (b.type !== RayType.TERMINAL)
+    if (b.type !== RayType.INITIAL)
       throw new PreventsImplementationBug();
 
-    return a.equivalent(b);
+    if (!a.self.self.is_none())
+      throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+    if (!b.self.self.is_none())
+      throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+
+    a.equivalent(b);
+
+    const ret = terminal;
+
+    if (ret.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug(`${ret.type}`);
+
+    return ret;
   });
   equivalent = Ray.equivalent.as_method(this);
 
