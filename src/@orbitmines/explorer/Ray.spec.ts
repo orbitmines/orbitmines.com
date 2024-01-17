@@ -375,7 +375,7 @@ describe("Ray", () => {
     // const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
     //
     // X.compose(Y).compose(Z);
-
+    //
     // const ret = A.compose(X.follow(Ray.directions.previous));
 
 

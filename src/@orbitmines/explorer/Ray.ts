@@ -180,15 +180,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_initial = (): Ray => {
     const [terminal_vertex, initial_vertex] = this.___as_vertices();
 
-    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }))
-
-    // TODO: Without compose;
-    // initial_vertex.o({ js: 'initial_vertex' })
-    //   .follow()
-    //   .equivalent(
-    //     terminal_vertex.o({ js: 'terminal_vertex' })
-    //       .follow(Ray.directions.previous)
-    //   )
+    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }));
 
     // TODO BETTER DEBUG
 
@@ -203,15 +195,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_terminal = (): Ray => {
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
 
-    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }))
-
-    // TODO: Without compose;
-    // initial_vertex.o({ js: 'initial_vertex' })
-    //   .follow()
-    //   .equivalent(
-    //     terminal_vertex.o({ js: 'terminal_vertex' })
-    //       .follow(Ray.directions.previous)
-    //   )
+    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }));
 
     // TODO BETTER DEBUG
 
