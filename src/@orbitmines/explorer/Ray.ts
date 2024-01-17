@@ -164,9 +164,19 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * ______ (<- initial pointer)
    */
   as_initial = (): Ray => {
+    if (this.is_none() || this.dereference.is_none()) {
+      // TODO: Need some intuition for this check
+      return Ray.vertex(this.as_arbitrary()).as_reference().follow(Ray.directions.previous);
+    }
+
     const [terminal_vertex, initial_vertex] = this.___as_vertices();
 
-    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }));
+    if (initial_vertex.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug();
+    if (terminal_vertex.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug();
+
+    initial_vertex.compose(terminal_vertex);
 
     // TODO BETTER DEBUG
 
@@ -179,9 +189,19 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *                                         _____ (<- terminal pointer)
    */
   as_terminal = (): Ray => {
+    if (this.is_none() || this.dereference.is_none()) {
+      // TODO: Need some intuition for this check
+      return Ray.vertex(this.as_arbitrary()).as_reference().follow();
+    }
+
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
 
-    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }));
+    if (initial_vertex.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug();
+    if (terminal_vertex.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug();
+
+    initial_vertex.compose(terminal_vertex);
 
     // TODO BETTER DEBUG
 
@@ -195,11 +215,18 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return [this.self.___as_vertex(), this.___as_vertex()];
   }
   private ___as_vertex = (): Ray => {
-    return this.self.___ignorantly_equivalent(Ray.vertex().as_reference());
+    const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
+
+    // this.self.self = vertex.self.as_arbitrary();
+    // vertex.self.self = this.self.as_arbitrary();
+
+    // return this.___ignorantly_equivalent(Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' }));
+
+    return this.___ignorantly_equivalent(vertex);
   }
   private ___ignorantly_equivalent = (ref: Ray): Ray => {
-    this.self = ref.as_arbitrary();
-    ref.self = this.as_arbitrary();
+    this.self.self = ref.self.as_arbitrary();
+    ref.self.self = this.self.as_arbitrary();
 
     return ref;
   }
@@ -377,8 +404,12 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   static compose = Ray.___func(ref => {
     let { initial, terminal} = ref.self;
 
+    if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
+      throw new PreventsImplementationBug();
+
+    // ${[...initial.self.initial.as_reference().traverse()].map(ref => ref.self.any.js)}
     if (initial.type !== RayType.VERTEX || terminal.type !== RayType.VERTEX) {
-      throw new PreventsImplementationBug(`[${initial.type}] - [${terminal.type}] - only composing vertices for now`);
+      throw new PreventsImplementationBug(`[${initial.type}] - [${terminal.type}] - only composing vertices for now (${initial.self.initial.any.js} -> ${terminal.self.terminal.any.js})`);
     }
 
     initial.follow().equivalent(terminal.follow(Ray.directions.previous));
@@ -411,8 +442,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * Basically turns `A` into a reference to `B`, and `B` into a reference to `A`.
      */
     const ignorant_equivalence = (): Ray => {
-      initial.self.___ignorantly_equivalent(terminal.self);
-      return ref;
+      return initial.___ignorantly_equivalent(terminal);
     }
 
     // 2x Ray.None -> Turn into 2 empty references, referencing each-other.
@@ -438,9 +468,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * - Then we're left with the 'beginning' of one iterator, and the 'end' of the other. And the only thing that's left to do, is draw a simple (ignorant) equivalence between the two. (Basically call this function again, and call {ignorant_equivalence}).
      *    TODO: This could also be a line with some debug information.
      */
-    initial.as_initial().equivalent(terminal.as_terminal());
+    const a = initial.as_initial();
+    const b = terminal.as_terminal();
 
-    return ref;
+    if (a.type !== RayType.INITIAL)
+      throw new PreventsImplementationBug();
+    if (b.type !== RayType.TERMINAL)
+      throw new PreventsImplementationBug();
+
+    return a.equivalent(b);
   });
   equivalent = Ray.equivalent.as_method(this);
 
@@ -560,7 +596,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         pointer = pointer.step().step();
 
         if (pointer.terminal.type !== RayType.VERTEX)
-          throw new NotImplementedError(pointer.terminal.type);
+          throw new NotImplementedError(`${pointer.terminal.type} / ${pointer.terminal.self.self.any.js}`);
 
         return pointer.terminal;
 
