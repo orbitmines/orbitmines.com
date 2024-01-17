@@ -100,11 +100,11 @@ export namespace Chyp {
     // Graph.inputs = Ray.initial
       get inputs(): Ray { return this.initial; } set inputs(ray: Arbitrary<Ray>) { this.initial = ray; }
       set_inputs = (ray: Arbitrary<Ray>): Graph => { this.inputs = ray; return this; }
-      add_inputs = (ray: Ray): Graph => { this.inputs.continues_with(ray); return this; }
+      add_inputs = (ray: Ray): Graph => { this.inputs.compose(ray); return this; }
     // Graph.inputs = Ray.terminal
       get outputs(): Ray { return this.terminal; } set outputs(ray: Arbitrary<Ray>) { this.terminal = ray; }
       set_outputs = (ray: Arbitrary<Ray>): Graph => { this.outputs = ray; return this; }
-      add_outputs = (ray: Ray): Graph => { this.outputs.continues_with(ray); return this; }
+      add_outputs = (ray: Ray): Graph => { this.outputs.compose(ray); return this; }
 
   }
 

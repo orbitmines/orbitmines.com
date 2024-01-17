@@ -25,7 +25,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     expect(() => A.copy()).toThrow();
     // const copy = A.copy();
@@ -37,7 +37,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     // let pointer = A.step(Ray.directions.next()(A));
 
@@ -135,7 +135,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     // let pointer = A.step(Ray.directions.next()(A));
 
@@ -192,7 +192,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({js: 'B'}).as_reference().o({js: 'B.#'});
     const C = Ray.vertex().o({js: 'C'}).as_reference().o({js: 'C.#'});
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     expect(A.has_next()).toBe(true);
     expect(A.has_next(Ray.directions.next)).toBe(true);
@@ -220,7 +220,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({js: 'B'}).as_reference().o({js: 'B.#'});
     const C = Ray.vertex().o({js: 'C'}).as_reference().o({js: 'C.#'});
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     expect(A.first().self.any.js).toBe('A');
     expect(B.first().self.any.js).toBe('A');
@@ -235,7 +235,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({js: 'B'}).as_reference().o({js: 'B.#'});
     const C = Ray.vertex().o({js: 'C'}).as_reference().o({js: 'C.#'});
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     expect(A.at(Number.MIN_VALUE.valueOf()).is_none()).toBe(true);
     expect(A.at(-100).is_none()).toBe(true);
@@ -318,7 +318,7 @@ describe("Ray", () => {
     expect(A.next().is_none()).toBe(true);
     expect(A.previous().is_none()).toBe(true);
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     expect(A.next().is_none()).toBe(false);
     expect(A.previous().is_none()).toBe(true);
@@ -347,10 +347,10 @@ describe("Ray", () => {
   //   const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
   //   const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
   //
-  //   A.continues_with(B).continues_with(C);
-  //   X.continues_with(Y).continues_with(Z);
+  //   A.compose(B).compose(C);
+  //   X.compose(Y).compose(Z);
   //
-  //   A.follow().equivalent2(Y.follow(Ray.directions.previous));
+  //   A.follow().equivalent(Y.follow(Ray.directions.previous));
   //
   //   expect(Y.previous()).toBe('?')
   // });
@@ -374,9 +374,9 @@ describe("Ray", () => {
     // const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
     // const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
     //
-    // X.continues_with(Y).continues_with(Z);
+    // X.compose(Y).compose(Z);
 
-    // const ret = A.continues_with(X.follow(Ray.directions.previous));
+    // const ret = A.compose(X.follow(Ray.directions.previous));
 
 
 
@@ -430,7 +430,7 @@ describe("Ray", () => {
     //  *         |-- Z --|
     //  *         |       |
     //  */
-    // ret.continues_with(B).continues_with(C);
+    // ret.compose(B).compose(C);
     //
 
   });
@@ -451,7 +451,7 @@ describe("Ray", () => {
     expect(B.self.self.any.js).toBe('B');
     expect(B.self.self.self.any.js).toBe('B');
 
-    A.equivalent2(B);
+    A.equivalent(B);
 
     expect(A.type).toBe(RayType.REFERENCE); // Turns A into a reference to B.
     expect(B.type).toBe(RayType.REFERENCE); // Turns B into a reference to A.
@@ -481,7 +481,7 @@ describe("Ray", () => {
     expect(B.is_none()).toBe(false);
     expect(B.dereference.is_none()).toBe(true);
 
-    let ret = A.equivalent2(B);
+    let ret = A.equivalent(B);
 
     expect(A.type).toBe(RayType.VERTEX);
     expect(B.type).toBe(RayType.VERTEX);
@@ -514,18 +514,18 @@ describe("Ray", () => {
   //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
   //   // const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
   //
-  //   A.equivalent2(B);
-  //   // C.equivalent2(D);
+  //   A.equivalent(B);
+  //   // C.equivalent(D);
   //
-  //   // A.equivalent2(D);
-  //   A.equivalent2(C);
+  //   // A.equivalent(D);
+  //   A.equivalent(C);
   //
   // });
   test("(A:vertex.# = B:vertex.#) ; A.as_terminal", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
-    A.equivalent2(B);
+    A.equivalent(B);
 
     const terminal = A.as_terminal();
 
@@ -554,7 +554,7 @@ describe("Ray", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
-    A.equivalent2(B);
+    A.equivalent(B);
 
     const terminal = B.as_terminal();
 
@@ -577,7 +577,7 @@ describe("Ray", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
-    A.equivalent2(B);
+    A.equivalent(B);
 
     const initial = A.as_initial();
 
@@ -600,7 +600,7 @@ describe("Ray", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
-    A.equivalent2(B);
+    A.equivalent(B);
 
     const initial = B.as_initial();
 
@@ -632,7 +632,7 @@ describe("Ray", () => {
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
 
-    A.continues_with(B).continues_with(C);
+    A.compose(B).compose(C);
 
     expect(A.as_array().map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
     expect(B.as_array().map(ref => ref.self.any.js)).toEqual(['B', 'C']); // TODO: This may or may not be expected behavior, you could make a case for saying it should render both sides for .as_array. ???
@@ -667,7 +667,7 @@ describe("Ray", () => {
     let A = Ray.vertex().o({ js: 'A' }).as_reference();
     let B = Ray.vertex().o({ js: 'B'}).as_reference();
 
-    A.continues_with(B);
+    A.compose(B);
 
     B = A.next();
 
@@ -683,11 +683,11 @@ describe("Ray", () => {
       .any.js
     ).toBe('B');
   });
-  test(".vertex.#.continues_with(.vertex.#)", () => {
+  test(".vertex.#.compose(.vertex.#)", () => {
     let A = Ray.vertex().o({ js: 'A' }).as_reference();
     let B = Ray.vertex().o({ js: 'B'}).as_reference();
 
-    B = A.continues_with(B);
+    B = A.compose(B);
 
     expect(B.type).toBe(RayType.VERTEX);
     expect(B.self.any.js).toBe('B');
@@ -701,14 +701,14 @@ describe("Ray", () => {
       .any.js
     ).toBe('B');
   });
-  test("[.vertex.#, .vertex.#].#.continues_with", () => {
+  test("[.vertex.#, .vertex.#].#.compose", () => {
     let A = Ray.vertex().o({ js: 'A' }).as_reference();
     let B = Ray.vertex().o({ js: 'B' }).as_reference();
 
     B = new Ray({
       initial: A.as_arbitrary(),
       terminal: B.as_arbitrary()
-    }).as_reference().continues_with();
+    }).as_reference().compose();
 
     expect(B.type).toBe(RayType.VERTEX);
     expect(B.self.any.js).toBe('B');
@@ -725,7 +725,7 @@ describe("Ray", () => {
   // test(".vertex.#.debug", () => {
   //   const a = Ray.vertex().as_reference();
   //   const b = Ray.vertex().as_reference();
-  //   a.continues_with(b);
+  //   a.compose(b);
   //
   //   const debug = {};
   //   a.debug(debug);

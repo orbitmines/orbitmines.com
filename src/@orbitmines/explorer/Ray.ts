@@ -1,4 +1,4 @@
-import _, {initial} from "lodash";
+import _ from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 
@@ -168,7 +168,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     // TODO: Disregards anything on this.self.self?? - or not with current??
 
-    return vertex.as_reference();//.continues_with(current.as_reference());
+    return vertex.as_reference();//.compose(current.as_reference());
   }
 
   /**
@@ -180,12 +180,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_initial = (): Ray => {
     const [terminal_vertex, initial_vertex] = this.___as_vertices();
 
-    initial_vertex.o({ js: 'initial_vertex' })
-      .follow()
-      .equivalent2(
-        terminal_vertex.o({ js: 'terminal_vertex' })
-          .follow(Ray.directions.previous)
-      )
+    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }))
+
+    // TODO: Without compose;
+    // initial_vertex.o({ js: 'initial_vertex' })
+    //   .follow()
+    //   .equivalent(
+    //     terminal_vertex.o({ js: 'terminal_vertex' })
+    //       .follow(Ray.directions.previous)
+    //   )
 
     // TODO BETTER DEBUG
 
@@ -200,12 +203,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_terminal = (): Ray => {
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
 
-    initial_vertex.o({ js: 'initial_vertex' })
-      .follow()
-      .equivalent2(
-        terminal_vertex.o({ js: 'terminal_vertex' })
-          .follow(Ray.directions.previous)
-      )
+    initial_vertex.o({ js: 'initial_vertex' }).compose(terminal_vertex.o({ js: 'terminal_vertex' }))
+
+    // TODO: Without compose;
+    // initial_vertex.o({ js: 'initial_vertex' })
+    //   .follow()
+    //   .equivalent(
+    //     terminal_vertex.o({ js: 'terminal_vertex' })
+    //       .follow(Ray.directions.previous)
+    //   )
 
     // TODO BETTER DEBUG
 
@@ -230,10 +236,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   /** [     ] */ static None = () => new Ray({ }).o({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
-    // /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
-    // /** [?????] -> [???  ] */ as_terminal = () =>
-    //   new Ray({ initial: this.as_arbitrary(), vertex: () => this.terminal, js: () => 'terminal ref' }); // TODO: These fields as DEBUG
-
     /** [     ] */ const vertex = Ray.None();
     /** [--   ] */ vertex.initial = vertex.___empty_initial();
     /** [  ?  ] */ vertex.vertex = value;
@@ -244,7 +246,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** [  |-?] */ static initial = () => Ray.vertex().initial;
   /** [?-|  ] */ static terminal = () => Ray.vertex().terminal;
 
-  // TODO; Temp placeholders for now
+  // TODO; Temp placeholders for now - & BETTER DEBUG
   ___empty_initial = () => new Ray({ vertex: Ray.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
   ___empty_terminal = () => new Ray({ vertex: Ray.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
 
@@ -360,6 +362,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   }
   step= Ray.___func(Ray.step).as_method(this);
 
+  // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
     protected ___primitive_switch = (cases: SwitchCases): Ray => {
       const _case = cases[this.type];
   
@@ -369,6 +372,27 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       return _case(this);
     }
 
+  /**
+   * TODO : COMPOSE EMPTY AS FIRST ELEMENT:
+   *  if (initial.is_none()) {
+   *           // 'Empty' vertex from this perspective.
+   *
+   *           initial.vertex = terminal.as_arbitrary();
+   *           console.log('first element');
+   *           return terminal;
+   *         }
+   */
+
+  // TODO: Test if references hold after equivalence/composition...
+
+
+  // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
+  // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
+
+  // TODO: Should do, one timesteap ahead, collapse one reference, and then recursively call continues_with on the vlaue at the reference, until it yields something.
+
+  // TODO AS += through property
+  // TODO: Generally, return something which knows where all continuations are.
   // @alias('merge, 'continues_with', 'compose')
   /**
    * Compose as "Equivalence at Continuations": (can usually be done in parallel - not generally)
@@ -381,7 +405,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * @see "Continuations as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
    */
   static compose = Ray.___func(ref => {
+    let { initial, terminal} = ref.self;
 
+    if (initial.type !== RayType.VERTEX || terminal.type !== RayType.VERTEX) {
+      throw new PreventsImplementationBug(`[${initial.type}] - [${terminal.type}] - only composing vertices for now`);
+    }
+
+    initial.follow().equivalent(terminal.follow(Ray.directions.previous));
+
+    // return ref; TODO
+    return terminal;
   });
   compose = Ray.compose.as_method(this);
 
@@ -395,7 +428,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
    */
-  static equivalent2 = Ray.___func(ref => {
+  static equivalent = Ray.___func(ref => {
     let { initial, terminal} = ref.self;
 
     /**
@@ -435,136 +468,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * - Then we're left with the 'beginning' of one iterator, and the 'end' of the other. And the only thing that's left to do, is draw a simple (ignorant) equivalence between the two. (Basically call this function again, and call {ignorant_equivalence}).
      *    TODO: This could also be a line with some debug information.
      */
-    initial.as_initial().equivalent2(terminal.as_terminal());
-
-    return ref;
-  });
-  equivalent2 = Ray.equivalent2.as_method(this);
-
-  static equivalent= Ray.___func(ref => {
-    let { initial, terminal } = ref.self;
-
-    // TODO: Can just move the terminal which holds the oointer to the boundary
-
-    // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
-
-    // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
-    // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
-
-    if (initial.self.self.is_none() && terminal.self.self.is_none()) {
-      // throw new NotImplementedError('a');
-      /**
-       * i.e. initial.self.self.self === initial.self.self.self.self && terminal.self.self.self === terminal.self.self.self.self
-       * Or in other words: There's no connection currently defined on {initial.self} & {terminal.self}.
-       *
-       * Since that's the case, they can just reference each-other directly - Making a slightly larger orbit.
-       */
-      initial.self.self = terminal.self.as_arbitrary();
-      terminal.self.self = initial.self.as_arbitrary();
-      return ref;
-    }
-
-    if (initial.self.self.is_none() || terminal.self.self.is_none()) {
-      throw new PreventsImplementationBug('What is the case in which one side is ignorant and the other is not?');
-    }
-
-    /**
-     * If there currently exist structure on (initial/terminal).self.self (i.e. existing connections), we need to add to them.
-     */
-
-    // TODO: COULD ADD?? - probably the case for all these equivalences.
-    // TODO: Should do, one timesteap ahead, collapse one reference, and then recursively call continues_with on the vlaue at the reference, until it yields something.
-
-
-    if (!(Ray.is_orbit(initial.self, initial.self.self.self) && Ray.is_orbit(terminal.self, terminal.self.self.self))) {
-      // throw new PreventsImplementationBug('Just add?');
-      initial.self.continues_with(terminal.self);
-      return ref;
-    }
-
-
-    // throw new PreventsImplementationBug(`[${initial.self.initial.any.js}]-[${initial.follow(Ray.directions.previous).next.self.any.js}]/[${terminal.self.terminal.any.js}]`)
-
-    // TODO
-    initial.self.as_vertex().continues_with(terminal.self.as_vertex())
+    initial.as_initial().equivalent(terminal.as_terminal());
 
     return ref;
   });
   equivalent = Ray.equivalent.as_method(this);
-  // protected equivalent = (b: Ray) => { // TODO: Generic, now just ignorantly sets the vertices to eachother
-
-  // TODO AS += through property
-  static continues_with = Ray.___func(ref => {
-    const { initial, terminal } = ref.self;
-
-    // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
-    return initial.___primitive_switch({
-      [RayType.REFERENCE]:
-      "We could either go inside the reference and continue there, or expand the direction of reference." +
-      "We could move when a reference is on the vertex, set the type to vertex from the perspective of the reference",
-      [RayType.TERMINAL]: "",
-      // [RayType.INITIAL]: () => {
-      //
-      // },
-
-      // "Could be each element found in this direction, or continue *after* the entire direction", ; TODO: This continue is probably more appropraite for vertex, then move to the last one, and compose there...
-      [RayType.VERTEX]: (): Ray => {
-        // const next_vertex = b; // TODO: Could be a reference too, now just force as a next element
-
-        if (initial.is_none()) {
-          // 'Empty' vertex from this perspective.
-
-          initial.vertex = terminal.as_arbitrary();
-          console.log('first element');
-          return terminal; // TODO: Generally, return something which knows where all continuations are.
-        }
-
-        return terminal.___primitive_switch({
-          [RayType.VERTEX]: () => {
-            initial.follow().equivalent(terminal.follow(Ray.directions.previous));
-            return terminal;
-          },
-          [RayType.INITIAL]: () => {
-            // TODO: You could make a case of preserving the structure of this, or even superposing it on the continuations we're defining here, ... might need a better handle on this at some point
-            // TODO: Could even have a difference of destroying the connecting itself vs not..
-
-            // TODO; This is probably incredibly hacky now
-
-            const terminals = [...terminal.follow()].map(vertex => vertex.___primitive_switch({
-              [RayType.VERTEX]: (ref) => {
-
-                // TODO: Currently takes the vertex, drops the initial/terminal sides and reassigns them to this structure
-                initial.follow().equivalent(ref.follow(Ray.directions.previous));
-                ref.self.terminal = ref.self.___empty_terminal();
-
-                return ref.self.terminal;
-              }
-            }));
-
-            let ret: Ray | undefined;
-            let current: Ray;
-            terminals.forEach(terminal => {
-              const next = Ray.vertex(terminal.as_arbitrary()).as_reference();
-
-              if (ret === undefined) {
-                ret = current = next;
-              } else {
-                current = current.continues_with(next);
-              }
-            });
-
-            if (ret === undefined)
-              throw new PreventsImplementationBug();
-
-            // TODO; Now a Ray/list of [--|  ] (terminal) connections.
-
-            return ret.follow(Ray.directions.previous); // Ret the intial ref of this list TODO
-          },
-        });
-      }
-    });
-  });
-  continues_with = Ray.continues_with.as_method(this);
 
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
@@ -779,7 +687,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       if (!ret) {
         current = ret = vertex;
       } else {
-        current = current?.continues_with(vertex);
+        current = current?.compose(vertex);
       }
     }
 
@@ -792,7 +700,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return Ray.size(of, value).at(index);
   }
   /**
-   * Just uses length/size for permutation. TODO: More complex permutation implementation should follow at some point. (@see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
+   * Just uses length/size for permutation. TODO: More complex permutation/enumeration implementation should follow at some point. (@see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
    *
    * @see "Combinatorics as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Combinatorics%20%2D%20Combinatorics%20as%20Equivalence
    */
@@ -1067,7 +975,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
 
-  // TODO: These are just (.back/.front) + .continues_with ??
+  // TODO: These are just (.back/.front) + .compose ??
   push_back = (ray: Ray) => { throw new NotImplementedError(); }
   push_front = (ray: Ray) => { throw new NotImplementedError(); }
 
@@ -1250,7 +1158,7 @@ export namespace JS {
     // |-false->-true-| (could of course also be reversed)
     const _false = Ray.vertex().o({ js: false });
     const _true = Ray.vertex().o({ js: true });
-    _false.continues_with(_true);
+    _false.compose(_true);
 
     return (boolean ? _true : _false).as_reference();
   }
@@ -1273,7 +1181,7 @@ export namespace JS {
         const terminal = new Ray({
           initial: () => initial
         });
-        // initial.continues_with(() => terminal.as_reference());
+        // initial.compose(() => terminal.as_reference());
 
         // if (initial.is_some())
         //   initial.terminal = () => terminal; // TODO REPEAT FROM BELOW
@@ -1288,7 +1196,7 @@ export namespace JS {
         terminal: () => next(current)
       }).o({js: iterator_result.value});
 
-      // initial.continues_with(() => current.as_reference());
+      // initial.compose(() => current.as_reference());
       if (initial.is_some())
         initial.terminal = () => current;
 

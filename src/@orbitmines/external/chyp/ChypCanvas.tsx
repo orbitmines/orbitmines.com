@@ -279,7 +279,7 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
               position: add(selection.any.position ?? [0, 0, 0], [space_between * 2, 0, 0])
             });
 
-            Interface.any.selection = selection.continues_with(next);
+            Interface.any.selection = selection.compose(next);
             Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
               ray.any.traversed = true;
               return ray.as_reference();
@@ -337,7 +337,7 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
 
             // selection.o({...selection.o, position: add(selection.any.position ?? [0, 0, 0], [0, i * 2, 0])})
 
-            // selection.continues_with(
+            // selection.compose(
 
             // );
           }
@@ -490,7 +490,7 @@ export const DebugInterface3 = ({scale = 1.5}: InterfaceOptions) => {
               position: add(selection.any.position ?? [0, 0, 0], [space_between * 2, 0, 0])
             });
 
-            Interface.any.selection = selection.continues_with(next);
+            Interface.any.selection = selection.compose(next);
             Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
               ray.any.traversed = true;
               return ray.as_reference();
@@ -548,7 +548,7 @@ export const DebugInterface3 = ({scale = 1.5}: InterfaceOptions) => {
 
             // selection.o({...selection.o, position: add(selection.any.position ?? [0, 0, 0], [0, i * 2, 0])})
 
-            // selection.continues_with(
+            // selection.compose(
 
             // );
           }
