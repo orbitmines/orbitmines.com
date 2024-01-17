@@ -170,6 +170,51 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return vertex.as_reference();//.continues_with(current.as_reference());
   }
 
+  /**
+   * Moves `this.self` and `this.self.self` to a new line.
+   *
+   * [  |--] this.self ----- this.self.self [--|--]
+   * ______ (<- initial pointer)
+   */
+  as_initial = (): Ray => {
+    const [terminal_vertex, initial_vertex] = this.___as_vertices();
+
+    // TODO BETTER DEBUG
+    initial_vertex.o({ js: 'initial_vertex' }).continues_with(terminal_vertex.o({ js: 'terminal_vertex' }))
+
+    return initial_vertex.self.initial.as_reference();
+  }
+  /**
+   * Moves `this.self` and `this.self.self` to a new line.
+   *
+   * [  |--] this.self.self ----- this.self [--|--]
+   *                                     _____ (<- terminal pointer)
+   */
+  as_terminal = (): Ray => {
+    const [initial_vertex, terminal_vertex] = this.___as_vertices();
+
+    return (
+      initial_vertex.o({ js: 'initial_vertex' }).continues_with(terminal_vertex.o({ js: 'terminal_vertex' })) // TODO BETTER DEBUG
+      .self.terminal.as_reference()
+    )
+  }
+  private ___as_vertices = (): [Ray, Ray] => {
+    if (!Ray.is_orbit(this.self, this.self.self.self))
+      throw new PreventsImplementationBug('Is there a use-case for this? Probably not?'); //TODO
+
+    // TODO NOTE: THE ORDER OF `this.self` first matters here.
+    return [this.self.___as_vertex2(), this.___as_vertex2()];
+  }
+  private ___as_vertex2 = (): Ray => {
+    return this.self.___ignorantly_equivalent(Ray.vertex().as_reference());
+  }
+  private ___ignorantly_equivalent = (ref: Ray): Ray => {
+    this.self = ref.as_arbitrary();
+    ref.self = this.as_arbitrary();
+
+    return ref;
+  }
+
   /** [     ] */ static None = () => new Ray({ }).o({ });
   /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
     // /** [?????] -> [  ???] */ as_initial = () => new Ray({ vertex: () => this.initial, terminal: this.as_arbitrary(), js: () => 'initial ref' });
@@ -193,6 +238,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
 
+  // TODO: Difference between () => this & this.as_arbitrary , relevant for lazy/modular/ignorant structures etc..
   as_arbitrary = (): Arbitrary<Ray> => () => this;
 
   /**
@@ -327,7 +373,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   compose = Ray.compose.as_method(this);
 
   /**
-   * Equivalence as "Composing Vertices": "TODO: Is this right?: Equivalence at Continuations, inside a Vertex, is parallel composition"
+   * Equivalence as "Composing Vertices": "TODO: Is this right?: Equivalence at Continuations, inside a Vertex, is parallel composition, from the perspective of the usual direction defined at the Vertex (not generally parallel)"
    *  - `A.equivalent(B)`               = `A.as_vertex().compose(B.as_vertex())`
    *  - `A.equivalent(B).equivalent(C)` = `A.as_vertex().compose(B.as_vertex()).compose(C.as_vertex())`
    *
@@ -349,8 +395,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * Basically turns `A` into a reference to `B`, and `B` into a reference to `A`.
      */
     const ignorant_equivalence = (): Ray => {
-      initial.self.vertex = terminal.self.as_arbitrary();
-      terminal.self.vertex = initial.self.as_arbitrary();
+      initial.self.___ignorantly_equivalent(terminal.self);
       return ref;
     }
 
@@ -362,7 +407,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (initial.dereference.is_none() && terminal.dereference.is_none())
       return ignorant_equivalence();
 
-    throw new NotImplementedError(`[${initial.type}] .equiv [${terminal.type}]`);
+
+
+    throw new NotImplementedError(`[${initial.type}] .equiv [${terminal.type}] / ${Ray.is_orbit(initial.self.self.self.self, terminal.self.self.self)}`);
     // initial.as_vertex().compose(terminal.as_vertex());
 
     return ref;
@@ -626,6 +673,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     // TODO; in the case of a list, each individually, again, additional structure...
   }
   // TODO: Ignore the connection between the two, say a.equiv(b) within some Rule [a,b], ignore the existing of the connection in the Rule? What does it mean not to???
+
+  // TODO: Whether the thing is referenced on the vertex: do their vertices have some connection onm this direction?
   is_equivalent = (b: Ray): boolean => { return false; } // TODOl: Current references assume you can't go inside vertex..
   // TODO implement .not??
 
@@ -795,10 +844,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       current = current.next(step);
     }
-  }
-
-  *traverse2(step: Implementation = Ray.directions.next): Generator<Ray> {
-
   }
 
   /**

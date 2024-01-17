@@ -416,20 +416,6 @@ describe("Ray", () => {
   //
   //
   // });
-  test(".as_vertex", () => {
-    let A = Ray.terminal().o({js: 'A'}).as_reference().o({js: 'A.#'});
-    // const B= Ray.initial().o({js: 'B'}).as_reference().o({js: 'B.#'});
-
-    // initial.self = terminal.self.as_arbitrary();
-    // terminal.self = initial.self.as_arbitrary();
-
-    A = A.as_vertex();
-
-    // expect(A.self.any.js).toBe('A');
-    expect(A.self.self.any.js).toBe('A');
-    // expect(A.self.self.self.any.js).toBe('A');
-    expect(A.self.self.self.self.any.js).toBe('A');
-  });
   test(".None.#.equivalent(.None.#)", () => {
     const A = Ray.None().o({ js: 'A' }).as_reference(); // TODO Tagging the 'NONE' vertices here is incredibly inconsistent, but just to demonstrate the test.
     const B = Ray.None().o({ js: 'B' }).as_reference();
@@ -504,15 +490,113 @@ describe("Ray", () => {
     expect(ret.self.terminal.self.self.any.js).toBe('A');
     expect(ret.self.terminal.self.self.self.any.js).toBe('B');
   });
-  test(".None.#.equivalent(.None.#) ;.equivalent(.None.#)", () => {
-    const A = Ray.None().o({ js: 'A' }).as_reference(); // TODO Tagging the 'NONE' vertices here is incredibly inconsistent, but just to demonstrate the test.
-    const B = Ray.None().o({ js: 'B' }).as_reference();
-    const C = Ray.None().o({ js: 'C' }).as_reference();
+  // test(".None.#.equivalent(.None.#) ;.equivalent(.None.#)", () => {
+  //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+  //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+  //
+  //   let ret = A.equivalent2(B);
+  //
+  //   ret = B.equivalent2(C);
+  //
+  // });
+  test("(A:vertex.# = B:vertex.#) ; A.as_terminal", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
-    let ret = A.equivalent2(B);
+    A.equivalent2(B);
 
-    ret = B.equivalent2(C);
+    const terminal = A.as_terminal();
 
+    expect(terminal.type).toBe(RayType.TERMINAL);
+
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
+
+    /**
+     * terminal_vertex = A
+     * initial_vertex = B
+     *
+     * Since we're at the terminal, and reversing direction, that gives 'terminal_vertex' first, then 'initial_vertex'.
+     */
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+
+    /**
+     * These should keep looping...
+     * TODO: Better test helper for this
+     */
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+  });
+  test("(A:vertex.# = B:vertex.#) ; B.as_terminal", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+
+    A.equivalent2(B);
+
+    const terminal = B.as_terminal();
+
+    expect(terminal.type).toBe(RayType.TERMINAL);
+
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
+
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+
+    /**
+     * These should keep looping...
+     * TODO: Better test helper for this
+     */
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+  });
+  test("(A:vertex.# = B:vertex.#) ; A.as_initial", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+
+    A.equivalent2(B);
+
+    const initial = A.as_initial();
+
+    expect(initial.type).toBe(RayType.INITIAL);
+
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
+
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+
+    /**
+     * These should keep looping...
+     * TODO: Better test helper for this
+     */
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+  });
+  test("(A:vertex.# = B:vertex.#) ; B.as_initial", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+
+    A.equivalent2(B);
+
+    const initial = B.as_initial();
+
+    expect(initial.type).toBe(RayType.INITIAL);
+
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
+
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+
+    /**
+     * These should keep looping...
+     * TODO: Better test helper for this
+     */
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
   });
   test(".None.#.equivalent(.vertex.#)", () => {
     const A = Ray.None().as_reference();
