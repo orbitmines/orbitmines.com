@@ -329,6 +329,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *  - `A.equivalent(B)`               = `A.as_vertex().compose(B.as_vertex())`
    *  - `A.equivalent(B).equivalent(C)` = `A.as_vertex().compose(B.as_vertex()).compose(C.as_vertex())`
    *
+   * An equivalence is best understood as the drawing of a single line between two things. Where those two things might have arbitrary structure around them, but we're not checking the (non-)existence of that structure. And thus:
+   *   - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. (or: Changes of an equivalence are only applied locally, which could have global effects, but this isn't necessarily obvious).
+   *
    * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
    */
   static equivalent2 = Ray.___func(ref => {
