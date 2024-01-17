@@ -325,7 +325,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   compose = Ray.compose.as_method(this);
 
   /**
-   * Equivalence as "Composing Vertices"
+   * Equivalence as "Composing Vertices": "TODO: Is this right?: Equivalence at Continuations, inside a Vertex, is parallel composition"
    *  - `A.equivalent(B)`               = `A.as_vertex().compose(B.as_vertex())`
    *  - `A.equivalent(B).equivalent(C)` = `A.as_vertex().compose(B.as_vertex()).compose(C.as_vertex())`
    *
@@ -644,8 +644,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   /**
    * TODO: Need more control over the (non-/)lazyness of copy.
+   *
+   * - The problem with a copy, is that in or to be generalizable, it needs to alter all references to the thing it's copying to itself - this cannot be done with certainty.
+   *
+   * - Additionally, a copy necessarily has some non-redundancy to it:
+   *   @see "A copy is necessarily inconsistent": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=If%20I%20have%20one%20thing%20and%20I%20make%20a%20perfect%20copy
    */
+  // @alias('duplicate')
   copy = (): Ray => {
+    // return this.self.as_reference(); // Copies the reference?
     throw new NotImplementedError();
 
     // const copy = new Ray({
