@@ -434,6 +434,9 @@ describe("Ray", () => {
     const A = Ray.None().o({ js: 'A' }).as_reference(); // TODO Tagging the 'NONE' vertices here is incredibly inconsistent, but just to demonstrate the test.
     const B = Ray.None().o({ js: 'B' }).as_reference();
 
+    expect(A.type).toBe(RayType.VERTEX);
+    expect(B.type).toBe(RayType.VERTEX);
+
     expect(A.is_none()).toBe(true);
     expect(A.self.any.js).toBe('A');
     expect(A.self.self.any.js).toBe('A');
@@ -444,7 +447,10 @@ describe("Ray", () => {
     expect(B.self.self.any.js).toBe('B');
     expect(B.self.self.self.any.js).toBe('B');
 
-    const ret = A.equivalent(B);
+    A.equivalent2(B);
+
+    expect(A.type).toBe(RayType.REFERENCE); // Turns A into a reference to B.
+    expect(B.type).toBe(RayType.REFERENCE); // Turns B into a reference to A.
 
     expect(A.is_none()).toBe(false);
     expect(A.self.any.js).toBe('A');
@@ -456,30 +462,36 @@ describe("Ray", () => {
     expect(B.self.self.any.js).toBe('A');
     expect(B.self.self.self.any.js).toBe('B');
   });
-  test(".None.#.equivalent(.vertex.#)", () => {
-    const A = Ray.None().as_reference();
-    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
-
-    // const ret = A.equivalent(B);
-
-    // expect()
-  });
   test(".vertex.#.equivalent(.vertex.#)", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
 
+    expect(A.type).toBe(RayType.VERTEX);
+    expect(B.type).toBe(RayType.VERTEX);
     expect(A.any.js).toBe('A.#');
     expect(B.any.js).toBe('B.#');
 
-    const ret = A.equivalent(B);
+    expect(A.is_none()).toBe(false);
+    expect(A.dereference.is_none()).toBe(true);
 
+    expect(B.is_none()).toBe(false);
+    expect(B.dereference.is_none()).toBe(true);
+
+    let ret = A.equivalent2(B);
+
+    expect(A.type).toBe(RayType.VERTEX);
+    expect(B.type).toBe(RayType.VERTEX);
+    expect(A.self.type).toBe(RayType.VERTEX);
+    expect(B.self.type).toBe(RayType.VERTEX);
+
+    expect(A.is_none()).toBe(false);
     expect(A.self.any.js).toBe('A');
-    expect(B.self.any.js).toBe('B');
-
     expect(A.self.self.any.js).toBe('B');
-    expect(B.self.self.any.js).toBe('A');
-
     expect(A.self.self.self.any.js).toBe('A');
+
+    expect(B.is_none()).toBe(false);
+    expect(B.self.any.js).toBe('B');
+    expect(B.self.self.any.js).toBe('A');
     expect(B.self.self.self.any.js).toBe('B');
 
     expect(ret.self.initial.any.js).toBe('A.#');
@@ -491,6 +503,24 @@ describe("Ray", () => {
     expect(ret.self.terminal.self.any.js).toBe('B');
     expect(ret.self.terminal.self.self.any.js).toBe('A');
     expect(ret.self.terminal.self.self.self.any.js).toBe('B');
+  });
+  test(".None.#.equivalent(.None.#) ;.equivalent(.None.#)", () => {
+    const A = Ray.None().o({ js: 'A' }).as_reference(); // TODO Tagging the 'NONE' vertices here is incredibly inconsistent, but just to demonstrate the test.
+    const B = Ray.None().o({ js: 'B' }).as_reference();
+    const C = Ray.None().o({ js: 'C' }).as_reference();
+
+    let ret = A.equivalent2(B);
+
+    ret = B.equivalent2(C);
+
+  });
+  test(".None.#.equivalent(.vertex.#)", () => {
+    const A = Ray.None().as_reference();
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+
+    // const ret = A.equivalent(B);
+
+    // expect()
   });
   test("[A, B, C][.as_array, ...]", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });

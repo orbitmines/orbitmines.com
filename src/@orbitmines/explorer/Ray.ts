@@ -151,6 +151,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * Can be used to override default dereference behavior.
    *
    * TODO: This should probably be configurable on a more global setting.
+   *
+   * TODO: Difference between this.self and this.self.self.as_reference is???
    */
   get dereference() { return this.self.self.as_reference(); }
 
@@ -337,16 +339,36 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   static equivalent2 = Ray.___func(ref => {
     let { initial, terminal} = ref.self;
 
-    initial.as_vertex().compose(terminal.as_vertex());
+    /**
+     * The simplest case, is where both sides are only aware of themselves (on .vertex). The only thing we need to do is turn an Orbit, to an Orbit which repeats every 2 steps, the intermediate step being the other thing.
+     *
+     * Or in textual terms something like:
+     *  - A single Orbit:  `(A.self = A) | (B.self = B)`  (i.e. A.is_none && B.is_none)
+     *  -             To:  `(A.self = B) | (B.self = A)`
+     *
+     * Basically turns `A` into a reference to `B`, and `B` into a reference to `A`.
+     */
+    const ignorant_equivalence = (): Ray => {
+      initial.self.vertex = terminal.self.as_arbitrary();
+      terminal.self.vertex = initial.self.as_arbitrary();
+      return ref;
+    }
+
+    // 2x Ray.None -> Turn into 2 empty references, referencing each-other.
+    if (initial.is_none() && terminal.is_none())
+      return ignorant_equivalence();
+
+    // Two structures, which have `ref.self = Ray.None` -> Turn into two structures referencing each-other.
+    if (initial.dereference.is_none() && terminal.dereference.is_none())
+      return ignorant_equivalence();
+
+    throw new NotImplementedError(`[${initial.type}] .equiv [${terminal.type}]`);
+    // initial.as_vertex().compose(terminal.as_vertex());
 
     return ref;
   });
   equivalent2 = Ray.equivalent2.as_method(this);
 
-
-  /**
-   * Equivalence in this context, is best understood as the drawing of the line between two things. And ensures that the line can be found on the `.vertex/.self` of those two things. (Albeit in an arbitrary place on it).
-   */
   static equivalent= Ray.___func(ref => {
     let { initial, terminal } = ref.self;
 
@@ -354,41 +376,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     // TODO: IS THIS EVEN HOW THIS SHOULD WORK?? - Now just takes the pointer and assumes that as its own
 
-
     // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
     // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
-
-    /**
-     * The type of equivalence so [initial.type, terminal.type], doesn't matter for us to do this equivalence. So we don't need an "initial.___primitive_switch + terminal.___primitive_switch" here, but instead we go directly to the things we're referencing: {initial.self} & {terminal.self} (TODO: is this actually the case??)
-     *
-     *           initial / terminal             - Two ('references') to things we're equivalencing
-     *      initial.self / terminal.self        - Two things/.../abstract directions/rays we actually want to connect
-     * initial.self.self / terminal.self.self   - The direction which defines what it's connected to (could be ignorant)
-     */
-
-    if (initial.self.is_none() && terminal.self.is_none()) {
-      /**
-       * Basically turns an Orbit which repeats on every step, to one which repeats every 2 steps.
-       * Or in textual terms something like: `(A.self = A) | (B.self = B)` to `(A.self = B) | (B.self = A)`.
-       */
-
-      initial.self.self = terminal.self.as_arbitrary();
-      terminal.self.self = initial.self.as_arbitrary();
-
-      return ref;
-    }
-
-    if (initial.self.is_none() || terminal.self.is_none()) {
-      /**
-       * Basically when [].self === [].self.self - See "{Ray.is_orbit}".
-       *
-       * TODO: "This is basically already the case, they're already equivalent. - Could take this to mean that we want a degree of separation between them??"
-       */
-      throw new PreventsImplementationBug(`Not expecting empty equivalences (for now)`); //TODO ?? What to do with these?
-    }
-
-    if (initial.type === RayType.REFERENCE || terminal.type === RayType.REFERENCE)
-      throw new PreventsImplementationBug(`Not expecting references? ${initial.type}/${terminal.type}`); // TODO REMOVE
 
     if (initial.self.self.is_none() && terminal.self.self.is_none()) {
       // throw new NotImplementedError('a');
