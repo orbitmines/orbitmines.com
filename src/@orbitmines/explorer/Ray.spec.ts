@@ -490,16 +490,19 @@ describe("Ray", () => {
     expect(ret.self.terminal.self.self.any.js).toBe('A');
     expect(ret.self.terminal.self.self.self.any.js).toBe('B');
   });
-  // test(".None.#.equivalent(.None.#) ;.equivalent(.None.#)", () => {
-  //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
-  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
-  //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
-  //
-  //   let ret = A.equivalent2(B);
-  //
-  //   ret = B.equivalent2(C);
-  //
-  // });
+  test("(A:vertex.# = B:vertex.# = C:vertex.#)", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    // const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
+
+    A.equivalent2(B);
+    // C.equivalent2(D);
+
+    // A.equivalent2(D);
+    A.equivalent2(C);
+
+  });
   test("(A:vertex.# = B:vertex.#) ; A.as_terminal", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });

@@ -111,6 +111,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** [--|--] */ is_vertex = (): boolean => !this.is_initial() && !this.is_terminal();
   /** [?-|  ] */ is_terminal = (): boolean => this.is_some() && this.self.terminal.is_none();
   /** [  |  ] */ is_reference = (): boolean => this.is_initial() && this.is_terminal();
+  /** [?-|  ] or [  |-?] */ is_boundary = (): boolean => !this.is_reference() && (this.is_initial() || this.is_terminal()); // TODO: IS !This.references necessary?
 
   get type(): RayType {
     /** [  |  ] */ if (this.is_reference()) return RayType.REFERENCE;
@@ -188,7 +189,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * Moves `this.self` and `this.self.self` to a new line.
    *
    * [  |--] this.self.self ----- this.self [--|--]
-   *                                     _____ (<- terminal pointer)
+   *                                         _____ (<- terminal pointer)
    */
   as_terminal = (): Ray => {
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
@@ -407,10 +408,22 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (initial.dereference.is_none() && terminal.dereference.is_none())
       return ignorant_equivalence();
 
+    if (
+      (initial.is_vertex() && terminal.is_boundary())
+      || (terminal.is_vertex() && initial.is_boundary())
+    ) {
+      throw new NotImplementedError(`Parallel composition: TODO`);
+    }
 
-
-    throw new NotImplementedError(`[${initial.type}] .equiv [${terminal.type}] / ${Ray.is_orbit(initial.self.self.self.self, terminal.self.self.self)}`);
-    // initial.as_vertex().compose(terminal.as_vertex());
+    /**
+     * - Splits the 'initial' side's vertex, into an iterable one, and returns a pointer to the initial side of that iterator.
+     *
+     * - Similarly, we do the opposite for the terminal, returning the terminal side of that iterator.
+     *
+     * - Then we're left with the 'beginning' of one iterator, and the 'end' of the other. And the only thing that's left to do, is draw a simple (ignorant) equivalence between the two. (Basically call this function again, and call {ignorant_equivalence}).
+     *    TODO: This could also be a line with some debug information.
+     */
+    initial.as_initial().equivalent2(terminal.as_terminal());
 
     return ref;
   });
