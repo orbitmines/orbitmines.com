@@ -158,20 +158,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   get dereference() { return this.self.self.as_reference(); }
 
   /**
-   * Places the current structure inside a new non-ignorant vertex.
-   */
-  as_vertex = (): Ray => {
-    const vertex = Ray.vertex(this.self.as_arbitrary());
-    const current = this.self.self;
-
-    this.self.self = vertex.as_arbitrary();
-
-    // TODO: Disregards anything on this.self.self?? - or not with current??
-
-    return vertex.as_reference();//.compose(current.as_reference());
-  }
-
-  /**
    * Moves `this.self` and `this.self.self` to a new line.
    *
    * [  |--] this.self ----- this.self.self [--|--]
@@ -206,9 +192,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       throw new PreventsImplementationBug('Is there a use-case for this? Probably not?'); //TODO
 
     // TODO NOTE: THE ORDER OF `this.self` first matters here.
-    return [this.self.___as_vertex2(), this.___as_vertex2()];
+    return [this.self.___as_vertex(), this.___as_vertex()];
   }
-  private ___as_vertex2 = (): Ray => {
+  private ___as_vertex = (): Ray => {
     return this.self.___ignorantly_equivalent(Ray.vertex().as_reference());
   }
   private ___ignorantly_equivalent = (ref: Ray): Ray => {

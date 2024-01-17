@@ -338,22 +338,25 @@ describe("Ray", () => {
     expect(A.next().previous().next().next().previous().self.any.js).toBe('B');
     expect(A.next().previous().next().next().previous().next().self.any.js).toBe('C');
   });
-  // test("[A, B, C], [X, Y, Z] ; A.terminal = Y.initial", () => {
-  //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
-  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
-  //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
-  //
-  //   const X = Ray.vertex().o({ js: 'X' }).as_reference().o({ js: 'X.#' });
-  //   const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
-  //   const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
-  //
-  //   A.compose(B).compose(C);
-  //   X.compose(Y).compose(Z);
-  //
-  //   A.follow().equivalent(Y.follow(Ray.directions.previous));
-  //
-  //   expect(Y.previous()).toBe('?')
-  // });
+  test("[A, B, C], [X, Y, Z] ; C.compose(X)", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    const X = Ray.vertex().o({ js: 'X' }).as_reference().o({ js: 'X.#' });
+    const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
+    const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
+
+    A.compose(B).compose(C);
+    X.compose(Y).compose(Z);
+
+    C.compose(X);
+
+    expect([...A].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C', 'X', 'Y', 'Z']);
+    expect([...Z.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['Z', 'Y', 'X', 'C', 'B', 'A']);
+    expect([...X.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['X', 'C', 'B', 'A']);
+    expect([...X].map(ref => ref.self.any.js)).toEqual(['X', 'Y', 'Z']);
+  });
   test("[A, [X, Y, Z].initial, B, C][.next(), .previous()]", () => {
     // /**
     //  *         |       |
