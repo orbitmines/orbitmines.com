@@ -14,9 +14,9 @@ import _ from "lodash";
 
 // TODO: Could be a function on Ray (any func really)
 export const Render = ({ ray, Interface }: { ray: Ray, Interface: Ray }) => {
-  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options(Interface);
+  const initial: Required<InterfaceOptions> = ray.follow(Ray.directions.previous).render_options(Interface);
   const vertex: Required<InterfaceOptions> = ray.render_options(Interface);
-  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options(Interface);
+  const terminal: Required<InterfaceOptions> = ray.follow().render_options(Interface);
 
   switch (ray.type) {
     case RayType.REFERENCE:

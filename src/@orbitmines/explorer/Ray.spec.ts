@@ -350,7 +350,7 @@ describe("Ray", () => {
   //   A.continues_with(B).continues_with(C);
   //   X.continues_with(Y).continues_with(Z);
   //
-  //   A.self.terminal.as_reference().equivalent2(Y.self.initial.as_reference());
+  //   A.follow().equivalent2(Y.follow(Ray.directions.previous));
   //
   //   expect(Y.previous()).toBe('?')
   // });
@@ -376,7 +376,7 @@ describe("Ray", () => {
     //
     // X.continues_with(Y).continues_with(Z);
 
-    // const ret = A.continues_with(X.self.initial.as_reference());
+    // const ret = A.continues_with(X.follow(Ray.directions.previous));
 
 
 
@@ -392,14 +392,14 @@ describe("Ray", () => {
     //  *         |       \
     //  */
     // expect(ret.type).toBe(RayType.INITIAL);
-    // expect(ret.self.terminal.as_reference().is_none()).toBe(false);
-    // expect([...ret.self.terminal.as_reference()].map(
+    // expect(ret.follow().is_none()).toBe(false);
+    // expect([...ret.follow()].map(
     //   return_ref => return_ref.type
     // )).toEqual([RayType.VERTEX, RayType.VERTEX, RayType.VERTEX]);
-    // expect([...ret.self.terminal.as_reference()].map(
+    // expect([...ret.follow()].map(
     //   return_ref => return_ref.self.type
     // )).toEqual([RayType.TERMINAL, RayType.TERMINAL, RayType.TERMINAL]);
-    // expect([...ret.self.terminal.as_reference()].map(
+    // expect([...ret.follow()].map(
     //   return_ref => {
     //     const return_vertex = return_ref.self;
     //     const terminal = return_vertex.self;
@@ -408,7 +408,7 @@ describe("Ray", () => {
     //     return continued_vertex.any.js;
     //   }
     // )).toEqual(['X', 'Y', 'Z']);
-    // expect([...ret.self.terminal.as_reference()].map(
+    // expect([...ret.follow()].map(
     //   return_ref => {
     //     const vertex = return_ref.self;
     //     const terminal = vertex.self;
@@ -531,7 +531,7 @@ describe("Ray", () => {
 
     expect(terminal.type).toBe(RayType.TERMINAL);
 
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
 
     /**
      * terminal_vertex = A
@@ -539,16 +539,16 @@ describe("Ray", () => {
      *
      * Since we're at the terminal, and reversing direction, that gives 'terminal_vertex' first, then 'initial_vertex'.
      */
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
 
     /**
      * These should keep looping...
      * TODO: Better test helper for this
      */
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
   });
   test("(A:vertex.# = B:vertex.#) ; B.as_terminal", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
@@ -560,18 +560,18 @@ describe("Ray", () => {
 
     expect(terminal.type).toBe(RayType.TERMINAL);
 
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
 
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
 
     /**
      * These should keep looping...
      * TODO: Better test helper for this
      */
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['B', 'A']);
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
-    expect([...terminal.self.initial.as_reference().traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['terminal_vertex', 'initial_vertex']);
   });
   test("(A:vertex.# = B:vertex.#) ; A.as_initial", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
@@ -583,18 +583,18 @@ describe("Ray", () => {
 
     expect(initial.type).toBe(RayType.INITIAL);
 
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
 
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
 
     /**
      * These should keep looping...
      * TODO: Better test helper for this
      */
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
   });
   test("(A:vertex.# = B:vertex.#) ; B.as_initial", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
@@ -606,18 +606,18 @@ describe("Ray", () => {
 
     expect(initial.type).toBe(RayType.INITIAL);
 
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.any.js)).toEqual(['B', 'A']);
 
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
 
     /**
      * These should keep looping...
      * TODO: Better test helper for this
      */
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.any.js)).toEqual(['B', 'A']);
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
-    expect([...initial.self.terminal.as_reference().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['B', 'A']);
+    expect([...initial.follow().traverse(Ray.directions.next)].map(ref => ref.self.self.self.self.self.self.any.js)).toEqual(['initial_vertex', 'terminal_vertex']);
   });
   test(".None.#.equivalent(.vertex.#)", () => {
     const A = Ray.None().as_reference();
@@ -782,7 +782,7 @@ describe("Ray", () => {
 
     expect(vertex.self).toBe(vertex.self.initial.terminal);
     expect(vertex.self).toBe(vertex.self.terminal.initial);
-    expect(vertex.self).toBe(vertex.self.initial.as_reference().self.terminal);
+    expect(vertex.self).toBe(vertex.follow(Ray.directions.previous).self.terminal);
   });
   test(".vertex.initial.#", () => {
     /** [--|--] */ const vertex = Ray.vertex();

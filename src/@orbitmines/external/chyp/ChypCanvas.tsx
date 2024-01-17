@@ -148,11 +148,11 @@ export const Render2 = ({ ray, Interface, show =  { initial: true, terminal: tru
   const index = ___index(ray);
   let added = [15 * index, 60 * index, 0];
 
-  const initial: Required<InterfaceOptions> = ray.self.initial.as_reference().render_options(Interface);
+  const initial: Required<InterfaceOptions> = ray.follow(Ray.directions.previous).render_options(Interface);
   initial.position = add_(initial.position, added);
   const vertex: Required<InterfaceOptions> = ray.render_options(Interface);
   vertex.position = add_(vertex.position, added);
-  const terminal: Required<InterfaceOptions> = ray.self.terminal.as_reference().render_options(Interface);
+  const terminal: Required<InterfaceOptions> = ray.follow().render_options(Interface);
   terminal.position = add_(terminal.position, added);
 
   switch (ray.type) {

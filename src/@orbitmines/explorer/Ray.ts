@@ -181,15 +181,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     const [terminal_vertex, initial_vertex] = this.___as_vertices();
 
     initial_vertex.o({ js: 'initial_vertex' })
-      .self.terminal.as_reference()
+      .follow()
       .equivalent2(
         terminal_vertex.o({ js: 'terminal_vertex' })
-          .self.initial.as_reference()
+          .follow(Ray.directions.previous)
       )
 
     // TODO BETTER DEBUG
 
-    return initial_vertex.self.initial.as_reference();
+    return initial_vertex.follow(Ray.directions.previous);
   }
   /**
    * Moves `this.self` and `this.self.self` to a new line.
@@ -201,15 +201,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
 
     initial_vertex.o({ js: 'initial_vertex' })
-      .self.terminal.as_reference()
+      .follow()
       .equivalent2(
         terminal_vertex.o({ js: 'terminal_vertex' })
-          .self.initial.as_reference()
+          .follow(Ray.directions.previous)
       )
 
     // TODO BETTER DEBUG
 
-    return terminal_vertex.self.terminal.as_reference();
+    return terminal_vertex.follow();
   }
   private ___as_vertices = (): [Ray, Ray] => {
     if (!Ray.is_orbit(this.self, this.self.self.self))
@@ -483,7 +483,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
 
 
-    // throw new PreventsImplementationBug(`[${initial.self.initial.any.js}]-[${initial.self.initial.as_reference().next.self.any.js}]/[${terminal.self.terminal.any.js}]`)
+    // throw new PreventsImplementationBug(`[${initial.self.initial.any.js}]-[${initial.follow(Ray.directions.previous).next.self.any.js}]/[${terminal.self.terminal.any.js}]`)
 
     // TODO
     initial.self.as_vertex().continues_with(terminal.self.as_vertex())
@@ -521,7 +521,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
         return terminal.___primitive_switch({
           [RayType.VERTEX]: () => {
-            initial.self.terminal.as_reference().equivalent(terminal.self.initial.as_reference());
+            initial.follow().equivalent(terminal.follow(Ray.directions.previous));
             return terminal;
           },
           [RayType.INITIAL]: () => {
@@ -530,11 +530,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
             // TODO; This is probably incredibly hacky now
 
-            const terminals = [...terminal.self.terminal.as_reference()].map(vertex => vertex.___primitive_switch({
+            const terminals = [...terminal.follow()].map(vertex => vertex.___primitive_switch({
               [RayType.VERTEX]: (ref) => {
 
                 // TODO: Currently takes the vertex, drops the initial/terminal sides and reassigns them to this structure
-                initial.self.terminal.as_reference().equivalent(ref.self.initial.as_reference());
+                initial.follow().equivalent(ref.follow(Ray.directions.previous));
                 ref.self.terminal = ref.self.___empty_terminal();
 
                 return ref.self.terminal;
@@ -558,7 +558,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
             // TODO; Now a Ray/list of [--|  ] (terminal) connections.
 
-            return ret.self.initial.as_reference(); // Ret the intial ref of this list TODO
+            return ret.follow(Ray.directions.previous); // Ret the intial ref of this list TODO
           },
         });
       }
@@ -573,7 +573,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   pop = (): Ray => this.___primitive_switch({
     [RayType.VERTEX]: () => {
-      const previous_vertex = this.self.initial.self.initial.as_reference();
+      const previous_vertex = this.self.initial.follow(Ray.directions.previous);
 
       if (this.is_none()) {
         return this; // TODO; Already empty, perhaps throw
@@ -658,6 +658,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     static directions = {
       next: (ref: Ray) => ref.self.terminal.as_reference(),
       previous: (ref: Ray) => ref.self.initial.as_reference(),
+    }
+
+    // TODO: Nicer one? ; Differentiate between ".next" and just "follow the pointer" ?
+    follow = (step: Implementation = Ray.directions.next): Ray => {
+      // let pointer = new Ray({
+      //   initial: () => this,
+      //   terminal: () => step(this),
+      // }); TODO USE POINTER?
+
+      return step(this);
     }
 
     /**
