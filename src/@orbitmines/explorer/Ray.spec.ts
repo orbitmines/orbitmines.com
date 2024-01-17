@@ -338,18 +338,7 @@ describe("Ray", () => {
     expect(A.next().previous().next().next().previous().self.any.js).toBe('B');
     expect(A.next().previous().next().next().previous().next().self.any.js).toBe('C');
   });
-  // test("[A, [X, Y, Z].initial, B, C][.next(), .previous()]", () => {
-  //   /**
-  //    *         |       |
-  //    * |-- A --|       |-- B --|-- C --|
-  //    *         |   \   |
-  //    *         |-- X --|
-  //    *         |   \   |
-  //    *         |-- Y --|
-  //    *         |   \   |
-  //    *         |-- Z --|
-  //    *         |   \   |               (Destroys the '\' connections) TODO: This should be optional/more complexly constructed
-  //    */
+  // test("[A, B, C], [X, Y, Z] ; A.terminal = Y.initial", () => {
   //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
   //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
   //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
@@ -358,64 +347,93 @@ describe("Ray", () => {
   //   const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
   //   const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
   //
+  //   A.continues_with(B).continues_with(C);
   //   X.continues_with(Y).continues_with(Z);
   //
-  //   const ret = A.continues_with(X.self.initial.as_reference());
+  //   A.self.terminal.as_reference().equivalent2(Y.self.initial.as_reference());
   //
-  //   /**
-  //    *         |
-  //    * |-- A --|
-  //    *         |       \  <-- '\' is 'ret'
-  //    *         |-- X --|
-  //    *         |       \
-  //    *         |-- Y --|
-  //    *         |       \
-  //    *         |-- Z --|
-  //    *         |       \
-  //    */
-  //   expect(ret.type).toBe(RayType.INITIAL);
-  //   expect(ret.self.terminal.as_reference().is_none()).toBe(false);
-  //   expect([...ret.self.terminal.as_reference()].map(
-  //     return_ref => return_ref.type
-  //   )).toEqual([RayType.VERTEX, RayType.VERTEX, RayType.VERTEX]);
-  //   expect([...ret.self.terminal.as_reference()].map(
-  //     return_ref => return_ref.self.type
-  //   )).toEqual([RayType.TERMINAL, RayType.TERMINAL, RayType.TERMINAL]);
-  //   expect([...ret.self.terminal.as_reference()].map(
-  //     return_ref => {
-  //       const return_vertex = return_ref.self;
-  //       const terminal = return_vertex.self;
-  //       const continued_vertex = terminal.initial;
-  //
-  //       return continued_vertex.any.js;
-  //     }
-  //   )).toEqual(['X', 'Y', 'Z']);
-  //   expect([...ret.self.terminal.as_reference()].map(
-  //     return_ref => {
-  //       const vertex = return_ref.self;
-  //       const terminal = vertex.self;
-  //
-  //       return terminal.self.as_reference().is_none();
-  //     }
-  //   )).toEqual([true, true, true]); // From the perspective of the 'terminal' it's ignorant of 'ret'.
-  //
-  //   expect(A.next().type).toBe(RayType.INITIAL);
-  //
-  //   /**
-  //    *         |       |
-  //    * |-- A --|       |-- B --|-- C --|
-  //    *         |       |
-  //    *         |-- X --|
-  //    *         |       |
-  //    *         |-- Y --|
-  //    *         |       |
-  //    *         |-- Z --|
-  //    *         |       |
-  //    */
-  //   ret.continues_with(B).continues_with(C);
-  //
-  //
+  //   expect(Y.previous()).toBe('?')
   // });
+  test("[A, [X, Y, Z].initial, B, C][.next(), .previous()]", () => {
+    // /**
+    //  *         |       |
+    //  * |-- A --|       |-- B --|-- C --|
+    //  *         |   \   |
+    //  *         |-- X --|
+    //  *         |   \   |
+    //  *         |-- Y --|
+    //  *         |   \   |
+    //  *         |-- Z --|
+    //  *         |   \   |               (Destroys the '\' connections) TODO: This should be optional/more complexly constructed
+    //  */
+    // const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    // const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    // const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    //
+    // const X = Ray.vertex().o({ js: 'X' }).as_reference().o({ js: 'X.#' });
+    // const Y = Ray.vertex().o({ js: 'Y' }).as_reference().o({ js: 'Y.#' });
+    // const Z = Ray.vertex().o({ js: 'Z' }).as_reference().o({ js: 'Z.#' });
+    //
+    // X.continues_with(Y).continues_with(Z);
+
+    // const ret = A.continues_with(X.self.initial.as_reference());
+
+
+
+    // /**
+    //  *         |
+    //  * |-- A --|
+    //  *         |       \  <-- '\' is 'ret'
+    //  *         |-- X --|
+    //  *         |       \
+    //  *         |-- Y --|
+    //  *         |       \
+    //  *         |-- Z --|
+    //  *         |       \
+    //  */
+    // expect(ret.type).toBe(RayType.INITIAL);
+    // expect(ret.self.terminal.as_reference().is_none()).toBe(false);
+    // expect([...ret.self.terminal.as_reference()].map(
+    //   return_ref => return_ref.type
+    // )).toEqual([RayType.VERTEX, RayType.VERTEX, RayType.VERTEX]);
+    // expect([...ret.self.terminal.as_reference()].map(
+    //   return_ref => return_ref.self.type
+    // )).toEqual([RayType.TERMINAL, RayType.TERMINAL, RayType.TERMINAL]);
+    // expect([...ret.self.terminal.as_reference()].map(
+    //   return_ref => {
+    //     const return_vertex = return_ref.self;
+    //     const terminal = return_vertex.self;
+    //     const continued_vertex = terminal.initial;
+    //
+    //     return continued_vertex.any.js;
+    //   }
+    // )).toEqual(['X', 'Y', 'Z']);
+    // expect([...ret.self.terminal.as_reference()].map(
+    //   return_ref => {
+    //     const vertex = return_ref.self;
+    //     const terminal = vertex.self;
+    //
+    //     return terminal.self.as_reference().is_none();
+    //   }
+    // )).toEqual([true, true, true]); // From the perspective of the 'terminal' it's ignorant of 'ret'.
+    //
+    // expect(A.next().type).toBe(RayType.INITIAL);
+    //
+    // /**
+    //  *         |       |
+    //  * |-- A --|       |-- B --|-- C --|
+    //  *         |       |
+    //  *         |-- X --|
+    //  *         |       |
+    //  *         |-- Y --|
+    //  *         |       |
+    //  *         |-- Z --|
+    //  *         |       |
+    //  */
+    // ret.continues_with(B).continues_with(C);
+    //
+
+  });
   test(".None.#.equivalent(.None.#)", () => {
     const A = Ray.None().o({ js: 'A' }).as_reference(); // TODO Tagging the 'NONE' vertices here is incredibly inconsistent, but just to demonstrate the test.
     const B = Ray.None().o({ js: 'B' }).as_reference();
@@ -490,19 +508,19 @@ describe("Ray", () => {
     expect(ret.self.terminal.self.self.any.js).toBe('A');
     expect(ret.self.terminal.self.self.self.any.js).toBe('B');
   });
-  test("(A:vertex.# = B:vertex.# = C:vertex.#)", () => {
-    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
-    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
-    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
-    // const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
-
-    A.equivalent2(B);
-    // C.equivalent2(D);
-
-    // A.equivalent2(D);
-    A.equivalent2(C);
-
-  });
+  // test("(A:vertex.# = B:vertex.# = C:vertex.#)", () => {
+  //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+  //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+  //   // const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
+  //
+  //   A.equivalent2(B);
+  //   // C.equivalent2(D);
+  //
+  //   // A.equivalent2(D);
+  //   A.equivalent2(C);
+  //
+  // });
   test("(A:vertex.# = B:vertex.#) ; A.as_terminal", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });

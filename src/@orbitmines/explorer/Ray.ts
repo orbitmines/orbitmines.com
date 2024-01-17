@@ -180,8 +180,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_initial = (): Ray => {
     const [terminal_vertex, initial_vertex] = this.___as_vertices();
 
+    initial_vertex.o({ js: 'initial_vertex' })
+      .self.terminal.as_reference()
+      .equivalent2(
+        terminal_vertex.o({ js: 'terminal_vertex' })
+          .self.initial.as_reference()
+      )
+
     // TODO BETTER DEBUG
-    initial_vertex.o({ js: 'initial_vertex' }).continues_with(terminal_vertex.o({ js: 'terminal_vertex' }))
 
     return initial_vertex.self.initial.as_reference();
   }
@@ -194,10 +200,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   as_terminal = (): Ray => {
     const [initial_vertex, terminal_vertex] = this.___as_vertices();
 
-    return (
-      initial_vertex.o({ js: 'initial_vertex' }).continues_with(terminal_vertex.o({ js: 'terminal_vertex' })) // TODO BETTER DEBUG
+    initial_vertex.o({ js: 'initial_vertex' })
       .self.terminal.as_reference()
-    )
+      .equivalent2(
+        terminal_vertex.o({ js: 'terminal_vertex' })
+          .self.initial.as_reference()
+      )
+
+    // TODO BETTER DEBUG
+
+    return terminal_vertex.self.terminal.as_reference();
   }
   private ___as_vertices = (): [Ray, Ray] => {
     if (!Ray.is_orbit(this.self, this.self.self.self))
