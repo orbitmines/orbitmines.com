@@ -6,7 +6,7 @@ describe("JS", () => {
       a: 'b',
       position: [0, 1, 2],
       func: () => 'c'
-    });
+    }).as_reference();
 
     expect(ray.any.a).toBe('b');
     expect(ray.any.test).toBe(undefined);

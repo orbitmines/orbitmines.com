@@ -8,9 +8,9 @@ describe("Chyp", () => {
         .set_inputs(Ray.vertex().o({ js: 'B' }).as_arbitrary())
         .set_inputs(Ray.vertex().o({ js: 'A' }).as_arbitrary());
 
-      expect(graph.inputs.any.js).toBe('A');
-      expect(graph.initial.any.js).toBe('A');
-      expect(graph.inputs.any.js).toBe(graph.initial.any.js);
+      expect(graph.inputs.as_reference().any.js).toBe('A');
+      expect(graph.initial.as_reference().any.js).toBe('A');
+      expect(graph.inputs.as_reference().any.js).toBe(graph.initial.as_reference().any.js);
       expect(graph.inputs).toBe(graph.initial);
     });
 

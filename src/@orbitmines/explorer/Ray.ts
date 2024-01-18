@@ -313,7 +313,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
       throw new PreventsImplementationBug();
 
-    // ${[...initial.self.initial.as_reference().traverse()].map(ref => ref.self.any.js)}
+    // ${[...initial.self.initial.as_reference().all().js]}
     if (initial.type !== RayType.VERTEX || terminal.type !== RayType.VERTEX) {
       throw new PreventsImplementationBug(`[${initial.type}] - [${terminal.type}] - only composing vertices for now (${initial.self.initial.any.js} -> ${terminal.self.terminal.any.js})`);
     }
@@ -392,7 +392,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       throw new PreventsImplementationBug('wut2')
     }
 
-    // if (terminal.self.self.any.js === 'D')
+    // if (terminal.self.any.js === 'D')
     //   throw new PreventsImplementationBug();
 
     initial.dereference.compose(terminal.dereference);
@@ -452,9 +452,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   //     throw new PreventsImplementationBug();
   //
   //   if (!a.self.self.is_none())
-  //     throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+  //     throw new PreventsImplementationBug(`${b.self.self.any.js}`);
   //   if (!b.self.self.is_none())
-  //     throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+  //     throw new PreventsImplementationBug(`${b.self.self.any.js}`);
   //
   //   a.equivalent(b);
   //
@@ -617,7 +617,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         pointer = pointer.step().step();
 
         if (pointer.terminal.type !== RayType.VERTEX)
-          throw new NotImplementedError(`${pointer.terminal.type} / ${pointer.terminal.self.self.any.js}`);
+          throw new NotImplementedError(`${pointer.terminal.type} / ${pointer.terminal.self.any.js}`);
 
         return pointer.terminal;
 
@@ -849,11 +849,20 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     for (let pointer of this.___traverse({step})) {
 
       // TODO: You can do this non-locally with a pass over the history. This way it's local, but we''ll have to find a good example of why this might not go that well. (As this would match to any empty vertices, and maybe more)
+
+      // TODO: Could also check for none..
       const { initial: previous, terminal: current } = pointer;
 
       if (previous.is_vertex() && !Ray.is_orbit(previous.self, current)) {
         yield pointer.initial;
       }
+    }
+  }
+  *___map<T>(map: (vertex: Ray) => T, {
+    step = Ray.directions.next,
+  } = {}): Generator<T> {
+    for (let vertex of this.___next({step})) {
+      yield map(vertex);
     }
   }
 
@@ -1044,25 +1053,59 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     as_array = (): Ray[] => [...this];
     // JS.String
     toString = (): string => this.as_string();
-    as_string = (): string => this.as_array().map(ref => ref.self.any.js).join(','); // TODO: PROPER
+    as_string = (): string => this.as_array().map(ref => ref.any.js).join(','); // TODO: PROPER
 
     as_int = (): number => { throw new NotImplementedError(); }
     as_number = this.as_int;
 
-  // all = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
-  // get all(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
+  /**
+   *
+   * TODO:
+   *   - This needs something much smarter at some point...
+   */
+  all = (step: Implementation = Ray.directions.next): { [key: string | symbol]: Ray } & any => {
+    return new Proxy<Ray>(this, {
+
+      get(self: Ray, p: string | symbol, receiver: any): any {
+
+        return self.___map(ref => ref.any[p], {step});
+      },
+
+      /**
+       * Can't overload things like '-=' for anything but things that return numbers... ; So just apply a general function instead.
+       */
+      set(self: Ray, p: string | symbol, newValue: any, receiver: any): boolean {
+        for (let ref of self.___next({step})) { // TODO; This needs to either be dynamically, or just a simple shut-off for circular ones.
+          ref.any[p] = JS.is_function(newValue) ? newValue(ref.any[p]) : newValue;
+        }
+
+        return true;
+      },
+
+
+      deleteProperty(self: Ray, p: string | symbol): boolean {
+        throw new NotImplementedError();
+
+        return true;
+      }
+      // TODO: What do these other methods on Proxy do???
+    });
+
+  }
 
   /**
    * Move to a JavaScript object, which will handle any complexity of existing JavaScript objects, and allows one to abstract any values contained in the {vertex} to the usual JavaScript interface. - More usual to how one thinks about functions, ..., properties.
    */
-  get any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
+  get any(): { [key: string | symbol]: Ray } & any { return this.self.proxy(); }
   cast = <T extends Ray>(): T => { throw new NotImplementedError(); } // TODO this.proxy<T>();
 
   /**
    * Used for chaining JavaScript-provided properties
+   *
+   * TODO: DOESNT FOLLOW .ANY PATTERN?
    */
   o = (object: { [key: string | symbol]: any }): Ray => {
-    _.keys(object).forEach(key => this.any[key] = object[key]); // TODO: Can be prettier, TODO: map to Ray equivalents and add to vertices..
+    _.keys(object).forEach(key => this.proxy()[key] = object[key]); // TODO: Can be prettier, TODO: map to Ray equivalents and add to vertices..
     return this;
   }
 
@@ -1138,7 +1181,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       ...this._dirty_store,
       position:
         target_ray.any.position
-        ?? this.self.any.position
+        ?? this.any.position
         ?? Ray.POSITION_OF_DOOM
     });
     console.log('move', `${this.self.label.split(' ')[0]} -> ${target.self.label.split(' ')[0]}`);
@@ -1161,18 +1204,18 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   render_options = (Interface: Ray): Required<InterfaceOptions> => {
     return ({
       position:
-        this.self.any.position
+        this.any.position
         ?? (this.is_none() ? Ray.POSITION_OF_DOOM : Ray.POSITION_OF_DOOM),
       rotation:
-        this.self.any.rotation
+        this.any.rotation
         ?? [0, 0, 0],
       scale:
-        this.self.any.scale
+        this.any.scale
         ?? (this.is_none() ? 1.5 : 1.5),
       color:
         (Ray.is_orbit(Interface.any.selection.self, this.self) && Interface.any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
           : (
-            this.self.any.color
+            this.any.color
             ?? (this.is_none() ? 'red' : {
                 [RayType.VERTEX]: 'orange',
                 [RayType.TERMINAL]: '#FF5555',

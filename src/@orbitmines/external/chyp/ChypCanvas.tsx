@@ -134,13 +134,13 @@ import {Render, StatsPanels} from "../../explorer/debug/DebugCanvas";
 const ___index = (ray: Ray): number => {
   switch (ray.type) {
     case RayType.REFERENCE:
-      return ray.self.any.index ?? 0;
+      return ray.any.index ?? 0;
     case RayType.INITIAL:
       return ray.self.terminal.any.index ?? 0;
     case RayType.TERMINAL:
       return ray.self.initial.any.index ?? 0;
     case RayType.VERTEX:
-      return ray.self.any.index ?? 0;
+      return ray.any.index ?? 0;
   }
 }
 
@@ -272,7 +272,7 @@ export const DebugInterface2 = ({scale = 1.5}: InterfaceOptions) => {
 
             const next = Ray.vertex().o2({
               initial: { position: add_(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
-              vertex: { index: Interface.any.selection.self.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
+              vertex: { index: Interface.any.selection.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
               terminal: { position: add_(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
             }).as_reference().o({
               ...selection.as_reference().render_options(Interface),
@@ -483,7 +483,7 @@ export const DebugInterface3 = ({scale = 1.5}: InterfaceOptions) => {
 
             const next = Ray.vertex().o2({
               initial: { position: add_(current.position, [(space_between * 2) - space_between, 0, 0]), scale, color: 'orange' },
-              vertex: { index: Interface.any.selection.self.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
+              vertex: { index: Interface.any.selection.any.index + 1, position: add_(current.position, [(space_between * 2), 0, 0]), scale, color: 'orange' },
               terminal: { position: add_(current.position, [(space_between * 2) + space_between, 0, 0 ]), scale, color: 'orange' }
             }).as_reference().o({
               ...selection.as_reference().render_options(Interface),
