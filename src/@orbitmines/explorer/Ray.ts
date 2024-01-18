@@ -157,89 +157,89 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    */
   get dereference() { return this.self.self.as_reference(); }
 
-  /**
-   * Moves `this.self` and `this.self.self` to a new line.
-   *
-   * [  |--] this.self ----- this.self.self [--|--]
-   * ______ (<- initial pointer)
-   */
-  as_initial = (): Ray => {
-    if (this.is_none()) {
-      throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
-    }
-    if (this.dereference.is_none()) {
-      // TODO: Need some intuition for this check
-      const vertex = this.___as_vertex();
-
-      if (vertex.type !== RayType.VERTEX)
-        throw new PreventsImplementationBug();
-
-      return vertex.follow(Ray.directions.previous);
-    }
-
-    const [terminal_vertex, initial_vertex] = this.___as_vertices();
-
-    if (initial_vertex.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug();
-    if (terminal_vertex.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug();
-
-    initial_vertex.compose(terminal_vertex);
-
-    // TODO BETTER DEBUG
-
-    return initial_vertex.follow(Ray.directions.previous);
-  }
-  /**
-   * Moves `this.self` and `this.self.self` to a new line.
-   *
-   * [  |--] this.self.self ----- this.self [--|--]
-   *                                         _____ (<- terminal pointer)
-   */
-  as_terminal = (): Ray => {
-    if (this.is_none()) {
-      throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
-    }
-    if (this.dereference.is_none()) {
-      // TODO: Need some intuition for this check
-      const vertex = this.___as_vertex();
-
-      if (vertex.type !== RayType.VERTEX)
-        throw new PreventsImplementationBug();
-
-      return vertex.follow();
-    }
-
-    const [initial_vertex, terminal_vertex] = this.___as_vertices();
-
-    if (initial_vertex.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug();
-    if (terminal_vertex.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug();
-
-    initial_vertex.compose(terminal_vertex);
-
-    // TODO BETTER DEBUG
-
-    return terminal_vertex.follow();
-  }
-  private ___as_vertices = (): [Ray, Ray] => {
-    if (!Ray.is_orbit(this.self, this.self.self.self))
-      throw new PreventsImplementationBug('Is there a use-case for this? Probably not?'); //TODO
-
-    // TODO NOTE: THE ORDER OF `this.self` first matters here.
-    return [this.self.___as_vertex(), this.___as_vertex()];
-  }
-  private ___as_vertex = (): Ray => {
-    const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
-
-    // this.self.self = vertex.self.as_arbitrary();
-    // vertex.self.self = this.self.as_arbitrary();
-
-    // return this.___ignorantly_equivalent(Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' }));
-
-    return this.___ignorantly_equivalent(vertex);
-  }
+  // /**
+  //  * Moves `this.self` and `this.self.self` to a new line.
+  //  *
+  //  * [  |--] this.self ----- this.self.self [--|--]
+  //  * ______ (<- initial pointer)
+  //  */
+  // as_initial = (): Ray => {
+  //   if (this.is_none()) {
+  //     throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
+  //   }
+  //   if (this.dereference.is_none()) {
+  //     // TODO: Need some intuition for this check
+  //     const vertex = this.___as_vertex();
+  //
+  //     if (vertex.type !== RayType.VERTEX)
+  //       throw new PreventsImplementationBug();
+  //
+  //     return vertex.follow(Ray.directions.previous);
+  //   }
+  //
+  //   const [terminal_vertex, initial_vertex] = this.___as_vertices();
+  //
+  //   if (initial_vertex.type !== RayType.VERTEX)
+  //     throw new PreventsImplementationBug();
+  //   if (terminal_vertex.type !== RayType.VERTEX)
+  //     throw new PreventsImplementationBug();
+  //
+  //   initial_vertex.compose(terminal_vertex);
+  //
+  //   // TODO BETTER DEBUG
+  //
+  //   return initial_vertex.follow(Ray.directions.previous);
+  // }
+  // /**
+  //  * Moves `this.self` and `this.self.self` to a new line.
+  //  *
+  //  * [  |--] this.self.self ----- this.self [--|--]
+  //  *                                         _____ (<- terminal pointer)
+  //  */
+  // as_terminal = (): Ray => {
+  //   if (this.is_none()) {
+  //     throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
+  //   }
+  //   if (this.dereference.is_none()) {
+  //     // TODO: Need some intuition for this check
+  //     const vertex = this.___as_vertex();
+  //
+  //     if (vertex.type !== RayType.VERTEX)
+  //       throw new PreventsImplementationBug();
+  //
+  //     return vertex.follow();
+  //   }
+  //
+  //   const [initial_vertex, terminal_vertex] = this.___as_vertices();
+  //
+  //   if (initial_vertex.type !== RayType.VERTEX)
+  //     throw new PreventsImplementationBug();
+  //   if (terminal_vertex.type !== RayType.VERTEX)
+  //     throw new PreventsImplementationBug();
+  //
+  //   initial_vertex.compose(terminal_vertex);
+  //
+  //   // TODO BETTER DEBUG
+  //
+  //   return terminal_vertex.follow();
+  // }
+  // private ___as_vertices = (): [Ray, Ray] => {
+  //   if (!Ray.is_orbit(this.self, this.self.self.self))
+  //     throw new PreventsImplementationBug('Is there a use-case for this? Probably not?'); //TODO
+  //
+  //   // TODO NOTE: THE ORDER OF `this.self` first matters here.
+  //   return [this.self.___as_vertex(), this.___as_vertex()];
+  // }
+  // private ___as_vertex = (): Ray => {
+  //   const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
+  //
+  //   // this.self.self = vertex.self.as_arbitrary();
+  //   // vertex.self.self = this.self.as_arbitrary();
+  //
+  //   // return this.___ignorantly_equivalent(Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' }));
+  //
+  //   return this.___ignorantly_equivalent(vertex);
+  // }
   private ___ignorantly_equivalent = (ref: Ray): Ray => {
     this.self.self = ref.self.as_arbitrary();
     ref.self.self = this.self.as_arbitrary();
@@ -435,6 +435,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   });
   compose = Ray.compose.as_method(this);
 
+  // TODO: Cleanup
   /**
    * Equivalence as "Composing Vertices": "TODO: Is this right?: Equivalence at Continuations, inside a Vertex, is parallel composition, from the perspective of the usual direction defined at the Vertex (not generally parallel)"
    *  - `A.equivalent(B)`               = `A.as_vertex().compose(B.as_vertex())`
@@ -462,51 +463,119 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
 
     // 2x Ray.None -> Turn into 2 empty references, referencing each-other.
-    if (initial.is_none() && terminal.is_none())
-      return ignorant_equivalence();
-
-    // Two structures, which have `ref.self = Ray.None` -> Turn into two structures referencing each-other.
-    if (initial.dereference.is_none() && terminal.dereference.is_none())
-      return ignorant_equivalence();
-
     if (
-      (initial.is_vertex() && terminal.is_boundary())
-      || (terminal.is_vertex() && initial.is_boundary())
+      initial.dereference.is_none() && terminal.dereference.is_none()
+      && !(initial.type === RayType.VERTEX && terminal.type === RayType.VERTEX)
     ) {
-      throw new NotImplementedError(`Parallel composition: TODO`);
+      // throw new PreventsImplementationBug(`${initial.type} / ${terminal.type}`)
+      return ignorant_equivalence();
     }
 
-    /**
-     * - Splits the 'initial' side's vertex, into an iterable one, and returns a pointer to the initial side of that iterator.
-     *
-     * - Similarly, we do the opposite for the terminal, returning the terminal side of that iterator.
-     *
-     * - Then we're left with the 'beginning' of one iterator, and the 'end' of the other. And the only thing that's left to do, is draw a simple (ignorant) equivalence between the two. (Basically call this function again, and call {ignorant_equivalence}).
-     *    TODO: This could also be a line with some debug information.
-     */
-    const a = initial.as_terminal();
-    const b = terminal.as_initial();
+    // Two structures, which have `ref.self = Ray.None` -> Turn into two structures which are on a line in between them.
+    if (initial.dereference.is_none()) {
+      const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
+      vertex.self.self = initial.self.as_arbitrary();
+      initial.self.self = vertex.self.as_arbitrary();
 
-    if (a.type !== RayType.TERMINAL)
-      throw new PreventsImplementationBug();
-    if (b.type !== RayType.INITIAL)
-      throw new PreventsImplementationBug();
+      // initial.equivalent(terminal);
+      // return terminal;
+    }
+    if (terminal.dereference.is_none()) {
+      const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
+      vertex.self.self = terminal.self.as_arbitrary();
+      terminal.self.self = vertex.self.as_arbitrary();
 
-    if (!a.self.self.is_none())
-      throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
-    if (!b.self.self.is_none())
-      throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+      // initial.equivalent(terminal.___as_vertex());
+      // return terminal;
+    }
 
-    a.equivalent(b);
+    if (
+      initial.dereference.type !== RayType.VERTEX
+      || terminal.dereference.type !== RayType.VERTEX
+      || initial.dereference.self === initial.self
+      || terminal.dereference.self === terminal.self
+    ) {
+      throw new PreventsImplementationBug('wut')
+    }
 
-    const ret = terminal;
+    if (initial.follow().type !== RayType.TERMINAL || terminal.follow(Ray.directions.previous).type !== RayType.INITIAL) {
+      throw new PreventsImplementationBug('wut2')
+    }
 
-    if (ret.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug(`${ret.type}`);
+    // if (terminal.self.self.any.js === 'D')
+    //   throw new PreventsImplementationBug();
 
-    return ret;
+    initial.dereference.compose(terminal.dereference);
+
+    return terminal;
+
+    // initial.dereference.compose()
+    // return terminal;
   });
   equivalent = Ray.equivalent.as_method(this);
+
+  // static equivalent = Ray.___func(ref => {
+  //   let { initial, terminal} = ref.self;
+  //
+  //   /**
+  //    * The simplest case, is where both sides are only aware of themselves (on .vertex). The only thing we need to do is turn an Orbit, to an Orbit which repeats every 2 steps, the intermediate step being the other thing.
+  //    *
+  //    * Or in textual terms something like:
+  //    *  - A single Orbit:  `(A.self = A) | (B.self = B)`  (i.e. A.is_none && B.is_none)
+  //    *  -             To:  `(A.self = B) | (B.self = A)`
+  //    *
+  //    * Basically turns `A` into a reference to `B`, and `B` into a reference to `A`.
+  //    */
+  //   const ignorant_equivalence = (): Ray => {
+  //     return initial.___ignorantly_equivalent(terminal);
+  //   }
+  //
+  //   // 2x Ray.None -> Turn into 2 empty references, referencing each-other.
+  //   if (initial.is_none() && terminal.is_none())
+  //     return ignorant_equivalence();
+  //
+  //   // Two structures, which have `ref.self = Ray.None` -> Turn into two structures referencing each-other.
+  //   if (initial.dereference.is_none() && terminal.dereference.is_none())
+  //     return ignorant_equivalence();
+  //
+  //   if (
+  //     (initial.is_vertex() && terminal.is_boundary())
+  //     || (terminal.is_vertex() && initial.is_boundary())
+  //   ) {
+  //     throw new NotImplementedError(`Parallel composition: TODO`);
+  //   }
+  //
+  //   /**
+  //    * - Splits the 'initial' side's vertex, into an iterable one, and returns a pointer to the initial side of that iterator.
+  //    *
+  //    * - Similarly, we do the opposite for the terminal, returning the terminal side of that iterator.
+  //    *
+  //    * - Then we're left with the 'beginning' of one iterator, and the 'end' of the other. And the only thing that's left to do, is draw a simple (ignorant) equivalence between the two. (Basically call this function again, and call {ignorant_equivalence}).
+  //    *    TODO: This could also be a line with some debug information.
+  //    */
+  //   const a = initial.as_terminal();
+  //   const b = terminal.as_initial();
+  //
+  //   if (a.type !== RayType.TERMINAL)
+  //     throw new PreventsImplementationBug();
+  //   if (b.type !== RayType.INITIAL)
+  //     throw new PreventsImplementationBug();
+  //
+  //   if (!a.self.self.is_none())
+  //     throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+  //   if (!b.self.self.is_none())
+  //     throw new PreventsImplementationBug(`${b.self.self.self.any.js}`);
+  //
+  //   a.equivalent(b);
+  //
+  //   const ret = terminal;
+  //
+  //   if (ret.type !== RayType.VERTEX)
+  //     throw new PreventsImplementationBug(`${ret.type}`);
+  //
+  //   return ret;
+  // });
+  // equivalent = Ray.equivalent.as_method(this);
 
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
