@@ -2,7 +2,6 @@ import _ from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 
-
 // TODO: SHOULDNT CLASSIFY THESE? (And incorporate in Ray??)
 export enum RayType {
   // NONE = '     ',
@@ -80,9 +79,16 @@ export type DebugRay = {
  *
  *
  *
+ * TODO: All methods to 'step' variant - and an intuitive way to switch between modes
+ *  - Through better Ray.___func
+ *  - Transform all functions on Ray to that. (Perhaps use JavaScript generators by default (more intuitively?) - Just convert using JS.Generator)
+ *  - No assumption of halting
+ *  - Perhaps locally cache (for stuff like count?) - no way to ensure globally coherence
  *
+ * TODO: Stylistic
+ *  - Consistency of Arbitrary vs non-arbitrary.
+ *  - Reorder methods in a sensible way.
  *
- * TODO: Consistency of Arbitrary vs non-arbitrary.
  */
 export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   implements
@@ -268,122 +274,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // TODO: Difference between () => this & this.as_arbitrary , relevant for lazy/modular/ignorant structures etc..
   as_arbitrary = (): Arbitrary<Ray> => () => this;
-
-  /**
-   *
-   *
-   * TODO: switch/match Should be abstracted into Ray?
-   */
-  static step = (ref: Ray) => {
-    const { initial } = ref;
-
-    /**
-     * Should return vertex, for one possible next step
-     * Initial for many
-     * Terminal for none
-     * Reference for ???
-     */
-
-    /**
-     * Dereferencing is likely in many cases quickly subject to infinite stepping.
-     *
-     * REFERENCE          -> Dereference (this.self.self)
-     * INITIAL/INITIAL    -> Dereference (this.self.terminal)
-     * TERMINAL/TERMINAL  -> Dereference (this.self.initial)
-     * VERTEX/VERTEX      -> ???
-     *
-     * - Could be that this means that there's no continuation, a self-reference defined here, or it's some mechanism of halting.
-     *
-     * - TODO: Simple example of infinitely finding terminals, or a reference to 'nothing - infinitely'.
-     * - TODO: Could return both dereference sides as possible options
-     */
-
-    const next_pointer = (ref: Ray, terminal: Ray, next: Arbitrary<Ray>) => new Ray({
-      initial: () => terminal,
-      vertex: () => ref,
-      terminal: next,
-    });
-
-    /**
-     * INITIAL/TERMINAL -> possible previous  - TERMINAL.self.initial   (pass to step)
-     * TERMINAL/INITIAL -> possible next      - INITIAL.self.terminal   (pass to step)
-     */
-    const follow_direction = (terminal: Ray): Ray => next_pointer(ref, terminal, () => terminal.___primitive_switch({
-      [RayType.INITIAL]: Ray.directions.next,
-      [RayType.TERMINAL]: Ray.directions.previous,
-    }));
-
-    const dereference = (terminal: Ray) => next_pointer(ref, terminal, () => terminal.dereference);
-
-    /**
-     * TERMINAL -> VERTEX (next: VERTEX -> INITIAL)
-     * INITIAL -> VERTEX (next: VERTEX -> TERMINAL)
-     */
-    const arbitrary_continuations = (terminal: Ray): Ray => next_pointer(ref, terminal, () => initial.___primitive_switch({
-      [RayType.INITIAL]: (initial) => Ray.directions.next(terminal),
-      [RayType.TERMINAL]: (initial) => Ray.directions.previous(terminal),
-    }));
-
-    const boundary = (boundary: Boundary) => (terminal: Ray): Ray => terminal.___primitive_switch({
-
-      /**
-       * Many possible continuations (from the perspective of initial = TERMINAL)
-       *
-       * From something, we arrived at some TERMINAL/INITIAL, which at its `.self`, holds a VERTEX.
-       *        [  ?  ]
-       * [--|--][--|  ]         <-- ref superposed with ref.self
-       *        [  ?  ]
-       */
-      [RayType.VERTEX]: arbitrary_continuations,
-
-      /**
-       * A possible continuation
-       *
-       * (INITIAL -> TERMINAL)
-       * (TERMINAL -> INITIAL)
-       */
-      [boundary]: follow_direction,
-      [opposite(boundary)]: follow_direction,
-
-      [RayType.REFERENCE]: dereference,
-    });
-
-    return initial.___primitive_switch({
-
-      /**
-       * VERTEX -> VERTEX
-       * TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
-       *
-       * VERTEX -> TERMINAL
-       * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
-       *        [--|--][--|  ]  <-- (VERTEX -> TERMINAL)
-       *
-       * VERTEX -> INITIAL
-       * If we're going in the initial direction (from the perspective of the initial = VERTEX)
-       * [  |--][--|--]         <-- (VERTEX -> INITIAL)
-       *
-       * VERTEX -> REFERENCE
-       * TODO ???
-       */
-      [RayType.VERTEX]: (initial) => dereference(ref.terminal),
-
-      [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL)(ref.terminal),
-      [RayType.TERMINAL]: (initial) => boundary(RayType.TERMINAL)(ref.terminal),
-
-      [RayType.REFERENCE]: dereference,
-    });
-  }
-  step= Ray.___func(Ray.step).as_method(this);
-
-  // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
-    protected ___primitive_switch = (cases: SwitchCases): Ray => {
-      const _case = cases[this.type];
-  
-      if (_case === undefined || _.isString(_case))
-        throw new PreventsImplementationBug(_case ?? `Unhandled switch case; [${this.type}]`);
-  
-      return _case(this);
-    }
 
   /**
    * TODO : COMPOSE EMPTY AS FIRST ELEMENT:
@@ -580,8 +470,26 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
   // [[a,d,g],[b,e,h],[c,f,i]]
-  zip = (): Ray => { throw new NotImplementedError(); }
+  static zip = Ray.___func(ref => {
+    let { initial, terminal } = ref.self;
 
+    if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
+      throw new PreventsImplementationBug('TODO: Implement');
+
+    if (initial.type !== RayType.VERTEX || terminal.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug('TODO: Implement');
+
+    throw new NotImplementedError();
+    // initial.traverse()
+    // return new Ray({
+    //
+    // });
+  });
+  zip = Ray.zip.as_method(this);
+
+  // pop = (): Ray => {
+    // this.last().previous().all.terminal = (ref) => ref.___empty_terminal();
+  // }
   pop = (): Ray => this.___primitive_switch({
     [RayType.VERTEX]: () => {
       const previous_vertex = this.self.initial.follow(Ray.directions.previous);
@@ -601,6 +509,16 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       });
     }
   });
+
+
+  // static sn = (step: Implementation): {
+  //   as_method: ArbitraryMethod
+  // } => {
+  //
+  //   return {
+  //     as_method: Ray.___func(step).as_method
+  //   }
+  // }
 
   /**
    * Constructs a function accepting arbitrary structure based on one implementation of it.
@@ -684,7 +602,13 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .next
      */
-      next = (step: Implementation = Ray.directions.next) => {
+      next = (step: Implementation = Ray.directions.next): Ray => {
+        // for (let next of this.___next({step})) {
+        //
+        //   // return next;
+        // }
+        //
+        // return Ray.None();
         let pointer = new Ray({
           initial: () => this,
           terminal: () => step(this),
@@ -724,8 +648,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   is_equivalent = (b: Ray): boolean => { return false; } // TODOl: Current references assume you can't go inside vertex..
   // TODO implement .not??
 
-  // TODO: Perhaps locally cache count?? - no way to ensure globally coherenct
-  get count(): Ray { throw new NotImplementedError() }
+  get count(): Ray { return JS.Number(this.as_array().length); }
 
   // TODO; Could return the ignorant reference to both instances, or just the result., ..
 
@@ -756,7 +679,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     // return copy.as_reference();
   }
 
-  none_or = (arbitrary: Implementation): Ray => this.is_none() ? Ray.None() : arbitrary(this);
+  // none_or = (arbitrary: Implementation): Ray => this.is_none() ? Ray.None() : arbitrary(this);
 
   // @alias('converse', 'opposite', 'swap')
   get reverse(): Ray {
@@ -834,7 +757,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
   map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
-  all = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   // filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
   get clear(): Ray { throw new NotImplementedError(); }
 
@@ -854,7 +776,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   max = (_default: 0): Ray => { throw new NotImplementedError(); }
 
   // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
-  apply = (func: Ray) => {
+  // apply = (func: Ray) => {
 
     // TODO: Combine into generalized [x, min/max()] - preserve terminal/initial structure
     // TODO: ray#apply.
@@ -870,7 +792,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      *       compose.initial.x.max(), // max_self
      *     ]
      */
-  }
+  // }
 
   // ___compute = ()
 
@@ -880,16 +802,227 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     if (this.type !== RayType.VERTEX)
       throw new NotImplementedError(`[${this.type}]`);
 
-    let current: Ray = this;
+    yield *this.___next({step});
+  }
+
+  static pointer = (initial: Ray, step: Implementation): Ray => new Ray({
+    initial: () => initial,
+    terminal: () => step(initial)
+  });
+
+  private next_pointer = (step: Implementation) => {
+    const { self: history, terminal: current } = this;
+
+    return new Ray({
+      initial: current.as_arbitrary(),
+      vertex: history.as_arbitrary(),
+      terminal: () => current.follow(step)
+    });
+  };
+
+  /**
+   *      VERTEX (current)
+   *         |
+   *         v
+   *
+   *         ?        <-- Pointer B
+   *      [--|  ]     <-- INITIAL/TERMINAL (previous)
+   *         ?        <-- Pointer A
+   */
+  private branch = (): [Ray, Ray] => {
+    const { initial: previous, terminal: current } = this;
+
+    if (!previous.is_boundary())
+      throw new PreventsImplementationBug('Only branching off INITIAL/TERMINAL -> VERTEX for now.');
+    if (current.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug('Only branching off INITIAL/TERMINAL -> VERTEX for now.');
+
+    return [
+      this.next_pointer(Ray.directions.previous),
+      this.next_pointer(Ray.directions.next)
+    ];
+  }
+
+  *___next({
+    step = Ray.directions.next,
+  } = {}): Generator<Ray> {
+    for (let pointer of this.___traverse({step})) {
+
+      // TODO: You can do this non-locally with a pass over the history. This way it's local, but we''ll have to find a good example of why this might not go that well. (As this would match to any empty vertices, and maybe more)
+      const { initial: previous, terminal: current } = pointer;
+
+      if (previous.is_vertex() && !Ray.is_orbit(previous.self, current)) {
+        yield pointer.initial;
+      }
+    }
+  }
+
+  /**
+   * TODO: Not happy with this...
+   */
+  *___traverse({
+    step = Ray.directions.next,
+    should_branch = (pointer: Ray) => {
+      const { initial: previous, terminal: current } = pointer;
+      return previous.is_boundary() && current.is_vertex() && Ray.is_orbit(current.self, previous);
+    },
+    branch = (pointer: Ray): [Ray, Ray] => pointer.branch(),
+    filter = (pointer: Ray): boolean => true,
+    next = (pointers: Ray[]): Ray => pointers[0],
+    remove = (pointers: Ray[], pointer: Ray) => delete pointers[0],
+  } = {}): Generator<Ray> {
+    const pointers: Ray[] = [
+      Ray.vertex(Ray.pointer(this, step).as_arbitrary())
+    ]; // TODO COuld be a ray;
 
     while (true) {
-      yield current;
 
-      if (!current.has_next(step))
+      const ref = next(pointers);
+      if (ref === undefined) {
+        // TODO: Could just keep trying...
         break;
+      }
+      let { self: pointer } = ref;
 
-      current = current.next(step);
+      if (!filter(pointer)) {
+        remove(pointers, pointer);
+        continue;
+      }
+
+      yield pointer;
+
+      pointer = pointer.step();
+
+      if (pointer.terminal.is_none()) {
+        remove(pointers, pointer);
+        continue;
+      }
+
+      if (should_branch(pointer)) {
+        const [a, b] = branch(pointer);
+
+        ref.self = a.as_arbitrary();
+        pointers.push(Ray.vertex(b.as_arbitrary()));
+      } else {
+        ref.self = pointer.as_arbitrary();
+      }
     }
+  }
+
+  /**
+   *
+   *
+   * TODO: switch/match Should be abstracted into Ray?
+   */
+  static step = (ref: Ray) => {
+    const { initial } = ref;
+
+    /**
+     * Should return vertex, for one possible next step
+     * Initial for many
+     * Terminal for none
+     * Reference for ???
+     */
+
+    /**
+     * Dereferencing is likely in many cases quickly subject to infinite stepping.
+     *
+     * REFERENCE          -> Dereference (this.self.self)
+     * INITIAL/INITIAL    -> Dereference (this.self.terminal)
+     * TERMINAL/TERMINAL  -> Dereference (this.self.initial)
+     * VERTEX/VERTEX      -> ???
+     *
+     * - Could be that this means that there's no continuation, a self-reference defined here, or it's some mechanism of halting.
+     *
+     * - TODO: Simple example of infinitely finding terminals, or a reference to 'nothing - infinitely'.
+     * - TODO: Could return both dereference sides as possible options
+     */
+
+    const next_pointer = (terminal: Ray, next: Arbitrary<Ray>) => new Ray({
+      initial: () => terminal,
+      vertex: () => ref,
+      terminal: next,
+    });
+
+    /**
+     * INITIAL/TERMINAL -> possible previous  - TERMINAL.self.initial   (pass to step)
+     * TERMINAL/INITIAL -> possible next      - INITIAL.self.terminal   (pass to step)
+     */
+    const follow_direction = (terminal: Ray): Ray => next_pointer(terminal, () => terminal.___primitive_switch({
+      [RayType.INITIAL]: Ray.directions.next,
+      [RayType.TERMINAL]: Ray.directions.previous,
+    }));
+
+    const dereference = (terminal: Ray) => next_pointer(terminal, () => terminal.dereference);
+
+    /**
+     * TERMINAL -> VERTEX (next: VERTEX -> INITIAL)
+     * INITIAL -> VERTEX (next: VERTEX -> TERMINAL)
+     */
+    const arbitrary_continuations = (terminal: Ray): Ray => next_pointer(terminal, () => initial.___primitive_switch({
+      [RayType.INITIAL]: (initial) => Ray.directions.next(terminal),
+      [RayType.TERMINAL]: (initial) => Ray.directions.previous(terminal),
+    }));
+
+    const boundary = (boundary: Boundary) => (terminal: Ray): Ray => terminal.___primitive_switch({
+
+      /**
+       * Many possible continuations (from the perspective of initial = TERMINAL)
+       *
+       * From something, we arrived at some TERMINAL/INITIAL, which at its `.self`, holds a VERTEX.
+       *        [  ?  ]
+       * [--|--][--|  ]         <-- ref superposed with ref.self
+       *        [  ?  ]
+       */
+      [RayType.VERTEX]: arbitrary_continuations,
+
+      /**
+       * A possible continuation
+       *
+       * (INITIAL -> TERMINAL)
+       * (TERMINAL -> INITIAL)
+       */
+      [boundary]: follow_direction,
+      [opposite(boundary)]: follow_direction,
+
+      [RayType.REFERENCE]: dereference,
+    });
+
+    return initial.___primitive_switch({
+
+      /**
+       * VERTEX -> VERTEX
+       * TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
+       *
+       * VERTEX -> TERMINAL
+       * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
+       *        [--|--][--|  ]  <-- (VERTEX -> TERMINAL)
+       *
+       * VERTEX -> INITIAL
+       * If we're going in the initial direction (from the perspective of the initial = VERTEX)
+       * [  |--][--|--]         <-- (VERTEX -> INITIAL)
+       *
+       * VERTEX -> REFERENCE
+       * TODO ???
+       */
+      [RayType.VERTEX]: (initial) => dereference(ref.terminal),
+
+      [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL)(ref.terminal),
+      [RayType.TERMINAL]: (initial) => boundary(RayType.TERMINAL)(ref.terminal),
+
+      [RayType.REFERENCE]: dereference,
+    });
+  }
+  step= Ray.___func(Ray.step).as_method(this);
+
+  // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
+  protected ___primitive_switch = (cases: SwitchCases): Ray => {
+    const _case = cases[this.type];
+
+    if (_case === undefined || _.isString(_case))
+      throw new PreventsImplementationBug(_case ?? `Unhandled switch case; [${this.type}]`);
+
+    return _case(this);
   }
 
   /**
@@ -916,11 +1049,14 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     as_int = (): number => { throw new NotImplementedError(); }
     as_number = this.as_int;
 
+  // all = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
+  // get all(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
+
   /**
    * Move to a JavaScript object, which will handle any complexity of existing JavaScript objects, and allows one to abstract any values contained in the {vertex} to the usual JavaScript interface. - More usual to how one thinks about functions, ..., properties.
    */
   get any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
-  cast = <T extends Ray>(): T => this.proxy<T>();
+  cast = <T extends Ray>(): T => { throw new NotImplementedError(); } // TODO this.proxy<T>();
 
   /**
    * Used for chaining JavaScript-provided properties
@@ -946,6 +1082,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   protected proxy = <T = any>(constructor?: ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
     // TODO: IMPLEMENT SPLAT... {...ray.any}
     return this._proxy ??= new Proxy<Ray>(this, {
+
       get(self: Ray, p: string | symbol, receiver: any): any {
 
         // throw new NotImplementedError();
@@ -957,14 +1094,39 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         self._dirty_store[p] = newValue;
 
         return true;
-      }
+      },
 
+      deleteProperty(self: Ray, p: string | symbol): boolean {
+        if (!(p in self._dirty_store)) {
+          return false;
+        }
+
+        delete self._dirty_store[p];
+        return true;
+      }
       // TODO: What do these other methods on Proxy do???
     }) as T;
   }
 
-  get delete(): Ray {
-    this.self = Ray.None; // TODO; I made a lazy delete comment somewhere?
+  /**
+   *
+   * - Don't assume we can track back any reference to this thing. Just destroy it, set everything to None. And let anything else deal with the consequences of the deletion.
+   *
+   * TODO:
+   *   - Could lazily try to find references.
+   *   - Implement on proxy for 'delete ray'
+   */
+  delete = (): Ray => {
+    this.self.initial = Ray.None;
+    this.self.self = this.self.self_reference;
+    this.self.terminal = Ray.None;
+    // TODO: REMOVE THESE
+    this.self._proxy = undefined;
+    this.self._dirty_store = {};
+
+    // Removes the current reference to it.
+    this.self = this.self_reference;
+
     return this;
   }
 
@@ -1078,10 +1240,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
 
-  // TODO: These are just (.back/.front) + .compose ??
-  push_back = (ray: Ray) => { throw new NotImplementedError(); }
-  push_front = (ray: Ray) => { throw new NotImplementedError(); }
-
+  push_back = (b: Ray) => this.last().compose(b);
+  push_front = (b: Ray) => this.first().compose(b);
 
   // [index: number]: Ray;
 
@@ -1218,9 +1378,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   //   return [];
   // }
   //
-  includes(searchElement: Ray, fromIndex?: number): boolean {
-    return false;
-  }
+  // includes(searchElement: Ray, fromIndex?: number): boolean {
+  //   return false;
+  // }
   //
   // toReversed(): Ray[] {
   //   return [];

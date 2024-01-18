@@ -32,6 +32,62 @@ describe("Ray", () => {
     // expect(A.has_previous()).toBe(false);
     // expect(copy.has_previous()).toBe(false);
   });
+  test(".vertex.#.delete", () => {
+    const A_vertex = Ray.vertex().o({ js: 'A' });
+    const A_ref = A_vertex.as_reference().o({ js: 'A.#' });
+
+    expect(A_vertex.is_none()).toBe(false);
+    expect(A_ref.follow().is_none()).toBe(false);
+    expect(A_ref.follow(Ray.directions.previous).is_none()).toBe(false);
+    expect(A_vertex.any.js).toBe('A');
+    expect(A_ref.is_none()).toBe(false);
+
+    A_ref.delete();
+
+    expect(A_vertex.is_none()).toBe(true);
+    expect(A_vertex.follow().is_none()).toBe(true);
+    expect(A_vertex.follow(Ray.directions.previous).is_none()).toBe(true);
+    expect(A_vertex.any.js).toBe(undefined);
+    expect(A_ref.is_none()).toBe(true);
+  });
+  test("[A, B, C].___next()", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
+    const E = Ray.vertex().o({ js: 'E' }).as_reference().o({ js: 'E.#' });
+
+    A.compose(B).compose(C).compose(D).compose(E);
+
+    expect([...A.___next()].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C', 'D', 'E']);
+  });
+  test("[A, B, C].___traverse()", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
+    const E = Ray.vertex().o({ js: 'E' }).as_reference().o({ js: 'E.#' });
+
+    A.compose(B).compose(C).compose(D).compose(E);
+
+    expect([...A.___traverse()].map(pointer =>
+      [pointer.initial.type, pointer.terminal.type, pointer.initial.self.any.js]
+    )).toEqual([
+      [RayType.VERTEX, RayType.TERMINAL, 'A'],
+      [RayType.TERMINAL, RayType.INITIAL, undefined],
+      [RayType.INITIAL, RayType.VERTEX, undefined],
+      [RayType.VERTEX, RayType.TERMINAL, 'B'],
+      [RayType.TERMINAL, RayType.INITIAL, undefined],
+      [RayType.INITIAL, RayType.VERTEX, undefined],
+      [RayType.VERTEX, RayType.TERMINAL, 'C'],
+      [RayType.TERMINAL, RayType.INITIAL, undefined],
+      [RayType.INITIAL, RayType.VERTEX, undefined],
+      [RayType.VERTEX, RayType.TERMINAL, 'D'],
+      [RayType.TERMINAL, RayType.INITIAL, undefined],
+      [RayType.INITIAL, RayType.VERTEX, undefined],
+      [RayType.VERTEX, RayType.TERMINAL, 'E'],
+    ]);
+  });
   test("[A, B, C].next()", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });

@@ -4,7 +4,7 @@ import {Chyp} from "./Chyp";
 describe("Chyp", () => {
   describe(".Graph", () => {
     test(".set_inputs", () => {
-      const graph = new Chyp.Graph()
+      const graph = Chyp.Graph.new()
         .set_inputs(Ray.vertex().o({ js: 'B' }).as_arbitrary())
         .set_inputs(Ray.vertex().o({ js: 'A' }).as_arbitrary());
 
@@ -17,7 +17,7 @@ describe("Chyp", () => {
   });
   describe(".Rule", () => {
     test(".name", () => {
-      let rule = new Chyp.Rule();
+      let rule = Chyp.Rule.new();
       rule.name = 'test';
 
       expect(rule.name).toBe('test');

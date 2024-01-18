@@ -23,6 +23,14 @@ export namespace Chyp {
 
   export type VData = Vertex; export class Vertex extends Ray {
 
+    static new = (): Vertex => {
+      return new Vertex();
+    }
+
+    protected constructor() {
+      super();
+    }
+
     // Vertex.in_edges = Ray.initial
       get in_edges(): Ray { return this.initial; } set in_edges(ray: Arbitrary<Ray>) { this.initial = ray; }
 
@@ -45,6 +53,25 @@ export namespace Chyp {
 
   export class Match extends Ray {
 
+    /**
+     *                      |            <-- (vertex/edge)_map to (vertex/edge)_image
+     *                 _____|_____
+     *                /     |     \
+     * Domain:    [--|--][--|--][--|--]   <-- Any of the matching structure on 'domain' is '_map'.
+     *               |      |      |          (is_total = true, if everything is on '_map')
+     *               |      |      |
+     * Codomain:  [--|--][--|--][--|--]   <-- Any of the matching structure on 'codomain' is '_image'.
+     *               |      |      |          (is_surjective = true, if everything is on '_image')
+     */
+
+    static new = (): Match => {
+      return new Match();
+    }
+
+    protected constructor() {
+      super();
+    }
+
     // Match.domain = Ray.initial
       get domain(): Ray { return this.initial; } set domain(ray: Arbitrary<Ray>) { this.initial = ray; }
 
@@ -54,6 +81,14 @@ export namespace Chyp {
   }
 
   export class Rule extends Ray {
+
+    static new = (): Rule => {
+      return new Rule();
+    }
+
+    protected constructor() {
+      super();
+    }
 
     // Rule.lhs = Ray.initial
       get lhs(): Ray { return this.initial; } set lhs(ray: Arbitrary<Ray>) { this.initial = ray; }
@@ -96,6 +131,14 @@ export namespace Chyp {
   }
 
   export class Graph extends Ray {
+
+    static new = (): Graph => {
+      return new Graph();
+    }
+
+    protected constructor() {
+      super();
+    }
 
     // Graph.inputs = Ray.initial
       get inputs(): Ray { return this.initial; } set inputs(ray: Arbitrary<Ray>) { this.initial = ray; }
