@@ -1097,6 +1097,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * Move to a JavaScript object, which will handle any complexity of existing JavaScript objects, and allows one to abstract any values contained in the {vertex} to the usual JavaScript interface. - More usual to how one thinks about functions, ..., properties.
    */
   get any(): { [key: string | symbol]: Ray } & any { return this.self.proxy(); }
+  get ___any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
   cast = <T extends Ray>(): T => { throw new NotImplementedError(); } // TODO this.proxy<T>();
 
   /**
@@ -1188,11 +1189,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     if (memory) {
       if (!target_ray.any.traversed) {
-        Interface.any.rays.push(target);
+        Interface.___any.rays.push(target);
         target_ray.any.traversed = true;
       }
     } else {
-      Interface.any.rays = [target];
+      Interface.___any.rays = [target];
     }
 
     return target;
@@ -1213,7 +1214,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         this.any.scale
         ?? (this.is_none() ? 1.5 : 1.5),
       color:
-        (Ray.is_orbit(Interface.any.selection.self, this.self) && Interface.any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
+        (Ray.is_orbit(Interface.___any.selection.self, this.self) && Interface.___any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
           : (
             this.any.color
             ?? (this.is_none() ? 'red' : {

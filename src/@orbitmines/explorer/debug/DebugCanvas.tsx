@@ -75,72 +75,73 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
     }),
     rays: [] as Ray[],
     stats: false,
+    cursor: { tick: false },
     controls: Ray.vertex().o({
       hotkeys: [
         {
           combo: ["a", "arrowleft"], global: true, label: "", onKeyDown: () => {
-            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.initial, memory, Interface);
+            Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.initial, memory, Interface);
           }
         },
         {
           combo: ["d", "arrowright"], global: true, label: "", onKeyDown: () => {
-            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.terminal, memory, Interface);
+            Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.terminal, memory, Interface);
           }
         },
         {
           combo: ["delete"], global: true, label: "", onKeyDown: () => {
-            Interface.any.rays = Interface.any.rays.filter((ray: Ray) => ray.self.label !== Interface.any.selection.self.label); // Should be automatic, this sort of thing
-            Interface.any.selection = Interface.any.selection.delete;
+            Interface.___any.rays = Interface.___any.rays.filter((ray: Ray) => ray.self.label !== Interface.___any.selection.self.label); // Should be automatic, this sort of thing
+            Interface.___any.selection = Interface.___any.selection.delete;
           }
         },
         {
           combo: ["w", "arrowup"], global: true, label: "", onKeyDown: () => {
             // TODO SHOULD BE ANOTHER DIRECTION AT THE FRAME?
-            Interface.any.selection = Interface.any.selection.move((self: Ray) => self.self, memory, Interface);
+            Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.self, memory, Interface);
           }
         },
         {
           combo: ["e"], global: true, label: "", onKeyDown: () => {
             const change = [0, 0, Math.PI / 10];
-            console.log(Interface.any.selection.self.initial.label)
+            console.log(Interface.___any.selection.self.initial.label)
 
-            Interface.any.selection = Interface.any.selection.self.o2({
-              initial: { rotation: add(Interface.any.selection.self.initial.any.rotation ?? [0, 0, 0], change) },
-              terminal: { rotation: add(Interface.any.selection.self.terminal.any.rotation ?? [0, 0, 0], change) },
+            Interface.___any.selection = Interface.___any.selection.self.o2({
+              initial: { rotation: add(Interface.___any.selection.self.initial.___any.rotation ?? [0, 0, 0], change) },
+              terminal: { rotation: add(Interface.___any.selection.self.terminal.___any.rotation ?? [0, 0, 0], change) },
             })
           }
         },
         {
           combo: ["space"], global: true, label: "", onKeyDown: (e) => {
             e.preventDefault();
-            Interface.any.rays = Interface.any.selection.self.___dirty_all([]).map((ray: Ray) => {
-              ray.any.traversed = true;
+            Interface.___any.rays = Interface.___any.selection.self.___dirty_all([]).map((ray: Ray) => {
+              ray.___any.traversed = true;
               return ray.as_reference();
             });
           }
         },
         // {
         //   combo: ["s", "arrowdown"], global: true, label: "", onKeyDown: () => {
-        //     Interface.any.selection = Interface.any.selection.move((self: Ray) => self.as_reference().as_reference(), memory, Interface);
+        //     Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.as_reference().as_reference(), memory, Interface);
         //   }
         // },
         {
           combo: "/", global: true, label: "", onKeyDown: () => {
             console.log('---------')
-            console.log(`Debugging: ${Interface.any.selection.self.label} (type=${Interface.any.selection.type})`)
-            console.log(`rays.length at pos=[${Interface.any.selection.render_options.position}]: ${Interface.any.rays.filter((ray: Ray) => 
+            console.log(`Debugging: ${Interface.___any.selection.self.label} (type=${Interface.___any.selection.type})`)
+            console.log(`rays.length at pos=[${Interface.___any.selection.render_options.position}]: ${Interface.___any.rays.filter((ray: Ray) => 
               _.isEqual(
-                Interface.any.selection.render_options.position,
+                Interface.___any.selection.render_options.position,
                 ray.render_options(Interface).position
               )
-            ).length} / ${Interface.any.rays.length}`)
-            console.log('ref', Interface.any.selection)
-            console.log('ref.self', Interface.any.selection.self)
+            ).length} / ${Interface.___any.rays.length}`)
+            console.log('ref', Interface.___any.selection)
+            console.log('ref.self', Interface.___any.selection.self)
 
             const debug: DebugResult = {};
-            Interface.any.selection.self.debug(debug);
+            Interface.___any.selection.self.debug(debug);
             console.log('ref.debug', debug);
-            Interface.any.rays.forEach((ray: Ray) => ray.debug(debug));
+            Interface.___any.rays.forEach((ray: Ray) => ray.debug(debug));
             console.log('rays.debug', debug);
 
           }
@@ -148,7 +149,7 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
         {
           combo: "f3", global: true, label: "Show stats Panel", onKeyDown: (e) => {
             e.preventDefault();
-            Interface.any.stats = !Interface.any.stats;
+            Interface.___any.stats = !Interface.___any.stats;
           }
         },
       ] as HotkeyConfig[]
@@ -157,16 +158,16 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
 
   // useEffect(() => {
   // TODO: Eventually goes over maximum size of react-debug callstack when updates each frame like this.
-  hotkeyConfig.set(...Interface.any.controls.any.hotkeys);
-  // }, [Interface.any.controls.any.hotkeys]);
+  hotkeyConfig.set(...Interface.___any.controls.___any.hotkeys);
+  // }, [Interface.___any.controls.___any.hotkeys]);
 
   return <>
-    {Interface.any.stats ? <StatsPanels/> : <></>}
+    {Interface.___any.stats ? <StatsPanels/> : <></>}
 
-    <AutoVertex position={(Interface.any.selection as Ray).any.position} rotation={[0, 0, Math.PI / 5]} scale={scale / 2} color="#555555" />
+    <AutoVertex position={(Interface.___any.selection as Ray).___any.position} rotation={[0, 0, Math.PI / 5]} scale={scale / 2} color="#555555" />
 
-    {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
-    {Interface.any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray} Interface={Interface} />)}
+    {/*{Interface.___any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
+    {Interface.___any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray} Interface={Interface} />)}
   </>
 }
 
