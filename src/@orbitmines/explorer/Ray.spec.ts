@@ -27,7 +27,7 @@ describe("Ray", () => {
 
     A.compose(B).compose(C);
 
-    expect(() => A.copy()).toThrow();
+    expect(() => A.copy()).toThrow(); //TODO
     // const copy = A.copy();
     // expect(A.has_previous()).toBe(false);
     // expect(copy.has_previous()).toBe(false);
@@ -357,19 +357,6 @@ describe("Ray", () => {
     expect([...X.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['X', 'C', 'B', 'A']);
     expect([...X].map(ref => ref.self.any.js)).toEqual(['X', 'Y', 'Z']);
   });
-  // test("(A:vertex.# = B:vertex.# = C:vertex.#)", () => {
-  //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
-  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
-  //   const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
-  //   // const D = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' });
-  //
-  //   A.equivalent(B).equivalent(C);
-  //   // C.equivalent(D);
-  //
-  //   // A.equivalent(D);
-  //   // A.equivalent(C);
-  //
-  // });
   // test("[A, B, C], [X, Y, Z] ; B.compose(X)", () => {
   //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
   //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
@@ -1178,7 +1165,7 @@ describe("Ray", () => {
     A.compose(B).compose(C);
 
     expect(A.as_array().map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
-    expect(B.as_array().map(ref => ref.self.any.js)).toEqual(['B', 'C']); // TODO: This may or may not be expected behavior, you could make a case for saying it should render both sides for .as_array. ???
+    expect(B.as_array().map(ref => ref.self.any.js)).toEqual(['B', 'C']);
     expect(C.as_array().map(ref => ref.self.any.js)).toEqual(['C']);
 
     expect([...A].map(ref => ref.self.any.js)).toEqual(['A', 'B', 'C']);
@@ -1265,7 +1252,7 @@ describe("Ray", () => {
       .any.js
     ).toBe('B');
   });
-  // test(".vertex.#.debug", () => {
+  // test(".vertex.#.debug", () => { TODO
   //   const a = Ray.vertex().as_reference();
   //   const b = Ray.vertex().as_reference();
   //   a.compose(b);
@@ -1302,14 +1289,6 @@ describe("Ray", () => {
     expect(ray.any.position).toEqual([0, 1, 2]);
     expect(ray.any.func()).toBe('c');
   })
-
-  // test(".[vertex, vertex].#.compose", () => {
-  //   /** [--|--] */ const vertex = Ray.vertex().as_reference();
-  //   vertex.initial.o({ js: 'A' });
-  //   vertex.terminal.o({ js: 'B' });
-  //
-  //   expect(vertex.compose.)
-  // });
   test(".vertex.#", () => {
     /** [--|--] */ const vertex = Ray.vertex().as_reference();
 
