@@ -196,59 +196,48 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   //
   //   return initial_vertex.follow(Ray.directions.previous);
   // }
-  // /**
-  //  * Moves `this.self` and `this.self.self` to a new line.
-  //  *
-  //  * [  |--] this.self.self ----- this.self [--|--]
-  //  *                                         _____ (<- terminal pointer)
-  //  */
-  // as_terminal = (): Ray => {
-  //   if (this.is_none()) {
-  //     throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
-  //   }
-  //   if (this.dereference.is_none()) {
-  //     // TODO: Need some intuition for this check
-  //     const vertex = this.___as_vertex();
-  //
-  //     if (vertex.type !== RayType.VERTEX)
-  //       throw new PreventsImplementationBug();
-  //
-  //     return vertex.follow();
-  //   }
-  //
-  //   const [initial_vertex, terminal_vertex] = this.___as_vertices();
-  //
-  //   if (initial_vertex.type !== RayType.VERTEX)
-  //     throw new PreventsImplementationBug();
-  //   if (terminal_vertex.type !== RayType.VERTEX)
-  //     throw new PreventsImplementationBug();
-  //
-  //   initial_vertex.compose(terminal_vertex);
-  //
-  //   // TODO BETTER DEBUG
-  //
-  //   return terminal_vertex.follow();
-  // }
-  // private ___as_vertices = (): [Ray, Ray] => {
-  //   if (!Ray.is_orbit(this.self, this.self.self.self))
-  //     throw new PreventsImplementationBug('Is there a use-case for this? Probably not?'); //TODO
-  //
-  //   // TODO NOTE: THE ORDER OF `this.self` first matters here.
-  //   return [this.self.___as_vertex(), this.___as_vertex()];
-  // }
-  // private ___as_vertex = (): Ray => {
-  //   const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
-  //
-  //   // this.self.self = vertex.self.as_arbitrary();
-  //   // vertex.self.self = this.self.as_arbitrary();
-  //
-  //   // return this.___ignorantly_equivalent(Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' }));
-  //
-  //   return this.___ignorantly_equivalent(vertex);
-  // }
+  /**
+   * Moves `this.self` and `this.self.self` to a new line.
+   *
+   * [  |--] this.self.self ----- this.self [--|--]
+   *                                         _____ (<- terminal pointer)
+   */
+  as_terminal = (): Ray => {
+    if (this.is_none()) {
+      throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
+    }
+    if (this.dereference.is_none()) {
+      throw new PreventsImplementationBug();
+    }
+
+    const [terminal_vertex, initial_vertex] = this.___as_vertices();
+
+    if (initial_vertex.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug();
+    if (terminal_vertex.type !== RayType.VERTEX)
+      throw new PreventsImplementationBug();
+
+    initial_vertex.compose(terminal_vertex);
+
+    // TODO BETTER DEBUG
+
+    return terminal_vertex.follow();
+  }
+  private ___as_vertices = (): [Ray, Ray] => {
+    if (!Ray.is_orbit(this.self, this.self.self.self))
+      throw new PreventsImplementationBug('Is there a use-case for this? Probably not?'); //TODO
+
+    // TODO NOTE: THE ORDER OF `this.self` first matters here.
+    return [this.self.___as_vertex(), this.___as_vertex()];
+  }
+  private ___as_vertex = (): Ray => {
+    const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
+
+    return this.___ignorantly_equivalent(vertex);
+  }
   private ___ignorantly_equivalent = (ref: Ray): Ray => {
-    this.self.self = ref.self.as_arbitrary();
     ref.self.self = this.self.as_arbitrary();
+    this.self.self = ref.self.as_arbitrary();
 
     return ref;
   }
@@ -379,17 +368,32 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       // return terminal;
     }
 
+    if (initial.is_boundary() && initial.dereference.is_boundary()) {
+      initial.as_terminal();
+      //.follow(Ray.directions.previous).compose(terminal.dereference);
+      // return terminal;
+    }
+
     if (
       initial.dereference.type !== RayType.VERTEX
       || terminal.dereference.type !== RayType.VERTEX
       || initial.dereference.self === initial.self
       || terminal.dereference.self === terminal.self
     ) {
-      throw new PreventsImplementationBug('wut')
+      throw new PreventsImplementationBug(`
+        [${initial.type}](${initial.follow_direction().any.js})
+        / [${initial.dereference.type}](${initial.dereference.follow_direction().any.js})
+        -> ${terminal.type}${terminal.follow_direction().any.js}`)
     }
 
     if (initial.follow().type !== RayType.TERMINAL || terminal.follow(Ray.directions.previous).type !== RayType.INITIAL) {
-      throw new PreventsImplementationBug('wut2')
+      initial.dereference.push_back(terminal.dereference); // TODO: NON-PUSH-BACK VARIANT? (Just local splits?)
+      return terminal;
+      // throw new PreventsImplementationBug(`
+      //   [${initial.type}](${initial.follow_direction().any.js})
+      //   / [${initial.dereference.type}] {${[...initial.dereference.traverse()].map(ref => ref.self.follow_direction().any.js)}}
+      //   -> ${terminal.type} (${terminal.follow_direction().any.js})
+      //   / [${terminal.dereference.type}]`)
     }
 
     // if (terminal.self.any.js === 'D')
@@ -598,28 +602,39 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       return step(this);
     }
+    follow_direction = (): Ray => this.___primitive_switch({
+      [RayType.INITIAL]: Ray.directions.next,
+      [RayType.TERMINAL]: Ray.directions.previous,
+    });
 
     /**
      * .next
      */
       next = (step: Implementation = Ray.directions.next): Ray => {
+        return [...this.traverse(step)][1] ?? Ray.None(); // TODO BAD
+        // for (let next of this.traverse(step)) {
+        //
+        //   return next;
+        // }
+        //
+        // return Ray.None();
         // for (let next of this.___next({step})) {
         //
         //   // return next;
         // }
         //
         // return Ray.None();
-        let pointer = new Ray({
-          initial: () => this,
-          terminal: () => step(this),
-        });
-
-        pointer = pointer.step().step();
-
-        if (pointer.terminal.type !== RayType.VERTEX)
-          throw new NotImplementedError(`${pointer.terminal.type} / ${pointer.terminal.self.any.js}`);
-
-        return pointer.terminal;
+        // let pointer = new Ray({
+        //   initial: () => this,
+        //   terminal: () => step(this),
+        // });
+        //
+        // pointer = pointer.step().step();
+        //
+        // if (pointer.terminal.type !== RayType.VERTEX)
+        //   throw new NotImplementedError(`${pointer.terminal.type} / ${pointer.terminal.self.any.js}`);
+        //
+        // return pointer.terminal;
 
         // return Ray.___next(Ray.directions.next)(this);
       }
@@ -809,7 +824,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     initial: () => initial,
     terminal: () => step(initial)
   });
-
   private next_pointer = (step: Implementation) => {
     const { self: history, terminal: current } = this;
 
@@ -819,29 +833,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       terminal: () => current.follow(step)
     });
   };
-
-  /**
-   *      VERTEX (current)
-   *         |
-   *         v
-   *
-   *         ?        <-- Pointer B
-   *      [--|  ]     <-- INITIAL/TERMINAL (previous)
-   *         ?        <-- Pointer A
-   */
-  private branch = (): [Ray, Ray] => {
-    const { initial: previous, terminal: current } = this;
-
-    if (!previous.is_boundary())
-      throw new PreventsImplementationBug('Only branching off INITIAL/TERMINAL -> VERTEX for now.');
-    if (current.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug('Only branching off INITIAL/TERMINAL -> VERTEX for now.');
-
-    return [
-      this.next_pointer(Ray.directions.previous),
-      this.next_pointer(Ray.directions.next)
-    ];
-  }
 
   *___next({
     step = Ray.directions.next,
@@ -871,51 +862,134 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    */
   *___traverse({
     step = Ray.directions.next,
-    should_branch = (pointer: Ray) => {
-      const { initial: previous, terminal: current } = pointer;
-      return previous.is_boundary() && current.is_vertex() && Ray.is_orbit(current.self, previous);
-    },
-    branch = (pointer: Ray): [Ray, Ray] => pointer.branch(),
     filter = (pointer: Ray): boolean => true,
-    next = (pointers: Ray[]): Ray => pointers[0],
-    remove = (pointers: Ray[], pointer: Ray) => delete pointers[0],
+    next = (pointers: Ray[]): Ray => pointers[pointers.length - 1],
+    remove = (pointers: Ray[]) => pointers.pop(),
   } = {}): Generator<Ray> {
     const pointers: Ray[] = [
       Ray.vertex(Ray.pointer(this, step).as_arbitrary())
     ]; // TODO COuld be a ray;
 
+    let first = true;
+
     while (true) {
 
       const ref = next(pointers);
       if (ref === undefined) {
+        remove(pointers);
         // TODO: Could just keep trying...
         break;
       }
       let { self: pointer } = ref;
 
       if (!filter(pointer)) {
-        remove(pointers, pointer);
+        remove(pointers); ///, pointer
+        first = false; // TODO REMOVE
         continue;
+      }
+
+      if (!first) { // TODO THIS NEEDS TO BE BETTER
+        pointer = pointer.step();
       }
 
       yield pointer;
 
-      pointer = pointer.step();
+      const { initial, terminal } = pointer;
 
-      if (pointer.terminal.is_none()) {
-        remove(pointers, pointer);
-        continue;
+      if (!first) {
+
+        // TODO: Same pattern as .step
+
+        /**
+         *      VERTEX (current)
+         *         |
+         *         v
+         *
+         *         ?        <-- Pointer B
+         *      [--|  ]     <-- INITIAL/TERMINAL (previous)
+         *         ?        <-- Pointer A
+         */
+        const default_pointer = (): Ray[] => {
+          return pointer.terminal.is_none() ? [] : [pointer];
+        }
+        const boundary = (boundary: Boundary): Ray[] => {
+          return terminal.___primitive_switch({
+            [boundary]: default_pointer,
+            [opposite(boundary)]: default_pointer,
+            [RayType.REFERENCE]: default_pointer,
+
+            [RayType.VERTEX]: () => {
+              if (Ray.is_orbit(terminal.self.self, initial.self)) {
+                return [
+                  this.next_pointer(Ray.directions.previous),
+                  this.next_pointer(Ray.directions.next)
+                ];
+              }
+
+              if (terminal.dereference.is_boundary() && Ray.is_orbit(terminal.self.self.self, terminal.self)) {
+
+                return [
+                  ...default_pointer(),
+                  new Ray({
+                    initial: terminal.as_arbitrary(),
+                    vertex: pointer.as_arbitrary(),
+                    terminal: () => terminal.dereference
+                  })
+                ]
+              }
+
+              return default_pointer();
+
+              // if (terminal.self.is_boundary() && Ray.is_orbit(terminal.self.self.self, terminal.self)) {
+              //
+              //   return [
+              //     this.next_pointer(Ray.directions.next),
+              //     this.next(current => current.self.self)
+              //   ]
+              // }
+              //
+              // if (!Ray.is_orbit(terminal.self.self, initial.self))
+              //   return default_pointer();
+              //
+              // return [
+              //   this.next_pointer(Ray.directions.previous),
+              //   this.next_pointer(Ray.directions.next)
+              // ];
+            },
+          })
+        }
+
+        const branches: Ray[] = initial.___primitive_switch<Ray[]>({
+          [RayType.VERTEX]: (initial) => terminal.___primitive_switch({
+            [RayType.VERTEX]: default_pointer,
+            [RayType.REFERENCE]: default_pointer,
+
+            [RayType.INITIAL]: default_pointer,
+            [RayType.TERMINAL]: default_pointer,
+          }),
+
+          [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL),
+          [RayType.TERMINAL]: (initial) => boundary(RayType.TERMINAL),
+
+          [RayType.REFERENCE]: default_pointer,
+        });
+
+        if (branches.length === 0) {
+          remove(pointers); // pointer,
+        } else {
+          ref.self = branches[0].as_arbitrary();
+
+          if (branches.length !== 1) {
+            pointers.push(...branches.slice(1).map(b => Ray.vertex(b.as_arbitrary())));
+          }
+        }
       }
 
-      if (should_branch(pointer)) {
-        const [a, b] = branch(pointer);
-
-        ref.self = a.as_arbitrary();
-        pointers.push(Ray.vertex(b.as_arbitrary()));
-      } else {
-        ref.self = pointer.as_arbitrary();
-      }
+      first = false; // TODO REMOVE
     }
+
+    if (pointers.length !== 0)
+      throw new PreventsImplementationBug(`${pointers.length} left`)
   }
 
   /**
@@ -957,10 +1031,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * INITIAL/TERMINAL -> possible previous  - TERMINAL.self.initial   (pass to step)
      * TERMINAL/INITIAL -> possible next      - INITIAL.self.terminal   (pass to step)
      */
-    const follow_direction = (terminal: Ray): Ray => next_pointer(terminal, () => terminal.___primitive_switch({
-      [RayType.INITIAL]: Ray.directions.next,
-      [RayType.TERMINAL]: Ray.directions.previous,
-    }));
+    const follow_direction = (terminal: Ray): Ray => next_pointer(terminal, () => terminal.follow_direction());
 
     const dereference = (terminal: Ray) => next_pointer(terminal, () => terminal.dereference);
 
@@ -1025,7 +1096,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   step= Ray.___func(Ray.step).as_method(this);
 
   // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
-  protected ___primitive_switch = (cases: SwitchCases): Ray => {
+  ___primitive_switch = <TResult = Ray>(cases: SwitchCases<Ray, RayType, string | ((self: Ray) => TResult)>): TResult => {
     const _case = cases[this.type];
 
     if (_case === undefined || _.isString(_case))
@@ -1068,6 +1139,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       get(self: Ray, p: string | symbol, receiver: any): any {
 
+        // TODO: Could return arbitrary structure (or in other method than .all?)
         return self.___map(ref => ref.any[p], {step});
       },
 

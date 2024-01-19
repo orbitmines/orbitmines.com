@@ -30,7 +30,35 @@ describe("Ray", () => {
     expect(() => A.copy()).toThrow(); //TODO
     // const copy = A.copy();
     // expect(A.has_previous()).toBe(false);
+
     // expect(copy.has_previous()).toBe(false);
+  });
+  test("[A, [B, C]]", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+
+    /**
+     * [--A--] [--|  ]
+     *         [  |--] [--B--]
+     */
+    A.compose(B);
+
+    /**
+     * [--A--] [--|  ]
+     *         [  |--] [--B--]
+     *            |
+     *         [  |--] [--C--]
+     */
+    A.compose(C);
+
+    expect(A.follow().type).toEqual(RayType.TERMINAL);
+    expect(A.follow().dereference.type).toEqual(RayType.VERTEX);
+    expect([...A.follow().dereference].map(ref => ref.self.follow_direction().any.js)).toEqual(['A', 'B', 'C']);
+    expect([...A.all().js]).toEqual(['A', 'B', 'C']);
+    // expect([...A].map(ref => ref.any.js)).toEqual(['A', 'B', 'C']);
+
+
   });
   test(".vertex.#.delete", () => {
     const A_vertex = Ray.vertex().o({ js: 'A' });
@@ -89,8 +117,10 @@ describe("Ray", () => {
     A.compose(B).compose(C).compose(D).compose(E);
 
     expect([...A.___next()].map(ref => ref.any.js)).toEqual(['A', 'B', 'C', 'D', 'E']);
+    expect(A.last().any.js).toEqual('E');
+    expect(D.first().any.js).toEqual('A');
   });
-  test("[A, B, C].___traverse()", () => {
+  test("[A, B, C, D, E].___traverse()", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
     const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
@@ -100,21 +130,48 @@ describe("Ray", () => {
     A.compose(B).compose(C).compose(D).compose(E);
 
     expect([...A.___traverse()].map(pointer =>
-      [pointer.initial.type, pointer.terminal.type, pointer.initial.any.js]
+      [pointer.terminal.is_none(), pointer.initial.type, pointer.terminal.type, pointer.initial.any.js]
     )).toEqual([
-      [RayType.VERTEX, RayType.TERMINAL, 'A'],
-      [RayType.TERMINAL, RayType.INITIAL, undefined],
-      [RayType.INITIAL, RayType.VERTEX, undefined],
-      [RayType.VERTEX, RayType.TERMINAL, 'B'],
-      [RayType.TERMINAL, RayType.INITIAL, undefined],
-      [RayType.INITIAL, RayType.VERTEX, undefined],
-      [RayType.VERTEX, RayType.TERMINAL, 'C'],
-      [RayType.TERMINAL, RayType.INITIAL, undefined],
-      [RayType.INITIAL, RayType.VERTEX, undefined],
-      [RayType.VERTEX, RayType.TERMINAL, 'D'],
-      [RayType.TERMINAL, RayType.INITIAL, undefined],
-      [RayType.INITIAL, RayType.VERTEX, undefined],
-      [RayType.VERTEX, RayType.TERMINAL, 'E'],
+      [false, RayType.VERTEX, RayType.TERMINAL, 'A'],
+      [false, RayType.TERMINAL, RayType.INITIAL, undefined],
+      [false, RayType.INITIAL, RayType.VERTEX, undefined],
+      [false, RayType.VERTEX, RayType.TERMINAL, 'B'],
+      [false, RayType.TERMINAL, RayType.INITIAL, undefined],
+      [false, RayType.INITIAL, RayType.VERTEX, undefined],
+      [false, RayType.VERTEX, RayType.TERMINAL, 'C'],
+      [false, RayType.TERMINAL, RayType.INITIAL, undefined],
+      [false, RayType.INITIAL, RayType.VERTEX, undefined],
+      [false, RayType.VERTEX, RayType.TERMINAL, 'D'],
+      [false, RayType.TERMINAL, RayType.INITIAL, undefined],
+      [false, RayType.INITIAL, RayType.VERTEX, undefined],
+      [false, RayType.VERTEX, RayType.TERMINAL, 'E'],
+      [true, RayType.TERMINAL, RayType.VERTEX, undefined], // vertex is Ray.None
+    ]);
+  });
+  test("[A, [B, C, D]].___traverse()", () => {
+    // const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    // const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
+    // const C = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' });
+    //
+    // A.compose(B);
+    // A.compose(C);
+
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const A_terminal = A.follow();
+    const B_initial = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' }).follow(Ray.directions.previous);
+    const C_initial = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' }).follow(Ray.directions.previous);
+    const D_initial = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' }).follow(Ray.directions.previous);
+
+    A_terminal.equivalent(B_initial);
+    A_terminal.equivalent(C_initial);
+    A_terminal.equivalent(D_initial);
+
+    expect([...A.___traverse()].map(pointer =>
+      [pointer.terminal.is_none(), pointer.initial.type, pointer.terminal.type, pointer.terminal.is_boundary() ? pointer.terminal.follow_direction().any.js : undefined]
+    )).toEqual([
+      [false, RayType.VERTEX, RayType.TERMINAL, 'A'],
+      [false, RayType.TERMINAL, RayType.VERTEX, undefined],
+      // [true, RayType.VERTEX, RayType.VERTEX, undefined],
     ]);
   });
   test("[A, B, C].next()", () => {
@@ -965,28 +1022,79 @@ describe("Ray", () => {
       expect([...R.dereference.traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['R', 'J', 'Y', 'B']);
       expect([...R.dereference.traverse()].map(ref => ref.self.any.js)).toEqual(['R']);
   });
-  // test("(A:vertex.# = B:vertex.#) ; A.as_terminal", () => {
-  //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
-  //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
-  //
-  //   A.equivalent(B);
-  //
-  //   const terminal = A.as_terminal();
-  //
-  //   expect(terminal.type).toBe(RayType.TERMINAL);
-  //
-  //   expect([...terminal.follow(Ray.directions.previous).all(Ray.directions.previous).js]).toEqual(['___as_vertex', '___as_vertex']);
-  //   expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.any.js)).toEqual(['A', 'B']);
-  //
-  //   /**
-  //    * These should keep looping...
-  //    * TODO: Better test helper for this
-  //    */
-  //   expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.any.js)).toEqual(['___as_vertex', '___as_vertex']);
-  //   expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.any.js)).toEqual(['A', 'B']);
-  //   expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.any.js)).toEqual(['___as_vertex', '___as_vertex']);
-  //   expect([...terminal.follow(Ray.directions.previous).traverse(Ray.directions.previous)].map(ref => ref.self.self.self.self.self.any.js)).toEqual(['A', 'B']);
-  // });
+  test("(A:terminal.# = B:initial.#) ; A.as_terminal", () => {
+    const A_terminal = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' }).follow();
+    const B_initial = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' }).follow(Ray.directions.previous);
+
+    /**
+     *    A    ____________    B
+     * [--|--][--|  ][  |--][--|--]
+     */
+    A_terminal.equivalent(B_initial);
+
+    /**
+     *           |
+     *        [  |--][--B--]
+     *           |
+     * [--A--][--|  ]         <--- ret
+     *           |
+     */
+    const ret = A_terminal.as_terminal();
+    expect(ret.type).toBe(RayType.TERMINAL);
+
+    expect([...A_terminal.dereference.all().js]).toEqual(['___as_vertex', '___as_vertex']);
+    expect([...A_terminal.dereference.___map(ref => ref.self.follow_direction().any.js)]).toEqual(['A', 'B']);
+  });
+  test("(A:terminal.# = B:initial.# = C:initial.#) ; A.as_terminal", () => {
+    const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
+    const A_terminal = A.follow();
+    const B_initial = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' }).follow(Ray.directions.previous);
+    const C_initial = Ray.vertex().o({ js: 'C' }).as_reference().o({ js: 'C.#' }).follow(Ray.directions.previous);
+    const D_initial = Ray.vertex().o({ js: 'D' }).as_reference().o({ js: 'D.#' }).follow(Ray.directions.previous);
+
+    /**
+     *    A    ____________    B
+     * [--|--][--|  ][  |--][--|--]
+     */
+    A_terminal.equivalent(B_initial);
+
+    expect([...A_terminal.dereference.all().js]).toEqual(['B']);
+    expect([...A_terminal.dereference.___map(ref => ref.any.js)]).toEqual(['B']);
+
+    expect([...B_initial.dereference.all(Ray.directions.previous).js]).toEqual(['A']);
+    expect([...B_initial.dereference.___map(ref => ref.any.js, { step: Ray.directions.previous})]).toEqual(['A']);
+
+    /**
+     *           |
+     * [--A--][--|  ]
+     *           |
+     *        [  |--][--B--]
+     *           |
+     *        [  |--][--C--]
+     *           |
+     */
+    A_terminal.equivalent(C_initial);
+
+    expect([...A_terminal.dereference.all().js]).toEqual(['___as_vertex', '___as_vertex', '___as_vertex']);
+    expect([...A_terminal.dereference.___map(ref => ref.self.follow_direction().any.js)]).toEqual(['A', 'B', 'C']);
+
+    /**
+     *           |
+     * [--A--][--|  ]
+     *           |
+     *        [  |--][--B--]
+     *           |
+     *        [  |--][--C--]
+     *           |
+     *        [  |--][--D--]
+     *           |
+     */
+    A_terminal.equivalent(D_initial);
+
+    expect([...A_terminal.dereference.all().js]).toEqual(['___as_vertex', '___as_vertex', '___as_vertex', '___as_vertex']);
+    expect([...A_terminal.dereference.___map(ref => ref.self.follow_direction().any.js)]).toEqual(['A', 'B', 'C', 'D']);
+    expect([...A.all().js]).toEqual(['A', 'B', 'C', 'D']);
+  });
   // test("(A:vertex.# = B:vertex.#) ; B.as_terminal", () => {
   //   const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
   //   const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
