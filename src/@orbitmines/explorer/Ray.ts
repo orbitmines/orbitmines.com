@@ -1,6 +1,7 @@
 import _ from "lodash";
 import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
+import JS from "./JS";
 
 // TODO: SHOULDNT CLASSIFY THESE? (And incorporate in Ray??)
 export enum RayType {
@@ -13,16 +14,6 @@ export enum RayType {
 export type Boundary = RayType.INITIAL | RayType.TERMINAL;
 const opposite = (boundary: Boundary): Boundary => boundary === RayType.INITIAL ? RayType.TERMINAL : RayType.INITIAL;
 
-export type ParameterlessFunction<T = any> = () => T;
-export type Arbitrary<T> = (...args: any[]) => T;
-export type Constructor<T> = new (...args: any[]) => T;
-export type ParameterlessConstructor<T> = new () => T;
-
-// TODO: Merge with Arbitrary.
-export type Recursive<T = Ray> = (T | Recursive<T | T[]>)[];
-export type Method<T = Ray> = (...other: Recursive<T>) => T;
-export type ArbitraryMethod<T = Ray> = (ref: T) => Method<T>;
-
 export type SwitchCases<
   T = Ray,
   SwitchCase extends string | symbol | number = RayType,
@@ -30,8 +21,6 @@ export type SwitchCases<
 > = {
   [TCase in SwitchCase]?: TResult
 }
-
-export type Implementation<T = Ray> = (ref: T) => T;
 
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
@@ -42,7 +31,11 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
   as_reference: () => T
 }
 
-export interface AbstractDirectionality<T> { initial: Arbitrary<T>, vertex: Arbitrary<T>, terminal: Arbitrary<T> }
+export interface AbstractDirectionality<T> {
+  get initial(): T,
+  get vertex(): T,
+  get terminal(): T
+}
 
 // TODO: better debug
 export type DebugResult = { [label: string]: DebugRay }
@@ -92,6 +85,7 @@ export type DebugRay = {
  */
 export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   implements
+      AbstractDirectionality<Ray>,
       PossiblyHomoiconic<Ray>,
 
       AsyncIterable<Ray>,
@@ -101,13 +95,17 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 {
   // TODO: Could make a case that setting the terminal is more of a map, defaulting/first checking the terminal before additional functionality is mapped over that.
 
-  protected _initial: Arbitrary<Ray>; get initial(): Ray { return this._initial(); } set initial(initial: Arbitrary<Ray>) { this._initial = initial; }
-  protected _vertex: Arbitrary<Ray>; get vertex(): Ray { return this._vertex(); } set vertex(vertex: Arbitrary<Ray>) { this._vertex = vertex; }
-  protected _terminal: Arbitrary<Ray>; get terminal(): Ray { return this._terminal(); } set terminal(terminal: Arbitrary<Ray>) { this._terminal = terminal; }
+  protected _initial: JS.Arbitrary<Ray>; get initial(): Ray { return this._initial(); } set initial(initial: JS.Arbitrary<Ray>) { this._initial = initial; }
+  protected _vertex: JS.Arbitrary<Ray>; get vertex(): Ray { return this._vertex(); } set vertex(vertex: JS.Arbitrary<Ray>) { this._vertex = vertex; }
+  protected _terminal: JS.Arbitrary<Ray>; get terminal(): Ray { return this._terminal(); } set terminal(terminal: JS.Arbitrary<Ray>) { this._terminal = terminal; }
 
-  get self(): Ray { return this.vertex; }; set self(self: Arbitrary<Ray>) { this.vertex = self; }
+  get self(): Ray { return this.vertex; }; set self(self: JS.Arbitrary<Ray>) { this.vertex = self; }
 
-  constructor({ initial, vertex, terminal, }: Partial<AbstractDirectionality<Ray>> = {}) {
+  constructor({ initial, vertex, terminal, }: {
+    initial?: JS.Arbitrary<Ray>,
+    vertex?: JS.Arbitrary<Ray>,
+    terminal?: JS.Arbitrary<Ray>,
+  } = {}) {
     this._initial = initial ?? Ray.None;
     this._vertex = vertex ?? this.self_reference; // TODO: None, could also self-reference the ray on which it's defining to be None. Now it's just an ignorant loop.
     this._terminal = terminal ?? Ray.None;
@@ -243,7 +241,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   }
 
   /** [     ] */ static None = () => new Ray({ }).o({ });
-  /** [--?--] */ static vertex = (value: Arbitrary<Ray> = Ray.None) => {
+  /** [--?--] */ static vertex = (value: JS.Arbitrary<Ray> = Ray.None) => {
     /** [     ] */ const vertex = Ray.None();
     /** [--   ] */ vertex.initial = vertex.___empty_initial();
     /** [  ?  ] */ vertex.vertex = value;
@@ -262,7 +260,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
 
   // TODO: Difference between () => this & this.as_arbitrary , relevant for lazy/modular/ignorant structures etc..
-  as_arbitrary = (): Arbitrary<Ray> => () => this;
+  as_arbitrary = (): JS.Arbitrary<Ray> => () => this;
 
   /**
    * TODO : COMPOSE EMPTY AS FIRST ELEMENT:
@@ -296,8 +294,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * @see "Continuations as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
    */
-  static compose = Ray.___func(ref => {
-    let { initial, terminal} = ref.self;
+  static compose = JS.Function.Impl((initial, terminal) => {
 
     if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
       throw new PreventsImplementationBug();
@@ -325,8 +322,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
    */
-  static equivalent = Ray.___func(ref => {
-    let { initial, terminal} = ref.self;
+  static equivalent = JS.Function.Impl((initial, terminal) => {
 
     /**
      * The simplest case, is where both sides are only aware of themselves (on .vertex). The only thing we need to do is turn an Orbit, to an Orbit which repeats every 2 steps, the intermediate step being the other thing.
@@ -476,8 +472,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // zip also compose???
   // [a, b, c] zip [d, e, f] zip [g, h, i] ...
   // [[a,d,g],[b,e,h],[c,f,i]]
-  static zip = Ray.___func(ref => {
-    let { initial, terminal } = ref.self;
+  static zip = JS.Function.Impl((initial, terminal) => {
 
     if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
       throw new PreventsImplementationBug('TODO: Implement');
@@ -516,75 +511,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
   });
 
-
-  // static sn = (step: Implementation): {
-  //   as_method: ArbitraryMethod
-  // } => {
-  //
-  //   return {
-  //     as_method: Ray.___func(step).as_method
-  //   }
-  // }
-
-  /**
-   * Constructs a function accepting arbitrary structure based on one implementation of it.
-   *
-   * TODO: Is there some equivalent of this in computer science??? category theory??
-   *
-   * a.compose(b).compose(c) = [a, b, c].compose = abc.compose = [[a1, a2], b, c].compose = [[a1, a2], b, [c1, c2]].compose = [[a1, [[[a2]]], [[[[]]], []]], b, [[[]], [], [c]]].compose = ...
-   */
-  static ___func(
-    step: Implementation,
-  ): {
-    as_method: ArbitraryMethod
-  } {
-    return {
-
-      /**
-       * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
-       */
-      as_method: (ref: Ray): Method => (...any: Recursive): Ray => {
-        if (any === undefined || any.length === 0)
-          return step(ref);
-
-        // TODO: This can be much better...
-        const first = (recursive?: Recursive): Ray | undefined => {
-          if (recursive === undefined) return;
-          // if (_.isObject(recursive)) return recursive as unknown as Ray;
-
-          for (let r of recursive) {
-            if (r === undefined) continue;
-            if (_.isObject(r)) return r as unknown as Ray;
-
-            // if (r instanceof Ray)
-            //   throw new PreventsImplementationBug();
-
-            // @ts-ignore
-            const _first = first(r);
-            if (_first)
-              return _first;
-          }
-        }
-
-        const _first = first(any);
-
-        if (_first === undefined)
-          return step(ref);
-
-        const pointer = new Ray({
-          initial: () => ref,
-          terminal: () => _first
-        });
-
-        return step(pointer);
-
-        // TODO: ANY CASE
-        // if (any.length === 1) {
-        // }
-      }
-    }
-  }
-
   /**
    * Helper methods for commonly used directions
    *
@@ -597,7 +523,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
 
     // TODO: Nicer one? ; Differentiate between ".next" and just "follow the pointer" ?
-    follow = (step: Implementation = Ray.directions.next): Ray => {
+    follow = (step: JS.Implementation = Ray.directions.next): Ray => {
       // let pointer = new Ray({
       //   initial: () => this,
       //   terminal: () => step(this),
@@ -613,7 +539,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     /**
      * .next
      */
-      next = (step: Implementation = Ray.directions.next): Ray => {
+      next = (step: JS.Implementation = Ray.directions.next): Ray => {
         return [...this.traverse(step)][1] ?? Ray.None(); // TODO BAD
         // for (let next of this.traverse(step)) {
         //
@@ -641,19 +567,19 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
         // return Ray.___next(Ray.directions.next)(this);
       }
-      has_next = (step: Implementation = Ray.directions.next): boolean => this.next(step).is_some();
+      has_next = (step: JS.Implementation = Ray.directions.next): boolean => this.next(step).is_some();
       // @alias('end', 'result', 'back')
-      last = (step: Implementation = Ray.directions.next): Ray => {
+      last = (step: JS.Implementation = Ray.directions.next): Ray => {
         const next = this.next(step);
         return next.is_some() ? next.last(step) : this;
       }
     /**
      * .previous (Just .next with a `Ray.directions.previous` default)
      */
-      previous = (step: Implementation = Ray.directions.previous): Ray => this.next(step);
-      has_previous = (step: Implementation = Ray.directions.previous): boolean => this.has_next(step);
+      previous = (step: JS.Implementation = Ray.directions.previous): Ray => this.next(step);
+      has_previous = (step: JS.Implementation = Ray.directions.previous): boolean => this.has_next(step);
       // @alias('beginning', 'front')
-      first = (step: Implementation = Ray.directions.previous): Ray => this.last(step);
+      first = (step: JS.Implementation = Ray.directions.previous): Ray => this.last(step);
   
   // TODO: I Don't like this name, but it needs to get across that any equivalency, or any equivalency check for that necessarily, is local. And I want more equivalences, I run more of this method.
   // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex.
@@ -755,7 +681,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     permutation === undefined ? 1 : of
   )
 
-  at = (steps: number | Ray | Arbitrary<Ray>): Ray => {
+  at = (steps: number | Ray | JS.Arbitrary<Ray>): Ray => {
     if (!JS.is_number(steps))
       throw new NotImplementedError('Not yet implemented for Rays.');
 
@@ -814,7 +740,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   // ___compute = ()
 
-  *traverse(step: Implementation = Ray.directions.next): Generator<Ray> {
+  *traverse(step: JS.Implementation = Ray.directions.next): Generator<Ray> {
     // TODO: Also to ___func??
 
     if (this.type !== RayType.VERTEX)
@@ -823,11 +749,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     yield *this.___next({step});
   }
 
-  static pointer = (initial: Ray, step: Implementation): Ray => new Ray({
+  static pointer = (initial: Ray, step: JS.Implementation): Ray => new Ray({
     initial: () => initial,
     terminal: () => step(initial)
   });
-  private next_pointer = (step: Implementation) => {
+  private next_pointer = (step: JS.Implementation) => {
     const { self: history, terminal: current } = this;
 
     return new Ray({
@@ -1000,8 +926,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * TODO: switch/match Should be abstracted into Ray?
    */
-  static step = (ref: Ray) => {
-    const { initial } = ref;
+  static step = JS.Function.Impl((initial, terminal) => {
+    // TODO: Can be ignorant of terminal is initial is a reference. (probably some performance thing)
 
     /**
      * Should return vertex, for one possible next step
@@ -1024,9 +950,9 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
      * - TODO: Could return both dereference sides as possible options
      */
 
-    const next_pointer = (terminal: Ray, next: Arbitrary<Ray>) => new Ray({
+    const next_pointer = (terminal: Ray, next: JS.Arbitrary<Ray>) => new Ray({
       initial: () => terminal,
-      vertex: () => ref,
+      // vertex: () => ref,? TODO HISTORY
       terminal: next,
     });
 
@@ -1088,15 +1014,15 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
        * VERTEX -> REFERENCE
        * TODO ???
        */
-      [RayType.VERTEX]: (initial) => dereference(ref.terminal),
+      [RayType.VERTEX]: (initial) => dereference(terminal),
 
-      [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL)(ref.terminal),
-      [RayType.TERMINAL]: (initial) => boundary(RayType.TERMINAL)(ref.terminal),
+      [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL)(terminal),
+      [RayType.TERMINAL]: (initial) => boundary(RayType.TERMINAL)(terminal),
 
       [RayType.REFERENCE]: dereference,
     });
-  }
-  step= Ray.___func(Ray.step).as_method(this);
+  });
+  step = Ray.step.as_method(this);
 
   // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
   ___primitive_switch = <TResult = Ray>(cases: SwitchCases<Ray, RayType, string | ((self: Ray) => TResult)>): TResult => {
@@ -1137,7 +1063,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * TODO:
    *   - This needs something much smarter at some point...
    */
-  all = (step: Implementation = Ray.directions.next): { [key: string | symbol]: Ray } & any => {
+  all = (step: JS.Implementation = Ray.directions.next): { [key: string | symbol]: Ray } & any => {
     return new Proxy<Ray>(this, {
 
       get(self: Ray, p: string | symbol, receiver: any): any {
@@ -1198,7 +1124,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
-  protected proxy = <T = any>(constructor?: ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
+  protected proxy = <T = any>(constructor?: JS.ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
     // TODO: IMPLEMENT SPLAT... {...ray.any}
     return this._proxy ??= new Proxy<Ray>(this, {
 
@@ -1530,125 +1456,3 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 //     })
 //
 
-
-/**
- *
- * Important to remember this is just one particular structure to which it can be mapped, there are probably many (TODO infinitely?) others.
- *
- * Not to be considered as a perfect mapping of JavaScript functionality - merely a practical one.
- */
-export namespace JS {
-  export const Boolean = (boolean: boolean): Ray => {
-    // TODO: Could be superpose structure instead of length 2;
-    // |-false->-true-| (could of course also be reversed)
-    const _false = Ray.vertex().o({ js: false }).as_reference();
-    const _true = Ray.vertex().o({ js: true }).as_reference();
-    _false.compose(_true);
-
-    return (boolean ? _true : _false);
-  }
-  // export const bit = (bit?: boolean): Arbitrary<Ray<any>> => permutation(bit ? 1 : 0, 2);
-  export const Bit = Boolean;
-
-  export const Iterable = <T = any>(iterable: Iterable<T>): Ray => JS.Iterator(iterable[Symbol.iterator]());
-
-  export const Iterator = <T = any>(iterator: Iterator<T>): Ray => {
-    // [  |--]
-
-    const next = (previous: Ray, first: boolean = false): Ray => {
-      const iterator_result = iterator.next();
-      const is_terminal = iterator_result.done === true;
-
-      // Clear the terminal function attached to the Iterator.
-      // TODO: In case of 'is_terminal = true': Could also leave this be, in case JavaScript allows for adding stuff to the iterator even after .done === true;
-      previous.self.terminal = previous.self.___empty_terminal();
-
-      if (is_terminal) {
-        // We're done, this is the end of the iterator
-
-        return Ray.None();
-      }
-
-      const current = Ray
-        .vertex(() => JS.Any(iterator_result.value))
-        .o({js: iterator_result.value})
-        .as_reference();
-
-      // Move the iterator to the terminal.
-      current.self.terminal = () => next(current);
-
-      if (first) {
-        // Move the iterator's terminal to current.
-        ray_iterator.self.terminal = () => current.self;
-
-        current.self.initial = () => ray_iterator.self;
-
-        return current; // Answer to INITIAL.terminal is a VERTEX.
-      }
-
-      // TODO: This is just compose, but without .type checks.. ; FIX ON COMPOSE END for is_reference etc..
-      if (previous.follow().type !== RayType.TERMINAL)
-        throw new PreventsImplementationBug();
-      if (current.follow(Ray.directions.previous).type !== RayType.INITIAL)
-        throw new PreventsImplementationBug();
-
-      previous.follow().equivalent(current.follow(Ray.directions.previous));
-      // TODO:
-      // previous.compose(current);
-
-      return current.self.initial; // Answer to VERTEX.terminal is an INITIAL.
-    }
-
-    const ray_iterator: Ray = new Ray({
-      vertex: Ray.None,
-      terminal: () => next(ray_iterator, true),
-    })
-      .o({ js: iterator })
-      .as_reference();
-
-    return ray_iterator;
-  }
-
-  export const Generator = <T = any>(generator: Generator<T>): Ray => JS.Iterable(generator);
-
-  // TODO Could have parallel threads in general.
-  // export const AsyncGenerator = <T = any>(generator: AsyncGenerator<T>): Ray => {
-  //   // [  |--]
-  //   return JS.Iterable(generator);
-  // }
-
-  export const Number = (number: number): Ray => {
-    throw new NotImplementedError();
-  }
-
-  export const Function = (func: Arbitrary<any>): Ray => {
-    throw new NotImplementedError();
-  }
-
-  // TODO
-  export const Object = (object: object): Ray => Ray.vertex().o(object).as_reference();
-
-  export const Any = (any: any): Ray => {
-    if (any === null || any === undefined) return JS.Any(any);
-    if (JS.is_boolean(any)) return JS.Boolean(any);
-    if (JS.is_number(any)) return JS.Number(any);
-    if (JS.is_iterable(any)) return JS.Iterable(any); // || is_array(any))
-    if (JS.is_function(any)) return JS.Function(any);
-    if (JS.is_object(any)) return JS.Object(any);
-
-    // TODO
-    // return JS.Any(any);
-    return Ray.vertex().o({js: any}).as_reference();
-  }
-
-  export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);
-  export const is_number = (_object: any): _object is number => _.isNumber(_object);
-  export const is_object = (_object: any): _object is object => _.isObject(_object);
-  export const is_iterable = <T = any>(_object: any): _object is Iterable<T> => Symbol.iterator in Object(_object) && is_function(_object[Symbol.iterator]);
-  export const is_async_iterable = <T = any>(_object: any): _object is AsyncIterable<T> => Symbol.asyncIterator in Object(_object);
-  export const is_array = <T = any>(_object: any): _object is T[] => _.isArray(_object);
-  export const is_async = (_object: any) => _.has(_object, 'then') && is_function(_.get(_object, 'then')); // TODO, Just an ugly check
-
-  export const is_error = (_object: any): _object is Error => _.isError(_object);
-  export const is_function = (_object: any): _object is ((...args: any[]) => any) => _.isFunction(_object);
-}

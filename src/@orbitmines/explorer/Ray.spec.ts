@@ -1,25 +1,6 @@
 import {Ray, RayType} from "./Ray";
 
 describe("Ray", () => {
-  test(".___func(ref)", () => {
-    const method = Ray.___func((ref: Ray): Ray => new Ray({
-      initial: ref.self.initial.as_arbitrary(),
-      terminal: ref.self.terminal.as_arbitrary()
-    }).o({ js: ref.type })).as_method;
-
-    expect(method(Ray.vertex().as_reference().as_reference())().any.js).toBe(RayType.REFERENCE);
-    expect(method(Ray.vertex().as_reference())().any.js).toBe(RayType.VERTEX);
-    expect(method(Ray.initial().as_reference())().any.js).toBe(RayType.INITIAL);
-    expect(method(Ray.terminal().as_reference())().any.js).toBe(RayType.TERMINAL);
-
-    const a = Ray.vertex().o({ js: 'A'}).as_reference();
-    const b = Ray.vertex().o({ js: 'B'}).as_reference();
-
-    // TODO What about method(a)(b)(c)... :thinking:
-    expect(method(a)(b).initial.any.js).toBe('A');
-    expect(method(a)(b).terminal.any.js).toBe('B');
-    expect(method(a)(b).type).toBe(RayType.VERTEX);
-  });
   test("[A, B, C].copy", () => {
     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
     const B = Ray.vertex().o({ js: 'B' }).as_reference().o({ js: 'B.#' });
@@ -1424,27 +1405,28 @@ describe("Ray", () => {
       .as_reference().any.js
     ).toBe('B');
   });
-  test("[.vertex.#, .vertex.#].#.compose", () => {
-    let A = Ray.vertex().o({ js: 'A' }).as_reference();
-    let B = Ray.vertex().o({ js: 'B' }).as_reference();
-
-    B = new Ray({
-      initial: A.as_arbitrary(),
-      terminal: B.as_arbitrary()
-    }).as_reference().compose();
-
-    expect(B.type).toBe(RayType.VERTEX);
-    expect(B.any.js).toBe('B');
-    expect(B.self
-      .initial.self.initial
-      .as_reference().any.js
-    ).toBe('A');
-    expect(B.self
-      .initial.self.initial
-      .terminal.self.terminal
-      .as_reference().any.js
-    ).toBe('B');
-  });
+  // TODO: .compose(), should take everything at the vertex instead.
+  // test("[.vertex.#, .vertex.#].#.compose", () => {
+  //   let A = Ray.vertex().o({ js: 'A' }).as_reference();
+  //   let B = Ray.vertex().o({ js: 'B' }).as_reference();
+  //
+  //   B = new Ray({
+  //     initial: A.as_arbitrary(),
+  //     terminal: B.as_arbitrary()
+  //   }).as_reference().compose();
+  //
+  //   expect(B.type).toBe(RayType.VERTEX);
+  //   expect(B.any.js).toBe('B');
+  //   expect(B.self
+  //     .initial.self.initial
+  //     .as_reference().any.js
+  //   ).toBe('A');
+  //   expect(B.self
+  //     .initial.self.initial
+  //     .terminal.self.terminal
+  //     .as_reference().any.js
+  //   ).toBe('B');
+  // });
   // test(".vertex.#.debug", () => { TODO
   //   const a = Ray.vertex().as_reference();
   //   const b = Ray.vertex().as_reference();

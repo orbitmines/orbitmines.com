@@ -1,6 +1,26 @@
-import {JS, Ray, RayType} from "./Ray";
+import {Ray, RayType} from "./Ray";
+import JS from "./JS";
 
 describe("JS", () => {
+  test(".Function.Ref(ref)", () => {
+    const method = JS.Function.Ref((ref): Ray => new Ray({
+      initial: ref.self.initial.as_arbitrary(),
+      terminal: ref.self.terminal.as_arbitrary()
+    }).o({ js: ref.type })).as_method;
+
+    expect(method(Ray.vertex().as_reference().as_reference())().any.js).toBe(RayType.REFERENCE);
+    expect(method(Ray.vertex().as_reference())().any.js).toBe(RayType.VERTEX);
+    expect(method(Ray.initial().as_reference())().any.js).toBe(RayType.INITIAL);
+    expect(method(Ray.terminal().as_reference())().any.js).toBe(RayType.TERMINAL);
+
+    const a = Ray.vertex().o({ js: 'A'}).as_reference();
+    const b = Ray.vertex().o({ js: 'B'}).as_reference();
+
+    // TODO What about method(a)(b)(c)... :thinking:
+    expect(method(a)(b).initial.any.js).toBe('A');
+    expect(method(a)(b).terminal.any.js).toBe('B');
+    expect(method(a)(b).type).toBe(RayType.VERTEX);
+  });
   test(".Object", () => {
     const ray = JS.Object({
       a: 'b',
