@@ -13,11 +13,12 @@ import {
   torus
 } from "../OrbitMinesExplorer";
 import {HotkeyEventOptions, useHotkeys} from "../../js/react/hooks/useHotkeys";
-import {Implementation, Ray, RayType} from "../Ray";
+import {Ray, RayType} from "../Ray";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import _ from "lodash";
 import {useThree} from "@react-three/fiber";
 import {StatsPanels} from "./DebugCanvas";
+import JS from "../JS";
 
 const ___index = (ray: Ray): number => {
   switch (ray.type) {
@@ -349,7 +350,7 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
               // TODO Then expand these to any-dimensional
             ];
             const isFollowing = directions.map(
-              ([initial, terminal]): Implementation => {
+              ([initial, terminal]): JS.Implementation => {
                 const toInitial = initial.some(option => pressed.includes(option));
                 const toTerminal = terminal.some(option => pressed.includes(option));
 
