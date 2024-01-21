@@ -235,7 +235,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     return this.___ignorantly_equivalent(vertex);
   }
-  private ___ignorantly_equivalent = (ref: Ray): Ray => {
+  ___ignorantly_equivalent = (ref: Ray): Ray => {
     ref.self.self = this.self.as_arbitrary();
     this.self.self = ref.self.as_arbitrary();
 
@@ -369,6 +369,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
 
     if (initial.is_boundary() && initial.dereference.is_boundary()) {
+      throw new NotImplementedError();
       initial.as_terminal();
       //.follow(Ray.directions.previous).compose(terminal.dereference);
       // return terminal;
@@ -387,6 +388,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
 
     if (initial.follow().type !== RayType.TERMINAL || terminal.follow(Ray.directions.previous).type !== RayType.INITIAL) {
+      throw new NotImplementedError();
       initial.dereference.push_back(terminal.dereference); // TODO: NON-PUSH-BACK VARIANT? (Just local splits?)
       return terminal;
       // throw new PreventsImplementationBug(`
@@ -591,6 +593,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     static directions = {
       next: (ref: Ray) => ref.self.terminal.as_reference(),
       previous: (ref: Ray) => ref.self.initial.as_reference(),
+      none: (ref: Ray) => ref, // Note that "None" is necessarily inconsistent
     }
 
     // TODO: Nicer one? ; Differentiate between ".next" and just "follow the pointer" ?
@@ -1206,6 +1209,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         // return self.as_arbitrary();
       },
       set(self: Ray, p: string | symbol, newValue: any, receiver: any): boolean {
+        // TODO:
+        // self._dirty_store[p] = JS.is_function(newValue) ? newValue(self._dirty_store[p]) : newValue;
         // throw new NotImplementedError();
         self._dirty_store[p] = newValue;
 
@@ -1261,11 +1266,11 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     if (memory) {
       if (!target_ray.any.traversed) {
-        Interface.___any.rays.push(target);
+        Interface.any.rays.compose(target);
         target_ray.any.traversed = true;
       }
     } else {
-      Interface.___any.rays = [target];
+      Interface.any.rays = [target];
     }
 
     return target;
@@ -1286,7 +1291,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
         this.any.scale
         ?? (this.is_none() ? 1.5 : 1.5),
       color:
-        (Ray.is_orbit(Interface.___any.selection.self, this.self) && Interface.___any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
+        (Ray.is_orbit(Interface.any.selection.self, this.self) && Interface.any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
           : (
             this.any.color
             ?? (this.is_none() ? 'red' : {
@@ -1534,12 +1539,13 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
  */
 export namespace JS {
   export const Boolean = (boolean: boolean): Ray => {
+    // TODO: Could be superpose structure instead of length 2;
     // |-false->-true-| (could of course also be reversed)
-    const _false = Ray.vertex().o({ js: false });
-    const _true = Ray.vertex().o({ js: true });
+    const _false = Ray.vertex().o({ js: false }).as_reference();
+    const _true = Ray.vertex().o({ js: true }).as_reference();
     _false.compose(_true);
 
-    return (boolean ? _true : _false).as_reference();
+    return (boolean ? _true : _false);
   }
   // export const bit = (bit?: boolean): Arbitrary<Ray<any>> => permutation(bit ? 1 : 0, 2);
   export const Bit = Boolean;
@@ -1549,44 +1555,58 @@ export namespace JS {
   export const Iterator = <T = any>(iterator: Iterator<T>): Ray => {
     // [  |--]
 
-    const next = (initial: Ray): Ray => {
+    const next = (previous: Ray, first: boolean = false): Ray => {
       const iterator_result = iterator.next();
       const is_terminal = iterator_result.done === true;
+
+      // Clear the terminal function attached to the Iterator.
+      // TODO: In case of 'is_terminal = true': Could also leave this be, in case JavaScript allows for adding stuff to the iterator even after .done === true;
+      previous.self.terminal = previous.self.___empty_terminal();
 
       if (is_terminal) {
         // We're done, this is the end of the iterator
 
-        // vertex: could have something at the vertex which defines the "end of the iterator" - but we don't here.
-        const terminal = new Ray({
-          initial: () => initial
-        });
-        // initial.compose(() => terminal.as_reference());
-
-        // if (initial.is_some())
-        //   initial.terminal = () => terminal; // TODO REPEAT FROM BELOW
-
-        return terminal;
+        return Ray.None();
       }
 
-      const current: Ray = new Ray({
-        // initial: () => new Ray(),
-        initial: () => initial,
-        vertex: () => JS.Any(iterator_result.value),
-        terminal: () => next(current)
-      }).o({js: iterator_result.value});
+      const current = Ray
+        .vertex(() => JS.Any(iterator_result.value))
+        .o({js: iterator_result.value})
+        .as_reference();
 
-      // initial.compose(() => current.as_reference());
-      if (initial.is_some())
-        initial.terminal = () => current;
+      // Move the iterator to the terminal.
+      current.self.terminal = () => next(current);
 
-      return current;
+      if (first) {
+        // Move the iterator's terminal to current.
+        ray_iterator.self.terminal = () => current.self;
+
+        current.self.initial = () => ray_iterator.self;
+
+        return current; // Answer to INITIAL.terminal is a VERTEX.
+      }
+
+      // TODO: This is just compose, but without .type checks.. ; FIX ON COMPOSE END for is_reference etc..
+      if (previous.follow().type !== RayType.TERMINAL)
+        throw new PreventsImplementationBug();
+      if (current.follow(Ray.directions.previous).type !== RayType.INITIAL)
+        throw new PreventsImplementationBug();
+
+      previous.follow().equivalent(current.follow(Ray.directions.previous));
+      // TODO:
+      // previous.compose(current);
+
+      return current.self.initial; // Answer to VERTEX.terminal is an INITIAL.
     }
 
-    const ray_iterator = Ray.None().o({ js: iterator });
-    ray_iterator.terminal = () => next(ray_iterator);
+    const ray_iterator: Ray = new Ray({
+      vertex: Ray.None,
+      terminal: () => next(ray_iterator, true),
+    })
+      .o({ js: iterator })
+      .as_reference();
 
-    // This indicates we're passing a reference, since traversal logic will be defined at its vertex - what it's defining.
-    return ray_iterator.as_reference();
+    return ray_iterator;
   }
 
   export const Generator = <T = any>(generator: Generator<T>): Ray => JS.Iterable(generator);
@@ -1605,7 +1625,8 @@ export namespace JS {
     throw new NotImplementedError();
   }
 
-  export const Object = (object: object): Ray => Ray.vertex().o(object);
+  // TODO
+  export const Object = (object: object): Ray => Ray.vertex().o(object).as_reference();
 
   export const Any = (any: any): Ray => {
     if (any === null || any === undefined) return JS.Any(any);
@@ -1617,13 +1638,13 @@ export namespace JS {
 
     // TODO
     // return JS.Any(any);
-    return Ray.vertex().o({js: any});
+    return Ray.vertex().o({js: any}).as_reference();
   }
 
   export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);
   export const is_number = (_object: any): _object is number => _.isNumber(_object);
   export const is_object = (_object: any): _object is object => _.isObject(_object);
-  export const is_iterable = <T = any>(_object: any): _object is Iterable<T> => Symbol.iterator in Object(_object);
+  export const is_iterable = <T = any>(_object: any): _object is Iterable<T> => Symbol.iterator in Object(_object) && is_function(_object[Symbol.iterator]);
   export const is_async_iterable = <T = any>(_object: any): _object is AsyncIterable<T> => Symbol.asyncIterator in Object(_object);
   export const is_array = <T = any>(_object: any): _object is T[] => _.isArray(_object);
   export const is_async = (_object: any) => _.has(_object, 'then') && is_function(_.get(_object, 'then')); // TODO, Just an ugly check

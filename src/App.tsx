@@ -15,6 +15,7 @@ import Icons from "./lib/layout/experimental-designs/Icons";
 import {ThumbnailPage} from "./lib/paper/Paper";
 import {ChypExplorer} from "./@orbitmines/external/chyp/ChypCanvas";
 import {DebugExplorer} from "./@orbitmines/explorer/debug/DebugCanvas";
+import {QuickVisualizationExplorer} from "./@orbitmines/explorer/debug/QuickVisualizationInterface";
 
 export const Router = () => {
 
@@ -28,6 +29,7 @@ export const Router = () => {
     </Route>
     <Route path="thumbnail" element={<ThumbnailPage />} />
     <Route path="explorer">
+      <Route path="quick-visualization" element={<QuickVisualizationExplorer />} />
       <Route path="debug" element={<DebugExplorer />} />
       {/*<Route path="explorer" element={<OrbitMinesExplorer />} />*/}
 
