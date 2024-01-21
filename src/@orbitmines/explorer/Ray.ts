@@ -808,12 +808,18 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       let branch: Ray = branches_to_traverse; //TODO
 
-      const initial = branch.previous();
+      const initial = branch.previous(); // TODO hold history ; discard more than one step for this implementation, optionally switch
       const terminal = branch;
 
       const step = () => {
         const traverse_boundary = (): Ray => {
           return branch.___primitive_switch({
+            /**
+             * Dereferencing is likely in many cases quickly subject to infinite stepping (similar to INITIAL -> INITIAL, TERMINAL -> TERMINAL, VERTEX -> VERTEX. (Could be that this means that there's no continuation, a self-reference defined here, or it's some mechanism of halting.)
+             *
+             * - TODO: Simple example of infinitely finding terminals, or a reference to 'nothing - infinitely'.
+             * - TODO: If both are references, allow deref of both?
+             */
             [RayType.REFERENCE]: (self) => self.dereference,
 
             /**
@@ -846,7 +852,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
               }
 
               /**
-               * This is the one which disallows structure on edges, and assumes a vertex it finds, necessarily as additional vertices we're looking for. (But we don't need to keep track of where we are like this)
+               * This is the one which disallows structure on edges, and assumes a vertex it finds, necessarily as additional vertices we're looking for. (But we don't need to keep track of where we are like this ; TODO: Implement variant which checks back over branch.previous() to allow for this)
                * @see = TODO
                */
               if (
@@ -1018,38 +1024,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       throw new PreventsImplementationBug(`${pointers.length} left`)
   }
 
-  /**
-   *
-   *
-   * TODO: switch/match Should be abstracted into Ray?
-   */
   static step = JS.Function.Impl((initial, terminal) => {
-    // TODO: Can be ignorant of terminal is initial is a reference. (probably some performance thing)
-
-    /**
-     * Should return vertex, for one possible next step
-     * Initial for many
-     * Terminal for none
-     * Reference for ???
-     */
-
-    /**
-     * Dereferencing is likely in many cases quickly subject to infinite stepping.
-     *
-     * REFERENCE          -> Dereference (this.self.self)
-     * INITIAL/INITIAL    -> Dereference (this.self.terminal)
-     * TERMINAL/TERMINAL  -> Dereference (this.self.initial)
-     * VERTEX/VERTEX      -> ???
-     *
-     * - Could be that this means that there's no continuation, a self-reference defined here, or it's some mechanism of halting.
-     *
-     * - TODO: Simple example of infinitely finding terminals, or a reference to 'nothing - infinitely'.
-     * - TODO: Could return both dereference sides as possible options
-     */
 
     const next_pointer = (terminal: Ray, next: JS.Arbitrary<Ray>) => new Ray({
       initial: () => terminal,
-      // vertex: () => ref,? TODO HISTORY
       terminal: next,
     });
 
@@ -1058,10 +1036,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     const dereference = (terminal: Ray) => next_pointer(terminal, () => terminal.dereference);
 
-    /**
-     * TERMINAL -> VERTEX (next: VERTEX -> INITIAL)
-     * INITIAL -> VERTEX (next: VERTEX -> TERMINAL)
-     */
     const arbitrary_continuations = (terminal: Ray): Ray => next_pointer(terminal, () => initial.___primitive_switch({
       [RayType.INITIAL]: (initial) => Ray.directions.next(terminal),
       [RayType.TERMINAL]: (initial) => Ray.directions.previous(terminal),
@@ -1069,22 +1043,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
     const boundary = (boundary: Boundary) => (terminal: Ray): Ray => terminal.___primitive_switch({
 
-      /**
-       * Many possible continuations (from the perspective of initial = TERMINAL)
-       *
-       * From something, we arrived at some TERMINAL/INITIAL, which at its `.self`, holds a VERTEX.
-       *        [  ?  ]
-       * [--|--][--|  ]         <-- ref superposed with ref.self
-       *        [  ?  ]
-       */
       [RayType.VERTEX]: arbitrary_continuations,
 
-      /**
-       * A possible continuation
-       *
-       * (INITIAL -> TERMINAL)
-       * (TERMINAL -> INITIAL)
-       */
       [boundary]: follow_direction,
       [opposite(boundary)]: follow_direction,
 
@@ -1092,22 +1052,6 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     });
 
     return initial.___primitive_switch({
-
-      /**
-       * VERTEX -> VERTEX
-       * TODO Could be an ignorant continuation (as in, the terminal does not have the initial vertex on its .initial). Or you could interpret this as saying, oh this should be a vertex, no information about the continuation definition in between?
-       *
-       * VERTEX -> TERMINAL
-       * If we're going in the terminal direction (from the perspective of the initial = VERTEX)
-       *        [--|--][--|  ]  <-- (VERTEX -> TERMINAL)
-       *
-       * VERTEX -> INITIAL
-       * If we're going in the initial direction (from the perspective of the initial = VERTEX)
-       * [  |--][--|--]         <-- (VERTEX -> INITIAL)
-       *
-       * VERTEX -> REFERENCE
-       * TODO ???
-       */
       [RayType.VERTEX]: (initial) => dereference(terminal),
 
       [RayType.INITIAL]: (initial)  => boundary(RayType.INITIAL)(terminal),
@@ -1119,6 +1063,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   step = Ray.step.as_method(this);
 
   // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
+  // TODO: switch/match Should be abstracted into Ray?
   ___primitive_switch = <TResult = Ray>(cases: SwitchCases<Ray, RayType, string | ((self: Ray) => TResult)>): TResult => {
     const _case = cases[this.type];
 
