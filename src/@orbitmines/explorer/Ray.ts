@@ -3,6 +3,7 @@ import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 import JS from "./JS";
 
+
 // TODO: SHOULDNT CLASSIFY THESE? (And incorporate in Ray??)
 export enum RayType {
   // NONE = '     ',
@@ -148,7 +149,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
    */
   static is_orbit = (a: Ray, b: Ray) => a === b; // is, ..., appears equal.
-  protected self_reference = () => this;
+  protected get self_reference() { return this.as_arbitrary(); };
 
   is_some = (): boolean => !this.is_none();
 
@@ -521,6 +522,10 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       previous: (ref: Ray) => ref.self.initial.as_reference(),
       none: (ref: Ray) => ref, // Note that "None" is necessarily inconsistent
     }
+    static follow_direction = {
+      [RayType.INITIAL]: Ray.directions.next,
+      [RayType.TERMINAL]: Ray.directions.previous
+    }
 
     // TODO: Nicer one? ; Differentiate between ".next" and just "follow the pointer" ?
     follow = (step: JS.Implementation = Ray.directions.next): Ray => {
@@ -531,41 +536,13 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
 
       return step(this);
     }
-    follow_direction = (): Ray => this.___primitive_switch({
-      [RayType.INITIAL]: Ray.directions.next,
-      [RayType.TERMINAL]: Ray.directions.previous,
-    });
+    follow_direction = (): Ray => this.___primitive_switch({...Ray.follow_direction});
 
     /**
      * .next
      */
       next = (step: JS.Implementation = Ray.directions.next): Ray => {
         return [...this.traverse(step)][1] ?? Ray.None(); // TODO BAD
-        // for (let next of this.traverse(step)) {
-        //
-        //   return next;
-        // }
-        //
-        // return Ray.None();
-        // for (let next of this.___next({step})) {
-        //
-        //   // return next;
-        // }
-        //
-        // return Ray.None();
-        // let pointer = new Ray({
-        //   initial: () => this,
-        //   terminal: () => step(this),
-        // });
-        //
-        // pointer = pointer.step().step();
-        //
-        // if (pointer.terminal.type !== RayType.VERTEX)
-        //   throw new NotImplementedError(`${pointer.terminal.type} / ${pointer.terminal.self.any.js}`);
-        //
-        // return pointer.terminal;
-
-        // return Ray.___next(Ray.directions.next)(this);
       }
       has_next = (step: JS.Implementation = Ray.directions.next): boolean => this.next(step).is_some();
       // @alias('end', 'result', 'back')
@@ -786,6 +763,126 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
     }
   }
 
+  static *traverse(options = {
+    initial: Ray.None(),
+    step: Ray.directions.next,
+    branch: {
+      // @alias('pruning', 'mapping', 'filtering')
+      prune: (branches: Ray): Ray => branches,
+      // @alias('next', 'selection', 'tactic', 'strategy')
+      next: (branches: Ray): Ray => branches.first(),
+    }
+  }): Generator<{
+    branch: Ray,
+    vertex: Ray,
+  }> {
+    /**
+     * An arbitrary Ray of (accessible) (possible) next steps to perform in traversal.
+     */
+    // @alias('cursor(s)', 'branch(es)', 'selection(s)')
+    let branches: Ray = Ray.None();
+
+    while (true) {
+      /**
+       * Branch *Pruning, Mapping, ..., Filtering*
+       */
+        branches = options.branch.prune(branches); // TODO: Could hold history
+
+      /**
+       * Branch *Selection, Tactic, ..., Strategy*
+       */
+
+        /**
+         * An arbitrary Ray of (requested) next steps to perform in parallel/.../superposition (with respect to all the other branches).
+         */
+        const branches_to_traverse: Ray = options.branch.next(branches);
+
+        /**
+         * Make copies of our traversal for each selected branch
+         */
+        // TODO
+
+        /**
+         * Split off traversal to each branch, selecting their respective .
+         */
+
+      let branch: Ray = branches_to_traverse; //TODO
+
+      const initial = branch.previous();
+      const terminal = branch;
+
+      const step = () => {
+        const traverse_boundary = (): Ray => {
+          return branch.___primitive_switch({
+            [RayType.REFERENCE]: (self) => self.dereference,
+
+            /**
+             * A possible continuation
+             * INITIAL/TERMINAL -> possible previous  - TERMINAL.self.initial   (pass to step)
+             * TERMINAL/INITIAL -> possible next      - INITIAL.self.terminal   (pass to step)
+             */
+            [RayType.INITIAL]: Ray.follow_direction[RayType.INITIAL],
+            [RayType.TERMINAL]: Ray.follow_direction[RayType.TERMINAL],
+
+            /**
+             * This is the most interesting case: Many possible continuations (from the perspective of a boundary (INITIAL/TERMINAL)).
+             *
+             * NOTE:
+             * - There are many ways of actually implementing this. This is one which ensures the checks needed to traverse arbitrary continuations is always local (with the trade-off that you can't disambiguate between structure on edges vs structure on vertices by default). Though this can be imposed with something else. (TODO)
+             *
+             * @see = TODO
+             */
+            [RayType.VERTEX]: (terminal) => {
+              const initial = branch.previous();
+              // TODO: Could check if self.self is Orbit.
+
+              /**
+               * Simplest check, ensure we're coming from some place which splits into many branches
+               * @see = TODO
+               */
+              if (Ray.is_orbit(initial.self, terminal.self.self)) {
+                // TODO: Branch to previous.next
+                throw new NotImplementedError();
+              }
+
+              /**
+               * This is the one which disallows structure on edges, and assumes a vertex it finds, necessarily as additional vertices we're looking for. (But we don't need to keep track of where we are like this)
+               * @see = TODO
+               */
+              if (
+                terminal.dereference.is_boundary() // Whether there's a continuation defined on the vertex.
+                && Ray.is_orbit(terminal.self, terminal.self.self.self)
+              ) {
+                // TODO: Split of options.step(terminal) & new Ray({
+                //                     initial: terminal.as_arbitrary(),
+                //                     vertex: pointer.as_arbitrary(),
+                //                     terminal: () => terminal.dereference
+                //                   })
+                throw new NotImplementedError();
+              }
+
+              return options.step(terminal);
+            }
+          });
+        }
+
+        return initial.___primitive_switch({
+          [RayType.VERTEX]: (self) => options.step(self), // TODO dereference
+          [RayType.INITIAL]: (self) => traverse_boundary(),
+          [RayType.TERMINAL]: (self) => traverse_boundary(),
+          [RayType.REFERENCE]: (self) => self.dereference,
+        });
+      }
+
+      // After step, if IS_TERMINAL, nothing. assume halting (!!!at prune step ?)
+
+      const terminal = branch.follow();
+
+      // branch.self = terminal;
+
+    }
+  }
+
   /**
    * TODO: Not happy with this...
    */
@@ -956,10 +1053,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       terminal: next,
     });
 
-    /**
-     * INITIAL/TERMINAL -> possible previous  - TERMINAL.self.initial   (pass to step)
-     * TERMINAL/INITIAL -> possible next      - INITIAL.self.terminal   (pass to step)
-     */
+
     const follow_direction = (terminal: Ray): Ray => next_pointer(terminal, () => terminal.follow_direction());
 
     const dereference = (terminal: Ray) => next_pointer(terminal, () => terminal.dereference);

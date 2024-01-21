@@ -40,15 +40,35 @@ namespace JS {
      * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
      */
     static Ref = <T extends AbstractDirectionality<T> = Ray>(impl: (ref: T) => T): Function<T> => {
-      return new Function<T>(impl);
+      return new Function<T>(impl); // TODO: THIS SHOULD CHANGE, TO ON VERTEX.
     }
-
     static Impl = <T extends AbstractDirectionality<T> = Ray>(impl: (initial: T, terminal: T) => T): Function<T> => {
       return Function.Ref((ref: T) => impl(ref.initial, ref.terminal));
     }
-    static IgnorantOfInitial = <T extends AbstractDirectionality<T> = Ray>(impl: (terminal: T) => T): Function<T> => Function.Impl((_, terminal) => impl(terminal));
-    static IgnorantOfTerminal = <T extends AbstractDirectionality<T> = Ray>(impl: (initial: T) => T): Function<T> => Function.Impl((initial, _) => impl(initial));
-    static Ignorant = <T extends AbstractDirectionality<T> = Ray>(impl: ParameterlessFunction<T>): Function<T> => Function.Impl(impl);
+    // static IgnorantOfInitial = <T extends AbstractDirectionality<T> = Ray>(impl: (terminal: T) => T): Function<T> => Function.Impl((_, terminal) => impl(terminal));
+    // static IgnorantOfTerminal = <T extends AbstractDirectionality<T> = Ray>(impl: (initial: T) => T): Function<T> => Function.Impl((initial, _) => impl(initial));
+    // static Ignorant = <T extends AbstractDirectionality<T> = Ray>(impl: ParameterlessFunction<T>): Function<T> => Function.Impl(impl);
+
+    /**
+     * TODO: Reversible through memory...
+     */
+    static WithMemory = <T extends AbstractDirectionality<T> = Ray>(impl: (initial: T, terminal: T) => T): Function<T> => {
+      // return Function.Ref((ref: T) => impl(ref.initial, ref.terminal));
+      throw new NotImplementedError();
+    }
+
+    /**
+     * @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
+     */
+    static Reversible = <T extends AbstractDirectionality<T> = Ray>(
+      // @alias('backward')
+      initial: (ref: T) => T,
+      // @alias('forward')
+      terminal: (ref: T) => T,
+    ): Function<T> => {
+      // return Function.Ref((ref: T) => impl(ref.initial, ref.terminal));
+      throw new NotImplementedError();
+    }
 
     /**
      * Constructs a class method accepting arbitrary structure.
