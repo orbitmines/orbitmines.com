@@ -350,7 +350,7 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
               // TODO Then expand these to any-dimensional
             ];
             const isFollowing = directions.map(
-              ([initial, terminal]): JS.Implementation => {
+              ([initial, terminal]): JS.FunctionImpl => {
                 const toInitial = initial.some(option => pressed.includes(option));
                 const toTerminal = terminal.some(option => pressed.includes(option));
 

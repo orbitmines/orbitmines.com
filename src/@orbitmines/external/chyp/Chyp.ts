@@ -33,22 +33,22 @@ export namespace Chyp {
     }
 
     // Vertex.in_edges = Ray.initial
-      get in_edges(): Ray { return this.initial; } set in_edges(ray: JS.Arbitrary<Ray>) { this.initial = ray; }
+      get in_edges(): Ray { return this.initial; } set in_edges(ray: JS.ParameterlessFunction<Ray>) { this.initial = ray; }
 
     // Vertex.out_edges = Ray.terminal
-      get out_edges(): Ray { return this.terminal; } set out_edges(ray: JS.Arbitrary<Ray>) { this.terminal = ray; }
+      get out_edges(): Ray { return this.terminal; } set out_edges(ray: JS.ParameterlessFunction<Ray>) { this.terminal = ray; }
 
   }
 
   export type EData = Edge; export class Edge extends Ray {
 
     // Edge.source = Ray.initial
-      get source(): Ray { return this.initial; } set source(ray: JS.Arbitrary<Ray>) { this.initial = ray; }
-      get s(): Ray { return this.initial; } set s(ray: JS.Arbitrary<Ray>) { this.initial = ray; }
+      get source(): Ray { return this.initial; } set source(ray: JS.ParameterlessFunction<Ray>) { this.initial = ray; }
+      get s(): Ray { return this.initial; } set s(ray: JS.ParameterlessFunction<Ray>) { this.initial = ray; }
 
     // Edge.targets = Ray.terminal
-      get target(): Ray { return this.terminal; } set target(ray: JS.Arbitrary<Ray>) { this.terminal = ray; }
-      get t(): Ray { return this.terminal; } set t(ray: JS.Arbitrary<Ray>) { this.terminal = ray; }
+      get target(): Ray { return this.terminal; } set target(ray: JS.ParameterlessFunction<Ray>) { this.terminal = ray; }
+      get t(): Ray { return this.terminal; } set t(ray: JS.ParameterlessFunction<Ray>) { this.terminal = ray; }
 
   }
 
@@ -74,10 +74,10 @@ export namespace Chyp {
     }
 
     // Match.domain = Ray.initial
-      get domain(): Ray { return this.initial; } set domain(ray: JS.Arbitrary<Ray>) { this.initial = ray; }
+      get domain(): Ray { return this.initial; } set domain(ray: JS.ParameterlessFunction<Ray>) { this.initial = ray; }
 
     // Match.codomain = Ray.terminal
-      get codomain(): Ray { return this.terminal; } set codomain(ray: JS.Arbitrary<Ray>) { this.terminal = ray; }
+      get codomain(): Ray { return this.terminal; } set codomain(ray: JS.ParameterlessFunction<Ray>) { this.terminal = ray; }
 
   }
 
@@ -92,10 +92,10 @@ export namespace Chyp {
     }
 
     // Rule.lhs = Ray.initial
-      get lhs(): Ray { return this.initial; } set lhs(ray: JS.Arbitrary<Ray>) { this.initial = ray; }
+      get lhs(): Ray { return this.initial; } set lhs(ray: JS.ParameterlessFunction<Ray>) { this.initial = ray; }
 
     // Rule.rhs = Ray.terminal
-      get rhs(): Ray { return this.terminal; } set rhs(ray: JS.Arbitrary<Ray>) { this.terminal = ray; }
+      get rhs(): Ray { return this.terminal; } set rhs(ray: JS.ParameterlessFunction<Ray>) { this.terminal = ray; }
 
     /**
      * TODO: We can use the same implementation to rewrite where there's not necessarily a match between initial/terminal side of a rule.
@@ -142,12 +142,12 @@ export namespace Chyp {
     }
 
     // Graph.inputs = Ray.initial
-      get inputs(): Ray { return this.initial; } set inputs(ray: JS.Arbitrary<Ray>) { this.initial = ray; }
-      set_inputs = (ray: JS.Arbitrary<Ray>): Graph => { this.inputs = ray; return this; }
+      get inputs(): Ray { return this.initial; } set inputs(ray: JS.ParameterlessFunction<Ray>) { this.initial = ray; }
+      set_inputs = (ray: JS.ParameterlessFunction<Ray>): Graph => { this.inputs = ray; return this; }
       add_inputs = (ray: Ray): Graph => { this.inputs.compose(ray); return this; }
     // Graph.inputs = Ray.terminal
-      get outputs(): Ray { return this.terminal; } set outputs(ray: JS.Arbitrary<Ray>) { this.terminal = ray; }
-      set_outputs = (ray: JS.Arbitrary<Ray>): Graph => { this.outputs = ray; return this; }
+      get outputs(): Ray { return this.terminal; } set outputs(ray: JS.ParameterlessFunction<Ray>) { this.terminal = ray; }
+      set_outputs = (ray: JS.ParameterlessFunction<Ray>): Graph => { this.outputs = ray; return this; }
       add_outputs = (ray: Ray): Graph => { this.outputs.compose(ray); return this; }
 
   }
