@@ -84,9 +84,9 @@ export namespace Rays {
     }
   }
 
-  export const Function = <
-    TProperty extends keyof typeof Rays.Functions
-  >(property: string | symbol): (typeof Rays.Functions)[TProperty] | undefined => Rays.Functions[property as TProperty] ?? undefined;
+  export const Function = <TProperty extends keyof typeof Rays.Functions>(
+    property: string | symbol
+  ): (typeof Rays.Functions)[TProperty] | undefined => Rays.Functions[property as TProperty] ?? undefined;
 
   export namespace Functions {
 
