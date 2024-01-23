@@ -3,16 +3,6 @@ import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 import JS from "./JS";
 
-const opposite = (boundary: Boundary): Boundary => boundary === RayType.INITIAL ? RayType.TERMINAL : RayType.INITIAL;
-
-/**
- * https://en.wikipedia.org/wiki/Homoiconicity
- */
-export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
-  get self(): T;
-  is_reference: () => boolean
-  as_reference: () => T
-}
 
 // TODO: better debug
 export type DebugResult = { [label: string]: DebugRay }
@@ -28,50 +18,7 @@ export type DebugRay = {
   _dirty_store: any
 }
 
-/**
- * JavaScript wrapper for a mutable value. It is important to realize that this is merely some simple JavaScript abstraction, and anything is assumed to be inherently mutable.
- *
- * TODO:
- * - Homotopy equivalence merely as some direction/reversibility constraint on some direction, ignoring additional structure (or incorporating it into the equiv) at the vertices. (Could be loosened where certain vertex-equivalences are also part of the homotopy)
- * - Induced ignorance/equivalence along arbitrary rays.
- * - Usual way of thinking about vertices is what the coninuations are here - phrase that somewhjere
- *
- * TODO: Any javascript class, allow warpper of function names around any ray, as a possible match
- * TODO: All the methods defined here should be implemented in some Ray structure at some point
- *
- * TODO: Maybe want a way to destroy from one end, so that if other references try to look, they won't find additional structure. - More as a javascript implementation quirck if anything?
- *
- * TODO: Can do some workaround overloading through properties, at least for +/-
- *
- * TODO: Singlke keybind for now to show/hide the ray disambiguation or 'dead edges/..'/
- *
- *
- *
- * TODO: All methods to 'step' variant - and an intuitive way to switch between modes
- *  - Through better Ray.___func
- *  - Transform all functions on Ray to that. (Perhaps use JavaScript generators by default (more intuitively?) - Just convert using JS.Generator)
- *  - No assumption of halting
- *  - Perhaps locally cache (for stuff like count?) - no way to ensure globally coherence
- *
- * TODO: SWITCH/MATCH
- *   // TODO; Maybe replace switch with 'zip'?, What are the practical differences?
- *   // TODO: switch/match Should be abstracted into Ray?
- *
- * TODO: Stylistic
- *  - Consistency of Arbitrary vs non-arbitrary.
- *  - Reorder methods in a sensible way.
- *
- */
-export class Ray
-  implements
-      AbstractDirectionality<Ray>,
-      PossiblyHomoiconic<Ray>,
-
-      AsyncIterable<Ray>,
-      Iterable<Ray>
-      // Array<Ray>
-      // Dict<Ray>
-{
+export class Ray {
   // /**
   //  * Moves `this.self` and `this.self.self` to a new line.
   //  *
@@ -169,7 +116,6 @@ export class Ray
 
 
 
-
   // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
 
 
@@ -257,47 +203,8 @@ export class Ray
   });
   equivalent = Ray.equivalent.as_method(this);
 
-  // zip also compose???
-  // [a, b, c] zip [d, e, f] zip [g, h, i] ...
-  // [[a,d,g],[b,e,h],[c,f,i]]
-  static zip = JS.Function.Impl((initial, terminal) => {
 
-    if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
-      throw new PreventsImplementationBug('TODO: Implement');
 
-    if (initial.type !== RayType.VERTEX || terminal.type !== RayType.VERTEX)
-      throw new PreventsImplementationBug('TODO: Implement');
-
-    throw new NotImplementedError();
-    // initial.traverse()
-    // return new Ray({
-    //
-    // });
-  });
-  zip = Ray.zip.as_method(this);
-
-  // pop = (): Ray => {
-    // this.last().previous().all.terminal = (ref) => ref.___empty_terminal();
-  // }
-  // pop = (): Ray => this.___primitive_switch({
-  //   [RayType.VERTEX]: () => {
-  //     const previous_vertex = this.self.initial.follow(Ray.directions.previous);
-  //
-  //     if (this.is_none()) {
-  //       return this; // TODO; Already empty, perhaps throw
-  //     }
-  //
-  //     return previous_vertex.___primitive_switch({
-  //       [RayType.VERTEX]: () => {
-  //         console.log(previous_vertex)
-  //         // TODO: NONHACKY
-  //
-  //         previous_vertex.self.terminal = new Ray({ vertex: Ray.None, initial: previous_vertex.self.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary()
-  //         return previous_vertex;
-  //       }
-  //     });
-  //   }
-  // });
 
     static follow_direction = {
       [RayType.INITIAL]: Ray.directions.next,
@@ -335,48 +242,7 @@ export class Ray
       has_previous = (step: JS.FunctionImpl = Ray.directions.previous): boolean => this.has_next(step);
       // @alias('beginning', 'front')
       first = (step: JS.FunctionImpl = Ray.directions.previous): Ray => this.last(step);
-  
-  // TODO: I Don't like this name, but it needs to get across that any equivalency, or any equivalency check for that necessarily, is local. And I want more equivalences, I run more of this method.
-  // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex.
-  is_vertex_equivalent = (b: Ray) => {
-    // TODO; in the case of a list, each individually, again, additional structure...
-  }
-  // TODO: Ignore the connection between the two, say a.equiv(b) within some Rule [a,b], ignore the existing of the connection in the Rule? What does it mean not to???
 
-  // TODO: Whether the thing is referenced on the vertex: do their vertices have some connection onm this direction?
-
-  get count(): Ray { return JS.Number(this.as_array().length); }
-
-  // TODO; Could return the ignorant reference to both instances, or just the result., ..
-
-  /**
-   * TODO: Need more control over the (non-/)lazyness of copy.
-   *
-   * - The problem with a copy, is that in or to be generalizable, it needs to alter all references to the thing it's copying to itself - this cannot be done with certainty.
-   *
-   * - Additionally, a copy necessarily has some non-redundancy to it:
-   *   @see "A copy is necessarily inconsistent": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=If%20I%20have%20one%20thing%20and%20I%20make%20a%20perfect%20copy
-   */
-  // @alias('duplicate')
-  copy = (): Ray => {
-    // return this.self.as_reference(); // Copies the reference?
-    throw new NotImplementedError();
-
-    // const copy = new Ray({
-    //   initial: this.self._initial().as_reference().none_or(ref => ref.copy()).as_arbitrary(),
-    //   vertex: this.self._vertex().as_reference().none_or(ref => ref.copy()).as_arbitrary(),
-    // }).o({ ___dirty_copy_buffer: {} });
-    // // copy._initial = () => copy.any.___dirty_copy_buffer._initial ??= this.self._initial().as_reference().copy();
-    // // copy._vertex = () => copy.any.___dirty_copy_buffer._vertex ??= this.self._vertex().as_reference().copy();
-    // // copy._terminal = () => copy.any.___dirty_copy_buffer._terminal ??= this.self._terminal().as_reference().copy();
-    //
-    //
-    // // TODO: Doesn't copy .any
-    //
-    // return copy.as_reference();
-  }
-
-  // none_or = (arbitrary: Implementation): Ray => this.is_none() ? Ray.None() : arbitrary(this);
 
   get reverse(): Ray {
     const copy = this;//TODO.copy();
@@ -389,108 +255,6 @@ export class Ray
 
     return copy;
   }
-
-  /**
-   * TODO - Better 'value' here. (Use JS.Any??)
-   *
-   * TODO: All these should accept Ray values.
-   *
-   * .size, since .length is reserved by JavaScript.
-   * TODO: .size could be more tensor-like, arbitrary lengths..
-   */
-  // @alias('length', 'of_length')
-  static size = (of: number, value: any = undefined): Ray => {
-    let ret: Ray | undefined;
-    let current: Ray | undefined;
-    // TODO: Actual good implementation: Should be lazy
-    for (let i = 0; i < of; i++) {
-      const vertex = Ray.vertex().o({js: value}).as_reference();
-
-      if (!ret) {
-        current = ret = vertex;
-      } else {
-        current = current?.compose(vertex);
-      }
-    }
-
-    if (!ret)
-      return Ray.None();
-
-    return ret;
-  }
-  static at = (index: number, of: number, value: any = undefined): Ray => {
-    return Ray.size(of, value).at(index);
-  }
-  /**
-   * Just uses length/size for permutation. TODO: More complex permutation/enumeration implementation should follow at some point. (@see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
-   *
-   * @see "Combinatorics as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Combinatorics%20%2D%20Combinatorics%20as%20Equivalence
-   */
-  static permutation = (permutation: number | undefined, of: number): Ray => Ray.at(
-    // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)
-    permutation ?? 0,
-    // In the case of a bit: Either |-*-| if no bit or |-*->-*-| if a bit.
-    permutation === undefined ? 1 : of
-  )
-
-  at = (steps: number | Ray | JS.ParameterlessFunction<Ray>): Ray => {
-    if (!JS.is_number(steps))
-      throw new NotImplementedError('Not yet implemented for Rays.');
-
-    // TODO: Actual good implementation - also doesn't support modular like this
-    const array = [...this.traverse(
-      steps < 0 ? Ray.directions.previous : Ray.directions.next
-    )];
-
-    steps = Math.abs(steps);
-
-    return array.length > steps && steps >= 0 ? (
-      array[steps] ?? Ray.None() // TODO FIX: Probably a JavaScript quirck with some weird numbers, just failsafe to None.
-    ) : Ray.None();
-  }
-
-  // export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
-
-  // TODO: Should give the program that does the mapping, not the result, and probably implemented as 'compile/traverse'
-  map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
-  // filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
-  get clear(): Ray { throw new NotImplementedError(); }
-
-  // TODO: Generalize these functions to:
-  //
-  // TODO: +default, in the case of Initial/Terminal = Ray.None, to which the default sometimes is nothing. Or in the case of min/max it's 0.
-
-
-  // TODO: being called min.x needs to return the min value within that entire structure.
-
-  // [this.vertices().x.max(), this.edges().x.max()].max()
-  // [this.vertices().x.min(), this.edges().x.max()].max()
-  // TODO: Indicies not corresponding the the directionality defined, are probably on another abstraction layer described this way. More accurately, they're directly connected, and on a separate layer with more stuff in between...
-  get index(): Ray { throw new NotImplementedError(); }
-  // TODO: Can probably generate these on the fly, or cache them automatically
-  min = (_default: 0): Ray => { throw new NotImplementedError(); }
-  max = (_default: 0): Ray => { throw new NotImplementedError(); }
-
-  // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
-  // apply = (func: Ray) => {
-
-    // TODO: Combine into generalized [x, min/max()] - preserve terminal/initial structure
-    // TODO: ray#apply.
-    // TODO: FROM COMPOSER
-    /**
-     *  const func = [min(), '', max()]
-     *
-     *      const [min_x, max_x] = [
-     *       // Compute the min x-coordinate of the edges and vertices in the other graph.
-     *       compose.terminal.x.min(), // min_other
-     *
-     *       // Compute the max x-coordinate of the edges and vertices in this graph.
-     *       compose.initial.x.max(), // max_self
-     *     ]
-     */
-  // }
-
-  // ___compute = ()
 
   *traverse(step: JS.FunctionImpl = Ray.directions.next): Generator<Ray> {
     // TODO: Also to ___func??
@@ -709,30 +473,6 @@ export class Ray
 
 
   /**
-   * JavaScript, possible compilations - TODO: Could have enumeratd possibilities, but just ignore that for now.
-   */
-    // JS.AsyncGenerator
-    async *[Symbol.asyncIterator](): AsyncGenerator<Ray> { yield *this.traverse(); }
-    // JS.Generator
-    *[Symbol.iterator](): Generator<Ray> { yield *this.traverse(); }
-    // JS.AsyncGenerator
-    as_async_generator = (): AsyncGenerator<Ray> => this[Symbol.asyncIterator]();
-    // JS.AsyncIterator
-    as_async_iterator = (): AsyncIterator<Ray> => this.as_async_generator();
-    // JS.Iterator
-    as_generator = (): Generator<Ray> => this[Symbol.iterator]();
-    // JS.AsyncIterator
-    as_iterator = (): Iterator<Ray> => this.as_generator();
-    // JS.Array
-    as_array = (): Ray[] => [...this];
-    // JS.String
-    toString = (): string => this.as_string();
-    as_string = (): string => this.as_array().map(ref => ref.any.js).join(','); // TODO: PROPER
-
-    as_int = (): number => { throw new NotImplementedError(); }
-    as_number = this.as_int;
-
-  /**
    *
    * TODO:
    *   - This needs something much smarter at some point...
@@ -773,28 +513,6 @@ export class Ray
    */
   get any(): { [key: string | symbol]: Ray } & any { return this.self.proxy(); }
   get ___any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
-  cast = <T extends Ray>(): T => { throw new NotImplementedError(); } // TODO this.proxy<T>();
-
-  /**
-   * Used for chaining JavaScript-provided properties
-   *
-   * TODO: DOESNT FOLLOW .ANY PATTERN?
-   */
-  o = (object: { [key: string | symbol]: any }): Ray => {
-    _.keys(object).forEach(key => this.proxy()[key] = object[key]); // TODO: Can be prettier, TODO: map to Ray equivalents and add to vertices..
-    return this;
-  }
-
-  // All these are dirty
-  o2 = ({ initial, vertex, terminal }: any): Ray => {
-    if (initial) this.initial.o(initial);
-    if (vertex) this.o(vertex);
-    if (terminal) this.terminal.o(terminal);
-
-    return this;
-  }
-
-  protected property = (property: string | symbol, _default?: any): any => this.any[property] ??= (_default ?? Ray.None()); // TODO: Can this be prettier??
 
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
@@ -834,6 +552,7 @@ export class Ray
    * - Don't assume we can track back any reference to this thing. Just destroy it, set everything to None. And let anything else deal with the consequences of the deletion.
    *
    * TODO:
+   *   - TODO: Maybe want a way to destroy from one end, so that if other references try to look, they won't find additional structure. - More as a javascript implementation quick if anything?
    *   - Could lazily try to find references.
    *   - Implement on proxy for 'delete ray'
    */
@@ -849,60 +568,6 @@ export class Ray
     this.self = this.self_reference;
 
     return this;
-  }
-
-  //TODO USED FOR DEBUG NOW
-  move = (func: (self: Ray) => Ray, memory: boolean, Interface: Ray): Ray => {
-    const target_ray = func(this.self);
-
-    const target = target_ray.as_reference().o({
-      ...this._dirty_store,
-      position:
-        target_ray.any.position
-        ?? this.any.position
-        ?? Ray.POSITION_OF_DOOM
-    });
-    console.log('move', `${this.self.label.split(' ')[0]} -> ${target.self.label.split(' ')[0]}`);
-
-    if (memory) {
-      if (!target_ray.any.traversed) {
-        Interface.any.rays.compose(target);
-        target_ray.any.traversed = true;
-      }
-    } else {
-      Interface.any.rays = [target];
-    }
-
-    return target;
-  }
-
-  static POSITION_OF_DOOM = [0, 100, 0]
-
-  // TODO: Abstract away as compilation
-  render_options = (Interface: Ray): Required<InterfaceOptions> => {
-    return ({
-      position:
-        this.any.position
-        ?? (this.is_none() ? Ray.POSITION_OF_DOOM : Ray.POSITION_OF_DOOM),
-      rotation:
-        this.any.rotation
-        ?? [0, 0, 0],
-      scale:
-        this.any.scale
-        ?? (this.is_none() ? 1.5 : 1.5),
-      color:
-        (Ray.is_orbit(Interface.any.selection.self, this.self) && Interface.any.cursor.tick) ? '#AAAAAA' // TODO: Should do lines as well, line render should prefer based on level of description.. (flat line only vertices, then render for the vertex?)
-          : (
-            this.any.color
-            ?? (this.is_none() ? 'red' : {
-                [RayType.VERTEX]: 'orange',
-                [RayType.TERMINAL]: '#FF5555',
-                [RayType.INITIAL]: '#5555FF',
-                [RayType.REFERENCE]: '#555555',
-              }[this.type]
-            )
-          )
-    });
   }
 
   ___dirty_all(c: Ray[]): Ray[] {
@@ -950,17 +615,6 @@ export class Ray
     return obj;
   }
 
-  /**
-   * TODO: This should be constructed at the vertex and in general unsolvable
-   */
-  static _label: number = 0;
-  get label(): string {
-    if (this.any.label !== undefined)
-      return this.any.label;
-
-    return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
-  }
-
 }
 
 //     default = (fn: () => any): any => self.match({
@@ -968,4 +622,3 @@ export class Ray
 //         None: () => fn()
 //     })
 //
-

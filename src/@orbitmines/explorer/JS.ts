@@ -90,9 +90,17 @@ namespace JS {
        *
        * TODO; Impl
        *  - Generally, return something which knows where all continuations are.
+       *  - Generator/step function/... ; with no assumption of halting, but allow to hook into any step.
+       *  - Cache:
+       *    - Control of (non-/)lazyness of functions
+       *    - None as, first time called, memoize func.
+       *    - Perhaps locally cache (for stuff like count?) - no way to ensure globally coherence
+       *
        * TODO: Testing
        *  - Test if references hold after equivalence/composition...
        *
+       * TODO: After initial demo:
+       *  - Allow mapping/finding of other implementations regarding some equiv funcs (like different ways of implementing using NAND etc...)
        */
     }
 
@@ -127,6 +135,10 @@ namespace JS {
 
       export type MatchCases = [...MatchCase[], /** 'else, ... default' **/ Function.Type<typeof Function.None.Impl>];
 
+      /**
+       * TODO:
+       *   - Maybe replace switch with 'zip'?, What are the practical differences?
+       */
       export const Match = (cases: MatchCases): Function.Instance => {
         return Impl(self => self); // TODO
       }
