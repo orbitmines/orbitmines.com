@@ -42,7 +42,12 @@ namespace JS {
   export namespace Enum {
 
     export const Impl = <T extends Array<string>>(...values: T): Enum<T> => {
-      throw new NotImplementedError(); // TODO: ONE OF 4 SELECTION RAY for the case of type.
+      return Object.fromEntries(values.map(value =>
+        [value, JS.Function.None.Impl((): Ray => {
+          throw new NotImplementedError(); // TODO
+        })]
+      )) as Enum<T>;
+      // TODO: ONE OF 4 SELECTION RAY for the case of type.
     }
 
   }
@@ -57,14 +62,44 @@ namespace JS {
     /** {T} is just an example/desired use case. But it generalizes to any function. */
     export type Type<T> = T | Function.Instance;
 
+    /** From which perspective the Function is implemented. */
+    enum Perspective {
+      None,
+      Self,
+      // Ref,
+    }
+
     export class Instance {
 
+      readonly perspective: Perspective;
+      readonly impl: (...params: Ray[]) => Ray;
+
+      constructor({ perspective, impl }: Pick<Instance, 'perspective' | 'impl'>) {
+        this.perspective = perspective;
+        this.impl = impl;
+      }
+
+      as_method = (self: Ray): Method => {
+        return () => { throw new NotImplementedError(); }
+        // throw new NotImplementedError();
+      }
+
+      /**
+       * TODO
+       *   - Compose empty as first element? Disregard none to first elemn? Or not??
+       *
+       * TODO; Impl
+       *  - Generally, return something which knows where all continuations are.
+       * TODO: Testing
+       *  - Test if references hold after equivalence/composition...
+       *
+       */
     }
 
     export namespace None {
 
       export const Impl = (impl: () => Ray): Function.Instance => {
-        return new Function.Instance();
+        return new Function.Instance({ perspective: Perspective.None, impl });
       }
 
     }
@@ -74,11 +109,15 @@ namespace JS {
      */
     export namespace Self {
       export const Impl = (impl: (self: Ray) => Ray): Function.Instance => {
-        return new Function.Instance();
+        return new Function.Instance({ perspective: Perspective.Self, impl });
+      }
+
+      export const Two = (impl: (a: Ray, b: Ray) => Ray): Function.Instance => {
+        return new Function.Instance({ perspective: Perspective.Self, impl }); // TODO: Good way to deal with arity
       }
 
       export const If = (impl: (self: Ray) => Ray): Function.Instance => {
-        return new Function.Instance();
+        return Impl(impl); // TODO: GENERIC collapse to boolean implemented and overridable
       }
 
       export type MatchCase = [
@@ -89,13 +128,7 @@ namespace JS {
       export type MatchCases = [...MatchCase[], /** 'else, ... default' **/ Function.Type<typeof Function.None.Impl>];
 
       export const Match = (cases: MatchCases): Function.Instance => {
-        return new Function.Instance();
-      }
-    }
-
-    export namespace Two {
-      export const Impl = (impl: (a: Ray, b: Ray) => Ray): Function.Instance => {
-        return new Function.Instance();
+        return Impl(self => self); // TODO
       }
     }
 
@@ -104,14 +137,6 @@ namespace JS {
   //
   //   // static New = (constructor: FunctionConstructor) => new Function(constructor);
   //
-  //   /**
-  //    * Implement a function from the perspective of 'this'.
-  //    */
-  //   static Self = (impl: (self: Ray) => Ray): Function => {
-  //     return Function.New(() => {
-  //       throw new NotImplementedError();
-  //     });
-  //   }
   //
   //   /**
   //    * Implement a function from the perspective of 'this' for 'this.self'.

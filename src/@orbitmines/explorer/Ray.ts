@@ -4,9 +4,9 @@ import {NotImplementedError} from "./errors/errors";
 export namespace Rays {
 
   export type Constructor = {
-    initial?: JS.FunctionConstructor<Ray>,
-    self?: JS.FunctionConstructor<Ray>,
-    terminal?: JS.FunctionConstructor<Ray>,
+  //   initial?: JS.FunctionConstructor<Ray>,
+  //   self?: JS.FunctionConstructor<Ray>,
+  //   terminal?: JS.FunctionConstructor<Ray>,
   }
 
   /**
@@ -21,7 +21,7 @@ export namespace Rays {
   /**
    * An uninitialized empty Ray, which caches itself once initialized.
    */
-  export const None: JS.FunctionConstructor<Ray> = JS.Function.CachedAfterUse(Rays.New);
+  // export const None: JS.FunctionConstructor<Ray> = JS.Function.CachedAfterUse(Rays.New);
 
   export class Instance {
 
@@ -29,23 +29,26 @@ export namespace Rays {
 
     protected readonly _proxy: Ray;
 
-    get initial(): Ray { return this._initial.call(this.proxy); } set initial(initial: JS.FunctionConstructor<Ray>) { this._initial = JS.Function.New(initial); } protected _initial: JS.Function<Ray>;
-    get self(): Ray { return this._self.call(this.proxy); } set self(self: JS.FunctionConstructor<Ray>) { this._self = JS.Function.New(self); } protected _self: JS.Function<Ray>;
-    get terminal(): Ray { return this._terminal.call(this.proxy); } set terminal(terminal: JS.FunctionConstructor<Ray>) { this._terminal = JS.Function.New(terminal); } protected _terminal: JS.Function<Ray>;
+    // get initial(): Ray { return this._initial.call(this.proxy); } set initial(initial: JS.FunctionConstructor<Ray>) { this._initial = JS.Function.New(initial); } protected _initial: JS.Function<Ray>;
+    // get self(): Ray { return this._self.call(this.proxy); } set self(self: JS.FunctionConstructor<Ray>) { this._self = JS.Function.New(self); } protected _self: JS.Function<Ray>;
+    // get terminal(): Ray { return this._terminal.call(this.proxy); } set terminal(terminal: JS.FunctionConstructor<Ray>) { this._terminal = JS.Function.New(terminal); } protected _terminal: JS.Function<Ray>;
 
     get proxy(): Ray { return this._proxy; }
 
-    protected constructor({ initial, self, terminal }: Rays.Constructor = {}) {
+    protected constructor({
+                            // initial, self, terminal
+    }: Rays.Constructor = {}) {
       this._proxy = new Proxy<Instance>(this, Rays.ProxyHandler) as unknown as Ray;
-      this._initial = JS.Function.New(initial ?? Rays.None);
-      this._self = JS.Function.New(self ?? this.proxy);
-      this._terminal = JS.Function.New(terminal ?? Rays.None);
+      // this._initial = JS.Function.New(initial ?? Rays.None);
+      // this._self = JS.Function.New(self ?? this.proxy);
+      // this._terminal = JS.Function.New(terminal ?? Rays.None);
     }
 
     /** Used to jump out of the proxy. */
     get ___instance(): Instance { return this; }
   }
 
+  // TODO AS += through property, anything possible
   export const ProxyHandler: ProxyHandler<Instance> = {
     get: (self: Instance, property: string | symbol, proxy: Ray): any => {
       // /** Use any field defined on {Rays.Instance} first. */
@@ -80,19 +83,19 @@ export namespace Rays {
   export namespace Functions {
 
     /** [  |-?] */ export const is_initial = JS.Function.Self.Impl(
-      self => self.is_some().and(self.initial().is_none())
+      self => self.initial().is_none()
     );
     /** [--|--] */ export const is_vertex = JS.Function.Self.Impl(
-      self => self.is_initial().not().and(self.is_terminal().not())
+      self => self.is_initial().nor(self.is_terminal())
     );
     /** [?-|  ] */ export const is_terminal = JS.Function.Self.Impl(
-      self => self.is_some().and(self.terminal().is_none())
+      self => self.terminal().is_none()
     );
     /** [  |  ] */ export const is_reference = JS.Function.Self.Impl(
       self => self.is_initial().and(self.is_terminal())
     );
     /** [?-|  ] or [  |-?] */ export const is_boundary = JS.Function.Self.Impl(
-      self => ( self.is_reference().not() ).and( self.is_initial().or(self.is_terminal()) )
+      self => self.is_initial().xor(self.is_terminal())
     );
 
     export const type = JS.Function.Self.Match([
@@ -127,7 +130,7 @@ export namespace Rays {
      *
      * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
      */
-    export const is_orbit = JS.Function.Two.Impl(
+    export const is_orbit = JS.Function.Self.Two(
       (a, b) => a.___instance === b.___instance
     );
 
@@ -143,7 +146,6 @@ export namespace Rays {
     export const initial = JS.Function.Self.Impl(
       self => self.___instance.initial // TODO .as_reference?
     );
-
     /**
      * An arbitrary Ray, defining what our current position is equivalent to.
      *
@@ -159,19 +161,29 @@ export namespace Rays {
       self => Rays.New({ self: self })
     );
 
-    export const compose = JS.Function.Two.Impl(
-      (a, b) => {
-      throw new NotImplementedError();
-        return b;
-    });
-    export const equivalent = JS.Function.Two.Impl(
+    /**
+     * @see "Continuations as Equivalence (can often be done in parallel - not generally)": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
+     */
+    // @alias('merge, 'continues_with', 'compose')
+    export const compose = JS.Function.Self.Two(
+      (a, b) => a.terminal().equivalent(b.initial())
+    );
+
+    /**
+     *
+     * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
+     */
+    export const equivalent = JS.Function.Self.Two(
       (a, b) => {
         // TODO: = COMPOSE
       throw new NotImplementedError();
-      return b;
+
+      // TODO: This is close but not quite, use the shifting thing I wrote down a few days ago: (And then use something to break the self-reference) - Either on this side. compose, or outside the definitions
+        // This one harder to do in parallel?
+      return a.dereference().compose(b.dereference());
     });
 
-    export const is_equivalent = JS.Function.Two.Impl(
+    export const is_equivalent = JS.Function.Self.Two(
       (a, b) => {
         // TODO: = COMPOSE
       throw new NotImplementedError();
@@ -201,22 +213,28 @@ export namespace Rays {
       throw new NotImplementedError();
       return self;
     });
-    export const and = JS.Function.Two.Impl((a, b) => {
+    export const and = JS.Function.Self.Two((a, b) => {
       throw new NotImplementedError();
       return self;
     });
-    export const or = JS.Function.Two.Impl((a, b) => {
+    export const or = JS.Function.Self.Two((a, b) => {
       throw new NotImplementedError();
       return self;
     });
+    export const xor = JS.Function.Self.Two((a, b) => {
+      throw new NotImplementedError();
+      return self;
+    });
+    export const nand = JS.Function.Self.Two((a, b) => a.and(b).not());
+    export const nor = JS.Function.Self.Two((a, b) => a.or(b).not());
 
 
     // @alias(`push_{last.alias}`)
-    export const push_back = JS.Function.Two.Impl(
+    export const push_back = JS.Function.Self.Two(
       (a, b) => a.last().compose(b)
     );
     // @alias(`push_{first.alias}`)
-    export const push_front = JS.Function.Two.Impl(
+    export const push_front = JS.Function.Self.Two(
       (a, b) => b.compose(a.first())
     );
 

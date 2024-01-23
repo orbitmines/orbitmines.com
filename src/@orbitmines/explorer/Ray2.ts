@@ -167,65 +167,19 @@ export class Ray
   ___empty_initial = () => new Ray({ vertex: Ray.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
   ___empty_terminal = () => new Ray({ vertex: Ray.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
 
-  /**
-   * TODO : COMPOSE EMPTY AS FIRST ELEMENT:
-   *  if (initial.is_none()) {
-   *           // 'Empty' vertex from this perspective.
-   *
-   *           initial.vertex = terminal.as_arbitrary();
-   *           console.log('first element');
-   *           return terminal;
-   *         }
-   */
 
-  // TODO: Test if references hold after equivalence/composition...
 
 
   // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
-  // TODO a.equivalent(b).equivalent(c), in this case would be [[a, b]].equivalent(c) not [a, b, c].equivalent ???
 
-  // TODO: Should do, one timesteap ahead, collapse one reference, and then recursively call continues_with on the vlaue at the reference, until it yields something.
 
-  // TODO AS += through property
-  // TODO: Generally, return something which knows where all continuations are.
-  // @alias('merge, 'continues_with', 'compose')
-  /**
-   * Compose as "Equivalence at Continuations": (can usually be done in parallel - not generally)
-   *  - `A.compose(B)`            = `(A.TERMINAL).equivalent(B.INITIAL)`
-   *  - `A.compose(B).compose(C)` = `(A.TERMINAL).equivalent(B.INITIAL) & (B.TERMINAL).equivalent(C.INITIAL)`
-   *
-   * Another interesting connection:
-   *  - `A.compose(B).compose(C)` = `(A.equivalent(B).equivalent(C)).dereference.(MISSING ALL FUNC).compose`
-   *
-   * @see "Continuations as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
-   */
-  static compose = JS.Function.Impl((initial, terminal) => {
-
-    if (initial.as_reference().type !== RayType.REFERENCE || terminal.as_reference().type !== RayType.REFERENCE)
-      throw new PreventsImplementationBug();
-
-    // ${[...initial.self.initial.as_reference().all().js]}
-    if (initial.type !== RayType.VERTEX || terminal.type !== RayType.VERTEX) {
-      throw new PreventsImplementationBug(`[${initial.type}] - [${terminal.type}] - only composing vertices for now (${initial.self.initial.any.js} -> ${terminal.self.terminal.any.js})`);
-    }
-
-    Ray.directions.next(initial).equivalent(Ray.directions.previous(terminal));
-
-    // return ref; TODO
-    return terminal;
-  });
-  compose = Ray.compose.as_method(this);
-
-  // TODO: Cleanup
   /**
    * Equivalence as "Composing Vertices": "TODO: Is this right?: Equivalence at Continuations, inside a Vertex, is parallel composition, from the perspective of the usual direction defined at the Vertex (not generally parallel)"
-   *  - `A.equivalent(B)`               = `A.as_vertex().compose(B.as_vertex())`
-   *  - `A.equivalent(B).equivalent(C)` = `A.as_vertex().compose(B.as_vertex()).compose(C.as_vertex())`
    *
    * An equivalence is best understood as the drawing of a single line between two things. Where those two things might have arbitrary structure around them, but we're not checking the (non-)existence of that structure. And thus:
    *   - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. (or: Changes of an equivalence are only applied locally, which could have global effects, but this isn't necessarily obvious).
    *
-   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
+   *
    */
   static equivalent = JS.Function.Impl((initial, terminal) => {
 

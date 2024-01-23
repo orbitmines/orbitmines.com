@@ -1,19 +1,18 @@
 import Ray, {Rays} from "./Ray";
 
 describe("Ray", () => {
-  test(".is_orbit", () => {
-    const a = Rays.New();
-    const b = Rays.New();
-
-    expect(a.is_orbit(a)).toBe(true);
-    expect(b.is_orbit(b)).toBe(true);
-    expect(a.is_orbit(b)).toBe(false);
-  });
+  // test(".is_orbit", () => {
+  //   const a = Rays.New();
+  //   const b = Rays.New();
+  //
+  //   expect(a.is_orbit(a)).toBe(true);
+  //   expect(b.is_orbit(b)).toBe(true);
+  //   expect(a.is_orbit(b)).toBe(false);
+  // });
   test(".dereference", () => {
     const a = Rays.New();
-    const b = Rays.New();
 
-    expect(a.terminal()).toBe(true);
+    expect(a.dereference()).toBe(true);
   });
 
 //   test("[A, B, C].copy", () => {
