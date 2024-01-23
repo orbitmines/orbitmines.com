@@ -151,9 +151,12 @@ export namespace Rays {
      *
      * Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
      */
+    // @alias('dereference', 'self')
     export const dereference = JS.Function.Self.Impl(
       self => self.___instance.self // TODO .as_reference?
     );
+    export const self = dereference;
+
     /**
      * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
      */
@@ -170,17 +173,21 @@ export namespace Rays {
     );
 
     /**
+     * Equivalence as "Composition of Rays."
+     *
+     * NOTE:
+     *  - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. And it is expensive work to edge towards global coherence.
+     *  - Though changes are only applied locally, their effects can be global (Take for instance, the example of adding to one Ray, which changes the perspective of everything connected to that Ray if they were to traverse the connection).
      *
      * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
      */
     export const equivalent = JS.Function.Self.Two(
       (a, b) => {
-        // TODO: = COMPOSE
       throw new NotImplementedError();
 
       // TODO: This is close but not quite, use the shifting thing I wrote down a few days ago: (And then use something to break the self-reference) - Either on this side. compose, or outside the definitions
         // This one harder to do in parallel?
-      return a.dereference().compose(b.dereference());
+      return a.self().compose(b.self());
     });
 
     export const is_equivalent = JS.Function.Self.Two(

@@ -174,11 +174,6 @@ export class Ray
 
 
   /**
-   * Equivalence as "Composing Vertices": "TODO: Is this right?: Equivalence at Continuations, inside a Vertex, is parallel composition, from the perspective of the usual direction defined at the Vertex (not generally parallel)"
-   *
-   * An equivalence is best understood as the drawing of a single line between two things. Where those two things might have arbitrary structure around them, but we're not checking the (non-)existence of that structure. And thus:
-   *   - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. (or: Changes of an equivalence are only applied locally, which could have global effects, but this isn't necessarily obvious).
-   *
    *
    */
   static equivalent = JS.Function.Impl((initial, terminal) => {
