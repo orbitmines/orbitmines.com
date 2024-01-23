@@ -1,7 +1,7 @@
 
 describe("Chyp", () => {
   describe(".Graph", () => {
-  //   test(".set_inputs", () => {
+    test(".set_inputs", () => {
   //     const graph = Chyp.Graph.new()
   //       .set_inputs(Ray.vertex().o({ js: 'B' }).as_arbitrary())
   //       .set_inputs(Ray.vertex().o({ js: 'A' }).as_arbitrary());
@@ -10,7 +10,7 @@ describe("Chyp", () => {
   //     expect(graph.initial.as_reference().any.js).toBe('A');
   //     expect(graph.inputs.as_reference().any.js).toBe(graph.initial.as_reference().any.js);
   //     expect(graph.inputs).toBe(graph.initial);
-  //   });
+    });
   //
   });
   // describe(".Rule", () => {

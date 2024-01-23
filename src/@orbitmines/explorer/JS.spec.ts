@@ -1,11 +1,32 @@
-import Ray from "./Ray";
+import Ray, {Rays} from "./Ray";
 import JS from "./JS";
 import {previous} from "slate";
 import {NotImplementedError} from "./errors/errors";
 
 describe("JS", () => {
+  describe(".Function", () => {
+    describe(".Instance", () => {
 
+      test(".traverse", () => {
+        const events: any[] = [];
+        const traverser = Rays.New({ // TODO: Probably should have this as an extra option on Ray, with a way of selecting different functions (for example: not going further if function was already found through traversal).
+          proxy: Rays.ProxyHandlers.FunctionTraversal({
+            callback: (event) => {
+              events.push({...event, params: '--', traverser: '--'});
+            }
+          })
+        });
 
+        try {
+          traverser.compose();
+        } catch (e) {
+          //
+        }
+
+        expect(events).toBe(false);
+      });
+    })
+  })
   // test(".Function.Ref(ref)", () => {
   //   const method = JS.Function.Ref((ref): Ray => new Ray({
   //     initial: ref.self.initial.as_arbitrary(),

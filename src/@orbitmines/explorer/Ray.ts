@@ -1,5 +1,6 @@
 import JS from "./JS";
 import {NotImplementedError} from "./errors/errors";
+import Event = JS.Function.Traversal.Event;
 
 export namespace Rays {
 
@@ -7,6 +8,7 @@ export namespace Rays {
   //   initial?: JS.FunctionConstructor<Ray>,
   //   self?: JS.FunctionConstructor<Ray>,
   //   terminal?: JS.FunctionConstructor<Ray>,
+    proxy?: ProxyHandler<Instance>
   }
 
   /**
@@ -37,8 +39,9 @@ export namespace Rays {
 
     protected constructor({
                             // initial, self, terminal
+      proxy
     }: Rays.Constructor = {}) {
-      this._proxy = new Proxy<Instance>(this, Rays.ProxyHandler) as unknown as Ray;
+      this._proxy = new Proxy<Instance>(this, proxy ?? Rays.ProxyHandlers.Ray) as unknown as Ray;
       // this._initial = JS.Function.New(initial ?? Rays.None);
       // this._self = JS.Function.New(self ?? this.proxy);
       // this._terminal = JS.Function.New(terminal ?? Rays.None);
@@ -48,32 +51,65 @@ export namespace Rays {
     get ___instance(): Instance { return this; }
   }
 
-  // TODO AS += through property, anything possible
-  export const ProxyHandler: ProxyHandler<Instance> = {
-    get: (self: Instance, property: string | symbol, proxy: Ray): any => {
-      // /** Use any field defined on {Rays.Instance} first. */
-      // const field = (self as any)[property];
-      if (property === '___instance') { return self.___instance; }
+  export namespace ProxyHandlers {
 
-      /** Otherwise, switch to functions defined on {Rays.Functions}  */
-      const func = Rays.Function(property);
-      if (func) { return func.as_method(self.proxy); }
+    // TODO AS += through property, anything possible
+    export const Ray: ProxyHandler<Instance> = {
+      get: (self: Instance, property: string | symbol, proxy: Ray): any => {
+        // /** Use any field defined on {Rays.Instance} first. */
+        // const field = (self as any)[property];
+        if (property === '___instance') { return self.___instance; }
 
-      /** Not implemented. */
-      throw new NotImplementedError(`Called property '${String(property)}' on Ray, which has not been implemented.`);
-    },
+        /** Otherwise, switch to functions defined on {Rays.Functions}  */
+        const func = Rays.Function(property);
+        if (func) { return func.as_method(self.proxy); }
 
-    apply: (self: Instance, thisArg: any, argArray: any[]): any => {
-      throw new NotImplementedError();
-    },
+        /** Not implemented. */
+        throw new NotImplementedError(`Called property '${String(property)}' on Ray, which has not been implemented.`);
+      },
 
-    set: (self: Instance, property: string | symbol, newValue: any, proxy: Ray): boolean => {
-      throw new NotImplementedError();
-    },
+      apply: (self: Instance, thisArg: any, argArray: any[]): any => {
+        throw new NotImplementedError();
+      },
 
-    deleteProperty: (self: Instance, property: string | symbol): boolean => {
-      throw new NotImplementedError();
+      set: (self: Instance, property: string | symbol, newValue: any, proxy: Ray): boolean => {
+        throw new NotImplementedError();
+      },
+
+      deleteProperty: (self: Instance, property: string | symbol): boolean => {
+        throw new NotImplementedError();
+      }
     }
+
+    export const FunctionTraversal = (
+      { callback }: { callback: JS.Function.Traversal.Callback }
+    ): ProxyHandler<Instance> => ({
+      get: (self: Instance, property: string | symbol, proxy: Ray): any => {
+        // /** Use any field defined on {Rays.Instance} first. */
+        // const field = (self as any)[property];
+        if (property === '___instance') { return self.___instance; }
+
+        /** Otherwise, switch to functions defined on {Rays.Functions}  */
+        const func = Rays.Function(property);
+        if (func) { return func.traverse(proxy, { name: property, callback }); }
+
+        /** Not implemented. */
+        throw new NotImplementedError(`Called property '${String(property)}' on Ray, which has not been implemented.`);
+      },
+
+      apply: (self: Instance, thisArg: any, argArray: any[]): any => {
+        throw new NotImplementedError();
+      },
+
+      set: (self: Instance, property: string | symbol, newValue: any, proxy: Ray): boolean => {
+        throw new NotImplementedError();
+      },
+
+      deleteProperty: (self: Instance, property: string | symbol): boolean => {
+        throw new NotImplementedError();
+      }
+    });
+
   }
 
   export const Function = <TProperty extends keyof typeof Rays.Functions>(
@@ -183,7 +219,7 @@ export namespace Rays {
      */
     export const equivalent = JS.Function.Self.Two(
       (a, b) => {
-      throw new NotImplementedError();
+      // throw new NotImplementedError();
 
       // TODO: This is close but not quite, use the shifting thing I wrote down a few days ago: (And then use something to break the self-reference) - Either on this side. compose, or outside the definitions
         // This one harder to do in parallel?

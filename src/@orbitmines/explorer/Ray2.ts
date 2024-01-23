@@ -117,11 +117,7 @@ export class Ray {
 
 
   // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
-
-
-  /**
-   *
-   */
+  
   static equivalent = JS.Function.Impl((initial, terminal) => {
 
     /**

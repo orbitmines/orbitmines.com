@@ -59,6 +59,17 @@ namespace JS {
    */
   export namespace Function {
 
+    export namespace Traversal {
+
+      export type Callback = (event: { event: Event, func: JS.Function.Instance, traverser: Ray, params?: Recursive<Ray>, name: string | symbol }) => void
+
+      export enum Event {
+        GET_METHOD = "GET_METHOD",
+        CALL_METHOD = "CALL_METHOD",
+      }
+
+    }
+
     /** {T} is just an example/desired use case. But it generalizes to any function. */
     export type Type<T> = T | Function.Instance;
 
@@ -82,6 +93,14 @@ namespace JS {
       as_method = (self: Ray): Method => {
         return () => { throw new NotImplementedError(); }
         // throw new NotImplementedError();
+      }
+
+      traverse = (traverser: Ray, { name, callback }: { name: string | symbol, callback: JS.Function.Traversal.Callback }): Method => {
+        callback({ event: JS.Function.Traversal.Event.GET_METHOD, name, func: this, traverser });
+        return (...params) => {
+          callback({ event: JS.Function.Traversal.Event.CALL_METHOD, name, func: this, traverser, params });
+          return this.impl(traverser);
+        }
       }
 
       /**
