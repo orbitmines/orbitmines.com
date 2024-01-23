@@ -72,22 +72,6 @@ export class Ray
       // Array<Ray>
       // Dict<Ray>
 {
-
-
-
-  protected get self_reference() { return this.as_arbitrary(); };
-
-  is_some = (): boolean => !this.is_none();
-
-  /**
-   * Can be used to override default dereference behavior.
-   *
-   * TODO: This should probably be configurable on a more global setting.
-   *
-   * TODO: Difference between this.self and this.self.self.as_reference is???
-   */
-  get dereference() { return this.self.self.as_reference(); }
-
   // /**
   //  * Moves `this.self` and `this.self.self` to a new line.
   //  *
@@ -182,12 +166,6 @@ export class Ray
   // TODO; Temp placeholders for now - & BETTER DEBUG
   ___empty_initial = () => new Ray({ vertex: Ray.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
   ___empty_terminal = () => new Ray({ vertex: Ray.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
-
-  /** A ray whose vertex references this Ray (ignorantly - 'this' doesn't know about it). **/
-  /** [?????] -> [  |  ] */ as_reference = (): Ray => new Ray({ vertex: this.as_arbitrary() });
-
-  // TODO: Difference between () => this & this.as_arbitrary , relevant for lazy/modular/ignorant structures etc..
-  as_arbitrary = (): JS.ParameterlessFunction<Ray> => () => this;
 
   /**
    * TODO : COMPOSE EMPTY AS FIRST ELEMENT:
@@ -372,16 +350,6 @@ export class Ray
   //   }
   // });
 
-  /**
-   * Helper methods for commonly used directions
-   *
-   * TODO: Link to step-wise walk as any function - lazy, not traversing certain paths, etc.. (for last/..)
-   */
-    static directions = {
-      next: (ref: Ray) => ref.self.terminal.as_reference(),
-      previous: (ref: Ray) => ref.self.initial.as_reference(),
-      none: (ref: Ray) => ref, // Note that "None" is necessarily inconsistent
-    }
     static follow_direction = {
       [RayType.INITIAL]: Ray.directions.next,
       [RayType.TERMINAL]: Ray.directions.previous
@@ -427,8 +395,6 @@ export class Ray
   // TODO: Ignore the connection between the two, say a.equiv(b) within some Rule [a,b], ignore the existing of the connection in the Rule? What does it mean not to???
 
   // TODO: Whether the thing is referenced on the vertex: do their vertices have some connection onm this direction?
-  is_equivalent = (b: Ray): boolean => { return false; } // TODOl: Current references assume you can't go inside vertex..
-  // TODO implement .not??
 
   get count(): Ray { return JS.Number(this.as_array().length); }
 
@@ -463,7 +429,6 @@ export class Ray
 
   // none_or = (arbitrary: Implementation): Ray => this.is_none() ? Ray.None() : arbitrary(this);
 
-  // @alias('converse', 'opposite', 'swap')
   get reverse(): Ray {
     const copy = this;//TODO.copy();
 
@@ -1047,8 +1012,6 @@ export class Ray
     return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
   }
 
-  push_back = (b: Ray) => this.last().compose(b);
-  push_front = (b: Ray) => this.first().compose(b);
 }
 
 //     default = (fn: () => any): any => self.match({

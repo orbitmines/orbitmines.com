@@ -59,3 +59,9 @@ A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hype
   - ```shell
     npm run test -- --watchAll
     ```
+    
+---
+
+## JavaScript Interface Examples
+
+- [ ] Applying a function on a Ray (vertex/initial/terminal) ; then go inside, insde can again be a vertex/initial/terminal on each vertex, apply on those.

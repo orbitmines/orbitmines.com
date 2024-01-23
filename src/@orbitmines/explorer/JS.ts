@@ -16,17 +16,35 @@ namespace JS {
   export type FunctionImpl<T> = (ref: T) => T;
   export type Recursive<T> = (T | Recursive<T | T[]>)[];
 
-  export type Method<TResult> = (...other: Recursive<Ray>) => TResult;
+  export type Method = (...other: Recursive<Ray>) => Ray;
 
-  export type FunctionConstructor<TResult> =
-    Ray
-    | ParameterlessFunction<TResult>
-    | Function<TResult>;
+  //
+  // export type FunctionConstructor =
+  //   Ray
+  //   | ParameterlessFunction<TResult>
+  //   | Function<TResult>;
 
-  export type Interface<T> = {
-    [TKey in keyof T]: T[TKey] extends JS.Function<infer TResult>
-      ? JS.Method<TResult>
-      : never;
+  // export type Interface<T> = {
+  //   [TKey in keyof T]: T[TKey] extends JS.Function<infer TResult>
+  //     ? JS.Method<TResult>
+  //     : never;
+  // }
+
+  // TODO: NEVER DIRECTLY EXECUTE, ONLY AFTER CHAIN OF FUNCS, possibly arbitrarily LAZY
+
+  export type Enum<T extends Array<string>> = {
+    [TKey in T[number]]: JS.Function.Instance
+  }
+
+  /**
+   * An Enum(eration) is a (simple) Ray.
+   */
+  export namespace Enum {
+
+    export const Impl = <T extends Array<string>>(...values: T): Enum<T> => {
+      throw new NotImplementedError(); // TODO: ONE OF 4 SELECTION RAY for the case of type.
+    }
+
   }
 
   /**
@@ -34,51 +52,103 @@ namespace JS {
    *
    * TODO: Is there some equivalent of this in computer science??? category theory??
    */
-  export class Function<TResult> { // TODO: Ray could extend Function
+  export namespace Function {
 
-    static New = <TResult>(constructor: FunctionConstructor<TResult>) => new Function(constructor);
+    /** {T} is just an example/desired use case. But it generalizes to any function. */
+    export type Type<T> = T | Function.Instance;
+
+    export class Instance {
+
+    }
+
+    export namespace None {
+
+      export const Impl = (impl: () => Ray): Function.Instance => {
+        return new Function.Instance();
+      }
+
+    }
 
     /**
      * Implement a function from the perspective of 'this'.
      */
-    static Self = <TResult>(impl: (self: Ray) => TResult): Function<TResult> => {
-      return Function.New(() => {
-        throw new NotImplementedError();
-      });
+    export namespace Self {
+      export const Impl = (impl: (self: Ray) => Ray): Function.Instance => {
+        return new Function.Instance();
+      }
+
+      export const If = (impl: (self: Ray) => Ray): Function.Instance => {
+        return new Function.Instance();
+      }
+
+      export type MatchCase = [
+        Function.Type<typeof Function.Self.If>,
+        Function.Type<typeof Function.Self.Impl | typeof Function.None.Impl>
+      ];
+
+      export type MatchCases = [...MatchCase[], /** 'else, ... default' **/ Function.Type<typeof Function.None.Impl>];
+
+      export const Match = (cases: MatchCases): Function.Instance => {
+        return new Function.Instance();
+      }
     }
 
-    /**
-     * Implement a function from the perspective of 'this' for 'this.self'.
-     */
-    // static Ref = <TResult>(impl: (ref: Ray) => TResult): Function<TResult> => JS.Function.Self(self => impl(self.as_reference()));
-
-    static Two = <TResult>(impl: (a: Ray, b: Ray) => TResult): Function<TResult> => {
-      return Function.New(() => {
-        throw new NotImplementedError();
-      });
-    }
-
-    /**
-     *
-     */
-    static CachedAfterUse = <TResult>(constructor: FunctionConstructor<TResult>): FunctionConstructor<TResult> => {
-      return constructor;
-    }
-
-    protected constructor(constructor: FunctionConstructor<TResult>) {
-
-    }
-
-    call = (self: Ray) => { throw new NotImplementedError(); }
-
-    as_method = <TResult>(self: Ray): Method<TResult> => {
-      throw new NotImplementedError();
+    export namespace Two {
+      export const Impl = (impl: (a: Ray, b: Ray) => Ray): Function.Instance => {
+        return new Function.Instance();
+      }
     }
 
   }
+  // export class Function { // TODO: Ray could extend Function
+  //
+  //   // static New = (constructor: FunctionConstructor) => new Function(constructor);
+  //
+  //   /**
+  //    * Implement a function from the perspective of 'this'.
+  //    */
+  //   static Self = (impl: (self: Ray) => Ray): Function => {
+  //     return Function.New(() => {
+  //       throw new NotImplementedError();
+  //     });
+  //   }
+  //
+  //   /**
+  //    * Implement a function from the perspective of 'this' for 'this.self'.
+  //    */
+  //   // static Ref = <TResult>(impl: (ref: Ray) => TResult): Function<TResult> => JS.Function.Self(self => impl(self.as_reference()));
+  //
+  //   static Two = (impl: (a: Ray, b: Ray) => Ray): Function => {
+  //     return Function.New(() => {
+  //       throw new NotImplementedError();
+  //     });
+  //   }
+  //
+  //   /**
+  //    *
+  //    */
+  //   // static CachedAfterUse = <TResult>(constructor: FunctionConstructor<TResult>): FunctionConstructor<TResult> => {
+  //   //   return constructor;
+  //   // }
+  //
+  //   // protected constructor(constructor: FunctionConstructor<TResult>) {
+  //   //
+  //   // }
+  //
+  //   call = (self: Ray) => {
+  //     throw new NotImplementedError();
+  //   }
+  //
+  //   as_method = <TResult>(self: Ray): Method<TResult> => {
+  //     throw new NotImplementedError();
+  //   }
+  //
+  // }
 
   /**
    * JavaScript runtime type checks
+   *
+   * TODO: Copy from lodash
    */
     export const is_boolean = (_object: any): _object is boolean => _.isBoolean(_object);
     export const is_number = (_object: any): _object is number => _.isNumber(_object);

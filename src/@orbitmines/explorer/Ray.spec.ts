@@ -9,6 +9,12 @@ describe("Ray", () => {
     expect(b.is_orbit(b)).toBe(true);
     expect(a.is_orbit(b)).toBe(false);
   });
+  test(".dereference", () => {
+    const a = Rays.New();
+    const b = Rays.New();
+
+    expect(a.terminal()).toBe(true);
+  });
 
 //   test("[A, B, C].copy", () => {
 //     const A = Ray.vertex().o({ js: 'A' }).as_reference().o({ js: 'A.#' });
