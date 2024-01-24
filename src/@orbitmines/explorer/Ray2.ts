@@ -16,7 +16,7 @@ export class Ray {
   //   }
   //   if (this.dereference.is_none()) {
   //     // TODO: Need some intuition for this check
-  //     const vertex = this.___as_vertex();
+  //     const vertex = this.___as_vertex();1
   //
   //     if (vertex.type !== RayType.VERTEX)
   //       throw new PreventsImplementationBug();
@@ -210,19 +210,11 @@ export class Ray {
         // return [...this.traverse(step)][1] ?? Ray.None(); // TODO BAD
         return Ray.None();
       }
-      has_next = (step: JS.FunctionImpl = Ray.directions.next): boolean => this.next(step).is_some();
       // @alias('end', 'result', 'back')
       last = (step: JS.FunctionImpl = Ray.directions.next): Ray => {
         const next = this.next(step);
         return next.is_some() ? next.last(step) : this;
       }
-    /**
-     * .previous (Just .next with a `Ray.directions.previous` default)
-     */
-      previous = (step: JS.FunctionImpl = Ray.directions.previous): Ray => this.next(step);
-      has_previous = (step: JS.FunctionImpl = Ray.directions.previous): boolean => this.has_next(step);
-      // @alias('beginning', 'front')
-      first = (step: JS.FunctionImpl = Ray.directions.previous): Ray => this.last(step);
 
 
   get reverse(): Ray {
@@ -566,34 +558,6 @@ export class Ray {
       this.terminal.___dirty_all(c);
 
     return c;
-  }
-
-  // TODO: DOESNT DO ON .SELF
-  debug = (c: DebugResult): DebugRay => {
-    if (c[this.label] !== undefined)
-      return c[this.label]!;
-
-    const of = (ray: Ray): string => {
-      if (ray.as_reference().is_none()) return 'None';
-
-      ray.debug(c);
-      return ray.label;
-    }
-
-    const obj: any = { label: this.label };
-    c[this.label] = obj;
-
-    obj.label = this.label;
-    obj.initial = of(this.initial);
-    obj.vertex = of(this.vertex);
-    obj.terminal = of(this.terminal);
-    obj.type = this.as_reference().type;
-    obj.is_initial = this.as_reference().is_initial();
-    obj.is_vertex = this.as_reference().is_vertex();
-    obj.is_terminal = this.as_reference().is_terminal();
-    obj._dirty_store = this._dirty_store;
-
-    return obj;
   }
 
 }

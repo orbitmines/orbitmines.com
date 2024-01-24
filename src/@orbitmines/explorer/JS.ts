@@ -16,17 +16,55 @@ namespace JS {
   export type FunctionImpl<T> = (ref: T) => T;
   export type Recursive<T> = (T | Recursive<T | T[]>)[];
 
-  //
-  // export type FunctionConstructor =
-  //   Ray
-  //   | ParameterlessFunction<TResult>
-  //   | Function<TResult>;
+  /**
+   * Slightly more beautiful abstraction on top of JavaScript's proxy.
+   */
+  export namespace Class {
+    export type Handler<T> = {
+      apply?(self: T, args: any[]): any;
+      construct?(self: T, args: any[]): object;
+      // defineProperty?(self: T, property: string | symbol, attributes: PropertyDescriptor): boolean;
+      deleteProperty?(self: T, property: string | symbol): boolean;
+      get?(self: T, property: string | symbol): any;
+      // getOwnPropertyDescriptor?(self: T, property: string | symbol): PropertyDescriptor | undefined;
+      // getPrototypeOf?(self: T): object | null;
+      has?(self: T, property: string | symbol): boolean;
+      // isExtensible?(self: T): boolean;
+      // ownKeys?(self: T): ArrayLike<string | symbol>;
+      // preventExtensions?(self: T): boolean;
+      set?(self: T, property: string | symbol, value: any): boolean;
+      // setPrototypeOf?(self: T, v: object | null): boolean;
+    }
 
-  // export type Interface<T> = {
-  //   [TKey in keyof T]: T[TKey] extends JS.Function<infer TResult>
-  //     ? JS.Method<TResult>
-  //     : never;
-  // }
+    export type Constructor<T extends object> = { proxy: ProxyHandler<T> }
+    
+    export const Handler = <T extends object>(handler: JS.Class.Handler<T>): ProxyHandler<T> => ({
+      get: (___proxy_function: any, property: string | symbol, self: T): any => handler.get(self, property),
+      apply: (___proxy_function: any, thisArg: Ray, argArray: any[]): any => handler.apply(thisArg ?? ___proxy_function.___instance.proxy, argArray), /** thisArg can be undefined. TODO: What's the use-case of us actually using it? */
+      set: (___proxy_function: any, property: string | symbol, newValue: any, self: T): boolean => handler.set(self, property, newValue),
+      deleteProperty: (___proxy_function: any, property: string | symbol): boolean => handler.deleteProperty(___proxy_function.___instance.proxy, property),
+      has(___proxy_function: any, property: string | symbol): boolean { return handler.has(___proxy_function.___instance.proxy, property); },
+      construct(___proxy_function: any, argArray: any[], self: Function): object { return handler.construct(self as T, argArray); },
+    })
+    
+    export abstract class Instance<T extends object> {
+
+      protected readonly _proxy: T;
+
+      get proxy(): T { return this._proxy; }
+
+      protected constructor(constructor: Constructor<T>) {
+        /**
+         * Need a function here to tell the JavaScript runtime we can use it as a function & constructor.
+         * Doesn't really matter, since we're just catching everything in the proxy anyway.
+         */
+        function ___proxy_function() { }
+        ___proxy_function.___instance = this;
+
+        this._proxy = new Proxy<T>(___proxy_function as any, constructor.proxy);
+      }
+    }
+  }
 
   // TODO: NEVER DIRECTLY EXECUTE, ONLY AFTER CHAIN OF FUNCS, possibly arbitrarily LAZY
 
@@ -48,13 +86,6 @@ namespace JS {
       // TODO: ONE OF 4 SELECTION RAY for the case of type.
     }
 
-  }
-
-  export type Method = {
-    (...other: Recursive<Ray>): Ray, // TODO: IMplement this on Ray itself somehow?
-    constructor: Function.Constructor;
-    self: Ray;
-    property: string | symbol;
   }
 
   /**
@@ -109,6 +140,7 @@ namespace JS {
        *    - Control of (non-/)lazyness of functions
        *    - None as, first time called, memoize func.
        *    - Perhaps locally cache (for stuff like count?) - no way to ensure globally coherence
+       *    - a.orbit() -> a.orbit(a)
        *
        * TODO: Testing
        *  - Test if references hold after equivalence/composition...
@@ -124,7 +156,13 @@ namespace JS {
         return new Function.Constructor({ perspective: Perspective.None, impl });
       }
 
+
     }
+
+    //   /**
+    //    * Implement a function from the perspective of 'this' for 'this.self'.
+    //    */
+    //   // static Ref = <TResult>(impl: (ref: Ray) => TResult): Function<TResult> => JS.Function.Self(self => impl(self.as_reference()));
 
     /**
      * Implement a function from the perspective of 'this'.
@@ -159,42 +197,10 @@ namespace JS {
     }
 
   }
-  // export class Function { // TODO: Ray could extend Function
-  //
-  //   // static New = (constructor: FunctionConstructor) => new Function(constructor);
-  //
-  //
-  //   /**
-  //    * Implement a function from the perspective of 'this' for 'this.self'.
-  //    */
-  //   // static Ref = <TResult>(impl: (ref: Ray) => TResult): Function<TResult> => JS.Function.Self(self => impl(self.as_reference()));
-  //
-  //   static Two = (impl: (a: Ray, b: Ray) => Ray): Function => {
-  //     return Function.New(() => {
-  //       throw new NotImplementedError();
-  //     });
-  //   }
-  //
-  //   /**
-  //    *
-  //    */
   //   // static CachedAfterUse = <TResult>(constructor: FunctionConstructor<TResult>): FunctionConstructor<TResult> => {
   //   //   return constructor;
   //   // }
-  //
-  //   // protected constructor(constructor: FunctionConstructor<TResult>) {
-  //   //
-  //   // }
-  //
-  //   call = (self: Ray) => {
-  //     throw new NotImplementedError();
-  //   }
-  //
-  //   as_method = <TResult>(self: Ray): Method<TResult> => {
-  //     throw new NotImplementedError();
-  //   }
-  //
-  // }
+
 
   /**
    * JavaScript runtime type checks

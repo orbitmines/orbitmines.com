@@ -1,5 +1,28 @@
-import JS, {Binary} from "./JS";
+import JS from "./JS";
 import {NotImplementedError} from "./errors/errors";
+
+type Ray =
+  {
+    /** Ray is a function (.next) */
+    (...other: JS.Recursive<Ray>): Ray,
+
+    /** Ray is a constructor - TODO: Copy? */
+    new (...other: JS.Recursive<Ray>): Ray,
+  }
+  /** JavaScript runtime conversions. */
+    & Symbol
+    & Iterable<Ray>
+    & AsyncIterable<Ray>
+
+  & Pick<Rays.Instance, '___instance' | 'on' | 'debug'>
+
+  & {
+    -readonly [TKey in keyof typeof Rays.Functions]: typeof Rays.Functions[TKey] extends JS.Function.Constructor
+      ? Ray
+      : never;
+  }
+
+export default Ray;
 
 export namespace Rays {
 
@@ -7,7 +30,7 @@ export namespace Rays {
   //   initial?: JS.FunctionConstructor<Ray>,
   //   self?: JS.FunctionConstructor<Ray>,
   //   terminal?: JS.FunctionConstructor<Ray>,
-    proxy?: ProxyHandler<Instance>,
+    proxy?: ProxyHandler<Ray>,
     debug?: Debug.Listener,
   }
 
@@ -26,23 +49,22 @@ export namespace Rays {
   }
 
   export type Op = { get: (self: Ray) => Ray, set: (self: Ray) => Ray };
-  export type Ops = {
-    initial(self: Ray): Ray;
-    self(self: Ray): Ray;
-    terminal(self: Ray): Ray;
-    is_orbit(a: Ray, b: Ray): boolean;
-  }
+  // export type Ops = {
+  //   initial(self: Ray): Ray;
+  //   self(self: Ray): Ray;
+  //   terminal(self: Ray): Ray;
+  //   is_orbit(a: Ray, b: Ray): boolean;
+  // }
 
   /**
    * An uninitialized empty Ray, which caches itself once initialized.
    */
   // export const None: JS.FunctionConstructor<Ray> = JS.Function.CachedAfterUse(Rays.New);
 
-  export class Instance {
+  export class Instance extends JS.Class.Instance<Ray> {
 
     static New = (constructor?: Rays.Constructor): Rays.Instance => new Rays.Instance(constructor);
 
-    protected readonly _proxy: Ray;
 
     listeners: Debug.Listener[];
 
@@ -50,15 +72,15 @@ export namespace Rays {
     // get self(): Ray { return this._self.call(this.proxy); } set self(self: JS.FunctionConstructor<Ray>) { this._self = JS.Function.New(self); } protected _self: JS.Function<Ray>;
     // get terminal(): Ray { return this._terminal.call(this.proxy); } set terminal(terminal: JS.FunctionConstructor<Ray>) { this._terminal = JS.Function.New(terminal); } protected _terminal: JS.Function<Ray>;
 
-    get proxy(): Ray { return this._proxy; }
-
     protected constructor({
                             // initial, self, terminal
       proxy,
       debug,
     }: Rays.Constructor = {}) {
+      super({ proxy: proxy ?? ProxyHandlers.Ray });
+
       this.listeners = debug ? [debug] : [];
-      this._proxy = new Proxy<Instance>(this, proxy ?? Rays.ProxyHandlers.Ray) as unknown as Ray;
+
       // this._initial = JS.Function.New(initial ?? Rays.None);
       // this._self = JS.Function.New(self ?? this.proxy);
       // this._terminal = JS.Function.New(terminal ?? Rays.None);
@@ -88,6 +110,10 @@ export namespace Rays {
   }
 
   export namespace Op {
+    export enum New { NONE, INITIAL, VERTEX, TERMINAL }
+    export enum Zeroary {
+
+    }
     // Should not need anything elese ; so could be any one thing?
     export enum Unary {
       INITIAL,
@@ -101,40 +127,65 @@ export namespace Rays {
 
   export namespace ProxyHandlers {
 
-    // TODO AS += through property, anything possible
-    export const Ray = ({
-      get: (self: Instance, property: string | symbol, proxy: Ray): any => {
+    export const Ray: ProxyHandler<Ray> = JS.Class.Handler<Ray>({
+      /** ray.property */
+      get: (self: Ray, property: string | symbol): any => {
         // self.on({ event: 'PROXY.GET', context: {  } });
 
         /** Use any field on {Rays.Instance}, which we want to delegate to, first. */
-        if (property === '___instance' || property === 'debug' || property === 'on') { return self[property]; }
+        if (property === '___instance' || property === 'debug' || property === 'on') { return self.___instance[property]; }
 
         /** Otherwise, switch to functions defined on {Rays.Functions}  */
         const func = Rays.Function(property);
-        if (func) { return func.as_method({ self: proxy, property }); }
+        if (func) { return func.as_method({ self, property }); }
+
+        if (property === Symbol.toPrimitive)
+          return (hint: string) => { return 100; };
+        // throw new NotImplementedError(``);
 
         /** Not implemented. */
         throw new NotImplementedError(`Called property '${String(property)}' on Ray, which has not been implemented.`);
       },
 
-      apply: (self: Instance, thisArg: any, argArray: any[]): any => {
+      /** ray.property = something; */
+      set: (self: Ray, property: string | symbol, value: any): boolean => {
         throw new NotImplementedError();
       },
 
-      set: (self: Instance, property: string | symbol, newValue: any, proxy: Ray): boolean => {
+      /** delete ray.property; */
+      deleteProperty: (self: Ray, property: string | symbol): boolean => {
         throw new NotImplementedError();
       },
 
-      deleteProperty: (self: Instance, property: string | symbol): boolean => {
-        throw new NotImplementedError();
-      }
-    })
+      /** ray() is called. */
+      apply: (self: Ray, args: any[]): any => {
 
+        throw new NotImplementedError(`${self}`);
+      },
+
+      /** new ray() */
+      construct: (self: Ray, args: any[]): object => {
+        throw new NotImplementedError(`${args.length} ${self}`);
+      },
+
+      /** property in ray; */
+      has: (self: Ray, property: string | symbol): boolean => {
+        throw new NotImplementedError(`${String(property)}`);
+      },
+    });
   }
 
   export const Function = <TProperty extends keyof typeof Rays.Functions>(
     property: string | symbol
   ): (typeof Rays.Functions)[TProperty] | undefined => Rays.Functions[property as TProperty] ?? undefined;
+
+  // TODO CAN ALSO BE ZERO-ARY..
+  // @alias('resize', 'size', 'structure', 'length', 'duplicate', 'copy') -> Should be generalized as any kind of structure, but with this thing repeated on it. ; use traversal or ...
+  export const size = JS.Function.Self.Binary(
+    (a, size) => { throw new NotImplementedError(); }
+  );
+  // @alias('bit')
+  // export const boolean = size(2);
 
   export namespace Functions {
 
@@ -191,9 +242,14 @@ export namespace Rays {
     export const self_reference = JS.Function.Self.Impl(
       self => self
     );
-    // @alias('destroy', 'clear', 'delete')
-    export const none = JS.Function.Self.Impl(
-      self => Rays.New({ }) // TODO self: self_reference
+
+    // TODO: set = none;
+    // TODO: Destroy the current thing, connect .initial & .terminal ? (can do just direct connection, preserves 'could have been something here') - then something like [self.initial, self, self.terminal].pop().
+    // TODO: Leave behind --] [-- or connect them basically..
+
+    // @alias('destroy', 'clear', 'delete', 'pop')
+    export const none = JS.Function.Self.Impl( // TODO FROM REF SPEC?
+      self => self.self = Op.New.NONE // TODO self: self_reference
     );
 
     /** An arbitrary Ray, defining what continuing in this direction is equivalent to. */
@@ -211,6 +267,8 @@ export namespace Rays {
 
     /**
      * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
+     *
+     * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
      */
     export const reference = JS.Function.Self.Impl(
       self => Rays.New({ self: self })
@@ -222,6 +280,11 @@ export namespace Rays {
     // @alias('merge, 'continues_with', 'compose')
     export const compose = JS.Function.Self.Binary(
       (a, b) => a.terminal().equivalent(b.initial())
+    );
+
+    // @alias('modular', 'modulus', 'orbit')
+    export const orbit = JS.Function.Self.Binary(
+      (a, b) => a.first().initial().compose(b.last().terminal())
     );
 
     /**
@@ -242,30 +305,36 @@ export namespace Rays {
       return a.self().compose(b.self());
     });
 
+    /**
+     * If there exists an orbit between A & B, anywhere (so dually connected, what if only one is aware??).
+     */
+    // @alias('includes', 'contains') ; (slightly different variants?)
     export const is_equivalent = JS.Function.Self.Binary(
-      (a, b) => {
-        // TODO: = COMPOSE
-      throw new NotImplementedError();
-      return true;
-    });
+      (a, b) => a.self().traverse().is_orbit(b.self().traverse()) // Basically: does there exist a single connection between the two?
+    );
 
+    export const traverse = JS.Function.Self.Impl(
+      (a) => { throw new NotImplementedError(); }
+    );
+
+
+    // TODO: .next but arbitrary step??
     export const next = JS.Function.Self.Impl((self) => {
       throw new NotImplementedError();
       return self;
     });
-    export const has_next = JS.Function.Self.Impl((self) => {
-      throw new NotImplementedError();
-      return true;
-    });
+    export const has_next = JS.Function.Self.Impl((self) => self.next().is_some());
     // @alias('end', 'result', 'back', 'output')
     export const last = JS.Function.Self.Impl((self) => {
       throw new NotImplementedError();
       return self;
     });
-    export const first = JS.Function.Self.Impl((self) => {
-      throw new NotImplementedError();
-      return self;
-    });
+
+    export const previous = JS.Function.Self.Impl((self) => self.not().next());
+    // @alias()
+    export const has_previous = JS.Function.Self.Impl((self) => self.not().has_next());
+    // @alias('beginning', 'front')
+    export const first = JS.Function.Self.Impl((self) => self.not().last());
 
     // @alias('not', 'reverse', 'swap', 'converse', 'negative', 'neg')
     // export const not = JS.Function.Self.Impl(self => );
@@ -274,9 +343,11 @@ export namespace Rays {
     // self.not().not() = self
     // TODO: What's the difference in context between stepping after not / or not doing so.
     // TODO; OR BINARY? - "It's just always .next from some perspective?"
+    // TODO: Level at which "not" is applied.
     export const not = JS.Function.Self.Binary((a, b) => b);
 
-    export const and = JS.Function.Self.Binary((a, b) => );
+    export const and = JS.Function.Self.Binary((a, b) => { throw new NotImplementedError();
+    } );
     export const or = JS.Function.Self.Binary((a, b) => {
       throw new NotImplementedError();
       return self;
@@ -298,13 +369,6 @@ export namespace Rays {
 
   }
 }
-
-type Ray = Pick<Rays.Instance, '___instance' | 'on' | 'debug'> & {
-  [TKey in keyof typeof Rays.Functions]: typeof Rays.Functions[TKey] extends JS.Function.Constructor
-    ? JS.Method
-    : never;
-}
-export default Ray;
 
 /**
  * Other possibly names: "AbstractDirectionality, ..., ???"

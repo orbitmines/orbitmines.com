@@ -9,7 +9,9 @@
 
 ## What is this?, What is OrbitMines?, What are Rays?
 
-A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hyper-/)'Edge', (hyper-/)'Graph', (hyper-/)'Rule', (hyper-/)'Tactic', (hyper-/)..., (hyper-/)'Rewrite' are merged into one thing: a [Ray](https://github.com/orbitmines/orbitmines.com/blob/main/src/%40orbitmines/explorer/Ray.ts). It handles surrounding context, ignorances, equivalences, ..., differentiation. (And if it cannot, then it offers a way of implementing it for all of the above)
+A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hyper-/)'Edge', (hyper-/)'Graph', (hyper-/)'Rule', (hyper-/)'Tactic', (hyper-/)..., (hyper-/)'Rewrite' are merged into one thing: a [Ray](https://github.com/orbitmines/orbitmines.com/blob/main/src/%40orbitmines/explorer/Ray.ts). It handles surrounding context, ignorances, equivalences, ..., differentiation (And if it cannot, then it offers a way of implementing it for all of the above). 
+
+Most importantly, it is here as infrastructure. Infrastructure for the design and implementation of a different category of (programming) interfaces.
 
 - If you prefer **text**, see [2023-12-31. On Orbits, Equivalence and Inconsistencies](https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies), or more generally my/OrbitMines writing can be found here: [orbitmines.com/profiles/fadi-shawki](https://orbitmines.com/profiles/fadi-shawki).
 
@@ -23,7 +25,7 @@ A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hype
 - If you prefer discussions on **Discord**: [discord.orbitmines.com](https://discord.orbitmines.com).
 
 
-- Or if prefer smashing your keyboard till there's something interesting on the screen. See a first implementation of this *explorational interface*: [orbitmines.com/explorer/github.com/akissinger/chyp](https://orbitmines.com/explorer/github.com/akissinger/chyp).
+- TODO: ~~Or if prefer smashing your keyboard till there's something interesting on the screen. See a first implementation of this *explorational interface*: [orbitmines.com/explorer/github.com/akissinger/chyp](https://orbitmines.com/explorer/github.com/akissinger/chyp).~~
 
 ---
 
@@ -64,4 +66,48 @@ A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hype
 
 ## JavaScript Interface Examples
 
+> [!WARNING]
+> Reasoning backwards, what should the JavaScript interface look like?
+
 - [ ] Applying a function on a Ray (vertex/initial/terminal) ; then go inside, insde can again be a vertex/initial/terminal on each vertex, apply on those.
+
+---
+
+Let's take logic gates as an example?
+
+```ts
+const initial = Rays.boolean().orbit().size(2);
+const terminal = Rays.boolean().orbit().size(2);
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

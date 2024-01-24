@@ -44,10 +44,6 @@ is_vertex_equivalent = (b: Ray) => {
 // none_or = (arbitrary: Implementation): Ray => this.is_none() ? Ray.None() : arbitrary(this);
 
 
-// TODO: IS JUST .NEXT/.previous (depending on whether its implementation is a modular structure) on boundaries
-const opposite = (boundary: Boundary): Boundary => boundary === RayType.INITIAL ? RayType.TERMINAL : RayType.INITIAL;
-
-
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
  */
@@ -56,30 +52,6 @@ export interface PossiblyHomoiconic<T extends PossiblyHomoiconic<T>> {
   is_reference: () => boolean
   as_reference: () => T
 }
-
-
-  // pop = (): Ray => {
-// this.last().previous().all.terminal = (ref) => ref.___empty_terminal();
-// }
-// pop = (): Ray => this.___primitive_switch({
-//   [RayType.VERTEX]: () => {
-//     const previous_vertex = this.self.initial.follow(Ray.directions.previous);
-//
-//     if (this.is_none()) {
-//       return this; // TODO; Already empty, perhaps throw
-//     }
-//
-//     return previous_vertex.___primitive_switch({
-//       [RayType.VERTEX]: () => {
-//         console.log(previous_vertex)
-//         // TODO: NONHACKY
-//
-//         previous_vertex.self.terminal = new Ray({ vertex: Ray.None, initial: previous_vertex.self.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary()
-//         return previous_vertex;
-//       }
-//     });
-//   }
-// });
 
 
   // zip also compose???
@@ -197,16 +169,6 @@ max = (_default: 0): Ray => { throw new NotImplementedError(); }
   map = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
 // filter = (mapping: (ray: Ray) => Ray | any): Ray => { throw new NotImplementedError(); }
 
-  get clear(): Ray { throw new NotImplementedError(); }
-
-  /**
- * TODO - Better 'value' here. (Use JS.Any??)
- *
- * TODO: All these should accept Ray values.
- *
- * .size, since .length is reserved by JavaScript.
- * TODO: .size could be more tensor-like, arbitrary lengths..
- */
 // @alias('length', 'of_length')
 static size = (of: number, value: any = undefined): Ray => {
   let ret: Ray | undefined;

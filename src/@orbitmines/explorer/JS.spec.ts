@@ -10,59 +10,65 @@ describe("JS", () => {
     describe(".Instance", () => {
 
       test(".traverse", () => {
-        const events: any[] = [];
-        const ray = Rays.New();
+        // const events: any[] = [];
+        const ray: Ray = Rays.New();
 
-        ray.debug(
-          (event) => {
-            events.push(event);
-          },
-          () => {
-            try{
-              ray.compose()
-            } catch (e) {}
-          }
-        );
+        // const b = ray in ray;
 
-        expect(events.map(event => ({
-          event: event.event, context: { method: { property: event.context.method.property} }
-        }))).toBe(false);
+        ray.initial = new ray()
+
+        // ray()()()()();
+        //
+        // ray.debug(
+        //   (event) => {
+        //     events.push(event);
+        //   },
+        //   () => {
+        //     try{
+        //       ray.compose()
+        //     } catch (e) {}
+        //   }
+        // );
+        //
+        // expect(events.map(event => ({
+        //   event: event.event, context: { method: { property: event.context.method.property} }
+        // }))).toBe(false);
 
       });
       test(".traverse", () => {
-        const events: any[] = [];
-        const ray = Rays.New();
-
-        ray.debug(
-          (event) => {
-            events.push(event);
-          },
-          () => {
-            // // Reference
-            // ray.initial = none;
-            // // ray.self = // SOMETHING
-            // ray.terminal = none;
-            //
-            // // Initial
-            // ray.initial = none;
-            // ray.self = self_reference;
-            // ray.terminal = self_reference;
-            //
-            // // Vertex:
-            // ray.initial = self_reference;
-            // ray.self = self_reference;
-            // ray.terminal = self_reference;
-            //
-            // // Terminal
-            // ray.initial = self_reference;
-            // ray.self = self_reference;
-            // ray.terminal = none;
-          }
-        );
-
-        expect(events.map(event => ({
-          event: event.event, context: { method: { property: event.context.method.property} }
-        }))).toBe(false);
+        // const events: any[] = [];
+        // const ray = Rays.New();
+        //
+        // ray.debug(
+        //   (event) => {
+        //     events.push(event);
+        //   },
+        //   () => {
+        //     // // Reference
+        //     // ray.initial = none;
+        //     // // ray.self = // SOMETHING
+        //     // ray.terminal = none;
+        //     //
+        //     // // Initial
+        //     // ray.initial = none;
+        //     // ray.self = self_reference;
+        //     // ray.terminal = self_reference;
+        //     //
+        //     // // Vertex:
+        //     // ray.initial = self_reference;
+        //     // ray.self = self_reference;
+        //     // ray.terminal = self_reference;
+        //     //
+        //     // // Terminal
+        //     // ray.initial = self_reference;
+        //     // ray.self = self_reference;
+        //     // ray.terminal = none;
+        //   }
+        // );
+        //
+        // expect(events.map(event => ({
+        //   event: event.event, context: { method: { property: event.context.method.property} }
+        // }))).toBe(false);
 
       });
     })

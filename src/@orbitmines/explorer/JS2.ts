@@ -1,15 +1,6 @@
 //
 //
 //
-//     private readonly step: JS.FunctionImpl<Ray>;
-//
-//
-//     static Any = (...args: any[]): Function => {
-//       throw new NotImplementedError();
-//     }
-//
-//
-//
 //     /**
 //      * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
 //      */
@@ -196,18 +187,6 @@
 //     }
 //
 //   }
-//
-//   export const Boolean = (boolean: boolean): Ray => {
-//     // TODO: Could be superpose structure instead of length 2;
-//     // |-false->-true-| (could of course also be reversed)
-//     const _false = Ray.vertex().o({ js: false }).as_reference();
-//     const _true = Ray.vertex().o({ js: true }).as_reference();
-//     _false.compose(_true);
-//
-//     return (boolean ? _true : _false);
-//   }
-//   // export const bit = (bit?: boolean): Arbitrary<Ray<any>> => permutation(bit ? 1 : 0, 2);
-//   export const Bit = Boolean;
 //
 //   export const Iterable = <T = any>(iterable: Iterable<T>): Ray => JS.Iterator(iterable[Symbol.iterator]());
 //
