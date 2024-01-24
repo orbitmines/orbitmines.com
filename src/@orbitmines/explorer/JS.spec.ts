@@ -2,6 +2,8 @@ import Ray, {Rays} from "./Ray";
 import JS from "./JS";
 import {previous} from "slate";
 import {NotImplementedError} from "./errors/errors";
+import self_reference = Rays.Functions.self_reference;
+import none = Rays.Functions.none;
 
 describe("JS", () => {
   describe(".Function", () => {
@@ -9,21 +11,59 @@ describe("JS", () => {
 
       test(".traverse", () => {
         const events: any[] = [];
-        const traverser = Rays.New({ // TODO: Probably should have this as an extra option on Ray, with a way of selecting different functions (for example: not going further if function was already found through traversal).
-          proxy: Rays.ProxyHandlers.FunctionTraversal({
-            callback: (event) => {
-              events.push({...event, params: '--', traverser: '--'});
-            }
-          })
-        });
+        const ray = Rays.New();
 
-        try {
-          traverser.compose();
-        } catch (e) {
-          //
-        }
+        ray.debug(
+          (event) => {
+            events.push(event);
+          },
+          () => {
+            try{
+              ray.compose()
+            } catch (e) {}
+          }
+        );
 
-        expect(events).toBe(false);
+        expect(events.map(event => ({
+          event: event.event, context: { method: { property: event.context.method.property} }
+        }))).toBe(false);
+
+      });
+      test(".traverse", () => {
+        const events: any[] = [];
+        const ray = Rays.New();
+
+        ray.debug(
+          (event) => {
+            events.push(event);
+          },
+          () => {
+            // // Reference
+            // ray.initial = none;
+            // // ray.self = // SOMETHING
+            // ray.terminal = none;
+            //
+            // // Initial
+            // ray.initial = none;
+            // ray.self = self_reference;
+            // ray.terminal = self_reference;
+            //
+            // // Vertex:
+            // ray.initial = self_reference;
+            // ray.self = self_reference;
+            // ray.terminal = self_reference;
+            //
+            // // Terminal
+            // ray.initial = self_reference;
+            // ray.self = self_reference;
+            // ray.terminal = none;
+          }
+        );
+
+        expect(events.map(event => ({
+          event: event.event, context: { method: { property: event.context.method.property} }
+        }))).toBe(false);
+
       });
     })
   })

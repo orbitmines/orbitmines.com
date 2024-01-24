@@ -3,21 +3,6 @@ import {NotImplementedError, PreventsImplementationBug} from "./errors/errors";
 import {InterfaceOptions} from "./OrbitMinesExplorer";
 import JS from "./JS";
 
-
-// TODO: better debug
-export type DebugResult = { [label: string]: DebugRay }
-export type DebugRay = {
-  label: string,
-  initial: string,
-  vertex: string,
-  terminal: string,
-  is_initial: boolean,
-  is_vertex: boolean,
-  is_terminal: boolean,
-  type: RayType,
-  _dirty_store: any
-}
-
 export class Ray {
   // /**
   //  * Moves `this.self` and `this.self.self` to a new line.

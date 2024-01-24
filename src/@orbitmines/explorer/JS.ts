@@ -12,11 +12,9 @@ import Ray, {Rays} from "./Ray";
 namespace JS {
   export type ParameterlessFunction<T = any> = () => T;
   export type ParameterlessConstructor<T> = new () => T;
-  export type Constructor<T> = new (...args: any[]) => T;
+  // export type Constructor<T> = new (...args: any[]) => T;
   export type FunctionImpl<T> = (ref: T) => T;
   export type Recursive<T> = (T | Recursive<T | T[]>)[];
-
-  export type Method = (...other: Recursive<Ray>) => Ray;
 
   //
   // export type FunctionConstructor =
@@ -33,7 +31,7 @@ namespace JS {
   // TODO: NEVER DIRECTLY EXECUTE, ONLY AFTER CHAIN OF FUNCS, possibly arbitrarily LAZY
 
   export type Enum<T extends Array<string>> = {
-    [TKey in T[number]]: JS.Function.Instance
+    [TKey in T[number]]: JS.Function.Constructor
   }
 
   /**
@@ -52,6 +50,13 @@ namespace JS {
 
   }
 
+  export type Method = {
+    (...other: Recursive<Ray>): Ray, // TODO: IMplement this on Ray itself somehow?
+    constructor: Function.Constructor;
+    self: Ray;
+    property: string | symbol;
+  }
+
   /**
    * This allows automatic conversion between "JavaScript functions/.../generators" and Rays.
    *
@@ -59,19 +64,8 @@ namespace JS {
    */
   export namespace Function {
 
-    export namespace Traversal {
-
-      export type Callback = (event: { event: Event, func: JS.Function.Instance, traverser: Ray, params?: Recursive<Ray>, name: string | symbol }) => void
-
-      export enum Event {
-        GET_METHOD = "GET_METHOD",
-        CALL_METHOD = "CALL_METHOD",
-      }
-
-    }
-
     /** {T} is just an example/desired use case. But it generalizes to any function. */
-    export type Type<T> = T | Function.Instance;
+    export type Type<T> = T | Function.Constructor;
 
     /** From which perspective the Function is implemented. */
     enum Perspective {
@@ -80,27 +74,28 @@ namespace JS {
       // Ref,
     }
 
-    export class Instance {
+    export class Constructor {
 
       readonly perspective: Perspective;
       readonly impl: (...params: Ray[]) => Ray;
 
-      constructor({ perspective, impl }: Pick<Instance, 'perspective' | 'impl'>) {
+      constructor({ perspective, impl }: Pick<Function.Constructor, 'perspective' | 'impl'>) {
         this.perspective = perspective;
         this.impl = impl;
       }
 
-      as_method = (self: Ray): Method => {
-        return () => { throw new NotImplementedError(); }
-        // throw new NotImplementedError();
-      }
-
-      traverse = (traverser: Ray, { name, callback }: { name: string | symbol, callback: JS.Function.Traversal.Callback }): Method => {
-        callback({ event: JS.Function.Traversal.Event.GET_METHOD, name, func: this, traverser });
-        return (...params) => {
-          callback({ event: JS.Function.Traversal.Event.CALL_METHOD, name, func: this, traverser, params });
-          return this.impl(traverser);
+      as_method = ({ self, property }: Pick<JS.Method, 'self' | 'property'>): Method => {
+        const method: Method = (...params) => {
+          self.on({ event: 'METHOD.CALL', context: { method, params } });
+          return this.impl(self);
         }
+        method.constructor = this;
+        method.self = self;
+        method.property = property;
+
+        self.on({ event: 'METHOD.GET', context: { method } });
+
+        return method;
       }
 
       /**
@@ -125,8 +120,8 @@ namespace JS {
 
     export namespace None {
 
-      export const Impl = (impl: () => Ray): Function.Instance => {
-        return new Function.Instance({ perspective: Perspective.None, impl });
+      export const Impl = (impl: () => Ray): Function.Constructor => {
+        return new Function.Constructor({ perspective: Perspective.None, impl });
       }
 
     }
@@ -135,15 +130,15 @@ namespace JS {
      * Implement a function from the perspective of 'this'.
      */
     export namespace Self {
-      export const Impl = (impl: (self: Ray) => Ray): Function.Instance => {
-        return new Function.Instance({ perspective: Perspective.Self, impl });
+      export const Impl = (impl: Rays.Op.Unary | ((self: Ray) => Ray)): Function.Constructor => {
+        return new Function.Constructor({ perspective: Perspective.Self, impl });
       }
 
-      export const Two = (impl: (a: Ray, b: Ray) => Ray): Function.Instance => {
-        return new Function.Instance({ perspective: Perspective.Self, impl }); // TODO: Good way to deal with arity
+      export const Binary = (impl: Rays.Op.Binary | ((a: Ray, b: Ray) => Ray)): Function.Constructor => {
+        return new Function.Constructor({ perspective: Perspective.Self, impl }); // TODO: Good way to deal with arity
       }
 
-      export const If = (impl: (self: Ray) => Ray): Function.Instance => {
+      export const If = (impl: (self: Ray) => Ray): Function.Constructor => {
         return Impl(impl); // TODO: GENERIC collapse to boolean implemented and overridable
       }
 
@@ -158,7 +153,7 @@ namespace JS {
        * TODO:
        *   - Maybe replace switch with 'zip'?, What are the practical differences?
        */
-      export const Match = (cases: MatchCases): Function.Instance => {
+      export const Match = (cases: MatchCases): Function.Constructor => {
         return Impl(self => self); // TODO
       }
     }

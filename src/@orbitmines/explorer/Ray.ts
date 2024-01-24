@@ -1,6 +1,5 @@
-import JS from "./JS";
+import JS, {Binary} from "./JS";
 import {NotImplementedError} from "./errors/errors";
-import Event = JS.Function.Traversal.Event;
 
 export namespace Rays {
 
@@ -8,7 +7,8 @@ export namespace Rays {
   //   initial?: JS.FunctionConstructor<Ray>,
   //   self?: JS.FunctionConstructor<Ray>,
   //   terminal?: JS.FunctionConstructor<Ray>,
-    proxy?: ProxyHandler<Instance>
+    proxy?: ProxyHandler<Instance>,
+    debug?: Debug.Listener,
   }
 
   /**
@@ -19,6 +19,19 @@ export namespace Rays {
   // export const Boundary = { INITIAL: Type.INITIAL, TERMINAL: Type.TERMINAL }; TODO: LIST O
 
   export const New = (constructor?: Rays.Constructor): Ray => Rays.Instance.New(constructor).proxy;
+
+  export namespace Debug {
+    export type Event = { event: string, self: Ray, context: any };
+    export type Listener = (event: Event) => void;
+  }
+
+  export type Op = { get: (self: Ray) => Ray, set: (self: Ray) => Ray };
+  export type Ops = {
+    initial(self: Ray): Ray;
+    self(self: Ray): Ray;
+    terminal(self: Ray): Ray;
+    is_orbit(a: Ray, b: Ray): boolean;
+  }
 
   /**
    * An uninitialized empty Ray, which caches itself once initialized.
@@ -31,6 +44,8 @@ export namespace Rays {
 
     protected readonly _proxy: Ray;
 
+    listeners: Debug.Listener[];
+
     // get initial(): Ray { return this._initial.call(this.proxy); } set initial(initial: JS.FunctionConstructor<Ray>) { this._initial = JS.Function.New(initial); } protected _initial: JS.Function<Ray>;
     // get self(): Ray { return this._self.call(this.proxy); } set self(self: JS.FunctionConstructor<Ray>) { this._self = JS.Function.New(self); } protected _self: JS.Function<Ray>;
     // get terminal(): Ray { return this._terminal.call(this.proxy); } set terminal(terminal: JS.FunctionConstructor<Ray>) { this._terminal = JS.Function.New(terminal); } protected _terminal: JS.Function<Ray>;
@@ -39,8 +54,10 @@ export namespace Rays {
 
     protected constructor({
                             // initial, self, terminal
-      proxy
+      proxy,
+      debug,
     }: Rays.Constructor = {}) {
+      this.listeners = debug ? [debug] : [];
       this._proxy = new Proxy<Instance>(this, proxy ?? Rays.ProxyHandlers.Ray) as unknown as Ray;
       // this._initial = JS.Function.New(initial ?? Rays.None);
       // this._self = JS.Function.New(self ?? this.proxy);
@@ -49,20 +66,52 @@ export namespace Rays {
 
     /** Used to jump out of the proxy. */
     get ___instance(): Instance { return this; }
+
+    debug = <T>(
+      on: Debug.Listener,
+      func: JS.ParameterlessFunction<T>
+    ): T => {
+      this.listeners.push(on);
+      const ret = func();
+      this.listeners.pop(); // TODO?
+
+      return ret;
+    }
+
+    /** Simple debug/traversal mechanism. */
+    on = (event: Omit<Debug.Event, 'self'>) => {
+      if (!this.listeners) return;
+
+      this.listeners.forEach(listener => listener({ ...event, self: this.proxy }));
+    }
+
+  }
+
+  export namespace Op {
+    // Should not need anything elese ; so could be any one thing?
+    export enum Unary {
+      INITIAL,
+      SELF, // TODO .as_reference? Basically, Ray.directions
+      TERMINAL
+    }
+    export enum Binary {
+      IS_ORBIT // a.___instance === b.___instance
+    }
   }
 
   export namespace ProxyHandlers {
 
     // TODO AS += through property, anything possible
-    export const Ray: ProxyHandler<Instance> = {
+    export const Ray = ({
       get: (self: Instance, property: string | symbol, proxy: Ray): any => {
-        // /** Use any field defined on {Rays.Instance} first. */
-        // const field = (self as any)[property];
-        if (property === '___instance') { return self.___instance; }
+        // self.on({ event: 'PROXY.GET', context: {  } });
+
+        /** Use any field on {Rays.Instance}, which we want to delegate to, first. */
+        if (property === '___instance' || property === 'debug' || property === 'on') { return self[property]; }
 
         /** Otherwise, switch to functions defined on {Rays.Functions}  */
         const func = Rays.Function(property);
-        if (func) { return func.as_method(self.proxy); }
+        if (func) { return func.as_method({ self: proxy, property }); }
 
         /** Not implemented. */
         throw new NotImplementedError(`Called property '${String(property)}' on Ray, which has not been implemented.`);
@@ -79,36 +128,7 @@ export namespace Rays {
       deleteProperty: (self: Instance, property: string | symbol): boolean => {
         throw new NotImplementedError();
       }
-    }
-
-    export const FunctionTraversal = (
-      { callback }: { callback: JS.Function.Traversal.Callback }
-    ): ProxyHandler<Instance> => ({
-      get: (self: Instance, property: string | symbol, proxy: Ray): any => {
-        // /** Use any field defined on {Rays.Instance} first. */
-        // const field = (self as any)[property];
-        if (property === '___instance') { return self.___instance; }
-
-        /** Otherwise, switch to functions defined on {Rays.Functions}  */
-        const func = Rays.Function(property);
-        if (func) { return func.traverse(proxy, { name: property, callback }); }
-
-        /** Not implemented. */
-        throw new NotImplementedError(`Called property '${String(property)}' on Ray, which has not been implemented.`);
-      },
-
-      apply: (self: Instance, thisArg: any, argArray: any[]): any => {
-        throw new NotImplementedError();
-      },
-
-      set: (self: Instance, property: string | symbol, newValue: any, proxy: Ray): boolean => {
-        throw new NotImplementedError();
-      },
-
-      deleteProperty: (self: Instance, property: string | symbol): boolean => {
-        throw new NotImplementedError();
-      }
-    });
+    })
 
   }
 
@@ -166,31 +186,27 @@ export namespace Rays {
      *
      * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
      */
-    export const is_orbit = JS.Function.Self.Two(
-      (a, b) => a.___instance === b.___instance
-    );
+    export const is_orbit = JS.Function.Self.Binary(Op.Binary.IS_ORBIT);
 
     export const self_reference = JS.Function.Self.Impl(
       self => self
     );
+    // @alias('destroy', 'clear', 'delete')
+    export const none = JS.Function.Self.Impl(
+      self => Rays.New({ }) // TODO self: self_reference
+    );
 
     /** An arbitrary Ray, defining what continuing in this direction is equivalent to. */
-    export const terminal = JS.Function.Self.Impl(
-      self => self.___instance.terminal // TODO .as_reference? Basically, Ray.directions
-    );
+    export const terminal = JS.Function.Self.Impl(Op.Unary.TERMINAL);
     /** An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to. */
-    export const initial = JS.Function.Self.Impl(
-      self => self.___instance.initial // TODO .as_reference?
-    );
+    export const initial = JS.Function.Self.Impl(Op.Unary.INITIAL);
     /**
      * An arbitrary Ray, defining what our current position is equivalent to.
      *
      * Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
      */
     // @alias('dereference', 'self')
-    export const dereference = JS.Function.Self.Impl(
-      self => self.___instance.self // TODO .as_reference?
-    );
+    export const dereference = JS.Function.Self.Impl(Op.Unary.SELF);
     export const self = dereference;
 
     /**
@@ -204,7 +220,7 @@ export namespace Rays {
      * @see "Continuations as Equivalence (can often be done in parallel - not generally)": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
      */
     // @alias('merge, 'continues_with', 'compose')
-    export const compose = JS.Function.Self.Two(
+    export const compose = JS.Function.Self.Binary(
       (a, b) => a.terminal().equivalent(b.initial())
     );
 
@@ -217,7 +233,7 @@ export namespace Rays {
      *
      * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
      */
-    export const equivalent = JS.Function.Self.Two(
+    export const equivalent = JS.Function.Self.Binary(
       (a, b) => {
       // throw new NotImplementedError();
 
@@ -226,7 +242,7 @@ export namespace Rays {
       return a.self().compose(b.self());
     });
 
-    export const is_equivalent = JS.Function.Self.Two(
+    export const is_equivalent = JS.Function.Self.Binary(
       (a, b) => {
         // TODO: = COMPOSE
       throw new NotImplementedError();
@@ -251,41 +267,40 @@ export namespace Rays {
       return self;
     });
 
-    // @alias('not', 'reverse', 'swap', 'converse')
-    export const not = JS.Function.Self.Impl((self) => {
+    // @alias('not', 'reverse', 'swap', 'converse', 'negative', 'neg')
+    // export const not = JS.Function.Self.Impl(self => );
+    // self.terminal = self.initial();
+    // self.initial = self.terminal();
+    // self.not().not() = self
+    // TODO: What's the difference in context between stepping after not / or not doing so.
+    // TODO; OR BINARY? - "It's just always .next from some perspective?"
+    export const not = JS.Function.Self.Binary((a, b) => b);
+
+    export const and = JS.Function.Self.Binary((a, b) => );
+    export const or = JS.Function.Self.Binary((a, b) => {
       throw new NotImplementedError();
       return self;
     });
-    export const and = JS.Function.Self.Two((a, b) => {
-      throw new NotImplementedError();
-      return self;
-    });
-    export const or = JS.Function.Self.Two((a, b) => {
-      throw new NotImplementedError();
-      return self;
-    });
-    export const xor = JS.Function.Self.Two((a, b) => {
-      throw new NotImplementedError();
-      return self;
-    });
-    export const nand = JS.Function.Self.Two((a, b) => a.and(b).not());
-    export const nor = JS.Function.Self.Two((a, b) => a.or(b).not());
+    export const xor = JS.Function.Self.Binary((a, b) => a.xnor(b).not());
+    export const xnor = JS.Function.Self.Binary((a, b) => a.is_orbit(b)); // TODO: Could be 'is_equivalent' too?
+    export const nand = JS.Function.Self.Binary((a, b) => a.and(b).not());
+    export const nor = JS.Function.Self.Binary((a, b) => a.or(b).not());
 
 
     // @alias(`push_{last.alias}`)
-    export const push_back = JS.Function.Self.Two(
+    export const push_back = JS.Function.Self.Binary(
       (a, b) => a.last().compose(b)
     );
     // @alias(`push_{first.alias}`)
-    export const push_front = JS.Function.Self.Two(
+    export const push_front = JS.Function.Self.Binary(
       (a, b) => b.compose(a.first())
     );
 
   }
 }
 
-type Ray = Pick<Rays.Instance, '___instance'> & {
-  [TKey in keyof typeof Rays.Functions]: typeof Rays.Functions[TKey] extends JS.Function.Instance
+type Ray = Pick<Rays.Instance, '___instance' | 'on' | 'debug'> & {
+  [TKey in keyof typeof Rays.Functions]: typeof Rays.Functions[TKey] extends JS.Function.Constructor
     ? JS.Method
     : never;
 }
