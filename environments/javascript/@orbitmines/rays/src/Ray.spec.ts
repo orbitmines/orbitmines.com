@@ -1,4 +1,5 @@
 import Ray from "./Ray";
+import rays from "../index";
 
 describe("Ray", () => {
 
@@ -19,7 +20,13 @@ describe("Ray", () => {
           },
           () => {
             try{
-              ray.initial = new ray()
+              if (ray) {
+
+              }
+              // ray.initial = new ray();
+              // ray.initial = ray.terminal();
+              // ray.initial = (self): Ray.Any => {}
+              // ray.initial = Ray.Function.Self.Impl((self) => {})
 
             } catch (e) {}
           }

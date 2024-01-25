@@ -117,6 +117,8 @@ namespace Ray {
      *    - Perhaps locally cache (for stuff like count?) - no way to ensure globally coherence
      *    - a.orbit() -> a.orbit(a)
      *
+     *  - .initial/.terminal can be seen as a particular connection on .self, which .self ignores?
+     *
      * TODO: Testing
      *  - Test if references hold after equivalence/composition...
      *
@@ -157,7 +159,7 @@ namespace Ray {
         if (func) { return func.as_method({ self, property }); }
 
         if (property === Symbol.toPrimitive)
-          return (hint: string) => { return 100; };
+          return (hint: string) => { return 100; }; // TODO: Can be used to setup label generation through javascript objects if we want to ? + allow search on this
         // throw new NotImplementedError(``);
 
         /** Not implemented. */
@@ -207,24 +209,29 @@ namespace Ray {
   /** Ray is an Enum(eration) */
   export namespace Enum {
 
-    export const Impl = <T extends Array<string>>(...values: T): Enum<T> => {
+    export const Impl = <T extends Array<string>>(...values: T): Ray.Enum<T> => {
       return Object.fromEntries(values.map(value =>
         [value, Ray.Function.None.Impl((): Ray.Any => {
           throw new NotImplementedError(); // TODO
         })]
-      )) as Enum<T>;
+      )) as Ray.Enum<T>;
       // TODO: ONE OF 4 SELECTION RAY for the case of type.
     }
 
   }
+
   /** Ray is a function (.next) */
   export namespace Function {
+
+    // TODO: Reversible is orbit.
 
     /** {T} is just an example/desired use case. But it generalizes to any function. */
     export type Type<T> = T | Ray.Any;
 
     /** From which perspective the Function is implemented. */
-    enum Perspective { None, Self, /** Ref, */ } // TODO Ray.Enum? or not.
+    enum Perspective {
+      None, Self, /** Ref, */
+    } // TODO Ray.Enum? or not.
 
     //   /**
     //    * Implement a function from the perspective of 'this' for 'this.self'.
@@ -277,7 +284,13 @@ namespace Ray {
         return Impl(self => self); // TODO
       }
     }
+  }
 
+  /** TODO: Shouldn't classify these? */
+  export const Type = Ray.Enum.Impl('REFERENCE', 'INITIAL', 'TERMINAL', 'VERTEX');
+
+
+  export namespace Function {
     export const Get = <TProperty extends keyof (typeof Ray.Function.All)>(
       property: TProperty
     ): (typeof Ray.Function.All)[TProperty] | undefined => Ray.Function.All[property as TProperty] ?? undefined;
@@ -461,6 +474,22 @@ namespace Ray {
       export const push_front = Ray.Function.Self.Binary(
         (a, b) => b.compose(a.first())
       );
+
+      /**
+       * Performing a copy (realizing it) can be conceptualized as traversing the entire structure. (Where the 'entire structure' means the current instantiation of it - with many ignorances attached)
+       *
+       * - A problem with a copy, is that in or to be generalizable, it needs to alter all references to the thing it's copying to itself - this cannot be done with certainty.
+       *    - This copy does not do that. Instead, it is ignorant of other things referencing the thing it's copying.
+       * - Additionally, a copy necessarily has some non-redundancy to it:
+       *
+       * @see "A copy is necessarily inconsistent": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=If%20I%20have%20one%20thing%20and%20I%20make%20a%20perfect%20copy
+       */
+      // @alias('clone', 'duplicate')
+      export const copy = Ray.Function.Self.Impl(
+        (self) => none().self = self.self.copy() // TODO Relies heavily on the execution layer to copy initial/terminal etc... ; and an is_orbit check before calling copy again. - Then again on the execution layer it can lazily do this copy (by not evaluating (i.e.) traversing everywhere), or it first does this traversing directly.
+      );
+
+
     }
   }
 
@@ -473,10 +502,6 @@ namespace Ray {
     export const async_generator = <T = any>(generator: AsyncGenerator<T>): Ray.Any => Ray.async_iterator(generator);
 
     export const number = (number: number) => { throw new NotImplementedError(); }
-
-
-  /** TODO: Shouldn't classify these? */
-  export const Type = Ray.Enum.Impl('REFERENCE', 'INITIAL', 'TERMINAL', 'VERTEX');
 
   // export const Boundary = { INITIAL: Type.INITIAL, TERMINAL: Type.TERMINAL }; TODO: LIST O
 

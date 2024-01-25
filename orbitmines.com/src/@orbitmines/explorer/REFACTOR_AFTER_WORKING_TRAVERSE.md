@@ -2,37 +2,9 @@
 // NOT NEEDED FOR INITIAL DEMONSTRATION:
 
 ```ts
-  // TODO; Could return the ignorant reference to both instances, or just the result., ..
-
-/**
- * - The problem with a copy, is that in or to be generalizable, it needs to alter all references to the thing it's copying to itself - this cannot be done with certainty.
- *
- * - Additionally, a copy necessarily has some non-redundancy to it:
- *   @see "A copy is necessarily inconsistent": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=If%20I%20have%20one%20thing%20and%20I%20make%20a%20perfect%20copy
- */
-// @alias('duplicate')
-copy = (): Ray.Any => {
-  // return this.self.as_reference(); // Copies the reference?
-  throw new NotImplementedError();
-
-  // const copy = new Ray({
-  //   initial: this.self._initial().as_reference().none_or(ref => ref.copy()).as_arbitrary(),
-  //   vertex: this.self._vertex().as_reference().none_or(ref => ref.copy()).as_arbitrary(),
-  // }).o({ ___dirty_copy_buffer: {} });
-  // // copy._initial = () => copy.any.___dirty_copy_buffer._initial ??= this.self._initial().as_reference().copy();
-  // // copy._vertex = () => copy.any.___dirty_copy_buffer._vertex ??= this.self._vertex().as_reference().copy();
-  // // copy._terminal = () => copy.any.___dirty_copy_buffer._terminal ??= this.self._terminal().as_reference().copy();
-  //
-  //
-  // // TODO: Doesn't copy .any
-  //
-  // return copy.as_reference();
-}
-
 
   get count(): Ray.Any { return JS.Number(this.as_array().length); }
-
-
+  
 // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex. ; each individually, again, additional structure...
 
 // TODO: Ignore the connection between the two, say a.equiv(b) within some Rule [a,b], ignore the existing of the connection in the Rule? What does it mean not to???
@@ -42,7 +14,6 @@ is_vertex_equivalent = (b: Ray.Any) => {
 
 
 // none_or = (arbitrary: Implementation): Ray.Any => this.is_none() ? Ray.None() : arbitrary(this);
-
 
 /**
  * https://en.wikipedia.org/wiki/Homoiconicity
@@ -72,21 +43,6 @@ static zip = Ray.Function.Impl((initial, terminal) => {
   // });
 });
 zip = Ray.zip.as_method(this);
-
-/**
- * TODO: This should be constructed at the vertex and in general unsolvable
- * 
- * TODO: Setup labels
- * TODO: Use JavaScript engine for generating these for a default impl without someone supplying their own gen func??
- * TODO: + allow for searching/doing stuff based on some label ; this can be arbitrarily through the structure
- */
-static _label: number = 0;
-get label(): string {
-  if (this.any.label !== undefined)
-    return this.any.label;
-
-  return this.any.label = `"${Ray._label++} (${this.any.debug?.toString() ?? '?'})})"`;
-}
 
   /**
  * Used for chaining JavaScript-provided properties
