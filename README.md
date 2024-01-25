@@ -1,11 +1,11 @@
-![orbitmines.logo.3000x1000.png](src%2Flib%2Forganizations%2Forbitmines%2Flogo%2Forbitmines.logo.3000x1000.png)
+![orbitmines.logo.3000x1000.png](./orbitmines.com/src%2Flib%2Forganizations%2Forbitmines%2Flogo%2Forbitmines.logo.3000x1000.png)
 
 # orbitmines.com
 *A public repository for [orbitmines.com](https://orbitmines.com). The hub for OrbitMines' (research) projects.*
 
 *Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems.*
 
-![header](./public/papers/on-orbits-equivalence-and-inconsistencies/images/header.png)
+![header](./orbitmines.com/public/papers/on-orbits-equivalence-and-inconsistencies/images/header.png)
 
 ## What is this?, What is OrbitMines?, What are Rays?
 
@@ -51,6 +51,12 @@ Most importantly, it is here as infrastructure. Infrastructure for the design an
 ### Local setup
 
 - Running `orbitmines.com` locally on `http://localhost:3000`:
+  - ```shell
+    git clone git@github.com:orbitmines/orbitmines.com.git
+    ```
+  - ```shell
+    cd ./orbitmines/orbitmines.com
+    ``` 
   - ```
     npm install
     ```
