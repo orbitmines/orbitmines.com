@@ -99,6 +99,8 @@ namespace Ray {
   export class Compiler { // Ray is Compiler
 
     /**
+     * TODO: Do I want to keep the is_equiv/is_composed pattern? Or simplify to one of the two?
+     *
      *  // TODO: NEVER DIRECTLY EXECUTE, ONLY AFTER CHAIN OF FUNCS, possibly arbitrarily LAZY
      *
      * TODO
@@ -280,8 +282,6 @@ namespace Ray {
       export const All = Op.all({
         // @alias('alloc', 'new', 'create', 'initialize')
         none: 'none',
-        // @alias('free', 'destroy', 'clear', 'delete', 'pop')
-        free: 'free',
       });
     }
     export namespace Unary {
@@ -289,6 +289,9 @@ namespace Ray {
       export type Any<T> = (keyof typeof Op.Unary.All) | Type<T>;
 
       export const All = Op.all({
+
+        // @alias('free', 'destroy', 'clear', 'delete', 'pop')
+        free: 'free',
 
         /** An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to. */
         initial: 'initial',   // a.initial
@@ -398,7 +401,11 @@ namespace Ray {
        */
       // @alias('modular', 'modulus', 'orbit', 'circle', 'repeats', 'infinitely')
       export const orbit = Ray.Function.Self.Binary(
-        (a, b) => b.last().compose(a.first())
+        /**
+         * - TODO: If we're only doing one end: This already assumes they are connected on the other end.
+         * - TODO: should be a connection here, with is_composed ; or "reference.is_equivalent" so that you can drop one of the sides, or both.
+         */
+        (a, b) => ( b.last().compose(a.first()) ).and( a.first().compose(b.last()) )
       );
 
       /**
@@ -430,8 +437,12 @@ namespace Ray {
        */
         // @alias('includes', 'contains') ; (slightly different variants?)
       export const is_equivalent = Ray.Function.Self.Binary(
-          (a, b) => a.self().traverse().is_orbit(b.self().traverse()) // Basically: does there exist a single connection between the two?
+          (a, b) => a.self().traverse().is_orbit(b.self().traverse())
         );
+      // TODO: Either is_equiv or is_composed will likely change?.
+      export const is_composed = Ray.Function.Self.Binary(
+        (a, b) => a.traverse().is_orbit(b.traverse()) // Basically: does there exist a single connection between the two?
+      );
 
       export const traverse = Ray.Function.Self.Impl(
         (a) => { throw new NotImplementedError(); }
