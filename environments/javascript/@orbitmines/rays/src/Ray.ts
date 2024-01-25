@@ -99,6 +99,9 @@ namespace Ray {
   export class Compiler { // Ray is Compiler
 
     /**
+     * TODO: Compiler could have things like other composed rays which tell it cares about the other (even if that's correct or not??)
+     *
+     *
      * TODO: Do I want to keep the is_equiv/is_composed pattern? Or simplify to one of the two?
      *
      *  // TODO: NEVER DIRECTLY EXECUTE, ONLY AFTER CHAIN OF FUNCS, possibly arbitrarily LAZY
@@ -374,15 +377,6 @@ namespace Ray {
       );
 
       /**
-       * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
-       *
-       * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
-       */
-      export const reference = Ray.Function.Self.Impl(
-        self => Ray.Op.Zeroary.All.none().self = self
-      );
-
-      /**
        * @see "Continuations as Equivalence (can often be done in parallel - not generally)": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
        */
         // @alias('merge, 'continues_with', 'compose')
@@ -511,11 +505,47 @@ namespace Ray {
       export const copy = Ray.Function.Self.Impl(
         // or
         // (self) => self.self.copy.reference()
-        (self) => Ray.Op.Zeroary.All.none().self = self.self.copy()
+        (self) => none().self = self.self.copy()
 
           // TODO Relies heavily on the execution layer to copy initial/terminal etc... ; and an is_orbit check before calling copy again. - Then again on the execution layer it can lazily do this copy (by not evaluating (i.e.) traversing everywhere), or it first does this traversing directly.
       );
 
+      export const none = Ray.Op.Zeroary.All.none; // TODO FOR ALL OPS, ? automatic, or just put them here.
+
+      // TODO: These should allow as_vertex as zero-ary, but that means self = self_reference, not none. ?
+      /**
+       * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
+       *
+       * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
+       */
+      export const as_reference = Ray.Function.Self.Impl(
+        self => none().self = self
+      );
+
+      export const as_vertex = Ray.Function.Self.Impl((self) => {
+        const vertex = Ray.Op.Zeroary.All.none();
+        vertex.initial = self_reference;
+        vertex.terminal = self_reference;
+        vertex.self = self; // TODO: Like this, ignorant vs non-ignorant? What to do here?
+
+        return vertex;
+      });
+      export const as_terminal = Ray.Function.Self.Impl((self) => {
+        const terminal = Ray.Op.Zeroary.All.none();
+        terminal.initial = self_reference;
+        // terminal.terminal = none;
+        terminal.self = self;
+
+        return terminal;
+      });
+      export const as_initial = Ray.Function.Self.Impl((self) => {
+        const initial = Ray.Op.Zeroary.All.none();
+        // initial.initial = none;
+        initial.terminal = self_reference;
+        initial.self = self;
+
+        return initial;
+      });
 
     }
   }
