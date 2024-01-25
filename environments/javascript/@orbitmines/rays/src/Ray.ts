@@ -116,6 +116,8 @@ namespace Ray {
      *
      *  - .initial/.terminal can be seen as a particular connection on .self, which .self ignores?
      *
+     *  TODO: Allow hooking
+     *
      * TODO: Testing
      *  - Test if references hold after equivalence/composition...
      *
@@ -386,7 +388,9 @@ namespace Ray {
         );
 
       /**
+       * "Composing an terminal & initial boundary"
        * - TODO: Note that an orbit is reversibility. ?
+       * - TODO: Could represent this abstraction in another layer what we want to accomplish while the actual search is still taking place.
        *
        * - Like with 'copy' and all concepts: Note that we're only after reversibility after ignoring some difference.
        *
@@ -394,7 +398,7 @@ namespace Ray {
        */
       // @alias('modular', 'modulus', 'orbit', 'circle', 'repeats', 'infinitely')
       export const orbit = Ray.Function.Self.Binary(
-        (a, b) => a.first().initial().compose(b.last().terminal())
+        (a, b) => b.last().compose(a.first())
       );
 
       /**
@@ -426,7 +430,7 @@ namespace Ray {
        */
         // @alias('includes', 'contains') ; (slightly different variants?)
       export const is_equivalent = Ray.Function.Self.Binary(
-          (a, b) => a.traverse().is_orbit(b.traverse()) // Basically: does there exist a single connection between the two?
+          (a, b) => a.self().traverse().is_orbit(b.self().traverse()) // Basically: does there exist a single connection between the two?
         );
 
       export const traverse = Ray.Function.Self.Impl(
