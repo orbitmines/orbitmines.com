@@ -1,5 +1,4 @@
 import _ from "lodash";
-import Ray from "./Ray";
 
 /**
  * NOTE:
@@ -37,7 +36,7 @@ namespace JS {
     
     export const Handler = <T extends object>(handler: JS.Class.Handler<T>): ProxyHandler<T> => ({
       get: (___proxy_function: any, property: string | symbol, self: T): any => handler.get(self, ___proxy_function.___instance, property),
-      apply: (___proxy_function: any, thisArg: Ray.Any, argArray: any[]): any => handler.apply(thisArg ?? ___proxy_function.___instance.proxy, ___proxy_function.___instance, argArray), /** thisArg can be undefined. TODO: What's the use-case of us actually using it? */
+      apply: (___proxy_function: any, thisArg: T, argArray: any[]): any => handler.apply(thisArg ?? ___proxy_function.___instance.proxy, ___proxy_function.___instance, argArray), /** thisArg can be undefined. TODO: What's the use-case of us actually using it? */
       set: (___proxy_function: any, property: string | symbol, newValue: any, self: T): boolean => handler.set(self, ___proxy_function.___instance, property, newValue),
       deleteProperty: (___proxy_function: any, property: string | symbol): boolean => handler.deleteProperty(___proxy_function.___instance.proxy, ___proxy_function.___instance, property),
       has(___proxy_function: any, property: string | symbol): boolean { return handler.has(___proxy_function.___instance.proxy, ___proxy_function.___instance, property); },

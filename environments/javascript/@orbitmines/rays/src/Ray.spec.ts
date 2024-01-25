@@ -1,6 +1,95 @@
-import Ray, {Rays} from "./Ray";
+import Ray from "./Ray";
 
 describe("Ray", () => {
+
+  describe(".Function", () => {
+    describe(".Instance", () => {
+
+      test(".traverse", () => {
+        const events: any[] = [];
+        const ray = Ray.New();
+
+        // const b = ray in ray;
+
+        // ray()()()()();
+        //
+        ray.debug(
+          (event) => {
+            events.push(event);
+          },
+          () => {
+            try{
+              ray.initial = new ray()
+
+            } catch (e) {}
+          }
+        );
+
+        expect(events.map(event => ({
+          event: event.event, context: event.context
+        }))).toBe(false);
+
+      });
+      test(".traverse", () => {
+        // const events: any[] = [];
+        // const ray = Ray.New();
+        //
+        // ray.debug(
+        //   (event) => {
+        //     events.push(event);
+        //   },
+        //   () => {
+        //     // // Reference
+        //     // ray.initial = none;
+        //     // // ray.self = // SOMETHING
+        //     // ray.terminal = none;
+        //     //
+        //     // // Initial
+        //     // ray.initial = none;
+        //     // ray.self = self_reference;
+        //     // ray.terminal = self_reference;
+        //     //
+        //     // // Vertex:
+        //     // ray.initial = self_reference;
+        //     // ray.self = self_reference;
+        //     // ray.terminal = self_reference;
+        //     //
+        //     // // Terminal
+        //     // ray.initial = self_reference;
+        //     // ray.self = self_reference;
+        //     // ray.terminal = none;
+        //   }
+        // );
+        //
+        // expect(events.map(event => ({
+        //   event: event.event, context: { method: { property: event.context.method.property} }
+        // }))).toBe(false);
+
+      });
+    })
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // test(".is_orbit", () => {
   //   const a = Ray.New();
   //   const b = Ray.New();

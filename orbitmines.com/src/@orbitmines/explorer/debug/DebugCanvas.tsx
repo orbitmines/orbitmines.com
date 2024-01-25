@@ -2,12 +2,12 @@ import IEventListener from "../../js/react/IEventListener";
 import {VisualizationCanvas} from "../Visualization";
 import React, {useEffect, useReducer, useRef, useState} from "react";
 import {useHotkeys} from "../../js/react/hooks/useHotkeys";
-import {DebugResult, Ray, RayType} from "../Ray";
 import {_Continuation, _Vertex, add, AutoVertex, circle, InterfaceOptions, Line, torus} from "../OrbitMinesExplorer";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import {useThree} from "@react-three/fiber";
 import {Stats, StatsGl} from "@react-three/drei";
 import _ from "lodash";
+import Ray from "@orbitmines/rays"
 
 // TODO: What about showing disconnect when multiple things are rendered at the same position??
 // TODO: It's, rende rboth draw equivalence, then ignore the difference from either perspective or take some middle thing. - Line from both ends, also vertex? (or take the pos, take the x from one/other, y from the other/..)

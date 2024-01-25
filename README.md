@@ -9,7 +9,7 @@
 
 ## What is this?, What is OrbitMines?, What are Rays?
 
-A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hyper-/)'Edge', (hyper-/)'Graph', (hyper-/)'Rule', (hyper-/)'Tactic', (hyper-/)..., (hyper-/)'Rewrite' are merged into one thing: a [Ray](https://github.com/orbitmines/orbitmines.com/blob/main/src/%40orbitmines/explorer/Ray.ts). It handles surrounding context, ignorances, equivalences, ..., differentiation (And if it cannot, then it offers a way of implementing it for all of the above). 
+A simple way of phrasing this, is that the concept of a (hyper-/)'Vertex', (hyper-/)'Edge', (hyper-/)'Graph', (hyper-/)'Rule', (hyper-/)'Tactic', (hyper-/)..., (hyper-/)'Rewrite' are merged into one thing: a [Ray](./environments/javascript/@orbitmines/rays/src/Ray.ts). It handles surrounding context, ignorances, equivalences, ..., differentiation (And if it cannot, then it offers a way of implementing it for all of the above). 
 
 Most importantly, it is here as infrastructure. Infrastructure for the design and implementation of a different category of (programming) interfaces.
 
@@ -19,7 +19,7 @@ Most importantly, it is here as infrastructure. Infrastructure for the design an
 - If you prefer **audio-visual mumblings**, see [2024-01-04. What is OrbitMines?, Implementing Aleks Kissinger's Chyp and maybe looking at Tinygrad](https://www.youtube.com/watch?v=O6v_gzlI1kY), or more generally my streams can be found here: [youtube.com/@FadiShawki/streams](https://www.youtube.com/@FadiShawki/streams).
 
 
-- If you prefer **archaic symbolics: i.e. code**, see [Ray.ts](https://github.com/orbitmines/orbitmines.com/blob/main/src/%40orbitmines/explorer/Ray.ts) (or locally: [local/Ray.ts](./src/@orbitmines/explorer/Ray.ts)), or more generally my/OrbitMines code can be found here [github.com/orbitmines](https://github.com/orbitmines/).
+- If you prefer **archaic symbolics: i.e. code**, see [Ray.ts](./environments/javascript/@orbitmines/rays/src/Ray.ts), or more generally my/OrbitMines code can be found here [github.com/orbitmines](https://github.com/orbitmines/).
 
 
 - If you prefer discussions on **Discord**: [discord.orbitmines.com](https://discord.orbitmines.com).
@@ -55,7 +55,7 @@ Most importantly, it is here as infrastructure. Infrastructure for the design an
     git clone git@github.com:orbitmines/orbitmines.com.git
     ```
   - ```shell
-    cd ./orbitmines/orbitmines.com
+    cd ./orbitmines.com/orbitmines.com
     ``` 
   - ```
     npm install

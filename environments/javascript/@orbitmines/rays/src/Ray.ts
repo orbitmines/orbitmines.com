@@ -1,6 +1,4 @@
-import JS from "./JS";
-import {NotImplementedError} from "./errors/errors";
-
+import JS, {NotImplementedError} from "@orbitmines/js";
 
 namespace Ray {
 
@@ -26,9 +24,10 @@ namespace Ray {
     }
 
   export type Constructor = {
-  //   initial?: Ray.FunctionConstructor<Ray.Any>,
-  //   self?: Ray.FunctionConstructor<Ray.Any>,
-  //   terminal?: Ray.FunctionConstructor<Ray.Any>,
+    initial?: Ray.Any,
+    self?: Ray.Any,
+    terminal?: Ray.Any,
+
     proxy?: ProxyHandler<Ray.Any>,
     debug?: Debug.Listener,
   }
@@ -249,7 +248,7 @@ namespace Ray {
 
     /** Implement a function from the perspective of 'this' */
     export namespace Self {
-      export const Impl = (impl: Ray.Op.Unary | ((self: Ray.Any) => Ray.Any)): Ray.Any => {
+      export const Impl = (impl: Ray.Op.New | Ray.Op.Unary | ((self: Ray.Any) => Ray.Any)): Ray.Any => {
         throw new NotImplementedError();
         // return new Ray.Any({ perspective: Perspective.Self, impl });
       }
@@ -345,7 +344,7 @@ namespace Ray {
 
       // @alias('destroy', 'clear', 'delete', 'pop')
       export const none = Ray.Function.Self.Impl( // TODO FROM REF SPEC?
-        self => self.self = Op.New.NONE // TODO self: self_reference
+        self => self.self //= Op.New.NONE // TODO self: self_reference
       );
 
       /** An arbitrary Ray, defining what continuing in this direction is equivalent to. */
