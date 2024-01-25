@@ -13,7 +13,7 @@ import _ from "lodash";
 // TODO: It's, rende rboth draw equivalence, then ignore the difference from either perspective or take some middle thing. - Line from both ends, also vertex? (or take the pos, take the x from one/other, y from the other/..)
 
 // TODO: Could be a function on Ray (any func really)
-export const Render = ({ ray, Interface }: { ray: Ray, Interface: Ray }) => {
+export const Render = ({ ray, Interface }: { ray: Ray.Any, Interface: Ray.Any }) => {
   const initial: Required<InterfaceOptions> = ray.follow(Ray.directions.previous).render_options(Interface);
   const vertex: Required<InterfaceOptions> = ray.render_options(Interface);
   const terminal: Required<InterfaceOptions> = ray.follow().render_options(Interface);
@@ -56,9 +56,9 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
   
   const memory = false;
 
-  const [Interface] = useState<Ray>(Ray.vertex().o({
-    selection: Ray.vertex(
-      // () => Ray.vertex().o2({
+  const [Interface] = useState<Ray.Any>(Ray.vertex().o({
+    selection: Ray.Any.vertex(
+      // () => Ray.Any.vertex().o2({
       //   initial: { position: [-space_between, 0, 0], scale, rotation: [0, 0, Math.PI / 2] },
       //   vertex: { position: [0, 0, 0], scale, color: '#FF55FF' },
       //   terminal: { position: [space_between, 0, 0 ], scale, rotation: [0, 0, Math.PI / 2] }
@@ -76,28 +76,28 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
     rays: [] as Ray[],
     stats: false,
     cursor: { tick: false },
-    controls: Ray.vertex().o({
+    controls: Ray.Any.vertex().o({
       hotkeys: [
         {
           combo: ["a", "arrowleft"], global: true, label: "", onKeyDown: () => {
-            Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.initial, memory, Interface);
+            Interface.___any.selection = Interface.___any.selection.move((self: Ray.Any) => self.initial, memory, Interface);
           }
         },
         {
           combo: ["d", "arrowright"], global: true, label: "", onKeyDown: () => {
-            Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.terminal, memory, Interface);
+            Interface.___any.selection = Interface.___any.selection.move((self: Ray.Any) => self.terminal, memory, Interface);
           }
         },
         {
           combo: ["delete"], global: true, label: "", onKeyDown: () => {
-            Interface.___any.rays = Interface.___any.rays.filter((ray: Ray) => ray.self.label !== Interface.___any.selection.self.label); // Should be automatic, this sort of thing
+            Interface.___any.rays = Interface.___any.Ray.filter((ray: Ray.Any) => Ray.Any.self.label !== Interface.___any.selection.self.label); // Should be automatic, this sort of thing
             Interface.___any.selection = Interface.___any.selection.delete;
           }
         },
         {
           combo: ["w", "arrowup"], global: true, label: "", onKeyDown: () => {
             // TODO SHOULD BE ANOTHER DIRECTION AT THE FRAME?
-            Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.self, memory, Interface);
+            Interface.___any.selection = Interface.___any.selection.move((self: Ray.Any) => self.self, memory, Interface);
           }
         },
         {
@@ -114,7 +114,7 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
         {
           combo: ["space"], global: true, label: "", onKeyDown: (e) => {
             e.preventDefault();
-            Interface.___any.rays = Interface.___any.selection.self.___dirty_all([]).map((ray: Ray) => {
+            Interface.___any.rays = Interface.___any.selection.self.___dirty_all([]).map((ray: Ray.Any) => {
               ray.___any.traversed = true;
               return ray.as_reference();
             });
@@ -122,27 +122,27 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
         },
         // {
         //   combo: ["s", "arrowdown"], global: true, label: "", onKeyDown: () => {
-        //     Interface.___any.selection = Interface.___any.selection.move((self: Ray) => self.as_reference().as_reference(), memory, Interface);
+        //     Interface.___any.selection = Interface.___any.selection.move((self: Ray.Any) => self.as_reference().as_reference(), memory, Interface);
         //   }
         // },
         {
           combo: "/", global: true, label: "", onKeyDown: () => {
             console.log('---------')
             console.log(`Debugging: ${Interface.___any.selection.self.label} (type=${Interface.___any.selection.type})`)
-            console.log(`rays.length at pos=[${Interface.___any.selection.render_options.position}]: ${Interface.___any.rays.filter((ray: Ray) => 
+            console.log(`Ray.length at pos=[${Interface.___any.selection.render_options.position}]: ${Interface.___any.Ray.filter((ray: Ray.Any) => 
               _.isEqual(
                 Interface.___any.selection.render_options.position,
                 ray.render_options(Interface).position
               )
-            ).length} / ${Interface.___any.rays.length}`)
+            ).length} / ${Interface.___any.Ray.length}`)
             console.log('ref', Interface.___any.selection)
             console.log('ref.self', Interface.___any.selection.self)
 
             const debug: DebugResult = {};
             Interface.___any.selection.self.debug(debug);
             console.log('ref.debug', debug);
-            Interface.___any.rays.forEach((ray: Ray) => ray.debug(debug));
-            console.log('rays.debug', debug);
+            Interface.___any.Ray.forEach((ray: Ray.Any) => Ray.Any.debug(debug));
+            console.log('Ray.debug', debug);
 
           }
         },
@@ -166,8 +166,8 @@ export const DebugInterface = ({ scale = 1.5 }: InterfaceOptions) => {
 
     <AutoVertex position={(Interface.___any.selection as Ray).___any.position} rotation={[0, 0, Math.PI / 5]} scale={scale / 2} color="#555555" />
 
-    {/*{Interface.___any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
-    {Interface.___any.rays.map((ray: Ray) => <Render key={ray.self.label} ray={ray} Interface={Interface} />)}
+    {/*{Interface.___any.Ray.map((ray: Ray.Any) => <Render key={ray.label} ray={ray} />)}*/}
+    {Interface.___any.Ray.map((ray: Ray.Any) => <Render key={ray.self.label} ray={ray} Interface={Interface} />)}
   </>
 }
 

@@ -2,8 +2,8 @@ import Ray, {Rays} from "./Ray";
 
 describe("Ray", () => {
   // test(".is_orbit", () => {
-  //   const a = Rays.New();
-  //   const b = Rays.New();
+  //   const a = Ray.New();
+  //   const b = Ray.New();
   //
   //   expect(a.is_orbit(a)).toBe(true);
   //   expect(b.is_orbit(b)).toBe(true);
@@ -131,7 +131,7 @@ describe("Ray", () => {
 //
 //     const branch = Ray.step_function(Ray.directions.next);
 //
-//     let step: Ray = branch.as_ray(A);
+//     let step: Ray.Any = branch.as_ray(A);
 //
 //     expect([step.previous(), step].map(ray =>
 //       [ray.dereference.is_some(), ray.dereference.type, ray.dereference.any.js])
@@ -231,7 +231,7 @@ describe("Ray", () => {
 //   //
 //   //   let pointer = new Ray({
 //   //     initial: () => A,
-//   //     terminal: () => Ray.directions.next(A),
+//   //     terminal: () => Ray.Any.directions.next(A),
 //   //   });
 //   //
 //   //   /**
@@ -329,7 +329,7 @@ describe("Ray", () => {
 //   //
 //   //   let pointer = new Ray({
 //   //     initial: () => C,
-//   //     terminal: () => Ray.directions.previous(C),
+//   //     terminal: () => Ray.Any.directions.previous(C),
 //   //   });
 //   //
 //   //   expect(pointer.initial.any.js).toBe('C');
@@ -1108,7 +1108,7 @@ describe("Ray", () => {
 //   //   expect([...A_terminal.dereference.___map(ref => ref.any.js)]).toEqual(['B']);
 //   //
 //   //   expect([...B_initial.dereference.all(Ray.directions.previous).js]).toEqual(['A']);
-//   //   expect([...B_initial.dereference.___map(ref => ref.any.js, { step: Ray.directions.previous})]).toEqual(['A']);
+//   //   expect([...B_initial.dereference.___map(ref => ref.any.js, { step: Ray.Any.directions.previous})]).toEqual(['A']);
 //   //
 //   //   /**
 //   //    *           |
@@ -1416,7 +1416,7 @@ describe("Ray", () => {
 //
 //       const iterator = A.as_iterator();
 //
-//       let array: Ray[] = [];
+//       let array: Ray.Any[] = [];
 //
 //       while (true) {
 //         let current = iterator.next();
@@ -1525,7 +1525,7 @@ describe("Ray", () => {
 //
 //     expect(ray.any.a).toBe('b');
 //     expect(ray.any.test).toBe(undefined);
-//     expect(() => ray.any.undefinedFunction()).toThrow();
+//     expect(() => Ray.Any.any.undefinedFunction()).toThrow();
 //     expect(ray.any.position).toEqual([0, 1, 2]);
 //     expect(ray.any.func()).toBe('c');
 //   })

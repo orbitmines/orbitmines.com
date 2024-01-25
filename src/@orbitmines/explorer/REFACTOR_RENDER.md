@@ -3,7 +3,7 @@
 ```ts
 
 //TODO USED FOR DEBUG NOW
-move = (func: (self: Ray) => Ray, memory: boolean, Interface: Ray): Ray => {
+move = (func: (self: Ray.Any) => Ray.Any, memory: boolean, Interface: Ray.Any): Ray.Any => {
   const target_ray = func(this.self);
 
   const target = target_ray.as_reference().o({
@@ -17,7 +17,7 @@ move = (func: (self: Ray) => Ray, memory: boolean, Interface: Ray): Ray => {
 
   if (memory) {
     if (!target_ray.any.traversed) {
-      Interface.any.rays.compose(target);
+      Interface.any.Ray.compose(target);
       target_ray.any.traversed = true;
     }
   } else {
@@ -30,11 +30,11 @@ move = (func: (self: Ray) => Ray, memory: boolean, Interface: Ray): Ray => {
 static POSITION_OF_DOOM = [0, 100, 0]
 
 // TODO: Abstract away as compilation
-render_options = (Interface: Ray): Required<InterfaceOptions> => {
+render_options = (Interface: Ray.Any): Required<InterfaceOptions> => {
   return ({
     position:
       this.any.position
-      ?? (this.is_none() ? Ray.POSITION_OF_DOOM : Ray.POSITION_OF_DOOM),
+      ?? (this.is_none() ? Ray.POSITION_OF_DOOM : Ray.Any.POSITION_OF_DOOM),
     rotation:
       this.any.rotation
       ?? [0, 0, 0],

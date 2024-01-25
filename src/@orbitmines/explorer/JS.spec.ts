@@ -1,43 +1,37 @@
-import Ray, {Rays} from "./Ray";
-import JS from "./JS";
-import {previous} from "slate";
-import {NotImplementedError} from "./errors/errors";
-import self_reference = Rays.Functions.self_reference;
-import none = Rays.Functions.none;
+import Ray from "./Ray";
 
 describe("JS", () => {
   describe(".Function", () => {
     describe(".Instance", () => {
 
       test(".traverse", () => {
-        // const events: any[] = [];
-        const ray: Ray = Rays.New();
+        const events: any[] = [];
+        const ray = Ray.New();
 
         // const b = ray in ray;
 
-        ray.initial = new ray()
-
         // ray()()()()();
         //
-        // ray.debug(
-        //   (event) => {
-        //     events.push(event);
-        //   },
-        //   () => {
-        //     try{
-        //       ray.compose()
-        //     } catch (e) {}
-        //   }
-        // );
-        //
-        // expect(events.map(event => ({
-        //   event: event.event, context: { method: { property: event.context.method.property} }
-        // }))).toBe(false);
+        ray.debug(
+          (event) => {
+            events.push(event);
+          },
+          () => {
+            try{
+              ray.initial = new ray()
+
+            } catch (e) {}
+          }
+        );
+
+        expect(events.map(event => ({
+          event: event.event, context: event.context
+        }))).toBe(false);
 
       });
       test(".traverse", () => {
         // const events: any[] = [];
-        // const ray = Rays.New();
+        // const ray = Ray.New();
         //
         // ray.debug(
         //   (event) => {
@@ -74,7 +68,7 @@ describe("JS", () => {
     })
   })
   // test(".Function.Ref(ref)", () => {
-  //   const method = JS.Function.Ref((ref): Ray => new Ray({
+  //   const method = Ray.Function.Ref((ref): Ray.Any => new Ray({
   //     initial: ref.self.initial.as_arbitrary(),
   //     terminal: ref.self.terminal.as_arbitrary()
   //   }).o({ js: ref.type })).as_method;
@@ -93,7 +87,7 @@ describe("JS", () => {
   //   expect(method(a)(b).type).toBe(RayType.VERTEX);
   // });
   // test(".Function.WithMemory", () => {
-  //   const square = JS.Function.WithMemory(
+  //   const square = Ray.Function.WithMemory(
   //     previous => previous.any.js * previous.any.js,
   //   );
   //
@@ -111,7 +105,7 @@ describe("JS", () => {
   //   expect(vertex.next().next().next().next().any.js).toBe(65536);
   // });
   // test(".Function.Reversible", () => {
-  //   const exp2 = JS.Function.Reversible(
+  //   const exp2 = Ray.Function.Reversible(
   //     previous => Math.log(previous.any.js) / Math.log(2),
   //     previous => Math.pow(previous.any.js, 2),
   //   );
@@ -138,7 +132,7 @@ describe("JS", () => {
   //
   //   expect(ray.any.a).toBe('b');
   //   expect(ray.any.undefinedProperty).toBe(undefined);
-  //   expect(() => ray.any.undefinedFunction()).toThrow();
+  //   expect(() => Ray.Any.any.undefinedFunction()).toThrow();
   //   expect(ray.any.position).toEqual([0, 1, 2]);
   //   expect(ray.any.func()).toBe('c');
   // });
@@ -239,7 +233,7 @@ describe("JS", () => {
   //
   //     expect(ray.any.a).toBe('b');
   //     expect(ray.any.undefinedProperty).toBe(undefined);
-  //     expect(() => ray.any.undefinedFunction()).toThrow();
+  //     expect(() => Ray.Any.any.undefinedFunction()).toThrow();
   //     expect(ray.any.position).toEqual([0, 1, 2]);
   //     expect(ray.any.func()).toBe('c');
   //   }

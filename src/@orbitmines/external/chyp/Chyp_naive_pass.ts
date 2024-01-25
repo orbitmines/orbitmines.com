@@ -27,39 +27,39 @@
 //  * - If not then this is probably a hack and should be interpreted as "on another layer of description which is the GUI"
 //  */
 //
-// export const int = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const list = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Iterable = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const set = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const str = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QKeyEvent = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Optional = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Tuple = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QObject = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Union = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QModelIndex = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QPersistentModelIndex = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QWidget = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const List = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Qt = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Orientation = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QPainter = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QStyleOptionGraphicsItem = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const bool = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const False = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const True = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QGraphicsSceneMouseEvent = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QTextDocument = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const editor = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const QCloseEvent = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Any = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const tuple = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const None = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const state = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Callable = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
-// export const Set = (t1?: any, t2?: any, t3?: any): Ray => { throw new NotImplementedError() };
+// export const int = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const list = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Iterable = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const set = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const str = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QKeyEvent = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Optional = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Tuple = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QObject = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Union = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QModelIndex = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QPersistentModelIndex = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QWidget = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const List = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Qt = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Orientation = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QPainter = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QStyleOptionGraphicsItem = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const bool = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const False = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const True = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QGraphicsSceneMouseEvent = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QTextDocument = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const editor = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const QCloseEvent = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Any = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const tuple = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const None = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const state = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Callable = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
+// export const Set = (t1?: any, t2?: any, t3?: any): Ray.Any => { throw new NotImplementedError() };
 //
-// export const Color = (t1: Ray = str('')): Ray => { throw new NotImplementedError() };
+// export const Color = (t1: Ray.Any = str('')): Ray.Any => { throw new NotImplementedError() };
 //
 // export class ValueError extends Error {}
 //
@@ -108,12 +108,12 @@
 //   /**
 //    * Indices (if any) where this vertex occurs in the input and output lists of the hypergraph.
 //    */
-//   get in_indices(): Ray { return this.initial } //
-//   get out_indices(): Ray { throw new NotImplementedError(); }
+//   get in_indices(): Ray.Any { return this.initial } //
+//   get out_indices(): Ray.Any { throw new NotImplementedError(); }
 //
-//   is_input = (): Ray => this.in_indices.count.as_int() > 0;
-//   is_output = (): Ray => this.out_indices.count.as_int() > 0;
-//   is_boundary = (): Ray => this.is_input() || this.is_output();
+//   is_input = (): Ray.Any => this.in_indices.count.as_int() > 0;
+//   is_output = (): Ray.Any => this.out_indices.count.as_int() > 0;
+//   is_boundary = (): Ray.Any => this.is_input() || this.is_output();
 //
 //   // TODO: Probably generalizable
 //
@@ -122,7 +122,7 @@
 //    *
 //    * TODO; particular sort of composing
 //    */
-//   merge = (other: VData): Ray => {
+//   merge = (other: VData): Ray.Any => {
 //     throw new NotImplementedError();
 //   }
 //
@@ -135,7 +135,7 @@
 //   }
 //
 //   // TODO: Shouldn't be here, this should be implemented on Ray if it's general enough
-//   get domain(): Ray { return JS.Iterable([this.vtype, this.size]) };
+//   get domain(): Ray.Any { return JS.Iterable([this.vtype, this.size]) };
 //
 // }
 //
@@ -150,7 +150,7 @@
 //   hyper = this.property('value', bool(True))
 //   value = this.property('value')
 //
-//   __repr__ = (): Ray => { throw new NotImplementedError();
+//   __repr__ = (): Ray.Any => { throw new NotImplementedError();
 //   // TODO:   return f'Edge: {self.value} ({self.x}, {self.y})'
 //   }
 //
@@ -162,10 +162,10 @@
 //    *  - If the number of inputs and outputs are both <= 1, draw as a small (1 width unit) box.
 //    *  - Otherwise draw as a larger (size 2) box.
 //    */
-//   box_size = (): Ray => JS.Number((this.s.count.as_int() <= 1 && this.t.count.as_int() <= 1) ? 1 : 2);
+//   box_size = (): Ray.Any => JS.Number((this.s.count.as_int() <= 1 && this.t.count.as_int() <= 1) ? 1 : 2);
 //
-//   domain = (): Ray => this.source.cast<VData>().domain;
-//   codomain = (): Ray => this.target.cast<VData>().domain;
+//   domain = (): Ray.Any => this.source.cast<VData>().domain;
+//   codomain = (): Ray.Any => this.target.cast<VData>().domain;
 //
 //   toString = (): string => this.__repr__().as_string(); // TODO; FOR ALL
 // }
@@ -186,8 +186,8 @@
 //  */
 // export class Graph extends Ray {
 //
-//   get vindex(): Ray { return this.vdata.index.max(0); }
-//   get eindex(): Ray { return this.edata.index.max(0); }
+//   get vindex(): Ray.Any { return this.vdata.index.max(0); }
+//   get eindex(): Ray.Any { return this.edata.index.max(0); }
 //
 //   // Mapping from integer identifiers of each vertex to its data.
 //   vdata = this.property('vertices');
@@ -204,20 +204,20 @@
 //    * This consists of a list of pairs (vertex type, register size) corresponding to each input vertex.
 //    */
 //   // TODO: Domain/Codmain is just the initial/terminal side (possibly typed) where the direction which is what defines what it itself is connected to, is ignored.
-//   get domain(): Ray { return this.inputs.cast<VData>().domain; };
+//   get domain(): Ray.Any { return this.inputs.cast<VData>().domain; };
 //
 //   /**
 //    * Return the domain of the graph.
 //    *
 //    * This consists of a list of pairs (vertex type, register size) corresponding to each output vertex.
 //    */
-//   get codomain(): Ray { return this.outputs.cast<VData>().domain; };
+//   get codomain(): Ray.Any { return this.outputs.cast<VData>().domain; };
 //
 //   vertex_data = (v = int): VData => this.vertices().at(v).cast();
 //   edge_data = (e = int): EData => this.edges().at(e).cast();
 //
 //   // TODO: Shouldnt be here
-//   ___next_index = (name = int(-1), index: Ray): Ray => {
+//   ___next_index = (name = int(-1), index: Ray.Any): Ray.Any => {
 //     // TODO: This is definitely going to be buggy if '-1' and certain specific values are used. (Hence the note above add_vertex & add_edge)
 //     const current = name === -1 ? index : Math.max(name, index);
 //     return current + 1;
@@ -256,7 +256,7 @@
 //
 //     return edge;
 //   }
-//   // add_simple_edge - is automatically handled: Rays can disambiguate between one/multiple values for certain purposes.
+//   // add_simple_edge - is automatically handled: Ray.Anys can disambiguate between one/multiple values for certain purposes.
 //
 //   /**
 //    * Remove a vertex from the graph.
@@ -268,7 +268,7 @@
 //    * @param v
 //    * @param strict If True, require the vertex to have no adjacent edges and not be a boundary vertex.
 //    */
-//   remove_vertex = (v = int, strict: boolean = false): Ray => {
+//   remove_vertex = (v = int, strict: boolean = false): Ray.Any => {
 //     // TODO: as delegation
 //
 //     if (strict) {
@@ -293,7 +293,7 @@
 //    *
 //    * @param e Integer identifier of the edge to remove.
 //    */
-//   remove_edge = (e = int): Ray => {
+//   remove_edge = (e = int): Ray.Any => {
 //     // in/out edges from all vertices
 //     delete this.edata[e];
 //   }
@@ -318,7 +318,7 @@
 //    * Return vertices that lie on a directed path from any of `vs`.
 //    * // TODO: Just traverse the rays, deduplicate using the index
 //    */
-//   successors = (ray: Ray): Ray => ray.next;
+//   successors = (ray: Ray.Any): Ray.Any => Ray.Any.next;
 //
 //   /**
 //    * Split a vertex into copies for each input, output, and tentacle.
@@ -330,7 +330,7 @@
 //    *
 //    * @param v Integer identifier of vertex to be exploded.
 //    */
-//   explode_vertex = (v = int): Ray => {
+//   explode_vertex = (v = int): Ray.Any => {
 //     const vertex = this.vertex_data(v);
 //
 //     // TODO; This just seems like another copy which minor changes
@@ -340,8 +340,8 @@
 //
 //     const __temp = ( // TODO This whole bit of code will definitely be reduced to one line at some point in this process
 //       vertex: VData,
-//       boundary: (vertex: VData) => Ray,
-//       next_boundary: Ray
+//       boundary: (vertex: VData) => Ray.Any,
+//       next_boundary: Ray.Any
 //     ) => {
 //       // TODO: It's just a duplicated process for vertex/edge since their definition is separataed
 //
@@ -390,7 +390,7 @@
 //    *  - If `False`, the original vertex becomes the source of the ew identity hyperedge while the new vertex becomes the target.
 //    *  - If `True`, the source and target of the new identity are flipped. This can be used to break directed cycles, by neffectively introducing a cap and cup.
 //    */
-//   insert_id_after = (v = int, reverse = bool(False)): Ray => {
+//   insert_id_after = (v = int, reverse = bool(False)): Ray.Any => {
 //     const vertex = this.vertex_data(v);
 //
 //     // Create a new vertex with the same vtype and size
@@ -430,12 +430,12 @@
 //    * @param other
 //    * @param layout If `True`, compute new y-coordinates of the vertices and edges of the resulting graph so that the two graphs in the tensor product are adjacent with no overlap in the y-direction.
 //    */
-//   tensor = (other: Graph, layout: boolean = true): Ray => {
+//   tensor = (other: Graph, layout: boolean = true): Ray.Any => {
 //
 //     const a = this;
 //     const b = other;
 //
-//     const tensor: Ray = new Ray(); // TODO: [initial = a.outputs, terminal = b.inputs]
+//     const tensor: Ray.Any = new Ray(); // TODO: [initial = a.outputs, terminal = b.inputs]
 //
 //     tensor.initial.any.y -=
 //       tensor.initial.any.y.max(); // max_self
@@ -459,7 +459,7 @@
 // // /**
 // //  * Compose structures defined at .initial with those at .terminal, dropping the vertex. ; or if done non-ignorantly. Composing them on another level, ignoring to this vertex. TODO: Allow this freedom
 // //  */
-// // get merge(): Ray {
+// // get merge(): Ray.Any {
 // //   // concat initial.a + initial.b, terminal.a + terminal.b
 // //   // then: either destroy a/b, merge structure... etc..
 // //   // Chyp: destroy b
@@ -539,7 +539,7 @@
 //    *
 //    * Calling g.compose(h) will turn g into g ; h, performing the operation in-place. Use the infix version `g >> h` to simply return the sequential composition without changing g.
 //    */
-//   compose = (other: Graph): Ray => {
+//   compose = (other: Graph): Ray.Any => {
 //     // TODO Just matching outputs and inputs..
 //
 //     // TODO: Simply visualized, as a single thing "us composing this thing", where on the initial side, we have the outputs of one thing, which we're trying to one-to-one match to the terminal side"
@@ -632,7 +632,7 @@
 //    *
 //    * This does not modify either of the original graphs. TODO: Again this sort of thing should be abstracted elsewhere on what to do with them
 //    */
-//   __mul__ = (other: Graph): Ray => this.___something_something_copy(other, (a, b) => a.tensor(b));
+//   __mul__ = (other: Graph): Ray.Any => this.___something_something_copy(other, (a, b) => a.tensor(b));
 //
 //   /**
 //    * Return the composition of the current graph with `other`.
@@ -640,12 +640,12 @@
 //    * Composition is done in diagram order (`other` comes after `self`), and neither of the two graphs are modified.
 //    * @param other
 //    */
-//   __rshift__ = (other: Graph): Ray => this.___something_something_copy(other, (a, b) => a.compose(b));
+//   __rshift__ = (other: Graph): Ray.Any => this.___something_something_copy(other, (a, b) => a.compose(b));
 //
 //   /**
 //    * TODO: These are just simple delegations of a single method on copies.. ; requires a nice abstraction layer
 //    */
-//   ___something_something_copy = (b: Graph, something: (a: Graph, b: Graph) => void): Ray => {
+//   ___something_something_copy = (b: Graph, something: (a: Graph, b: Graph) => void): Ray.Any => {
 //     const a_copy: Graph = this.copy().cast(); // TODO: Here preferring copy, do this everywhere? / Depending on forgetful preference..
 //     something(a_copy, b); // TODO: Chyp just assumes b to be copied at the other end here???
 //     return a_copy; // Could generalize to either end
@@ -659,7 +659,7 @@
 //    * @param vertices A set of vertices to highlight.
 //    * @param edges A set of edges to highlight.
 //    */
-//   highlight = (vertices = set(int), edges = set(int)): Ray => {
+//   highlight = (vertices = set(int), edges = set(int)): Ray.Any => {
 //     // TODO Again, these could be merged
 //     this.vdata
 //       .filter(vertex => vertices.includes(vertex))
@@ -675,7 +675,7 @@
 //    *
 //    * This is equivalent to calling :func:`highlight` with empty sets of vertices/edges.
 //    */
-//   unhighlight = (): Ray => {
+//   unhighlight = (): Ray.Any => {
 //     // TODO: These could be merged
 //     this.vdata.highlight = false;
 //     this.edata.highlight = false;
@@ -701,15 +701,15 @@
 //     // Try to find an initial match mapping one of the boundary vertices of the  domain graph to the corresponding boundary vertex (the vertex in the same input/output location) of the codomain graph. If no initial match is found, return `None`.
 //     const initial_match = new Match(this, other);
 //
-//     const ___temp = (func: (ray: Graph) => Ray) => {
+//     const ___temp = (func: (ray: Graph) => Ray.Any) => {
 //       ([func(this), func(other)] as Ray).zip(([initial, terminal]) => {
 //         if (!initial_match.try_add_vertex(initial, terminal))
 //           return None; //TODO, DOESNT ACTUALLY RETURN THE FUNCTION HERE. Wait till matcher is abstracted to fix this
 //       });
 //     }
 //
-//     ___temp(ray => ray.inputs);
-//     ___temp(ray => ray.outputs); // TODO: See again, the same pattern over and over again, same on both sides.
+//     ___temp(ray => Ray.Any.inputs);
+//     ___temp(ray => Ray.Any.outputs); // TODO: See again, the same pattern over and over again, same on both sides.
 //
 //     // If an initial match is found, try to find a total and surjective match of the domain graph into the codomain graph.
 //
@@ -723,7 +723,7 @@
 // }
 //
 // export class Chyp extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
 //
 //   /**
 //    * Load a .chyp graph file from the given path.
@@ -753,7 +753,7 @@
 //   }
 //
 //
-//   ___map_domain = (domain: Ray, _default: VData): Ray => {
+//   ___map_domain = (domain: Ray.Any, _default: VData): Ray.Any => {
 //     return domain.map(([vtype, size], i) => {
 //       const vertex: VData = _default.copy().cast();
 //       // TODO: These should be automatic somewhere, again abstract the place where it's displayed elsewhere
@@ -771,7 +771,7 @@
 //    * @param domain - A list of pairs (vertex type, register size) corresponding to each input vertex.
 //    * @param codomain - A list of pairs (vertex type, register size) corresponding to each output vertex.
 //    */
-//   gen = (_default: VData, domain: Ray, codomain: Ray): Graph => {
+//   gen = (_default: VData, domain: Ray.Any, codomain: Ray.Any): Graph => {
 //     const graph = new Graph();
 //
 //     const inputs = this.___map_domain(domain, _default)
@@ -800,7 +800,7 @@
 //    * @param p A permutation given as an n-element list of integers from 0 to n-1.
 //    * @param domain The domain type of the permutation. This consists of a list of pairs (vertex type, register size) corresponding to each input vertex of the edge. If `None`, the domain is assumed to be the  appropriate number of default type vertices all with register size 1.
 //    */
-//   perm = (p = list(int), domain: Ray, _default: VData) => {
+//   perm = (p = list(int), domain: Ray.Any, _default: VData) => {
 //
 //     const graph = new Graph();
 //     const num_wires = p.count.as_int();
@@ -913,136 +913,136 @@
 // }
 //
 // export class CodeView extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   popup_visible = (): Ray => { throw new NotImplementedError(); }
-//   set_completions = (completions = Iterable(str)): Ray => { throw new NotImplementedError(); }
-//   ident_at_cursor = (): Ray => { throw new NotImplementedError(); }
-//   insert_completion = (completion = str): Ray => { throw new NotImplementedError(); }
-//   keyPressEvent = (e = QKeyEvent): Ray => { throw new NotImplementedError(); }
-//   set_current_region = (region = Optional(Tuple(int,int))): Ray => { throw new NotImplementedError(); }
-//   add_line_below = (text = str): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   popup_visible = (): Ray.Any => { throw new NotImplementedError(); }
+//   set_completions = (completions = Iterable(str)): Ray.Any => { throw new NotImplementedError(); }
+//   ident_at_cursor = (): Ray.Any => { throw new NotImplementedError(); }
+//   insert_completion = (completion = str): Ray.Any => { throw new NotImplementedError(); }
+//   keyPressEvent = (e = QKeyEvent): Ray.Any => { throw new NotImplementedError(); }
+//   set_current_region = (region = Optional(Tuple(int,int))): Ray.Any => { throw new NotImplementedError(); }
+//   add_line_below = (text = str): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class CodeCompletionModel extends Ray {
-//   __init__ = (parent = QObject): Ray => { throw new NotImplementedError(); }
-//   set_completions = (completions = Iterable(str)): Ray => { throw new NotImplementedError(); }
-//   data = (index = Union(QModelIndex, QPersistentModelIndex)): Ray => { throw new NotImplementedError(); }
-//   rowCount = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (parent = QObject): Ray.Any => { throw new NotImplementedError(); }
+//   set_completions = (completions = Iterable(str)): Ray.Any => { throw new NotImplementedError(); }
+//   data = (index = Union(QModelIndex, QPersistentModelIndex)): Ray.Any => { throw new NotImplementedError(); }
+//   rowCount = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class ChypDocument extends Ray {
-//   __init__ = (parent = QWidget): Ray => { throw new NotImplementedError(); }
-//   confirm_close = (): Ray => { throw new NotImplementedError(); }
-//   add_to_recent_files = (file_name = str): Ray => { throw new NotImplementedError(); }
-//   open = (file_name = str): Ray => { throw new NotImplementedError(); }
-//   save = (): Ray => { throw new NotImplementedError(); }
-//   save_as = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (parent = QWidget): Ray.Any => { throw new NotImplementedError(); }
+//   confirm_close = (): Ray.Any => { throw new NotImplementedError(); }
+//   add_to_recent_files = (file_name = str): Ray.Any => { throw new NotImplementedError(); }
+//   open = (file_name = str): Ray.Any => { throw new NotImplementedError(); }
+//   save = (): Ray.Any => { throw new NotImplementedError(); }
+//   save_as = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class Editor extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   title = (): Ray => { throw new NotImplementedError(); }
-//   reset_state = (): Ray => { throw new NotImplementedError(); }
-//   invalidate_text = (): Ray => { throw new NotImplementedError(); }
-//   next_part = (): Ray => { throw new NotImplementedError(); }
-//   jump_to_error = (): Ray => { throw new NotImplementedError(); }
-//   show_errors = (): Ray => { throw new NotImplementedError(); }
-//   show_at_cursor = (): Ray => { throw new NotImplementedError(); }
-//   next_rewrite_at_cursor = (): Ray => { throw new NotImplementedError(); }
-//   repeat_step_at_cursor = (): Ray => { throw new NotImplementedError(); }
-//   update_state = (): Ray => { throw new NotImplementedError(); }
-//   import_at_cursor = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   title = (): Ray.Any => { throw new NotImplementedError(); }
+//   reset_state = (): Ray.Any => { throw new NotImplementedError(); }
+//   invalidate_text = (): Ray.Any => { throw new NotImplementedError(); }
+//   next_part = (): Ray.Any => { throw new NotImplementedError(); }
+//   jump_to_error = (): Ray.Any => { throw new NotImplementedError(); }
+//   show_errors = (): Ray.Any => { throw new NotImplementedError(); }
+//   show_at_cursor = (): Ray.Any => { throw new NotImplementedError(); }
+//   next_rewrite_at_cursor = (): Ray.Any => { throw new NotImplementedError(); }
+//   repeat_step_at_cursor = (): Ray.Any => { throw new NotImplementedError(); }
+//   update_state = (): Ray.Any => { throw new NotImplementedError(); }
+//   import_at_cursor = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class CheckThread extends Ray {
-//   __init__ = (rw = RewriteState): Ray => { throw new NotImplementedError(); }
-//   run = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (rw = RewriteState): Ray.Any => { throw new NotImplementedError(); }
+//   run = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class ErrorListModel extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   set_errors = (errors = List(Tuple(str, int, str))): Ray => { throw new NotImplementedError(); }
-//   data = (index = Union(QModelIndex, QPersistentModelIndex)): Ray => { throw new NotImplementedError(); }
-//   headerData = (section = int, orientation = Orientation): Ray => { throw new NotImplementedError(); }
-//   index = (row = int, column = int): Ray => { throw new NotImplementedError(); }
-//   columnCount = (): Ray => { throw new NotImplementedError(); }
-//   rowCount = (): Ray => { throw new NotImplementedError(); }
-//   parent = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   set_errors = (errors = List(Tuple(str, int, str))): Ray.Any => { throw new NotImplementedError(); }
+//   data = (index = Union(QModelIndex, QPersistentModelIndex)): Ray.Any => { throw new NotImplementedError(); }
+//   headerData = (section = int, orientation = Orientation): Ray.Any => { throw new NotImplementedError(); }
+//   index = (row = int, column = int): Ray.Any => { throw new NotImplementedError(); }
+//   columnCount = (): Ray.Any => { throw new NotImplementedError(); }
+//   rowCount = (): Ray.Any => { throw new NotImplementedError(); }
+//   parent = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class EItem extends Ray {
-//   __init__ = (g = Graph, e = int): Ray => { throw new NotImplementedError(); }
-//   paint = (painter = QPainter, option = QStyleOptionGraphicsItem): Ray => { throw new NotImplementedError(); }
+//   __init__ = (g = Graph, e = int): Ray.Any => { throw new NotImplementedError(); }
+//   paint = (painter = QPainter, option = QStyleOptionGraphicsItem): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class VItem extends Ray {
-//   __init__ = (g = Graph, v = int): Ray => { throw new NotImplementedError(); }
-//   refresh = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (g = Graph, v = int): Ray.Any => { throw new NotImplementedError(); }
+//   refresh = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class TItem extends Ray {
-//   __init__ = (vitem = VItem, eitem = EItem, i = int, src = bool): Ray => { throw new NotImplementedError(); }
-//   refresh = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (vitem = VItem, eitem = EItem, i = int, src = bool): Ray.Any => { throw new NotImplementedError(); }
+//   refresh = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class GraphScene extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   set_graph = (g = Graph): Ray => { throw new NotImplementedError(); }
-//   add_items = (): Ray => { throw new NotImplementedError(); }
-//   mousePressEvent = (e = QGraphicsSceneMouseEvent): Ray => { throw new NotImplementedError(); }
-//   mouseMoveEvent = (e = QGraphicsSceneMouseEvent): Ray => { throw new NotImplementedError(); }
-//   mouseReleaseEvent = (_ = QGraphicsSceneMouseEvent): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   set_graph = (g = Graph): Ray.Any => { throw new NotImplementedError(); }
+//   add_items = (): Ray.Any => { throw new NotImplementedError(); }
+//   mousePressEvent = (e = QGraphicsSceneMouseEvent): Ray.Any => { throw new NotImplementedError(); }
+//   mouseMoveEvent = (e = QGraphicsSceneMouseEvent): Ray.Any => { throw new NotImplementedError(); }
+//   mouseReleaseEvent = (_ = QGraphicsSceneMouseEvent): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class GraphView extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   set_graph = (g = Graph): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   set_graph = (g = Graph): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class ChypHighlighter extends Ray {
-//   __init__ = (doc = QTextDocument): Ray => { throw new NotImplementedError(); }
-//   set_current_region = (region = Optional(Tuple(int,int)), status = int): Ray => { throw new NotImplementedError(); }
-//   highlightBlock = (text = str): Ray => { throw new NotImplementedError(); }
+//   __init__ = (doc = QTextDocument): Ray.Any => { throw new NotImplementedError(); }
+//   set_current_region = (region = Optional(Tuple(int,int)), status = int): Ray.Any => { throw new NotImplementedError(); }
+//   highlightBlock = (text = str): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class MainWindow extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   remove_empty_editor = (): Ray => { throw new NotImplementedError(); }
-//   update_file_name = (): Ray => { throw new NotImplementedError(); }
-//   tab_changed = (i = int): Ray => { throw new NotImplementedError(); }
-//   update_themes = (): Ray => { throw new NotImplementedError(); }
-//   recent_files = (): Ray => { throw new NotImplementedError(); }
-//   update_recent_files = (): Ray => { throw new NotImplementedError(); }
-//   add_tab = (ed = Editor, title = str): Ray => { throw new NotImplementedError(); }
-//   close_tab = (): Ray => { throw new NotImplementedError(); }
-//   new = (): Ray => { throw new NotImplementedError(); }
-//   open = (): Ray => { throw new NotImplementedError(); }
-//   save = (): Ray => { throw new NotImplementedError(); }
-//   save_as = (): Ray => { throw new NotImplementedError(); }
-//   undo = (): Ray => { throw new NotImplementedError(); }
-//   redo = (): Ray => { throw new NotImplementedError(); }
-//   show_errors = (): Ray => { throw new NotImplementedError(); }
-//   add_rewrite_step = (): Ray => { throw new NotImplementedError(); }
-//   repeat_rewrite_step = (): Ray => { throw new NotImplementedError(); }
-//   next_rewrite = (): Ray => { throw new NotImplementedError(); }
-//   next_part = (): Ray => { throw new NotImplementedError(); }
-//   previous_part = (): Ray => { throw new NotImplementedError(); }
-//   next_tab = (): Ray => { throw new NotImplementedError(); }
-//   previous_tab = (): Ray => { throw new NotImplementedError(); }
-//   goto_import = (): Ray => { throw new NotImplementedError(); }
-//   closeEvent = (e = QCloseEvent): Ray => { throw new NotImplementedError(); }
-//   build_menu = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   remove_empty_editor = (): Ray.Any => { throw new NotImplementedError(); }
+//   update_file_name = (): Ray.Any => { throw new NotImplementedError(); }
+//   tab_changed = (i = int): Ray.Any => { throw new NotImplementedError(); }
+//   update_themes = (): Ray.Any => { throw new NotImplementedError(); }
+//   recent_files = (): Ray.Any => { throw new NotImplementedError(); }
+//   update_recent_files = (): Ray.Any => { throw new NotImplementedError(); }
+//   add_tab = (ed = Editor, title = str): Ray.Any => { throw new NotImplementedError(); }
+//   close_tab = (): Ray.Any => { throw new NotImplementedError(); }
+//   new = (): Ray.Any => { throw new NotImplementedError(); }
+//   open = (): Ray.Any => { throw new NotImplementedError(); }
+//   save = (): Ray.Any => { throw new NotImplementedError(); }
+//   save_as = (): Ray.Any => { throw new NotImplementedError(); }
+//   undo = (): Ray.Any => { throw new NotImplementedError(); }
+//   redo = (): Ray.Any => { throw new NotImplementedError(); }
+//   show_errors = (): Ray.Any => { throw new NotImplementedError(); }
+//   add_rewrite_step = (): Ray.Any => { throw new NotImplementedError(); }
+//   repeat_rewrite_step = (): Ray.Any => { throw new NotImplementedError(); }
+//   next_rewrite = (): Ray.Any => { throw new NotImplementedError(); }
+//   next_part = (): Ray.Any => { throw new NotImplementedError(); }
+//   previous_part = (): Ray.Any => { throw new NotImplementedError(); }
+//   next_tab = (): Ray.Any => { throw new NotImplementedError(); }
+//   previous_tab = (): Ray.Any => { throw new NotImplementedError(); }
+//   goto_import = (): Ray.Any => { throw new NotImplementedError(); }
+//   closeEvent = (e = QCloseEvent): Ray.Any => { throw new NotImplementedError(); }
+//   build_menu = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // // TODO ISNT A MATCH JUST AN IGNORANT COPY ON BOTH SIDES???
 // export class Match extends Ray {
 //
-//   get vertex_map(): Ray { throw new NotImplementedError(); }
-//   get vertex_image(): Ray { throw new NotImplementedError(); }
-//   get edge_map(): Ray { throw new NotImplementedError(); }
-//   get edge_image(): Ray { throw new NotImplementedError(); }
+//   get vertex_map(): Ray.Any { throw new NotImplementedError(); }
+//   get vertex_image(): Ray.Any { throw new NotImplementedError(); }
+//   get edge_map(): Ray.Any { throw new NotImplementedError(); }
+//   get edge_image(): Ray.Any { throw new NotImplementedError(); }
 //
-//   __str__ = (): Ray => {
+//   __str__ = (): Ray.Any => {
 //     // (f'\tVertex map: {str(self.vertex_map)}'
 //     //                 + f'\n\tEdge map: {str(self.edge_map)}')
 //     // TODO
@@ -1050,7 +1050,7 @@
 //
 //   // Implemented on Ray
 //   // TODO; doesnt copy the graphs at domain/codomain
-//   // copy = (): Ray => { throw new NotImplementedError(); }
+//   // copy = (): Ray.Any => { throw new NotImplementedError(); }
 //
 //   /**
 //    * Try to map `domain_vertex` to `codomain_vertex`.
@@ -1059,7 +1059,7 @@
 //    *
 //    * Returns: `True` if either a consistent map from `domain_vertex` to  already exists or the new map is consistent and satisfies the gluing conditions, otherwise `False`.
 //    */
-//   try_add_vertex = (domain_vertex: VData, codomain_vertex: VData): Ray => {
+//   try_add_vertex = (domain_vertex: VData, codomain_vertex: VData): Ray.Any => {
 //
 //     // If the vertex is already mapped, only check the new mapping is consistent with the current match.
 //     if (this.vertex_map.includes(domain_vertex)) {
@@ -1140,7 +1140,7 @@
 //    *
 //    * `True` if a consistent match is found mapping `domain_edge` to `codomain_edge`, otherwise `False`.
 //    */
-//   try_add_edge = (initial: EData, terminal: EData): Ray => {
+//   try_add_edge = (initial: EData, terminal: EData): Ray.Any => {
 //     log(`Trying to add edge ${initial} -> ${terminal} to match:`);
 //     log(this.toString());
 //
@@ -1205,7 +1205,7 @@
 //   /**
 //    * Return whether all adjacent edges of a domain vertex are mapped.
 //    */
-//   domain_neighbourhood_mapped = (vertex: VData): Ray =>
+//   domain_neighbourhood_mapped = (vertex: VData): Ray.Any =>
 //     ([vertex.in_edges + vertex.out_edges] as Ray).all(edge => this.edge_map.includes(edge));
 //
 //   /**
@@ -1222,11 +1222,11 @@
 //    *
 //    * Returns: `True` if all scalars in the domain are mapped injectively to scalars in the codomain, otherwise `False`.
 //    */
-//   map_scalars = (): Ray => {
+//   map_scalars = (): Ray.Any => {
 //     //TODO WHAT'S A SCALAR HERE?
 //     // TODO: Again same pattern for (co)domain - flipped, two dimensional
 //     const ___scalars = (domain: Graph, reverse: boolean) => {
-//       const is = (ray: Ray) => reverse ? ray.count !== 0 : ray.count === 0; // TODO: Should be easier to just .not this
+//       const is = (ray: Ray.Any) => reverse ? ray.count !== 0 : Ray.Any.count === 0; // TODO: Should be easier to just .not this
 //
 //       return domain.edges
 //         .filter((edge: EData) => this.is(edge.source) && this.is(edge.target));
@@ -1276,7 +1276,7 @@
 //   /**
 //    * Return any matches extending `self` by a single vertex or edge.
 //    */
-//   more = (): Ray => {
+//   more = (): Ray.Any => {
 //     // First, try to add an edge adjacent to any domain vertices that have already been matched.
 //     this.vertex_map
 //       // If all the edges adjacent to the current vertex have already been matched, continue. TODO: Could just be on the .vertex
@@ -1285,7 +1285,7 @@
 //         // TODO: AS ZIp or something
 //         const terminal_vertex = this.vertex_map[initial_vertex];
 //
-//         const ___test = (boundary: (ray: Graph) => Ray): Ray => {
+//         const ___test = (boundary: (ray: Graph) => Ray.Any): Ray.Any => {
 //           // Try to extend the match by mapping an adjacent source edge.
 //           boundary(this.domain) // TODO: AGAIN SAME THING
 //             // If the edge has already been matched, continue.
@@ -1306,8 +1306,8 @@
 //
 //         }
 //
-//         ___test(ray => ray.in_edges);
-//         ___test(ray => ray.out_edges);
+//         ___test(ray => Ray.Any.in_edges);
+//         ___test(ray => Ray.Any.out_edges);
 //
 //       });
 //
@@ -1340,16 +1340,16 @@
 //   /**
 //    * Return whether all domain vertices and edges have been mapped.
 //    */
-//   is_total = (): Ray => this.___defuq('map', this.domain);
+//   is_total = (): Ray.Any => this.___defuq('map', this.domain);
 //   /**
 //    * Return whether the vertex and edge maps are surjective.
 //    */
-//   is_surjective = (): Ray => this.___defuq('image', this.codomain);
+//   is_surjective = (): Ray.Any => this.___defuq('image', this.codomain);
 //
 //   /**
 //    * Return whether the vertex and edge maps are injective.
 //    */
-//   is_injective = (): Ray => {
+//   is_injective = (): Ray.Any => {
 //     // Since the edge map is always injective, we only need to check the vertex map is injective. TODO (GENERALIZE)
 //     return this.vertex_map.count === this.vertex_image.count;
 //   }
@@ -1363,7 +1363,7 @@
 //    *
 //    * TODO: Just no overlap??
 //    */
-//   is_convex = (): Ray => {
+//   is_convex = (): Ray.Any => {
 //     if (!this.is_injective()) { //TODO: WHY?
 //       return false;
 //     }
@@ -1407,7 +1407,7 @@
 //  *     stack and extending if possible until a valid match is found and returned.
 //  */
 // export class Matches extends Ray {
-//   __init__ = (domain = Graph, codomain = Graph): Ray => {
+//   __init__ = (domain = Graph, codomain = Graph): Ray.Any => {
 //     /**
 //      * TODO
 //      *         if initial_match is None:
@@ -1424,14 +1424,14 @@
 //      *             self.match_stack = []
 //      */
 //     throw new NotImplementedError(); }
-//   __iter__ = (): Ray => { throw new NotImplementedError(); }
+//   __iter__ = (): Ray.Any => { throw new NotImplementedError(); }
 //
 //   /**
 //    * Return the next suitable match found.
 //    *
 //    * A 'suitable' match is one that is total and, if `self.convex == True`, convex.
 //    */
-//   __next__ = (): Ray => {
+//   __next__ = (): Ray.Any => {
 //     // TODO Like expected this, class can probably be dropped this just becomes
 //
 //     return this.match_stack.dont_check_for_convex_or.is_convex; // TODO: Just generalize these on functions
@@ -1464,13 +1464,13 @@
 //
 // export class Rule extends Ray {
 //
-//   get equiv(): Ray { throw new NotImplementedError(); }
+//   get equiv(): Ray.Any { throw new NotImplementedError(); }
 //
 //
 //   /**
 //    * Returns True if boundary on lhs embeds injectively
 //    */
-//   is_left_linear = (): Ray => {
+//   is_left_linear = (): Ray.Any => {
 //     // TODO, needs to implement splat and stuff? or by default, could be done smarter, but again no overloading - Or should just equivalence a copy??
 //     return !JS.Iterable([...this.lhs.inputs, ...this.rhs.outputs]).as_ray()
 //       .has_duplicates() // TODO; This thing is basically asking whether any input is used twice, whether any output is used twice, or there's a circle between in/output? Basically: NO SELF-REFERENCE, this should be a very sikmple check whether any frame is used twice here - or some loop is found basically.
@@ -1482,7 +1482,7 @@
 //    * Given a rule r and match of r.lhs into a graph, return a match of r.rhs into the rewritten graph.
 //    * @param match
 //    */
-//   dpo = (match: Match): Ray => {
+//   dpo = (match: Match): Ray.Any => {
 //     // if (!this.is_left_linear())
 //     //   throw new NotImplementedError("Only left linear rules are supported for now")
 //
@@ -1586,80 +1586,80 @@
 //    *
 //    * This is a convenience wrapper for `dpo` for when the extra rewrite data isn't needed.
 //    */
-//   rewrite = (match: Match): Ray => this.dpo(match).first.terminal; // .first.codomain
+//   rewrite = (match: Match): Ray.Any => this.dpo(match).first.terminal; // .first.codomain
 //   // TODO; Though .first is used here, something like .any is more appropriate in the sense of: Don't care which one first, just something.
 // }
 //
 // export class RewriteState extends Ray {
-//   __init__ = (sequence = int, state = State): Ray => { throw new NotImplementedError(); }
-//   check = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (sequence = int, state = State): Ray.Any => { throw new NotImplementedError(); }
+//   check = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class State extends Ray {
-//   __init__ = (): Ray => { throw new NotImplementedError(); }
-//   part_with_index_at = (pos = int): Ray => { throw new NotImplementedError(); }
-//   part_at = (pos = int): Ray => { throw new NotImplementedError(); }
-//   var = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   module_name = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   num = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   type_element = (items = list(Any)): Ray => { throw new NotImplementedError(); }
-//   type_term = (items = list(JS.Iterable([tuple(JS.Iterable([str, None]), int), None]))): Ray => { throw new NotImplementedError(); }
-//   id = (items = list(Any)): Ray => { throw new NotImplementedError(); }
-//   id0 = (_ = List(Any)): Ray => { throw new NotImplementedError(); }
-//   eq = (_ = List(Any)): Ray => { throw new NotImplementedError(); }
-//   le = (_ = List(Any)): Ray => { throw new NotImplementedError(); }
-//   perm_indices = (items = list(int)): Ray => { throw new NotImplementedError(); }
-//   size_list = (items = list(int)): Ray => { throw new NotImplementedError(); }
-//   par = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   gen_color = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   color = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   import_let = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   tactic = (items = List(Any)): Ray => { throw new NotImplementedError(); }
-//   nested_term = (items = List(Any)): Ray => { throw new NotImplementedError(); }
+//   __init__ = (): Ray.Any => { throw new NotImplementedError(); }
+//   part_with_index_at = (pos = int): Ray.Any => { throw new NotImplementedError(); }
+//   part_at = (pos = int): Ray.Any => { throw new NotImplementedError(); }
+//   var = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   module_name = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   num = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   type_element = (items = list(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   type_term = (items = list(JS.Iterable([tuple(JS.Iterable([str, None]), int), None]))): Ray.Any => { throw new NotImplementedError(); }
+//   id = (items = list(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   id0 = (_ = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   eq = (_ = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   le = (_ = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   perm_indices = (items = list(int)): Ray.Any => { throw new NotImplementedError(); }
+//   size_list = (items = list(int)): Ray.Any => { throw new NotImplementedError(); }
+//   par = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   gen_color = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   color = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   import_let = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   tactic = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
+//   nested_term = (items = List(Any)): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class Tactic extends Ray {
-//   __init__ = (local_state = RewriteState, args = List(str)): Ray => { throw new NotImplementedError(); }
-//   repeat = (rw = Callable([str], bool), rules = List(str)): Ray => { throw new NotImplementedError(); }
-//   error = (message = str): Ray => { throw new NotImplementedError(); }
-//   has_goal = (): Ray => { throw new NotImplementedError(); }
-//   global_rules = (): Ray => { throw new NotImplementedError(); }
-//   lookup_rule = (rule_expr = str): Ray => { throw new NotImplementedError(); }
-//   add_refl_to_context = (graph = Graph, ident = str): Ray => { throw new NotImplementedError(); }
-//   add_rule_to_context = (rule_name = str): Ray => { throw new NotImplementedError(); }
-//   __lhs = (target = str): Ray => { throw new NotImplementedError(); }
-//   __rhs = (target = str): Ray => { throw new NotImplementedError(); }
-//   __set_lhs = (target = str, graph = Graph): Ray => { throw new NotImplementedError(); }
-//   __set_rhs = (target = str, graph = Graph): Ray => { throw new NotImplementedError(); }
-//   rewrite_lhs = (rule_expr = str): Ray => { throw new NotImplementedError(); }
-//   rewrite_rhs = (rule_expr = str): Ray => { throw new NotImplementedError(); }
-//   rewrite_lhs1 = (rule_expr = str): Ray => { throw new NotImplementedError(); }
-//   rewrite_rhs1 = (rule_expr = str): Ray => { throw new NotImplementedError(); }
-//   validate_goal = (): Ray => { throw new NotImplementedError(); }
-//   lhs = (): Ray => { throw new NotImplementedError(); }
-//   rhs = (): Ray => { throw new NotImplementedError(); }
-//   lhs_size = (): Ray => { throw new NotImplementedError(); }
-//   rhs_size = (): Ray => { throw new NotImplementedError(); }
-//   highlight_lhs = (vertices = Set(int), edges = Set(int)): Ray => { throw new NotImplementedError(); }
-//   highlight_rhs = (vertices = Set(int), edges = Set(int)): Ray => { throw new NotImplementedError(); }
-//   __reset = (): Ray => { throw new NotImplementedError(); }
-//   next_rhs = (current = str): Ray => { throw new NotImplementedError(); }
-//   run_check = (): Ray => { throw new NotImplementedError(); }
-//   name = (): Ray => { throw new NotImplementedError(); }
-//   check = (): Ray => { throw new NotImplementedError(); }
-//   make_rhs = (): Ray => { throw new NotImplementedError(); }
+//   __init__ = (local_state = RewriteState, args = List(str)): Ray.Any => { throw new NotImplementedError(); }
+//   repeat = (rw = Callable([str], bool), rules = List(str)): Ray.Any => { throw new NotImplementedError(); }
+//   error = (message = str): Ray.Any => { throw new NotImplementedError(); }
+//   has_goal = (): Ray.Any => { throw new NotImplementedError(); }
+//   global_rules = (): Ray.Any => { throw new NotImplementedError(); }
+//   lookup_rule = (rule_expr = str): Ray.Any => { throw new NotImplementedError(); }
+//   add_refl_to_context = (graph = Graph, ident = str): Ray.Any => { throw new NotImplementedError(); }
+//   add_rule_to_context = (rule_name = str): Ray.Any => { throw new NotImplementedError(); }
+//   __lhs = (target = str): Ray.Any => { throw new NotImplementedError(); }
+//   __rhs = (target = str): Ray.Any => { throw new NotImplementedError(); }
+//   __set_lhs = (target = str, graph = Graph): Ray.Any => { throw new NotImplementedError(); }
+//   __set_rhs = (target = str, graph = Graph): Ray.Any => { throw new NotImplementedError(); }
+//   rewrite_lhs = (rule_expr = str): Ray.Any => { throw new NotImplementedError(); }
+//   rewrite_rhs = (rule_expr = str): Ray.Any => { throw new NotImplementedError(); }
+//   rewrite_lhs1 = (rule_expr = str): Ray.Any => { throw new NotImplementedError(); }
+//   rewrite_rhs1 = (rule_expr = str): Ray.Any => { throw new NotImplementedError(); }
+//   validate_goal = (): Ray.Any => { throw new NotImplementedError(); }
+//   lhs = (): Ray.Any => { throw new NotImplementedError(); }
+//   rhs = (): Ray.Any => { throw new NotImplementedError(); }
+//   lhs_size = (): Ray.Any => { throw new NotImplementedError(); }
+//   rhs_size = (): Ray.Any => { throw new NotImplementedError(); }
+//   highlight_lhs = (vertices = Set(int), edges = Set(int)): Ray.Any => { throw new NotImplementedError(); }
+//   highlight_rhs = (vertices = Set(int), edges = Set(int)): Ray.Any => { throw new NotImplementedError(); }
+//   __reset = (): Ray.Any => { throw new NotImplementedError(); }
+//   next_rhs = (current = str): Ray.Any => { throw new NotImplementedError(); }
+//   run_check = (): Ray.Any => { throw new NotImplementedError(); }
+//   name = (): Ray.Any => { throw new NotImplementedError(); }
+//   check = (): Ray.Any => { throw new NotImplementedError(); }
+//   make_rhs = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class RuleTac extends Ray {
-//   name = (): Ray => { throw new NotImplementedError(); }
-//   make_rhs = (): Ray => { throw new NotImplementedError(); }
-//   check = (): Ray => { throw new NotImplementedError(); }
+//   name = (): Ray.Any => { throw new NotImplementedError(); }
+//   make_rhs = (): Ray.Any => { throw new NotImplementedError(); }
+//   check = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //
 // export class SimpTac extends Ray {
-//   name = (): Ray => { throw new NotImplementedError(); }
-//   __prepare_rules = (): Ray => { throw new NotImplementedError(); }
-//   make_rhs = (): Ray => { throw new NotImplementedError(); }
-//   check = (): Ray => { throw new NotImplementedError(); }
+//   name = (): Ray.Any => { throw new NotImplementedError(); }
+//   __prepare_rules = (): Ray.Any => { throw new NotImplementedError(); }
+//   make_rhs = (): Ray.Any => { throw new NotImplementedError(); }
+//   check = (): Ray.Any => { throw new NotImplementedError(); }
 // }
 //

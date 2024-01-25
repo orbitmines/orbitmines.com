@@ -2044,7 +2044,7 @@ const OnOrbits = () => {
 
     <Arc head="Wrapping up">
       <Section>
-        What I think this will turn out to be; Is that in the process of trying to understand programming languages, compilation and compression. That I ended up abstracting so far away from them. That aided by having some intuitive notion of hyperedges, I stumbled upon this formulation of Rays.
+        What I think this will turn out to be; Is that in the process of trying to understand programming languages, compilation and compression. That I ended up abstracting so far away from them. That aided by having some intuitive notion of hyperedges, I stumbled upon this formulation of Ray.
 
         <BR/>
 

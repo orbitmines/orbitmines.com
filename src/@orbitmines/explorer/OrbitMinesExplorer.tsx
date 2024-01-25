@@ -215,15 +215,15 @@ type Options = {
 
 type RenderContext = Compiler; // Rendering is Compiling - Something which holds equivalences and ignores/shuts down self-referential structures.
 export type Compiler = {
-  coverage(ray: Ray): Ray, // Disallow dedups
-  covered_by(cover: Ray, ray: Ray): Compiler
+  coverage(ray: Ray.Any): Ray.Any, // Disallow dedups
+  covered_by(cover: Ray.Any, ray: Ray.Any): Compiler
 }
 
 class TempCompiler implements Compiler {
-  coverage(ray: Ray): Ray {
+  coverage(ray: Ray.Any): Ray.Any {
     return Ray.None();
   }
-  covered_by(cover: Ray, ray: Ray): Compiler {
+  covered_by(cover: Ray.Any, ray: Ray.Any): Compiler {
     return this;
   }
 }
@@ -234,12 +234,12 @@ export const AutoRay = (
     initial: _default_initial,
     terminal: _default_terminal,
     ...options
-  }: { ray: Ray, compiler?: Compiler } & Omit<Options, 'vertex'> & InterfaceOptions
+  }: { ray: Ray.Any, compiler?: Compiler } & Omit<Options, 'vertex'> & InterfaceOptions
 ) => {
   compiler ??= new TempCompiler();
 
 
-  const o = (ray: Ray, defaults: InterfaceOptions = {}): Required<InterfaceOptions> => {
+  const o = (ray: Ray.Any, defaults: InterfaceOptions = {}): Required<InterfaceOptions> => {
     const {
       position = defaults.position ?? [0, 0, 0],
       rotation = defaults.rotation ?? [0, 0, 0],
@@ -251,9 +251,9 @@ export const AutoRay = (
 
   // Move to a layer of abstraction above what is passed to us - this way we can start describing it.
   const ref = { // TODO; This general pattern is probably worth abstracting somewhere.
-    initial: ray.initial.as_reference(),
-    vertex: ray.as_reference(),
-    terminal: ray.terminal.as_reference()
+    initial: Ray.Any.initial.as_reference(),
+    vertex: Ray.Any.as_reference(),
+    terminal: Ray.Any.terminal.as_reference()
   }
 
   if (compiler.coverage(ray).is_some())
@@ -286,9 +286,9 @@ export const AutoRay = (
   // //
   // const map: { [type: string]: { [type: string]: Pick<Ray, 'type'> & InterfaceOptions }} = {
   //   [RayType.INITIAL]: {
-  //     [RayType.INITIAL]: { type: RayType.INITIAL, position: [-20 * _default.scale, 0, 0] },
-  //     [RayType.VERTEX]: { type: RayType.VERTEX, position: [-20 * _default.scale, 0, 0], rotation: [0, 0, Math.PI / 2] },
-  //     [RayType.TERMINAL]: { type: RayType.TERMINAL },
+  //     [RayType.INITIAL]: { type: Ray.AnyType.INITIAL, position: [-20 * _default.scale, 0, 0] },
+  //     [RayType.VERTEX]: { type: Ray.AnyType.VERTEX, position: [-20 * _default.scale, 0, 0], rotation: [0, 0, Math.PI / 2] },
+  //     [RayType.TERMINAL]: { type: Ray.AnyType.TERMINAL },
   //   }
   // }
   // const initial_op = map[RayType.INITIAL][ref.initial.type];
@@ -393,7 +393,7 @@ export const SimpleRenderedRay = (
 
 // In principle, this should be anything, this is just for the initial setup
 export const RenderedRay = (
-  props: { reference: Ray } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
+  props: { reference: Ray.Any } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
 ) => {
   const {
     position = [0, 0, 0],
@@ -458,7 +458,7 @@ export const RenderedRay = (
           return <Continuation color={color} position={position} />
 
         // throw 'Not Implemented'
-        return <RenderedRay {...props} reference={vertex.is_some() ? vertex.as_reference() : Ray.None()} />
+        return <RenderedRay {...props} reference={vertex.is_some() ? vertex.as_reference() : Ray.Any.None()} />
       }
       case RayType.VERTEX: {
         const tilt = -10; // TODO; Generally should use some equivalencing in the 3d-frames for this once setup is in place (perpsective/camera) if in threejs..

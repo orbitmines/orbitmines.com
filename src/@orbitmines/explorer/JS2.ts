@@ -4,7 +4,7 @@
 //     /**
 //      * Puts the Ray this is called with on a new Ray [initial = ref, ???, ???]. Then it places any structure it's applying a method to, on the terminal of this new Ray [initial = ref, ???, terminal = any]
 //      */
-//     static Ref = (impl: JS.FunctionImpl<Ray>): Function => {
+//     static Ref = (impl: Ray.FunctionImpl<Ray.Any>): Function => {
 //       return new Function(impl); // TODO: THIS SHOULD CHANGE, TO ON VERTEX.
 //     }
 //     static Impl = <T = Ray>(impl: (initial: T, terminal: T) => T): Function<T> => {
@@ -18,13 +18,13 @@
 //      * TODO: Reversible through memory...
 //      */
 //     static WithMemory = <T = Ray>(
-//       apply: (previous: Ray) => Ray | any
+//       apply: (previous: Ray.Any) => Ray.Any | any
 //     ): Function<T> => {
 //       // return Function.Ref((ref: T) => impl(ref.initial, ref.terminal));
 //
 //       return {
-//         as_ray: (ref: Ray = Ray.None()) => {
-//           const next = (previous: Ray, first: boolean = false): Ray => {
+//         as_ray: (ref: Ray.Any = Ray.None()) => {
+//           const next = (previous: Ray.Any, first: boolean = false): Ray.Any => {
 //             const result = apply(previous);
 //             const is_terminal = result instanceof Ray ?
 //               result.is_none() || (result.is_terminal() && result.self.is_none())
@@ -70,8 +70,8 @@
 //           }
 //
 //           if (ref.is_none()) {
-//             const ray: Ray = new Ray({
-//               vertex: Ray.None,
+//             const ray: Ray.Any = new Ray({
+//               vertex: Ray.Any.None,
 //               terminal: () => next(ray, true),
 //             }).as_reference();
 //
@@ -93,18 +93,18 @@
 //      */
 //     static Reversible = <T extends AbstractDirectionality<T> = Ray>(
 //       // @alias('backward')
-//       initial: (ref: Ray) => Ray | any,
+//       initial: (ref: Ray.Any) => Ray.Any | any,
 //       // @alias('forward')
-//       terminal: (ref: Ray) => Ray | any,
+//       terminal: (ref: Ray.Any) => Ray.Any | any,
 //     ): Function<T> => {
 //       // return Function.Ref((ref: T) => impl(ref.initial, ref.terminal));
 //
 //       return {
-//         as_ray: (ref: Ray = Ray.None()): Ray => {
+//         as_ray: (ref: Ray.Any = Ray.None()): Ray.Any => {
 //           if (ref.is_none())
 //             throw new NotImplementedError();
 //
-//           const next = (previous: Ray, direction: (ref: Ray) => Ray | any): Ray => {
+//           const next = (previous: Ray.Any, direction: (ref: Ray.Any) => Ray.Any | any): Ray.Any => {
 //             const result = direction(previous);
 //
 //             // TODO: COuld do this in place.
@@ -136,7 +136,7 @@
 //      *
 //      * a.compose(b).compose(c) = [a, b, c].compose = abc.compose = [[a1, a2], b, c].compose = [[a1, a2], b, [c1, c2]].compose = [[a1, [[[a2]]], [[[[]]], []]], b, [[[]], [], [c]]].compose = ...
 //      */
-//     as_method = <TResult>(ref: Ray): Method<Ray, TResult> => ((...any: Recursive<Ray>): TResult => {
+//     as_method = <TResult>(ref: Ray.Any): Method<Ray, TResult> => ((...any: Recursive<Ray.Any>): TResult => {
 //       if (any === undefined || any.length === 0)
 //         return this.step(ref);
 //
@@ -178,7 +178,7 @@
 //       // }
 //     })
 //
-//     as_ray = (initial: Ray = Ray.None()): Ray => {
+//     as_ray = (initial: Ray.Any = Ray.None()): Ray.Any => {
 //       throw new NotImplementedError();
 //     }
 //
@@ -188,39 +188,29 @@
 //
 //   }
 //
-//   export const Iterable = <T = any>(iterable: Iterable<T>): Ray => JS.Iterator(iterable[Symbol.iterator]());
 //
-//   export const Iterator = <T = any>(iterator: Iterator<T>): Ray => {
+//
+//   export const Iterator = <T = any>(iterator: Iterator<T>): Ray.Any => {
 //     // [  |--]
 //
-//     return JS.Function.WithMemory(previous => {
+//     return Ray.Function.WithMemory(previous => {
 //       const iterator_result = iterator.next();
 //
-//       return iterator_result.done !== true ? iterator_result.value : Ray.None();
+//       return iterator_result.done !== true ? iterator_result.value : Ray.Any.None();
 //     }).as_ray();
 //   }
 //
-//   export const Generator = <T = any>(generator: Generator<T>): Ray => JS.Iterable(generator);
-//
-//   // TODO Could have parallel threads in general.
-//   // export const AsyncGenerator = <T = any>(generator: AsyncGenerator<T>): Ray => {
-//   //   // [  |--]
-//   //   return JS.Iterable(generator);
-//   // }
-//
-//   export const Number = (number: number): Ray => {
-//     throw new NotImplementedError();
-//   }
+
 //
 //   // TODO
-//   export const Object = (object: object): Ray => Ray.vertex().o(object).as_reference();
+//   export const Object = (object: object): Ray.Any => Ray.Any.vertex().o(object).as_reference();
 //
-//   export const Any = (any: any): Ray => {
+//   export const Any = (any: any): Ray.Any => {
 //     if (any === null || any === undefined) return JS.Any(any);
 //     if (JS.is_boolean(any)) return JS.Boolean(any);
 //     // if (JS.is_number(any)) return JS.Number(any); TODO
 //     if (JS.is_iterable(any)) return JS.Iterable(any); // || is_array(any))
-//     if (JS.is_function(any)) return JS.Function.Any(any).as_ray();
+//     if (JS.is_function(any)) return Ray.Function.Any(any).as_ray();
 //     if (JS.is_object(any)) return JS.Object(any);
 //
 //     // TODO

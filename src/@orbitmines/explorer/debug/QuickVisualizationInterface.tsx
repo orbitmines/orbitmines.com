@@ -20,7 +20,7 @@ import {useThree} from "@react-three/fiber";
 import {StatsPanels} from "./DebugCanvas";
 import JS from "../JS";
 
-const ___index = (ray: Ray): number => {
+const ___index = (ray: Ray.Any): number => {
   switch (ray.type) {
     case RayType.REFERENCE:
       return ray.___any.index ?? 0;
@@ -33,7 +33,7 @@ const ___index = (ray: Ray): number => {
   }
 }
 
-export const Render2 = ({ ray, Interface, show =  { initial: true, terminal: true } }: { ray: Ray, Interface: Ray, index: number, show?: { initial: boolean, terminal: boolean } }) => {
+export const Render2 = ({ ray, Interface, show =  { initial: true, terminal: true } }: { ray: Ray.Any, Interface: Ray.Any, index: number, show?: { initial: boolean, terminal: boolean } }) => {
   const index = ___index(ray);
   let added = [15 * index, 60 * index, 0];
 
@@ -181,7 +181,7 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
 
   const space_between = 20 * scale;
 
-  const [Interface] = useState<Ray>(Ray.vertex().o({
+  const [Interface] = useState<Ray.Any>(Ray.vertex().o({
     selection:
       // The things selected
       Ray.None()
@@ -199,9 +199,9 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
     cursor: {
       tick: false
     },
-    add: (ray: Ray) => {
+    add: (ray: Ray.Any) => {
       (Interface.any.selection as Ray).self.self = ray.self.as_arbitrary();
-      Interface.any.rays.push(...[ray.follow(Ray.directions.previous), ray, ray.follow()]);
+      Interface.any.Ray.push(...[ray.follow(Ray.directions.previous), ray, ray.follow()]);
     },
     controls: {
       hotkeys: [
@@ -350,14 +350,14 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
               // TODO Then expand these to any-dimensional
             ];
             const isFollowing = directions.map(
-              ([initial, terminal]): JS.FunctionImpl => {
+              ([initial, terminal]): Ray.FunctionImpl => {
                 const toInitial = initial.some(option => pressed.includes(option));
                 const toTerminal = terminal.some(option => pressed.includes(option));
 
                 if (toInitial === toTerminal)
                   return Ray.directions.none;
 
-                return toInitial ? Ray.directions.previous : Ray.directions.next;
+                return toInitial ? Ray.directions.previous : Ray.Any.directions.next;
               }
             );
 
@@ -379,23 +379,23 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
         },
         {
           combo: "/", global: true, label: "", preventDefault: true, onKeyDown: () => {
-            console.log(Interface.any.rays.map((ray: Ray) => ray.render_options(Interface)))
+            console.log(Interface.any.Ray.map((ray: Ray.Any) => Ray.Any.render_options(Interface)))
             // console.log('---------')
             // console.log(`Debugging: ${Interface.any.selection.self.label} (type=${Interface.any.selection.type})`)
-            // console.log(`rays.length at pos=[${Interface.any.selection.render_options(Interface).position}]: ${Interface.any.rays.filter((ray: Ray) =>
+            // console.log(`Ray.length at pos=[${Interface.any.selection.render_options(Interface).position}]: ${Interface.any.Ray.filter((ray: Ray.Any) =>
             //   _.isEqual(
             //     Interface.any.selection.render_options.position,
             //     ray.render_options(Interface).position
             //   )
-            // ).length} / ${Interface.any.rays.length}`)
+            // ).length} / ${Interface.any.Ray.length}`)
             // console.log('ref', Interface.any.selection)
             // console.log('ref.self', Interface.any.selection.self)
             //
             // const debug: DebugResult = {};
             // Interface.any.selection.self.debug(debug);
             // console.log('ref.debug', debug);
-            // Interface.any.rays.forEach((ray: Ray) => ray.debug(debug));
-            // console.log('rays.debug', debug);
+            // Interface.any.Ray.forEach((ray: Ray.Any) => Ray.Any.debug(debug));
+            // console.log('Ray.debug', debug);
 
           }
         },
@@ -427,15 +427,15 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
       color="#555555"
     />
 
-    {/*{Interface.any.rays.map((ray: Ray) => <Render key={ray.label} ray={ray} />)}*/}
+    {/*{Interface.any.Ray.map((ray: Ray.Any) => <Render key={ray.label} ray={ray} />)}*/}
 
-    {Interface.any.rays.map((ray: Ray) => <Render2 index={0} key={ray.self.label} Interface={Interface} ray={ray}/>)}
+    {Interface.any.Ray.map((ray: Ray.Any) => <Render2 index={0} key={ray.self.label} Interface={Interface} ray={ray}/>)}
 
     {/*<group position={[0, 0, 0]}>*/}
     {/*  <AutoVertex position={add(Interface.any.selection.any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
     {/*              scale={scale / 1.5} color="#55FF55"/>*/}
     {/*  <group position={[0, 60, 0]}>*/}
-    {/*    {Interface.any.rays.___map((ray: Ray, index: number) => <Render2 key={ray.self.label} Interface={Interface} ray={ray} index={index} show={{initial: false, terminal: false}} />)}*/}
+    {/*    {Interface.any.Ray.___map((ray: Ray.Any, index: number) => <Render2 key={ray.self.label} Interface={Interface} ray={ray} index={index} show={{initial: false, terminal: false}} />)}*/}
     {/*  </group>*/}
     {/*</group>*/}
 
@@ -443,7 +443,7 @@ export const QuickVisualizationInterface = ({scale = 1.5}: InterfaceOptions) => 
     {/*  <AutoVertex position={add(Interface.any.selection.any.position, added)} rotation={[0, 0, Math.PI / 2]}*/}
     {/*              scale={scale / 1.5} color="#55FF55"/>*/}
     {/*  <group position={[0, 60, 0]}>*/}
-    {/*    {Interface.any.rays.___map((ray: Ray, index: number) => <Render2 key={ray.self.label} Interface={Interface} ray={ray} index={index}/>)}*/}
+    {/*    {Interface.any.Ray.___map((ray: Ray.Any, index: number) => <Render2 key={ray.self.label} Interface={Interface} ray={ray} index={index}/>)}*/}
     {/*  </group>*/}
     {/*</group>*/}
   </>

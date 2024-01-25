@@ -20,7 +20,7 @@ export type VisualizationProps = {
   alt: string,
 }
 
-const Visualization = ({ray}: { ray: Ray }) => {
+const Visualization = ({ray}: { ray: Ray.Any }) => {
   return <VisualizationCanvas>
 
   </VisualizationCanvas>

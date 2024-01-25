@@ -10,7 +10,7 @@ export class Ray {
   //  * [  |--] this.self ----- this.self.self [--|--]
   //  * ______ (<- initial pointer)
   //  */
-  // as_initial = (): Ray => {
+  // as_initial = (): Ray.Any => {
   //   if (this.is_none()) {
   //     throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
   //   }
@@ -43,7 +43,7 @@ export class Ray {
    * [  |--] this.self.self ----- this.self [--|--]
    *                                         _____ (<- terminal pointer)
    */
-  as_terminal = (): Ray => {
+  as_terminal = (): Ray.Any => {
     if (this.is_none()) {
       throw new PreventsImplementationBug('Should be implemented at some point ; Just return an empty vertex');
     }
@@ -71,12 +71,12 @@ export class Ray {
     // TODO NOTE: THE ORDER OF `this.self` first matters here.
     return [this.self.___as_vertex(), this.___as_vertex()];
   }
-  private ___as_vertex = (): Ray => {
+  private ___as_vertex = (): Ray.Any => {
     const vertex = Ray.vertex().o({ js: '___as_vertex' }).as_reference().o({ js: '___as_vertex.#' });
 
     return this.___ignorantly_equivalent(vertex);
   }
-  ___ignorantly_equivalent = (ref: Ray): Ray => {
+  ___ignorantly_equivalent = (ref: Ray.Any): Ray.Any => {
     ref.self.self = this.self.as_arbitrary();
     this.self.self = ref.self.as_arbitrary();
 
@@ -84,7 +84,7 @@ export class Ray {
   }
 
   /** [     ] */ static None = () => new Ray({ });
-  /** [--?--] */ static vertex = (value: JS.ParameterlessFunction<Ray> = Ray.None) => {
+  /** [--?--] */ static vertex = (value: JS.ParameterlessFunction<Ray.Any> = Ray.None) => {
     /** [     ] */ const vertex = Ray.None();
     /** [--   ] */ vertex.initial = vertex.___empty_initial();
     /** [  ?  ] */ vertex.vertex = value;
@@ -92,18 +92,18 @@ export class Ray {
 
     /** [--?--] */ return vertex;
   }
-  /** [  |-?] */ static initial = () => Ray.vertex().initial;
-  /** [?-|  ] */ static terminal = () => Ray.vertex().terminal;
+  /** [  |-?] */ static initial = () => Ray.Any.vertex().initial;
+  /** [?-|  ] */ static terminal = () => Ray.Any.vertex().terminal;
 
   // TODO; Temp placeholders for now - & BETTER DEBUG
-  ___empty_initial = () => new Ray({ vertex: Ray.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
-  ___empty_terminal = () => new Ray({ vertex: Ray.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
+  ___empty_initial = () => new Ray({ vertex: Ray.Any.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
+  ___empty_terminal = () => new Ray({ vertex: Ray.Any.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
 
 
 
   // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
   
-  static equivalent = JS.Function.Impl((initial, terminal) => {
+  static equivalent = Ray.Function.Impl((initial, terminal) => {
 
     /**
      * The simplest case, is where both sides are only aware of themselves (on .vertex). The only thing we need to do is turn an Orbit, to an Orbit which repeats every 2 steps, the intermediate step being the other thing.
@@ -114,7 +114,7 @@ export class Ray {
      *
      * Basically turns `A` into a reference to `B`, and `B` into a reference to `A`.
      */
-    const ignorant_equivalence = (): Ray => {
+    const ignorant_equivalence = (): Ray.Any => {
       return initial.___ignorantly_equivalent(terminal);
     }
 
@@ -188,14 +188,14 @@ export class Ray {
 
 
     static follow_direction = {
-      [RayType.INITIAL]: Ray.directions.next,
-      [RayType.TERMINAL]: Ray.directions.previous
+      [RayType.INITIAL]: Ray.Any.directions.next,
+      [RayType.TERMINAL]: Ray.Any.directions.previous
     }
 
     /**
      * .next
      */
-      next = (step: JS.FunctionImpl = Ray.directions.next): Ray => {
+      next = (step: Ray.FunctionImpl = Ray.directions.next): Ray.Any => {
         if (step(this).self.self.is_none())
           return Ray.None();
 
@@ -211,13 +211,13 @@ export class Ray {
         return Ray.None();
       }
       // @alias('end', 'result', 'back')
-      last = (step: JS.FunctionImpl = Ray.directions.next): Ray => {
+      last = (step: Ray.FunctionImpl = Ray.directions.next): Ray.Any => {
         const next = this.next(step);
         return next.is_some() ? next.last(step) : this;
       }
 
 
-  get reverse(): Ray {
+  get reverse(): Ray.Any {
     const copy = this;//TODO.copy();
 
     // TODO: Do we do this lazy by default? Just using refs??? - Or abstract this elsewhere to decide what to do
@@ -229,7 +229,7 @@ export class Ray {
     return copy;
   }
 
-  *traverse(step: JS.FunctionImpl = Ray.directions.next): Generator<Ray> {
+  *traverse(step: Ray.FunctionImpl = Ray.directions.next): Generator<Ray.Any> {
     // TODO: Also to ___func??
 
     if (this.type !== RayType.VERTEX)
@@ -240,7 +240,7 @@ export class Ray {
 
   *___next({
     step = Ray.directions.next,
-  } = {}): Generator<Ray> {
+  } = {}): Generator<Ray.Any> {
     for (let current of Ray.traverse({
       initial: this.as_arbitrary(),
       step
@@ -256,7 +256,7 @@ export class Ray {
       }
     }
   }
-  *___map<T>(map: (vertex: Ray) => T, {
+  *___map<T>(map: (vertex: Ray.Any) => T, {
     step = Ray.directions.next,
   } = {}): Generator<T> {
     for (let vertex of this.___next({step})) {
@@ -265,9 +265,9 @@ export class Ray {
   }
 
   static step_function = (
-    step: JS.FunctionImpl
-  ): JS.Function => {
-    const step_from_boundary = (from: Ray, to: Ray): Ray => {
+    step: Ray.FunctionImpl
+  ): Ray.Function => {
+    const step_from_boundary = (from: Ray.Any, to: Ray.Any): Ray.Any => {
       switch (to.type) {
         /**
          * Dereferencing is likely in many cases quickly subject to infinite stepping (similar to INITIAL -> INITIAL, TERMINAL -> TERMINAL, VERTEX -> VERTEX. (Could be that this means that there's no continuation, a self-reference defined here, or it's some mechanism of halting.)
@@ -322,7 +322,7 @@ export class Ray {
             && Ray.is_orbit(to.self, to.self.self.self)
           ) {
             // default pointer
-            // const default_pointer = (): Ray[] => {
+            // const default_pointer = (): Ray.Any[] => {
             //           return pointer.terminal.is_none() ? [] : [pointer];
             //         }
             // TODO: Split of options.step(terminal) & new Ray({
@@ -338,7 +338,7 @@ export class Ray {
       }
     }
 
-    return JS.Function.WithMemory(
+    return Ray.Function.WithMemory(
       to_step => {
         const to = to_step.dereference;
 
@@ -371,21 +371,21 @@ export class Ray {
   }
 
   static *traverse(options = {
-    initial: Ray.None,
-    step: Ray.directions.next,
+    initial: Ray.Any.None,
+    step: Ray.Any.directions.next,
     // branch: {
     //   // @alias('pruning', 'mapping', 'filtering')
-    //   prune: (branches: Ray): Ray => branches,
+    //   prune: (branches: Ray.Any): Ray.Any => branches,
     //   // @alias('next', 'selection', 'tactic', 'strategy')
-    //   next: (branches: Ray): Ray => branches.first(),
+    //   next: (branches: Ray.Any): Ray.Any => branches.first(),
     // }
-  }): Generator<Ray> {
+  }): Generator<Ray.Any> {
 
     /**
      * An arbitrary Ray of (accessible) (possible) next steps to perform in traversal.
      */
     // @alias('cursor(s)', 'branch(es)', 'selection(s)')
-    let branches: Ray = Ray.step_function(options.step).as_ray(options.initial()); // TODO; This can be used to copy?
+    let branches: Ray.Any = Ray.step_function(options.step).as_ray(options.initial()); // TODO; This can be used to copy?
     let branch = branches;
 
     while (true) {
@@ -401,7 +401,7 @@ export class Ray {
     //     /**
     //      * An arbitrary Ray of (requested) next steps to perform in parallel/.../superposition (with respect to all the other branches).
     //      */
-    //     const branches_to_traverse: Ray = options.branch.next(branches);
+    //     const branches_to_traverse: Ray.Any = options.branch.next(branches);
     //
     //     /**
     //      * Make copies of our traversal for each selected branch
@@ -412,7 +412,7 @@ export class Ray {
     //      * Split off traversal to each branch, selecting their respective .
     //      */
     //
-    //   let branch: Ray = branches_to_traverse; //TODO
+    //   let branch: Ray.Any = branches_to_traverse; //TODO
 
       branch.self = branch.next().as_arbitrary();
 
@@ -434,7 +434,7 @@ export class Ray {
        *           ref.self = branches[0].as_arbitrary();
        *
        *           if (branches.length !== 1) {
-       *             pointers.push(...branches.slice(1).map(b => Ray.vertex(b.as_arbitrary())));
+       *             pointers.push(...branches.slice(1).map(b => Ray.Any.vertex(b.as_arbitrary())));
        *           }
        *         }
        */
@@ -450,10 +450,10 @@ export class Ray {
    * TODO:
    *   - This needs something much smarter at some point...
    */
-  all = (step: JS.FunctionImpl = Ray.directions.next): { [key: string | symbol]: Ray } & any => {
-    return new Proxy<Ray>(this, {
+  all = (step: Ray.FunctionImpl = Ray.directions.next): { [key: string | symbol]: Ray.Any } & any => {
+    return new Proxy<Ray.Any>(this, {
 
-      get(self: Ray, p: string | symbol, receiver: any): any {
+      get(self: Ray.Any, p: string | symbol, receiver: any): any {
 
         // TODO: Could return arbitrary structure (or in other method than .all?)
         return self.___map(ref => ref.any[p], {step});
@@ -462,7 +462,7 @@ export class Ray {
       /**
        * Can't overload things like '-=' for anything but things that return numbers... ; So just apply a general function instead.
        */
-      set(self: Ray, p: string | symbol, newValue: any, receiver: any): boolean {
+      set(self: Ray.Any, p: string | symbol, newValue: any, receiver: any): boolean {
         for (let ref of self.___next({step})) { // TODO; This needs to either be dynamically, or just a simple shut-off for circular ones.
           ref.any[p] = JS.is_function(newValue) ? newValue(ref.any[p]) : newValue;
         }
@@ -471,7 +471,7 @@ export class Ray {
       },
 
 
-      deleteProperty(self: Ray, p: string | symbol): boolean {
+      deleteProperty(self: Ray.Any, p: string | symbol): boolean {
         throw new NotImplementedError();
 
         return true;
@@ -484,22 +484,22 @@ export class Ray {
   /**
    * Move to a JavaScript object, which will handle any complexity of existing JavaScript objects, and allows one to abstract any values contained in the {vertex} to the usual JavaScript interface. - More usual to how one thinks about functions, ..., properties.
    */
-  get any(): { [key: string | symbol]: Ray } & any { return this.self.proxy(); }
-  get ___any(): { [key: string | symbol]: Ray } & any { return this.proxy(); }
+  get any(): { [key: string | symbol]: Ray.Any } & any { return this.self.proxy(); }
+  get ___any(): { [key: string | symbol]: Ray.Any } & any { return this.proxy(); }
 
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
-  protected proxy = <T = any>(constructor?: JS.ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray } => { // TODO:
+  protected proxy = <T = any>(constructor?: JS.ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray.Any } => { // TODO:
     // TODO: IMPLEMENT SPLAT... {...ray.any}
-    return this._proxy ??= new Proxy<Ray>(this, {
+    return this._proxy ??= new Proxy<Ray.Any>(this, {
 
-      get(self: Ray, p: string | symbol, receiver: any): any {
+      get(self: Ray.Any, p: string | symbol, receiver: any): any {
 
         // throw new NotImplementedError();
         return self._dirty_store[p];
         // return self.as_arbitrary();
       },
-      set(self: Ray, p: string | symbol, newValue: any, receiver: any): boolean {
+      set(self: Ray.Any, p: string | symbol, newValue: any, receiver: any): boolean {
         // TODO:
         // self._dirty_store[p] = JS.is_function(newValue) ? newValue(self._dirty_store[p]) : newValue;
         // throw new NotImplementedError();
@@ -508,7 +508,7 @@ export class Ray {
         return true;
       },
 
-      deleteProperty(self: Ray, p: string | symbol): boolean {
+      deleteProperty(self: Ray.Any, p: string | symbol): boolean {
         if (!(p in self._dirty_store)) {
           return false;
         }
@@ -529,7 +529,7 @@ export class Ray {
    *   - Could lazily try to find references.
    *   - Implement on proxy for 'delete ray'
    */
-  delete = (): Ray => {
+  delete = (): Ray.Any => {
     this.self.initial = Ray.None;
     this.self.self = this.self.self_reference;
     this.self.terminal = Ray.None;
@@ -543,7 +543,7 @@ export class Ray {
     return this;
   }
 
-  ___dirty_all(c: Ray[]): Ray[] {
+  ___dirty_all(c: Ray.Any[]): Ray.Any[] {
     if (c.filter(a => a.label === this.label).length !== 0) {
       return c;
     }

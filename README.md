@@ -73,13 +73,16 @@ Most importantly, it is here as infrastructure. Infrastructure for the design an
 
 ---
 
-Let's take logic gates as an example?
+Let's take logic gates as an example? - and maybe logic with different equiv func? - Like switching between true/false on each check?
 
 ```ts
-const initial = Rays.boolean().orbit().size(2);
-const terminal = Rays.boolean().orbit().size(2);
+import Ray from '@orbitmines/rays';
+
+const initial = Ray.boolean().orbit().size(2);
+const terminal = Ray.boolean().orbit().size(2);
 
 
+// TODO: Compiles to a sequence of traversal checks?, and setting ops?, and arbitrary many of them make up a program.
 
 ```
 
