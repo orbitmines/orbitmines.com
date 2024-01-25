@@ -512,40 +512,43 @@ namespace Ray {
 
       export const none = Ray.Op.Zeroary.All.none; // TODO FOR ALL OPS, ? automatic, or just put them here.
 
-      // TODO: These should allow as_vertex as zero-ary, but that means self = self_reference, not none. ?
       /**
-       * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
-       *
-       * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
+       * Placing existing structure on a new Reference, Boundary or Vertex:
        */
-      export const as_reference = Ray.Function.Self.Impl(
-        self => none().self = self
-      );
+        // TODO: These should allow as_vertex as zero-ary, but that means self = self_reference, not none. ?
+        /**
+         * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
+         *
+         * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
+         */
+        export const as_reference = Ray.Function.Self.Impl(
+          self => none().self = self
+        );
 
-      export const as_vertex = Ray.Function.Self.Impl((self) => {
-        const vertex = Ray.Op.Zeroary.All.none();
-        vertex.initial = self_reference;
-        vertex.terminal = self_reference;
-        vertex.self = self; // TODO: Like this, ignorant vs non-ignorant? What to do here?
+        export const as_vertex = Ray.Function.Self.Impl((self) => {
+          const vertex = Ray.Op.Zeroary.All.none();
+          vertex.initial = self_reference;
+          vertex.terminal = self_reference;
+          vertex.self = self; // TODO: Like this, ignorant vs non-ignorant? What to do here?
 
-        return vertex;
-      });
-      export const as_terminal = Ray.Function.Self.Impl((self) => {
-        const terminal = Ray.Op.Zeroary.All.none();
-        terminal.initial = self_reference;
-        // terminal.terminal = none;
-        terminal.self = self;
+          return vertex;
+        });
+        export const as_terminal = Ray.Function.Self.Impl((self) => {
+          const terminal = Ray.Op.Zeroary.All.none();
+          terminal.initial = self_reference;
+          // terminal.terminal = none;
+          terminal.self = self;
 
-        return terminal;
-      });
-      export const as_initial = Ray.Function.Self.Impl((self) => {
-        const initial = Ray.Op.Zeroary.All.none();
-        // initial.initial = none;
-        initial.terminal = self_reference;
-        initial.self = self;
+          return terminal;
+        });
+        export const as_initial = Ray.Function.Self.Impl((self) => {
+          const initial = Ray.Op.Zeroary.All.none();
+          // initial.initial = none;
+          initial.terminal = self_reference;
+          initial.self = self;
 
-        return initial;
-      });
+          return initial;
+        });
 
     }
   }
