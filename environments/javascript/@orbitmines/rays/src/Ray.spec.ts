@@ -8,7 +8,7 @@ describe("Ray", () => {
 
       test(".traverse", () => {
         const events: any[] = [];
-        const ray = Ray.New();
+        const ray = Ray.array([]);
 
         // const b = ray in ray;
 
@@ -21,8 +21,11 @@ describe("Ray", () => {
           () => {
             try{
               if (ray) {
+                ray.is_orbit();
 
               }
+              new ray.initial;
+
               // ray.initial = new ray();
               // ray.initial = ray.terminal();
               // ray.initial = (self): Ray.Any => {}

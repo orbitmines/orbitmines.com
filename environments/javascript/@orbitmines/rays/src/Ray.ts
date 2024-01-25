@@ -17,11 +17,15 @@ namespace Ray {
 
     & Pick<Ray.Instance, '___instance' | 'on' | 'debug'>
 
+    /** Preconfigured functions defined for Rays. */
     & {
       -readonly [TKey in keyof typeof Ray.Function.All]: typeof Ray.Function.All[TKey] extends Ray.Any
         ? Ray.Any
         : never;
     }
+
+    /** Storage/Movement operations which need to be implemented. */
+    & { [TKey in keyof Ray.Op.Impl<Ray.Any>]: Ray.Any }
 
   export type Constructor = {
     initial?: Ray.Any,
@@ -38,14 +42,6 @@ namespace Ray {
     export type Event = { event: string, self: Ray.Any, context: any };
     export type Listener = (event: Event) => void;
   }
-
-  export type Op = { get: (self: Ray.Any) => Ray.Any, set: (self: Ray.Any) => Ray.Any };
-  // export type Ops = {
-  //   initial(self: Ray.Any): Ray.Any;
-  //   self(self: Ray.Any): Ray.Any;
-  //   terminal(self: Ray.Any): Ray.Any;
-  //   is_orbit(a: Ray.Any, b: Ray.Any): boolean;
-  // }
 
   /**
    * An uninitialized empty Ray, which caches itself once initialized.
@@ -116,6 +112,7 @@ namespace Ray {
      *    - None as, first time called, memoize func.
      *    - Perhaps locally cache (for stuff like count?) - no way to ensure globally coherence
      *    - a.orbit() -> a.orbit(a)
+     * // TODO: Should be automatic? is_orbit() or any method without arguments is a.is_orbit(a.self()) ?? not a.is_orbit(a) ; ???
      *
      *  - .initial/.terminal can be seen as a particular connection on .self, which .self ignores?
      *
@@ -126,22 +123,6 @@ namespace Ray {
      *  - Allow mapping/finding of other implementations regarding some equiv funcs (like different ways of implementing using NAND etc...)
      */
 
-  }
-
-  export namespace Op {
-    export enum New { NONE, INITIAL, VERTEX, TERMINAL }
-    export enum Zeroary {
-
-    }
-    // Should not need anything elese ; so could be any one thing?
-    export enum Unary {
-      INITIAL,
-      SELF, // TODO .as_reference? Basically, Ray.directions
-      TERMINAL
-    }
-    export enum Binary {
-      IS_ORBIT // a.___instance === b.___instance
-    }
   }
 
   export namespace ProxyHandlers {
@@ -203,18 +184,19 @@ namespace Ray {
     });
   }
 
-  export type Enum<T extends Array<string>> = {
-    [TKey in T[number]]: Ray.Any
-  }
   /** Ray is an Enum(eration) */
   export namespace Enum {
 
-    export const Impl = <T extends Array<string>>(...values: T): Ray.Enum<T> => {
-      return Object.fromEntries(values.map(value =>
+    export type Type<T extends Array<string>> = {
+      [TKey in T[number]]: Ray.Any
+    }
+
+    export const Impl = <T extends Array<string>>(...enumeration: T): Type<T> => {
+      return Object.fromEntries(enumeration.map(value =>
         [value, Ray.Function.None.Impl((): Ray.Any => {
           throw new NotImplementedError(); // TODO
         })]
-      )) as Ray.Enum<T>;
+      )) as Type<T>;
       // TODO: ONE OF 4 SELECTION RAY for the case of type.
     }
 
@@ -223,30 +205,23 @@ namespace Ray {
   /** Ray is a function (.next) */
   export namespace Function {
 
-    // TODO: Reversible is orbit.
-
     /** {T} is just an example/desired use case. But it generalizes to any function. */
     export type Type<T> = T | Ray.Any;
 
     /** From which perspective the Function is implemented. */
     enum Perspective {
       None, Self, /** Ref, */
-    } // TODO Ray.Enum? or not.
+    }
 
     //   /**
     //    * Implement a function from the perspective of 'this' for 'this.self'.
     //    */
     //   // static Ref = <TResult>(impl: (ref: Ray.Any) => TResult): Function<TResult> => Ray.Function.Self(self => impl(self.as_reference()));
 
-    //   // static CachedAfterUse = <TResult>(constructor: FunctionConstructor<TResult>): FunctionConstructor<TResult> => {
-    //   //   return constructor;
-    //   // }
-
-
     /** Implement a function from no (or: an ignorant) perspective. */
     export namespace None {
 
-      export const Impl = (impl: () => Ray.Any): Ray.Any => {
+      export const Impl = (impl: Op.Zeroary.Type<Ray.Any>): Ray.Any => {
         throw new NotImplementedError();
         // return new Ray.Any({ perspective: Perspective.None, impl });
       }
@@ -255,40 +230,98 @@ namespace Ray {
 
     /** Implement a function from the perspective of 'this' */
     export namespace Self {
-      export const Impl = (impl: Ray.Op.New | Ray.Op.Unary | ((self: Ray.Any) => Ray.Any)): Ray.Any => {
+      export const Impl = (impl: Op.Unary.Type<Ray.Any>): Ray.Any => {
         throw new NotImplementedError();
         // return new Ray.Any({ perspective: Perspective.Self, impl });
       }
 
-      export const Binary = (impl: Ray.Op.Binary | ((a: Ray.Any, b: Ray.Any) => Ray.Any)): Ray.Any => {
+      export const Binary = (impl: Op.Binary.Type<Ray.Any>): Ray.Any => {
         throw new NotImplementedError();
         // return new Ray.Any({ perspective: Perspective.Self, impl }); // TODO: Good way to deal with arity
       }
 
-      export const If = (impl: (self: Ray.Any) => Ray.Any): Ray.Any => {
-        return Impl(impl); // TODO: GENERIC collapse to boolean implemented and overridable
-      }
-
-      export type MatchCase = [
-        Function.Type<typeof Function.Self.If>,
-        Function.Type<typeof Function.Self.Impl | typeof Function.None.Impl>
-      ];
-
-      export type MatchCases = [...MatchCase[], /** 'else, ... default' **/ Function.Type<typeof Function.None.Impl>];
+      // export const If = (impl: Op.Unary.Type<Ray.Any>): Ray.Any => {
+      //   return Impl(impl); // TODO: GENERIC collapse to boolean implemented and overridable
+      // }
+      // TODO: GENERIC collapse to boolean implemented and overridable
 
       /**
        * TODO:
        *   - Maybe replace switch with 'zip'?, What are the practical differences?
        */
-      export const Match = (cases: MatchCases): Ray.Any => {
-        return Impl(self => self); // TODO
-      }
+      // export const Match = (cases: MatchCases): Ray.Any => {
+      //   return Impl(self => self); // TODO
+      // }
     }
   }
 
-  /** TODO: Shouldn't classify these? */
-  export const Type = Ray.Enum.Impl('REFERENCE', 'INITIAL', 'TERMINAL', 'VERTEX');
+  export namespace Op {
 
+    export type Impl<T> =
+      { [TKey in keyof (typeof Op.Zeroary.All)]: Op.Zeroary.Type<T> }
+      & { [TKey in keyof (typeof Op.Unary.All)]: Op.Unary.Type<T> }
+      & { [TKey in keyof (typeof Op.Binary.All)]: Op.Binary.Type<T> }
+
+    export const all = <TOps extends {
+      [op: string]: string
+    }>(ops: TOps): {
+      [TOP in keyof TOps]: Ray.Any
+    } => ({});
+
+    export namespace Zeroary {
+      export type Type<T> = () => T;
+      export type Any<T> = (keyof typeof Op.Zeroary.All) | Type<T>;
+
+      // TODO: set = none;
+      // TODO: Destroy the current thing, connect .initial & .terminal ? (can do just direct connection, preserves 'could have been something here') - then something like [self.initial, self, self.terminal].pop().
+      // TODO: Leave behind --] [-- or connect them basically..
+      export const All = Op.all({
+        // @alias('alloc', 'new', 'create', 'initialize')
+        none: 'none',
+        // @alias('free', 'destroy', 'clear', 'delete', 'pop')
+        free: 'free',
+      });
+    }
+    export namespace Unary {
+      export type Type<T> = (a: T) => T;
+      export type Any<T> = (keyof typeof Op.Unary.All) | Type<T>;
+
+      export const All = Op.all({
+
+        /** An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to. */
+        initial: 'initial',   // a.initial
+
+        /**
+         * An arbitrary Ray, defining what our current position is equivalent to.
+         *
+         * Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
+         */
+        // @alias('dereference', 'self')
+        self: 'self',         // a.self
+
+        /** An arbitrary Ray, defining what continuing in this direction is equivalent to. */
+        terminal: 'terminal', // a.terminal
+      });
+    }
+    export namespace Binary {
+      export type Type<T> = (a: T, b: T) => T;
+      export type Any<T> = (keyof typeof Op.Binary.All) | Type<T>;
+
+      export const All = Op.all({
+        initial: 'initial',   // a.initial = b
+        self: 'self',         // a.self = b
+        terminal: 'terminal', // a.terminal = b
+
+        /**
+         * Concretely, we use here "whatever the JavaScript engine run on" as the thing which has power over the equivalence assumption we use to halt programs. - The asymmetry which allows the engine to make a distinction between each object.
+         *
+         * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
+         */
+        // @alias('is_none')
+        is_orbit: 'is_orbit', // a.___instance === b.___instance
+      });
+    }
+  }
 
   export namespace Function {
     export const Get = <TProperty extends keyof (typeof Ray.Function.All)>(
@@ -313,13 +346,6 @@ namespace Ray {
         self => self.is_initial().xor(self.is_terminal())
       );
 
-      export const type = Ray.Function.Self.Match([
-        /** [  |  ] */ [is_reference, Ray.Type.REFERENCE],
-        /** [  |-?] */ [is_initial, Ray.Type.INITIAL],
-        /** [?-|  ] */ [is_terminal, Ray.Type.TERMINAL],
-        /** [--|--] */ Ray.Type.VERTEX
-      ]);
-
       /**
        * This is basically what breaks the recursive structure.
        *
@@ -333,45 +359,14 @@ namespace Ray {
        *
        * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Quite%20similarly%20to%20the%20loops%2C%20I%20could%20be%20ignorant%20of%20additional%20structure%20by%20assuming%20it%27s%20not%20there.
        */
-      export const is_none = Ray.Function.Self.Impl(
-        self => self.is_orbit(self.dereference())
-      );
+      export const is_none = Ray.Op.Binary.All.is_orbit;
       export const is_some = Ray.Function.Self.Impl(
         self => self.is_none().not()
       );
 
-      /**
-       * Concretely, we use here "whatever the JavaScript engine run on" as the thing which has power over the equivalence assumption we use to halt programs. - The asymmetry which allows the engine to make a distinction between each object.
-       *
-       * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
-       */
-      export const is_orbit = Ray.Function.Self.Binary(Op.Binary.IS_ORBIT);
-
       export const self_reference = Ray.Function.Self.Impl(
         self => self
       );
-
-      // TODO: set = none;
-      // TODO: Destroy the current thing, connect .initial & .terminal ? (can do just direct connection, preserves 'could have been something here') - then something like [self.initial, self, self.terminal].pop().
-      // TODO: Leave behind --] [-- or connect them basically..
-
-      // @alias('destroy', 'clear', 'delete', 'pop')
-      export const none = Ray.Function.Self.Impl( // TODO FROM REF SPEC?
-        self => self.self //= Op.New.NONE // TODO self: self_reference
-      );
-
-      /** An arbitrary Ray, defining what continuing in this direction is equivalent to. */
-      export const terminal = Ray.Function.Self.Impl(Op.Unary.TERMINAL);
-      /** An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to. */
-      export const initial = Ray.Function.Self.Impl(Op.Unary.INITIAL);
-      /**
-       * An arbitrary Ray, defining what our current position is equivalent to.
-       *
-       * Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
-       */
-        // @alias('dereference', 'self')
-      export const dereference = Ray.Function.Self.Impl(Op.Unary.SELF);
-      export const self = dereference;
 
       /**
        * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
@@ -379,7 +374,7 @@ namespace Ray {
        * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
        */
       export const reference = Ray.Function.Self.Impl(
-        self => Ray.New({ self: self })
+        self => Ray.Op.Zeroary.All.none().self = self
       );
 
       /**
@@ -390,7 +385,14 @@ namespace Ray {
           (a, b) => a.terminal().equivalent(b.initial())
         );
 
-      // @alias('modular', 'modulus', 'orbit')
+      /**
+       * - TODO: Note that an orbit is reversibility. ?
+       *
+       * - Like with 'copy' and all concepts: Note that we're only after reversibility after ignoring some difference.
+       *
+       * @see "Reversibility is necessarily inconsistent": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
+       */
+      // @alias('modular', 'modulus', 'orbit', 'circle', 'repeats', 'infinitely')
       export const orbit = Ray.Function.Self.Binary(
         (a, b) => a.first().initial().compose(b.last().terminal())
       );
@@ -414,11 +416,17 @@ namespace Ray {
         });
 
       /**
-       * If there exists an orbit between A & B, anywhere (so dually connected, what if only one is aware??).
+       * If there exists an orbit between A & B anywhere on their equivalency functions - or: their .self - (except for the directions through which we're referencing them)
+       *
+       * Note the connection between 'is_orbit' vs 'is_equivalence'. They're essentially the same thing, but:
+       *    - in the case of 'is_equivalence' we directly have access to their difference but are explicitly ignoring them - in the context in which this functionality is called.
+       *    - in the case of 'is_orbit', we might need to do more complicated things to acknowledge their differences - we don't have direct access to them.
+       *
+       * TODO: (so dually connected, what if only one is aware??) Or basically just ; the answer in this particular instance is just if either end can find the other only once. Consistency of it defined on a more abstract level...
        */
         // @alias('includes', 'contains') ; (slightly different variants?)
       export const is_equivalent = Ray.Function.Self.Binary(
-          (a, b) => a.self().traverse().is_orbit(b.self().traverse()) // Basically: does there exist a single connection between the two?
+          (a, b) => a.traverse().is_orbit(b.traverse()) // Basically: does there exist a single connection between the two?
         );
 
       export const traverse = Ray.Function.Self.Impl(
@@ -486,7 +494,11 @@ namespace Ray {
        */
       // @alias('clone', 'duplicate')
       export const copy = Ray.Function.Self.Impl(
-        (self) => none().self = self.self.copy() // TODO Relies heavily on the execution layer to copy initial/terminal etc... ; and an is_orbit check before calling copy again. - Then again on the execution layer it can lazily do this copy (by not evaluating (i.e.) traversing everywhere), or it first does this traversing directly.
+        // or
+        // (self) => self.self.copy.reference()
+        (self) => Ray.Op.Zeroary.All.none().self = self.self.copy()
+
+          // TODO Relies heavily on the execution layer to copy initial/terminal etc... ; and an is_orbit check before calling copy again. - Then again on the execution layer it can lazily do this copy (by not evaluating (i.e.) traversing everywhere), or it first does this traversing directly.
       );
 
 
@@ -494,6 +506,7 @@ namespace Ray {
   }
 
   /** JavaScript runtime conversions */
+    export const array = <T = any>(array: T[]): Ray.Any => Ray.iterable(array);
     export const iterable = <T = any>(iterable: Iterable<T>): Ray.Any => Ray.iterator(iterable[Symbol.iterator]());
     export const async_iterable = <T = any>(async_iterable: AsyncIterable<T>): Ray.Any => Ray.async_iterator(async_iterable[Symbol.asyncIterator]());
     export const iterator = <T = any>(iterator: Iterator<T>): Ray.Any => { throw new NotImplementedError(); }

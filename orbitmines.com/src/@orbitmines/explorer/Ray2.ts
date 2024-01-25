@@ -185,13 +185,6 @@ export class Ray {
   equivalent = Ray.equivalent.as_method(this);
 
 
-
-
-    static follow_direction = {
-      [RayType.INITIAL]: Ray.Any.directions.next,
-      [RayType.TERMINAL]: Ray.Any.directions.previous
-    }
-
     /**
      * .next
      */
