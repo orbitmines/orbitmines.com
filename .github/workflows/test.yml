@@ -10,5 +10,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Setup Node
       uses: actions/setup-node@v3
-    - run: npm install
-    - run: npm run test -- --watchAll=false
+    - working-directory: "./orbitmines.com"
+      run: npm install
+    - working-directory: "./orbitmines.com"
+      run: npm run test -- --watchAll=false
