@@ -8,7 +8,7 @@ import RewritingRays from "./papers/2024.RewritingRays";
 const PAPERS: { [key: string]: any } = {
     'on-intelligibility': OnIntelligibility,
     'on-orbits-equivalence-and-inconsistencies': OnOrbits,
-    'rewriting-rays': RewritingRays,
+    'traversing-and-rewriting-of-arbitrary-rays': RewritingRays,
 }
 
 const Paper = () => {

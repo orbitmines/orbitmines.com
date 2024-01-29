@@ -41,7 +41,7 @@ const RewritingRays = () => {
   const paper: Omit<PaperProps, 'children'> = {
     ...REWRITING_RAYS.reference,
     subtitle: renderable<string>("", (value: any) => <>
-      A technical deep dive into the initial implementation of Rays {<Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>}.
+      A technical deep dive into Rays {<Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>}. Demonstrated by an implementation of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Aleks Kissinger\'s Chyp (Cospans of HYPergraphs)', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />.
     </>),
     pdf: {
       fonts: [JetBrainsMono],
