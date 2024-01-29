@@ -12,6 +12,7 @@ import BlueprintJS from "./lib/layout/experimental-designs/BlueprintJS";
 import Modules from "./@orbitmines/js/react/Modules";
 import Icons from "./lib/layout/experimental-designs/Icons";
 import {ThumbnailPage} from "./lib/paper/Paper";
+import Archive from "./routes/Archive";
 
 export const Router = () => {
 
@@ -22,6 +23,9 @@ export const Router = () => {
     </Route>
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
+    </Route>
+    <Route path="archive">
+      <Route path=":item" element={<Archive />} />
     </Route>
     <Route path="thumbnail" element={<ThumbnailPage />} />
     {/* TODO */}
