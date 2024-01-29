@@ -27,17 +27,6 @@ namespace Ray {
     /** Storage/Movement operations which need to be implemented. */
     & { [TKey in keyof Ray.Op.Impl<Ray.Any>]: Ray.Any }
 
-  export type Constructor = {
-    initial?: Ray.Any,
-    self?: Ray.Any,
-    terminal?: Ray.Any,
-
-    proxy?: ProxyHandler<Ray.Any>,
-    debug?: Debug.Listener,
-  }
-
-  export const New = (constructor?: Ray.Constructor): Ray.Any => Ray.Instance.New(constructor).proxy;
-
   export namespace Debug {
     export type Event = { event: string, self: Ray.Any, context: any };
     export type Listener = (event: Event) => void;
@@ -48,55 +37,23 @@ namespace Ray {
    */
   // export const None: Ray.FunctionConstructor<Ray.Any> = Ray.Function.CachedAfterUse(Ray.New);
 
-  export class Instance extends JS.Class.Instance<Ray.Any> {
+  // export class Object {
+  //
+  //   // TODO: Could copy?
+  //   get initial(): Ray.Any { return this._initial(); } set initial(initial: Ray.Any) { this._initial = initial; } protected _initial: Ray.Any;
+  //   get self(): Ray.Any { return this._self(); } set self(self: Ray.Any) { this._self = self; } protected _self: Ray.Any;
+  //   get terminal(): Ray.Any { return this._terminal(); } set terminal(terminal: Ray.Any) { this._terminal = terminal; } protected _terminal: Ray.Any;
+  //
+  //   protected constructor({ initial, self, terminal }: { initial?: Ray.Any, self?: Ray.Any, terminal?: Ray.Any } = {}) {
+  //
+  //     this._initial = initial ?? Ray.none.memoized;
+  //     this._self = self ?? Ray.self_reference;
+  //     this._terminal = terminal ?? Ray.none.memoized;
+  //   }
+  // }
 
-    static New = (constructor?: Ray.Constructor): Ray.Instance => new Ray.Instance(constructor);
-
-
-    listeners: Debug.Listener[];
-
-    // get initial(): Ray.Any { return this._initial.call(this.proxy); } set initial(initial: Ray.FunctionConstructor<Ray.Any>) { this._initial = Ray.Function.New(initial); } protected _initial: Ray.Function<Ray.Any>;
-    // get self(): Ray.Any { return this._self.call(this.proxy); } set self(self: Ray.FunctionConstructor<Ray.Any>) { this._self = Ray.Function.New(self); } protected _self: Ray.Function<Ray.Any>;
-    // get terminal(): Ray.Any { return this._terminal.call(this.proxy); } set terminal(terminal: Ray.FunctionConstructor<Ray.Any>) { this._terminal = Ray.Function.New(terminal); } protected _terminal: Ray.Function<Ray.Any>;
-
-    protected constructor({
-                            // initial, self, terminal
-      proxy,
-      debug,
-    }: Ray.Constructor = {}) {
-      super({ proxy: proxy ?? Ray.ProxyHandlers.Default });
-
-      this.listeners = debug ? [debug] : [];
-
-      // this._initial = Ray.Function.New(initial ?? Ray.None);
-      // this._self = Ray.Function.New(self ?? this.proxy);
-      // this._terminal = Ray.Function.New(terminal ?? Ray.None);
-    }
-
-    /** Used to jump out of the proxy. */
-    get ___instance(): Instance { return this; }
-
-    debug = <T>(
-      on: Debug.Listener,
-      func: JS.ParameterlessFunction<T>
-    ): T => {
-      this.listeners.push(on);
-      const ret = func();
-      this.listeners.pop(); // TODO?
-
-      return ret;
-    }
-
-    /** Simple debug/traversal mechanism. */
-    on = (event: Omit<Debug.Event, 'self'>) => {
-      if (!this.listeners) return;
-
-      this.listeners.forEach(listener => listener({ ...event, self: this.proxy }));
-    }
-
-  }
-
-  export class Compiler { // Ray is Compiler
+  /** A simplistic compiler for Ray */
+  export namespace Compiler { // TODO Ray is Compiler
 
     /**
      * TODO: Compiler could have things like other composed rays which tell it cares about the other (even if that's correct or not??)
@@ -128,9 +85,49 @@ namespace Ray {
      *
      * TODO: After initial demo:
      *  - Allow mapping/finding of other implementations regarding some equiv funcs (like different ways of implementing using NAND etc...)
+     *
+     *  Arbitrary.
      */
+  }
+
+  export type Constructor = { proxy?: ProxyHandler<Ray.Any>, debug?: Debug.Listener, }
+
+  export class Instance extends JS.Class.Instance<Ray.Any> {
+
+    listeners: Debug.Listener[];
+
+    constructor({
+      proxy,
+      debug,
+    }: Ray.Constructor = {}) {
+      super({ proxy: proxy ?? Ray.ProxyHandlers.Default });
+
+      this.listeners = debug ? [debug] : [];
+    }
+
+    /** Used to jump out of the proxy. */
+    get ___instance(): Instance { return this; }
+
+    debug = <T>(
+      on: Debug.Listener,
+      func: JS.ParameterlessFunction<T>
+    ): T => {
+      this.listeners.push(on);
+      const ret = func();
+      this.listeners.pop(); // TODO?
+
+      return ret;
+    }
+
+    /** Simple debug/traversal mechanism. */
+    on = (event: Omit<Debug.Event, 'self'>) => {
+      if (!this.listeners) return;
+
+      this.listeners.forEach(listener => listener({ ...event, self: this.proxy }));
+    }
 
   }
+
 
   export namespace ProxyHandlers {
 
@@ -372,17 +369,13 @@ namespace Ray {
         self => self.is_none().not()
       );
 
-      export const self_reference = Ray.Function.Self.Impl(
-        self => self
-      );
-
       /**
        * @see "Continuations as Equivalence (can often be done in parallel - not generally)": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
        */
         // @alias('merge, 'continues_with', 'compose')
       export const compose = Ray.Function.Self.Binary(
-          (a, b) => a.terminal().equivalent(b.initial())
-        );
+        (a, b) => a.terminal().equivalent(b.initial())
+      );
 
       /**
        * "Composing an terminal & initial boundary"
@@ -399,7 +392,12 @@ namespace Ray {
          * - TODO: If we're only doing one end: This already assumes they are connected on the other end.
          * - TODO: should be a connection here, with is_composed ; or "reference.is_equivalent" so that you can drop one of the sides, or both.
          */
-        (a, b) => ( b.last().compose(a.first()) ).and( a.first().compose(b.last()) )
+        (a, b) => {
+          b.last().compose(a.first());
+          a.first().compose(b.last());
+
+          return a; // ?
+        }
       );
 
       /**
@@ -442,8 +440,6 @@ namespace Ray {
         (a) => { throw new NotImplementedError(); }
       );
 
-
-      // TODO: .next but arbitrary step??
       export const next = Ray.Function.Self.Impl((self) => {
         throw new NotImplementedError();
         return self;
@@ -510,8 +506,6 @@ namespace Ray {
           // TODO Relies heavily on the execution layer to copy initial/terminal etc... ; and an is_orbit check before calling copy again. - Then again on the execution layer it can lazily do this copy (by not evaluating (i.e.) traversing everywhere), or it first does this traversing directly.
       );
 
-      export const none = Ray.Op.Zeroary.All.none; // TODO FOR ALL OPS, ? automatic, or just put them here.
-
       /**
        * Placing existing structure on a new Reference, Boundary or Vertex:
        */
@@ -550,6 +544,9 @@ namespace Ray {
           return initial;
         });
 
+      export const memoized = Ray.Function.Self.Impl(
+        self => { throw new NotImplementedError(); }
+      );
     }
   }
 
@@ -564,6 +561,11 @@ namespace Ray {
 
     export const number = (number: number) => { throw new NotImplementedError(); }
 
+  export const self_reference = Ray.Function.Self.Impl(
+    self => self
+  );
+  export const none = Ray.Op.Zeroary.All.none; // TODO FOR ALL OPS, ? automatic, or just put them here.
+
   // export const Boundary = { INITIAL: Type.INITIAL, TERMINAL: Type.TERMINAL }; TODO: LIST O
 
   // TODO CAN ALSO BE ZERO-ARY..
@@ -572,8 +574,17 @@ namespace Ray {
     (a, size) => { throw new NotImplementedError(); }
   );
   // @alias('bit')
-  // export const boolean = size(2);
+  export const boolean = size(2);
 
+  export const vertex = Ray.Function.Self.Impl(
+    (self) => { throw new NotImplementedError(); }
+  );
+  export const initial = Ray.Function.Self.Impl(
+    (self) => { throw new NotImplementedError(); }
+  );
+  export const terminal = Ray.Function.Self.Impl(
+    (self) => { throw new NotImplementedError(); }
+  );
 }
 
 export default Ray;

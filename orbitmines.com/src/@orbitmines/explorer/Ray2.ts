@@ -60,8 +60,6 @@ export class Ray {
 
     initial_vertex.compose(terminal_vertex);
 
-    // TODO BETTER DEBUG
-
     return Ray.directions.next(terminal_vertex);
   }
   private ___as_vertices = (): [Ray, Ray] => {
@@ -220,15 +218,6 @@ export class Ray {
     // TODO: This doesn't actually work
 
     return copy;
-  }
-
-  *traverse(step: Ray.FunctionImpl = Ray.directions.next): Generator<Ray.Any> {
-    // TODO: Also to ___func??
-
-    if (this.type !== RayType.VERTEX)
-      throw new NotImplementedError(`[${this.type}]`);
-
-    yield *this.___next({step});
   }
 
   *___next({
@@ -437,12 +426,6 @@ export class Ray {
     //   throw new PreventsImplementationBug(`${pointers.length} left`)
   }
 
-
-  /**
-   *
-   * TODO:
-   *   - This needs something much smarter at some point...
-   */
   all = (step: Ray.FunctionImpl = Ray.directions.next): { [key: string | symbol]: Ray.Any } & any => {
     return new Proxy<Ray.Any>(this, {
 

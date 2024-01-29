@@ -1,11 +1,29 @@
 import Ray from "./Ray";
-import rays from "../index";
 
 describe("Ray", () => {
 
   describe(".Function", () => {
     describe(".Instance", () => {
+      test(".te", () => {
+        {
+          // "new Ray.vertex()()" vs "new Ray.vertex()"
+          const A = new Ray.vertex();
+          const B = new Ray.vertex();
 
+          A.compose(B);
+        }
+        {
+          const ray = Ray.size(2);
+        }
+        {
+          const ray = Ray.array([undefined, undefined]);
+
+        }
+        {
+          const ray = Ray.boolean();
+        }
+
+      });
       test(".traverse", () => {
         const events: any[] = [];
         const ray = Ray.array([]);
@@ -15,7 +33,7 @@ describe("Ray", () => {
         // ray()()()()();
         //
         ray.debug(
-          (event) => {
+          (event: Ray.Debug.Event) => {
             events.push(event);
           },
           () => {
