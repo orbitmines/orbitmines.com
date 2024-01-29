@@ -13,20 +13,13 @@ import Arc from "../../lib/paper/layout/Arc";
 import Link from "../../lib/paper/layout/Link";
 import {renderable} from "../../lib/typescript/React";
 import {Divider, Intent, Tag} from "@blueprintjs/core";
-import {CachedVisualizationCanvas, VisualizationCanvas} from "../../@orbitmines/explorer/Visualization";
 import {Center} from "@react-three/drei";
 import {Block} from "../../lib/syntax-highlighting/CodeBlock";
-import {
-  BinarySuperposition,
-  Continuation,
-  Curve, Line, Loop,
-  RenderedRay, torus,
-  Vertex
-} from "../../@orbitmines/explorer/OrbitMinesExplorer";
-import {Ray} from "../../@orbitmines/explorer/Ray";
 import {HorizontalLine} from "../../lib/paper/PaperContent";
 import CustomIcon from "../../lib/layout/icons/CustomIcon";
 import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
+import { CachedVisualizationCanvas } from '../../@orbitmines/Visualization';
+import Ray from '@orbitmines/rays';
 
 export const ON_ORBITS: Content = {
   reference: {

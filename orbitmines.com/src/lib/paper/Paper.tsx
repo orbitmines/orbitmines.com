@@ -7,10 +7,10 @@ import {useLocation, useSearchParams} from "react-router-dom";
 import {ReferenceCounter, ReferenceProps, useCounter} from "./layout/Reference";
 import {PaperHeader} from "./PaperContent";
 import {Grid, Row} from "../layout/flexbox";
-import {CanvasContainer} from "../../@orbitmines/explorer/Visualization";
 import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
 import {PROFILES} from "../../profiles/profiles";
+import {CanvasContainer} from "../../@orbitmines/Visualization";
 
 export type PaperProps = ReferenceProps & {
   header?: any //

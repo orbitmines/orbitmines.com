@@ -520,6 +520,8 @@ namespace Ray {
           self => none().self = self
         );
 
+        // TODO as_reference.as_vertex instead of as_vertex ignorant by default?
+
         export const as_vertex = Ray.Function.Self.Impl((self) => {
           const vertex = Ray.Op.Zeroary.All.none();
           vertex.initial = self_reference;
@@ -545,6 +547,9 @@ namespace Ray {
           return initial;
         });
 
+      /**
+       * Any arbitrary direction, where .not (or reversing the direction) relies on some memory mechanism
+       */
       export const memoized = Ray.Function.Self.Impl(
         self => { throw new NotImplementedError(); }
       );

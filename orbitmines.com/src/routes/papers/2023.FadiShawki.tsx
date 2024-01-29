@@ -11,8 +11,7 @@ import {Reference} from "../../lib/paper/layout/Reference";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
 import {ON_ORBITS} from "./2023.OnOrbits";
-import { Block } from '../../lib/syntax-highlighting/CodeBlock';
-import {CachedVisualizationCanvas, CanvasContainer} from "../../@orbitmines/explorer/Visualization";
+import {CanvasContainer} from "../../@orbitmines/Visualization";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
