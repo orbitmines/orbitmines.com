@@ -440,6 +440,7 @@ namespace Ray {
         (a) => { throw new NotImplementedError(); }
       );
 
+      // TODO: .terminal/.initial is self() vs self.not()
       export const next = Ray.Function.Self.Impl((self) => {
         throw new NotImplementedError();
         return self;
