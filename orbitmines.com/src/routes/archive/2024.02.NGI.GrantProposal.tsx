@@ -91,15 +91,15 @@ const _2024_02_NGI_GrantProposal = () => {
 
         <BR/>
 
-        Hardware requirements: A <Reference is="reference" index={referenceCounter()} reference={{title: "tinybox", link: "https://tinygrad.org/#:~:text=The-,tinybox,-738%20FP16%20TFLOPS"}} simple inline /> or an equivalent in case of import-related issues. 15.000 USD excl VAT. Corrected for EUR, taxes, shipping costs and a small buffer in case of import issues: 17.500 EUR should suffice.
+        - Hardware requirements: A <Reference is="reference" index={referenceCounter()} reference={{title: "tinybox", link: "https://tinygrad.org/#:~:text=The-,tinybox,-738%20FP16%20TFLOPS"}} simple inline /> or an equivalent in case of import-related issues. 15.000 USD excl VAT. Corrected for EUR, taxes, shipping costs and a small buffer in case of import issues: 17.500 EUR should suffice.
 
         <BR/>
 
-        12.500 EUR to sustain myself for at least a year (any additional costs associated with the project will come out of this).
+        - 12.500 EUR to sustain myself for at least a year (any additional costs associated with the project will come out of this).
 
         <BR/>
 
-        20.000 EUR to involve a second person in the project. (I might do something more non-trivial, but a second person is the simplest case)
+        - 20.000 EUR to involve a second person in the project. (I might do something more non-trivial, but a second person is the simplest case)
 
         <BR/>
 

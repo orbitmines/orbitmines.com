@@ -9,7 +9,6 @@ import isWebGLAvailable = WEBGL.isWebGLAvailable;
 import {PaperProps} from "../lib/paper/Paper";
 import {Children} from "../lib/typescript/React";
 import {Col, Row} from "../lib/layout/flexbox";
-import Ray from "@orbitmines/rays";
 
 export const NoWebGL = () => {
   return <div>No WebGL</div>
@@ -20,7 +19,7 @@ export type VisualizationProps = {
   alt: string,
 }
 
-const Visualization = ({ray}: { ray: Ray.Any }) => {
+const Visualization = ({}: { }) => {
   return <VisualizationCanvas>
 
   </VisualizationCanvas>

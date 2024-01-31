@@ -31,7 +31,7 @@ Most importantly, it is here as infrastructure. Infrastructure for the design an
 
 ## Where is OrbitMines going with this? - i.e. Future inquiries
 
-Check out everything I've made public regarding this here: https://github.com/orbitmines/orbitmines.com/issues or equivalently, check the Discord channels grouped under the name: [Fractals of the Galaxy](https://discord.com/channels/1055502602365845534/1114584997702156388).
+Check out everything I've made public regarding this here: [GitHub Issues](https://github.com/orbitmines/orbitmines.com/issues) or equivalently, check the Discord channels grouped under the name: [Fractals of the Galaxy](https://discord.com/channels/1055502602365845534/1114584997702156388).
 
 ---
 
@@ -98,9 +98,5 @@ const terminal = Ray.boolean().orbit().size(2);
 
 ## License Magic
 
-I'm not convinced putting licenses on the repo's in the usual case is anything other than *Minecraft servers putting "Not affiliated with Mojang" in their stores* just because everyone else does it. But here: after doing absolutely no research into the international ramifications: [LICENSE](./LICENSE) a license for those who like to look at them. Try to reason to what that applies in this repository, obviously that doesn't cover everything not made by me or other contributions to OrbitMines or something.
-
-
-
-
+I'm not convinced putting licenses on the repo's in the usual case is anything other than *Minecraft servers putting "Not affiliated with Mojang" in their stores* just because everyone else does it. But here: after doing absolutely no research into the international ramifications: [LICENSE](./LICENSE) a license for those who like to look at them. Try to reason to what that applies in this repository, obviously that doesn't cover everything not made by me or other contributions to OrbitMines or something. Just put a reference to me or this project somewhere if it's remotely interesting to you.
 
