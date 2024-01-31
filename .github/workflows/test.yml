@@ -1,0 +1,16 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Node
+      uses: actions/setup-node@v3
+    - working-directory: "./orbitmines.com"
+      run: npm install
+    - working-directory: "./orbitmines.com"
+      run: npm run test -- --watchAll=false
