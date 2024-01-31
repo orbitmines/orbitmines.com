@@ -5,7 +5,7 @@ import React from "react";
 import Paragraph from "./Paragraph";
 import {SectionProps} from "./Section";
 
-const Arc = ({ head, children }: SectionProps & Children) => {
+const Arc = ({ head, children, buffer = true }: SectionProps & Children & { buffer?: boolean}) => {
 
   return <>
     <Row center="xs">
@@ -16,9 +16,9 @@ const Arc = ({ head, children }: SectionProps & Children) => {
       <Paragraph>{children}</Paragraph>
     </Row>
 
-    <Row center="xs">
+    {buffer ? <Row center="xs">
       <Divider style={{width: '80%'}}/>
-    </Row>
+    </Row> : <></>}
   </>;
 }
 

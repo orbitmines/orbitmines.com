@@ -16,6 +16,8 @@ import tinycorp_icon from "././tinycorp/132956020.jpeg";
 import lex_fridman_podcast_icon from "././lexfridman-podcast/download.jpeg";
 import _3b1b_icon from "././3b1b/3B1B_Logo.svg.png";
 import akissinger_icon from "././akissinger/881183.png";
+import wolfram_icon from "././wolfram-research/logo.png";
+import zx_calculus_icon from "././zx/icon.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
 
@@ -106,6 +108,20 @@ const ORGANIZATIONS = {
       icon_png: orbitmines_icon,
     },
   },
+  zx_calculus: <TOrganization>{
+    key: 'zx_calculus',
+    name: "zx_calculus",
+    assets: {
+      icon_png: zx_calculus_icon,
+    }
+  },
+  wolfram: <TOrganization>{
+    key: 'wolfram',
+    name: "wolfram",
+    assets: {
+      icon_png: wolfram_icon,
+    }
+  },
   lex_fridman_podcast: <TOrganization>{
     key: 'lex_fridman_podcast',
     name: "lex_fridman_podcast",
@@ -186,6 +202,13 @@ const ORGANIZATIONS = {
     name: "Higher Order Company",
     assets: {
       icon_png: hoc_icon,
+    }
+  },
+  mindscape: <TOrganization>{
+    key: 'mindscape',
+    name: "Mindscape",
+    assets: {
+      icon_png: mindscape_icon,
     }
   },
   preposterous_universe: <TOrganization>{

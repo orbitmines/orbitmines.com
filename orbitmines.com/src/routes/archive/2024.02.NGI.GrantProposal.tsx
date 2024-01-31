@@ -94,7 +94,7 @@ const _2024_02_NGI_GrantProposal = () => {
         So in short terms. Better infrastructure for CRDTs and Version Control Systems and abstract them away as much as possible.
       </Section>
       <Section head="Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?" sub="(Optional) This can help us determine if you are the right person to undertake this effort">
-
+        {' '}
       </Section>
     </Arc>
 
