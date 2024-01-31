@@ -150,7 +150,7 @@ const REFERENCES = {
   PROGRAMMING_WHAT_IS_THE_Q_ALGORITHM_OPENAI_Q_STAR_ALGORITHM_MISTRAL_7B_PRM800K: <Content>{
     reference: {
       title: 'Programming | what is the Q* algorithm? OpenAI Q Star Algorithm | Mistral 7B | PRM800K',
-      authors: [{name: 'algorithm? OpenAI Q Star Algorithm | Mistral 7B | PRM800K (2023)](https://www.youtube.com/watch?v=2QO3vzwHXhg) - *George Hotz'}],
+      authors: [{name: 'George Hotz'}],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=2QO3vzwHXhg"
