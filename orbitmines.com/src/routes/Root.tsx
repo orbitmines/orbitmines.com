@@ -12,6 +12,7 @@ import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
 import {Rendered} from "../lib/typescript/React";
 import {ON_ORBITS} from "./papers/2023.OnOrbits";
 import Reference from "../lib/paper/layout/Reference";
+import {CanvasContainer} from "../@orbitmines/Visualization";
 
 const Root = () => {
   const papers = [ON_ORBITS, ON_INTELLIGIBILITY];
@@ -87,9 +88,17 @@ const Root = () => {
         </Row></Col>
       </Row>
 
-      <Row center="xs">
-        <Divider style={{width: '80%'}}/>
-      </Row>
+      <CanvasContainer style={{height: '120px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
 
       <Row center="xs">
         <H3 className="m-0">Papers</H3>
@@ -107,9 +116,17 @@ const Root = () => {
         </Row>))}
       </div>
 
-      <Row center="xs">
-        <Divider style={{width: '80%'}}/>
-      </Row>
+      <CanvasContainer style={{height: '150px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
 
       <Author {...PROFILES.fadi_shawki} filter={(profile) => [
         ORGANIZATIONS.github.key,
