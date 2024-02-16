@@ -1,3 +1,6 @@
 [submodule "external/github.com/akissinger/chyp"]
 	path = external/github.com/akissinger/chyp
 	url = git@github.com:akissinger/chyp.git
+[submodule "external/github.com/tinygrad/tinygrad"]
+	path = external/github.com/tinygrad/tinygrad
+	url = git@github.com:tinygrad/tinygrad.git
