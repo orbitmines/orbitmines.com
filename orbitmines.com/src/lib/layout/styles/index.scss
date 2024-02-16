@@ -1,0 +1,19 @@
+@import "./blueprintjs/styles/blueprintjs";
+@import "../../layout/flexbox/styles/flexbox";
+@import "../font/styles/font";
+
+@import "../../layout/styles/spacing";
+
+@import "~@blueprintjs/core/lib/scss/variables";
+
+* {
+  margin: 0;
+
+  font-family: 'JetBrainsMono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: $dark-gray1;
+}

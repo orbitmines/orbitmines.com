@@ -1,3 +1,3 @@
-[submodule "src/@orbitmines/external/github.com/tinygrad/tinygrad"]
-	path = src/@orbitmines/external/github.com/tinygrad/tinygrad
-	url = git@github.com:tinygrad/tinygrad.git
+[submodule "external/github.com/akissinger/chyp"]
+	path = external/github.com/akissinger/chyp
+	url = git@github.com:akissinger/chyp.git
