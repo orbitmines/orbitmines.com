@@ -96,6 +96,12 @@ const terminal = Ray.boolean().orbit().size(2);
 
 ---
 
+## Latest Writing
+https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies/
+![2023.on-orbits-equivalence-and-inconsistencies-thumbnail.jpeg](./orbitmines.com/public/papers/on-orbits-equivalence-and-inconsistencies/images/thumbnail/3840x2160.jpeg)
+
+---
+
 ## License Magic
 
 I'm not convinced putting licenses on the repo's in the usual case is anything other than *Minecraft servers putting "Not affiliated with Mojang" in their stores* just because everyone else does it. But here: after doing absolutely no research into the international ramifications: [LICENSE](./LICENSE) a license for those who like to look at them. Try to reason to what that applies in this repository, obviously that doesn't cover everything not made by me or other contributions to OrbitMines or something. Just put a reference to me or this project somewhere if it's remotely interesting to you.
