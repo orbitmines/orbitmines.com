@@ -59,7 +59,6 @@ namespace Ray {
      *
      * TODO: Compiler could have things like other composed rays which tell it cares about the other (even if that's correct or not??)
      *
-     *
      * TODO: Do I want to keep the is_equiv/is_composed pattern? Or simplify to one of the two?
      *
      *  // TODO: NEVER DIRECTLY EXECUTE, ONLY AFTER CHAIN OF FUNCS, possibly arbitrarily LAZY

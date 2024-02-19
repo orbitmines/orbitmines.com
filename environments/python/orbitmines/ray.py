@@ -48,12 +48,6 @@ class Ray:
   @ray
   def terminal(self) -> Ray: return (-self).initial
 
-  # An arbitrary Ray, defining what our current position is equivalent to.
-  # Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
-  @ray
-  # @alias('dereference')
-  def self(self) -> Ray: raise NotImplementedError
-
   # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
   # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
   @ray
@@ -61,6 +55,12 @@ class Ray:
     return Ray(initial=self.terminal, self=self.self, terminal=self.initial)
   neg = __neg__ = opposite = _not = converse = negative = swap \
     = reverse
+
+  # An arbitrary Ray, defining what our current position is equivalent to.
+  # Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
+  @ray
+  # @alias('dereference')
+  def self(self) -> Ray: raise NotImplementedError
 
   # TODO: Like this, ignorant vs non-ignorant? What to do here?
   #   return vertex
