@@ -31,6 +31,14 @@ print(Ray.as_javascript()) # Ray.compiler = test.compiler = Ray.compiler.compile
 test.run(lambda ray: ray)
 # Ray.runtime(lambda ray: ray).run(test)
 
+# class Object(Ray):
+#   @property
+#   def initial(self) -> Ray: raise NotImplementedError
+#   @property
+#   def self(self) -> Ray: raise NotImplementedError
+#   @property
+#   def terminal(self) -> Ray: raise NotImplementedError
+
 test.compile(lambda ray: ray)
 Ray.compile(lambda ray: ray)
 

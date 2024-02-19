@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import inspect
-from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable, AsyncIterable
+from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable, AsyncIterable, Tuple
 
 
 # TODO: Restrictive cases:
@@ -11,8 +11,22 @@ from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable, Asyn
 
 # TODO: Better python solution than just @ray everywhere (for typechecker)
 
-def ray(func: Callable[[Any, ...], Any]) -> Ray: return func
+def ray(func: Callable[[Any, ...], Any]) -> Ray:
+    pass
 
+class Ray2:
+  def __getattr__(self, name: str) -> Any:
+    print(f'{name}')
+    pass
+  def __setattr__(self, key, value) -> Any:
+    print(f'{key}={value}')
+    pass
+
+#
+# In the case of Rays, whether something is a vertex/initial/terminal is only inferred from surrounding context. And these checks only need to happen locally in order to decide how to traverse arbitrary structure (as in - I only need to check the presence of something next to me, not traverse the whole direction recursively in order to decide what to do).
+#
+# @staticmethod: Implement a function from no (or: an ignorant) perspective.
+# method(self): Implement a function from the perspective of 'this'
 class Ray:
   def __init__(self, *args, **kwargs):
       pass
@@ -29,6 +43,7 @@ class Ray:
   def none() -> Ray: return -Ray.some
   alloc = new = create = initialize \
     = none
+
   @staticmethod
   @ray
   def some() -> Ray: return -Ray.none
@@ -254,7 +269,7 @@ class Ray:
   @ray
   def radd(self) -> Ray: return -self.add.perspective
   @ray
-  def sub(a, b: Arbitrary) -> Ray: raise NotImplementedError
+  def sub(a, b: Arbitrary) -> Ray: return -a.add
   __sub__ \
     = sub
   @ray
@@ -306,17 +321,19 @@ class Ray:
   # Ray is a function (.next)
   # TODO: In the case of tinygrad this is similar to .realize() ?
   def __call__(self, *args, **kwargs) -> Ray:
-    print(f'__call__ {args} {kwargs}')
+    print(f'{self.name}.__call__ {args} {kwargs}')
     # raise NotImplementedError
     return self
   map = render = compile = run \
     = __call__
 
   def __get__(self, instance, owner) -> Ray:
-    print(f'__get__ {instance} {owner}')
+    print(f'{self.name}.__get__ {instance} {owner}')
     return self
     # raise NotImplementedError
-  def __set__(self, instance, value) -> Ray: raise NotImplementedError
+  def __set__(self, instance, value) -> Ray:
+    print(f'{self.name}.__set__ {instance} {value}')
+    return self
   def __delete__(self, instance) -> Ray: raise NotImplementedError
 
   def __iter__(self) -> Iterator[Ray]: return self.as_iterator()
@@ -399,8 +416,10 @@ class Ray:
   #
 
   @staticmethod
-  def function(func: Callable[[Any, ...], Any]) -> Ray:
-    return Ray()
+  def function(name: str, func: Callable[[Any, ...], Any]) -> Ray:
+    a = Ray()
+    a.name = name
+    return a
   @staticmethod
   def integer(val: int) -> Ray: raise NotImplementedError
   @staticmethod
@@ -424,6 +443,13 @@ class Ray:
   # - TODO: readonly setup, where only traversal ops are allowed. Of course these are writing in some sense, but those writings aren't directly accessible from this perspective
   def readonly() -> Ray: raise NotImplementedError
 
+  # Any arbitrary direction, where reversing the direction relies on some arbitrary memory mechanism
+  @ray
+  def memoized(self) -> Ray:
+    # TODO: something along the lines of:
+    # self.next.initial = self ;
+    raise NotImplementedError
+
   # print(f'{type(func)}')
   # def method(*args, **kwargs) -> Ray:
   #   return Ray()
@@ -432,15 +458,22 @@ class Ray:
   # TODO: Binary on self is (a, a) like is_orbit(a, a) ?
 
   # By default a = -b is -b = a
-  # __sub__ = -__add__
-  # __add__ = -__sub__
+  # __set__(self, '')
 
 for name, fn in inspect.getmembers(Ray, inspect.isfunction):
   if name.startswith('__'): continue
   print(f'{name}')
-  setattr(Ray, name, Ray.function(fn))
+  setattr(Ray, name, Ray.function(name, fn))
 
 # a: Callable[[Ray], Ray] = lambda self: self.is_terminal
-setattr(Ray, '__mul__', Ray.function(Ray.size))
+setattr(Ray, '__mul__', Ray.function('__mul__', Ray.size))
+
+print('----------------')
+ray = Ray2()
+ray.__init__ = lambda self: self
+ray.__mul__ = 'test'
+print('----------------')
+# Ray.__add__ = -Ray.__sub__
+# Ray.__sub__ = -Ray.__add__
 
 Arbitrary = Union[int, Ray]
