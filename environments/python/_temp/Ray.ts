@@ -273,55 +273,6 @@ namespace Ray {
         (a) => { throw new NotImplementedError(); }
       );
 
-      // export const not = Ray.Function.Self.Impl(self => );
-      // self.terminal = self.initial();
-      // self.initial = self.terminal();
-      // self.not().not() = self
-      // TODO: What's the difference in context between stepping after not / or not doing so.
-      // TODO; OR BINARY? - "It's just always .next from some perspective?"
-      // TODO: Level at which "not" is applied.
-      export const not = Ray.Function.Self.Binary((a, b) => b);
-
-      /**
-       * Placing existing structure on a new Reference, Boundary or Vertex:
-       */
-        // TODO: These should allow as_vertex as zero-ary, but that means self = self_reference, not none. ?
-        /**
-         * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
-         *
-         * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
-         */
-        export const as_reference = Ray.Function.Self.Impl(
-          self => none().self = self
-        );
-
-        // TODO as_reference.as_vertex instead of as_vertex ignorant by default?
-
-        export const as_vertex = Ray.Function.Self.Impl((self) => {
-          const vertex = Ray.Op.Zeroary.All.none();
-          vertex.initial = self_reference;
-          vertex.terminal = self_reference;
-          vertex.self = self; // TODO: Like this, ignorant vs non-ignorant? What to do here?
-
-          return vertex;
-        });
-        export const as_terminal = Ray.Function.Self.Impl((self) => {
-          const terminal = Ray.Op.Zeroary.All.none();
-          terminal.initial = self_reference;
-          // terminal.terminal = none;
-          terminal.self = self;
-
-          return terminal;
-        });
-        export const as_initial = Ray.Function.Self.Impl((self) => {
-          const initial = Ray.Op.Zeroary.All.none();
-          // initial.initial = none;
-          initial.terminal = self_reference;
-          initial.self = self;
-
-          return initial;
-        });
-
       /**
        * Any arbitrary direction, where .not (or reversing the direction) relies on some memory mechanism
        */
@@ -329,13 +280,6 @@ namespace Ray {
         self => { throw new NotImplementedError(); }
       );
     }
-  }
-
-  export const self_reference = Ray.Function.Self.Impl(
-    self => self
-  );
-
-  // export const Boundary = { INITIAL: Type.INITIAL, TERMINAL: Type.TERMINAL }; TODO: LIST O
 
 }
 

@@ -26,9 +26,14 @@ class Ray:
   # TODO: Leave behind --] [-- or connect them basically..
   @staticmethod
   @ray
-  def none() -> Ray: raise NotImplementedError
+  def none() -> Ray: return -Ray.some
   alloc = new = create = initialize \
     = none
+  @staticmethod
+  @ray
+  def some() -> Ray: return -Ray.none
+  self_reference \
+    = some
 
   @ray
   def free(self): raise NotImplementedError
@@ -36,16 +41,46 @@ class Ray:
     = free
 
   # An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to.
+  # TODO: Note that whenever you have a self-reference through operators, that requires an implementation to break this self-reference. For example ray functionality only requires initial + negative, or terminal + negative, or initial + terminal, to make all the other three.
   @ray
-  def initial(self) -> Ray: raise NotImplementedError
+  def initial(self) -> Ray: return (-self).terminal
+  # An arbitrary Ray, defining what continuing in this direction is equivalent to.
+  @ray
+  def terminal(self) -> Ray: return (-self).initial
+
   # An arbitrary Ray, defining what our current position is equivalent to.
   # Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
   @ray
   # @alias('dereference')
   def self(self) -> Ray: raise NotImplementedError
-  # An arbitrary Ray, defining what continuing in this direction is equivalent to.
+
+  # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
+  # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
   @ray
-  def terminal(self) -> Ray: raise NotImplementedError
+  def reverse(self) -> Ray:
+    return Ray(initial=self.terminal, self=self.self, terminal=self.initial)
+  neg = __neg__ = opposite = _not = converse = negative = swap \
+    = reverse
+
+  # TODO: Like this, ignorant vs non-ignorant? What to do here?
+  #   return vertex
+  # TODO: These are very close to binary ops / makes sense since some/none is a boolean.
+  #       /**
+  #        * Placing existing structure on a new Reference, Boundary or Vertex:
+  #        */
+  #         // TODO: These should allow as_vertex as zero-ary, but that means self = self_reference, not none. ?
+  #         /**
+  #          * Moving `self` to `.self` on an abstraction layer (higher). As a way of being able to describe `self`.
+  #          *
+  #          * TODO: the .reference might need two levels of abstraction higher, one to put it at the .self, another to reference that thing? (Depends a bit on the execution layer)
+  #          */
+  #            // TODO as_reference.as_vertex instead of as_vertex ignorant by default?
+  def as_reference(self) -> Ray: return Ray(initial=Ray.none, self=self, terminal=Ray.none)
+  def as_vertex(self) -> Ray: return Ray(initial=Ray.some, self=self, terminal=Ray.some)
+  def as_initial(self) -> Ray: return Ray(initial=Ray.none, self=self, terminal=Ray.some)
+  def as_terminal(self) -> Ray: return Ray(initial=Ray.some, self=self, terminal=Ray.none)
+
+  # An arbitrary Ray, defining what continuing in this direction is equivalent to.
 
   # This is basically what breaks the recursive structure.
   #
@@ -76,7 +111,7 @@ class Ray:
 
   @ray
   # TODO is_initial = return (-self).terminal().is_none ??
-  def is_initial(self) -> Ray: return self.initial().is_none                      # [  |-?]
+  def is_initial(self) -> Ray: return self.initial().is_none
   @ray
   def is_terminal(self) -> Ray: return self.terminal().is_none                    # [?-|  ]
   @ray
@@ -167,14 +202,6 @@ class Ray:
   @ray
   def is_composed(self) -> Ray: return self.is_orbit.from_perspective_of(self.traverse) # Needs some ref from Ray.Function.Self.
 
-  # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
-  # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
-  @ray
-  # TODO @alias swap ?
-  def reverse(self) -> Ray: raise NotImplementedError
-  neg = __neg__ = opposite = _not = converse = negative \
-    = reverse
-
   @staticmethod
   @ray
   def boolean() -> Ray: return Ray.none * 2
@@ -250,16 +277,6 @@ class Ray:
   @ray
   # @alias(f'push_{last.alias}')
   def push_back(a, b: Arbitrary) -> Ray: return a.last().compose(b)
-
-  @ray
-  def self_reference(self) -> Ray: return self
-
-  # def as_vertex(self) -> Ray:
-  #   vertex = Ray.none()
-  #   vertex.initial = Ray.self_reference
-  #   vertex.terminal = Ray.self_reference
-  #   vertex.self = self # TODO: Like this, ignorant vs non-ignorant? What to do here?
-  #   return vertex
 
   #
   # Python runtime conversions

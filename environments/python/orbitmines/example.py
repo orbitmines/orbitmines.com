@@ -6,13 +6,21 @@ print('test')
 
 @Ray.function
 def test() -> Ray:
-  a = Ray.boolean
-  b = Ray.boolean
+  a = Ray.none; b = Ray.none
+  a, b = Ray.none * 2
+  a, b = Ray.boolean
+  *a, b = Ray.boolean
+  a, *b = Ray.boolean
+  a, *between, b = Ray.boolean
+  b, none = -Ray.boolean
+  b, a = -Ray.boolean.orbit
+  a, b = --Ray.boolean.orbit
+  b, a = ---Ray.boolean.orbit
+  a, b = --Ray.boolean
 
-  a, b = Ray.boolean * 2
+  # TODO: Normal way of talking about a boolean, or probably any concept, is that this is always with .orbit on it. And without .orbit it's probably a weird case. We assume modularity of booleans.
 
   # TODO: This is only if Ray.boolean is .orbit, otherwise reverse would be different.
-  b, a = -(Ray.boolean * 2)
 
 # Compile the function to javascript
 print(test.as_javascript())
