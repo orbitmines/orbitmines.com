@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import inspect
-from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable
+from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable, AsyncIterable
+
 
 # TODO: Restrictive cases:
-# - TODO: readonly setup, where only traversal ops are allowed. Of course these are writing in some sense, bit those writings aren't directly accessible from this perspective
 # - TODO: Tensor as restrictive case
 #
 #
@@ -89,6 +89,8 @@ class Ray:
   # TODO: .terminal/.initial is self() vs self.not()
   @ray
   def next(self) -> Ray: raise NotImplementedError
+  forward \
+    = next
   @ray
   def has_next(self) -> Ray: return self.next().is_some
   @ray
@@ -102,6 +104,21 @@ class Ray:
   def compose(a, b: Arbitrary) -> Ray: return a.terminal().equivalent(b.initial())
   continues_with \
     = compose
+
+  # Equivalence as "Composition of Ray."
+  #
+  # NOTE:
+  #  - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. And it is expensive work to edge towards global coherence.
+  #  - Though changes are only applied locally, their effects can be global (Take for instance, the example of adding to one Ray, which changes the perspective of everything connected to that Ray if they were to traverse the connection).
+  #
+  # @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
+  @ray
+  def equivalent(a, b: Arbitrary) -> Ray:
+    # raise NotImplementedError
+
+    # TODO: This is close but not quite, use the shifting thing I wrote down a few days ago: (And then use something to break the self-reference) - Either on this side. compose, or outside the definitions
+    # This one harder to do in parallel?
+    return a.self().compose(b.self())
 
   # "Composing an terminal & initial boundary"
   # - TODO: Note that an orbit is reversibility. ?
@@ -121,21 +138,6 @@ class Ray:
     return a # TODO ?
   circle = repeats = infinitely \
     = orbit
-
-  # Equivalence as "Composition of Ray."
-  #
-  # NOTE:
-  #  - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. And it is expensive work to edge towards global coherence.
-  #  - Though changes are only applied locally, their effects can be global (Take for instance, the example of adding to one Ray, which changes the perspective of everything connected to that Ray if they were to traverse the connection).
-  #
-  # @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
-  @ray
-  def equivalent(a, b: Arbitrary) -> Ray:
-    # raise NotImplementedError
-
-    # TODO: This is close but not quite, use the shifting thing I wrote down a few days ago: (And then use something to break the self-reference) - Either on this side. compose, or outside the definitions
-    # This one harder to do in parallel?
-    return a.self().compose(b.self())
 
   # "Applying the same thing in a different context"
   # TODO: Somewhat related to Functors?
@@ -165,6 +167,8 @@ class Ray:
   @ray
   def is_composed(self) -> Ray: return self.is_orbit.from_perspective_of(self.traverse) # Needs some ref from Ray.Function.Self.
 
+  # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
+  # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
   @ray
   # TODO @alias swap ?
   def reverse(self) -> Ray: raise NotImplementedError
@@ -196,6 +200,7 @@ class Ray:
      #      // TODO Relies heavily on the execution layer to copy initial/terminal etc... ; and an is_orbit check before calling copy again. - Then again on the execution layer it can lazily do this copy (by not evaluating (i.e.) traversing everywhere), or it first does this traversing directly.
 
     pass
+  # size = length = no params different behavior
   # resize = structure
   mul = __mul__ = times \
     = size
@@ -263,10 +268,23 @@ class Ray:
 
   def as_iterator(self) -> Iterator[Ray]: return self
   def as_async_iterator(self) -> AsyncIterator[Ray]: return self
+  def as_iterable(self) -> Iterable[Ray]: return self
+  def as_async_iterable(self) -> AsyncIterable[Ray]: return self
   def as_string(self) -> str: raise NotImplementedError
   def as_int(self) -> int: raise NotImplementedError
   def as_list(self) -> list: raise NotImplementedError
   def as_tuple(self) -> tuple: raise NotImplementedError
+  @staticmethod
+  def as_javascript() -> str: raise NotImplementedError
+
+  @staticmethod
+  @ray
+  def runtimes() -> Ray: raise NotImplementedError
+
+  # TODO: Any function calls which do not return or are convertable to ray, convert as an operator.
+  @staticmethod
+  @ray
+  def compiler() -> Ray: raise NotImplementedError
 
   # Ray is a function (.next)
   # TODO: In the case of tinygrad this is similar to .realize() ?
@@ -274,6 +292,8 @@ class Ray:
     print(f'__call__ {args} {kwargs}')
     # raise NotImplementedError
     return self
+  map = render = compile = run \
+    = __call__
 
   def __get__(self, instance, owner) -> Ray:
     print(f'__get__ {instance} {owner}')
@@ -329,6 +349,8 @@ class Ray:
 
   @ray
   def previous(self) -> Ray: return (-self).next
+  backward \
+    = previous
   @ray
   def has_previous(self) -> Ray: return (-self).has_next
   @ray
@@ -360,26 +382,30 @@ class Ray:
   #
 
   @staticmethod
-  def from_function(func: Callable[[Any, ...], Any]) -> Ray:
+  def function(func: Callable[[Any, ...], Any]) -> Ray:
     return Ray()
   @staticmethod
-  def from_int(val: int) -> Ray: raise NotImplementedError
+  def integer(val: int) -> Ray: raise NotImplementedError
   @staticmethod
-  def from_iterator(val: Iterator[Any]) -> Ray: raise NotImplementedError
+  def iterator(val: Iterator[Any]) -> Ray: raise NotImplementedError
   @staticmethod
-  def from_iterable(val: Iterable[Any]) -> Ray: raise NotImplementedError
+  def iterable(val: Iterable[Any]) -> Ray: raise NotImplementedError
   @staticmethod
-  def from_boolean(val: bool) -> Ray: raise NotImplementedError
-  @staticmethod
-  @ray
-  def false(): return Ray.from_boolean(False)
+  def boolean(val: bool) -> Ray: raise NotImplementedError
   @staticmethod
   @ray
-  def true(): return Ray.from_boolean(True)
+  def false(): return Ray.boolean(False)
   @staticmethod
-  def from_object(val: object) -> Ray: raise NotImplementedError
+  @ray
+  def true(): return Ray.boolean(True)
   @staticmethod
-  def from_arbitrary(val: Arbitrary) -> Ray: raise NotImplementedError
+  def obj(val: object) -> Ray: raise NotImplementedError
+  @staticmethod
+  def arbitrary(val: Arbitrary) -> Ray: raise NotImplementedError
+
+  @staticmethod
+  # - TODO: readonly setup, where only traversal ops are allowed. Of course these are writing in some sense, but those writings aren't directly accessible from this perspective
+  def readonly() -> Ray: raise NotImplementedError
 
   # print(f'{type(func)}')
   # def method(*args, **kwargs) -> Ray:
@@ -388,12 +414,16 @@ class Ray:
   # return await func(self, *args, **kwargs)
   # TODO: Binary on self is (a, a) like is_orbit(a, a) ?
 
+  # By default a = -b is -b = a
+  # __sub__ = -__add__
+  # __add__ = -__sub__
 
 for name, fn in inspect.getmembers(Ray, inspect.isfunction):
   if name.startswith('__'): continue
   print(f'{name}')
-  setattr(Ray, name, Ray.from_function(fn))
+  setattr(Ray, name, Ray.function(fn))
 
-setattr(Ray, '__mul__', Ray.from_function(Ray.size))
+# a: Callable[[Ray], Ray] = lambda self: self.is_terminal
+setattr(Ray, '__mul__', Ray.function(Ray.size))
 
 Arbitrary = Union[int, Ray]
