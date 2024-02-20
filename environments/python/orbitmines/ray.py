@@ -150,6 +150,11 @@ class Ray:
   def is_orbit(a, b: Arbitrary) -> Ray: raise NotImplementedError # a.___instance === b.___instance
   __eq__ \
     = is_orbit
+
+  # -__eq__ == __ne__
+  # @ray
+  # def __ne__(a, b: Arbitrary) -> Ray: raise NotImplementedError
+
   @ray # TODO
   def is_none(self) -> Ray: return self.is_orbit(self, self.self)
 
@@ -410,11 +415,23 @@ class Ray:
   def __invert__(self): raise NotImplementedError
   def __lshift__(self, item): raise NotImplementedError
   def __pos__(self): raise NotImplementedError
-  def __lt__(a, b: Arbitrary) -> Ray: raise NotImplementedError
+
+  @ray
+  def less_than(self) -> Ray: return (
+    -self.greater_than_or_equal_to
+  )
+  __lt__ \
+    = less_than
+  @ray
+  def greater_than_or_equal_to(self) -> Ray: return (
+    -self.less_than
+  )
+  __ge__ \
+    = greater_than_or_equal_to
+  @ray
   def __gt__(a, b: Arbitrary) -> Ray: raise NotImplementedError
-  def __ge__(a, b: Arbitrary) -> Ray: raise NotImplementedError
+  @ray
   def __le__(a, b: Arbitrary) -> Ray: raise NotImplementedError
-  def __ne__(a, b: Arbitrary) -> Ray: raise NotImplementedError
 
   #
   # Opposite aliases
