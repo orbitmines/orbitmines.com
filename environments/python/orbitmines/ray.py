@@ -23,7 +23,13 @@ class Ray2:
     pass
 
 #
+#
 # In the case of Rays, whether something is a vertex/initial/terminal is only inferred from surrounding context. And these checks only need to happen locally in order to decide how to traverse arbitrary structure (as in - I only need to check the presence of something next to me, not traverse the whole direction recursively in order to decide what to do).
+#
+#
+# "Self-referential operators & multiple abstract implementations":
+# - Note that whenever you have a self-reference through operators, that requires an implementation to break this self-reference. For example ray functionality only requires initial + negative, or terminal + negative, or initial + terminal, to make all the other three.
+#
 #
 # @staticmethod: Implement a function from no (or: an ignorant) perspective.
 # method(self): Implement a function from the perspective of 'this'
@@ -56,7 +62,6 @@ class Ray:
     = free
 
   # An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to.
-  # TODO: Note that whenever you have a self-reference through operators, that requires an implementation to break this self-reference. For example ray functionality only requires initial + negative, or terminal + negative, or initial + terminal, to make all the other three.
   @ray
   def initial(self) -> Ray: return (-self).terminal
   # An arbitrary Ray, defining what continuing in this direction is equivalent to.
@@ -292,8 +297,6 @@ class Ray:
   __sub__ \
     = sub
 
-  # TODO: -add = sub & others
-
   @ray
   def radd(self) -> Ray: return -self.add.perspective
   @ray
@@ -423,14 +426,14 @@ class Ray:
   #   Ray(b).__add__(a)
   #   __add__ = -__add__.perspective (if python would allow for this)
   #   ; TODO could be automatic
-  def __radd__(a, b: Arbitrary) -> Ray: return Ray(b).__add__(a)
-  def __rsub__(a, b: Arbitrary) -> Ray: return Ray(b).__sub__(a)
-  def __rmul__(a, b: Arbitrary) -> Ray: return Ray(b).__mul__(a)
-  def __rpow__(a, b: Arbitrary) -> Ray: return Ray(b).__pow__(a)
-  def __rtruediv__(a, b: Arbitrary) -> Ray: return Ray(b).__truediv__(a)
-  def __rmatmul__(a, b: Arbitrary) -> Ray: return Ray(b).__matmul__(a)
-  def __rxor__(a, b: Arbitrary) -> Ray: return Ray(b).__xor__(a)
-  def __rfloordiv__(a, b: Arbitrary) -> Ray: return Ray(b).__floordiv__(a)
+  def __radd__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__add__(a)
+  def __rsub__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__sub__(a)
+  def __rmul__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__mul__(a)
+  def __rpow__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__pow__(a)
+  def __rtruediv__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__truediv__(a)
+  def __rmatmul__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__matmul__(a)
+  def __rxor__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__xor__(a)
+  def __rfloordiv__(a, b: Arbitrary) -> Ray: return Ray.arbitrary(b).__floordiv__(a)
 
   #
   # Python runtime converters

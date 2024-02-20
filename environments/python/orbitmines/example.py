@@ -1,4 +1,4 @@
-from ray import Ray
+from ray import Ray, ray
 
 print('test')
 
@@ -43,3 +43,12 @@ test.compile(lambda ray: ray)
 Ray.compile(lambda ray: ray)
 
 # test.compile(python).run(python)
+
+# These should be the same
+# def add(self) -> Ray: return -self.sub
+# def sub(self) -> Ray: return -self.add
+# def add(a, b: Arbitrary) -> Ray: return (-self.sub)(b)
+# def sub(a, b: Arbitrary) -> Ray: return (-self.add)(b)
+# add = -sub
+# sub = -add
+# [add, sub].orbit
