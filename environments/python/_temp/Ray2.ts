@@ -342,7 +342,6 @@ export class Ray {
     /**
      * An arbitrary Ray of (accessible) (possible) next steps to perform in traversal.
      */
-    // @alias('cursor(s)', 'branch(es)', 'selection(s)')
     let branches: Ray.Any = Ray.step_function(options.step).as_ray(options.initial()); // TODO; This can be used to copy?
     let branch = branches;
 

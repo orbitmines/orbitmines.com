@@ -66,9 +66,23 @@ class Ray:
   # An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to.
   @ray
   def initial(self) -> Ray: return (-self).terminal
+  previous = backward \
+    = initial
   # An arbitrary Ray, defining what continuing in this direction is equivalent to.
   @ray
   def terminal(self) -> Ray: return (-self).initial
+  next = forward = step \
+    = terminal
+
+  # Ray is a function (.next)
+  # TODO: In the case of tinygrad this is similar to .realize() ?
+  def __call__(self, *args, **kwargs) -> Ray:
+    print(f'{self.name}.__call__ {args} {kwargs}')
+    # raise NotImplementedError
+    return self
+  map = render = compile = run \
+    = __call__ # TODO SHOULD BE __call__ = next
+
 
   # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
   # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
@@ -81,8 +95,9 @@ class Ray:
   # An arbitrary Ray, defining what our current position is equivalent to.
   # Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
   @ray
-  # @alias('dereference')
   def self(self) -> Ray: raise NotImplementedError
+  element = dereference = selected = selection = cursor \
+    = self # TODO: = branch?
 
   # TODO: Like this, ignorant vs non-ignorant? What to do here?
   #   return vertex
@@ -107,6 +122,7 @@ class Ray:
     (-self).as_initial() # TODO: These sorts of deductions should be automatic, here as an example
     or Ray(initial=Ray.some, self=self, terminal=Ray.none)
   )
+  # TODO: Ray.vertex/initial/terminal ? places empty_initial/terminal in the expected style?
 
   # TODO: These might be slightly different?
   # def empty_initial(self) -> Ray: return Ray(initial=Ray.none, self=Ray.none, terminal=self)
@@ -153,27 +169,10 @@ class Ray:
   @ray
   def is_boundary(self) -> Ray: return self.is_initial() ^ self.is_terminal()     # [?-|  ] or [  |-?]
 
-  # TODO: .terminal/.initial is self() vs self.not()
-  @ray
-  def next(self) -> Ray: return (
-
-  )
-  forward = step \
-    = next
-
-  # Ray is a function (.next)
-  # TODO: In the case of tinygrad this is similar to .realize() ?
-  def __call__(self, *args, **kwargs) -> Ray:
-    print(f'{self.name}.__call__ {args} {kwargs}')
-    # raise NotImplementedError
-    return self
-  map = render = compile = run \
-    = __call__ # TODO SHOULD BE __call__ = next
-
   @ray
   def has_next(self) -> Ray: return self.next().is_some
   @ray
-  def last(self) -> Ray: raise NotImplementedError
+  def last(self) -> Ray: raise NotImplementedError # TODO: Other layer of abstraction waiting for .next step function - will hook into anything that finishes, and allows already composing stuff after .last ..
   end = result = back = output \
     = last
 
@@ -417,13 +416,9 @@ class Ray:
 
   #
   # Opposite aliases
-  # TODO: Could just dynamically assign these
+  # TODO: Could just dynamically assign these - the case for any reversible thing (next/previous, initial/terminal ...) always: A.something and (-A).something
   #
 
-  @ray
-  def previous(self) -> Ray: return (-self).next
-  backward \
-    = previous
   @ray
   def has_previous(self) -> Ray: return (-self).has_next
   @ray
