@@ -375,6 +375,8 @@ class Ray:
   def __set__(self, instance, value) -> Ray:
     print(f'{self.name}.__set__ {instance} {value}')
     return self
+  assign = \
+    __set__ # TODO: This thing I mentioned in my notes a while back is relevant to this: Assign in the sense of adding to existing equivalences: i.e. offering a specific implementation for a certain thing, vs the destroy of them and replacing it with something specific: i.e. removing all existing assigns and setting a single one.
   def __delete__(self, instance) -> Ray: raise NotImplementedError
 
   def __iter__(self) -> Iterator[Ray]: return self.as_iterator()
