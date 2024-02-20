@@ -16,10 +16,10 @@ def ray(func: Callable[[Any, ...], Any]) -> Ray:
 
 class Ray2:
   def __getattr__(self, name: str) -> Any:
-    print(f'{name}')
+    print(f'__getattr__.{name}')
     pass
   def __setattr__(self, key, value) -> Any:
-    print(f'{key}={value}')
+    print(f'__setattr__{key}={value}')
     pass
 
 #
@@ -249,29 +249,53 @@ class Ray:
   # duplicate = copy = clone = size.from_perspective_of
 
   @ray
-  def xor(a, b: Arbitrary) -> Ray: return -(a.xnor(b))
+  def xor(self) -> Ray: return (
+    -self.xnor
+  )
   __xor__ \
     = xor
+  @ray # TODO: Could be 'is_equivalent' too? or is_orbit
+  def xnor(self) -> Ray: return (
+    -self.xor
+  )
   @ray
-  def xnor(a, b: Arbitrary) -> Ray: raise NotImplementedError # TODO: Could be 'is_equivalent' too? or is_orbit
+  def nand(self) -> Ray: return (
+    -self._and
+  )
   @ray
-  def nand(a, b: Arbitrary) -> Ray: return -(a & b)
+  def nor(self): return (
+    -self._or
+  )
   @ray
-  def nor(a, b: Arbitrary) -> Ray: return -(a | b)
+  def _and(self) -> Ray: return (
+    -self.nand
+  )
+  __and__ = \
+    _and
+  @ray
+  def _or(self) -> Ray: return (
+    -self.nor
+  )
+  __or__ = \
+    _or
 
   @ray
-  def add(a, b: Arbitrary) -> Ray: raise NotImplementedError
+  def add(self) -> Ray: return (
+    -self.sub
+  )
   __add__ \
     = add
+  @ray
+  def sub(self) -> Ray: return (
+    -self.add
+  )
+  __sub__ \
+    = sub
 
   # TODO: -add = sub & others
 
   @ray
   def radd(self) -> Ray: return -self.add.perspective
-  @ray
-  def sub(a, b: Arbitrary) -> Ray: return -a.add
-  __sub__ \
-    = sub
   @ray
   def pow(a, b: Arbitrary) -> Ray: raise NotImplementedError
   __pow__ \
@@ -345,9 +369,6 @@ class Ray:
   # def __repr__(self) -> str: raise NotImplementedError
   # def __hash__(self) -> str: raise NotImplementedError
   # def __bool__(self) -> bool: raise NotImplementedError
-
-  def __and__(a, b: Arbitrary) -> Ray: raise NotImplementedError
-  def __or__(a, b: Arbitrary) -> Ray: raise NotImplementedError
 
   # def __iadd__(a, b: Arbitrary) -> Ray: return a.assign(a.add(b))
   # def __isub__(a, b: Arbitrary) -> Ray: return a.assign(a.sub(b))
@@ -471,7 +492,15 @@ setattr(Ray, '__mul__', Ray.function('__mul__', Ray.size))
 print('----------------')
 ray = Ray2()
 ray.__init__ = lambda self: self
+
 ray.__mul__ = 'test'
+setattr(ray, '__mul__', lambda self: self)
+
+# class Ray3(ray):
+#   mul = times = size \
+#     = ray__mul__
+#   pass
+
 print('----------------')
 # Ray.__add__ = -Ray.__sub__
 # Ray.__sub__ = -Ray.__add__
