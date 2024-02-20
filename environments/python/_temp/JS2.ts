@@ -196,22 +196,3 @@
 //     }).as_ray();
 //   }
 //
-
-//
-//   // TODO
-//   export const Object = (object: object): Ray.Any => Ray.Any.vertex().o(object).as_reference();
-//
-//   export const Any = (any: any): Ray.Any => {
-//     if (any === null || any === undefined) return JS.Any(any);
-//     if (JS.is_boolean(any)) return JS.Boolean(any);
-//     // if (JS.is_number(any)) return JS.Number(any); TODO
-//     if (JS.is_iterable(any)) return JS.Iterable(any); // || is_array(any))
-//     if (JS.is_function(any)) return Ray.Function.Any(any).as_ray();
-//     if (JS.is_object(any)) return JS.Object(any);
-//
-//     // TODO
-//     // return JS.Any(any);
-//     return Ray.vertex().o({js: any}).as_reference();
-//   }
-//
-// }

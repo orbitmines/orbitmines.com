@@ -32,9 +32,6 @@ namespace Ray {
 
     /**
      *
-     *
-     * How about treating something like something which the context says it's not? (Could apply this sort of thing in some fidelity/consistency checking mechanism as a way of fuzzing the fidelity mechanism)
-     *
      * TODO: Reference maybe as an orbit at the point is the thing ignorant
      *
      * TODO: Compiler could have things like other composed rays which tell it cares about the other (even if that's correct or not??)
@@ -141,7 +138,6 @@ namespace Ray {
       // export const If = (impl: Op.Unary.Type<Ray.Any>): Ray.Any => {
       //   return Impl(impl); // TODO: GENERIC collapse to boolean implemented and overridable
       // }
-      // TODO: GENERIC collapse to boolean implemented and overridable
 
       /**
        * TODO:

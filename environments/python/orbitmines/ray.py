@@ -25,6 +25,8 @@ class Ray2:
 #
 #
 # In the case of Rays, whether something is a vertex/initial/terminal is only inferred from surrounding context. And these checks only need to happen locally in order to decide how to traverse arbitrary structure (as in - I only need to check the presence of something next to me, not traverse the whole direction recursively in order to decide what to do).
+# Leaves the following questions:
+# - TODO: How about treating something like something which the context says it's not? (Could apply this sort of thing in some fidelity/consistency checking mechanism as a way of fuzzing the fidelity mechanism)
 #
 #
 # "Self-referential operators & multiple abstract implementations":
@@ -74,7 +76,7 @@ class Ray:
   def reverse(self) -> Ray:
     return Ray(initial=self.terminal, self=self.self, terminal=self.initial)
   neg = __neg__ = opposite = _not = converse = negative = swap \
-    = reverse
+    = reverse # TODO ; Could also be implemented as copy - hence the __call__ on Ray() - this is the case for any sort of constructor/type.
 
   # An arbitrary Ray, defining what our current position is equivalent to.
   # Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
@@ -97,8 +99,18 @@ class Ray:
   #            // TODO as_reference.as_vertex instead of as_vertex ignorant by default?
   def as_reference(self) -> Ray: return Ray(initial=Ray.none, self=self, terminal=Ray.none)
   def as_vertex(self) -> Ray: return Ray(initial=Ray.some, self=self, terminal=Ray.some)
-  def as_initial(self) -> Ray: return Ray(initial=Ray.none, self=self, terminal=Ray.some)
-  def as_terminal(self) -> Ray: return Ray(initial=Ray.some, self=self, terminal=Ray.none)
+  def as_initial(self) -> Ray: return (
+    (-self).as_terminal() # TODO: These sorts of deductions should be automatic, here as an example
+    or Ray(initial=Ray.none, self=self, terminal=Ray.some)
+  )
+  def as_terminal(self) -> Ray: return (
+    (-self).as_initial() # TODO: These sorts of deductions should be automatic, here as an example
+    or Ray(initial=Ray.some, self=self, terminal=Ray.none)
+  )
+
+  # TODO: These might be slightly different?
+  # def empty_initial(self) -> Ray: return Ray(initial=Ray.none, self=Ray.none, terminal=self)
+  # def empty_terminal(self) -> Ray: return Ray(initial=self, self=Ray.none, terminal=Ray.none)
 
   # An arbitrary Ray, defining what continuing in this direction is equivalent to.
 
@@ -143,9 +155,21 @@ class Ray:
 
   # TODO: .terminal/.initial is self() vs self.not()
   @ray
-  def next(self) -> Ray: raise NotImplementedError
-  forward \
+  def next(self) -> Ray: return (
+
+  )
+  forward = step \
     = next
+
+  # Ray is a function (.next)
+  # TODO: In the case of tinygrad this is similar to .realize() ?
+  def __call__(self, *args, **kwargs) -> Ray:
+    print(f'{self.name}.__call__ {args} {kwargs}')
+    # raise NotImplementedError
+    return self
+  map = render = compile = run \
+    = __call__ # TODO SHOULD BE __call__ = next
+
   @ray
   def has_next(self) -> Ray: return self.next().is_some
   @ray
@@ -345,15 +369,6 @@ class Ray:
   @ray
   def compiler() -> Ray: raise NotImplementedError
 
-  # Ray is a function (.next)
-  # TODO: In the case of tinygrad this is similar to .realize() ?
-  def __call__(self, *args, **kwargs) -> Ray:
-    print(f'{self.name}.__call__ {args} {kwargs}')
-    # raise NotImplementedError
-    return self
-  map = render = compile = run \
-    = __call__
-
   def __get__(self, instance, owner) -> Ray:
     print(f'{self.name}.__get__ {instance} {owner}')
     return self
@@ -453,6 +468,8 @@ class Ray:
   @staticmethod
   def boolean(val: bool) -> Ray: raise NotImplementedError
   @staticmethod
+  def string(val: str) -> Ray: raise NotImplementedError
+  @staticmethod
   @ray
   def false(): return Ray.boolean(False)
   @staticmethod
@@ -461,7 +478,14 @@ class Ray:
   @staticmethod
   def obj(val: object) -> Ray: raise NotImplementedError
   @staticmethod
-  def arbitrary(val: Arbitrary) -> Ray: raise NotImplementedError
+  def arbitrary(val: Arbitrary) -> Ray:
+    if isinstance(val, bool): return Ray.boolean(val)
+    if isinstance(val, int): return Ray.integer(val)
+    if isinstance(val, str): return Ray.string(val)
+    if isinstance(val, object): return Ray.obj(val)
+    # TODO ... - Could do all through object/iterable in the case of python ...
+
+    raise NotImplementedError
 
   @staticmethod
   # - TODO: readonly setup, where only traversal ops are allowed. Of course these are writing in some sense, but those writings aren't directly accessible from this perspective
@@ -471,7 +495,9 @@ class Ray:
   @ray
   def memoized(self) -> Ray:
     # TODO: something along the lines of:
-    # self.next.initial = self ;
+    # res = self.next
+    # res.initial = self
+    # return res
     raise NotImplementedError
 
   # print(f'{type(func)}')

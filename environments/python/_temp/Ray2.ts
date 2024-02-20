@@ -93,12 +93,6 @@ export class Ray {
   /** [  |-?] */ static initial = () => Ray.Any.vertex().initial;
   /** [?-|  ] */ static terminal = () => Ray.Any.vertex().terminal;
 
-  // TODO; Temp placeholders for now - & BETTER DEBUG
-  ___empty_initial = () => new Ray({ vertex: Ray.Any.None, terminal: this.as_arbitrary() }).o({ debug: 'initial ref'}).as_arbitrary();
-  ___empty_terminal = () => new Ray({ vertex: Ray.Any.None, initial: this.as_arbitrary() }).o({ debug: 'terminal ref'}).as_arbitrary();
-
-
-
   // TODO: Returns the ref, since it still holds the information on how they're not the same??? - Need some intuitive way of doing this?
   
   static equivalent = Ray.Function.Impl((initial, terminal) => {
@@ -201,24 +195,6 @@ export class Ray {
         // return [...this.traverse(step)][1] ?? Ray.None(); // TODO BAD
         return Ray.None();
       }
-      // @alias('end', 'result', 'back')
-      last = (step: Ray.FunctionImpl = Ray.directions.next): Ray.Any => {
-        const next = this.next(step);
-        return next.is_some() ? next.last(step) : this;
-      }
-
-
-  get reverse(): Ray.Any {
-    const copy = this;//TODO.copy();
-
-    // TODO: Do we do this lazy by default? Just using refs??? - Or abstract this elsewhere to decide what to do
-    const swap = copy.initial;
-    copy.initial = copy.terminal.as_arbitrary();
-    copy.terminal = swap.as_arbitrary();
-    // TODO: This doesn't actually work
-
-    return copy;
-  }
 
   *___next({
     step = Ray.directions.next,
