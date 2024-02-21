@@ -11,7 +11,7 @@ from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable, Asyn
 
 # TODO: Better python solution than just @ray everywhere (for typechecker)
 
-# TODO: match, switch
+# TODO: match, switch, enum (like key=value), dict, keyvalue, pair, ....
 # TODO: zip, tensor (are these the same as match/switch?)
 
 def ray(func: Callable[[Any, ...], Any]) -> Ray:
@@ -26,6 +26,10 @@ class Ray2:
     pass
 
 #
+# "Arbitrarily partial/.../parallel/superposed" TODO? better name
+# The concept is never really direct execution, and if it is, that's often more like ignorance. Basically, arbitrary lazyness. Like this we basically rephrase "output" or "halting" as "what if we assume it halts here". Inaccessible, ..., Ignorant ones turn into the inability to ask that question.
+# @see "What if this wasn't the case?" https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=%22What%20if%20this%20wasn%27t%20the%20case%3F%22
+#
 #
 # In the case of Rays, whether something is a vertex/initial/terminal is only inferred from surrounding context. And these checks only need to happen locally in order to decide how to traverse arbitrary structure (as in - I only need to check the presence of something next to me, not traverse the whole direction recursively in order to decide what to do).
 # Leaves the following questions:
@@ -36,8 +40,13 @@ class Ray2:
 # - Note that whenever you have a self-reference through operators, that requires an implementation to break this self-reference. For example ray functionality only requires initial + negative, or terminal + negative, or initial + terminal, to make all the other three.
 #
 #
-# @staticmethod: Implement a function from no (or: an ignorant) perspective.
-# method(self): Implement a function from the perspective of 'this'
+# "Naming, ..., Grouping"
+# TODO: This is basically: When to decide that perspective switches should have a different name associated with them, when they can probably be thrown in a bag with other stuff: I.e. Why is it so significantly different it should be separate?
+#    - ex: TODO: Do I want to keep the is_equiv/is_composed pattern? Or simplify to one of the two?
+#
+#   These basically fall under naming/grouping
+#     @staticmethod: Implement a function from no (or: an ignorant) perspective.
+#     method(self): Implement a function from the perspective of 'this'
 class Ray:
   def __init__(self, *args, **kwargs):
       # TODO: Named args in the sense, similar to class definition, in the sense that they equivalences on the existing functions. Again this thing of assign.
@@ -179,6 +188,9 @@ class Ray:
   @ray
   def is_reference(self) -> Ray: return self.is_initial() & self.is_terminal()    # [  |  ]
   # TODO: reference = pointer ...
+  # TODO: Reference maybe as an orbit at the point is the thing ignorant
+  #     TODO: This is basically saying "reference as a constant"
+  # TODO Could say orbit = constant, meaning this entire direction repeats??? - maybe it's slightly different
   @ray
   def is_boundary(self) -> Ray: return self.is_initial() ^ self.is_terminal()     # [?-|  ] or [  |-?]
 
@@ -422,11 +434,14 @@ class Ray:
   async def __aenter__(self) -> Ray: raise NotImplementedError
   async def __aexit__(self, exc_type, exc_val) -> Ray: raise NotImplementedError
 
+
+  def __floordiv__(self, item): raise NotImplementedError
+
+  # TODO: THESE ARE ALL MAPS.
   def __contains__(self, item): raise NotImplementedError
   def __delitem__(self, item): raise NotImplementedError
   def __getitem__(self, item): raise NotImplementedError
   def __setitem__(self, key, value): raise NotImplementedError
-  def __floordiv__(self, item): raise NotImplementedError
   def __pos__(self): raise NotImplementedError
 
   @ray
@@ -516,6 +531,11 @@ class Ray:
 
     raise NotImplementedError
 
+  #
+  # Some functions which demonstrate control of (non-/)lazyness of functions
+  # TODO: this concept should be expanded (more like ignorant function calls from certain perspectives).
+  #
+
   @staticmethod
   # - TODO: readonly setup, where only traversal ops are allowed. Of course these are writing in some sense, but those writings aren't directly accessible from this perspective
   def readonly() -> Ray: raise NotImplementedError
@@ -528,6 +548,8 @@ class Ray:
     # res.initial = self
     # return res
     raise NotImplementedError
+  # TODO = cached
+  # TODO: Better ideas what local caching looks like, (i.e. put it in some local structure to cache, this can be delayed till some useful implementation is ready)
 
   # print(f'{type(func)}')
   # def method(*args, **kwargs) -> Ray:

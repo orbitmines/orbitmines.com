@@ -61,6 +61,7 @@ Ray.compile(lambda ray: ray)
 
 # test.compile(python).run(python)
 
+# Hence the difference between add/sub and a normal boolean. Is context. What add/sub is applied to; i.e. what effects it has.
 # These should be the same
 # def add(self) -> Ray: return -self.sub
 # def sub(self) -> Ray: return -self.add
