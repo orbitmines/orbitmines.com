@@ -31,6 +31,12 @@ print(Ray.as_javascript()) # Ray.compiler = test.compiler = Ray.compiler.compile
 test.run(lambda ray: ray)
 # Ray.runtime(lambda ray: ray).run(test)
 
+Ray(
+  initial = lambda ray: ray,
+  self = lambda ray: ray,
+  terminal = lambda ray: ray,
+  is_orbit = lambda ray: ray
+)
 # class Object(Ray):
 #   @property
 #   def initial(self) -> Ray: raise NotImplementedError
@@ -52,3 +58,4 @@ Ray.compile(lambda ray: ray)
 # add = -sub
 # sub = -add
 # [add, sub].orbit
+

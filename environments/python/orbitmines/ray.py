@@ -11,6 +11,9 @@ from typing import Iterator, AsyncIterator, Union, Callable, Any, Iterable, Asyn
 
 # TODO: Better python solution than just @ray everywhere (for typechecker)
 
+# TODO: match, switch
+# TODO: zip, tensor (are these the same as match/switch?)
+
 def ray(func: Callable[[Any, ...], Any]) -> Ray:
     pass
 
@@ -37,7 +40,11 @@ class Ray2:
 # method(self): Implement a function from the perspective of 'this'
 class Ray:
   def __init__(self, *args, **kwargs):
+      # TODO: Named args in the sense, similar to class definition, in the sense that they equivalences on the existing functions. Again this thing of assign.
+
       pass
+
+  # TODO: DEBUG/LISTENER/OBSERVER/WRAPPER IS A WRAPPER AROUND EVERY FIELD, callbacks. "Ignorant of how it effects, ..., doesn't effect the function."
 
   #
   # Basic Ray operators
@@ -63,26 +70,21 @@ class Ray:
   destroy = clear = delete = pop \
     = free
 
+  # TODO: Like any method, .initial/.terminal could be seen as a particular section of .self, which .self itself ignores. - This should be generalizable to other things setup on .self.
+
   # An arbitrary Ray, defining what continuing in the reverse of this direction is equivalent to.
   @ray
   def initial(self) -> Ray: return (-self).terminal
-  previous = backward \
+  previous = backward = decompile = predecessor \
     = initial
   # An arbitrary Ray, defining what continuing in this direction is equivalent to.
   @ray
-  def terminal(self) -> Ray: return (-self).initial
-  next = forward = step \
-    = terminal
-
-  # Ray is a function (.next)
-  # TODO: In the case of tinygrad this is similar to .realize() ?
-  def __call__(self, *args, **kwargs) -> Ray:
+  def terminal(self, *args, **kwargs) -> Ray:
     print(f'{self.name}.__call__ {args} {kwargs}')
-    # raise NotImplementedError
-    return self
-  map = render = compile = run \
-    = __call__ # TODO SHOULD BE __call__ = next
-
+    return (-self).initial
+  next = __call__ = forward = step = map = render = compile = run = realize = successor \
+    = terminal
+  # Todo: slightly different perspectives in cases of map/render etc..., where certain aliases of these are expected not to have alternative behaviors based on binary/ternary calls to this... ; Basically; some of these aliases are probably more appropriate as separate perspectives.
 
   # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
   # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
@@ -150,6 +152,7 @@ class Ray:
   def is_orbit(a, b: Arbitrary) -> Ray: raise NotImplementedError # a.___instance === b.___instance
   __eq__ \
     = is_orbit
+  # TODO: Constant as local orbit.
 
   # -__eq__ == __ne__
   # @ray
@@ -171,6 +174,7 @@ class Ray:
   def is_vertex(self) -> Ray: return self.is_initial().nor(self.is_terminal())    # [--|--]
   @ray
   def is_reference(self) -> Ray: return self.is_initial() & self.is_terminal()    # [  |  ]
+  # TODO: reference = pointer ...
   @ray
   def is_boundary(self) -> Ray: return self.is_initial() ^ self.is_terminal()     # [?-|  ] or [  |-?]
 
@@ -224,6 +228,7 @@ class Ray:
 
   # "Applying the same thing in a different context"
   # TODO: Somewhat related to Functors?
+  # TODO: .ref perspecctive: self.as_reference & self.dereference
   @ray
   def from_perspective_of(a, b):
     raise NotImplementedError
