@@ -87,45 +87,6 @@
 //       } as Function<T>;
 //     }
 //
-//     static Reversible = <T extends AbstractDirectionality<T> = Ray>(
-//       // @alias('backward')
-//       initial: (ref: Ray.Any) => Ray.Any | any,
-//       // @alias('forward')
-//       terminal: (ref: Ray.Any) => Ray.Any | any,
-//     ): Function<T> => {
-//       // return Function.Ref((ref: T) => impl(ref.initial, ref.terminal));
-//
-//       return {
-//         as_ray: (ref: Ray.Any = Ray.None()): Ray.Any => {
-//           if (ref.is_none())
-//             throw new NotImplementedError();
-//
-//           const next = (previous: Ray.Any, direction: (ref: Ray.Any) => Ray.Any | any): Ray.Any => {
-//             const result = direction(previous);
-//
-//             // TODO: COuld do this in place.
-//             const current = Ray
-//               .vertex(() => result instanceof Ray ? result.self : JS.Any(result))
-//               .o(result instanceof Ray ? {} : { js: result })
-//               .as_reference();
-//
-//             current.self.initial.self = () => next(current, initial);
-//             current.self.terminal.self = () => next(current, terminal);
-//
-//             return current.self.initial;
-//           }
-//
-//
-//           const initial_vertex = Ray.vertex(() => ref.self).as_reference();
-//
-//           // const initial_vertex = Ray.vertex(() => ref.self).as_reference();
-//           initial_vertex.self.initial.self = () => next(initial_vertex, initial);
-//           initial_vertex.self.terminal.self = () => next(initial_vertex, terminal);
-//
-//           return initial_vertex;
-//         }
-//       } as Function<T>;
-//     }
 //
 //     /**
 //      * Constructs a class method accepting arbitrary structure.
@@ -173,14 +134,6 @@
 //       // if (any.length === 1) {
 //       // }
 //     })
-//
-//     as_ray = (initial: Ray.Any = Ray.None()): Ray.Any => {
-//       throw new NotImplementedError();
-//     }
-//
-//     as_generator = (): Generator<T> => {
-//       throw new NotImplementedError();
-//     }
 //
 //   }
 //

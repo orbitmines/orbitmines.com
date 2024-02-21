@@ -31,12 +31,13 @@ print(Ray.as_javascript()) # Ray.compiler = test.compiler = Ray.compiler.compile
 test.run(lambda ray: ray)
 # Ray.runtime(lambda ray: ray).run(test)
 
-Ray(
-  initial = lambda ray: ray,
-  self = lambda ray: ray,
-  terminal = lambda ray: ray,
-  is_orbit = lambda ray: ray
-)
+# TODO These also the same:
+# Ray(
+#   initial = lambda ray: ray,
+#   self = lambda ray: ray,
+#   terminal = lambda ray: ray,
+#   is_orbit = lambda ray: ray
+# )
 # class Object(Ray):
 #   @property
 #   def initial(self) -> Ray: raise NotImplementedError
@@ -44,6 +45,16 @@ Ray(
 #   def self(self) -> Ray: raise NotImplementedError
 #   @property
 #   def terminal(self) -> Ray: raise NotImplementedError
+#
+# ray = Ray()
+# ray.initial = lambda ray:
+# ...
+#
+#
+# Then copy is simple:
+# ray.copy() / Ray(ray) / sometimes even ray()
+#
+
 
 test.compile(lambda ray: ray)
 Ray.compile(lambda ray: ray)
@@ -59,3 +70,6 @@ Ray.compile(lambda ray: ray)
 # sub = -add
 # [add, sub].orbit
 
+# TODO: Message: "Cannot run, need more implementations, for example these:"
+
+# TODO: Could just randomly start generating possible combinations of logical gates (or any methods on Ray), which if the runtime has an explanation for (or in the debug mode just to listen), you can hook into that and create an implementation. In the case of python made something along the lines of an interpreter which gives you one, asks to write one in python...

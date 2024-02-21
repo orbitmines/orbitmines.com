@@ -67,7 +67,7 @@ class Ray:
 
   @ray
   def free(self): raise NotImplementedError
-  destroy = clear = delete = pop \
+  destroy = clear = delete = pop = prune \
     = free
 
   # TODO: Like any method, .initial/.terminal could be seen as a particular section of .self, which .self itself ignores. - This should be generalizable to other things setup on .self.
@@ -82,16 +82,20 @@ class Ray:
   def terminal(self, *args, **kwargs) -> Ray:
     print(f'{self.name}.__call__ {args} {kwargs}')
     return (-self).initial
-  next = __call__ = forward = step = map = render = compile = run = realize = successor \
+  next = __call__ = __next__ = __anext__ = forward = step = apply = run = successor \
+    = map = render = compile = realize = generate \
     = terminal
+  # TODo: __anext__ in python case might need addition async def setup? - How is that interpreted as operators for awaitable?
   # Todo: slightly different perspectives in cases of map/render etc..., where certain aliases of these are expected not to have alternative behaviors based on binary/ternary calls to this... ; Basically; some of these aliases are probably more appropriate as separate perspectives.
+  # TODO: compile/map/cast/ ... probably fit in that separate category. Wrap to any object if translation exists (in python case inspect?). - Realize is probably similarly on another level of abstraction.
+  # TODO: FILTER/WHERE/IF/... for instance - branch different effect
 
   # @see "Reversibility after ignoring some difference": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Another%20example%20of%20this%20is%20reversibility
   # @see "More accurately phrased as the assumption of Reversibility: with the potential of being violated.": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Assumptions%20%26%20Assumption%20Violation
   @ray
   def reverse(self) -> Ray:
     return Ray(initial=self.terminal, self=self.self, terminal=self.initial)
-  neg = __neg__ = opposite = _not = converse = negative = swap \
+  neg = __neg__ = __invert__ = opposite = _not = converse = negative = swap \
     = reverse # TODO ; Could also be implemented as copy - hence the __call__ on Ray() - this is the case for any sort of constructor/type.
 
   # An arbitrary Ray, defining what our current position is equivalent to.
@@ -182,7 +186,7 @@ class Ray:
   def has_next(self) -> Ray: return self.next().is_some
   @ray
   def last(self) -> Ray: raise NotImplementedError # TODO: Other layer of abstraction waiting for .next step function - will hook into anything that finishes, and allows already composing stuff after .last ..
-  end = result = back = output \
+  end = result = back = output = max \
     = last
 
   # @see "Continuations as Equivalence (can often be done in parallel - not generally)": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
@@ -352,14 +356,23 @@ class Ray:
   @ray
   # @alias(f'push_{last.alias}')
   def push_back(a, b: Arbitrary) -> Ray: return a.last().compose(b)
+  # TODO: lshift/rshift respects the .size of the ray. So it's push_back & pop front, or in certain interpretations, we might keep and not pop...
+  __lshift__ \
+    = push_back
 
   #
   # Python runtime conversions
   # ; TODO: Could have enumerated possibilities, but just ignore that for now.
   #
 
+  # TODO: similar to next/anext, these might collapse if there's a python awaitable operator...
   def as_iterator(self) -> Iterator[Ray]: return self
+  __iter__ \
+    = as_iterator
   def as_async_iterator(self) -> AsyncIterator[Ray]: return self
+  __aiter__ \
+    = as_async_iterator
+
   def as_iterable(self) -> Iterable[Ray]: return self
   def as_async_iterable(self) -> AsyncIterable[Ray]: return self
   def as_string(self) -> str: raise NotImplementedError
@@ -389,11 +402,6 @@ class Ray:
     __set__ # TODO: This thing I mentioned in my notes a while back is relevant to this: Assign in the sense of adding to existing equivalences: i.e. offering a specific implementation for a certain thing, vs the destroy of them and replacing it with something specific: i.e. removing all existing assigns and setting a single one.
   def __delete__(self, instance) -> Ray: raise NotImplementedError
 
-  def __iter__(self) -> Iterator[Ray]: return self.as_iterator()
-  def __aiter__(self) -> AsyncIterator[Ray]: return self.as_async_iterator()
-  def __next__(self) -> Ray: raise NotImplementedError
-  async def __anext__(self) -> Ray: raise NotImplementedError
-
   # def __str__(self) -> str: return self.as_string()
   # def __repr__(self) -> str: raise NotImplementedError
   # def __hash__(self) -> str: raise NotImplementedError
@@ -407,6 +415,8 @@ class Ray:
   # def __imatmul__(a, b: Arbitrary) -> Ray: return a.assign(a.matmul(b))
   # def __ibor__(a, b: Arbitrary) -> Ray: return a.assign(a.bor(b))
 
+  #  TODO: Are these "GLOBAL" varibles from the perspective of the ignorant setup - or more accuarrately something which it could be made aware of.
+  # TODO: WHILE = WITH = SCOPE = CONTEXT = GLOBAL = //...
   def __enter__(self) -> Ray: raise NotImplementedError
   def __exit__(self, exc_type, exc_val) -> Ray: raise NotImplementedError
   async def __aenter__(self) -> Ray: raise NotImplementedError
@@ -417,8 +427,6 @@ class Ray:
   def __getitem__(self, item): raise NotImplementedError
   def __setitem__(self, key, value): raise NotImplementedError
   def __floordiv__(self, item): raise NotImplementedError
-  def __invert__(self): raise NotImplementedError
-  def __lshift__(self, item): raise NotImplementedError
   def __pos__(self): raise NotImplementedError
 
   @ray
@@ -447,13 +455,15 @@ class Ray:
   def has_previous(self) -> Ray: return (-self).has_next
   @ray
   def first(self) -> Ray: return (-self).last
-  beginning = front \
+  beginning = front = min \
     = first
   @ray
   def is_some(self) -> Ray: return (-self).is_none
   @ray
   # @alias(f'push_{first.alias}')
   def push_front(self) -> Ray: return (-self).push_back
+  __rshift__ \
+    = push_front
 
   # Several ways of achieving these:
   #   -a.__add__.perspective(b)

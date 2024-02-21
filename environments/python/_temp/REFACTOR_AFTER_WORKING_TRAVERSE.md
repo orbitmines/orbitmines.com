@@ -2,13 +2,10 @@
 // NOT NEEDED FOR INITIAL DEMONSTRATION:
 
 ```ts
-
-  get count(): Ray.Any { return JS.Number(this.as_array().length); }
-  
 // TODO: For chyp used to compare [vtype, size] as domains, just type matching on the vertex. ; each individually, again, additional structure...
 
 // TODO: Ignore the connection between the two, say a.equiv(b) within some Rule [a,b], ignore the existing of the connection in the Rule? What does it mean not to???
-is_vertex_equivalent = (b: Arbitrary.Any) => {
+is_vertex_equivalent = (b: Arbitrary.Any) => { # TODO; STUPID NAME dont use
 
 }
 
@@ -44,37 +41,10 @@ static zip = Ray.Function.Impl((initial, terminal) => {
 });
 zip = Ray.zip.as_method(this);
 
-  /**
- * Used for chaining JavaScript-provided properties
- *
- * TODO: DOESNT FOLLOW .ANY PATTERN?
- */
-o = (object: { [key: string | symbol]: any }): Ray.Any => {
-  _.keys(object).forEach(key => this.proxy()[key] = object[key]); // TODO: Can be prettier, TODO: map to Ray equivalents and add to vertices..
-  return this;
-}
-
-// All these are dirty
-o2 = ({ initial, vertex, terminal }: any): Ray.Any => {
-  if (initial) this.initial.o(initial);
-  if (vertex) this.o(vertex);
-  if (terminal) this.terminal.o(terminal);
-
-  return this;
-}
-
-  // TODO: Cast to Any JS Class wrap/cast? + test self-referentially with Rays???
-  cast = <T extends Ray>(): T => { throw new NotImplementedError(); } // TODO this.proxy<T>();
-  
-as_string = (): string => this.as_array().map(ref => ref.any.js).join(','); // TODO: PROPER
-
-as_number = this.as_int;
 
   // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
-  // apply = (func: Ray.Any) => {
-
+ 
 // TODO: Combine into generalized [x, min/max()] - preserve terminal/initial structure
-// TODO: Ray.Any#apply.
 // TODO: FROM COMPOSER
 /**
  *  const func = [min(), '', max()]
@@ -96,16 +66,16 @@ as_number = this.as_int;
   // TODO: Indicies not corresponding the the directionality defined, are probably on another abstraction layer described this way. More accurately, they're directly connected, and on a separate layer with more stuff in between...
 # Index with respect to 'something' - i.e. distance.
 # The problem with index is that this, in respect to the context defined the direction of the Ray. Necessitates a notion of distance, which necessitates the notion of an orbit, ..., loop to be an ignorant one.
+          
+// TODO: Ray is already an index in the space around that if interpreted like that. In the actual index case, you just want to translate it to another level of description - relate them to each other.
 get index(): Ray.Any { throw new NotImplementedError(); }
+
+// TODO: Same with count, it's just translating the traversal to antoher level of descipriton/.
+  get count(): Ray.Any { return JS.Number(this.as_array().length); }
+  
 // TODO: Can probably generate these on the fly, or cache them automatically
 // TODO: being called min.x needs to return the min value within that entire structure.
-
-min = (_default: 0): Ray.Any => { throw new NotImplementedError(); }
-max = (_default: 0): Ray.Any => { throw new NotImplementedError(); }
-
-  map = (mapping: (ray: Ray.Any) => Ray.Any | any): Ray.Any => { throw new NotImplementedError(); }
-// filter = (mapping: (ray: Ray.Any) => Ray.Any | any): Ray.Any => { throw new NotImplementedError(); }
-
+  
 // @alias('length', 'of_length')
 static size = (of: number, value: any = undefined): Ray.Any => {
   let ret: Ray.Any | undefined;
@@ -160,184 +130,4 @@ at = (steps: number | Ray | JS.ParameterlessFunction<Ray.Any>): Ray.Any => {
 // export const hexadecimal = (hexadecimal?: string): Arbitrary<Ray<any>> => permutation(hexadecimal ? parseInt(hexadecimal, 16) : undefined, 16);
 
 ```
-
-
-export class Ray
-  // implements
-  // AsyncIterable<Ray.Any>,
-  // Iterable<Ray.Any>
-  // Array<Ray.Any>
-  // Dict??
-{
-
-  /**
-   * JavaScript Array
-   */
-  // [n: number]: Ray.Any;
-  //
-  // readonly [Symbol.unscopables]: { [K in keyof any[]]?: boolean };
-  // length: number;
-  //
-  // [Symbol.iterator](): IterableIterator<Ray.Any> {
-  //   return undefined;
-  // }
-  //
-  // at(index: number): Ray.Any | undefined {
-  //   return undefined;
-  // }
-  //
-  // concat(...items: ConcatArray<Ray.Any>[]): Ray.Any[];
-  // concat(...items: (ConcatArray<Ray.Any> | Ray)[]): Ray.Any[];
-  // concat(...items: (ConcatArray<Ray.Any> | Ray)[]): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // copyWithin(target: number, start: number, end?: number): this {
-  //   return undefined;
-  // }
-  //
-  // entries(): IterableIterator<[number, Ray]> {
-  //   return undefined;
-  // }
-  //
-  // every<S extends Ray>(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => value is S, thisArg?: any): this is S[];
-  // every(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => unknown, thisArg?: any): boolean;
-  // every(predicate, thisArg?: any): any {
-  // }
-  //
-  // fill(value: Ray.Any, start?: number, end?: number): this {
-  //   return undefined;
-  // }
-  //
-  // filter<S extends Ray>(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => value is S, thisArg?: any): S[];
-  // filter(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => unknown, thisArg?: any): Ray.Any[];
-  // filter(predicate, thisArg?: any): any {
-  // }
-  //
-  // find<S extends Ray>(predicate: (value: Ray.Any, index: number, obj: Ray.Any[]) => value is S, thisArg?: any): S | undefined;
-  // find(predicate: (value: Ray.Any, index: number, obj: Ray.Any[]) => unknown, thisArg?: any): Ray.Any | undefined;
-  // find(predicate, thisArg?: any): any {
-  // }
-  //
-  // findIndex(predicate: (value: Ray.Any, index: number, obj: Ray.Any[]) => unknown, thisArg?: any): number {
-  //   return 0;
-  // }
-  //
-  // findLast<S extends Ray>(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => value is S, thisArg?: any): S | undefined;
-  // findLast(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => unknown, thisArg?: any): Ray.Any | undefined;
-  // findLast(predicate, thisArg?: any): any {
-  // }
-  //
-  // findLastIndex(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => unknown, thisArg?: any): number {
-  //   return 0;
-  // }
-  //
-  // flat<A, D = 1 extends number>(depth?: D): FlatArray<A, D>[] {
-  //   return [];
-  // }
-  //
-  // flatMap<U, This = undefined>(callback: (this: This, value: Ray.Any, index: number, array: Ray.Any[]) => (ReadonlyArray<U> | U), thisArg?: This): U[] {
-  //   return [];
-  // }
-  //
-  // forEach(callbackfn: (value: Ray.Any, index: number, array: Ray.Any[]) => void, thisArg?: any): void {
-  // }
-  //
-  // includes(searchElement: Ray.Any, fromIndex?: number): boolean {
-  //   return false;
-  // }
-  //
-  // indexOf(searchElement: Ray.Any, fromIndex?: number): number {
-  //   return 0;
-  // }
-  //
-  // join(separator?: string): string {
-  //   return "";
-  // }
-  //
-  // keys(): IterableIterator<number> {
-  //   return undefined;
-  // }
-  //
-  // lastIndexOf(searchElement: Ray.Any, fromIndex?: number): number {
-  //   return 0;
-  // }
-  //
-  // map<U>(callbackfn: (value: Ray.Any, index: number, array: Ray.Any[]) => U, thisArg?: any): U[] {
-  //   return [];
-  // }
-  //
-  // pop(): Ray.Any | undefined {
-  //   return undefined;
-  // }
-  //
-  // push(...items: Ray.Any[]): number {
-  //   return 0;
-  // }
-  //
-  // reduce(callbackfn: (previousValue: Ray.Any, currentValue: Ray.Any, currentIndex: number, array: Ray.Any[]) => Ray.Any): Ray.Any;
-  // reduce(callbackfn: (previousValue: Ray.Any, currentValue: Ray.Any, currentIndex: number, array: Ray.Any[]) => Ray.Any, initialValue: Ray.Any): Ray.Any;
-  // reduce<U>(callbackfn: (previousValue: U, currentValue: Ray.Any, currentIndex: number, array: Ray.Any[]) => U, initialValue: U): U;
-  // reduce(callbackfn, initialValue?): any {
-  // }
-  //
-  // reduceRight(callbackfn: (previousValue: Ray.Any, currentValue: Ray.Any, currentIndex: number, array: Ray.Any[]) => Ray.Any): Ray.Any;
-  // reduceRight(callbackfn: (previousValue: Ray.Any, currentValue: Ray.Any, currentIndex: number, array: Ray.Any[]) => Ray.Any, initialValue: Ray.Any): Ray.Any;
-  // reduceRight<U>(callbackfn: (previousValue: U, currentValue: Ray.Any, currentIndex: number, array: Ray.Any[]) => U, initialValue: U): U;
-  // reduceRight(callbackfn, initialValue?): any {
-  // }
-  //
-  // reverse(): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // shift(): Ray.Any | undefined {
-  //   return undefined;
-  // }
-  //
-  // slice(start?: number, end?: number): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // some(predicate: (value: Ray.Any, index: number, array: Ray.Any[]) => unknown, thisArg?: any): boolean {
-  //   return false;
-  // }
-  //
-  // sort(compareFn?: (a: Ray.Any, b: Arbitrary.Any) => number): this {
-  //   return undefined;
-  // }
-  //
-  // splice(start: number, deleteCount?: number): Ray.Any[];
-  // splice(start: number, deleteCount: number, ...items: Ray.Any[]): Ray.Any[];
-  // splice(start: number, deleteCount?: number, ...items: Ray.Any[]): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // toReversed(): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // toSorted(compareFn?: (a: Ray.Any, b: Arbitrary.Any) => number): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // toSpliced(start: number, deleteCount: number, ...items: Ray.Any[]): Ray.Any[];
-  // toSpliced(start: number, deleteCount?: number): Ray.Any[];
-  // toSpliced(start: number, deleteCount?: number, ...items: Ray.Any[]): Ray.Any[] {
-  //   return [];
-  // }
-  //
-  // unshift(...items: Ray.Any[]): number {
-  //   return 0;
-  // }
-  //
-  // values(): IterableIterator<Ray.Any> {
-  //   return undefined;
-  // }
-  //
-  // with(index: number, value: Ray.Any): Ray.Any[] {
-  //   return [];
-  // }
-
-}
 

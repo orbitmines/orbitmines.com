@@ -2,26 +2,6 @@ import JS, {NotImplementedError} from "@orbitmines/js";
 
 namespace Ray {
 
-  export type Any =
-    {
-      /** Ray is a constructor - TODO: Copy? */
-      new (...other: JS.Recursive<Ray.Any>): Ray.Any,
-    }
-    /** JavaScript runtime conversions. */
-      & Symbol
-
-    & Pick<Ray.Instance, '___instance' | 'on' | 'debug'>
-
-    /** Preconfigured functions defined for Rays. */
-    & {
-      -readonly [TKey in keyof typeof Ray.Function.All]: typeof Ray.Function.All[TKey] extends Ray.Any
-        ? Ray.Any
-        : never;
-    }
-
-    /** Storage/Movement operations which need to be implemented. */
-    & { [TKey in keyof Ray.Op.Impl<Ray.Any>]: Ray.Any }
-
   /** A simplistic compiler for Ray */
   export namespace Compiler { // TODO Ray is Compiler
 

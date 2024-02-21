@@ -432,12 +432,6 @@ export class Ray {
 
   }
 
-  /**
-   * Move to a JavaScript object, which will handle any complexity of existing JavaScript objects, and allows one to abstract any values contained in the {vertex} to the usual JavaScript interface. - More usual to how one thinks about functions, ..., properties.
-   */
-  get any(): { [key: string | symbol]: Ray.Any } & any { return this.self.proxy(); }
-  get ___any(): { [key: string | symbol]: Ray.Any } & any { return this.proxy(); }
-
   protected _proxy: any;
   protected _dirty_store: { [key: string | symbol]: object } = {}
   protected proxy = <T = any>(constructor?: JS.ParameterlessConstructor<T>): T & { [key: string | symbol]: Ray.Any } => { // TODO:
