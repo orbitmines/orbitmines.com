@@ -9,10 +9,11 @@ import {renderable} from "../../lib/typescript/React";
 import Section from '../../lib/paper/layout/Section';
 import Arc from '../../lib/paper/layout/Arc';
 import BR from "../../lib/paper/layout/BR";
-import {Row} from "../../lib/layout/flexbox";
+import {Col, Row} from "../../lib/layout/flexbox";
 import Link from "../../lib/paper/layout/Link";
 import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
+import CustomIcon from "../../lib/layout/icons/CustomIcon";
 
 export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {
@@ -23,6 +24,7 @@ export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
     year: "2024",
     date: "2024-02-22",
     external: {
+      discord: {serverId: '1055502602365845534', channelId: '1194769877542649938', link: () => "https://discord.com/channels/1055502602365845534/1194769877542649938/1194769877542649938"}
     },
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
@@ -67,7 +69,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
 
       <BR/><BR/>
 
-      As a follow up of a recent <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'post', link: 'https://www.linkedin.com/posts/fadishawki_lookingforwork-looking-funding-activity-7162063253718691840-sf38'}} />, this is a letter I've sent to a plentiful of people, which outlines the category of project OrbitMines will be. Please feel to share this with anyone who could help me make these things happen. As with anything with me, this thing is so flexibly general that it should survive any sudden shift in direction I occasionally tend to make.
+      As a follow up of this <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'post', link: 'https://www.linkedin.com/posts/fadishawki_lookingforwork-looking-funding-activity-7162063253718691840-sf38'}} /> and this <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'other one', link: 'https://www.instagram.com/p/C23KZXOt0Xr/'}} />, this is a letter I've sent to a plentiful of people, which outlines the category of project OrbitMines will be. Please feel to share this with anyone who could help me make these things happen. As with anything with me, this thing is so flexibly general that it should survive any sudden shift in direction I occasionally tend to make.
 
       <BR/><BR/>
 
@@ -76,7 +78,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
 
         <BR/><BR/>
 
-        The very example that all those things are so isolated from each-other as concepts itself is shows the entirety of this complex problem. But for a lot of good practical reasons, it is quite understandable that such a thing happens. Simplifying, - compression -, is hard.
+        The very example that all those things are so isolated from each-other as concepts itself shows the entirety of this complex problem. But for a lot of good practical reasons, it is quite understandable that such a thing happens. Simplifying, - compression -, is hard. Exploring, - finding new things -, is hard.
 
         <BR/><BR/>
 
@@ -96,6 +98,121 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
 
         That makes our lives in a certain respect much easier. Because it's definitely not remotely like anything I've seen before.
       </Section>
+    </Arc>
+    <Arc head="Technical Complexity">
+      Though all that might sound interesting, how do you *actually* make that happen? A question which has been digging at me for a long time.
+      <BR/><BR/>
+
+      This starts with a few complicated but simple ideas:
+
+      <Section sub={
+        <span className="px-15 child-px-2">
+          See:
+           <a href="https://github.com/orbitmines/orbitmines.com/issues/20" target="_blank"><CustomIcon
+             icon={ORGANIZATIONS.github.key} size={20}/></a>
+           <a href="https://discord.com/channels/1055502602365845534/1200246205473619968" target="_blank"><CustomIcon
+             icon={ORGANIZATIONS.discord.key} size={20}/></a>
+           <span style={{fontStyle: 'italic'}}>Indexing existing Abstract Models (2024-2025?)</span>
+        </span>
+      }>
+        - Whatever it is (programming) languages are currently doing, they will never get there: This will **never** be
+        possible in *just* the textual interface any programmer is familiar with.
+        <BR/><BR/>
+        - For some reason, it's incredibly hard to apply the mode of thinking which allows for the creation in, ... of a
+        programming language, to the interface in which one programs.
+        <BR/><BR/>
+        - It is incredibly hard to throw away all historical context and actually start from something **new**, while still having a practical handle on anything others have done before. Try doing that, while everyone is doing that.
+      </Section>
+
+      <Section sub={
+        <span className="px-15 child-px-2">
+          See:
+           <a href="https://github.com/orbitmines/orbitmines.com/issues/15" target="_blank"><CustomIcon
+             icon={ORGANIZATIONS.github.key} size={20}/></a>
+           <a href="https://discord.com/channels/1055502602365845534/1194769877542649938" target="_blank"><CustomIcon
+             icon={ORGANIZATIONS.discord.key} size={20}/></a>
+           <span style={{fontStyle: 'italic'}}>OrbitMines as Game Project (2025/2026?)</span>
+        </span>
+      }>
+        - Whatever this interface will look like, it necessitates conveniently being able to change **anything** about how it looks, ..., how it operates *from the interface itself*. This introduces a hard problem on the side of the implementer: How do you possibly account for that? Or perhaps: Why is that a problem in the first case?
+        <BR/><BR/>
+        - Whatever function it is that platforms and interfaces serve, they will probably converge to being more of a theme applied on a particular type of structure. Only as a supply of resources (access to certain kinds of information/compute) will they persist. They will not persist as separable interfaces.
+        <BR/><BR/>
+        - Whatever sets up this open world generation must rely on existing structure, information. You can set up something more random, sure. But the only possibility of some feedback on this generation must be some generalization of existing knowledge. Whatever (entropically relevant) information, structure, ..., items have been found.
+        <BR/><BR/>
+        - This means open world generation must support arbitrary information which will **not** be available in the design of this game/interface.
+      </Section>
+
+      <Section sub={
+        <Row>
+          <Col xs={12}>
+            <span className="px-15 child-px-2">
+              See:
+               <a href="https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies" target="_blank"><img
+                 key={ORGANIZATIONS.orbitmines_research.key} src={ORGANIZATIONS.orbitmines_research.assets.icon_png}
+                 style={{maxWidth: '1rem', verticalAlign: 'middle'}}/></a>
+               <a href="https://discord.com/channels/1055502602365845534/1190719376085766195"
+                  target="_blank"><CustomIcon
+                 icon={ORGANIZATIONS.discord.key} size={20}/></a>
+               <span style={{fontStyle: 'italic'}}><Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies'}} /></span>
+            </span>
+          </Col>
+          <Col xs={12}>
+            <span className="px-15 child-px-2">
+              See:
+               <a href="https://github.com/orbitmines/orbitmines.com/issues/19" target="_blank"><CustomIcon
+                 icon={ORGANIZATIONS.github.key} size={20}/></a>
+               <a href="https://discord.com/channels/1055502602365845534/1200225618164461639"
+                  target="_blank"><CustomIcon
+                 icon={ORGANIZATIONS.discord.key} size={20}/></a>
+               <span style={{fontStyle: 'italic'}}>(Hypergraphic) Version Control System through Rays (2024)</span>
+            </span>
+          </Col>
+          <Col xs={12}>
+            <span className="px-15 child-px-2">
+              See:
+               <a href="https://github.com/orbitmines/orbitmines.com/issues/16" target="_blank"><CustomIcon
+                 icon={ORGANIZATIONS.github.key} size={20}/></a>
+               <a href="https://discord.com/channels/1055502602365845534/1200210127358267522" target="_blank"><CustomIcon
+                 icon={ORGANIZATIONS.discord.key} size={20}/></a>
+               <span style={{fontStyle: 'italic'}}>Rays to GPUs</span>
+            </span>
+          </Col>
+        </Row>
+      }>
+        - You need to be able to deal in *questions* of different levels of abstraction, description, ..., scales, when
+        each layer introduces arbitrary complexity. This is not simple scale invariance.
+        <BR/><BR/>
+        - Any scale, ..., any language will in some respect introduce this arbitrary complexity. The only way to
+        properly deal with that is the possibility of exploration. You cannot have this without an open world generation
+        aspect.
+        <BR/><BR/>
+        - Any translation between any layer necessarily contains something which *cannot* be translated.
+        <BR/><BR/>
+        - You will have to deal with being able to move in certain data structures for which there might not (yet) be a nice translation to something you can understand.
+      </Section>
+
+    </Arc>
+    <Arc head="A quick step towards Design">
+      Though I've not yet gone into a proper research trajectory towards designs. It will come down to generalizations of the patterns found in the following things:
+      <BR/><BR/>
+      - In broad terms how this game should initially feel: It looks like you're playing something like Minecraft. You might not even realize it can be used as a tool. Then suddenly comes the realization that it can be used to do/create *anything*.
+      <BR/><BR/>
+      - It should be seamless, you shouldn't even notice that certain things you're doing could be interpreted as science, ..., engineering. The moment you realize you can, you can tap into that more.
+      <BR/><BR/>
+      - The constraining aspects of the game are not necessarily item collection in the usual game sense: Certain kinds of copying are incredibly easy. The limiting factor is finding a particular kind of resource, or what it can be used for.
+      <BR/><BR/>
+      - There must be some sense of stability in the interface. Though many interesting things will probably be more visually unstable.
+      <BR/><BR/>
+      <span style={{textAlign: 'left', minWidth: '100%'}}>- Anything that's <span className="bp5-text-muted">generated, ..., created</span>, which is <span className="bp5-text-muted">accessible, not forgotten and understandable</span> can be visited as a location. This for example includes whatever intro-screen it is that the game has. It can be changed.</span>
+      <BR/><BR/>
+      <span style={{textAlign: 'left', minWidth: '100%'}}>- A big challenge is probably ignoring an existing generated world and instantiating new generation on that same location. <span className="bp5-text-muted">Superposed, portalled through, ..., forked.</span></span>
+      <BR/><BR/>
+      - There's something entirely problematic about certain types of convenient solutions. An example of this may be the interface that is the cursor on your computer screen you are familiar with. Though easy to generalize as an interface to any kind of website or application, it heavily steers towards a particular kind of interface which is directly goes against what this project is trying to accomplish.
+      <BR/>
+      Similarly, there's something quite unsatisfying about the keyboard too, though it probably scales better. Its functionality is usually hidden and not easily visualized. It's even harder to ask the question of finding out what possible things you can do with it, let alone to adapt to it yourself: that's hard. A more general pattern along those lines is probably something like this: Once something seemingly convenient is found, it is seriously hard to explore and steer away from that.
+      <BR/>
+      Enter more interesting tactile interfaces.
     </Arc>
   </Paper>
 }
