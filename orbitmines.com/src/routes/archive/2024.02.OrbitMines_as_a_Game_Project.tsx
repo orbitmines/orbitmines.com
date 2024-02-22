@@ -5,13 +5,10 @@ import {useNavigate} from "react-router-dom";
 import Paper, {PaperProps} from "../../lib/paper/Paper";
 import Reference, {useCounter} from "../../lib/paper/layout/Reference";
 import {PROFILES} from "../../profiles/profiles";
-import {renderable} from "../../lib/typescript/React";
 import Section from '../../lib/paper/layout/Section';
 import Arc from '../../lib/paper/layout/Arc';
 import BR from "../../lib/paper/layout/BR";
 import {Col, Row} from "../../lib/layout/flexbox";
-import Link from "../../lib/paper/layout/Link";
-import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
 import CustomIcon from "../../lib/layout/icons/CustomIcon";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
@@ -21,7 +18,7 @@ export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {
     title: "OrbitMines as a Game Project",
     subtitle: "A comprehensive guide on how to be frustrated with pixels. An open call for funding, collaboration or anyone curious to learn more.",
-    draft: true,
+    draft: false,
     link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project',
     year: "2024",
     date: "2024-02-22",
@@ -286,7 +283,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       <BR/>
       - December 2023: Again the most interesting confusions of the year compiled in a writing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies'}} />, this time in a more acceptable form (for now).
       <BR/><BR/><BR/><BR/><BR/>
-      - 22 February 2023: And now we're here. I think I finally understand the quest that is this project which at is center must be the tool with which to find new quests.
+      - 22 February 2024: And now we're here. I think I finally understand the quest that is this project which at is center must be the tool with which to find new quests.
 
       <CanvasContainer style={{height: '150px'}}>
         <canvas
