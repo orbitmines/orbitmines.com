@@ -18,6 +18,7 @@ import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
 import {ON_ORBITS} from "./2023.OnOrbits";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
+import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -75,7 +76,7 @@ const FadiShawki = () => {
 
     <Arc head="Writings" buffer={false}>
       <Section head="Theoretics">
-        {[ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+        {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
           <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
         ))}
       </Section>
