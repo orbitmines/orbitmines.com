@@ -14,6 +14,8 @@ import Link from "../../lib/paper/layout/Link";
 import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
 import CustomIcon from "../../lib/layout/icons/CustomIcon";
+import {CanvasContainer} from "../../@orbitmines/Visualization";
+import Author from "../../lib/paper/layout/Author";
 
 export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {
@@ -98,6 +100,18 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
 
         That makes our lives in a certain respect much easier. Because it's definitely not remotely like anything I've seen before.
       </Section>
+
+      <CanvasContainer style={{height: '140px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/4_bits_grid.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
     </Arc>
     <Arc head="Technical Complexity">
       Though all that might sound interesting, how do you *actually* make that happen? A question which has been digging at me for a long time.
@@ -192,6 +206,17 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
         - You will have to deal with being able to move in certain data structures for which there might not (yet) be a nice translation to something you can understand.
       </Section>
 
+      <CanvasContainer style={{height: '150px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_equived_select_1.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
     </Arc>
     <Arc head="A quick step towards Design">
       Though I've not yet gone into a proper research trajectory towards designs. It will come down to generalizations of the patterns found in the following things:
@@ -208,11 +233,78 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       <BR/><BR/>
       <span style={{textAlign: 'left', minWidth: '100%'}}>- A big challenge is probably ignoring an existing generated world and instantiating new generation on that same location. <span className="bp5-text-muted">Superposed, portalled through, ..., forked.</span></span>
       <BR/><BR/>
-      - There's something entirely problematic about certain types of convenient solutions. An example of this may be the interface that is the cursor on your computer screen you are familiar with. Though easy to generalize as an interface to any kind of website or application, it heavily steers towards a particular kind of interface which is directly goes against what this project is trying to accomplish.
+      - There's something entirely problematic about certain types of convenient solutions. An example of this may be the interface that is the cursor on your computer screen you are familiar with. Though easy to generalize as an interface to any kind of website or application, it heavily steers towards a particular kind of interface which directly goes against what this project is trying to accomplish.
       <BR/>
       Similarly, there's something quite unsatisfying about the keyboard too, though it probably scales better. Its functionality is usually hidden and not easily visualized. It's even harder to ask the question of finding out what possible things you can do with it, let alone to adapt to it yourself: that's hard. A more general pattern along those lines is probably something like this: Once something seemingly convenient is found, it is seriously hard to explore and steer away from that.
       <BR/>
       Enter more interesting tactile interfaces.
+
+      <CanvasContainer style={{height: '150px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_horizontal_binary_loops.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
+    </Arc>
+    <Arc head="Something about me">
+      Since the target audience for this one will probably be interested in me instead of thinking on these problems: This is making me wish I had already finished my archive project and could just point to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'that', link: 'https://github.com/orbitmines/orbitmines.com/issues/18'}} />.
+      <BR/>
+      I recently was in a call with someone going over some of OrbitMines history so that makes this thing a little easier. Let me just list a bunch of tangents of which only the Minecraft server wasn't a complete disaster:
+      <BR/>
+      - 24 October 2011: I login to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'DarkOrbit', link: 'https://en.wikipedia.org/wiki/DarkOrbit'}} /> for the first time (Don't remember how we found it).
+      <BR/>
+      - 31 January 2013: I buy <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Minecraft', link: 'https://www.minecraft.net/'}} /> after seeing <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'my brother', link: 'https://www.linkedin.com/in/benjamin-shawki/'}} /> play Minecraft (hunger/survival)games on <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'MCSG', link: 'https://mcgamer.net/games/mcsg/'}} /> for the first time.
+      <BR/>
+      - July?-October 2013: I try to figure out how to make a Minecraft server, inspired by <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'one I loved', link: 'https://torchcraft.nl/'}} />.
+      <BR/>
+      - September?-October 2013: While on the bicycle next to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'my brother', link: 'https://www.linkedin.com/in/benjamin-shawki/'}} />, discussing whether MineOrbit or OrbitMines is the better name for the server. With the idea to make it like <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'DarkOrbit in Minecraft', link: 'https://www.youtube.com/watch?v=nI8c6yNnbbI'}} /> which we later (2017) dubbed as "Fractals of the Galaxy".
+      <BR/>
+      - 15 October 2013: orbitmines.com is registered.
+      <BR/>
+      - 15 October 2013 - 11 June 2019: Insert OrbitMines Minecraft history I want to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'expand on later', link: 'https://github.com/orbitmines/orbitmines.com/issues/18'}} />. Including other Minecraft <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'disasters', link: 'https://www.spigotmc.org/resources/authors/fadidev.49372/'}} />. Even things along the lines of: Surely you would like to make a Minecraft plugin by decompiling <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Java', link: 'https://en.wikipedia.org/wiki/Java_(programming_language)'}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Ruby', link: 'https://en.wikipedia.org/wiki/Ruby_(programming_language)'}} /> and recombining program <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'AST', link: 'https://en.wikipedia.org/wiki/Abstract_syntax_tree'}} />s.
+      <BR/>
+      - 16 October 2018: First exposed to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'cellular automata', link: 'https://github.com/FadiShawki/Game_of_Life.'}} /> as an exercise given to me by <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'a company', link: 'https://www.mobiel.nl/'}} /> I ended up working at.
+      <BR/>
+      - 2020: I stop attending <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Leiden University', link: 'https://en.wikipedia.org/wiki/Leiden_University'}} />. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest.
+      <BR/>
+      - 2018 - May 2022: I <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'do work for several companies and attempt to start up several doomed-to-failure project/companies with partners', link: 'https://www.linkedin.com/in/fadishawki/'}} />.
+      <BR/>
+      - 2021: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Dune', link: 'https://en.wikipedia.org/wiki/Dune_(2021_film)'}} /> makes me interested to start reading.
+      <BR/>
+      - 2021-2022: I attempt writing compression algorithms with zero knowledge of established fields. That <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Hutter Prize', link: 'http://prize.hutter1.net/'}} /> sure looks interesting.
+      <BR/>
+      - December 2022: I try organizing a year of incredible confusions, reading, ..., listening. Which turned into a dabble too close to being a descent into uselessness. I compiled it into a confusing piece of philosophy if you're interested in that sort of thing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty', link: 'https://orbitmines.com/papers/on-intelligibility'}} />
+      <BR/>
+      - January - July 2023: Confusion turns to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'more interesting confusion', link: 'https://twitter.com/_FadiShawki/status/1664387058721325056'}} />
+      <BR/>
+      - 26 June 2023: I get <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'a random notification', link: 'https://twitter.com/semf_nexus/status/1673300178986582025'}} /> of this little thing called <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Society for Multidisciplinary and Fundamental Research (SEMF)', link: 'https://semf.org.es/'}} /> organizing a summer school a few weeks later. Where some of the most interesting people I've ever met seemed to be. And evidently a good place for my confusions.
+      <BR/>
+      - December 2023: Again the most interesting confusions of the year compiled in a writing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies'}} />, this time in a more acceptable form (for now).
+      <BR/><BR/><BR/><BR/><BR/>
+      - 22 February 2023: And now we're here. I think I finally understand the quest that is this project which at is center must be the tool with which to find new quests.
+
+      <CanvasContainer style={{height: '150px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
+
+      <Author {...PROFILES.fadi_shawki} filter={(profile) => [
+        ORGANIZATIONS.github.key,
+        ORGANIZATIONS.twitter.key,
+        ORGANIZATIONS.discord.key,
+      ].includes(profile.organization.key)}/>
     </Arc>
   </Paper>
 }
