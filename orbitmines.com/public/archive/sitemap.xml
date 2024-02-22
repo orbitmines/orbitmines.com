@@ -12,15 +12,16 @@
         <loc>https://discord.orbitmines.com</loc>
         <lastmod>2023-10-04</lastmod>
     </url>
+
     <url>
-        <loc>https://orbitmines.com/profiles/fadi-shawki</loc>
-        <lastmod>2024-02-01</lastmod>
+        <loc>https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project</loc>
+        <lastmod>2024-02-22</lastmod>
         <image:image>
-            <image:loc>https://orbitmines.com/profiles/fadi-shawki.jpeg</image:loc>
+            <image:loc>https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project.jpeg</image:loc>
         </image:image>
     </url>
     <url>
-        <loc>https://orbitmines.com/profiles/fadi-shawki.pdf</loc>
-        <lastmod>2023-10-01</lastmod>
+        <loc>https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project.pdf</loc>
+        <lastmod>2024-02-22</lastmod>
     </url>
 </urlset>
