@@ -82,7 +82,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
         <BR/><BR/>
 
         <span style={{textAlign: 'left', minWidth: '100%'}}>
-          A broader interpretation of this approach is probably more along the lines of instead of attacking any single problem directly, or to solve any definite problem. To instead assume we can't actually generally do that, and to find tools as generally as possible that can be applied as conveniently as possible. I don't care how its details work, what can you <b>do with it</b>? But not only that, it needs to be satisfying to learn, to explore. The only example I know of which has achieved this for a general audience are video games. Specifically for this category of problem, sandbox video games.
+          A broader interpretation of this approach is probably more along the lines of instead of attacking any single problem directly, or to solve any definite problem. To instead assume we can't actually generally do that, and to find tools as general as possible that can be applied as conveniently as possible. I don't care how its details work, what can you <b>do with it</b>? But not only that, it needs to be satisfying to learn, to explore. The only example I know of which has achieved this for a general audience are video games. Specifically for this category of problem, sandbox video games.
         </span>
 
         <BR/><BR/>
@@ -117,7 +117,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       This starts with a few complicated but simple ideas:
 
       <Section sub={
-        <span className="px-15 child-px-2">
+        <span className="child-px-2">
           See:
            <a href="https://github.com/orbitmines/orbitmines.com/issues/20" target="_blank"><CustomIcon
              icon={ORGANIZATIONS.github.key} size={20}/></a>
@@ -136,7 +136,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       </Section>
 
       <Section sub={
-        <span className="px-15 child-px-2">
+        <span className="child-px-2">
           See:
            <a href="https://github.com/orbitmines/orbitmines.com/issues/15" target="_blank"><CustomIcon
              icon={ORGANIZATIONS.github.key} size={20}/></a>
@@ -157,7 +157,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       <Section sub={
         <Row>
           <Col xs={12}>
-            <span className="px-15 child-px-2">
+            <span className="child-px-2">
               See:
                <a href="https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies" target="_blank"><img
                  key={ORGANIZATIONS.orbitmines_research.key} src={ORGANIZATIONS.orbitmines_research.assets.icon_png}
@@ -169,7 +169,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
             </span>
           </Col>
           <Col xs={12}>
-            <span className="px-15 child-px-2">
+            <span className="child-px-2">
               See:
                <a href="https://github.com/orbitmines/orbitmines.com/issues/19" target="_blank"><CustomIcon
                  icon={ORGANIZATIONS.github.key} size={20}/></a>
@@ -180,7 +180,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
             </span>
           </Col>
           <Col xs={12}>
-            <span className="px-15 child-px-2">
+            <span className="child-px-2">
               See:
                <a href="https://github.com/orbitmines/orbitmines.com/issues/16" target="_blank"><CustomIcon
                  icon={ORGANIZATIONS.github.key} size={20}/></a>
@@ -283,7 +283,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       <BR/>
       - December 2023: Again the most interesting confusions of the year compiled in a writing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies'}} />, this time in a more acceptable form (for now).
       <BR/><BR/><BR/><BR/><BR/>
-      - 22 February 2024: And now we're here. I think I finally understand the quest that is this project which at is center must be the tool with which to find new quests.
+      - 22 February 2024: And now we're here. I think I finally understand the quest that is this project which at its center must be the tool with which to find new quests.
 
       <CanvasContainer style={{height: '150px'}}>
         <canvas
