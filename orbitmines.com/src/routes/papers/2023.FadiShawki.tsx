@@ -31,7 +31,7 @@ const FadiShawki = () => {
       <Section head="Looking for funding, collaboration or anyone curious to learn more">
         Feel free to contact me on the socials specified above.
       </Section>
-      <Section head="Building a (ray-like hypergraph) graphical interface">
+      <Section head="Building a (ray-like) graphical interface: OrbitMines as a Game Project">
         <CanvasContainer style={{height: '140px'}}>
           <canvas
             style={{
@@ -47,7 +47,7 @@ const FadiShawki = () => {
         <Link
           link="https://github.com/orbitmines/orbitmines.com"
           name={<span>
-        OrbitMines - <Tag intent={Intent.WARNING} minimal multiline style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
+        OrbitMines as a Game Project
       </span>}
           icon={ORGANIZATIONS.github.key} />
       </Section>
