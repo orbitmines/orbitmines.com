@@ -25,7 +25,10 @@ const FadiShawki = () => {
 
   return <Profile profile={profile}>
     <Arc head="Currently..." buffer={false}>
-      <Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">
+      {/*<Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">*/}
+      {/*  Feel free to contact me on the socials specified above.*/}
+      {/*</Section>*/}
+      <Section head="Looking for funding, collaboration or anyone curious to learn more">
         Feel free to contact me on the socials specified above.
       </Section>
       <Section head="Building a (ray-like hypergraph) graphical interface">
