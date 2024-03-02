@@ -111,7 +111,7 @@ class Ray:
   # Moving to the intersecting Ray at `.self` - as a way of going an abstraction layer (lower), and asking what's inside.
   @ray
   def self(self) -> Ray: raise NotImplementedError
-  element = dereference = selected = selection = cursor \
+  element = dereference = selected = selection = cursor = auto \
     = self # TODO: = branch?
 
   # TODO: Like this, ignorant vs non-ignorant? What to do here?
