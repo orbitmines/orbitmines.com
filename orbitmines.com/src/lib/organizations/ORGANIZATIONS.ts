@@ -17,6 +17,7 @@ import lex_fridman_podcast_icon from "././lexfridman-podcast/download.jpeg";
 import _3b1b_icon from "././3b1b/3B1B_Logo.svg.png";
 import akissinger_icon from "././akissinger/881183.png";
 import wolfram_icon from "././wolfram-research/logo.png";
+import all_in_icon from "././all-in/icon.jpeg";
 import zx_calculus_icon from "././zx/icon.png";
 import {Renderable} from "../typescript/React";
 import {ReferenceProps} from "../paper/layout/Reference";
@@ -107,6 +108,13 @@ const ORGANIZATIONS = {
       logo: logo,
       icon_png: orbitmines_icon,
     },
+  },
+  all_in: <TOrganization>{
+    key: 'all_in',
+    name: "all_in",
+    assets: {
+      icon_png: all_in_icon,
+    }
   },
   zx_calculus: <TOrganization>{
     key: 'zx_calculus',
