@@ -18,16 +18,20 @@ import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
 import {ON_ORBITS} from "./2023.OnOrbits";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
+import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
 
   return <Profile profile={profile}>
     <Arc head="Currently..." buffer={false}>
-      <Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">
+      {/*<Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">*/}
+      {/*  Feel free to contact me on the socials specified above.*/}
+      {/*</Section>*/}
+      <Section head="Looking for funding, collaboration or anyone curious to learn more">
         Feel free to contact me on the socials specified above.
       </Section>
-      <Section head="Building a (ray-like hypergraph) graphical interface">
+      <Section head="Building a (ray-like) graphical interface: OrbitMines as a Game Project">
         <CanvasContainer style={{height: '140px'}}>
           <canvas
             style={{
@@ -43,7 +47,7 @@ const FadiShawki = () => {
         <Link
           link="https://github.com/orbitmines/orbitmines.com"
           name={<span>
-        OrbitMines - <Tag intent={Intent.WARNING} minimal multiline style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
+        OrbitMines as a Game Project
       </span>}
           icon={ORGANIZATIONS.github.key} />
       </Section>
@@ -75,7 +79,7 @@ const FadiShawki = () => {
 
     <Arc head="Writings" buffer={false}>
       <Section head="Theoretics">
-        {[ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+        {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
           <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
         ))}
       </Section>

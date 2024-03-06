@@ -3,6 +3,204 @@ import ORGANIZATIONS, {Content, ContentCategory, Viewed} from '../../lib/organiz
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 const REFERENCES = {
+  SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION: <Content>{
+    reference: {
+      title: 'Solving SAT via Positive Supercompilation',
+      authors: [{name: 'Tima Kinsart (Hirrolot)'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://hirrolot.github.io/posts/sat-supercompilation.html) ; *Tima Kinsart (Hirrolot"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  NAVIGATING_COGNITION_SPATIAL_CODES_FOR_HUMAN_THINKING: <Content>{
+    reference: {
+      title: 'Navigating cognition: Spatial codes for human thinking',
+      authors: [{name: 'Jacob L. S. Bellmund'},{name: 'Peter Gärdenfors'},{name: 'Edvard I. Moser'},{name: 'Christian F. Doeller'}],
+      organizations: [],
+      year: '(2018)',
+      link: "https://www.science.org/doi/10.1126/science.aat6766"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  TOWARDS_A_STRUCTURAL_TURN_IN_CONSCIOUSNESS_SCIENCE: <Content>{
+    reference: {
+      title: 'Towards a structural turn in consciousness science',
+      authors: [{name: 'Johannes Kleiner'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://pubmed.ncbi.nlm.nih.gov/38422757/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_GLASS_BEAD_GAME: <Content>{
+    reference: {
+      title: 'The Glass Bead Game',
+      authors: [{name: 'Ralph Freedman'}],
+      organizations: [],
+      year: '(1970)',
+      link: "https://www.nytimes.com/1970/01/04/archives/the-glass-bead-game-glass-bead.html"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  AN_INTRODUCTION_TO_HIGHER_ARITY_SCIENCE: <Content>{
+    reference: {
+      title: 'An Introduction to Higher Arity Science',
+      authors: [{name: 'Carlos Zapata-Carratalá'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2021)',
+      link: "https://www.youtube.com/watch?v=62UFbGsj5Jg"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  HISTORY_OF_SCIENCE_AND_TECHNOLOGY_QA_FEBRUARY_28: <Content>{
+    reference: {
+      title: 'History of Science and Technology Q&A (February 28,',
+      authors: [{name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2024)',
+      link: "https://www.youtube.com/watch?v=kNXXksujIHM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  GRETA_SEMINAR_HIGHER_ARITY_ALGEBRA_VIA_HYPERGRAPH_REWRITING: <Content>{
+    reference: {
+      title: 'GReTA seminar: Higher-Arity Algebra via Hypergraph Rewriting',
+      authors: [{name: 'Carlos Zapata-Carratalá'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=ZBjagJvNEn8"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WORKSHOP_AXIOMATIC_CREATION: <Content>{
+    reference: {
+      title: 'Workshop | Axiomatic Creation',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=StNfdknDQ9c"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  COMMUNITY_LIVESTREAM_AXIOMS_CREATIVITY: <Content>{
+    reference: {
+      title: 'Community Livestream | Axioms & Creativity',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=9ddJAJaYk_E"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CONCEPT_COLLIDER_GEOMETRY_OF_DATA_AND_NEURAL_CORRELATES: <Content>{
+    reference: {
+      title: 'Concept Collider | Geometry of Data and Neural Correlates',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=mROz1U4VkGY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WOLFRAM_PHYSICS_PROJECT_WORKING_SESSION___CAUSAL_MULTIWAY_SYSTEMS: <Content>{
+    reference: {
+      title: 'Wolfram Physics Project: Working Session - Causal Multiway Systems',
+      authors: [{name: 'Stephen Wolfram'},{name: 'Jonathan Gorard'}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram],
+      year: '(2020)',
+      link: "https://www.youtube.com/watch?v=OXSE6KhRUF4"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  SCIENCE_RESEARCH_SESSION_HYPORULIAD: <Content>{
+    reference: {
+      title: 'Science Research Session: Hyporuliad',
+      authors: [{name: 'Stephen Wolfram'},{name: 'Jonathan Gorard'}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram],
+      year: '(2023)',
+      link: "https://www.youtube.com/watch?v=lZaBjuHk7Ms"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  A_CONVERSATION_BETWEEN_BOB_COECKE_AND_STEPHEN_WOLFRAM: <Content>{
+    reference: {
+      title: 'A conversation between Bob Coecke and Stephen Wolfram',
+      authors: [{name: 'Bob Coecke'},{name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram],
+      year: '(2021)',
+      link: "https://www.youtube.com/watch?v=8CUTXaGqvSQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  STEVE_JOBS: <Content>{
+    reference: {
+      title: 'Steve Jobs',
+      authors: [{name: 'Walter Isaacson'}],
+      organizations: [],
+      year: '(2011)',
+      link: "https://en.wikipedia.org/wiki/Steve_Jobs_(book)"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  JOHN_CLEESE_ON_CREATIVITY_IN_MANAGEMENT: <Content>{
+    reference: {
+      title: 'John Cleese on Creativity In Management',
+      authors: [{name: 'John Cleese'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2017)',
+      link: "https://www.youtube.com/watch?v=Pb5oIIPO62g"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_TRILLION_DOLLAR_EQUATION: <Content>{
+    reference: {
+      title: 'The Trillion Dollar Equation',
+      authors: [{name: '@Veritasium'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(Veritasium)',
+      link: "https://www.youtube.com/watch?v=A5w-dEgIU1M"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  STEVE_JOBS_PRESIDENT_CEO_NEXT_COMPUTER_CORP_AND_APPLE_MIT_SLOAN_DISTINGUISHED_SPEAKER_SERIES: <Content>{
+    reference: {
+      title: 'Steve Jobs President & CEO, NeXT Computer Corp and Apple. MIT Sloan Distinguished Speaker Series',
+      authors: [{name: 'Steve Jobs'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(1992)',
+      link: "https://www.youtube.com/watch?v=Gk-9Fd2mEnI"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CARL_SAGAN_AT_MIT___MANAGEMENT_IN_THE_YEAR_2000_SLOAN_SCHOOL_SYMPOSIUM: <Content>{
+    reference: {
+      title: 'Carl Sagan at MIT - Management in the Year 2000: Sloan School Symposium',
+      authors: [{name: 'Carl Sagan'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(1987)',
+      link: "https://www.youtube.com/watch?v=gLOZsTMuars"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CHAMATH_PALIHAPITIYA_SOCIALCAPITAL_STARTUP_GRIND: <Content>{
+    reference: {
+      title: 'Chamath Palihapitiya (SocialCapital) @ Startup Grind',
+      authors: [{name: 'Chamath Palihapitiya'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2015)',
+      link: "https://www.youtube.com/watch?v=ncjum-bkW98"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CHAMATH_PALIHAPITIYA_SPEAKING_AT_WATERLOO_INNOVATION_SUMMIT: <Content>{
+    reference: {
+      title: 'Chamath Palihapitiya speaking at Waterloo Innovation Summit',
+      authors: [{name: 'Chamath Palihapitiya'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2016)',
+      link: "https://www.youtube.com/watch?v=D82_ppT2iic"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALL_IN_PODCAST_E165: <Content>{
+    reference: {
+      title: 'All-In Podcast E165',
+      authors: [{name: 'Chamath Palihapitiya'},{name: 'Jason Calacanis'},{name: 'David Friedberg'},{name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.all_in],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=FHO4hoXc75k"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALL_IN_PODCAST_E164: <Content>{
+    reference: {
+      title: 'All-In Podcast E164',
+      authors: [{name: 'Chamath Palihapitiya'},{name: 'Jason Calacanis'},{name: 'David Friedberg'},{name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.all_in],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=bUuEE2jmP2c"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
   CONCEPT_COLLIDER_MATHEMATICAL_PHYSICS_ACTIVE_INFERENCE_FREE_ENERGY_ENTROPY: <Content>{
     reference: {
       title: 'Concept Collider | Mathematical Physics + Active Inference, Free Energy & Entropy',
@@ -2083,14 +2281,6 @@ const REFERENCES = {
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023"
   },
 
-// TODO , Accurate here, list the articles from archive automatically
-  WIKIPEDIA_ARTICLES: <Content>{
-    reference: {
-      title: "~400+ Wikipedia Articles",
-      link: "https://www.wikipedia.org/"
-    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "2023"
-  },
-
   EXPLORER_ORBITMINES_RESEARCH: <Content>{
     reference: {
       title: "Explorer - OrbitMines Research",
@@ -2476,6 +2666,28 @@ export const BOOKS: ContentCategory = {
 export const ARTICLES_2024: ContentCategory = {
   name: '2024',
   items: [
+    REFERENCES.SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION,
+    REFERENCES.NAVIGATING_COGNITION_SPATIAL_CODES_FOR_HUMAN_THINKING,
+    REFERENCES.TOWARDS_A_STRUCTURAL_TURN_IN_CONSCIOUSNESS_SCIENCE,
+    REFERENCES.THE_GLASS_BEAD_GAME,
+    REFERENCES.AN_INTRODUCTION_TO_HIGHER_ARITY_SCIENCE,
+    REFERENCES.HISTORY_OF_SCIENCE_AND_TECHNOLOGY_QA_FEBRUARY_28,
+    REFERENCES.GRETA_SEMINAR_HIGHER_ARITY_ALGEBRA_VIA_HYPERGRAPH_REWRITING,
+    REFERENCES.WORKSHOP_AXIOMATIC_CREATION,
+    REFERENCES.COMMUNITY_LIVESTREAM_AXIOMS_CREATIVITY,
+    REFERENCES.CONCEPT_COLLIDER_GEOMETRY_OF_DATA_AND_NEURAL_CORRELATES,
+    REFERENCES.WOLFRAM_PHYSICS_PROJECT_WORKING_SESSION___CAUSAL_MULTIWAY_SYSTEMS,
+    REFERENCES.SCIENCE_RESEARCH_SESSION_HYPORULIAD,
+    REFERENCES.A_CONVERSATION_BETWEEN_BOB_COECKE_AND_STEPHEN_WOLFRAM,
+    REFERENCES.STEVE_JOBS,
+    REFERENCES.JOHN_CLEESE_ON_CREATIVITY_IN_MANAGEMENT,
+    REFERENCES.THE_TRILLION_DOLLAR_EQUATION,
+    REFERENCES.STEVE_JOBS_PRESIDENT_CEO_NEXT_COMPUTER_CORP_AND_APPLE_MIT_SLOAN_DISTINGUISHED_SPEAKER_SERIES,
+    REFERENCES.CARL_SAGAN_AT_MIT___MANAGEMENT_IN_THE_YEAR_2000_SLOAN_SCHOOL_SYMPOSIUM,
+    REFERENCES.CHAMATH_PALIHAPITIYA_SOCIALCAPITAL_STARTUP_GRIND,
+    REFERENCES.CHAMATH_PALIHAPITIYA_SPEAKING_AT_WATERLOO_INNOVATION_SUMMIT,
+    REFERENCES.ALL_IN_PODCAST_E165,
+    REFERENCES.ALL_IN_PODCAST_E164,
     REFERENCES.CONCEPT_COLLIDER_MATHEMATICAL_PHYSICS_ACTIVE_INFERENCE_FREE_ENERGY_ENTROPY,
     REFERENCES.CRDTS_GO_BRRR,
     REFERENCES.THIS_WEEKS_FINDS_18_CATEGORIFYING_THE_QUANTUM_HARMONIC_OSCILLATOR,
@@ -2660,9 +2872,7 @@ export const ARTICLES_2023: ContentCategory = {
     REFERENCES.COMPUTATIONAL_FOUNDATIONS_FOR_THE_SECOND_LAW_OF_THERMODYNAMICS,
     REFERENCES.FASTER_THAN_LIGHT_IN_OUR_MODEL_OF_PHYSICS_SOME_PRELIMINARY_THOUGHTS,
     REFERENCES.HOW_DID_WE_GET_HERE_THE_TANGLED_HISTORY_OF_THE_SECOND_LAW_OF_THERMODYNAMICS,
-    REFERENCES.MULTICOMPUTATIONAL_IRREDUCIBILITY,
-
-    REFERENCES.WIKIPEDIA_ARTICLES
+    REFERENCES.MULTICOMPUTATIONAL_IRREDUCIBILITY
   ]
 }
 
