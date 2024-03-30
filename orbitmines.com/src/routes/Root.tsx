@@ -15,7 +15,7 @@ import {CanvasContainer} from "../@orbitmines/Visualization";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
 
 const Root = () => {
-  const papers = [_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
@@ -88,6 +88,18 @@ const Root = () => {
         </Row></Col>
       </Row>
 
+      <div className="child-px-2">
+        {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT].map(paper => (<Row center="xs" className="pb-3">
+          <Col xs={12} sm={10} md={8} lg={6} xl={5}>
+            <Reference index={0} reference={{...paper.reference, notes: undefined}} center="xs"
+                       style={{fontSize: '0.8rem'}} target="_self"/>
+            {/*<a href={paper.reference.link?.replace("https://orbitmines.com/papers", "")}>*/}
+            {/*    <Icon icon="link" /> {paper.reference.year}. <Rendered renderable={paper.reference.title} />*/}
+            {/*</a>*/}
+          </Col>
+        </Row>))}
+      </div>
+
       <CanvasContainer style={{height: '120px'}}>
         <canvas
           style={{
@@ -101,7 +113,7 @@ const Root = () => {
       </CanvasContainer>
 
       <Row center="xs">
-        <H3 className="m-0">Paperable Text</H3>
+        <H3 className="m-0">Could be printed on paper</H3>
       </Row>
 
       <div className="child-px-2">
