@@ -3,12 +3,12 @@ import OnIntelligibility from "./papers/2022.OnIntelligibility";
 import {useParams} from "react-router-dom";
 import Error from "./Error";
 import OnOrbits from "./papers/2023.OnOrbits";
-import RewritingRays from "./papers/2024.RewritingRays";
+import AUniversalLanguage from "./papers/2024.AUniversalLanguage";
 
 const PAPERS: { [key: string]: any } = {
     'on-intelligibility': OnIntelligibility,
     'on-orbits-equivalence-and-inconsistencies': OnOrbits,
-    'traversing-and-rewriting-of-arbitrary-rays': RewritingRays,
+    'a-universal-language': AUniversalLanguage,
 }
 
 const Paper = () => {

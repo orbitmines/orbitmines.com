@@ -8,14 +8,14 @@ import {PROFILES} from "../../profiles/profiles";
 import {renderable} from "../../lib/typescript/React";
 import {ON_ORBITS} from "./2023.OnOrbits";
 
-export const REWRITING_RAYS: Content = {
+export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
-    title: "Traversing and Rewriting of Arbitrary Rays",
+    title: "A Universal Language",
     subtitle: "",
     draft: true,
-    link: 'https://orbitmines.com/papers/traversing-and-rewriting-of-arbitrary-rays',
+    link: 'https://orbitmines.com/papers/a-universal-language',
     year: "2024",
-    date: "2024-03-31",
+    date: "2024-04-30",
     external: {
       // TODO
       // discord: {serverId: '1055502602365845534', channelId: '1190719376085766195', link: () => "https://discord.com/channels/1055502602365845534/1190719376085766195/1190719376085766195"}
@@ -33,15 +33,16 @@ export const REWRITING_RAYS: Content = {
   }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "March, 2024"
 }
 
-const RewritingRays = () => {
+const AUniversalLanguage = () => {
   const navigate = useNavigate();
 
   const referenceCounter = useCounter();
 
   const paper: Omit<PaperProps, 'children'> = {
-    ...REWRITING_RAYS.reference,
+    ...A_UNIVERSAL_LANGUAGE.reference,
     subtitle: renderable<string>("", (value: any) => <>
-      A technical deep dive into Rays {<Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>}. Demonstrated by an implementation of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Aleks Kissinger\'s Chyp (Cospans of HYPergraphs)', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />.
+      A technical deep dive into Rays {<Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>} <Reference is="footnote" index={referenceCounter()} reference={{title: 'github.com/orbitmines/ray', link: 'https://github.com/orbitmines/ray', authors: [{
+          ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}}/>. Accompanied by a simple implementation of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Aleks Kissinger\'s Chyp (Cospans of HYPergraphs)', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />.
     </>),
     pdf: {
       fonts: [JetBrainsMono],
@@ -53,7 +54,8 @@ const RewritingRays = () => {
   return <Paper
     {...paper}
   >
+
   </Paper>
 }
 
-export default RewritingRays;
+export default AUniversalLanguage;
