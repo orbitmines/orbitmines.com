@@ -10,6 +10,7 @@ import {ON_ORBITS} from "./2023.OnOrbits";
 import BR from '../../lib/paper/layout/BR';
 import {Row} from "../../lib/layout/flexbox";
 import Section from "../../lib/paper/layout/Section";
+import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 
 export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
@@ -60,6 +61,7 @@ const AUniversalLanguage = () => {
     <Row center="xs">
       <Section head="Introduction">
 
+        This thing is, in essence, a language to understand inconsistencies. A conceptual framework to make sense of ambiguity: A story of how destructively confusing languages can be. Though to me, most importantly, it is here as infrastructure. Infrastructure for the design and implementation of a <Reference is="reference" index={referenceCounter()} reference={{link: _2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference.link, title: "different category of (programming) interfaces"}} simple inline />.
       </Section>
     </Row>
   </Paper>
