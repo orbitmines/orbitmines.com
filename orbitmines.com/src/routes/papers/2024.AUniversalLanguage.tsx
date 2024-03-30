@@ -7,11 +7,12 @@ import Reference, {useCounter} from "../../lib/paper/layout/Reference";
 import {PROFILES} from "../../profiles/profiles";
 import {renderable} from "../../lib/typescript/React";
 import {ON_ORBITS} from "./2023.OnOrbits";
+import BR from '../../lib/paper/layout/BR';
 
 export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
     title: "A Universal Language",
-    subtitle: "",
+    subtitle: "One Ray to rule them all, One Ray to find them, One Ray to bring them all, and in the darkness bind them: Explore a technical deep dive into Rays. Accompanied by a simple implementation of Aleks Kissinger's Chyp (Cospans of HYPergraphs).",
     draft: true,
     link: 'https://orbitmines.com/papers/a-universal-language',
     year: "2024",
@@ -41,7 +42,7 @@ const AUniversalLanguage = () => {
   const paper: Omit<PaperProps, 'children'> = {
     ...A_UNIVERSAL_LANGUAGE.reference,
     subtitle: renderable<string>("", (value: any) => <>
-      A technical deep dive into Rays {<Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>} <Reference is="footnote" index={referenceCounter()} reference={{title: 'github.com/orbitmines/ray', link: 'https://github.com/orbitmines/ray', authors: [{
+      One Ray to rule them all, One Ray to find them,<BR/> One Ray to bring them all, and in the darkness bind them.<BR/><div className="pt-15"/> Explore a technical deep dive into Rays {<Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>} <Reference is="footnote" index={referenceCounter()} reference={{title: 'github.com/orbitmines/ray', link: 'https://github.com/orbitmines/ray', authors: [{
           ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}}/>. Accompanied by a simple implementation of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Aleks Kissinger\'s Chyp (Cospans of HYPergraphs)', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />.
     </>),
     pdf: {
