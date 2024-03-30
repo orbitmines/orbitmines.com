@@ -1,6 +1,12 @@
 import React from 'react';
 import {Intent, Tag} from "@blueprintjs/core";
-import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, FAMILIAR_TOOLS} from "../../profiles/FadiShawki/FadiShawki";
+import {
+  ARTICLES_2021,
+  ARTICLES_2022,
+  ARTICLES_2023,
+  ARTICLES_2024,
+  FAMILIAR_TOOLS
+} from "../../profiles/FadiShawki/FadiShawki";
 import ORGANIZATIONS from "../../lib/organizations/ORGANIZATIONS";
 import Section from "../../lib/paper/layout/Section";
 import Arc from "../../lib/paper/layout/Arc";
@@ -12,16 +18,20 @@ import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
 import {ON_ORBITS} from "./2023.OnOrbits";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
+import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
 
   return <Profile profile={profile}>
-    <Arc head="Currently...">
-      <Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">
+    <Arc head="Currently..." buffer={false}>
+      {/*<Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">*/}
+      {/*  Feel free to contact me on the socials specified above.*/}
+      {/*</Section>*/}
+      <Section head="Looking for funding, collaboration or anyone curious to learn more">
         Feel free to contact me on the socials specified above.
       </Section>
-      <Section head="Building a (ray-like hypergraph) graphical interface">
+      <Section head="Building a (ray-like) graphical interface: OrbitMines as a Game Project">
         <CanvasContainer style={{height: '140px'}}>
           <canvas
             style={{
@@ -35,9 +45,9 @@ const FadiShawki = () => {
         </CanvasContainer>
 
         <Link
-          link="https://github.com/orbitmines/orbitmines.com/pull/1"
+          link="https://github.com/orbitmines/orbitmines.com"
           name={<span>
-        OrbitMines Explorer - <Tag intent={Intent.WARNING} minimal multiline style={{fontSize: '1rem', paddingTop: '0px', paddingBottom: '0px'}}>WIP</Tag> Preliminary Technical Implementation/Exploration
+        OrbitMines as a Game Project
       </span>}
           icon={ORGANIZATIONS.github.key} />
       </Section>
@@ -54,15 +64,40 @@ const FadiShawki = () => {
       {/*</Section>*/}
     </Arc>
 
-    <Arc head="Writings">
+
+    <CanvasContainer style={{height: '110px'}}>
+      <canvas
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/branch.png')`,
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+    </CanvasContainer>
+
+    <Arc head="Writings" buffer={false}>
       <Section head="Theoretics">
-        {[ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+        {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
           <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
         ))}
       </Section>
     </Arc>
 
-    <Arc head="Formal History">
+    <CanvasContainer style={{height: '110px'}}>
+      <canvas
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal.png')`,
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+    </CanvasContainer>
+
+    <Arc head="Formal History" buffer={false}>
       <Section head="Projects">
         <Category category={profile.content!.history} focus={ContentFocus.FINISHED} />
       </Section>
@@ -76,14 +111,41 @@ const FadiShawki = () => {
       </Section>
     </Arc>
 
-    <Arc head="Technology Exposure">
+    <CanvasContainer style={{height: '150px'}}>
+      <canvas
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_with_equivs.png')`,
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+    </CanvasContainer>
+
+    <Arc head="Technology Exposure" buffer={false}>
       <Section head="2013 .. 2023">
         <Category category={FAMILIAR_TOOLS} focus={ContentFocus.ALL} inline simple />
       </Section>
     </Arc>
 
+    <CanvasContainer style={{height: '110px'}}>
+      <canvas
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_equived.png')`,
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+    </CanvasContainer>
+
     {/* Include things like wikipedia exposure/other things like github ? */}
     <Arc head="Literary Exposure">
+      <Section head="2024">
+        <Category category={ARTICLES_2024} focus={ContentFocus.ALL} />
+      </Section>
       <Section head="2023">
         <Category category={ARTICLES_2023} focus={ContentFocus.ALL} />
       </Section>

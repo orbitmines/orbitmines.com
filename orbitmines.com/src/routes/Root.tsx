@@ -2,19 +2,20 @@ import React from 'react';
 import {Layer, pageStyles} from "../profiles/FadiShawki/FadiShawki2";
 import {Col, Row} from "../lib/layout/flexbox";
 import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
-import {Divider, H3, Icon, Tag} from "@blueprintjs/core";
+import {H3, Tag} from "@blueprintjs/core";
 import CustomIcon from "../lib/layout/icons/CustomIcon";
 import ORGANIZATIONS from "../lib/organizations/ORGANIZATIONS";
 import Author from "../lib/paper/layout/Author";
 import {PROFILES} from "../profiles/profiles";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
-import {Rendered} from "../lib/typescript/React";
 import {ON_ORBITS} from "./papers/2023.OnOrbits";
 import Reference from "../lib/paper/layout/Reference";
+import {CanvasContainer} from "../@orbitmines/Visualization";
+import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
 
 const Root = () => {
-  const papers = [ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
@@ -87,16 +88,24 @@ const Root = () => {
         </Row></Col>
       </Row>
 
-      <Row center="xs">
-        <Divider style={{width: '80%'}}/>
-      </Row>
+      <CanvasContainer style={{height: '120px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
 
       <Row center="xs">
-        <H3 className="m-0">Papers</H3>
+        <H3 className="m-0">Paperable Text</H3>
       </Row>
 
       <div className="child-px-2">
-        {papers.map(paper => (<Row center="xs">
+        {papers.map(paper => (<Row center="xs" className="pb-3">
           <Col xs={12} sm={10} md={8} lg={6} xl={5}>
             <Reference index={0} reference={{...paper.reference, notes: undefined}} center="xs"
                        style={{fontSize: '0.8rem'}} target="_self"/>
@@ -107,9 +116,17 @@ const Root = () => {
         </Row>))}
       </div>
 
-      <Row center="xs">
-        <Divider style={{width: '80%'}}/>
-      </Row>
+      <CanvasContainer style={{height: '150px'}}>
+        <canvas
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+      </CanvasContainer>
 
       <Author {...PROFILES.fadi_shawki} filter={(profile) => [
         ORGANIZATIONS.github.key,

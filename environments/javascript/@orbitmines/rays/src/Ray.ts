@@ -56,6 +56,10 @@
 //   export namespace Compiler { // TODO Ray is Compiler
 //
 //     /**
+//      * In the case of Rays, whether something is a vertex/initial/terminal is only inferred from surrounding context. And these checks only need to happen locally in order to decide how to traverse arbitrary structure (as in - I only need to check the presence of something next to me, not traverse the whole direction recursively in order to decide what to do).
+//      *
+//      * How about treating something like something which the context says it's not? (Could apply this sort of thing in some fidelity/consistency checking mechanism as a way of fuzzing the fidelity mechanism)
+//      *
 //      * TODO: Compiler could have things like other composed rays which tell it cares about the other (even if that's correct or not??)
 //      *
 //      *
@@ -87,6 +91,8 @@
 //      *  - Allow mapping/finding of other implementations regarding some equiv funcs (like different ways of implementing using NAND etc...)
 //      *
 //      *  Arbitrary.
+//      *
+//      *  TODO Pass a single ray to the runtime, and run that way? Access runtime as variable from ray? That would have programs accessing possible runtimes?
 //      */
 //   }
 //
@@ -261,6 +267,11 @@
 //
 //   export namespace Op {
 //
+//     /**
+//      * TODO: readonly setup, where only traversal ops are allowed. Of course these are writing in some sense, bit those writings aren't directly accessible from this perspective
+//      *
+//      */
+//
 //     export type Impl<T> =
 //       { [TKey in keyof (typeof Op.Zeroary.All)]: Op.Zeroary.Type<T> }
 //       & { [TKey in keyof (typeof Op.Unary.All)]: Op.Unary.Type<T> }
@@ -364,6 +375,7 @@
 //        *
 //        * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Quite%20similarly%20to%20the%20loops%2C%20I%20could%20be%20ignorant%20of%20additional%20structure%20by%20assuming%20it%27s%20not%20there.
 //        */
+//         // TODO: is none, ref, init terminal as global equiv check kn the structure? as generalization ; yep, is_orbit.
 //       export const is_none = Ray.Op.Binary.All.is_orbit;
 //       export const is_some = Ray.Function.Self.Impl(
 //         self => self.is_none().not()
@@ -426,15 +438,22 @@
 //        *    - in the case of 'is_orbit', we might need to do more complicated things to acknowledge their differences - we don't have direct access to them.
 //        *
 //        * TODO: (so dually connected, what if only one is aware??) Or basically just ; the answer in this particular instance is just if either end can find the other only once. Consistency of it defined on a more abstract level...
+//        *
+//        * a.self().traverse().is_orbit(b.self().traverse())
 //        */
 //         // @alias('includes', 'contains') ; (slightly different variants?)
-//       export const is_equivalent = Ray.Function.Self.Binary(
-//           (a, b) => a.self().traverse().is_orbit(b.self().traverse())
-//         );
+//       export const is_equivalent = is_composed.from_perspective_of(self => self.self());
 //       // TODO: Either is_equiv or is_composed will likely change?.
-//       export const is_composed = Ray.Function.Self.Binary(
-//         (a, b) => a.traverse().is_orbit(b.traverse()) // Basically: does there exist a single connection between the two?
-//       );
+//       /**
+//        * a.traverse().is_orbit(b.traverse()) // Basically: does there exist a single connection between the two?
+//        */
+//       export const is_composed = is_orbit.from_perspective_of(self => self.traverse()); // Needs some ref from Ray.Function.Self.
+//
+//       /**
+//        * "Applying the same thing in a different context"
+//        * TODO: Somewhat related to Functors?
+//        */
+//       export const from_perspective_of = Ray.Function.Self.Binary((a, b) => { throw new NotImplementedError(); });
 //
 //       export const traverse = Ray.Function.Self.Impl(
 //         (a) => { throw new NotImplementedError(); }
