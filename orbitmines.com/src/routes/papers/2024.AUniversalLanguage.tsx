@@ -8,6 +8,8 @@ import {PROFILES} from "../../profiles/profiles";
 import {renderable} from "../../lib/typescript/React";
 import {ON_ORBITS} from "./2023.OnOrbits";
 import BR from '../../lib/paper/layout/BR';
+import {Row} from "../../lib/layout/flexbox";
+import Section from "../../lib/paper/layout/Section";
 
 export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
@@ -55,7 +57,11 @@ const AUniversalLanguage = () => {
   return <Paper
     {...paper}
   >
+    <Row center="xs">
+      <Section head="Introduction">
 
+      </Section>
+    </Row>
   </Paper>
 }
 
