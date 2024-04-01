@@ -2550,7 +2550,7 @@ const REFERENCES = {
     reference: {
       title: "(Unfinished) Computer Science (BSc)",
       published: [{name: "Leiden University"}],
-      year: "2020: I stop attending Leiden University. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest.",
+      year: "2020: I stop attending Leiden University. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest",
     }, status: Viewed.IN_PROGRESS, viewed_at: "September, 2019 - December, 2020", archived: true
   },
 
