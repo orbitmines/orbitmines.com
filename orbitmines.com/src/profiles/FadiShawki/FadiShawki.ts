@@ -3,6 +3,223 @@ import ORGANIZATIONS, {Content, ContentCategory, Viewed} from '../../lib/organiz
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 const REFERENCES = {
+  CALCULUS_RATIOCINATOR_VS_CHARACTERISTICA_UNIVERSALIS_THE_TWO_TRADITIONS_IN_LOGIC_REVISITED: <Content>{
+    reference: {
+      title: 'Calculus Ratiocinator vs. Characteristica Universalis? The Two Traditions in Logic, Revisited',
+      authors: [{name: 'Volker Peckhaus'}],
+      organizations: [],
+      year: '(2004)',
+      link: "https://www.researchgate.net/publication/228386287_Calculus_Ratiocinator_vs_Characteristica_Universalis_The_two_traditions_in_logic_revisited"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CARGO_CULT_SCIENCE: <Content>{
+    reference: {
+      title: 'Cargo Cult Science',
+      authors: [{name: 'Richard P. Feynman'}],
+      organizations: [],
+      year: '(1974)',
+      link: "https://calteches.library.caltech.edu/51/2/CargoCult.htm"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MILLIONS_OF_CHILDREN_LEARN_ONLY_VERY_LITTLE_HOW_CAN_THE_WORLD_PROVIDE_A_BETTER_EDUCATION_TO_THE_NEXT_GENERATION: <Content>{
+    reference: {
+      title: 'Millions of children learn only very little. How can the world provide a better education to the next generation?',
+      authors: [{name: 'Max Roser'}],
+      organizations: [],
+      year: '(2022)',
+      link: "https://ourworldindata.org/better-learning"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  STRIPES_2023_ANNUAL_LETTER: <Content>{
+    reference: {
+      title: 'Stripe\'s 2023 annual letter',
+      authors: [{name: 'Patrick Collison'}, {name: 'John Collison'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://stripe.com/en-nl/annual-updates/2023"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PLAYING_VALUING_AND_LIVING_EXAMINING_NIETZSCHES_PLAYFUL_RESPONSE_TO_NIHILISM: <Content>{
+    reference: {
+      title: 'Playing, Valuing, and Living: Examining Nietzsche’s Playful Response to Nihilism',
+      authors: [{name: 'Aaron Harper'}],
+      organizations: [],
+      year: '(2015)',
+      link: "https://philpapers.org/rec/HARPVA-2"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_BUILD_YOUR_OWN_OPEN_GAMES_ENGINE_BOOTCAMP_PART_I_LENSES: <Content>{
+    reference: {
+      title: 'The Build Your Own Open Games Engine Bootcamp — Part I: Lenses',
+      authors: [{name: 'Daniele Palombi'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://blog.20squares.xyz/open-games-bootcamp-i/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CAN_AI_SOLVE_SCIENCE: <Content>{
+    reference: {
+      title: 'Can AI Solve Science?',
+      authors: [{name: 'Stephen Wolfram'}, {name: 'Richard Assar'}, {name: 'Nik Murzin'}],
+      organizations: [ORGANIZATIONS.wolfram],
+      year: '(2024)',
+      link: "https://writings.stephenwolfram.com/2024/03/can-ai-solve-science/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  COMMUNITY_LIVESTREAM_BIOELECTRICITY: <Content>{
+    reference: {
+      title: 'Community Livestream | Bioelectricity',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=XBNh3Yoxei0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  QUANTUM_GRAVITY_WOLFRAM_PHYSICS_PROJECT: <Content>{
+    reference: {
+      title: 'Quantum Gravity & Wolfram Physics Project',
+      authors: [{name: 'Jonathan Gorard'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=ioXwL-c1RXQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PARADIGM_SHIFT_GHOST_PARTICLES_CONSTRUCTOR_THEORY: <Content>{
+    reference: {
+      title: 'Paradigm Shift, Ghost Particles, Constructor Theory',
+      authors: [{name: 'Chiara Marletto'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=40CB12cj_aM&t=6443s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_STRING_THEORY_ICEBERG_EXPLAINED: <Content>{
+    reference: {
+      title: 'The String Theory Iceberg EXPLAINED',
+      authors: [{name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=X4PdPnQuwjY&t=9496s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  EXPLORING_SNIFFING_NVIDIAS_IOCTLS_OPEN_GPU_KERNEL_MODULES_DEBUG_PTX_CUDA: <Content>{
+    reference: {
+      title: 'Exploring | sniffing NVIDIA\'s ioctls | open-gpu-kernel-modules | DEBUG | PTX | CUDA',
+      authors: [{name: 'George Hotz'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=rUsx1b7rQ8Q&t=9910s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PROGRAMMING_WRITING_A_FUZZER_AND_NOT_GETTING_TRIGGERED_WHEN_THE_AMD_GPU_CRASHES_UMR: <Content>{
+    reference: {
+      title: 'Programming | writing a fuzzer and not getting triggered when the AMD GPU crashes UMR',
+      authors: [{name: 'George Hotz'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=BCnTXwhzzxA&t=9780s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PROGRAMMING_RIPPING_OUT_ALL_OF_AMDS_USERSPACE_AMDGPU_IOCTLS_GPU_MEMORY_HSA_KFD: <Content>{
+    reference: {
+      title: 'Programming | ripping out all of AMD\'s userspace, AMDGPU ioctls | GPU memory | HSA KFD',
+      authors: [{name: 'George Hotz'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=-iH5wvFnsKs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALL_IN_PODCAST_E169: <Content>{
+    reference: {
+      title: 'All-In Podcast E169',
+      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=snbTCWL6rxo"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALL_IN_PODCAST_E170: <Content>{
+    reference: {
+      title: 'All-In Podcast E170',
+      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=uMajFsCkzxY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALL_IN_PODCAST_E171: <Content>{
+    reference: {
+      title: 'All-In Podcast E171',
+      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=3tEcLAud7Nc"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALL_IN_PODCAST_E172: <Content>{
+    reference: {
+      title: 'All-In Podcast E172',
+      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=4t4YkHSTZbw"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  SHANNON_LUMINARY_LECTURE_SERIES___STEPHEN_FRY: <Content>{
+    reference: {
+      title: 'Shannon Luminary Lecture Series - Stephen Fry',
+      authors: [{name: 'Stephen Fry'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2017)',
+      link: "https://www.youtube.com/watch?v=24F6C1KfbjM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CONTAINERS_FOR_COMPILER_ARCHITECTURE: <Content>{
+    reference: {
+      title: 'Containers for compiler architecture',
+      authors: [{name: 'Andre Videla'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=BnzAxT-O0Y8"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHY_IT_WAS_ALMOST_IMPOSSIBLE_TO_MAKE_THE_BLUE_LED: <Content>{
+    reference: {
+      title: 'Why It Was Almost Impossible to Make the Blue LED',
+      authors: [{name: '@Veritasium'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=AF8d72mA41M"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  COMPOSITIONAL_GAME_THEORY_TOWARDS_INCENTIVES_MODELLING_AT_SCALE: <Content>{
+    reference: {
+      title: 'Compositional Game Theory – Towards Incentives Modelling at Scale',
+      authors: [{name: 'Jules Hedges'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=2b4hxOP7g9I"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MINDSCAPE_268_MATT_STRASSLER_ON_RELATIVITY_FIELDS_AND_THE_LANGUAGE_OF_REALITY: <Content>{
+    reference: {
+      title: 'Mindscape 268 | Matt Strassler on Relativity, Fields, and the Language of Reality',
+      authors: [{name: 'Matt Strassler'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=kCpELmx425w"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ACTINF_MATHSTREAM_0091_JONATHAN_GORARD_A_COMPUTATIONAL_PERSPECTIVE_ON_OBSERVATION_AND_COGNITION: <Content>{
+    reference: {
+      title: 'ActInf MathStream 009.1 ~ Jonathan Gorard: A computational perspective on observation and cognition',
+      authors: [{name: 'Jonathan Gorard'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.active_inference_institute],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=I3rhsT-8isk"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
   SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION: <Content>{
     reference: {
       title: 'Solving SAT via Positive Supercompilation',
@@ -15,7 +232,7 @@ const REFERENCES = {
   NAVIGATING_COGNITION_SPATIAL_CODES_FOR_HUMAN_THINKING: <Content>{
     reference: {
       title: 'Navigating cognition: Spatial codes for human thinking',
-      authors: [{name: 'Jacob L. S. Bellmund'},{name: 'Peter Gärdenfors'},{name: 'Edvard I. Moser'},{name: 'Christian F. Doeller'}],
+      authors: [{name: 'Jacob L. S. Bellmund'}, {name: 'Peter Gärdenfors'}, {name: 'Edvard I. Moser'}, {name: 'Christian F. Doeller'}],
       organizations: [],
       year: '(2018)',
       link: "https://www.science.org/doi/10.1126/science.aat6766"
@@ -70,7 +287,7 @@ const REFERENCES = {
     reference: {
       title: 'Workshop | Axiomatic Creation',
       authors: [{name: ''}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=StNfdknDQ9c"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -79,7 +296,7 @@ const REFERENCES = {
     reference: {
       title: 'Community Livestream | Axioms & Creativity',
       authors: [{name: ''}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=9ddJAJaYk_E"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -88,7 +305,7 @@ const REFERENCES = {
     reference: {
       title: 'Concept Collider | Geometry of Data and Neural Correlates',
       authors: [{name: ''}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=mROz1U4VkGY"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -96,8 +313,8 @@ const REFERENCES = {
   WOLFRAM_PHYSICS_PROJECT_WORKING_SESSION___CAUSAL_MULTIWAY_SYSTEMS: <Content>{
     reference: {
       title: 'Wolfram Physics Project: Working Session - Causal Multiway Systems',
-      authors: [{name: 'Stephen Wolfram'},{name: 'Jonathan Gorard'}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram],
+      authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '(2020)',
       link: "https://www.youtube.com/watch?v=OXSE6KhRUF4"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -105,8 +322,8 @@ const REFERENCES = {
   SCIENCE_RESEARCH_SESSION_HYPORULIAD: <Content>{
     reference: {
       title: 'Science Research Session: Hyporuliad',
-      authors: [{name: 'Stephen Wolfram'},{name: 'Jonathan Gorard'}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram],
+      authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=lZaBjuHk7Ms"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -114,8 +331,8 @@ const REFERENCES = {
   A_CONVERSATION_BETWEEN_BOB_COECKE_AND_STEPHEN_WOLFRAM: <Content>{
     reference: {
       title: 'A conversation between Bob Coecke and Stephen Wolfram',
-      authors: [{name: 'Bob Coecke'},{name: 'Stephen Wolfram'}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram],
+      authors: [{name: 'Bob Coecke'}, {name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '(2021)',
       link: "https://www.youtube.com/watch?v=8CUTXaGqvSQ"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -186,8 +403,8 @@ const REFERENCES = {
   ALL_IN_PODCAST_E165: <Content>{
     reference: {
       title: 'All-In Podcast E165',
-      authors: [{name: 'Chamath Palihapitiya'},{name: 'Jason Calacanis'},{name: 'David Friedberg'},{name: 'David O. Sacks'}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.all_in],
+      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=FHO4hoXc75k"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -195,8 +412,8 @@ const REFERENCES = {
   ALL_IN_PODCAST_E164: <Content>{
     reference: {
       title: 'All-In Podcast E164',
-      authors: [{name: 'Chamath Palihapitiya'},{name: 'Jason Calacanis'},{name: 'David Friedberg'},{name: 'David O. Sacks'}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.all_in],
+      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=bUuEE2jmP2c"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -205,7 +422,7 @@ const REFERENCES = {
     reference: {
       title: 'Concept Collider | Mathematical Physics + Active Inference, Free Energy & Entropy',
       authors: [{name: ''}],
-      organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.semf],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=GwbLOCCI2yE"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
@@ -2333,7 +2550,7 @@ const REFERENCES = {
     reference: {
       title: "(Unfinished) Computer Science (BSc)",
       published: [{name: "Leiden University"}],
-      year: "September, 2019 - December, 2020"
+      year: "2020: I stop attending Leiden University. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest.",
     }, status: Viewed.IN_PROGRESS, viewed_at: "September, 2019 - December, 2020", archived: true
   },
 
@@ -2351,6 +2568,15 @@ const REFERENCES = {
       year: "2023",
       link: "https://semf.org.es/school2023/"
     }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
+  },
+
+  INTO_THE_INFORMATION_CONTINUUM: <Content>{
+    reference: {
+      title: "In-Person Workshop | Into the Information Continuum",
+      organizations: [ORGANIZATIONS.semf],
+      year: "2024 @ Amsterdam",
+      link: "https://www.youtube.com/watch?v=KM97bUcVPDE&t=2786s"
+    }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
   },
 
   NGI_FORUM_2023: <Content>{
@@ -2666,6 +2892,32 @@ export const BOOKS: ContentCategory = {
 export const ARTICLES_2024: ContentCategory = {
   name: '2024',
   items: [
+    REFERENCES.CALCULUS_RATIOCINATOR_VS_CHARACTERISTICA_UNIVERSALIS_THE_TWO_TRADITIONS_IN_LOGIC_REVISITED,
+    REFERENCES.CARGO_CULT_SCIENCE,
+    REFERENCES.MILLIONS_OF_CHILDREN_LEARN_ONLY_VERY_LITTLE_HOW_CAN_THE_WORLD_PROVIDE_A_BETTER_EDUCATION_TO_THE_NEXT_GENERATION,
+    REFERENCES.STRIPES_2023_ANNUAL_LETTER,
+    REFERENCES.PLAYING_VALUING_AND_LIVING_EXAMINING_NIETZSCHES_PLAYFUL_RESPONSE_TO_NIHILISM,
+    REFERENCES.THE_BUILD_YOUR_OWN_OPEN_GAMES_ENGINE_BOOTCAMP_PART_I_LENSES,
+    REFERENCES.CAN_AI_SOLVE_SCIENCE,
+    REFERENCES.COMMUNITY_LIVESTREAM_BIOELECTRICITY,
+    REFERENCES.QUANTUM_GRAVITY_WOLFRAM_PHYSICS_PROJECT,
+    REFERENCES.PARADIGM_SHIFT_GHOST_PARTICLES_CONSTRUCTOR_THEORY,
+    REFERENCES.THE_STRING_THEORY_ICEBERG_EXPLAINED,
+    REFERENCES.EXPLORING_SNIFFING_NVIDIAS_IOCTLS_OPEN_GPU_KERNEL_MODULES_DEBUG_PTX_CUDA,
+    REFERENCES.PROGRAMMING_WRITING_A_FUZZER_AND_NOT_GETTING_TRIGGERED_WHEN_THE_AMD_GPU_CRASHES_UMR,
+    REFERENCES.PROGRAMMING_RIPPING_OUT_ALL_OF_AMDS_USERSPACE_AMDGPU_IOCTLS_GPU_MEMORY_HSA_KFD,
+    REFERENCES.ALL_IN_PODCAST_E169,
+    REFERENCES.ALL_IN_PODCAST_E170,
+    REFERENCES.ALL_IN_PODCAST_E171,
+    REFERENCES.ALL_IN_PODCAST_E172,
+    REFERENCES.SHANNON_LUMINARY_LECTURE_SERIES___STEPHEN_FRY,
+    REFERENCES.CONTAINERS_FOR_COMPILER_ARCHITECTURE,
+    REFERENCES.WHY_IT_WAS_ALMOST_IMPOSSIBLE_TO_MAKE_THE_BLUE_LED,
+    REFERENCES.COMPOSITIONAL_GAME_THEORY_TOWARDS_INCENTIVES_MODELLING_AT_SCALE,
+    REFERENCES.MINDSCAPE_268_MATT_STRASSLER_ON_RELATIVITY_FIELDS_AND_THE_LANGUAGE_OF_REALITY,
+    REFERENCES.ACTINF_MATHSTREAM_0091_JONATHAN_GORARD_A_COMPUTATIONAL_PERSPECTIVE_ON_OBSERVATION_AND_COGNITION,
+
+
     REFERENCES.SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION,
     REFERENCES.NAVIGATING_COGNITION_SPATIAL_CODES_FOR_HUMAN_THINKING,
     REFERENCES.TOWARDS_A_STRUCTURAL_TURN_IN_CONSCIOUSNESS_SCIENCE,
@@ -2965,6 +3217,7 @@ export const FORMAL_EDUCATION: ContentCategory = {
 export const ATTENDED_EVENTS: ContentCategory = {
   name: 'Attended Events',
   items: [
+    REFERENCES.INTO_THE_INFORMATION_CONTINUUM,
     REFERENCES.NGI_FORUM_2023,
     REFERENCES.SEMF_2023,
   ]

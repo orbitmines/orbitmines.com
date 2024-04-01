@@ -150,6 +150,7 @@ const OnOrbits = () => {
         <span style={{textAlign: 'left', minWidth: '100%'}}>It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some <span
           className="bp5-text-muted">single thing, node, vertex, ..., point</span>, this is done against some assumed background, to draw one's attention to that single thing.</span>
 
+
         <BR/>
 
         <Block>
