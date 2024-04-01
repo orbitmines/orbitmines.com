@@ -122,7 +122,7 @@ const ORGANIZATIONS = {
     key: 'active_inference_institute',
     name: "active_inference_institute",
     assets: {
-      icon_png: toe_icon,
+      icon_png: active_inference_institute_icon,
     }
   },
   all_in: <TOrganization>{
