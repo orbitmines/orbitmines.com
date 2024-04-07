@@ -11,7 +11,7 @@ export const PROFILES = {
 
     picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.jpg',
 
-    date: '2024-03-05',
+    date: '2024-04-01',
 
     email: 'fadi.shawki@orbitmines.com',
 
