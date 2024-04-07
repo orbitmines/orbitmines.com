@@ -24,15 +24,15 @@ const res = string.split('\n')
       .replaceAll(/[- ]/g, "_")
       .toUpperCase();
 
-    // return `${ref}: <Content>{
-    //   reference: {
-    //     title: '${title}',
-    //     authors: [${authors.map(author => `{name: '${author}'}`).join(',')}],
-    //     organizations: [${organizations.map(org => `ORGANIZATIONS.${org}`)}],
-    //     year: '${year}',
-    //     link: "${link}"
-    //   }, status: Viewed.VIEWED, viewed_at: "2023, December"
-    // }`
-    return `REFERENCES.${ref}`;
+    return `${ref}: <Content>{
+      reference: {
+        title: '${title}',
+        authors: [${authors.map(author => `{name: '${author}'}`).join(',')}],
+        organizations: [${organizations.map(org => `ORGANIZATIONS.${org}`)}],
+        year: '${year}',
+        link: "${link}"
+      }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }`
+    // return `REFERENCES.${ref}`;
   }).join(',\n')
 console.log(res);
