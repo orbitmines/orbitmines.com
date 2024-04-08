@@ -9,10 +9,6 @@ import {Stats, StatsGl} from "@react-three/drei";
 import _ from "lodash";
 import Ray from "@orbitmines/rays"
 
-// TODO: What about showing disconnect when multiple things are rendered at the same position??
-// TODO: It's, rende rboth draw equivalence, then ignore the difference from either perspective or take some middle thing. - Line from both ends, also vertex? (or take the pos, take the x from one/other, y from the other/..)
-
-// TODO: Could be a function on Ray (any func really)
 export const Render = ({ ray, Interface }: { ray: Ray.Any, Interface: Ray.Any }) => {
   const initial: Required<InterfaceOptions> = ray.follow(Ray.directions.previous).render_options(Interface);
   const vertex: Required<InterfaceOptions> = ray.render_options(Interface);

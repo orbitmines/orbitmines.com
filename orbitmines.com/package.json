@@ -7,7 +7,6 @@
     "@blueprintjs/docs-theme": "^5.2.2",
     "@blueprintjs/icons": "^5.4.0",
     "@blueprintjs/table": "^5.0.19",
-    "@orbitmines/rays": "file:../environments/javascript/@orbitmines/rays",
     "@react-pdf/renderer": "^3.1.9",
     "@react-three/drei": "^9.66.6",
     "@react-three/fiber": "^8.13.0",
