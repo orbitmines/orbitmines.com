@@ -8,6 +8,7 @@
 ![header](./orbitmines.com/public/papers/on-orbits-equivalence-and-inconsistencies/images/header.png)
 
 ## [What is this?, What is OrbitMines?, What are Rays?](https://github.com/orbitmines/ray)
+See https://github.com/orbitmines/ray
 
 ---
 
