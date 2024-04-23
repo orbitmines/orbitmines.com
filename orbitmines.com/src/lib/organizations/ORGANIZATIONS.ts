@@ -21,8 +21,7 @@ import all_in_icon from "././all-in/icon.jpeg";
 import zx_calculus_icon from "././zx/icon.png";
 import active_inference_institute_icon from "././active-inference-institute/channels4_profile.jpg";
 import toe_icon from "././toe/toe.jpg";
-import {Renderable} from "../typescript/React";
-import {ReferenceProps} from "../paper/Paper";
+import {ReferenceProps, Renderable} from "../paper/Paper";
 
 export type SVG = {
   viewBox: {

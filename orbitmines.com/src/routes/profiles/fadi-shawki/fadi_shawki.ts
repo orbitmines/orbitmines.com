@@ -1,8 +1,8 @@
-import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../lib/organizations/ORGANIZATIONS';
+import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../../lib/organizations/ORGANIZATIONS';
 
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
-const REFERENCES = {
+export const REFERENCES = {
     CALCULUS_RATIOCINATOR_VS_CHARACTERISTICA_UNIVERSALIS_THE_TWO_TRADITIONS_IN_LOGIC_REVISITED: <Content>{
         reference: {
             title: 'Calculus Ratiocinator vs. Characteristica Universalis? The Two Traditions in Logic, Revisited',

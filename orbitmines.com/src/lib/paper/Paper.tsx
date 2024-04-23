@@ -1,19 +1,238 @@
-import React, {ReactNode, useCallback, useRef} from 'react';
+import React, {ReactNode, useCallback, useMemo, useRef} from 'react';
 import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
-import {AllowReact, Children, Predicate, Renderable, Rendered, value} from "../typescript/React";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS, {ExternalProfile, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, ExternalProfile, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
 import _ from "lodash";
-import {Col, Grid, Row, RowProps} from "../render/Layout";
 import {Button, Divider, H1, H3, H4, H6, Intent, Popover, Tag} from "@blueprintjs/core";
 import CustomIcon from "../layout/icons/CustomIcon";
 import {toJpeg} from "html-to-image";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
-import {PROFILES} from "../../profiles/profiles";
+import classNames from "classnames";
+import {PROFILES} from "../../routes/profiles/profiles";
+import {Highlight, Prism, themes} from "prism-react-renderer";
 
-const Exports = (
+// export const getClass = (className: string) => (styles && styles[className]) ? styles[className] : className;
+
+export type ColumnSize = number | boolean;
+export type ViewportSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type Alignment = 'start' | 'center' | 'end' | 'top' | 'middle' | 'bottom' | 'around' | 'between';
+
+// TODO: ts-transformer-keys
+export const ViewportSizes: ViewportSize[] = ['xs', 'sm', 'md', 'lg', 'xl']
+export const Alignments: Alignment[] = ['start', 'center', 'end', 'top', 'middle', 'bottom', 'around', 'between'];
+
+export const Grid = (props: React.HTMLAttributes<HTMLElement> & {
+  fluid?: boolean
+  tagName?: string
+}) => {
+  return React.createElement(props.tagName ?? 'div', {
+    ...props,
+    className: classNames(
+        props.fluid ? 'container-fluid' : 'container',
+        props.className,
+    )
+  });
+}
+
+export type ColumnProps = {
+  [T in ViewportSize]?: ColumnSize
+} & {
+  [T in `${ViewportSize}Offset`]?: number
+} & {
+  first?: ViewportSize
+  last?: ViewportSize
+  tagName?: string
+};
+
+export const Col = (props: React.HTMLAttributes<HTMLElement> & ColumnProps) => {
+  const {
+    tagName = 'div',
+
+    first,
+    last,
+
+    className
+  } = props;
+
+  return React.createElement(tagName, {
+    ...props,
+    className: classNames(
+        first ? `first-${first}` : null,
+        last ? `last-${first}` : null,
+
+        ...ViewportSizes.map(size => {
+          let value = props[size];
+          let offset = props[`${size}Offset`];
+
+          return ({
+            [`col-${size}${_.isInteger(value) ? `-${value}` : ''}`]: !!value,
+            [`col-${size}-offset${_.isInteger(offset) ? `-${offset}` : ''}`]: !!offset,
+          })
+        }),
+
+        className
+    )
+  });
+}
+
+export type RowProps = {
+  [T in Alignment]?: ViewportSize
+} & {
+  reverse?: boolean,
+  tagName?: string
+};
+
+export const Row = (props: React.HTMLAttributes<HTMLElement> & RowProps) => {
+  const {
+    tagName = 'div',
+    reverse,
+
+    className
+  } = props;
+
+  return React.createElement(tagName, {
+    ...props,
+    className: classNames(
+        'row',
+        {
+          reverse,
+        },
+        ...Alignments.map(alignment => props[alignment] ? `${alignment}-${props[alignment]}` : null),
+        className
+    )
+  });
+}
+
+export type Children = { children: ReactNode };
+
+export type AllowReact<T> = {
+  [TKey in keyof T]: T[TKey] extends string ? ReactNode : T[TKey];
+}
+
+export type Renderable<T> = T | { value: T, render: (value: T) => ReactNode };
+
+// TODO ; Some directionality which takes this as a value, just any function to some other.
+export const Rendered = ({renderable}: { renderable: Renderable<any>}) => {
+  const rendered = useMemo(() => renderable?.render ? renderable.render(renderable.value) : renderable, [renderable]);
+
+  return <>{rendered}</>;
+}
+
+export const value = (renderable: Renderable<any>) => renderable?.render ? renderable.value : renderable;
+
+export function renderable<T extends ReactNode>(value: T, _default: (value: T) => ReactNode = (value) => value): Renderable<T> { return { value: value, render: _default }}
+
+export type Predicate<T> = (value: T, index: number, array: T[]) => unknown;
+
+export const highlight = (code: string) => (
+    // @ts-ignore
+    <Highlight prism={Prism} theme={themes.dracula} code={code} language="typescript">
+      {({className, style, tokens, getLineProps, getTokenProps}) => (
+          <>
+            {tokens.map((line, i) => (
+                <div {...getLineProps({line, key: i})}>
+                  {line.map((token, key) => <span {...getTokenProps({token, key})} />)}
+                </div>
+            ))}
+          </>
+      )}
+    </Highlight>
+)
+
+export type CodeBlockProps = {
+  code: string
+}
+
+export const Block = ({children, className, style = {}, ...props}: Children & React.HTMLAttributes<HTMLElement>) => {
+  return (
+      <pre {...props} className={classNames(className, 'bp5-code-block')} style={{
+        fontSize: '1.1rem',
+        width: '80%',
+        ...style,
+      }}>
+      {children}
+    </pre>
+  )
+}
+
+export const CodeBlock = (props: CodeBlockProps) => {
+  const {code} = props;
+
+  return <Block>
+    {highlight(code)}
+  </Block>;
+};
+
+
+export const Category = (props: {
+  content?: Content[],
+  inline?: boolean,
+  simple?: boolean
+}) => {
+  const {inline, simple = false, content} = props;
+
+  if (!props.content)
+    return <></>;
+
+  const Item = ({item, index}: { item: Content, index: number }) => {
+    return <Tag intent={Intent.NONE} minimal multiline>
+      <Reference index={index} reference={{...item.reference}} inline simple={simple}/>
+    </Tag>;
+  }
+
+  const inline_item = () => <Row center="xs" className="child-p-1">
+    {content.map((item, index) => <Col><Item item={item} index={index} key={index}/></Col>)}
+  </Row>
+
+  if (inline)
+    return inline_item();
+
+  const simple_item = () => <div>
+    {/*<H4>{name}</H4>*/}
+    {content.map((item, index) => <Row center="xs" className="child-py-1" key={index}>
+      <Col xs={12}>
+        <Item item={item} index={index} key={index}/>
+      </Col>
+    </Row>)}
+  </div>
+
+  if (simple)
+    simple_item();
+
+  return <Row start="xs" className="child-pb-1" style={{width: '100%'}}>
+    {content.map((item, index) => <Col md={4} sm={6} xs={6} key={index}>
+      <Reference index={index} reference={{...item.reference}} style={{fontSize: '0.8rem'}} />
+    </Col>)}
+  </Row>
+}
+
+export const pageStyles = {
+  // width: '1240px';
+  // height: '1754px';
+  width: '100%',
+  maxWidth: '100vw',
+  minHeight: '100vh',
+  // fontSize: '1.1rem'
+};
+
+export const Layer = ({zIndex, children, ...props}: any) => {
+  return <div
+      {...props}
+      className={classNames("py-35 child-pb-15", props.className)}
+      style={{
+        ...pageStyles,
+        position: 'absolute',
+        zIndex: zIndex,
+        ...(props.style ?? {})
+      }}
+  >
+    {children}
+  </div>;
+}
+
+export const Exports = (
     {paper, children}: { paper: PaperProps } & Children
 ) => {
   const location = useLocation();

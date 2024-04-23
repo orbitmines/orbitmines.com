@@ -1,14 +1,13 @@
 import {HotkeysProvider} from '@blueprintjs/core';
 import React from 'react';
 import IEventListener from "./@orbitmines/js/react/IEventListener";
-import {Children} from "./lib/typescript/React";
 import {Route, Routes} from 'react-router-dom';
 import Root from "./routes/Root";
 import Paper from "./routes/Paper";
-import Profile from "./routes/Profiles";
+import Profile from "./routes/profiles/Profiles";
 import {Helmet} from "react-helmet";
 import Modules from "./@orbitmines/js/react/Modules";
-import {ThumbnailPage} from "./lib/paper/Paper";
+import {Children, ThumbnailPage} from "./lib/paper/Paper";
 import Archive from "./routes/Archive";
 
 export const Router = () => {

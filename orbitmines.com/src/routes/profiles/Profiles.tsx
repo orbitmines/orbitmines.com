@@ -1,7 +1,7 @@
 import React from 'react';
 import {useParams} from "react-router-dom";
-import Error from "./Error";
-import FadiShawki from "./papers/2023.FadiShawki";
+import Error from "../Error";
+import FadiShawki from "./fadi-shawki/FadiShawki";
 
 const PROFILES: { [key: string]: any } = {
     'fadi-shawki': FadiShawki,

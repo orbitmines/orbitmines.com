@@ -1,9 +1,9 @@
 import React, {createContext} from "react";
 import IModule from "./IModule";
-import {Children} from "../../../lib/typescript/React";
 import useHoveringModule from "./hooks/useHovering";
 import useHotkeysModule from "./hooks/useHotkeys";
 import IEventListener, {mergeListeners} from "./IEventListener";
+import {Children} from "../../../lib/paper/Paper";
 
 export const ModulesContext = createContext<IModule<any>[]>([]);
 

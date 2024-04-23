@@ -1,10 +1,9 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import {useLocation} from "react-router-dom";
-import {PaperProps, PaperView} from "../lib/paper/Paper";
-import JetBrainsMono from "../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS, {TProfile} from "../lib/organizations/ORGANIZATIONS";
-import {Children, value} from "../lib/typescript/React";
+import {PaperProps, PaperView, Children, value} from "../../lib/paper/Paper";
+import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
+import ORGANIZATIONS, {TProfile} from "../../lib/organizations/ORGANIZATIONS";
 
 import BlueprintIcons16 from '@blueprintjs/icons/lib/css/blueprint-icons-16.ttf';
 import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf';

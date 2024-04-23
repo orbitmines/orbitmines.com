@@ -2,17 +2,14 @@ import React from 'react';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {BR, PaperProps, Arc, HorizontalLine, Link, useCounter, Reference, Section} from "../../lib/paper/Paper";
-import {PROFILES} from "../../profiles/profiles";
+import Paper, {BR, PaperProps, Arc, HorizontalLine, Link, useCounter, Reference, Section, Block, renderable, Row} from "../../lib/paper/Paper";
+import {PROFILES} from "../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
-import {renderable} from "../../lib/typescript/React";
 import {Divider, Intent, Tag} from "@blueprintjs/core";
 import {CatmullRomLine, Center, Circle, QuadraticBezierLine, Torus} from "@react-three/drei";
-import {Block} from "../../lib/syntax-highlighting/CodeBlock";
-import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
+import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 import {CachedVisualizationCanvas} from '../../@orbitmines/Visualization';
 import _ from 'lodash';
-import {Row} from "../../lib/render/Layout";
 
 export const ON_ORBITS: Content = {
   reference: {

@@ -6,9 +6,7 @@ import {useSearchParams} from "react-router-dom";
 import {toPng} from "html-to-image";
 import {Button} from "@blueprintjs/core";
 import isWebGLAvailable = WEBGL.isWebGLAvailable;
-import {PaperProps} from "../lib/paper/Paper";
-import {Children} from "../lib/typescript/React";
-import { Col, Row } from "../lib/render/Layout";
+import {Children, Col, PaperProps, Row} from "../lib/paper/Paper";
 
 export const NoWebGL = () => {
   return <div>No WebGL</div>

@@ -1,12 +1,10 @@
 import React from 'react';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import Paper, {Arc, BR, PaperProps, Link, useCounter, Reference, Section} from "../../lib/paper/Paper";
-import {PROFILES} from "../../profiles/profiles";
-import {renderable} from "../../lib/typescript/React";
-import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
+import Paper, {Arc, BR, PaperProps, Link, useCounter, Reference, Section, renderable, Row} from "../../lib/paper/Paper";
+import {PROFILES} from "../profiles/profiles";
+import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
-import {Row} from "../../lib/render/Layout";
 
 export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
   reference: {
