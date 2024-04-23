@@ -1,5 +1,5 @@
 import React from 'react';
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import Paper, {
   Arc,
   BR,
@@ -27,13 +27,7 @@ export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.mastodon.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
   }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "January, 2024"
 }

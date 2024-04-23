@@ -482,4 +482,17 @@ ORGANIZATIONS.orbitmines_research.profile = {
   ]
 }
 
+export const PLATFORMS = [
+  ORGANIZATIONS.github.key,
+  ORGANIZATIONS.twitter.key,
+  ORGANIZATIONS.discord.key,
+  ORGANIZATIONS.linkedin.key,
+  ORGANIZATIONS.orcid.key,
+  ORGANIZATIONS.instagram.key,
+  ORGANIZATIONS.youtube.key,
+  ORGANIZATIONS.twitch.key,
+  ORGANIZATIONS.mastodon.key,
+  ORGANIZATIONS.facebook.key,
+]
+
 export default ORGANIZATIONS;

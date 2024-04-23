@@ -1,7 +1,7 @@
 import React from 'react';
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {
   BR,
@@ -33,12 +33,7 @@ export const ON_INTELLIGIBILITY: Content = { reference: {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
     published: [ORGANIZATIONS.orbitmines_research],
     link: "https://orbitmines.com/papers/on-intelligibility",

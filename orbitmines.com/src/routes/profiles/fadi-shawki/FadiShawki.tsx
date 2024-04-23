@@ -2,11 +2,10 @@ import React from 'react';
 import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024} from "./fadi_shawki";
 import ORGANIZATIONS, {Viewed} from "../../../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "../profiles";
-import Profile from "../Profile";
 import {ON_INTELLIGIBILITY} from "../../papers/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "../../papers/2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../../archive/2024.02.OrbitMines_as_a_Game_Project";
-import {Arc, Section, Reference, Category} from "../../../lib/paper/Paper";
+import {Arc, Section, Reference, Category, Profile} from "../../../lib/paper/Paper";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;

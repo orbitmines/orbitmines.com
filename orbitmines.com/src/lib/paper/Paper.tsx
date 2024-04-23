@@ -1,7 +1,14 @@
 import React, {Fragment, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Helmet} from "react-helmet";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import ORGANIZATIONS, {Content, ExternalProfile, SVG, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {
+  Content,
+  ExternalProfile,
+  PLATFORMS,
+  SVG,
+  TOrganization,
+  TProfile
+} from "../organizations/ORGANIZATIONS";
 import _, {uniqueId} from "lodash";
 import {Button, Classes, Divider, H1, H3, H4, H6, Icon, IconSize, Intent, Popover, Tag} from "@blueprintjs/core";
 import {toJpeg} from "html-to-image";
@@ -19,6 +26,121 @@ import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Semi
 import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
 import {renderToStaticMarkup} from "react-dom/server";
 import {Document, Font, Image, Page, Path, PDFViewer, Svg, Text, View} from "@react-pdf/renderer";
+
+export const Profile = ({profile, children}: {profile: TProfile} & Children) => {
+  const location = useLocation();
+
+  const paper: Omit<PaperProps, 'children'> = {
+    title: profile.title ?? profile.name,
+    subtitle: profile.subtitle,
+    date: profile.date,
+    pdf: {
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
+    },
+    authors: [{
+      ...profile,
+      external: profile.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
+    }],
+    Reference: (props: {}) => (<></>),
+    exclude_footnotes: true
+  }
+
+  const {title, subtitle, authors} = paper;
+
+  const url = {
+    base: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}`,
+    pdf: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.pdf`,
+  };
+  const description = value(subtitle);
+
+  // Google Scholar: https://scholar.google.com.au/intl/en/scholar/inclusion.html#indexing
+
+  // The Open Graph Protocol // https://ogp.me/
+  const OpenGraph = () => (
+      <Helmet>
+        <meta property="og:type" content="profile" />
+        <meta property="og:title" content={value(title)} />
+        <meta property="og:url" content={url.base} />
+        <meta property="og:description" content={description} />
+
+        <meta property="og:image" content={profile.picture} />
+        {/*<meta property="og:image:secure_url" content={profile.picture} />*/}
+        <meta property="og:image:type" content="image/jpeg" />
+        {/*<meta property="og:image:width" content="400" />*/}
+        {/*<meta property="og:image:height" content="300" />*/}
+        <meta property="og:image:alt" content="Profile picture" />
+
+        <meta property="og:profile:first_name" content={profile.first_name} />
+        <meta property="og:profile:last_name" content={profile.last_name} />
+        <meta property="og:profile:username" content={profile.profile} />
+      </Helmet>
+  )
+
+  // https://schema.org/Article
+  const Schemaorg = () => (
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify([{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": profile.name,
+          "email": profile.email,
+          "givenName": profile.first_name,
+          "familyName": profile.last_name,
+          "url": `https://orbitmines.com/profiles/${profile.profile}`,
+          "image": profile.picture,
+        }, {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "url": "https://orbitmines.com",
+          "logo": "https://www.example.com/images/logo.png"
+        }, {
+          // Can have multiple breadcrumbs
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Profiles",
+            "item": "https://orbitmines.com/profiles"
+          },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": profile.name
+          }]
+
+          // TODO  https://developers.google.com/search/docs/appearance/structured-data/dataset
+          // TODO https://developers.google.com/search/docs/appearance/structured-data/event
+          // TODO https://developers.google.com/search/docs/appearance/structured-data/image-license-metadata
+          // todo https://developers.google.com/search/docs/appearance/structured-data/math-solvers
+          // todo https://developers.google.com/search/docs/appearance/structured-data/software-app
+          // todo https://developers.google.com/search/docs/appearance/structured-data/book
+          // TODO https://developers.google.com/search/docs/appearance/structured-data/faqpage
+        }])}</script>
+      </Helmet>
+  )
+
+  const Twitter = () => (<Helmet>
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:creator" content="@_FadiShawki" />
+    <meta property="twitter:title" content={value(title)} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={profile.picture} />
+  </Helmet>);
+
+  return <div>
+    <Helmet>
+      <title lang="en">{value(title)}</title>
+      <meta name="description" content={description} />
+    </Helmet>
+    <OpenGraph/>
+    <Schemaorg/>
+    <Twitter/>
+
+    <PaperView {...paper}>
+      {children}
+    </PaperView>
+  </div>
+}
 
 export const renderPdfRendererElement: DereferencedElementRenderer = (element: Element, parent: Element | undefined, initialProps: any) => {
   const isTopLevel = parent === undefined;
@@ -1210,16 +1332,7 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
     <Row center="xs" className="child-px-2">
       {(external || []).filter(filter ? filter : () => true).map(profile => <Col>
         <a href={profile.link} target="_blank">
-          <Tag
-              icon={<CustomIcon icon={profile.organization.key} size={20}/>}
-              minimal
-              interactive
-              multiline
-          >
-            <Row middle="xs" className="px-2" style={{fontSize: '0.8rem'}}>
-              {profile.display}
-            </Row>
-          </Tag>
+          <CustomIcon icon={profile.organization.key} size={16}/>
         </a>
       </Col>)}
     </Row>
@@ -1271,13 +1384,7 @@ export const ThumbnailPage = () => {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.youtube.key,
-        ORGANIZATIONS.twitch.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
     draft: false,
     Reference: (props: {}) => (<></>),

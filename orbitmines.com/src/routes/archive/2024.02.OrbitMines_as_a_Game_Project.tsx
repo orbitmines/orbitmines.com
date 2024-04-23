@@ -1,5 +1,5 @@
 import React from 'react';
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {
   Arc,
@@ -31,15 +31,7 @@ export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.instagram.key,
-        ORGANIZATIONS.linkedin.key,
-        ORGANIZATIONS.mastodon.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
   }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "February, 2024"
 }
@@ -300,11 +292,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
         />
       </CanvasContainer>
 
-      <Author {...PROFILES.fadi_shawki} filter={(profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-      ].includes(profile.organization.key)}/>
+      <Author {...PROFILES.fadi_shawki} filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
     </Arc>
   </Paper>
 }

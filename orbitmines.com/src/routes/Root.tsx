@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import {H3, Tag} from "@blueprintjs/core";
-import ORGANIZATIONS from "../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "./profiles/profiles";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
@@ -62,21 +62,9 @@ const Root = () => {
 
           <Col xs={12}>
             <Row center="xs" className="child-px-1">
-              {(profile?.external || []).filter(profile => [
-                ORGANIZATIONS.github.key,
-                ORGANIZATIONS.twitter.key,
-                ORGANIZATIONS.discord.key,
-                ORGANIZATIONS.linkedin.key,
-                ORGANIZATIONS.gitlab.key,
-                ORGANIZATIONS.instagram.key,
-                ORGANIZATIONS.instagram.key,
-                ORGANIZATIONS.youtube.key,
-                ORGANIZATIONS.twitch.key,
-                ORGANIZATIONS.mastodon.key,
-                ORGANIZATIONS.facebook.key,
-              ].includes(profile.organization.key)).map(profile => <Col>
+              {(profile?.external || []).filter(profile => PLATFORMS.includes(profile.organization.key)).map(profile => <Col>
                 <a href={profile.link} target="_blank">
-                  <CustomIcon icon={profile.organization.key} size={20}/>
+                  <CustomIcon icon={profile.organization.key} size={16}/>
                 </a>
               </Col>)}
             </Row>
@@ -136,11 +124,7 @@ const Root = () => {
         />
       </CanvasContainer>
 
-      <Author {...PROFILES.fadi_shawki} filter={(profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-      ].includes(profile.organization.key)}/>
+      <Author {...PROFILES.fadi_shawki} filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
     </Layer>
   </div>
 };
