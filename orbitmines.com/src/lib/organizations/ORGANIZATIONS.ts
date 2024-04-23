@@ -22,7 +22,7 @@ import zx_calculus_icon from "././zx/icon.png";
 import active_inference_institute_icon from "././active-inference-institute/channels4_profile.jpg";
 import toe_icon from "././toe/toe.jpg";
 import {Renderable} from "../typescript/React";
-import {ReferenceProps} from "../paper/layout/Reference";
+import {ReferenceProps} from "../paper/Paper";
 
 export type SVG = {
   viewBox: {
@@ -63,11 +63,6 @@ export type Content = {
   description?: string
 }
 
-export type ContentCategory = {
-  name: string,
-  items: Content[]
-}
-
 export type TProfile = {
   first_name?: string,
   last_name?: string,
@@ -94,9 +89,9 @@ export type TProfile = {
   external?: ExternalProfiles,
 
   content?: {
-    history?: ContentCategory
-    formal_education?: ContentCategory
-    attended_events?: ContentCategory,
+    history?: Content[]
+    formal_education?: Content[]
+    attended_events?: Content[],
   }
 
 };

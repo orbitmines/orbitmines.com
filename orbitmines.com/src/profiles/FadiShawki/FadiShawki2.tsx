@@ -1,50 +1,18 @@
-import {Content, ContentCategory, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import {Content} from "../../lib/organizations/ORGANIZATIONS";
 import {Intent, Tag} from "@blueprintjs/core";
-import Reference from "../../lib/paper/layout/Reference";
-import {Col, Row} from "../../lib/layout/flexbox";
+import { Col, Row } from "../../lib/render/Layout";
 import classNames from "classnames";
-
-// TODO: Lex Fridman podcasts & others ..
-
-export const current = (content: ContentCategory): Content[] =>
-  (content?.items || []).filter(item => item.status === Viewed.IN_PROGRESS && !item.archived);
-
-export const finished = (content: ContentCategory): Content[] =>
-  (content?.items || []).filter(item => item.status === Viewed.VIEWED && !item.archived);
-
-export const todo = (content: ContentCategory): Content[] =>
-  (content?.items || []).filter(item => item.status === Viewed.FOUND && !item.archived);
-
-export enum ContentFocus {
-  CURRENT,
-  FINISHED,
-  TODO,
-  ALL,
-}
-
-export const category = (content: ContentCategory) => {
-  return {
-    [ContentFocus.CURRENT]: current(content),
-    [ContentFocus.FINISHED]: finished(content),
-    [ContentFocus.TODO]: todo(content),
-    [ContentFocus.ALL]: content.items,
-  };
-}
+import {Reference} from "../../lib/paper/Paper";
 
 export const Category = (props: {
-  category?: ContentCategory,
+  content?: Content[],
   inline?: boolean,
-  focus?: ContentFocus,
   simple?: boolean
 }) => {
-  const {inline, focus = ContentFocus.CURRENT, simple = false} = props;
+  const {inline, simple = false, content} = props;
 
-  if (!props.category)
+  if (!props.content)
     return <></>;
-
-  const {name, items} = props.category;
-
-  const content: Content[] = category(props.category)[focus];
 
   const Item = ({item, index}: { item: Content, index: number }) => {
     return <Tag intent={Intent.NONE} minimal multiline>

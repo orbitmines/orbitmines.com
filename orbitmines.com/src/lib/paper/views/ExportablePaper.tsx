@@ -4,8 +4,7 @@ import {Document, Font, Image, Link, Page, Path, PDFViewer, Svg, Text, View} fro
 import DereferenceHtml from "../../pdf/DereferenceHtml";
 import {FontFamily} from "../../layout/font/Font";
 import {DereferencedElementRenderer} from "../../pdf/dereferenceHtmlElement";
-import {PaperProps} from "../Paper";
-import PaperContent from "../PaperContent";
+import {PaperContent, PaperProps} from "../Paper";
 import {useSearchParams} from "react-router-dom";
 
 const renderPdfRendererElement: DereferencedElementRenderer = (element: Element, parent: Element | undefined, initialProps: any) => {

@@ -8,7 +8,7 @@ import {Button} from "@blueprintjs/core";
 import isWebGLAvailable = WEBGL.isWebGLAvailable;
 import {PaperProps} from "../lib/paper/Paper";
 import {Children} from "../lib/typescript/React";
-import {Col, Row} from "../lib/layout/flexbox";
+import { Col, Row } from "../lib/render/Layout";
 
 export const NoWebGL = () => {
   return <div>No WebGL</div>

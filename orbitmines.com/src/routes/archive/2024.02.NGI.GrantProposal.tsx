@@ -1,18 +1,12 @@
 import React from 'react';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
+import Paper, {Arc, BR, PaperProps, Link, useCounter, Reference, Section} from "../../lib/paper/Paper";
 import {PROFILES} from "../../profiles/profiles";
 import {renderable} from "../../lib/typescript/React";
-import Section from '../../lib/paper/layout/Section';
-import Arc from '../../lib/paper/layout/Arc';
-import BR from "../../lib/paper/layout/BR";
-import {Row} from "../../lib/layout/flexbox";
-import Link from "../../lib/paper/layout/Link";
 import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
+import {Row} from "../../lib/render/Layout";
 
 export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
   reference: {
@@ -39,8 +33,6 @@ export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
 }
 
 const _2024_02_NGI_GrantProposal = () => {
-  const navigate = useNavigate();
-
   const referenceCounter = useCounter();
 
   const paper: Omit<PaperProps, 'children'> = {

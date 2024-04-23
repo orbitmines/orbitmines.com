@@ -2,17 +2,12 @@ import React from 'react';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
+import Paper, {Arc, BR, PaperProps, Author, Reference, Section, useCounter} from "../../lib/paper/Paper";
 import {PROFILES} from "../../profiles/profiles";
-import Section from '../../lib/paper/layout/Section';
-import Arc from '../../lib/paper/layout/Arc';
-import BR from "../../lib/paper/layout/BR";
-import {Col, Row} from "../../lib/layout/flexbox";
+import { Col, Row } from "../../lib/render/Layout";
 import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
 import CustomIcon from "../../lib/layout/icons/CustomIcon";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
-import Author from "../../lib/paper/layout/Author";
 
 export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {

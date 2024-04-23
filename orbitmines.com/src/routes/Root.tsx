@@ -1,18 +1,17 @@
 import React from 'react';
 import {Layer, pageStyles} from "../profiles/FadiShawki/FadiShawki2";
-import {Col, Row} from "../lib/layout/flexbox";
+import { Col, Row } from "../lib/render/Layout";
 import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import {H3, Tag} from "@blueprintjs/core";
 import CustomIcon from "../lib/layout/icons/CustomIcon";
 import ORGANIZATIONS from "../lib/organizations/ORGANIZATIONS";
-import Author from "../lib/paper/layout/Author";
 import {PROFILES} from "../profiles/profiles";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
 import {ON_ORBITS} from "./papers/2023.OnOrbits";
-import Reference from "../lib/paper/layout/Reference";
 import {CanvasContainer} from "../@orbitmines/Visualization";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
+import {Author, Reference} from "../lib/paper/Paper";
 
 const Root = () => {
   const papers = [ON_ORBITS, ON_INTELLIGIBILITY];

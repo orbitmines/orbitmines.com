@@ -1,16 +1,547 @@
-import React from 'react';
+import React, {ReactNode, useCallback, useRef} from 'react';
 import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
-import {Children, value} from "../typescript/React";
-import Browser from "./views/Browser";
-import {useLocation, useSearchParams} from "react-router-dom";
-import {ReferenceCounter, ReferenceProps, useCounter} from "./layout/Reference";
-import {PaperHeader} from "./PaperContent";
-import {Grid, Row} from "../layout/flexbox";
+import {AllowReact, Children, Predicate, Renderable, Rendered, value} from "../typescript/React";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS from "../organizations/ORGANIZATIONS";
-import {PROFILES} from "../../profiles/profiles";
+import ORGANIZATIONS, {ExternalProfile, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
+import _ from "lodash";
+import {Col, Grid, Row, RowProps} from "../render/Layout";
+import {Button, Divider, H1, H3, H4, H6, Intent, Popover, Tag} from "@blueprintjs/core";
+import CustomIcon from "../layout/icons/CustomIcon";
+import {toJpeg} from "html-to-image";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
+import {PROFILES} from "../../profiles/profiles";
+
+const Exports = (
+    {paper, children}: { paper: PaperProps } & Children
+) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+
+  const ref = useRef<any>(null);
+
+  const generate = params.get('generate');
+  const width = parseInt(params.get('width') ?? '1920');
+  const height = parseInt(params.get('height') ?? '1080');
+
+  const exportJpeg = useCallback(() => {
+    if (ref === null)
+      return;
+
+    toJpeg(ref.current, {
+
+      cacheBust: true, backgroundColor: '#1C2127' })
+        .then((dataUrl) => {
+          const link = document.createElement('a')
+
+          link.download =
+              generate === 'thumbnail'
+                  ? `${width}x${height}.jpeg`
+                  : `${value(paper.title).toLowerCase().replaceAll(" ", "-").replaceAll(",", "")}.jpeg`
+          link.href = dataUrl
+          link.click()
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+  }, [ref]);
+
+  return <Row center="xs">
+    {/* TODO: */}
+    <Row between="xs" className="py-10 px-15" style={{width: '100%'}}>
+      <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
+
+      <Col>
+        {generate && ['button', 'thumbnail'].includes(generate) ? <>
+          <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
+        </> : <>
+          <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
+          <a href={`${location.pathname.replace(/\/$/, "")}.pdf`} target="_blank"><Button text=".pdf" icon="document" minimal /></a>
+        </>}
+      </Col>
+    </Row>
+    <div ref={ref}>
+      {children}
+    </div>
+  </Row>
+}
+
+
+export type FootnoteProps = {
+  index: number,
+}
+
+export type Counter = () => number;
+export const useCounter = (): ReferenceCounter => {
+  const index = useRef(0);
+
+  return (): number => {
+    index.current = index.current + 1;
+
+    return index.current;
+  };
+}
+
+export type ReferenceCounter = Counter;
+
+export const FootnoteContent = (props: FootnoteProps & Children & { index: number }) => {
+  const { index, children } = props;
+
+  return <div className="p-4">
+    <span style={{display: 'inline'}} className="p-4">
+      <span className="bp5-text-muted" style={{display: 'inline'}}>[{index}] </span>
+      {children}
+    </span>
+  </div>;
+}
+
+export const getFootnotes = (node: ReactNode): JSX.Element[] => {
+  const footnotes: JSX.Element[] = [];
+
+  React.Children.forEach(node, child => {
+    if (!React.isValidElement(child))
+      return;
+
+    if ((child.props as any).is === 'footnote') {
+      if ((child.props as any).reference === undefined) {
+        footnotes.push(<FootnoteContent {...child.props} />);
+      } else {
+        footnotes.push(<FootnoteContent index={child.props.index}><Reference {...child.props} is="reference" inline/></FootnoteContent>);
+      }
+      return;
+    }
+
+    // footnotes.push(..._.flatMap(child.props, (value) => getFootnotes(value)));
+    footnotes.push(...getFootnotes(child.props.children));
+  });
+
+  return footnotes;
+}
+
+export type ReferenceStyle = {
+  inline?: boolean,
+  simple?: boolean,
+  is?: 'reference' | 'footnote',
+}
+export type ReferenceProps = {
+  title: Renderable<string>,
+  subtitle?: Renderable<string>,
+
+  date?: string,
+
+  draft?: boolean,
+
+  organizations?: TOrganization[]
+  authors?: TProfile[]
+
+  published?: TOrganization[],
+
+  year?: string,
+
+  link?: string,
+
+  pointer?: string,
+
+  external?: {
+    discord?: { serverId: string, channelId?: string, link: () => string },
+  },
+
+  notes?: { render: () => ReactNode, date: string }[]
+};
+
+export const Reference = (props: { reference?: ReferenceProps, target?: string } & React.HTMLAttributes<HTMLElement> & RowProps & ReferenceStyle & FootnoteProps) => {
+  const {
+    reference,
+    target = "_blank",
+
+    simple,
+    inline = false,
+    is = 'reference',
+
+    index,
+
+    children,
+
+    ...otherProps
+  } = props;
+  const {
+    title,
+    subtitle,
+
+    authors,
+    organizations,
+
+    published,
+
+    date,
+    year,
+    link,
+
+    pointer,
+
+    notes,
+  } = reference || {};
+
+  const footnote = () => (<span style={{fontSize: '12px'}}>
+    <Popover
+        interactionKind="hover"
+        content={<div style={{maxWidth: '400px'}}>
+          <FootnoteContent {...props} index={index}>
+            {children}
+            {reference ? <Reference {...props} is="reference" /> : <></>}
+          </FootnoteContent>
+        </div>}
+    >
+      <span className="bp5-text-muted" style={{fontWeight: 'bold'}}>[{index}]</span>
+    </Popover>
+  </span>)
+
+  if (is === 'footnote')
+    return footnote();
+
+  const author = authors?.map(author => author.name)?.join(', ');
+  const journal = (published ?? [])[0]?.name;
+
+  const display = simple
+      ? _.compact([title, year ? `(${year})` : '']).join(' ')
+      : _.compact([author ? `${author}.` : author, title ? `"${title}"` : '', journal, year ? `(${year})` : '', pointer]).join(' ')
+
+  const inline_reference = () => React.createElement(link ? 'a' : 'span', {
+    ...(link ? { href: link.replace("https://orbitmines.com", ""), target } : {}),
+    children: <>
+      {display}
+    </>
+  });
+
+  if (inline)
+    return inline_reference();
+
+  const detailed_reference = () => (<Row {...otherProps} className="child-pb-4">
+    <Col sm={notes ? 6 : 12} xs={12}>
+      <Row>
+        <Col xs={12}>
+          {React.createElement(link ? 'a' : 'span', {
+            ...(link ? { href: link.replace("https://orbitmines.com", ""), target, className: 'child-mr-2' } : {}),
+            children: <>
+              {(organizations ?? []).map(organization => {
+                if (organization?.assets?.icon_png)
+                  return <img key={organization.key} src={organization.assets.icon_png} style={{maxWidth: '1rem', verticalAlign: 'middle'}} />;
+
+                if (organization?.assets?.icon)
+                  return <CustomIcon icon={organization.key} />
+
+                return <></>
+              })}
+              <Rendered renderable={title} />
+            </>
+          })}
+        </Col>
+        <Col xs={12}>
+          <Row start="xs" className="bp5-text-muted" style={{display: 'inline'}}>
+            {_.compact([(year || date) ? `${date ?? year}.` : '', author]).join(' ')}
+          </Row>
+        </Col>
+        {subtitle ? <Col xs={12}>
+          <Row start="xs" style={{paddingTop: '0.4rem', fontSize: '0.7rem', fontStyle: 'italic'}}>
+            <Rendered renderable={subtitle} />
+          </Row>
+        </Col> : <></>}
+      </Row>
+    </Col>
+    {notes ? <Col sm={6} xs={12} className="child-pb-3">
+      {notes.map((note, i) => (
+          <Row key={i}>
+            <Col xs={12}><Row className="bp5-text-muted" style={{fontSize: '0.6rem'}}>
+              {note.render()}
+            </Row>
+            </Col>
+            <Col xs={12}> <Row end="xs" className="bp5-text-disabled pt-1">
+              <span style={{fontSize: '0.6rem'}}>(Note written: {note.date})</span>
+            </Row>
+            </Col>
+          </Row>
+      ))}
+    </Col> : <></>}
+  </Row>);
+
+  return detailed_reference();
+}
+
+export const Browser = ({ paper }: { paper: PaperProps }) => {
+  return (
+      <Exports paper={paper}>
+        <PaperContent {...paper} />
+      </Exports>
+  );
+};
+
+export const Title = ({children}: Children) => {
+  return <Row center="xs">
+    <H1>{children}</H1>
+  </Row>;
+}
+
+export const Subtitle = ({children}: Children) => {
+  return <Row center="xs">
+    <H4 className="bp5-text-muted" style={{maxWidth: '80%'}}>{children}</H4>
+  </Row>
+}
+
+export const HorizontalLine = () => <>
+  <Row center="xs">
+    <Divider style={{width: '80%'}}/>
+  </Row>
+  <Row/>
+</>
+
+export const PaperHeader = (props: PaperProps) => {
+  const {
+    title,
+    subtitle,
+    date,
+    draft,
+    organizations,
+    authors
+  } = props;
+
+  return <>
+    <Title><Rendered renderable={title}/></Title>
+    {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
+
+    <Row center="xs" middle="xs" className="child-px-20-sm">
+      {organizations ? <>
+        {organizations.map((organization) => (<Col md={4} xs={12}>
+          <Organization {...organization} />
+        </Col>))}
+
+        <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
+          <Divider style={{height: '80px'}}/>
+        </Col>
+      </> : <></>}
+
+      {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
+        <Author {...author} />
+
+      </Col>))}
+    </Row>
+
+    <Row center="xs" middle="xs" className="child-px-10">
+      {date ? <Col>
+        <H3 className="m-0">{new Date(date).toLocaleString("en-GB", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"})}</H3>
+      </Col> : <></>}
+      {draft ? <Col>
+        <Tag intent={Intent.DANGER} minimal multiline style={{fontSize: '1.1rem'}}>DRAFT: POSSIBLY IMPRACTICALLY VAGUE</Tag>
+      </Col> : <></>}
+    </Row>
+  </>
+}
+
+
+export const PaperContent = (props: PaperProps) => {
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
+
+  if (generate === 'thumbnail')
+    return <PaperThumbnail {...props}/>
+
+  const {header, children, external, exclude_footnotes } = props;
+
+  const {discord} = external || {};
+
+  const external_links = !!discord;
+
+  const Content = <>
+    <PaperHeader {...props} />
+
+    {external_links ? <Row center="xs" middle="xs" className="child-px-10">
+      {discord ? <Col>
+        <Link name="Discussion Channel" link={discord.link()} icon={ORGANIZATIONS.discord.key} intent={Intent.PRIMARY} />
+      </Col> : <></>}
+    </Row> : <></>}
+
+    {header ? header : <HorizontalLine/>}
+
+    {children}
+
+    <HorizontalLine/>
+  </>
+
+  const footnotes = getFootnotes(Content);
+
+  return <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
+    // border: 'solid rgba(143, 153, 168, 0.15) 2px',
+    //     height={1754} width={1240}
+    maxWidth: '1240px',
+    fontSize: '1.1rem',
+    width: '100vw'
+  }}>
+    {Content}
+
+    {!exclude_footnotes ? <Section head="Footnotes & References">
+      {footnotes}
+    </Section> : <></>}
+  </Grid>
+}
+
+export type SectionProps = {
+  head?: ReactNode
+}
+
+export const TODO = ({ children }: Children) => {
+  return (
+      <Row className="bp5-text-muted" start="xs">TODO: [{children}]</Row>
+  )
+}
+
+export const Section = ({ head, sub, children }: SectionProps & Children & { sub?: ReactNode }) => {
+
+  return <>
+    <Row center="xs" className={"mt-12 pb-3"}>
+      {head ? <Col xs={12}><H4>{head}</H4></Col> : <></>}
+      {sub ? <Col xs={12}><H6 className="bp5-text-muted">{sub}</H6></Col> : <></>}
+    </Row>
+
+    <Paragraph>{children}</Paragraph>
+  </>
+}
+
+export const Paragraph = ({ children }: Children & { block?: boolean }): JSX.Element => {
+  const blocks: JSX.Element[] = [];
+  let currentBlock: JSX.Element[] = [];
+
+  // little nasty regrouping into inline blocks
+  const pushCurrentBlock = () => {
+    blocks.push(<Row is="block" className="py-2" style={{width: '100%'}}>{currentBlock}</Row>);
+    currentBlock = [];
+  }
+
+  let block = true;
+
+  React.Children.forEach(children, child => {
+    const inline = (_.isString(child)
+        || (child as any)?.props?.is === 'reference' // TODO THROUGH PROPS
+        || (child as any)?.props?.is === 'footnote' // TODO THROUGH PROPS
+    );
+
+    if (!inline) {
+      pushCurrentBlock();
+      blocks.push(<Row center="xs" style={{width: '100%'}} className="py-2">{child}</Row>);
+      return;
+    }
+
+    block = false;
+
+    currentBlock.push(<span>{child}</span>);
+  });
+  pushCurrentBlock();
+
+  if (block)
+    return <div style={{width: '100%'}} is="paragraph">{blocks}</div>
+
+  return <span style={{ textAlign: 'start' }} is="paragraph">
+    {blocks}
+  </span>;
+}
+
+export const Organization = (props: AllowReact<TOrganization> & { only_logo?: boolean }) => {
+  const { name, assets } = props;
+  const { logo } = assets;
+
+  return <Col>
+    <Row center="xs">
+      <img src={logo} alt={_.isString(name) ? name : 'logo'} style={{maxWidth: '200px'}}/>
+    </Row>
+    {props.only_logo ? <></> : <H3>{name}</H3>}
+  </Col>
+}
+
+export const BR = () => <div />;
+
+// #fbb360 ; #c87619 ; #935610
+// discord?/purple ; #5865F2 ; #1B2DFA ~ ; rgba(#1B2DFA, 0.1);;
+export const Link = ({name, link, icon, intent, ...props }: { name?: ReactNode, link: string, icon: string, intent?: Intent } & any) => {
+  return (<a href={link} target="_blank">
+    <Tag
+        icon={<CustomIcon intent={intent} icon={icon} size={20}/>}
+        intent={intent}
+        minimal
+        interactive
+        multiline
+    >
+      <Row middle="xs" className="px-5" {...props} style={{fontSize: '1.1rem', ...(props.style || {})}}>
+        <span {...props}>{name ? name : link.replaceAll('https://', '')}</span>
+      </Row>
+    </Tag>
+  </a>)
+};
+
+export const Arc = ({ head, children, buffer = true }: SectionProps & Children & { buffer?: boolean}) => {
+
+  return <>
+    <Row center="xs">
+      <Row center="xs" className={"mt-12 pb-3"}>
+        <H3 className="bp5-text-muted">{head}</H3>
+      </Row>
+
+      <Paragraph>{children}</Paragraph>
+    </Row>
+
+    {buffer ? <Row center="xs">
+      <Divider style={{width: '80%'}}/>
+    </Row> : <></>}
+  </>;
+}
+export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>}) => {
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
+
+  const { reference, name, email, profile, external, filter } = props;
+
+  const { title, subtitle } = reference || {};
+
+  return <Col>
+    <Row center="xs" middle="xs" className="child-px-2">
+      <Col><img src={`/profiles/${props.profile}/profile-picture.jpg`} alt="Profile picture" style={{
+        maxWidth: '32px', clipPath: 'circle()'}}
+      /></Col>
+      <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a>}</H3>
+    </Row>
+    <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row>
+    <Row center="xs" className="child-px-2">
+      {(external || []).filter(filter ? filter : () => true).map(profile => <Col>
+        <a href={profile.link} target="_blank">
+          <Tag
+              icon={<CustomIcon icon={profile.organization.key} size={20}/>}
+              minimal
+              interactive
+              multiline
+          >
+            <Row middle="xs" className="px-2" style={{fontSize: '0.8rem'}}>
+              {profile.display}
+            </Row>
+          </Tag>
+        </a>
+      </Col>)}
+    </Row>
+  </Col>
+}
 
 export type PaperProps = ReferenceProps & {
   header?: any //

@@ -1,24 +1,14 @@
 import React from 'react';
-import {Intent, Tag} from "@blueprintjs/core";
-import REFERENCES, {
-  ARTICLES_2021,
-  ARTICLES_2022,
-  ARTICLES_2023,
-  ARTICLES_2024,
-  FAMILIAR_TOOLS
-} from "../../profiles/FadiShawki/FadiShawki";
+import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024} from "../../profiles/FadiShawki/FadiShawki";
 import ORGANIZATIONS, {Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import Section from "../../lib/paper/layout/Section";
-import Arc from "../../lib/paper/layout/Arc";
-import Link from '../../lib/paper/layout/Link';
 import {PROFILES} from "../../profiles/profiles";
 import Profile from "../../profiles/Profile";
-import {Reference} from "../../lib/paper/layout/Reference";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
-import {Category, ContentFocus} from '../../profiles/FadiShawki/FadiShawki2';
+import {Category} from '../../profiles/FadiShawki/FadiShawki2';
 import {ON_ORBITS} from "./2023.OnOrbits";
 import {CanvasContainer} from "../../@orbitmines/Visualization";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
+import {Arc, Section, Reference} from "../../lib/paper/Paper";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -47,9 +37,7 @@ const FadiShawki = () => {
       </CanvasContainer>
 
       <Section head="Ongoing Projects">
-        <Category category={{
-          name: '2013 .. 2024',
-          items: [
+        <Category content={[
             _2024_02_ORBITMINES_AS_A_GAME_PROJECT,
             {
               reference: {
@@ -107,8 +95,7 @@ const FadiShawki = () => {
                 link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Archive%20-%20%22OrbitMines'%20Journey%22%20(2025-2026%3F).md"
               }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
             }
-          ]
-        }} focus={ContentFocus.ALL} />
+          ]} />
       </Section>
 
       <CanvasContainer style={{height: '140px'}}>
@@ -159,15 +146,15 @@ const FadiShawki = () => {
 
     <Arc head="Formal History" buffer={false}>
       <Section head="Projects">
-        <Category category={profile.content!.history} focus={ContentFocus.FINISHED} />
+        <Category content={profile.content!.history} />
       </Section>
 
       <Section head="Attended Events">
-        <Category category={profile.content!.attended_events} focus={ContentFocus.ALL} />
+        <Category content={profile.content!.attended_events} />
       </Section>
 
       <Section head="Formal Education">
-        <Category category={profile.content!.formal_education} focus={ContentFocus.ALL} />
+        <Category content={profile.content!.formal_education} />
       </Section>
     </Arc>
 
@@ -186,16 +173,16 @@ const FadiShawki = () => {
     {/* Include things like wikipedia exposure/other things like github ? */}
     <Arc head="Literary Exposure">
       <Section head="2024">
-        <Category category={ARTICLES_2024} focus={ContentFocus.ALL} />
+        <Category content={ARTICLES_2024} />
       </Section>
       <Section head="2023">
-        <Category category={ARTICLES_2023} focus={ContentFocus.ALL} />
+        <Category content={ARTICLES_2023} />
       </Section>
       <Section head="2022">
-        <Category category={ARTICLES_2022} focus={ContentFocus.ALL} />
+        <Category content={ARTICLES_2022} />
       </Section>
       <Section head="2021">
-        <Category category={ARTICLES_2021} focus={ContentFocus.ALL} />
+        <Category content={ARTICLES_2021} />
       </Section>
     </Arc>
   </Profile>;

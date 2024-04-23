@@ -1,16 +1,13 @@
 import React from 'react';
 import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
 import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import {Row} from '../../lib/layout/flexbox';
 import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
 
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import BR from "../../lib/paper/layout/BR";
-import Section from "../../lib/paper/layout/Section";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
+import Paper, {BR, PaperProps, Reference, Section, useCounter} from "../../lib/paper/Paper";
 import {PROFILES} from "../../profiles/profiles";
+import {Row} from "../../lib/render/Layout";
 
 const {
   A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
