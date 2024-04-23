@@ -1,6 +1,5 @@
-import React, {ReactNode, useCallback, useMemo, useRef} from 'react';
+import React, {Fragment, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Helmet} from "react-helmet";
-import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import ORGANIZATIONS, {Content, ExternalProfile, SVG, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
 import _, {uniqueId} from "lodash";
@@ -12,16 +11,373 @@ import {Highlight, Prism, themes} from "prism-react-renderer";
 import {IntentProps, Props} from "@blueprintjs/core/src/common";
 import {SVGIconProps} from "@blueprintjs/icons";
 import {CanvasContainer} from "../../routes/papers/2023.OnOrbits";
-
+import {BulkLoad, SingleLoad} from "@react-pdf/types";
 import _BlueprintIcons16 from '@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf';
 import _BlueprintIcons20 from '@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf';
-import {BulkLoad, SingleLoad} from "@react-pdf/types";
 import JetBrainsMonoRegular from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
 import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-SemiBold.ttf";
 import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
+import {renderToStaticMarkup} from "react-dom/server";
+import {Document, Font, Image, Page, Path, PDFViewer, Svg, Text, View} from "@react-pdf/renderer";
+
+export const renderPdfRendererElement: DereferencedElementRenderer = (element: Element, parent: Element | undefined, initialProps: any) => {
+  const isTopLevel = parent === undefined;
+  const tagName = element.tagName.toLowerCase();
+
+  const isText = (initialProps.children?.length ?? 0) === 1 && _.isString(initialProps.children[0]);
+  const onlyContainsText = !_.isEmpty(initialProps.children) && React.Children.toArray(initialProps.children).every((child: any) => _.isString(child) || child.type === 'TEXT');
+
+  const styles =  _.transform(initialProps.style, (result, value, key: string) => {
+    key = _.camelCase(key);
+
+    if (_.isString(value) && ['auto'].includes(value))
+      return;
+
+    if (initialProps.center === "xs") {
+      result.textAlign = 'center';
+      result.width = '100%';
+      result.flexDirection = 'row';
+    }
+
+    if (['width'].includes(key)) {
+      // TODO ONLY IGNORE COMPUTED ONES
+      if (tagName !== 'img')
+        return;
+    }
+
+    if (['perspectiveOrigin', 'lineHeight', 'transformOrigin', 'flex', 'height'].includes(key))
+      return;
+
+    // ignore ad hoc styles
+    if (['fontStyle', 'textDecoration'].includes(key))
+      return;
+
+    if (['blockSize', 'inlineSize'].includes(key) || key.startsWith('webkit'))
+      return;
+
+    // Remove inferred lengths
+    if (['width', 'height', 'perspectiveOrigin'].includes(key) && _.isString(value) && /[0-9]+\.[0-9]+px/.test(value))
+      return;
+
+    result[key] = value;
+  }, {} as { [key: string]: string });
+
+  // if (key.includes('fontFamily'))
+  //   console.log(key, value);
+  //
+  // if ((key === 'maxHeight' || key === 'maxWidth') && value === 'none')
+  //   return false;
+
+  const renderChildren = () => initialProps.children?.map((child: string | ReactNode, index: number) => _.isString(child)
+      // @ts-ignore
+      ? (isText ? child : <Text key={index}>{child}</Text>)
+      : <Fragment key={index}>{child}</Fragment>
+  ) ?? undefined;
+
+  const props = {
+    ...initialProps,
+    style: styles,
+    tagName,
+
+
+    // TODO: BORDERS ARE GREEN FOR SOME REASON?
+
+    // Wraps children in text in order to inline
+    // @ts-ignore
+    children: onlyContainsText ? <Text>{renderChildren()}</Text> : renderChildren()
+  };
+
+  if (isTopLevel) {
+    // @ts-ignore
+    return <Document>
+      {/* @ts-ignore*/}
+      <Page wrap size="A4" dpi={150} {...{
+        ...props,
+        style: {
+          ...props.style,
+          paddingBottom: '40',
+          backgroundColor: '#1c2127'
+        }
+      }} />
+    </Document>
+  } else if (['img'].includes(tagName)) {
+    // @ts-ignore
+    // return <Image {...props} />
+    // } else if (['span'].includes(tagName)) {
+    //     // @ts-ignore
+    //     return <View {...props} />
+    // } else if (['div'].includes(tagName)) {
+    //     // @ts-ignore
+    //     return <View {...props} />
+    // }
+    // @ts-ignore
+    return <Image {...props} />
+  } else if (['canvas'].includes(tagName)) {
+    if (props.style.backgroundImage.startsWith('url(')) {
+      const url = props.style.backgroundImage.replace(/^url\("/, '').replace(/"\)$/, '');
+      console.log(url)
+      console.log(props)
+      return <Image {...props} style={{...props.style, width: '992px'}} src={url} /> // TODO FIX
+    }
+
+    return <View {...props} />
+  } else if (['svg'].includes(tagName)) {
+    // @ts-ignore
+    return <Svg {...props} />
+  } else if (['path'].includes(tagName)) {
+    // @ts-ignore
+    return <Path {...props} />
+  } else if (['a'].includes(tagName)) {
+    // @ts-ignore
+    return <Link {...props} />
+  } else if (isText || (tagName === 'span' && styles.display === 'inline')) {
+    // @ts-ignore
+    return <Text {...props} />
+  } else if (['span'].includes(tagName)) {
+    // @ts-ignore
+    return <View {...props} />
+  } else {
+    // console.log(props)
+    // @ts-ignore
+    return <View {...props} />
+  }
+  // @ts-ignore
+  // return <View></View>
+}
+
+export type PdfProps = {
+  fonts?: FontFamily[]
+};
+
+export const registerFont = (font: FontFamily) => {
+  Font.register(font);
+
+  // React-pdf has poor support for deviations from family name, just split the family configs so:
+  // 'JetBrainsMono, monospace' -> 'JetBrainsMono', 'monospace', 'JetBrainsMono, monospace'
+  font.family.split(', ').forEach(family => {
+    Font.register({
+      ...font,
+      family
+    })
+  })
+}
+
+export const ExportablePaper = (paper: PaperProps) => {
+  const [dereferenced, setDereferenced] = useState<JSX.Element | undefined>();
+  const renderElement = useCallback(renderPdfRendererElement, []);
+
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
+
+  const { pdf } = paper;
+
+  pdf.fonts?.forEach(registerFont);
+
+  const content = <PaperContent {...paper}/>;
+
+  if (!dereferenced || generate === 'dereferenced_html')
+    return <DereferenceHtml
+        onDereference={setDereferenced}
+        renderElement={renderElement}
+        element={content}
+    />;
+
+  // console.log(renderToStaticMarkup(dereferenced))
+
+  return  <PDFViewer height={1754} width={1240}>
+    {dereferenced}
+  </PDFViewer>;
+};
+
+export type Attributes = { [key: string]: string };
+
+export const dereferencedAttributes = (element: Element, parent?: Element): object => {
+  const attributes: Attributes = {};
+
+  for (let attribute of element.attributes) {
+    const { name, value } = attribute;
+
+    if (!['class', 'id'].includes(name)) // TODO; This wont be foolproof
+      attributes[name] = value;
+  }
+
+  return {
+    ...attributes,
+    style: computeExplicitStyles(element, parent)
+  };
+}
+
+export type DereferencedElementRenderer = (element: Element, parent: Element | undefined, props: object) => JSX.Element;
+/**
+ * Dereferences the stylesheets of the given HTML element and all its descendants.
+ *
+ * @param parent - can be mentioned explicitly, so that the initial element passed to this function is considered the
+ *                 top-level element.
+ */
+export const dereferenceHtmlElement = (
+    element: Element,
+    parent?: Element,
+    renderElement?: DereferencedElementRenderer
+): JSX.Element => {
+  renderElement ??= (element: Element, parent: Element | undefined, props: object): JSX.Element => {
+    return React.createElement(element.tagName.toLowerCase(), props);
+  }
+
+  const children: (JSX.Element | string)[] = [];
+  element.childNodes.forEach(child => {
+
+    // Could be a text element...
+    if (_.isString(child.nodeValue)) {
+      children.push(child.nodeValue);
+      return;
+    }
+
+    children.push(dereferenceHtmlElement(child as Element, element, renderElement));
+  });
+
+  return renderElement(element, parent, {
+    ...dereferencedAttributes(element),
+    children: !_.isEmpty(children) ? children : undefined
+  });
+}
+
+export type DereferenceHtmlProps = {
+  onDereference: (html: JSX.Element | undefined) => void
+  renderElement?: DereferencedElementRenderer
+  element: JSX.Element
+};
+
+export const DereferenceHtml = (props: DereferenceHtmlProps) => {
+  const {
+    element,
+    onDereference,
+    renderElement
+  } = props;
+
+  const ref = useRef<any>();
+
+  // More clean would be to walk the React tree, but just serializing and parsing to html makes our lives a lot easier,
+  // and is sufficient for now.
+  const html = renderToStaticMarkup(element);
+
+  useEffect(() => {
+    onDereference(dereferenceHtmlElement(ref.current, undefined, renderElement));
+  }, []);
+
+  return <div ref={ref} dangerouslySetInnerHTML={{__html: html}}></div>;
+}
+
+export type Styles = { [key: string]: string };
+
+export const computeExplicitStyles = (element: Element, parent?: Element): Styles => {
+  const isTopLevel = parent === undefined;
+
+  const styles = getComputedStyle(element);
+  const parentStyles = !isTopLevel && element.parentElement
+      ? getComputedStyle(element.parentElement)
+      : null;
+
+  const keys: string[] = _.values(styles) as string[];
+
+  const computedStyles = _.fromPairs<string>(keys
+      .map<[string, string]>(key => [key, styles.getPropertyValue(key)])
+      .filter(pair => {
+        const [key, value] = pair;
+
+        if (_.isEmpty(value))
+          return false;
+
+        // TODO: These are all useful initial drafts, they're not foolproof.
+
+        // Exclude if inferable from other styles on the same element
+        if (isInferable(styles, key, value))
+          return false;
+
+        // Exclude if inheritable from parent
+        if (isInheritable(key) && parentStyles?.getPropertyValue(key) === value)
+          return false;
+
+        // Exclude if it's a default value
+        if (isDefault(key, value))
+          return false;
+
+        return true;
+      })
+  );
+
+  return computedStyles;
+}
+
+export const defaultStyles: Styles = { "accent-color": "auto", "align-content": "normal", "align-items": "normal", "align-self": "auto", "alignment-baseline": "auto", "animation-delay": "0s", "animation-direction": "normal", "animation-duration": "0s", "animation-fill-mode": "none", "animation-iteration-count": "1", "animation-name": "none", "animation-play-state": "running", "animation-timing-function": "ease", "app-region": "none", "appearance": "none", "backdrop-filter": "none", "backface-visibility": "visible", "background-attachment": "scroll", "background-blend-mode": "normal", "background-clip": "border-box", "background-color": "rgba(0, 0, 0, 0)", "background-image": "none", "background-origin": "padding-box", "background-position": "0% 0%", "background-repeat": "repeat", "background-size": "auto", "baseline-shift": "0px", "block-size": "auto", "border-block-end-style": "none", "border-block-end-width": "0px", "border-block-start-style": "none", "border-block-start-width": "0px", "border-bottom-left-radius": "0px", "border-bottom-right-radius": "0px", "border-bottom-style": "none", "border-bottom-width": "0px", "border-collapse": "separate", "border-end-end-radius": "0px", "border-end-start-radius": "0px", "border-image-outset": "0", "border-image-repeat": "stretch", "border-image-slice": "100%", "border-image-source": "none", "border-image-width": "1", "border-inline-end-style": "none", "border-inline-end-width": "0px", "border-inline-start-style": "none", "border-inline-start-width": "0px", "border-left-style": "none", "border-left-width": "0px", "border-right-style": "none", "border-right-width": "0px", "border-start-end-radius": "0px", "border-start-start-radius": "0px", "border-top-left-radius": "0px", "border-top-right-radius": "0px", "border-top-style": "none", "border-top-width": "0px", "bottom": "auto", "box-shadow": "none", "box-sizing": "border-box", "break-after": "auto", "break-before": "auto", "break-inside": "auto", "buffered-rendering": "auto", "caption-side": "top", "clear": "none", "clip": "auto", "clip-path": "none", "clip-rule": "nonzero", "color-interpolation": "srgb", "color-interpolation-filters": "linearrgb", "color-rendering": "auto", "column-count": "auto", "column-gap": "normal", "column-rule-style": "none", "column-rule-width": "0px", "column-span": "none", "column-width": "auto", "contain-intrinsic-block-size": "none", "contain-intrinsic-height": "none", "contain-intrinsic-inline-size": "none", "contain-intrinsic-size": "none", "contain-intrinsic-width": "none", "container-name": "none", "container-type": "normal", "content": "normal", "cursor": "auto", "cx": "0px", "cy": "0px", "d": "none", "direction": "ltr", "dominant-baseline": "auto", "empty-cells": "show", "fill": "rgb(0, 0, 0)", "fill-opacity": "1", "fill-rule": "nonzero", "filter": "none", "flex-basis": "auto", "flex-direction": "row", "flex-grow": "0", "flex-shrink": "1", "flex-wrap": "nowrap", "float": "none", "flood-color": "rgb(0, 0, 0)", "flood-opacity": "1", "font-kerning": "auto", "font-optical-sizing": "auto", "font-palette": "normal", "font-stretch": "100%", "font-style": "normal", "font-synthesis-small-caps": "auto", "font-synthesis-style": "auto", "font-synthesis-weight": "auto", "font-variant": "normal", "font-variant-caps": "normal", "font-variant-east-asian": "normal", "font-variant-ligatures": "normal", "font-variant-numeric": "normal", "font-weight": "400", "grid-auto-columns": "auto", "grid-auto-flow": "row", "grid-auto-rows": "auto", "grid-column-end": "auto", "grid-column-start": "auto", "grid-row-end": "auto", "grid-row-start": "auto", "grid-template-areas": "none", "grid-template-columns": "none", "grid-template-rows": "none", "height": "auto", "hyphenate-character": "auto", "hyphens": "manual", "image-orientation": "from-image", "image-rendering": "auto", "inline-size": "auto", "inset-block-end": "auto", "inset-block-start": "auto", "inset-inline-end": "auto", "inset-inline-start": "auto", "isolation": "auto", "justify-content": "normal", "justify-items": "normal", "justify-self": "auto", "left": "auto", "letter-spacing": "normal", "lighting-color": "rgb(255, 255, 255)", "line-break": "auto", "list-style-image": "none", "list-style-position": "outside", "list-style-type": "disc", "margin-block-end": "0px", "margin-block-start": "0px", "margin-bottom": "0px", "margin-inline-end": "0px", "margin-inline-start": "0px", "margin-left": "0px", "margin-right": "0px", "margin-top": "0px", "marker-end": "none", "marker-mid": "none", "marker-start": "none", "mask-type": "luminance", "max-block-size": "none", "max-height": "none", "max-inline-size": "none", "max-width": "none", "min-block-size": "0px", "min-height": "0px", "min-inline-size": "0px", "min-width": "0px", "mix-blend-mode": "normal", "object-fit": "fill", "object-position": "50% 50%", "object-view-box": "none", "offset-distance": "0px", "offset-path": "none", "offset-rotate": "auto 0deg", "opacity": "1", "order": "0", "orphans": "2", "outline-offset": "0px", "outline-style": "none", "outline-width": "0px", "overflow-anchor": "auto", "overflow-clip-margin": "0px", "overflow-wrap": "normal", "overflow-x": "visible", "overflow-y": "visible", "overscroll-behavior-block": "auto", "overscroll-behavior-inline": "auto", "padding-block-end": "0px", "padding-block-start": "0px", "padding-bottom": "0px", "padding-inline-end": "0px", "padding-inline-start": "0px", "padding-left": "0px", "padding-right": "0px", "padding-top": "0px", "paint-order": "normal", "perspective": "none", "perspective-origin": "0px 0px", "pointer-events": "auto", "position": "static", "r": "0px", "resize": "none", "right": "auto", "rotate": "none", "row-gap": "normal", "ruby-position": "over", "rx": "auto", "ry": "auto", "scale": "none", "scroll-behavior": "auto", "scroll-margin-block-end": "0px", "scroll-margin-block-start": "0px", "scroll-margin-inline-end": "0px", "scroll-margin-inline-start": "0px", "scroll-padding-block-end": "auto", "scroll-padding-block-start": "auto", "scroll-padding-inline-end": "auto", "scroll-padding-inline-start": "auto", "scrollbar-gutter": "auto", "shape-image-threshold": "0", "shape-margin": "0px", "shape-outside": "none", "shape-rendering": "auto", "speak": "normal", "stop-color": "rgb(0, 0, 0)", "stop-opacity": "1", "stroke": "none", "stroke-dasharray": "none", "stroke-dashoffset": "0px", "stroke-linecap": "butt", "stroke-linejoin": "miter", "stroke-miterlimit": "4", "stroke-opacity": "1", "stroke-width": "1px", "tab-size": "8", "table-layout": "auto", "text-align": "center", "text-align-last": "auto", "text-anchor": "start", "text-decoration-line": "none", "text-decoration-skip-ink": "auto", "text-decoration-style": "solid", "text-emphasis-position": "over", "text-emphasis-style": "none", "text-indent": "0px", "text-overflow": "clip", "text-rendering": "auto", "text-shadow": "none", "text-size-adjust": "auto", "text-transform": "none", "text-underline-position": "auto", "top": "auto", "touch-action": "auto", "transform": "none", "transform-origin": "0px 0px", "transform-style": "flat", "transition-delay": "0s", "transition-duration": "0s", "transition-property": "all", "transition-timing-function": "ease", "translate": "none", "unicode-bidi": "normal", "user-select": "auto", "vector-effect": "none", "vertical-align": "baseline", "visibility": "visible", "white-space": "normal", "widows": "2", "width": "auto", "will-change": "auto", "word-break": "normal", "word-spacing": "0px", "writing-mode": "horizontal-tb", "x": "0px", "y": "0px", "z-index": "auto", "zoom": "1",
+}
+
+export const isDefault = (cssProperty: string, value: string): boolean => {
+  return !!defaultStyles[cssProperty] && defaultStyles[cssProperty] === value;
+}
+
+export const isInheritable = (cssProperty: string): boolean => {
+  return [
+    'border-collapse',
+    'border-spacing',
+    'caption-side',
+    'color',
+    'cursor',
+    'direction',
+    'empty-cells',
+    'font-family',
+    'font-size',
+    'font-style',
+    'font-variant',
+    'font-weight',
+    'font-size-adjust',
+    'font-stretch',
+    'font',
+    'letter-spacing',
+    'line-height',
+    'list-style-image',
+    'list-style-position',
+    'list-style-type',
+    'list-style',
+    'orphans',
+    'quotes',
+    'tab-size',
+    'text-align',
+    'text-align-last',
+    'text-decoration-color',
+    'text-indent',
+    'text-justify',
+    'text-shadow',
+    'text-transform',
+    'visibility',
+    'white-space',
+    'widows',
+    'word-break',
+    'word-spacing',
+    'word-wrap',
+  ].includes(cssProperty);
+}
+
+export const isInferable = (styles: CSSStyleDeclaration, cssProperty: string, value: string): boolean => {
+  const inferable = { 'color': [ 'text-decoration-color', 'text-emphasis-color', 'column-rule-color', 'outline-color', 'border-block-end-color', 'border-block-start-color', 'border-bottom-color', 'border-inline-end-color', 'border-inline-start-color', 'border-left-color', 'border-right-color', 'border-top-color', 'caret-color', ] };
+
+  for (let [source, targets] of _.entries(inferable)) {
+    if (!targets.includes(cssProperty))
+      continue;
+
+    if (styles.getPropertyValue(source) === value)
+      return true;
+  }
+
+  return false;
+}
 
 export type FontFamily = SingleLoad | BulkLoad;
-
 
 export const BlueprintIcons16: FontFamily = {
   family: 'blueprint-icons-16',
