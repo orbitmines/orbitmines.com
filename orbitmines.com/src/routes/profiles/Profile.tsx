@@ -1,12 +1,16 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import {useLocation} from "react-router-dom";
-import {PaperProps, PaperView, Children, value} from "../../lib/paper/Paper";
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
+import {
+  PaperProps,
+  PaperView,
+  Children,
+  value,
+  JetBrainsMono,
+  BlueprintIcons20,
+  BlueprintIcons16
+} from "../../lib/paper/Paper";
 import ORGANIZATIONS, {TProfile} from "../../lib/organizations/ORGANIZATIONS";
-
-import BlueprintIcons16 from '@blueprintjs/icons/lib/css/blueprint-icons-16.ttf';
-import BlueprintIcons20 from '@blueprintjs/icons/lib/css/blueprint-icons-20.ttf';
 
 const Profile = ({profile, children}: {profile: TProfile} & Children) => {
   const location = useLocation();
@@ -16,21 +20,7 @@ const Profile = ({profile, children}: {profile: TProfile} & Children) => {
     subtitle: profile.subtitle,
     date: profile.date,
     pdf: {
-      fonts: [
-        JetBrainsMono,
-        {
-          family: 'blueprint-icons-20',
-          fonts: [
-            {src: BlueprintIcons20, fontWeight: 'normal', fontStyle: 'normal'},
-          ]
-        },
-        {
-          family: 'blueprint-icons-16',
-          fonts: [
-            {src: BlueprintIcons16, fontWeight: 'normal', fontStyle: 'normal'},
-          ]
-        }
-      ],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     authors: [{
       ...profile,

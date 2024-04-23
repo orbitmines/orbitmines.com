@@ -1,10 +1,18 @@
 import React from 'react';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {BR, PaperProps, Reference, Section, useCounter, CodeBlock, Row} from "../../lib/paper/Paper";
+import Paper, {
+  BR,
+  PaperProps,
+  Reference,
+  Section,
+  useCounter,
+  CodeBlock,
+  Row,
+  JetBrainsMono, BlueprintIcons20, BlueprintIcons16
+} from "../../lib/paper/Paper";
 import {PROFILES} from "../profiles/profiles";
 
 const {
@@ -55,7 +63,7 @@ const OnIntelligibility = () => {
   const paper: Omit<PaperProps, 'children'> = {
     ...ON_INTELLIGIBILITY.reference,
     pdf: {
-      fonts: [ JetBrainsMono ],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter

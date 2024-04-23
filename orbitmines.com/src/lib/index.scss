@@ -1,8 +1,8 @@
-@import "./blueprintjs/styles/blueprintjs";
-@import "../../layout/flexbox/styles/flexbox";
-@import "../font/styles/font";
+@import "paper/blueprintjs";
+@import "paper/flexbox";
+@import "fonts/font";
 
-@import "../../layout/styles/spacing";
+@import "paper/spacing";
 
 @import "~@blueprintjs/core/lib/scss/variables";
 

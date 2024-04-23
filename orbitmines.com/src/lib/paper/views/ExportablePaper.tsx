@@ -2,9 +2,8 @@ import React, {Fragment, ReactNode, useCallback, useState} from "react";
 import _ from "lodash";
 import {Document, Font, Image, Link, Page, Path, PDFViewer, Svg, Text, View} from "@react-pdf/renderer";
 import DereferenceHtml from "../../pdf/DereferenceHtml";
-import {FontFamily} from "../../layout/font/Font";
 import {DereferencedElementRenderer} from "../../pdf/dereferenceHtmlElement";
-import {PaperContent, PaperProps} from "../Paper";
+import {FontFamily, PaperContent, PaperProps} from "../Paper";
 import {useSearchParams} from "react-router-dom";
 
 const renderPdfRendererElement: DereferencedElementRenderer = (element: Element, parent: Element | undefined, initialProps: any) => {

@@ -1,10 +1,18 @@
 import React from 'react';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import Paper, {Arc, BR, PaperProps, Link, useCounter, Reference, Section, renderable, Row} from "../../lib/paper/Paper";
+import Paper, {
+  Arc,
+  BR,
+  PaperProps,
+  Link,
+  useCounter,
+  Reference,
+  Section,
+  renderable,
+  Row, JetBrainsMono, BlueprintIcons20, BlueprintIcons16
+} from "../../lib/paper/Paper";
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
-import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
 
 export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
   reference: {
@@ -39,7 +47,7 @@ const _2024_02_NGI_GrantProposal = () => {
       A grant proposal to <Reference is="reference" index={referenceCounter()} reference={{title: "NGI", link: "https://www.ngi.eu/"}} simple inline /> through <Reference is="reference" index={referenceCounter()} reference={{title: 'NLnet', link: 'https://nlnet.nl/'}} simple inline />. In contrast to my previous application, which I realized was quite naive after a conversation with <Reference is="reference" index={referenceCounter()} reference={{title: 'Michiel Leenaars', link: 'https://nlnet.nl/people/leenaars.html'}} simple inline /> at <Reference is="reference" index={referenceCounter()} reference={{...REFERENCES.NGI_FORUM_2023.reference, year: undefined}} simple inline />: Hopefully this will serve as a concrete target problem to solve.
     </>),
     pdf: {
-      fonts: [JetBrainsMono, BlueprintIcons],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter

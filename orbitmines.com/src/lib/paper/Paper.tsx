@@ -2,16 +2,124 @@ import React, {ReactNode, useCallback, useMemo, useRef} from 'react';
 import {Helmet} from "react-helmet";
 import ExportablePaper, {PdfProps} from "./views/ExportablePaper";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import JetBrainsMono from "../layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS, {Content, ExternalProfile, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
-import _ from "lodash";
-import {Button, Divider, H1, H3, H4, H6, Intent, Popover, Tag} from "@blueprintjs/core";
-import CustomIcon from "../layout/icons/CustomIcon";
+import ORGANIZATIONS, {Content, ExternalProfile, SVG, TOrganization, TProfile} from "../organizations/ORGANIZATIONS";
+import _, {uniqueId} from "lodash";
+import {Button, Classes, Divider, H1, H3, H4, H6, Icon, IconSize, Intent, Popover, Tag} from "@blueprintjs/core";
 import {toJpeg} from "html-to-image";
-import {CanvasContainer} from "../../@orbitmines/Visualization";
 import classNames from "classnames";
 import {PROFILES} from "../../routes/profiles/profiles";
 import {Highlight, Prism, themes} from "prism-react-renderer";
+import {IntentProps, Props} from "@blueprintjs/core/src/common";
+import {SVGIconProps} from "@blueprintjs/icons";
+import {CanvasContainer} from "../../routes/papers/2023.OnOrbits";
+
+import _BlueprintIcons16 from '@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf';
+import _BlueprintIcons20 from '@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf';
+import {BulkLoad, SingleLoad} from "@react-pdf/types";
+import JetBrainsMonoRegular from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
+import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-SemiBold.ttf";
+import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
+
+export type FontFamily = SingleLoad | BulkLoad;
+
+
+export const BlueprintIcons16: FontFamily = {
+  family: 'blueprint-icons-16',
+  fonts: [
+    {src: _BlueprintIcons16, fontWeight: 'normal', fontStyle: 'normal'},
+  ]
+}
+export const BlueprintIcons20: FontFamily = {
+  family: 'blueprint-icons-20',
+  fonts: [
+    {src: _BlueprintIcons20, fontWeight: 'normal', fontStyle: 'normal'},
+  ]
+}
+
+export const JetBrainsMono: FontFamily = {
+  family: 'JetBrainsMono, monospace',
+  fonts: [
+    {src: JetBrainsMonoRegular, fontWeight: 'normal', fontStyle: 'normal'},
+    {src: JetBrainsMonoSemiBold, fontWeight: 'semibold', fontStyle: 'normal'},
+    {src: JetBrainsMonoBold, fontWeight: 'bold', fontStyle: 'normal'},
+  ]
+}
+
+export interface IconProps extends IntentProps, Props, SVGIconProps {
+  icon: string;
+
+  tagName?: keyof JSX.IntrinsicElements;
+
+  /** Props to apply to the `SVG` element */
+  svgProps?: React.HTMLAttributes<SVGElement>;
+}
+
+export const renderSvgPaths = (svg: SVG): JSX.Element[] | null => {
+  const paths = svg.paths;
+  if (paths == null) {
+    return null;
+  }
+  return paths.map((path, i) => <path key={i} d={path} fillRule="evenodd" />);
+}
+
+export const CustomIcon: React.FC<IconProps & Omit<React.HTMLAttributes<HTMLElement>, "title">> = (props) => {
+  const {
+    className,
+    color,
+    htmlTitle,
+    intent,
+    size = IconSize.STANDARD,
+    title,
+    tagName = "span",
+    icon,
+
+    svgProps,
+    ...htmlProps
+  } = props;
+
+  const RenderedIcon = () => {
+    const organization = (ORGANIZATIONS as any)[icon] as TOrganization | undefined;
+    const svg = organization?.assets?.icon;
+
+    if (!organization || !svg) {
+      // @ts-ignore
+      return <Icon {...props} />
+    }
+    // render path elements, or nothing if icon name is unknown.
+    const paths = renderSvgPaths(svg);
+
+    const viewBox = `0 0 ${svg.viewBox.width} ${svg.viewBox.height}`;
+
+    return (<svg
+        fill={color}
+        data-icon={icon}
+        width={size}
+        height={size}
+        viewBox={viewBox}
+        aria-labelledby={title ? titleId : undefined}
+        role="img"
+        style={{transform: 'scaleY(1)'}} // something in bp5 scaleY(-1)?
+    >
+      {title && <title id={titleId}>{title}</title>}
+      {paths}
+    </svg>);
+  }
+
+  const classes = classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className);
+
+  const titleId = uniqueId("iconTitleCustom");
+
+  return React.createElement(
+      tagName,
+      {
+        ...htmlProps,
+        "aria-hidden": title ? undefined : true,
+        className: classes,
+        title: htmlTitle,
+      },
+      <RenderedIcon/>,
+  );
+};
 
 // export const getClass = (className: string) => (styles && styles[className]) ? styles[className] : className;
 
@@ -802,7 +910,7 @@ export const ThumbnailPage = () => {
     subtitle,
     date,
     pdf: {
-      fonts: [ JetBrainsMono ],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{

@@ -1,12 +1,21 @@
 import React from 'react';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
 import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {Arc, BR, PaperProps, Author, Reference, Section, useCounter, Col, Row} from "../../lib/paper/Paper";
+import Paper, {
+  Arc,
+  Author, BlueprintIcons16, BlueprintIcons20,
+  BR,
+  Col,
+  CustomIcon, JetBrainsMono,
+  PaperProps,
+  Reference,
+  Row,
+  Section,
+  useCounter
+} from "../../lib/paper/Paper";
 import {PROFILES} from "../profiles/profiles";
-import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
-import CustomIcon from "../../lib/layout/icons/CustomIcon";
-import {CanvasContainer} from "../../@orbitmines/Visualization";
+import WEBGL from "three/examples/jsm/capabilities/WebGL";
+import {CanvasContainer} from "../papers/2023.OnOrbits";
 
 export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {
@@ -44,7 +53,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
     ..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference,
     subtitle: "A comprehensive guide on how to be frustrated with pixels. An open call for funding, collaboration or anyone curious to learn more.",
     pdf: {
-      fonts: [JetBrainsMono, BlueprintIcons],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter

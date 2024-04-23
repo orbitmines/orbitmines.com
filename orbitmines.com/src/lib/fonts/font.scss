@@ -12,7 +12,7 @@ $fonts: (
   $font-weight: map-get($options, font-weight);
   $font-style: map-get($options, font-style);
 
-  $file: '../fonts/#{$name}/ttf/#{$file-name}';
+  $file: './#{$name}/ttf/#{$file-name}';
 
   @font-face{
     font-family: $name;
