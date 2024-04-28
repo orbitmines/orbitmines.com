@@ -1,4 +1,4 @@
-![orbitmines.logo.3000x1000.png](./orbitmines.com/src%2Flib%2Forganizations%2Forbitmines%2Flogo%2Forbitmines.logo.3000x1000.png)
+![orbitmines.logo.3000x1000.png](./orbitmines.com/src/lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png)
 
 # orbitmines.com
 *A public repository for [orbitmines.com](https://orbitmines.com). The hub for OrbitMines' (research) projects.*
