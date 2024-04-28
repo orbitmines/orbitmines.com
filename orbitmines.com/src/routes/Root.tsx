@@ -8,10 +8,11 @@ import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "./papers/2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
 import {Author, Layer, pageStyles, Reference, Col, Row, CustomIcon} from "../lib/paper/Paper";
+import {A_UNIVERSAL_LANGUAGE} from "./papers/2024.AUniversalLanguage";
 
 
 const Root = () => {
-  const papers = [ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [A_UNIVERSAL_LANGUAGE, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 

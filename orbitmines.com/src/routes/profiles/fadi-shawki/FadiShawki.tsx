@@ -6,6 +6,7 @@ import {ON_INTELLIGIBILITY} from "../../papers/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "../../papers/2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../../archive/2024.02.OrbitMines_as_a_Game_Project";
 import {Arc, Section, Reference, Category, Profile} from "../../../lib/paper/Paper";
+import {A_UNIVERSAL_LANGUAGE} from "../../papers/2024.AUniversalLanguage";
 
 const FadiShawki = () => {
   const profile = PROFILES.fadi_shawki;
@@ -123,7 +124,7 @@ const FadiShawki = () => {
 
     <Arc head="Writings" buffer={false}>
       <Section head="Theoretics">
-        {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+        {[A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
           <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
         ))}
       </Section>

@@ -928,6 +928,7 @@ export const getFootnotes = (node: ReactNode): JSX.Element[] => {
 export type ReferenceStyle = {
   inline?: boolean,
   simple?: boolean,
+  render?: ReactNode
   is?: 'reference' | 'footnote',
 }
 export type ReferenceProps = {
@@ -956,6 +957,15 @@ export type ReferenceProps = {
   notes?: { render: () => ReactNode, date: string }[]
 };
 
+const RefIcon = ({organization}: {organization: TOrganization}) => {
+  if (organization?.assets?.icon_png)
+    return <img key={organization.key} src={organization.assets.icon_png} style={{maxWidth: '1rem', verticalAlign: 'middle'}} />;
+
+  if (organization?.assets?.icon)
+    return <CustomIcon icon={organization.key} />
+
+  return <></>
+}
 export const Reference = (props: { reference?: ReferenceProps, target?: string } & React.HTMLAttributes<HTMLElement> & RowProps & ReferenceStyle & FootnoteProps) => {
   const {
     reference,
@@ -964,6 +974,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
     simple,
     inline = false,
     is = 'reference',
+    render,
 
     index,
 
@@ -971,7 +982,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
 
     ...otherProps
   } = props;
-  const {
+  let {
     title,
     subtitle,
 
@@ -989,6 +1000,9 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
     notes,
   } = reference || {};
 
+  if (link)
+    link = link.replace("https://orbitmines.com", "")
+
   const footnote = () => (<span style={{fontSize: '12px'}}>
     <Popover
         interactionKind="hover"
@@ -999,7 +1013,15 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
           </FootnoteContent>
         </div>}
     >
-      <span className="bp5-text-muted" style={{fontWeight: 'bold'}}>[{index}]</span>
+      <span className="bp5-text-muted" style={{fontWeight: 'bold'}}>
+        [
+        {index}
+        {link ? <>
+          {link.startsWith('https://github.com') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.github} /></a> : <></>}
+          {link.startsWith('/') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.orbitmines_research}/></a> : <></>}
+        </> : <></>}
+        ]
+      </span>
     </Popover>
   </span>)
 
@@ -1014,7 +1036,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
       : _.compact([author ? `${author}.` : author, title ? `"${title}"` : '', journal, year ? `(${year})` : '', pointer]).join(' ')
 
   const inline_reference = () => React.createElement(link ? 'a' : 'span', {
-    ...(link ? { href: link.replace("https://orbitmines.com", ""), target } : {}),
+    ...(link ? { href: link, target } : {}),
     children: <>
       {display}
     </>
@@ -1030,15 +1052,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
           {React.createElement(link ? 'a' : 'span', {
             ...(link ? { href: link.replace("https://orbitmines.com", ""), target, className: 'child-mr-2' } : {}),
             children: <>
-              {(organizations ?? []).map(organization => {
-                if (organization?.assets?.icon_png)
-                  return <img key={organization.key} src={organization.assets.icon_png} style={{maxWidth: '1rem', verticalAlign: 'middle'}} />;
-
-                if (organization?.assets?.icon)
-                  return <CustomIcon icon={organization.key} />
-
-                return <></>
-              })}
+              {(organizations ?? []).map(organization => <RefIcon organization={organization} />)}
               <Rendered renderable={title} />
             </>
           })}

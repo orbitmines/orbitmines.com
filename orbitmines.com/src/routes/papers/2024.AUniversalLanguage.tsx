@@ -1,19 +1,22 @@
 import React from 'react';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
-import {PROFILES} from "../../profiles/profiles";
-import {renderable} from "../../lib/typescript/React";
+import Paper, {
+  BlueprintIcons16,
+  BlueprintIcons20,
+  BR,
+  JetBrainsMono,
+  PaperProps,
+  Reference,
+  renderable,
+  Row,
+  Section,
+  useCounter
+} from "../../lib/paper/Paper";
 import {ON_ORBITS} from "./2023.OnOrbits";
-import BR from '../../lib/paper/layout/BR';
-import {Row} from "../../lib/layout/flexbox";
-import Section from "../../lib/paper/layout/Section";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
+import {PROFILES} from "../profiles/profiles";
 
-// TODO Move Aleks Kissinger ref to same level as the others, covariance etc..
-// Accompanied by a simple implementation of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Aleks Kissinger\'s Chyp (Cospans of HYPergraphs)', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />
 export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
     title: "A Universal Language",
@@ -29,12 +32,7 @@ export const A_UNIVERSAL_LANGUAGE: Content = {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
   }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "March, 2024"
 }
@@ -51,7 +49,7 @@ const AUniversalLanguage = () => {
         ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}} />: A Universal Language.
     </>),
     pdf: {
-      fonts: [JetBrainsMono],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter
