@@ -1,18 +1,18 @@
 import React from 'react';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
-import {PROFILES} from "../../profiles/profiles";
-import {renderable} from "../../lib/typescript/React";
-import Section from '../../lib/paper/layout/Section';
-import Arc from '../../lib/paper/layout/Arc';
-import BR from "../../lib/paper/layout/BR";
-import {Row} from "../../lib/layout/flexbox";
-import Link from "../../lib/paper/layout/Link";
-import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
-import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import Paper, {
+  Arc,
+  BR,
+  PaperProps,
+  Link,
+  useCounter,
+  Reference,
+  Section,
+  renderable,
+  Row, JetBrainsMono, BlueprintIcons20, BlueprintIcons16
+} from "../../lib/paper/Paper";
+import {PROFILES} from "../profiles/profiles";
+import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
 export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
   reference: {
@@ -27,20 +27,12 @@ export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.mastodon.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
   }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "January, 2024"
 }
 
 const _2024_02_NGI_GrantProposal = () => {
-  const navigate = useNavigate();
-
   const referenceCounter = useCounter();
 
   const paper: Omit<PaperProps, 'children'> = {
@@ -49,7 +41,7 @@ const _2024_02_NGI_GrantProposal = () => {
       A grant proposal to <Reference is="reference" index={referenceCounter()} reference={{title: "NGI", link: "https://www.ngi.eu/"}} simple inline /> through <Reference is="reference" index={referenceCounter()} reference={{title: 'NLnet', link: 'https://nlnet.nl/'}} simple inline />. In contrast to my previous application, which I realized was quite naive after a conversation with <Reference is="reference" index={referenceCounter()} reference={{title: 'Michiel Leenaars', link: 'https://nlnet.nl/people/leenaars.html'}} simple inline /> at <Reference is="reference" index={referenceCounter()} reference={{...REFERENCES.NGI_FORUM_2023.reference, year: undefined}} simple inline />: Hopefully this will serve as a concrete target problem to solve.
     </>),
     pdf: {
-      fonts: [JetBrainsMono, BlueprintIcons],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter

@@ -1,22 +1,17 @@
 import React from 'react';
-import {Layer, pageStyles} from "../profiles/FadiShawki/FadiShawki2";
-import {Col, Row} from "../lib/layout/flexbox";
 import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import {H3, Tag} from "@blueprintjs/core";
-import CustomIcon from "../lib/layout/icons/CustomIcon";
-import ORGANIZATIONS from "../lib/organizations/ORGANIZATIONS";
-import Author from "../lib/paper/layout/Author";
-import {PROFILES} from "../profiles/profiles";
+import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
+import {PROFILES} from "./profiles/profiles";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
-import {ON_ORBITS} from "./papers/2023.OnOrbits";
-import Reference from "../lib/paper/layout/Reference";
-import {CanvasContainer} from "../@orbitmines/Visualization";
+import {CanvasContainer, ON_ORBITS} from "./papers/2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
-import {A_UNIVERSAL_LANGUAGE} from "./papers/2024.AUniversalLanguage";
+import {Author, Layer, pageStyles, Reference, Col, Row, CustomIcon} from "../lib/paper/Paper";
+
 
 const Root = () => {
-  const papers = [A_UNIVERSAL_LANGUAGE, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
@@ -67,21 +62,9 @@ const Root = () => {
 
           <Col xs={12}>
             <Row center="xs" className="child-px-1">
-              {(profile?.external || []).filter(profile => [
-                ORGANIZATIONS.github.key,
-                ORGANIZATIONS.twitter.key,
-                ORGANIZATIONS.discord.key,
-                ORGANIZATIONS.linkedin.key,
-                ORGANIZATIONS.gitlab.key,
-                ORGANIZATIONS.instagram.key,
-                ORGANIZATIONS.instagram.key,
-                ORGANIZATIONS.youtube.key,
-                ORGANIZATIONS.twitch.key,
-                ORGANIZATIONS.mastodon.key,
-                ORGANIZATIONS.facebook.key,
-              ].includes(profile.organization.key)).map(profile => <Col>
+              {(profile?.external || []).filter(profile => PLATFORMS.includes(profile.organization.key)).map(profile => <Col>
                 <a href={profile.link} target="_blank">
-                  <CustomIcon icon={profile.organization.key} size={20}/>
+                  <CustomIcon icon={profile.organization.key} size={16}/>
                 </a>
               </Col>)}
             </Row>
@@ -141,11 +124,7 @@ const Root = () => {
         />
       </CanvasContainer>
 
-      <Author {...PROFILES.fadi_shawki} filter={(profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-      ].includes(profile.organization.key)}/>
+      <Author {...PROFILES.fadi_shawki} filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
     </Layer>
   </div>
 };

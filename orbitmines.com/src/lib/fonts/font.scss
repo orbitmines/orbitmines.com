@@ -1,0 +1,26 @@
+$fonts: (
+        JetBrainsMono: (
+                file-name: "JetBrainsMono-Regular",
+                font-weight: 400,
+                font-style: normal
+        )
+);
+
+
+@each $name, $options in $fonts {
+  $file-name: map-get($options, file-name);
+  $font-weight: map-get($options, font-weight);
+  $font-style: map-get($options, font-style);
+
+  $file: './#{$name}/ttf/#{$file-name}';
+
+  @font-face{
+    font-family: $name;
+    src: local($name),
+      //url('#{$file}.woff2') format('woff2'),
+      //url('#{$file}.woff') format('woff'),
+      url('#{$file}.ttf') format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+  }
+}
