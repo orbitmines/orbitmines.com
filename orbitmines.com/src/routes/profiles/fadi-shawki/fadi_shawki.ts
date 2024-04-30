@@ -3,6 +3,195 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+    REVERSE_ENGINEERING_SAME_THING_WE_DO_EVERY_WEEKEND_DOCUMENTING_THE_AMD_7900XTX_PART2: <Content>{
+        reference: {
+            title: 'Reverse engineering | same thing we do every weekend documenting the AMD 7900XTX Part2',
+            authors: [{name: 'George Hotz'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=Z04xTlLdZnc"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    RESEARCHING_DOCUMENTING_THE_AMD_7900XTX_SO_WE_CAN_UNDERSTAND_WHY_IT_CRASHES_RDNA_3: <Content>{
+        reference: {
+            title: 'Researching | documenting the AMD 7900XTX so we can understand why it crashes | RDNA 3',
+            authors: [{name: 'George Hotz'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=Y-0yZ1AHb0s"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    WHAT_MAKES_HIGH_DIMENSIONAL_NETWORKS_PRODUCE_LOW_DIM_ACTIVITY: <Content>{
+        reference: {
+            title: 'What makes high-dimensional networks produce low-dim. activity?',
+            authors: [{name: 'Eric Shea-Brown'}],
+            organizations: [ORGANIZATIONS.youtube],
+            year: '(2019)',
+            link: "https://www.youtube.com/watch?v=toeX2mGWDbI"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    LISA_RANDALL_DARK_MATTER_THEORETICAL_PHYSICS_AND_EXTINCTION_EVENTS_LEX_FRIDMAN_PODCAST_403: <Content>{
+        reference: {
+            title: 'Lisa Randall: Dark Matter, Theoretical Physics, and Extinction Events | Lex Fridman Podcast #403',
+            authors: [{name: 'Lisa Randall'}, {name: 'Lex Fridman'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+            year: '(2023)',
+            link: "https://www.youtube.com/watch?v=VPaOy3G1-2A"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    REALITY_IS_A_PARADOX___MATHEMATICS_PHYSICS_TRUTH_LOVE_LEX_FRIDMAN_PODCAST_370: <Content>{
+        reference: {
+            title: 'Reality is a Paradox - Mathematics, Physics, Truth & Love | Lex Fridman Podcast #370',
+            authors: [{name: 'Edward Frenkel'}, {name: 'Lex Fridman'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+            year: '(2023)',
+            link: "https://www.youtube.com/watch?v=Osh0-J3T2nY"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    THE_LANGLANDS_PROGRAM___NUMBERPHILE: <Content>{
+        reference: {
+            title: 'The Langlands Program - Numberphile',
+            authors: [{name: 'Edward Frenkel'}],
+            organizations: [ORGANIZATIONS.youtube],
+            year: '(2023)',
+            link: "https://www.youtube.com/watch?v=4dyytPboqvE"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    TIME_AND_QUANTUM_MECHANICS_SOLVED_LEE_SMOLIN: <Content>{
+        reference: {
+            title: 'Time and Quantum Mechanics SOLVED? | Lee Smolin',
+            authors: [{name: 'Lee Smolin'}, {name: 'Curt Jaimungal'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=uOKOodQXjhc"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    EDWARD_FRENKEL_INFINITY_AI_STRING_THEORY_DEATH_THE_SELF: <Content>{
+        reference: {
+            title: 'Edward Frenkel: Infinity, Ai, String Theory, Death, The Self',
+            authors: [{name: 'Edward Frenkel'}, {name: 'Curt Jaimungal'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+            year: '(2023)',
+            link: "https://www.youtube.com/watch?v=n_oPMcvHbAc"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    LIVE_SCIENCE_INFRAGEOMETRY_CORE_DEFINITIONS_DIFFERENTIAL_GEOMETRY_TANGENT_BUNDLES_FUNCTIONS: <Content>{
+        reference: {
+            title: 'Live Science | Infrageometry: Core Definitions | Differential Geometry, Tangent Bundles, Functions',
+            authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}, {name: 'Utkarsh Bajaj'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=QxtG4tr6VY0"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    LIVE_SCIENCE_INFRAGEOMETRY_WORKING_SESSION_FUNCTIONS_EDGES_PLACES_BIPARTITE_GRAPHS: <Content>{
+        reference: {
+            title: 'Live Science | Infrageometry: Working Session | Functions, Edges-Places, Bipartite Graphs',
+            authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}, {name: 'Utkarsh Bajaj'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=pdPBzPyJqcE"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    FELLOW_FOCUS_RICHARD_ASSAR_METAMETAVERSE_ALIEN_MINDS_MACHINE_LEARNING_CELLULAR_AUTOMATA: <Content>{
+        reference: {
+            title: 'Fellow Focus | Richard Assar | MetaMetaverse, Alien Minds, Machine Learning Cellular Automata',
+            authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=xg9pAx4bupk"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    FELLOW_FOCUS_NIK_MURZIN_QUANTUM_FRAMEWORK: <Content>{
+        reference: {
+            title: 'Fellow Focus | Nik Murzin | Quantum Framework',
+            authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=eG6d8_2GuCw"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    EXPLORE_LEARN_THE_MAP_OF_INSTITUTE_RESEARCH_QUANTUM_PROBABILITIES_MULTICOMPUTATION_CAUSALITY: <Content>{
+        reference: {
+            title: 'Explore & Learn | The Map of Institute Research | Quantum Probabilities, Multicomputation, Causality',
+            authors: [{name: 'Nikolay Murzin'}, {name: 'James Wiles'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=OKHrPZ6tT6M"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    EXPLORE_LEARN_THE_MAP_OF_INSTITUTE_RESEARCH_MULTICOMPUTATION_INFRAGEOMETRY_RULIAD: <Content>{
+        reference: {
+            title: 'Explore & Learn | The Map of Institute Research | Multicomputation, Infrageometry, Ruliad',
+            authors: [{name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=8F9YL887Bck"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    EXPLORE_LEARN_FUNDAMENTALS_WHATS_HYPE_ABOUT_HYPERGRAPHS_GRAPH_THEORY_HYPERMATRIX_ARITY: <Content>{
+        reference: {
+            title: 'Explore & Learn | Fundamentals: What\'s hype about Hypergraphs? | Graph Theory, Hypermatrix, Arity',
+            authors: [{name: 'Carlos Zapata-Carratalá'}, {name: 'Richard Assar'}, {name: 'James Wiles'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=N3vGEp1uLvk"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    MINDSCAPE_274_GIZEM_GUMUSKAYA_ON_BUILDING_ROBOTS_FROM_HUMAN_CELLS: <Content>{
+        reference: {
+            title: 'Mindscape 274 | Gizem Gumuskaya on Building Robots from Human Cells',
+            authors: [{name: 'Gizem Gumuskaya'}, {name: 'Sean Carroll'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=jwaOzmW3xfs"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    COMMUNITY_LIVESTREAM_DATA_DIMENSIONALITY: <Content>{
+        reference: {
+            title: 'Community Livestream | Data & Dimensionality',
+            authors: [{name: ''}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=zBV1nLw2WuM"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    ALL_IN_PODCAST_E173: <Content>{
+        reference: {
+            title: 'All-In Podcast E173',
+            authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=z3Zzlgo-xZM"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    ALL_IN_PODCAST_E174: <Content>{
+        reference: {
+            title: 'All-In Podcast E174',
+            authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=hZp80SYIRlY"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    ALL_IN_PODCAST_E175: <Content>{
+        reference: {
+            title: 'All-In Podcast E175',
+            authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=HKtlezdPNAI"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
+    ALL_IN_PODCAST_E176: <Content>{
+        reference: {
+            title: 'All-In Podcast E176',
+            authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+            organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
+            year: '(2024)',
+            link: "https://www.youtube.com/watch?v=1ZQ33OnGFWE"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
     CALCULUS_RATIOCINATOR_VS_CHARACTERISTICA_UNIVERSALIS_THE_TWO_TRADITIONS_IN_LOGIC_REVISITED: <Content>{
         reference: {
             title: 'Calculus Ratiocinator vs. Characteristica Universalis? The Two Traditions in Logic, Revisited',
@@ -2570,6 +2759,15 @@ export const REFERENCES = {
         }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
     },
 
+    SYCO_12: <Content>{
+        reference: {
+            title: "Twelfth Symposium on Compositional Structures (SYCO 12)",
+            organizations: [ORGANIZATIONS.syco],
+            year: "2024 @ Birmingham, UK",
+            link: "https://www.cl.cam.ac.uk/events/syco/12/"
+        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
+    },
+
     INTO_THE_INFORMATION_CONTINUUM: <Content>{
         reference: {
             title: "In-Person Workshop | Into the Information Continuum",
@@ -2830,6 +3028,28 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2024: Content[] = [
+    REFERENCES.REVERSE_ENGINEERING_SAME_THING_WE_DO_EVERY_WEEKEND_DOCUMENTING_THE_AMD_7900XTX_PART2,
+    REFERENCES.RESEARCHING_DOCUMENTING_THE_AMD_7900XTX_SO_WE_CAN_UNDERSTAND_WHY_IT_CRASHES_RDNA_3,
+    REFERENCES.WHAT_MAKES_HIGH_DIMENSIONAL_NETWORKS_PRODUCE_LOW_DIM_ACTIVITY,
+    REFERENCES.LISA_RANDALL_DARK_MATTER_THEORETICAL_PHYSICS_AND_EXTINCTION_EVENTS_LEX_FRIDMAN_PODCAST_403,
+    REFERENCES.REALITY_IS_A_PARADOX___MATHEMATICS_PHYSICS_TRUTH_LOVE_LEX_FRIDMAN_PODCAST_370,
+    REFERENCES.THE_LANGLANDS_PROGRAM___NUMBERPHILE,
+    REFERENCES.TIME_AND_QUANTUM_MECHANICS_SOLVED_LEE_SMOLIN,
+    REFERENCES.EDWARD_FRENKEL_INFINITY_AI_STRING_THEORY_DEATH_THE_SELF,
+    REFERENCES.LIVE_SCIENCE_INFRAGEOMETRY_CORE_DEFINITIONS_DIFFERENTIAL_GEOMETRY_TANGENT_BUNDLES_FUNCTIONS,
+    REFERENCES.LIVE_SCIENCE_INFRAGEOMETRY_WORKING_SESSION_FUNCTIONS_EDGES_PLACES_BIPARTITE_GRAPHS,
+    REFERENCES.FELLOW_FOCUS_RICHARD_ASSAR_METAMETAVERSE_ALIEN_MINDS_MACHINE_LEARNING_CELLULAR_AUTOMATA,
+    REFERENCES.FELLOW_FOCUS_NIK_MURZIN_QUANTUM_FRAMEWORK,
+    REFERENCES.EXPLORE_LEARN_THE_MAP_OF_INSTITUTE_RESEARCH_QUANTUM_PROBABILITIES_MULTICOMPUTATION_CAUSALITY,
+    REFERENCES.EXPLORE_LEARN_THE_MAP_OF_INSTITUTE_RESEARCH_MULTICOMPUTATION_INFRAGEOMETRY_RULIAD,
+    REFERENCES.EXPLORE_LEARN_FUNDAMENTALS_WHATS_HYPE_ABOUT_HYPERGRAPHS_GRAPH_THEORY_HYPERMATRIX_ARITY,
+    REFERENCES.MINDSCAPE_274_GIZEM_GUMUSKAYA_ON_BUILDING_ROBOTS_FROM_HUMAN_CELLS,
+    REFERENCES.COMMUNITY_LIVESTREAM_DATA_DIMENSIONALITY,
+    REFERENCES.ALL_IN_PODCAST_E173,
+    REFERENCES.ALL_IN_PODCAST_E174,
+    REFERENCES.ALL_IN_PODCAST_E175,
+    REFERENCES.ALL_IN_PODCAST_E176,
+
     REFERENCES.CALCULUS_RATIOCINATOR_VS_CHARACTERISTICA_UNIVERSALIS_THE_TWO_TRADITIONS_IN_LOGIC_REVISITED,
     REFERENCES.CARGO_CULT_SCIENCE,
     REFERENCES.MILLIONS_OF_CHILDREN_LEARN_ONLY_VERY_LITTLE_HOW_CAN_THE_WORLD_PROVIDE_A_BETTER_EDUCATION_TO_THE_NEXT_GENERATION,
@@ -3158,6 +3378,7 @@ export const fadi_shawki = <TProfile>{
             REFERENCES.VWO,
         ],
         attended_events: [
+            REFERENCES.SYCO_12,
             REFERENCES.INTO_THE_INFORMATION_CONTINUUM,
             REFERENCES.NGI_FORUM_2023,
             REFERENCES.SEMF_2023,
