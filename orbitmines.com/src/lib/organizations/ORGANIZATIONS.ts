@@ -21,8 +21,8 @@ import all_in_icon from "././all-in/icon.jpeg";
 import zx_calculus_icon from "././zx/icon.png";
 import active_inference_institute_icon from "././active-inference-institute/channels4_profile.jpg";
 import toe_icon from "././toe/toe.jpg";
-import {Renderable} from "../typescript/React";
-import {ReferenceProps} from "../paper/layout/Reference";
+import syco_icon from "././syco/logo.png";
+import {ReferenceProps, Renderable} from "../paper/Paper";
 
 export type SVG = {
   viewBox: {
@@ -63,11 +63,6 @@ export type Content = {
   description?: string
 }
 
-export type ContentCategory = {
-  name: string,
-  items: Content[]
-}
-
 export type TProfile = {
   first_name?: string,
   last_name?: string,
@@ -94,9 +89,9 @@ export type TProfile = {
   external?: ExternalProfiles,
 
   content?: {
-    history?: ContentCategory
-    formal_education?: ContentCategory
-    attended_events?: ContentCategory,
+    history?: Content[]
+    formal_education?: Content[]
+    attended_events?: Content[],
   }
 
 };
@@ -110,6 +105,13 @@ const ORGANIZATIONS = {
       logo: logo,
       icon_png: orbitmines_icon,
     },
+  },
+  syco: <TOrganization>{
+    key: 'syco',
+    name: "syco",
+    assets: {
+      icon_png: syco_icon,
+    }
   },
   toe: <TOrganization>{
     key: 'toe',
@@ -487,5 +489,18 @@ ORGANIZATIONS.orbitmines_research.profile = {
     { organization: ORGANIZATIONS.facebook, display: 'OrbitMines', link: 'https://www.facebook.com/profile.php?id=61550528503885' },
   ]
 }
+
+export const PLATFORMS = [
+  ORGANIZATIONS.github.key,
+  ORGANIZATIONS.twitter.key,
+  ORGANIZATIONS.discord.key,
+  ORGANIZATIONS.linkedin.key,
+  ORGANIZATIONS.orcid.key,
+  ORGANIZATIONS.instagram.key,
+  ORGANIZATIONS.youtube.key,
+  ORGANIZATIONS.twitch.key,
+  ORGANIZATIONS.mastodon.key,
+  ORGANIZATIONS.facebook.key,
+]
 
 export default ORGANIZATIONS;

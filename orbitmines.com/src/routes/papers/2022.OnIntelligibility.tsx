@@ -1,16 +1,19 @@
 import React from 'react';
-import CodeBlock from '../../lib/syntax-highlighting/CodeBlock';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import {Row} from '../../lib/layout/flexbox';
-import REFERENCES from "../../profiles/FadiShawki/FadiShawki";
+import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import BR from "../../lib/paper/layout/BR";
-import Section from "../../lib/paper/layout/Section";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
-import {PROFILES} from "../../profiles/profiles";
+import Paper, {
+  BR,
+  PaperProps,
+  Reference,
+  Section,
+  useCounter,
+  CodeBlock,
+  Row,
+  JetBrainsMono, BlueprintIcons20, BlueprintIcons16
+} from "../../lib/paper/Paper";
+import {PROFILES} from "../profiles/profiles";
 
 const {
   A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS,
@@ -30,12 +33,7 @@ export const ON_INTELLIGIBILITY: Content = { reference: {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
     published: [ORGANIZATIONS.orbitmines_research],
     link: "https://orbitmines.com/papers/on-intelligibility",
@@ -60,7 +58,7 @@ const OnIntelligibility = () => {
   const paper: Omit<PaperProps, 'children'> = {
     ...ON_INTELLIGIBILITY.reference,
     pdf: {
-      fonts: [ JetBrainsMono ],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter

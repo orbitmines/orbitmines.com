@@ -1,18 +1,21 @@
 import React from 'react';
-import JetBrainsMono from "../../lib/layout/font/fonts/JetBrainsMono/JetBrainsMono";
-import ORGANIZATIONS, {Content, Viewed} from "../../lib/organizations/ORGANIZATIONS";
+import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {PaperProps} from "../../lib/paper/Paper";
-import Reference, {useCounter} from "../../lib/paper/layout/Reference";
-import {PROFILES} from "../../profiles/profiles";
-import Section from '../../lib/paper/layout/Section';
-import Arc from '../../lib/paper/layout/Arc';
-import BR from "../../lib/paper/layout/BR";
-import {Col, Row} from "../../lib/layout/flexbox";
-import BlueprintIcons from "../../lib/layout/font/fonts/blueprintjs/BlueprintIcons";
-import CustomIcon from "../../lib/layout/icons/CustomIcon";
-import {CanvasContainer} from "../../@orbitmines/Visualization";
-import Author from "../../lib/paper/layout/Author";
+import Paper, {
+  Arc,
+  Author, BlueprintIcons16, BlueprintIcons20,
+  BR,
+  Col,
+  CustomIcon, JetBrainsMono,
+  PaperProps,
+  Reference,
+  Row,
+  Section,
+  useCounter
+} from "../../lib/paper/Paper";
+import {PROFILES} from "../profiles/profiles";
+import WEBGL from "three/examples/jsm/capabilities/WebGL";
+import {CanvasContainer} from "../papers/2023.OnOrbits";
 
 export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {
@@ -28,15 +31,7 @@ export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
       ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-        ORGANIZATIONS.instagram.key,
-        ORGANIZATIONS.linkedin.key,
-        ORGANIZATIONS.mastodon.key,
-        ORGANIZATIONS.orcid.key,
-      ].includes(profile.organization.key))
+      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
   }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "February, 2024"
 }
@@ -50,7 +45,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
     ..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference,
     subtitle: "A comprehensive guide on how to be frustrated with pixels. An open call for funding, collaboration or anyone curious to learn more.",
     pdf: {
-      fonts: [JetBrainsMono, BlueprintIcons],
+      fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
     Reference: (props: {}) => (<></>),
     references: referenceCounter
@@ -297,11 +292,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
         />
       </CanvasContainer>
 
-      <Author {...PROFILES.fadi_shawki} filter={(profile) => [
-        ORGANIZATIONS.github.key,
-        ORGANIZATIONS.twitter.key,
-        ORGANIZATIONS.discord.key,
-      ].includes(profile.organization.key)}/>
+      <Author {...PROFILES.fadi_shawki} filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
     </Arc>
   </Paper>
 }
