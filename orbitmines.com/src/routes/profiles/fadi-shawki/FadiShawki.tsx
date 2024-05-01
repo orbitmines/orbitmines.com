@@ -61,6 +61,14 @@ const FadiShawki = () => {
               }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
             },
             {
+                reference: {
+                    title: "Project - Research towards Designs",
+                    organizations: [ORGANIZATIONS.github],
+                    year: "2024",
+                    link: "https://github.com/orbitmines/orbitmines.com/issues/29"
+                }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
+            },
+            {
               reference: {
                 title: "Project - Compute - Rays to GPUs",
                 organizations: [ORGANIZATIONS.github],
@@ -78,7 +86,7 @@ const FadiShawki = () => {
             },
             {
               reference: {
-                title: "Project - Compression (2025?)",
+                title: "Project - Compression",
                 organizations: [ORGANIZATIONS.github],
                 year: "2025?",
                 link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Compression%20(2025%3F).md"
@@ -90,6 +98,14 @@ const FadiShawki = () => {
                 organizations: [ORGANIZATIONS.github],
                 year: "2025-2026?",
                 link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Archive%20-%20%22OrbitMines'%20Journey%22%20(2025-2026%3F).md"
+              }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
+            },
+            {
+              reference: {
+                title: "Project - Education",
+                organizations: [ORGANIZATIONS.github],
+                year: "2027+?",
+                link: "https://github.com/orbitmines/orbitmines.com/issues/30"
               }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
             }
           ]} />
