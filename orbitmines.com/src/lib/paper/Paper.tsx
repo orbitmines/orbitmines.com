@@ -806,7 +806,7 @@ export const pageStyles = {
 export const Layer = ({zIndex, children, ...props}: any) => {
   return <div
       {...props}
-      className={classNames("py-35 child-pb-15", props.className)}
+      className={classNames("pt-35 child-pb-15", props.className)}
       style={{
         ...pageStyles,
         position: 'absolute',
@@ -968,6 +968,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
     index,
 
     children,
+    className,
 
     ...otherProps
   } = props;
@@ -1028,7 +1029,8 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
       <Row>
         <Col xs={12}>
           {React.createElement(link ? 'a' : 'span', {
-            ...(link ? { href: link.replace("https://orbitmines.com", ""), target, className: 'child-mr-2' } : {}),
+            ...(link ? { href: link.replace("https://orbitmines.com", ""), target } : { }),
+            className: classNames('child-mr-3', className),
             children: <>
               {(organizations ?? []).map(organization => {
                 if (organization?.assets?.icon_png)
@@ -1427,7 +1429,7 @@ export const PaperThumbnail = (
   }}>
     <Row center="xs" middle="xs" style={{height: '100%', width: '100%'}}>
       <div style={{transform: `scale(${scale})`}}>
-        <Grid fluid className="pt-35 child-pb-15 px-50-lg" style={{
+        <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}
           maxWidth: '1240px',

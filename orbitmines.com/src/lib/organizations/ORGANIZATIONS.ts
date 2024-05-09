@@ -1,5 +1,8 @@
 import logo from "../../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import orbitmines_icon from "../../lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png";
+import minigames_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.minigames.1000x1000.png";
+import creative_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.creative.1000x1000.png";
+import prison_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.prison.1000x1000.png";
 import strangeloop_icon from "../../lib/organizations/strange-loop/strange_loop_logo_final_color_no_year_square2.png";
 import semf_icon from "../../lib/organizations/semf/semf_icon.jpg";
 import webassembly_icon from "../../lib/organizations/wasm/webassembly-icon.png";
@@ -106,6 +109,9 @@ const ORGANIZATIONS = {
       icon_png: orbitmines_icon,
     },
   },
+  orbitmines_minecraft_prison: <TOrganization>{key: 'orbitmines-minecraft-prison', name: "", assets: {icon_png: prison_icon,},},
+  orbitmines_minecraft_creative: <TOrganization>{key: 'orbitmines-minecraft-creative', name: "", assets: {icon_png: creative_icon,},},
+  orbitmines_minecraft_minigames: <TOrganization>{key: 'orbitmines-minecraft-minigames', name: "", assets: {icon_png: minigames_icon,},},
   syco: <TOrganization>{
     key: 'syco',
     name: "syco",

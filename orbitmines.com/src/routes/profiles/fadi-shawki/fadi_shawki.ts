@@ -408,7 +408,15 @@ export const REFERENCES = {
             link: "https://www.youtube.com/watch?v=I3rhsT-8isk"
         }, status: Viewed.VIEWED, viewed_at: "2023, December"
     },
-
+    A_CONVERSATION_WITH_MARK_ZUCKERBERG_PATRICK_COLLISON_AND_TYLER_COWEN: <Content>{
+        reference: {
+            title: 'A Conversation with Mark Zuckerberg, Patrick Collison and Tyler Cowen',
+            authors: [{name: 'Mark Zuckerberg'}, {name: 'Patrick Collison'}, {name: 'Tyler Cowen'}],
+            organizations: [ORGANIZATIONS.youtube],
+            year: '(2019)',
+            link: "https://about.fb.com/news/2019/11/a-conversation-with-mark-zuckerberg-patrick-collison-and-tyler-cowen/"
+        }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    },
     SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION: <Content>{
         reference: {
             title: 'Solving SAT via Positive Supercompilation',
@@ -3074,7 +3082,7 @@ export const ARTICLES_2024: Content[] = [
     REFERENCES.COMPOSITIONAL_GAME_THEORY_TOWARDS_INCENTIVES_MODELLING_AT_SCALE,
     REFERENCES.MINDSCAPE_268_MATT_STRASSLER_ON_RELATIVITY_FIELDS_AND_THE_LANGUAGE_OF_REALITY,
     REFERENCES.ACTINF_MATHSTREAM_0091_JONATHAN_GORARD_A_COMPUTATIONAL_PERSPECTIVE_ON_OBSERVATION_AND_COGNITION,
-
+    REFERENCES.A_CONVERSATION_WITH_MARK_ZUCKERBERG_PATRICK_COLLISON_AND_TYLER_COWEN,
 
     REFERENCES.SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION,
     REFERENCES.NAVIGATING_COGNITION_SPATIAL_CODES_FOR_HUMAN_THINKING,
@@ -3358,11 +3366,11 @@ export const fadi_shawki = <TProfile>{
     email: 'fadi.shawki@orbitmines.com',
 
     title: "2024. Fadi Shawki",
-    subtitle: "A self-profile by some 23-solar-orbiting explorer.",
+    subtitle: "A self-profile by some 24-solar-orbiting explorer.",
 
     reference: {
         // title: renderable<string>("2023. Fadi Shawki"),
-        // subtitle: renderable<string>("A self-profile by some 23-solar-orbiting explorer."),
+        // subtitle: renderable<string>("A self-profile by some 24-solar-orbiting explorer."),
     },
 
     content: {

@@ -9,11 +9,12 @@ import {Helmet} from "react-helmet";
 import Modules from "./@orbitmines/js/react/Modules";
 import {Children, ThumbnailPage} from "./lib/paper/Paper";
 import Archive from "./routes/Archive";
+import Minimap from './routes/Minimap';
 
 export const Router = () => {
 
   return <Routes>
-    <Route path="*" element={<Root/>} errorElement={<Root/>} />
+    <Route path="*" element={<Minimap/>} errorElement={<Minimap/>} />
     <Route path="papers">
       <Route path=":paper" element={<Paper />} />
     </Route>
