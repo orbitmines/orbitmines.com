@@ -224,7 +224,7 @@ const Minimap = () => {
                             reference={{
                                 title: "Operating System",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/PENDING%20(2027%3F%2B)%20%3B%20Operation%20System.md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
