@@ -1,5 +1,8 @@
 import logo from "../../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import orbitmines_icon from "../../lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png";
+import minigames_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.minigames.1000x1000.png";
+import creative_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.creative.1000x1000.png";
+import prison_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.prison.1000x1000.png";
 import strangeloop_icon from "../../lib/organizations/strange-loop/strange_loop_logo_final_color_no_year_square2.png";
 import semf_icon from "../../lib/organizations/semf/semf_icon.jpg";
 import webassembly_icon from "../../lib/organizations/wasm/webassembly-icon.png";
@@ -21,6 +24,7 @@ import all_in_icon from "././all-in/icon.jpeg";
 import zx_calculus_icon from "././zx/icon.png";
 import active_inference_institute_icon from "././active-inference-institute/channels4_profile.jpg";
 import toe_icon from "././toe/toe.jpg";
+import syco_icon from "././syco/logo.png";
 import {ReferenceProps, Renderable} from "../paper/Paper";
 
 export type SVG = {
@@ -104,6 +108,16 @@ const ORGANIZATIONS = {
       logo: logo,
       icon_png: orbitmines_icon,
     },
+  },
+  orbitmines_minecraft_prison: <TOrganization>{key: 'orbitmines-minecraft-prison', name: "", assets: {icon_png: prison_icon,},},
+  orbitmines_minecraft_creative: <TOrganization>{key: 'orbitmines-minecraft-creative', name: "", assets: {icon_png: creative_icon,},},
+  orbitmines_minecraft_minigames: <TOrganization>{key: 'orbitmines-minecraft-minigames', name: "", assets: {icon_png: minigames_icon,},},
+  syco: <TOrganization>{
+    key: 'syco',
+    name: "syco",
+    assets: {
+      icon_png: syco_icon,
+    }
   },
   toe: <TOrganization>{
     key: 'toe',
