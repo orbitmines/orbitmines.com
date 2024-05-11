@@ -8,10 +8,11 @@ import {CanvasContainer, ON_ORBITS} from "./papers/2023.OnOrbits";
 import {Author, Category, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/paper/Paper";
 import {PROFILES} from "./profiles/profiles";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
+import {A_UNIVERSAL_LANGUAGE} from "./papers/2024.AUniversalLanguage";
 
 
 const Minimap = () => {
-    const papers = [_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+    const papers = [A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
     const profile = ORGANIZATIONS.orbitmines_research.profile;
 

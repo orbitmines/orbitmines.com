@@ -2,6 +2,7 @@ import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {
+  Arc,
   BlueprintIcons16,
   BlueprintIcons20,
   BR,
@@ -83,6 +84,24 @@ const AUniversalLanguage = () => {
 
         Let me show you how.
       </Section>
+
+      <Arc head="Arc: Where to start...">
+        Admittedly, this starts with a simple concession: that this is a generalization of many ideas whose details I don't fully understand. Though crucially, this is not important for my purposes here.
+
+        <BR/>
+
+        A list which undoubtedly falls short, would contain: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Category Theory', link: 'https://ncatlab.org/nlab/show/category+theory'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Hypergraphs', link: 'https://en.wikipedia.org/wiki/Hypergraph'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Covariant computation', link: 'https://twitter.com/getjonwithit/status/1780722985747263709'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Infrageometry', link: 'https://github.com/WolframInstitute/Infrageometry'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Chyp', link: 'https://github.com/akissinger/chyp'}} />, ..., <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'ZX-Calculus', link: 'https://zxcalculus.com/'}} />. A more complete set of ideas and partial history of me becoming aware of them can be found in my archive <Reference is="footnote" index={referenceCounter()} reference={{title: 'https://github.com/orbitmines/archive', link: 'https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md', authors: [{
+          ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}} />.
+
+        <BR/>
+
+        I suspect that a large numbers of problems arise from a rather simple conceptual mistake. And perhaps calling it a mistake - is itself a mistake. For we are always forced to first find practical tools, before we can find better ones. But therein lies to me the possibility of that mistake: <Reference is="reference" index={referenceCounter()} reference={{link: "https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project#:~:text=Once%20something%20seemingly%20convenient%20is%20found%2C%20it%20is%20seriously%20hard%20to%20explore%20and%20steer%20away%20from%20that.", title: "Once something seemingly convenient is found, it is seriously hard to explore and steer away from that"}} simple inline />.
+
+        <BR/>
+
+        Perhaps you could consider this as my attempt to provide proper infrastructure for that exploration.
+      </Arc>
+
     </Row>
   </Paper>
 }
