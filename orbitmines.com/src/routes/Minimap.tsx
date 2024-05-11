@@ -23,7 +23,7 @@ const Minimap = () => {
             <title lang="en">OrbitMines Research</title>
             <meta property="og:type" content="website"/>
             <meta name="description"
-                  content="Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems."/>
+                  content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
             <meta property="og:image" content="https://orbitmines.com/logo.png"/>
             <meta property="og:image:type" content="image/jpeg"/>
 

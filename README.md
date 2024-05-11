@@ -3,7 +3,7 @@
 # orbitmines.com
 *A public repository for [orbitmines.com](https://orbitmines.com). The hub for OrbitMines' (research) projects.*
 
-*Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems.*
+*Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.*
 
 ![header](./orbitmines.com/public/papers/on-orbits-equivalence-and-inconsistencies/images/header.png)
 

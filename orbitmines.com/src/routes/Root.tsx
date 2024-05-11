@@ -23,7 +23,7 @@ const Root = () => {
       <title lang="en">OrbitMines Research</title>
       <meta property="og:type" content="website"/>
       <meta name="description"
-            content="Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems."/>
+            content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:image" content="https://orbitmines.com/logo.png"/>
       <meta property="og:image:type" content="image/jpeg"/>
 
@@ -34,7 +34,7 @@ const Root = () => {
         <Col xs={12}><Row center="xs"><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Row></Col>
         <Col md={8} sm={10} xs={12}><Row center="xs">
                     <span style={{fontStyle: 'italic'}}>
-                        Once a Minecraft server, now a research project dedicated to understanding arbitrarily unknown dynamical systems.
+                        Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.
                     </span>
         </Row></Col>
         <Col xs={12}> <Row center="xs" className="child-py-2 child-px-2">
