@@ -1018,8 +1018,9 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
         [
         {index}
         {link ? <>
-          {link.startsWith('https://github.com') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.github} /></a> : <></>}
-          {link.startsWith('/') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.orbitmines_research}/></a> : <></>}
+          <a href={link} target="_blank">{(organizations ?? []).map(organization => <span> <RefIcon organization={organization} /></span>)}</a>
+            {/*{link.startsWith('https://github.com') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.github} /></a> : <></>}*/}
+          {/*{link.startsWith('/') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.orbitmines_research}/></a> : <></>}*/}
         </> : <></>}
         ]
       </span>
@@ -1310,7 +1311,7 @@ export const Link = ({name, link, icon, intent, ...props }: { name?: ReactNode, 
 export const Arc = ({ head, children, buffer = true }: SectionProps & Children & { buffer?: boolean}) => {
 
   return <>
-    <Row center="xs">
+    <Row center="xs" style={{width: '100%'}}>
       <Row center="xs" className={"mt-12 pb-3"}>
         <H3 className="bp5-text-muted">{head}</H3>
       </Row>
