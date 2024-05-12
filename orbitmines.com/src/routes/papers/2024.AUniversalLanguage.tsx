@@ -5,7 +5,7 @@ import Paper, {
   Arc,
   BlueprintIcons16,
   BlueprintIcons20,
-  BR,
+  BR, HorizontalLine,
   JetBrainsMono,
   PaperProps,
   Reference,
@@ -131,6 +131,8 @@ const AUniversalLanguage = () => {
              ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github, ORGANIZATIONS.orbitmines_research]}} />.
         </span>
 
+        <BR/>
+        <div style={{width: '100%'}}><HorizontalLine/></div>
         <BR/>
 
         I suspect that a large numbers of problems arise from a rather simple conceptual mistake. And perhaps calling it a mistake - is itself a mistake. For we are always forced to first find practical tools, before we can find better ones. But therein lies to me the possibility of that mistake: <Reference is="reference" index={referenceCounter()} reference={{link: "https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project#:~:text=Once%20something%20seemingly%20convenient%20is%20found%2C%20it%20is%20seriously%20hard%20to%20explore%20and%20steer%20away%20from%20that.", title: "Once something seemingly convenient is found, it is seriously hard to explore and steer away from that"}} simple inline />.
