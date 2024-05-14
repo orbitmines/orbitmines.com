@@ -173,21 +173,13 @@ const FadiShawki = () => {
             {/*</Section>*/}
         </Arc>
 
-
         <Arc head="Writings" buffer={false}>
             <Section head="Theoretics">
-                {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+                {[A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
                     <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}}/>
                 ))}
             </Section>
         </Arc>
-    <Arc head="Writings" buffer={false}>
-      <Section head="Theoretics">
-        {[A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
-          <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}} />
-        ))}
-      </Section>
-    </Arc>
 
         <CanvasContainer style={{height: '110px'}}>
             <canvas
