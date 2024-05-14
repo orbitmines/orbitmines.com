@@ -12,6 +12,7 @@ import Paper, {
   renderable,
   Row,
   Section,
+  TODO,
   useCounter
 } from "../../lib/paper/Paper";
 import {ON_ORBITS} from "./2023.OnOrbits";
@@ -149,23 +150,55 @@ const AUniversalLanguage = () => {
       <BR/>
       <Arc head="Arc: Core Ideas">
         <Section head="What is a Ray?" sub="">
-          Let's first take a few steps back; it will be necessary.
+          Let's first take a few steps back; it will be necessary. First, you must throw out any kind of assumptions you're bringing to the table. Just like we'll do now for Rays: Anything we'd like to make, should be phraseable in our universal language. It wouldn't be much of one if that wasn't the case.
+
+          <BR/>
+
+          That however, doesn't necessarily make it easy to phrase the things we would like to phrase. But let's start somewhere anyway:
+
+          <Block>
+
+          </Block>
+
+          Not much of a somewhere. But
+
+          <Block>
+
+          </Block>
+
+        </Section>
+        <Section head="References" sub="Direction, arrows, ..., one-way connections">
+          {/* TODO: This needs to be different, not good*/}
+
+          Similar to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'asymmetries/symmetries', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=What%20I%27m%20basically%20saying%20here%2C%20is%20that%20in%20order%20to%20point%20out%20some%20symmetry%2C%20invariance%2C%20...%2C%20equivalence%2C%20I%20need%20access%20to%20some%20asymmetry%2C%20variance%2C%20...%2C%20inconsistency.'}} />. The only way to show you a one-way connection, is to have access to some way in which it is not one-way. What do I mean by that? - Quite simply put it is this: If you can't remember that you forgot something, you wouldn't notice. [REPHRASE]
+
+          <BR/>
+
+          Or in terms of our Rays: If I didn't have access to this [SOMETHING]
+          <Block>
+
+          </Block>
+
+          I wouldn't be able to point it out, so it would just be this:
 
           <Block>
 
           </Block>
 
 
-          <Block>
-
-          </Block>
-
+          {/* TODO Link to reversibility here>>>. */}
         </Section>
         <Section head="Traversal" sub="Arbitrarily branching, stepwise, superposed, ..., partial traversal & equivalences">
+          <TODO>This needs some restructure, good ordering here</TODO>
         </Section>
-        <Section head="Superposing Languages (??? good name?)" sub="Different levels of abstraction simultaneously, ..., simulation">
+        <Section head="">
         </Section>
-        <Section sub="Self-referential operators & multiple abstract implementations">
+        <Section head="Breaking Recursion" sub="Local self-references, constants, orbits & Self-referential operators">
+
+        </Section>
+        {/* TODO Elena; "Formalism rosetta stone?" */}
+        <Section head="Superposing Languages" sub="Simultaneously having 'different levels of abstraction', 'multiple abstraction implementations', ..., simulation">
+
         </Section>
       </Arc>
       <Arc head="Arc: Full Implementation">
@@ -191,6 +224,9 @@ const AUniversalLanguage = () => {
           <BR/>
           <div style={{width: '100%'}}><HorizontalLine/></div>
           <BR/>
+
+          <TODO>Local changes move larger structures.</TODO>
+          <TODO>Shoving causal history in some direction?</TODO>
 
         </Section>
         <Section head="Example: Mathematics" sub="Some preliminary intuitions for mathematics">
@@ -219,13 +255,17 @@ const AUniversalLanguage = () => {
           <BR/>
 
           Which would be the moment you'd call it an inconsistency. But that as an argument, only holds up if you can indeed traverse arbitrarily. But it is likely exactly this property which allows for homoiconic foundations of mathematics <Reference is="footnote" index={referenceCounter()} reference={{title: "This made me think again about a question which has bugged me for a long time: what would a truly homoiconic foundation for mathematics look like? Proof theory gives one the syntax of math. Model theory gives one its semantics (i.e. the \"substrate\" on which proofs act)", link: 'https://twitter.com/_FadiShawki/status/1664387058721325056',
-          authors: [{name: 'Jonathan Gorard'}, {name: 'Fadi Shawki'}], date: '2023-06-01', organizations: [ORGANIZATIONS.twitter] }} />.
+          authors: [{name: 'Jonathan Gorard'}, {name: 'Fadi Shawki'}], date: '2023-06-01', organizations: [ORGANIZATIONS.twitter] }} />. [NEEDS EXAMPLE]
 
-          <BR/>
+          <Block>
+
+          </Block>
 
           Similarly. Concepts like - absolute equality -, follow a similar pattern <Reference is="footnote" index={referenceCounter()} reference={{link: "https://www.youtube.com/live/YAwWctUq3zw?si=eieXuSLc49nmBKDp&t=6013", title: "Community Livestream | Information Continuum", date: '2024-03-14', authors: [{name: 'Fadi Shawki'}, {name: 'Carlos Zapata Carratalá'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}], organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf]}} />.
 
-          <BR/>
+          <Block>
+
+          </Block>
 
 
         </Section>
@@ -236,6 +276,9 @@ const AUniversalLanguage = () => {
         </Section>
         <Section sub="">
         </Section>
+      </Arc>
+      <Arc head="Arc: ">
+
       </Arc>
       <Arc head="Wrapping up">
         <Section sub="">
