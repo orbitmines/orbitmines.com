@@ -149,10 +149,21 @@ const AUniversalLanguage = () => {
       <BR/>
       <Arc head="Arc: Core Ideas">
         <Section head="What is a Ray?" sub="">
+          Let's first take a few steps back; it will be necessary.
+
+          <Block>
+
+          </Block>
+
+
+          <Block>
+
+          </Block>
+
         </Section>
-        <Section sub="Arbitrarily branching, stepwise, superposed, ..., partial traversal & equivalences">
+        <Section head="Traversal" sub="Arbitrarily branching, stepwise, superposed, ..., partial traversal & equivalences">
         </Section>
-        <Section sub="Different levels of abstraction simultaneously, ..., simulation">
+        <Section head="Superposing Languages (??? good name?)" sub="Different levels of abstraction simultaneously, ..., simulation">
         </Section>
         <Section sub="Self-referential operators & multiple abstract implementations">
         </Section>
@@ -221,7 +232,7 @@ const AUniversalLanguage = () => {
       </Arc>
 
       <Arc head="Arc: Rendering Engine">
-        <Section head="A Reprogrammable Visual Interface">
+        <Section head="A Reprogrammable (Visual) Interface" sub="Open inputs, outputs, compute substrate, ..., interfaces">
         </Section>
         <Section sub="">
         </Section>
