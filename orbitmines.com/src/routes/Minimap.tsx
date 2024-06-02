@@ -246,12 +246,12 @@ const Minimap = () => {
                     {/*</Row>*/}
 
                     <div className="pl-9">
-                        {papers.map(paper => (
+                        {papers.map(((paper, i) => (
                             <Reference index={0}
-                                       reference={{...paper.reference, subtitle: undefined, notes: undefined}}
+                                       reference={{...paper.reference, subtitle: i < 2 ? paper.reference.subtitle : undefined, notes: undefined}}
                                        start="xs"
                                        style={{fontSize: '0.8rem'}} target="_self"/>
-                        ))}
+                        )))}
                     </div>
 
                     <CanvasContainer style={{height: '150px'}}>
