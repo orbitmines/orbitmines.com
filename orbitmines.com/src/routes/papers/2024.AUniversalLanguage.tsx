@@ -27,7 +27,7 @@ export const A_UNIVERSAL_LANGUAGE: Content = {
     draft: true,
     link: 'https://orbitmines.com/papers/a-universal-language',
     year: "2024",
-    date: "2024-05-31",
+    date: "2024-06-30",
     external: {
       // TODO
       // discord: {serverId: '1055502602365845534', channelId: '1190719376085766195', link: () => "https://discord.com/channels/1055502602365845534/1190719376085766195/1190719376085766195"}
@@ -277,6 +277,8 @@ const AUniversalLanguage = () => {
         <Section sub="">
         </Section>
       </Arc>
+      <Arc head="Arc: Version Control">
+      </Arc>
       <Arc head="Arc: ">
 
       </Arc>
@@ -284,6 +286,14 @@ const AUniversalLanguage = () => {
         <Section sub="">
         </Section>
         <Section head="Future inquiries">
+
+        </Section>
+        <Section sub={"..."}>
+          And to wrap up this "Wrapping up" arc, allow me to repeat a few things already alluded to in my 2023 thought excerpts <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On self-publishing and referencing"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20self%2Dpublishing%20and%20referencing'}} /> & <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On language and my bending of it"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20language%20and%20my%20bending%20of%20it'}} />. Which by default should carry over to everything I write down. Though repeating it might be necessary.
+
+          <BR/>
+
+          In any case, even though I did not understand the scope of what I was making: We edge ever closer to the project I have been anticipating for several years now: <Reference is="reference" index={referenceCounter()} reference={{link: _2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference.link, title: "OrbitMines: A Game Project"}} simple inline />. This is merely one of the first few steps of many more to come.
         </Section>
       </Arc>
     </Row>
