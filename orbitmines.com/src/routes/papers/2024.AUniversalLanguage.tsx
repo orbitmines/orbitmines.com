@@ -200,6 +200,21 @@ const AUniversalLanguage = () => {
         <Section head="Superposing Languages" sub="Simultaneously having 'different levels of abstraction', 'multiple abstraction implementations', ..., simulation">
 
         </Section>
+        <Section head="Compression" sub="Generalization of (perceived, ..., partial) geodesics">
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Now that we can superpose languages, and state with better clarity what having access to certain <span
+              className="bp5-text-muted">operators, ..., structure</span> even means. We now fall into the world of compression. As this allows for a generalization of 'shorter paths' given our capabilities.</span>
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Note that with compression, we're always necessarily partially ignorant <Reference is="footnote" index={referenceCounter()} reference={{title: '"The only way to actually do that, is to introduce some inconsistency along some direction"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=The%20only%20way%20to%20actually%20do%20that%2C%20is%20to%20introduce%20some%20inconsistency%20along%20some%20direction', organizations: [ORGANIZATIONS.orbitmines_research]}} /> of context and relying on some invariance <Reference is="footnote" index={referenceCounter()} reference={{title: '"Which would rely on strategies like easy re-discoverability for things forgotten"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Which%20would%20rely%20on%20strategies%20like%20easy%20re%2Ddiscoverability%20for%20things%20forgotten', organizations: [ORGANIZATIONS.orbitmines_research]}} />. Thus, any story about compression, becomes a story of rediscovery. Bringing with it an incredibly complicated world: You will have to deal with <span
+              className="bp5-text-muted">redundancy, ambiguity, forgetting, assumption violation, ..., inconsistencies</span>. Where changes in <span
+              className="bp5-text-muted">resources, ..., capabilities</span> will always play a role in <span
+              className="bp5-text-muted">how, ..., when</span> one can compress. Or even better: This will *always* play a role in any (partial) translation. It's just often ignored as a problem.</span>
+
+          <BR/>
+
+          But let's first do a dive into the implementation details, before we start attacking these problems.
+        </Section>
       </Arc>
       <Arc head="Arc: Full Implementation">
         <Section head="Ray.py" sub="Python Implementation">
