@@ -6,4 +6,7 @@
     <sitemap>
         <loc>https://orbitmines.com/profiles/sitemap.xml</loc>
     </sitemap>
+    <sitemap>
+        <loc>https://orbitmines.com/archive/sitemap.xml</loc>
+    </sitemap>
 </sitemapindex>
