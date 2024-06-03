@@ -182,6 +182,12 @@ const AUniversalLanguage = () => {
 
           </Block>
 
+          And a simple move back:
+
+          <Block>
+
+          </Block>
+
           <TODO>...</TODO>
 
           <BR/>
@@ -339,7 +345,7 @@ const AUniversalLanguage = () => {
         </Section>
       </Arc>
       <Arc head="Arc: Version Control">
-        <Section>
+        <Section sub="Concurrency, Dependency management, Causal Histories, ..., Theorem proving">
           <span style={{textAlign: 'left', minWidth: '100%'}}><span
               className="bp5-text-muted">Version control, causal histories, theorem proving, ..., a (programming) language</span> are all rather similar. Always we consider some sort of <span
               className="bp5-text-muted">persisting, surviving, ..., crafted</span> items whose rediscoverability is not entirely obvious. In the case of version control, or reversibility, the gnawing question becomes: "What if I didn't know about something?"</span>
@@ -359,6 +365,8 @@ const AUniversalLanguage = () => {
           <Block>
 
           </Block>
+
+          <TODO>Essentially, version control comes hand-in-hand with compression. It becomes a story of redundancy, ..., recoverability.</TODO>
         </Section>
       </Arc>
       <Arc head="Arc: Exploration and Discovery">
