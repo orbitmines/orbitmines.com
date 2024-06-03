@@ -156,15 +156,11 @@ const AUniversalLanguage = () => {
 
           That however, doesn't necessarily make it easy to phrase the things we would like to phrase. But let's start somewhere anyway:
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           Not much of a somewhere. But the basic premise becomes this: I don't know what things around me look like. Let's start by looking around me in some direction:
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           I don't yet know what this is or means, I just know I moved in some direction. You'll start to see the pattern of what we're doing here: I need to start traversing to find things around me - otherwise I can't know about them.
 
@@ -172,21 +168,15 @@ const AUniversalLanguage = () => {
 
           Alright now let's try to move backwards.
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           You'll see that there's no recollection of what we just did. In order to say even something as simple as that, we need some notion of memory. We need some way remember what we just did. Let's try it again with a notion of memory of where we've already been:
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           And a simple move back:
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           <TODO>...</TODO>
 
@@ -203,21 +193,17 @@ const AUniversalLanguage = () => {
           <BR/>
 
           Or in terms of our Rays: If I didn't have access to this [SOMETHING]
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           I wouldn't be able to point it out, so it would just be this:
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
 
           {/* TODO Link to reversibility here>>>. */}
         </Section>
         <Section head="Superpositions">
-
+          .
         </Section>
         <Section head="Traversal" sub="Arbitrarily branching, stepwise, superposed, ..., partial traversal & equivalences">
           <TODO>This needs some restructure, good ordering here</TODO>
@@ -226,6 +212,7 @@ const AUniversalLanguage = () => {
           ...TODO... This way, you can just draw a single line (or even arbitrary structure), and say: "What if I wanted to regard that as the same? What would happen?". The answer to those are far from obvious.
         </Section>
         <Section head="">
+          .
         </Section>
         <Section head="Breaking Recursion" sub="Local self-references, constants, orbits & Self-referential operators">
           Note that whenever you have a self-reference through operators. Either we break the recursion there through some implementation. Or we simply decide to stop orbiting. And say it could be any of these things, it could be any of some superposition of things.
@@ -270,9 +257,10 @@ const AUniversalLanguage = () => {
       </Arc>
       <Arc head="Arc: Full Implementation">
         <Section head="Ray.py" sub="Python Implementation">
-
+          .
         </Section>
         <Section head="Ray.py - Ray.ts" sub="Crosscompilation of Python and TypeScript Implementation">
+          .
         </Section>
       </Arc>
       <Arc head="Arc: Examples">
@@ -299,15 +287,11 @@ const AUniversalLanguage = () => {
         <Section head="Example: Mathematics" sub="Some preliminary intuitions for mathematics">
           You could probably phrase mathematics as have access to the `.self` equivalency Ray, and assuming one can traverse that structure arbitrarily, and ignoring how one has access to that. Basically: I'm saying all these things:
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           are the same. But I'm ignoring how I know about that.
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           Or in other words: I'm assuming their consistency - and that assumption has consequences, as alluded to here: <Reference is="reference" index={referenceCounter()} reference={{link: "https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies/#:~:text=One%20might%20as%20well%20%2D%20more%20practically%20%2D%20say%20that%20some%20consistency%2C%20...%2C%20well%2Ddefined%20property%20could%20be%20more%20vaguely%20restated%20as", title: "\"One might as well - more practically - say that some consistency, ..., well-defined property could be more vaguely restated as...\""}} simple inline />
 
@@ -315,24 +299,18 @@ const AUniversalLanguage = () => {
 
           And this becomes problematic for mathematics if there is some way to traverse from `.self`, back to the current ray we're referencing. [NEEDS REPHRASING]
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           <BR/>
 
           Which would be the moment you'd call it an inconsistency. But that as an argument, only holds up if you can indeed traverse arbitrarily. But it is likely exactly this property which allows for homoiconic foundations of mathematics <Reference is="footnote" index={referenceCounter()} reference={{title: "This made me think again about a question which has bugged me for a long time: what would a truly homoiconic foundation for mathematics look like? Proof theory gives one the syntax of math. Model theory gives one its semantics (i.e. the \"substrate\" on which proofs act)", link: 'https://twitter.com/_FadiShawki/status/1664387058721325056',
           authors: [{name: 'Jonathan Gorard'}, {name: 'Fadi Shawki'}], date: '2023-06-01', organizations: [ORGANIZATIONS.twitter] }} />. [NEEDS EXAMPLE]
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           Similarly. Concepts like - absolute equality -, follow a similar pattern <Reference is="footnote" index={referenceCounter()} reference={{link: "https://www.youtube.com/live/YAwWctUq3zw?si=eieXuSLc49nmBKDp&t=6013", title: "Community Livestream | Information Continuum", date: '2024-03-14', authors: [{name: 'Fadi Shawki'}, {name: 'Carlos Zapata Carratalá'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}], organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf]}} />.
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
 
         </Section>
@@ -340,8 +318,10 @@ const AUniversalLanguage = () => {
 
       <Arc head="Arc: Rendering Engine">
         <Section head="A Reprogrammable (Visual) Interface" sub="Open inputs, outputs, compute substrate, ..., interfaces">
+          .
         </Section>
         <Section sub="">
+          .
         </Section>
       </Arc>
       <Arc head="Arc: Version Control">
@@ -350,32 +330,28 @@ const AUniversalLanguage = () => {
               className="bp5-text-muted">Version control, causal histories, theorem proving, ..., a (programming) language</span> are all rather similar. Always we consider some sort of <span
               className="bp5-text-muted">persisting, surviving, ..., crafted</span> items whose rediscoverability is not entirely obvious. In the case of version control, or reversibility, the gnawing question becomes: "What if I didn't know about something?"</span>
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           nor could rely on these things I currently know about.
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           could I rediscover this other thing I'm interested in?"
 
-          <Block>
-
-          </Block>
+          <Block>-</Block>
 
           <TODO>Essentially, version control comes hand-in-hand with compression. It becomes a story of redundancy, ..., recoverability.</TODO>
         </Section>
       </Arc>
       <Arc head="Arc: Exploration and Discovery">
-
+        .
       </Arc>
       <Arc head="Wrapping up">
         <Section sub="">
+          .
         </Section>
         <Section head="Future inquiries">
+          .
           {/*I suspect that we've always lacked a proper tool to think across fields. E*/}
         </Section>
         <Section sub={"..."}>

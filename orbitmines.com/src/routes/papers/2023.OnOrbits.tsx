@@ -4155,11 +4155,6 @@ export type VisualizationProps = {
   alt: string,
 }
 
-const Visualization = ({}: { }) => {
-  return <VisualizationCanvas>
-
-  </VisualizationCanvas>
-}
 
 export const CachedVisualizationCanvas = (
     {

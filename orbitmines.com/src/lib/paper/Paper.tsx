@@ -14,7 +14,6 @@ import {Button, Classes, Divider, H1, H3, H4, H6, Icon, IconSize, Intent, Popove
 import {toJpeg} from "html-to-image";
 import classNames from "classnames";
 import {PROFILES} from "../../routes/profiles/profiles";
-import {Highlight, Prism, themes} from "prism-react-renderer";
 import {IntentProps, Props} from "@blueprintjs/core/src/common";
 import {SVGIconProps} from "@blueprintjs/icons";
 import {CanvasContainer} from "../../routes/papers/2023.OnOrbits";
@@ -713,18 +712,19 @@ export function renderable<T extends ReactNode>(value: T, _default: (value: T) =
 export type Predicate<T> = (value: T, index: number, array: T[]) => unknown;
 
 export const highlight = (code: string) => (
-    // @ts-ignore
-    <Highlight prism={Prism} theme={themes.dracula} code={code} language="typescript">
-      {({className, style, tokens, getLineProps, getTokenProps}) => (
-          <>
-            {tokens.map((line, i) => (
-                <div {...getLineProps({line, key: i})}>
-                  {line.map((token, key) => <span {...getTokenProps({token, key})} />)}
-                </div>
-            ))}
-          </>
-      )}
-    </Highlight>
+    <div>{code}</div>
+    // // @ts-ignore
+    // // <Highlight prism={Prism} theme={themes.dracula} code={code} language="typescript">
+    // //   {({className, style, tokens, getLineProps, getTokenProps}) => (
+    // //       <>
+    //         {/*{tokens.map((line, i) => (*/}
+    //         {/*    <div {...getLineProps({line, key: i})}>*/}
+    //         {/*      {line.map((token, key) => <span {...getTokenProps({token, key})} />)}*/}
+    //         {/*    </div>*/}
+    //         {/*))}*/}
+    //       {/*</>*/}
+    //   // )}
+    // // </Highlight>
 )
 
 export type CodeBlockProps = {
