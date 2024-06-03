@@ -140,11 +140,11 @@ const AUniversalLanguage = () => {
 
         <BR/>
 
-        Perhaps you could consider this as my attempt to provide proper infrastructure for that exploration.
+        Perhaps you could consider this as my attempt to provide proper infrastructure for that exploration. Perhaps not just exploration, perhaps better communication.
 
         <BR/>
 
-        Though, in my ignorance, only recently - and amazingly after naming it Rays - did I become properly aware of the scope of this project <Reference is="footnote" index={referenceCounter()} reference={{title: 'This feels pretty much in the ballpark of Wolfram’s automata / Lafont’s Interaction Nets / Pearl’s causal graphs / 16th century Lingua Universalis / Hesse’s Glass bead game. So, in that vein, you have tagged a good amount of people working in this niche there.', link: 'https://twitter.com/prathyvsh/status/1760679779819540592/',
+        Though, in my ignorance, only recently did I become properly aware of the scope of this project <Reference is="footnote" index={referenceCounter()} reference={{title: 'This feels pretty much in the ballpark of Wolfram’s automata / Lafont’s Interaction Nets / Pearl’s causal graphs / 16th century Lingua Universalis / Hesse’s Glass bead game. So, in that vein, you have tagged a good amount of people working in this niche there.', link: 'https://twitter.com/prathyvsh/status/1760679779819540592/',
         authors: [{name: '@prathyvsh'}], date: '2024-02-22', organizations: [ORGANIZATIONS.twitter] }} />. And so, even though I still need to learn more about his history at some point, allow me to take on <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Leibniz', link: 'https://en.wikipedia.org/wiki/Gottfried_Wilhelm_Leibniz'}} />' naming: A Universal Language.
       </Arc>
       <BR/>
@@ -160,12 +160,34 @@ const AUniversalLanguage = () => {
 
           </Block>
 
-          Not much of a somewhere. But
+          Not much of a somewhere. But the basic premise becomes this: I don't know what things around me look like. Let's start by looking around me in some direction:
 
           <Block>
 
           </Block>
 
+          I don't yet know what this is or means, I just know I moved in some direction. You'll start to see the pattern of what we're doing here: I need to start traversing to find things around me - otherwise I can't know about them.
+
+          <BR/>
+
+          Alright now let's try to move backwards.
+
+          <Block>
+
+          </Block>
+
+          You'll see that there's no recollection of what we just did. In order to say even something as simple as that, we need some notion of memory. We need some way remember what we just did. Let's try it again with a notion of memory of where we've already been:
+
+          <Block>
+
+          </Block>
+
+          <TODO>...</TODO>
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Essentially what any of this comes down to. Is things are entirely inferred from surrounding context. Yet your abstractions can be ignorant of how you're using them. Whether something is a <span
+              className="bp5-text-muted">function, number, geometry, topology, ..., structure</span> becomes quite hard to say when you consider its surrounding context [REPHRASE]. More usefully what we're doing here, is saying: "Can you see a difference? And can you ignore it?"</span>
         </Section>
         <Section head="References" sub="Direction, arrows, ..., one-way connections">
           {/* TODO: This needs to be different, not good*/}
@@ -188,16 +210,40 @@ const AUniversalLanguage = () => {
 
           {/* TODO Link to reversibility here>>>. */}
         </Section>
+        <Section head="Superpositions">
+
+        </Section>
         <Section head="Traversal" sub="Arbitrarily branching, stepwise, superposed, ..., partial traversal & equivalences">
           <TODO>This needs some restructure, good ordering here</TODO>
+
+          <TODO>?</TODO>
+          ...TODO... This way, you can just draw a single line (or even arbitrary structure), and say: "What if I wanted to regard that as the same? What would happen?". The answer to those are far from obvious.
         </Section>
         <Section head="">
         </Section>
         <Section head="Breaking Recursion" sub="Local self-references, constants, orbits & Self-referential operators">
+          Note that whenever you have a self-reference through operators. Either we break the recursion there through some implementation. Or we simply decide to stop orbiting. And say it could be any of these things, it could be any of some superposition of things.
 
+          <BR/>
+
+          {/*A simple example could be the difference INITIAL + NEGACTIVE VS TERMINAL + NEGATIVE VS INITIAL/TERMINAL*/}
         </Section>
         {/* TODO Elena; "Formalism rosetta stone?" */}
         <Section head="Superposing Languages" sub="Simultaneously having 'different levels of abstraction', 'multiple abstraction implementations', ..., simulation">
+          Almost always with any abstraction, you'll see the following simple pattern: (1) First one of something, (2) then more of things like it, (3) then some recursive construction of that thing. And noticing that is far from obvious.
+
+        </Section>
+        <Section head="Switching Perspectives">
+
+          But this introduces a rather hard problem, namely that: <Reference is="reference" inline simple index={referenceCounter()} reference={{title: '"Any scale, ..., any language will in some respect introduce this arbitrary complexity."', link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=Any%20scale%2C%20...%2C%20any%20language%20will%20in%20some%20respect%20introduce%20this%20arbitrary%20complexity.%20The%20only%20way%20to%20properly%20deal%20with%20that%20is%20the%20possibility%20of%20exploration.%20You%20cannot%20have%20this%20without%20an%20open%20world%20generation%20aspect.', organizations: [ORGANIZATIONS.orbitmines_research]}} />.
+        </Section>
+        <Section head="Modelling Unknowns">
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Part of any task then, becomes this: <Reference
+              is="reference" inline simple index={referenceCounter()} reference={{title: '"You will have to deal with being able to move in certain data structures for which there might not (yet) be a nice translation to something you can understand."', link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=You%20will%20have%20to%20deal%20with%20being%20able%20to%20move%20in%20certain%20data%20structures%20for%20which%20there%20might%20not%20(yet)%20be%20a%20nice%20translation%20to%20something%20you%20can%20understand.', organizations: [ORGANIZATIONS.orbitmines_research]}} />. This should somewhere be quite intuitive: You can use tools without knowing how to make those tools. Essentially wanting to understand unknowns, might as well be called reverse engineering: How is it done? How can it be <span
+              className="bp5-text-muted">replicated, decomposed, ..., understood</span>?; What aspects of it can I understand?</span>
+
+          <BR/>
+
 
         </Section>
         <Section head="Compression" sub="Generalization of (perceived, ..., partial) geodesics">
@@ -209,7 +255,7 @@ const AUniversalLanguage = () => {
           <span style={{textAlign: 'left', minWidth: '100%'}}>Note that with compression, we're always necessarily partially ignorant <Reference is="footnote" index={referenceCounter()} reference={{title: '"The only way to actually do that, is to introduce some inconsistency along some direction"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=The%20only%20way%20to%20actually%20do%20that%2C%20is%20to%20introduce%20some%20inconsistency%20along%20some%20direction', organizations: [ORGANIZATIONS.orbitmines_research]}} /> of context and relying on some invariance <Reference is="footnote" index={referenceCounter()} reference={{title: '"Which would rely on strategies like easy re-discoverability for things forgotten"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Which%20would%20rely%20on%20strategies%20like%20easy%20re%2Ddiscoverability%20for%20things%20forgotten', organizations: [ORGANIZATIONS.orbitmines_research]}} />. Thus, any story about compression, becomes a story of rediscovery. Bringing with it an incredibly complicated world: You will have to deal with <span
               className="bp5-text-muted">redundancy, ambiguity, forgetting, assumption violation, ..., inconsistencies</span>. Where changes in <span
               className="bp5-text-muted">resources, ..., capabilities</span> will always play a role in <span
-              className="bp5-text-muted">how, ..., when</span> one can compress. Or even better: This will *always* play a role in any (partial) translation. It's just often ignored as a problem.</span>
+              className="bp5-text-muted">how, ..., when</span> one can compress. Or even better: This will <b>always</b> play a role in any (partial) translation. It's just often ignored as a problem.</span>
 
           <BR/>
 
@@ -293,15 +339,36 @@ const AUniversalLanguage = () => {
         </Section>
       </Arc>
       <Arc head="Arc: Version Control">
+        <Section>
+          <span style={{textAlign: 'left', minWidth: '100%'}}><span
+              className="bp5-text-muted">Version control, causal histories, theorem proving, ..., a (programming) language</span> are all rather similar. Always we consider some sort of <span
+              className="bp5-text-muted">persisting, surviving, ..., crafted</span> items whose rediscoverability is not entirely obvious. In the case of version control, or reversibility, the gnawing question becomes: "What if I didn't know about something?"</span>
+
+          <Block>
+
+          </Block>
+
+          nor could rely on these things I currently know about.
+
+          <Block>
+
+          </Block>
+
+          could I rediscover this other thing I'm interested in?"
+
+          <Block>
+
+          </Block>
+        </Section>
       </Arc>
-      <Arc head="Arc: ">
+      <Arc head="Arc: Exploration and Discovery">
 
       </Arc>
       <Arc head="Wrapping up">
         <Section sub="">
         </Section>
         <Section head="Future inquiries">
-
+          {/*I suspect that we've always lacked a proper tool to think across fields. E*/}
         </Section>
         <Section sub={"..."}>
           And to wrap up this "Wrapping up" arc, allow me to repeat a few things already alluded to in my 2023 thought excerpts <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On self-publishing and referencing"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20self%2Dpublishing%20and%20referencing'}} /> & <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On language and my bending of it"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20language%20and%20my%20bending%20of%20it'}} />. Which by default should carry over to everything I write down. Though repeating it might be necessary.
