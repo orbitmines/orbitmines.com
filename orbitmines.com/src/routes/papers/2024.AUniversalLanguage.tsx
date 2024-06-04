@@ -238,7 +238,7 @@ const AUniversalLanguage = () => {
           {/*A simple example could be the difference INITIAL + NEGACTIVE VS TERMINAL + NEGATIVE VS INITIAL/TERMINAL*/}
         </Section>
         {/* TODO Elena; "Formalism rosetta stone?" */}
-        <Section head="Superposing Languages" sub="Simultaneously having 'different levels of abstraction', 'multiple abstraction implementations', ..., simulation">
+        <Section head="Superposing Languages" sub="Simultaneously having 'different levels of abstraction', superposing operators, 'multiple abstraction implementations', ..., simulation">
           Almost always with any abstraction, you'll see the following simple pattern: (1) First one of something, (2) then more of things like it, (3) then some recursive construction of that thing. And noticing that is far from obvious.
 
         </Section>
