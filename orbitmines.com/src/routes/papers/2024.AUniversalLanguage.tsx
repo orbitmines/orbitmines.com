@@ -246,6 +246,17 @@ const AUniversalLanguage = () => {
 
           But this introduces a rather hard problem, namely that: <Reference is="reference" inline simple index={referenceCounter()} reference={{title: '"Any scale, ..., any language will in some respect introduce this arbitrary complexity."', link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=Any%20scale%2C%20...%2C%20any%20language%20will%20in%20some%20respect%20introduce%20this%20arbitrary%20complexity.%20The%20only%20way%20to%20properly%20deal%20with%20that%20is%20the%20possibility%20of%20exploration.%20You%20cannot%20have%20this%20without%20an%20open%20world%20generation%20aspect.', organizations: [ORGANIZATIONS.orbitmines_research]}} />.
         </Section>
+        <Section head="Naming & Grouping superposed Languages">
+          <TODO>Move elsewhere?</TODO>
+
+          A lot of this comes from the realization. That most differences come from the context in which they're applied. But this presents a problem of how one often uses languages: Specific names for specific perspectives. And that makes useful generalization quite hard. [REPHRASE]
+
+          <BR/>
+
+          Essentially the problem becomes. When do you decide that a particular kind of perspective, or switch in perspective should have a different name associated with it. Essentially what we're asking, is: Why is it so important to name this differently? Would it be harder to find if one didn't do that? [REPHRASE]
+
+          <TODO></TODO>
+        </Section>
         <Section head="Modelling Unknowns">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Part of any task then, becomes this: <Reference
               is="reference" inline simple index={referenceCounter()} reference={{title: '"You will have to deal with being able to move in certain data structures for which there might not (yet) be a nice translation to something you can understand."', link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=You%20will%20have%20to%20deal%20with%20being%20able%20to%20move%20in%20certain%20data%20structures%20for%20which%20there%20might%20not%20(yet)%20be%20a%20nice%20translation%20to%20something%20you%20can%20understand.', organizations: [ORGANIZATIONS.orbitmines_research]}} />. This should somewhere be quite intuitive: You can use tools without knowing how to make those tools. Essentially wanting to understand unknowns, might as well be called reverse engineering: How is it done? What aspects of it can be <span
@@ -311,7 +322,8 @@ const AUniversalLanguage = () => {
           <TODO>Something like: Constantly all the rays as functions are executing (in orbits), then if something causes something else's behavior to change, you get the inconsistencies.</TODO>
           <TODO>Particles are seemingly temporally stable orbits/modular structures?</TODO>
           <TODO>"Wrong dynamics" from a particular perspective, often probably still keep traversing - they still work. It's just that from the perspective you wanted, they don't.</TODO>
-          <TODO>Reprogrammability as foundational?</TODO>
+          <TODO>Reprogrammability & inconsistencies as foundational?</TODO>
+          <TODO>Invariances at start hence a modular structure might be a necessity physically</TODO>
 
         </Section>
         <Section head="Example: Mathematics" sub="Some preliminary intuitions for mathematics">
@@ -362,7 +374,7 @@ const AUniversalLanguage = () => {
         <Section sub="">
         </Section>
       </Arc>
-      <Arc head="Arc: Version Control">
+      <Arc head="Arc: Universal Version Control">
         <Section sub="Concurrency, Dependency management, Causal Histories, ..., Theorem proving">
           <span style={{textAlign: 'left', minWidth: '100%'}}><span
               className="bp5-text-muted">Version control, causal histories, theorem proving, ..., a (programming) language</span> are all rather similar. Always we consider some sort of <span
