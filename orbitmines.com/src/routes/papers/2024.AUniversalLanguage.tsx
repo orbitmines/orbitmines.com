@@ -265,7 +265,7 @@ const AUniversalLanguage = () => {
           <BR/>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>This lands us in the world of <span
-              className="bp5-text-muted">descriptions, definitions, lazy functions, questions, ..., conjectures</span>. Or: We can point to things to which we don't yet have any (or a definitive) answer. Take for instance an extreme of saying: "Whatever this direction is, you need to follow it completely":</span>
+              className="bp5-text-muted">descriptions, definitions, lazy functions, unresolved pointers, non-committal ignorance, awaiting function execution, questions, ..., conjectures</span>. Or: We can point to things to which we don't yet have any (or a definitive) answer. Take for instance an extreme of saying: "Whatever this direction is, you need to follow it completely":</span>
 
           <Block>
 
