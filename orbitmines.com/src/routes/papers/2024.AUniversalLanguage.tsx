@@ -149,7 +149,7 @@ const AUniversalLanguage = () => {
       </Arc>
       <BR/>
       <Arc head="Arc: Core Ideas">
-        <Section head="What is a Ray?" sub="">
+        <Section head="A few steps back" sub="">
           Let's first take a few steps back; this will be necessary. First, you must throw out any kind of assumptions you're bringing to the table. Just like we'll do now for Rays: Anything we'd like to make, should be phraseable in our universal language. It wouldn't be much of one if that wasn't the case.
 
           <BR/>
@@ -194,6 +194,9 @@ const AUniversalLanguage = () => {
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Essentially what any of this comes down to. Is things are entirely inferred from surrounding context. Yet your abstractions can be ignorant of how you're using them. Whether something is a <span
               className="bp5-text-muted">function, number, geometry, topology, ..., structure</span> becomes quite hard to say when you consider its surrounding context [REPHRASE]. More usefully what we're doing here, is saying: "Can you see a difference? And can you ignore it?"</span>
+        </Section>
+        <Section head="What is a Ray?">
+          Simply put, a Ray consists of two parts. One part [....]
         </Section>
         <Section head="References" sub="Direction, arrows, ..., one-way connections">
           {/* TODO: This needs to be different, not good*/}
@@ -245,11 +248,19 @@ const AUniversalLanguage = () => {
         </Section>
         <Section head="Modelling Unknowns">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Part of any task then, becomes this: <Reference
-              is="reference" inline simple index={referenceCounter()} reference={{title: '"You will have to deal with being able to move in certain data structures for which there might not (yet) be a nice translation to something you can understand."', link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=You%20will%20have%20to%20deal%20with%20being%20able%20to%20move%20in%20certain%20data%20structures%20for%20which%20there%20might%20not%20(yet)%20be%20a%20nice%20translation%20to%20something%20you%20can%20understand.', organizations: [ORGANIZATIONS.orbitmines_research]}} />. This should somewhere be quite intuitive: You can use tools without knowing how to make those tools. Essentially wanting to understand unknowns, might as well be called reverse engineering: How is it done? How can it be <span
-              className="bp5-text-muted">replicated, decomposed, ..., understood</span>?; What aspects of it can I understand?</span>
+              is="reference" inline simple index={referenceCounter()} reference={{title: '"You will have to deal with being able to move in certain data structures for which there might not (yet) be a nice translation to something you can understand."', link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=You%20will%20have%20to%20deal%20with%20being%20able%20to%20move%20in%20certain%20data%20structures%20for%20which%20there%20might%20not%20(yet)%20be%20a%20nice%20translation%20to%20something%20you%20can%20understand.', organizations: [ORGANIZATIONS.orbitmines_research]}} />. This should somewhere be quite intuitive: You can use tools without knowing how to make those tools. Essentially wanting to understand unknowns, might as well be called reverse engineering: How is it done? What aspects of it can be <span
+              className="bp5-text-muted">replicated, decomposed, ..., understood</span>?</span>
 
           <BR/>
 
+          <span style={{textAlign: 'left', minWidth: '100%'}}>This lands us in the world of <span
+              className="bp5-text-muted">descriptions, definitions, lazy functions, questions, ..., conjectures</span>. Or: We can point to things to which we don't yet have any (or a definitive) answer. Take for instance an extreme of saying: "Whatever this direction is, you need to follow it completely":</span>
+
+          <Block>
+
+          </Block>
+
+          This is essentially what it means to point to something you don't yet understand: I point in some direction without having to define what that something is.
 
         </Section>
         <Section head="Compression" sub="Generalization of (perceived, ..., partial) geodesics">
@@ -292,8 +303,15 @@ const AUniversalLanguage = () => {
           <div style={{width: '100%'}}><HorizontalLine/></div>
           <BR/>
 
+
+          <TODO>Ordered to talk about usefully (assymetry), higher-arity cases more in line with ignoring/invariances of that order. Where an invariance is something like a branching ray as a cursor along every entry of some other ray. ( "Also, interesting to note might be that Von Neumann and Birkhoff attempted to ground quantum mechanics using order theory (their attempt was not very successful at that)." @pr)</TODO>
           <TODO>Local changes move larger structures.</TODO>
+          <TODO>Cannot have interaction without an idea similar to gravity?</TODO>
           <TODO>Shoving causal history in some direction?</TODO>
+          <TODO>Something like: Constantly all the rays as functions are executing (in orbits), then if something causes something else's behavior to change, you get the inconsistencies.</TODO>
+          <TODO>Particles are seemingly temporally stable orbits/modular structures?</TODO>
+          <TODO>"Wrong dynamics" from a particular perspective, often probably still keep traversing - they still work. It's just that from the perspective you wanted, they don't.</TODO>
+          <TODO>Reprogrammability as foundational?</TODO>
 
         </Section>
         <Section head="Example: Mathematics" sub="Some preliminary intuitions for mathematics">
@@ -328,7 +346,7 @@ const AUniversalLanguage = () => {
 
           </Block>
 
-          Similarly. Concepts like - absolute equality -, follow a similar pattern <Reference is="footnote" index={referenceCounter()} reference={{link: "https://www.youtube.com/live/YAwWctUq3zw?si=eieXuSLc49nmBKDp&t=6013", title: "Community Livestream | Information Continuum", date: '2024-03-14', authors: [{name: 'Fadi Shawki'}, {name: 'Carlos Zapata Carratalá'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}], organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf]}} />.
+          Similarly. Concepts like - absolute equality -, follow a similar pattern <Reference is="footnote" index={referenceCounter()} reference={{link: "https://www.youtube.com/live/YAwWctUq3zw?si=eieXuSLc49nmBKDp&t=6013", title: "Community Livestream | Information Continuum", date: '2024-03-14', authors: [{name: 'Fadi Shawki'}, {name: 'Carlos Zapata Carratalá'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}], organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf]}} />. Namely in the sense that it is an admission of a difference and the ignorance of it.
 
           <Block>
 
