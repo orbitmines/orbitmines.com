@@ -1,6 +1,9 @@
 <div align="center">
 
-![orbitmines.logo.3000x1000.png](./orbitmines.com/src%2Flib%2Forganizations%2Forbitmines%2Flogo%2Forbitmines.logo.3000x1000.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/orbitmines/.github/blob/main/profile/orbitmines.logo.3000x1000.png">
+  <img alt="OrbitMines Logo" src="https://github.com/orbitmines/.github/blob/main/profile/orbitmines.logo.3000x1000.png" width="50%" height="50%">
+</picture>
 
 *A public repository for [orbitmines.com](https://orbitmines.com).*
 
