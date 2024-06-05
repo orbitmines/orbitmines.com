@@ -691,7 +691,7 @@ export const Row = (props: React.HTMLAttributes<HTMLElement> & RowProps) => {
   });
 }
 
-export type Children = { children: ReactNode };
+export type Children = { children?: ReactNode };
 
 export type AllowReact<T> = {
   [TKey in keyof T]: T[TKey] extends string ? ReactNode : T[TKey];
