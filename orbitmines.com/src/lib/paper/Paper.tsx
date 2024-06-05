@@ -1302,7 +1302,7 @@ export const Link = ({name, link, icon, intent, ...props }: { name?: ReactNode, 
         multiline
     >
       <Row middle="xs" className="px-5" {...props} style={{fontSize: '1.1rem', ...(props.style || {})}}>
-        <span {...props}>{name ? name : link.replaceAll('https://', '')}</span>
+        <span {...props}>{name ? name : (link ?? '').replaceAll('https://', '')}</span>
       </Row>
     </Tag>
   </a>)

@@ -84,26 +84,6 @@ const Minimap = () => {
                         <Reference
                             index={0}
                             reference={{
-                                title: "Rays: A Universal Language",
-                                organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/ray"
-                            }}
-                            start="xs"
-                            style={{fontSize: '0.8rem'}} target="_blank"
-                        />
-                        <Reference
-                            index={0}
-                            reference={{
-                                title: "A Reprogrammable Visual Interface",
-                                organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/ray"
-                            }}
-                            start="xs"
-                            style={{fontSize: '0.8rem', color: 'orange'}} target="_blank"
-                        />
-                        <Reference
-                            index={0}
-                            reference={{
                                 title: "Intercommunication between Languages",
                                 organizations: [ORGANIZATIONS.github],
                                 link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md"
@@ -253,18 +233,6 @@ const Minimap = () => {
                                        style={{fontSize: '0.8rem'}} target="_self"/>
                         )))}
                     </div>
-
-                    <CanvasContainer style={{height: '150px'}}>
-                        <canvas
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
-                                backgroundPosition: 'center center',
-                                backgroundRepeat: 'no-repeat'
-                            }}
-                        />
-                    </CanvasContainer>
                 </Col>
             </Row>
 

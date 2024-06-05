@@ -2,10 +2,12 @@ import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {
-  Arc, Block,
+  Arc,
+  Block,
   BlueprintIcons16,
   BlueprintIcons20,
-  BR, HorizontalLine,
+  BR,
+  HorizontalLine,
   JetBrainsMono,
   PaperProps,
   Reference,
@@ -19,6 +21,7 @@ import {ON_ORBITS} from "./2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
+import _ from "lodash";
 
 export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
@@ -30,7 +33,7 @@ export const A_UNIVERSAL_LANGUAGE: Content = {
     date: "2024-06-30",
     external: {
       // TODO
-      // discord: {serverId: '1055502602365845534', channelId: '1190719376085766195', link: () => "https://discord.com/channels/1055502602365845534/1190719376085766195/1190719376085766195"}
+      discord: {serverId: '1055502602365845534', channelId: '1200194437314261002', link: () => "https://discord.com/channels/1055502602365845534/1200194437314261002"}
     },
     organizations: [ORGANIZATIONS.orbitmines_research],
     authors: [{
@@ -369,7 +372,8 @@ const AUniversalLanguage = () => {
       </Arc>
 
       <Arc head="Arc: Rendering Engine">
-        <Section head="A Reprogrammable (Visual) Interface" sub="Open inputs, outputs, compute substrate, ..., interfaces">
+        <Section head={<span>A Reprogrammable <span
+            className="bp5-text-muted">(Visual)</span> Interface</span>} sub="Open inputs, outputs, compute substrate, ..., interfaces">
         </Section>
         <Section sub="">
         </Section>
@@ -421,3 +425,47 @@ const AUniversalLanguage = () => {
 }
 
 export default AUniversalLanguage;
+
+
+/**
+ * Rays: A Universal Language
+ * @see https://github.com/orbitmines/ray
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
