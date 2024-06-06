@@ -132,7 +132,7 @@ const AUniversalLanguage = () => {
            A list which undoubtedly falls short, would contain: <span className="bp5-text-muted">
            <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Characteristica universalis', link: 'https://en.wikipedia.org/wiki/Characteristica_universalis'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Lingua universalis', link: 'https://en.wikipedia.org/wiki/Lingua_generalis'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Category Theory', link: 'https://ncatlab.org/nlab/show/category+theory'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Hypergraphs', link: 'https://en.wikipedia.org/wiki/Hypergraph'}} />, Covariant computation <Reference is="footnote" index={referenceCounter()} reference={{title: "It's all coming together: after developing the formalism (and the tools) on-and-off for a couple of years, we now glimpse the beginnings of a fully covariant theory of computation...", link: 'https://twitter.com/getjonwithit/status/1780722985747263709', authors: [{name: 'Jonathan Gorard'}], date: '2024-04-18', organizations: [ORGANIZATIONS.twitter]}} /> <Reference is="footnote" index={referenceCounter()} reference={{title: 'Continuation of Computation, Causality and Compositionality @ SEMF 2023', link: 'https://www.youtube.com/watch?v=p2vadd_6550', date: '2023-07-28', organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf], authors: [{name: 'Jonathan Gorard'}]}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Chyp', link: 'https://github.com/akissinger/chyp', authors: [{name: 'Aleks Kissinger'}]}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'ZX-Calculus', link: 'https://zxcalculus.com/'}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Interaction nets', link: 'https://en.wikipedia.org/wiki/Interaction_nets'}} />, ..., Infrageometry <Reference is="footnote" index={referenceCounter()} reference={REFERENCES.WOLFRAM_INSTITUTES_INFRAGEOMETRY_LIVESTREAMS.reference} /> <Reference is="footnote" index={referenceCounter()} reference={{title: 'Infrageometry', link: 'https://github.com/WolframInstitute/Infrageometry', organizations: [ORGANIZATIONS.github, ORGANIZATIONS.wolfram_institute]}} />
          </span>. A more complete set of ideas and a partial history of me becoming aware of them can be found in my archive <Reference is="footnote" index={referenceCounter()} reference={{title: 'https://github.com/orbitmines/archive', link: 'https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md', authors: [{
-             ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github, ORGANIZATIONS.orbitmines_research]}} />.
+             ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github, ORGANIZATIONS.orbitmines_research]}} /> and the <Reference is="reference" index={referenceCounter()} reference={{link: "https://github.com/orbitmines/library", title: "OrbitMines Library"}} simple inline />.
         </span>
 
         <BR/>
@@ -407,13 +407,32 @@ const AUniversalLanguage = () => {
 
       </Arc>
       <Arc head="Wrapping up">
-        <Section sub="">
-        </Section>
         <Section head="Future inquiries">
           {/*I suspect that we've always lacked a proper tool to think across fields. E*/}
-        </Section>
-        <Section sub={"..."}>
-          And to wrap up this "Wrapping up" arc, allow me to repeat a few things already alluded to in my 2023 thought excerpts <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On self-publishing and referencing"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20self%2Dpublishing%20and%20referencing'}} /> & <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On language and my bending of it"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20language%20and%20my%20bending%20of%20it'}} />. Which by default should carry over to everything I write down. Though repeating it might be necessary.
+          There's much left to do where this infrastructure is concerned. More specifically, I see the following steps on my horizon:
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>- Expanding the <Reference is="reference" index={referenceCounter()} reference={{link: "https://github.com/orbitmines/library", title: "OrbitMines Library"}} simple inline /> project. Providing steps towards <span
+              className="bp5-text-muted">language, ..., platform</span> interoperability <Reference is="footnote" index={referenceCounter()} reference={{title: "Whatever function it is that platforms and interfaces serve, they will probably converge to being more of a theme applied on a particular type of structure. Only as a supply of resources (access to certain kinds of information/compute) will they persist. They will not persist as separable interfaces.", link: "https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=Whatever%20sets%20up,have%20been%20found.", organizations: [ORGANIZATIONS.orbitmines_research]}}/> <Reference is="footnote" index={referenceCounter()} reference={{title: "This would have to include higher-order version control, keeping track of causal histories. And constantly reprogramming the renderer on the fly. Before a thing like this becomes even remotely practical.\n\nBut all these intermediate things are all practical tools for a smaller audience anyway.", link: 'https://x.com/_FadiShawki/status/1790005202084335947', authors: [{name: 'Fadi Shawki'}], date: '2024-05-13', organizations: [ORGANIZATIONS.twitter]}} />.</span>
+
+          <BR/>
+
+          - Additional steps towards gamified learning: <Reference is="reference" index={referenceCounter()} reference={{link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024).md", title: "Research Towards Designs (2024)", organizations: [ORGANIZATIONS.github, ORGANIZATIONS.orbitmines_research]}} simple inline />.
+
+          <BR/>
+
+          - The setting up of <Reference is="reference" index={referenceCounter()} reference={{link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Computer%20Networking%2C%20Security%2C%20Encryption%20%20%26%20Communication%20(2025%3F).md", title: "Universal Networking Infrastructure (2025)", organizations: [ORGANIZATIONS.github, ORGANIZATIONS.orbitmines_research]}} simple inline />.
+
+          <BR/>
+
+          And plenty of other explorations. Though now that this initial theoretical step is behind me, my hope is that my projects will start picking up in pace.
+
+          <BR/>
+          <div style={{width: '100%'}}><HorizontalLine/></div>
+          <BR/>
+
+          And to wrap up this "Wrapping up" arc, let me quickly repeat a few things already alluded to in my 2023 thought excerpts <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}}/>: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On self-publishing and referencing"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20self%2Dpublishing%20and%20referencing'}} /> & <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '"On language and my bending of it"', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20language%20and%20my%20bending%20of%20it'}} />. Which by default should carry over to everything I write down. Though repeating it might be necessary.
 
           <BR/>
 
