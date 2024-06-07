@@ -806,7 +806,7 @@ export const pageStyles = {
 export const Layer = ({zIndex, children, ...props}: any) => {
   return <div
       {...props}
-      className={classNames("pt-35 child-pb-15", props.className)}
+      className={props.className?? "pt-35 child-pb-15"}
       style={{
         ...pageStyles,
         position: 'absolute',

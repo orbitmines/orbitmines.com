@@ -3467,14 +3467,14 @@ export const fadi_shawki = <TProfile>{
   orcid: '0009-0009-9288-992X',
 
   external: <ExternalProfile[]>[
+    {organization: ORGANIZATIONS.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com'},
     {organization: ORGANIZATIONS.github, display: 'FadiShawki', link: 'https://github.com/FadiShawki'},
     {organization: ORGANIZATIONS.twitter, display: '@_FadiShawki', link: 'https://twitter.com/_FadiShawki'},
-    {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
-    {organization: ORGANIZATIONS.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com'},
     {organization: ORGANIZATIONS.gitlab, display: '@FadiShawki', link: 'https://gitlab.com/FadiShawki'},
     {organization: ORGANIZATIONS.instagram, display: '@f._shawki', link: 'https://www.instagram.com/f._shawki/'},
     {organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki'},
     {organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki'},
+    {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
     {
       organization: ORGANIZATIONS.mastodon,
       display: '@fadishawki',

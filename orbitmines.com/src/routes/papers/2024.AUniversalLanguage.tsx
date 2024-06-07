@@ -404,7 +404,6 @@ const AUniversalLanguage = () => {
         </Section>
       </Arc>
       <Arc head="Arc: Exploration and Discovery">
-
       </Arc>
       <Arc head="Wrapping up">
         <Section head="Future inquiries">
