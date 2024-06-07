@@ -404,6 +404,7 @@ const AUniversalLanguage = () => {
           <TODO>
             And you can probably setup ways where you can switch between discrete/infinitary stuctures at will. - Of course this doesn't mean it's easily tractable. But more that these problems become computable searchspaces.
           </TODO>
+          <TODO>Traversing `.self` without time-step would be a projective plane? Recursive definition of a projective plan but then (partially?) accessible as a calculus?</TODO>
 
         </Section>
       </Arc>
@@ -465,10 +466,79 @@ const AUniversalLanguage = () => {
 
           </Block>
 
-          <TODO>Essentially, version control comes hand-in-hand with compression. It becomes a story of redundancy, ..., recoverability.</TODO>
+          Essentially, version control comes hand-in-hand with compression. It becomes a story of redundancy, ..., recoverability. And we always consider both, simultaneously.
         </Section>
       </Arc>
       <Arc head="Arc: Exploration and Discovery">
+        <span style={{textAlign: 'left', minWidth: '100%'}}>In exploration, one necessarily has to confront the problem of forgetting. Which becomes a tale of finding out how failures can be <span
+            className="bp5-text-muted">detected, ..., prevented</span>. How do you fight errors when rediscoverability is not obvious?</span>
+
+        <BR/>
+
+        <span style={{textAlign: 'left', minWidth: '100%'}}>The interesting thing about discovery, is that it's not easy to say <span
+            className="bp5-text-muted">whether, ..., why</span> a particular strategy is a good one for exploration. But what we can say is this: Whether either end, once found in isolation, can have itself be linked conceptually to its counterpart, is the interesting question.</span>
+
+        <BR/>
+
+        <TODO>Ref with examples?</TODO>
+
+        You could try practical guesses.
+
+        <Block>
+
+        </Block>
+
+        Brute-forcing enumeration:
+
+        <Block>
+
+        </Block>
+
+        You could have your unknowns drive your curiosity. [EXTREMES?]
+
+        <Block>
+
+        </Block>
+
+        Treating something as something it's not - essentially by simulating a "what if" scenario:
+
+        <Block>
+
+        </Block>
+
+        Quite funky constructions can be used it, but we're always considering some form of error correction. [REPHRASE]
+
+        <Section head="Fidelity" sub="Consistency checking, reverse engineering, debugging, ..., validation">
+          Fidelity, becomes a story of trust <Reference is="footnote" index={referenceCounter()} reference={{title: "A useful extreme to point out here is 'trust'. If verification of uncertainty results into uncertainty, then trust is the point at which we simply cut off the infinite regression and say: \"Let's just trust this output\".", link: "https://orbitmines.com/papers/on-intelligibility#:~:text=A%20useful%20extreme%20to%20point%20out%20here%20is%20%27trust%27", authors: [{name: 'Fadi Shawki'}], date: '2022-12-31', organizations: [ORGANIZATIONS.orbitmines_research]}}/>. If I assume some consistency,
+
+          <Block>
+
+          </Block>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>I won't spend the resources to check whether that's actually the case: WIll something fail? That question is what fidelity means. If I have some way of checking that fidelity, that could be conceptualized as some <span
+              className="bp5-text-muted">error correcting, ..., safety mechanism</span>. Not doing so, in some <span
+              className="bp5-text-muted">simulation, ..., emulation</span>,</span>
+
+          <Block>
+
+          </Block>
+
+          Could have unexpected consequences:
+
+          <Block>
+
+          </Block>
+
+          <TODO>Fuzzing, random changes/forgetting</TODO>
+        </Section>
+        <Section head="(Self-)imposed Limitations" sub="Constraints, ..., resources">
+          <TODO>Limitation as things which seem like they can't be changed (from some perspective)</TODO>
+        </Section>
+        <Section head="Discovery" sub="Unusual, probing, ..., sporadic exploration">
+
+        </Section>
+
+        <TODO>Link to energy?</TODO>
       </Arc>
       <Arc head="Wrapping up">
         <Section head="Future inquiries">
