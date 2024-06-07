@@ -45,11 +45,11 @@ const Minimap = () => {
                         <Col xs={12}>
                             <Row center="xs" className="child-py-2 child-px-2">
                                 <Col xs={12}>
-                                    <Row center="xs" className="child-px-1">
+                                    <Row center="xs" className="child-pt-5 child-px-2">
                                         {(profile?.external || []).filter(profile => PLATFORMS.includes(profile.organization.key)).map(profile =>
                                             <Col>
                                                 <a href={profile.link} target="_blank">
-                                                    <CustomIcon icon={profile.organization.key} size={16}/>
+                                                    <CustomIcon icon={profile.organization.key} size={20}/>
                                                 </a>
                                             </Col>)}
                                     </Row>
