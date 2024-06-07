@@ -398,6 +398,13 @@ const AUniversalLanguage = () => {
           </Block>
 
 
+          <TODO>
+            I suspect that all these moduli-type questions become computable problems. And it should become obvious that all these moduli-type questions are only answerable if you already have access to some other moduli space.
+          </TODO>
+          <TODO>
+            And you can probably setup ways where you can switch between discrete/infinitary stuctures at will. - Of course this doesn't mean it's easily tractable. But more that these problems become computable searchspaces.
+          </TODO>
+
         </Section>
       </Arc>
 
