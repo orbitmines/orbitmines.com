@@ -276,6 +276,36 @@ const AUniversalLanguage = () => {
 
           This is essentially what it means to point to something you don't yet understand: I point in some direction without having to define what that something is.
 
+          <BR/>
+
+          This allows us to phrase what it means to have unintended, ..., unrealized effects: Essentially phrasing resources you didn't know you were consuming:
+
+          <Block>
+
+          </Block>
+
+          <BR/>
+
+          This begs the question: How do you phrase an expectation for something which isn't yet known?
+
+          <Block>
+
+          </Block>
+
+          What do you do when the information you want is not available?
+
+          <Block>
+
+          </Block>
+
+          How do you determine that something from outside available context is looking inside?
+
+          <Block>
+
+          </Block>
+
+          What about effects which aren't abstractly realized, yet still have an effect on the outcome? [REPHRASE ; No causal links on one language, but the superposed one knows about them - how else could I point it out?]
+
         </Section>
         <Section head="Compression" sub="Generalization of (perceived, ..., partial) geodesics">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Now that we can superpose languages, and state with better clarity what having access to certain <span
@@ -374,6 +404,34 @@ const AUniversalLanguage = () => {
       <Arc head="Arc: Rendering Engine">
         <Section head={<span>A Reprogrammable <span
             className="bp5-text-muted">(Visual)</span> Interface</span>} sub="Open inputs, outputs, compute substrate, ..., interfaces">
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Now we finally get to the points which are the most interesting ones to me. All this allows us to phrase a setting, where we have open <span
+              className="bp5-text-muted">inputs, outputs, compute substrate, ..., interfaces</span>.</span>
+
+          <BR/>
+
+          Where inputs and outputs are an extreme:
+
+          <Block>
+
+          </Block>
+
+          A substrate being a superposed language:
+
+          <Block>
+
+          </Block>
+
+          Intermediate steps being the program:
+
+          <Block>
+
+          </Block>
+
+          And the interfaces we have on it, being additional levers of control, or reading out intermediate steps (which our system could be ignorant of).
+
+          <Block>
+
+          </Block>
         </Section>
         <Section sub="">
         </Section>
