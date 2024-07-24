@@ -2922,6 +2922,10 @@ export const REFERENCES = {
     reference: {title: "Three.js", link: "https://github.com/mrdoob/three.js/"},
     status: Viewed.IN_PROGRESS
   },
+  NEXTJS: <Content>{
+    reference: {title: "Next.js", link: "https://nextjs.org/"},
+    status: Viewed.IN_PROGRESS
+  },
   DREI: <Content>{reference: {title: "drei", link: "https://github.com/pmndrs/drei"}, status: Viewed.IN_PROGRESS},
   WASM: <Content>{
     reference: {title: "WebAssembly", link: "https://en.wikipedia.org/wiki/WebAssembly"},
@@ -3422,6 +3426,80 @@ export const ARTICLES_2022: Content[] = [
   REFERENCES.ROBUST_SPEECH_RECOGNITION_VIA_LARGE_SCALE_WEAK_SUPERVISION,
 ]
 
+export const FAMILIAR_TOOLS: Content[] = [
+
+  REFERENCES.PYTHON,
+  // REFERENCES.GO,
+  // REFERENCES.CHYP,
+  // REFERENCES.LLVM,
+  // REFERENCES.HASKELL,
+  REFERENCES.JAVA,
+  REFERENCES.RUBY_ON_RAILS,
+  REFERENCES.WOLFRAM_LANGUAGE,
+  REFERENCES.C_SHARP,
+  REFERENCES.DOT_NET,
+  REFERENCES.BLAZOR,
+  REFERENCES.JAVASCRIPT,
+  REFERENCES.KOTLIN,
+  REFERENCES.CSS,
+  REFERENCES.SASS,
+  REFERENCES.HTML,
+  REFERENCES.WASM,
+  REFERENCES.WEBGPU,
+  REFERENCES.RUST,
+  REFERENCES.CPP,
+
+  REFERENCES.WEBPACK,
+
+  REFERENCES.ASSEMBLY_SCRIPT,
+  REFERENCES.TYPESCRIPT,
+  REFERENCES.REACT,
+  // REFERENCES.BLUEPRINT_JS,
+  // REFERENCES.SLATE,
+  REFERENCES.THREEJS,
+  REFERENCES.DREI,
+  REFERENCES.NEXTJS,
+
+  REFERENCES.IPFS,
+  REFERENCES.IPVM,
+  REFERENCES.SQL,
+  REFERENCES.MYSQL,
+  REFERENCES.POSTGRESQL,
+  REFERENCES.MONGO_DB,
+  REFERENCES.REDIS,
+  REFERENCES.RABBIT_MQ,
+
+  REFERENCES.GIT,
+  REFERENCES.GITLAB,
+  REFERENCES.GITHUB,
+  REFERENCES.BITBUCKET,
+
+  REFERENCES.DOCKER,
+  REFERENCES.KUBERNETES,
+  REFERENCES.NGINX,
+  REFERENCES.NPM,
+  REFERENCES.MAVEN,
+
+  REFERENCES.LINUX,
+  REFERENCES.ANDROID,
+
+  REFERENCES.GCP,
+  REFERENCES.AZURE,
+  REFERENCES.AWS,
+
+  // REFERENCES.SPIGOT_MC,
+  // REFERENCES.BUNGEE_CORD,
+  // REFERENCES.BUKKIT,
+
+  // REFERENCES.FLATPAK,
+  // REFERENCES.OBS,
+  // REFERENCES.CLOUDFLARE,
+
+  // REFERENCES.INTELLI_J,
+  // REFERENCES.VS_CODE,
+  // REFERENCES.ECLIPSE,
+];
+
 export const fadi_shawki = <TProfile>{
   first_name: 'Fadi',
   last_name: 'Shawki',
@@ -3491,8 +3569,8 @@ export const fadi_shawki = <TProfile>{
       link: 'https://orcid.org/0009-0009-9288-992X'
     },
 
-    {organization: ORGANIZATIONS.ipfs, link: 'https://discuss.ipfs.tech/u/fadishawki'},
-    {organization: ORGANIZATIONS.nixos, link: 'https://discourse.nixos.org/u/fadishawki'},
-    {organization: ORGANIZATIONS.fission, link: 'https://talk.fission.codes/u/fadishawki/'},
+    // {organization: ORGANIZATIONS.ipfs, link: 'https://discuss.ipfs.tech/u/fadishawki'},
+    // {organization: ORGANIZATIONS.nixos, link: 'https://discourse.nixos.org/u/fadishawki'},
+    // {organization: ORGANIZATIONS.fission, link: 'https://talk.fission.codes/u/fadishawki/'},
   ]
 }

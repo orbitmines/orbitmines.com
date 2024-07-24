@@ -27,13 +27,14 @@ import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf
 import {renderToStaticMarkup} from "react-dom/server";
 import {Document, Font, Image, Page, Path, PDFViewer, Svg, Text, View} from "@react-pdf/renderer";
 
-export const Profile = ({profile, children}: {profile: TProfile} & Children) => {
+export const Profile = ({profile, children, head}: {profile: TProfile} & Children & { head?: any }) => {
   const location = useLocation();
 
   const paper: Omit<PaperProps, 'children'> = {
     title: profile.title ?? profile.name,
     subtitle: profile.subtitle,
     date: profile.date,
+    head: head,
     pdf: {
       fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
     },
@@ -1169,19 +1170,24 @@ export const PaperContent = (props: PaperProps) => {
   const external_links = !!discord;
 
   const Content = <>
-    <PaperHeader {...props} />
+    {props.head ? <>
+      {props.head}
+      {children}
+    </> : <>
+      <PaperHeader {...props} />
 
-    {external_links ? <Row center="xs" middle="xs" className="child-px-10">
-      {discord ? <Col>
-        <Link name="Discussion Channel" link={discord.link()} icon={ORGANIZATIONS.discord.key} intent={Intent.PRIMARY} />
-      </Col> : <></>}
-    </Row> : <></>}
+      {external_links ? <Row center="xs" middle="xs" className="child-px-10">
+        {discord ? <Col>
+          <Link name="Discussion Channel" link={discord.link()} icon={ORGANIZATIONS.discord.key} intent={Intent.PRIMARY} />
+        </Col> : <></>}
+      </Row> : <></>}
 
-    {header ? header : <HorizontalLine/>}
+      {header ? header : <HorizontalLine/>}
 
-    {children}
+      {children}
 
-    <HorizontalLine/>
+      <HorizontalLine/>
+    </>}
   </>
 
   const footnotes = getFootnotes(Content);
@@ -1343,6 +1349,7 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
 
 export type PaperProps = ReferenceProps & {
   header?: any //
+  head?: any
   pdf: PdfProps,
   exclude_footnotes?: boolean
 
