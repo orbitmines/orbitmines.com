@@ -3,12 +3,124 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  COMPUTING_MACHINERY_AND_INTELLIGENCE: <Content>{
+    reference: {                 title: 'Computing Machinery and Intelligence',
+         authors: [{name: 'Alan M. Turing'}],
+         organizations: [],
+         year: '(1950)',
+         link: "https://academic.oup.com/mind/article/LIX/236/433/986238?url=http://szyxflb.com&login=false"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+VON_NEUMANN_AND_LATTICE_THEORY: <Content>{
+    reference: {                 title: 'Von Neumann and Lattice Theory',
+         authors: [{name: 'Garrett Birkhoff'}],
+         organizations: [],
+         year: '(1958)',
+         link: "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-64/issue-3.P2/Von-Neumann-and-lattice-theory/bams/1183522370.pdf"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION: <Content>{
+    reference: {                 title: 'When Exactly Will the Eclipse Happen? A Multimillennium Tale of Computation',
+         authors: [{name: 'Stephen Wolfram'}],
+         organizations: [ORGANIZATIONS.wolfram],
+         year: '(2024)',
+         link: "https://writings.stephenwolfram.com/2024/03/when-exactly-will-the-eclipse-happen-a-multimillennium-tale-of-computation/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM: <Content>{
+    reference: {                 title: 'Are All Fish the Same Shape if You Stretch Them? The Victorian Tale of On Growth and Form',
+         authors: [{name: 'Stephen Wolfram'}],
+         organizations: [ORGANIZATIONS.wolfram],
+         year: '(2017)',
+         link: "https://writings.stephenwolfram.com/2017/10/are-all-fish-the-same-shape-if-you-stretch-them-the-victorian-tale-of-on-growth-and-form/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS: <Content>{
+    reference: {                 title: 'What’s Really Going On in Machine Learning? Some Minimal Models',
+         authors: [{name: 'Stephen Wolfram'}],
+         organizations: [ORGANIZATIONS.wolfram],
+         year: '(2024)',
+         link: "https://writings.stephenwolfram.com/2024/08/whats-really-going-on-in-machine-learning-some-minimal-models/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM: <Content>{
+    reference: {                 title: 'The Hydrogen Atom: Intro to Quantum',
+         authors: [{name: 'Richard Behiel'}],
+         organizations: [ORGANIZATIONS.youtube],
+         year: 'Physics',
+         link: "https://www.youtube.com/watch?v=-Y0XL-K0jy0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF: <Content>{
+    reference: {                 title: 'Mindscape 287 | Institutions and the Legacy of',
+         authors: [{name: 'Jean-Paul Faguet'},{name: 'Sean Carroll'}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.mindscape],
+         year: 'History',
+         link: "https://www.youtube.com/watch?v=FKVmYeU11y0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND: <Content>{
+    reference: {                 title: 'Live Science | Spinal Graphs | Hypergraph Confluence, Symmetry and',
+         authors: [{name: ''}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],
+         year: 'Efficiency',
+         link: "https://www.youtube.com/watch?v=uZkqNDIOQLs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH: <Content>{
+    reference: {                 title: 'Live Science | Infrageometry: Correspondences | Differential Geometry, Hypergraph',
+         authors: [{name: ''}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],
+         year: 'Rewriting',
+         link: "https://www.youtube.com/watch?v=Mr1zfZtoFX0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME: <Content>{
+    reference: {                 title: 'Live Science | Quantum Paradoxes | Delayed Choice Quantum Eraser, CHSH Game,',
+         authors: [{name: ''}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],
+         year: 'Quasiprobabilities',
+         link: "https://www.youtube.com/watch?v=rTKSWObWtNE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER: <Content>{
+    reference: {                 title: 'Consciousness, Biology, Universal Mind, Emergence, Cancer',
+         authors: [{name: 'Michael Levin'},{name: 'Curt Jaimungal'}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.toe],
+         year: 'Research',
+         link: "https://www.youtube.com/watch?v=c8iFtaltX-s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU: <Content>{
+    reference: {                 title: 'The Crisis in (Fundamental) Physics is Worse Than You',
+         authors: [{name: 'Sean Carroll'},{name: 'Curt Jaimungal'}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.toe],
+         year: 'Think...',
+         link: "https://www.youtube.com/watch?v=9AoRxtYZrZo"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST: <Content>{
+    reference: {                 title: 'Neuralink and the Future of Humanity | Lex Fridman Podcast',
+         authors: [{name: ''}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],
+         year: '#438',
+         link: "https://www.youtube.com/watch?v=Kbk9BiPhm7o"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
+PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
+    reference: {                 title: 'Physics of Life, Time, Complexity, and Aliens | Lex Fridman Podcast',
+         authors: [{name: 'Sara Walker'},{name: 'Lex Fridman'}],
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],
+         year: '#433',
+         link: "https://www.youtube.com/watch?v=wwhTfyX9J34"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+},
   PLURALISTIC_THE_DISENSHITTIFIED_INTERNET_STARTS_WITH_LOYAL_USER_AGENTS: <Content>{
     reference: {
       title: 'Pluralistic: The disenshittified internet starts with loyal "user agents"',
       authors: [{name: 'Cory Doctorow'}],
       organizations: [],
-      year: '2024',
+      year: '(2024)',
       link: "https://pluralistic.net/2024/05/07/treacherous-computing/"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -17,43 +129,43 @@ export const REFERENCES = {
       title: 'Elon Musk',
       authors: [{name: 'Walter Isaacson'}],
       organizations: [],
-      year: '2023',
+      year: '(2023)',
       link: "https://en.wikipedia.org/wiki/Elon_Musk_(Isaacson_book)"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   FUN_RAISING_FUNDING_SCHOOL_QA_SEMF: <Content>{
     reference: {
-      title: 'Fun Raising | Funding & School Q&A + SEMF Social',
+      title: 'Fun Raising | Funding & School Q&A + SEMF',
       authors: [{name: 'Fadi Shawki'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}, {name: 'Elena Isasi Theus'}, {name: 'Anmol Agrawal'}, {name: 'Carlos Zapata Carratalá'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: 'Social',
       link: "https://www.youtube.com/watch?v=FL8zNDbrAR0"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   HUMAN_MEMORY_IMAGINATION_DEJA_VU_AND_FALSE_MEMORIES_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
-      title: 'Human Memory, Imagination, Deja Vu, and False Memories',
+      title: 'Human Memory, Imagination, Deja Vu, and False Memories | Lex Fridman Podcast',
       authors: [{name: 'Charan Ranganath'}, {name: 'Lex Fridman'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
-      year: '2024',
+      year: '#430',
       link: "https://www.youtube.com/watch?v=4iuepdI3wCU"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   JUNGLE_APEX_PREDATORS_ALIENS_UNCONTACTED_TRIBES_AND_GOD_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
-      title: 'Jungle, Apex Predators, Aliens, Uncontacted Tribes, and God',
+      title: 'Jungle, Apex Predators, Aliens, Uncontacted Tribes, and God | Lex Fridman Podcast',
       authors: [{name: 'Paul Rosolie'}, {name: 'Lex Fridman'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
-      year: '2024',
+      year: '#429',
       link: "https://www.youtube.com/watch?v=pwN8u6HFH8U"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   LONGEVITY_MEDITATION_PHILOSOPHIES_CONSCIOUSNESS_NATURE_OF: <Content>{
     reference: {
-      title: 'Longevity, Meditation, Philosophies, Consciousness, Nature of Reality',
+      title: 'Longevity, Meditation, Philosophies, Consciousness, Nature of',
       authors: [{name: 'Bryan Johnson'}, {name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: '2024',
+      year: 'Reality',
       link: "https://www.youtube.com/watch?v=PXkhhHPUud4"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -63,7 +175,7 @@ export const REFERENCES = {
       title: 'Reverse engineering | same thing we do every weekend documenting the AMD 7900XTX Part2',
       authors: [{name: 'George Hotz'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=Z04xTlLdZnc"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -72,7 +184,7 @@ export const REFERENCES = {
       title: 'Researching | documenting the AMD 7900XTX so we can understand why it crashes | RDNA 3',
       authors: [{name: 'George Hotz'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=Y-0yZ1AHb0s"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -81,7 +193,7 @@ export const REFERENCES = {
       title: 'What makes high-dimensional networks produce low-dim. activity?',
       authors: [{name: 'Eric Shea-Brown'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2019',
+      year: '(2019)',
       link: "https://www.youtube.com/watch?v=toeX2mGWDbI"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -90,7 +202,7 @@ export const REFERENCES = {
       title: 'Lisa Randall: Dark Matter, Theoretical Physics, and Extinction Events | Lex Fridman Podcast #403',
       authors: [{name: 'Lisa Randall'}, {name: 'Lex Fridman'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
-      year: '2023',
+      year: '(2023)',
       link: "https://www.youtube.com/watch?v=VPaOy3G1-2A"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -99,7 +211,7 @@ export const REFERENCES = {
       title: 'Reality is a Paradox - Mathematics, Physics, Truth & Love | Lex Fridman Podcast #370',
       authors: [{name: 'Edward Frenkel'}, {name: 'Lex Fridman'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
-      year: '2023',
+      year: '(2023)',
       link: "https://www.youtube.com/watch?v=Osh0-J3T2nY"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -108,7 +220,7 @@ export const REFERENCES = {
       title: 'The Langlands Program - Numberphile',
       authors: [{name: 'Edward Frenkel'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2023',
+      year: '(2023)',
       link: "https://www.youtube.com/watch?v=4dyytPboqvE"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -117,7 +229,7 @@ export const REFERENCES = {
       title: 'Time and Quantum Mechanics SOLVED? | Lee Smolin',
       authors: [{name: 'Lee Smolin'}, {name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=uOKOodQXjhc"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -126,7 +238,7 @@ export const REFERENCES = {
       title: 'Edward Frenkel: Infinity, Ai, String Theory, Death, The Self',
       authors: [{name: 'Edward Frenkel'}, {name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: '2023',
+      year: '(2023)',
       link: "https://www.youtube.com/watch?v=n_oPMcvHbAc"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -135,7 +247,7 @@ export const REFERENCES = {
       title: 'Live Science | Infrageometry: Core Definitions | Differential Geometry, Tangent Bundles, Functions',
       authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}, {name: 'Utkarsh Bajaj'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=QxtG4tr6VY0"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -144,7 +256,7 @@ export const REFERENCES = {
       title: 'Live Science | Infrageometry: Working Session | Functions, Edges-Places, Bipartite Graphs',
       authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}, {name: 'Utkarsh Bajaj'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=pdPBzPyJqcE"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -153,7 +265,7 @@ export const REFERENCES = {
       title: 'Fellow Focus | Richard Assar | MetaMetaverse, Alien Minds, Machine Learning Cellular Automata',
       authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=xg9pAx4bupk"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -162,7 +274,7 @@ export const REFERENCES = {
       title: 'Fellow Focus | Nik Murzin | Quantum Framework',
       authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=eG6d8_2GuCw"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -171,7 +283,7 @@ export const REFERENCES = {
       title: 'Explore & Learn | The Map of Institute Research | Quantum Probabilities, Multicomputation, Causality',
       authors: [{name: 'Nikolay Murzin'}, {name: 'James Wiles'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=OKHrPZ6tT6M"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -180,7 +292,7 @@ export const REFERENCES = {
       title: 'Explore & Learn | The Map of Institute Research | Multicomputation, Infrageometry, Ruliad',
       authors: [{name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=8F9YL887Bck"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -189,7 +301,7 @@ export const REFERENCES = {
       title: 'Explore & Learn | Fundamentals: What\'s hype about Hypergraphs? | Graph Theory, Hypermatrix, Arity',
       authors: [{name: 'Carlos Zapata-Carratalá'}, {name: 'Richard Assar'}, {name: 'James Wiles'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=N3vGEp1uLvk"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -198,7 +310,7 @@ export const REFERENCES = {
       title: 'Mindscape 274 | Gizem Gumuskaya on Building Robots from Human Cells',
       authors: [{name: 'Gizem Gumuskaya'}, {name: 'Sean Carroll'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=jwaOzmW3xfs"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -207,7 +319,7 @@ export const REFERENCES = {
       title: 'Community Livestream | Data & Dimensionality',
       authors: [{name: ''}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=zBV1nLw2WuM"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -216,7 +328,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E173',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=z3Zzlgo-xZM"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -225,7 +337,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E174',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=hZp80SYIRlY"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -234,7 +346,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E175',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=HKtlezdPNAI"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -243,7 +355,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E176',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=1ZQ33OnGFWE"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -252,7 +364,7 @@ export const REFERENCES = {
       title: 'Calculus Ratiocinator vs. Characteristica Universalis? The Two Traditions in Logic, Revisited',
       authors: [{name: 'Volker Peckhaus'}],
       organizations: [],
-      year: '2004',
+      year: '(2004)',
       link: "https://www.researchgate.net/publication/22838cus`6287_Calculus_Ratiocinator_vs_Characteristica_Universalis_The_two_traditions_in_logic_revisited"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -261,7 +373,7 @@ export const REFERENCES = {
       title: 'Cargo Cult Science',
       authors: [{name: 'Richard P. Feynman'}],
       organizations: [],
-      year: '1974',
+      year: '(1974)',
       link: "https://calteches.library.caltech.edu/51/2/CargoCult.htm"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -270,7 +382,7 @@ export const REFERENCES = {
       title: 'Millions of children learn only very little. How can the world provide a better education to the next generation?',
       authors: [{name: 'Max Roser'}],
       organizations: [],
-      year: '2022',
+      year: '(2022)',
       link: "https://ourworldindata.org/better-learning"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -279,7 +391,7 @@ export const REFERENCES = {
       title: 'Stripe\'s 2023 annual letter',
       authors: [{name: 'Patrick Collison'}, {name: 'John Collison'}],
       organizations: [],
-      year: '2024',
+      year: '(2024)',
       link: "https://stripe.com/en-nl/annual-updates/2023"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -288,7 +400,7 @@ export const REFERENCES = {
       title: 'Playing, Valuing, and Living: Examining Nietzsche’s Playful Response to Nihilism',
       authors: [{name: 'Aaron Harper'}],
       organizations: [],
-      year: '2015',
+      year: '(2015)',
       link: "https://philpapers.org/rec/HARPVA-2"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -297,7 +409,7 @@ export const REFERENCES = {
       title: 'The Build Your Own Open Games Engine Bootcamp — Part I: Lenses',
       authors: [{name: 'Daniele Palombi'}],
       organizations: [],
-      year: '2024',
+      year: '(2024)',
       link: "https://blog.20squares.xyz/open-games-bootcamp-i/"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -306,7 +418,7 @@ export const REFERENCES = {
       title: 'Can AI Solve Science?',
       authors: [{name: 'Stephen Wolfram'}, {name: 'Richard Assar'}, {name: 'Nik Murzin'}],
       organizations: [ORGANIZATIONS.wolfram],
-      year: '2024',
+      year: '(2024)',
       link: "https://writings.stephenwolfram.com/2024/03/can-ai-solve-science/"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -315,7 +427,7 @@ export const REFERENCES = {
       title: 'Community Livestream | Bioelectricity',
       authors: [{name: ''}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=XBNh3Yoxei0"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -324,7 +436,7 @@ export const REFERENCES = {
       title: 'Quantum Gravity & Wolfram Physics Project',
       authors: [{name: 'Jonathan Gorard'}, {name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=ioXwL-c1RXQ"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -333,7 +445,7 @@ export const REFERENCES = {
       title: 'Paradigm Shift, Ghost Particles, Constructor Theory',
       authors: [{name: 'Chiara Marletto'}, {name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=40CB12cj_aM&t=6443s"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -342,7 +454,7 @@ export const REFERENCES = {
       title: 'The String Theory Iceberg EXPLAINED',
       authors: [{name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=X4PdPnQuwjY&t=9496s"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -351,7 +463,7 @@ export const REFERENCES = {
       title: 'Exploring | sniffing NVIDIA\'s ioctls | open-gpu-kernel-modules | DEBUG | PTX | CUDA',
       authors: [{name: 'George Hotz'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=rUsx1b7rQ8Q&t=9910s"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -360,7 +472,7 @@ export const REFERENCES = {
       title: 'Programming | writing a fuzzer and not getting triggered when the AMD GPU crashes UMR',
       authors: [{name: 'George Hotz'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=BCnTXwhzzxA&t=9780s"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -369,7 +481,7 @@ export const REFERENCES = {
       title: 'Programming | ripping out all of AMD\'s userspace, AMDGPU ioctls | GPU memory | HSA KFD',
       authors: [{name: 'George Hotz'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=-iH5wvFnsKs"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -378,7 +490,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E169',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=snbTCWL6rxo"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -387,7 +499,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E170',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=uMajFsCkzxY"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -396,7 +508,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E171',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=3tEcLAud7Nc"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -405,7 +517,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E172',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=4t4YkHSTZbw"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -414,7 +526,7 @@ export const REFERENCES = {
       title: 'Shannon Luminary Lecture Series - Stephen Fry',
       authors: [{name: 'Stephen Fry'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2017',
+      year: '(2017)',
       link: "https://www.youtube.com/watch?v=24F6C1KfbjM"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -423,7 +535,7 @@ export const REFERENCES = {
       title: 'Containers for compiler architecture',
       authors: [{name: 'Andre Videla'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=BnzAxT-O0Y8"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -432,7 +544,7 @@ export const REFERENCES = {
       title: 'Why It Was Almost Impossible to Make the Blue LED',
       authors: [{name: '@Veritasium'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=AF8d72mA41M"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -441,7 +553,7 @@ export const REFERENCES = {
       title: 'Compositional Game Theory – Towards Incentives Modelling at Scale',
       authors: [{name: 'Jules Hedges'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=2b4hxOP7g9I"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -450,7 +562,7 @@ export const REFERENCES = {
       title: 'Mindscape 268 | Matt Strassler on Relativity, Fields, and the Language of Reality',
       authors: [{name: 'Matt Strassler'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=kCpELmx425w"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -459,7 +571,7 @@ export const REFERENCES = {
       title: 'ActInf MathStream 009.1 ~ Jonathan Gorard: A computational perspective on observation and cognition',
       authors: [{name: 'Jonathan Gorard'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.active_inference_institute],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=I3rhsT-8isk"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -468,7 +580,7 @@ export const REFERENCES = {
       title: 'A Conversation with Mark Zuckerberg, Patrick Collison and Tyler Cowen',
       authors: [{name: 'Mark Zuckerberg'}, {name: 'Patrick Collison'}, {name: 'Tyler Cowen'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2019',
+      year: '(2019)',
       link: "https://about.fb.com/news/2019/11/a-conversation-with-mark-zuckerberg-patrick-collison-and-tyler-cowen/"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -477,7 +589,7 @@ export const REFERENCES = {
       title: 'Solving SAT via Positive Supercompilation',
       authors: [{name: 'Tima Kinsart (Hirrolot)'}],
       organizations: [],
-      year: '2024',
+      year: '(2024)',
       link: "https://hirrolot.github.io/posts/sat-supercompilation.html) ; *Tima Kinsart (Hirrolot"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -486,7 +598,7 @@ export const REFERENCES = {
       title: 'Navigating cognition: Spatial codes for human thinking',
       authors: [{name: 'Jacob L. S. Bellmund'}, {name: 'Peter Gärdenfors'}, {name: 'Edvard I. Moser'}, {name: 'Christian F. Doeller'}],
       organizations: [],
-      year: '2018',
+      year: '(2018)',
       link: "https://www.science.org/doi/10.1126/science.aat6766"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -495,7 +607,7 @@ export const REFERENCES = {
       title: 'Towards a structural turn in consciousness science',
       authors: [{name: 'Johannes Kleiner'}],
       organizations: [],
-      year: '2024',
+      year: '(2024)',
       link: "https://pubmed.ncbi.nlm.nih.gov/38422757/"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -504,7 +616,7 @@ export const REFERENCES = {
       title: 'The Glass Bead Game',
       authors: [{name: 'Ralph Freedman'}],
       organizations: [],
-      year: '1970',
+      year: '(1970)',
       link: "https://www.nytimes.com/1970/01/04/archives/the-glass-bead-game-glass-bead.html"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -513,7 +625,7 @@ export const REFERENCES = {
       title: 'An Introduction to Higher Arity Science',
       authors: [{name: 'Carlos Zapata-Carratalá'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2021',
+      year: '(2021)',
       link: "https://www.youtube.com/watch?v=62UFbGsj5Jg"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -531,7 +643,7 @@ export const REFERENCES = {
       title: 'GReTA seminar: Higher-Arity Algebra via Hypergraph Rewriting',
       authors: [{name: 'Carlos Zapata-Carratalá'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=ZBjagJvNEn8"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -540,7 +652,7 @@ export const REFERENCES = {
       title: 'Workshop | Axiomatic Creation',
       authors: [{name: ''}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=StNfdknDQ9c"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -549,7 +661,7 @@ export const REFERENCES = {
       title: 'Community Livestream | Axioms & Creativity',
       authors: [{name: ''}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=9ddJAJaYk_E"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -558,7 +670,7 @@ export const REFERENCES = {
       title: 'Concept Collider | Geometry of Data and Neural Correlates',
       authors: [{name: ''}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=mROz1U4VkGY"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -567,7 +679,7 @@ export const REFERENCES = {
       title: 'Wolfram Physics Project: Working Session - Causal Multiway Systems',
       authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
-      year: '2020',
+      year: '(2020)',
       link: "https://www.youtube.com/watch?v=OXSE6KhRUF4"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -576,7 +688,7 @@ export const REFERENCES = {
       title: 'Science Research Session: Hyporuliad',
       authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
-      year: '2023',
+      year: '(2023)',
       link: "https://www.youtube.com/watch?v=lZaBjuHk7Ms"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -585,7 +697,7 @@ export const REFERENCES = {
       title: 'A conversation between Bob Coecke and Stephen Wolfram',
       authors: [{name: 'Bob Coecke'}, {name: 'Stephen Wolfram'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
-      year: '2021',
+      year: '(2021)',
       link: "https://www.youtube.com/watch?v=8CUTXaGqvSQ"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -594,7 +706,7 @@ export const REFERENCES = {
       title: 'Steve Jobs',
       authors: [{name: 'Walter Isaacson'}],
       organizations: [],
-      year: '2011',
+      year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Steve_Jobs_(book)"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -603,7 +715,7 @@ export const REFERENCES = {
       title: 'John Cleese on Creativity In Management',
       authors: [{name: 'John Cleese'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2017',
+      year: '(2017)',
       link: "https://www.youtube.com/watch?v=Pb5oIIPO62g"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -621,7 +733,7 @@ export const REFERENCES = {
       title: 'Steve Jobs President & CEO, NeXT Computer Corp and Apple. MIT Sloan Distinguished Speaker Series',
       authors: [{name: 'Steve Jobs'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '1992',
+      year: '(1992)',
       link: "https://www.youtube.com/watch?v=Gk-9Fd2mEnI"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -630,7 +742,7 @@ export const REFERENCES = {
       title: 'Carl Sagan at MIT - Management in the Year 2000: Sloan School Symposium',
       authors: [{name: 'Carl Sagan'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '1987',
+      year: '(1987)',
       link: "https://www.youtube.com/watch?v=gLOZsTMuars"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -639,7 +751,7 @@ export const REFERENCES = {
       title: 'Chamath Palihapitiya (SocialCapital) @ Startup Grind',
       authors: [{name: 'Chamath Palihapitiya'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2015',
+      year: '(2015)',
       link: "https://www.youtube.com/watch?v=ncjum-bkW98"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -648,7 +760,7 @@ export const REFERENCES = {
       title: 'Chamath Palihapitiya speaking at Waterloo Innovation Summit',
       authors: [{name: 'Chamath Palihapitiya'}],
       organizations: [ORGANIZATIONS.youtube],
-      year: '2016',
+      year: '(2016)',
       link: "https://www.youtube.com/watch?v=D82_ppT2iic"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -657,7 +769,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E165',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=FHO4hoXc75k"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -666,7 +778,7 @@ export const REFERENCES = {
       title: 'All-In Podcast E164',
       authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=bUuEE2jmP2c"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -675,7 +787,7 @@ export const REFERENCES = {
       title: 'Concept Collider | Mathematical Physics + Active Inference, Free Energy & Entropy',
       authors: [{name: ''}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: '2024',
+      year: '(2024)',
       link: "https://www.youtube.com/watch?v=GwbLOCCI2yE"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -3099,6 +3211,21 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2024: Content[] = [
+  REFERENCES.COMPUTING_MACHINERY_AND_INTELLIGENCE,
+  REFERENCES.VON_NEUMANN_AND_LATTICE_THEORY,
+  REFERENCES.WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION,
+  REFERENCES.ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM,
+  REFERENCES.WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS,
+  REFERENCES.THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM,
+  REFERENCES.MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF,
+  REFERENCES.LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND,
+  REFERENCES.LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH,
+  REFERENCES.LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME,
+  REFERENCES.CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER,
+  REFERENCES.THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU,
+  REFERENCES.NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST,
+  REFERENCES.PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST,
+
   REFERENCES.PLURALISTIC_THE_DISENSHITTIFIED_INTERNET_STARTS_WITH_LOYAL_USER_AGENTS,
   REFERENCES.ELON_MUSK,
   REFERENCES.FUN_RAISING_FUNDING_SCHOOL_QA_SEMF,
@@ -3467,14 +3594,14 @@ export const fadi_shawki = <TProfile>{
   orcid: '0009-0009-9288-992X',
 
   external: <ExternalProfile[]>[
+    {organization: ORGANIZATIONS.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com'},
     {organization: ORGANIZATIONS.github, display: 'FadiShawki', link: 'https://github.com/FadiShawki'},
     {organization: ORGANIZATIONS.twitter, display: '@_FadiShawki', link: 'https://twitter.com/_FadiShawki'},
-    {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
-    {organization: ORGANIZATIONS.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com'},
     {organization: ORGANIZATIONS.gitlab, display: '@FadiShawki', link: 'https://gitlab.com/FadiShawki'},
     {organization: ORGANIZATIONS.instagram, display: '@f._shawki', link: 'https://www.instagram.com/f._shawki/'},
     {organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki'},
     {organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki'},
+    {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
     {
       organization: ORGANIZATIONS.mastodon,
       display: '@fadishawki',
