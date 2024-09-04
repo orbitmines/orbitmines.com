@@ -3,6 +3,118 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  COMPUTING_MACHINERY_AND_INTELLIGENCE: <Content>{  
+    reference: {                 title: 'Computing Machinery and Intelligence',      
+         authors: [{name: 'Alan M. Turing'}],      
+         organizations: [],  
+         year: '(1950)',      
+         link: "https://academic.oup.com/mind/article/LIX/236/433/986238?url=http://szyxflb.com&login=false"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+VON_NEUMANN_AND_LATTICE_THEORY: <Content>{  
+    reference: {                 title: 'Von Neumann and Lattice Theory',      
+         authors: [{name: 'Garrett Birkhoff'}],      
+         organizations: [],  
+         year: '(1958)',      
+         link: "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-64/issue-3.P2/Von-Neumann-and-lattice-theory/bams/1183522370.pdf"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION: <Content>{  
+    reference: {                 title: 'When Exactly Will the Eclipse Happen? A Multimillennium Tale of Computation',      
+         authors: [{name: 'Stephen Wolfram'}],      
+         organizations: [ORGANIZATIONS.wolfram],  
+         year: '(2024)',      
+         link: "https://writings.stephenwolfram.com/2024/03/when-exactly-will-the-eclipse-happen-a-multimillennium-tale-of-computation/"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM: <Content>{  
+    reference: {                 title: 'Are All Fish the Same Shape if You Stretch Them? The Victorian Tale of On Growth and Form',      
+         authors: [{name: 'Stephen Wolfram'}],      
+         organizations: [ORGANIZATIONS.wolfram],  
+         year: '(2017)',      
+         link: "https://writings.stephenwolfram.com/2017/10/are-all-fish-the-same-shape-if-you-stretch-them-the-victorian-tale-of-on-growth-and-form/"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS: <Content>{  
+    reference: {                 title: 'What’s Really Going On in Machine Learning? Some Minimal Models',      
+         authors: [{name: 'Stephen Wolfram'}],      
+         organizations: [ORGANIZATIONS.wolfram],  
+         year: '(2024)',      
+         link: "https://writings.stephenwolfram.com/2024/08/whats-really-going-on-in-machine-learning-some-minimal-models/"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM: <Content>{  
+    reference: {                 title: 'The Hydrogen Atom: Intro to Quantum',      
+         authors: [{name: 'Richard Behiel'}],      
+         organizations: [ORGANIZATIONS.youtube],  
+         year: 'Physics',      
+         link: "https://www.youtube.com/watch?v=-Y0XL-K0jy0"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF: <Content>{  
+    reference: {                 title: 'Mindscape 287 | Institutions and the Legacy of',      
+         authors: [{name: 'Jean-Paul Faguet'},{name: 'Sean Carroll'}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.mindscape],  
+         year: 'History',      
+         link: "https://www.youtube.com/watch?v=FKVmYeU11y0"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND: <Content>{  
+    reference: {                 title: 'Live Science | Spinal Graphs | Hypergraph Confluence, Symmetry and',      
+         authors: [{name: ''}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],  
+         year: 'Efficiency',      
+         link: "https://www.youtube.com/watch?v=uZkqNDIOQLs"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH: <Content>{  
+    reference: {                 title: 'Live Science | Infrageometry: Correspondences | Differential Geometry, Hypergraph',      
+         authors: [{name: ''}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],  
+         year: 'Rewriting',      
+         link: "https://www.youtube.com/watch?v=Mr1zfZtoFX0"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME: <Content>{  
+    reference: {                 title: 'Live Science | Quantum Paradoxes | Delayed Choice Quantum Eraser, CHSH Game,',      
+         authors: [{name: ''}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],  
+         year: 'Quasiprobabilities',      
+         link: "https://www.youtube.com/watch?v=rTKSWObWtNE"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER: <Content>{  
+    reference: {                 title: 'Consciousness, Biology, Universal Mind, Emergence, Cancer',      
+         authors: [{name: 'Michael Levin'},{name: 'Curt Jaimungal'}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.toe],  
+         year: 'Research',      
+         link: "https://www.youtube.com/watch?v=c8iFtaltX-s"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU: <Content>{  
+    reference: {                 title: 'The Crisis in (Fundamental) Physics is Worse Than You',      
+         authors: [{name: 'Sean Carroll'},{name: 'Curt Jaimungal'}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.toe],  
+         year: 'Think...',      
+         link: "https://www.youtube.com/watch?v=9AoRxtYZrZo"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST: <Content>{  
+    reference: {                 title: 'Neuralink and the Future of Humanity | Lex Fridman Podcast',      
+         authors: [{name: ''}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+         year: '#438',      
+         link: "https://www.youtube.com/watch?v=Kbk9BiPhm7o"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
+PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{  
+    reference: {                 title: 'Physics of Life, Time, Complexity, and Aliens | Lex Fridman Podcast',      
+         authors: [{name: 'Sara Walker'},{name: 'Lex Fridman'}],      
+         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+         year: '#433',      
+         link: "https://www.youtube.com/watch?v=wwhTfyX9J34"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+},
   PLURALISTIC_THE_DISENSHITTIFIED_INTERNET_STARTS_WITH_LOYAL_USER_AGENTS: <Content>{
     reference: {
       title: 'Pluralistic: The disenshittified internet starts with loyal "user agents"',
@@ -3099,6 +3211,21 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2024: Content[] = [
+  REFERENCES.COMPUTING_MACHINERY_AND_INTELLIGENCE,
+  REFERENCES.VON_NEUMANN_AND_LATTICE_THEORY,
+  REFERENCES.WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION,
+  REFERENCES.ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM,
+  REFERENCES.WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS,
+  REFERENCES.THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM,
+  REFERENCES.MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF,
+  REFERENCES.LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND,
+  REFERENCES.LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH,
+  REFERENCES.LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME,
+  REFERENCES.CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER,
+  REFERENCES.THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU,
+  REFERENCES.NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST,
+  REFERENCES.PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST,
+
   REFERENCES.PLURALISTIC_THE_DISENSHITTIFIED_INTERNET_STARTS_WITH_LOYAL_USER_AGENTS,
   REFERENCES.ELON_MUSK,
   REFERENCES.FUN_RAISING_FUNDING_SCHOOL_QA_SEMF,

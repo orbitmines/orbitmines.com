@@ -85,7 +85,7 @@ export const ONGOING_PROJECTS = [
         reference: {
             title: "Research towards Designs",
             organizations: [ORGANIZATIONS.github],
-            year: "2027+?",
+            year: "2024",
             link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
