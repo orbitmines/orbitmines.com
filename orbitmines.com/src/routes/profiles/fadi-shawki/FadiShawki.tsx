@@ -6,6 +6,7 @@ import {ON_INTELLIGIBILITY} from "../../papers/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "../../papers/2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../../archive/2024.02.OrbitMines_as_a_Game_Project";
 import {Arc, Section, Reference, Category, Profile} from "../../../lib/paper/Paper";
+import {A_UNIVERSAL_LANGUAGE} from "../../papers/2024.AUniversalLanguage";
 
 export const ONGOING_PROJECTS = [
     {
@@ -84,7 +85,7 @@ export const ONGOING_PROJECTS = [
         reference: {
             title: "Research towards Designs",
             organizations: [ORGANIZATIONS.github],
-            year: "2027+?",
+            year: "2024",
             link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
@@ -172,10 +173,9 @@ const FadiShawki = () => {
             {/*</Section>*/}
         </Arc>
 
-
         <Arc head="Writings" buffer={false}>
             <Section head="Theoretics">
-                {[_2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
+                {[A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper, i) => (
                     <Reference index={i} reference={{...paper.reference}} start="xs" style={{fontSize: '0.8rem'}}/>
                 ))}
             </Section>
