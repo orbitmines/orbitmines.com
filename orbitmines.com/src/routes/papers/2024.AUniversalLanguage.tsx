@@ -25,7 +25,7 @@ import _ from "lodash";
 
 export const A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
-    title: "A Universal Language",
+    title: "Towards A Universal Language",
     subtitle: "One Ray to rule them all, One Ray to find them, One Ray to bring them all, and in the darkness bind them: An implementation of Rays: A Universal Language.",
     draft: true,
     link: 'https://orbitmines.com/papers/a-universal-language',
@@ -97,7 +97,20 @@ const AUniversalLanguage = () => {
     {/*</div>*/}
 
     <Row center="xs">
+      <Section head="Introduction">
+      </Section>
+      <Section head="...">
 
+      </Section>
+
+      <Section head="Traversal" sub="Arbitrarily branching, stepwise, superposed, ..., partial traversal & equivalences">
+
+      </Section>
+      <Section head="Breaking Recursion" sub="Local self-references, constants, orbits & Self-referential operators">
+
+      <Arc head="Wrapping up">
+
+      </Arc>
     </Row>
   </Paper>
 }
@@ -110,9 +123,8 @@ export default AUniversalLanguage;
  * @see https://github.com/orbitmines/ray
  */
 
-
-
-
+// localStorage.setItem('key', 'value')
+// localStorage.getItem('key')
 
 
 
