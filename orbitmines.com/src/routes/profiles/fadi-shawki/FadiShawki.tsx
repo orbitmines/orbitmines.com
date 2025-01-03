@@ -1,5 +1,5 @@
 import React from 'react';
-import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024} from "./fadi_shawki";
+import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024, ARTICLES_2025} from "./fadi_shawki";
 import ORGANIZATIONS, {Viewed} from "../../../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "../profiles";
 import {ON_INTELLIGIBILITY} from "../../papers/2022.OnIntelligibility";
@@ -26,7 +26,7 @@ export const ONGOING_PROJECTS = [
     },
     {
         reference: {
-            title: "Intercommunication between Languages",
+            title: "Communication between Languages",
             organizations: [ORGANIZATIONS.github],
             year: "2024-2025?",
             link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md"
@@ -118,16 +118,7 @@ const FadiShawki = () => {
     const profile = PROFILES.fadi_shawki;
 
     return <Profile profile={profile}>
-        <Arc head={<span>
-      TGBG but the solution to TGBG is TGBG.🤔
-    </span>} buffer={false}>
-            {/*<Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">*/}
-            {/*  Feel free to contact me on the socials specified above.*/}
-            {/*</Section>*/}
-            <Section head="Looking for funding, collaboration or anyone curious to learn more">
-                Feel free to contact me on the socials specified above.
-            </Section>
-
+        <Arc buffer={false}>
             <CanvasContainer style={{height: '110px'}}>
                 <canvas
                     style={{
@@ -221,6 +212,9 @@ const FadiShawki = () => {
 
         {/* Include things like wikipedia exposure/other things like github ? */}
         <Arc head="Literary Exposure">
+            <Section head="2025">
+                <Category content={ARTICLES_2025}/>
+            </Section>
             <Section head="2024">
                 <Category content={ARTICLES_2024}/>
             </Section>

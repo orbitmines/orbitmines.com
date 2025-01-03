@@ -505,7 +505,7 @@ export const PLATFORMS = [
   ORGANIZATIONS.instagram.key,
   ORGANIZATIONS.youtube.key,
   ORGANIZATIONS.twitch.key,
-  ORGANIZATIONS.mastodon.key,
+  // ORGANIZATIONS.mastodon.key,
   ORGANIZATIONS.facebook.key,
 ]
 

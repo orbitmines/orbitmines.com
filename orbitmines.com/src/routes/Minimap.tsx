@@ -103,7 +103,7 @@ const Minimap = () => {
                         <Reference
                             index={0}
                             reference={{
-                                title: "Intercommunication between Languages",
+                                title: "Communication between Languages",
                                 organizations: [ORGANIZATIONS.github],
                                 link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md"
                             }}

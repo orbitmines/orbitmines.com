@@ -3,6 +3,61 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  APPLIED_CATEGORY_THEORY_IN_CHEMISTRY_COMPUTING_AND_SOCIAL_NETWORKS: <Content>{
+    reference: {
+      title: 'Applied Category Theory in Chemistry, Computing, and Social Networks',
+      authors: [{name: 'John Baez'}, {name: 'Simon Cho'}, {name: 'Daniel Cicala'}, {name: 'Nina Otter'}, {name: 'Valeria de Paiva'}],
+      organizations: [],
+      year: '(2022)',
+      link: "https://math.ucr.edu/home/baez/mrc_2022.pdf"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  UNIQUENESS_TREES_A_POSSIBLE_POLYNOMIAL_APPROACH_TO_THE_GRAPH_ISOMORPHISM_PROBLEM: <Content>{
+    reference: {
+      title: 'Uniqueness Trees: A Possible Polynomial Approach to the Graph Isomorphism Problem',
+      authors: [{name: 'Jonathan Gorard'}],
+      organizations: [],
+      year: '(2016)',
+      link: "https://arxiv.org/pdf/1606.06399"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALIEN_CIVILIZATIONS_AND_THE_SEARCH_FOR_EXTRATERRESTRIAL_LIFE_LEX_FRIDMAN_PODCAST_455: <Content>{
+    reference: {
+      title: 'Alien Civilizations and the Search for Extraterrestrial Life | Lex Fridman Podcast #455',
+      authors: [{name: 'Adam Frank'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=yhZAXXI83-4&ab_channel=LexFridman"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THERES_NO_WAVE_FUNCTION: <Content>{
+    reference: {
+      title: 'There’s No Wave Function?',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=7oWip00iXbo&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_POTENTIAL_OF_THE_HUMAN_BRAIN: <Content>{
+    reference: {
+      title: 'The Potential of the Human Brain',
+      authors: [{name: 'Iain McGilchrist'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=Q9sBKCd2HD0&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_UNIVERSE_WRITES_ITSELF_INTO_EXISTENCE_MOMENT_BY_MOMENT: <Content>{
+    reference: {
+      title: 'The Universe Writes Itself Into Existence Moment by Moment',
+      authors: [{name: 'Avshalom Elitzur'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=pWRAaimQT1E&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
   HUNTERS_OF_DUNE: <Content>{
     reference: {
       title: 'Hunters of Dune',
@@ -3005,7 +3060,7 @@ export const REFERENCES = {
 
   EXPLORER_ORBITMINES_RESEARCH: <Content>{
     reference: {
-      title: "Explorer - OrbitMines Research",
+      title: "Independent Researcher - OrbitMines Research",
       organizations: [ORGANIZATIONS.orbitmines_research],
       year: "July, 2022 - Present",
       link: "https://orbitmines.com/"
@@ -3355,7 +3410,17 @@ export const REFERENCES = {
 
 export default REFERENCES;
 
+export const ARTICLES_2025: Content[] = [
+]
+
 export const ARTICLES_2024: Content[] = [
+  REFERENCES.APPLIED_CATEGORY_THEORY_IN_CHEMISTRY_COMPUTING_AND_SOCIAL_NETWORKS,
+  REFERENCES.UNIQUENESS_TREES_A_POSSIBLE_POLYNOMIAL_APPROACH_TO_THE_GRAPH_ISOMORPHISM_PROBLEM,
+  REFERENCES.ALIEN_CIVILIZATIONS_AND_THE_SEARCH_FOR_EXTRATERRESTRIAL_LIFE_LEX_FRIDMAN_PODCAST_455,
+  REFERENCES.THERES_NO_WAVE_FUNCTION,
+  REFERENCES.THE_POTENTIAL_OF_THE_HUMAN_BRAIN,
+  REFERENCES.THE_UNIVERSE_WRITES_ITSELF_INTO_EXISTENCE_MOMENT_BY_MOMENT,
+
   REFERENCES.HUNTERS_OF_DUNE,
   REFERENCES.THE_LITTLE_BOOK_OF_DEEP_LEARNING,
   REFERENCES.PREFACE_WHAT_IS_OPENGL,
@@ -3792,11 +3857,11 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.jpg',
 
-  date: '2024-10-01',
+  date: '2025-01-01',
 
   email: 'fadi.shawki@orbitmines.com',
 
-  title: "2024. Fadi Shawki",
+  title: "2025. Fadi Shawki",
   subtitle: "A self-profile by some 24-solar-orbiting explorer.",
 
   reference: {
