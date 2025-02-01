@@ -3,6 +3,61 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  EINSTEIN_HIS_LIFE_AND_UNIVERSE: <Content>{
+    reference: {
+      title: 'Einstein: His Life and Universe',
+      authors: [{name: 'Walter Isaacson'}],
+      organizations: [],
+      year: '(2007)',
+      link: "https://en.wikipedia.org/wiki/Einstein:_His_Life_and_Universe"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY: <Content>{
+    reference: {
+      title: 'The future of brain emulation is looking spiky',
+      authors: [{name: 'Andy McKenzie'}],
+      organizations: [],
+      year: '(2025)',
+      link: "https://neurobiology.substack.com/p/the-future-of-brain-emulation-is"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHY_THE_GODFATHER_OF_AI_NOW_FEARS_HIS_OWN_CREATION: <Content>{
+    reference: {
+      title: 'Why The "Godfather of AI" Now Fears His Own Creation',
+      authors: [{name: 'Geoffrey Hinton'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=b_DUft-BdIE&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_MAJOR_FLAWS_IN_FUNDAMENTAL_PHYSICS: <Content>{
+    reference: {
+      title: 'The Major Flaws in Fundamental Physics',
+      authors: [{name: 'Sabine Hossenfelder'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=E3y-Z0pgupg&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_CRISIS_IN_STRING_THEORY_IS_WORSE_THAN_YOU_THINK: <Content>{
+    reference: {
+      title: 'The Crisis in String Theory is Worse Than You Think',
+      authors: [{name: 'Leonard Susskind'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=2p_Hlm6aCok&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MATH_HAS_CHANGED_FOREVER: <Content>{
+    reference: {
+      title: 'Math Has Changed Forever…',
+      authors: [{name: 'Yang-Hui He'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=wbP0KjWm0pw&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
   APPLIED_CATEGORY_THEORY_IN_CHEMISTRY_COMPUTING_AND_SOCIAL_NETWORKS: <Content>{
     reference: {
       title: 'Applied Category Theory in Chemistry, Computing, and Social Networks',
@@ -3411,6 +3466,12 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2025: Content[] = [
+  REFERENCES.EINSTEIN_HIS_LIFE_AND_UNIVERSE,
+  REFERENCES.THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY,
+  REFERENCES.WHY_THE_GODFATHER_OF_AI_NOW_FEARS_HIS_OWN_CREATION,
+  REFERENCES.THE_MAJOR_FLAWS_IN_FUNDAMENTAL_PHYSICS,
+  REFERENCES.THE_CRISIS_IN_STRING_THEORY_IS_WORSE_THAN_YOU_THINK,
+  REFERENCES.MATH_HAS_CHANGED_FOREVER
 ]
 
 export const ARTICLES_2024: Content[] = [
