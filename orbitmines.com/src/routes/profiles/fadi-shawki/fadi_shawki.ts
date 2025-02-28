@@ -3,6 +3,69 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY: <Content>{
+    reference: {
+      title: 'The equivalence between geometrical structures and entropy',
+      authors: [{name: 'Gabriele Carcassi'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=lp0RgZ6kQF8"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DEEPSEEK_CHINA_OPENAI_NVIDIA_XAI_TSMC_STARGATE_AND_AI_MEGACLUSTERS_459: <Content>{
+    reference: {
+      title: 'DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters | #459',
+      authors: [{name: 'Dylan Patel'}, {name: 'Nathan Lambert'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=_1f-o0nqpEI"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHY_PHYSICS_WITHOUT_PHILOSOPHY_IS_DEEPLY_BROKEN_PART_2: <Content>{
+    reference: {
+      title: 'Why Physics Without Philosophy Is Deeply Broken... [Part 2]',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=YaS1usLeXQM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  HARVARD_SCIENTIST_THERE_IS_NO_QUANTUM_MULTIVERSE_PART_3: <Content>{
+    reference: {
+      title: 'Harvard Scientist: "There is No Quantum Multiverse" [Part 3]',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=wrUvtqr4wOs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  HARVARD_PHYSICIST_DEBUNKS_PARTICLE_SUPERPOSITION: <Content>{
+    reference: {
+      title: 'Harvard Physicist Debunks Particle Superposition',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Manolis Kellis'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=MTD8xkbiGis&t=11s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  TOP_AI_SCIENTIST_UNIFIES_WOLFRAM_LEIBNIZ_CONSCIOUSNESS: <Content>{
+    reference: {
+      title: 'Top AI Scientist Unifies Wolfram, Leibniz, & Consciousness',
+      authors: [{name: 'William Hahn'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=3fkg0uTA3qU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_THEORY_THAT_EXPLAINS_YOU_FREE_ENERGY_PRINCIPLE: <Content>{
+    reference: {
+      title: 'The Theory That Explains YOU... (Free Energy Principle)',
+      authors: [{name: 'Michael Levin'}, {name: 'Karl Friston'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=0yOV9Pzk2zw"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
   EINSTEIN_HIS_LIFE_AND_UNIVERSE: <Content>{
     reference: {
       title: 'Einstein: His Life and Universe',
@@ -3466,6 +3529,14 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2025: Content[] = [
+  REFERENCES.THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY,
+  REFERENCES.DEEPSEEK_CHINA_OPENAI_NVIDIA_XAI_TSMC_STARGATE_AND_AI_MEGACLUSTERS_459,
+  REFERENCES.WHY_PHYSICS_WITHOUT_PHILOSOPHY_IS_DEEPLY_BROKEN_PART_2,
+  REFERENCES.HARVARD_SCIENTIST_THERE_IS_NO_QUANTUM_MULTIVERSE_PART_3,
+  REFERENCES.HARVARD_PHYSICIST_DEBUNKS_PARTICLE_SUPERPOSITION,
+  REFERENCES.TOP_AI_SCIENTIST_UNIFIES_WOLFRAM_LEIBNIZ_CONSCIOUSNESS,
+  REFERENCES.THE_THEORY_THAT_EXPLAINS_YOU_FREE_ENERGY_PRINCIPLE,
+
   REFERENCES.EINSTEIN_HIS_LIFE_AND_UNIVERSE,
   REFERENCES.THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY,
   REFERENCES.WHY_THE_GODFATHER_OF_AI_NOW_FEARS_HIS_OWN_CREATION,
