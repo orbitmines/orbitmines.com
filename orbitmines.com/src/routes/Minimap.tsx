@@ -105,7 +105,7 @@ const Minimap = () => {
                             reference={{
                                 title: "Communication between Languages",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md"
+                                link: "https://github.com/orbitmines/library"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
@@ -118,7 +118,7 @@ const Minimap = () => {
                             reference={{
                                 title: "(Universal) Version Control",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20(Hypergraphic)%20Version%20Control%20System%20through%20Rays%20(2024).md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/Writing%20-%202025.%20A%20Universal%20Language.md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
@@ -129,56 +129,14 @@ const Minimap = () => {
                             reference={{
                                 title: "(Universal) Compression Infrastructure",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20(Hypergraphic)%20Version%20Control%20System%20through%20Rays%20(2024).md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/Writing%20-%202025.%20A%20Universal%20Language.md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
                         />
 
-                        <Reference
-                            index={0}
-                            reference={{
-                                title: "(Universal) Networking Infrastructure",
-                                organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Computer%20Networking%2C%20Security%2C%20Encryption%20%20%26%20Communication%20(2025%3F).md"
-                            }}
-                            start="xs"
-                            style={{fontSize: '0.8rem'}} target="_blank"
-                        />
                     </div>
 
-                    <Reference
-                        index={0}
-                        reference={{
-                            title: "Ongoing Logistics",
-                            organizations: [ORGANIZATIONS.orbitmines_minecraft_creative],
-                            link: "https://github.com/orbitmines/archive/blob/main/projects/ONGOING%20Project%20Logistics.md"
-                        }}
-                        start="xs"
-                        style={{fontSize: '0.8rem'}} className="bp5-text-muted"  target="_blank"
-                    />
-                    <div className="pl-9">
-                        <Reference
-                            index={0}
-                            reference={{
-                                title: "Open Call for Funding",
-                                organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/ONGOING%20Project%20-%20Funding.md"
-                            }}
-                            start="xs"
-                            style={{fontSize: '0.8rem'}} target="_blank"
-                        />
-                        <Reference
-                            index={0}
-                            reference={{
-                                title: "Archive",
-                                organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/tree/main/projects"
-                            }}
-                            start="xs"
-                            style={{fontSize: '0.8rem'}} target="_blank"
-                        />
-                    </div>
                     <Reference
                         index={0}
                         reference={{
@@ -194,7 +152,7 @@ const Minimap = () => {
                             reference={{
                                 title: "Research towards Designs",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024).md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024-2025).md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
@@ -204,7 +162,7 @@ const Minimap = () => {
                             reference={{
                                 title: "Education",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/INDEFINITE%20Project%20-%20Education%20(2027%2B%3F).md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/INDEFINITE%20Project%20-%20Education%20(2027%2B%3F).md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
@@ -214,7 +172,7 @@ const Minimap = () => {
                             reference={{
                                 title: "Physics (& Hardware)",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/PENDING%20(2027%3F%2B)%20%3B%20Physics%20(%26%20Hardware).md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Physics%20(%26%20Hardware).md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"
@@ -224,7 +182,7 @@ const Minimap = () => {
                             reference={{
                                 title: "Operating System",
                                 organizations: [ORGANIZATIONS.github],
-                                link: "https://github.com/orbitmines/archive/blob/main/projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
+                                link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
                             }}
                             start="xs"
                             style={{fontSize: '0.8rem'}} target="_blank"

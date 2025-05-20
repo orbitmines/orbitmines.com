@@ -483,14 +483,14 @@ const ORGANIZATIONS = {
 ORGANIZATIONS.orbitmines_research.profile = {
   email: 'fadi.shawki@orbitmines.com',
   external: <ExternalProfile[]>[
+    { organization: ORGANIZATIONS.discord, display: 'discord.orbitmines.com', link: 'https://discord.orbitmines.com' },
     { organization: ORGANIZATIONS.github, display: 'orbitmines', link: 'https://github.com/orbitmines' },
     { organization: ORGANIZATIONS.twitter, display: '@OrbitMines', link: 'https://twitter.com/OrbitMines' },
-    { organization: ORGANIZATIONS.linkedin, display: 'orbitmines', link: 'https://www.linkedin.com/company/orbitmines/' },
-    { organization: ORGANIZATIONS.discord, display: 'discord.orbitmines.com', link: 'https://discord.orbitmines.com' },
-    { organization: ORGANIZATIONS.gitlab, display: '@orbitmines', link: 'https://gitlab.com/orbitmines' },
     { organization: ORGANIZATIONS.instagram, display: '@orbitmines', link: 'https://www.instagram.com/orbitmines/' },
     { organization: ORGANIZATIONS.youtube, display: '@OrbitMines', link: 'https://www.youtube.com/@OrbitMines' },
     { organization: ORGANIZATIONS.twitch, display: '@orbitmines', link: 'https://www.twitch.tv/orbitmines' },
+    { organization: ORGANIZATIONS.linkedin, display: 'orbitmines', link: 'https://www.linkedin.com/company/orbitmines/' },
+    { organization: ORGANIZATIONS.gitlab, display: '@orbitmines', link: 'https://gitlab.com/orbitmines' },
     { organization: ORGANIZATIONS.mastodon, display: '@orbitmines', link: 'https://mastodon.orbitmines.com/@orbitmines' },
     { organization: ORGANIZATIONS.facebook, display: 'OrbitMines', link: 'https://www.facebook.com/profile.php?id=61550528503885' },
   ]
