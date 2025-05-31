@@ -25,6 +25,8 @@ import zx_calculus_icon from "././zx/icon.png";
 import active_inference_institute_icon from "././active-inference-institute/channels4_profile.jpg";
 import toe_icon from "././toe/toe.jpg";
 import syco_icon from "././syco/logo.png";
+import cool_worlds_podcast_icon from "././cool_worlds/channels4_profile.jpg";
+import demystifysci_icon from "././demystifysci/channels4_profile.jpg";
 import {ReferenceProps, Renderable} from "../paper/Paper";
 
 export type SVG = {
@@ -112,6 +114,20 @@ const ORGANIZATIONS = {
   orbitmines_minecraft_prison: <TOrganization>{key: 'orbitmines-minecraft-prison', name: "", assets: {icon_png: prison_icon,},},
   orbitmines_minecraft_creative: <TOrganization>{key: 'orbitmines-minecraft-creative', name: "", assets: {icon_png: creative_icon,},},
   orbitmines_minecraft_minigames: <TOrganization>{key: 'orbitmines-minecraft-minigames', name: "", assets: {icon_png: minigames_icon,},},
+  demystifysci: <TOrganization>{
+    key: 'demystifysci',
+    name: "demystifysci",
+    assets: {
+      icon_png: demystifysci_icon,
+    }
+  },
+  cool_worlds_podcast: <TOrganization>{
+    key: 'cool_worlds_podcast',
+    name: "cool_worlds_podcast",
+    assets: {
+      icon_png: cool_worlds_podcast_icon,
+    }
+  },
   syco: <TOrganization>{
     key: 'syco',
     name: "syco",

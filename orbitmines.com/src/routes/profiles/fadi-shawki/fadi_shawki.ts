@@ -3,6 +3,88 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS: <Content>{
+    reference: {
+      title: 'String diagram rewrite theory III: Confluence with and without Frobenius',
+      authors: [{name: 'Filippo Bonchi'}, {name: 'Fabio Gadducci'}, {name: 'Aleks Kissinger'}, {name: 'Pawel Sobocinski'}, {name: 'Fabio Zanasi'}],
+      organizations: [],
+      year: '(2022)',
+      link: "https://arxiv.org/abs/2109.06049"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY: <Content>{
+    reference: {
+      title: 'Influence of temporal information gaps on decision making: describing the dynamics of working memory',
+      authors: [{name: 'Alejandro Sospedra'}, {name: 'Santiago Canals'}, {name: 'Encarni Marcos'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://www.biorxiv.org/content/10.1101/2024.07.17.603868v1"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468: <Content>{
+    reference: {
+      title: 'Black Holes, Wormholes, Aliens, Paradoxes & Extra Dimensions | #468',
+      authors: [{name: 'Janna Levin'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=A6m4iJIw_84"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _19___INFLATION_B_MODES_AND_LOSING_THE_NOBEL_PRIZE: <Content>{
+    reference: {
+      title: '#19 - Inflation, B Modes and Losing the Nobel Prize',
+      authors: [{name: 'Brian Keating'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=L5MDDTFbpfU&t=3s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _20___KEPLER_MISSION_EXOPLANETS_WITH_JWST_FUTURE_IMAGERS: <Content>{
+    reference: {
+      title: '#20 - Kepler Mission, Exoplanets with JWST, Future Imagers',
+      authors: [{name: 'Natalie Batalha'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=BCWd7NuTIcY&t=4s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _21___EARLY_MARS_TERRAFORMINGSETTLING_MARS: <Content>{
+    reference: {
+      title: '#21 - Early Mars, Terraforming/Settling Mars',
+      authors: [{name: 'Edwin Kite'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=-DaeWdIaMZE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _22___ORIGIN_OF_LIFE_ASSEMBLY_THEORY_BIOSIGNATURES: <Content>{
+    reference: {
+      title: '#22 - Origin of Life, Assembly Theory, Biosignatures',
+      authors: [{name: 'Sara Walker'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=W2duMnWYhDY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  RULES_THAT_REALITY_PLAYS_BY___343: <Content>{
+    reference: {
+      title: 'Rules that Reality Plays By - #343',
+      authors: [{name: 'Stephen Wolfram'}, {name: 'Anastasia Bendebury'}, {name: 'Michael Shilo DeLay'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.demystifysci],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=aQCT_kboi8A"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MISTAKING_THE_MAP_FOR_THE_TERRITORY_IN_PHYSICS___344: <Content>{
+    reference: {
+      title: 'Mistaking the Map for the Territory in Physics - #344',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Anastasia Bendebury'}, {name: 'Michael Shilo DeLay'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.demystifysci],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=9068pS75Uds&t=2s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
   THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY: <Content>{
     reference: {
       title: 'The equivalence between geometrical structures and entropy',
@@ -3529,6 +3611,16 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2025: Content[] = [
+  REFERENCES.STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS,
+  REFERENCES.INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY,
+  REFERENCES.BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468,
+  REFERENCES._19___INFLATION_B_MODES_AND_LOSING_THE_NOBEL_PRIZE,
+  REFERENCES._20___KEPLER_MISSION_EXOPLANETS_WITH_JWST_FUTURE_IMAGERS,
+  REFERENCES._21___EARLY_MARS_TERRAFORMINGSETTLING_MARS,
+  REFERENCES._22___ORIGIN_OF_LIFE_ASSEMBLY_THEORY_BIOSIGNATURES,
+  REFERENCES.RULES_THAT_REALITY_PLAYS_BY___343,
+  REFERENCES.MISTAKING_THE_MAP_FOR_THE_TERRITORY_IN_PHYSICS___344,
+
   REFERENCES.THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY,
   REFERENCES.DEEPSEEK_CHINA_OPENAI_NVIDIA_XAI_TSMC_STARGATE_AND_AI_MEGACLUSTERS_459,
   REFERENCES.WHY_PHYSICS_WITHOUT_PHILOSOPHY_IS_DEEPLY_BROKEN_PART_2,
