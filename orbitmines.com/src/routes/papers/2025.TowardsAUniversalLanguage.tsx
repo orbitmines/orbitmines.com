@@ -43,7 +43,7 @@ export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   }, status: Viewed.VIEWED, found_at: "2025", viewed_at: "December, 2025"
 }
 
-const AUniversalLanguage = () => {
+const TowardsAUniversalLanguage = () => {
   const navigate = useNavigate();
 
   const referenceCounter = useCounter();
@@ -123,7 +123,7 @@ const AUniversalLanguage = () => {
   </Paper>
 }
 
-export default AUniversalLanguage;
+export default TowardsAUniversalLanguage;
 
 
 /**
