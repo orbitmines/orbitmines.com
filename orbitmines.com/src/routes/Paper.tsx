@@ -3,12 +3,12 @@ import OnIntelligibility from "./papers/2022.OnIntelligibility";
 import {useParams} from "react-router-dom";
 import Error from "./Error";
 import OnOrbits from "./papers/2023.OnOrbits";
-import AUniversalLanguage from "./papers/2024.AUniversalLanguage";
+import AUniversalLanguage from "./papers/2025.TowardsAUniversalLanguage";
 
 const PAPERS: { [key: string]: any } = {
     'on-intelligibility': OnIntelligibility,
     'on-orbits-equivalence-and-inconsistencies': OnOrbits,
-    'a-universal-language': AUniversalLanguage,
+    'towards-a-universal-language': AUniversalLanguage,
 }
 
 const Paper = () => {
