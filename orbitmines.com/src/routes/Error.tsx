@@ -1,5 +1,5 @@
-import Root from "./Root";
+import Minimap from "./Minimap";
 
-const Error = Root;
+const Error = Minimap;
 
 export default Error;

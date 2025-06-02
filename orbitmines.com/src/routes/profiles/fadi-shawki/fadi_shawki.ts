@@ -3,118 +3,514 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
-  COMPUTING_MACHINERY_AND_INTELLIGENCE: <Content>{  
-    reference: {                 title: 'Computing Machinery and Intelligence',      
-         authors: [{name: 'Alan M. Turing'}],      
-         organizations: [],  
-         year: '(1950)',      
-         link: "https://academic.oup.com/mind/article/LIX/236/433/986238?url=http://szyxflb.com&login=false"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-VON_NEUMANN_AND_LATTICE_THEORY: <Content>{  
-    reference: {                 title: 'Von Neumann and Lattice Theory',      
-         authors: [{name: 'Garrett Birkhoff'}],      
-         organizations: [],  
-         year: '(1958)',      
-         link: "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-64/issue-3.P2/Von-Neumann-and-lattice-theory/bams/1183522370.pdf"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION: <Content>{  
-    reference: {                 title: 'When Exactly Will the Eclipse Happen? A Multimillennium Tale of Computation',      
-         authors: [{name: 'Stephen Wolfram'}],      
-         organizations: [ORGANIZATIONS.wolfram],  
-         year: '(2024)',      
-         link: "https://writings.stephenwolfram.com/2024/03/when-exactly-will-the-eclipse-happen-a-multimillennium-tale-of-computation/"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM: <Content>{  
-    reference: {                 title: 'Are All Fish the Same Shape if You Stretch Them? The Victorian Tale of On Growth and Form',      
-         authors: [{name: 'Stephen Wolfram'}],      
-         organizations: [ORGANIZATIONS.wolfram],  
-         year: '(2017)',      
-         link: "https://writings.stephenwolfram.com/2017/10/are-all-fish-the-same-shape-if-you-stretch-them-the-victorian-tale-of-on-growth-and-form/"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS: <Content>{  
-    reference: {                 title: 'What’s Really Going On in Machine Learning? Some Minimal Models',      
-         authors: [{name: 'Stephen Wolfram'}],      
-         organizations: [ORGANIZATIONS.wolfram],  
-         year: '(2024)',      
-         link: "https://writings.stephenwolfram.com/2024/08/whats-really-going-on-in-machine-learning-some-minimal-models/"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM: <Content>{  
-    reference: {                 title: 'The Hydrogen Atom: Intro to Quantum',      
-         authors: [{name: 'Richard Behiel'}],      
-         organizations: [ORGANIZATIONS.youtube],  
-         year: 'Physics',      
-         link: "https://www.youtube.com/watch?v=-Y0XL-K0jy0"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF: <Content>{  
-    reference: {                 title: 'Mindscape 287 | Institutions and the Legacy of',      
-         authors: [{name: 'Jean-Paul Faguet'},{name: 'Sean Carroll'}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.mindscape],  
-         year: 'History',      
-         link: "https://www.youtube.com/watch?v=FKVmYeU11y0"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND: <Content>{  
-    reference: {                 title: 'Live Science | Spinal Graphs | Hypergraph Confluence, Symmetry and',      
-         authors: [{name: ''}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],  
-         year: 'Efficiency',      
-         link: "https://www.youtube.com/watch?v=uZkqNDIOQLs"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH: <Content>{  
-    reference: {                 title: 'Live Science | Infrageometry: Correspondences | Differential Geometry, Hypergraph',      
-         authors: [{name: ''}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],  
-         year: 'Rewriting',      
-         link: "https://www.youtube.com/watch?v=Mr1zfZtoFX0"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME: <Content>{  
-    reference: {                 title: 'Live Science | Quantum Paradoxes | Delayed Choice Quantum Eraser, CHSH Game,',      
-         authors: [{name: ''}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.wolfram_institute],  
-         year: 'Quasiprobabilities',      
-         link: "https://www.youtube.com/watch?v=rTKSWObWtNE"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER: <Content>{  
-    reference: {                 title: 'Consciousness, Biology, Universal Mind, Emergence, Cancer',      
-         authors: [{name: 'Michael Levin'},{name: 'Curt Jaimungal'}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.toe],  
-         year: 'Research',      
-         link: "https://www.youtube.com/watch?v=c8iFtaltX-s"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU: <Content>{  
-    reference: {                 title: 'The Crisis in (Fundamental) Physics is Worse Than You',      
-         authors: [{name: 'Sean Carroll'},{name: 'Curt Jaimungal'}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.toe],  
-         year: 'Think...',      
-         link: "https://www.youtube.com/watch?v=9AoRxtYZrZo"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST: <Content>{  
-    reference: {                 title: 'Neuralink and the Future of Humanity | Lex Fridman Podcast',      
-         authors: [{name: ''}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-         year: '#438',      
-         link: "https://www.youtube.com/watch?v=Kbk9BiPhm7o"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
-PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{  
-    reference: {                 title: 'Physics of Life, Time, Complexity, and Aliens | Lex Fridman Podcast',      
-         authors: [{name: 'Sara Walker'},{name: 'Lex Fridman'}],      
-         organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-         year: '#433',      
-         link: "https://www.youtube.com/watch?v=wwhTfyX9J34"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-},
+  STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS: <Content>{
+    reference: {
+      title: 'String diagram rewrite theory III: Confluence with and without Frobenius',
+      authors: [{name: 'Filippo Bonchi'}, {name: 'Fabio Gadducci'}, {name: 'Aleks Kissinger'}, {name: 'Pawel Sobocinski'}, {name: 'Fabio Zanasi'}],
+      organizations: [],
+      year: '(2022)',
+      link: "https://arxiv.org/abs/2109.06049"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY: <Content>{
+    reference: {
+      title: 'Influence of temporal information gaps on decision making: describing the dynamics of working memory',
+      authors: [{name: 'Alejandro Sospedra'}, {name: 'Santiago Canals'}, {name: 'Encarni Marcos'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://www.biorxiv.org/content/10.1101/2024.07.17.603868v1"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468: <Content>{
+    reference: {
+      title: 'Black Holes, Wormholes, Aliens, Paradoxes & Extra Dimensions | #468',
+      authors: [{name: 'Janna Levin'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=A6m4iJIw_84"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _19___INFLATION_B_MODES_AND_LOSING_THE_NOBEL_PRIZE: <Content>{
+    reference: {
+      title: '#19 - Inflation, B Modes and Losing the Nobel Prize',
+      authors: [{name: 'Brian Keating'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=L5MDDTFbpfU&t=3s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _20___KEPLER_MISSION_EXOPLANETS_WITH_JWST_FUTURE_IMAGERS: <Content>{
+    reference: {
+      title: '#20 - Kepler Mission, Exoplanets with JWST, Future Imagers',
+      authors: [{name: 'Natalie Batalha'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=BCWd7NuTIcY&t=4s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _21___EARLY_MARS_TERRAFORMINGSETTLING_MARS: <Content>{
+    reference: {
+      title: '#21 - Early Mars, Terraforming/Settling Mars',
+      authors: [{name: 'Edwin Kite'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=-DaeWdIaMZE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _22___ORIGIN_OF_LIFE_ASSEMBLY_THEORY_BIOSIGNATURES: <Content>{
+    reference: {
+      title: '#22 - Origin of Life, Assembly Theory, Biosignatures',
+      authors: [{name: 'Sara Walker'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=W2duMnWYhDY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  RULES_THAT_REALITY_PLAYS_BY___343: <Content>{
+    reference: {
+      title: 'Rules that Reality Plays By - #343',
+      authors: [{name: 'Stephen Wolfram'}, {name: 'Anastasia Bendebury'}, {name: 'Michael Shilo DeLay'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.demystifysci],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=aQCT_kboi8A"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MISTAKING_THE_MAP_FOR_THE_TERRITORY_IN_PHYSICS___344: <Content>{
+    reference: {
+      title: 'Mistaking the Map for the Territory in Physics - #344',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Anastasia Bendebury'}, {name: 'Michael Shilo DeLay'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.demystifysci],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=9068pS75Uds&t=2s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
+  THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY: <Content>{
+    reference: {
+      title: 'The equivalence between geometrical structures and entropy',
+      authors: [{name: 'Gabriele Carcassi'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=lp0RgZ6kQF8"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DEEPSEEK_CHINA_OPENAI_NVIDIA_XAI_TSMC_STARGATE_AND_AI_MEGACLUSTERS_459: <Content>{
+    reference: {
+      title: 'DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters | #459',
+      authors: [{name: 'Dylan Patel'}, {name: 'Nathan Lambert'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=_1f-o0nqpEI"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHY_PHYSICS_WITHOUT_PHILOSOPHY_IS_DEEPLY_BROKEN_PART_2: <Content>{
+    reference: {
+      title: 'Why Physics Without Philosophy Is Deeply Broken... [Part 2]',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=YaS1usLeXQM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  HARVARD_SCIENTIST_THERE_IS_NO_QUANTUM_MULTIVERSE_PART_3: <Content>{
+    reference: {
+      title: 'Harvard Scientist: "There is No Quantum Multiverse" [Part 3]',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=wrUvtqr4wOs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  HARVARD_PHYSICIST_DEBUNKS_PARTICLE_SUPERPOSITION: <Content>{
+    reference: {
+      title: 'Harvard Physicist Debunks Particle Superposition',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Manolis Kellis'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=MTD8xkbiGis&t=11s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  TOP_AI_SCIENTIST_UNIFIES_WOLFRAM_LEIBNIZ_CONSCIOUSNESS: <Content>{
+    reference: {
+      title: 'Top AI Scientist Unifies Wolfram, Leibniz, & Consciousness',
+      authors: [{name: 'William Hahn'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=3fkg0uTA3qU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_THEORY_THAT_EXPLAINS_YOU_FREE_ENERGY_PRINCIPLE: <Content>{
+    reference: {
+      title: 'The Theory That Explains YOU... (Free Energy Principle)',
+      authors: [{name: 'Michael Levin'}, {name: 'Karl Friston'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=0yOV9Pzk2zw"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  EINSTEIN_HIS_LIFE_AND_UNIVERSE: <Content>{
+    reference: {
+      title: 'Einstein: His Life and Universe',
+      authors: [{name: 'Walter Isaacson'}],
+      organizations: [],
+      year: '(2007)',
+      link: "https://en.wikipedia.org/wiki/Einstein:_His_Life_and_Universe"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY: <Content>{
+    reference: {
+      title: 'The future of brain emulation is looking spiky',
+      authors: [{name: 'Andy McKenzie'}],
+      organizations: [],
+      year: '(2025)',
+      link: "https://neurobiology.substack.com/p/the-future-of-brain-emulation-is"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHY_THE_GODFATHER_OF_AI_NOW_FEARS_HIS_OWN_CREATION: <Content>{
+    reference: {
+      title: 'Why The "Godfather of AI" Now Fears His Own Creation',
+      authors: [{name: 'Geoffrey Hinton'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=b_DUft-BdIE&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_MAJOR_FLAWS_IN_FUNDAMENTAL_PHYSICS: <Content>{
+    reference: {
+      title: 'The Major Flaws in Fundamental Physics',
+      authors: [{name: 'Sabine Hossenfelder'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=E3y-Z0pgupg&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_CRISIS_IN_STRING_THEORY_IS_WORSE_THAN_YOU_THINK: <Content>{
+    reference: {
+      title: 'The Crisis in String Theory is Worse Than You Think',
+      authors: [{name: 'Leonard Susskind'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=2p_Hlm6aCok&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MATH_HAS_CHANGED_FOREVER: <Content>{
+    reference: {
+      title: 'Math Has Changed Forever…',
+      authors: [{name: 'Yang-Hui He'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=wbP0KjWm0pw&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
+  APPLIED_CATEGORY_THEORY_IN_CHEMISTRY_COMPUTING_AND_SOCIAL_NETWORKS: <Content>{
+    reference: {
+      title: 'Applied Category Theory in Chemistry, Computing, and Social Networks',
+      authors: [{name: 'John Baez'}, {name: 'Simon Cho'}, {name: 'Daniel Cicala'}, {name: 'Nina Otter'}, {name: 'Valeria de Paiva'}],
+      organizations: [],
+      year: '(2022)',
+      link: "https://math.ucr.edu/home/baez/mrc_2022.pdf"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  UNIQUENESS_TREES_A_POSSIBLE_POLYNOMIAL_APPROACH_TO_THE_GRAPH_ISOMORPHISM_PROBLEM: <Content>{
+    reference: {
+      title: 'Uniqueness Trees: A Possible Polynomial Approach to the Graph Isomorphism Problem',
+      authors: [{name: 'Jonathan Gorard'}],
+      organizations: [],
+      year: '(2016)',
+      link: "https://arxiv.org/pdf/1606.06399"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ALIEN_CIVILIZATIONS_AND_THE_SEARCH_FOR_EXTRATERRESTRIAL_LIFE_LEX_FRIDMAN_PODCAST_455: <Content>{
+    reference: {
+      title: 'Alien Civilizations and the Search for Extraterrestrial Life | Lex Fridman Podcast #455',
+      authors: [{name: 'Adam Frank'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=yhZAXXI83-4&ab_channel=LexFridman"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THERES_NO_WAVE_FUNCTION: <Content>{
+    reference: {
+      title: 'There’s No Wave Function?',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=7oWip00iXbo&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_POTENTIAL_OF_THE_HUMAN_BRAIN: <Content>{
+    reference: {
+      title: 'The Potential of the Human Brain',
+      authors: [{name: 'Iain McGilchrist'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=Q9sBKCd2HD0&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_UNIVERSE_WRITES_ITSELF_INTO_EXISTENCE_MOMENT_BY_MOMENT: <Content>{
+    reference: {
+      title: 'The Universe Writes Itself Into Existence Moment by Moment',
+      authors: [{name: 'Avshalom Elitzur'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=pWRAaimQT1E&ab_channel=CurtJaimungal"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
+  HUNTERS_OF_DUNE: <Content>{
+    reference: {
+      title: 'Hunters of Dune',
+      authors: [{name: 'Brian Herbert'}, {name: 'Kevin J. Anderson'}],
+      organizations: [],
+      year: '(2006)',
+      link: "https://en.wikipedia.org/wiki/Hunters_of_Dune"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_LITTLE_BOOK_OF_DEEP_LEARNING: <Content>{
+    reference: {
+      title: 'The Little Book of Deep Learning',
+      authors: [{name: 'François Fleuret'}],
+      organizations: [],
+      year: '(2023)',
+      link: "https://fleuret.org/public/lbdl.pdf"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PREFACE_WHAT_IS_OPENGL: <Content>{
+    reference: {
+      title: 'Preface: What is OpenGL?',
+      authors: [{name: 'Eddy Luten'}],
+      organizations: [],
+      year: '(2014)',
+      link: "https://openglbook.com/chapter-0-preface-what-is-opengl.html#:~:text=On%20the%20most%20fundamental%20level,the%20finer%20details%20of%20OpenGL."
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  FOUNDATIONS_OF_BIDIRECTIONAL_PROGRAMMING_I_WELL_TYPED_SUBSTRUCTURAL_LANGUAGES: <Content>{
+    reference: {
+      title: 'Foundations of Bidirectional Programming I: Well-Typed Substructural Languages',
+      authors: [{name: 'Jules Hedges'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://cybercat.institute/2024/08/26/bidirectional-programming-i/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  FOUNDATIONS_OF_BIDIRECTIONAL_PROGRAMMING_II_NEGATIVE_TYPES: <Content>{
+    reference: {
+      title: 'Foundations of Bidirectional Programming II: Negative Types',
+      authors: [{name: 'Jules Hedges'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://cybercat.institute/2024/09/05/bidirectional-programming-ii/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_YOGA_OF_CONTEXTS_I: <Content>{
+    reference: {
+      title: 'The Yoga of Contexts I',
+      authors: [{name: 'Jules Hedges'}],
+      organizations: [],
+      year: '(2024)',
+      link: "https://cybercat.institute/2024/06/28/yoga-contexts/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHY_DOES_BIOLOGICAL_EVOLUTION_WORK_A_MINIMAL_MODEL_FOR_BIOLOGICAL_EVOLUTION_AND_OTHER_ADAPTIVE_PROCESSES: <Content>{
+    reference: {
+      title: 'Why Does Biological Evolution Work? A Minimal Model for Biological Evolution and Other Adaptive Processes',
+      authors: [{name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.wolfram],
+      year: '(2024)',
+      link: "https://writings.stephenwolfram.com/2024/05/why-does-biological-evolution-work-a-minimal-model-for-biological-evolution-and-other-adaptive-processes/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _20TH_CENTURY_S_GREATEST_LIVING_SCIENTIST_SIR_ROGER_PENROSE: <Content>{
+    reference: {
+      title: '20th Century’s Greatest Living Scientist | Sir Roger Penrose',
+      authors: [{name: 'Roger Penrose'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=sGm505TFMbU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_QUANTUM_HERETIC_A_NEW_THEORY_OF_EVERYTHING: <Content>{
+    reference: {
+      title: 'The Quantum Heretic: A New Theory of Everything?',
+      authors: [{name: 'Jonathan Oppenheim'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=6Z_p3viqW1g"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MAYA_AZTEC_INCA_AND_LOST_CIVILIZATIONS_OF_SOUTH_AMERICA_LEX_FRIDMAN_PODCAST_446: <Content>{
+    reference: {
+      title: 'Maya, Aztec, Inca, and Lost Civilizations of South America | Lex Fridman Podcast #446',
+      authors: [{name: 'Ed Barnhart'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=AzzE7GOvYz8"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_ROMAN_EMPIRE___RISE_AND_FALL_OF_ANCIENT_ROME_LEX_FRIDMAN_PODCAST_443: <Content>{
+    reference: {
+      title: 'The Roman Empire - Rise and Fall of Ancient Rome | Lex Fridman Podcast #443',
+      authors: [{name: 'Gregory Aldrete'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=DyoVVSggPjY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MINDSCAPE_289_THE_NEXT_GENERATION_OF_PARTICLE_EXPERIMENTS: <Content>{
+    reference: {
+      title: 'Mindscape 289 | The Next Generation of Particle Experiments',
+      authors: [{name: 'Cari Cesarotti'}, {name: 'Sean Carroll'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=ELe3fvuTsdE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MINDSCAPE_291_THE_BIOLOGY_OF_DEATH_AND_AGING: <Content>{
+    reference: {
+      title: 'Mindscape 291 | The Biology of Death and Aging',
+      authors: [{name: 'Venki Ramakrishnan'}, {name: 'Sean Carroll'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=aNqwamgxNiU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MATHS_OF_QUANTUM_MECHANICS: <Content>{
+    reference: {
+      title: 'Maths of Quantum Mechanics',
+      authors: [{name: 'Brandon Sandoval'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2023)',
+      link: "https://www.youtube.com/watch?v=3nvbBEzfmE8&list=PL8ER5-vAoiHAWm1UcZsiauUGPlJChgNXC"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
+  COMPUTING_MACHINERY_AND_INTELLIGENCE: <Content>{
+    reference: {
+      title: 'Computing Machinery and Intelligence',
+      authors: [{name: 'Alan M. Turing'}],
+      organizations: [],
+      year: '(1950)',
+      link: "https://academic.oup.com/mind/article/LIX/236/433/986238?url=http://szyxflb.com&login=false"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  VON_NEUMANN_AND_LATTICE_THEORY: <Content>{
+    reference: {
+      title: 'Von Neumann and Lattice Theory',
+      authors: [{name: 'Garrett Birkhoff'}],
+      organizations: [],
+      year: '(1958)',
+      link: "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-64/issue-3.P2/Von-Neumann-and-lattice-theory/bams/1183522370.pdf"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION: <Content>{
+    reference: {
+      title: 'When Exactly Will the Eclipse Happen? A Multimillennium Tale of Computation',
+      authors: [{name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.wolfram],
+      year: '(2024)',
+      link: "https://writings.stephenwolfram.com/2024/03/when-exactly-will-the-eclipse-happen-a-multimillennium-tale-of-computation/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM: <Content>{
+    reference: {
+      title: 'Are All Fish the Same Shape if You Stretch Them? The Victorian Tale of On Growth and Form',
+      authors: [{name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.wolfram],
+      year: '(2017)',
+      link: "https://writings.stephenwolfram.com/2017/10/are-all-fish-the-same-shape-if-you-stretch-them-the-victorian-tale-of-on-growth-and-form/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS: <Content>{
+    reference: {
+      title: 'What’s Really Going On in Machine Learning? Some Minimal Models',
+      authors: [{name: 'Stephen Wolfram'}],
+      organizations: [ORGANIZATIONS.wolfram],
+      year: '(2024)',
+      link: "https://writings.stephenwolfram.com/2024/08/whats-really-going-on-in-machine-learning-some-minimal-models/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM: <Content>{
+    reference: {
+      title: 'The Hydrogen Atom: Intro to Quantum Physics',
+      authors: [{name: 'Richard Behiel'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '2023',
+      link: "https://www.youtube.com/watch?v=-Y0XL-K0jy0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF: <Content>{
+    reference: {
+      title: 'Mindscape 287 | Institutions and the Legacy of History',
+      authors: [{name: 'Jean-Paul Faguet'}, {name: 'Sean Carroll'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=FKVmYeU11y0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND: <Content>{
+    reference: {
+      title: 'Live Science | Spinal Graphs | Hypergraph Confluence, Symmetry and Efficiency',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=uZkqNDIOQLs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH: <Content>{
+    reference: {
+      title: 'Live Science | Infrageometry: Correspondences | Differential Geometry, Hypergraph Rewriting',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=Mr1zfZtoFX0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME: <Content>{
+    reference: {
+      title: 'Live Science | Quantum Paradoxes | Delayed Choice Quantum Eraser, CHSH Game, Quasiprobabilities',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=rTKSWObWtNE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER: <Content>{
+    reference: {
+      title: 'Consciousness, Biology, Universal Mind, Emergence, Cancer Research',
+      authors: [{name: 'Michael Levin'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=c8iFtaltX-s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU: <Content>{
+    reference: {
+      title: 'The Crisis in (Fundamental) Physics is Worse Than You Think...',
+      authors: [{name: 'Sean Carroll'}, {name: 'Curt Jaimungal'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=9AoRxtYZrZo"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST: <Content>{
+    reference: {
+      title: 'Neuralink and the Future of Humanity | Lex Fridman Podcast #438',
+      authors: [{name: ''}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=Kbk9BiPhm7o"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
+    reference: {
+      title: 'Physics of Life, Time, Complexity, and Aliens | Lex Fridman Podcast #433',
+      authors: [{name: 'Sara Walker'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '2024',
+      link: "https://www.youtube.com/watch?v=wwhTfyX9J34"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
   PLURALISTIC_THE_DISENSHITTIFIED_INTERNET_STARTS_WITH_LOYAL_USER_AGENTS: <Content>{
     reference: {
       title: 'Pluralistic: The disenshittified internet starts with loyal "user agents"',
@@ -135,37 +531,37 @@ PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
   },
   FUN_RAISING_FUNDING_SCHOOL_QA_SEMF: <Content>{
     reference: {
-      title: 'Fun Raising | Funding & School Q&A + SEMF',
+      title: 'Fun Raising | Funding & School Q&A + SEMF Social',
       authors: [{name: 'Fadi Shawki'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}, {name: 'Elena Isasi Theus'}, {name: 'Anmol Agrawal'}, {name: 'Carlos Zapata Carratalá'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
-      year: 'Social',
+      year: '2024',
       link: "https://www.youtube.com/watch?v=FL8zNDbrAR0"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   HUMAN_MEMORY_IMAGINATION_DEJA_VU_AND_FALSE_MEMORIES_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
-      title: 'Human Memory, Imagination, Deja Vu, and False Memories | Lex Fridman Podcast',
+      title: 'Human Memory, Imagination, Deja Vu, and False Memories | Lex Fridman Podcast #430',
       authors: [{name: 'Charan Ranganath'}, {name: 'Lex Fridman'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
-      year: '#430',
+      year: '2024',
       link: "https://www.youtube.com/watch?v=4iuepdI3wCU"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   JUNGLE_APEX_PREDATORS_ALIENS_UNCONTACTED_TRIBES_AND_GOD_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
-      title: 'Jungle, Apex Predators, Aliens, Uncontacted Tribes, and God | Lex Fridman Podcast',
+      title: 'Jungle, Apex Predators, Aliens, Uncontacted Tribes, and God | Lex Fridman Podcast #429',
       authors: [{name: 'Paul Rosolie'}, {name: 'Lex Fridman'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
-      year: '#429',
+      year: '2024',
       link: "https://www.youtube.com/watch?v=pwN8u6HFH8U"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
   LONGEVITY_MEDITATION_PHILOSOPHIES_CONSCIOUSNESS_NATURE_OF: <Content>{
     reference: {
-      title: 'Longevity, Meditation, Philosophies, Consciousness, Nature of',
+      title: 'Longevity, Meditation, Philosophies, Consciousness, Nature of Reality',
       authors: [{name: 'Bryan Johnson'}, {name: 'Curt Jaimungal'}],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
-      year: 'Reality',
+      year: '2024',
       link: "https://www.youtube.com/watch?v=PXkhhHPUud4"
     }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
@@ -2864,7 +3260,7 @@ PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
 
   EXPLORER_ORBITMINES_RESEARCH: <Content>{
     reference: {
-      title: "Explorer - OrbitMines Research",
+      title: "Independent Researcher - OrbitMines Research",
       organizations: [ORGANIZATIONS.orbitmines_research],
       year: "July, 2022 - Present",
       link: "https://orbitmines.com/"
@@ -3032,6 +3428,10 @@ PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
   },
   THREEJS: <Content>{
     reference: {title: "Three.js", link: "https://github.com/mrdoob/three.js/"},
+    status: Viewed.IN_PROGRESS
+  },
+  NEXTJS: <Content>{
+    reference: {title: "Next.js", link: "https://nextjs.org/"},
     status: Viewed.IN_PROGRESS
   },
   DREI: <Content>{reference: {title: "drei", link: "https://github.com/pmndrs/drei"}, status: Viewed.IN_PROGRESS},
@@ -3210,7 +3610,56 @@ PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
 
 export default REFERENCES;
 
+export const ARTICLES_2025: Content[] = [
+  REFERENCES.STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS,
+  REFERENCES.INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY,
+  REFERENCES.BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468,
+  REFERENCES._19___INFLATION_B_MODES_AND_LOSING_THE_NOBEL_PRIZE,
+  REFERENCES._20___KEPLER_MISSION_EXOPLANETS_WITH_JWST_FUTURE_IMAGERS,
+  REFERENCES._21___EARLY_MARS_TERRAFORMINGSETTLING_MARS,
+  REFERENCES._22___ORIGIN_OF_LIFE_ASSEMBLY_THEORY_BIOSIGNATURES,
+  REFERENCES.RULES_THAT_REALITY_PLAYS_BY___343,
+  REFERENCES.MISTAKING_THE_MAP_FOR_THE_TERRITORY_IN_PHYSICS___344,
+
+  REFERENCES.THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY,
+  REFERENCES.DEEPSEEK_CHINA_OPENAI_NVIDIA_XAI_TSMC_STARGATE_AND_AI_MEGACLUSTERS_459,
+  REFERENCES.WHY_PHYSICS_WITHOUT_PHILOSOPHY_IS_DEEPLY_BROKEN_PART_2,
+  REFERENCES.HARVARD_SCIENTIST_THERE_IS_NO_QUANTUM_MULTIVERSE_PART_3,
+  REFERENCES.HARVARD_PHYSICIST_DEBUNKS_PARTICLE_SUPERPOSITION,
+  REFERENCES.TOP_AI_SCIENTIST_UNIFIES_WOLFRAM_LEIBNIZ_CONSCIOUSNESS,
+  REFERENCES.THE_THEORY_THAT_EXPLAINS_YOU_FREE_ENERGY_PRINCIPLE,
+
+  REFERENCES.EINSTEIN_HIS_LIFE_AND_UNIVERSE,
+  REFERENCES.THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY,
+  REFERENCES.WHY_THE_GODFATHER_OF_AI_NOW_FEARS_HIS_OWN_CREATION,
+  REFERENCES.THE_MAJOR_FLAWS_IN_FUNDAMENTAL_PHYSICS,
+  REFERENCES.THE_CRISIS_IN_STRING_THEORY_IS_WORSE_THAN_YOU_THINK,
+  REFERENCES.MATH_HAS_CHANGED_FOREVER
+]
+
 export const ARTICLES_2024: Content[] = [
+  REFERENCES.APPLIED_CATEGORY_THEORY_IN_CHEMISTRY_COMPUTING_AND_SOCIAL_NETWORKS,
+  REFERENCES.UNIQUENESS_TREES_A_POSSIBLE_POLYNOMIAL_APPROACH_TO_THE_GRAPH_ISOMORPHISM_PROBLEM,
+  REFERENCES.ALIEN_CIVILIZATIONS_AND_THE_SEARCH_FOR_EXTRATERRESTRIAL_LIFE_LEX_FRIDMAN_PODCAST_455,
+  REFERENCES.THERES_NO_WAVE_FUNCTION,
+  REFERENCES.THE_POTENTIAL_OF_THE_HUMAN_BRAIN,
+  REFERENCES.THE_UNIVERSE_WRITES_ITSELF_INTO_EXISTENCE_MOMENT_BY_MOMENT,
+
+  REFERENCES.HUNTERS_OF_DUNE,
+  REFERENCES.THE_LITTLE_BOOK_OF_DEEP_LEARNING,
+  REFERENCES.PREFACE_WHAT_IS_OPENGL,
+  REFERENCES.FOUNDATIONS_OF_BIDIRECTIONAL_PROGRAMMING_I_WELL_TYPED_SUBSTRUCTURAL_LANGUAGES,
+  REFERENCES.FOUNDATIONS_OF_BIDIRECTIONAL_PROGRAMMING_II_NEGATIVE_TYPES,
+  REFERENCES.THE_YOGA_OF_CONTEXTS_I,
+  REFERENCES.WHY_DOES_BIOLOGICAL_EVOLUTION_WORK_A_MINIMAL_MODEL_FOR_BIOLOGICAL_EVOLUTION_AND_OTHER_ADAPTIVE_PROCESSES,
+  REFERENCES._20TH_CENTURY_S_GREATEST_LIVING_SCIENTIST_SIR_ROGER_PENROSE,
+  REFERENCES.THE_QUANTUM_HERETIC_A_NEW_THEORY_OF_EVERYTHING,
+  REFERENCES.MAYA_AZTEC_INCA_AND_LOST_CIVILIZATIONS_OF_SOUTH_AMERICA_LEX_FRIDMAN_PODCAST_446,
+  REFERENCES.THE_ROMAN_EMPIRE___RISE_AND_FALL_OF_ANCIENT_ROME_LEX_FRIDMAN_PODCAST_443,
+  REFERENCES.MINDSCAPE_289_THE_NEXT_GENERATION_OF_PARTICLE_EXPERIMENTS,
+  REFERENCES.MINDSCAPE_291_THE_BIOLOGY_OF_DEATH_AND_AGING,
+  REFERENCES.MATHS_OF_QUANTUM_MECHANICS,
+
   REFERENCES.COMPUTING_MACHINERY_AND_INTELLIGENCE,
   REFERENCES.VON_NEUMANN_AND_LATTICE_THEORY,
   REFERENCES.WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION,
@@ -3549,6 +3998,80 @@ export const ARTICLES_2022: Content[] = [
   REFERENCES.ROBUST_SPEECH_RECOGNITION_VIA_LARGE_SCALE_WEAK_SUPERVISION,
 ]
 
+export const FAMILIAR_TOOLS: Content[] = [
+
+  REFERENCES.PYTHON,
+  // REFERENCES.GO,
+  // REFERENCES.CHYP,
+  // REFERENCES.LLVM,
+  // REFERENCES.HASKELL,
+  REFERENCES.JAVA,
+  REFERENCES.RUBY_ON_RAILS,
+  REFERENCES.C_SHARP,
+  REFERENCES.DOT_NET,
+  REFERENCES.BLAZOR,
+  REFERENCES.JAVASCRIPT,
+  REFERENCES.KOTLIN,
+  REFERENCES.CSS,
+  REFERENCES.SASS,
+  REFERENCES.HTML,
+  REFERENCES.WASM,
+  REFERENCES.WEBGPU,
+  REFERENCES.RUST,
+  REFERENCES.CPP,
+  REFERENCES.WOLFRAM_LANGUAGE,
+
+  REFERENCES.WEBPACK,
+
+  REFERENCES.ASSEMBLY_SCRIPT,
+  REFERENCES.TYPESCRIPT,
+  REFERENCES.REACT,
+  // REFERENCES.BLUEPRINT_JS,
+  // REFERENCES.SLATE,
+  REFERENCES.THREEJS,
+  REFERENCES.DREI,
+  REFERENCES.NEXTJS,
+
+  REFERENCES.IPFS,
+  REFERENCES.IPVM,
+  REFERENCES.SQL,
+  REFERENCES.MYSQL,
+  REFERENCES.POSTGRESQL,
+  REFERENCES.MONGO_DB,
+  REFERENCES.REDIS,
+  REFERENCES.RABBIT_MQ,
+
+  REFERENCES.GIT,
+  REFERENCES.GITLAB,
+  REFERENCES.GITHUB,
+  REFERENCES.BITBUCKET,
+
+  REFERENCES.DOCKER,
+  REFERENCES.KUBERNETES,
+  REFERENCES.NGINX,
+  REFERENCES.NPM,
+  REFERENCES.MAVEN,
+
+  REFERENCES.LINUX,
+  REFERENCES.ANDROID,
+
+  REFERENCES.GCP,
+  REFERENCES.AZURE,
+  REFERENCES.AWS,
+
+  // REFERENCES.SPIGOT_MC,
+  // REFERENCES.BUNGEE_CORD,
+  // REFERENCES.BUKKIT,
+
+  // REFERENCES.FLATPAK,
+  // REFERENCES.OBS,
+  // REFERENCES.CLOUDFLARE,
+
+  // REFERENCES.INTELLI_J,
+  // REFERENCES.VS_CODE,
+  // REFERENCES.ECLIPSE,
+];
+
 export const fadi_shawki = <TProfile>{
   first_name: 'Fadi',
   last_name: 'Shawki',
@@ -3558,11 +4081,11 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.jpg',
 
-  date: '2024-06-01',
+  date: '2025-02-01',
 
   email: 'fadi.shawki@orbitmines.com',
 
-  title: "2024. Fadi Shawki",
+  title: "2025. Fadi Shawki",
   subtitle: "A self-profile by some 24-solar-orbiting explorer.",
 
   reference: {
@@ -3618,8 +4141,8 @@ export const fadi_shawki = <TProfile>{
       link: 'https://orcid.org/0009-0009-9288-992X'
     },
 
-    {organization: ORGANIZATIONS.ipfs, link: 'https://discuss.ipfs.tech/u/fadishawki'},
-    {organization: ORGANIZATIONS.nixos, link: 'https://discourse.nixos.org/u/fadishawki'},
-    {organization: ORGANIZATIONS.fission, link: 'https://talk.fission.codes/u/fadishawki/'},
+    // {organization: ORGANIZATIONS.ipfs, link: 'https://discuss.ipfs.tech/u/fadishawki'},
+    // {organization: ORGANIZATIONS.nixos, link: 'https://discourse.nixos.org/u/fadishawki'},
+    // {organization: ORGANIZATIONS.fission, link: 'https://talk.fission.codes/u/fadishawki/'},
   ]
 }

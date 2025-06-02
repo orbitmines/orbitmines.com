@@ -40,7 +40,7 @@ export const ON_INTELLIGIBILITY: Content = { reference: {
     notes: [{
       date: '2023-11-27',
       render: () => <span>
-        I started distilling a years' worth of thoughts/explorations on 2023-12-11. Already - on the first day -, distributing them within the buckets of two titles: "On the intelligibility of (dynamic) systems and associated uncertainty" and "On Functional Equivalence and Compression". Though I initially didn't intend to publish these thoughts quickly, that changed on 2023-12-22. While exploring Melanie Mitchell's Mastodon account, I found her <a href="https://sigmoid.social/@melaniemitchell/109303350293539759" target="_blank">post</a> on the Lab42 essay competition, which prompted me to accelerate my timeline.
+        I started distilling a years' worth of thoughts/explorations on 2023-12-11. Already - on the first day -, distributing them within the buckets of two titles: "On the intelligibility of (dynamic) systems and associated uncertainty" and "On Functional Equivalence and Compression". Though I initially didn't intend to publish these thoughts quickly, that changed on 2022-12-22. While exploring Melanie Mitchell's Mastodon account, I found her <a href="https://sigmoid.social/@melaniemitchell/109303350293539759" target="_blank">post</a> on the Lab42 essay competition, which prompted me to accelerate my timeline.
       </span>
     }, {
       date: '2023-08-03',

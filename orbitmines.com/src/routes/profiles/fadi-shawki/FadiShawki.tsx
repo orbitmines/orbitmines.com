@@ -1,5 +1,5 @@
 import React from 'react';
-import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024} from "./fadi_shawki";
+import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024, ARTICLES_2025} from "./fadi_shawki";
 import ORGANIZATIONS, {Viewed} from "../../../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "../profiles";
 import {ON_INTELLIGIBILITY} from "../../papers/2022.OnIntelligibility";
@@ -27,10 +27,10 @@ export const ONGOING_PROJECTS = [
     },
     {
         reference: {
-            title: "Intercommunication between Languages",
+            title: "Communication between Languages",
             organizations: [ORGANIZATIONS.github],
             year: "2024-2025?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Indexing%20existing%20Abstract%20Models%20(2024-2025%3F).md"
+            link: "https://github.com/orbitmines/library"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -38,7 +38,7 @@ export const ONGOING_PROJECTS = [
             title: "(Universal) Version Control",
             organizations: [ORGANIZATIONS.github],
             year: "2024",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20(Hypergraphic)%20Version%20Control%20System%20through%20Rays%20(2024).md"
+            link: "https://github.com/orbitmines/archive/blob/main/projects/Writing%20-%202025.%20A%20Universal%20Language.md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -46,15 +46,7 @@ export const ONGOING_PROJECTS = [
             title: "(Universal) Compression Infrastructure",
             organizations: [ORGANIZATIONS.github],
             year: "2025?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20(Hypergraphic)%20Version%20Control%20System%20through%20Rays%20(2024).md"
-        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
-    },
-    {
-        reference: {
-            title: "(Universal) Networking Infrastructure",
-            organizations: [ORGANIZATIONS.github],
-            year: "2024",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Computer%20Networking%2C%20Security%2C%20Encryption%20%20%26%20Communication%20(2025%3F).md"
+            link: "https://github.com/orbitmines/archive/blob/main/projects/Writing%20-%202025.%20A%20Universal%20Language.md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -63,14 +55,6 @@ export const ONGOING_PROJECTS = [
             organizations: [ORGANIZATIONS.github],
             year: "Ongoing",
             link: "https://github.com/orbitmines/archive/blob/main/projects/ONGOING%20Project%20Logistics.md"
-        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
-    },
-    {
-        reference: {
-            title: "Open Call for Funding",
-            organizations: [ORGANIZATIONS.github],
-            year: "Ongoing",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/ONGOING%20Project%20-%20Funding.md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -85,8 +69,8 @@ export const ONGOING_PROJECTS = [
         reference: {
             title: "Research towards Designs",
             organizations: [ORGANIZATIONS.github],
-            year: "2024",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024).md"
+            year: "2027+?",
+            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024-2025).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -94,7 +78,7 @@ export const ONGOING_PROJECTS = [
             title: "Education",
             organizations: [ORGANIZATIONS.github],
             year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/INDEFINITE%20Project%20-%20Education%20(2027%2B%3F).md"
+            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/INDEFINITE%20Project%20-%20Education%20(2027%2B%3F).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -102,7 +86,7 @@ export const ONGOING_PROJECTS = [
             title: "Physics (& Hardware)",
             organizations: [ORGANIZATIONS.github],
             year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/PENDING%20(2027%3F%2B)%20%3B%20Physics%20(%26%20Hardware).md"
+            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Physics%20(%26%20Hardware).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -110,7 +94,7 @@ export const ONGOING_PROJECTS = [
             title: "Operating System",
             organizations: [ORGANIZATIONS.github],
             year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
+            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     }
 ]
@@ -119,16 +103,7 @@ const FadiShawki = () => {
     const profile = PROFILES.fadi_shawki;
 
     return <Profile profile={profile}>
-        <Arc head={<span>
-      TGBG but the solution to TGBG is TGBG.🤔
-    </span>} buffer={false}>
-            {/*<Section head="Looking for a (Compiler, Chip, Language, ...)-(Research, Design)-related position">*/}
-            {/*  Feel free to contact me on the socials specified above.*/}
-            {/*</Section>*/}
-            <Section head="Looking for funding, collaboration or anyone curious to learn more">
-                Feel free to contact me on the socials specified above.
-            </Section>
-
+        <Arc buffer={false}>
             <CanvasContainer style={{height: '110px'}}>
                 <canvas
                     style={{
@@ -221,6 +196,9 @@ const FadiShawki = () => {
 
         {/* Include things like wikipedia exposure/other things like github ? */}
         <Arc head="Literary Exposure">
+            <Section head="2025">
+                <Category content={ARTICLES_2025}/>
+            </Section>
             <Section head="2024">
                 <Category content={ARTICLES_2024}/>
             </Section>

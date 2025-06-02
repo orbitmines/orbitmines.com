@@ -25,6 +25,8 @@ import zx_calculus_icon from "././zx/icon.png";
 import active_inference_institute_icon from "././active-inference-institute/channels4_profile.jpg";
 import toe_icon from "././toe/toe.jpg";
 import syco_icon from "././syco/logo.png";
+import cool_worlds_podcast_icon from "././cool_worlds/channels4_profile.jpg";
+import demystifysci_icon from "././demystifysci/channels4_profile.jpg";
 import {ReferenceProps, Renderable} from "../paper/Paper";
 
 export type SVG = {
@@ -112,6 +114,20 @@ const ORGANIZATIONS = {
   orbitmines_minecraft_prison: <TOrganization>{key: 'orbitmines-minecraft-prison', name: "", assets: {icon_png: prison_icon,},},
   orbitmines_minecraft_creative: <TOrganization>{key: 'orbitmines-minecraft-creative', name: "", assets: {icon_png: creative_icon,},},
   orbitmines_minecraft_minigames: <TOrganization>{key: 'orbitmines-minecraft-minigames', name: "", assets: {icon_png: minigames_icon,},},
+  demystifysci: <TOrganization>{
+    key: 'demystifysci',
+    name: "demystifysci",
+    assets: {
+      icon_png: demystifysci_icon,
+    }
+  },
+  cool_worlds_podcast: <TOrganization>{
+    key: 'cool_worlds_podcast',
+    name: "cool_worlds_podcast",
+    assets: {
+      icon_png: cool_worlds_podcast_icon,
+    }
+  },
   syco: <TOrganization>{
     key: 'syco',
     name: "syco",
@@ -486,26 +502,26 @@ ORGANIZATIONS.orbitmines_research.profile = {
     { organization: ORGANIZATIONS.discord, display: 'discord.orbitmines.com', link: 'https://discord.orbitmines.com' },
     { organization: ORGANIZATIONS.github, display: 'orbitmines', link: 'https://github.com/orbitmines' },
     { organization: ORGANIZATIONS.twitter, display: '@OrbitMines', link: 'https://twitter.com/OrbitMines' },
-    { organization: ORGANIZATIONS.gitlab, display: '@orbitmines', link: 'https://gitlab.com/orbitmines' },
     { organization: ORGANIZATIONS.instagram, display: '@orbitmines', link: 'https://www.instagram.com/orbitmines/' },
     { organization: ORGANIZATIONS.youtube, display: '@OrbitMines', link: 'https://www.youtube.com/@OrbitMines' },
     { organization: ORGANIZATIONS.twitch, display: '@orbitmines', link: 'https://www.twitch.tv/orbitmines' },
     { organization: ORGANIZATIONS.linkedin, display: 'orbitmines', link: 'https://www.linkedin.com/company/orbitmines/' },
+    { organization: ORGANIZATIONS.gitlab, display: '@orbitmines', link: 'https://gitlab.com/orbitmines' },
     { organization: ORGANIZATIONS.mastodon, display: '@orbitmines', link: 'https://mastodon.orbitmines.com/@orbitmines' },
     { organization: ORGANIZATIONS.facebook, display: 'OrbitMines', link: 'https://www.facebook.com/profile.php?id=61550528503885' },
   ]
 }
 
 export const PLATFORMS = [
-  ORGANIZATIONS.discord.key,
   ORGANIZATIONS.github.key,
   ORGANIZATIONS.twitter.key,
+  ORGANIZATIONS.discord.key,
+  ORGANIZATIONS.linkedin.key,
   ORGANIZATIONS.orcid.key,
   ORGANIZATIONS.instagram.key,
   ORGANIZATIONS.youtube.key,
   ORGANIZATIONS.twitch.key,
-  ORGANIZATIONS.linkedin.key,
-  ORGANIZATIONS.mastodon.key,
+  // ORGANIZATIONS.mastodon.key,
   ORGANIZATIONS.facebook.key,
 ]
 

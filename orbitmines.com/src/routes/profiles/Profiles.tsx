@@ -4,7 +4,7 @@ import Error from "../Error";
 import FadiShawki from "./fadi-shawki/FadiShawki";
 
 const PROFILES: { [key: string]: any } = {
-    'fadi-shawki': FadiShawki,
+    'fadi-shawki': FadiShawki
 }
 
 const Profile = () => {
