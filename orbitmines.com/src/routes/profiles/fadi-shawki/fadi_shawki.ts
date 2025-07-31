@@ -3,6 +3,87 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  READY_PLAYER_ONE: <Content>{
+    reference: {
+      title: 'Ready Player One',
+      authors: [{name: 'Ernest Cline'}],
+      organizations: [],
+      year: '(2011)',
+      link: "https://en.wikipedia.org/wiki/Ready_Player_One"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  READY_PLAYER_TWO: <Content>{
+    reference: {
+      title: 'Ready Player Two',
+      authors: [{name: 'Ernest Cline'}],
+      organizations: [],
+      year: '(2020)',
+      link: "https://en.wikipedia.org/wiki/Ready_Player_Two"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MSP_101_GENERALISATION_IN_LLMS_PETAR_VELIČKOVIĆ: <Content>{
+    reference: {
+      title: 'MSP 101: Generalisation in LLMs (Petar Veličković)',
+      authors: [{name: 'Petar Veličković'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=7Z144Ymohd0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  SUNDAR_PICHAI_CEO_OF_GOOGLE_AND_ALPHABET_471: <Content>{
+    reference: {
+      title: 'Sundar Pichai: CEO of Google and Alphabet | #471',
+      authors: [{name: 'Sundar Pichai'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=9V6tWC4CdFQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  TERENCE_TAO_HARDEST_PROBLEMS_IN_MATHEMATICS_PHYSICS_THE_FUTURE_OF_AI_472: <Content>{
+    reference: {
+      title: 'Terence Tao: Hardest Problems in Mathematics, Physics & the Future of AI | #472',
+      authors: [{name: 'Terence Tao'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=HUkBz-cdB-k"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DHH_FUTURE_OF_PROGRAMMING_AI_RUBY_ON_RAILS_PRODUCTIVITY_PARENTING_474: <Content>{
+    reference: {
+      title: 'DHH: Future of Programming, AI, Ruby on Rails, Productivity & Parenting | #474',
+      authors: [{name: 'David Heinemeier Hansson'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=vagyIcmIGOQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DEMIS_HASSABIS_FUTURE_OF_AI_SIMULATING_REALITY_PHYSICS_AND_VIDEO_GAMES_475: <Content>{
+    reference: {
+      title: 'Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games | #475',
+      authors: [{name: 'Demis Hassabis'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=-HzgcbRXUK8&t=8677s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MINDSCAPE_323_JACOB_BARANDES_ON_INDIVISIBLE_STOCHASTIC_QUANTUM_MECHANICS: <Content>{
+    reference: {
+      title: 'Mindscape 323 | Jacob Barandes on Indivisible Stochastic Quantum Mechanics',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Sean Carroll'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=gINYis8BgSY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _23___FINE_TUNING_MULTIVERSE_COSMOLOGICAL_TENSIONS: <Content>{
+    reference: {
+      title: '#23 - Fine-Tuning, Multiverse, Cosmological Tensions',
+      authors: [{name: 'Geraint Lewis'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=OejwZqh-F9U&t=29s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
   STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS: <Content>{
     reference: {
       title: 'String diagram rewrite theory III: Confluence with and without Frobenius',
@@ -3329,6 +3410,14 @@ export const REFERENCES = {
       link: "https://semf.org.es/school2023/"
     }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
   },
+  SEMF_2025: <Content>{
+    reference: {
+      title: "SEMF School of 2025",
+      organizations: [ORGANIZATIONS.semf],
+      year: "2025",
+      link: "https://semf.org.es/school2025/"
+    }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
+  },
 
   SYCO_12: <Content>{
     reference: {
@@ -3611,6 +3700,16 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2025: Content[] = [
+  REFERENCES.READY_PLAYER_ONE,
+  REFERENCES.READY_PLAYER_TWO,
+  REFERENCES.MSP_101_GENERALISATION_IN_LLMS_PETAR_VELIČKOVIĆ,
+  REFERENCES.SUNDAR_PICHAI_CEO_OF_GOOGLE_AND_ALPHABET_471,
+  REFERENCES.TERENCE_TAO_HARDEST_PROBLEMS_IN_MATHEMATICS_PHYSICS_THE_FUTURE_OF_AI_472,
+  REFERENCES.DHH_FUTURE_OF_PROGRAMMING_AI_RUBY_ON_RAILS_PRODUCTIVITY_PARENTING_474,
+  REFERENCES.DEMIS_HASSABIS_FUTURE_OF_AI_SIMULATING_REALITY_PHYSICS_AND_VIDEO_GAMES_475,
+  REFERENCES.MINDSCAPE_323_JACOB_BARANDES_ON_INDIVISIBLE_STOCHASTIC_QUANTUM_MECHANICS,
+  REFERENCES._23___FINE_TUNING_MULTIVERSE_COSMOLOGICAL_TENSIONS,
+
   REFERENCES.STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS,
   REFERENCES.INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY,
   REFERENCES.BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468,
@@ -4106,6 +4205,7 @@ export const fadi_shawki = <TProfile>{
       REFERENCES.VWO,
     ],
     attended_events: [
+      REFERENCES.SEMF_2025,
       REFERENCES.INTO_THE_INFORMATION_CONTINUUM_2024_05_04,
       REFERENCES.SYCO_12,
       REFERENCES.INTO_THE_INFORMATION_CONTINUUM_2024_03_09,
