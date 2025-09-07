@@ -79,23 +79,7 @@ const _2025_09_NGI_GrantProposal = () => {
 
         <BR/>
 
-        What makes the language unique is that it treats everything like a structure similar to a hypergraph. As an example: It implements something like a Graph as a refinement of Hypergraph, and Array as a refinement of Graph. Then something like a binary string: A bit is an Array of length 2. Which finds itself defined at points in another Array which is the binary string.
-
-        <BR/>
-
-        Like that the intermediate representation used in the compiler, is the same as the language itself; as the control-flow graph is just another hypergraph.
-
-        <BR/>
-
-        You also get the unique property: that checking the equality of two objects simply become checking the equality of hypergraphs (and custom defined equivalences). And it's automatically defined for all objects in the language.
-
-        <BR/>
-
         If at the end of this project I can start working on an IDE (as the next project) in the language itself. I'd consider it a success.
-
-        <BR/>
-
-        (Some more details of specific features of the language I've put in the other sections)
       </Section>
       <Section head="Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?" sub="(Optional) This can help us determine if you are the right person to undertake this effort">
         I have not been involved with other projects related to this project before. Except for a minor bug-fix, this is the first time I'm contributing to an open source project.
@@ -137,7 +121,7 @@ const _2025_09_NGI_GrantProposal = () => {
         <BR/>
         (3) As working with theorem provers is quite new to me, implementing that functionality into the language will be a challenge. (As is working with proofs in possibly infinite spaces)
         <BR/>
-        (4) The technical challenge of writing some of the algorithms for working with hypergraphs.
+        (4) Since the whole language is based on hypergraphs: The technical challenge of writing some of the algorithms for working with hypergraphs.
         <BR/>
         (5) One feature of the interactive theorem prover I'd like, and part of language called function intensionality (so checking whether the implementations of two functions mean the same thing) is something I'm still unsure about how to implement.
       </Section>
