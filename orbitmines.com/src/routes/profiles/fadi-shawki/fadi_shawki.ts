@@ -4367,11 +4367,11 @@ export const fadi_shawki = <TProfile>{
   email: 'fadi.shawki@orbitmines.com',
 
   title: "2025. Fadi Shawki",
-  subtitle: "A self-profile by some 24-solar-orbiting explorer.",
+  subtitle: "A self-profile by some 25-solar-orbiting explorer.",
 
   reference: {
     // title: renderable<string>("2023. Fadi Shawki"),
-    // subtitle: renderable<string>("A self-profile by some 24-solar-orbiting explorer."),
+    // subtitle: renderable<string>("A self-profile by some 25-solar-orbiting explorer."),
   },
 
   content: {
