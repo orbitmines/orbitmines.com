@@ -117,7 +117,7 @@ const TowardsAUniversalLanguage = () => {
           I'll start this excursion from the perspective of a new text-based programming language. Though this project intends to step away from the limitations of the text file, all programming infrastructure relies on it. A move away from it, will require additional infrastructure. Even if this is achieved, being able to express as much as possible in a traditional text-based format will be beneficial. Though there will be design features which are simply not translatable to a purely text-based programming language.
         </Section>
         <Section head="Every variable..." sub="is Many">
-          Even though most compilers use some form of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation"}} />, a language which natively supports superposed values is certainly unusual. You only really see it used in type systems. But it is one of the cornerstones of the Ray language.
+          Even though most compilers use some form of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation"}} />, a language which natively supports superposed values is certainly unusual. (You only really see it used in type systems.) But it is one of the cornerstones of the Ray language.
           <BR/>
           Take for instance the following boolean values:
           <CodeBlock>
