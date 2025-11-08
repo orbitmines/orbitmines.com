@@ -16,7 +16,7 @@ export const Router = () => {
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>
-    <Route path="papers/*" element={<Navigate to="/archive" replace />}/>
+    <Route path="papers/*" element={<Navigate to={`/archive/${window.location.pathname.replace(/^\/papers\/?/, '')}`} replace />}/>
     <Route path="archive">
       <Route path=":item" element={<Archive />} />
     </Route>
