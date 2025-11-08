@@ -6,7 +6,7 @@ import Paper, {
   Block,
   BlueprintIcons16,
   BlueprintIcons20,
-  BR, Col,
+  BR, Children, CodeBlockProps, Col, highlight,
   HorizontalLine,
   JetBrainsMono,
   PaperProps,
@@ -22,11 +22,12 @@ import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMin
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 import _ from "lodash";
+import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
     title: "2025 Progress Update: Towards A Universal Language",
-    subtitle: "",
+    subtitle: "An initial look at the text-based .ray.txt programming language and subsequent design notes for its IDE: The Ether.",
     draft: true,
     link: 'https://orbitmines.com/archive/towards-a-universal-language',
     year: "2025",
@@ -43,6 +44,12 @@ export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   }, status: Viewed.VIEWED, found_at: "2025", viewed_at: "December, 2025"
 }
 
+export const CodeBlock = ({children}: Children) => {
+  return <Block style={{textAlign: 'left'}}>
+    {children}
+  </Block>;
+};
+
 const TowardsAUniversalLanguage = () => {
   const navigate = useNavigate();
 
@@ -51,8 +58,8 @@ const TowardsAUniversalLanguage = () => {
   const paper: Omit<PaperProps, 'children'> = {
     ...TOWARDS_A_UNIVERSAL_LANGUAGE.reference,
     subtitle: renderable<string>("", (value: any) => <>
-       <Reference is="footnote" index={referenceCounter()} reference={{title: 'github.com/orbitmines/ray', link: 'https://github.com/orbitmines/ray', authors: [{
-        ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}} />: A Universal Language.
+       An initial look at the text-based <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '.ray.txt programming language', link: 'https://github.com/orbitmines/ray', authors: [{
+        ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}} /> and subsequent design notes for its IDE: The Ether.
     </>),
     pdf: {
       fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
@@ -98,13 +105,53 @@ const TowardsAUniversalLanguage = () => {
 
     <Row center="xs">
       <Section head="Introduction">
+        After several years of abstract thought <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference}} />, actualization is the next step in the designing of a kind of universal programming language. The central question being: how do we evolve programming languages and their respective compilers forward?
 
+        <BR/>
+
+        With wider ambitions of: how do you design a programming language, which becomes an IDE, which becomes a operating system and (game) rendering engine.
       </Section>
 
-      <Arc head="Arc: Where to start...">
-        <Section head="Compression" sub="Generalization of (perceived, ..., partial) geodesics">
-            a
+      <Arc head="Arc: The .ray.txt Programming Language">
+        <Section head="A new language">
+          I'll start this excursion from the perspective of a new text-based programming language. Though this project intends to step away from the limitations of the text file, all programming infrastructure relies on it. A move away from it, will require additional infrastructure. Even if this is achieved, being able to express as much as possible in a traditional text-based format will be beneficial. Though there will be design features which are simply not translatable to a purely text-based programming language.
         </Section>
+        <Section head="Every variable..." sub="is Many">
+          Even though most compilers use some form of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation"}} />, a language which natively supports superposed values is certainly unusual. But it is one of the cornerstones of the Ray language.
+          <BR/>
+          Take for instance the following boolean values:
+          <CodeBlock>
+            false | true // (= boolean)<BR/>
+            false & true
+          </CodeBlock>
+          These are not boolean OR and AND operations. Instead they superpose possible values for that particular variable. In the | (OR) case, it's: this value is either false or true, but I don't know which one: This is just like the boolean type.
+          <BR/>
+          Since they are castable to boolean, you can call functions accepting a boolean with them:
+
+          <CodeBlock>
+            def s(x: boolean) = x ? "Y" : "N"<BR/>
+            s(false & true) // "Y" & "N"<BR/>
+            s(boolean) // "Y" | "N"
+          </CodeBlock>
+
+          This arbitrary structure is accessible through the @ operator:
+
+          <CodeBlock>
+            x = false | true<BR/>
+            x@ // Access iterable structure<BR/>
+            x@.count // == 2
+          </CodeBlock>
+
+          This takes care of an important requirement for a universal language, namely: "I want to be able to say: Whenever you have one of something, what if you had more of that thing.".
+        </Section>
+        <Section sub="has a Location">
+        </Section>
+        <Section sub="holds a History">
+
+        </Section>
+      </Arc>
+      <Arc head="Quests">
+
       </Arc>
 
       <Arc head="Wrapping up">

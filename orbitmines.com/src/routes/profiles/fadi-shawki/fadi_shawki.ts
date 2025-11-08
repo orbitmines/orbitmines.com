@@ -4360,7 +4360,7 @@ export const fadi_shawki = <TProfile>{
   profile: 'fadi-shawki',
   formal_citation_name: 'Shawki, Fadi',
 
-  picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.jpg',
+  picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.png',
 
   date: '2025-10-01',
 

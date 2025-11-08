@@ -1346,7 +1346,7 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
 
   return <Col>
     <Row center="xs" middle="xs" className="child-px-2">
-      <Col><img src={`/profiles/${props.profile}/profile-picture.jpg`} alt="Profile picture" style={{
+      <Col><img src={props.picture.replace('https://orbitmines.com', '')} alt="Profile picture" style={{
         maxWidth: '32px', clipPath: 'circle()'}}
       /></Col>
       <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a>}</H3>
