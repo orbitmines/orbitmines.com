@@ -223,7 +223,7 @@ const Minimap = () => {
                                     style={{
                                         width: '100%',
                                         height: '100%',
-                                        backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
+                                        backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
                                         backgroundPosition: 'center center',
                                         backgroundRepeat: 'no-repeat'
                                     }}

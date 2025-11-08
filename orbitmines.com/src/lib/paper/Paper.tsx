@@ -1418,7 +1418,7 @@ export const ThumbnailPage = () => {
         style={{
           width: '100%',
           height: '100%',
-          backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+          backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
           backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat'
         }}

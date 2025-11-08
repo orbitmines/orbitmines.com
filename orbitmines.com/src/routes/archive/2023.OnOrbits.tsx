@@ -50,7 +50,7 @@ export const ON_ORBITS: Content = {
     title: "On Orbits, Equivalence and Inconsistencies",
     subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility.",
     draft: false,
-    link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies',
+    link: 'https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies',
     year: "2023",
     date: "2023-12-31",
     external: {
@@ -2693,7 +2693,7 @@ class Ray // Other possibly names: AbstractDirectionality, ..., ??
    *
    * As a way of saying/.../assuming: I only 'infinitely' assume it's only this structure, "it seems to halt here". Note that this is necessarily an assumption. No guarantee of this can be made. This is necessarily an equivalence, ..., ignorance.
    *
-   * See more: https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Quite%20similarly%20to%20the%20loops%2C%20I%20could%20be%20ignorant%20of%20additional%20structure%20by%20assuming%20it%27s%20not%20there.
+   * See more: https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=Quite%20similarly%20to%20the%20loops%2C%20I%20could%20be%20ignorant%20of%20additional%20structure%20by%20assuming%20it%27s%20not%20there.
    *
    * ---
    *
@@ -2704,7 +2704,7 @@ class Ray // Other possibly names: AbstractDirectionality, ..., ??
   /**
    * Tries for "global coherence" - since we probably can't actually do that, practically this just means self-reference, were no change is assumed...
    *
-   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
+   * @see https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=And%20there%20we%20have%20it%2C%20an%20infinity%2C%20loop%2C%20...%2C%20orbit%20if%20we%20ignore%20the%20difference.
    */
   static is_orbit = (a: Ray, b: Ray) => a === b; // is, ..., appears equal.
   protected self_reference = () => this;
@@ -2862,7 +2862,7 @@ class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * Another interesting connection:
    *  - `A.compose(B).compose(C)` = `(A.equivalent(B).equivalent(C)).dereference.(MISSING ALL FUNC).compose`
    *
-   * @see "Continuations as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
+   * @see "Continuations as Equivalence": https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Continuations%20%2D%20Continuations%20as%20Equivalence
    */
   static compose = Ray.___func(ref => {
     let { initial, terminal} = ref.self;
@@ -2891,7 +2891,7 @@ class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * An equivalence is best understood as the drawing of a single line between two things. Where those two things might have arbitrary structure around them, but we're not checking the (non-)existence of that structure. And thus:
    *   - An equivalence, is only a local equivalence, no global coherence of it can be guaranteed. (or: Changes of an equivalence are only applied locally, which could have global effects, but this isn't necessarily obvious).
    *
-   * @see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
+   * @see https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=On%20Equivalences%20%26%20Inconsistencies
    */
   static equivalent = Ray.___func(ref => {
     let { initial, terminal} = ref.self;
@@ -3215,7 +3215,7 @@ class Ray // Other possibly names: AbstractDirectionality, ..., ??
    * - The problem with a copy, is that in or to be generalizable, it needs to alter all references to the thing it's copying to itself - this cannot be done with certainty.
    *
    * - Additionally, a copy necessarily has some non-redundancy to it:
-   *   @see "A copy is necessarily inconsistent": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=If%20I%20have%20one%20thing%20and%20I%20make%20a%20perfect%20copy
+   *   @see "A copy is necessarily inconsistent": https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=If%20I%20have%20one%20thing%20and%20I%20make%20a%20perfect%20copy
    */
     // @alias('duplicate')
   copy = (): Ray => {
@@ -3283,9 +3283,9 @@ class Ray // Other possibly names: AbstractDirectionality, ..., ??
     return Ray.size(of, value).at(index);
   }
   /**
-   * Just uses length/size for permutation. TODO: More complex permutation/enumeration implementation should follow at some point. (@see https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
+   * Just uses length/size for permutation. TODO: More complex permutation/enumeration implementation should follow at some point. (@see https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=One%20of%20them%20could%20even%20be%20putting%20both%20our%20points%20on%20our%20selection for an example)
    *
-   * @see "Combinatorics as Equivalence": https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Combinatorics%20%2D%20Combinatorics%20as%20Equivalence
+   * @see "Combinatorics as Equivalence": https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies#:~:text=Constructing%20Combinatorics%20%2D%20Combinatorics%20as%20Equivalence
    */
   static permutation = (permutation: number | undefined, of: number): Ray => Ray.at(
     // In the case of a bit: 2nd value for '1' (but could be the reverse, if our interpreter does this)

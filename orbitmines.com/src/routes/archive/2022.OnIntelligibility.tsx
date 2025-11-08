@@ -36,7 +36,7 @@ export const ON_INTELLIGIBILITY: Content = { reference: {
       external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
     }],
     published: [ORGANIZATIONS.orbitmines_research],
-    link: "https://orbitmines.com/papers/on-intelligibility",
+    link: "https://orbitmines.com/archive/on-intelligibility",
     notes: [{
       date: '2023-11-27',
       render: () => <span>

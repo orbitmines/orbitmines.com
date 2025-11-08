@@ -98,7 +98,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
           style={{
             width: '100%',
             height: '100%',
-            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/4_bits_grid.png')`,
+            backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/4_bits_grid.png')`,
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat'
           }}
@@ -154,13 +154,13 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
           <Col xs={12}>
             <span className="child-px-2">
               See:
-               <a href="https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies" target="_blank"><img
+               <a href="https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies" target="_blank"><img
                  key={ORGANIZATIONS.orbitmines_research.key} src={ORGANIZATIONS.orbitmines_research.assets.icon_png}
                  style={{maxWidth: '1rem', verticalAlign: 'middle'}}/></a>
                <a href="https://discord.com/channels/1055502602365845534/1190719376085766195"
                   target="_blank"><CustomIcon
                  icon={ORGANIZATIONS.discord.key} size={20}/></a>
-               <span style={{fontStyle: 'italic'}}><Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies'}} /></span>
+               <span style={{fontStyle: 'italic'}}><Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies'}} /></span>
             </span>
           </Col>
           <Col xs={12}>
@@ -203,7 +203,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
           style={{
             width: '100%',
             height: '100%',
-            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_equived_select_1.png')`,
+            backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_equived_select_1.png')`,
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat'
           }}
@@ -236,7 +236,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
           style={{
             width: '100%',
             height: '100%',
-            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_horizontal_binary_loops.png')`,
+            backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_horizontal_binary_loops.png')`,
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat'
           }}
@@ -270,13 +270,13 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
       <BR/>
       - 2021-2022: I attempt writing compression algorithms with zero knowledge of established fields. That <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Hutter Prize', link: 'http://prize.hutter1.net/'}} /> sure looks interesting.
       <BR/>
-      - December 2022: I try organizing a year of incredible confusions, reading, ..., listening. Which turned into a dabble too close to being a descent into uselessness. I compiled it into a confusing piece of philosophy if you're interested in that sort of thing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty', link: 'https://orbitmines.com/papers/on-intelligibility'}} />
+      - December 2022: I try organizing a year of incredible confusions, reading, ..., listening. Which turned into a dabble too close to being a descent into uselessness. I compiled it into a confusing piece of philosophy if you're interested in that sort of thing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty', link: 'https://orbitmines.com/archive/on-intelligibility'}} />
       <BR/>
       - January - July 2023: Confusion turns to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'more interesting confusion', link: 'https://twitter.com/_FadiShawki/status/1664387058721325056'}} />
       <BR/>
       - 26 June 2023: I get <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'a random notification', link: 'https://twitter.com/semf_nexus/status/1673300178986582025'}} /> of this little thing called <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Society for Multidisciplinary and Fundamental Research (SEMF)', link: 'https://semf.org.es/'}} /> organizing a summer school a few weeks later. Where some of the most interesting people I've ever met seemed to be. And evidently a good place for my confusions.
       <BR/>
-      - December 2023: Again the most interesting confusions of the year compiled in a writing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies'}} />, this time in a more acceptable form (for now).
+      - December 2023: Again the most interesting confusions of the year compiled in a writing: <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'On Orbits, Equivalence and Inconsistencies', link: 'https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies'}} />, this time in a more acceptable form (for now).
       <BR/><BR/><BR/><BR/><BR/>
       - 22 February 2024: And now we're here. I think I finally understand the quest that is this project which at its center must be the tool with which to find new quests.
 
@@ -285,7 +285,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
           style={{
             width: '100%',
             height: '100%',
-            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
+            backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat'
           }}

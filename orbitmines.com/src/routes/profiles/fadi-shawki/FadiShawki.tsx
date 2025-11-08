@@ -109,7 +109,7 @@ const FadiShawki = () => {
                     style={{
                         width: '100%',
                         height: '100%',
-                        backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/branch.png')`,
+                        backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/branch.png')`,
                         backgroundPosition: 'center center',
                         backgroundRepeat: 'no-repeat'
                     }}
@@ -128,7 +128,7 @@ const FadiShawki = () => {
                     style={{
                         width: '100%',
                         height: '100%',
-                        backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+                        backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
                         backgroundPosition: 'center center',
                         backgroundRepeat: 'no-repeat'
                     }}
@@ -144,7 +144,7 @@ const FadiShawki = () => {
 
             {/*</Section>*/}
             {/*<Section head="Writing a paper on most of the above">*/}
-            {/*  <Link link="https://orbitmines.com/papers/on-orbits-equivalence-and-inconsistencies" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />*/}
+            {/*  <Link link="https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies" intent={Intent.DANGER} style={{textDecoration: 'line-through'}} />*/}
             {/*</Section>*/}
         </Arc>
 
@@ -161,7 +161,7 @@ const FadiShawki = () => {
                 style={{
                     width: '100%',
                     height: '100%',
-                    backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal.png')`,
+                    backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal.png')`,
                     backgroundPosition: 'center center',
                     backgroundRepeat: 'no-repeat'
                 }}
@@ -187,7 +187,7 @@ const FadiShawki = () => {
                 style={{
                     width: '100%',
                     height: '100%',
-                    backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_with_equivs.png')`,
+                    backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_with_equivs.png')`,
                     backgroundPosition: 'center center',
                     backgroundRepeat: 'no-repeat'
                 }}

@@ -25,10 +25,10 @@ import _ from "lodash";
 
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
-    title: "Towards A Universal Language",
+    title: "2025 Progress Update: Towards A Universal Language",
     subtitle: "",
     draft: true,
-    link: 'https://orbitmines.com/papers/towards-a-universal-language',
+    link: 'https://orbitmines.com/archive/towards-a-universal-language',
     year: "2025",
     date: "2025-12-31",
     external: {
@@ -85,7 +85,7 @@ const TowardsAUniversalLanguage = () => {
     {/*              style={{*/}
     {/*                width: '100%',*/}
     {/*                height: '100%',*/}
-    {/*                backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,*/}
+    {/*                backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,*/}
     {/*                backgroundPosition: 'center center',*/}
     {/*                backgroundRepeat: 'no-repeat'*/}
     {/*              }}*/}
