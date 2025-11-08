@@ -15,7 +15,7 @@ import Paper, {
 } from "../../lib/paper/Paper";
 import {PROFILES} from "../profiles/profiles";
 import WEBGL from "three/examples/jsm/capabilities/WebGL";
-import {CanvasContainer} from "../papers/2023.OnOrbits";
+import {CanvasContainer} from "./2023.OnOrbits";
 
 export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
   reference: {

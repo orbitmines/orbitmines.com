@@ -1,9 +1,7 @@
 import {HotkeysProvider} from '@blueprintjs/core';
 import React from 'react';
 import IEventListener from "./@orbitmines/js/react/IEventListener";
-import {Route, Routes} from 'react-router-dom';
-import Root from "./routes/Root";
-import Paper from "./routes/Paper";
+import {Navigate, Route, Routes} from 'react-router-dom';
 import Profile from "./routes/profiles/Profiles";
 import {Helmet} from "react-helmet";
 import Modules from "./@orbitmines/js/react/Modules";
@@ -15,12 +13,10 @@ export const Router = () => {
 
   return <Routes>
     <Route path="*" element={<Minimap/>} errorElement={<Minimap/>} />
-    <Route path="papers">
-      <Route path=":paper" element={<Paper />} />
-    </Route>
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>
+    <Route path="papers/*" element={<Navigate to="/archive" replace />}/>
     <Route path="archive">
       <Route path=":item" element={<Archive />} />
     </Route>

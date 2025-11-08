@@ -13,6 +13,31 @@
         <lastmod>2023-10-04</lastmod>
     </url>
 
+
+    <url>
+        <loc>https://orbitmines.com/archive/on-intelligibility</loc>
+        <lastmod>2022-12-31</lastmod>
+        <image:image>
+            <image:loc>https://orbitmines.com/archive/on-intelligibility.jpeg</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://orbitmines.com/archive/on-intelligibility.pdf</loc>
+        <lastmod>2022-12-31</lastmod>
+    </url>
+
+    <url>
+        <loc>https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies</loc>
+        <lastmod>2023-12-31</lastmod>
+        <image:image>
+            <image:loc>https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies.jpeg</image:loc>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies.pdf</loc>
+        <lastmod>2023-12-31</lastmod>
+    </url>
+
     <url>
         <loc>https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project</loc>
         <lastmod>2024-02-22</lastmod>

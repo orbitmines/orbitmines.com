@@ -3,12 +3,12 @@ import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000
 import {H3, H4} from "@blueprintjs/core";
 import ORGANIZATIONS, {PLATFORMS, Viewed} from "../lib/organizations/ORGANIZATIONS";
 import {Helmet} from "react-helmet";
-import {ON_INTELLIGIBILITY} from "./papers/2022.OnIntelligibility";
-import {CanvasContainer, ON_ORBITS} from "./papers/2023.OnOrbits";
+import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
+import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
 import {Author, Category, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/paper/Paper";
 import {PROFILES} from "./profiles/profiles";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
-import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./papers/2025.TowardsAUniversalLanguage";
+import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";
 
 
 const Minimap = () => {
@@ -67,7 +67,7 @@ const Minimap = () => {
                         style={{
                             width: '100%',
                             height: '100%',
-                            backgroundImage: `url('/papers/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
+                            backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/header.png')`,
                             backgroundPosition: 'center center',
                             backgroundRepeat: 'no-repeat'
                         }}

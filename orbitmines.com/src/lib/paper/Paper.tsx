@@ -17,7 +17,7 @@ import {PROFILES} from "../../routes/profiles/profiles";
 import {Highlight, Prism, themes} from "prism-react-renderer";
 import {IntentProps, Props} from "@blueprintjs/core/src/common";
 import {SVGIconProps} from "@blueprintjs/icons";
-import {CanvasContainer} from "../../routes/papers/2023.OnOrbits";
+import {CanvasContainer} from "../../routes/archive/2023.OnOrbits";
 import {BulkLoad, SingleLoad} from "@react-pdf/types";
 import _BlueprintIcons16 from '@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf';
 import _BlueprintIcons20 from '@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf';

@@ -2,11 +2,11 @@ import React from 'react';
 import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024, ARTICLES_2025} from "./fadi_shawki";
 import ORGANIZATIONS, {Viewed} from "../../../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "../profiles";
-import {ON_INTELLIGIBILITY} from "../../papers/2022.OnIntelligibility";
-import {CanvasContainer, ON_ORBITS} from "../../papers/2023.OnOrbits";
+import {ON_INTELLIGIBILITY} from "../../archive/2022.OnIntelligibility";
+import {CanvasContainer, ON_ORBITS} from "../../archive/2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../../archive/2024.02.OrbitMines_as_a_Game_Project";
 import {Arc, Section, Reference, Category, Profile} from "../../../lib/paper/Paper";
-import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "../../papers/2025.TowardsAUniversalLanguage";
+import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "../../archive/2025.TowardsAUniversalLanguage";
 
 export const ONGOING_PROJECTS = [
     {
