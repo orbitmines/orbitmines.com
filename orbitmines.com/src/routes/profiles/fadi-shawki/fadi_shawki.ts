@@ -3,6 +3,250 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  CRAFTING_INTERPRETERS: <Content>{
+    reference: {
+      title: 'Crafting Interpreters',
+      authors: [{name: 'Robert Nystrom'}],
+      organizations: [],
+      year: '(2021)',
+      link: "https://www.craftinginterpreters.com/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  FUNCTIONAL_PROGRAMMING_IN_LEAN: <Content>{
+    reference: {
+      title: 'Functional Programming in Lean',
+      authors: [{name: 'David Thrane Christiansen'}],
+      organizations: [],
+      year: '(2023)',
+      link: "https://lean-lang.org/functional_programming_in_lean/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  REFLECTIONS_ON_EQUALITY: <Content>{
+    reference: {
+      title: 'Reflections on Equality',
+      authors: [{name: 'Amélia Liao'}],
+      organizations: [],
+      year: '(2020)',
+      link: "https://amelia.how/posts/reflections-on-equality.html"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CUBICAL_TYPE_THEORY: <Content>{
+    reference: {
+      title: 'Cubical Type Theory',
+      authors: [{name: 'Amélia Liao'}],
+      organizations: [],
+      year: '(2021)',
+      link: "https://amelia.how/posts/cubical-type-theory.html"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ABSTRACT_INTERPRETATION_IN_A_NUTSHELL: <Content>{
+    reference: {
+      title: 'Abstract Interpretation in a Nutshell',
+      authors: [{name: 'Patrick Cousot'}],
+      organizations: [],
+      year: '(2005)',
+      link: "https://www.di.ens.fr/~cousot/AI/IntroAbsInt.html"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ABSTRACT_INTERPRETATION_A_UNIFIED_LATTICE_MODEL_FOR_STATIC_ANALYSIS_OF_PROGRAMS_BY_CONSTRUCTION_OR_APPROXIMATION_OF_FIXPOINTS: <Content>{
+    reference: {
+      title: 'Abstract interpretation: a unified lattice model for static analysis of programs by construction or approximation of fixpoints',
+      authors: [{name: 'Patrick Cousot'}, {name: 'Radhia Cousot'}],
+      organizations: [],
+      year: '(1977)',
+      link: "https://dl.acm.org/doi/pdf/10.1145/512950.512973"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  LEVIATHAN_WAKES: <Content>{
+    reference: {
+      title: 'Leviathan Wakes',
+      authors: [{name: 'James S. A. Corey'}],
+      organizations: [],
+      year: '(2011)',
+      link: "https://en.wikipedia.org/wiki/Leviathan_Wakes"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  CUBICAL_TYPES_FOR_THE_WORKING_FORMALIZER: <Content>{
+    reference: {
+      title: '"Cubical types for the working formalizer"',
+      authors: [{name: 'Amélia Liao'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=rhZAkHDo-r4&t=1s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  EASY_ABSTRACT_INTERPRETATION_WITH_SPARTA: <Content>{
+    reference: {
+      title: '"Easy Abstract Interpretation with SPARTA"',
+      authors: [{name: 'Arnaud Venet'}, {name: 'Jez Ng'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
+      year: '(2019)',
+      link: "https://www.youtube.com/watch?v=_fA7vkVJhF8&t=2s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  A_LITTLE_TASTE_OF_DEPENDENT_TYPES: <Content>{
+    reference: {
+      title: 'A Little Taste of Dependent Types',
+      authors: [{name: 'David Thrane Christiansen'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
+      year: '(2018)',
+      link: "https://www.youtube.com/watch?v=VxINoKFm-S4&ab_channel=StrangeLoopConference"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _24___MODERN_COSMOLOGY_HUBBLE_TENSION_EXOTIC_PHYSICS: <Content>{
+    reference: {
+      title: '#24 - Modern Cosmology, Hubble Tension, Exotic Physics',
+      authors: [{name: 'Colin Hill'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=FkC-kVC2IRA"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _25___PBS_SPACETIME_SCIENCE_ON_YOUTUBE_QUASARS: <Content>{
+    reference: {
+      title: '#25 - PBS Spacetime, Science on YouTube, Quasars',
+      authors: [{name: 'Matt O\'Dowd'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=V7QjrsadlKQ&t=5327s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DAVE_PLUMMER_PROGRAMMING_AUTISM_AND_OLD_SCHOOL_MICROSOFT_STORIES_479: <Content>{
+    reference: {
+      title: 'Dave Plummer: Programming, Autism, and Old-School Microsoft Stories | #479',
+      authors: [{name: 'Dave Plummer'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=HsLgZzgpz9Y"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DAVE_HONE_T_REX_DINOSAURS_EXTINCTION_EVOLUTION_AND_JURASSIC_PARK_480: <Content>{
+    reference: {
+      title: 'Dave Hone: T-Rex, Dinosaurs, Extinction, Evolution, and Jurassic Park | #480',
+      authors: [{name: 'Dave Hone'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=-Qm1_On71Oo"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  TIM_SWEENEY_FORTNITE_UNREAL_ENGINE_AND_THE_FUTURE_OF_GAMING_467: <Content>{
+    reference: {
+      title: 'Tim Sweeney: Fortnite, Unreal Engine, and the Future of Gaming | #467',
+      authors: [{name: 'Tim Sweeney'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=477qF6QNSvc&t=14990s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  QUANTUM_THEORY_AS_A_NEW_KIND_OF_STOCHASTIC_PROCESS: <Content>{
+    reference: {
+      title: 'Quantum Theory as a New Kind of Stochastic Process',
+      authors: [{name: 'Jacob Barandes'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=JsmX3YxiUj0&t=4288s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  KEYNOTE_HIGHER_INDUCTIVE_TYPES_IN_HOMOTOPY_TYPE_THEORY: <Content>{
+    reference: {
+      title: 'Keynote: Higher Inductive Types in Homotopy Type Theory',
+      authors: [{name: 'Kristina Sojakova'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2019)',
+      link: "https://www.youtube.com/watch?v=AMJIsEBS-zk"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_VERSE_PROGRAMMING_LANGUAGE_GDC_2023: <Content>{
+    reference: {
+      title: 'The Verse Programming Language | GDC 2023',
+      authors: [{name: 'Tim Sweeney'}, {name: 'Phil Pizlo'}, {name: 'Tim TIllotson'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2023)',
+      link: "https://www.youtube.com/watch?v=5prkKOIilJg&t=1517s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+
+  READY_PLAYER_ONE: <Content>{
+    reference: {
+      title: 'Ready Player One',
+      authors: [{name: 'Ernest Cline'}],
+      organizations: [],
+      year: '(2011)',
+      link: "https://en.wikipedia.org/wiki/Ready_Player_One"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  READY_PLAYER_TWO: <Content>{
+    reference: {
+      title: 'Ready Player Two',
+      authors: [{name: 'Ernest Cline'}],
+      organizations: [],
+      year: '(2020)',
+      link: "https://en.wikipedia.org/wiki/Ready_Player_Two"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MSP_101_GENERALISATION_IN_LLMS_PETAR_VELIČKOVIĆ: <Content>{
+    reference: {
+      title: 'MSP 101: Generalisation in LLMs (Petar Veličković)',
+      authors: [{name: 'Petar Veličković'}],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=7Z144Ymohd0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  SUNDAR_PICHAI_CEO_OF_GOOGLE_AND_ALPHABET_471: <Content>{
+    reference: {
+      title: 'Sundar Pichai: CEO of Google and Alphabet | #471',
+      authors: [{name: 'Sundar Pichai'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=9V6tWC4CdFQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  TERENCE_TAO_HARDEST_PROBLEMS_IN_MATHEMATICS_PHYSICS_THE_FUTURE_OF_AI_472: <Content>{
+    reference: {
+      title: 'Terence Tao: Hardest Problems in Mathematics, Physics & the Future of AI | #472',
+      authors: [{name: 'Terence Tao'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=HUkBz-cdB-k"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DHH_FUTURE_OF_PROGRAMMING_AI_RUBY_ON_RAILS_PRODUCTIVITY_PARENTING_474: <Content>{
+    reference: {
+      title: 'DHH: Future of Programming, AI, Ruby on Rails, Productivity & Parenting | #474',
+      authors: [{name: 'David Heinemeier Hansson'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=vagyIcmIGOQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DEMIS_HASSABIS_FUTURE_OF_AI_SIMULATING_REALITY_PHYSICS_AND_VIDEO_GAMES_475: <Content>{
+    reference: {
+      title: 'Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games | #475',
+      authors: [{name: 'Demis Hassabis'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=-HzgcbRXUK8&t=8677s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  MINDSCAPE_323_JACOB_BARANDES_ON_INDIVISIBLE_STOCHASTIC_QUANTUM_MECHANICS: <Content>{
+    reference: {
+      title: 'Mindscape 323 | Jacob Barandes on Indivisible Stochastic Quantum Mechanics',
+      authors: [{name: 'Jacob Barandes'}, {name: 'Sean Carroll'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=gINYis8BgSY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _23___FINE_TUNING_MULTIVERSE_COSMOLOGICAL_TENSIONS: <Content>{
+    reference: {
+      title: '#23 - Fine-Tuning, Multiverse, Cosmological Tensions',
+      authors: [{name: 'Geraint Lewis'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=OejwZqh-F9U&t=29s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
   STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS: <Content>{
     reference: {
       title: 'String diagram rewrite theory III: Confluence with and without Frobenius',
@@ -3329,6 +3573,14 @@ export const REFERENCES = {
       link: "https://semf.org.es/school2023/"
     }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
   },
+  SEMF_2025: <Content>{
+    reference: {
+      title: "SEMF School of 2025",
+      organizations: [ORGANIZATIONS.semf],
+      year: "2025",
+      link: "https://semf.org.es/school2025/"
+    }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
+  },
 
   SYCO_12: <Content>{
     reference: {
@@ -3611,6 +3863,35 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2025: Content[] = [
+  REFERENCES.CRAFTING_INTERPRETERS,
+  REFERENCES.FUNCTIONAL_PROGRAMMING_IN_LEAN,
+  REFERENCES.REFLECTIONS_ON_EQUALITY,
+  REFERENCES.CUBICAL_TYPE_THEORY,
+  REFERENCES.ABSTRACT_INTERPRETATION_IN_A_NUTSHELL,
+  REFERENCES.ABSTRACT_INTERPRETATION_A_UNIFIED_LATTICE_MODEL_FOR_STATIC_ANALYSIS_OF_PROGRAMS_BY_CONSTRUCTION_OR_APPROXIMATION_OF_FIXPOINTS,
+  REFERENCES.LEVIATHAN_WAKES,
+  REFERENCES.CUBICAL_TYPES_FOR_THE_WORKING_FORMALIZER,
+  REFERENCES.EASY_ABSTRACT_INTERPRETATION_WITH_SPARTA,
+  REFERENCES.A_LITTLE_TASTE_OF_DEPENDENT_TYPES,
+  REFERENCES._24___MODERN_COSMOLOGY_HUBBLE_TENSION_EXOTIC_PHYSICS,
+  REFERENCES._25___PBS_SPACETIME_SCIENCE_ON_YOUTUBE_QUASARS,
+  REFERENCES.DAVE_PLUMMER_PROGRAMMING_AUTISM_AND_OLD_SCHOOL_MICROSOFT_STORIES_479,
+  REFERENCES.DAVE_HONE_T_REX_DINOSAURS_EXTINCTION_EVOLUTION_AND_JURASSIC_PARK_480,
+  REFERENCES.TIM_SWEENEY_FORTNITE_UNREAL_ENGINE_AND_THE_FUTURE_OF_GAMING_467,
+  REFERENCES.QUANTUM_THEORY_AS_A_NEW_KIND_OF_STOCHASTIC_PROCESS,
+  REFERENCES.KEYNOTE_HIGHER_INDUCTIVE_TYPES_IN_HOMOTOPY_TYPE_THEORY,
+  REFERENCES.THE_VERSE_PROGRAMMING_LANGUAGE_GDC_2023,
+
+  REFERENCES.READY_PLAYER_ONE,
+  REFERENCES.READY_PLAYER_TWO,
+  REFERENCES.MSP_101_GENERALISATION_IN_LLMS_PETAR_VELIČKOVIĆ,
+  REFERENCES.SUNDAR_PICHAI_CEO_OF_GOOGLE_AND_ALPHABET_471,
+  REFERENCES.TERENCE_TAO_HARDEST_PROBLEMS_IN_MATHEMATICS_PHYSICS_THE_FUTURE_OF_AI_472,
+  REFERENCES.DHH_FUTURE_OF_PROGRAMMING_AI_RUBY_ON_RAILS_PRODUCTIVITY_PARENTING_474,
+  REFERENCES.DEMIS_HASSABIS_FUTURE_OF_AI_SIMULATING_REALITY_PHYSICS_AND_VIDEO_GAMES_475,
+  REFERENCES.MINDSCAPE_323_JACOB_BARANDES_ON_INDIVISIBLE_STOCHASTIC_QUANTUM_MECHANICS,
+  REFERENCES._23___FINE_TUNING_MULTIVERSE_COSMOLOGICAL_TENSIONS,
+
   REFERENCES.STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS,
   REFERENCES.INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY,
   REFERENCES.BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468,
@@ -4081,16 +4362,16 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.jpg',
 
-  date: '2025-02-01',
+  date: '2025-10-01',
 
   email: 'fadi.shawki@orbitmines.com',
 
   title: "2025. Fadi Shawki",
-  subtitle: "A self-profile by some 24-solar-orbiting explorer.",
+  subtitle: "A self-profile by some 25-solar-orbiting explorer.",
 
   reference: {
     // title: renderable<string>("2023. Fadi Shawki"),
-    // subtitle: renderable<string>("A self-profile by some 24-solar-orbiting explorer."),
+    // subtitle: renderable<string>("A self-profile by some 25-solar-orbiting explorer."),
   },
 
   content: {
@@ -4106,6 +4387,7 @@ export const fadi_shawki = <TProfile>{
       REFERENCES.VWO,
     ],
     attended_events: [
+      REFERENCES.SEMF_2025,
       REFERENCES.INTO_THE_INFORMATION_CONTINUUM_2024_05_04,
       REFERENCES.SYCO_12,
       REFERENCES.INTO_THE_INFORMATION_CONTINUUM_2024_03_09,
