@@ -107,9 +107,7 @@ const TowardsAUniversalLanguage = () => {
       <Section head="Introduction">
         After several years of abstract thought <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference}} />, actualization is the next step in the designing of a kind of universal programming language. The central question being: how do we evolve programming languages and their respective compilers forward?
 
-        <BR/>
 
-        With wider ambitions of: how do you design a programming language, which becomes an IDE, which becomes a operating system and (game) rendering engine.
       </Section>
 
       <Arc head="Arc: The .ray.txt Programming Language">
@@ -134,15 +132,18 @@ const TowardsAUniversalLanguage = () => {
             s(boolean) // "Y" | "N"
           </CodeBlock>
 
-          This arbitrary structure is accessible through the @ operator:
+          This arbitrary structure is accessible through the # operator:
 
           <CodeBlock>
             x = false | true<BR/>
-            x@ // Access iterable structure<BR/>
-            x@.count // == 2
+            x# // Access iterable structure<BR/>
+            x#.count // == 2
           </CodeBlock>
 
           This takes care of an important requirement for a universal language, namely: "I want to be able to say: Whenever you have one of something, what if you had more of that thing.".
+        </Section>
+        <Section sub="is a Type">
+          As you can see, that construction makes it possible to construct types. This is also how the type system is implemented and accessed: Every variable a type.
         </Section>
         <Section sub="has a Location">
         </Section>
