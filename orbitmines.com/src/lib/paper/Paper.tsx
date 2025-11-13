@@ -1294,7 +1294,9 @@ export const Organization = (props: AllowReact<TOrganization> & { only_logo?: bo
   </Col>
 }
 
-export const BR = () => <div />;
+export const BR = () => <>
+  <></> <div />
+</>;
 
 // #fbb360 ; #c87619 ; #935610
 // discord?/purple ; #5865F2 ; #1B2DFA ~ ; rgba(#1B2DFA, 0.1);;

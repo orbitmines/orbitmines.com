@@ -114,7 +114,7 @@ const TowardsAUniversalLanguage = () => {
         <Section head="A new language">
           I'll start this excursion from the perspective of a new text-based programming language. Though this project intends to step away from the limitations of the text file, all programming infrastructure relies on it. A move away from it, will require additional infrastructure. Even if this is achieved, being able to express as much as possible in a traditional text-based format will be beneficial. Though there will be design features which are simply not translatable to a purely text-based programming language.
         </Section>
-        <Section head="Every variable..." sub="is Many">
+        <Section head="Every variable..." sub="Every variable... is Many">
           Even though most compilers use some form of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation"}} />, a language which natively supports superposed values is certainly unusual. (You only really see it used in type systems.) But it is one of the cornerstones of the Ray language.
           <BR/>
           Take for instance the following boolean values:
@@ -132,7 +132,42 @@ const TowardsAUniversalLanguage = () => {
             s(boolean) // "Y" | "N"
           </CodeBlock>
 
-          This arbitrary structure is accessible through the # operator:
+          This too, works for defining and calling superposed methods. Whether it is to combine the results of many methods, or whether it is to function as <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} />. For example, if we superpose the boolean operators AND and OR:
+
+          <CodeBlock>
+            true (|| | &&) false // true | false
+          </CodeBlock>
+
+          Or for the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} /> case, only methods matching the parameter types get executed: (Note that you can of course, also give multiple names to the same function, as if defining aliases)
+          <CodeBlock>
+            def A | A1(x: boolean) = "A"<BR/>
+            def A | A2(x: Number) = "B"<BR/>
+            <BR/>
+            // A is (A1 & A2)<BR/>
+            A(boolean) // "A"<BR/>
+            A(Number) // "B"
+          </CodeBlock>
+
+          In fact, this is even as powerful as to extent to possible implementations of a function. Take for instance the way boolean operators are defined in Ray. They are all recursively defined in terms of each other. The NOT gate has definitions like:
+
+          <CodeBlock>
+            def !<BR/>
+            or this !&& this // nand<BR/>
+            or this !|| this // nor <BR/>
+            or this x|| true // xor<BR/>
+            or this x!|| false // xnor<BR/>
+            end
+          </CodeBlock>
+
+          All other operations would have something similar. What this allows you to do, is say things like: I don't know which one is supported by the system it eventually ends up running in, but I know how to get from one to the other.
+
+          <BR/>
+
+          Each with a different performance profile. One perhaps serving as specification of the algorithm, the other one focussing on performance. The compiler would in turn decide which one to use.
+
+          <BR/>
+
+          All this arbitrary structure is accessible through the # operator on a variable:
 
           <CodeBlock>
             x = false | true<BR/>
@@ -142,12 +177,12 @@ const TowardsAUniversalLanguage = () => {
 
           This takes care of an important requirement for a universal language, namely: "I want to be able to say: Whenever you have one of something, what if you had more of that thing.".
         </Section>
-        <Section sub="is a Type">
+        <Section sub="Every variable... is a Type">
           As you can see, that construction makes it possible to construct types. This is also how the type system is implemented and accessed: Every variable a type.
         </Section>
-        <Section sub="has a Location">
+        <Section sub="Every variable... has a Location">
         </Section>
-        <Section sub="holds a History">
+        <Section sub="Every variable... holds a History">
 
         </Section>
       </Arc>
