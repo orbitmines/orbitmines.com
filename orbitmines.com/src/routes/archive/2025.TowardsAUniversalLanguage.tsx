@@ -140,12 +140,12 @@ const TowardsAUniversalLanguage = () => {
 
           Or for the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} /> case, only methods matching the parameter types get executed: (Note that you can of course, also give multiple names to the same function, as if defining aliases)
           <CodeBlock>
-            def A | A1(x: boolean) = "A"<BR/>
-            def A | A2(x: Number) = "B"<BR/>
+            def A | A1(x: boolean) = "X"<BR/>
+            def A | A2(x: Number) = "Y"<BR/>
             <BR/>
             // A is (A1 & A2)<BR/>
-            A(boolean) // "A"<BR/>
-            A(Number) // "B"
+            A(boolean) // "X"<BR/>
+            A(Number) // "Y"
           </CodeBlock>
 
           In fact, this is even as powerful as to extent to possible implementations of a function. Take for instance the way boolean operators are defined in Ray. They are all recursively defined in terms of each other. The NOT gate has definitions like:
@@ -178,16 +178,29 @@ const TowardsAUniversalLanguage = () => {
           This takes care of an important requirement for a universal language, namely: "I want to be able to say: Whenever you have one of something, what if you had more of that thing.".
         </Section>
         <Section sub="Every variable... is a Type">
-          As you can see, that construction makes it possible to construct types. This is also how the type system is implemented and accessed: Every variable a type.
+          As you can see, that construction makes it possible to construct types. This is also how the type system is implemented and accessed: Every variable is a type.
+        </Section>
+        <Section sub="Every variable... is a Ray">
+          Instead of branding a language's abstractions as inaccessible. The approach of Ray is slightly different: The meaning of every abstraction must be accessible. Whether that's control-flow of a function, or the structural definition of a number. In a quick way of phrasing it, you achieve this by saying that "Everything is a kind of Structure/Graph" and that structure must be accessible. Or the term I'm using for it, since the approach we're using here will be more general than Graphs, is: "Everything is a Ray".
+          <BR/>
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>(Then phrasing inaccessible abstractions just becomes: There's structure there we're ignorant of. We can simulate this by ignoring structure.)</span>
+          <BR/>
+          A good place to start is to understand how this graph-like structure I'm calling a Ray is defined.
         </Section>
         <Section sub="Every variable... has a Location">
+        </Section>
+        <Section sub="Every variable... is a Lazy Expression">
         </Section>
         <Section sub="Every variable... holds a History">
 
         </Section>
       </Arc>
       <Arc head="Quests">
-
+        There's a hard problem which demands a practical solution. Namely that the halting of any part of any program is unknown <Reference is="footnote" index={referenceCounter()} reference={{title: "Halting problem", link: "https://en.wikipedia.org/wiki/Halting_problem"}} />. And since we interpret any variable as an iterable structure, there's no way of knowing whether that structure is halting or not other than to start traversing the structure to determine whether it is. (Or the structure's abstract definition, which in turn, still is a structure we'll have to traverse)
+        <BR/>
+        Instead of ignoring this problem, it's a central theme to the Ray language. It's a rephrasing of the problem in terms of (1) how many resources you decide to dedicate to which problem and (2) how you deal with intermediate results/variables. This is where quests come in.
+        <BR/>
+        Though more broadly, quests are aimed at both players and NPCs. From the perspective of the NPC it's how do you operate in a world where any step of the program is possible infinitely generating?
       </Arc>
 
       <Arc head="Wrapping up">
