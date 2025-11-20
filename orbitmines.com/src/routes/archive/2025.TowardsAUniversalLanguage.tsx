@@ -115,7 +115,7 @@ const TowardsAUniversalLanguage = () => {
           I'll start this excursion from the perspective of a new text-based programming language. Though this project intends to step away from the limitations of the text file, all programming infrastructure relies on it. A move away from it, will require additional infrastructure. Even if this is achieved, being able to express as much as possible in a traditional text-based format will be beneficial. Though there will be design features which are simply not translatable to a purely text-based programming language.
         </Section>
         <Section head="Every variable..." sub="Every variable... is Many">
-          Even though most compilers use some form of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation"}} />, a language which natively supports superposed values is certainly unusual. (You only really see it used in type systems.) But it is one of the cornerstones of the Ray language.
+          Even though most compilers use some form of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation"}} />, a language which natively supports superposed values is certainly unusual. You only really see it used in type systems. There do exist implementations of something like an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "'Ambiguous Operator'", link: "https://rosettacode.org/wiki/Amb"}} />, but it is not as expressive as it is for one of the cornerstones of the Ray language:
           <BR/>
           Take for instance the following boolean values:
           <CodeBlock>
@@ -127,7 +127,7 @@ const TowardsAUniversalLanguage = () => {
           Since they are castable to boolean, you can call functions accepting a boolean with them:
 
           <CodeBlock>
-            def s(x: boolean) = x ? "Y" : "N"<BR/>
+            s (x: boolean) =&gt; x ? "Y" : "N"<BR/>
             s(false & true) // "Y" & "N"<BR/>
             s(boolean) // "Y" | "N"
           </CodeBlock>
@@ -135,13 +135,13 @@ const TowardsAUniversalLanguage = () => {
           This too, works for defining and calling superposed methods. Whether it is to combine the results of many methods, or whether it is to function as <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} />. For example, if we superpose the boolean operators AND and OR:
 
           <CodeBlock>
-            true (|| | &&) false // true | false
+            true (|| | &&) false // (true || false) | (true && false)
           </CodeBlock>
 
           Or for the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} /> case, only methods matching the parameter types get executed: (Note that you can of course, also give multiple names to the same function, as if defining aliases)
           <CodeBlock>
-            def A | A1(x: boolean) = "X"<BR/>
-            def A | A2(x: Number) = "Y"<BR/>
+            A | A1 (x: boolean) =&gt; "X"<BR/>
+            A | A2 (x: Number) =&gt; "Y"<BR/>
             <BR/>
             // A is (A1 & A2)<BR/>
             A(boolean) // "X"<BR/>
@@ -151,12 +151,11 @@ const TowardsAUniversalLanguage = () => {
           In fact, this is even as powerful as to extent to possible implementations of a function. Take for instance the way boolean operators are defined in Ray. They are all recursively defined in terms of each other. The NOT gate has definitions like:
 
           <CodeBlock>
-            def !<BR/>
-            or this !&& this // nand<BR/>
-            or this !|| this // nor <BR/>
-            or this x|| true // xor<BR/>
-            or this x!|| false // xnor<BR/>
-            end
+            !{"{"}.{"}"}<BR/>
+            <></>  | this !&& this // nand<BR/>
+            <></>  | this !|| this // nor <BR/>
+            <></>  | this x|| true // xor<BR/>
+            <></>  | this x!|| false // xnor
           </CodeBlock>
 
           All other operations would have something similar. What this allows you to do, is say things like: I don't know which one is supported by the system it eventually ends up running in, but I know how to get from one to the other.
@@ -164,6 +163,14 @@ const TowardsAUniversalLanguage = () => {
           <BR/>
 
           Each with a different performance profile. One perhaps serving as specification of the algorithm, the other one focussing on performance. The compiler would in turn decide which one to use.
+
+          <BR/>
+
+          It's also good to know that this sort of thing works for any part of some iterable structure, albeit an array or graph. Take a string for instance:
+
+          <CodeBlock>
+            "A", ("B" | "C") // "AB" | "AC"
+          </CodeBlock>
 
           <BR/>
 
@@ -189,7 +196,7 @@ const TowardsAUniversalLanguage = () => {
         </Section>
         <Section sub="Every variable... has a Location">
         </Section>
-        <Section sub="Every variable... is a Lazy Expression">
+        <Section sub="Every variable... is a Lazy Expression/Program">
         </Section>
         <Section sub="Every variable... holds a History">
 
