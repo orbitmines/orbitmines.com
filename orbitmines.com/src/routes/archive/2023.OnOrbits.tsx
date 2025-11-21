@@ -2127,11 +2127,11 @@ const OnOrbits = () => {
 
 export default OnOrbits;
 
-const Vertex = ({ position, color = circle.color }: any) =>
+export const Vertex = ({ position, color = circle.color }: any) =>
   <Circle position={position} material-color={color} args={[circle.radius, circle.segments]} />
 // In principle, this should be anything, this is just for the initial setup
-const RenderedRay = (
-  props: { reference: Ray } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
+export const RenderedRay = (
+  props: { reference: Ray, renderContinuations?: boolean } & { position?: [number, number, number], initial?: [number, number, number], terminal?: [number, number, number], scale?: number, color?: string }
 ) => {
   const {
     position = [0, 0, 0],
@@ -2140,6 +2140,7 @@ const RenderedRay = (
     color = 'orange',
     initial = add(position, [-20, 0, 0]),
     terminal = add(position, [20, 0, 0]),
+    renderContinuations = true
   } = props;
   const left = initial;
   const right = terminal;
@@ -2367,7 +2368,7 @@ const RenderedRay = (
           {/*<Continuation color="orange" position={add(left, [-40, 60, 0])} />*/}
 
           {/*<RenderedRay reference={vertex.initial.as_reference()} position={add(left, [-20, 20, 0])} />*/}
-          <RenderedRay reference={vertex.initial.as_reference()} position={left} color={color} />
+          {renderContinuations ? <RenderedRay reference={vertex.initial.as_reference()} position={left} color={color} /> : <></>}
 
           {/* Line now starts in the center of the torus tube */}
           {/*{isVertical*/}
@@ -2409,7 +2410,7 @@ const RenderedRay = (
 
           {/*</>}*/}
 
-          <RenderedRay reference={vertex.terminal.as_reference()} position={right} color={color} />
+          {renderContinuations ? <RenderedRay reference={vertex.terminal.as_reference()} position={right} color={color} /> : <></>}
 
           {/*<Torus*/}
           {/*  args={[15, torus.tube.width, torus.segments, torus.tube.segments]}*/}
@@ -2492,7 +2493,7 @@ const BinarySuperposition = ({ position = [0, 0, 0], scale = 1.5 }: any) => {
   </>
 }
 
-const Line = ({ start, mid, end, scale, color = line.color }: any) =>
+export const Line = ({ start, mid, end, scale, color = line.color }: any) =>
   <QuadraticBezierLine
     start={start}
     mid={mid}
@@ -2503,7 +2504,7 @@ const Line = ({ start, mid, end, scale, color = line.color }: any) =>
 
 const line = { width: 2,  length: 1,  color: "orange", }
 
-const Continuation = (
+export const Continuation = (
   {
     color = torus.color,
     radius = torus.radius,
@@ -2647,7 +2648,7 @@ type DebugRay = {
  *  - Reorder methods in a sensible way.
  *
  */
-class Ray // Other possibly names: AbstractDirectionality, ..., ??
+export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   implements
     PossiblyHomoiconic<Ray>,
 
@@ -4138,11 +4139,11 @@ type Options = {
   terminal?: InterfaceOptions,
 }
 
-const torus = {
+export const torus = {
   // Radius of the torus, from the center of the torus to the center of the tube. Default is 1.
   radius: 3, color: "orange", segments: 200, tube: { width: 1, segments: 200 },
 }
-const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+export const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
 const circle = { radius: 3,  color: "orange", segments: 30, }
 

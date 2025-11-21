@@ -17,7 +17,16 @@ import Paper, {
   TODO,
   useCounter
 } from "../../lib/paper/Paper";
-import {CanvasContainer, ON_ORBITS} from "./2023.OnOrbits";
+import {
+  add,
+  CachedVisualizationCanvas,
+  CanvasContainer,
+  Continuation,
+  Line,
+  ON_ORBITS,
+  Ray,
+  RenderedRay, torus, Vertex
+} from "./2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
@@ -184,15 +193,121 @@ const TowardsAUniversalLanguage = () => {
 
           This takes care of an important requirement for a universal language, namely: "I want to be able to say: Whenever you have one of something, what if you had more of that thing.".
         </Section>
-        <Section sub="Every variable... is a Type">
-          As you can see, that construction makes it possible to construct types. This is also how the type system is implemented and accessed: Every variable is a type.
-        </Section>
         <Section sub="Every variable... is a Ray">
           Instead of branding a language's abstractions as inaccessible. The approach of Ray is slightly different: The meaning of every abstraction must be accessible. Whether that's control-flow of a function, or the structural definition of a number. In a quick way of phrasing it, you achieve this by saying that "Everything is a kind of Structure/Graph" and that structure must be accessible. Or the term I'm using for it, since the approach we're using here will be more general than Graphs, is: "Everything is a Ray".
           <BR/>
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>(Then phrasing inaccessible abstractions just becomes: There's structure there we're ignorant of. We can simulate this by ignoring structure.)</span>
           <BR/>
-          A good place to start is to understand how this graph-like structure I'm calling a Ray is defined.
+          A good place to start is to understand how this graph-like structure I'm calling a Ray is defined. Which is simple enough to understand, especially if you're already familiar with <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "graphs", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} />. Or if you've already used something like a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "linked list", link: "https://en.wikipedia.org/wiki/Linked_list"}} />.
+          <BR/>
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Essentially it's nothing more than being at a <span className="bp5-text-muted">point, ..., vertex</span> and having information on what's in front of you, and behind you. If we visualize that point like this:</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex" context={paper}>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Then in front and behind, we define an <span style={{color: '#FF5555'}}>initial</span> and <span style={{color: '#5555FF'}}>terminal</span> boundary:</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex_with_expanded_boundaries" context={paper} style={{height: '50px'}}>
+              {/*<group scale={1.5}>*/}
+              {/*  <Line start={add([-30, 10, 0], [20, 0, 0])} end={[0, 0, 0]} scale={1.5} color="gray" />*/}
+              {/*  <Line start={[-20 + torus.radius, 0, 0]} end={add([-30, 10, 0], [torus.radius, 0, 0])} scale={1.5} color="gray" />*/}
+              {/*</group>*/}
+              <group scale={1.5}>
+                <Continuation position={[-30, 10, 0]} color="#FF5555"/>
+                <Line start={add([-30, 10, 0], [torus.radius, 0, 0])} end={add([-30, 10, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[30, -10, 0]} color="#5555FF"/>
+                <Line start={add([30, -10, 0], [-torus.radius, 0, 0])} end={add([30, -10, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          {/*Which we alternately display as:*/}
+
+          {/*<CodeBlock>*/}
+          {/*  <CachedVisualizationCanvas alt="empty_vertex_with_boundaries" context={paper}>*/}
+          {/*    <group scale={1.5}>*/}
+          {/*      <Continuation position={[-20, 0, 0]} color="#FF5555"/>*/}
+          {/*      <Line start={add([-20, 0, 0], [torus.radius, 0, 0])} end={add([-20, 0, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />*/}
+          {/*    </group>*/}
+          {/*    <group scale={1.5}>*/}
+          {/*      <Continuation position={[20, 0, 0]} color="#5555FF"/>*/}
+          {/*      <Line start={add([20, 0, 0], [-torus.radius, 0, 0])} end={add([20, 0, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />*/}
+          {/*    </group>*/}
+
+          {/*    <group scale={1.5}><Vertex position={[0, 0, 0]} scale={1.5} /></group>*/}
+
+          {/*  </CachedVisualizationCanvas>*/}
+          {/*</CodeBlock>*/}
+
+          Each boundary then in turn defines other boundaries, together they make an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edge", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} />.
+
+        </Section>
+        <Section sub="Every variable... is a Type">
+          As you now know, a normal variable allows you to construct types. That makes it possible, with regular syntax, to support things like <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "dependent types", link: "https://en.wikipedia.org/wiki/Dependent_type"}} />.
+
+          <BR/>
+
+          If we take for instance a 2-bit binary number which intuitively looks something like:
+
+          <CodeBlock>
+            <CanvasContainer style={{height: '140px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_2.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </CodeBlock>
+
+          We might have a type requirement of one of the methods on the number, take the length of the number for instance, which in this case would be two. We'd check for that simply with:
+
+          <CodeBlock>
+            Binary.Positive{'{'}length == 2{'}'}
+          </CodeBlock>
+
+          You can also extend the type systems with arbitrary asserts, which add additional constraints, just like this dependent type would.
+
+          <CodeBlock>
+            class Example {'<'} Binary.Positive<BR/>
+            <></>  dynamically assert length == 2
+          </CodeBlock>
+
+          Which would be helpful when you have conditions which depend on multiple variables in intricate ways.
+
+          <BR/>
+
+          What is unusual about the type system, is that you can use define arbitrary patterns which must be matched when extended. (In the sense that, for example some valid <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "regex", link: "https://en.wikipedia.org/wiki/Regular_expression"}} /> syntax (type) matches certain string instances.)
+
+          <BR/>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>An example of this sort of <span className="bp5-text-disabled">type, pattern</span> can be seen in how <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "IPv6", link: "https://en.wikipedia.org/wiki/IPv6"}} /> is implemented. Where there are two complications to a valid address: (1) a sequence of zero segments can be compressed with '::' and (2) an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "IPv4", link: "https://en.wikipedia.org/wiki/IPv4"}} /> address might be embedded in them. Making a valid address something like <span className="bp5-text-disabled">::ffff:0.0.0.0</span> or <span className="bp5-text-disabled">64:ff9b::</span>.</span>
+
+          <CodeBlock>
+            class v6 {'<'}<BR/>
+            <></>  (left: Segment[]).join(":")?,<BR/>
+            <></>  zero_compression: defined_segments.empty ? "::" : "::"?,<BR/>
+            <></>  (right: Segment[]).join(":")?,<BR/>
+            <></>  (":", embedded_ipv4: IPv4)?<BR/>
+            <BR/>
+            <></>  defined_segments: Segment[] ={'>'}<BR/>
+            <></>    left, right, embedded_ipv4 as Binary.Positive<BR/>
+            <BR/>
+            <></>  static Segment = Hexadecimal.Positive{'{'}length {'<'}= 4{'}'}
+          </CodeBlock>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "look here", link: "https://github.com/orbitmines/ray/blob/main/Ether/Network.ray.txt"}} />.</span>
         </Section>
         <Section sub="Every variable... has a Location">
         </Section>
