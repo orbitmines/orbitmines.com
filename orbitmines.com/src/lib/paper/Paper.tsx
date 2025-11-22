@@ -983,6 +983,8 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
     children,
     className,
 
+    style,
+
     ...otherProps
   } = props;
   let {
@@ -1041,6 +1043,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
 
   const inline_reference = () => React.createElement(link ? 'a' : 'span', {
     ...(link ? { href: link, target } : {}),
+    style: style,
     children: <>
       {display}
     </>

@@ -32,6 +32,7 @@ import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 import _ from "lodash";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
+import {Center} from "@react-three/drei";
 
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
@@ -198,9 +199,9 @@ const TowardsAUniversalLanguage = () => {
           <BR/>
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>(Then phrasing inaccessible abstractions just becomes: There's structure there we're ignorant of. We can simulate this by ignoring structure.)</span>
           <BR/>
-          A good place to start is to understand how this graph-like structure I'm calling a Ray is defined. Which is simple enough to understand, especially if you're already familiar with <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "graphs", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} />. Or if you've already used something like a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "linked list", link: "https://en.wikipedia.org/wiki/Linked_list"}} />.
+          A good place to start is to understand how this graph-like structure I'm calling a Ray is defined. Which is simple enough to understand, especially if you're already familiar with <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "graphs", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} /> or <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "linked lists", link: "https://en.wikipedia.org/wiki/Linked_list"}} />.
           <BR/>
-          <span style={{textAlign: 'left', minWidth: '100%'}}>Essentially it's nothing more than being at a <span className="bp5-text-muted">point, ..., vertex</span> and having information on what's in front of you, and behind you. If we visualize that point like this:</span>
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Essentially it's nothing more than being at a <span style={{color: 'orange'}}>point, ..., vertex</span> and having information on what's in front of you, and behind you. If we visualize that point like this:</span>
 
           <CodeBlock>
             <CachedVisualizationCanvas alt="empty_vertex" context={paper}>
@@ -247,7 +248,126 @@ const TowardsAUniversalLanguage = () => {
           {/*  </CachedVisualizationCanvas>*/}
           {/*</CodeBlock>*/}
 
-          Each boundary then in turn defines other boundaries, together they make an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edge", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} />.
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Each boundary then in turn optionally defines other boundaries, together they make an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edge", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} style={{color: '#5555FF'}} />. (And if there's no additional boundaries defined, it's a <span style={{color: '#FF5555'}}>dangling edge</span>; or an actual boundary of the structure.)</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex_with_edge" context={paper} style={{height: '50px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-40, 10, 0]} color="#FF5555"/>
+                <Line start={add([-40, 10, 0], [torus.radius, 0, 0])} end={add([-40, 10, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[20, -10, 0]} color="#5555FF"/>
+                <Line start={add([20, -10, 0], [-torus.radius, 0, 0])} end={add([20, -10, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, -10, 0], [torus.radius, 0, 0])} end={add([20, -10, 0], [20, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 0, 0]} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Then of course, at that boundary, another <span style={{color: 'orange'}}>vertex</span> is defined.</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="2_expanded" context={paper} style={{height: '50px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-60, 10, 0]} color="#FF5555"/>
+                <Line start={add([-60, 10, 0], [torus.radius, 0, 0])} end={add([-60, 10, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[0, -10, 0]} color="#5555FF"/>
+                <Line start={add([0, -10, 0], [-torus.radius, 0, 0])} end={add([0, -10, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([0, -10, 0], [torus.radius, 0, 0])} end={add([0, -10, 0], [20, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[60, 10, 0]} color="#FF5555"/>
+                <Line start={add([60, 10, 0], [-torus.radius, 0, 0])} end={add([60, 10, 0], [-20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-30, 0, 0]} scale={1.5} renderContinuations={false} /></group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[30, 0, 0]} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          You can keep repeating that and here we have the familiar structure of an Array. Which is simply defined as a line (of points).
+
+          <BR/>
+
+          Where of course it gets just a little more complicated, is when we take into account what I said earlier: "Every variable... is Many". You'll see in this case, that instead of an Array, that the ideas of <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "graphs", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} /> and <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "hypergraphs", link: "https://en.wikipedia.org/wiki/Hypergraph"}} /> fall naturally out of that definition. There are 4 places where we are defining variables here, namely:
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>(1 & 2) Each <span style={{color: 'orange'}}>point</span> has many <span style={{color: '#FF5555'}}>initial</span> and <span style={{color: '#5555FF'}}>terminal</span> boundaries. Or in other words, they define many <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edges", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} />. This upgrades our Array to the definition of a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Graph", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} />.</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex_with_many_expanded_boundaries" context={paper} style={{height: '50px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-30, 10, 0]} color="#FF5555"/>
+                <Line start={add([-30, 10, 0], [torus.radius, 0, 0])} end={add([-30, 10, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+                <Continuation position={[-30, -10, 0]} color="#FF5555"/>
+                <Line start={add([-30, -10, 0], [torus.radius, 0, 0])} end={add([-30, -10, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[30, -10, 0]} color="#5555FF"/>
+                <Line start={add([30, -10, 0], [-torus.radius, 0, 0])} end={add([30, -10, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Continuation position={[30, 10, 0]} color="#5555FF"/>
+                <Line start={add([30, 10, 0], [-torus.radius, 0, 0])} end={add([30, 10, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          Then the next two, are ways of upgrading our <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Graph", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} /> into a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Hypergraph", link: "https://en.wikipedia.org/wiki/Hypergraph"}} />. By turning the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edges", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} /> into <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "hyperedges", link: "https://en.wikipedia.org/wiki/Hypergraph"}} />. Note that 'hyper-', might as well stand for 'Many'.
+
+          <BR/>
+
+          (3) Each boundary defines many other boundaries. (Which is the typical definition of a hyperedge)
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex_with_hyperedge_1" context={paper} style={{height: '65px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-40, 15, 0]} color="#FF5555"/>
+                <Line start={add([-40, 15, 0], [torus.radius, 0, 0])} end={add([-40, 15, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[20, -5, 0]} color="#5555FF"/>
+                <Line start={add([20, -5, 0], [-torus.radius, 0, 0])} end={add([20, -5, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, 5, 0], [20, 0, 0])} end={add([20, -5, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, -15, 0], [20, 0, 0])} end={add([20, -5, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 5, 0]} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>And (4) each boundary is connected to many <span style={{color: 'orange'}}>vertices</span>.</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex_with_hyperedge_2" context={paper} style={{height: '80px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-40, 20, 0]} color="#FF5555"/>
+                <Line start={add([-40, 20, 0], [torus.radius, 0, 0])} end={add([-40, 20, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+                <Continuation position={[-40, -20, 0]} color="#FF5555"/>
+                <Line start={add([-40, -20, 0], [torus.radius, 0, 0])} end={add([-40, -20, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[20, 0, 0]} color="#5555FF"/>
+                <Line start={add([20, 0, 0], [-torus.radius, 0, 0])} end={add([20, 0, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 10, 0]} scale={1.5} renderContinuations={false} /></group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, -10, 0]} scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          And then the last few pieces to make it all fit: How do we know that there are Many defined, instead of one? It's recursively a Ray: Whenever you have Many of some variable, what you actually have is an iterable structure called a Ray, which defines on each of its points what's defined there.
+
+          <BR/>
+
+          Which brings me to the last piece of what a ray is: Every vertex, boundary and edge. Has a value on it. What type is that value? You guessed it, it's another Ray. And since every variable is Many. The value defined on each point is actually many Rays. In the next sections you'll see how that's used to encode structure like a binary number, or to encode programs on edges.
 
         </Section>
         <Section sub="Every variable... is a Type">
@@ -255,7 +375,7 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          If we take for instance a 2-bit binary number which intuitively looks something like:
+          If we take for instance a 2-bit binary number (00) which intuitively looks something like:
 
           <CodeBlock>
             <CanvasContainer style={{height: '140px'}}>
