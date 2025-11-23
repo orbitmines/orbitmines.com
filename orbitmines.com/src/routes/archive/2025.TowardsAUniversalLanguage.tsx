@@ -333,8 +333,8 @@ const TowardsAUniversalLanguage = () => {
               <group scale={1.5}>
                 <Continuation position={[20, -5, 0]} color="#5555FF"/>
                 <Line start={add([20, -5, 0], [-torus.radius, 0, 0])} end={add([20, -5, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
-                <Line start={add([20, 5, 0], [20, 0, 0])} end={add([20, -5, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
-                <Line start={add([20, -15, 0], [20, 0, 0])} end={add([20, -5, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, 5, 0], [20, 0, 0])} end={add([20, -5, 0], [0, torus.radius, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, -15, 0], [20, 0, 0])} end={add([20, -5, 0], [0, -torus.radius, 0])} scale={1.5} color="#5555FF" />
               </group>
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 5, 0]} scale={1.5} renderContinuations={false} /></group>
@@ -354,8 +354,8 @@ const TowardsAUniversalLanguage = () => {
               <group scale={1.5}>
                 <Continuation position={[20, 0, 0]} color="#5555FF"/>
                 <Line start={add([20, 0, 0], [-torus.radius, 0, 0])} end={add([20, 0, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
-                <Line start={add([20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
-                <Line start={add([20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [torus.radius, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5} color="#5555FF" />
               </group>
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 10, 0]} scale={1.5} renderContinuations={false} /></group>
@@ -367,7 +367,39 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          Which brings me to the last piece of what a ray is: Every vertex, boundary and edge. Has a value on it. What type is that value? You guessed it, it's another Ray. And since every variable is Many. The value defined on each point is actually many Rays. In the next sections you'll see how that's used to encode structure like a binary number, or to encode programs on edges.
+          Take the edge we're defining here for instance:
+
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="hyperedge" context={paper} style={{height: '40px'}}>
+              <group scale={1.5}>
+                <Continuation position={[0, 0, 0]} color="#5555FF"/>
+                <Line start={add([0, 0, 0], [-torus.radius, 0, 0])} end={add([0, 0, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([0, 10, 0], [20, 0, 0])} end={add([0, 0, 0], [0, torus.radius, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([0, -10, 0], [20, 0, 0])} end={add([0, 0, 0], [0, -torus.radius, 0])} scale={1.5} color="#5555FF" />
+              </group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>What this actually is, is some other structure, with three entries in it; one for each of the boundaries. Together this structure makes the <span style={{color: 'orange'}}>edge</span>. And essentially we're saying: "These boundaries are equivalent along <span style={{color: 'orange'}}>this ray</span>".</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="hyperedge_expanded" context={paper} style={{height: '70px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-20, 10, 0]} color="#5555FF"/>
+                <Continuation position={[0, 0, 0]} color="#5555FF"/>
+                <Continuation position={[20, -10, 0]} color="#5555FF"/>
+                <Line start={add([-20, 10, 0], [-torus.radius, 0, 0])} end={add([-20, 10, 0], [-20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([0, 0, 0], [torus.radius, 0, 0])} end={add([0, 0, 0], [20, 0, 0])} scale={1.5} color="#5555FF" />
+                <Line start={add([20, -10, 0], [torus.radius, 0, 0])} end={add([20, -10, 0], [20, 0, 0])} scale={1.5} color="#5555FF" />
+              </group>
+              <group rotation={[0, 0, - Math.PI / 6.8]}>
+                <Line start={[60, 0, 0]} end={[-60, 0, 0]} scale={1.5} color="orange" />
+              </group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          Which brings me to the last piece of what a ray is: Every vertex, boundary and edge. Has a value on it. What type is that value? You guessed it, it's another Ray. Just like how we just defined the edge: At each of the vertices there is a boundary. And since every variable is Many. The value defined on each point is actually many Rays. In the next sections you'll see how that's used to encode structure like a binary number, or to encode programs on edges.
 
         </Section>
         <Section sub="Every variable... is a Type">
@@ -375,7 +407,7 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          If we take for instance a 2-bit binary number (00) which intuitively looks something like:
+          <span style={{textAlign: 'left', minWidth: '100%'}}>If we take for instance a 2-bit binary number (<span style={{color: '#FF5555'}}>00</span>) which intuitively looks something like:</span>
 
           <CodeBlock>
             <CanvasContainer style={{height: '140px'}}>
