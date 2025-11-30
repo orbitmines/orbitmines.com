@@ -399,7 +399,43 @@ const TowardsAUniversalLanguage = () => {
             </CachedVisualizationCanvas>
           </CodeBlock>
 
-          Which brings me to the last piece of what a ray is: Every vertex, boundary and edge. Has a value on it. What type is that value? You guessed it, it's another Ray. Just like how we just defined the edge: At each of the vertices there is a boundary. And since every variable is Many. The value defined on each point is actually many Rays. In the next sections you'll see how that's used to encode structure like a binary number, or to encode programs on edges.
+          As you can see there: Every vertex, boundary and edge. Has a value on it. What type is that value? You guessed it, it's another Ray. Just like how we just defined the edge: At each of the vertices there is a boundary. And since every variable is Many. The value defined on each point is actually many Rays.
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Which brings me to the last piece of what a ray is: An important part of structures like grammar or programs, is the ability to group together many parts into a single entity. A ray, can also be expanded and collapsed to reveal or hide structure. Take an <span style={{color: '#FF5555'}}>initial</span> boundary for instance, we could hide <span style={{color: '#FF55FF'}}>additional structure</span> in it:</span>
+
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="empty_vertex_with_edge_expanded" context={paper} style={{height: '50px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-40, 10, 0]} color="#FF5555"/>
+                <Line start={add([-40, 10, 0], [torus.radius, 0, 0])} end={add([-40, 10, 0], [20, 0, 0])} scale={1.5} color="#FF55FF" />
+              </group>
+              <group scale={1.5}>
+                <Continuation position={[20, -10, 0]} color="#FF55FF"/>
+                <Line start={add([20, -10, 0], [-torus.radius, 0, 0])} end={add([20, -10, 0], [-20, 0, 0])} scale={1.5} color="#FF55FF" />
+                <Line start={add([20, -10, 0], [torus.radius, 0, 0])} end={add([20, -10, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 0, 0]} color="#FF55FF" scale={1.5} renderContinuations={false} /></group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          Collapsing that additional structure inside the boundary, would give us:
+          <CodeBlock>
+            <CachedVisualizationCanvas alt="initial_boundary" context={paper}>
+              <group scale={1.5}>
+                <Continuation position={[-10, 0, 0]} color="#FF5555"/>
+                <Line start={add([-10, 0, 0], [torus.radius, 0, 0])} end={add([-10, 0, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
+              </group>
+            </CachedVisualizationCanvas>
+          </CodeBlock>
+
+          This hidden structure doesn't need to be adjacent, but often is.
+
+          <BR/>
+
+          In the next sections you'll see how this all is used to encode structure like a binary number, or to encode programs.
 
         </Section>
         <Section sub="Every variable... is a Type">
