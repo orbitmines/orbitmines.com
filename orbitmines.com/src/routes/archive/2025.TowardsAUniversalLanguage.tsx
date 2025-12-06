@@ -115,9 +115,11 @@ const TowardsAUniversalLanguage = () => {
 
     <Row center="xs">
       <Section head="Introduction">
-        After several years of abstract thought <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference}} />, actualization is the next step in the designing of a kind of universal programming language. The central question being: how do we evolve programming languages and their respective compilers forward?
+        After several years of abstract thought <Reference is="footnote" index={referenceCounter()} reference={{...ON_INTELLIGIBILITY.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{...ON_ORBITS.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference}} />, actualization is the next step in the designing of a kind of universal programming language. The central question being: how do we evolve programming languages and their respective compilers and ecosystems forward?
 
+        <BR/>
 
+        This is a bit of a technical update on the state of the ideas I'm working on to combat this question.
       </Section>
 
       <Arc head="Arc: The .ray.txt Programming Language">
@@ -431,7 +433,7 @@ const TowardsAUniversalLanguage = () => {
             </CachedVisualizationCanvas>
           </CodeBlock>
 
-          This hidden structure doesn't need to be adjacent, but often is.
+          This hidden structure doesn't need to be adjacent, but often is. Another common use of it, is a parallel structure, in the sense that it is 'the same thing on another level of description'.
 
           <BR/>
 
@@ -497,15 +499,164 @@ const TowardsAUniversalLanguage = () => {
 
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "look here", link: "https://github.com/orbitmines/ray/blob/main/Ether/Network.ray.txt"}} />.</span>
         </Section>
-        <Section sub="Every variable... has a Location">
-        </Section>
         <Section sub="Every variable... is a Lazy Expression/Program">
+          As a bit of an unusual feature for a programming language, the expressions, subexpressions and control-flow of a program are all (if wanted) exposed to the runtime. Instead of having a usual <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "AST", link: "https://en.wikipedia.org/wiki/Abstract_syntax_tree"}} />, the control-flow of the function is what is exposed to the compiler and runtime.
+
+          <BR/>
+
+          Having the control-flow as the primary language for functions/programs, or in other words: just a graph (or rather a ray), should make it much easier to abstractly compare the functionality of programs. Where when possible, any subexpression is expandable to its control-flow. With the only primitive being conditional edges: So in text-based terms essentially just <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "goto", link: "https://en.wikipedia.org/wiki/Goto"}} />'s wrapped in an if-statement.
+
+          <BR/>
+
+          Which is another requirement if we wanted to create a universal language: We need to be able to have some common language in which we can compare and reason about all types of programming languages.
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Note that this way things like <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "coroutines", link: "https://en.wikipedia.org/wiki/Coroutine"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multithreading", link: "https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)"}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "return", link: "https://en.wikipedia.org/wiki/Return_statement"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "if", link: "https://en.wikipedia.org/wiki/Conditional_(computer_programming)"}} /> statements, ..., <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "for", link: "https://en.wikipedia.org/wiki/For_loop"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "while", link: "https://en.wikipedia.org/wiki/While_loop"}} /> loops all become then just a matter of structures in the graph. The way they are implemented then, is just to get the access they have to the control-flow of the function, and to edit it. <span className="bp5-text-muted">To see how all this is implemented, see <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "here", link: "https://github.com/orbitmines/ray/blob/main/Ether/.ray.txt/Program.ray.txt"}} />.</span></span>
+
+          <BR/>
+
+          The simplest example would be a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "goto", link: "https://en.wikipedia.org/wiki/Goto"}} />, since that is just an edge to some next part of a program.
+
+          <BR/>
+
+          First, like labelling in some programming languages, you can get a pointer to somewhere in a function by labelling it. So a simple A + B, allows you to:
+
+          <CodeBlock>
+            label1\ A (label2\ + B)<BR/>
+            <BR/>
+            label2 // A program/function pointer
+          </CodeBlock>
+
+          Or you can get the current function with &, and iterate through the control-flow to similarly get a particular pointer. Each successive part is also just a program: Just instantiated at a different point along the control-flow. Note that this is an unusual feature: Usually any reference to a function is just to it's starting point, but since we allow access the the internals of a function, we can do this.
+
+          <CodeBlock>
+            &next
+          </CodeBlock>
+
+          Combined with those two things the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "goto", link: "https://en.wikipedia.org/wiki/Goto"}} /> implementation is rather simple. We get the program which called the goto function, and just alter its control-flow:
+
+          <CodeBlock>
+            goto (program: Program)<BR/>
+            <></>  &caller.push(program)
+          </CodeBlock>
+
+          Having covered that, we can start turning towards another powerful feature of the language: Every variable is a lazy expression/program/function. How the laziness is handled is something I'll discuss later with Quests. For now just remember that the current value of any variable is accessible through the following operator:
+
+          <CodeBlock>
+            variable**
+          </CodeBlock>
+
+          This gives us the powerful ability to access the functions which might still need to run to fill this variable, it gives you access to possible intermediate results if the function hasn't yet been completed. But see Quests later for more on this.
+
+          <BR/>
+
+          I say current value, because that brings me to the next unusual feature of the language:
         </Section>
         <Section sub="Every variable... holds a History">
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Every variable holds a history. <span className="bp5-text-muted">(Or at least, it's available to the compiler should you want to use it, keeping and storing every bit of variable change is of course way too expensive. A more intelligent approach is required. Keeping track of what functions we want to explicitly store histories for, is something I'll discuss with Quests.)</span></span>
 
+          <BR/>
+
+          When you think about it, there isn't much of a difference between the unresolved lazy program and a history we want keep. The implementation of history, is therefore just a program under the hood. Both are just graph of steps to perform to arrive at certain states and branches.
+
+          <BR/>
+
+          What this allows us to do, is to natively support version control over arbitrary data structures. We can have localized subexpressions which have different histories, or group them together in a 'global order'; this ordering/grouping of changes is referred to as a repository.
+
+          <BR/>
+
+          The hope of having nested repositories over arbitrary graphs (/rays), and this native support for version control, is that we can start having better infrastructure than just <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Git", link: "https://en.wikipedia.org/wiki/Git"}} />, which really only works for text files.
+
+          <BR/>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>One particular feature of the IDE, The Ether, will be to make use of this in the following way: By versioning functions (as a repository), and possibly sub-expressions of a function, we can start referencing function versions in our network stack; communicate what version I'm running on, what kinds of patches are available for any particular functions. As infrastructure it will allow us to reason about this more, which will become quite valuable.</span>
+
+          <BR/>
+
+          Let's walk through the structure of a history to understand how it works a little better:
         </Section>
+        <Section sub="Every variable... has Access Permissions">
+          One of the requirements of the language is also to be able to communicate as a database. Whether that is to function as a new version control system, a networked file system or to serve packages, game files, packets or anything else you can think of. Which brings into view the following feature: Every variable has access permissions defined.
+
+          <BR/>
+
+          These access permissions allow you to do the usual private/protected/public shenanigans of a programming language. In the Ray language we simply use 'internal' or not use it.
+
+          <CodeBlock>
+            class Example<BR/>
+            <></>  internal variable
+          </CodeBlock>
+
+          How that is implemented, is that the filter we used earlier for <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "dependent types", link: "https://en.wikipedia.org/wiki/Dependent_type"}} /> can also be used in this way. It's equivalent to this code:
+
+          <CodeBlock>
+            class Example<BR/>
+            <></>  Node{'{'}==.instance_of /* PARENT CLASS */{'}'} variable
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Where the Ray language differs, is that the possible recipient of this filter might be a Character: Player <span className="bp5-text-muted">(think user)</span>, or NPC <span className="bp5-text-muted">(think server or agent)</span>.</span>
+
+          We might say that we want everyone, by which I mean EVERYONE with an internet connection to me to be able to access the variable:
+
+          <CodeBlock>
+            public variable
+          </CodeBlock>
+
+          Which would be used by a public <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "API", link: "https://en.wikipedia.org/wiki/API"}} /> or endpoint. For instance, a publicly available profile, or a distributed chatroom.
+
+          <BR/>
+
+          There is a single Character associated with a runtime. We might want to specify that character, and only on this local machine is allowed to access it.
+
+          <CodeBlock>protected variable</CodeBlock>
+
+          Similarly there are modifiers for Characters which are running on the same machine:
+
+          <CodeBlock>localhost variable</CodeBlock>
+
+          Or we might want to say, only this Character, but on any machine which is running it. This would for instance be any information only available to you, the central Ether server, and any private servers you might have which have a backup of your data. In that case we'd say:
+
+          <CodeBlock>private variable</CodeBlock>
+
+          Or the same thing but excluding the central Ether server, only your private ones:
+
+          <CodeBlock>managed variable</CodeBlock>
+
+          There's also such a thing as default privacy policies, which you might set to 'managed', which allows any of your machines to edit each-other's states.
+
+          <BR/>
+
+          There's then also the 'confidential' modifier, which defaults to 'protected' or 'private' or 'managed' depending on your default privacy policy. It would be 'protected' by default.
+
+          <CodeBlock>confidential variable</CodeBlock>
+
+          Just like operating systems, you can have different access levels for different types of operations: reading, writing, or executing on your local machine.
+
+          <CodeBlock>public.read public.execute API_METHOD</CodeBlock>
+
+          Unlike operating systems however, you can also specify what kind of write operations any node can perform. We might for instance only want to expose a +1 operation publicly:
+          <CodeBlock>
+            public.read NUMBER = 0<BR/>
+            <></>  public.execute += (== 1)
+          </CodeBlock>
+
+          Note that the write permission is just a wrapper for execute, namely:
+          <CodeBlock>
+            public.write NUMBER = 0<BR/>
+            <BR/>
+            NUMBER = 0<BR/>
+            <></>  public.execute =
+          </CodeBlock>
+
+          Having covered access permissions, this brings me to the next section. How do you access external machines and their states?
+        </Section>
+        <Section sub="Every variable... has a Location">
+        </Section>
+        <Section head="Equality/Equivalence" sub=""></Section>
+
       </Arc>
-      <Arc head="Quests">
+      <Arc head="Arc: Quests">
         There's a hard problem which demands a practical solution. Namely that the halting of any part of any program is unknown <Reference is="footnote" index={referenceCounter()} reference={{title: "Halting problem", link: "https://en.wikipedia.org/wiki/Halting_problem"}} />. And since we interpret any variable as an iterable structure, there's no way of knowing whether that structure is halting or not other than to start traversing the structure to determine whether it is. (Or the structure's abstract definition, which in turn, still is a structure we'll have to traverse)
         <BR/>
         Instead of ignoring this problem, it's a central theme to the Ray language. It's a rephrasing of the problem in terms of (1) how many resources you decide to dedicate to which problem and (2) how you deal with intermediate results/variables. This is where quests come in.
