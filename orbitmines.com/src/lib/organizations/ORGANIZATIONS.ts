@@ -28,6 +28,7 @@ import syco_icon from "././syco/logo.png";
 import cool_worlds_podcast_icon from "././cool_worlds/channels4_profile.jpg";
 import demystifysci_icon from "././demystifysci/channels4_profile.jpg";
 import {ReferenceProps, Renderable} from "../paper/Paper";
+import {ReactNode} from "react";
 
 export type SVG = {
   viewBox: {
@@ -83,7 +84,7 @@ export type TProfile = {
 
   orcid?: string,
 
-  title?: Renderable<string>
+  title?: Renderable<string | ReactNode>
   subtitle?: Renderable<string>,
 
   reference?: {

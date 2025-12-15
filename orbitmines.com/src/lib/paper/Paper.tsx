@@ -934,7 +934,7 @@ export type ReferenceStyle = {
   is?: 'reference' | 'footnote',
 }
 export type ReferenceProps = {
-  title: Renderable<string>,
+  title: Renderable<string | ReactNode>,
   subtitle?: Renderable<string>,
 
   date?: string,
@@ -1369,6 +1369,7 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
 }
 
 export type PaperProps = ReferenceProps & {
+
   header?: any //
   head?: any
   pdf: PdfProps,
