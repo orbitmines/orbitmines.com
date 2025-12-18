@@ -222,12 +222,12 @@ const TowardsAUniversalLanguage = () => {
 
           Or for the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} /> case, only methods matching the parameter types get executed: (Note that you can of course, also give multiple names to the same function, as if defining aliases)
           <CodeBlock>
-            A | A1 (: boolean) =&gt; "X"<BR/>
-            A | A2 (: Number) =&gt; "Y"<BR/>
+            a | a1 (: boolean) =&gt; "X"<BR/>
+            a | a2 (: Number) =&gt; "Y"<BR/>
             <BR/>
-            // A is (A1 & A2)<BR/>
-            A(boolean) // "X"<BR/>
-            A(Number) // "Y"
+            // a is (a1 & a2)<BR/>
+            a(boolean) // "X"<BR/>
+            a(Number) // "Y"
           </CodeBlock>
 
           In fact, this is even as powerful as to extent to possible implementations of a function. Take for instance the way boolean operators are defined in Ray. They are all recursively defined in terms of each other. The NOT gate has definitions like:

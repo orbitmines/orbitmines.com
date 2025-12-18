@@ -924,7 +924,12 @@ export const getFootnotes = (node: ReactNode): JSX.Element[] => {
     footnotes.push(...getFootnotes(child.props.children));
   });
 
-  return footnotes;
+  const deduplicated: JSX.Element[] = []
+  footnotes.forEach((footnote) => {
+    if (!deduplicated.map(x => x.props.index).includes(footnote.props.index))
+      deduplicated.push(footnote);
+  })
+  return deduplicated;
 }
 
 export type ReferenceStyle = {
