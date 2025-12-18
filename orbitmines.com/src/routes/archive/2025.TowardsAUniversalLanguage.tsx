@@ -557,7 +557,7 @@ const TowardsAUniversalLanguage = () => {
           <CodeBlock>
             class IPv6 {'<'}<BR/>
             <></>  (left: Segment[]).join(":")?,<BR/>
-            <></>  zero_compression: defined_segments.empty ? "::" : "::"?,<BR/>
+            <></>  zero_compression: "::" (? if !defined_segments.empty),<BR/>
             <></>  (right: Segment[]).join(":")?,<BR/>
             <></>  (":", embedded_ipv4: IPv4)?<BR/>
             <BR/>
