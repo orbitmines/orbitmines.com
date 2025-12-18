@@ -893,12 +893,37 @@ export const useCounter = (): ReferenceCounter => {
 
 export type ReferenceCounter = Counter;
 
-export const FootnoteContent = (props: FootnoteProps & Children & { index: number }) => {
+export const FootnoteContent = (props: FootnoteProps & { goto?: JSX.Element } & Children & { index: number }) => {
   const { index, children } = props;
+
+  const goto = () => {
+    const element =document.getElementById(`footnote-${index}`)
+
+    window.scrollTo({
+      top: element.getBoundingClientRect().top + window.scrollY - 100,
+      behavior: "smooth",
+    });
+
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+
+    const range = document.createRange();
+
+    let start: ChildNode = element;
+    if (!element.previousSibling)
+      start = element.parentElement;
+
+    while (start.previousSibling) { start = start.previousSibling }
+
+    range.setStartBefore(start);
+    range.setEndAfter(element);
+
+    selection.addRange(range)
+  }
 
   return <div className="p-4">
     <span style={{display: 'inline'}} className="p-4">
-      <span className="bp5-text-muted" style={{display: 'inline'}}>[{index}] </span>
+      <a className="bp5-text-muted" style={{display: 'inline'}} onClick={goto}>[{index}] </a>
       {children}
     </span>
   </div>;
@@ -913,9 +938,9 @@ export const getFootnotes = (node: ReactNode): JSX.Element[] => {
 
     if ((child.props as any).is === 'footnote') {
       if ((child.props as any).reference === undefined) {
-        footnotes.push(<FootnoteContent {...child.props} />);
+        footnotes.push(<FootnoteContent {...child.props} goto={child} />);
       } else {
-        footnotes.push(<FootnoteContent index={child.props.index}><Reference {...child.props} is="reference" inline/></FootnoteContent>);
+        footnotes.push(<FootnoteContent index={child.props.index} goto={child}><Reference {...child.props} is="reference" inline/></FootnoteContent>);
       }
       return;
     }
@@ -1013,7 +1038,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
   if (link)
     link = link.replace("https://orbitmines.com", "")
 
-  const footnote = () => (<span style={{fontSize: '12px'}}>
+  const footnote = () => (<span id={`footnote-${index}`} style={{fontSize: '12px'}}>
     <Popover
         interactionKind="hover"
         content={<div style={{maxWidth: '400px'}}>
