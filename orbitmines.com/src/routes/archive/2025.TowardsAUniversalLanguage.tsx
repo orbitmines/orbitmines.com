@@ -82,10 +82,10 @@ Prism.languages["ray.txt"] = {
   },
   'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
   'bp5-text-muted': /(\\)|(\bas\b)|#|@|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
-  'punctuation': /[{}[\],()]|=>|:|[|&.]/,
+  'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]/,
   'builtin': /\b(?:boolean|Number|String)\b/,
   'keyword': /\b(?:this|static|class|namespace|dynamically|assert|read|write|execute)\b/,
-  'access': /\b(?:internal|public|protected|localhost|private|managed|confidential)\b/,
+  'access': /\b(?:internal|none|public|protected|localhost|private|managed|confidential)\b/,
   'boolean': /\b(?:false|true)\b/,
   'class-name': /[A-Z][A-Za-z0-9]+/,//
   'variable': /[a-z0-9]+/,
@@ -534,13 +534,13 @@ const TowardsAUniversalLanguage = () => {
           We might have a type requirement of one of the methods on the number, take the length of the number for instance, which in this case would be two. We'd check for that simply with:
 
           <CodeBlock>
-            Binary.Positive{'{'}length == 2{'}'}
+            Binary{'{'}length == 2{'}'}
           </CodeBlock>
 
           You can also extend the type systems with arbitrary asserts, which add additional constraints, just like this dependent type would.
 
           <CodeBlock>
-            class Example {'<'} Binary.Positive<BR/>
+            class Example {'<'} Binary<BR/>
             <></>  dynamically assert length == 2
           </CodeBlock>
 
@@ -562,9 +562,9 @@ const TowardsAUniversalLanguage = () => {
             <></>  (":", embedded_ipv4: IPv4)?<BR/>
             <BR/>
             <></>  defined_segments: Segment[] ={'>'}<BR/>
-            <></>    left, right, embedded_ipv4 as Binary.Positive<BR/>
+            <></>    left, right, embedded_ipv4 as Binary<BR/>
             <BR/>
-            <></>  static Segment = Hexadecimal.Positive{'{'}length {'<'}= 4{'}'}
+            <></>  static Segment = Hexadecimal{'{'}length {'<'}= 4{'}'}
           </CodeBlock>
 
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "look here", link: "https://github.com/orbitmines/ray/blob/main/Ether/Network.ray.txt"}} />.</span>
@@ -732,6 +732,40 @@ const TowardsAUniversalLanguage = () => {
         Instead of ignoring this problem, it's a central theme to the Ray language. It's a rephrasing of the problem in terms of (1) how many resources you decide to dedicate to which problem and (2) how you deal with intermediate results/variables. This is where quests come in.
         <BR/>
         Though more broadly, quests are aimed at both players and NPCs. From the perspective of the NPC it's how do you operate in a world where any step of the program is possible infinitely generating?
+      </Arc>
+      <Arc head="Arc: 2026">
+        <Section head="Templating other languages">
+          A perfect example of where text-based programming languages fall short is the templating of other languages. The simplest example of this is how (templated) strings work. Whether it is to support expressions within a string, or to have to escape the character we're using to close the string's expression. This necessity of having to escape the characters, is the shortcoming.
+          <BR/>
+          If we were to step away from text-based programming languages, our editor could simply be aware of whether we're working in the language we're templating or if we're defining an expression in our host language.
+          <BR/>
+          This is then also one of the features our editor The Ether will have, alas, we're currently defining a text-based language, and we'd still like to template other languages. Namely because we're going to be implementing (trans-/)compilers to other languages within the language.
+          <BR/>
+
+          I've resorted to using the double parenthesis unicode characters for injecting expressions in the Ray language, as I can't remember any of the language I've looked at the past few years uses them.
+
+          <CodeBlock>
+            x = 2<BR/>
+            program = ⸨⸩.ts<BR/>
+            <></>  const x: number = ⸨x⸩ * 2<BR/>
+            <BR/>
+            program().x // 4
+          </CodeBlock>
+
+          Besides simple templating, I'm hoping to also allow bindings such that all the functionality of the Ray language can also be injected into arbitrary code from other languages. So if you want access to the function control-flow or intermediate values of variables, that would be supported.
+
+          <BR/>
+
+          Another thing that I'm hoping to support is to, instead of running the language in its native runtime, to extract the control-flow (which could even be one which doesn't support the entire language), and run it like any other program in the Ray language.
+
+          <BR/>
+
+          By the end of 2026, I'm hoping to have something more definitive regarding this feature.
+
+        </Section>
+        <Section head="The v0 runtime">
+
+        </Section>
       </Arc>
 
       <Arc head="Wrapping up">
