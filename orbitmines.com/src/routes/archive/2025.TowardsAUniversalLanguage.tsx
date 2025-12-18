@@ -742,7 +742,7 @@ const TowardsAUniversalLanguage = () => {
           This is then also one of the features our editor The Ether will have, alas, we're currently defining a text-based language, and we'd still like to template other languages. Namely because we're going to be implementing (trans-/)compilers to other languages within the language.
           <BR/>
 
-          I've resorted to using the double parenthesis unicode characters for injecting expressions in the Ray language, as I can't remember any of the language I've looked at the past few years uses them.
+          I've resorted to using the double parenthesis unicode characters for injecting expressions in the Ray language, as I don't think any of the language I've looked at the past few years uses them.
 
           <CodeBlock>
             x = 2<BR/>
