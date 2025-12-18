@@ -80,11 +80,9 @@ Prism.languages["ray.txt"] = {
     pattern: /(\/\/.*)|(\/\*.*\*\/)/,
     greedy: true
   },
-  // 'function': /#?.(?:(?!\s).)*(?=\s*\()/,
   'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
   'bp5-text-muted': /(\\)|(\bas\b)|#|@|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
   'punctuation': /[{}[\],()]|=>|:|[|&.]/,
-  // 'bp5-text-muted': /[|&]/,
   'builtin': /\b(?:boolean|Number|String)\b/,
   'keyword': /\b(?:this|static|class|namespace|dynamically|assert|read|write|execute)\b/,
   'access': /\b(?:internal|public|protected|localhost|private|managed|confidential)\b/,
