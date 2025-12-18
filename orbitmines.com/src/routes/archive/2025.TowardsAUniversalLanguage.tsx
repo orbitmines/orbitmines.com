@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
 import Paper, {
@@ -6,7 +6,7 @@ import Paper, {
   Block,
   BlueprintIcons16,
   BlueprintIcons20,
-  BR, Children, CodeBlockProps, Col, highlight,
+  BR, Children, CodeBlockProps, Col,
   HorizontalLine,
   JetBrainsMono,
   PaperProps,
@@ -33,6 +33,7 @@ import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 import _ from "lodash";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Center} from "@react-three/drei";
+import {Highlight, Prism, themes} from "prism-react-renderer";
 
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
@@ -54,9 +55,83 @@ export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   }, status: Viewed.VIEWED, found_at: "2025", viewed_at: "December, 2025"
 }
 
+Prism.languages["ray.txt"] = {
+  // 'string': {
+  //   pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,
+  //   lookbehind: true,
+  //   greedy: true
+  // },
+  'string': {
+    pattern: /"(?:\\.|\{[^{}]*\}|(?!\{)[^\\"])*"/,
+    inside: {
+      'interpolation': {
+        pattern: /\{[^{}]*\}/,
+        inside: {
+          'punctuation': /^\{|\}$/,
+          'expression': {
+            pattern: /[\s\S]+/,
+            inside: null // see below
+          }
+        }
+      }
+    }
+  },
+  'comment': {
+    pattern: /\/\/.*/,
+    greedy: true
+  },
+  // 'function': /#?.(?:(?!\s).)*(?=\s*\()/,
+  'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
+  'bp5-text-muted': /(\bas\b)|#|@|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
+  'punctuation': /[{}[\],()]|=>|:|[|&.]/,
+  // 'bp5-text-muted': /[|&]/,
+  'builtin': /\b(?:boolean|Number|String)\b/,
+  'keyword': /\b(?:this|static|class|namespace|dynamically|assert)\b/,
+  'boolean': /\b(?:false|true)\b/,
+  'function': {
+    pattern: /(\w)(?=\s+\()/,
+    greedy: true
+  },
+  'class-name': /[A-Z][A-Za-z0-9]+/,//
+  'variable': /[a-z0-9]+/,
+};
+// (Prism as any).languages["ray.txt"]['template-string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
+(Prism as any).languages["ray.txt"]['string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
+
+
+const highlight = (code: string) => (
+  // @ts-ignore
+  <Highlight prism={Prism} theme={themes.duotoneDark} code={code} language="ray.txt">
+    {({className, style, tokens, getLineProps, getTokenProps}) => (
+      <>
+        {tokens.map((line, i) => (
+          <div {...getLineProps({line, key: i})}>
+            {line.map((token, key) => <span {...getTokenProps({token, key})} />)}
+          </div>
+        ))}
+      </>
+    )}
+  </Highlight>
+)
+
+const string = (node: ReactNode): string => {
+  if (node === null || node === undefined || typeof node === "boolean")
+    return ""
+  if (typeof node === "string" || typeof node === "number")
+    return String(node)
+  if (Array.isArray(node))
+    return node.map(string).join("");
+  if (!React.isValidElement(node))
+    return ""
+  if (node.type == React.Fragment)
+    return string(node.props.children)
+
+  return "\n";
+}
+
 export const CodeBlock = ({children}: Children) => {
   return <Block style={{textAlign: 'left'}}>
-    {children}
+    {highlight(string(children))}
   </Block>;
 };
 
@@ -152,8 +227,8 @@ const TowardsAUniversalLanguage = () => {
 
           Or for the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multimethods", link: "https://en.wikipedia.org/wiki/Multiple_dispatch"}} /> case, only methods matching the parameter types get executed: (Note that you can of course, also give multiple names to the same function, as if defining aliases)
           <CodeBlock>
-            A | A1 (x: boolean) =&gt; "X"<BR/>
-            A | A2 (x: Number) =&gt; "Y"<BR/>
+            A | A1 (: boolean) =&gt; "X"<BR/>
+            A | A2 (: Number) =&gt; "Y"<BR/>
             <BR/>
             // A is (A1 & A2)<BR/>
             A(boolean) // "X"<BR/>
@@ -205,15 +280,15 @@ const TowardsAUniversalLanguage = () => {
           <BR/>
           <span style={{textAlign: 'left', minWidth: '100%'}}>Essentially it's nothing more than being at a <span style={{color: 'orange'}}>point, ..., vertex</span> and having information on what's in front of you, and behind you. If we visualize that point like this:</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex" context={paper}>
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Then in front and behind, we define an <span style={{color: '#FF5555'}}>initial</span> and <span style={{color: '#5555FF'}}>terminal</span> boundary:</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex_with_expanded_boundaries" context={paper} style={{height: '50px'}}>
               {/*<group scale={1.5}>*/}
               {/*  <Line start={add([-30, 10, 0], [20, 0, 0])} end={[0, 0, 0]} scale={1.5} color="gray" />*/}
@@ -230,11 +305,11 @@ const TowardsAUniversalLanguage = () => {
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           {/*Which we alternately display as:*/}
 
-          {/*<CodeBlock>*/}
+          {/*<Block>*/}
           {/*  <CachedVisualizationCanvas alt="empty_vertex_with_boundaries" context={paper}>*/}
           {/*    <group scale={1.5}>*/}
           {/*      <Continuation position={[-20, 0, 0]} color="#FF5555"/>*/}
@@ -248,11 +323,11 @@ const TowardsAUniversalLanguage = () => {
           {/*    <group scale={1.5}><Vertex position={[0, 0, 0]} scale={1.5} /></group>*/}
 
           {/*  </CachedVisualizationCanvas>*/}
-          {/*</CodeBlock>*/}
+          {/*</Block>*/}
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Each boundary then in turn optionally defines other boundaries, together they make an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edge", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} style={{color: '#5555FF'}} />. (And if there's no additional boundaries defined, it's a <span style={{color: '#FF5555'}}>dangling edge</span>; or an actual boundary of the structure.)</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex_with_edge" context={paper} style={{height: '50px'}}>
               <group scale={1.5}>
                 <Continuation position={[-40, 10, 0]} color="#FF5555"/>
@@ -266,11 +341,11 @@ const TowardsAUniversalLanguage = () => {
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 0, 0]} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Then of course, at that boundary, another <span style={{color: 'orange'}}>vertex</span> is defined.</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="2_expanded" context={paper} style={{height: '50px'}}>
               <group scale={1.5}>
                 <Continuation position={[-60, 10, 0]} color="#FF5555"/>
@@ -289,7 +364,7 @@ const TowardsAUniversalLanguage = () => {
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-30, 0, 0]} scale={1.5} renderContinuations={false} /></group>
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[30, 0, 0]} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           You can keep repeating that and here we have the familiar structure of an Array. Which is simply defined as a line (of points).
 
@@ -301,7 +376,7 @@ const TowardsAUniversalLanguage = () => {
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>(1 & 2) Each <span style={{color: 'orange'}}>point</span> has many <span style={{color: '#FF5555'}}>initial</span> and <span style={{color: '#5555FF'}}>terminal</span> boundaries. Or in other words, they define many <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edges", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} />. This upgrades our Array to the definition of a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Graph", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} />.</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex_with_many_expanded_boundaries" context={paper} style={{height: '50px'}}>
               <group scale={1.5}>
                 <Continuation position={[-30, 10, 0]} color="#FF5555"/>
@@ -318,7 +393,7 @@ const TowardsAUniversalLanguage = () => {
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           Then the next two, are ways of upgrading our <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Graph", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}} /> into a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Hypergraph", link: "https://en.wikipedia.org/wiki/Hypergraph"}} />. By turning the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "edges", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}} /> into <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "hyperedges", link: "https://en.wikipedia.org/wiki/Hypergraph"}} />. Note that 'hyper-', might as well stand for 'Many'.
 
@@ -326,7 +401,7 @@ const TowardsAUniversalLanguage = () => {
 
           (3) Each boundary defines many other boundaries. (Which is the typical definition of a hyperedge)
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex_with_hyperedge_1" context={paper} style={{height: '65px'}}>
               <group scale={1.5}>
                 <Continuation position={[-40, 15, 0]} color="#FF5555"/>
@@ -341,11 +416,11 @@ const TowardsAUniversalLanguage = () => {
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 5, 0]} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>And (4) each boundary is connected to many <span style={{color: 'orange'}}>vertices</span>.</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex_with_hyperedge_2" context={paper} style={{height: '80px'}}>
               <group scale={1.5}>
                 <Continuation position={[-40, 20, 0]} color="#FF5555"/>
@@ -363,7 +438,7 @@ const TowardsAUniversalLanguage = () => {
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 10, 0]} scale={1.5} renderContinuations={false} /></group>
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, -10, 0]} scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           And then the last few pieces to make it all fit: How do we know that there are Many defined, instead of one? It's recursively a Ray: Whenever you have Many of some variable, what you actually have is an iterable structure called a Ray, which defines on each of its points what's defined there.
 
@@ -372,7 +447,7 @@ const TowardsAUniversalLanguage = () => {
           Take the edge we're defining here for instance:
 
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="hyperedge" context={paper} style={{height: '40px'}}>
               <group scale={1.5}>
                 <Continuation position={[0, 0, 0]} color="#5555FF"/>
@@ -381,11 +456,11 @@ const TowardsAUniversalLanguage = () => {
                 <Line start={add([0, -10, 0], [20, 0, 0])} end={add([0, 0, 0], [0, -torus.radius, 0])} scale={1.5} color="#5555FF" />
               </group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>What this actually is, is some other structure, with three entries in it; one for each of the boundaries. Together this structure makes the <span style={{color: 'orange'}}>edge</span>. And essentially we're saying: "These boundaries are equivalent along <span style={{color: 'orange'}}>this ray</span>".</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="hyperedge_expanded" context={paper} style={{height: '70px'}}>
               <group scale={1.5}>
                 <Continuation position={[-20, 10, 0]} color="#5555FF"/>
@@ -399,7 +474,7 @@ const TowardsAUniversalLanguage = () => {
                 <Line start={[60, 0, 0]} end={[-60, 0, 0]} scale={1.5} color="orange" />
               </group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           As you can see there: Every vertex, boundary and edge. Has a value on it. What type is that value? You guessed it, it's another Ray. Just like how we just defined the edge: At each of the vertices there is a boundary. And since every variable is Many. The value defined on each point is actually many Rays.
 
@@ -407,7 +482,7 @@ const TowardsAUniversalLanguage = () => {
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Which brings me to the last piece of what a ray is: An important part of structures like grammar or programs, is the ability to group together many parts into a single entity. A ray, can also be expanded and collapsed to reveal or hide structure. Take an <span style={{color: '#FF5555'}}>initial</span> boundary for instance, we could hide <span style={{color: '#FF55FF'}}>additional structure</span> in it:</span>
 
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="empty_vertex_with_edge_expanded" context={paper} style={{height: '50px'}}>
               <group scale={1.5}>
                 <Continuation position={[-40, 10, 0]} color="#FF5555"/>
@@ -421,17 +496,17 @@ const TowardsAUniversalLanguage = () => {
 
               <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-10, 0, 0]} color="#FF55FF" scale={1.5} renderContinuations={false} /></group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           Collapsing that additional structure inside the boundary, would give us:
-          <CodeBlock>
+          <Block>
             <CachedVisualizationCanvas alt="initial_boundary" context={paper}>
               <group scale={1.5}>
                 <Continuation position={[-10, 0, 0]} color="#FF5555"/>
                 <Line start={add([-10, 0, 0], [torus.radius, 0, 0])} end={add([-10, 0, 0], [20, 0, 0])} scale={1.5} color="#FF5555" />
               </group>
             </CachedVisualizationCanvas>
-          </CodeBlock>
+          </Block>
 
           This hidden structure doesn't need to be adjacent, but often is. Another common use of it, is a parallel structure, in the sense that it is 'the same thing on another level of description'.
 
@@ -447,7 +522,7 @@ const TowardsAUniversalLanguage = () => {
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>If we take for instance a 2-bit binary number (<span style={{color: '#FF5555'}}>00</span>) which intuitively looks something like:</span>
 
-          <CodeBlock>
+          <Block>
             <CanvasContainer style={{height: '140px'}}>
               <canvas
                 style={{
@@ -459,7 +534,7 @@ const TowardsAUniversalLanguage = () => {
                 }}
               />
             </CanvasContainer>
-          </CodeBlock>
+          </Block>
 
           We might have a type requirement of one of the methods on the number, take the length of the number for instance, which in this case would be two. We'd check for that simply with:
 
@@ -485,7 +560,7 @@ const TowardsAUniversalLanguage = () => {
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>An example of this sort of <span className="bp5-text-disabled">type, pattern</span> can be seen in how <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "IPv6", link: "https://en.wikipedia.org/wiki/IPv6"}} /> is implemented. Where there are two complications to a valid address: (1) a sequence of zero segments can be compressed with '::' and (2) an <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "IPv4", link: "https://en.wikipedia.org/wiki/IPv4"}} /> address might be embedded in them. Making a valid address something like <span className="bp5-text-disabled">::ffff:0.0.0.0</span> or <span className="bp5-text-disabled">64:ff9b::</span>.</span>
 
           <CodeBlock>
-            class v6 {'<'}<BR/>
+            class IPv6 {'<'}<BR/>
             <></>  (left: Segment[]).join(":")?,<BR/>
             <></>  zero_compression: defined_segments.empty ? "::" : "::"?,<BR/>
             <></>  (right: Segment[]).join(":")?,<BR/>

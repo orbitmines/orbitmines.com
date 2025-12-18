@@ -75,8 +75,8 @@ const Minimap = () => {
 
             <Col xs={12}>
               <Row middle="xs" center="xs">
-                <Col>
-                  <CanvasContainer style={{height: '140px'}}>
+                <Col style={{maxWidth: '500px'}}>
+                  <CanvasContainer style={{height: '140px'}} className="hidden-xs">
                     <canvas
                       style={{
                         width: '100%',
@@ -130,7 +130,7 @@ const Minimap = () => {
                     />
                   </div>
                 </Col>
-                <Col style={{maxWidth: '400px'}}>
+                <Col style={{maxWidth: '500px'}}>
                   {/*<Row start="xs">*/}
                   <Reference
                     index={0}
@@ -152,7 +152,7 @@ const Minimap = () => {
                     ))}
                   </div>
 
-                  <CanvasContainer style={{height: '150px'}}>
+                  <CanvasContainer style={{height: '150px'}} className="hidden-xs">
                     <canvas
                       style={{
                         width: '100%',
