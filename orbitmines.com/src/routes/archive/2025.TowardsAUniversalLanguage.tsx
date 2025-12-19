@@ -81,11 +81,14 @@ Prism.languages["ray.txt"] = {
     greedy: true
   },
   'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
-  'bp5-text-muted': /(\\)|(\bas\b)|#|@|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
+  'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
   'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]/,
-  'builtin': /\b(?:boolean|Number|String)\b/,
   'keyword': /\b(?:this|static|class|namespace|dynamically|assert|read|write|execute)\b/,
-  'access': /\b(?:internal|none|public|protected|localhost|private|managed|confidential)\b/,
+  'access': {
+    pattern: /\b(?:internal|none|confidential|managed)\b|@[a-zA-Z0-9]+/,
+    greedy: true
+  },
+  'builtin': /\b(?:boolean|Number|String)\b/,
   'boolean': /\b(?:false|true)\b/,
   'class-name': /[A-Z][A-Za-z0-9]+/,//
   'variable': /[a-z0-9]+/,
@@ -662,7 +665,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             class Example<BR/>
-            <></>  Node{'{'}==.instance_of /* PARENT CLASS */{'}'} variable
+            <></>  Node{'{'}==.instance_of Example{'}'} variable
           </CodeBlock>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Where the Ray language differs, is that the possible recipient of this filter might be a Character: Player <span className="bp5-text-muted">(think user)</span>, or NPC <span className="bp5-text-muted">(think server or agent)</span>.</span>
@@ -670,7 +673,7 @@ const TowardsAUniversalLanguage = () => {
           We might say that we want everyone, by which I mean EVERYONE with an internet connection to me to be able to access the variable:
 
           <CodeBlock>
-            public variable
+            @public variable
           </CodeBlock>
 
           Which would be used by a public <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "API", link: "https://en.wikipedia.org/wiki/API"}} /> or endpoint. For instance, a publicly available profile, or a distributed chatroom.
@@ -679,44 +682,44 @@ const TowardsAUniversalLanguage = () => {
 
           There is a single Character associated with a runtime. We might want to specify that character, and only on this local machine is allowed to access it.
 
-          <CodeBlock>protected variable</CodeBlock>
+          <CodeBlock>@local variable</CodeBlock>
 
           Similarly there are modifiers for Characters which are running on the same machine:
 
-          <CodeBlock>localhost variable</CodeBlock>
+          <CodeBlock>@localhost variable</CodeBlock>
 
           Or we might want to say, only this Character, but on any machine which is running it. This would for instance be any information only available to you, the central Ether server, and any private servers you might have which have a backup of your data. In that case we'd say:
 
-          <CodeBlock>private variable</CodeBlock>
+          <CodeBlock>@private variable</CodeBlock>
 
           Or the same thing but excluding the central Ether server, only your private ones:
 
-          <CodeBlock>managed variable</CodeBlock>
+          <CodeBlock>@private.managed variable</CodeBlock>
 
           There's also such a thing as default privacy policies, which you might set to 'managed', which allows any of your machines to edit each-other's states.
 
           <BR/>
 
-          There's then also the 'confidential' modifier, which defaults to 'protected' or 'private' or 'managed' depending on your default privacy policy. It would be 'protected' by default.
+          There's then also the 'confidential' modifier, which defaults to '@local' or '@private' or '@private.managed' depending on your default privacy policy. It would be '@local' by default.
 
-          <CodeBlock>confidential variable</CodeBlock>
+          <CodeBlock>@private.confidential variable</CodeBlock>
 
           Just like operating systems, you can have different access levels for different types of operations: reading, writing, or executing on your local machine.
 
-          <CodeBlock>public.read public.execute API_METHOD</CodeBlock>
+          <CodeBlock>@public.read @public.execute API_METHOD</CodeBlock>
 
           Unlike operating systems however, you can also specify what kind of write operations any node can perform. We might for instance only want to expose a +1 operation publicly:
           <CodeBlock>
-            public.read NUMBER = 0<BR/>
-            <></>  public.execute += (== 1)
+            @public.read NUMBER = 0<BR/>
+            <></>  @public.execute += (== 1)
           </CodeBlock>
 
           Note that the write permission is just a wrapper for execute, namely:
           <CodeBlock>
-            public.write NUMBER = 0<BR/>
+            @public.write NUMBER = 0<BR/>
             <BR/>
             NUMBER = 0<BR/>
-            <></>  public.execute =
+            <></>  @public.execute =
           </CodeBlock>
 
           Having covered access permissions, this brings me to the next section. How do you access external machines and their states?
