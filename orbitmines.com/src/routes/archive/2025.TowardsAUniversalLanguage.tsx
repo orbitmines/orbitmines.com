@@ -56,11 +56,6 @@ export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
 }
 
 Prism.languages["ray.txt"] = {
-  // 'string': {
-  //   pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,
-  //   lookbehind: true,
-  //   greedy: true
-  // },
   'string': {
     pattern: /"(?:\\.|\{[^{}]*\}|(?!\{)[^\\"])*"/,
     inside: {
@@ -83,15 +78,15 @@ Prism.languages["ray.txt"] = {
   'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
   'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
   'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]/,
-  'keyword': /\b(?:this|static|class|namespace|dynamically|assert|read|write|execute)\b/,
+  'keyword': /\b(?:this|static|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b/,
   'access': {
-    pattern: /\b(?:internal|none|confidential|managed)\b|@[a-zA-Z0-9]+/,
+    pattern: /@[a-zA-Z0-9_]+/,
     greedy: true
   },
   'builtin': /\b(?:boolean|Number|String)\b/,
   'boolean': /\b(?:false|true)\b/,
-  'class-name': /[A-Z][A-Za-z0-9]+/,//
-  'variable': /[a-z0-9]+/,
+  'class-name': /[A-Z][A-Za-z0-9_]+/,//
+  'variable': /[a-z0-9_]+/,
 };
 // (Prism as any).languages["ray.txt"]['template-string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
 (Prism as any).languages["ray.txt"]['string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
@@ -727,6 +722,117 @@ const TowardsAUniversalLanguage = () => {
         <Section sub="Every variable... has a Location">
         </Section>
         <Section head="Equality/Equivalence" sub=""></Section>
+        <Section head="Probability" sub="">
+          Since we're working with superposed values already, a natural expansion of the concept is to that of probabilities. Where by default, if we'd have some superposed values OR'ed, there's a uniform probability distribution. Or in other words.
+
+          <CodeBlock>
+            x = "A" | "B"
+          </CodeBlock>
+
+          Evaluated to a single value,
+
+          <CodeBlock>
+            x#.random
+          </CodeBlock>
+
+          would be 50% each.
+
+          We can assign probabilities in two ways;
+
+          <CodeBlock>
+            x: String? = 0.2("A") | 0.5("B")<BR/>
+            <BR/>
+            x: String? =<BR/>
+            <></>  | 0.2 ={'>'} "A"<BR/>
+            <></>  | 0.5 ={'>'} "B"<BR/>
+            <></>  | None
+          </CodeBlock>
+
+          Where any non-covered probabilities, default to None, if the variable is optional. (If the value is non-optional, all cases need to be covered)
+
+          Nested probabilities, will of course be supported.
+
+          <CodeBlock>
+            0.5(0.5("A") | 0.5("B")) | "C"
+          </CodeBlock>
+
+          Note that only OR's are evaluated this way, an AND, would not be effected, we can then of course, combine the two. The following for instance:
+
+          <CodeBlock>
+            0.5("A") & 0.5(0.3("B") | 0.7("C"))
+          </CodeBlock>
+
+          Would be two separate probabilities, both evaluated. One for A, and one for B or C.
+
+          Note that unless the probabilities are explicitly evaluated to a value, they stay around like any superposed variable.
+
+          <CodeBlock>
+            n (== "A") ={'>'} 1<BR/>
+            n (== "B") ={'>'} 2<BR/>
+            <BR/>
+            n 0.3("A") | 0.7("B")<BR/>
+            // 0.3(1) | 0.7(2)
+          </CodeBlock>
+
+
+          We unlock some powerful capabilities like this, I could for instance create the following type:
+
+          <CodeBlock>
+            Binary{'{'}-{'>'} .next == 0.5(?.random){'}'}
+          </CodeBlock>
+
+          Which is like saying: A randomly generated string of boolean values (possibly infinite) whose length is determined by randomly flipping a coin whether there's a next value.
+
+          This syntax requires some unpacking, first consider this:
+
+          <CodeBlock>
+            -{'>'} .next
+          </CodeBlock>
+
+          This is a constructor for a ray which recursively calls the method on an object until none is found. Typically, you'd be able to say things like
+
+          <CodeBlock>
+            variable -{'>'} .parent
+          </CodeBlock>
+
+          And then say things like
+
+          <CodeBlock>
+            (variable -{'>'} .parent).last
+          </CodeBlock>
+
+          to get the first parent in some tree.
+
+          Then there's
+
+          <CodeBlock>
+            ?.random
+          </CodeBlock>
+
+          which takes the current type and generates a random instance of it.
+
+          To illustrate the power of this new abstraction, you'd then also be able to say something like:
+
+          <CodeBlock>
+            Binary{'{'}-{'>'} .next == 0.5(?.random){'}'}.length
+          </CodeBlock>
+
+          Since .next generates randomly, the length is a variable (infinitely generating) probability distribution.
+
+          We could, instead of a Binary, also reference an Array with arbitrary objects:
+
+          <CodeBlock>
+            Array{'{'}-{'>'} .next == 0.5(?.random){'}'}
+          </CodeBlock>
+
+          There is however, a slight problem with the following subexpression:
+
+          <CodeBlock>
+            ?.random
+          </CodeBlock>
+
+          Because we currently point to an arbitrary Array, this is any Node. In other words, it's an infinitely generating object, we can't just uniformly pick a random element from an infinitely generating object. Which is why this statement would fail. Instead, you'd have to define some other way to generate random Nodes.
+        </Section>
 
       </Arc>
       <Arc head="Arc: Quests">
