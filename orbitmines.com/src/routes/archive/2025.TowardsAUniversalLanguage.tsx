@@ -6,7 +6,7 @@ import Paper, {
   Block,
   BlueprintIcons16,
   BlueprintIcons20,
-  BR, Children, CodeBlockProps, Col,
+  BR, Children, CodeBlockProps, Col, CustomIcon,
   HorizontalLine,
   JetBrainsMono,
   PaperProps,
@@ -78,7 +78,7 @@ Prism.languages["ray.txt"] = {
   'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
   'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
   'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]/,
-  'keyword': /\b(?:this|static|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b/,
+  'keyword': /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b/,
   'access': {
     pattern: /@[a-zA-Z0-9_]+/,
     greedy: true
@@ -433,6 +433,15 @@ const TowardsAUniversalLanguage = () => {
             </CachedVisualizationCanvas>
           </Block>
 
+          Because the only differences between Arrays, Trees, Graphs & Hypergraphs is what kind of edges are defined on the boundaries, we get the following property in our language (without explicitly creating an object hierarchy):
+
+          <CodeBlock>
+            Array <BR/>
+            <></>  ==.instance_of Tree<BR/>
+            <></>  ==.instance_of Graph<BR/>
+            <></>  ==.instance_of Hypergraph
+          </CodeBlock>
+
           And then the last few pieces to make it all fit: How do we know that there are Many defined, instead of one? It's recursively a Ray: Whenever you have Many of some variable, what you actually have is an iterable structure called a Ray, which defines on each of its points what's defined there.
 
           <BR/>
@@ -577,6 +586,22 @@ const TowardsAUniversalLanguage = () => {
           <BR/>
 
           Which is another requirement if we wanted to create a universal language: We need to be able to have some common language in which we can compare and reason about all types of programming languages.
+
+          <BR/>
+
+          The ability to talk about the control-flow natively, allows us to construct types like this, to require functions which terminate:
+
+          <CodeBlock>
+            Program.Terminating
+          </CodeBlock>
+
+          Which is equivalent to the following code which checks that all branches are of a finite length:
+
+          <CodeBlock>
+            Program{'{'}expanded.length#.every != ∞{'}'}
+          </CodeBlock>
+
+          Of course, we can't guarantee that this type-check will halt itself (<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Halting problem", link: "https://en.wikipedia.org/wiki/Halting_problem"}} />). But we at least have the language to express this sort of thing when we do need it.
 
           <BR/>
 
@@ -743,12 +768,13 @@ const TowardsAUniversalLanguage = () => {
             x: String? = 0.2("A") | 0.5("B")<BR/>
             <BR/>
             x: String? =<BR/>
-            <></>  | 0.2 ={'>'} "A"<BR/>
-            <></>  | 0.5 ={'>'} "B"<BR/>
-            <></>  | None
+            <></>  0.2 ={'>'} "A"<BR/>
+            <></>  0.5 ={'>'} "B"
           </CodeBlock>
 
           Where any non-covered probabilities, default to None, if the variable is optional. (If the value is non-optional, all cases need to be covered)
+
+          <BR/>
 
           Nested probabilities, will of course be supported.
 
@@ -763,6 +789,8 @@ const TowardsAUniversalLanguage = () => {
           </CodeBlock>
 
           Would be two separate probabilities, both evaluated. One for A, and one for B or C.
+
+          <BR/>
 
           Note that unless the probabilities are explicitly evaluated to a value, they stay around like any superposed variable.
 
@@ -782,6 +810,8 @@ const TowardsAUniversalLanguage = () => {
           </CodeBlock>
 
           Which is like saying: A randomly generated string of boolean values (possibly infinite) whose length is determined by randomly flipping a coin whether there's a next value.
+
+          <BR/>
 
           This syntax requires some unpacking, first consider this:
 
@@ -803,6 +833,8 @@ const TowardsAUniversalLanguage = () => {
 
           to get the first parent in some tree.
 
+          <BR/>
+
           Then there's
 
           <CodeBlock>
@@ -811,6 +843,8 @@ const TowardsAUniversalLanguage = () => {
 
           which takes the current type and generates a random instance of it.
 
+          <BR/>
+
           To illustrate the power of this new abstraction, you'd then also be able to say something like:
 
           <CodeBlock>
@@ -818,6 +852,8 @@ const TowardsAUniversalLanguage = () => {
           </CodeBlock>
 
           Since .next generates randomly, the length is a variable (infinitely generating) probability distribution.
+
+          <BR/>
 
           We could, instead of a Binary, also reference an Array with arbitrary objects:
 
@@ -842,7 +878,7 @@ const TowardsAUniversalLanguage = () => {
         <BR/>
         Though more broadly, quests are aimed at both players and NPCs. From the perspective of the NPC it's how do you operate in a world where any step of the program is possible infinitely generating?
       </Arc>
-      <Arc head="Arc: 2026">
+      <Arc head="Arc: 2026/Planned features">
         <Section head="Templating other languages">
           A perfect example of where text-based programming languages fall short is the templating of other languages. The simplest example of this is how (templated) strings work. Whether it is to support expressions within a string, or to have to escape the character we're using to close the string's expression. This necessity of having to escape the characters, is the shortcoming.
           <BR/>
@@ -872,20 +908,78 @@ const TowardsAUniversalLanguage = () => {
           By the end of 2026, I'm hoping to have something more definitive regarding this feature.
 
         </Section>
-        <Section head="The v0 runtime">
+        <Section head="Other planned features">
+          There are other features I'm thinking about which I'm not yet sure about, so design decisions on it are still pending.
+
+          <BR/>
+
+          (1) Whether to superpose concurrent accesses of a variable. If we define 'branch' as separate execution branches of a function, so there's concurrent access to some variable:
+
+          <BR/>
+
+          <CodeBlock>
+            x = 0<BR/>
+            <BR/>
+            branch<BR/>
+            <></>  x = 1<BR/>
+            branch<BR/>
+            <></>  x = 2<BR/>
+            <BR/>
+            x // What is 'x' here.
+          </CodeBlock>
+
+          We could have the compiler realize there's a concurrent access, and instead of forcing some race condition, we could simply have it superpose the different branches' variable changes. And say
+
+          <CodeBlock>
+            x == 1 | 2
+          </CodeBlock>
+
+          (2) Is a function's control-graph without an initial boundary: a starting point, a valid function? So that would be one which has an infinite past; one could imagine that we could still deduce certain things about function execution. Things like imagining starting at any point within some looped initial structure. Or properties and possible values certain variables can have based, even on an infinite past.
+
+          <BR/>
+
+          (3) Kind of related to that, is starting which certain variables down in a function, and running a function backwards, using isomorphisms (defined or automatic) or historical values where available. And of course how you'd define and call and define inverses of functions. I've not yet thought through how that would work properly.
+
+          <BR/>
+
+          (4) Eventually once we have a programming language which isn't just text-based, you can imagine monkey-patching an existing function or constructor; by simply editing its code. Is there some way in which we want to implement this in the text-based form too?
+
 
         </Section>
       </Arc>
 
       <Arc head="Wrapping up">
-        <Section head="Future inquiries">
+        Having skipped the 2024 progress update due to personal reasons, I hope to continue this yearly exposition of thoughts and ideas I've been working on. From now on they should be much more technical.
 
-          A
-
-          <span style={{textAlign: 'left', minWidth: '100%'}}>- Expanding the <Reference is="reference" index={referenceCounter()} reference={{link: "https://github.com/orbitmines/library", title: "OrbitMines Library"}} simple inline /> project. Providing steps towards <span
-              className="bp5-text-muted">language, ..., platform</span> interoperability <Reference is="footnote" index={referenceCounter()} reference={{title: "Whatever function it is that platforms and interfaces serve, they will probably converge to being more of a theme applied on a particular type of structure. Only as a supply of resources (access to certain kinds of information/compute) will they persist. They will not persist as separable interfaces.", link: "https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project/#:~:text=Whatever%20sets%20up,have%20been%20found.", organizations: [ORGANIZATIONS.orbitmines_research]}}/> <Reference is="footnote" index={referenceCounter()} reference={{title: "This would have to include higher-order version control, keeping track of causal histories. And constantly reprogramming the renderer on the fly. Before a thing like this becomes even remotely practical.\n\nBut all these intermediate things are all practical tools for a smaller audience anyway.", link: 'https://x.com/_FadiShawki/status/1790005202084335947', authors: [{name: 'Fadi Shawki'}], date: '2024-05-13', organizations: [ORGANIZATIONS.twitter]}} />.</span>
+        <Section head="My current timeline">
+          Along with thinking through the planned features, my current goals for 2026 are the following:
 
           <BR/>
+
+          - Get a v0 specification runtime working, without any optimizations yet, which I can run in the browser.
+          <BR/>
+          - At the end of the year, put a language specification book online, which I will periodically update.
+
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+
+          My current timeline is then as following:
+          <BR/>
+          - 2026: Have a functioning runtime
+          <BR/>
+          - 2027: Start work on the IDE: Ether, and start lifting the Ray's language constraints of being text-based
+          <BR/>
+          - 2028: Using the IDE, create functionality for the analysis, indexing and implementation in/of other programming languages: A start to the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "library project", link: "https://github.com/orbitmines/ray/tree/main/Ether/projects/library"}} />.
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+
+          Join <Reference is="reference" simple inline index={referenceCounter()} reference={{title: <span><CustomIcon icon={ORGANIZATIONS.discord.key} size={20}/> Our Discord</span>, link: "https://discord.orbitmines.com"}} /> to be notified about progress updates.
 
         </Section>
       </Arc>

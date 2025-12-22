@@ -1068,7 +1068,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
   const journal = (published ?? [])[0]?.name;
 
   const display = simple
-      ? _.compact([title, year ? `(${year})` : '']).join(' ')
+      ? <span>{title as any}{year ? ` (${year})` : ''}</span>
       : _.compact([author ? `${author}.` : author, title ? `"${title}"` : '', journal, year ? `(${year})` : '', pointer]).join(' ')
 
   const inline_reference = () => React.createElement(link ? 'a' : 'span', {
