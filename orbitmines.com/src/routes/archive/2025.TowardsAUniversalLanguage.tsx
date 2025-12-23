@@ -1013,7 +1013,7 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          (5) One of the open challenges is how you would create a massive decentralized graph structure which has dynamics defined on it; across shards and redundancies. The basic infrastructure for it is there, but how you would do this optimally with, as a challenge for scale, has a million players simultaneously.
+          (5) One of the open challenges is how you would create a massive decentralized graph structure which has dynamics defined on it; across shards and redundancies. The basic infrastructure for it is there, but how you would do this optimally with, as a challenge for scale, a million players simultaneously.
 
         </Section>
       </Arc>
