@@ -78,9 +78,12 @@ Prism.languages["ray.txt"] = {
   'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
   'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
   'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]/,
-  'keyword': /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b/,
+  'keyword': {
+    pattern: /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b|[0-9a-f-]{36}/,
+    greedy: true
+  },
   'access': {
-    pattern: /@[a-zA-Z0-9_]+/,
+    pattern: /@[a-zA-Z0-9_]*/,
     greedy: true
   },
   'builtin': /\b(?:boolean|Number|String)\b/,
@@ -745,6 +748,70 @@ const TowardsAUniversalLanguage = () => {
           Having covered access permissions, this brings me to the next section. How do you access external machines and their states?
         </Section>
         <Section sub="Every variable... has a Location">
+
+          The goal with deeply integrating locations of variables in the language, is that we can abstract all networking away. So that only people working on optimization of the language, really need to deal with the details.
+
+          <BR/>
+
+          Just like access permissions, we can also use the syntax of getting characters for loading in packages.
+
+          <CodeBlock>
+            {'<'} @ether/.ts
+          </CodeBlock>
+
+          Or using other protocols than the ether's, you can load
+
+          <CodeBlock>
+            {'<'} @"https://orbitmines.com"/package
+          </CodeBlock>
+
+          Domain names like
+
+          <CodeBlock>
+            @"orbitmines.com"
+          </CodeBlock>
+          are also reserved for that domain, and will default to the ether's port 37839. They could be claimed by someone who owns that domain to map it to a character registered with the central Ether server.
+          <BR/>
+          Names can otherwise be registered by making the following network call, which would later be worked into the Ether's GUI.
+
+          <CodeBlock>
+            @ether.@USERNAME = @me
+          </CodeBlock>
+          In order to make this call to you first need to give the central Ether server permission to host variables for you. So that everything you mark as @private/.../@public gets routed through its servers to others. You do this by setting you status:
+
+          <CodeBlock>
+            @me.status = Hosted
+          </CodeBlock>
+          This would always go together which setting your network status as online, which is equivalent to opening a port on your machine for the central Ether server to communicate with. By default, you're set to 'Offline', and no network communication is allowed in your instance.
+
+          <CodeBlock>
+            @me.status = Online & Hosted
+          </CodeBlock>
+          Of course they can still directly call your instance if desired, but for that you need to give the central Ether permission to broadcast the IP associated with your current machine. (This way your registered username is associated with an IP address)
+
+          <CodeBlock>
+            @me.status = Online & Broadcast
+          </CodeBlock>
+          Or they store your domain name or IP, they could of course also directly communicate with your instance. For which you would of course have to set your status to 'Online'.
+
+          <BR/>
+
+          Allowing the central Ether server to host variables for you, also assigns you a UUID. Which like all usernames is accessible through @.
+
+          <BR/>
+
+          It's also worth noting that version control will automatically load specific versions of methods/classes. Manually that would be
+
+          <CodeBlock>
+            {'<'} @ether/package {'<'}&6ba7b810-9dad-11d1-80b4-00c04fd430c8{'>'}
+          </CodeBlock>
+
+          You can this way also create structures which are sharded, or partially stored on other machines. We could for instance say
+
+          <CodeBlock>
+            "A1", "A2" @me.managed, "A3" @ether, "A4" @"192.168.1.254"
+          </CodeBlock>
+          If you would start iterating this structure, network calls would be made when necessary. Optimizations of this sort of network access would have to be more intelligent than just requesting a single Node when necessary. So you'll see that partially mirrored structures will be synced. Of course when the structures are sufficiently large you'll see actual sharding. (I'm thinking as an example of a sharded large game world.)
         </Section>
         <Section head="Equality/Equivalence" sub=""></Section>
         <Section head="Probability" sub="">
@@ -887,7 +954,7 @@ const TowardsAUniversalLanguage = () => {
           This is then also one of the features our editor The Ether will have, alas, we're currently defining a text-based language, and we'd still like to template other languages. Namely because we're going to be implementing (trans-/)compilers to other languages within the language.
           <BR/>
 
-          I've resorted to using the double parenthesis unicode characters for injecting expressions in the Ray language, as I don't think any of the language I've looked at the past few years uses them.
+          I've resorted to using the double parenthesis unicode characters for injecting expressions in the Ray language, as I don't think any of the languages I've looked at the past few years uses them.
 
           <CodeBlock>
             x = 2<BR/>
@@ -938,12 +1005,15 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          (3) Kind of related to that, is starting which certain variables down in a function, and running a function backwards, using isomorphisms (defined or automatic) or historical values where available. And of course how you'd define and call and define inverses of functions. I've not yet thought through how that would work properly.
+          (3) Kind of related to that, is starting with certain variables down in a function, and running a function backwards, using isomorphisms (defined or automatic) or historical values where available. And of course how you'd define and call and define inverses of functions. I've not yet thought through how that would work properly.
 
           <BR/>
 
           (4) Eventually once we have a programming language which isn't just text-based, you can imagine monkey-patching an existing function or constructor; by simply editing its code. Is there some way in which we want to implement this in the text-based form too?
 
+          <BR/>
+
+          (5) One of the open challenges is how you would create a massive decentralized graph structure which has dynamics defined on it; across shards and redundancies. The basic infrastructure for it is there, but how you would do this optimally with, as a challenge for scale, has a million players simultaneously.
 
         </Section>
       </Arc>
