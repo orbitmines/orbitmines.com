@@ -1169,7 +1169,7 @@ export const PaperHeader = (props: PaperProps) => {
 
     <Row center="xs" middle="xs" className="child-px-20-sm">
       {organizations ? <>
-        {organizations.map((organization) => (<Col md={4} xs={12}>
+        {organizations.map((organization) => (<Col md={5} xs={12}>
           <Organization {...organization} />
         </Col>))}
 
@@ -1178,7 +1178,7 @@ export const PaperHeader = (props: PaperProps) => {
         </Col>
       </> : <></>}
 
-      {(authors || []).map((author) => (<Col md={organizations ? 7 : 12} xs={12}>
+      {(authors || []).map((author) => (<Col md={organizations ? 5 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
