@@ -777,12 +777,12 @@ const TowardsAUniversalLanguage = () => {
           <CodeBlock>
             @ether.@USERNAME = @me
           </CodeBlock>
-          In order to make this call to you first need to give the central Ether server permission to host variables for you. So that everything you mark as @private/.../@public gets routed through its servers to others. You do this by setting you status:
+          In order to make this call to you first need to give the central Ether server permission to host variables for you. So that everything you mark as @private/.../@public gets routed through its servers to others. You do this by setting your status:
 
           <CodeBlock>
             @me.status = Hosted
           </CodeBlock>
-          This would always go together which setting your network status as online, which is equivalent to opening a port on your machine for the central Ether server to communicate with. By default, you're set to 'Offline', and no network communication is allowed in your instance.
+          This would always go together with setting your network status as online, which is equivalent to opening a port on your machine for the central Ether server to communicate with. By default, you're set to 'Offline', and no network communication is allowed in your instance.
 
           <CodeBlock>
             @me.status = Online & Hosted
@@ -792,7 +792,7 @@ const TowardsAUniversalLanguage = () => {
           <CodeBlock>
             @me.status = Online & Broadcast
           </CodeBlock>
-          Or they store your domain name or IP, they could of course also directly communicate with your instance. For which you would of course have to set your status to 'Online'.
+          Or if they store your domain name or IP, they could of course also directly communicate with your instance. For which you would of course have to set your status to 'Online'.
 
           <BR/>
 
@@ -1015,6 +1015,31 @@ const TowardsAUniversalLanguage = () => {
 
           (5) One of the open challenges is how you would create a massive decentralized graph structure which has dynamics defined on it; across shards and redundancies. The basic infrastructure for it is there, but how you would do this optimally with, as a challenge for scale, a million players simultaneously.
 
+          <BR/>
+
+          (6) The intuition I currently have for implementing a GUI, is that it serves the language best when speaking about it geometrically. When defining what mirroring features of languages like HTML or other GUI libraries in other languages do, being able to compare what they do geometrically seems like the right intuition. A big part of eventually becoming a rendering engine, also will rely on libraries like this.
+
+          <BR/>
+
+          Currently, you would implement these structures similar as you would <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'higher inductive types', link: 'https://ncatlab.org/nlab/show/higher+inductive+type'}} />. By simply structurally describing them. An example would be a loop, and its 2d interpretation, a circle, whose definition would be at least something like:
+
+          <CodeBlock>
+            Point = Ray<BR/>
+            Loop = Array.Unbounded.loop(boundaries: false)<BR/>
+            <BR/>
+            class Circle<BR/>
+            <></>  outline: Loop{'{'}every(to centre -- #.min.length).reduce(==){'}'}<BR/>
+            <BR/>
+            <></>  centre: Point<BR/>
+            <></>  radius: outline to centre -- #.min.length
+          </CodeBlock>
+
+          One can imagine defining, other shapes, functions like centering, to similarly follow a more intuitive definition. And have less-intuitive shader code be generated for this sort of high-level representation.
+
+          <BR/>
+
+          A big geometric library is therefore on the agenda when I'm going to work on the IDE.
+
         </Section>
       </Arc>
 
@@ -1022,23 +1047,9 @@ const TowardsAUniversalLanguage = () => {
         Having skipped the 2024 progress update due to personal reasons, I hope to continue this yearly exposition of thoughts and ideas I've been working on. From now on they should be much more technical.
 
         <Section head="My current timeline">
-          Along with thinking through the planned features, my current goals for 2026 are the following:
-
-          <BR/>
-
-          - Get a v0 specification runtime working, without any optimizations yet, which I can run in the browser.
-          <BR/>
-          - At the end of the year, put a language specification book online, which I will periodically update.
-
-          <BR/>
-          <BR/>
-          <BR/>
-          <BR/>
-          <BR/>
-
           My current timeline is then as following:
           <BR/>
-          - 2026: Have a functioning runtime
+          - 2026: Have a functioning runtime ; just a v0 specification runtime, without any optimizations which I can run in the browser.
           <BR/>
           - 2027: Start work on the IDE: Ether, and start lifting the Ray's language constraints of being text-based
           <BR/>
