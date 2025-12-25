@@ -38,7 +38,7 @@ import {Highlight, Prism, themes} from "prism-react-renderer";
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
     title: "2025 Progress Update: Towards A Universal Language",
-    subtitle: "An initial look at the text-based .ray.txt programming language and subsequent design notes for its IDE: The Ether.",
+    subtitle: "An initial look at the text-based Ray programming language and subsequent design notes for its IDE: The Ether.",
     draft: true,
     link: 'https://orbitmines.com/archive/towards-a-universal-language',
     year: "2025",
@@ -139,7 +139,7 @@ const TowardsAUniversalLanguage = () => {
   const paper: Omit<PaperProps, 'children'> = {
     ...TOWARDS_A_UNIVERSAL_LANGUAGE.reference,
     subtitle: renderable<string>("", (value: any) => <>
-       An initial look at the text-based <Reference is="reference" simple inline index={referenceCounter()} reference={{title: '.ray.txt programming language', link: 'https://github.com/orbitmines/ray', authors: [{
+       An initial look at the text-based <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'Ray programming language', link: 'https://github.com/orbitmines/ray', authors: [{
         ...PROFILES.fadi_shawki}], organizations: [ORGANIZATIONS.github]}} /> and subsequent design notes for its IDE: The Ether.
     </>),
     pdf: {
@@ -151,6 +151,17 @@ const TowardsAUniversalLanguage = () => {
 
   return <Paper
     {...paper}
+    header={<div style={{height: '250px'}} className="hidden-xs hidden-sm">
+      <canvas
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url('/archive/towards-a-universal-language/images/header.svg')`,
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+    </div>}
   >
 
     {/* TODO: In place dynamic implementation here; remove from ?generate= */}
@@ -193,7 +204,7 @@ const TowardsAUniversalLanguage = () => {
         This is a bit of a technical update on the state of the ideas I'm working on to combat this question.
       </Section>
 
-      <Arc head="Arc: The .ray.txt Programming Language">
+      <Arc head="Arc: The Ray Programming Language">
         <Section head="A new language">
           I'll start this excursion from the perspective of a new text-based programming language. Though this project intends to step away from the limitations of the text file, all programming infrastructure relies on it. A move away from it, will require additional infrastructure. Even if this is achieved, being able to express as much as possible in a traditional text-based format will be beneficial. Though there will be design features which are simply not translatable to a purely text-based programming language.
         </Section>
@@ -577,7 +588,7 @@ const TowardsAUniversalLanguage = () => {
             <></>  static Segment = Hexadecimal{'{'}length {'<'}= 4{'}'}
           </CodeBlock>
 
-          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "look here", link: "https://github.com/orbitmines/ray/blob/main/Ether/Network.ray.txt"}} />.</span>
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "look here", link: "https://github.com/orbitmines/ray/blob/main/Ether/Network.ray"}} />.</span>
         </Section>
         <Section sub="Every variable... is a Lazy Expression/Program">
           As a bit of an unusual feature for a programming language, the expressions, subexpressions and control-flow of a program are all (if wanted) exposed to the runtime. Instead of having a usual <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "AST", link: "https://en.wikipedia.org/wiki/Abstract_syntax_tree"}} />, the control-flow of the function is what is exposed to the compiler and runtime.
@@ -608,7 +619,7 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          <span style={{textAlign: 'left', minWidth: '100%'}}>Note that this way things like <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "coroutines", link: "https://en.wikipedia.org/wiki/Coroutine"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multithreading", link: "https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)"}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "return", link: "https://en.wikipedia.org/wiki/Return_statement"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "if", link: "https://en.wikipedia.org/wiki/Conditional_(computer_programming)"}} /> statements, ..., <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "for", link: "https://en.wikipedia.org/wiki/For_loop"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "while", link: "https://en.wikipedia.org/wiki/While_loop"}} /> loops all become then just a matter of structures in the graph. The way they are implemented then, is just to get the access they have to the control-flow of the function, and to edit it. <span className="bp5-text-muted">To see how all this is implemented, see <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "here", link: "https://github.com/orbitmines/ray/blob/main/Ether/.ray.txt/Program.ray.txt"}} />.</span></span>
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Note that this way things like <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "coroutines", link: "https://en.wikipedia.org/wiki/Coroutine"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "multithreading", link: "https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)"}} />, <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "return", link: "https://en.wikipedia.org/wiki/Return_statement"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "if", link: "https://en.wikipedia.org/wiki/Conditional_(computer_programming)"}} /> statements, ..., <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "for", link: "https://en.wikipedia.org/wiki/For_loop"}} />/<Reference is="reference" simple inline index={referenceCounter()} reference={{title: "while", link: "https://en.wikipedia.org/wiki/While_loop"}} /> loops all become then just a matter of structures in the graph. The way they are implemented then, is just to get the access they have to the control-flow of the function, and to edit it. <span className="bp5-text-muted">To see how all this is implemented, see <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "here", link: "https://github.com/orbitmines/ray/blob/main/Ether/.ray/Program.ray"}} />.</span></span>
 
           <BR/>
 
