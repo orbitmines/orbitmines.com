@@ -1017,7 +1017,11 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          (6) The intuition I currently have for implementing a GUI, is that it serves the language best when speaking about it geometrically. When defining what mirroring features of languages like HTML or other GUI libraries in other languages do, being able to compare what they do geometrically seems like the right intuition. A big part of eventually becoming a rendering engine, also will rely on libraries like this.
+          (6) One thing I want to research is to limit some speed at which one can explore a game graph in some way such that the player's speed is actually limited by some computational restraints. In such a way that you can't just skip ahead programmatically. One immediate possibility which jumps to mind is that you need some verifiable history of your location. But how to combine that with a specific world graph, and how to make it distributed, I don't know yet.
+
+          <BR/>
+
+          (7) The intuition I currently have for implementing a GUI, is that it serves the language best when speaking about it geometrically. When defining what mirroring features of languages like HTML or other GUI libraries in other languages do, being able to compare what they do geometrically seems like the right intuition. A big part of eventually becoming a rendering engine, also will rely on libraries like this.
 
           <BR/>
 
@@ -1028,13 +1032,13 @@ const TowardsAUniversalLanguage = () => {
             Loop = Array.Unbounded.loop(boundaries: false)<BR/>
             <BR/>
             class Circle<BR/>
-            <></>  outline: Loop{'{'}every(to centre -- #.min.length).reduce(==){'}'}<BR/>
+            <></>  outline: Loop{'{'}map(to centre -- #.min.length).reduce(==){'}'}<BR/>
             <BR/>
             <></>  centre: Point<BR/>
             <></>  radius: outline to centre -- #.min.length
           </CodeBlock>
 
-          One can imagine defining, other shapes, functions like centering, to similarly follow a more intuitive definition. And have less-intuitive shader code be generated for this sort of high-level representation.
+          One can imagine defining, other shapes, functions like centering, to similarly follow a more intuitive definition. And have less-intuitive shader code be generated from this sort of high-level representation.
 
           <BR/>
 
