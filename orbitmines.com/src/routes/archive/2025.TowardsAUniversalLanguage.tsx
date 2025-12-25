@@ -1040,7 +1040,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             Point = Ray<BR/>
-            Loop = Array.Unbounded.loop(boundaries: false)<BR/>
+            Loop = Array.Unbounded.loop<BR/>
             <BR/>
             class Circle<BR/>
             <></>  outline: Loop{'{'}map(to centre -- #.min.length).reduce(==){'}'}<BR/>
