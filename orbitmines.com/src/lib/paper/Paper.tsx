@@ -1488,14 +1488,14 @@ export const PaperThumbnail = (
   }}>
     <Row center="xs" middle="xs" style={{height: '100%', width: '100%'}}>
       <div style={{transform: `scale(${scale})`}}>
-        <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
+        <Grid fluid className="pt-35 child-pb-15 px-50-lg" style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}
           maxWidth: '1240px',
           fontSize: '1.1rem'
         }}>
 
-          <PaperHeader {...props} />
+          <PaperHeader {...props} draft={false} />
         </Grid>
 
         {header}
