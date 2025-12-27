@@ -286,14 +286,10 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             !{"{"}.{"}"}<BR/>
-            <></>
-            | this !&& this // nand<BR/>
-            <></>
-            | this !|| this // nor <BR/>
-            <></>
-            | this x|| true // xor<BR/>
-            <></>
-            | this x!|| false // xnor
+            <></>  | this !&& this // nand<BR/>
+            <></>  | this !|| this // nor <BR/>
+            <></>  | this x|| true // xor<BR/>
+            <></>  | this x!|| false // xnor
           </CodeBlock>
 
           All other operations would have something similar. What this allows you to do, is say things like: I don't
@@ -578,12 +574,9 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             Array <BR/>
-            <></>
-            ==.instance_of Tree<BR/>
-            <></>
-            ==.instance_of Graph<BR/>
-            <></>
-            ==.instance_of Hypergraph
+            <></>  ==.instance_of Tree<BR/>
+            <></>  ==.instance_of Graph<BR/>
+            <></>  ==.instance_of Hypergraph
           </CodeBlock>
 
           And then the last few pieces to make it all fit: How do we know that there are Many defined, instead of one?
@@ -720,8 +713,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             class Example {'<'} Binary<BR/>
-            <></>
-            dynamically assert length == 2
+            <></>  dynamically assert length == 2
           </CodeBlock>
 
           Which would be helpful when you have conditions which depend on multiple variables in intricate ways.
@@ -752,22 +744,15 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             class IPv6 {'<'}<BR/>
-            <></>
-            (left: Segment[]).join(":")?,<BR/>
-            <></>
-            zero_compression: "::" (? if !defined_segments.empty),<BR/>
-            <></>
-            (right: Segment[]).join(":")?,<BR/>
-            <></>
-            (":", embedded_ipv4: IPv4)?<BR/>
+            <></>  (left: Segment[]).join(":")?,<BR/>
+            <></>  zero_compression: "::" (? if !defined_segments.empty),<BR/>
+            <></>  (right: Segment[]).join(":")?,<BR/>
+            <></>  (":", embedded_ipv4: IPv4)?<BR/>
             <BR/>
-            <></>
-            defined_segments: Segment[] ={'>'}<BR/>
-            <></>
-            left, right, embedded_ipv4 as Binary<BR/>
+            <></>  defined_segments: Segment[] ={'>'}<BR/>
+            <></>  left, right, embedded_ipv4 as Binary<BR/>
             <BR/>
-            <></>
-            static Segment = Hexadecimal{'{'}length {'<'}= 4{'}'}
+            <></>  static Segment = Hexadecimal{'{'}length {'<'}= 4{'}'}
           </CodeBlock>
 
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, <Reference
@@ -892,8 +877,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             goto (program: Program)<BR/>
-            <></>
-            &caller.push(program)
+            <></>  &caller.push(program)
           </CodeBlock>
 
           Having covered that, we can start turning towards another powerful feature of the language: Every variable is
@@ -960,8 +944,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             class Example<BR/>
-            <></>
-            internal variable
+            <></>  internal variable
           </CodeBlock>
 
           How that is implemented, is that the filter we used earlier for <Reference is="reference" simple inline
@@ -974,8 +957,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             class Example<BR/>
-            <></>
-            Node{'{'}==.instance_of Example{'}'} variable
+            <></>  Node{'{'}==.instance_of Example{'}'} variable
           </CodeBlock>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Where the Ray language differs, is that the possible recipient of this filter might be a Character: Player <span
@@ -1035,8 +1017,7 @@ const TowardsAUniversalLanguage = () => {
           might for instance only want to expose a +1 operation publicly:
           <CodeBlock>
             @public.read NUMBER = 0<BR/>
-            <></>
-            @public.execute += (== 1)
+            <></>  @public.execute += (== 1)
           </CodeBlock>
 
           Note that the write permission is just a wrapper for execute, namely:
@@ -1044,8 +1025,7 @@ const TowardsAUniversalLanguage = () => {
             @public.write NUMBER = 0<BR/>
             <BR/>
             NUMBER = 0<BR/>
-            <></>
-            @public.execute =
+            <></>  @public.execute =
           </CodeBlock>
 
           Having covered access permissions, this brings me to the next section. How do you access external machines and
@@ -1157,10 +1137,8 @@ const TowardsAUniversalLanguage = () => {
             x: String? = 0.2("A") | 0.5("B")<BR/>
             <BR/>
             x: String? =<BR/>
-            <></>
-            0.2 ={'>'} "A"<BR/>
-            <></>
-            0.5 ={'>'} "B"
+            <></>  0.2 ={'>'} "A"<BR/>
+            <></>  0.5 ={'>'} "B"
           </CodeBlock>
 
           Where any non-covered probabilities, default to None, if the variable is optional. (If the value is
@@ -1287,8 +1265,7 @@ const TowardsAUniversalLanguage = () => {
 
           <CodeBlock>
             Node{'{'}== 1{'}'}<BR/>
-            <></>
-            as (== String) ={'>'} "A"<BR/>
+            <></>  as (== String) ={'>'} "A"<BR/>
             <BR/>
             1 == "A" // true
           </CodeBlock>
@@ -1444,19 +1421,27 @@ const TowardsAUniversalLanguage = () => {
             A check\ ==.historical B
           </CodeBlock>
 
-          Now, the more interesting, and the default implementation of functionality equivalence, is that of intensional equality.
+          Now, the more interesting, and the default implementation of functional equivalence, is that of intensional equality.
 
           <BR/>
 
-          Since we already assume we have access to the control-flow of functions, that control-flow is the language we use to compare functions. Any functions we can't reduce, or want to mark as effects, can this be checked.
+          Since we already assume we have access to the control-flow of functions, that control-flow is the language we use to compare functions. Including any functions we can't reduce, or which we marked as effects.
 
           <BR/>
 
-          The only tricky part of intensionality, is the equivalence graph we're defining. Which is simply something which will have to be continuously improved throughout the lifetime of the Ray programming language. Luckily we can use exactly the same code the compiler would use for optimizations of equivalent code for this exact functionality.
+          My thoughts currently are to have this default to the language we're targeting; or the lowest possible level we have access to. But there are also good arguments to be made for having it be the highest level of abstraction.
 
           <BR/>
 
+          The tricky part of intensionality, is the equivalence graph we're defining. Which is simply something which will have to be continuously improved throughout the lifetime of the Ray programming language. Luckily we can use exactly the same code the compiler would use for optimizations and (trans/)compilation of equivalent code for this exact functionality.
 
+          <BR/>
+
+          We might want certain kinds of equivalences and not others, if we assume that certain equivalent code actually executes something different; our equivalence might be ignoring information we wouldn't want to ignore. As an example: CPU bugs, we might hit them depending on whether we include certain code snippets we'd consider as equivalent to some simpler code.
+
+          <BR/>
+
+          The actual details of this are still an open question to me.
         </Section>
 
       </Arc>
@@ -1497,8 +1482,7 @@ const TowardsAUniversalLanguage = () => {
           <CodeBlock>
             x = 2<BR/>
             program = ⸨⸩.ts<BR/>
-            <></>
-            const x: number = ⸨x⸩ * 2<BR/>
+            <></>  const x: number = ⸨x⸩ * 2<BR/>
             <BR/>
             program().x // 4
           </CodeBlock>
@@ -1533,11 +1517,9 @@ const TowardsAUniversalLanguage = () => {
             x = 0<BR/>
             <BR/>
             branch<BR/>
-            <></>
-            x = 1<BR/>
+            <></>  x = 1<BR/>
             branch<BR/>
-            <></>
-            x = 2<BR/>
+            <></>  x = 2<BR/>
             <BR/>
             x // What is 'x' here.
           </CodeBlock>
@@ -1604,13 +1586,10 @@ const TowardsAUniversalLanguage = () => {
             Loop = Array.Unbounded.loop<BR/>
             <BR/>
             class Circle<BR/>
-            <></>
-            outline: Loop{'{'}map(to centre -- #.min.length).reduce(==){'}'}<BR/>
+            <></>  outline: Loop{'{'}map(to centre -- #.min.length).reduce(==){'}'}<BR/>
             <BR/>
-            <></>
-            centre: Point<BR/>
-            <></>
-            radius: outline to centre -- #.min.length
+            <></>  centre: Point<BR/>
+            <></>  radius: outline to centre -- #.min.length
           </CodeBlock>
 
           One can imagine defining, other shapes, functions like centering, to similarly follow a more intuitive
