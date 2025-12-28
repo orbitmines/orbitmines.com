@@ -1107,7 +1107,7 @@ const TowardsAUniversalLanguage = () => {
           instance say
 
           <CodeBlock>
-            "A1", "A2" @me.managed, "A3" @ether, "A4" @"192.168.1.254"
+            "A1", "A2" @ @me.managed, "A3" @ @ether, "A4" @ @"192.168.1.254"
           </CodeBlock>
           If you would start iterating this structure, network calls would be made when necessary. Optimizations of this
           sort of network access would have to be more intelligent than just requesting a single Node when necessary. So
@@ -1323,12 +1323,12 @@ const TowardsAUniversalLanguage = () => {
           An example where you would use this, is that when comparing two characters, they're considered the same whether they're hosted remote or not:
 
           <CodeBlock>
-            @me == @me @remote
+            @me == @me @ @remote
           </CodeBlock>
 
           But forcing location to be part of the equality check, it fails:
           <CodeBlock>
-            @me === @me @remote // false
+            @me === @me @ @remote // false
           </CodeBlock>
 
           Then there are three additional functions, the familiar type check:
