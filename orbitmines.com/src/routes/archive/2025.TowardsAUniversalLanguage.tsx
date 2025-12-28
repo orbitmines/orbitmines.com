@@ -900,19 +900,36 @@ const TowardsAUniversalLanguage = () => {
           <span style={{textAlign: 'left', minWidth: '100%'}}>Every variable holds a history. <span
             className="bp5-text-muted">(Or at least, it's available to the compiler should you want to use it, keeping and storing every bit of variable change is of course way too expensive. A more intelligent approach is required. Keeping track of what functions we want to explicitly store histories for, is something I'll discuss with Quests.)</span></span>
 
-          <BR/>
+          <CodeBlock>
+            variable% // a Commit
+          </CodeBlock>
 
           When you think about it, there isn't much of a difference between the unresolved lazy program and a history we
           want keep. The implementation of history, is therefore just a program under the hood. Both are just graph of
           steps to perform to arrive at certain states and branches.
 
-          <BR/>
+          <CodeBlock>
+            class Branch {'<'} Program<BR/>
+            <></>  static Version | Commit = State
+          </CodeBlock>
 
           What this allows us to do, is to natively support version control over arbitrary data structures. We can have
-          localized subexpressions which have different histories, or group them together in a 'global order'; this
+          localized subexpressions which have different histories,
+
+          <CodeBlock>
+            var = A, B, C = "ABC"<BR/>
+            B = "2" // var == "A2C"<BR/>
+            C = "3" // var == "A23"<BR/>
+            <BR/>
+            B% == "B", \"2"\ // A ray with "2" selected
+          </CodeBlock>
+
+          or group them together in a 'global order'; this
           ordering/grouping of changes is referred to as a repository.
 
-          <BR/>
+          <CodeBlock>
+            var% == B%, \C%\
+          </CodeBlock>
 
           The hope of having nested repositories over arbitrary graphs (/rays), and this native support for version
           control, is that we can start having better infrastructure than just <Reference is="reference" simple inline
@@ -925,11 +942,15 @@ const TowardsAUniversalLanguage = () => {
 
           <BR/>
 
-          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>One particular feature of the IDE, The Ether, will be to make use of this in the following way: By versioning functions (as a repository), and possibly sub-expressions of a function, we can start referencing function versions in our network stack; communicate what version I'm running on, what kinds of patches are available for any particular functions. As infrastructure it will allow us to reason about this more, which will become quite valuable.</span>
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>One particular feature of the IDE, The Ether, will be to make use of this in the following way: By versioning functions (as a repository), and possibly sub-expressions of a function, we can start referencing function versions in our network stack; communicate what version I'm running on, what kinds of patches are available for any particular functions. As infrastructure it will allow us to reason about this more, which will become quite valuable.
+          </span>
 
-          <BR/>
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>
+          This allows us to also intertwine the IDE's features of version control (so keystroke history) with the actual repository it's in. Since keystroke history, is just a branch off the current branch, which we haven't yet merged.</span>
 
-          Let's walk through the structure of a history to understand how it works a little better:
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Instead of always forcing all histories to always agree on the order of events, or even which events, we'd also want to support those that don't. <span className="bp5-text-muted">An example would be a message history, where each local instance might have a different ordering of events, but we still push to all those different orderings.</span> But I don't yet know how that would look like from the language's perspective.</span>
+
+          As a last thing, it's also worth noting, that any spatial changes, so for example adding a character to a string. As a local change, is a history on an edge, instead of a vertex.
         </Section>
         <Section sub="Every variable... has Access Permissions">
           One of the requirements of the language is also to be able to communicate as a database. Whether that is to
