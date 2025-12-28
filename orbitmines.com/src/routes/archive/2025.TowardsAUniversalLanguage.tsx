@@ -750,7 +750,7 @@ const TowardsAUniversalLanguage = () => {
             <></>  (":", embedded_ipv4: IPv4)?<BR/>
             <BR/>
             <></>  defined_segments: Segment[] ={'>'}<BR/>
-            <></>  left, right, embedded_ipv4 as Binary<BR/>
+            <></>    left, right, embedded_ipv4 as Binary<BR/>
             <BR/>
             <></>  static Segment = Hexadecimal{'{'}length {'<'}= 4{'}'}
           </CodeBlock>

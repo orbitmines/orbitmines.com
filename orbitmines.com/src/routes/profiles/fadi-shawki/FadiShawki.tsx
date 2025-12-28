@@ -11,50 +11,50 @@ import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "../../archive/2025.TowardsAUniversal
 export const ONGOING_PROJECTS = [
     {
         reference: {
-            title: "Rays: A Universal Language",
+            title: "The Ray Programming Language",
             organizations: [ORGANIZATIONS.github],
-            year: "2024",
+            year: "2025->",
             link: "https://github.com/orbitmines/ray"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
         reference: {
-            title: "A Reprogrammable Visual Interface",
+            title: "IDE: The Ether",
             organizations: [ORGANIZATIONS.github],
-            year: "2024",
+            year: "2026->",
             link: "https://github.com/orbitmines/ray"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
         reference: {
-            title: "Communication between Languages",
+            title: "Library: Analysis & indexing of Languages",
             organizations: [ORGANIZATIONS.github],
-            year: "2024-2025?",
-            link: "https://github.com/orbitmines/library"
+            year: "2028->",
+            link: "https://github.com/orbitmines/ray/tree/main/Ether/projects/library"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
         reference: {
-            title: "(Universal) Version Control",
+            title: "3D Rendering: Physics & Games",
             organizations: [ORGANIZATIONS.github],
-            year: "2024",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Writing%20-%202025.%20A%20Universal%20Language.md"
+            year: "2029+?",
+            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Physics%20(%26%20Hardware).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
         reference: {
-            title: "(Universal) Compression Infrastructure",
+            title: "Operating System",
             organizations: [ORGANIZATIONS.github],
-            year: "2025?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Writing%20-%202025.%20A%20Universal%20Language.md"
+            year: "2029+?",
+            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
         reference: {
-            title: "Logistics",
+            title: "Education",
             organizations: [ORGANIZATIONS.github],
-            year: "Ongoing",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/ONGOING%20Project%20Logistics.md"
+            year: "2035+?",
+            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/INDEFINITE%20Project%20-%20Education%20(2027%2B%3F).md"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
     {
@@ -65,38 +65,6 @@ export const ONGOING_PROJECTS = [
             link: "https://github.com/orbitmines/archive/tree/main/projects"
         }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
     },
-    {
-        reference: {
-            title: "Research towards Designs",
-            organizations: [ORGANIZATIONS.github],
-            year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/Project%20-%20Research%20towards%20Designs%20(2024-2025).md"
-        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
-    },
-    {
-        reference: {
-            title: "Education",
-            organizations: [ORGANIZATIONS.github],
-            year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/INDEFINITE%20Project%20-%20Education%20(2027%2B%3F).md"
-        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
-    },
-    {
-        reference: {
-            title: "Physics (& Hardware)",
-            organizations: [ORGANIZATIONS.github],
-            year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Physics%20(%26%20Hardware).md"
-        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
-    },
-    {
-        reference: {
-            title: "Operating System",
-            organizations: [ORGANIZATIONS.github],
-            year: "2027+?",
-            link: "https://github.com/orbitmines/archive/blob/main/projects/_indefinite_future_projects/PENDING%20(2027%3F%2B)%20%3B%20Operating%20System.md"
-        }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "2024"
-    }
 ]
 
 const FadiShawki = () => {
@@ -116,7 +84,7 @@ const FadiShawki = () => {
                 />
             </CanvasContainer>
 
-            <Section head="Ongoing Projects">
+            <Section head="Ongoing & Planned Projects">
                 <Category content={[
                     _2024_02_ORBITMINES_AS_A_GAME_PROJECT,
                     ...ONGOING_PROJECTS
