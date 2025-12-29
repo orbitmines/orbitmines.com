@@ -42,11 +42,10 @@ export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
     year: "2025",
     date: "2025-12-31",
     external: {
-      // TODO
       discord: {
         serverId: '1055502602365845534',
-        channelId: '1200194437314261002',
-        link: () => "https://discord.com/channels/1055502602365845534/1200194437314261002"
+        channelId: '1455223851825762475',
+        link: () => "https://discord.com/channels/1055502602365845534/1455223851825762475"
       }
     },
     organizations: [ORGANIZATIONS.orbitmines_research],
