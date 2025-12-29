@@ -90,7 +90,7 @@ Prism.languages["ray.txt"] = {
     pattern: /@[a-zA-Z0-9_]*/,
     greedy: true
   },
-  'builtin': /\b(?:boolean|Number|String)\b/,
+  'builtin': /\b(?:if|elsif|else|assume|boolean|Number|String)\b/,
   'boolean': /\b(?:false|true)\b/,
   'class-name': /[A-Z][A-Za-z0-9_]+/,//
   'variable': /[a-z0-9_]+/,
@@ -881,16 +881,14 @@ const TowardsAUniversalLanguage = () => {
           </CodeBlock>
 
           Having covered that, we can start turning towards another powerful feature of the language: Every variable is
-          a lazy expression/program/function. How the laziness is handled is something I'll discuss later with Quests.
-          For now just remember that the current value of any variable is accessible through the following operator:
+          a lazy expression/program/function. The current value of any variable is accessible through the following operator:
 
           <CodeBlock>
             variable**
           </CodeBlock>
 
           This gives us the powerful ability to access the functions which might still need to run to fill this
-          variable, it gives you access to possible intermediate results if the function hasn't yet been completed. But
-          see Quests later for more on this.
+          variable, it gives you access to possible intermediate results if the function hasn't yet been completed.
 
           <BR/>
 
@@ -898,7 +896,7 @@ const TowardsAUniversalLanguage = () => {
         </Section>
         <Section sub="Every variable... holds a History">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Every variable holds a history. <span
-            className="bp5-text-muted">(Or at least, it's available to the compiler should you want to use it, keeping and storing every bit of variable change is of course way too expensive. A more intelligent approach is required. Keeping track of what functions we want to explicitly store histories for, is something I'll discuss with Quests.)</span></span>
+            className="bp5-text-muted">(Or at least, it's available to the compiler should you want to use it, keeping and storing every bit of variable change is of course way too expensive. A more intelligent approach is required.)</span></span>
 
           <CodeBlock>
             variable% // a Commit
@@ -946,7 +944,11 @@ const TowardsAUniversalLanguage = () => {
           </span>
 
           <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>
-          This allows us to also intertwine the IDE's features of version control (so keystroke history) with the actual repository it's in. Since keystroke history, is just a branch off the current branch, which we haven't yet merged.</span>
+          This also allows us to intertwine the IDE's features of version control (so keystroke history) with the actual repository it's in. Since keystroke history, is just a branch off the current branch, which we haven't yet merged.</span>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>
+            Where we act as a database beyond version control, type conflicts(/changes) between versions which are detected will also require resolving - which would be done with patches to the database if they're not backwards compatible. So in this way merge conflicts will be expanded with additional features.
+          </span>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>Instead of always forcing all histories to always agree on the order of events, or even which events, we'd also want to support those that don't. <span className="bp5-text-muted">An example would be a message history, where each local instance might have a different ordering of events, but we still push to all those different orderings.</span> But I don't yet know how that would look like from the language's perspective.</span>
 
@@ -1466,23 +1468,62 @@ const TowardsAUniversalLanguage = () => {
         </Section>
 
       </Arc>
-      <Arc head="Arc: Quests">
-        There's a hard problem which demands a practical solution. Namely that the halting of any part of any program is
-        unknown <Reference is="footnote" index={referenceCounter()} reference={{
-        title: "Halting problem",
-        link: "https://en.wikipedia.org/wiki/Halting_problem"
-      }}/>. And since we interpret any variable as an iterable structure, there's no way of knowing whether that
-        structure is halting or not other than to start traversing the structure to determine whether it is. (Or the
-        structure's abstract definition, which in turn, still is a structure we'll have to traverse)
-        <BR/>
-        Instead of ignoring this problem, it's a central theme to the Ray language. It's a rephrasing of the problem in
-        terms of (1) how many resources you decide to dedicate to which problem and (2) how you deal with intermediate
-        results/variables. This is where quests come in.
-        <BR/>
-        Though more broadly, quests are aimed at both players and NPCs. From the perspective of the NPC it's how do you
-        operate in a world where any step of the program is possible infinitely generating?
-      </Arc>
       <Arc head="Arc: 2026/Planned features">
+        <Section head="Quests">
+          There's a hard problem which demands a practical solution. Namely that the halting of any part of any program is
+          unknown <Reference is="footnote" index={referenceCounter()} reference={{
+          title: "Halting problem",
+          link: "https://en.wikipedia.org/wiki/Halting_problem"
+        }}/>. And since we interpret any variable as an iterable structure, there's no way of knowing whether that
+          structure is halting or not other than to start traversing the structure to determine whether it is. (Or the
+          structure's abstract definition, which in turn, still is a structure we'll have to traverse)
+          <BR/>
+          Instead of ignoring this problem, it's a central theme to the Ray language. It's a rephrasing of the problem in
+          terms of (1) how many resources you decide to dedicate to which problem and (2) how you deal with intermediate
+          results/variables.
+          <BR/>
+          This problem is of course divided into two categories: the quests for our players, and NPCs. But the same approaches are used for both: A quest is a function. In the sense that a function follows a path of "things to do" - essentially a glorified TODO list. Like a function you define things to do in parallel, or in sequence.
+          <BR/>
+          These intermediate goals, or essentially subexpressions can be as vague as you can allow for. Even a very ill-defined set of goals, can still be interpreted as a function.
+          <BR/>
+          Where we interpret the return value of the function as the 'reward' for the quest. Which of may in turn be new functions.
+          <BR/>
+          There are a few open questions relating to quests:
+          <BR/>
+          (1) How do you assign a difficulty rating to a quest, relative for the character completing it. For players, this would be the difficult project of rating based on their current knowledge, whether some challenge is appropriate for them. Similarly for NPCs, if we mark their access to hardware resources, combined with their capabilities, how difficult is it to execute some function?
+          <BR/>
+          (2) How does the reward of the quest influence our future? Some sort of effectiveness rating? This could be measured in the sense of, which other functions/quests does the reward effect: Their difficulty rating, and the compounded effect of their future rewards. Which is pretty similar for both players and NPCs. The only problem being that for players, quests might be much harder to abstractly verify that they meet your required conditions for completing a quest; and then their rewards.
+          <BR/>
+          (3) For NPCs, Quest selection, or what to spend resources on.
+          <BR/>
+          Throughout our code, we might have many checks which require on some possibly infinitely generating traversal of a graph:
+          <CodeBlock>
+            if graph.last
+          </CodeBlock>
+          We might say assume it halts, and rollback any effects (if possible), when it finally terminates.
+          <CodeBlock>
+            if assume graph.last
+          </CodeBlock>
+          Where it executes with the assumption, and then spawns a quest for the NPC to resolve this possibly infinitely generating evaluation.
+          <BR/>
+          Speculatively assuming other cases would be done the same way:
+          <CodeBlock>
+            if graph.last<BR/>
+            <></>  A()<BR/>
+            else assume<BR/>
+            <></>  B()
+          </CodeBlock>
+
+          Then there are different execution modes for an NPC, keep running until all quests are resolved, keep running after, waiting for more. Or stop running with unfinished quests. Where any errors thrown could also be interpreted as unfinished quests for fixes (which the character monitoring might pick up)
+
+          <BR/>
+          (4) For gamification of science, engineering and education. A big open question is how do you generate/find quests relevant relative to some model one has of a player's knowledge. Of course one could have a curated library of quests, but generation of new ones, seems a crucial capability. Which is probably best suited to be paired for some way of navigating/finding them - in game form.
+
+          <BR/>
+          <BR/>
+          <BR/>
+          I'm hoping to explore answers to these questions over the coming years.
+        </Section>
         <Section head="Templating other languages">
           A perfect example of where text-based programming languages fall short is the templating of other languages.
           The simplest example of this is how (templated) strings work. Whether it is to support expressions within a
@@ -1631,7 +1672,7 @@ const TowardsAUniversalLanguage = () => {
           My current timeline is then as following:
           <BR/>
           - 2026: Have a functioning runtime ; just a v0 specification runtime, without any optimizations which I can
-          run in the browser.
+          run in the browser. At the end of the year I'm hoping to make a language specification book which I'll update periodically.
           <BR/>
           - 2027: Start work on the IDE: Ether, and start lifting the Ray's language constraints of being text-based
           <BR/>
