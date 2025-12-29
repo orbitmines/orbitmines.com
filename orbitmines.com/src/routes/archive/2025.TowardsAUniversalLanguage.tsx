@@ -1055,8 +1055,15 @@ const TowardsAUniversalLanguage = () => {
           their states?
         </Section>
         <Section sub="Every variable... has a Location">
+          Every variable is aware of its location in some other graph(s). (Of which equipped structure, like fields and methods are excluded.) This might be its location in a function, or a remote location where the variable is hosted. But it can also be an abstract location with yaw/pitch like a videogame, or even an abstract (sub)Graph where it is located without a specific point. Or it might be a function which describe a path of 'landmarks'. "Location" is just a modifier for some other structure.
 
-          The goal with deeply integrating locations of variables in the language, is that we can abstract all
+          <BR/>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', minWidth: '100%'}}>The file system exposed to the runtime then has the same assumptions as we have for any variable: A single location can have multiple values, and at that location can always be defined a further structure of locations: By which I mean each file is both a directory and a file with values.</span>
+
+          <BR/>
+
+          One of the goals with deeply integrating locations of variables in the language, is that we can abstract all
           networking away. So that only people working on optimization of the language, really need to deal with the
           details.
 
@@ -1486,7 +1493,7 @@ const TowardsAUniversalLanguage = () => {
           <BR/>
           These intermediate goals, or essentially subexpressions can be as vague as you can allow for. Even a very ill-defined set of goals, can still be interpreted as a function.
           <BR/>
-          Where we interpret the return value of the function as the 'reward' for the quest. Which of may in turn be new functions.
+          Where we interpret the return value of the function as the 'reward' for the quest. Which may in turn be new functions.
           <BR/>
           There are a few open questions relating to quests:
           <BR/>
@@ -1514,7 +1521,7 @@ const TowardsAUniversalLanguage = () => {
             <></>  B()
           </CodeBlock>
 
-          Then there are different execution modes for an NPC, keep running until all quests are resolved, keep running after, waiting for more. Or stop running with unfinished quests. Where any errors thrown could also be interpreted as unfinished quests for fixes (which the character monitoring might pick up)
+          Then there are different execution modes for an NPC, keep running until all quests are resolved, keep running after, waiting for more. Or stop running with unfinished quests. Where any errors thrown could also be interpreted as unfinished quests for fixes (which the character monitoring it, might pick up)
 
           <BR/>
           (4) For gamification of science, engineering and education. A big open question is how do you generate/find quests relevant relative to some model one has of a player's knowledge. Of course one could have a curated library of quests, but generation of new ones, seems a crucial capability. Which is probably best suited to be paired for some way of navigating/finding them - in game form.
