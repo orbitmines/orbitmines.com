@@ -13,10 +13,9 @@
 </div>
 
 ```sh
-git clone git@github.com:orbitmines/orbitmines.com.git # Website to the old internet
-git clone git@github.com:orbitmines/ray.git # Universal Language repo
-git clone git@github.com:orbitmines/library.git # A library for communication between languages
-git clone git@github.com:orbitmines/archive.git # Archive of tangents & history
+git clone git@github.com:orbitmines/ray.git # The Ray Programming Language & The Ether
+git clone git@github.com:orbitmines/archive.git # Publich research archive
+git clone git@github.com:orbitmines/orbitmines.com.git # Website to the internet
 ```
 
 ---
