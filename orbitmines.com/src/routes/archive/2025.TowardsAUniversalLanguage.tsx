@@ -88,7 +88,7 @@ Prism.languages["ray.txt"] = {
     pattern: /@[a-zA-Z0-9_]*/,
     greedy: true
   },
-  'builtin': /\b(?:if|elsif|else|assume|boolean|Number|String)\b/,
+  'builtin': /\b(?:goto|branch|if|elsif|else|assume|boolean|Number|String)\b/,
   'boolean': /\b(?:false|true)\b/,
   'class-name': /[A-Z][A-Za-z0-9_]+/,//
   'variable': /[a-z0-9_]+/,
