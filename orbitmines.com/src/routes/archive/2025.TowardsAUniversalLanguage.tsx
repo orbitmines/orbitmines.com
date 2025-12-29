@@ -6,15 +6,15 @@ import Paper, {
   Block,
   BlueprintIcons16,
   BlueprintIcons20,
-  BR, Children, CodeBlockProps, Col, CustomIcon,
-  HorizontalLine,
+  BR,
+  Children,
+  CustomIcon,
   JetBrainsMono,
   PaperProps,
   Reference,
   renderable,
   Row,
   Section,
-  TODO,
   useCounter
 } from "../../lib/paper/Paper";
 import {
@@ -25,21 +25,19 @@ import {
   Line,
   ON_ORBITS,
   Ray,
-  RenderedRay, torus, Vertex
+  RenderedRay,
+  torus
 } from "./2023.OnOrbits";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
 import {PROFILES} from "../profiles/profiles";
-import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
-import _ from "lodash";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
-import {Center} from "@react-three/drei";
 import {Highlight, Prism, themes} from "prism-react-renderer";
 
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
     title: "2025 Progress Update: Towards A Universal Language",
     subtitle: "An initial look at the text-based Ray programming language and subsequent design notes for its IDE: The Ether.",
-    draft: true,
+    draft: false,
     link: 'https://orbitmines.com/archive/towards-a-universal-language',
     year: "2025",
     date: "2025-12-31",
@@ -1400,6 +1398,10 @@ const TowardsAUniversalLanguage = () => {
 
           Then there's the mathematical intensional equality, which is essentially equality of source code.
 
+          <CodeBlock>
+            (2 + 2)** == (2 + 2)**
+          </CodeBlock>
+
           <BR/>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>But both concepts have three things which make them incomplete, which are: (1) "at which level of description?" or in other words "in which language?".  <span className="bp5-text-disabled">If we're really ambitious we could even keep asking that question until we hit physics.</span></span>
@@ -1676,7 +1678,7 @@ const TowardsAUniversalLanguage = () => {
         thoughts and ideas I've been working on. From now on they should be much more technical.
 
         <Section head="My current timeline">
-          My current timeline is then as following:
+          My current predicted timeline is as following:
           <BR/>
           - 2026: Have a functioning runtime ; just a v0 specification runtime, without any optimizations which I can
           run in the browser. At the end of the year I'm hoping to make a language specification book which I'll update periodically.

@@ -25,7 +25,7 @@ import JetBrainsMonoRegular from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Regul
 import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-SemiBold.ttf";
 import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
 import {renderToStaticMarkup} from "react-dom/server";
-import {Document, Font, Image, Page, Path, PDFViewer, Svg, Text, View} from "@react-pdf/renderer";
+import {Document, Font, Image, Page, Path, PDFViewer, Svg, Link as PdfLink, Text, View} from "@react-pdf/renderer";
 
 export const Profile = ({profile, children, head}: {profile: TProfile} & Children & { head?: any }) => {
   const location = useLocation();
@@ -252,7 +252,7 @@ export const renderPdfRendererElement: DereferencedElementRenderer = (element: E
     return <Path {...props} />
   } else if (['a'].includes(tagName)) {
     // @ts-ignore
-    return <Link {...props} />
+    return <PdfLink {...props} />
   } else if (isText || (tagName === 'span' && styles.display === 'inline')) {
     // @ts-ignore
     return <Text {...props} />
