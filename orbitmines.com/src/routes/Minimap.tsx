@@ -4,7 +4,7 @@ import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
-import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/paper/Paper";
+import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/post/Post";
 import {PROFILES} from "./profiles/profiles";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
 import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";

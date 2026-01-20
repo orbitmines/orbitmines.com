@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {
+import Post, {
   Arc,
   Block,
   BlueprintIcons16,
@@ -16,7 +16,7 @@ import Paper, {
   Row,
   Section,
   useCounter
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {
   add,
   CachedVisualizationCanvas,
@@ -153,7 +153,7 @@ const TowardsAUniversalLanguage = () => {
     references: referenceCounter
   }
 
-  return <Paper
+  return <Post
     {...paper}
     header={<div style={{height: '250px'}} className="hidden-xs hidden-sm">
       <canvas
@@ -1708,7 +1708,7 @@ const TowardsAUniversalLanguage = () => {
         </Section>
       </Arc>
     </Row>
-  </Paper>
+  </Post>
 }
 
 export default TowardsAUniversalLanguage;

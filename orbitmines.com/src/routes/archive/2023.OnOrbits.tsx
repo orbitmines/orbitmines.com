@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import Paper, {
+import Post, {
   BR,
   PaperProps,
   Arc,
@@ -14,7 +14,7 @@ import Paper, {
   renderable,
   Row,
   Children, Col, JetBrainsMono, BlueprintIcons20, BlueprintIcons16
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Button, Divider, Intent, Tag} from "@blueprintjs/core";
@@ -85,7 +85,7 @@ const OnOrbits = () => {
 
   const s2 = 1;
 
-  return <Paper
+  return <Post
     {...paper}
     header={<div style={{height: '140px'}}>
       <CachedVisualizationCanvas alt="header" context={paper} style={{
@@ -2122,7 +2122,7 @@ const OnOrbits = () => {
         In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found - or am starting to find - a proper language to do so.
       </Section>
     </Arc>
-  </Paper>;
+  </Post>;
 }
 
 export default OnOrbits;

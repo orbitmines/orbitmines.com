@@ -1,7 +1,7 @@
 import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {
+import Post, {
   Arc,
   Author, BlueprintIcons16, BlueprintIcons20,
   BR,
@@ -12,7 +12,7 @@ import Paper, {
   Row,
   Section,
   useCounter
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 import WEBGL from "three/examples/jsm/capabilities/WebGL";
 import {CanvasContainer} from "./2023.OnOrbits";
@@ -51,7 +51,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
     references: referenceCounter
   }
 
-  return <Paper
+  return <Post
     {...paper}
   >
     <Arc head="Introduction">
@@ -294,7 +294,7 @@ const _2024_02_OrbitMines_as_a_Game_Project = () => {
 
       <Author {...PROFILES.fadi_shawki} filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
     </Arc>
-  </Paper>
+  </Post>
 }
 
 export default _2024_02_OrbitMines_as_a_Game_Project;
