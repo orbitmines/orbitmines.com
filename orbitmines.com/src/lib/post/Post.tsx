@@ -1235,8 +1235,8 @@ export const PaperContent = (props: PaperProps) => {
   let generate;
   const [params, setParams] = useSearchParams();
 
-  const arc = params.get('arc');
-  const isStartPage: boolean = (arc ?? "").length == 0
+  const section = params.get('section');
+  const isStartPage: boolean = (section ?? "").length == 0
 
   try {
     generate = params.get('generate');

@@ -7,10 +7,11 @@ import Post, {
   BlueprintIcons20,
   JetBrainsMono,
   PaperProps,
-  renderable,
+  renderable, Section,
   Title,
   useCounter
 } from "../lib/post/Post";
+import {Button} from "@blueprintjs/core";
 
 export const ETHERS_ALMANAC: Content = { reference: {
   title: "Ether's Almanac",
@@ -19,7 +20,7 @@ export const ETHERS_ALMANAC: Content = { reference: {
   date: "Last update: 2026-12-31",
   year: "2026",
   external: {
-    discord: {serverId: '1055502602365845534', channelId: '1105246681915732108', link: () => "https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108"}
+    discord: {serverId: '1055502602365845534', channelId: '1463219913044005018', link: () => "https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018"}
   },
   organizations: [ORGANIZATIONS.orbitmines_research],
   authors: [{
@@ -53,7 +54,79 @@ const Almanac = () => {
     <Arc head="Introduction">
     </Arc>
     <Arc head="A. The Ray Programming Language">
+      <Section head="§0. For Beginners">
+        If you're starting out learning a programming language for the first time, great! This section is for you. If not <Button icon="arrow-right" text="Skip ahead to §2" minimal onClick={() => {}} />.
+        <Section head="§0.1 ">
+        </Section>
+      </Section>
+      <Section head="§1. How to Install">
+      </Section>
+      <Section head="§2. Programming Fundamentals">
+        <Section head="§2.1 Superposing Variables">
+        </Section>
+        <Section head="§2.2 Graphs & Rays">
+        </Section>
+        <Section head="§2.3 Numbers">
+          {/* Booleans, Numbers, compare i64 and other things */}
 
+        </Section>
+        <Section head="§2.4 Types: Patterns">
+
+        </Section>
+        <Section head="§2.5 Programs/Functions">
+
+        </Section>
+        <Section head="§2.6 Equality & Equivalence">
+
+        </Section>
+        <Section head="§2.7 Undecidability">
+
+        </Section>
+      </Section>
+      <Section head="§3. ">
+      </Section>
+      <Section head="§4. Ecosystem">
+        <Section head="§4.1 Location">
+
+        </Section>
+        <Section head="§4.2 Networking">
+
+        </Section>
+        <Section head="§4.3 Version Control">
+
+        </Section>
+        <Section head="§4.4 Access Permissions">
+        </Section>
+        <Section head="§4.5 Hosted Variables & Packages">
+
+        </Section>
+      </Section>
+      <Section head="§5. Features">
+        <Section head="§5.1 Probability">
+
+        </Section>
+        <Section head="§5.2 Coroutines">
+
+        </Section>
+        <Section head="§5.3 Theorem Proving">
+
+        </Section>
+        <Section head="§5.4 Geometry">
+
+        </Section>
+        <Section head="§5.5 UI">
+
+        </Section>
+      </Section>
+      <Section head="§6. The Compiler">
+      </Section>
+    </Arc>
+
+    <Arc head={<span className="bp5-text-disabled">B. The Ether: IDE (Planned for 2027)</span>}>
+    </Arc>
+    <Arc head={<span className="bp5-text-disabled">C. Ether Library Project (Planned for 2028)</span>}>
+    </Arc>
+    <Arc head={<span className="bp5-text-disabled">D. Physics & Game Engine (Planned for 2029)</span>}>
     </Arc>
   </Post>
 }
