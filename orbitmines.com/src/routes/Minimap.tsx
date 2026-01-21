@@ -8,6 +8,7 @@ import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib
 import {PROFILES} from "./profiles/profiles";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
 import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";
+import {ETHERS_ALMANAC} from "./Almanac";
 
 
 const Minimap = () => {
@@ -76,6 +77,19 @@ const Minimap = () => {
             <Col xs={12}>
               <Row middle="xs" center="xs">
                 <Col style={{maxWidth: '500px'}}>
+                  <Row style={{alignItems: 'center'}}>
+                    <Col xs={2}>
+                      <img src="/E.svg" alt="E" style={{width: '100%', maxHeight: '100px'}} />
+                    </Col>
+                    <Col xs={10}>
+                      <Reference
+                        index={0}
+                        reference={ETHERS_ALMANAC.reference}
+                        start="xs"
+                        style={{fontSize: '0.8rem'}} target="_blank"
+                      />
+                    </Col>
+                  </Row>
                   <CanvasContainer style={{height: '140px'}} className="hidden-xs">
                     <canvas
                       style={{
