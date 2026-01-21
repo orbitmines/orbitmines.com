@@ -25,7 +25,11 @@ export class BookUtil {
     ]);
   };
 
-  current = (): any => this.allSections().filter(child => this.sectionName(child) === this.section())[0]
+  current = (): any => {
+    const current = this.allSections().filter(child => this.sectionName(child) === this.section());
+
+    return current.length != 0 ? current[0] : this.allSections()[0]
+  }
 
   allSections = () =>
     this.arcs().flatMap(arc => [
@@ -77,17 +81,17 @@ export const Navigation = (props: PaperProps) => {
 
   return <Row style={{height: '100%', borderRight: '1px solid rgb(108, 103, 131)', alignContent: 'flex-start'}} className="child-py-3 py-20">
     {util.arcs().map((arc: any) => <Col xs={12} style={{textAlign: 'start'}}>
-      <a className="bp5-text-muted" style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => setParams({...params, section: util.sectionName(arc)})}>{arc.props.head}</a>
+      <a className="bp5-text-muted" style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => !util.disabled(arc) ? setParams({...params, section: util.sectionName(arc)}) : undefined}>{arc.props.head}</a>
 
       {React.Children.toArray((arc as any).props.children).filter(child =>
         React.isValidElement(child) && child.type === Section
       ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}} className="pt-3">
-        <a className="bp5-text-muted ml-2" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => setParams({...params, section: util.sectionName(section)})}>{section.props.head}</a>
+        <a className="bp5-text-muted ml-2" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams({...params, section: util.sectionName(section)}) : undefined}>{section.props.head}</a>
 
         {React.Children.toArray((section as any).props.children).filter(child =>
           React.isValidElement(child) && child.type === Section
         ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}}>
-          <a className="bp5-text-muted ml-4" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => setParams({...params, section: util.sectionName(section)})}>{section.props.head}</a>
+          <a className="bp5-text-muted ml-4" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams({...params, section: util.sectionName(section)}) : undefined}>{section.props.head}</a>
 
 
         </Col>)}
