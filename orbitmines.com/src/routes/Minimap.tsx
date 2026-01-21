@@ -86,7 +86,7 @@ const Minimap = () => {
                         index={0}
                         reference={ETHERS_ALMANAC.reference}
                         start="xs"
-                        style={{fontSize: '0.8rem'}} target="_blank"
+                        style={{fontSize: '0.8rem'}} target="_self"
                       />
                     </Col>
                   </Row>
