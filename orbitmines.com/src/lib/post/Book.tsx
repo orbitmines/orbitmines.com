@@ -3,36 +3,91 @@ import React, {useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
 import {Button} from "@blueprintjs/core";
 
-export const Navigation = (props: PaperProps) => {
-  const [params] = useSearchParams();
+export class BookUtil {
+  constructor(private props: PaperProps, private params: URLSearchParams) {}
 
-  const section = params.get('section');
-
-  const arcs = React.Children.toArray(props.children).filter(child =>
+  arcs = () => React.Children.toArray(this.props.children).filter(child =>
     React.isValidElement(child) && child.type === Arc
   )
 
-  const sections = arcs.flatMap(arc => [arc, ...React.Children.toArray((arc as any).props.children).filter(child =>
-    React.isValidElement(child) && child.type === Section
-  )])
+  getSections = (node: React.ReactNode): React.ReactElement[] => {
+    if (!React.isValidElement(node)) return [];
 
-  const isSelected = (element: any) => {
-    return React.isValidElement(element) && (element.props as any).head === section;
+    const children = React.Children.toArray(node.props?.children);
+
+    const directSections = children.filter(
+      child => React.isValidElement(child) && child.type === Section
+    ) as React.ReactElement[];
+
+    return directSections.flatMap(section => [
+      section,
+      ...this.getSections(section)
+    ]);
+  };
+
+  current = (): any => this.allSections().filter(child => this.sectionName(child) === this.section())[0]
+
+  allSections = () =>
+    this.arcs().flatMap(arc => [
+      arc,
+      ...this.getSections(arc)
+    ]).filter(child => !this.disabled(child));
+
+  section = () => this.params.get('section')
+
+  firstSection = () => this.sectionName(this.allSections()[0])
+  previousSection = () => this.nextSection(true)
+  nextSection = (reverse: boolean = false) => this.sectionName(this.next(reverse))
+
+  sectionName = (element: any) => {
+    if (typeof element.props.head === "string") return element.props.head
+    if (element.props.head.props != undefined) return element.props.head.props.children
+    return ""
+  }
+  disabled = (element: any) => typeof element.props.head !== "string"
+
+  previous = () => this.next(true)
+  next = (reverse: boolean = false) => {
+    const sections = this.allSections()
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i]
+      if (!this.isSelected(section)) continue
+
+      if (reverse) {
+        if (i === 0) return undefined
+      } else {
+        if (i === sections.length - 1) return undefined
+      }
+
+      return sections[i + (reverse ? -1 : 1)] as any
+    }
+
+    return undefined
   }
 
+  isSelected = (element: any) => {
+    return React.isValidElement(element) && this.sectionName(element) === this.section();
+  }
+}
+
+export const Navigation = (props: PaperProps) => {
+  const [params, setParams] = useSearchParams();
+
+  const util = new BookUtil(props, params)
+
   return <Row style={{height: '100%', borderRight: '1px solid rgb(108, 103, 131)', alignContent: 'flex-start'}} className="child-py-3 py-20">
-    {arcs.map((arc: any) => <Col xs={12} style={{textAlign: 'start'}}>
-      <span className="bp5-text-muted" style={{color: isSelected(arc) ? 'orange' : '#abb3bf'}}>{arc.props.head}</span>
+    {util.arcs().map((arc: any) => <Col xs={12} style={{textAlign: 'start'}}>
+      <a className="bp5-text-muted" style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => setParams({...params, section: util.sectionName(arc)})}>{arc.props.head}</a>
 
       {React.Children.toArray((arc as any).props.children).filter(child =>
         React.isValidElement(child) && child.type === Section
       ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}} className="pt-3">
-        <span className="bp5-text-muted" style={isSelected(section) ? {color: 'orange'} : {}}>{section.props.head}</span>
+        <a className="bp5-text-muted ml-2" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => setParams({...params, section: util.sectionName(section)})}>{section.props.head}</a>
 
         {React.Children.toArray((section as any).props.children).filter(child =>
           React.isValidElement(child) && child.type === Section
         ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}}>
-          <span className="bp5-text-muted" style={isSelected(section) ? {color: 'orange'} : {}}>{section.props.head}</span>
+          <a className="bp5-text-muted ml-4" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => setParams({...params, section: util.sectionName(section)})}>{section.props.head}</a>
 
 
         </Col>)}
@@ -66,14 +121,26 @@ const Book = (props: PaperProps) => {
 
   const isStartPage: boolean = (section ?? "").length == 0
 
+  const util = new BookUtil(props, params)
+  const current = util.current()
+
   if (isStartPage)
     return <Row end="xs">
-      <Button icon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: 'test'})} />
+      <Button icon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.firstSection() })} />
     </Row>
 
-  return <Row between="xs">
-    <Button icon="arrow-left" text="Previous" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, page: 'test'})} />
-    <Button icon="arrow-right" text="Next" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, page: 'test'})} />
+  return <Row>
+    <Col xs={12}>
+      <Section head={current.props.head}>
+        {current.props.children?.filter((child: any) => !React.isValidElement(child) || child.type !== Section)}
+      </Section>
+    </Col>
+    <Col xs={12}>
+      <Row between="xs">
+        {util.previous() ? <Button icon="arrow-left" text={util.previousSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams({...params, section: util.previousSection()})} /> : <div/>}
+        {util.next() ? <Button icon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
+      </Row>
+    </Col>
   </Row>
 }
 

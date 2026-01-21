@@ -40,7 +40,7 @@ import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Semi
 import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
 import {renderToStaticMarkup} from "react-dom/server";
 import {Document, Font, Image, Page, Path, PDFViewer, Svg, Link as PdfLink, Text, View} from "@react-pdf/renderer";
-import Book, {Navigation} from "./Book";
+import Book, {BookUtil, Navigation} from "./Book";
 
 export const Profile = ({profile, children, head}: {profile: TProfile} & Children & { head?: any }) => {
   const location = useLocation();
@@ -1253,12 +1253,14 @@ export const PaperContent = (props: PaperProps) => {
 
   const external_links = !!discord;
 
+  const util = new BookUtil(props, params)
+
   const Content = book && !isStartPage ? <>
     <Row between="xs" style={{height: '100%'}}>
       <Col xs={12}>
         <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
           <Rendered renderable={props.title}/>
-          <Button icon="arrow-right" text="Next" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, page: 'test'})} />
+          {util.next() ? <Button icon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
         </Row>
       </Col>
       <Col xs={12}><Book {...props}/></Col>
@@ -1290,10 +1292,10 @@ export const PaperContent = (props: PaperProps) => {
 
 
   return <>
-    <Row>
+    <Row style={{maxWidth: '1650px'}}>
       {book ? <Col xs={0} sm={4} md={3}><Navigation {...props} /></Col> : <></>}
       <Col md={book ? 9 : 12} sm={book ? 8 : 12} xs={12}>
-        <Grid fluid className={`${book && !isStartPage ? 'pb-35' : 'py-35'} child-pb-15 ${book ? 'pr-50-lg' : 'px-50-lg'}`} style={{
+        <Grid fluid className={`${book && !isStartPage ? 'pb-35' : 'py-35'} child-pb-15 ${book ? '' : 'px-50-lg'}`} style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}
           maxWidth: '1240px',

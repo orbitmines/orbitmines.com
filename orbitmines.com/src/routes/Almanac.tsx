@@ -12,6 +12,7 @@ import Post, {
   useCounter
 } from "../lib/post/Post";
 import {Button} from "@blueprintjs/core";
+import {useSearchParams} from "react-router-dom";
 
 export const ETHERS_ALMANAC: Content = { reference: {
   title: "Ether's Almanac",
@@ -33,6 +34,7 @@ export const ETHERS_ALMANAC: Content = { reference: {
 
 const Almanac = () => {
   const referenceCounter = useCounter();
+  const [params, setParams] = useSearchParams();
 
   const book: Omit<PaperProps, 'children'> = {
     book: true,
@@ -55,7 +57,8 @@ const Almanac = () => {
     </Arc>
     <Arc head="A. The Ray Programming Language">
       <Section head="§0. For Beginners">
-        If you're starting out learning a programming language for the first time, great! This section is for you. If not <Button icon="arrow-right" text="Skip ahead to §2" minimal onClick={() => {}} />.
+        <span style={{textAlign: 'left'}}>If you're starting out learning a programming language for the first time, great! This section is for you. If not <Button icon="arrow-right" text="Skip ahead to §1" minimal outlined onClick={() => setParams({...params, section: "§1. How to Install"})} />.</span>
+
         <Section head="§0.1 ">
         </Section>
       </Section>
@@ -127,6 +130,8 @@ const Almanac = () => {
     <Arc head={<span className="bp5-text-disabled">C. Ether Library Project (Planned for 2028)</span>}>
     </Arc>
     <Arc head={<span className="bp5-text-disabled">D. Physics & Game Engine (Planned for 2029)</span>}>
+    </Arc>
+    <Arc head="Wrapping up">
     </Arc>
   </Post>
 }
