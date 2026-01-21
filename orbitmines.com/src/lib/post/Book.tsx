@@ -79,19 +79,19 @@ export const Navigation = (props: PaperProps) => {
 
   const util = new BookUtil(props, params)
 
-  return <Row style={{height: '100%', borderRight: '1px solid rgb(108, 103, 131)', alignContent: 'flex-start'}} className="child-py-3 py-20">
+  return <Row style={{height: '100%', borderRight: '1px solid rgb(108, 103, 131)', alignContent: 'flex-start'}} className="pl-10 child-py-3 py-20">
     {util.arcs().map((arc: any) => <Col xs={12} style={{textAlign: 'start'}}>
       <a className="bp5-text-muted" style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => !util.disabled(arc) ? setParams({...params, section: util.sectionName(arc)}) : undefined}>{arc.props.head}</a>
 
       {React.Children.toArray((arc as any).props.children).filter(child =>
         React.isValidElement(child) && child.type === Section
       ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}} className="pt-3">
-        <a className="bp5-text-muted ml-2" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams({...params, section: util.sectionName(section)}) : undefined}>{section.props.head}</a>
+        <a className="bp5-text-muted ml-5" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams({...params, section: util.sectionName(section)}) : undefined}>{section.props.head}</a>
 
         {React.Children.toArray((section as any).props.children).filter(child =>
           React.isValidElement(child) && child.type === Section
         ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}}>
-          <a className="bp5-text-muted ml-4" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams({...params, section: util.sectionName(section)}) : undefined}>{section.props.head}</a>
+          <a className="bp5-text-muted ml-10" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams({...params, section: util.sectionName(section)}) : undefined}>{section.props.head}</a>
 
 
         </Col>)}

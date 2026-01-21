@@ -120,6 +120,9 @@ const Almanac = () => {
         <Section head="§5.5 UI">
 
         </Section>
+        <Section head="§5.6 (Unicode) Strings">
+
+        </Section>
       </Section>
       <Section head="§6. The Compiler">
       </Section>
