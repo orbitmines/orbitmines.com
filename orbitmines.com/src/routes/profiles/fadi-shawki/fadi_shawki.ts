@@ -3,6 +3,159 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
 export const REFERENCES = {
+  THE_STRANGEST_MAN: <Content>{
+    reference: {
+      title: 'The Strangest Man',
+      authors: [{name: 'Graham Farmelo'}],
+      organizations: [],
+      year: '(2009)',
+      link: "https://en.wikipedia.org/wiki/The_Strangest_Man"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  ECCE_HOMO: <Content>{
+    reference: {
+      title: 'Ecce Homo',
+      authors: [{name: 'Friedrich Nietzsche'}],
+      organizations: [],
+      year: '(1908)',
+      link: "https://en.wikipedia.org/wiki/Ecce_Homo_(book)"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  THE_THREE_BODY_PROBLEM: <Content>{
+    reference: {
+      title: 'The Three-Body Problem',
+      authors: [{name: 'Liu Cixin'}],
+      organizations: [],
+      year: '(2008)',
+      link: "https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WOOL: <Content>{
+    reference: {
+      title: 'Wool',
+      authors: [{name: 'Hugh Howey'}],
+      organizations: [],
+      year: '(2011)',
+      link: "https://en.wikipedia.org/wiki/Silo_(series)"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  SHIFT: <Content>{
+    reference: {
+      title: 'Shift',
+      authors: [{name: 'Hugh Howey'}],
+      organizations: [],
+      year: '(2013)',
+      link: "https://en.wikipedia.org/wiki/Silo_(series)"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  HARRY_POTTER_1_7: <Content>{
+    reference: {
+      title: 'Harry Potter 1-7',
+      authors: [{name: 'J. K. Rowling'}],
+      organizations: [],
+      year: '(1997-2007)',
+      link: "https://en.wikipedia.org/wiki/Harry_Potter"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PROPOSITIONS_AS_TYPES: <Content>{
+    reference: {
+      title: '"Propositions as Types"',
+      authors: [{name: 'Philip Wadler'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
+      year: '(2015)',
+      link: "https://www.youtube.com/watch?v=IOiZatlZtGU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PROGRAMMING_DISTRIBUTED_SYSTEMS: <Content>{
+    reference: {
+      title: '"Programming Distributed Systems"',
+      authors: [{name: 'Mae Milano'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
+      year: '(2023)',
+      link: "https://www.youtube.com/watch?v=Mc3tTRkjCvE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DAN_HOUSER_GTA_RED_DEAD_REDEMPTION_ROCKSTAR_ABSURD_FUTURE_OF_GAMING_484: <Content>{
+    reference: {
+      title: 'Dan Houser: GTA, Red Dead Redemption, Rockstar, Absurd & Future of Gaming | #484',
+      authors: [{name: 'Dan Houser'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=o3gbXDjNWyI"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DECIPHERING_SECRETS_OF_ANCIENT_CIVILIZATIONS_NOAHS_ARK_AND_FLOOD_MYTHS_487: <Content>{
+    reference: {
+      title: 'Deciphering Secrets of Ancient Civilizations, Noah\'s Ark, and Flood Myths | #487',
+      authors: [{name: 'Irving Finkel'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=_bBRVNkAfkQ&pp=0gcJCYcKAYcqIYzv"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PAVEL_DUROV_TELEGRAM_FREEDOM_CENSORSHIP_MONEY_POWER_HUMAN_NATURE_482: <Content>{
+    reference: {
+      title: 'Pavel Durov: Telegram, Freedom, Censorship, Money, Power & Human Nature | #482',
+      authors: [{name: 'Pavel Durov'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=qjPH9njnaVU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DAVID_KIRTLEY_NUCLEAR_FUSION_PLASMA_PHYSICS_AND_THE_FUTURE_OF_ENERGY_485: <Content>{
+    reference: {
+      title: 'David Kirtley: Nuclear Fusion, Plasma Physics, and the Future of Energy | #485',
+      authors: [{name: 'David Kirtley'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=m_CFCyc2Shs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  INFINITY_PARADOXES_GÖDEL_INCOMPLETENESS_THE_MATHEMATICAL_MULTIVERSE_488: <Content>{
+    reference: {
+      title: 'Infinity, Paradoxes, Gödel Incompleteness & the Mathematical Multiverse | #488',
+      authors: [{name: 'Joel David Hamkins'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=14OPT6CcsH4"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  PAUL_ROSOLIE_UNCONTACTED_TRIBES_IN_THE_AMAZON_JUNGLE_489: <Content>{
+    reference: {
+      title: 'Paul Rosolie: Uncontacted Tribes in the Amazon Jungle | #489',
+      authors: [{name: 'Paul Rosolie'}, {name: 'Lex Fridman'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=Z-FRe5AKmCU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _26_WILL_KINNEY___BEFORE_THE_BIG_BANG_INFLATION_INFINITY_OF_WORLDS: <Content>{
+    reference: {
+      title: '#26 Will Kinney - Before the Big Bang, Inflation, Infinity of Worlds',
+      authors: [{name: 'Will Kinney'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=HSZtn0yKPBI"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _27_JASON_STEFFEN___KEPLER_MISSION_LEGACY_PARTICLE_PHYSICS_OPTIMAL_PLANE_BOARDING: <Content>{
+    reference: {
+      title: '#27 Jason Steffen - Kepler Mission Legacy, Particle Physics, Optimal Plane Boarding',
+      authors: [{name: 'Jason Steffen'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=vaqgPzT8PXA"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _28_NÉSTOR_ESPINOZA___JWST_EXOPLANET_ATMOSPHERES_MOLECULE_DETECTION: <Content>{
+    reference: {
+      title: '#28 Néstor Espinoza - JWST, Exoplanet Atmospheres, Molecule Detection',
+      authors: [{name: 'Néstor Espinoza'}, {name: 'David Kipping'}],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=bZ7Hge0OUTE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
   CRAFTING_INTERPRETERS: <Content>{
     reference: {
       title: 'Crafting Interpreters',
@@ -3582,6 +3735,15 @@ export const REFERENCES = {
     }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
   },
 
+  URSPRUNG_IV: <Content>{
+    reference: {
+      title: "Ursprung IV",
+      organizations: [ORGANIZATIONS.ursprung],
+      year: "2026",
+      link: "https://ursprung.community/"
+    }, status: Viewed.VIEWED, found_at: "July, 2026", viewed_at: "2026"
+  },
+
   SYCO_12: <Content>{
     reference: {
       title: "Twelfth Symposium on Compositional Structures (SYCO 12)",
@@ -3862,7 +4024,28 @@ export const REFERENCES = {
 
 export default REFERENCES;
 
+export const ARTICLES_2026: Content[] = [
+  REFERENCES.THE_STRANGEST_MAN,
+  REFERENCES.ECCE_HOMO,
+  REFERENCES.THE_THREE_BODY_PROBLEM,
+  REFERENCES.SHIFT,
+  REFERENCES.PAUL_ROSOLIE_UNCONTACTED_TRIBES_IN_THE_AMAZON_JUNGLE_489,
+]
+
 export const ARTICLES_2025: Content[] = [
+  REFERENCES.WOOL,
+  REFERENCES.HARRY_POTTER_1_7,
+  REFERENCES.PROPOSITIONS_AS_TYPES,
+  REFERENCES.PROGRAMMING_DISTRIBUTED_SYSTEMS,
+  REFERENCES.DAN_HOUSER_GTA_RED_DEAD_REDEMPTION_ROCKSTAR_ABSURD_FUTURE_OF_GAMING_484,
+  REFERENCES.DECIPHERING_SECRETS_OF_ANCIENT_CIVILIZATIONS_NOAHS_ARK_AND_FLOOD_MYTHS_487,
+  REFERENCES.PAVEL_DUROV_TELEGRAM_FREEDOM_CENSORSHIP_MONEY_POWER_HUMAN_NATURE_482,
+  REFERENCES.DAVID_KIRTLEY_NUCLEAR_FUSION_PLASMA_PHYSICS_AND_THE_FUTURE_OF_ENERGY_485,
+  REFERENCES.INFINITY_PARADOXES_GÖDEL_INCOMPLETENESS_THE_MATHEMATICAL_MULTIVERSE_488,
+  REFERENCES._26_WILL_KINNEY___BEFORE_THE_BIG_BANG_INFLATION_INFINITY_OF_WORLDS,
+  REFERENCES._27_JASON_STEFFEN___KEPLER_MISSION_LEGACY_PARTICLE_PHYSICS_OPTIMAL_PLANE_BOARDING,
+  REFERENCES._28_NÉSTOR_ESPINOZA___JWST_EXOPLANET_ATMOSPHERES_MOLECULE_DETECTION,
+
   REFERENCES.CRAFTING_INTERPRETERS,
   REFERENCES.FUNCTIONAL_PROGRAMMING_IN_LEAN,
   REFERENCES.REFLECTIONS_ON_EQUALITY,
@@ -4362,11 +4545,11 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.png',
 
-  date: '2025-10-01',
+  date: '2026-01-01',
 
   email: 'fadi.shawki@orbitmines.com',
 
-  title: "2025. Fadi Shawki",
+  title: "2026. Fadi Shawki",
   subtitle: "A self-profile by some 25-solar-orbiting explorer.",
 
   reference: {
@@ -4387,6 +4570,7 @@ export const fadi_shawki = <TProfile>{
       REFERENCES.VWO,
     ],
     attended_events: [
+      REFERENCES.URSPRUNG_IV,
       REFERENCES.SEMF_2025,
       REFERENCES.INTO_THE_INFORMATION_CONTINUUM_2024_05_04,
       REFERENCES.SYCO_12,

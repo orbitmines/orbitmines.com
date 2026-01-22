@@ -1,5 +1,5 @@
 import React from 'react';
-import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024, ARTICLES_2025} from "./fadi_shawki";
+import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024, ARTICLES_2025, ARTICLES_2026} from "./fadi_shawki";
 import ORGANIZATIONS, {Viewed} from "../../../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "../profiles";
 import {ON_INTELLIGIBILITY} from "../../archive/2022.OnIntelligibility";
@@ -164,6 +164,9 @@ const FadiShawki = () => {
 
         {/* Include things like wikipedia exposure/other things like github ? */}
         <Arc head="Literary Exposure">
+            <Section head="2026">
+                <Category content={ARTICLES_2026}/>
+            </Section>
             <Section head="2025">
                 <Category content={ARTICLES_2025}/>
             </Section>
