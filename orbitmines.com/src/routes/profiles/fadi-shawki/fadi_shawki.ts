@@ -4545,11 +4545,11 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.png',
 
-  date: '2025-10-01',
+  date: '2026-01-01',
 
   email: 'fadi.shawki@orbitmines.com',
 
-  title: "2025. Fadi Shawki",
+  title: "2026. Fadi Shawki",
   subtitle: "A self-profile by some 25-solar-orbiting explorer.",
 
   reference: {
