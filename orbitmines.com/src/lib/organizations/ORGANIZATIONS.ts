@@ -5,6 +5,7 @@ import creative_icon from "../../lib/organizations/orbitmines/minecraft/server/i
 import prison_icon from "../../lib/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.prison.1000x1000.png";
 import strangeloop_icon from "../../lib/organizations/strange-loop/strange_loop_logo_final_color_no_year_square2.png";
 import semf_icon from "../../lib/organizations/semf/semf_icon.jpg";
+import ursprung_icon from "../../lib/organizations/ursprung/ursprung_icon.png";
 import webassembly_icon from "../../lib/organizations/wasm/webassembly-icon.png";
 import topos_institute_icon from "././topos.institute/topos_favicon.ico";
 import mindscape_icon from "././preposterous-universe/download.jpeg";
@@ -201,6 +202,13 @@ const ORGANIZATIONS = {
     assets: {
       logo: akissinger_icon,
       icon_png: akissinger_icon,
+    }
+  },
+  ursprung: <TOrganization>{
+    key: 'ursprung',
+    name: "Ursprung",
+    assets: {
+      icon_png: ursprung_icon,
     }
   },
   semf: <TOrganization>{
