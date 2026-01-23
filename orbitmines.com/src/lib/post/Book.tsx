@@ -136,7 +136,7 @@ const Book = (props: PaperProps) => {
   return <Row>
     <Col xs={12}>
       <Section head={current.props.head}>
-        {current.props.children?.filter((child: any) => !React.isValidElement(child) || child.type !== Section)}
+        {React.Children.toArray(current.props.children).filter((child: any) => !React.isValidElement(child) || child.type !== Section)}
       </Section>
     </Col>
     <Col xs={12}>
