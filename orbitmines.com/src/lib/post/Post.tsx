@@ -1234,6 +1234,7 @@ export const PaperHeader = (props: PaperProps) => {
 export const PaperContent = (props: PaperProps) => {
   let generate;
   const [params, setParams] = useSearchParams();
+  const [navigation, setNavigation] = useState(true)
 
   const section = params.get('section');
   const isStartPage: boolean = (section ?? "").length == 0
@@ -1256,11 +1257,12 @@ export const PaperContent = (props: PaperProps) => {
   const util = new BookUtil(props, params)
 
   const Content = book && !isStartPage ? <>
-    <Row between="xs" style={{height: '100%'}}>
-      <Col xs={12}>
+    <Row between="xs" style={{height: '100%', alignItems: 'center'}}>
+      <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={() => setNavigation(!navigation)} /></Col>
+      <Col xs={11}>
         <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
           <Rendered renderable={props.title}/>
-          {util.next() ? <Button icon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
+          {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
         </Row>
       </Col>
       <Col xs={12}><Book {...props}/></Col>
@@ -1293,8 +1295,10 @@ export const PaperContent = (props: PaperProps) => {
 
   return <>
     <Row style={{maxWidth: '1650px'}}>
-      {book ? <Col xs={0} sm={4} md={3}><Navigation {...props} /></Col> : <></>}
-      <Col md={book ? 9 : 12} sm={book ? 8 : 12} xs={12}>
+      {book && navigation ? <Col xs={0} sm={5} md={4}>
+        <Navigation {...props} />
+      </Col> : <></>}
+      <Col md={book && navigation ? 8 : 12} sm={book && navigation ? 7 : 12} xs={12}>
         <Grid fluid className={`${book && !isStartPage ? 'pb-35' : 'py-35'} child-pb-15 ${book ? '' : 'px-50-lg'}`} style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}

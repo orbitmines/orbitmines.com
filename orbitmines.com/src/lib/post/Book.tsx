@@ -1,4 +1,4 @@
-import Post, {Arc, Col, PaperProps, Row, Section} from "./Post";
+import Post, {Arc, Col, HorizontalLine, PaperProps, Row, Section} from "./Post";
 import React, {useEffect} from "react";
 import {useSearchParams} from "react-router-dom";
 import {Button} from "@blueprintjs/core";
@@ -16,7 +16,7 @@ export class BookUtil {
     const children = React.Children.toArray(node.props?.children);
 
     const directSections = children.filter(
-      child => React.isValidElement(child) && child.type === Section
+      child => React.isValidElement(child) && child.type === Section && child.props.head
     ) as React.ReactElement[];
 
     return directSections.flatMap(section => [
@@ -130,7 +130,7 @@ const Book = (props: PaperProps) => {
 
   if (isStartPage)
     return <Row end="xs">
-      <Button icon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.firstSection() })} />
+      <Button rightIcon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.firstSection() })} />
     </Row>
 
   return <Row>
@@ -140,9 +140,12 @@ const Book = (props: PaperProps) => {
       </Section>
     </Col>
     <Col xs={12}>
+      <HorizontalLine/>
+    </Col>
+    <Col xs={12}>
       <Row between="xs">
         {util.previous() ? <Button icon="arrow-left" text={util.previousSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams({...params, section: util.previousSection()})} /> : <div/>}
-        {util.next() ? <Button icon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
+        {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
       </Row>
     </Col>
   </Row>
