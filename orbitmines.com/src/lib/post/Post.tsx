@@ -751,7 +751,6 @@ export const Block = ({children, className, style = {}, ...props}: Children & Re
   return (
       <pre {...props} className={classNames(className, 'bp5-code-block')} style={{
         fontSize: '1.1rem',
-        width: '80%',
         whiteSpace: 'pre-wrap',
         ...style,
       }}>

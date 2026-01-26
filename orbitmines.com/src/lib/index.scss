@@ -18,6 +18,17 @@ body {
   background-color: $dark-gray1;
 }
 
+.bp5-code-block {
+  width: 100%;
+}
+
+/* md and up (≥ 768px, Blueprint breakpoint) */
+@media (min-width: 768px) {
+  .bp5-code-block {
+    width: 80%;
+  }
+}
+
 // TODO These under the specific theme
 .keyword {
   color: rgb(108, 103, 131) !important;

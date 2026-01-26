@@ -35,10 +35,14 @@ const Minimap = () => {
       <div style={{height: '100%'}}>
         <Row style={{height: '100%', minHeight: '100vh'}} center="xs" middle="xs" between="xs">
           <Col xs={12}>
-            <Col xs={12}><Row end="xs" middle="xs" className="child-px-5">
-              <Col><DownloadButton/></Col>
-              <Col><LoginButton/></Col>
-            </Row></Col>
+            <Col xs={12}>
+              <Row center="xs">
+                <Col xs={12} style={{maxWidth: '1240px'}}><Row end="xs" middle="xs" className="child-px-5">
+                  <Col><DownloadButton/></Col>
+                  <Col><LoginButton/></Col>
+                </Row></Col>
+              </Row>
+            </Col>
             <Col xs={12}><Row center="xs">
               <Col><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Col>
             </Row></Col>

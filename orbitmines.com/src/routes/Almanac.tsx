@@ -4,7 +4,7 @@ import React, {ReactNode, useEffect, useLayoutEffect, useRef, useState} from "re
 import Post, {
   Arc, Block,
   BlueprintIcons16,
-  BlueprintIcons20, BR, Children,
+  BlueprintIcons20, BR, Children, CustomIcon,
   JetBrainsMono,
   PaperProps, Reference,
   renderable, Section,
@@ -211,8 +211,76 @@ const Almanac = () => {
     {...book}
   >
     <Arc head="Introduction">
+      Greetings! This is the Ether's Almanac! Anything OrbitMines-related you may need like using the Ether (IDE) and the Ray programming language is contained in it. We'll update the almanac regularly, expect larger updates at the end of each year.
+      <BR/>
+      The Ether is a collective name for projects at OrbitMines. OrbitMines' goal is to eventually do research on the gamification of science, engineering and education: literally turning them into a sandbox videogame! But my judgement is that this in practice turns out to be a particularly difficult problem to think about. So instead (for the moment) we turn ourselves to a more practical problem: Programming infrastructure. If it is such a difficult problem to think about, why not advance the very tools with which we do our thinking! The thinking being that it might stimulate future thought towards this hard problem.
+      <BR/>
+      Currently, the plan is as follows:
+      <BR/>
+      - (1) Develop the Ray programming language, as a temporary placeholder to build out infrastructure for the future.
+      <BR/>
+      - (2) Build a reprogrammable visual interface (an IDE) which will allow us to go beyond what a typical programming language does.
+      <BR/>
+      - (3) Build tools within that interface for analyzing, comparing and cherry-picking features of ALL existing (programming) languages and their libraries: The Ether Library Project.
+      <BR/>
+      - (4) Do the same for rendering/physics/visual/game engines.
+      <BR/>
+      - (5) By the time this is all set in motion, have thought of an idea to get started with gamification.
+
+      <BR/>
+        If you're interesting in following along with these projects, or even contributing!, join <Reference is="reference" simple inline index={referenceCounter()} reference={{
+        title: <span><CustomIcon icon={ORGANIZATIONS.discord.key} size={20}/> Our Discord</span>,
+        link: "https://discord.orbitmines.com"
+      }}/>.
+      <BR/>
+
+      If you're here to learn more, then let me, without further ado, get you started on the Ray programming language!
     </Arc>
     <Arc head="A. The Ray Programming Language">
+      If you're a beginner and have never looked at a programming language before, no worries, we got you covered! But especially for those who are already familiar with a programming language, let me right out of the gate throw some code at you to look at, without having explained anything yet about the programming language. Perhaps that might already give you quite some information.
+      
+      <CodeBlock>
+        namespace Unicode<BR/>
+        <></>  class CodePoint {'<'} Hexadecimal{'{'}length == 1..6{'}'}<BR/>
+        <></>  class Scalar {'<'} CodePoint<BR/>
+        <></>    dynamically assert this {'<'} 0x110000 & !(0xD800 {'<'}= this {'<'}= 0xDFFF)<BR/>
+        <BR/>
+        <></>  class UTF-8 {'<'} TF, sequence: (<BR/>
+        <></>    prefix: 1[]{'{'}length == 0..4{'}'},<BR/>
+        <></>    U0: Binary{'{'}length == 8 - prefix.length{'}'}{'{'}⊢0{'}'},<BR/>
+        <></>    (10₂, U1: Binary{'{'}length == 6{'}'}) if prefix ⊢11₂<BR/>
+        <></>    (10₂, U2: Binary{'{'}length == 6{'}'}) if prefix ⊢111₂<BR/>
+        <></>    (10₂, U3: Binary{'{'}length == 6{'}'}) if prefix ⊢1111₂<BR/>
+        <></>  )[]<BR/>
+        <></>    as (== CodePoint[]) ={'>'} sequence.map(.U0, .U1, .U2, .U3)<BR/>
+        <BR/>
+        U+{'{'}codepoint: CodePoint.String{'}'}: Scalar ={'>'} codepoint<BR/>
+        <BR/>
+        U+1F525 // 🔥
+      </CodeBlock>
+
+      <span className="bp5-text-muted" style={{textAlign: 'left'}}>Note that all the codeblocks in this book are executable and editable! Try for instance changing the hexadecimal codepoint to another unicode character!</span>
+
+      <BR/>
+      <BR/>
+      <BR/>
+      <BR/>
+      <BR/>
+
+      The Ray programming language hopefully should feel somewhat familiar, somewhat alien to anyone with a programming language background. While it has many characteristics of a usual programming language, it deviates from the typical in quite a few ways, as you'll see.
+
+      <BR/>
+
+      <span style={{textAlign: 'left'}}>The hope is that the language is particularly useful for modelling the behavior of other (programming) languages (and replace them where convenient), whether low-level (close to the machine's instructions) or high-level. <span className="bp5-text-muted">At least for the UTF-8 example above, the code to express what that encoding means is very minimal.</span> With that comes the additional complexity of being able to express everything that they do<span className="bp5-text-muted">, and hopefully better.</span></span>
+
+      <BR/>
+
+      Aesthetically, the aim is to minimize verbosity while maximizing clarity. Of course there will be a certain know-how required to feel completely comfortable with a programming language. But especially if you're used to existing programming languages, the hope is that working with the Ray programming language feels very freeing.
+
+      <BR/>
+
+      <span style={{textAlign: 'left'}}>So whether you're interested in developing web applications, compiler engineering<span className="bp5-text-muted">, (future) game programming</span> or formalizing mathematics. This should be for you!</span>
+
       <Section head="§0. For Beginners">
         <span style={{textAlign: 'left'}}>If you're starting out learning a programming language for the first time, great! This section is for you. If not <Button rightIcon="arrow-right" text="Skip ahead to §1" minimal outlined onClick={() => setParams({...params, section: "§1. How to Install"})} />.</span>
 
