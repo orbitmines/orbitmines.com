@@ -374,6 +374,24 @@ const Almanac = () => {
 
           <BR/>
 
+          <CodeBlock>
+            x: Hypergraph = 1, 2, 3<BR/>
+            x: Graph      = 1, 2, 3<BR/>
+            x: Tree       = 1, 2, 3<BR/>
+            x: Array      = 1, 2, 3
+          </CodeBlock>
+          <CodeBlock>
+            x: Graph = 1, "2a" & "2b", 3
+          </CodeBlock>
+          <CodeBlock>
+            ~ 1, +2, +3, +4<BR/>
+            // 1, 3, 6, 10
+          </CodeBlock>
+          <CodeBlock>
+            ~ 1 | +2 | +3 | +4<BR/>
+            // 1 | 3 | 6 | 10
+          </CodeBlock>
+
           {/* Ranges */}
         </Section>
         <Section head="§2.3 Numbers">
@@ -382,9 +400,20 @@ const Almanac = () => {
         </Section>
         <Section head="§2.4 Types: Patterns">
           {/* Filters, > None */}
+          <CodeBlock>
+            "A"[]
+          </CodeBlock>
+          <CodeBlock>
+            "A", "A", "A"
+          </CodeBlock>
+          <CodeBlock>
+            "A", "B", "B"     ==.instance_of "A", "B"[]<BR/>
+            "A", ["B"], ["B"] ==.instance_of "A", ["B"][]<BR/>
+            "A", ["B", "B"]   ==.instance_of "A", ["B"[]]
+          </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
-
+          {/* Partial args */}
         </Section>
         <Section head="§2.6 Equality & Equivalence">
           {/* Cover default equivalences  */}
@@ -402,6 +431,28 @@ const Almanac = () => {
           <BR/>
 
           They are created by binding a function's context and defining some variables on it.
+
+          <CodeBlock>
+            class Enum {'<'} A | B | C(: String)
+          </CodeBlock>
+
+          <CodeBlock>
+            class Enum {'<'} A | B | C<BR/>
+            <></>  class A<BR/>
+            <></>  class B<BR/>
+            <></>  class C (var: String)
+          </CodeBlock>
+
+          <CodeBlock>
+            x: Enum = Enum.A<BR/>
+            x.match<BR/>
+            <></>  A ={'>'} 1<BR/>
+            <></>  var: B ={'>'} var * 2<BR/>
+            <></>  C("A") ={'>'} 3<BR/>
+            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
+            <></>  C(var) ={'>'} var * 5<BR/>
+            <></>  C ={'>'} 6
+          </CodeBlock>
         </Section>
       </Section>
       <Section head="§3. Ecosystem">
