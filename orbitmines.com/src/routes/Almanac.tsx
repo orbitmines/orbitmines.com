@@ -248,9 +248,9 @@ const Almanac = () => {
         <></>  class UTF-8 {'<'} TF, sequence: (<BR/>
         <></>    prefix: 1[]{'{'}length == 0..4{'}'},<BR/>
         <></>    U0: Binary{'{'}length == 8 - prefix.length{'}'}{'{'}⊢0{'}'},<BR/>
-        <></>    (10₂, U1: Binary{'{'}length == 6{'}'}) if prefix ⊢11₂<BR/>
-        <></>    (10₂, U2: Binary{'{'}length == 6{'}'}) if prefix ⊢111₂<BR/>
-        <></>    (10₂, U3: Binary{'{'}length == 6{'}'}) if prefix ⊢1111₂<BR/>
+        <></>    (10₂, U1: Binary₆) if prefix ⊢11₂<BR/>
+        <></>    (10₂, U2: Binary₆) if prefix ⊢111₂<BR/>
+        <></>    (10₂, U3: Binary₆) if prefix ⊢1111₂<BR/>
         <></>  )[]<BR/>
         <></>    as (== CodePoint[]) ={'>'} sequence.map(.U0, .U1, .U2, .U3)<BR/>
         <BR/>
@@ -384,11 +384,11 @@ const Almanac = () => {
             x: Graph = 1, "2a" & "2b", 3
           </CodeBlock>
           <CodeBlock>
-            ~ 1, +2, +3, +4<BR/>
+            1, +2, +3, +4<BR/>
             // 1, 3, 6, 10
           </CodeBlock>
           <CodeBlock>
-            ~ 1 | +2 | +3 | +4<BR/>
+            1 | +2 | +3 | +4<BR/>
             // 1 | 3 | 6 | 10
           </CodeBlock>
 
@@ -399,7 +399,7 @@ const Almanac = () => {
 
         </Section>
         <Section head="§2.4 Types: Patterns">
-          {/* Filters, > None */}
+          {/* Filters, > None, Dependent on other in structure, dependent type with .match or if statement, Ambiguities of patterns like varargs */}
           <CodeBlock>
             "A"[]
           </CodeBlock>
@@ -411,9 +411,28 @@ const Almanac = () => {
             "A", ["B"], ["B"] ==.instance_of "A", ["B"][]<BR/>
             "A", ["B", "B"]   ==.instance_of "A", ["B"[]]
           </CodeBlock>
+          <CodeBlock>
+            x: Binary{'{'}length == 32{'}'} = Binary{'{'}length == 8{'}'}[]{'{'}length == 4{'}'}
+          </CodeBlock>
+          Because the length check is quite common, there's a cleaner looking equivalence using subscripts:
+          <CodeBlock>
+            x: Binary₃₂ = Binary₈[]₄
+          </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
-          {/* Partial args */}
+          {/* Partial args + can set any var in the func (Can be prevented, which I'll discuss in Access Permissions), Multiline multiple implementations */}
+
+          Those familiar with other programming languages, might think: what about <Reference is="reference" index={referenceCounter()} reference={{title: "Variadic functions", link: "https://en.wikipedia.org/wiki/Variadic_function"}} simple inline />? (A function with a variable number of arguments) There's a simple interpretation of what that means. If you remember that in types the comma (,) operator just concatenates structures. The same is true for functions. So given the following function:
+          <CodeBlock>
+            varargs (a: String, b: Number[], c: String[])
+          </CodeBlock>
+          <span style={{textAlign: 'left'}}>We actually have, like all functions, only a single argument, it's just that it is described structurally by the variables a, b & c, in sequence. <span className="bp5-text-disabled">In a future version of the language which isn't just text-based, you can imagine that this 'single' argument which is described structurally, doesn't just need to be an Array. It could be some Graph for instance.</span></span><BR/>
+          We can call it with a variable number of arguments, whether they originate from other arrays or not.
+          <CodeBlock>
+            part: String[] = "c1", "c2"<BR/>
+            varargs("a", 1, 2, 3, part, "c3")
+          </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Remember how ambiguities were handled in types, it's the exact same here!</span>
         </Section>
         <Section head="§2.6 Equality & Equivalence">
           {/* Cover default equivalences  */}
@@ -423,7 +442,7 @@ const Almanac = () => {
           {/* Automatic isomorphisms */}
         </Section>
         <Section head="§2.8 Undecidability">
-          {/* assume */}
+          {/* assume, circularity */}
         </Section>
         <Section head="§2.9 Classes & Namespaces">
           Classes and Namespaces are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the standard library!
@@ -433,7 +452,7 @@ const Almanac = () => {
           They are created by binding a function's context and defining some variables on it.
 
           <CodeBlock>
-            class Enum {'<'} A | B | C(: String)
+            class Enum {'<'} .A | .B | .C(: String)
           </CodeBlock>
 
           <CodeBlock>
@@ -504,10 +523,13 @@ const Almanac = () => {
         <Section head="§7.1 (Unicode) Strings">
 
         </Section>
-        <Section head="§7.2 Time">
+        <Section head="§7.2 Units">
 
         </Section>
-        <Section head="§7.3 UUID">
+        <Section head="§7.3 Time">
+
+        </Section>
+        <Section head="§7.4 UUID">
 
         </Section>
       </Section>
