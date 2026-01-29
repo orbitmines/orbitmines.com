@@ -243,14 +243,14 @@ const Almanac = () => {
         namespace Unicode<BR/>
         <></>  class CodePoint {'<'} Hexadecimal{'{'}length == 1..6{'}'}<BR/>
         <></>  class Scalar {'<'} CodePoint<BR/>
-        <></>    dynamically assert this {'<'} 0x110000 & !(0xD800 {'<'}= this {'<'}= 0xDFFF)<BR/>
+        <></>    dynamically assert this {'<'} 0x110000 && !(0xD800 {'<'}= this {'<'}= 0xDFFF)<BR/>
         <BR/>
         <></>  class UTF-8 {'<'} TF, sequence: (<BR/>
         <></>    prefix: 1[]{'{'}length == 0..4{'}'},<BR/>
         <></>    U0: Binary{'{'}length == 8 - prefix.length{'}'}{'{'}⊢0{'}'},<BR/>
-        <></>    (10₂, U1: Binary₆) if prefix ⊢11₂<BR/>
-        <></>    (10₂, U2: Binary₆) if prefix ⊢111₂<BR/>
-        <></>    (10₂, U3: Binary₆) if prefix ⊢1111₂<BR/>
+        <></>    (10₂, U1: Binary⁶) if prefix ⊢11₂<BR/>
+        <></>    (10₂, U2: Binary⁶) if prefix ⊢111₂<BR/>
+        <></>    (10₂, U3: Binary⁶) if prefix ⊢1111₂<BR/>
         <></>  )[]<BR/>
         <></>    as (== CodePoint[]) ={'>'} sequence.map(.U0, .U1, .U2, .U3)<BR/>
         <BR/>
@@ -392,6 +392,53 @@ const Almanac = () => {
             // 1 | 3 | 6 | 10
           </CodeBlock>
 
+          {/**/}
+
+          Superposed values, map all the possible values according to any function called on them, like:
+          <CodeBlock>
+            (1 & 2 & 3) * 2 // 2 & 4 & 6
+          </CodeBlock>
+          That functionality is also available to the iterable structures, albeit with a little more verbosity:
+          <CodeBlock>
+            x: Array = [1, 2, 3].map(*2) // [2, 4, 6]
+          </CodeBlock>
+          It's worth noting that mapping, retains structure. So if we for instance have the following graph.
+          <Block>
+
+          </Block>
+          And we map it:
+          <CodeBlock>
+            x: Graph = (false, true & false, true).map(!)<BR/>
+            // (true, false & true, false)
+          </CodeBlock>
+          Structure is retained:
+          <Block>
+
+          </Block>
+          <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
+          <CodeBlock>
+            x: Number = [1, 2, 3]<BR/>
+            x.map(entry: Number + Ray ={'>'} entry + entry.index)<BR/>
+            // [1, 3, 5]
+          </CodeBlock>
+          <span style={{textAlign: 'left'}}>The mapping function can also include a filter which decides which entries should be mapped. <span className="bp5-text-muted">(In <Reference is="reference" index={referenceCounter()} reference={{title: "category theory", link: "https://en.wikipedia.org/wiki/Category_theory"}} simple inline /> this is referred to as a <Reference is="reference" index={referenceCounter()} reference={{title: "lens", link: "https://ncatlab.org/nlab/show/lens+%28in+computer+science%29"}} simple inline />.)</span> This filter is applied just like any type filter, but instead on the mapping function.</span>
+          <CodeBlock>
+            [1, 2, 3].map{'{'}.index == 2{'}'}(*10) // [1, 2, 30]
+          </CodeBlock>
+
+          Since structure is accessible to mapping function, one of the things you might want to do is to rewrite that structure in place with a different structure.
+          <BR/>
+
+          <CodeBlock>
+
+          </CodeBlock>
+
+          {/* TODO */}
+
+          Now the limitation here is that the mapping function only maps over all the entries, perhaps you'd want to do something slightly more complicated. Like matching to, and then rewriting substructures. (As in typical <Reference is="reference" index={referenceCounter()} reference={{title: "graph rewriting", link: "https://en.wikipedia.org/wiki/Graph_rewriting"}} simple inline />)
+
+          {/* Replace/Rewrite with mapping function */}
+
           {/* Ranges */}
         </Section>
         <Section head="§2.3 Numbers">
@@ -414,9 +461,18 @@ const Almanac = () => {
           <CodeBlock>
             x: Binary{'{'}length == 32{'}'} = Binary{'{'}length == 8{'}'}[]{'{'}length == 4{'}'}
           </CodeBlock>
-          Because the length check is quite common, there's a cleaner looking equivalence using subscripts:
+          Because the length check is quite common, there's a cleaner looking equivalence using superscripts:
           <CodeBlock>
-            x: Binary₃₂ = Binary₈[]₄
+            x: Binary³² = Binary⁸[]⁴
+          </CodeBlock>
+          Under the hood it uses the (^ and *) operator. So equivalent code is:
+          <CodeBlock>
+            x: Binary^32 = Binary^8[]^4<BR/>
+            x: Binary * 32 = (Binary * 32)[] * 4
+          </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Notice that there's a slight ambiguity here, the (^) and (*) operators are both also in use by a Number (Meaning exponentiation and multiplication respectively), which would be usually overwritten by the type Binary for instance. But as long as you access the base type like Binary, they prefer to use this interpretation of length of the Number. The moment you alter the base type, they default to exponentiation, for instance:</span>
+          <CodeBlock>
+            Binary{'{'}== 1..4{'}'}² // == 2 | 4 | 8 | 16, != 1..4[]{'{'}length == 2{'}'}
           </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
@@ -495,6 +551,42 @@ const Almanac = () => {
         {/* if 0.5 =>, 0.3 =>  */}
         </Section>
         <Section head="§4.2 Choice">
+          While randomization is a useful abstraction, sometimes you might want a slightly different concept. Which is where choice comes in. To flag that a required value can be chosen arbitrarily (by the runtime or even the Player).<BR/>
+
+          Unlike a random variable which can't be picked uniformly for infinitely generating structures, choice works just fine: There can be a preference or tendency for a certain kind of object. Choice is simply saying: we don't care about this information.<BR/>
+
+          We can use it in filters:
+          <CodeBlock>
+            [1, 2, 3].map{'{'}choose 1{'}'}(*10) // [10, 2, 3] | [1, 20, 3] | [1, 2, 30]<BR/>
+            <BR/>
+            Number{'{'}choose 5{'}'}
+          </CodeBlock>
+          Call it directly:
+          <CodeBlock>
+            choose 1 Number
+          </CodeBlock>
+          Or pass it to any function which will fill the type automatically (the choice having to disambiguate where necessary).
+          <CodeBlock>
+            func (a: String, b: Number[], c: String)<BR/>
+            func(choose, choose) // Choose two variables, the second can be a Number[] or a String
+          </CodeBlock>
+
+          An example of where this is used, is in a function defined on Iterable, the (unordered) function. Which says: I don't care about the order, or even what kind of structure yields the values, I just want it to yield them.
+          <CodeBlock>
+            class Iterable<BR/>
+            <></>  unordered ={'>'}<BR/>
+            <></>    choose Iterable{'{'}.every(this.contains(.)) && .count == count{'}'}
+          </CodeBlock>
+
+          Which can be useful because certain compiler optimizations might work when order doesn't matter.<BR/>
+
+          We can also force a player to make that arbitrary choice:
+          <CodeBlock>
+            @me.choose String
+          </CodeBlock>
+
+          {/* How tto define which algorithm chooses */}
+
         </Section>
         <Section head="§4.3 Coroutines">
 
