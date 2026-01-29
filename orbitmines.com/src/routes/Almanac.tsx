@@ -398,9 +398,9 @@ const Almanac = () => {
           <CodeBlock>
             (1 & 2 & 3) * 2 // 2 & 4 & 6
           </CodeBlock>
-          That functionality is also available to the iterable structures, albeit with a little more verbosity:
+          That functionality is also available to the iterable structures:
           <CodeBlock>
-            x: Array = [1, 2, 3].map(*2) // [2, 4, 6]
+            [1, 2, 3].map(*2) // [2, 4, 6]
           </CodeBlock>
           It's worth noting that mapping, retains structure. So if we for instance have the following graph.
           <Block>
@@ -408,8 +408,8 @@ const Almanac = () => {
           </Block>
           And we map it:
           <CodeBlock>
-            x: Graph = (false, true & false, true).map(!)<BR/>
-            // (true, false & true, false)
+            x: Graph = false, true & false, true<BR/>
+            x.map(!) // true, false & true, false
           </CodeBlock>
           Structure is retained:
           <Block>
