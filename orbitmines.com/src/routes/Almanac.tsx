@@ -465,14 +465,33 @@ const Almanac = () => {
           <CodeBlock>
             x: Binary³² = Binary⁸[]⁴
           </CodeBlock>
-          Under the hood it uses the (^ and *) operator. So equivalent code is:
+          Under the hood it uses the (^) operator. So equivalent code is:
           <CodeBlock>
-            x: Binary^32 = Binary^8[]^4<BR/>
-            x: Binary * 32 = (Binary * 32)[] * 4
+            x: Binary^32 = Binary^8[]^4
           </CodeBlock>
-          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Notice that there's a slight ambiguity here, the (^) and (*) operators are both also in use by a Number (Meaning exponentiation and multiplication respectively), which would be usually overwritten by the type Binary for instance. But as long as you access the base type like Binary, they prefer to use this interpretation of length of the Number. The moment you alter the base type, they default to exponentiation, for instance:</span>
+          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Notice that there's a slight ambiguity here, the (^) operator is also in use by a Number (Meaning exponentiation), which would be usually overwritten by the type Binary for instance. But as long as you access the base type like Binary, they prefer to use this interpretation of length of the Number. The moment you alter the base type, they default to exponentiation, for instance:</span>
           <CodeBlock>
             Binary{'{'}== 1..4{'}'}² // == 2 | 4 | 8 | 16, != 1..4[]{'{'}length == 2{'}'}
+          </CodeBlock>
+
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+
+          One of the things you might want to do, since every variable is potentially a large number of superposed variables. Is say: I only want a single instance of that object.
+          <CodeBlock>
+            x: 1 Number
+          </CodeBlock>
+          Which under the hood, simply is a type filter:
+          <CodeBlock>
+            Number{'{'}#.count == 1{'}'}
+          </CodeBlock>
+          <span style={{textAlign: 'left'}}>Or if you have an object with a finite number of <Reference is="reference" index={referenceCounter()} reference={{title: "permutations", link: "https://en.wikipedia.org/wiki/Permutation"}} simple inline /><span className="bp5-text-disabled">; when there's a finite number of possibilities that can fill that type.</span> (Like a Number of finite length) You can then say: I want a percentage of the possible objects.</span>
+          <CodeBlock>
+            50% ("A" | "B" | "C" | "D")<BR/>
+            1/2 Binary³²<BR/>
+            0.5 "A" | "B" // Is the same as 1 ("A" | "B")
           </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
@@ -563,7 +582,8 @@ const Almanac = () => {
           </CodeBlock>
           Call it directly:
           <CodeBlock>
-            choose 1 Number
+            choose 1 Number<BR/>
+            choose 50% ("A" | "B" | "C" | "D")
           </CodeBlock>
           Or pass it to any function which will fill the type automatically (the choice having to disambiguate where necessary).
           <CodeBlock>
@@ -571,7 +591,14 @@ const Almanac = () => {
             func(choose, choose) // Choose two variables, the second can be a Number[] or a String
           </CodeBlock>
 
-          An example of where this is used, is in a function defined on Iterable, the (unordered) function. Which says: I don't care about the order, or even what kind of structure yields the values, I just want it to yield them.
+          Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
+          <CodeBlock>
+            var = 2<BR/>
+            [1, var, var].map{'{'}choose 1{'}'}(*10) // [10, 2, 2] | [1, 20, 20]<BR/>
+            [1, var, var].map{'{'}choose 2{'}'}(*10) // [10, 20, 20] | [1, 200, 200]
+          </CodeBlock>
+
+          An example of where (choose) is used, is in a function defined on Iterable, the (unordered) function. Which says: I don't care about the order, or even what kind of structure yields the values, I just want it to yield them.
           <CodeBlock>
             class Iterable<BR/>
             <></>  unordered ={'>'}<BR/>
