@@ -444,9 +444,23 @@ const Almanac = () => {
         <Section head="§2.3 Numbers">
           {/* Booleans, Numbers, compare i64 and other things */}
 
+          Like other languages, there are for loops in the language to iterate over a number of things in some iterable. Although the syntax is slightly different, in Ray it is just treated like any other definition.<BR/>
+          In the following example, (~) is just a filter over the iterable. And anything in the following block get's executed for each entry.
+          <CodeBlock>
+            (0 -{'>'} +1) ~{'{'}{'<'} 10{'}'} for i ={'>'} /* */
+          </CodeBlock>
+          Or you can use the following equivalent code, using (-{'>'}), which means an infinitely generating iterable, without any structure/values defined on it. (But you do get access to the structure that is the iterable):
+          <CodeBlock>
+            (-{'>'}) ~{'{'}index {'<'} 10{'}'} for ={'>'} /* Use .index here */
+          </CodeBlock>
+          Another equivalence would be:
+          <CodeBlock>
+            10.times ={'>'} /* .index is also available here */
+          </CodeBlock>
+
         </Section>
         <Section head="§2.4 Types: Patterns">
-          {/* Filters, > None, Dependent on other in structure, dependent type with .match or if statement, Ambiguities of patterns like varargs */}
+          {/* Filters, > None, Dependent on other in structure, dependent type with .match or if statement, Ambiguities of patterns like varargs, Ambiguity what? */}
           <CodeBlock>
             "A"[]
           </CodeBlock>
@@ -458,6 +472,23 @@ const Almanac = () => {
             "A", ["B"], ["B"] ==.instance_of "A", ["B"][]<BR/>
             "A", ["B", "B"]   ==.instance_of "A", ["B"[]]
           </CodeBlock>
+
+          In many languages you have a spread operator if you want to pattern match to an array. So typically that would mean:
+          <CodeBlock>
+            first, middle: String[], last = "A", "B", "C", "D"
+          </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>The middle here, matching to both "B" and "C".</span>
+          Then for convenience, this spread operator is defined:
+          <CodeBlock>
+            first, ..middle, last = "A", "B", "C", "D"
+          </CodeBlock>
+          Which is just alternative syntax for defining an array ([]). So any place you have ([]), you can also use the prefix (..)<BR/>
+          This for instance would also work:
+          <CodeBlock>
+            first, middle: ..String, last = "A", "B", "C", "D"
+          </CodeBlock>
+
+
           <CodeBlock>
             x: Binary{'{'}length == 32{'}'} = Binary{'{'}length == 8{'}'}[]{'{'}length == 4{'}'}
           </CodeBlock>
@@ -511,6 +542,14 @@ const Almanac = () => {
         </Section>
         <Section head="§2.6 Equality & Equivalence">
           {/* Cover default equivalences  */}
+
+          One of the equivalences which exists in the language, is for instance that a String is equivalent to String[] when concatenated together, such that:
+          <CodeBlock>
+            "ABC" == "A", "B", "C"<BR/>
+            <BR/>
+            x: String = "A", "B", "C"
+          </CodeBlock>
+
         </Section>
         <Section head="§2.7 Transactions and Reversibility">
           {/* dynamically */}
@@ -595,6 +634,7 @@ const Almanac = () => {
           <CodeBlock>
             var = 2<BR/>
             [1, var, var].map{'{'}choose 1{'}'}(*10) // [10, 2, 2] | [1, 20, 20]<BR/>
+            var = 2<BR/>
             [1, var, var].map{'{'}choose 2{'}'}(*10) // [10, 20, 20] | [1, 200, 200]
           </CodeBlock>
 
@@ -620,6 +660,71 @@ const Almanac = () => {
         </Section>
         <Section head="§4.4 Concurrency">
 
+        </Section>
+        <Section head="§4.5 Punctuation">
+          The familiar parenthesis () are used to group certain kinds of operations, to prefer a particular interpretation over another. The Ray programming language extends this notion a little further than most programming languages. Where you're allowed to introduce parenthesis pretty much anywhere, and there's a valid interpretation of what that means.
+
+          <BR/>
+
+          So instead of doing the following:
+          <CodeBlock>
+            condition ? var == 5 : var {'<'}= 5
+          </CodeBlock>
+          You might do this:
+          <CodeBlock>
+            var (condition ? == 5 : {'<'}= 5)
+          </CodeBlock>
+          Or even:
+          <CodeBlock>
+            var (condition ? == : {'<'}=) 5
+          </CodeBlock>
+
+          The same can be done with property getters, so you can have things like:
+          <CodeBlock>
+            Symbol: Char = Unicode.GeneralCategory.(Punctuation | Symbol)
+          </CodeBlock>
+          Which superposes both properties with the (|) operator.
+
+          <BR/>
+          <BR/>
+          <BR/>
+          <BR/>
+
+          The Ray programming language is also pretty lenient in it's omittance of parenthesis and allowance for spaces as punctuation.<BR/>
+
+          You can omit the use of (.) in favor for a space, as is usually already the case for special character operators, but in Ray you can also do this with any property:
+
+          <CodeBlock>
+            "A".lowercase<BR/>
+            "A" lowercase
+          </CodeBlock>
+
+          With those two things we can choose between these sorts of syntax, whichever one seems clearer to you:
+          <CodeBlock>
+            (0 -{'>'} +2) ~{'{'}{'<'} 10{'}'}.for(i ={'>'} /* */)<BR/>
+            (0 -{'>'} +2) ~{'{'}{'<'} 10{'}'}.for i ={'>'}<BR/>
+            (0 -{'>'} +2) ~{'{'}{'<'} 10{'}'} for i ={'>'}
+          </CodeBlock>
+
+           There is also the (--) operator which wraps the whole line before it.
+          <CodeBlock>
+            1, 2 -- .map(+1) // 2, 3
+          </CodeBlock>
+          Additionally it can also be used after newlines and with if statements which optionally wrap the line.
+          <CodeBlock>
+            class IPv6<BR/>
+            <></>  as (== String)<BR/>
+            <></>    this<BR/>
+            <></>      -- .embed_ipv4 if ==.instance_of "::ffff:0.0.0.0/96"<BR/>
+            <></>      -- .embed_ipv4 if ==.instance_of "64:ff9b::/96"<BR/>
+            <></>      .compress_zeros<BR/>
+            <></>      .lowercase
+          </CodeBlock>
+          Then there is the (~~) operator, which does the exact same thing, but returns the original thing you call the successive functions on. Which is useful for creating one-liners like:
+          <CodeBlock>
+            mac_address: Binary⁴⁸ =<BR/>
+            <></>  secure Binary⁴⁷.random ~~ .[6].push_after(1)
+          </CodeBlock>
         </Section>
       </Section>
       <Section head="§5. Playerfacing">
