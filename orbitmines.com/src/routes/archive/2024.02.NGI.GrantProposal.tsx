@@ -1,6 +1,6 @@
 import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import Paper, {
+import Post, {
   Arc,
   BR,
   PaperProps,
@@ -10,7 +10,7 @@ import Paper, {
   Section,
   renderable,
   Row, JetBrainsMono, BlueprintIcons20, BlueprintIcons16
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
@@ -47,7 +47,7 @@ const _2024_02_NGI_GrantProposal = () => {
     references: referenceCounter
   }
 
-  return <Paper
+  return <Post
     {...paper}
   >
 
@@ -139,7 +139,7 @@ const _2024_02_NGI_GrantProposal = () => {
         In essence this shouldn't be more than a single properly crafted file. It will be able to compile (or provide compilation) to any setting someone would want to use it in. As infrastructure, probably any project will be able to use it - the difference in use-cases will merely be to what extend histories are preferred to be kept.
       </Section>
     </Arc>
-  </Paper>
+  </Post>
 }
 
 export default _2024_02_NGI_GrantProposal;

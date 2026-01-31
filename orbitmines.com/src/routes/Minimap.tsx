@@ -4,10 +4,13 @@ import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
-import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/paper/Paper";
+import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/post/Post";
 import {PROFILES} from "./profiles/profiles";
 import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
 import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";
+import {ETHERS_ALMANAC} from "./Almanac";
+import {Button} from "@blueprintjs/core";
+import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
 
 
 const Minimap = () => {
@@ -32,8 +35,17 @@ const Minimap = () => {
       <div style={{height: '100%'}}>
         <Row style={{height: '100%', minHeight: '100vh'}} center="xs" middle="xs" between="xs">
           <Col xs={12}>
-            <Col xs={12}><Row center="xs"><img src={logo} alt="logo"
-                                               style={{maxWidth: '400px', width: '90%'}}/></Row></Col>
+            <Col xs={12}>
+              <Row center="xs">
+                <Col xs={12} style={{maxWidth: '1240px'}}><Row end="xs" middle="xs" className="child-px-5">
+                  <Col><DownloadButton/></Col>
+                  <Col><LoginButton/></Col>
+                </Row></Col>
+              </Row>
+            </Col>
+            <Col xs={12}><Row center="xs">
+              <Col><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Col>
+            </Row></Col>
             <Col xs={12}>
               <Row center="xs">
                 <Col xl={4} lg={6} md={8} sm={10} xs={12}>
@@ -76,6 +88,19 @@ const Minimap = () => {
             <Col xs={12}>
               <Row middle="xs" center="xs">
                 <Col style={{maxWidth: '500px'}}>
+                  <Row style={{alignItems: 'center'}}>
+                    <Col xs={2}>
+                      <img src="/E.svg" alt="E" style={{width: '100%', maxHeight: '100px'}} />
+                    </Col>
+                    <Col xs={10}>
+                      <Reference
+                        index={0}
+                        reference={ETHERS_ALMANAC.reference}
+                        start="xs"
+                        style={{fontSize: '0.8rem'}} target="_self"
+                      />
+                    </Col>
+                  </Row>
                   <CanvasContainer style={{height: '140px'}} className="hidden-xs">
                     <canvas
                       style={{

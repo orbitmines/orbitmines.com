@@ -28,6 +28,17 @@ $xl-viewport: 1200px;
     padding-left: var(--gutter-width, 16px);
 }
 
+.bp5-input-action {
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+@media (max-width: 500px) {
+    #search { max-width: 140px; }
+}
+
+
 @media only screen and (min-width: $sm-viewport) {
     .container {
         width: calc(var(--sm-min) - var(--gutter-width));

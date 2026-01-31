@@ -10,7 +10,21 @@ import ORGANIZATIONS, {
   TProfile
 } from "../organizations/ORGANIZATIONS";
 import _, {uniqueId} from "lodash";
-import {Button, Classes, Divider, H1, H3, H4, H6, Icon, IconSize, Intent, Popover, Tag} from "@blueprintjs/core";
+import {
+  Button,
+  Classes,
+  Divider,
+  H1,
+  H3,
+  H4,
+  H6,
+  Icon,
+  IconSize,
+  InputGroup,
+  Intent,
+  Popover,
+  Tag
+} from "@blueprintjs/core";
 import {toJpeg} from "html-to-image";
 import classNames from "classnames";
 import {PROFILES} from "../../routes/profiles/profiles";
@@ -26,6 +40,7 @@ import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Semi
 import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
 import {renderToStaticMarkup} from "react-dom/server";
 import {Document, Font, Image, Page, Path, PDFViewer, Svg, Link as PdfLink, Text, View} from "@react-pdf/renderer";
+import Book, {BookUtil, Navigation} from "./Book";
 
 export const Profile = ({profile, children, head}: {profile: TProfile} & Children & { head?: any }) => {
   const location = useLocation();
@@ -736,7 +751,6 @@ export const Block = ({children, className, style = {}, ...props}: Children & Re
   return (
       <pre {...props} className={classNames(className, 'bp5-code-block')} style={{
         fontSize: '1.1rem',
-        width: '80%',
         whiteSpace: 'pre-wrap',
         ...style,
       }}>
@@ -825,7 +839,7 @@ export const Exports = (
 ) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
 
   const ref = useRef<any>(null);
 
@@ -861,12 +875,29 @@ export const Exports = (
       <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
 
       <Col>
-        {generate && ['button', 'thumbnail'].includes(generate) ? <>
-          <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
-        </> : <>
-          <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
-          <a href={`${location.pathname.replace(/\/$/, "")}.pdf`} target="_blank"><Button text=".pdf" icon="document" minimal /></a>
-        </>}
+        <Row>
+          {paper.book ? <Col><InputGroup
+            id="search"
+            type="search"
+            leftElement={<Icon icon="search" />}
+            onChange={(value) => setParams({...params, 'search': value.target.value })}
+            placeholder="Search"
+            // rightElement={
+            //   <span className="bp5-text-disabled bp5-align-center p-5 hidden-xs">
+            //     Ctrl + F
+            //   </span>
+            // }
+            value={params.get('search')}
+          /></Col> : <></>}
+          <Col>
+            {generate && ['button', 'thumbnail'].includes(generate) ? <>
+              <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
+            </> : <>
+              <a href={`${location.pathname.replace(/\/$/, "")}.jpeg`} target="_blank"><Button text=".jpeg" icon="media" minimal /></a>
+              <a href={`${location.pathname.replace(/\/$/, "")}.pdf`} target="_blank"><Button text=".pdf" icon="document" minimal /></a>
+            </>}
+          </Col>
+        </Row>
       </Col>
     </Row>
     <div ref={ref}>
@@ -897,7 +928,7 @@ export const FootnoteContent = (props: FootnoteProps & { goto?: JSX.Element } & 
   const { index, children } = props;
 
   const goto = () => {
-    const element =document.getElementById(`footnote-${index}`)
+    const element = document.getElementById(`footnote-${index}`)
 
     window.scrollTo({
       top: element.getBoundingClientRect().top + window.scrollY - 100,
@@ -1134,9 +1165,9 @@ export const Browser = ({ paper }: { paper: PaperProps }) => {
   );
 };
 
-export const Title = ({children}: Children) => {
+export const Title = ({children, ...props}: Children & any) => {
   return <Row center="xs">
-    <H1>{children}</H1>
+    <H1 {...props}>{children}</H1>
   </Row>;
 }
 
@@ -1169,16 +1200,16 @@ export const PaperHeader = (props: PaperProps) => {
 
     <Row center="xs" middle="xs" className="child-px-20-sm">
       {organizations ? <>
-        {organizations.map((organization) => (<Col md={5} xs={12}>
+        {organizations.map((organization) => (<Col md={!props.book ? 5 : 12} xs={12}>
           <Organization {...organization} />
         </Col>))}
 
-        <Col xs={1} className="hidden-xs hidden-sm hidden-md hidden-lg">
+        <Col xs={1} className={`hidden-xs hidden-sm hidden-md hidden-lg ${props.book ? 'hidden-xl' : ''}`}>
           <Divider style={{height: '80px'}}/>
         </Col>
       </> : <></>}
 
-      {(authors || []).map((author) => (<Col md={organizations ? 5 : 12} xs={12}>
+      {(authors || []).map((author) => (<Col md={!props.book && organizations ? 5 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
@@ -1201,9 +1232,13 @@ export const PaperHeader = (props: PaperProps) => {
 
 export const PaperContent = (props: PaperProps) => {
   let generate;
-  try {
-    const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
+  const [navigation, setNavigation] = useState(true)
 
+  const section = params.get('section');
+  const isStartPage: boolean = (section ?? "").length == 0
+
+  try {
     generate = params.get('generate');
   } catch (e) {
     generate = 'pdf';
@@ -1212,13 +1247,26 @@ export const PaperContent = (props: PaperProps) => {
   if (generate === 'thumbnail')
     return <PaperThumbnail {...props}/>
 
-  const {header, children, external, exclude_footnotes } = props;
+  let {book, header, children, external, exclude_footnotes } = props;
 
   const {discord} = external || {};
 
   const external_links = !!discord;
 
-  const Content = <>
+  const util = new BookUtil(props, params)
+
+  const Content = book && !isStartPage ? <>
+    <Row between="xs" style={{height: '100%', alignItems: 'center'}}>
+      <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={() => setNavigation(!navigation)} /></Col>
+      <Col xs={11}>
+        <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
+          <Rendered renderable={props.title}/>
+          {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => setParams({...params, section: util.nextSection()})} /> : null}
+        </Row>
+      </Col>
+      <Col xs={12}><Book {...props}/></Col>
+    </Row>
+  </> : <>
     {props.head ? <>
       {props.head}
       {children}
@@ -1231,29 +1279,41 @@ export const PaperContent = (props: PaperProps) => {
         </Col> : <></>}
       </Row> : <></>}
 
-      {header ? header : <HorizontalLine/>}
+      {header ? header : (book ? <span></span> : <HorizontalLine/>)}
 
-      {children}
+      {book ? <Book {...props}/> : children}
 
-      <HorizontalLine/>
+      {book ? <span></span> : <HorizontalLine/>}
     </>}
   </>
 
   const footnotes = getFootnotes(Content);
+  if (footnotes.length == 0)
+    exclude_footnotes = true
 
-  return <Grid fluid className="py-35 child-pb-15 px-50-lg" style={{
-    // border: 'solid rgba(143, 153, 168, 0.15) 2px',
-    //     height={1754} width={1240}
-    maxWidth: '1240px',
-    fontSize: '1.1rem',
-    width: '100vw'
-  }}>
-    {Content}
 
-    {!exclude_footnotes ? <Section head="Footnotes & References">
-      {footnotes}
-    </Section> : <></>}
-  </Grid>
+  return <>
+    <Row style={{maxWidth: '1650px'}}>
+      {book && navigation ? <Col xs={0} sm={5} md={4}>
+        <Navigation {...props} />
+      </Col> : <></>}
+      <Col md={book && navigation ? 8 : 12} sm={book && navigation ? 7 : 12} xs={12}>
+        <Grid fluid className={`${book && !isStartPage ? 'pb-35' : 'py-35'} child-pb-15 ${book ? '' : 'px-50-lg'}`} style={{
+          // border: 'solid rgba(143, 153, 168, 0.15) 2px',
+          //     height={1754} width={1240}
+          maxWidth: '1240px',
+          fontSize: '1.1rem',
+          width: book ? '100%' : '100vw'
+        }}>
+          {Content}
+
+          {!exclude_footnotes ? <Section head="Footnotes & References">
+            {footnotes}
+          </Section> : <></>}
+        </Grid>
+      </Col>
+    </Row>
+  </>
 }
 
 export type SectionProps = {
@@ -1402,6 +1462,7 @@ export type PaperProps = ReferenceProps & {
 
   header?: any //
   head?: any
+  book?: boolean,
   pdf: PdfProps,
   exclude_footnotes?: boolean
 
@@ -1504,7 +1565,7 @@ export const PaperThumbnail = (
   </div>
 }
 
-const Paper = (props: PaperProps) => {
+const Post = (props: PaperProps) => {
   const location = useLocation();
 
   const {title, subtitle, date, authors} = props;
@@ -1692,4 +1753,4 @@ const Paper = (props: PaperProps) => {
   </div>
 }
 
-export default Paper;
+export default Post;

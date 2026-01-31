@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {
+import Post, {
   Arc,
   Block,
   BlueprintIcons16,
@@ -16,7 +16,7 @@ import Paper, {
   Row,
   Section,
   useCounter
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {
   add,
   CachedVisualizationCanvas,
@@ -76,9 +76,9 @@ Prism.languages["ray.txt"] = {
     pattern: /(\/\/.*)|(\/\*.*\*\/)/,
     greedy: true
   },
-  'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
+  'number': /(-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b)|(\bU\+([a-fA-F0-9]+)?\b)|(\b0x([a-fA-F0-9]+)?\b)/i,
   'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
-  'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]|[⊣⊢∙⊙]/,
+  'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]|[⊣⊢∙⊙₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾]/,
   'keyword': {
     pattern: /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b|[0-9a-f-]{36}/,
     greedy: true
@@ -153,7 +153,7 @@ const TowardsAUniversalLanguage = () => {
     references: referenceCounter
   }
 
-  return <Paper
+  return <Post
     {...paper}
     header={<div style={{height: '250px'}} className="hidden-xs hidden-sm">
       <canvas
@@ -1708,7 +1708,7 @@ const TowardsAUniversalLanguage = () => {
         </Section>
       </Arc>
     </Row>
-  </Paper>
+  </Post>
 }
 
 export default TowardsAUniversalLanguage;

@@ -1,8 +1,8 @@
-@import "paper/blueprintjs";
-@import "paper/flexbox";
+@import "post/blueprintjs";
+@import "post/flexbox";
 @import "fonts/font";
 
-@import "paper/spacing";
+@import "post/spacing";
 
 @import "~@blueprintjs/core/lib/scss/variables";
 
@@ -16,6 +16,17 @@
 
 body {
   background-color: $dark-gray1;
+}
+
+.bp5-code-block {
+  width: 100%;
+}
+
+/* md and up (≥ 768px, Blueprint breakpoint) */
+@media (min-width: 768px) {
+  .bp5-code-block {
+    width: 80%;
+  }
 }
 
 // TODO These under the specific theme

@@ -28,7 +28,7 @@ import toe_icon from "././toe/toe.jpg";
 import syco_icon from "././syco/logo.png";
 import cool_worlds_podcast_icon from "././cool_worlds/channels4_profile.jpg";
 import demystifysci_icon from "././demystifysci/channels4_profile.jpg";
-import {ReferenceProps, Renderable} from "../paper/Paper";
+import {ReferenceProps, Renderable} from "../post/Post";
 import {ReactNode} from "react";
 
 export type SVG = {

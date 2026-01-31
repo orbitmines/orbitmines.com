@@ -1,6 +1,6 @@
 import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
-import Paper, {
+import Post, {
   Arc,
   BR,
   PaperProps,
@@ -10,7 +10,7 @@ import Paper, {
   Section,
   renderable,
   Row, JetBrainsMono, BlueprintIcons20, BlueprintIcons16
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
@@ -47,7 +47,7 @@ const _2025_09_NGI_GrantProposal = () => {
     references: referenceCounter
   }
 
-  return <Paper
+  return <Post
     {...paper}
   >
 
@@ -135,7 +135,7 @@ const _2025_09_NGI_GrantProposal = () => {
         Once the text-based programming language is in place, a big part of the ecosystem will be a custom IDE/and IntelliJ/VS Code plugins built on top of it. Which will provide the basis for its future ecosystem: A move away from only being a text-based programming language.
       </Section>
     </Arc>
-  </Paper>
+  </Post>
 }
 
 export default _2025_09_NGI_GrantProposal;
