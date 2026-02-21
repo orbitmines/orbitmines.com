@@ -568,6 +568,8 @@ const Almanac = () => {
           {/* assume, circularity */}
         </Section>
         <Section head="§2.9 Classes & Namespaces">
+          {/* Classes without parameters are namespace since they call their own constructor */}
+
           Classes and Namespaces are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the standard library!
 
           <BR/>
