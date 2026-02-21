@@ -620,7 +620,7 @@ const Almanac = () => {
 
 
           <CodeBlock>
-            class Enum {'<'} .A | .B | .C(: String)
+            enum Enum {'<'} A | B | C(: String)
           </CodeBlock>
 
           <CodeBlock>
@@ -628,6 +628,15 @@ const Almanac = () => {
             <></>  class A<BR/>
             <></>  class B<BR/>
             <></>  class C (var: String)
+          </CodeBlock>
+
+          or equivalently:
+
+          <CodeBlock>
+            class Enum {'<'}<BR/>
+            <></>  | class A<BR/>
+            <></>  | class B<BR/>
+            <></>  | class C (var: String)
           </CodeBlock>
 
           <CodeBlock>
