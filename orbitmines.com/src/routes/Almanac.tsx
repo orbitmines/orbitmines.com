@@ -489,12 +489,12 @@ const Almanac = () => {
           <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>The middle here, matching to both "B" and "C".</span>
           Then for convenience, this spread operator is defined:
           <CodeBlock>
-            first, ..middle, last = "A", "B", "C", "D"
+            first, ...middle, last = "A", "B", "C", "D"
           </CodeBlock>
-          Which is just alternative syntax for defining an array ([]). So any place you have ([]), you can also use the prefix (..)<BR/>
+          Which is just alternative syntax for defining an array ([]). So any place you have ([]), you can also use the prefix (...)<BR/>
           This for instance would also work:
           <CodeBlock>
-            first, middle: ..String, last = "A", "B", "C", "D"
+            first, middle: ...String, last = "A", "B", "C", "D"
           </CodeBlock>
 
 
