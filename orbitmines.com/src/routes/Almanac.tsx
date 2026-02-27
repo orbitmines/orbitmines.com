@@ -715,10 +715,12 @@ const Almanac = () => {
         </Section>
       </Section>
       <Section head="§4. Extended Fundamentals">
-        <Section head="§4.1 Probability">
+        <Section head="§4.1 Program Types">
+        </Section>
+        <Section head="§4.2 Probability">
         {/* if 0.5 =>, 0.3 =>  */}
         </Section>
-        <Section head="§4.2 Choice">
+        <Section head="§4.3 Choice">
           While randomization is a useful abstraction, sometimes you might want a slightly different concept. Which is where choice comes in. To flag that a required value can be chosen arbitrarily (by the runtime or even the Player).<BR/>
 
           Unlike a random variable which can't be picked uniformly for infinitely generating structures, choice works just fine: There can be a preference or tendency for a certain kind of object. Choice is simply saying: we don't care about this information.<BR/>
@@ -765,13 +767,13 @@ const Almanac = () => {
           {/* How tto define which algorithm chooses */}
 
         </Section>
-        <Section head="§4.3 Coroutines">
+        <Section head="§4.4 Coroutines">
 
         </Section>
-        <Section head="§4.4 Concurrency">
+        <Section head="§4.5 Concurrency">
 
         </Section>
-        <Section head="§4.5 Punctuation">
+        <Section head="§4.6 Punctuation">
           {/* //Allow returning out of a -- statement., Allow any kind of statement in <>,[],{},() as long as the return is what we're looking for. */}
 
           The familiar parenthesis () are used to group certain kinds of operations, to prefer a particular interpretation over another. The Ray programming language extends this notion a little further than most programming languages. Where you're allowed to introduce parenthesis pretty much anywhere, and there's a valid interpretation of what that means.
