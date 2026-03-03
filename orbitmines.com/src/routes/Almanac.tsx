@@ -344,6 +344,8 @@ const Almanac = () => {
             x = "AB" &+ true<BR/>
             x.next // == "A" & false
           </CodeBlock>
+
+          {/* You can also define a recursive chain from some base, where successively each step is calculated from the previous one (essentially you're describing a derivative this way). */}
           <CodeBlock>
             +1 {'<'}- x: "A" -{'>'} -1
           </CodeBlock>
@@ -448,9 +450,17 @@ const Almanac = () => {
           {/* Replace/Rewrite with mapping function */}
 
           {/* Ranges */}
+
+        {/* 0 -> +1 if .index < 2
+  -> +2 if .index < 4
+  -> +5  */}
         </Section>
         <Section head="§2.3 Numbers">
           {/* Booleans, Numbers, compare i64 and other things */}
+
+          {/* Numbers ; their integer part, like arrays, are bounded by default, you can similarly create an unbounded Binary by saying Binary.Unbounded */}
+
+          {/* 100% for decimals */}
 
           Like other languages, there are for loops in the language to iterate over a number of things in some iterable. Although the syntax is slightly different, in Ray it is just treated like any other definition.<BR/>
           In the following example, (~) is just a filter over the iterable. And anything in the following block get's executed for each entry.
@@ -536,7 +546,7 @@ const Almanac = () => {
         </Section>
         <Section head="§2.5 Programs/Functions">
           {/* Partial args + can set any var in the func (Can be prevented, which I'll discuss in Access Permissions), Multiline multiple implementations */}
-
+          {/* => overrides, &=> etc.., () doesnt override but = () => does */}
           Those familiar with other programming languages, might think: what about <Reference is="reference" index={referenceCounter()} reference={{title: "Variadic functions", link: "https://en.wikipedia.org/wiki/Variadic_function"}} simple inline />? (A function with a variable number of arguments) There's a simple interpretation of what that means. If you remember that in types the comma (,) operator just concatenates structures. The same is true for functions. So given the following function:
           <CodeBlock>
             varargs (a: String, b: Number[], c: String[])
@@ -775,6 +785,7 @@ const Almanac = () => {
         </Section>
         <Section head="§4.6 Punctuation">
           {/* //Allow returning out of a -- statement., Allow any kind of statement in <>,[],{},() as long as the return is what we're looking for. */}
+          {/* Super/subscript automatically converted to expression */}
 
           The familiar parenthesis () are used to group certain kinds of operations, to prefer a particular interpretation over another. The Ray programming language extends this notion a little further than most programming languages. Where you're allowed to introduce parenthesis pretty much anywhere, and there's a valid interpretation of what that means.
 
