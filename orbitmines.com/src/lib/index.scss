@@ -18,6 +18,11 @@ body {
   background-color: $dark-gray1;
 }
 
+.scrollbar-hidden {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
 .bp5-code-block {
   width: 100%;
 }

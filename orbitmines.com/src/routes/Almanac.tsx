@@ -199,7 +199,7 @@ const Almanac = () => {
     book: true,
     ...ETHERS_ALMANAC.reference,
     title: renderable<React.ReactNode>((ETHERS_ALMANAC.reference.title as any), (value: any) => <>
-      <img src="/Ether.svg" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '100%'}}/>
+      <img src="/Ether.svg" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '100%', height: '300px'}}/>
       <Title>Ether's Almanac</Title>
     </>),
     pdf: {

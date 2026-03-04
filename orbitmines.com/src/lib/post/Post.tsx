@@ -914,7 +914,7 @@ export const Exports = (
         });
   }, [ref]);
 
-  return <Row center="xs">
+  return <Row center="xs" style={{overflow: 'visible'}}>
     {/* TODO: */}
     <Row between="xs" className="py-10 px-15" style={{width: '100%'}}>
       <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
@@ -1278,7 +1278,47 @@ export const PaperHeader = (props: PaperProps) => {
 export const PaperContent = (props: PaperProps) => {
   let generate;
   const [params, setParams] = useSearchParams();
-  const [navigation, setNavigation] = useState(true)
+  const navigationParam = params.get('navigation');
+  const desktopNavigation = navigationParam !== 'false';
+
+  const [mobileNavExpanded, setMobileNavExpanded] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.matchMedia('(max-width: 575px)').matches : false);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 575px)');
+    const handler = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+      if (e.matches) setMobileNavExpanded(false);
+    };
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+
+  useEffect(() => {
+    if (mobileNavExpanded) {
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = ''; };
+    }
+  }, [mobileNavExpanded]);
+
+  const navigation = isMobile ? mobileNavExpanded : desktopNavigation;
+
+  const toggleNavigation = () => {
+    if (isMobile) {
+      setMobileNavExpanded(prev => !prev);
+    } else {
+      setParams(prev => {
+        const next = new URLSearchParams(prev);
+        if (desktopNavigation) {
+          next.set('navigation', 'false');
+        } else {
+          next.delete('navigation');
+        }
+        return next;
+      });
+    }
+  };
 
   const section = params.get('section');
   const isStartPage: boolean = (section ?? "").length == 0
@@ -1301,16 +1341,16 @@ export const PaperContent = (props: PaperProps) => {
   const util = new BookUtil(props, params)
 
   const Content = book && !isStartPage ? <>
-    <Row between="xs" style={{height: '100%', alignItems: 'center'}}>
-      <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={() => setNavigation(!navigation)} /></Col>
+    <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: '#1c2127'}}>
+      <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={toggleNavigation} /></Col>
       <Col xs={11}>
         <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
           <Rendered renderable={props.title}/>
           {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.nextSection()); next.delete('search'); return next; })} /> : null}
         </Row>
       </Col>
-      <Col xs={12}><Book {...props}/></Col>
     </Row>
+    <Book {...props}/>
   </> : <>
     {props.head ? <>
       {props.head}
@@ -1337,13 +1377,24 @@ export const PaperContent = (props: PaperProps) => {
     exclude_footnotes = true
 
 
+  const notGenerate = generate !== 'button' && generate !== 'pdf';
+  const showSidebar = book && navigation && !isMobile && notGenerate;
+
   return <>
-    <Row style={{maxWidth: '1650px'}}>
-      {book && navigation && generate !== 'button' && generate !== 'pdf' ? <Col xs={0} sm={5} md={4}>
+    <Row style={{maxWidth: '1650px', overflow: 'visible'}}>
+      {book && !isStartPage && isMobile && mobileNavExpanded && notGenerate ? <>
+        <div onClick={() => setMobileNavExpanded(false)} style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 19}} />
+        <div style={{position: 'fixed', top: 0, left: 0, bottom: 0, width: '75vw', zIndex: 20, background: '#1c1e26', overflowY: 'auto'}}>
+          <Navigation {...props} hideBorder onNavigate={() => setMobileNavExpanded(false)} />
+        </div>
+      </> : <></>}
+
+      {showSidebar ? <Col xs={0} sm={5} md={4} className="scrollbar-hidden" style={{position: 'sticky', top: 0, height: '100vh', overflowY: 'auto'}}>
         <Navigation {...props} />
       </Col> : <></>}
-      <Col md={book && navigation && generate !== 'button' && generate !== 'pdf' ? 8 : 12} sm={book && navigation && generate !== 'button' && generate !== 'pdf' ? 7 : 12} xs={12}>
-        <Grid fluid className={`${book && !isStartPage ? 'pb-35' : 'py-35'} child-pb-15 ${book ? '' : 'px-50-lg'}`} style={{
+
+      <Col md={showSidebar ? 8 : 12} sm={showSidebar ? 7 : 12} xs={12}>
+        <Grid {...(book ? {} : { fluid: true })} className={`${book ? 'pb-35' : 'py-35'} ${book ? '' : 'child-pb-15 px-50-lg'}`} style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}
           maxWidth: '1240px',
@@ -1351,6 +1402,8 @@ export const PaperContent = (props: PaperProps) => {
           width: book ? '100%' : '100vw'
         }}>
           {Content}
+
+          {book && isStartPage && isMobile && notGenerate ? <Navigation {...props} hideBorder /> : <></>}
 
           {!exclude_footnotes ? <Section head="Footnotes & References">
             {footnotes}

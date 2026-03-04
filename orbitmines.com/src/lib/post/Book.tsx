@@ -1,5 +1,5 @@
 import Post, {Arc, BR, Col, HorizontalLine, Paragraph, PaperProps, Row, Section} from "./Post";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useLayoutEffect, useRef} from "react";
 import {useSearchParams} from "react-router-dom";
 import {Button} from "@blueprintjs/core";
 
@@ -131,31 +131,49 @@ export class BookUtil {
   };
 }
 
-export const Navigation = (props: PaperProps) => {
+export const Navigation = (props: PaperProps & { hideBorder?: boolean, onNavigate?: () => void }) => {
   const [params, setParams] = useSearchParams();
+  const navRef = useRef<HTMLDivElement>(null);
 
   const util = new BookUtil(props, params)
   const generate = params.get('generate');
+  const section = params.get('section');
 
-  return <Row style={{height: '100%', ...(generate !== 'button' && generate !== 'pdf' ? {borderRight: '1px solid rgb(108, 103, 131)'} : {}), alignContent: 'flex-start'}} className="pl-10 child-py-3 py-20">
+  const navigate = (sectionName: string) => {
+    setParams(prev => { const next = new URLSearchParams(prev); next.set('section', sectionName); next.delete('search'); return next; });
+    props.onNavigate?.();
+  };
+
+  useLayoutEffect(() => {
+    if (!navRef.current) return;
+    const selected = navRef.current.querySelector('[data-selected]') as HTMLElement | null;
+    if (!selected) return;
+    const container = navRef.current.parentElement?.parentElement;
+    if (!container || container.scrollHeight <= container.clientHeight) return;
+    const containerRect = container.getBoundingClientRect();
+    const selectedRect = selected.getBoundingClientRect();
+    container.scrollTop = Math.max(0, selectedRect.top - containerRect.top + container.scrollTop - container.clientHeight / 2 + selectedRect.height / 2);
+  }, [section]);
+
+  return <Row style={{...(!props.hideBorder ? {minHeight: '100%'} : {}), ...(generate !== 'button' && generate !== 'pdf' && !props.hideBorder ? {borderRight: '1px solid rgb(108, 103, 131)'} : {}), alignContent: 'flex-start'}} className="pl-10 child-py-3 py-20"><div ref={navRef} style={{width: '100%'}}>
     {util.arcs().map((arc: any) => <Col xs={12} style={{textAlign: 'start'}}>
-      <a className="bp5-text-muted" style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => !util.disabled(arc) ? setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.sectionName(arc)); next.delete('search'); return next; }) : undefined}>{arc.props.head}</a>
+      <a className="bp5-text-muted" data-selected={util.isSelected(arc) || undefined} style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => !util.disabled(arc) ? navigate(util.sectionName(arc)) : undefined}>{arc.props.head}</a>
 
       {React.Children.toArray((arc as any).props.children).filter(child =>
         React.isValidElement(child) && child.type === Section
       ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}} className="pt-3">
-        <a className="bp5-text-muted ml-5" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.sectionName(section)); next.delete('search'); return next; }) : undefined}>{section.props.head}</a>
+        <a className="bp5-text-muted ml-5" data-selected={util.isSelected(section) || undefined} style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? navigate(util.sectionName(section)) : undefined}>{section.props.head}</a>
 
         {React.Children.toArray((section as any).props.children).filter(child =>
           React.isValidElement(child) && child.type === Section
         ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}}>
-          <a className="bp5-text-muted ml-10" style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.sectionName(section)); next.delete('search'); return next; }) : undefined}>{section.props.head}</a>
+          <a className="bp5-text-muted ml-10" data-selected={util.isSelected(section) || undefined} style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? navigate(util.sectionName(section)) : undefined}>{section.props.head}</a>
 
 
         </Col>)}
       </Col>)}
     </Col>)}
-  </Row>
+  </div></Row>
 }
 
 const highlightDomMatches = (container: HTMLElement, query: string) => {
