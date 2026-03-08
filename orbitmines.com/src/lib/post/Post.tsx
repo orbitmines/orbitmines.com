@@ -1394,7 +1394,7 @@ export const PaperContent = (props: PaperProps) => {
       </Col> : <></>}
 
       <Col md={showSidebar ? 8 : 12} sm={showSidebar ? 7 : 12} xs={12}>
-        <Grid {...(book ? {} : { fluid: true })} className={`${book ? 'pb-35' : 'py-35'} ${book ? '' : 'child-pb-15 px-50-lg'}`} style={{
+        <Grid {...(book ? {} : { fluid: true })} className={`${book ? 'pb-35' : 'py-35'} ${book && !isStartPage ? '' : 'child-pb-15'} ${book ? '' : 'px-50-lg'}`} style={{
           // border: 'solid rgba(143, 153, 168, 0.15) 2px',
           //     height={1754} width={1240}
           maxWidth: '1240px',

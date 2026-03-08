@@ -753,6 +753,9 @@ const Almanac = () => {
           </CodeBlock>
 
           Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
+
+          {/* TODO Should be var @ * to edit it everywhere explicitly? */}
+
           <CodeBlock>
             var = 2<BR/>
             [1, var, var].map{'{'}choose 1{'}'}(*10) // [10, 2, 2] | [1, 20, 20]<BR/>
