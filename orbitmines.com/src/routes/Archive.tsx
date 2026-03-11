@@ -7,6 +7,7 @@ import _2024_02_OrbitMines_as_a_Game_Project from "./archive/2024.02.OrbitMines_
 import OnIntelligibility from "./archive/2022.OnIntelligibility";
 import OnOrbits from "./archive/2023.OnOrbits";
 import TowardsAUniversalLanguage from "./archive/2025.TowardsAUniversalLanguage";
+import MinecraftArchive from "./archive/2026.MinecraftArchive";
 
 const ITEMS: { [key: string]: any } = {
     '2025-09-ngi-grant-proposal': _2025_09_NGI_GrantProposal,
@@ -15,6 +16,7 @@ const ITEMS: { [key: string]: any } = {
     'on-intelligibility': OnIntelligibility,
     'on-orbits-equivalence-and-inconsistencies': OnOrbits,
     'towards-a-universal-language': TowardsAUniversalLanguage,
+    'the-orbitmines-minecraft-server': MinecraftArchive,
 }
 
 const Archive = () => {
