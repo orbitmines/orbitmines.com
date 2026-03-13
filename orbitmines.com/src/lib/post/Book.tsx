@@ -297,6 +297,14 @@ const Book = (props: PaperProps) => {
   const search = params.get('search');
   const highlight = params.get('highlight');
 
+  const prevSection = useRef(section);
+  useEffect(() => {
+    if (prevSection.current !== section && !highlight) {
+      document.documentElement.scrollTop = 0;
+    }
+    prevSection.current = section;
+  }, [section]);
+
   // Save state when entering search
   useEffect(() => {
     const wasSearching = (prevSearch.current ?? '').length > 0;
