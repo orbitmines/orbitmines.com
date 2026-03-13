@@ -3,7 +3,7 @@ import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {
+import Post, {
   BR,
   PaperProps,
   Reference,
@@ -12,7 +12,7 @@ import Paper, {
   CodeBlock,
   Row,
   JetBrainsMono, BlueprintIcons20, BlueprintIcons16
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 
 const {
@@ -64,7 +64,7 @@ const OnIntelligibility = () => {
     references: referenceCounter
   }
 
-  return <Paper {...paper}>
+  return <Post {...paper}>
     <Row center="xs">
       <Section head="Abstract">
         Central to the theme of this paper lies the conceptual framework of framing all ideas and concepts (or generally; information) as perceived superpositions. Building on prior ideas of an observer's limitations and how such a framework is a necessity. One might believe there is such a thing as objective reality, but perfect knowledge of such a thing seems to lie in the space of impossibilities. I consider this mentioning of 'perfect' and other extremes quite susceptible to misinterpretation, which I believe are necessary conditions and imperfections of observers.
@@ -175,7 +175,7 @@ const OnIntelligibility = () => {
         Below a list of references can be found which I explicitly mentioned in this paper. I intend to release a full list of books, papers and other information I've exposed myself to leading up to this paper for additional reference in the future in the case that I fell short of mentioning them here.
       </Section>
     </Row>
-  </Paper>;
+  </Post>;
 }
 
 export default OnIntelligibility;

@@ -6,4 +6,11 @@
     <sitemap>
         <loc>https://orbitmines.com/archive/sitemap.xml</loc>
     </sitemap>
+    <url>
+        <loc>https://orbitmines.com/almanac</loc>
+        <lastmod>2026-12-31</lastmod>
+        <image:image>
+            <image:loc>https://orbitmines.com/Ether.svg</image:loc>
+        </image:image>
+    </url>
 </sitemapindex>

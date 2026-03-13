@@ -1,0 +1,35 @@
+"orbitmines.com"() if &entrypoint
+
+class "orbitmines.com" < Interface
+  { url } = Browser
+
+  url.path.match
+    ⊢"/profiles/", x: Profile$, "/"? =>
+    ⊢"/archive/", x: Article$, "/"? =>
+    "/almanac" => Almanac()
+    "/thumbnail" =>
+
+    ⊢"/papers/", x => url.path = "/archive/", x
+
+    * => Index()
+
+class Index
+  articles: Article[] =
+    "towards-a-universal-language",
+    "2024-02-orbitmines-as-a-game-project",
+    "on-orbits-equivalence-and-inconsistencies",
+    "on-intelligibility"
+
+  Center
+    100% * Center{width <= 1240px}(
+      End(DownloadButton(), LoginButton()).map(& px 5)
+    )
+    100% * Center Image{width <= 400px}(./lib/organizations/orbitmines/logo.png, width: 90%)
+    100% * Center
+      (xl 4/12 lg 6/12 md 8/12 sm 10/12 xs 12/12) * Center "Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.".italic
+    100% * Center + pt 5 (@orbitmines.avatars.map => Link .location{: URL} => .platform.profile_picture).map(& px 2)
+    100% * Center Image{height == 120px} ./archive/on-orbits-equivalence-and-inconsistencies/images/header.png
+    100% * Center
+      X{width <= 500px}
+      X{width <= 500px}
+    100% * Author(@fadi, margin.top: 5%)

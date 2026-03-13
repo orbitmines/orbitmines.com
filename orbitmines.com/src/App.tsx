@@ -5,9 +5,10 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 import Profile from "./routes/profiles/Profiles";
 import {Helmet} from "react-helmet";
 import Modules from "./@orbitmines/js/react/Modules";
-import {Children, ThumbnailPage} from "./lib/paper/Paper";
+import {Children, ThumbnailPage} from "./lib/post/Post";
 import Archive from "./routes/Archive";
 import Minimap from './routes/Minimap';
+import Almanac from "./routes/Almanac";
 
 export const Router = () => {
 
@@ -20,6 +21,7 @@ export const Router = () => {
     <Route path="archive">
       <Route path=":item" element={<Archive />} />
     </Route>
+    <Route path="almanac" element={<Almanac />} />
     <Route path="thumbnail" element={<ThumbnailPage />} />
   </Routes>
 }
