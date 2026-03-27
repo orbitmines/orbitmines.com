@@ -2501,7 +2501,7 @@ export const Line = ({ start, mid, end, scale, color = line.color }: any) =>
     lineWidth={line.width * scale}
   />
 
-const line = { width: 2,  length: 1,  color: "orange", }
+export const line = { width: 2,  length: 1,  color: "orange", }
 
 export const Continuation = (
   {
@@ -4144,7 +4144,7 @@ export const torus = {
 }
 export const add = (a: number[], b: number[]): [number, number, number] => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
 
-const circle = { radius: 3,  color: "orange", segments: 30, }
+export const circle = { radius: 3,  color: "orange", segments: 30, }
 
 export const NoWebGL = () => {
   return <div>No WebGL</div>
