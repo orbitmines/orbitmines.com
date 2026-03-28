@@ -14,7 +14,7 @@ import Paper, {
   Reference,
   renderable,
   Row,
-  Section,
+  Section, TODO,
   useCounter
 } from "../../lib/paper/Paper";
 import {
@@ -98,10 +98,159 @@ const MinecraftArchive = () => {
         <Col md={4} sm={12}><img className="orbitmines-staff-img" style={{maxWidth: '600px'}} alt="OrbitMines Staff" src="/archive/the-orbitmines-minecraft-server/orbitmines_staff.png" /></Col>
       </Row>
 
-      <Arc head="Arc: The Ray Programming Language">
-        <Section head="A new language">
+      <Arc head="Arc: The Beginnings (2013-2014)">
+        <Section head="Origins of a new server">
+          When I was 13, I mostly played on the dutch Minecraft server called <Reference is="reference" simple inline
+                                                                                         index={referenceCounter()} reference={{
+          title: "Torchcraft",
+          link: "https://torchcraft.nl/"
+        }}/>. After some time I decided - I want something like this for myself too -. Before that time I had played a lot of the MMO <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "DarkOrbit",link: "https://en.wikipedia.org/wiki/DarkOrbit" }}/>. And so I decided that I would make one myself. Browsing Bukkit & Spigot and YouTube researching what kind of Minecraft plugins exited out in the wild to make that dream a reality. I made the worlds, I made a setup, and there it was in its primitive form; the first inklings of OrbitMines.
+
+          <BR/>
+
+          The name OrbitMines was born: Combining both Minecraft and DarkOrbit. The only decision I needed to make was whether to call it MineOrbit or OrbitMines; luckily the sense of OrbitMines being the better one prevailed.
+
+          <BR/>
+
+          There was a single person whose called slienimon who was there at the origin of the server, someone I had met on <Reference is="reference" simple inline
+                                                                                                                                                   index={referenceCounter()} reference={{
+          title: "Torchcraft",
+          link: "https://torchcraft.nl/"
+        }}/>, whom I randomly stumbled into because we built our homes close together there. They helped me test the original idea for OrbitMines, as you can see from the video in a bit.
+        </Section>
+        <Section head="The Launch">
+          Though later we used the date 10 October 2013 as the birthday for OrbitMines, the original launch date the
+          16th of November in 2013.
+
+          <BR/>
+
+          I don't remember exactly why this date, the 10th of October was picked by me, the idea of starting the server
+          had been brewing before that. It is likely that it was the day I decided on the name OrbitMines.
+
+          <BR/>
+
+          At least from my private archives we can track that the first orbitmines-related email (which was a test
+          donation email), was sent on the 13th of October that year. We also know that from the domain registration
+          information that orbitmines.com was registered by me on the <Reference is="reference" simple inline
+                                                                                 index={referenceCounter()} reference={{
+          title: "15th of October (2013)",
+          link: "https://ie.godaddy.com/whois/results.aspx?itc=dlp_domain_whois&domain=orbitmines.com#:~:text=Registered%20On,15T15%3A12%3A57Z"
+        }}/>.
+
+          <BR/>
+
+          On the 16th we launched the "OrbitMines PvP" for Minecraft 1.6.4, which apparently, though I don't
+          recall this, was accompanied with a livestream on my brother's Twitch.
+
+          <BR/>
+
+          <img
+            alt="email_2013-11-14_16-17-00"
+            src="/archive/the-orbitmines-minecraft-server/emails/email_2013-11-14_16-17-00.png" style={{maxWidth: '100%'}}/>
+
+          I spammed out this message on the internet, which like usual spam seems to have actually worked for some
+          people as I have records of several players asking about it afterwards.
+
+          <BR/>
+
+          The launch however was a complete disaster, the gamemode wasn't fun, there were too many incomplete things,
+          and most of all, a game like that needs active players.
+
+          <BR/>
+
+          Unfortunately no working version of that gamemode survived, though we do have the worlds which were used for
+          it. We also have an <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "old video",
+          link: "https://www.youtube.com/watch?v=nI8c6yNnbbI"
+        }}/> of what it was like from the 5th of November that year.
+          <BR/>
+
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/nI8c6yNnbbI?si=UrRKcI2b6qI0SpuP"
+                  title="YouTube video player" frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen style={{maxWidth: '100%'}}></iframe>
+          <BR/>
+
+          Here are some more pictures of those worlds:
+
+          <TODO/>
 
         </Section>
+        <Section head="Pivot away from OrbitMines PvP">
+          Over the next month I decided the <Reference is="reference" simple inline index={referenceCounter()}
+                                                       reference={{
+                                                         title: "DarkOrbit",
+                                                         link: "https://en.wikipedia.org/wiki/DarkOrbit"
+                                                       }}/> gamemode wasn't working. I still wanting to run a server. So
+          instead I did what most Minecraft servers do: copy existing gamemodes from other servers; though we managed to distinguish ourselves from other servers in important ways which (I believe) is what aided in making players stay.
+
+          <BR/>
+
+          So over that next month I made the following gamemodes at first: Survival, Prison, SkyBlock and our beloved first iteration of KitPvP. We later also added an Arcade (minigames), and things like Creative/Factions/Pixelmon and other things. But for now this was it.
+
+          <BR/>
+
+          By 10 January 2014, we had switched to Minecraft 1.7 which originally released at the end of october in 2013. Thanks to <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "archive.org",
+          link: "https://web.archive.org/web/20140110020727/https://serverpact.com/voten.htm?server=8503"
+        }}/> we know that in the first 10 days of January, OrbitMines had gathered 440 votes on <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "serverpact.com",
+          link: "https://web.archive.org/web/20140110020727/https://serverpact.com/voten.htm?server=8503"
+        }}/>. We can reasonably assume that we had at least a playerbase of 40 people throughout the whole day.
+
+          <BR/>
+
+          This influx of people came from the fact that we started advertising on serverpact.com. We at least did so in <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "June",
+          link: "https://web.archive.org/web/20140625080501/http://www.serverpact.com/"
+        }}/>, <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "July",
+          link: "https://web.archive.org/web/20140701152614/http://www.serverpact.com/voten.htm?server=8503"
+        }}/> and <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "September",
+          link: "https://web.archive.org/web/20140922113915/http://www.serverpact.com/voten.htm?server=8503"
+        }}/> 2014 according to archive.org, but there were many more weeks where we did this. Once we had done that a couple of times, the votes gather for this minecraft server list made new people flow to OrbitMines organically.
+
+          <BR/>
+
+          <span className="bp5-text-muted" style={{fontSize: '0.7rem'}}>January 2014</span>
+          <img style={{maxWidth: '100%'}} alt="2014-01-10_ServerBanner" src="/archive/the-orbitmines-minecraft-server/banners/2014-01-10_ServerBanner.jpg" />
+          <span className="bp5-text-muted" style={{fontSize: '0.7rem'}}>February 2014</span>
+          <img style={{maxWidth: '100%'}} alt="2014-02-08_ServerBanner" src="/archive/the-orbitmines-minecraft-server/banners/2014-02-08_ServerBanner.gif" />
+          <span className="bp5-text-muted" style={{fontSize: '0.7rem'}}>March 2014</span>
+          <img style={{maxWidth: '100%'}} alt="2014-03-17_ServerBanner" src="/archive/the-orbitmines-minecraft-server/banners/2014-03-17_ServerBanner2.0.gif" />
+
+          <BR/>
+
+          While doing this advertising we can see we reached at least <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "1000",
+          link: "https://web.archive.org/web/20140922113915/http://www.serverpact.com/voten.htm?server=8503"
+        }}/> votes a month, which is plausible considering my memory that we peaked at 60-70 players during that time. Throughout OrbitMines history we would swing often between having a concurrent 10 players online, and at our peak 60-70 players. I believe the record was in the 80's but no record of that number exists.
+        </Section>
+        <Section head="The 2014 Minecraft server">
+
+        </Section>
+        <Section head="">
+
+          We actually managed to convince the principal at my high school to broadcast the Minecraft server on the screens which usually displayed the schedule updates. After a few days I remember someone calling it the "Groene Hart Minecraft server", "Groene Hart" being the name of the high school. I don't remember exactly how long it was up there (It must've at least been a week or two), but we got many new players for that.
+        </Section>
+      </Arc>
+      <Arc head="Arc:  (2014-2015)">
+
+      </Arc>
+      <Arc head="Arc:  (2016-2017)">
+
+      </Arc>
+      <Arc head="Arc:  (2017-2018)">
+
+      </Arc>
+      <Arc head="Arc: The last Chapter (2019)">
+
+      </Arc>
+
+      <Arc head="Wrapping up">
+
       </Arc>
     </Row>
   </Paper>
