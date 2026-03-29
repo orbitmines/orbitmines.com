@@ -257,14 +257,46 @@ const MinecraftArchive = () => {
 
           The server changed so much during 2014 that it's hard to paint the picture of just how much. Even some maps from this early period weren't preserved. We have however a fully functioning backup from 30 April 2014.
 
+          <BR/>
+
+          Originally we had Prison, MiniGames and Survival.
+
+          <BR/>
+
+          Survival, which became the thing which ended up being the thing which ensured a stable playerbase. A playerbase who would occasionally together go to the other gamemodes like KitPvP and MiniGames.
+
+          <BR/>
+
+          Prison was something which we never fully fledged out in OrbitMines, certain players enjoyed our versions, I believe our 2nd version was the best, if only because it was the most complete version. We had 3 versions of prison throughout OrbitMines' lifetime and we planned on having a 4th at the end, which never came to be.
+
+          <BR/>
+
+          MiniGames were originally all over the place, random plugins which I'd collected which all had their own system of operating, thrown together in something which worked for the time. We had Hide & Seek, OITC, Color Shuffle and Paint Ball.
+
+          <BR/>
+
+          By February we had added the first versions of SkyBlock and KitPvP. We iterated fairly quickly through KitPvP maps. One of which didn't survive the backups, but here are some pictures of the ones that survived from 2014:
+
+          <BR/>
+
+          During September 2014, we rereleased MiniGames. And then again a rerelease in October as I wasn't happy with its current state.
+
+          <BR/>
+
+          After which our 3rd version of Prison in a year was released in November.
+
+          <BR/>
+
+          As you can see 2014 was full of churning existing ideas and recreating them in new forms. This would persist throughout the entirety of OrbitMines' lifetime, never quite settling on a particular version of something.
+
         </Section>
         <Section head="">
 
           We actually managed to convince the principal at my high school to broadcast the Minecraft server on the screens which usually displayed the schedule updates. After a few days I remember someone calling it the "Groene Hart Minecraft server", "Groene Hart" being the name of the high school. I don't remember exactly how long it was up there (It must've at least been a week or two), but we got many new players for that.
         </Section>
       </Arc>
-      <Arc head="Arc:  (2014-2015)">
-        Even though slowly starting in 2014, I started creating plugins for small features, a large shift change in managing the server happened in the last few weeks of 2014 en the first month of 2015. Coming up on the Minecraft 1.8 update, we planned to fully step away from any external plugins; all code created for OrbitMines specifically.
+      <Arc head="Arc: Programming (2014-2015)">
+        Even though slowly starting in 2014, I started creating plugins for small features, a large shift change in managing the server happened in the last few weeks of 2014 en the first month of 2015. Coming up on the Minecraft 1.8 update, we planned to fully step away from any external plugins; all code created for OrbitMines specifically. Eventually 6 February 2015 was the date of that release.
 
         <ImageGallery
           shuffle={42}
