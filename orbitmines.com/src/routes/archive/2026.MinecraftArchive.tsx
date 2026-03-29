@@ -32,6 +32,7 @@ import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMin
 import {PROFILES} from "../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Highlight, Prism, themes} from "prism-react-renderer";
+import {ImageGallery} from "../../lib/paper/ImageGallery";
 
 export const ORBITMINES_MINECRAFT_ARCHIVE: Content = {
   reference: {
@@ -99,16 +100,32 @@ const MinecraftArchive = () => {
       </Row>
 
       <Arc head="Arc: The Beginnings (2013-2014)">
-        <Section head="Origins of a new server">
-          When I was 13, I mostly played on the dutch Minecraft server called <Reference is="reference" simple inline
-                                                                                         index={referenceCounter()} reference={{
-          title: "Torchcraft",
-          link: "https://torchcraft.nl/"
-        }}/>. After some time I decided - I want something like this for myself too -. Before that time I had played a lot of the MMO <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "DarkOrbit",link: "https://en.wikipedia.org/wiki/DarkOrbit" }}/>. And so I decided that I would make one myself. Browsing Bukkit & Spigot and YouTube researching what kind of Minecraft plugins exited out in the wild to make that dream a reality. I made the worlds, I made a setup, and there it was in its primitive form; the first inklings of OrbitMines.
+        <Section head="A new player and the origins of a new server">
+          My first interaction with Minecraft started quite early in its history, back when it used to run in the browser if I recall correctly, where you joined creative worlds listed on some website where everyone could edit the world as they liked. This must've been around 2010.
 
           <BR/>
 
-          The name OrbitMines was born: Combining both Minecraft and DarkOrbit. The only decision I needed to make was whether to call it MineOrbit or OrbitMines; luckily the sense of OrbitMines being the better one prevailed.
+          But then I only played it sparingly, I remember quite vividly when I started to play it much more, this was the day I purchased my Minecraft account. I remember my brother playing on <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "MCSG",link: "https://mcgamer.net/" }}/> and I was spectating the intensity of the game. After watching a few matches I knew I must play this game.
+
+          <BR/>
+
+          And so it was on that fated day that I purchased Minecraft. In the very same year when OrbitMines started itself.
+
+          <img
+            alt="email_2013-11-14_16-17-00"
+            src="/archive/the-orbitmines-minecraft-server/emails/email_2013-01-31_18-17-00.png" style={{maxWidth: '100%'}}/>
+
+          <BR/>
+
+          That year I turned 13, and I mostly played on the dutch Minecraft server called <Reference is="reference" simple inline
+                                                                                         index={referenceCounter()} reference={{
+          title: "Torchcraft",
+          link: "https://torchcraft.nl/"
+        }}/>. After some time I decided - I want something like this for myself too -. But what to build? Before that time I had played a lot of the MMO <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "DarkOrbit",link: "https://en.wikipedia.org/wiki/DarkOrbit" }}/>. And so I decided that I would make one like it myself. Browsing <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "Bukkit",link: "https://dev.bukkit.org/members/_forgeuser16475440/projects" }}/> & <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "Spigot",link: "https://www.spigotmc.org/members/fadidev.49372/" }}/> and YouTube researching what kind of Minecraft plugins exited out in the wild to make that dream a reality. I made the worlds, I made a setup, and there it was in its primitive form; the first inklings of OrbitMines.
+
+          <BR/>
+
+          The name OrbitMines was born: Combining both Minecraft and <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "DarkOrbit",link: "https://en.wikipedia.org/wiki/DarkOrbit" }}/>. The only decision I needed to make was whether to call it MineOrbit or OrbitMines; luckily the sense of OrbitMines being the better one prevailed.
 
           <BR/>
 
@@ -140,7 +157,7 @@ const MinecraftArchive = () => {
           <BR/>
 
           On the 16th we launched the "OrbitMines PvP" for Minecraft 1.6.4, which apparently, though I don't
-          recall this, was accompanied with a livestream on my brother's Twitch.
+          recall this, was accompanied with a livestream on my brother's Twitch. Unfortunately twitch nor I have not kept an archival recording of that livestream if it did indeed happen.
 
           <BR/>
 
@@ -210,7 +227,7 @@ const MinecraftArchive = () => {
         }}/> and <Reference is="reference" simple inline index={referenceCounter()} reference={{
           title: "September",
           link: "https://web.archive.org/web/20140922113915/http://www.serverpact.com/voten.htm?server=8503"
-        }}/> 2014 according to archive.org, but there were many more weeks where we did this. Once we had done that a couple of times, the votes gather for this minecraft server list made new people flow to OrbitMines organically.
+        }}/> 2014 according to archive.org, but there were many more weeks where we did this. Once we had done that a couple of times, the votes gathered for this minecraft server list made new people flow to OrbitMines organically.
 
           <BR/>
 
@@ -229,6 +246,16 @@ const MinecraftArchive = () => {
         }}/> votes a month, which is plausible considering my memory that we peaked at 60-70 players during that time. Throughout OrbitMines history we would swing often between having a concurrent 10 players online, and at our peak 60-70 players. I believe the record was in the 80's but no record of that number exists.
         </Section>
         <Section head="The 2014 Minecraft server">
+          <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "Here on archive.org",
+          link: "https://web.archive.org/web/20150220150911/http://www.orbitmines.com/"
+        }}/> you can see our old website, which ran on <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "Webs.com",
+          link: "https://en.wikipedia.org/wiki/Webs_(web_hosting)"
+        }}/>. Even though the styling there isn't preserved you can get a pretty clear picture of what happened over the course of 2014. There's a bunch of update messages there from July 11 2014 - June 2 2015. Let's walk together through 2014:
+          <BR/>
+
+          The server changed so much during 2014 that it's hard to paint the picture of just how much. Even some maps from this early period weren't preserved. We have however a fully functioning backup from 30 April 2014.
 
         </Section>
         <Section head="">
@@ -237,7 +264,46 @@ const MinecraftArchive = () => {
         </Section>
       </Arc>
       <Arc head="Arc:  (2014-2015)">
+        Even though slowly starting in 2014, I started creating plugins for small features, a large shift change in managing the server happened in the last few weeks of 2014 en the first month of 2015. Coming up on the Minecraft 1.8 update, we planned to fully step away from any external plugins; all code created for OrbitMines specifically.
 
+        <ImageGallery
+          shuffle={42}
+          caption="Builder World (2015-08-01)"
+          images={[
+            '2026-03-29_16.14.06.png',
+            '2026-03-29_16.14.12.png',
+            '2026-03-29_16.14.52.png',
+            '2026-03-29_16.14.53.png',
+            '2026-03-29_16.15.31.png',
+            '2026-03-29_16.15.40.png',
+            '2026-03-29_16.15.53.png',
+            '2026-03-29_16.15.59.png',
+            '2026-03-29_16.16.08.png',
+            '2026-03-29_16.16.18.png',
+            '2026-03-29_16.16.35.png',
+            '2026-03-29_16.17.18.png',
+            '2026-03-29_16.17.24.png',
+            '2026-03-29_16.17.43.png',
+            '2026-03-29_16.18.16.png',
+            '2026-03-29_16.18.28.png',
+            '2026-03-29_16.18.38.png',
+            '2026-03-29_16.18.53.png',
+            '2026-03-29_16.19.04.png',
+            '2026-03-29_16.20.02.png',
+            '2026-03-29_16.20.17.png',
+            '2026-03-29_16.20.27.png',
+            '2026-03-29_16.20.35.png',
+            '2026-03-29_16.20.47.png',
+            '2026-03-29_16.21.18.png',
+            '2026-03-29_16.21.57.png',
+            '2026-03-29_16.22.14.png',
+            '2026-03-29_16.22.34.png',
+            '2026-03-29_16.22.41.png',
+          ].map(name => ({
+            src: `/archive/the-orbitmines-minecraft-server/screenshots/2015-08-01_BuilderWorld/${name}`,
+            alt: 'Builder World',
+          }))}
+        />
       </Arc>
       <Arc head="Arc:  (2016-2017)">
 
