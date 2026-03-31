@@ -18,7 +18,7 @@ import {Highlight, Prism, themes} from "prism-react-renderer";
 import {IntentProps, Props} from "@blueprintjs/core/src/common";
 import {SVGIconProps} from "@blueprintjs/icons";
 import {CanvasContainer} from "../../routes/archive/2023.OnOrbits";
-import {BulkLoad, SingleLoad} from "@react-pdf/types";
+import {BulkLoad, SingleLoad} from "@react-pdf/font";
 import _BlueprintIcons16 from '@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf';
 import _BlueprintIcons20 from '@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf';
 import JetBrainsMonoRegular from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
@@ -277,7 +277,7 @@ export const registerFont = (font: FontFamily) => {
 
   // React-pdf has poor support for deviations from family name, just split the family configs so:
   // 'JetBrainsMono, monospace' -> 'JetBrainsMono', 'monospace', 'JetBrainsMono, monospace'
-  font.family.split(', ').forEach(family => {
+  font.family.split(', ').forEach((family: string) => {
     Font.register({
       ...font,
       family

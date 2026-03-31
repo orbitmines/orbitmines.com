@@ -24,8 +24,7 @@ import _ from 'lodash';
 import {toPng} from "html-to-image";
 import {Canvas} from "@react-three/fiber";
 import {ACESFilmicToneMapping, SRGBColorSpace} from "three";
-import WEBGL from "three/examples/jsm/capabilities/WebGL";
-import isWebGLAvailable = WEBGL.isWebGLAvailable;
+import WebGL from "three/examples/jsm/capabilities/WebGL";
 
 export const ON_ORBITS: Content = {
   reference: {
@@ -4263,10 +4262,10 @@ export const CanvasContainer = ({
 
 export const ThreeJS = ({ref, children}: Children & { ref?: React.MutableRefObject<any>}) => {
   // https://threejs.org/docs/#manual/en/introduction/WebGL-compatibility-check
-  if (!isWebGLAvailable())
+  if (!WebGL.isWebGL2Available())
     return <NoWebGL/>;
 
-  // console.log('webgl2', isWebGLAvailable());
+  // console.log('webgl2', WebGL.isWebGL2Available());
 
   /*
     https://docs.pmnd.rs/react-three-fiber/api/canvas
