@@ -113,6 +113,10 @@ export const ImageGallery = ({images, height = 450, caption, shuffle}: ImageGall
   }, [goTo]);
 
   // Pointer events for drag/swipe
+  const dragLastX = useRef(0);
+  const dragLastTime = useRef(0);
+  const dragVelocity = useRef(0);
+
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest('button')) return;
     dragActive.current = true;
@@ -120,6 +124,9 @@ export const ImageGallery = ({images, height = 450, caption, shuffle}: ImageGall
     dragCaptured.current = false;
     dragStartX.current = e.clientX;
     dragStartOffset.current = offsetRef.current;
+    dragLastX.current = e.clientX;
+    dragLastTime.current = Date.now();
+    dragVelocity.current = 0;
     setAnimated(false);
   }, []);
 
@@ -132,6 +139,13 @@ export const ImageGallery = ({images, height = 450, caption, shuffle}: ImageGall
       dragMoved.current = true;
     }
     if (dragCaptured.current) {
+      const now = Date.now();
+      const dt = now - dragLastTime.current;
+      if (dt > 0) {
+        dragVelocity.current = (e.clientX - dragLastX.current) / dt;
+      }
+      dragLastX.current = e.clientX;
+      dragLastTime.current = now;
       updateOffset(dragStartOffset.current - dx);
     }
   }, [updateOffset]);
@@ -140,9 +154,15 @@ export const ImageGallery = ({images, height = 450, caption, shuffle}: ImageGall
     if (!dragActive.current) return;
     dragActive.current = false;
     if (dragMoved.current) {
-      snapToNearest();
+      const v = dragVelocity.current;
+      // If flick velocity is high enough, advance in that direction
+      if (Math.abs(v) > 0.05) {
+        goTo(indexRef.current + (v < 0 ? 1 : -1));
+      } else {
+        snapToNearest();
+      }
     }
-  }, [snapToNearest]);
+  }, [snapToNearest, goTo]);
 
   const cls = useRef(`ig-${Math.random().toString(36).slice(2, 7)}`).current;
 
@@ -153,98 +173,120 @@ export const ImageGallery = ({images, height = 450, caption, shuffle}: ImageGall
           display: block;
           object-fit: cover;
           aspect-ratio: 16 / 9;
-          pointer-events: none;
           user-select: none;
         }
         @media (max-width: 767px) {
           .${cls}-item { flex: 0 0 85vw !important; }
           .${cls}-img { width: 100%; height: auto; }
-          .${cls}-nav { display: none !important; }
         }
         @media (min-width: 768px) {
           .${cls}-img { height: ${height}px; width: auto; }
         }
+        .${cls}-nav {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 48px;
+          background: rgba(0,0,0,0.0);
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 28px;
+          opacity: 0;
+          transition: opacity 0.2s ease, background 0.2s ease;
+          z-index: 10;
+          pointer-events: auto;
+        }
+        .${cls}-wrap:hover .${cls}-nav {
+          opacity: 1;
+        }
+        .${cls}-nav:hover {
+          background: rgba(0,0,0,0.4);
+        }
+        .${cls}-nav:disabled {
+          opacity: 0 !important;
+          cursor: default;
+        }
       `}</style>
-
-      <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
-        <button
-          className={`${cls}-nav`}
-          style={{
-            background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: '50%',
-            width: 40, height: 40, cursor: 'pointer', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', fontSize: 20, flexShrink: 0,
-            opacity: currentIndex === 0 ? 0.2 : 1,
-          }}
-          onClick={() => goTo(currentIndex - 1)}
-          disabled={currentIndex === 0}
-          aria-label="Previous"
-        >&#8249;</button>
-
-        <div
-          ref={containerRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          style={{overflow: 'hidden', touchAction: 'pan-y', cursor: 'grab', flex: 1, minWidth: 0}}
-        >
-          <div
-            ref={trackRef}
-            style={{
-              display: 'flex',
-              gap: 12,
-              padding: '16px 0',
-              transform: `translateX(${-offset}px)`,
-              transition: animated ? 'transform 0.4s ease' : 'none',
-            }}
-          >
-            {shuffledImages.map((img, i) => {
-              const isActive = i === currentIndex;
-              return (
-                <div
-                  key={i}
-                  className={`${cls}-item`}
-                  style={{
-                    flex: '0 0 auto',
-                    borderRadius: 6,
-                    overflow: 'hidden',
-                    transform: `scale(${isActive ? 1 : 0.85})`,
-                    opacity: isActive ? 1 : 0.5,
-                    transition: 'transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease',
-                    boxShadow: isActive ? '0 4px 24px rgba(0,0,0,0.3)' : 'none',
-                  }}
-                  onClick={() => { if (!dragMoved.current) goTo(i); }}
-                >
-                  <img className={`${cls}-img`} src={img.src} alt={img.alt || ''} draggable={false} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <button
-          className={`${cls}-nav`}
-          style={{
-            background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: '50%',
-            width: 40, height: 40, cursor: 'pointer', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', fontSize: 20, flexShrink: 0,
-            opacity: currentIndex === shuffledImages.length - 1 ? 0.2 : 1,
-          }}
-          onClick={() => goTo(currentIndex + 1)}
-          disabled={currentIndex === shuffledImages.length - 1}
-          aria-label="Next"
-        >&#8250;</button>
-      </div>
-
-      <div style={{textAlign: 'center', padding: '6px 0', fontSize: '0.75rem', opacity: 0.6}}>
-        {currentIndex + 1} / {shuffledImages.length}
-      </div>
 
       {caption && (
         <div className="bp5-text-muted" style={{textAlign: 'center', fontSize: '0.7rem'}}>
           {caption}
         </div>
       )}
+
+      <div
+        ref={containerRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        style={{overflow: 'hidden', touchAction: 'pan-y', cursor: 'grab'}}
+      >
+        <div
+          ref={trackRef}
+          style={{
+            display: 'flex',
+            gap: 12,
+            padding: '16px 0',
+            transform: `translateX(${-offset}px)`,
+            transition: animated ? 'transform 0.4s ease' : 'none',
+          }}
+        >
+          {shuffledImages.map((img, i) => {
+            const isActive = i === currentIndex;
+            return (
+              <div
+                key={i}
+                className={`${cls}-item`}
+                style={{
+                  flex: '0 0 auto',
+                  borderRadius: 6,
+                  overflow: 'hidden',
+                  transform: `scale(${isActive ? 1 : 0.85})`,
+                  opacity: isActive ? 1 : 0.5,
+                  transition: 'transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease',
+                  boxShadow: isActive ? '0 4px 24px rgba(0,0,0,0.3)' : 'none',
+                }}
+                onClick={() => { if (!dragMoved.current) goTo(i); }}
+              >
+                <div className={`${cls}-wrap`} style={{position: 'relative'}}>
+                  <img className={`${cls}-img`} src={img.src} alt={img.alt || ''} draggable={false} />
+                  {isActive && (
+                    <div style={{
+                      position: 'absolute', top: 8, right: 8,
+                      background: 'rgba(0,0,0,0.6)', color: '#fff',
+                      padding: '2px 8px', borderRadius: 4, fontSize: '0.75rem',
+                      pointerEvents: 'none',
+                    }}>
+                      {i + 1} / {shuffledImages.length}
+                    </div>
+                  )}
+                  {isActive && currentIndex > 0 && (
+                    <button
+                      className={`${cls}-nav`}
+                      style={{left: 0, borderRadius: '0 4px 4px 0'}}
+                      onClick={(e) => { e.stopPropagation(); goTo(currentIndex - 1); }}
+                      aria-label="Previous"
+                    >{'\u2039'}</button>
+                  )}
+                  {isActive && currentIndex < shuffledImages.length - 1 && (
+                    <button
+                      className={`${cls}-nav`}
+                      style={{right: 0, borderRadius: '4px 0 0 4px'}}
+                      onClick={(e) => { e.stopPropagation(); goTo(currentIndex + 1); }}
+                      aria-label="Next"
+                    >{'\u203A'}</button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
