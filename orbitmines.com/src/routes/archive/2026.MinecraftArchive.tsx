@@ -96,7 +96,7 @@ const MinecraftArchive = () => {
             }}/>, or you can join us online, @ the reinstated <strong>hub.orbitmines.com</strong>
           </div>
         </Col>
-        <Col md={4} sm={12}><img className="orbitmines-staff-img" style={{maxWidth: '600px'}} alt="OrbitMines Staff" src="/archive/the-orbitmines-minecraft-server/orbitmines_staff.png" /></Col>
+        <Col md={4} sm={12}><img className="orbitmines-staff-img" style={{maxWidth: '100%'}} alt="OrbitMines Staff" src="/archive/the-orbitmines-minecraft-server/orbitmines_staff.png" /></Col>
       </Row>
 
       <Arc head="Arc: The Beginnings (2013-2014)">
