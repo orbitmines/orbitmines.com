@@ -729,12 +729,11 @@ const MinecraftArchive = () => {
 
           <img alt="Legacy Logo" src="/archive/the-orbitmines-minecraft-server/logo/legacy.png" style={{maxWidth: '100%'}}/>
 
-          The new logos were made for for the server itself as for the gamemodes we planned on remaking:
+          The new logos were made for for the server itself as for the gamemodes we planned on remaking. By someone named Jess/Genny (I couldn't find a link to her current art profile).
         </Section>
-        <ImageGallery
-          shuffle={20}
-          caption="Server Icons, Names & Logo"
-          images={[
+        <div className="bp5-text-muted" style={{textAlign: 'center', fontSize: '0.7rem'}}>Server Icons, Names & Logo</div>
+        <div style={{display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', alignItems: 'center', padding: '8px 0'}}>
+          {[
             {src: '/logo.png', alt: 'Logo'},
             {src: '/archive/the-orbitmines-minecraft-server/server-icons/fog.png', alt: 'Server Icon - Fog'},
             {src: '/archive/the-orbitmines-minecraft-server/server-icons/fog 2.png', alt: 'Server Icon - Fog 2'},
@@ -751,11 +750,81 @@ const MinecraftArchive = () => {
             {src: '/archive/the-orbitmines-minecraft-server/server-names/prison.png', alt: 'Server Name - Prison'},
             {src: '/archive/the-orbitmines-minecraft-server/server-names/skyblock.png', alt: 'Server Name - SkyBlock'},
             {src: '/archive/the-orbitmines-minecraft-server/server-names/survival.png', alt: 'Server Name - Survival'},
-          ]}
-        />
+          ].map((img, i) => (
+            <img key={i} src={img.src} alt={img.alt} style={{maxHeight: 80, objectFit: 'contain'}} />
+          ))}
+        </div>
+        <Section>
+          New plugins, new logos and also new lobbies:
+
+          <BR/>
+
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/xr8CpLhICkk?si=UE2pr5FdigurUow0"
+                  title="YouTube video player" frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen style={{maxWidth: '100%'}}></iframe>
+
+          <BR/>
+
+          The relaunch of OrbitMines was highly anticipated, we had over 30 people ready at its release to join. We
+          hyped up the release with constant teasers, one of which was another 'trailer' of our history:
+
+          <BR/>
+
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/jIi7L9o7MRk?si=_4-3v65v_2e_xlJI"
+                  title="YouTube video player" frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen style={{maxWidth: '100%'}}></iframe>
+
+          <BR/>
+
+          Then, of course, the release went completely bad, we were one of the first servers to be on Minecraft 1.13 just 4 days after its release (22 July 2018)
+          thanks to us setting up a custom Minecraft server runnable which worked for 1.13. And this caused some issues
+          which we needed an extra day to resolve. Luckily all those players were patient with us, and were right back
+          again the next day for the actual release!
+
+          <BR/>
+
+          We were growing fast again, like back in 2014, just with a minimal set of gamemodes with a steady playerbase.
+
+          <BR/>
+
+          We announced KitPvP re-release again as the 5th anniversary of OrbitMines neared in 2018.
+
+          <BR/>
+
+          Then, unfortunately, after nearly a year or OrbitMines' rebirth. Came the unfortunate news. Minecraft 1.14 had major changes in the chunk system, which made lag unbearable, simultaneously we had some internal issues in the staff team for the first time in OrbitMines' lifetime.
+
+          <BR/>
+
+          Whatever it was, I felt that the chapter of OrbitMines - Minecraft -, was closing. And so it was on 11 June 2019 that I made the terminal decision to close the server:
+
+          <img alt="Terminal discord announcement message" src="/archive/the-orbitmines-minecraft-server/2019_06_11_discord_announcement.png" style={{maxWidth: '100%'}} />
+        </Section>
       </Arc>
 
       <Arc head="Wrapping up">
+        It was the end. Throughout most of my teenage years OrbitMines had been THE thing. In spite of it being hard to say goodbye to the server, I felt for the first time that I might turn my eye to a new project. What that project was, I knew not, only tiny fragments of an idea were there since 2017. Which would later flower to the projects OrbitMines currently associates itself with.
+
+        <BR/>
+
+        This is what I want to dedicate this last section to: That while I deeply value OrbitMines Minecraft. (As I hope to demonstrate by the effort put into the archival version.) I want to stress the importance I assign to decision to close down the server; My current projects would not have gotten the time of day if I did not.
+
+        <BR/>
+
+        I hope to once again return to game design: Those fragments became a dream which became a project. A project to turn creative pursuits into a videogame. Whether it is engineering, science or education. That is now OrbitMines' goal; I dream of a world where interfaces and games merge together: where everyone collaboratively plays a videogame and in doing so is contributing to the knowledge of the world.
+
+        <BR/>
+
+        But how to bring about such a future? That is the central question for OrbitMines.
+
+        <BR/>
+        Join our new <Reference is="reference" simple inline index={referenceCounter()} reference={{
+        title: <span><CustomIcon icon={ORGANIZATIONS.discord.key} size={20}/> Discord Server</span>,
+        link: "https://discord.orbitmines.com"
+      }}/> for updates and discussion on this project.
 
       </Arc>
     </Row>
