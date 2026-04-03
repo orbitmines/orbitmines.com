@@ -38,15 +38,15 @@ export const ORBITMINES_MINECRAFT_ARCHIVE: Content = {
   reference: {
     title: "The OrbitMines Minecraft Server (2013-2019)",
     subtitle: "A trip back into the past, a piece of OrbitMines history when it was a Minecraft server. And a look at the OrbitMines Minecraft Archive which includes a remastered version of the server through its lifetime!",
-    draft: true,
+    draft: false,
     link: 'https://orbitmines.com/archive/the-orbitmines-minecraft-server',
-    year: "2016",
-    date: "2026-06-31",
+    year: "2026",
+    date: "2026-04-04",
     external: {
       discord: {
-        serverId: '1055502602365845534',
-        channelId: '1455223851825762475',
-        link: () => "https://discord.com/channels/1055502602365845534/1455223851825762475" // TODO
+        serverId: '221293899967102976',
+        channelId: '1488917711982694461',
+        link: () => "https://discord.com/channels/221293899967102976/1488917711982694461" // TODO
       }
     },
     organizations: [ORGANIZATIONS.orbitmines_research],
