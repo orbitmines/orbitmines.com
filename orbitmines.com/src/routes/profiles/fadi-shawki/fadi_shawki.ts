@@ -2,7 +2,129 @@ import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../.
 
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
+const string = `
+- [An Infinity of Worlds: Cosmic Inflation and the Beginning of the Universe (2022)](https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y) ; *Will Kinney*
+
+- :youtube: :lex_fridman_podcast: [State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | #490 (2026)](https://www.youtube.com/watch?v=EV7WhVT270Q&t=2s) ;  *Nathan Lambert, Sebastian Raschka, Lex Fridman*
+- :youtube: :lex_fridman_podcast: [OpenClaw: The Viral AI Agent that Broke the Internet - Peter Steinberger | #491 (2026)](https://www.youtube.com/watch?v=YFjfBk8HI5o&t=2s) ;  *Peter Steinberger, Lex Fridman*
+- :youtube: :lex_fridman_podcast: [Jeff Kaplan: World of Warcraft, Overwatch, Blizzard, and Future of Gaming | #493 (2026)](https://www.youtube.com/watch?v=H9rF1CSSh-w&t=8566s&pp=0gcJCd4KAYcqIYzv) ;  *Jeff Kaplan, Lex Fridman*
+- :youtube: :lex_fridman_podcast: [Jensen Huang: NVIDIA - The $4 Trillion Company & the AI Revolution | #494 (2026)](https://www.youtube.com/watch?v=vif8NQcjVf0&t=1s) ;  *Jensen Huang, Lex Fridman*
+- :youtube: :lex_fridman_podcast: [Vikings, Ragnar, Berserkers, Valhalla & the Warriors of the Viking Age | #495 (2026)](https://www.youtube.com/watch?v=iKx3gAODybU) ;  *Lars Brownworth, Lex Fridman*
+- :youtube: :cool_worlds_podcast: [#31 Joshua Winn - Exoplanet New Discoveries, History and Future (2026)](https://www.youtube.com/watch?v=ISZHVwY5YjE) ;  *Joshua Winn, David Kipping*
+- :youtube: :cool_worlds_podcast: [#32 Chris Lintott - Technosignatures, Citizen Science, Scicomm (2026)](https://www.youtube.com/watch?v=qI3DAXM0-do) ;  *Chris Lintott, David Kipping*
+- :youtube: :topos_institute: [Dan Ghica: Designing and developing an industrial-strength programming language (2026)](https://www.youtube.com/watch?v=oFGc4hGJRJQ) ;  *Dan Ghica*
+- :youtube: [Where We’re Going, We Don’t Need Rows: Columnar Data Connectivity with Apache Arrow ADBC (2025)](https://www.youtube.com/watch?v=TjlmNGNx77E) ;  *Ian Cook*
+- :youtube: [Vortex: LLVM for File Formats (2025)](https://www.youtube.com/watch?v=zyn_T5uragA) ;  *Will Manning*
+- :youtube: [DuckLake: Learning from Cloud Data Warehouses to Build a Robust “Lakehouse” (2025)](https://www.youtube.com/watch?v=z2GhznqtIz0) ;  *Jordan Tigani*
+- :youtube: [An Extremely Technical Overview of How Apache Iceberg Planning Actually Works (2025)](https://www.youtube.com/watch?v=kJaD0WuQ1Bg) ;  *Russell Spitzer*
+`
+
 export const REFERENCES = {
+  AN_INFINITY_OF_WORLDS_COSMIC_INFLATION_AND_THE_BEGINNING_OF_THE_UNIVERSE: <Content>{  
+    reference: {                 title: 'An Infinity of Worlds: Cosmic Inflation and the Beginning of the Universe',      
+          authors: [{name: 'Will Kinney'}],      
+          organizations: [],  
+          year: '(2022)',      
+          link: "https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  STATE_OF_AI_IN_2026_LLMS_CODING_SCALING_LAWS_CHINA_AGENTS_GPUS_AGI_490: <Content>{  
+    reference: {                 title: 'State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | #490',      
+          authors: [{name: 'Nathan Lambert'},{name: 'Sebastian Raschka'},{name: 'Lex Fridman'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=EV7WhVT270Q"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  OPENCLAW_THE_VIRAL_AI_AGENT_THAT_BROKE_THE_INTERNET___PETER_STEINBERGER_491: <Content>{  
+    reference: {                 title: 'OpenClaw: The Viral AI Agent that Broke the Internet - Peter Steinberger | #491',      
+          authors: [{name: 'Peter Steinberger'},{name: 'Lex Fridman'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=YFjfBk8HI5o"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  JEFF_KAPLAN_WORLD_OF_WARCRAFT_OVERWATCH_BLIZZARD_AND_FUTURE_OF_GAMING_493: <Content>{  
+    reference: {                 title: 'Jeff Kaplan: World of Warcraft, Overwatch, Blizzard, and Future of Gaming | #493',      
+          authors: [{name: 'Jeff Kaplan'},{name: 'Lex Fridman'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=H9rF1CSSh-w"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  JENSEN_HUANG_NVIDIA___THE_4_TRILLION_COMPANY_THE_AI_REVOLUTION_494: <Content>{  
+    reference: {                 title: 'Jensen Huang: NVIDIA - The $4 Trillion Company & the AI Revolution | #494',      
+          authors: [{name: 'Jensen Huang'},{name: 'Lex Fridman'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=vif8NQcjVf0"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  VIKINGS_RAGNAR_BERSERKERS_VALHALLA_THE_WARRIORS_OF_THE_VIKING_AGE_495: <Content>{  
+    reference: {                 title: 'Vikings, Ragnar, Berserkers, Valhalla & the Warriors of the Viking Age | #495',      
+          authors: [{name: 'Lars Brownworth'},{name: 'Lex Fridman'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=iKx3gAODybU"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  _31_JOSHUA_WINN___EXOPLANET_NEW_DISCOVERIES_HISTORY_AND_FUTURE: <Content>{  
+    reference: {                 title: '#31 Joshua Winn - Exoplanet New Discoveries, History and Future',      
+          authors: [{name: 'Joshua Winn'},{name: 'David Kipping'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.cool_worlds_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=ISZHVwY5YjE"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  _32_CHRIS_LINTOTT___TECHNOSIGNATURES_CITIZEN_SCIENCE_SCICOMM: <Content>{  
+    reference: {                 title: '#32 Chris Lintott - Technosignatures, Citizen Science, Scicomm',      
+          authors: [{name: 'Chris Lintott'},{name: 'David Kipping'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.cool_worlds_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=qI3DAXM0-do"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  DAN_GHICA_DESIGNING_AND_DEVELOPING_AN_INDUSTRIAL_STRENGTH_PROGRAMMING_LANGUAGE: <Content>{  
+    reference: {                 title: 'Dan Ghica: Designing and developing an industrial-strength programming language',      
+          authors: [{name: 'Dan Ghica'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.topos_institute],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=oFGc4hGJRJQ"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  WHERE_WE_RE_GOING_WE_DON_T_NEED_ROWS_COLUMNAR_DATA_CONNECTIVITY_WITH_APACHE_ARROW_ADBC: <Content>{  
+    reference: {                 title: 'Where We\'re Going, We Don\'t Need Rows: Columnar Data Connectivity with Apache Arrow ADBC',      
+          authors: [{name: 'Ian Cook'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2025)',      
+          link: "https://www.youtube.com/watch?v=TjlmNGNx77E"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  VORTEX_LLVM_FOR_FILE_FORMATS: <Content>{  
+    reference: {                 title: 'Vortex: LLVM for File Formats',      
+          authors: [{name: 'Will Manning'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2025)',      
+          link: "https://www.youtube.com/watch?v=zyn_T5uragA"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  DUCKLAKE_LEARNING_FROM_CLOUD_DATA_WAREHOUSES_TO_BUILD_A_ROBUST_LAKEHOUSE: <Content>{  
+    reference: {                 title: 'DuckLake: Learning from Cloud Data Warehouses to Build a Robust “Lakehouse”',      
+          authors: [{name: 'Jordan Tigani'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2025)',      
+          link: "https://www.youtube.com/watch?v=z2GhznqtIz0"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  AN_EXTREMELY_TECHNICAL_OVERVIEW_OF_HOW_APACHE_ICEBERG_PLANNING_ACTUALLY_WORKS: <Content>{  
+    reference: {                 title: 'An Extremely Technical Overview of How Apache Iceberg Planning Actually Works',      
+          authors: [{name: 'Russell Spitzer'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2025)',      
+          link: "https://www.youtube.com/watch?v=kJaD0WuQ1Bg"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+
   THE_STRANGEST_MAN: <Content>{
     reference: {
       title: 'The Strangest Man',
@@ -4025,6 +4147,20 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2026: Content[] = [
+  REFERENCES.AN_INFINITY_OF_WORLDS_COSMIC_INFLATION_AND_THE_BEGINNING_OF_THE_UNIVERSE,
+  REFERENCES.STATE_OF_AI_IN_2026_LLMS_CODING_SCALING_LAWS_CHINA_AGENTS_GPUS_AGI_490,
+  REFERENCES.OPENCLAW_THE_VIRAL_AI_AGENT_THAT_BROKE_THE_INTERNET___PETER_STEINBERGER_491,
+  REFERENCES.JEFF_KAPLAN_WORLD_OF_WARCRAFT_OVERWATCH_BLIZZARD_AND_FUTURE_OF_GAMING_493,
+  REFERENCES.JENSEN_HUANG_NVIDIA___THE_4_TRILLION_COMPANY_THE_AI_REVOLUTION_494,
+  REFERENCES.VIKINGS_RAGNAR_BERSERKERS_VALHALLA_THE_WARRIORS_OF_THE_VIKING_AGE_495,
+  REFERENCES._31_JOSHUA_WINN___EXOPLANET_NEW_DISCOVERIES_HISTORY_AND_FUTURE,
+  REFERENCES._32_CHRIS_LINTOTT___TECHNOSIGNATURES_CITIZEN_SCIENCE_SCICOMM,
+  REFERENCES.DAN_GHICA_DESIGNING_AND_DEVELOPING_AN_INDUSTRIAL_STRENGTH_PROGRAMMING_LANGUAGE,
+  REFERENCES.WHERE_WE_RE_GOING_WE_DON_T_NEED_ROWS_COLUMNAR_DATA_CONNECTIVITY_WITH_APACHE_ARROW_ADBC,
+  REFERENCES.VORTEX_LLVM_FOR_FILE_FORMATS,
+  REFERENCES.DUCKLAKE_LEARNING_FROM_CLOUD_DATA_WAREHOUSES_TO_BUILD_A_ROBUST_LAKEHOUSE,
+  REFERENCES.AN_EXTREMELY_TECHNICAL_OVERVIEW_OF_HOW_APACHE_ICEBERG_PLANNING_ACTUALLY_WORKS,
+
   REFERENCES.THE_STRANGEST_MAN,
   REFERENCES.ECCE_HOMO,
   REFERENCES.THE_THREE_BODY_PROBLEM,
@@ -4545,12 +4681,12 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.png',
 
-  date: '2026-01-01',
+  date: '2026-05-01',
 
   email: 'fadi.shawki@orbitmines.com',
 
   title: "2026. Fadi Shawki",
-  subtitle: "A self-profile by some 25-solar-orbiting explorer.",
+  subtitle: "A self-profile by some 26-solar-orbiting explorer.",
 
   reference: {
     // title: renderable<string>("2023. Fadi Shawki"),
