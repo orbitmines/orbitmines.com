@@ -23,7 +23,7 @@ ReactPrism.languages.bash = Prism.languages.bash
 
 // Import bash language from prismjs
 import "prismjs/components/prism-bash";
-export const ETHERS_ALMANAC: Content = { reference: {
+export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
   title: "Ether's Almanac",
   subtitle: "Your handbook for anything Ether, Ray & OrbitMines.",
   draft: true,
@@ -39,7 +39,30 @@ export const ETHERS_ALMANAC: Content = { reference: {
   }],
   published: [ORGANIZATIONS.orbitmines_research],
   link: "https://orbitmines.com/almanac"
-}, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026" }
+}, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026",
+
+  UPDATES: [
+    { reference: {
+      title: "2026 Ether's Almanac: The v0 specification runtime for the Ray programming language",
+      subtitle: "The Ray Programming Language",
+      draft: true,
+      date: "2026-12-31",
+      year: "2026",
+      external: {
+        discord: {serverId: '1055502602365845534', channelId: '1463219913044005018', link: () => "https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018"}
+      },
+      organizations: [ORGANIZATIONS.orbitmines_research],
+      authors: [{
+        ...PROFILES.fadi_shawki,
+        external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
+      }],
+      published: [ORGANIZATIONS.orbitmines_research],
+      link: "https://orbitmines.com/almanac"
+    }, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026" }
+  ]
+
+}
+
 
 
 const Highlighted = (props: { code: string }) => {
@@ -312,15 +335,53 @@ const Almanac = () => {
         Let's start with a bunch of important things many programming languages cover! And importantly, how the Ray programming language differs from the usual approach. Though plenty should feel familiar regardless of your programming language background.
 
         <Section head="§2.1 Superposing Variables">
+          One of the cornerstones of most programming languages, even if that isn't often explicit, is their ability to superpose variables. Usually this is done in a language's <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'type system', link: 'https://en.wikipedia.org/wiki/Type_system'}} /> if it has one. Even if it doesn't, it's almost always the case that the language's compiler does so under the hood, by for instance, the means of <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation" }}/>; essentially reasoning about what kinds of values a particular variable might hold.
+          <BR/>
+          Typically in a language however, there exists a clear boundary between its runtime and its type system, or the runtime and its compiler. When you would have the ability to say something is A or B:
           <CodeBlock>
             "A" | "B"
           </CodeBlock>
+          Or similarly that the binary:
           <CodeBlock>
-            boolean = false | true
+            boolean == false | true
           </CodeBlock>
+          It would be the case that this would be restricted to the type system, or the compiler's reasoning about a program. In Ray, this boundary does not exist. And you can create and access, at runtime, the possible values of such a superposed variable. Every variable has the (#) operator defined for this reason, we can for instance iterate over, or count the possible values:
+          <CodeBlock>
+            boolean#.count // 2
+          </CodeBlock>
+          In essence we're simply saying that instead of just a single value, every variable can hold any number of values, or rather; an arbitrary graph of values. But we're getting ahead of ourselves. Let's first explore this idea of superposed variables a little further. Semantically for a type system, you typically only have the ability to say its A or B; you're summing possibilities. But this could in principle be any kind of relationship; whether that's a complicated structure, or just another binary relation like 'or'. Take for instance the ability to say it's A and B! At the same time!
           <CodeBlock>
             "A" & "B"
           </CodeBlock>
+          <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
+          It's hard to talk about programming language features from the ground up without mentioning functions. And I'll dedicate a whole section to it later, but it's useful to understand what kind of things this allows you to do. Typically in a programming language you could do something like:
+          </span>
+          <CodeBlock>
+            [1, 2].map(+1) // [2, 3]
+          </CodeBlock>
+          <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
+          Or a little more verbose:
+          </span>
+          <CodeBlock>
+            func (a) a + 1<BR/>
+            [1, 2].map(func) // [2, 3]
+          </CodeBlock>
+          <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
+          With superposed variables in Ray however, you can syntactically get rid of the fact that you're working with an iterable, since every variable is potentially an iterable. And you can do this:
+          </span>
+          <CodeBlock>
+            (1 & 2) + 1 // 2 & 3
+          </CodeBlock> 
+          <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
+          or you can call functions with it:
+          </span>
+          <CodeBlock>
+            func (a) a + 1<BR/>
+            func(1 & 2) // 2 & 3
+          </CodeBlock>
+          So that's the core of superposed variables, it's a very simple but powerful idea! It originated out of the idea that you can always ask the simple question: "What instead of one, you had many of them?". And typically, at least for software related issues, that tends to be a useful question or feature to have: What if I could have one or more accounts? One or more devices? One or more locations? One or more node-edge-relations? Typically this question leads to generalization, as we'll explore later. For now let's move on to another place you can ask that question: components. 
+          <BR/>
+          What instead out of one part, an object was made out of multiple parts?
           <CodeBlock>
             "A" & "B"  // Multiple possible objects<BR/>
             "A" &+ "B" // Single object, multiple components<BR/>
