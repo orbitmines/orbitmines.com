@@ -11,10 +11,11 @@ import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLang
 import {ETHERS_ALMANAC} from "./Almanac";
 import {Button} from "@blueprintjs/core";
 import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
+import {ORBITMINES_MINECRAFT_ARCHIVE} from "./archive/2026.MinecraftArchive";
 
 
 const Minimap = () => {
-  const papers = [TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
