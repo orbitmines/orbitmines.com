@@ -7,7 +7,7 @@ $xl-viewport: 1200px;
     --gutter-width: 16px;
     --outer-margin: 32px;
     --gutter-compensation: calc((var(--gutter-width) * 0.5) * -1);
-    --half-gutter-width: calc((var(--gutter-width) * 0.5));
+    --half-gutter-width: calc(var(--gutter-width) * 0.5);
     --xs-min: 0rem;
     --sm-min: $sm-viewport;
     --md-min: $md-viewport;

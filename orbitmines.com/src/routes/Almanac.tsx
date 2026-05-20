@@ -213,7 +213,7 @@ const Almanac = () => {
     {...book}
   >
     <Arc head="Introduction">
-      Greetings! This is the Ether's Almanac! Anything OrbitMines-related you may need like using the Ether (IDE) and the Ray programming language is contained in it. We'll update the almanac regularly, expect larger updates at the end of each year.
+      Greetings! This is the Ether's Almanac! Anything OrbitMines-related you may need like using the Ether and the Ray programming language is contained in it. We'll update the almanac regularly, expect larger updates at the end of each year.
       <BR/>
       The Ether is a collective name for projects at OrbitMines. OrbitMines' goal is to eventually do research on the gamification of science, engineering and education: literally turning them into a sandbox videogame! But my judgement is that this in practice turns out to be a particularly difficult problem to think about. So instead (for the moment) we turn ourselves to a more practical problem: Programming infrastructure. If it is such a difficult problem to think about, why not advance the very tools with which we do our thinking! The thinking being that it might stimulate future thought towards this hard problem.
       <BR/>
@@ -236,7 +236,7 @@ const Almanac = () => {
       }}/>.
       <BR/>
 
-      If you're here to learn more, then let me, without further ado, get you started on the Ray programming language!
+      If you're here to learn more, then let me, without (much) further ado, get you started on the Ray programming language!
     </Arc>
     <Arc head="A. The Ray Programming Language">
       If you're a beginner and have never looked at a programming language before, no worries, we got you covered! But especially for those who are already familiar with a programming language, let me right out of the gate throw some code at you to look at, without having explained anything yet about the programming language. Perhaps that might already give you quite some information.
@@ -305,7 +305,7 @@ const Almanac = () => {
           cd ray && ./install.sh --compile
         </Shell>
 
-        <span style={{textAlign: 'left'}} className="bp5-text-muted">Note that there is also a plugin available for <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'IntelliJ', link: 'https://plugins.jetbrains.com/plugin/29452-ether'}} /> and VS Code, you can find them in their respective marketplaces under the name 'Ether'.</span>
+        <span style={{textAlign: 'left'}} className="bp5-text-muted">Note that there is also a plugin available for <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'IntelliJ', link: 'https://plugins.jetbrains.com/plugin/29452-ether'}} /> and <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'VS Code', link: 'https://marketplace.visualstudio.com/items?itemName=orbitmines.ether-ray'}} />, you can find them in their respective marketplaces under the name 'Ether.ray'.</span>
 
       </Section>
       <Section head="§2. Programming Fundamentals">
@@ -922,7 +922,7 @@ const Almanac = () => {
       </Section>
     </Arc>
 
-    <Arc head={<span className="bp5-text-disabled">B. The Ether: IDE (Planned for 2027)</span>}>
+    <Arc head={<span className="bp5-text-disabled">B. The Ether (Planned for 2027)</span>}>
     </Arc>
     <Arc head={<span className="bp5-text-disabled">C. Ether Library Project (Planned for 2028)</span>}>
     </Arc>
