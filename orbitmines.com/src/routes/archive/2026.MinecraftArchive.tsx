@@ -16,7 +16,7 @@ import Paper, {
   Row,
   Section, TODO,
   useCounter
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {
   add,
   CachedVisualizationCanvas,
@@ -32,7 +32,7 @@ import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMin
 import {PROFILES} from "../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Highlight, Prism, themes} from "prism-react-renderer";
-import {ImageGallery} from "../../lib/paper/ImageGallery";
+import {ImageGallery} from "../../lib/post/ImageGallery";
 
 export const ORBITMINES_MINECRAFT_ARCHIVE: Content = {
   reference: {
