@@ -23,6 +23,7 @@ ReactPrism.languages.bash = Prism.languages.bash
 
 // Import bash language from prismjs
 import "prismjs/components/prism-bash";
+import { CanvasContainer } from "./archive/2023.OnOrbits";
 export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
   title: "Ether's Almanac",
   subtitle: "Your handbook for anything Ether, Ray & OrbitMines.",
@@ -332,10 +333,13 @@ const Almanac = () => {
 
       </Section>
       <Section head="§2. Programming Fundamentals">
-        Let's start with a bunch of important things many programming languages cover! And importantly, how the Ray programming language differs from the usual approach. Though plenty should feel familiar regardless of your programming language background.
+        Let's start with a bunch of important things many programming languages cover! And importantly, how the Ray programming language differs from the usual approach. Though plenty should feel familiar regardless of your programming language background. 
+          
+        <BR/>
+        <span style={{textAlign: 'left'}}>The goal of this chapter is to give you the minimal set of tools to get you started with the language. Any other fundamentals, will be handled in <Button rightIcon="arrow-right" text="§4. Extended Fundamentals" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§4. Extended Fundamentals'); return next; })} />.</span>
 
         <Section head="§2.1 Superposing Variables">
-          One of the cornerstones of most programming languages, even if that isn't often explicit, is their ability to superpose variables. Usually this is done in a language's <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'type system', link: 'https://en.wikipedia.org/wiki/Type_system'}} /> if it has one. Even if it doesn't, it's almost always the case that the language's compiler does so under the hood, by for instance, the means of <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation" }}/>; essentially reasoning about what kinds of values a particular variable might hold.
+          One of the cornerstones of most programming languages, even if that isn't often explicit, is their ability to superpose variables. Usually this is done in a language's <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'type system', link: 'https://en.wikipedia.org/wiki/Type_system'}} /> if it has one. Even if it doesn't, it's almost always the case that the language's compiler does so under the hood, by for instance, the means of <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation" }}/>; essentially reasoning about what kinds of values a particular variable might hold. (Or sometimes at runtime through something called an <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "'Ambiguous Operator'", link: "https://rosettacode.org/wiki/Amb" }}/>.)
           <BR/>
           Typically in a language however, there exists a clear boundary between its runtime and its type system, or the runtime and its compiler. When you would have the ability to say something is A or B:
           <CodeBlock>
@@ -381,32 +385,295 @@ const Almanac = () => {
           </CodeBlock>
           So that's the core of superposed variables, it's a very simple but powerful idea! It originated out of the idea that you can always ask the simple question: "What instead of one, you had many of them?". And typically, at least for software related issues, that tends to be a useful question or feature to have: What if I could have one or more accounts? One or more devices? One or more locations? One or more node-edge-relations? Typically this question leads to generalization, as we'll explore later. For now let's move on to another place you can ask that question: components. 
           <BR/>
-          What instead out of one part, an object was made out of multiple parts?
+          What if instead out of one part, an object was made out of multiple parts? Now of course most programming languages already have this concept in some way, using <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "inheritance", link: "https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)" }}/>. Where there is a hierarchy of parts which make up an object. This kind of 'class component' is also available in Ray as we'll discuss later, but this notion is extended slightly. Before getting to types, I want to introduce this notion first, as a simpler but more general kind of component.
+          <BR/>
+          I can say I want to combine A and B, and everything from B should override A. That is the simple addition of two objects:
           <CodeBlock>
-            "A" & "B"  // Multiple possible objects<BR/>
-            "A" &+ "B" // Single object, multiple components<BR/>
-            "A" + "B"  // Same as &+, but overwrites.
+            A + B
           </CodeBlock>
-          <span style={{textAlign: 'left'}}>The difference (and usefulness) of &, &+ is best stated with an example. (&) You can have multiple programs, and (&+) each program can be executing in many places. In the following section (<Button rightIcon="arrow-right" text="§2.2 Rays: Arrays, Trees, Graphs" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§2.2 Rays: Arrays, Trees, Graphs'); return next; })} />) you'll see another use for it.</span>
+          If for instance I had the following:
           <CodeBlock>
-            Program                        // Single<BR/>
-            Program & Program              // Many<BR/>
-            Program & (Program &+ Program) // Many, and one has many cursors
+            "A".next // "B"<BR/>
+            true.next // false
           </CodeBlock>
+          And I chose to combine these two components into a single object:
           <CodeBlock>
-            x = "AB" + true<BR/>
+            x = "A" + true<BR/>
             x.next // == false
           </CodeBlock>
+          You'd notice that even though the same kind of functionality the (.next) exists on ("A") as well as on (true). We take the one defined on true here, if we did it the other way around, we'd get ("B"), in other words this (+) is non-commutative.
+          <BR/>
+          Now the thing that you can do with these components, is superpose them and everything in them. With the following operators:
           <CodeBlock>
-            x = true + "AB"<BR/>
-            x.next // == "A"
+            A &+ B<BR/>
+            A |+ B
           </CodeBlock>
+          For the two superposing methods (|) and (&) respectively. Doing that in our example gives the following: 
           <CodeBlock>
-            x = "AB" &+ true<BR/>
-            x.next // == "A" & false
+            x = true &+ "A"<BR/>
+            x.next // == false & "B"
           </CodeBlock>
 
-          {/* You can also define a recursive chain from some base, where successively each step is calculated from the previous one (essentially you're describing a derivative this way). */}
+          One of the ways these components are used, besides <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "inheritance", link: "https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)" }}/>, is by equipping structure on something which might itself also be a structure. I mean for instance, the fact that an iterable string might find itself in some other structure, the iterator itself:
+          <CodeBlock>
+            ["A", "B", "C"].map(entry: + Ray ={'>'} entry.index) // [0, 1, 2]<BR/>
+            ["A", "B", "C"].map(entry ={'>'} entry.index) // [41, 42, 43] (Unicode index)
+          </CodeBlock>
+
+          But for that we must turn to the next section to unpack what that means. Starting with what this 'equipped structure' called a Ray is.
+        </Section>
+        <Section head="§2.2 Rays: Arrays, Trees, Graphs">
+          <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff (as one of the goals is to be able to model any existing programming language)</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
+
+          <BR/>
+
+          <span style={{textAlign: 'left'}}>It uses the most fundamental data structure to the Ray programming language - and with that the only: - the Ray <span className="bp5-text-muted">(; hence the name)</span>. All datastructures are made from it: <span className="bp5-text-muted">Objects <span className="bp5-text-disabled">(; called Nodes in Ray)</span>, Numbers, Types, Arrays, Trees, (Hyper)Graphs, Functions</span>: everything. We'll cover each of them separately, so strap in!</span>
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Let's start with the simplest structure, a single <span
+            style={{color: 'orange'}}>point, ..., vertex</span>. When we call it a Ray, is when that node has information on what's in front of it, and behind it. If we visualize that point like this:</span>
+
+          <Block>
+            <CanvasContainer style={{height: '20px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>To complete the definition, we need to define boundaries of said structure, in front and behind; an <span
+            style={{color: '#FF5555'}}>initial</span> and <span
+            style={{color: '#5555FF'}}>terminal</span> boundary:</span>
+
+          <Block>
+            <CanvasContainer style={{height: '40px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_expanded_boundaries.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+
+          This is the simplest structure we can have.
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Each boundary then in turn optionally defines other boundaries, together they make an <Reference
+            is="reference" simple inline index={referenceCounter()}
+            reference={{title: "edge", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}}
+            style={{color: '#5555FF'}}/>. (And if there's no additional boundaries defined, it's a <span
+            style={{color: '#FF5555'}}>dangling edge</span>; or an actual boundary of the structure.)</span>
+
+          <Block>
+            <CanvasContainer style={{height: '40px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_edge.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+          <span style={{textAlign: 'left', minWidth: '100%'}}>Then of course, at that boundary, another <span
+            style={{color: 'orange'}}>vertex</span> is defined.</span>
+
+
+          <Block>
+            <CanvasContainer style={{height: '40px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/2_expanded.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>You can keep repeating that and here we have the familiar structure of an Array. Which is simply defined as a
+          line (of points). <span className="bp5-text-muted">Note that what I said earlier, we ignore the fact that this is currently potentially a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "doubly linked list", link: "https://en.wikipedia.org/wiki/Doubly_linked_list"}}/>. We will entrust that the compiler will take care of optimizing that structure if we do not use the facilities of a (.next) or (.previous), and even when we do, to optimize the way in which that happens. In Ray, we don't want to consider the exact way the data is encoded if we can avoid it, we're operating at an abstraction layer after all. Only when we consider <Button rightIcon="arrow-right" text="§4.5 Optimizations" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§4.5 Optimizations'); return next; })} /> will we be confronted with details.</span></span>
+
+          <BR/>
+
+          Where of course it gets just a little more complicated, is when we take into account what I said earlier: In that every variable is potentially an iterable number of values. You'll see in this case, that instead of an Array, that the ideas of <Reference
+          is="reference" simple inline index={referenceCounter()} reference={{
+          title: "graphs",
+          link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+        }}/> and <Reference is="reference" simple inline index={referenceCounter()}
+                            reference={{title: "hypergraphs", link: "https://en.wikipedia.org/wiki/Hypergraph"}}/> fall
+          naturally out of that definition. There are 4 places where we are defining variables here, namely:
+
+          <BR/>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>(1 & 2) Each <span style={{color: 'orange'}}>point</span> has many <span
+            style={{color: '#FF5555'}}>initial</span> and <span style={{color: '#5555FF'}}>terminal</span> boundaries. Or in other words, they define many <Reference
+            is="reference" simple inline index={referenceCounter()}
+            reference={{title: "edges", link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"}}/>. This upgrades our Array to the definition of a <Reference
+            is="reference" simple inline index={referenceCounter()}
+            reference={{title: "Graph", link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"}}/>.</span>
+
+          <Block>
+            <CanvasContainer style={{height: '40px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_many_expanded_boundaries.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+
+          Then the next two, are ways of upgrading our <Reference is="reference" simple inline
+                                                                  index={referenceCounter()} reference={{
+          title: "Graph",
+          link: "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"
+        }}/> into a <Reference is="reference" simple inline index={referenceCounter()}
+                                reference={{title: "Hypergraph", link: "https://en.wikipedia.org/wiki/Hypergraph"}}/>. By
+          turning the <Reference is="reference" simple inline index={referenceCounter()} reference={{
+          title: "edges",
+          link: "https://en.wikipedia.org/wiki/Edge_(graph_theory)"
+        }}/> into <Reference is="reference" simple inline index={referenceCounter()}
+                              reference={{title: "hyperedges", link: "https://en.wikipedia.org/wiki/Hypergraph"}}/>. Note
+          that 'hyper-', might as well stand for 'Many'.
+
+          <BR/>
+
+          (3) Each boundary defines many other boundaries. (Which is the typical definition of a hyperedge)
+
+          <Block>
+            <CanvasContainer style={{height: '50px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_1.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+
+          <span style={{textAlign: 'left', minWidth: '100%'}}>And (4) each boundary is connected to many <span
+            style={{color: 'orange'}}>vertices</span>.</span>
+
+          <Block>
+            <CanvasContainer style={{height: '65px'}}>
+              <canvas
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_2.png')`,
+                  backgroundPosition: 'center center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </CanvasContainer>
+          </Block>
+
+          Because the only differences between Arrays, Trees, Graphs & Hypergraphs is what kind of edges are defined on
+          the boundaries, we get the following property in Ray (without explicitly creating an object
+          hierarchy):
+
+          <CodeBlock>
+            Array <BR/>
+            <></>  ==.instance_of Tree<BR/>
+            <></>  ==.instance_of Graph<BR/>
+            <></>  ==.instance_of Hypergraph
+          </CodeBlock>
+
+          Since we're working in text, we're limited to a rather linear expression of ideas, but for simple structures, it's nice to know it's possible to instantiate a linear version quite easily using the (,) operator.
+
+          <CodeBlock>
+            x: Hypergraph = [1, 2, 3]<BR/>
+            x: Graph      = [1, 2, 3]<BR/>
+            x: Tree       = [1, 2, 3]<BR/>
+            x: Array      = [1, 2, 3]
+          </CodeBlock>
+          I say that (,) is an operator, because it actually is one in Ray! It is essentially the thing that composes (or concatenates) structures. It also potentially accepts closures on what it does based on the previous element. So we can have things like: 
+          <CodeBlock>
+            1, +2, +3, +4<BR/>
+            // 1, 3, 6, 10
+          </CodeBlock>
+          The (,) operator is always interchangable with (&) and (|). Since those operators are essentially just semantic decorators on what such an edge between nodes mean.
+          <CodeBlock>
+            1 | +2 | +3 | +4<BR/>
+            // 1 | 3 | 6 | 10
+          </CodeBlock>
+
+          <CodeBlock>
+            x: Graph = [1, "2a" | "2b", 3]
+          </CodeBlock>
+
+          If you recall the superposed mapping example from before, something like:
+          <CodeBlock>
+            [1, 2, 3].map(*2) // [2, 4, 6]<BR/>
+            (1 & 2 & 3) * 2 // 2 & 4 & 6
+          </CodeBlock>
+          It's worth noting that mapping, retains structure. So if we for instance have the following graph.
+          <Block>
+
+          </Block>
+          And we map it:
+          <CodeBlock>
+            x: Graph = false, true & false, true<BR/>
+            x.map(!) // true, false & true, false
+          </CodeBlock>
+          Structure is retained:
+          <Block>
+
+          </Block>
+          <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
+          <CodeBlock>
+            x: Number = [1, 2, 3]<BR/>
+            x.map(entry: + Ray ={'>'} entry + entry.index) // [1, 3, 5]<BR/>
+            <BR/>
+            // Without '+ Ray' .index is the same as the integer value:<BR/>
+            x.map(entry ={'>'} entry.index) // [1, 2, 3]
+          </CodeBlock>
+          <span style={{textAlign: 'left'}}>The mapping function can also include a filter which decides which entries should be mapped. <span className="bp5-text-muted">(In <Reference is="reference" index={referenceCounter()} reference={{title: "category theory", link: "https://en.wikipedia.org/wiki/Category_theory"}} simple inline /> this is referred to as a <Reference is="reference" index={referenceCounter()} reference={{title: "lens", link: "https://ncatlab.org/nlab/show/lens+%28in+computer+science%29"}} simple inline />.)</span> This filter is applied just like any type filter, but instead on the mapping function.</span>
+          <CodeBlock>
+            [1, 2, 3].map{'{'}.index == 2{'}'}(*10) // [1, 2, 30]
+          </CodeBlock>
+
+          Since structure is accessible to mapping function, one of the things you might want to do is to rewrite that structure in place with a different structure.
+          <BR/>
+
+          <CodeBlock>
+
+          </CodeBlock>
+
+          {/* TODO */}
+
+          Now the limitation here is that the mapping function only maps over all the entries, perhaps you'd want to do something slightly more complicated. Like matching to, and then rewriting substructures. (As in typical <Reference is="reference" index={referenceCounter()} reference={{title: "graph rewriting", link: "https://en.wikipedia.org/wiki/Graph_rewriting"}} simple inline />)
+
+          {/* Replace/Rewrite with mapping function */}
+
+          {/* Ranges */}
+
+        {/* 0 -> +1 if .index < 2
+  -> +2 if .index < 4
+  -> +5  */}
+
+   {/* You can also define a recursive chain from some base, where successively each step is calculated from the previous one (essentially you're describing a derivative this way). */}
           <CodeBlock>
             +1 {'<'}- x: "A" -{'>'} -1
           </CodeBlock>
@@ -433,88 +700,6 @@ const Almanac = () => {
             <BR/>
             x## // == [string, equipped_structure]
           </CodeBlock>
-
-          Let us turn to the next section to unpack what that means. Starting with what this 'equipped structure' (our numberline) called a Ray is.
-        </Section>
-        <Section head="§2.2 Rays: Arrays, Trees, Graphs">
-          <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
-
-          <BR/>
-
-          <span style={{textAlign: 'left'}}>It uses the most fundamental data structure to the Ray programming language - and with that the only: - the Ray <span className="bp5-text-muted">(; hence the name)</span>. All datastructures are made from it: <span className="bp5-text-muted">Objects <span className="bp5-text-disabled">(; called Nodes in Ray)</span>, Numbers, Types, Arrays, Trees, (Hyper)Graphs, Functions</span>: everything. We'll cover each of them separately, so strap in!</span>
-
-          <BR/>
-
-          <CodeBlock>
-            x: Hypergraph = 1, 2, 3<BR/>
-            x: Graph      = 1, 2, 3<BR/>
-            x: Tree       = 1, 2, 3<BR/>
-            x: Array      = 1, 2, 3
-          </CodeBlock>
-          <CodeBlock>
-            x: Graph = 1, "2a" & "2b", 3
-          </CodeBlock>
-          <CodeBlock>
-            1, +2, +3, +4<BR/>
-            // 1, 3, 6, 10
-          </CodeBlock>
-          <CodeBlock>
-            1 | +2 | +3 | +4<BR/>
-            // 1 | 3 | 6 | 10
-          </CodeBlock>
-
-          {/**/}
-
-          Superposed values, map all the possible values according to any function called on them, like:
-          <CodeBlock>
-            (1 & 2 & 3) * 2 // 2 & 4 & 6
-          </CodeBlock>
-          That functionality is also available to the iterable structures:
-          <CodeBlock>
-            [1, 2, 3].map(*2) // [2, 4, 6]
-          </CodeBlock>
-          It's worth noting that mapping, retains structure. So if we for instance have the following graph.
-          <Block>
-
-          </Block>
-          And we map it:
-          <CodeBlock>
-            x: Graph = false, true & false, true<BR/>
-            x.map(!) // true, false & true, false
-          </CodeBlock>
-          Structure is retained:
-          <Block>
-
-          </Block>
-          <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
-          <CodeBlock>
-            x: Number = [1, 2, 3]<BR/>
-            x.map(entry: Number + Ray ={'>'} entry + entry.index)<BR/>
-            // [1, 3, 5]
-          </CodeBlock>
-          <span style={{textAlign: 'left'}}>The mapping function can also include a filter which decides which entries should be mapped. <span className="bp5-text-muted">(In <Reference is="reference" index={referenceCounter()} reference={{title: "category theory", link: "https://en.wikipedia.org/wiki/Category_theory"}} simple inline /> this is referred to as a <Reference is="reference" index={referenceCounter()} reference={{title: "lens", link: "https://ncatlab.org/nlab/show/lens+%28in+computer+science%29"}} simple inline />.)</span> This filter is applied just like any type filter, but instead on the mapping function.</span>
-          <CodeBlock>
-            [1, 2, 3].map{'{'}.index == 2{'}'}(*10) // [1, 2, 30]
-          </CodeBlock>
-
-          Since structure is accessible to mapping function, one of the things you might want to do is to rewrite that structure in place with a different structure.
-          <BR/>
-
-          <CodeBlock>
-
-          </CodeBlock>
-
-          {/* TODO */}
-
-          Now the limitation here is that the mapping function only maps over all the entries, perhaps you'd want to do something slightly more complicated. Like matching to, and then rewriting substructures. (As in typical <Reference is="reference" index={referenceCounter()} reference={{title: "graph rewriting", link: "https://en.wikipedia.org/wiki/Graph_rewriting"}} simple inline />)
-
-          {/* Replace/Rewrite with mapping function */}
-
-          {/* Ranges */}
-
-        {/* 0 -> +1 if .index < 2
-  -> +2 if .index < 4
-  -> +5  */}
         </Section>
         <Section head="§2.3 Numbers">
           {/* Booleans, Numbers, compare i64 and other things */}
@@ -631,14 +816,7 @@ const Almanac = () => {
           </CodeBlock>
 
         </Section>
-        <Section head="§2.7 Transactions and Reversibility">
-          {/* dynamically */}
-          {/* Automatic isomorphisms */}
-        </Section>
-        <Section head="§2.8 Undecidability">
-          {/* assume, circularity */}
-        </Section>
-        <Section head="§2.9 Classes & Namespaces">
+        <Section head="§2.7 Classes & Namespaces">
           {/* Classes without parameters are namespace since they call their own constructor */}
 
           Classes and Namespaces are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the standard library!
@@ -773,7 +951,7 @@ const Almanac = () => {
         <Section head="§3.1 Location & Assignment">
 
         </Section>
-        <Section head="§3.2 Networking">
+        <Section head="§3.2 Player Instances & Networking">
 
         </Section>
         <Section head="§3.3 Version Control">
@@ -781,73 +959,18 @@ const Almanac = () => {
         </Section>
         <Section head="§3.4 Access Permissions">
         </Section>
-        <Section head="§3.5 Hosted Variables & Packages">
+        <Section head="§3.5 IO">
+
+        </Section>
+        <Section head="§3.6 Hosted Variables & Packages">
+
+        </Section>
+        <Section head="§3.7 Hot-reloading Stateful Programs">
 
         </Section>
       </Section>
       <Section head="§4. Extended Fundamentals">
-        <Section head="§4.1 Program Types">
-        </Section>
-        <Section head="§4.2 Probability">
-        {/* if 0.5 =>, 0.3 =>  */}
-        </Section>
-        <Section head="§4.3 Choice">
-          While randomization is a useful abstraction, sometimes you might want a slightly different concept. Which is where choice comes in. To flag that a required value can be chosen arbitrarily (by the runtime or even the Player).<BR/>
-
-          Unlike a random variable which can't be picked uniformly for infinitely generating structures, choice works just fine: There can be a preference or tendency for a certain kind of object. Choice is simply saying: we don't care about this information.<BR/>
-
-          We can use it in filters:
-          <CodeBlock>
-            [1, 2, 3].map{'{'}choose 1{'}'}(*10) // [10, 2, 3] | [1, 20, 3] | [1, 2, 30]<BR/>
-            <BR/>
-            Number{'{'}choose 5{'}'}
-          </CodeBlock>
-          Call it directly:
-          <CodeBlock>
-            choose 1 Number<BR/>
-            choose 50% ("A" | "B" | "C" | "D")
-          </CodeBlock>
-          Or pass it to any function which will fill the type automatically (the choice having to disambiguate where necessary).
-          <CodeBlock>
-            func (a: String, b: Number[], c: String)<BR/>
-            func(choose, choose) // Choose two variables, the second can be a Number[] or a String
-          </CodeBlock>
-
-          Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
-
-          {/* TODO Should be var @ * to edit it everywhere explicitly? */}
-
-          <CodeBlock>
-            var = 2<BR/>
-            [1, var, var].map{'{'}choose 1{'}'}(*10) // [10, 2, 2] | [1, 20, 20]<BR/>
-            var = 2<BR/>
-            [1, var, var].map{'{'}choose 2{'}'}(*10) // [10, 20, 20] | [1, 200, 200]
-          </CodeBlock>
-
-          An example of where (choose) is used, is in a function defined on Iterable, the (unordered) function. Which says: I don't care about the order, or even what kind of structure yields the values, I just want it to yield them.
-          <CodeBlock>
-            class Iterable<BR/>
-            <></>  unordered ={'>'}<BR/>
-            <></>    choose Iterable{'{'}.every(this.contains(.)) && .count == count{'}'}
-          </CodeBlock>
-
-          Which can be useful because certain compiler optimizations might work when order doesn't matter.<BR/>
-
-          We can also force a player to make that arbitrary choice:
-          <CodeBlock>
-            @me.choose String
-          </CodeBlock>
-
-          {/* How tto define which algorithm chooses */}
-
-        </Section>
-        <Section head="§4.4 Coroutines">
-
-        </Section>
-        <Section head="§4.5 Concurrency">
-
-        </Section>
-        <Section head="§4.6 Punctuation">
+        <Section head="§4.1 Syntax & Punctuation">
           {/* //Allow returning out of a -- statement., Allow any kind of statement in <>,[],{},() as long as the return is what we're looking for. */}
           {/* Super/subscript automatically converted to expression */}
 
@@ -927,12 +1050,82 @@ const Almanac = () => {
             <></>  secure Binary⁴⁷.random ~~ .[6].push_after(1)
           </CodeBlock>
         </Section>
-      </Section>
-      <Section head="§5. Playerfacing">
-        <Section head="§5.1 Theorem Proving">
+        <Section head="§4.2 Transactions & Reversibility">
+          {/* dynamically */}
+          {/* Automatic isomorphisms */}
+        </Section>
+        <Section head="§4.3 Undecidability & Assumptions">
+          {/* assume, circularity */}
+        </Section>
+        <Section head="§4.4 Program Types">
+        </Section>
+        <Section head="§4.5 Optimizations">
+        </Section>
+        <Section head="§4.6 Probability">
+        {/* if 0.5 =>, 0.3 =>  */}
+        </Section>
+        <Section head="§4.7 Choice">
+          While randomization is a useful abstraction, sometimes you might want a slightly different concept. Which is where choice comes in. To flag that a required value can be chosen arbitrarily (by the runtime or even the Player).<BR/>
+
+          Unlike a random variable which can't be picked uniformly for infinitely generating structures, choice works just fine: There can be a preference or tendency for a certain kind of object. Choice is simply saying: we don't care about this information.<BR/>
+
+          We can use it in filters:
+          <CodeBlock>
+            [1, 2, 3].map{'{'}choose 1{'}'}(*10) // [10, 2, 3] | [1, 20, 3] | [1, 2, 30]<BR/>
+            <BR/>
+            Number{'{'}choose 5{'}'}
+          </CodeBlock>
+          Call it directly:
+          <CodeBlock>
+            choose 1 Number<BR/>
+            choose 50% ("A" | "B" | "C" | "D")
+          </CodeBlock>
+          Or pass it to any function which will fill the type automatically (the choice having to disambiguate where necessary).
+          <CodeBlock>
+            func (a: String, b: Number[], c: String)<BR/>
+            func(choose, choose) // Choose two variables, the second can be a Number[] or a String
+          </CodeBlock>
+
+          Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
+
+          {/* TODO Should be var @ * to edit it everywhere explicitly? */}
+
+          <CodeBlock>
+            var = 2<BR/>
+            [1, var, var].map{'{'}choose 1{'}'}(*10) // [10, 2, 2] | [1, 20, 20]<BR/>
+            var = 2<BR/>
+            [1, var, var].map{'{'}choose 2{'}'}(*10) // [10, 20, 20] | [1, 200, 200]
+          </CodeBlock>
+
+          An example of where (choose) is used, is in a function defined on Iterable, the (unordered) function. Which says: I don't care about the order, or even what kind of structure yields the values, I just want it to yield them.
+          <CodeBlock>
+            class Iterable<BR/>
+            <></>  unordered ={'>'}<BR/>
+            <></>    choose Iterable{'{'}.every(this.contains(.)) && .count == count{'}'}
+          </CodeBlock>
+
+          Which can be useful because certain compiler optimizations might work when order doesn't matter.<BR/>
+
+          We can also force a player to make that arbitrary choice:
+          <CodeBlock>
+            @me.choose String
+          </CodeBlock>
+
+          {/* How tto define which algorithm chooses */}
 
         </Section>
-        <Section head="§5.2 Language Templating">
+        <Section head="§4.8 Coroutines">
+
+        </Section>
+        <Section head="§4.9 Concurrency">
+
+        </Section>
+      </Section>
+      <Section head="§5. Playerfacing">
+        <Section head="§5.1 Syntax Highlighting">
+
+        </Section>
+        <Section head="§5.2 Theorem Proving">
 
         </Section>
         <Section head="§5.3 Geometry">
@@ -967,7 +1160,7 @@ const Almanac = () => {
 
         </Section>
       </Section>
-      <Section head="§7. Other Features">
+      <Section head="§7. Other Features of the Standard Library">
         <Section head="§7.1 (Unicode) Strings">
 
         </Section>
