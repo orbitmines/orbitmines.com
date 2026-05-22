@@ -2159,12 +2159,12 @@ export const RenderedRay = (
          * [  |--]
          */
         if (vertex.vertex.is_none()) {
-          return <Continuation color="orange" position={position} />
+          return <Continuation color={color} position={position} />
         } else {
           const possible_continuations = vertex.vertex;
 
           if (!possible_continuations.as_reference().is_terminal())
-            return <Continuation color="orange" position={position} />
+            return <Continuation color={color} position={position} />
           //
           // if (vertex.terminal.store.rendered)
           //   return <></>
@@ -2177,7 +2177,7 @@ export const RenderedRay = (
       }
       case RayType.TERMINAL: {
         if (vertex.vertex.is_none()) {
-          return <Continuation color="orange" position={position} />
+          return <Continuation color={color} position={position} />
         } else {
           const possible_continuations = vertex.vertex;
 

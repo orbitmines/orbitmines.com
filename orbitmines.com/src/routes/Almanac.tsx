@@ -23,7 +23,7 @@ ReactPrism.languages.bash = Prism.languages.bash
 
 // Import bash language from prismjs
 import "prismjs/components/prism-bash";
-import { CanvasContainer } from "./archive/2023.OnOrbits";
+import { add, CachedVisualizationCanvas, CanvasContainer, Continuation, Line, Ray, RenderedRay, torus, Vertex } from "./archive/2023.OnOrbits";
 export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
   title: "Ether's Almanac",
   subtitle: "Your handbook for anything Ether, Ray & OrbitMines.",
@@ -209,9 +209,10 @@ const Shell = ({children}: Children) => {
   </Block>
 }
 
-export const CodeBlock = ({children}: Children) => {
+export const CodeBlock = ({children, after}: Children & { after?: React.ReactNode }) => {
   return <Block style={{textAlign: 'left'}}>
     <Highlighted code={string(children)}/>
+    {after}
   </Block>;
 };
 
@@ -619,47 +620,7 @@ const Almanac = () => {
             // 1 | 3 | 6 | 10
           </CodeBlock>
 
-          <CodeBlock>
-            x: Graph = [1, "2a" | "2b", 3]
-          </CodeBlock>
 
-          If you recall the superposed mapping example from before, something like:
-          <CodeBlock>
-            [1, 2, 3].map(*2) // [2, 4, 6]<BR/>
-            (1 & 2 & 3) * 2 // 2 & 4 & 6
-          </CodeBlock>
-          It's worth noting that mapping, retains structure. So if we for instance have the following graph.
-          <Block>
-
-          </Block>
-          And we map it:
-          <CodeBlock>
-            x: Graph = false, true & false, true<BR/>
-            x.map(!) // true, false & true, false
-          </CodeBlock>
-          Structure is retained:
-          <Block>
-
-          </Block>
-          <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
-          <CodeBlock>
-            x: Number = [1, 2, 3]<BR/>
-            x.map(entry: + Ray ={'>'} entry + entry.index) // [1, 3, 5]<BR/>
-            <BR/>
-            // Without '+ Ray' .index is the same as the integer value:<BR/>
-            x.map(entry ={'>'} entry.index) // [1, 2, 3]
-          </CodeBlock>
-          <span style={{textAlign: 'left'}}>The mapping function can also include a filter which decides which entries should be mapped. <span className="bp5-text-muted">(In <Reference is="reference" index={referenceCounter()} reference={{title: "category theory", link: "https://en.wikipedia.org/wiki/Category_theory"}} simple inline /> this is referred to as a <Reference is="reference" index={referenceCounter()} reference={{title: "lens", link: "https://ncatlab.org/nlab/show/lens+%28in+computer+science%29"}} simple inline />.)</span> This filter is applied just like any type filter, but instead on the mapping function.</span>
-          <CodeBlock>
-            [1, 2, 3].map{'{'}.index == 2{'}'}(*10) // [1, 2, 30]
-          </CodeBlock>
-
-          Since structure is accessible to mapping function, one of the things you might want to do is to rewrite that structure in place with a different structure.
-          <BR/>
-
-          <CodeBlock>
-
-          </CodeBlock>
 
           {/* TODO */}
 
@@ -700,6 +661,107 @@ const Almanac = () => {
             <BR/>
             x## // == [string, equipped_structure]
           </CodeBlock>
+
+
+          <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
+          <CodeBlock>
+            x: Number = [1, 2, 3]<BR/>
+            x.map(entry: + Ray ={'>'} entry + entry.index) // [1, 3, 5]<BR/>
+            <BR/>
+            // Without '+ Ray' .index is the same as the integer value:<BR/>
+            x.map(entry ={'>'} entry.index) // [1, 2, 3]
+          </CodeBlock>
+          <span style={{textAlign: 'left'}}>The mapping function can also include a filter which decides which entries should be mapped. <span className="bp5-text-muted">(In <Reference is="reference" index={referenceCounter()} reference={{title: "category theory", link: "https://en.wikipedia.org/wiki/Category_theory"}} simple inline /> this is referred to as a <Reference is="reference" index={referenceCounter()} reference={{title: "lens", link: "https://ncatlab.org/nlab/show/lens+%28in+computer+science%29"}} simple inline />.)</span> This filter is applied just like any type filter, but instead on the mapping function.</span>
+          <CodeBlock>
+            [1, 2, 3].map{'{'}.index == 2{'}'}(*10) // [1, 2, 30]
+          </CodeBlock>
+
+          Since structure is accessible to mapping function, one of the things you might want to do is to rewrite that structure in place with a different structure.
+          <BR/>
+
+          <CodeBlock>
+
+          </CodeBlock>
+
+
+
+          <CodeBlock>
+            x: Graph = [1, "2a" | "2b", 3]
+          </CodeBlock>
+
+          If you recall the superposed mapping example from before, something like:
+          <CodeBlock>
+            [1, 2, 3].map(*2) // [2, 4, 6]<BR/>
+            (1 & 2 & 3) * 2 // 2 & 4 & 6
+          </CodeBlock>
+          It's worth noting that mapping, retains structure. So if we for instance have the following graph.
+          <CodeBlock after={
+
+            <CachedVisualizationCanvas alt="graph" context={book} style={{height: '120px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
+                <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
+              </group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+              <group scale={1.5}>
+                <Continuation position={[-20, 0, 0]} color="#5f6b7c"/>
+                <Line start={add([-20, 0, 0], [-torus.radius, 0, 0])} end={add([-20, 0, 0], [-20, 0, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+              </group>
+              
+              <group scale={1.5}>
+                <Continuation position={[20, 0, 0]} color="#5f6b7c"/>
+                <Line start={add([20, 0, 0], [torus.radius, 0, 0])} end={add([20, 0, 0], [20, 0, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+              </group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+
+              <group scale={1.5}>
+                <Vertex position={[0, 10, 0]} color="#5f6b7c"/>
+                <Vertex position={[0, -10, 0]} color="#5f6b7c"/>
+              </group>
+              
+              <group scale={0.5} position={[-60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+              </group>
+              <group scale={0.5} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+               </group>
+              <group scale={0.5} position={[0, -15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+              </group>
+              <group scale={0.5} position={[0, 15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+              </group>
+
+            </CachedVisualizationCanvas>
+          }>
+            x: Graph = [false, false | true, true]
+          </CodeBlock>
+          And we map it:
+          <CodeBlock>
+            x.map(!) // true, true | false, false
+          </CodeBlock>
+          Structure is retained:
+          <Block>
+
+          </Block>
+
+          That however leaves one thing I haven't yet explained about Rays, so the Nodes with structural information, which is the way booleans and numbers are encoded as Rays.
+          <BR/>
+          For that we'll turn towards the next section.
         </Section>
         <Section head="§2.3 Numbers">
           {/* Booleans, Numbers, compare i64 and other things */}
