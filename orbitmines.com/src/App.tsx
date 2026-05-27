@@ -9,11 +9,12 @@ import {Children, ThumbnailPage} from "./lib/post/Post";
 import Archive from "./routes/Archive";
 import Minimap from './routes/Minimap';
 import Almanac from "./routes/Almanac";
+import {EtherOverlay} from "./@ether/UI";
+import EtherOrMinimap from "./@ether/UI/router/EtherOrMinimap";
 
 export const Router = () => {
 
   return <Routes>
-    <Route path="*" element={<Minimap/>} errorElement={<Minimap/>} />
     <Route path="profiles">
       <Route path=":profile" element={<Profile />} />
     </Route>
@@ -23,6 +24,9 @@ export const Router = () => {
     </Route>
     <Route path="almanac" element={<Almanac />} />
     <Route path="thumbnail" element={<ThumbnailPage />} />
+    {/* Catch-all: hands ether URLs (/@user/..., /$...) to EtherRoutes,
+        everything else to Minimap. */}
+    <Route path="*" element={<EtherOrMinimap/>} errorElement={<Minimap/>} />
   </Routes>
 }
 
@@ -52,6 +56,7 @@ function App() {
       <HotkeysProvider>
         <Modules className="bp5-dark" listeners={[listener]}>
           <Router/>
+          <EtherOverlay/>
         </Modules>
       </HotkeysProvider>
     </Metadata>

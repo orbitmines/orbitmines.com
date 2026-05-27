@@ -1074,7 +1074,7 @@ const RefIcon = ({organization}: {organization: TOrganization}) => {
 
   return <></>
 }
-export const Reference = (props: { reference?: ReferenceProps, target?: string } & React.HTMLAttributes<HTMLElement> & RowProps & ReferenceStyle & FootnoteProps) => {
+export const Reference = (props: { reference?: ReferenceProps, target?: string, dark?: boolean } & React.HTMLAttributes<HTMLElement> & RowProps & ReferenceStyle & FootnoteProps) => {
   const {
     reference,
     target = "_blank",
@@ -1090,6 +1090,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
     className,
 
     style,
+    dark,
 
     ...otherProps
   } = props;
@@ -1165,6 +1166,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
           {React.createElement(link ? 'a' : 'span', {
             ...(link ? { href: link.replace("https://orbitmines.com", ""), target } : { }),
             className: classNames('child-mr-3', className),
+            style: dark ? { color: '#5d7eac' } : {},
             children: <>
               {(organizations ?? []).map(organization => <RefIcon organization={organization} />)}
               <Rendered renderable={title} />
@@ -1172,7 +1174,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string }
           })}
         </Col>
         <Col xs={12}>
-          <Row start="xs" className="bp5-text-muted" style={{display: 'inline'}}>
+          <Row start="xs" className={dark ? "bp5-text-disabled" : "bp5-text-muted"} style={{display: 'inline'}}>
             {_.compact([(year || date) ? `${date ?? year}.` : '', author]).join(' ')}
           </Row>
         </Col>
@@ -1543,7 +1545,10 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
       <Col><img src={props.picture.replace('https://orbitmines.com', '')} alt="Profile picture" style={{
         maxWidth: '32px', clipPath: 'circle()'}}
       /></Col>
+      <Col>
       <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a>}</H3>
+      <Col xs={12} style={{width: '100%', padding: '0'}}><div className="bp5-text-muted" style={{textAlign: 'left', width: '100%', fontSize: '0.8rem'}}><a className="bp5-text-muted" href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>@{profile}</a></div></Col>
+      </Col>
     </Row>
     <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row>
     <Row center="xs" className="child-px-2">

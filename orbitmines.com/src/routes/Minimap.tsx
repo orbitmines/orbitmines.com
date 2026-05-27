@@ -101,17 +101,8 @@ const Minimap = () => {
                       />
                     </Col>
                   </Row>
-                  <CanvasContainer style={{height: '140px'}} className="hidden-xs">
-                    <canvas
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_2.png')`,
-                        backgroundPosition: 'center center',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
-                  </CanvasContainer>
+                </Col>
+                <Col style={{maxWidth: '500px'}}>
                   <Reference
                     index={0}
                     reference={{
@@ -155,46 +146,38 @@ const Minimap = () => {
                     />
                   </div>
                 </Col>
-                <Col style={{maxWidth: '500px'}}>
-                  {/*<Row start="xs">*/}
-                  <Reference
-                    index={0}
-                    reference={{
-                      title: "/updates",
-                      organizations: [ORGANIZATIONS.orbitmines_research]
-                    }}
-                    start="xs"
-                    style={{fontSize: '0.8rem'}} className="bp5-text-muted" target="_blank"
-                  />
-                  {/*</Row>*/}
-
-                  <div className="pl-9">
-                    {papers.map(paper => (
-                      <Reference index={0}
-                                 reference={{...paper.reference, subtitle: undefined, notes: undefined}}
-                                 start="xs"
-                                 style={{fontSize: '0.8rem'}} target="_self"/>
-                    ))}
-                  </div>
-
-                  <CanvasContainer style={{height: '150px'}} className="hidden-xs">
-                    <canvas
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
-                        backgroundPosition: 'center center',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
-                  </CanvasContainer>
-                </Col>
               </Row>
             </Col>
 
             <Col xs={12} style={{marginTop: '5%', marginBlock: '5%'}}>
               <Author {...PROFILES.fadi_shawki}
                       filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
+            </Col>
+
+            <Col xs={12}>
+              <Row center="xs">
+                <Col style={{maxWidth: '500px'}}> {/*<Row start="xs">*/}
+                  <Row><span className="bp5-text-disabled" style={{
+                    fontSize: '0.8rem',
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    paddingBottom: "6px",
+                    textAlign: 'left'
+                  }}>
+                    /updates
+                  </span></Row>
+                
+                  <div className="pl-9">
+                    {papers.map(paper => (
+                      <Reference index={0}
+                                  reference={{...paper.reference, subtitle: undefined, notes: undefined}}
+                                  start="xs"
+                                  dark
+                                  style={{fontSize: '0.8rem'}} target="_self"/>
+                    ))}
+                  </div>
+                </Col>
+              </Row>
             </Col>
           </Col>
         </Row>

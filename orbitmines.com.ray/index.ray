@@ -1,6 +1,6 @@
-"orbitmines.com"() if &entrypoint
+orbitmines.com() if &entrypoint
 
-class "orbitmines.com" < Interface
+class orbitmines.com < Interface
   { url } = Browser
 
   url.path.match
