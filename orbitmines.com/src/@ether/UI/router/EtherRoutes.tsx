@@ -6,6 +6,7 @@ import Library from '../pages/library/Library';
 import Settings from '../pages/settings/Settings';
 import LangPage from '../pages/language/LangPage';
 import PullRequests from '../pages/pullrequests/PullRequests';
+import Repository from '../pages/repository/Repository';
 
 // Dispatches an ether URL to a page component. Pages are placeholders for
 // now — they'll be replaced page-by-page in the next milestones.
@@ -15,7 +16,7 @@ const EtherRoutes: React.FC = () => {
 
   switch (route.page) {
     case 'repository':
-      return <Placeholder page="repository" params={route.params} />;
+      return <Repository params={route.params} />;
     case 'pull-requests':
       return <PullRequests params={route.params} />;
     case 'settings':

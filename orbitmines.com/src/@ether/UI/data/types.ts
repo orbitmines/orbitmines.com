@@ -38,6 +38,50 @@ export function flattenEntries(tree: TreeEntry[]): FileEntry[] {
   return out;
 }
 
+export function resolveDirectory(tree: TreeEntry[], pathSegments: string[]): TreeEntry[] | null {
+  let current = tree;
+  for (const segment of pathSegments) {
+    const flat = flattenEntries(current);
+    const entry = flat.find((e) => e.name === segment && e.isDirectory);
+    if (!entry || !entry.children) return null;
+    current = entry.children;
+  }
+  return current;
+}
+
+export function resolveFile(tree: TreeEntry[], pathSegments: string[]): FileEntry | null {
+  if (pathSegments.length === 0) return null;
+  const dirPath = pathSegments.slice(0, -1);
+  const fileName = pathSegments[pathSegments.length - 1];
+  const dir = dirPath.length > 0 ? resolveDirectory(tree, dirPath) : tree;
+  if (!dir) return null;
+  const flat = flattenEntries(dir);
+  return flat.find((e) => e.name === fileName && !e.isDirectory) || null;
+}
+
+function resolveFlexible(tree: TreeEntry[], pathSegments: string[]): TreeEntry[] | null {
+  let current = tree;
+  for (const segment of pathSegments) {
+    const flat = flattenEntries(current);
+    const entry = flat.find(
+      (e) => e.name === segment && (e.isDirectory || (e.children && e.children.length > 0)),
+    );
+    if (!entry || !entry.children) return null;
+    current = entry.children;
+  }
+  return current;
+}
+
+export function resolveFiles(tree: TreeEntry[], pathSegments: string[]): FileEntry[] {
+  if (pathSegments.length === 0) return [];
+  const dirPath = pathSegments.slice(0, -1);
+  const fileName = pathSegments[pathSegments.length - 1];
+  const dir = dirPath.length > 0 ? resolveFlexible(tree, dirPath) : tree;
+  if (!dir) return [];
+  const flat = flattenEntries(dir);
+  return flat.filter((e) => e.name === fileName && !e.isDirectory);
+}
+
 // ---- Repository ----
 
 export interface Repository {
