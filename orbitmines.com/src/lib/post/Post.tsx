@@ -1343,7 +1343,7 @@ export const PaperContent = (props: PaperProps) => {
   const util = new BookUtil(props, params)
 
   const Content = book && !isStartPage ? <>
-    <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: '#1c2127'}}>
+    <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: 'rgb(10, 10, 10)'}}>
       <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={toggleNavigation} /></Col>
       <Col xs={11}>
         <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
@@ -1386,7 +1386,7 @@ export const PaperContent = (props: PaperProps) => {
     <Row style={{maxWidth: '1650px', overflow: 'visible'}}>
       {book && !isStartPage && isMobile && mobileNavExpanded && notGenerate ? <>
         <div onClick={() => setMobileNavExpanded(false)} style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 19}} />
-        <div style={{position: 'fixed', top: 0, left: 0, bottom: 0, width: '75vw', zIndex: 20, background: '#1c1e26', overflowY: 'auto'}}>
+        <div style={{position: 'fixed', top: 0, left: 0, bottom: 0, width: '75vw', zIndex: 20, background: 'rgb(10, 10, 10)', overflowY: 'auto'}}>
           <Navigation {...props} hideBorder onNavigate={() => setMobileNavExpanded(false)} />
         </div>
       </> : <></>}
