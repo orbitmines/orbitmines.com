@@ -18,12 +18,21 @@ import type {SocialGroup} from './profileGroups';
 interface ProfileNamesProps {
   user: string;
   isOwner: boolean;
+  defaults?: ProfileSocial[];
 }
 
 // Editable list of social/world/email entries, grouped by platform.
 // Drag handles let the owner reorder both within a group and across groups.
-const ProfileNames: React.FC<ProfileNamesProps> = ({user, isOwner}) => {
-  const [socials, setSocials] = useState<ProfileSocial[]>(() => loadProfile(user).socials);
+const ProfileNames: React.FC<ProfileNamesProps> = ({user, isOwner, defaults}) => {
+  const [socials, setSocials] = useState<ProfileSocial[]>(() => {
+    const stored = loadProfile(user).socials;
+    return stored.length > 0 ? stored : (defaults ?? []);
+  });
+
+  useEffect(() => {
+    const stored = loadProfile(user).socials;
+    setSocials(stored.length > 0 ? stored : (defaults ?? []));
+  }, [user, defaults]);
 
   const persist = useCallback(
     (next: ProfileSocial[]) => {

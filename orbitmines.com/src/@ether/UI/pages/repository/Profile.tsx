@@ -5,13 +5,13 @@ import {getAPI} from '../../data';
 import type {Repository as RepoData} from '../../data';
 import {EditIcon} from './icons';
 import {DEFAULT_AVATAR_SVG_HTML} from './icons';
-import Header from './Header';
 import type {HeaderChainItem} from './Header';
 import Breadcrumb from './Breadcrumb';
 import {buildBasePath, buildCanonicalPath} from './paths';
 import {findReadmes} from './FileListing';
 import {getCurrentPlayer, loadProfile, saveProfile} from './storage';
 import ProfileNames from './ProfileNames';
+import {getUserContent, getProfileDefaults, externalToSocials, ProfileMeta} from './userDefaults';
 
 interface ProfileProps {
   effectiveUser: string;
@@ -42,6 +42,12 @@ const Profile: React.FC<ProfileProps> = ({
 }) => {
   const currentPlayer = getCurrentPlayer();
   const isOwner = effectiveUser === currentPlayer;
+  const defaults = useMemo(() => getProfileDefaults(effectiveUser), [effectiveUser]);
+  const defaultSocials = useMemo(
+    () => (defaults ? externalToSocials(defaults.external) : undefined),
+    [defaults],
+  );
+  const userContent = useMemo(() => getUserContent(effectiveUser), [effectiveUser]);
   const [profile, setProfile] = useState(() => loadProfile(effectiveUser));
 
   // Refresh local state if we switched to a different user
@@ -49,13 +55,14 @@ const Profile: React.FC<ProfileProps> = ({
     setProfile(loadProfile(effectiveUser));
   }, [effectiveUser]);
 
-  const displayName = profile.displayName || effectiveUser;
+  const displayName = profile.displayName || defaults?.name || effectiveUser;
   const displayVersion = versions.length > 0 ? versions[versions.length - 1][1] : 'latest';
 
   // ---- Avatar URL ----
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(defaults?.picture ?? null);
   useEffect(() => {
     let cancelled = false;
+    setAvatarUrl(defaults?.picture ?? null);
     void (async () => {
       const repo = await getAPI().getRepository(effectiveUser);
       if (!repo || cancelled) return;
@@ -75,7 +82,7 @@ const Profile: React.FC<ProfileProps> = ({
     return () => {
       cancelled = true;
     };
-  }, [effectiveUser]);
+  }, [effectiveUser, defaults]);
 
   // ---- README ----
   const [readmeContent, setReadmeContent] = useState<string | null>(null);
@@ -109,11 +116,12 @@ const Profile: React.FC<ProfileProps> = ({
 
   return (
     <div className="repo-page">
-      <Header chain={headerChain} base={base} versions={versions} path={path} />
-      <div className="repo-description">{repository.description}</div>
+      {defaults ? <ProfileMeta profile={defaults} user={effectiveUser} /> : null}
       <div className="profile-layout">
         <div className="profile-readme">
-          {readmeContent ? (
+          {userContent ? (
+            <div className="profile-user-content">{userContent}</div>
+          ) : readmeContent ? (
             <div className="readme-section">
               <div className="readme-header">README.md</div>
               <Markdown className="readme-body" source={readmeContent} />
@@ -145,7 +153,7 @@ const Profile: React.FC<ProfileProps> = ({
             settingsUrl={settingsUrl}
             chatUrl={chatUrl}
           />
-          <ProfileNames user={effectiveUser} isOwner={isOwner} />
+          <ProfileNames user={effectiveUser} isOwner={isOwner} defaults={defaultSocials} />
         </div>
       </div>
     </div>
@@ -220,13 +228,13 @@ const DisplayName: React.FC<DisplayNameProps> = ({displayName, isOwner, onChange
 
   return (
     <div className="profile-name-row">
-      <span
+      <h1
         className="profile-display-name"
         style={isOwner ? {cursor: 'text'} : undefined}
         onClick={() => isOwner && setEditing(true)}
       >
         {displayName}
-      </span>
+      </h1>
       {isOwner && (
         <button
           type="button"

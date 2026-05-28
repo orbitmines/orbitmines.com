@@ -4685,7 +4685,7 @@ export const fadi_shawki = <TProfile>{
 
   email: 'fadi.shawki@orbitmines.com',
 
-  title: "2026. Fadi Shawki",
+  title: "Fadi Shawki",
   subtitle: "A self-profile by some 26-solar-orbiting explorer.",
 
   reference: {
@@ -4727,11 +4727,11 @@ export const fadi_shawki = <TProfile>{
     {organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki'},
     {organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki'},
     {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
-    {
-      organization: ORGANIZATIONS.mastodon,
-      display: '@fadishawki',
-      link: 'https://mastodon.orbitmines.com/@fadishawki'
-    },
+    // {
+    //   organization: ORGANIZATIONS.mastodon,
+    //   display: '@fadishawki',
+    //   link: 'https://mastodon.orbitmines.com/@fadishawki'
+    // },
     {
       organization: ORGANIZATIONS.facebook,
       display: 'Fadi Shawki',

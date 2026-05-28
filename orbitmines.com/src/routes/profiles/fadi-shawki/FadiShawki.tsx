@@ -67,10 +67,10 @@ export const ONGOING_PROJECTS = [
     },
 ]
 
-const FadiShawki = () => {
+export const FadiShawkiBody = () => {
     const profile = PROFILES.fadi_shawki;
 
-    return <Profile profile={profile}>
+    return <>
         <Arc buffer={false}>
             <CanvasContainer style={{height: '110px'}}>
                 <canvas
@@ -183,7 +183,12 @@ const FadiShawki = () => {
                 <Category content={ARTICLES_2021}/>
             </Section>
         </Arc>
-    </Profile>;
+    </>;
+}
+
+const FadiShawki = () => {
+    const profile = PROFILES.fadi_shawki;
+    return <Profile profile={profile}><FadiShawkiBody /></Profile>;
 }
 
 export default FadiShawki;

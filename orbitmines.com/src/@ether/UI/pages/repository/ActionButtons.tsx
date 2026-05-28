@@ -32,7 +32,7 @@ interface PrimaryButtonProps {
 }
 
 // Star or follow button — mutually exclusive (follow takes precedence when present).
-const PrimaryButton: React.FC<PrimaryButtonProps> = ({starPath, followUser}) => {
+export const PrimaryButton: React.FC<PrimaryButtonProps> = ({starPath, followUser}) => {
   const [, force] = useState(0);
   const refresh = () => force((n) => n + 1);
   if (followUser) {

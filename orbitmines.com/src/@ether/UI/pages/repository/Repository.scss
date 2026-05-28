@@ -795,6 +795,9 @@ $line-height: 20px;
   color: $phosphor;
   line-height: 28px;
   cursor: default;
+  margin: 0;
+  padding: 0;
+  display: inline;
 }
 .profile-hover-edit {
   display: inline-flex;

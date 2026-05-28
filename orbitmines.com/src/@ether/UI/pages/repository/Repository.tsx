@@ -605,7 +605,6 @@ const FileViewMode: React.FC<FileViewModeProps> = ({
     }),
     // openFileHref captured below; we want stable identity for sidebar
     // panel so we recompute when entries/basePath change.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [entries, basePath, hashPath.join('/'), effectiveWorld, effectiveUser, treePath.join('/')],
   );
 
@@ -663,7 +662,6 @@ const FileViewMode: React.FC<FileViewModeProps> = ({
       ],
       sizes: [0.2, 0.8],
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFilePanelId]);
 
   if (!filePanel) return <div className="repo-page file-view-mode" />;

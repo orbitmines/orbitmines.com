@@ -413,7 +413,7 @@ const Book = (props: PaperProps) => {
 
   if (isStartPage)
     return <Row end="xs">
-      <Button rightIcon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.firstSection()); return next; })} />
+      <Button rightIcon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px', border: '1px solid #EAB832'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.firstSection()); return next; })} />
     </Row>
 
   return <Row>

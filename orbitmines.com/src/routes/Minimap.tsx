@@ -46,7 +46,7 @@ const Minimap = () => {
             <Col xs={12}><Row center="xs">
               <Col><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Col>
             </Row></Col>
-            <Col xs={12}>
+            <Col xs={12} className="pt-5">
               <Row center="xs">
                 <Col xl={4} lg={6} md={8} sm={10} xs={12}>
                   <Row center="xs">

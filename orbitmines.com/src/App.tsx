@@ -1,8 +1,7 @@
 import {HotkeysProvider} from '@blueprintjs/core';
 import React from 'react';
 import IEventListener from "./@orbitmines/js/react/IEventListener";
-import {Navigate, Route, Routes} from 'react-router-dom';
-import Profile from "./routes/profiles/Profiles";
+import {Navigate, Route, Routes, useParams} from 'react-router-dom';
 import {Helmet} from "react-helmet";
 import Modules from "./@orbitmines/js/react/Modules";
 import {Children, ThumbnailPage} from "./lib/post/Post";
@@ -12,11 +11,16 @@ import Almanac from "./routes/Almanac";
 import {EtherOverlay} from "./@ether/UI";
 import EtherOrMinimap from "./@ether/UI/router/EtherOrMinimap";
 
+const ProfileRedirect = () => {
+  const {profile} = useParams();
+  return <Navigate to={`/@${profile}`} replace />;
+};
+
 export const Router = () => {
 
   return <Routes>
     <Route path="profiles">
-      <Route path=":profile" element={<Profile />} />
+      <Route path=":profile" element={<ProfileRedirect />} />
     </Route>
     <Route path="papers/*" element={<Navigate to={`/archive/${window.location.pathname.replace(/^\/papers\/?/, '')}`} replace />}/>
     <Route path="archive">

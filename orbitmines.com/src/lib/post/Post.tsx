@@ -41,6 +41,7 @@ import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf
 import {renderToStaticMarkup} from "react-dom/server";
 import {Document, Font, Image, Page, Path, PDFViewer, Svg, Link as PdfLink, Text, View} from "@react-pdf/renderer";
 import Book, {BookUtil, Navigation} from "./Book";
+import { log } from 'node:console';
 
 export const Profile = ({profile, children, head}: {profile: TProfile} & Children & { head?: any }) => {
   const location = useLocation();
@@ -879,6 +880,52 @@ export const Layer = ({zIndex, children, ...props}: any) => {
   </div>;
 }
 
+const DebouncedSearch = ({delay = 350}: {delay?: number}) => {
+  const [params, setParams] = useSearchParams();
+  const urlSearch = params.get('search') ?? '';
+  const [value, setValue] = useState(urlSearch);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastWritten = useRef(urlSearch);
+
+  useEffect(() => {
+    if (urlSearch !== lastWritten.current) {
+      lastWritten.current = urlSearch;
+      setValue(urlSearch);
+    }
+  }, [urlSearch]);
+
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+
+  const commit = (next: string) => {
+    lastWritten.current = next;
+    setParams(prev => {
+      const p = new URLSearchParams(prev);
+      if (next) p.set('search', next); else p.delete('search');
+      return p;
+    });
+  };
+
+  return <InputGroup
+    id="search"
+    type="search"
+    leftElement={<Icon icon="search" />}
+    placeholder="Search"
+    value={value}
+    onChange={(e) => {
+      const next = e.target.value;
+      setValue(next);
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(() => commit(next), delay);
+    }}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        if (timer.current) clearTimeout(timer.current);
+        commit(value);
+      }
+    }}
+  />;
+};
+
 export const Exports = (
     {paper, children}: { paper: PaperProps } & Children
 ) => {
@@ -921,19 +968,7 @@ export const Exports = (
 
       <Col>
         <Row>
-          {paper.book ? <Col><InputGroup
-            id="search"
-            type="search"
-            leftElement={<Icon icon="search" />}
-            onChange={(value) => setParams(prev => { const next = new URLSearchParams(prev); next.set('search', value.target.value); return next; })}
-            placeholder="Search"
-            // rightElement={
-            //   <span className="bp5-text-disabled bp5-align-center p-5 hidden-xs">
-            //     Ctrl + F
-            //   </span>
-            // }
-            value={params.get('search') ?? ''}
-          /></Col> : <></>}
+          {paper.book ? <Col><DebouncedSearch /></Col> : <></>}
           <Col>
             {generate && ['button', 'thumbnail'].includes(generate) ? <>
               <Button text=".jpeg" icon="media" minimal onClick={exportJpeg} />
@@ -945,7 +980,7 @@ export const Exports = (
         </Row>
       </Col>
     </Row>
-    <div ref={ref}>
+    <div ref={ref} style={paper.book ? {width: '100%'} : undefined}>
       {children}
     </div>
   </Row>
@@ -1245,18 +1280,15 @@ export const PaperHeader = (props: PaperProps) => {
     <Title><Rendered renderable={title}/></Title>
     {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
 
-    <Row center="xs" middle="xs" className="child-px-20-sm">
+    <Row center="xs" middle="xs">
       {organizations ? <>
-        {organizations.map((organization) => (<Col md={!props.book ? 5 : 12} xs={12}>
+        {organizations.map((organization) => (<Col xl={5} xs={12}>
           <Organization {...organization} />
         </Col>))}
 
-        <Col xs={1} className={`hidden-xs hidden-sm hidden-md hidden-lg ${props.book ? 'hidden-xl' : ''}`}>
-          <Divider style={{height: '80px'}}/>
-        </Col>
       </> : <></>}
 
-      {(authors || []).map((author) => (<Col md={!props.book && organizations ? 5 : 12} xs={12}>
+      {(authors || []).map((author) => (<Col xl={organizations ? 5 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
@@ -1324,6 +1356,7 @@ export const PaperContent = (props: PaperProps) => {
 
   const section = params.get('section');
   const isStartPage: boolean = (section ?? "").length == 0
+  const isSearching: boolean = (params.get('search') ?? "").length > 0
 
   try {
     generate = params.get('generate');
@@ -1342,7 +1375,7 @@ export const PaperContent = (props: PaperProps) => {
 
   const util = new BookUtil(props, params)
 
-  const Content = book && !isStartPage ? <>
+  const Content = book && (!isStartPage || isSearching) ? <>
     <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: 'rgb(10, 10, 10)'}}>
       <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={toggleNavigation} /></Col>
       <Col xs={11}>
@@ -1476,15 +1509,39 @@ export const Paragraph = ({ children }: Children & { block?: boolean }): JSX.Ele
   </span>;
 }
 
-export const Organization = (props: AllowReact<TOrganization> & { only_logo?: boolean }) => {
-  const { name, assets } = props;
+export const Organization = (props: AllowReact<TOrganization>) => {
+  let generate;
+  try {
+    const [params] = useSearchParams();
+
+    generate = params.get('generate');
+  } catch (e) {
+    generate = 'pdf';
+  }
+  
+  const { profile, name, assets } = props;
   const { logo } = assets;
+  const key = profile.profile;
+  console.log(props)
 
   return <Col>
-    <Row center="xs">
-      <img src={logo} alt={_.isString(name) ? name : 'logo'} style={{maxWidth: '200px'}}/>
+   <Row center="xs" middle="xs" className="child-px-2">
+      <Col><img src={logo.replace('https://orbitmines.com', '')} alt={_.isString(name) ? name : 'Logo'} style={{
+        maxWidth: '150px'}}
+      /></Col>
+      <Col>
+      {/* <H3 className="m-0"><a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a></H3> */}
+      <Col xs={12} style={{width: '100%', padding: '0'}}><div className="bp5-text-muted" style={{textAlign: 'left', width: '100%', fontSize: '0.8rem'}}><a className="bp5-text-muted" href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>@{profile.profile}</a></div></Col>
+      </Col>
     </Row>
-    {props.only_logo ? <></> : <H3>{name}</H3>}
+    {/* <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row> */}
+    <Row center="xs" className="child-px-2">
+      {profile.external.map(profile => <Col>
+        <a href={profile.link} target="_blank">
+          <CustomIcon icon={profile.organization.key} size={16}/>
+        </a>
+      </Col>)}
+    </Row>
   </Col>
 }
 

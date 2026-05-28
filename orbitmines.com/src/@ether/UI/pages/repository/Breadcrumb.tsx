@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import ActionRow, {CloneButton} from './ActionButtons';
+import ActionRow, {CloneButton, PrimaryButton} from './ActionButtons';
 
 export interface BreadcrumbItem {
   label: string;
@@ -79,7 +79,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
         {canonicalPath && (
           <span className="breadcrumb-actions">
             <span style={{marginLeft: 'auto'}} />
-            {/* PrimaryButton + CloneButton repeated here for desktop layout */}
+            <PrimaryButton
+              canonicalPath={canonicalPath}
+              starPath={starPath || canonicalPath}
+              followUser={followUser}
+            />
             <CloneButton canonicalPath={canonicalPath} />
           </span>
         )}

@@ -180,7 +180,6 @@ const DirectoryNode: React.FC<NodeProps> = ({
     if (isOnPath && !expanded.has(href)) {
       onToggle(href, true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isExpanded = expanded.has(href);
@@ -283,7 +282,6 @@ const FileNode: React.FC<NodeProps> = ({
     if (isOnPath && fileChildren.length > 0 && !expanded.has(href)) {
       onToggle(href, true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (fileChildren.length === 0) {
