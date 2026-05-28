@@ -118,16 +118,6 @@ const Profile: React.FC<ProfileProps> = ({
     <div className="repo-page">
       {defaults ? <ProfileMeta profile={defaults} user={effectiveUser} /> : null}
       <div className="profile-layout">
-        <div className="profile-readme">
-          {userContent ? (
-            <div className="profile-user-content">{userContent}</div>
-          ) : readmeContent ? (
-            <div className="readme-section">
-              <div className="readme-header">README.md</div>
-              <Markdown className="readme-body" source={readmeContent} />
-            </div>
-          ) : null}
-        </div>
         <div className="profile-card">
           <Avatar effectiveUser={effectiveUser} avatarUrl={avatarUrl} isOwner={isOwner} />
           <DisplayName
@@ -154,6 +144,16 @@ const Profile: React.FC<ProfileProps> = ({
             chatUrl={chatUrl}
           />
           <ProfileNames user={effectiveUser} isOwner={isOwner} defaults={defaultSocials} />
+        </div>
+        <div className="profile-readme">
+          {userContent ? (
+            <div className="profile-user-content">{userContent}</div>
+          ) : readmeContent ? (
+            <div className="readme-section">
+              <div className="readme-header">README.md</div>
+              <Markdown className="readme-body" source={readmeContent} />
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

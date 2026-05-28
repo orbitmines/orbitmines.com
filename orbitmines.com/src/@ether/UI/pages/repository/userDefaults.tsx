@@ -3,7 +3,7 @@ import {Helmet} from 'react-helmet';
 import {PROFILES} from '../../../../routes/profiles/profiles';
 import type {TProfile, ExternalProfile} from '../../../../lib/organizations/ORGANIZATIONS';
 import {FadiShawkiBody} from '../../../../routes/profiles/fadi-shawki/FadiShawki';
-import {Grid, value} from '../../../../lib/post/Post';
+import {value} from '../../../../lib/post/Post';
 import {SOCIAL_PLATFORMS} from './icons';
 import type {ProfileSocial} from './storage';
 
@@ -17,9 +17,9 @@ const PROFILE_BY_SLUG: Record<string, TProfile> = Object.values(PROFILES).reduce
 
 const USER_CONTENT: Record<string, React.ReactNode> = {
   'fadi-shawki': (
-    <Grid fluid style={{padding: 0, fontSize: '1.1rem'}}>
+    <div style={{fontSize: '1.1rem'}}>
       <FadiShawkiBody />
-    </Grid>
+    </div>
   ),
 };
 

@@ -735,13 +735,16 @@ $line-height: 20px;
 // ---- Profile page ----
 
 .profile-layout {
-  display: flex;
-  gap: 32px;
+  display: block;
   margin-top: 8px;
+  &::after { content: ""; display: block; clear: both; }
 }
-.profile-readme { flex: 1 1 60%; min-width: 0; }
+.profile-readme { min-width: 0; }
 .profile-card {
-  flex: 0 0 300px;
+  float: right;
+  width: 300px;
+  margin-left: 32px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1117,6 +1120,5 @@ $line-height: 20px;
 }
 
 @media (max-width: 700px) {
-  .profile-layout { flex-direction: column-reverse; }
-  .profile-card { flex: none; width: 100%; }
+  .profile-card { float: none; width: 100%; margin-left: 0; }
 }

@@ -67,7 +67,8 @@ export type Content = {
   archived?: boolean,
   found_at?: string,
   viewed_at?: string,
-  description?: string
+  description?: string,
+  type?: 'book' | 'video' | 'article'
 }
 
 export type TProfile = {
