@@ -32,6 +32,7 @@ import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMin
 import {PROFILES} from "../profiles/profiles";
 import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
 import {Highlight, Prism, themes} from "prism-react-renderer";
+import "../../lib/prism/ray";
 
 export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   reference: {
@@ -56,58 +57,18 @@ export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
   }, status: Viewed.VIEWED, found_at: "2025", viewed_at: "December, 2025"
 }
 
-Prism.languages["ray.txt"] = {
-  'string': {
-    pattern: /"(?:\\.|\{[^{}]*\}|(?!\{)[^\\"])*"/,
-    inside: {
-      'interpolation': {
-        pattern: /\{[^{}]*\}/,
-        inside: {
-          'punctuation': /^\{|\}$/,
-          'expression': {
-            pattern: /[\s\S]+/,
-            inside: null // see below
-          }
-        }
-      }
-    }
-  },
-  'comment': {
-    pattern: /(\/\/.*)|(\/\*.*\*\/)/,
-    greedy: true
-  },
-  'number': /(-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b)|(\bU\+([a-fA-F0-9]+)?\b)|(\b0x([a-fA-F0-9]+)?\b)/i,
-  'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
-  'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]|[⊣⊢∙⊙₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾]/,
-  'keyword': {
-    pattern: /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b|[0-9a-f-]{36}/,
-    greedy: true
-  },
-  'access': {
-    pattern: /@[a-zA-Z0-9_]*/,
-    greedy: true
-  },
-  'builtin': /\b(?:goto|branch|if|elsif|else|assume|boolean|Number|String)\b/,
-  'boolean': /\b(?:false|true)\b/,
-  'class-name': /[A-Z][A-Za-z0-9_]+/,//
-  'variable': /[a-z0-9_]+/,
-};
-// (Prism as any).languages["ray.txt"]['template-string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
-(Prism as any).languages["ray.txt"]['string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
-
-
 const highlight = (code: string) => (
   // @ts-ignore
   <Highlight prism={Prism} theme={themes.duotoneDark} code={code} language="ray.txt">
     {({className, style, tokens, getLineProps, getTokenProps}) => (
       <>
         {tokens.map((line, i) => {
-          const { key: _lk, ...lineProps } = getLineProps({line, key: i}) as any;
+          const lp = getLineProps({line}) as any;
           return (
-            <div key={i} {...lineProps}>
+            <div key={i} className={lp.className} style={lp.style}>
               {line.map((token, ti) => {
-                const { key: _tk, ...tokenProps } = getTokenProps({token, key: ti}) as any;
-                return <span key={ti} {...tokenProps} />;
+                const tp = getTokenProps({token}) as any;
+                return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
               })}
             </div>
           );

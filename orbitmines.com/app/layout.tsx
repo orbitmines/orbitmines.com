@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import '../src/lib/blueprintjs/css/blueprint.css';
 import '../src/lib/blueprintjs/css/blueprint-icons.css';
 import '../src/lib/index.scss';
+import Providers from './Providers';
 
 export const metadata: Metadata = {
   title: 'OrbitMines Research',
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root">{children}</div>
+        <div id="root">
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );

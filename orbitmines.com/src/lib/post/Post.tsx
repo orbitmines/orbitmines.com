@@ -779,12 +779,12 @@ export const highlight = (code: string) => (
       {({className, style, tokens, getLineProps, getTokenProps}) => (
           <>
             {tokens.map((line, i) => {
-              const { key: _lk, ...lineProps } = getLineProps({line, key: i}) as any;
+              const lp = getLineProps({line}) as any;
               return (
-                <div key={i} {...lineProps}>
+                <div key={i} className={lp.className} style={lp.style}>
                   {line.map((token, ti) => {
-                    const { key: _tk, ...tokenProps } = getTokenProps({token, key: ti}) as any;
-                    return <span key={ti} {...tokenProps} />;
+                    const tp = getTokenProps({token}) as any;
+                    return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
                   })}
                 </div>
               );

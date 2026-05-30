@@ -30,7 +30,8 @@
       "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig": ["./src/lib/blueprintjs/hooks/hotkeys/hotkeyConfig"],
       "@blueprintjs/icons": ["./src/lib/blueprintjs"],
       "@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf": ["./src/lib/blueprintjs/css/blueprint-icons-16.ttf"],
-      "@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf": ["./src/lib/blueprintjs/css/blueprint-icons-20.ttf"]
+      "@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf": ["./src/lib/blueprintjs/css/blueprint-icons-20.ttf"],
+      "react-router-dom": ["./src/router"]
     },
     "plugins": [
       {

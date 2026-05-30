@@ -14,6 +14,7 @@ import Post, {
 import {Button} from "@blueprintjs/core";
 import {useSearchParams} from "react-router-dom";
 import {Highlight, Prism as ReactPrism, themes} from "prism-react-renderer";
+import "../lib/prism/ray";
 import {DownloadButton} from "../@orbitmines/ether/Ether";
 
 import Prism from "prismjs";
@@ -163,13 +164,17 @@ const Highlighted = (props: { code: string }) => {
             overflowWrap: 'break-word'
           }}
         >
-        {tokens.map((line, i) => (
-          <div key={i} {...getLineProps({ line, key: i })}>
-            {line.map((token, key) => (
-              <span key={key} {...getTokenProps({ token, key })} />
-            ))}
-          </div>
-        ))}
+        {tokens.map((line, i) => {
+          const lp = getLineProps({ line }) as any;
+          return (
+            <div key={i} className={lp.className} style={lp.style}>
+              {line.map((token, ti) => {
+                const tp = getTokenProps({ token }) as any;
+                return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
+              })}
+            </div>
+          );
+        })}
       </pre>
       )}
     </Highlight>
@@ -198,12 +203,12 @@ const Shell = ({children}: Children) => {
       {({className, style, tokens, getLineProps, getTokenProps}) => (
         <>
           {tokens.map((line, i) => {
-            const { key: _lk, ...lineProps } = getLineProps({line, key: i}) as any;
+            const lp = getLineProps({line}) as any;
             return (
-              <div key={i} {...lineProps}>
+              <div key={i} className={lp.className} style={lp.style}>
                 {line.map((token, ti) => {
-                  const { key: _tk, ...tokenProps } = getTokenProps({token, key: ti}) as any;
-                  return <span key={ti} {...tokenProps} />;
+                  const tp = getTokenProps({token}) as any;
+                  return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
                 })}
               </div>
             );

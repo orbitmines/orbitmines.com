@@ -8,6 +8,7 @@ const BP_LOCAL = path.resolve(__dirname, 'src/lib/blueprintjs');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...(isProd ? { output: 'export', distDir: 'build' } : {}),
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
   reactStrictMode: false,
   images: { unoptimized: true, disableStaticImages: true },
   trailingSlash: false,
@@ -43,6 +44,7 @@ const nextConfig = {
       '@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf': path.join(BP_LOCAL, 'css/blueprint-icons-20.ttf'),
       '@blueprintjs/core$': BP_LOCAL,
       '@blueprintjs/icons$': BP_LOCAL,
+      'react-router-dom$': path.resolve(__dirname, 'src/router'),
     };
 
     config.module.rules.push({
