@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
+const logo = "/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
 import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";

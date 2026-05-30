@@ -34,9 +34,9 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "dev": "next dev --webpack",
+    "dev": "next dev",
     "start": "next start",
-    "build": "next build --webpack",
+    "build": "next build",
     "lint": "next lint"
   },
   "browserslist": {

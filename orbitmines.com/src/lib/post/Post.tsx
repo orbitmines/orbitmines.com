@@ -33,11 +33,12 @@ import {IntentProps, Props} from "@blueprintjs/core/src/common";
 import {SVGIconProps} from "@blueprintjs/icons";
 import {CanvasContainer} from "../../routes/archive/2023.OnOrbits";
 import {BulkLoad, SingleLoad} from "@react-pdf/font";
-import _BlueprintIcons16 from '@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf';
-import _BlueprintIcons20 from '@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf';
-import JetBrainsMonoRegular from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf";
-import JetBrainsMonoSemiBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-SemiBold.ttf";
-import JetBrainsMonoBold from "../fonts/JetBrainsMono/ttf/JetBrainsMono-Bold.ttf";
+// Font URLs come from /public/fonts so they don't need a build-time loader.
+const _BlueprintIcons16 = '/fonts/blueprint-icons-16.ttf';
+const _BlueprintIcons20 = '/fonts/blueprint-icons-20.ttf';
+const JetBrainsMonoRegular = '/fonts/JetBrainsMono-Regular.ttf';
+const JetBrainsMonoSemiBold = '/fonts/JetBrainsMono-SemiBold.ttf';
+const JetBrainsMonoBold = '/fonts/JetBrainsMono-Bold.ttf';
 import {renderToStaticMarkup} from "react-dom/server";
 import {Document, Font, Image, Page, Path, PDFViewer, Svg, Link as PdfLink, Text, View} from "@react-pdf/renderer";
 import Book, {BookUtil, Navigation} from "./Book";
