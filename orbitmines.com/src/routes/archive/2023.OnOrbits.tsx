@@ -3329,8 +3329,8 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
   // TODO: Indicies not corresponding the the directionality defined, are probably on another abstraction layer described this way. More accurately, they're directly connected, and on a separate layer with more stuff in between...
   get index(): Ray { throw new NotImplementedError(); }
   // TODO: Can probably generate these on the fly, or cache them automatically
-  min = (_default: 0): Ray => { throw new NotImplementedError(); }
-  max = (_default: 0): Ray => { throw new NotImplementedError(); }
+  min = (_default: 0): Ray => { throw new NotImplementedError(); };
+  max = (_default: 0): Ray => { throw new NotImplementedError(); };
 
   // TODO: FIND OUT IF SOMEONE HAS A NAME FOR THIS
   // apply = (func: Ray) => {
@@ -3398,7 +3398,7 @@ export class Ray // Other possibly names: AbstractDirectionality, ..., ??
       this.next_pointer(Ray.directions.previous),
       this.next_pointer(Ray.directions.next)
     ];
-  }
+  };
 
   *___next({
              step = Ray.directions.next,

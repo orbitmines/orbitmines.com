@@ -280,8 +280,6 @@ export const renderPdfRendererElement: DereferencedElementRenderer = (element: E
   } else if (['canvas'].includes(tagName)) {
     if (props.style.backgroundImage.startsWith('url(')) {
       const url = props.style.backgroundImage.replace(/^url\("/, '').replace(/"\)$/, '');
-      console.log(url)
-      console.log(props)
       return <Image {...props} style={{...props.style, width: '992px'}} src={url} /> // TODO FIX
     }
 
@@ -675,11 +673,12 @@ export const Grid = (props: React.HTMLAttributes<HTMLElement> & {
   fluid?: boolean
   tagName?: string
 }) => {
-  return React.createElement(props.tagName ?? 'div', {
-    ...props,
+  const { fluid, tagName, className, ...rest } = props;
+  return React.createElement(tagName ?? 'div', {
+    ...rest,
     className: classNames(
-        props.fluid ? 'container-fluid' : 'container',
-        props.className,
+        fluid ? 'container-fluid' : 'container',
+        className,
     )
   });
 }
@@ -779,11 +778,17 @@ export const highlight = (code: string) => (
     <Highlight prism={Prism} theme={themes.dracula} code={code} language="typescript">
       {({className, style, tokens, getLineProps, getTokenProps}) => (
           <>
-            {tokens.map((line, i) => (
-                <div {...getLineProps({line, key: i})}>
-                  {line.map((token, key) => <span {...getTokenProps({token, key})} />)}
+            {tokens.map((line, i) => {
+              const { key: _lk, ...lineProps } = getLineProps({line, key: i}) as any;
+              return (
+                <div key={i} {...lineProps}>
+                  {line.map((token, ti) => {
+                    const { key: _tk, ...tokenProps } = getTokenProps({token, key: ti}) as any;
+                    return <span key={ti} {...tokenProps} />;
+                  })}
                 </div>
-            ))}
+              );
+            })}
           </>
       )}
     </Highlight>
@@ -831,7 +836,7 @@ export const Category = (props: {
   }
 
   const inline_item = () => <Row center="xs" className="child-p-1">
-    {content.map((item, index) => <Col><Item item={item} index={index} key={index}/></Col>)}
+    {content.map((item, index) => <Col key={index}><Item item={item} index={index}/></Col>)}
   </Row>
 
   if (inline)
@@ -1164,7 +1169,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string, 
         [
         {index}
         {link ? <>
-          <a href={link} target="_blank">{(organizations ?? []).map(organization => <span> <RefIcon organization={organization} /></span>)}</a>
+          <a href={link} target="_blank">{(organizations ?? []).map(organization => <span key={organization.key}> <RefIcon organization={organization} /></span>)}</a>
             {/*{link.startsWith('https://github.com') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.github} /></a> : <></>}*/}
           {/*{link.startsWith('/') ? <a href={link} target="_blank"> <RefIcon organization={ORGANIZATIONS.orbitmines_research}/></a> : <></>}*/}
         </> : <></>}
@@ -1203,7 +1208,7 @@ export const Reference = (props: { reference?: ReferenceProps, target?: string, 
             className: classNames('child-mr-3', className),
             style: dark ? { color: '#5d7eac' } : {},
             children: <>
-              {(organizations ?? []).map(organization => <RefIcon organization={organization} />)}
+              {(organizations ?? []).map(organization => <RefIcon key={organization.key} organization={organization} />)}
               <Rendered renderable={title} />
             </>
           })}
@@ -1282,13 +1287,16 @@ export const PaperHeader = (props: PaperProps) => {
 
     <Row center="xs" middle="xs">
       {organizations ? <>
-        {organizations.map((organization) => (<Col xl={5} xs={12}>
-          <Organization {...organization} />
-        </Col>))}
+        {organizations.map((organization) => {
+          const { key: orgKey, ...rest } = organization as any;
+          return <Col key={orgKey} xl={5} xs={12}>
+            <Organization key={orgKey} {...rest} />
+          </Col>;
+        })}
 
       </> : <></>}
 
-      {(authors || []).map((author) => (<Col xl={organizations ? 5 : 12} xs={12}>
+      {(authors || []).map((author, i) => (<Col key={(author as any)?.profile ?? i} xl={organizations ? 5 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
@@ -1474,16 +1482,18 @@ export const Section = ({ head, sub, children }: SectionProps & Children & { sub
 export const Paragraph = ({ children }: Children & { block?: boolean }): JSX.Element => {
   const blocks: JSX.Element[] = [];
   let currentBlock: JSX.Element[] = [];
+  let blockIdx = 0;
 
   // little nasty regrouping into inline blocks
   const pushCurrentBlock = () => {
-    blocks.push(<Row is="block" className="py-2" style={{width: '100%'}}>{currentBlock}</Row>);
+    blocks.push(<div key={`b-${blockIdx++}`} className="py-2" style={{width: '100%'}}>{currentBlock}</div>);
     currentBlock = [];
   }
 
   let block = true;
+  let inlineIdx = 0;
 
-  React.Children.forEach(children, child => {
+  React.Children.forEach(children, (child, ci) => {
     const inline = (_.isString(child)
         || (child as any)?.props?.is === 'reference' // TODO THROUGH PROPS
         || (child as any)?.props?.is === 'footnote' // TODO THROUGH PROPS
@@ -1491,20 +1501,20 @@ export const Paragraph = ({ children }: Children & { block?: boolean }): JSX.Ele
 
     if (!inline) {
       pushCurrentBlock();
-      blocks.push(<Row center="xs" style={{width: '100%'}} className="py-2">{child}</Row>);
+      blocks.push(<Row key={`r-${ci}`} center="xs" style={{width: '100%'}} className="py-2">{child}</Row>);
       return;
     }
 
     block = false;
 
-    currentBlock.push(<span>{child}</span>);
+    currentBlock.push(<span key={`s-${inlineIdx++}`}>{child}</span>);
   });
   pushCurrentBlock();
 
   if (block)
-    return <div style={{width: '100%'}} is="paragraph">{blocks}</div>
+    return <div style={{width: '100%'}} data-block="paragraph">{blocks}</div>
 
-  return <span style={{ textAlign: 'start' }} is="paragraph">
+  return <span style={{ textAlign: 'start' }} data-block="paragraph">
     {blocks}
   </span>;
 }
@@ -1522,7 +1532,6 @@ export const Organization = (props: AllowReact<TOrganization>) => {
   const { profile, name, assets } = props;
   const { logo } = assets;
   const key = profile.profile;
-  console.log(props)
 
   return <Col>
    <Row center="xs" middle="xs" className="child-px-2">
@@ -1536,7 +1545,7 @@ export const Organization = (props: AllowReact<TOrganization>) => {
     </Row>
     {/* <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row> */}
     <Row center="xs" className="child-px-2">
-      {profile.external.map(profile => <Col>
+      {profile.external.map(profile => <Col key={profile.organization.key}>
         <a href={profile.link} target="_blank">
           <CustomIcon icon={profile.organization.key} size={16}/>
         </a>
@@ -1609,7 +1618,7 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
     </Row>
     <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row>
     <Row center="xs" className="child-px-2">
-      {(external || []).filter(filter ? filter : () => true).map(profile => <Col>
+      {(external || []).filter(filter ? filter : () => true).map(profile => <Col key={profile.organization.key}>
         <a href={profile.link} target="_blank">
           <CustomIcon icon={profile.organization.key} size={16}/>
         </a>
@@ -1757,7 +1766,7 @@ const Post = (props: PaperProps) => {
       <meta property="og:article:published_time" content={date}/>
       <meta property="og:article:modified_time" content={date}/>
       {/*<meta property="og:article:expiration_time" content="" />*/}
-      {(authors || []).map(author => (<meta name="og:article:author" content={author.formal_citation_name}/>))}
+      {(authors || []).map(author => (<meta key={author.profile} name="og:article:author" content={author.formal_citation_name}/>))}
       {/*<meta property="og:article:section" content="Technology" />*/}
       {/*<meta property="og:article:tag" content="" />*/}
     </Helmet>
@@ -1859,9 +1868,9 @@ const Post = (props: PaperProps) => {
     <meta name="citation_title" content={value(title)}/>
     {/*<meta name="citation_doi" content={value(title)}/>*/}
 
-    {(authors || []).map(author => (<meta name="citation_author" content={author.formal_citation_name}/>))}
-    {(authors || []).map(author => (<meta name="citation_author_email" content={author.email}/>))}
-    {(authors || []).map(author => (<meta name="citation_author_orcid" content={author.orcid}/>))}
+    {(authors || []).map(author => (<meta key={`ca-${author.profile}`} name="citation_author" content={author.formal_citation_name}/>))}
+    {(authors || []).map(author => (<meta key={`cae-${author.profile}`} name="citation_author_email" content={author.email}/>))}
+    {(authors || []).map(author => (<meta key={`cao-${author.profile}`} name="citation_author_orcid" content={author.orcid}/>))}
 
     {/*<meta name="citation_year" content="" />*/}
     <meta name="citation_date" content={date}/>
@@ -1876,7 +1885,7 @@ const Post = (props: PaperProps) => {
     <meta name="dc.date" content={date}/>
     {/*<meta name="dc.identifier" content="" />*/}
 
-    {(authors || []).map(author => (<meta name="dc.contributor" content={author.formal_citation_name}/>))}
+    {(authors || []).map(author => (<meta key={author.profile} name="dc.contributor" content={author.formal_citation_name}/>))}
   </Helmet>);
 
   // https://en.wikipedia.org/wiki/Publishing_Requirements_for_Industry_Standard_Metadata
@@ -1893,7 +1902,7 @@ const Post = (props: PaperProps) => {
     <meta name="eprints.date" content={date}/>
     <meta name="eprints.official_url" content={url.base}/>
 
-    {(authors || []).map(author => (<meta name="eprints.creators_name" content={author.formal_citation_name}/>))}
+    {(authors || []).map(author => (<meta key={author.profile} name="eprints.creators_name" content={author.formal_citation_name}/>))}
   </Helmet>);
 
   return <div>

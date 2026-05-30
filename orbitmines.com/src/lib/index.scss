@@ -4,7 +4,7 @@
 
 @import "post/spacing";
 
-@import "~@blueprintjs/core/lib/scss/variables";
+@import "blueprintjs/variables";
 
 * {
   margin: 0;
@@ -26,6 +26,16 @@ body {
 .bp5-code-block {
   width: 100%;
   background: rgba(17, 20, 24, 1) !important;
+}
+
+.bp5-dark .bp5-popover,
+.bp5-popover.bp5-dark {
+  .bp5-popover-content {
+    background: rgb(10, 10, 10) !important;
+  }
+  .bp5-popover-arrow-fill {
+    fill: rgb(10, 10, 10) !important;
+  }
 }
 
 /* md and up (≥ 768px, Blueprint breakpoint) */

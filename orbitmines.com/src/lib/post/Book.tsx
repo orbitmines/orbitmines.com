@@ -156,17 +156,17 @@ export const Navigation = (props: PaperProps & { hideBorder?: boolean, onNavigat
   }, [section]);
 
   return <Row style={{...(!props.hideBorder ? {minHeight: '100%'} : {}), ...(generate !== 'button' && generate !== 'pdf' && !props.hideBorder ? {borderRight: '1px solid rgb(108, 103, 131)'} : {}), alignContent: 'flex-start'}} className="pl-10 child-py-3 py-20"><div ref={navRef} style={{width: '100%'}}>
-    {util.arcs().map((arc: any) => <Col xs={12} style={{textAlign: 'start'}}>
+    {util.arcs().map((arc: any) => <Col key={util.sectionName(arc)} xs={12} style={{textAlign: 'start'}}>
       <a className="bp5-text-muted" data-selected={util.isSelected(arc) || undefined} style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => !util.disabled(arc) ? navigate(util.sectionName(arc)) : undefined}>{arc.props.head}</a>
 
       {React.Children.toArray((arc as any).props.children).filter(child =>
         React.isValidElement(child) && child.type === Section
-      ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}} className="pt-3">
+      ).map((section: any) => <Col key={util.sectionName(section)} xs={12} style={{textAlign: 'start'}} className="pt-3">
         <a className="bp5-text-muted ml-5" data-selected={util.isSelected(section) || undefined} style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? navigate(util.sectionName(section)) : undefined}>{section.props.head}</a>
 
         {React.Children.toArray((section as any).props.children).filter(child =>
           React.isValidElement(child) && child.type === Section
-        ).map((section: any) => <Col xs={12} style={{textAlign: 'start'}}>
+        ).map((section: any) => <Col key={util.sectionName(section)} xs={12} style={{textAlign: 'start'}}>
           <a className="bp5-text-muted ml-10" data-selected={util.isSelected(section) || undefined} style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? navigate(util.sectionName(section)) : undefined}>{section.props.head}</a>
 
 

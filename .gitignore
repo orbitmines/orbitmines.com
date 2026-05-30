@@ -2,7 +2,9 @@
 ./external
 
 # orbitmines.com
+orbitmines.com/.next
 orbitmines.com/node_modules
+orbitmines.com/build
 
 # Environment
 **/.idea

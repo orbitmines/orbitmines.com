@@ -15,16 +15,41 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "suppressImplicitAnyIndexErrors": false,
     "noEmit": true,
     "jsx": "react-jsx",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@blueprintjs/core": ["./src/lib/blueprintjs"],
+      "@blueprintjs/core/src/common": ["./src/lib/blueprintjs/common"],
+      "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig": ["./src/lib/blueprintjs/hooks/hotkeys/hotkeyConfig"],
+      "@blueprintjs/icons": ["./src/lib/blueprintjs"],
+      "@blueprintjs/icons/src/generated/16px/blueprint-icons-16.ttf": ["./src/lib/blueprintjs/css/blueprint-icons-16.ttf"],
+      "@blueprintjs/icons/src/generated/20px/blueprint-icons-20.ttf": ["./src/lib/blueprintjs/css/blueprint-icons-20.ttf"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
-    "src"
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    ".next/types/**/*.ts",
+    "build/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
   ]
 }

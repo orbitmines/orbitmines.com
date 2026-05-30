@@ -63,7 +63,7 @@ const Minimap = () => {
                 <Col xs={12}>
                   <Row center="xs" className="child-pt-5 child-px-2">
                     {(profile?.external || []).filter(profile => PLATFORMS.includes(profile.organization.key)).map(profile =>
-                      <Col>
+                      <Col key={profile.organization.key}>
                         <a href={profile.link} target="_blank">
                           <CustomIcon icon={profile.organization.key} size={20}/>
                         </a>
@@ -168,8 +168,9 @@ const Minimap = () => {
                   </span></Row>
                 
                   <div className="pl-9">
-                    {papers.map(paper => (
-                      <Reference index={0}
+                    {papers.map((paper, i) => (
+                      <Reference key={paper.reference?.link ?? i}
+                                  index={0}
                                   reference={{...paper.reference, subtitle: undefined, notes: undefined}}
                                   start="xs"
                                   dark

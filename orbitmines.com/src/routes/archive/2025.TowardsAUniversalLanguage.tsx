@@ -101,11 +101,17 @@ const highlight = (code: string) => (
   <Highlight prism={Prism} theme={themes.duotoneDark} code={code} language="ray.txt">
     {({className, style, tokens, getLineProps, getTokenProps}) => (
       <>
-        {tokens.map((line, i) => (
-          <div {...getLineProps({line, key: i})}>
-            {line.map((token, key) => <span {...getTokenProps({token, key})} />)}
-          </div>
-        ))}
+        {tokens.map((line, i) => {
+          const { key: _lk, ...lineProps } = getLineProps({line, key: i}) as any;
+          return (
+            <div key={i} {...lineProps}>
+              {line.map((token, ti) => {
+                const { key: _tk, ...tokenProps } = getTokenProps({token, key: ti}) as any;
+                return <span key={ti} {...tokenProps} />;
+              })}
+            </div>
+          );
+        })}
       </>
     )}
   </Highlight>
