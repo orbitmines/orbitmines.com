@@ -30,7 +30,6 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/react-helmet": "^6.1.11",
-    "node-polyfill-webpack-plugin": "^4.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },

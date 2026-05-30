@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 const BP_LOCAL = path.resolve(__dirname, 'src/lib/blueprintjs');
@@ -17,7 +16,6 @@ const nextConfig = {
   typescript: { ignoreBuildErrors: true },
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.plugins.push(new NodePolyfillPlugin());
       config.plugins.push(new webpack.ProvidePlugin({ Buffer: ['buffer', 'Buffer'] }));
       config.resolve.fallback = {
         ...(config.resolve.fallback || {}),
