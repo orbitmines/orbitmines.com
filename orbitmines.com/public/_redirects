@@ -1,1 +1,4 @@
+# Section URLs (/almanac/<section-slug>) are client-side shallow routes within
+# the Almanac book; serve the prerendered Almanac shell for any direct load.
+/almanac/*  /almanac.html  200
 /*  /index.html  200

@@ -140,7 +140,7 @@ export interface LoadRepoArgs extends ResolvedRepoParams {
 // virtual @/~ navigation entries + session/stars files, and returns the
 // directory entries that should be shown for the current path. Returns null
 // when the target repo/world doesn't exist.
-export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResult | null> {
+export function loadRepoEntries(args: LoadRepoArgs): LoadRepoResult | null {
   const {
     effectiveUser,
     effectiveWorld,
@@ -159,8 +159,8 @@ export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResul
 
   const currentPlayer = getCurrentPlayer();
   let repository = effectiveWorld
-    ? await getAPI().getWorld(effectiveWorldParent, effectiveWorld)
-    : await getAPI().getRepository(effectiveUser);
+    ? getAPI().getWorld(effectiveWorldParent, effectiveWorld)
+    : getAPI().getRepository(effectiveUser);
   if (!repository && !effectiveWorld && effectiveUser === currentPlayer) {
     repository = {user: currentPlayer, description: `@${currentPlayer}`, tree: []};
   }
@@ -169,7 +169,7 @@ export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResul
   let entries: TreeEntry[];
 
   if (showUsersListing) {
-    const referencedUsers = await getAPI().getReferencedUsers(effectiveUser, effectiveWorld);
+    const referencedUsers = getAPI().getReferencedUsers(effectiveUser, effectiveWorld);
     const users = referencedUsers.includes(currentPlayer)
       ? referencedUsers
       : [currentPlayer, ...referencedUsers];
@@ -179,7 +179,7 @@ export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResul
       modified: '',
     }));
   } else if (showWorldsListing) {
-    const referencedWorlds = await getAPI().getReferencedWorlds(effectiveUser, effectiveWorld);
+    const referencedWorlds = getAPI().getReferencedWorlds(effectiveUser, effectiveWorld);
     entries = referencedWorlds.map<FileEntry>((w) => ({
       name: w,
       isDirectory: true,
@@ -193,14 +193,14 @@ export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResul
       const apiPath = effectiveWorld
         ? `@${effectiveWorldParent}/~${effectiveWorld}/${treePath.join('/')}`
         : `@${effectiveUser}/${treePath.join('/')}`;
-      const fetched = await getAPI().listDirectory(apiPath);
+      const fetched = getAPI().listDirectory(apiPath);
       if (fetched.length > 0) resolved = fetched;
     }
 
     if (!resolved) {
       // Try the hash-redirect path: maybe the user typed a file path inline
       if (!hash && treePath.length > 0) {
-        const resolveTree = await augmentTreeRoot(
+        const resolveTree = augmentTreeRoot(
           repository.tree,
           effectiveUser,
           effectiveWorld,
@@ -227,7 +227,7 @@ export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResul
     entries = resolved;
 
     if (treePath.length === 0) {
-      const augmented = await augmentTreeRoot(
+      const augmented = augmentTreeRoot(
         entries,
         effectiveUser,
         effectiveWorld,
@@ -241,46 +241,42 @@ export async function loadRepoEntries(args: LoadRepoArgs): Promise<LoadRepoResul
   return {repository, entries};
 }
 
-async function augmentTreeRoot(
+function augmentTreeRoot(
   tree: TreeEntry[],
   effectiveUser: string,
   effectiveWorld: string | null,
   worldParentKey: string,
   currentPlayer: string,
-): Promise<TreeEntry[]> {
+): TreeEntry[] {
   const virtuals: FileEntry[] = [];
 
-  const refUsers = await getAPI().getReferencedUsers(effectiveUser, effectiveWorld);
+  const refUsers = getAPI().getReferencedUsers(effectiveUser, effectiveWorld);
   if (refUsers.length > 0) {
-    const userChildren: FileEntry[] = await Promise.all(
-      (refUsers.includes(currentPlayer) ? refUsers : [currentPlayer, ...refUsers]).map(
-        async (u) => {
-          const repo = await getAPI().getRepository(u);
-          return {
-            name: u,
-            isDirectory: true,
-            modified: '',
-            children: repo ? [...repo.tree] : [],
-          } as FileEntry;
-        },
-      ),
-    );
+    const userChildren: FileEntry[] = (
+      refUsers.includes(currentPlayer) ? refUsers : [currentPlayer, ...refUsers]
+    ).map((u) => {
+      const repo = getAPI().getRepository(u);
+      return {
+        name: u,
+        isDirectory: true,
+        modified: '',
+        children: repo ? [...repo.tree] : [],
+      } as FileEntry;
+    });
     virtuals.push({name: '@', isDirectory: true, modified: '', children: userChildren});
   }
 
-  const refWorlds = await getAPI().getReferencedWorlds(effectiveUser, effectiveWorld);
+  const refWorlds = getAPI().getReferencedWorlds(effectiveUser, effectiveWorld);
   if (refWorlds.length > 0) {
-    const worldChildren: FileEntry[] = await Promise.all(
-      refWorlds.map(async (w) => {
-        const worldRepo = await getAPI().getWorld(worldParentKey, w);
-        return {
-          name: w,
-          isDirectory: true,
-          modified: '',
-          children: worldRepo ? [...worldRepo.tree] : [],
-        } as FileEntry;
-      }),
-    );
+    const worldChildren: FileEntry[] = refWorlds.map((w) => {
+      const worldRepo = getAPI().getWorld(worldParentKey, w);
+      return {
+        name: w,
+        isDirectory: true,
+        modified: '',
+        children: worldRepo ? [...worldRepo.tree] : [],
+      } as FileEntry;
+    });
     virtuals.push({name: '~', isDirectory: true, modified: '', children: worldChildren});
   }
 

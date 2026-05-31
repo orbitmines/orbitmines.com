@@ -1,6 +1,7 @@
 import React, {Fragment, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Helmet} from "react-helmet";
 import {MemoryRouter, useLocation, useNavigate, useSearchParams} from "react-router-dom";
+import {useSectionPath, SectionNavContext, useSectionNav} from "./section";
 import ORGANIZATIONS, {
   Content,
   ExternalProfile,
@@ -104,7 +105,7 @@ export const Profile = ({profile, children, head}: {profile: TProfile} & Childre
           "email": profile.email,
           "givenName": profile.first_name,
           "familyName": profile.last_name,
-          "url": `https://orbitmines.com/profiles/${profile.profile}`,
+          "url": `https://orbitmines.com/@${profile.profile}`,
           "image": profile.picture,
         }, {
           "@context": "https://schema.org",
@@ -1321,6 +1322,10 @@ export const PaperHeader = (props: PaperProps) => {
 export const PaperContent = (props: PaperProps) => {
   let generate;
   const [params, setParams] = useSearchParams();
+  // Memoised: .slugs() deep-traverses the whole book; don't re-walk it on every
+  // re-render (search keystrokes, etc.). props.children is stable per content.
+  const sectionSlugs = useMemo(() => new BookUtil(props).slugs(), [props.children]);
+  const {currentSlug, navigateSection} = useSectionPath(sectionSlugs);
   const navigationParam = params.get('navigation');
   const desktopNavigation = navigationParam !== 'false';
 
@@ -1363,7 +1368,7 @@ export const PaperContent = (props: PaperProps) => {
     }
   };
 
-  const section = params.get('section');
+  const section = currentSlug;
   const isStartPage: boolean = (section ?? "").length == 0
   const isSearching: boolean = (params.get('search') ?? "").length > 0
 
@@ -1382,7 +1387,7 @@ export const PaperContent = (props: PaperProps) => {
 
   const external_links = !!discord;
 
-  const util = new BookUtil(props, params)
+  const util = new BookUtil(props, currentSlug)
 
   const Content = book && (!isStartPage || isSearching) ? <>
     <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: 'rgb(10, 10, 10)'}}>
@@ -1390,7 +1395,7 @@ export const PaperContent = (props: PaperProps) => {
       <Col xs={11}>
         <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
           <Rendered renderable={props.title}/>
-          {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.nextSection()); next.delete('search'); return next; })} /> : null}
+          {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => navigateSection(util.nextSection())} /> : null}
         </Row>
       </Col>
     </Row>
@@ -1424,8 +1429,10 @@ export const PaperContent = (props: PaperProps) => {
   const notGenerate = generate !== 'button' && generate !== 'pdf';
   const showSidebar = book && navigation && !isMobile && notGenerate;
 
-  return <>
-    <Row style={{maxWidth: '1650px', overflow: 'visible'}}>
+  return <SectionNavContext.Provider value={navigateSection}>
+    {/* Book layout is capped at 1650px, so center it; non-book posts fill the
+        viewport via a 100vw inner Grid and must stay left-anchored. */}
+    <Row style={{maxWidth: '1650px', overflow: 'visible', ...(book ? {margin: '0 auto'} : {})}}>
       {book && !isStartPage && isMobile && mobileNavExpanded && notGenerate ? <>
         <div onClick={() => setMobileNavExpanded(false)} style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 19}} />
         <div style={{position: 'fixed', top: 0, left: 0, bottom: 0, width: '75vw', zIndex: 20, background: 'rgb(10, 10, 10)', overflowY: 'auto'}}>
@@ -1455,8 +1462,15 @@ export const PaperContent = (props: PaperProps) => {
         </Grid>
       </Col>
     </Row>
-  </>
+  </SectionNavContext.Provider>
 }
+
+// Inline "jump to §X" button for use *inside* paper content. Reads the
+// section navigator from context so it lives wherever the content renders.
+export const SectionButton = ({section, ...buttonProps}: {section: string} & React.ComponentProps<typeof Button>) => {
+  const navigateSection = useSectionNav();
+  return <Button {...buttonProps} onClick={() => navigateSection(section)} />;
+};
 
 export type SectionProps = {
   head?: ReactNode
@@ -1540,8 +1554,8 @@ export const Organization = (props: AllowReact<TOrganization>) => {
         maxWidth: '150px'}}
       /></Col>
       <Col>
-      {/* <H3 className="m-0"><a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a></H3> */}
-      <Col xs={12} style={{width: '100%', padding: '0'}}><div className="bp5-text-muted" style={{textAlign: 'left', width: '100%', fontSize: '0.8rem'}}><a className="bp5-text-muted" href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>@{profile.profile}</a></div></Col>
+      {/* <H3 className="m-0"><a href={generate === 'pdf' ? `https://orbitmines.com/@${profile}` : `/@${profile}`}>{name}</a></H3> */}
+      <Col xs={12} style={{width: '100%', padding: '0'}}><div className="bp5-text-muted" style={{textAlign: 'left', width: '100%', fontSize: '0.8rem'}}><a className="bp5-text-muted" href={generate === 'pdf' ? `https://orbitmines.com/@${profile}` : `/@${profile}`}>@{profile.profile}</a></div></Col>
       </Col>
     </Row>
     {/* <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row> */}
@@ -1613,8 +1627,8 @@ export const Author = (props: TProfile & { filter?: Predicate<ExternalProfile>})
         maxWidth: '32px', clipPath: 'circle()'}}
       /></Col>
       <Col>
-      <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>{name}</a>}</H3>
-      <Col xs={12} style={{width: '100%', padding: '0'}}><div className="bp5-text-muted" style={{textAlign: 'left', width: '100%', fontSize: '0.8rem'}}><a className="bp5-text-muted" href={generate === 'pdf' ? `https://orbitmines.com/profiles/${profile}` : `/profiles/${profile}`}>@{profile}</a></div></Col>
+      <H3 className="m-0">{title ? <Rendered renderable={title} /> : <a href={generate === 'pdf' ? `https://orbitmines.com/@${profile}` : `/@${profile}`}>{name}</a>}</H3>
+      <Col xs={12} style={{width: '100%', padding: '0'}}><div className="bp5-text-muted" style={{textAlign: 'left', width: '100%', fontSize: '0.8rem'}}><a className="bp5-text-muted" href={generate === 'pdf' ? `https://orbitmines.com/@${profile}` : `/@${profile}`}>@{profile}</a></div></Col>
       </Col>
     </Row>
     <Row center="xs"><H4 className="bp5-text-muted">{subtitle ? <Rendered renderable={subtitle} /> : <a href={`mailto:${email}`} target="_blank">{email}</a>}</H4></Row>
@@ -1785,7 +1799,7 @@ const Post = (props: PaperProps) => {
           "email": author.email,
           "givenName": author.first_name,
           "familyName": author.last_name,
-          "url": `https://orbitmines.com/profiles/${author.profile}`,
+          "url": `https://orbitmines.com/@${author.profile}`,
           "image": author.picture,
         }))],
         "publisher": [{

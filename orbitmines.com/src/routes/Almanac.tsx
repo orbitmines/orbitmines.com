@@ -7,12 +7,11 @@ import Post, {
   BlueprintIcons20, BR, Children, CustomIcon,
   JetBrainsMono,
   PaperProps, Reference,
-  renderable, Section,
+  renderable, Section, SectionButton,
   Title,
   useCounter
 } from "../lib/post/Post";
 import {Button} from "@blueprintjs/core";
-import {useSearchParams} from "react-router-dom";
 import {Highlight, Prism as ReactPrism, themes} from "prism-react-renderer";
 import "../lib/prism/ray";
 import {DownloadButton} from "../@orbitmines/ether/Ether";
@@ -229,7 +228,6 @@ export const CodeBlock = ({children, after}: Children & { after?: React.ReactNod
 
 const Almanac = () => {
   const referenceCounter = useCounter();
-  const [params, setParams] = useSearchParams();
 
   const book: Omit<PaperProps, 'children'> = {
     book: true,
@@ -320,7 +318,7 @@ const Almanac = () => {
       <span style={{textAlign: 'left'}}>So whether you're interested in developing web applications, compiler engineering<span className="bp5-text-muted">, (future) game programming</span> or formalizing mathematics. This should be for you!</span>
 
       <Section head="§0. For Beginners">
-        <span style={{textAlign: 'left'}}>If you're starting out learning a programming language for the first time, great! This section is for you. If not <Button rightIcon="arrow-right" text="Skip ahead to §1" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§1. How to Install'); return next; })} />.</span>
+        <span style={{textAlign: 'left'}}>If you're starting out learning a programming language for the first time, great! This section is for you. If not <SectionButton section="§1. How to Install" rightIcon="arrow-right" text="Skip ahead to §1" minimal outlined />.</span>
 
         <Section head="§0.1 ">
         </Section>
@@ -348,7 +346,7 @@ const Almanac = () => {
         Let's start with a bunch of important things many programming languages cover! And importantly, how the Ray programming language differs from the usual approach. Though plenty should feel familiar regardless of your programming language background. 
           
         <BR/>
-        <span style={{textAlign: 'left'}}>The goal of this chapter is to give you the minimal set of tools to get you started with the language. Any other fundamentals, will be handled in <Button rightIcon="arrow-right" text="§4. Extended Fundamentals" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§4. Extended Fundamentals'); return next; })} />.</span>
+        <span style={{textAlign: 'left'}}>The goal of this chapter is to give you the minimal set of tools to get you started with the language. Any other fundamentals, will be handled in <SectionButton section="§4. Extended Fundamentals" rightIcon="arrow-right" text="§4. Extended Fundamentals" minimal outlined />.</span>
 
         <Section head="§2.1 Superposing Variables">
           One of the cornerstones of most programming languages, even if that isn't often explicit, is their ability to superpose variables. Usually this is done in a language's <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'type system', link: 'https://en.wikipedia.org/wiki/Type_system'}} /> if it has one. Even if it doesn't, it's almost always the case that the language's compiler does so under the hood, by for instance, the means of <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "abstract interpretation", link: "https://en.wikipedia.org/wiki/Abstract_interpretation" }}/>; essentially reasoning about what kinds of values a particular variable might hold. (Or sometimes at runtime through something called an <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "'Ambiguous Operator'", link: "https://rosettacode.org/wiki/Amb" }}/>.)
@@ -518,7 +516,7 @@ const Almanac = () => {
           </Block>
 
           <span style={{textAlign: 'left', minWidth: '100%'}}>You can keep repeating that and here we have the familiar structure of an Array. Which is simply defined as a
-          line (of points). <span className="bp5-text-muted">Note that what I said earlier, we ignore the fact that this is currently potentially a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "doubly linked list", link: "https://en.wikipedia.org/wiki/Doubly_linked_list"}}/>. We will entrust that the compiler will take care of optimizing that structure if we do not use the facilities of a (.next) or (.previous), and even when we do, to optimize the way in which that happens. In Ray, we don't want to consider the exact way the data is encoded if we can avoid it, we're operating at an abstraction layer after all. Only when we consider <Button rightIcon="arrow-right" text="§4.5 Optimizations" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§4.5 Optimizations'); return next; })} /> will we be confronted with details.</span></span>
+          line (of points). <span className="bp5-text-muted">Note that what I said earlier, we ignore the fact that this is currently potentially a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "doubly linked list", link: "https://en.wikipedia.org/wiki/Doubly_linked_list"}}/>. We will entrust that the compiler will take care of optimizing that structure if we do not use the facilities of a (.next) or (.previous), and even when we do, to optimize the way in which that happens. In Ray, we don't want to consider the exact way the data is encoded if we can avoid it, we're operating at an abstraction layer after all. Only when we consider <SectionButton section="§4.5 Optimizations" rightIcon="arrow-right" text="§4.5 Optimizations" minimal outlined /> will we be confronted with details.</span></span>
 
           <BR/>
 
@@ -664,7 +662,7 @@ const Almanac = () => {
           <CodeBlock>
             x = "A" &+ numberline
           </CodeBlock>
-          <span style={{textAlign: 'left'}}>You can extract the components in two ways. (1) By using types. Which we'll talk about later <Button rightIcon="arrow-right" text="§2.4 Types: Patterns" minimal outlined onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', '§2.4 Types: Patterns'); return next; })} />. Or (2) by using the '##' operator.</span>
+          <span style={{textAlign: 'left'}}>You can extract the components in two ways. (1) By using types. Which we'll talk about later <SectionButton section="§2.4 Types: Patterns" rightIcon="arrow-right" text="§2.4 Types: Patterns" minimal outlined />. Or (2) by using the '##' operator.</span>
 
           <CodeBlock>
             string: String = x<BR/>

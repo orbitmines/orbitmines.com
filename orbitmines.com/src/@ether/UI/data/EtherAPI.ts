@@ -17,14 +17,17 @@ import type {
 
 export interface EtherAPI {
   // ---- File system ----
-  listDirectory(path: string): Promise<FileEntry[]>;
-  readFile(path: string): Promise<string | null>;
+  // Read methods are synchronous so the repository view can resolve its data
+  // during render (first paint already has content) instead of in an effect.
+  // `await` on these still works for callers that prefer it.
+  listDirectory(path: string): FileEntry[];
+  readFile(path: string): string | null;
 
   // ---- Repos ----
-  getRepository(user: string): Promise<Repository | null>;
-  getWorld(user: string, world: string): Promise<Repository | null>;
-  getReferencedUsers(user: string, world?: string | null): Promise<string[]>;
-  getReferencedWorlds(user: string, world?: string | null): Promise<string[]>;
+  getRepository(user: string): Repository | null;
+  getWorld(user: string, world: string): Repository | null;
+  getReferencedUsers(user: string, world?: string | null): string[];
+  getReferencedWorlds(user: string, world?: string | null): string[];
 
   // ---- Pull requests ----
   getPullRequests(canonicalPath: string): Promise<PullRequest[]>;

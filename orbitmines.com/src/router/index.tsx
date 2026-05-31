@@ -7,13 +7,71 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useSyncExternalStore,
 } from 'react';
 import {
   usePathname as useNextPathname,
   useRouter as useNextRouter,
-  useSearchParams as useNextSearchParams,
   useParams as useNextParams,
 } from 'next/navigation';
+
+// ---------------------------------------------------------------------------
+// Shared client-side query-string store.
+//
+// next/navigation's useSearchParams() forces a CSR bailout, which makes routed
+// pages prerender blank under `output: export`. We read window.location.search
+// ourselves instead — but via a single shared store (not per-hook useState) so
+// every useSearchParams()/useLocation() consumer stays reactive to the SAME
+// navigations: back/forward (popstate) AND router.push/replace. The latter
+// don't emit popstate, so we patch history.pushState/replaceState once to emit
+// a synthetic event the store listens for.
+// ---------------------------------------------------------------------------
+
+let historyPatched = false;
+let lastSearch = '';
+function ensureHistoryPatch(): void {
+  if (historyPatched || typeof window === 'undefined') return;
+  historyPatched = true;
+  lastSearch = window.location.search;
+  for (const method of ['pushState', 'replaceState'] as const) {
+    const original = history[method];
+    history[method] = function (this: History, ...args: unknown[]) {
+      const result = (original as (...a: unknown[]) => unknown).apply(this, args);
+      // Only notify when the query string actually changed. Next's App Router
+      // calls replaceState constantly (scroll restoration, internal state) with
+      // an unchanged search — firing on every one of those would re-notify all
+      // useSearchParams consumers app-wide and make every page sluggish.
+      const search = window.location.search;
+      if (search !== lastSearch) {
+        lastSearch = search;
+        // Defer: Next calls pushState from inside React's insertion-effect
+        // phase, where notifying useSyncExternalStore subscribers throws. The
+        // URL is already updated, so a microtask hop is enough.
+        queueMicrotask(() => window.dispatchEvent(new Event('orbit:locationchange')));
+      }
+      return result;
+    } as History[typeof method];
+  }
+}
+
+function subscribeLocation(onChange: () => void): () => void {
+  ensureHistoryPatch();
+  window.addEventListener('popstate', onChange);
+  window.addEventListener('orbit:locationchange', onChange);
+  return () => {
+    window.removeEventListener('popstate', onChange);
+    window.removeEventListener('orbit:locationchange', onChange);
+  };
+}
+
+const getSearchSnapshot = (): string =>
+  typeof window !== 'undefined' ? window.location.search : '';
+const getServerSearchSnapshot = (): string => '';
+
+// Reactive query string ('' during SSR), shared across all consumers.
+function useUrlSearch(): string {
+  return useSyncExternalStore(subscribeLocation, getSearchSnapshot, getServerSearchSnapshot);
+}
 
 // ---------------------------------------------------------------------------
 // MemoryRouter
@@ -88,15 +146,14 @@ export interface Location {
 export const useLocation = (): Location => {
   const memory = useContext(MemoryRouterCtx);
   const nextPathname = useNextPathname();
-  const nextSearch = useNextSearchParams();
+  const search = useUrlSearch();
 
   if (memory) {
     return { pathname: memory.pathname, search: memory.search, hash: '', state: null, key: 'memory' };
   }
-  const qs = nextSearch ? nextSearch.toString() : '';
   return {
     pathname: nextPathname || '/',
-    search: qs ? `?${qs}` : '',
+    search,
     hash: '',
     state: null,
     key: 'default',
@@ -137,13 +194,17 @@ export type SetURLSearchParams = (
 export const useSearchParams = (): [URLSearchParams, SetURLSearchParams] => {
   const memory = useContext(MemoryRouterCtx);
   const nextPathname = useNextPathname();
-  const nextSearch = useNextSearchParams();
   const router = useNextRouter();
+
+  // Shared store (see useUrlSearch): every consumer reacts to the same URL, so
+  // a setParams() in one component (e.g. the search box) updates the book
+  // content rendered elsewhere. Avoids next/navigation's useSearchParams bailout.
+  const search = useUrlSearch();
 
   const current = useMemo(() => {
     if (memory) return new URLSearchParams(memory.search);
-    return new URLSearchParams(nextSearch ? nextSearch.toString() : '');
-  }, [memory, nextSearch]);
+    return new URLSearchParams(search);
+  }, [memory, search]);
 
   const setParams = useCallback<SetURLSearchParams>((nextInit, navigateOptions) => {
     let next: URLSearchParams;
@@ -164,6 +225,8 @@ export const useSearchParams = (): [URLSearchParams, SetURLSearchParams] => {
     }
 
     const url = qs ? `${nextPathname}?${qs}` : (nextPathname || '/');
+    // router.push/replace patch history (see ensureHistoryPatch) → the shared
+    // store notifies all consumers; no local state to update here.
     // scroll:false so updating ?section= etc. doesn't yank the page to top.
     if (navigateOptions?.replace) router.replace(url, { scroll: false });
     else router.push(url, { scroll: false });

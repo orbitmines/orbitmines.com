@@ -21,7 +21,7 @@ const ClonePopup: React.FC<ClonePopupProps> = ({canonicalPath, open}) => {
     <div className={`popup${open ? ' open' : ''}`}>
       <div className="popup-ether-block">
         <div className="popup-ether-icon">
-          <img src="/images/avatar/2d-square.svg" alt="Ether" />
+          <img src="/E.svg" alt="Ether" />
         </div>
         <div className="popup-ether-lines">
           <div className="popup-ether-line">

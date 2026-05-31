@@ -43,42 +43,20 @@ const Repository: React.FC<{params: RepoParams}> = ({params}) => {
 
   const resolved = useMemo(() => processPath(user, path, base), [user, path, base]);
 
-  const [loaded, setLoaded] = useState<{
-    repository: RepoData;
-    entries: TreeEntry[];
-  } | null>(null);
-  const [notFound, setNotFound] = useState(false);
+  // Resolve synchronously during render so the first paint already has the
+  // repository content (the backend is in-memory). loadRepoEntries returns
+  // null for a 404, or a { redirect } for an inline file path; the redirect
+  // is performed in an effect since navigation can't happen during render.
+  const result = useMemo(
+    () => loadRepoEntries({user, path, base, versions, hash, ...resolved}),
+    [resolved, user, path, base, versions, hash],
+  );
 
   useEffect(() => {
-    let cancelled = false;
-    setNotFound(false);
-    setLoaded(null);
-    void (async () => {
-      const result = await loadRepoEntries({
-        ...resolved,
-        user,
-        path,
-        base,
-        versions,
-        hash,
-      });
-      if (cancelled) return;
-      if (!result) {
-        setNotFound(true);
-        return;
-      }
-      if (result.redirect) {
-        navigate(result.redirect);
-        return;
-      }
-      setLoaded({repository: result.repository, entries: result.entries});
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [resolved, user, path, base, versions, hash, navigate]);
+    if (result?.redirect) navigate(result.redirect);
+  }, [result, navigate]);
 
-  if (notFound) {
+  if (result === null) {
     const target = resolved.effectiveWorld
       ? `#${resolved.effectiveWorld} in @${resolved.effectiveUser}`
       : `@${resolved.effectiveUser}`;
@@ -92,14 +70,14 @@ const Repository: React.FC<{params: RepoParams}> = ({params}) => {
     );
   }
 
-  if (!loaded) return <div className="repo-page" />;
+  if (result.redirect) return <div className="repo-page" />;
 
   return (
     <RepositoryView
       params={params}
       resolved={resolved}
-      repository={loaded.repository}
-      entries={loaded.entries}
+      repository={result.repository}
+      entries={result.entries}
     />
   );
 };

@@ -23,9 +23,10 @@ const EtherOverlay: React.FC = () => {
   const navigate = useNavigate();
 
   // ---- CRT boot ----
-  const [crtStage, setCrtStage] = useState<CRTStage>(() =>
-    isEtherHost() && isFirstVisit() ? 'turning-on' : 'done',
-  );
+  // Init to SSR-safe defaults; the real (localStorage/host-dependent) values
+  // are read after mount so server and first client render match (no hydration
+  // mismatch now that EtherOverlay is server-rendered).
+  const [crtStage, setCrtStage] = useState<CRTStage>('done');
 
   const onTurnedOn = useCallback(() => setCrtStage('on'), []);
   const onIntroDone = useCallback(() => {
@@ -41,7 +42,7 @@ const EtherOverlay: React.FC = () => {
 
   // ---- @me button + FLIP ----
   const meBtnRef = useRef<HTMLButtonElement>(null);
-  const [name, setName] = useState<string>(() => getName());
+  const [name, setName] = useState<string>('@me');
   const [phase, setPhase] = useState<OverlayPhase>('idle');
   const [centerOffset, setCenterOffset] = useState({x: 0, y: 0});
   const [returningStarted, setReturningStarted] = useState(false);
@@ -49,6 +50,12 @@ const EtherOverlay: React.FC = () => {
   // ---- Command bar ----
   // null = closed. The string is the initial text in the bar.
   const [commandInitial, setCommandInitial] = useState<string | null>(null);
+
+  // Post-mount: pull client-only state (stored @me name, first-visit CRT boot).
+  useEffect(() => {
+    setName(getName());
+    if (isEtherHost() && isFirstVisit()) setCrtStage('turning-on');
+  }, []);
 
   const computeCenterOffset = () => {
     const el = meBtnRef.current;

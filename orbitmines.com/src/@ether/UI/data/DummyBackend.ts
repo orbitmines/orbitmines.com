@@ -44,32 +44,32 @@ function etherRepository(): Repository {
 
 export class DummyBackend implements EtherAPI {
   // ---- File system ----
-  async listDirectory(_path: string): Promise<FileEntry[]> {
+  listDirectory(_path: string): FileEntry[] {
     return [];
   }
 
-  async readFile(_path: string): Promise<string | null> {
+  readFile(_path: string): string | null {
     return null;
   }
 
   // ---- Repos ----
-  async getRepository(user: string): Promise<Repository | null> {
+  getRepository(user: string): Repository | null {
     if (user === ETHER_USER) return etherRepository();
     return profileRepo(user);
   }
 
-  async getWorld(_user: string, _world: string): Promise<Repository | null> {
+  getWorld(_user: string, _world: string): Repository | null {
     // No worlds in the orbitmines.com ether surface (yet).
     return null;
   }
 
-  async getReferencedUsers(_user: string, world?: string | null): Promise<string[]> {
+  getReferencedUsers(_user: string, world?: string | null): string[] {
     if (world) return [];
     // @ether is always referenced (the canonical root); profile users follow.
     return [ETHER_USER, ...allProfileUsers()];
   }
 
-  async getReferencedWorlds(_user: string, _world?: string | null): Promise<string[]> {
+  getReferencedWorlds(_user: string, _world?: string | null): string[] {
     return [];
   }
 

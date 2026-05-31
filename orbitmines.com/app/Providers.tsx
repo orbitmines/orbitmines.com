@@ -1,18 +1,11 @@
 'use client';
 
 import React from 'react';
-import dynamic from 'next/dynamic';
 import { Helmet } from 'react-helmet';
 import { HotkeysProvider } from '@blueprintjs/core';
+import { EtherOverlay } from '../src/@ether/UI';
 import IEventListener from '../src/@orbitmines/js/react/IEventListener';
 import Modules from '../src/@orbitmines/js/react/Modules';
-
-// EtherOverlay reads window.location at render time (host detection,
-// centering math) so it must not be SSR'd.
-const EtherOverlay = dynamic(
-  () => import('../src/@ether/UI').then((m) => ({ default: m.EtherOverlay })),
-  { ssr: false },
-);
 
 const Metadata: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <>

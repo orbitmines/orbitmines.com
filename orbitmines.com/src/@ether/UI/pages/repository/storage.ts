@@ -2,10 +2,18 @@
 // follows, and per-user session (sidebar expand set + IDE layout).
 // Mirrors ray's API.ts local-state functions 1:1.
 
+// SSR-safe read: localStorage is undefined during server prerender, and these
+// reads now run in the render path (synchronous repo resolution). Writes only
+// happen from client event handlers, where localStorage always exists.
+function lsGet(key: string): string | null {
+  if (typeof localStorage === 'undefined') return null;
+  return localStorage.getItem(key);
+}
+
 // ---- Player identity ----
 
 export function getCurrentPlayer(): string {
-  return localStorage.getItem('ether:name') || 'anonymous';
+  return lsGet('ether:name') || 'anonymous';
 }
 
 // ---- Stars ----
@@ -17,12 +25,12 @@ function setStars(stars: string[]): void {
 }
 
 export function getStars(): string[] {
-  const raw = localStorage.getItem(STARS_KEY);
+  const raw = lsGet(STARS_KEY);
   return raw ? raw.split('\n').filter(Boolean) : [];
 }
 
 export function getStarCount(canonicalPath: string): number {
-  const raw = localStorage.getItem(`ether:star-count:${canonicalPath}`);
+  const raw = lsGet(`ether:star-count:${canonicalPath}`);
   return raw ? parseInt(raw, 10) || 0 : 0;
 }
 
@@ -67,7 +75,7 @@ export function toggleStar(canonicalPath: string): boolean {
 // ---- Follows ----
 
 export function getFollowerCount(user: string): number {
-  const raw = localStorage.getItem(`ether:follower-count:${user}`);
+  const raw = lsGet(`ether:follower-count:${user}`);
   return raw ? parseInt(raw, 10) || 0 : 0;
 }
 
@@ -76,7 +84,7 @@ export function setFollowerCount(user: string, count: number): void {
 }
 
 export function isFollowing(user: string): boolean {
-  const raw = localStorage.getItem('ether:following');
+  const raw = lsGet('ether:following');
   const list = raw ? raw.split('\n').filter(Boolean) : [];
   return list.includes(user);
 }

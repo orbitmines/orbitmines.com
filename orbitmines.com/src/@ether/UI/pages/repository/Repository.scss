@@ -749,6 +749,14 @@ $line-height: 20px;
   flex-direction: column;
   gap: 4px;
   overflow: visible;
+  // The readme block slides full-width under this float, and its
+  // position:relative descendants (e.g. timeline rows) otherwise paint above
+  // the float and swallow clicks on the card's buttons. Promote the card into
+  // the positioned layer so it stays on top and stays interactive. z-index 2
+  // clears the timeline filter input (position:relative; z-index:1) that would
+  // otherwise tie and win on DOM order.
+  position: relative;
+  z-index: 2;
   .popup { max-width: none; right: 0; }
   .repo-nav-row { margin-top: 8px; }
 }

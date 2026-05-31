@@ -1,6 +1,7 @@
 import Post, {Arc, BR, Col, HorizontalLine, Paragraph, PaperProps, Row, Section} from "./Post";
-import React, {useEffect, useLayoutEffect, useRef} from "react";
+import React, {useEffect, useLayoutEffect, useMemo, useRef} from "react";
 import {useSearchParams} from "react-router-dom";
+import {sectionSlug, useSectionPath} from "./section";
 import {Button} from "@blueprintjs/core";
 
 type SearchResult = { sectionName: string; groups: React.ReactNode[][] };
@@ -18,7 +19,14 @@ const extractText = (node: React.ReactNode): string => {
 };
 
 export class BookUtil {
-  constructor(private props: PaperProps, private params: URLSearchParams) {}
+  // `currentSlug` is the selected section's slug (from the URL path), or null
+  // on the start page. Pass null when only the section list is needed.
+  constructor(private props: PaperProps, private currentSlug: string | null = null) {}
+
+  // All section slugs this book defines — used to enumerate routes and to
+  // recognise a section segment in the path.
+  slugs = (): Set<string> =>
+    new Set(this.allSections().map((s) => sectionSlug(this.sectionName(s))));
 
   arcs = () => React.Children.toArray(this.props.children).filter(child =>
     React.isValidElement(child) && child.type === Arc
@@ -40,7 +48,7 @@ export class BookUtil {
   };
 
   current = (): any => {
-    const current = this.allSections().filter(child => this.sectionName(child) === this.section());
+    const current = this.allSections().filter(child => sectionSlug(this.sectionName(child)) === this.section());
 
     return current.length != 0 ? current[0] : this.allSections()[0]
   }
@@ -51,7 +59,7 @@ export class BookUtil {
       ...this.getSections(arc)
     ]).filter(child => !this.disabled(child));
 
-  section = () => this.params.get('section')
+  section = () => this.currentSlug
 
   firstSection = () => this.sectionName(this.allSections()[0])
   previousSection = () => this.nextSection(true)
@@ -84,7 +92,7 @@ export class BookUtil {
   }
 
   isSelected = (element: any) => {
-    return React.isValidElement(element) && this.sectionName(element) === this.section();
+    return React.isValidElement(element) && sectionSlug(this.sectionName(element)) === this.section();
   }
 
   getContentChildren = (element: any): React.ReactNode[] =>
@@ -135,12 +143,17 @@ export const Navigation = (props: PaperProps & { hideBorder?: boolean, onNavigat
   const [params, setParams] = useSearchParams();
   const navRef = useRef<HTMLDivElement>(null);
 
-  const util = new BookUtil(props, params)
   const generate = params.get('generate');
-  const section = params.get('section');
+  // Memoise the (deep) section-tree traversal so re-renders (e.g. search
+  // keystrokes) don't re-walk the whole book; props.children is stable unless
+  // the book content actually changes.
+  const sectionSlugs = useMemo(() => new BookUtil(props).slugs(), [props.children]);
+  const {currentSlug, navigateSection} = useSectionPath(sectionSlugs);
+  const util = new BookUtil(props, currentSlug)
+  const section = currentSlug;
 
   const navigate = (sectionName: string) => {
-    setParams(prev => { const next = new URLSearchParams(prev); next.set('section', sectionName); next.delete('search'); return next; });
+    navigateSection(sectionName);
     props.onNavigate?.();
   };
 
@@ -223,14 +236,14 @@ const clearDomHighlights = (container: HTMLElement) => {
   });
 };
 
-const BookSearch = ({ props, params, setParams, onBack }: {
+const BookSearch = ({ props, params, navigateSection, onBack }: {
   props: PaperProps,
   params: URLSearchParams,
-  setParams: ReturnType<typeof useSearchParams>[1],
+  navigateSection: ReturnType<typeof useSectionPath>['navigateSection'],
   onBack: () => void
 }) => {
   const search = params.get('search') || '';
-  const util = new BookUtil(props, params);
+  const util = new BookUtil(props);
   const results = util.searchAll(search);
   const resultsRef = useRef<HTMLDivElement>(null);
   const totalGroups = results.reduce((sum, r) => sum + r.groups.length, 0);
@@ -270,13 +283,7 @@ const BookSearch = ({ props, params, setParams, onBack }: {
             minimal
             small
             style={{fontSize: '13px'}}
-            onClick={() => setParams(prev => {
-              const next = new URLSearchParams(prev);
-              next.set('section', group.sectionName);
-              next.set('highlight', search);
-              next.delete('search');
-              return next;
-            })}
+            onClick={() => navigateSection(group.sectionName, {highlight: search})}
           />
         </Row>
         <div style={{textAlign: 'start'}}>
@@ -293,7 +300,12 @@ const Book = (props: PaperProps) => {
   const preSearchState = useRef<{ section: string | null; scrollTop: number } | null>(null);
   const prevSearch = useRef<string | null>(null);
 
-  const section = params.get('section');
+  // Memoise the (deep) section-tree traversal so re-renders (e.g. search
+  // keystrokes) don't re-walk the whole book; props.children is stable unless
+  // the book content actually changes.
+  const sectionSlugs = useMemo(() => new BookUtil(props).slugs(), [props.children]);
+  const {currentSlug, navigateSection} = useSectionPath(sectionSlugs);
+  const section = currentSlug;
   const search = params.get('search');
   const highlight = params.get('highlight');
 
@@ -312,7 +324,7 @@ const Book = (props: PaperProps) => {
 
     if (!wasSearching && isSearching) {
       preSearchState.current = {
-        section: params.get('section'),
+        section: currentSlug,
         scrollTop: document.documentElement.scrollTop
       };
     }
@@ -348,11 +360,18 @@ const Book = (props: PaperProps) => {
         firstMark.scrollIntoView({ block: 'center', behavior: 'smooth' });
       }
 
-      const originalSection = new URLSearchParams(window.location.search).get('section');
+      const slugs = new BookUtil(props).slugs();
+      const pathSlug = () => {
+        const segs = window.location.pathname.split('/').filter(Boolean);
+        const last = segs[segs.length - 1] ?? '';
+        return slugs.has(last) ? last : null;
+      };
+      const originalSection = pathSlug();
       setTimeout(() => {
         clearDomHighlights(container);
         const current = new URLSearchParams(window.location.search);
-        if (!current.get('search') && current.get('section') === originalSection) {
+        if (!current.get('search') && pathSlug() === originalSection) {
+          // highlight is a query param, so this stays a setParams call.
           setParams(prev => {
             const next = new URLSearchParams(prev);
             next.delete('highlight');
@@ -368,20 +387,13 @@ const Book = (props: PaperProps) => {
   const isSearching = (search ?? '').length > 0;
   const isStartPage: boolean = (section ?? "").length == 0
 
-  const util = new BookUtil(props, params)
+  const util = new BookUtil(props, currentSlug)
 
   const handleBack = () => {
     const saved = preSearchState.current;
-    setParams(prev => {
-      const next = new URLSearchParams(prev);
-      next.delete('search');
-      if (saved?.section) {
-        next.set('section', saved.section);
-      } else {
-        next.delete('section');
-      }
-      return next;
-    });
+    // saved.section is a slug; navigateSection slugifies (idempotent) and
+    // clears search + highlight, restoring the pre-search location.
+    navigateSection(saved?.section ?? null);
     if (saved) {
       requestAnimationFrame(() => {
         document.documentElement.scrollTop = saved.scrollTop;
@@ -407,13 +419,13 @@ const Book = (props: PaperProps) => {
     </Row>
 
   if (isSearching)
-    return <BookSearch props={props} params={params} setParams={setParams} onBack={handleBack} />;
+    return <BookSearch props={props} params={params} navigateSection={navigateSection} onBack={handleBack} />;
 
   const current = util.current()
 
   if (isStartPage)
     return <Row end="xs">
-      <Button rightIcon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px', border: '1px solid #EAB832'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.firstSection()); return next; })} />
+      <Button rightIcon="arrow-right" text="Start Reading" minimal style={{fontSize: '18px', border: '1px solid #EAB832'}} onClick={() => navigateSection(util.firstSection())} />
     </Row>
 
   return <Row>
@@ -429,8 +441,8 @@ const Book = (props: PaperProps) => {
     </Col>
     <Col xs={12}>
       <Row between="xs">
-        {util.previous() ? <Button icon="arrow-left" text={util.previousSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.previousSection()); return next; })} /> : <div/>}
-        {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => setParams(prev => { const next = new URLSearchParams(prev); next.set('section', util.nextSection()); return next; })} /> : null}
+        {util.previous() ? <Button icon="arrow-left" text={util.previousSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => navigateSection(util.previousSection())} /> : <div/>}
+        {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => navigateSection(util.nextSection())} /> : null}
       </Row>
     </Col>
   </Row>

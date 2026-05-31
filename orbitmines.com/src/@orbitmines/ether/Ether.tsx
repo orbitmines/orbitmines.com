@@ -13,6 +13,7 @@ const OS_ASSET_MATCH: Record<OS, RegExp> = {
 };
 
 export const os = (): OS | undefined => {
+  if (typeof navigator === 'undefined') return undefined;
   const platform = navigator.userAgent.toLowerCase();
 
   // if (platform.includes("iphone") || platform.includes("ipad") || platform.includes("ipod")) return "iOS";

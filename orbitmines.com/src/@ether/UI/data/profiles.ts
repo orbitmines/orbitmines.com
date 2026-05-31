@@ -10,7 +10,7 @@ type Profile = {
    *  orbitmines.com profile route. */
   user: string;
   description: string;
-  /** Path to the existing /profiles/<slug> page. */
+  /** Path to the profile's /@<slug> page. */
   routePath: string;
 };
 
@@ -18,7 +18,7 @@ export const PROFILES: Profile[] = [
   {
     user: 'fadi-shawki',
     description: 'Researcher; orbitmines.com primary profile.',
-    routePath: '/profiles/fadi-shawki',
+    routePath: '/@fadi-shawki',
   },
 ];
 

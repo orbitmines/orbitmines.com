@@ -34,21 +34,14 @@ const Timeline = ({title, entries, leftHeader, heading = 'Timeline', showHeading
     const mutedDot = '#5c6370';
     const activeText = '#e6e6e6';
     const currentYear = new Date().getFullYear();
-    const [isLarge, setIsLarge] = React.useState(() =>
-        typeof window !== 'undefined' && window.matchMedia('(min-width: 992px)').matches,
-    );
     const [isSmall, setIsSmall] = React.useState(() =>
         typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches,
     );
     React.useEffect(() => {
-        const mqlLarge = window.matchMedia('(min-width: 992px)');
         const mqlSmall = window.matchMedia('(max-width: 640px)');
-        const onLarge = (e: MediaQueryListEvent) => setIsLarge(e.matches);
         const onSmall = (e: MediaQueryListEvent) => setIsSmall(e.matches);
-        mqlLarge.addEventListener('change', onLarge);
         mqlSmall.addEventListener('change', onSmall);
         return () => {
-            mqlLarge.removeEventListener('change', onLarge);
             mqlSmall.removeEventListener('change', onSmall);
         };
     }, []);
@@ -74,8 +67,8 @@ const Timeline = ({title, entries, leftHeader, heading = 'Timeline', showHeading
                     </div>
                 )}
             </div>
-            {belowHeader ? <div style={{marginLeft: isLarge ? 120 : 0, marginBottom: 12}}>{belowHeader}</div> : null}
-            <div style={{position: 'relative', marginLeft: isLarge ? 120 : 0, paddingLeft: isSmall ? 0 : 22}}>
+            {belowHeader ? <div style={{marginBottom: 12}}>{belowHeader}</div> : null}
+            <div style={{position: 'relative', paddingLeft: isSmall ? 0 : 22}}>
                     {!isSmall ? <div style={{position: 'absolute', left: 6, top: 6, bottom: 6, width: 2, background: lineColor}}/> : null}
                     {(() => {
                         const ordered = groupByYear
