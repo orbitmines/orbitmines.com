@@ -1,8 +1,6 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
-const Almanac = dynamic(() => import('../../../src/routes/Almanac'), { ssr: false });
+import Almanac from '../../../src/routes/Almanac';
 
 export default function AlmanacClient() {
   return <Almanac />;
