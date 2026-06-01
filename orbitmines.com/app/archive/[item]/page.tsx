@@ -7,7 +7,7 @@ import ArchiveClient from './ArchiveClient';
 // src/routes/Archive.tsx). The page title is read from that file's first
 // `title: "..."` literal at build time, so titles stay in sync with the source
 // rather than being hand-duplicated here.
-const ITEM_SOURCES: Record<string, string> = {
+export const ITEM_SOURCES: Record<string, string> = {
   '2025-09-ngi-grant-proposal': 'src/routes/archive/2025.09.NGI.GrantProposal3.tsx',
   '2024-02-ngi-grant-proposal': 'src/routes/archive/2024.02.NGI.GrantProposal.tsx',
   '2024-02-orbitmines-as-a-game-project': 'src/routes/archive/2024.02.OrbitMines_as_a_Game_Project.tsx',
@@ -17,18 +17,14 @@ const ITEM_SOURCES: Record<string, string> = {
   'the-orbitmines-minecraft-server': 'src/routes/archive/2026.MinecraftArchive.tsx',
 };
 
-// Reads the reference object's `title` and its adjacent `subtitle` literal
-// (the same pair the rendered paper uses for its title/description) so the
-// static <title> and <meta name="description"> are owned by Next metadata
-// rather than duplicated by a client-hoisted tag.
-function itemMeta(item: string): { title?: string; description?: string } {
+// Reads the reference object's `title` literal so the static <title> is owned
+// by Next metadata. The description is rendered by the paper itself (Post),
+// so it isn't duplicated here.
+function itemTitle(item: string): string | undefined {
   const source = ITEM_SOURCES[item];
-  if (!source) return {};
+  if (!source) return undefined;
   const src = fs.readFileSync(path.join(process.cwd(), source), 'utf8');
-  const m = src.match(
-    /title:\s*"((?:[^"\\]|\\.)*)"\s*,\s*subtitle:\s*"((?:[^"\\]|\\.)*)"/,
-  );
-  return { title: m?.[1], description: m?.[2] || undefined };
+  return src.match(/title:\s*"((?:[^"\\]|\\.)*)"/)?.[1];
 }
 
 export function generateStaticParams() {
@@ -40,11 +36,8 @@ export const dynamicParams = false;
 export async function generateMetadata(
   { params }: { params: Promise<{ item: string }> },
 ): Promise<Metadata> {
-  const { title, description } = itemMeta((await params).item);
-  const meta: Metadata = {};
-  if (title) meta.title = title;
-  if (description) meta.description = description;
-  return meta;
+  const title = itemTitle((await params).item);
+  return title ? { title } : {};
 }
 
 export default function Page() {

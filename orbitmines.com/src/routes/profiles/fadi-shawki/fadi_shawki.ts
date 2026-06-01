@@ -4782,7 +4782,7 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.png',
 
-  date: '2026-05-01',
+  date: '2026-12-31',
 
   email: 'fadi.shawki@orbitmines.com',
 

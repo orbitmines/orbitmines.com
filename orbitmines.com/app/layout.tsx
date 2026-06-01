@@ -5,9 +5,10 @@ import '../src/lib/index.scss';
 import Providers from './Providers';
 
 export const metadata: Metadata = {
+  // Per-page <meta name="description"> is rendered by each page's content
+  // (Post/Minimap/profile) so it can be section/paper-specific; no global
+  // default here, which would otherwise duplicate or override those.
   title: 'OrbitMines Research',
-  description:
-    'Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.',
   manifest: '/manifest.json',
   icons: {
     icon: [{ url: '/favicon.png', type: 'image/png', sizes: '64x64' }],

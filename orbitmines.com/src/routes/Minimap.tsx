@@ -21,9 +21,10 @@ const Minimap = () => {
   return <div style={{
     ...pageStyles
   }}>
-    {/* <title> and <meta name="description"> come from the root layout's
-        metadata (server-rendered); only the page-specific OG tags live here. */}
+    {/* <title> comes from the root layout's metadata; the description and OG
+        tags for the home page are rendered (and hoisted) here. */}
     <>
+      <meta name="description" content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:type" content="website"/>
       <meta property="og:image" content="https://orbitmines.com/logo.png"/>
       <meta property="og:image:type" content="image/jpeg"/>

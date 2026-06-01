@@ -16,7 +16,7 @@ const BOOK_TITLE = "Ether's Almanac";
 // it stays in sync automatically rather than via a hand-kept manifest. We keep
 // the heading text too, so generateMetadata can title each section URL as
 // "Ether's Almanac - <Section>" for search engines.
-function almanacSections(): {slug: string; head: string}[] {
+export function almanacSections(): {slug: string; head: string}[] {
   const src = fs.readFileSync(
     path.join(process.cwd(), 'src/routes/Almanac.tsx'),
     'utf8',

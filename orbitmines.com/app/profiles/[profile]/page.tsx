@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import ProfileRedirect from './ProfileRedirect';
 
-const PROFILE_NAMES: Record<string, string> = {
+export const PROFILE_NAMES: Record<string, string> = {
   'fadi-shawki': 'Fadi Shawki',
 };
 

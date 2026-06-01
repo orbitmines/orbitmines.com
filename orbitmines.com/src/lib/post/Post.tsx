@@ -1748,17 +1748,78 @@ export const PaperThumbnail = (
   </div>
 }
 
+// Citation/article meta need a machine-readable date (ISO YYYY-MM-DD), but a
+// `date` field may carry prose like "Last update: 2026-12-31". Pull the actual
+// date out; undefined when none is present so the tag is simply omitted.
+const isoDate = (raw?: string): string | undefined =>
+  String(raw ?? "").match(/\d{4}-\d{2}-\d{2}/)?.[0];
+
+// Pull the plain text out of an arbitrary React node tree (strings, numbers,
+// nested elements) — used to derive a section's description from its content.
+const extractNodeText = (node: React.ReactNode): string => {
+  if (node === null || node === undefined || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractNodeText).join("");
+  if (React.isValidElement(node)) return extractNodeText((node.props as any)?.children);
+  return "";
+};
+
+// A section's first paragraph: text up to the first <BR/> (the paragraph
+// break used throughout the Almanac), whitespace-collapsed and capped to a
+// sensible meta-description length.
+const firstParagraphText = (content: React.ReactNode[]): string | null => {
+  let text = "";
+  for (const child of content) {
+    if (React.isValidElement(child) && child.type === BR) {
+      if (text.trim()) break;
+      continue;
+    }
+    text += extractNodeText(child);
+    if (text.length > 300) break;
+  }
+  text = text.replace(/\s+/g, " ").trim();
+  if (!text) return null;
+  return text.length > 280 ? text.slice(0, 280).replace(/\s+\S*$/, "") + "…" : text;
+};
+
 const Post = (props: PaperProps) => {
   const location = useLocation();
 
   const {title, subtitle, date, authors} = props;
+  // Normalised, machine-readable publication date for all the citation/article
+  // date meta below (citation_*, dc.date, prism, eprints, og:article, JSON-LD).
+  const articleDate = isoDate(date);
+
+  // When this Post is a book (its children contain Sections), the selected
+  // section is in the URL path. Fold it into the title so the section shows up
+  // everywhere a title does — <title>, og:title, twitter:title and the browser
+  // tab — on direct loads (server-rendered for crawlers/Discord) and on
+  // client-side section switches alike. Papers have no Sections, so currentSlug
+  // stays null and the title/description are unchanged.
+  const sectionSlugs = useMemo(() => new BookUtil(props).slugs(), [props.children]);
+  const {currentSlug} = useSectionPath(sectionSlugs);
+  const sectionUtil = currentSlug ? new BookUtil(props, currentSlug) : null;
+  const sectionEl = sectionUtil ? sectionUtil.current() : null;
+  const sectionName = sectionEl ? sectionUtil!.sectionName(sectionEl) : null;
+  const metaTitle = sectionName ? `${value(title)} - ${sectionName}` : value(title);
+
+  // generateMetadata sets the initial <title> server-side; this keeps it in
+  // sync when the section changes via client-side (shallow) navigation.
+  useEffect(() => {
+    if (typeof document !== "undefined") document.title = String(metaTitle);
+  }, [metaTitle]);
 
   const url = {
     base: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}`,
     jpeg: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.jpeg`,
     pdf: `https://orbitmines.com${location.pathname.replace(/\/$/, "")}.pdf`,
   };
-  const description = value(subtitle);
+  // In a book section, describe the section by its first paragraph; otherwise
+  // fall back to the paper/book subtitle.
+  const sectionDescription = sectionEl && sectionUtil
+    ? firstParagraphText(sectionUtil.getContentChildren(sectionEl))
+    : null;
+  const description = sectionDescription ?? value(subtitle);
 
   // Google Scholar: https://scholar.google.com.au/intl/en/scholar/inclusion.html#indexing
 
@@ -1766,7 +1827,7 @@ const Post = (props: PaperProps) => {
   const OpenGraph = () => (
     <>
       <meta property="og:type" content="article"/>
-      <meta property="og:title" content={value(title)}/>
+      <meta property="og:title" content={metaTitle}/>
       <meta property="og:url" content={url.base}/>
       <meta property="og:description" content={description}/>
 
@@ -1777,8 +1838,8 @@ const Post = (props: PaperProps) => {
       {/*<meta property="og:image:height" content="300" />*/}
       <meta property="og:image:alt" content={description}/>
 
-      <meta property="og:article:published_time" content={date}/>
-      <meta property="og:article:modified_time" content={date}/>
+      <meta property="og:article:published_time" content={articleDate}/>
+      <meta property="og:article:modified_time" content={articleDate}/>
       {/*<meta property="og:article:expiration_time" content="" />*/}
       {(authors || []).map(author => (<meta key={author.profile} name="og:article:author" content={author.formal_citation_name}/>))}
       {/*<meta property="og:article:section" content="Technology" />*/}
@@ -1805,8 +1866,8 @@ const Post = (props: PaperProps) => {
           "name": "OrbitMines",
           "url": "https://orbitmines.com"
         }],
-        "dateModified": date,
-        "datePublished:": date,
+        "dateModified": articleDate,
+        "datePublished": articleDate,
         "headline": value(title),
         "image": url.jpeg,
         // "articleBody": "",
@@ -1866,7 +1927,7 @@ const Post = (props: PaperProps) => {
   const Twitter = () => (<>
     <meta property="twitter:card" content="summary_large_image"/>
     <meta property="twitter:creator" content="@_FadiShawki"/>
-    <meta property="twitter:title" content={value(title)}/>
+    <meta property="twitter:title" content={metaTitle}/>
     <meta property="twitter:description" content={description}/>
     <meta property="twitter:image" content={url.jpeg}/>
   </>);
@@ -1887,16 +1948,16 @@ const Post = (props: PaperProps) => {
     {(authors || []).map(author => (<meta key={`cao-${author.profile}`} name="citation_author_orcid" content={author.orcid}/>))}
 
     {/*<meta name="citation_year" content="" />*/}
-    <meta name="citation_date" content={date}/>
-    <meta name="citation_online_date" content={date}/>
-    <meta name="citation_publication_date" content={date}/>
+    <meta name="citation_date" content={articleDate}/>
+    <meta name="citation_online_date" content={articleDate}/>
+    <meta name="citation_publication_date" content={articleDate}/>
   </>);
 
   // https://en.wikipedia.org/wiki/Dublin_Core
   const DublinCore = () => (<>
     <meta name="dc.title" content={value(title)}/>
     <meta name="dc.publisher" content="OrbitMines"/>
-    <meta name="dc.date" content={date}/>
+    <meta name="dc.date" content={articleDate}/>
     {/*<meta name="dc.identifier" content="" />*/}
 
     {(authors || []).map(author => (<meta key={author.profile} name="dc.contributor" content={author.formal_citation_name}/>))}
@@ -1905,7 +1966,7 @@ const Post = (props: PaperProps) => {
   // https://en.wikipedia.org/wiki/Publishing_Requirements_for_Industry_Standard_Metadata
   const Prism = () => (<>
     <meta name="prism.title" content={value(title)}/>
-    <meta name="prism.publicationDate" content={date}/>
+    <meta name="prism.publicationDate" content={articleDate}/>
     {/*<meta name="prism.doi" content="" />*/}
     <meta name="prism.url" content={url.base}/>
   </>);
@@ -1913,16 +1974,18 @@ const Post = (props: PaperProps) => {
   // http://wiki.eprints.org/w/Metadata
   const Eprints = () => (<>
     <meta name="eprints.title" content={value(title)}/>
-    <meta name="eprints.date" content={date}/>
+    <meta name="eprints.date" content={articleDate}/>
     <meta name="eprints.official_url" content={url.base}/>
 
     {(authors || []).map(author => (<meta key={author.profile} name="eprints.creators_name" content={author.formal_citation_name}/>))}
   </>);
 
   return <div>
-    {/* <title> and <meta name="description"> are owned by the route's
-        generateMetadata (server-rendered into the static HTML); the rest of the
-        per-paper meta is hoisted from here by React. */}
+    {/* <title> is owned by the route's generateMetadata; the description (the
+        section's first paragraph, or the subtitle) and the rest of the meta are
+        rendered here and hoisted into <head> by React — server-side for direct
+        loads, and re-rendered on client-side section navigation. */}
+    {description ? <meta name="description" content={description}/> : null}
     <OpenGraph/>
     <Schemaorg/>
     <Twitter/>
