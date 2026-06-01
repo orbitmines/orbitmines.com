@@ -1,5 +1,4 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
 import {PROFILES} from '../../../../routes/profiles/profiles';
 import type {TProfile, ExternalProfile} from '../../../../lib/organizations/ORGANIZATIONS';
 import {FadiShawkiBody} from '../../../../routes/profiles/fadi-shawki/FadiShawki';
@@ -58,11 +57,11 @@ export const ProfileMeta: React.FC<ProfileMetaProps> = ({profile, user}) => {
 
   return (
     <>
-      <Helmet>
+      <>
         <title lang="en">{title}</title>
         <meta name="description" content={description} />
-      </Helmet>
-      <Helmet>
+      </>
+      <>
         <meta property="og:type" content="profile" />
         <meta property="og:title" content={title} />
         <meta property="og:url" content={url} />
@@ -78,16 +77,15 @@ export const ProfileMeta: React.FC<ProfileMetaProps> = ({profile, user}) => {
         {profile.profile ? (
           <meta property="og:profile:username" content={profile.profile} />
         ) : null}
-      </Helmet>
-      <Helmet>
+      </>
+      <>
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
         {picture ? <meta property="twitter:image" content={picture} /> : null}
-      </Helmet>
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify({
+      </>
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Person',
             name: profile.name,
@@ -100,9 +98,8 @@ export const ProfileMeta: React.FC<ProfileMetaProps> = ({profile, user}) => {
               ? {'@type': 'PropertyValue', propertyID: 'ORCID', value: profile.orcid}
               : undefined,
             sameAs: profile.external?.map((e) => e.link),
-          })}
-        </script>
-      </Helmet>
+          })}} />
+      </>
     </>
   );
 };

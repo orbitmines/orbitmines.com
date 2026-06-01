@@ -1,7 +1,8 @@
-'use client';
+import type { Metadata } from 'next';
+import ThumbnailClient from './ThumbnailClient';
 
-import { ThumbnailPage } from '../../src/lib/post/Post';
+export const metadata: Metadata = { title: 'Thumbnail' };
 
 export default function Page() {
-  return <ThumbnailPage />;
+  return <ThumbnailClient />;
 }

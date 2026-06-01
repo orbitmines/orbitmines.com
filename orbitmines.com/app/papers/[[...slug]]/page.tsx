@@ -1,4 +1,7 @@
+import type { Metadata } from 'next';
 import PapersRedirect from './PapersRedirect';
+
+export const metadata: Metadata = { title: 'Papers' };
 
 export function generateStaticParams() {
   // Generate the bare /papers entry; deep `/papers/...` paths fall back to

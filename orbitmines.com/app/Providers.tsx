@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { HotkeysProvider } from '@blueprintjs/core';
 import { EtherOverlay } from '../src/@ether/UI';
 import IEventListener from '../src/@orbitmines/js/react/IEventListener';
@@ -9,11 +8,9 @@ import Modules from '../src/@orbitmines/js/react/Modules';
 
 const Metadata: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <>
-    <Helmet>
-      <meta property="og:site_name" content="OrbitMines" />
-      {/* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards */}
-      <meta property="twitter:site" content="@OrbitMines" />
-    </Helmet>
+    <meta property="og:site_name" content="OrbitMines" />
+    {/* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards */}
+    <meta property="twitter:site" content="@OrbitMines" />
     {children}
   </>
 );

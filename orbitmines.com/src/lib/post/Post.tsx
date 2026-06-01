@@ -1,5 +1,4 @@
 import React, {Fragment, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Helmet} from "react-helmet";
 import {MemoryRouter, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useSectionPath, SectionNavContext, useSectionNav} from "./section";
 import ORGANIZATIONS, {
@@ -76,7 +75,7 @@ export const Profile = ({profile, children, head}: {profile: TProfile} & Childre
 
   // The Open Graph Protocol // https://ogp.me/
   const OpenGraph = () => (
-      <Helmet>
+      <>
         <meta property="og:type" content="profile" />
         <meta property="og:title" content={value(title)} />
         <meta property="og:url" content={url.base} />
@@ -92,13 +91,13 @@ export const Profile = ({profile, children, head}: {profile: TProfile} & Childre
         <meta property="og:profile:first_name" content={profile.first_name} />
         <meta property="og:profile:last_name" content={profile.last_name} />
         <meta property="og:profile:username" content={profile.profile} />
-      </Helmet>
+      </>
   )
 
   // https://schema.org/Article
   const Schemaorg = () => (
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify([{
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify([{
           "@context": "https://schema.org",
           "@type": "Person",
           "name": profile.name,
@@ -134,23 +133,23 @@ export const Profile = ({profile, children, head}: {profile: TProfile} & Childre
           // todo https://developers.google.com/search/docs/appearance/structured-data/software-app
           // todo https://developers.google.com/search/docs/appearance/structured-data/book
           // TODO https://developers.google.com/search/docs/appearance/structured-data/faqpage
-        }])}</script>
-      </Helmet>
+        }])}} />
+      </>
   )
 
-  const Twitter = () => (<Helmet>
+  const Twitter = () => (<>
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:creator" content="@_FadiShawki" />
     <meta property="twitter:title" content={value(title)} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={profile.picture} />
-  </Helmet>);
+  </>);
 
   return <div>
-    <Helmet>
+    <>
       <title lang="en">{value(title)}</title>
       <meta name="description" content={description} />
-    </Helmet>
+    </>
     <OpenGraph/>
     <Schemaorg/>
     <Twitter/>
@@ -1765,7 +1764,7 @@ const Post = (props: PaperProps) => {
 
   // The Open Graph Protocol // https://ogp.me/
   const OpenGraph = () => (
-    <Helmet>
+    <>
       <meta property="og:type" content="article"/>
       <meta property="og:title" content={value(title)}/>
       <meta property="og:url" content={url.base}/>
@@ -1784,13 +1783,13 @@ const Post = (props: PaperProps) => {
       {(authors || []).map(author => (<meta key={author.profile} name="og:article:author" content={author.formal_citation_name}/>))}
       {/*<meta property="og:article:section" content="Technology" />*/}
       {/*<meta property="og:article:tag" content="" />*/}
-    </Helmet>
+    </>
   )
 
   // https://schema.org/Article
   const Schemaorg = () => (
-    <Helmet>
-      <script type="application/ld+json">{JSON.stringify([{
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify([{
         "@context": "https://schema.org",
         "@type": "Article",
         "author": [(authors || []).map(author => ({
@@ -1860,19 +1859,19 @@ const Post = (props: PaperProps) => {
         // todo https://developers.google.com/search/docs/appearance/structured-data/software-app
         // todo https://developers.google.com/search/docs/appearance/structured-data/book
         // TODO https://developers.google.com/search/docs/appearance/structured-data/faqpage
-      }])}</script>
-    </Helmet>
+      }])}} />
+    </>
   )
 
-  const Twitter = () => (<Helmet>
+  const Twitter = () => (<>
     <meta property="twitter:card" content="summary_large_image"/>
     <meta property="twitter:creator" content="@_FadiShawki"/>
     <meta property="twitter:title" content={value(title)}/>
     <meta property="twitter:description" content={description}/>
     <meta property="twitter:image" content={url.jpeg}/>
-  </Helmet>);
+  </>);
 
-  const HighwirePress = () => (<Helmet>
+  const HighwirePress = () => (<>
     {/*<meta name="citation_doi" content="10.1038/nature09108">*/}
 
     <meta name="citation_publisher" content="OrbitMines"/>
@@ -1891,40 +1890,39 @@ const Post = (props: PaperProps) => {
     <meta name="citation_date" content={date}/>
     <meta name="citation_online_date" content={date}/>
     <meta name="citation_publication_date" content={date}/>
-  </Helmet>);
+  </>);
 
   // https://en.wikipedia.org/wiki/Dublin_Core
-  const DublinCore = () => (<Helmet>
+  const DublinCore = () => (<>
     <meta name="dc.title" content={value(title)}/>
     <meta name="dc.publisher" content="OrbitMines"/>
     <meta name="dc.date" content={date}/>
     {/*<meta name="dc.identifier" content="" />*/}
 
     {(authors || []).map(author => (<meta key={author.profile} name="dc.contributor" content={author.formal_citation_name}/>))}
-  </Helmet>);
+  </>);
 
   // https://en.wikipedia.org/wiki/Publishing_Requirements_for_Industry_Standard_Metadata
-  const Prism = () => (<Helmet>
+  const Prism = () => (<>
     <meta name="prism.title" content={value(title)}/>
     <meta name="prism.publicationDate" content={date}/>
     {/*<meta name="prism.doi" content="" />*/}
     <meta name="prism.url" content={url.base}/>
-  </Helmet>);
+  </>);
 
   // http://wiki.eprints.org/w/Metadata
-  const Eprints = () => (<Helmet>
+  const Eprints = () => (<>
     <meta name="eprints.title" content={value(title)}/>
     <meta name="eprints.date" content={date}/>
     <meta name="eprints.official_url" content={url.base}/>
 
     {(authors || []).map(author => (<meta key={author.profile} name="eprints.creators_name" content={author.formal_citation_name}/>))}
-  </Helmet>);
+  </>);
 
   return <div>
-    <Helmet>
-      <title lang="en">{value(title)}</title>
-      <meta name="description" content={description}/>
-    </Helmet>
+    {/* <title> and <meta name="description"> are owned by the route's
+        generateMetadata (server-rendered into the static HTML); the rest of the
+        per-paper meta is hoisted from here by React. */}
     <OpenGraph/>
     <Schemaorg/>
     <Twitter/>

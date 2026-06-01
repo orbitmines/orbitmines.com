@@ -1,7 +1,6 @@
 import React from 'react';
 const logo = "/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
-import {Helmet} from "react-helmet";
 import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
 import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
 import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/post/Post";
@@ -22,15 +21,13 @@ const Minimap = () => {
   return <div style={{
     ...pageStyles
   }}>
-    <Helmet>
-      <title lang="en">OrbitMines Research</title>
+    {/* <title> and <meta name="description"> come from the root layout's
+        metadata (server-rendered); only the page-specific OG tags live here. */}
+    <>
       <meta property="og:type" content="website"/>
-      <meta name="description"
-            content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:image" content="https://orbitmines.com/logo.png"/>
       <meta property="og:image:type" content="image/jpeg"/>
-
-    </Helmet>
+    </>
 
     <Layer zIndex="0" className="">
       <div style={{height: '100%'}}>
