@@ -26,7 +26,7 @@ export const REFERENCES = {
           organizations: [],  
           year: '(2024)',      
           link: "https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'     
   },
   THE_DECOMPILATION_WIKI: <Content>{  
     reference: {                 title: 'The Decompilation Wiki',      
