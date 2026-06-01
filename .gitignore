@@ -3,6 +3,8 @@
 
 # orbitmines.com
 orbitmines.com/node_modules
+orbitmines.com/build
+orbitmines.com/.next
 
 # Environment
 **/.idea
