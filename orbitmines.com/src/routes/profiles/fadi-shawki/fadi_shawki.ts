@@ -20,6 +20,95 @@ const string = `
 `
 
 export const REFERENCES = {
+  THE_METAVERSE_BUILDING_THE_SPATIAL_INTERNET: <Content>{  
+    reference: {                 title: 'The Metaverse: Building the Spatial Internet',      
+          authors: [{name: 'Matthew Ball'}],      
+          organizations: [],  
+          year: '(2024)',      
+          link: "https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  THE_DECOMPILATION_WIKI: <Content>{  
+    reference: {                 title: 'The Decompilation Wiki',      
+          authors: [{name: 'Zion Leonahenahe Basque'}],      
+          organizations: [],  
+          year: '',      
+          link: "https://decompilation.wiki/"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  DECOMPILING_2024_A_YEAR_OF_RESURGENCE_IN_DECOMPILATION_RESEARCH: <Content>{  
+    reference: {                 title: 'Decompiling 2024: A Year of Resurgence in Decompilation Research',      
+          authors: [{name: 'Zion Leonahenahe Basque'}],      
+          organizations: [],  
+          year: '(2025)',      
+          link: "https://mahaloz.re/dec-progress-2024"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  _30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_1: <Content>{  
+    reference: {                 title: '30 Years of Decompilation and the Unsolved Structuring Problem: Part 1',      
+          authors: [{name: 'Zion Leonahenahe Basque'}],      
+          organizations: [],  
+          year: '(2024)',      
+          link: "https://mahaloz.re/dec-history-pt1"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  _30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_2: <Content>{  
+    reference: {                 title: '30 Years of Decompilation and the Unsolved Structuring Problem: Part 2',      
+          authors: [{name: 'Zion Leonahenahe Basque'}],      
+          organizations: [],  
+          year: '(2024)',      
+          link: "https://mahaloz.re/dec-history-pt2"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  FFMPEG_THE_INCREDIBLE_TECHNOLOGY_BEHIND_VIDEO_ON_THE_INTERNET_496: <Content>{  
+    reference: {                 title: 'FFmpeg: The Incredible Technology Behind Video on the Internet | #496',      
+          authors: [{name: 'Jean-Baptiste Kempf'},{name: 'Kieran Kunhya'},{name: 'Lex Fridman'}],      
+          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=nepKKz-MzFM"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  CREATOR_OF_CPP_BELL_LABS_NEGATIVE_OVERHEAD_ABSTRACTION_MISTAKES_BJARNE_STROUSTRUP: <Content>{  
+    reference: {                 title: 'Creator of C++: Bell Labs, Negative Overhead Abstraction, Mistakes | Bjarne Stroustrup',      
+          authors: [{name: 'Bjarne Stroustrup'},{name: 'Ryan Peterman'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2026)',      
+          link: "https://www.youtube.com/watch?v=U46fJ2bJ-co"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  THE_MAGIC_OF_ARM_W_CASEY_MURATORI: <Content>{  
+    reference: {                 title: 'The Magic Of ARM w/ Casey Muratori',      
+          authors: [{name: 'Casey Muratori'},{name: 'ThePrimeagen'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2024)',      
+          link: "https://www.youtube.com/watch?v=Zr09I5OlOjs"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  X86_NEEDS_TO_DIE: <Content>{  
+    reference: {                 title: 'X86 Needs To Die',      
+          authors: [{name: 'Casey Muratori'},{name: 'ThePrimeagen'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2024)',      
+          link: "https://www.youtube.com/watch?v=xCBrtopAG80"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  THE_REAL_PROBLEMS_W_GIT: <Content>{  
+    reference: {                 title: 'The Real Problems w/ Git',      
+          authors: [{name: 'ThePrimeagen'},{name: 'Casey Muratori'},{name: 'TJ DeVries'},{name: 'David Begin'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2025)',      
+          link: "https://www.youtube.com/watch?v=t6qL_FbLArk"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+  THE_ONLY_UNBREAKABLE_LAW: <Content>{  
+    reference: {                 title: 'The Only Unbreakable Law',      
+          authors: [{name: 'Casey Muratori'}],      
+          organizations: [ORGANIZATIONS.youtube],  
+          year: '(2022)',      
+          link: "https://www.youtube.com/watch?v=5IUj1EZwpJY"      
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  },
+
   AN_INFINITY_OF_WORLDS_COSMIC_INFLATION_AND_THE_BEGINNING_OF_THE_UNIVERSE: <Content>{  
     reference: {                 title: 'An Infinity of Worlds: Cosmic Inflation and the Beginning of the Universe',      
           authors: [{name: 'Will Kinney'}],      
@@ -4147,6 +4236,18 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2026: Content[] = [
+  REFERENCES.THE_METAVERSE_BUILDING_THE_SPATIAL_INTERNET,
+  REFERENCES.THE_DECOMPILATION_WIKI,
+  REFERENCES.DECOMPILING_2024_A_YEAR_OF_RESURGENCE_IN_DECOMPILATION_RESEARCH,
+  REFERENCES._30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_1,
+  REFERENCES._30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_2,
+  REFERENCES.FFMPEG_THE_INCREDIBLE_TECHNOLOGY_BEHIND_VIDEO_ON_THE_INTERNET_496,
+  REFERENCES.CREATOR_OF_CPP_BELL_LABS_NEGATIVE_OVERHEAD_ABSTRACTION_MISTAKES_BJARNE_STROUSTRUP,
+  REFERENCES.THE_MAGIC_OF_ARM_W_CASEY_MURATORI,
+  REFERENCES.X86_NEEDS_TO_DIE,
+  REFERENCES.THE_REAL_PROBLEMS_W_GIT,
+  REFERENCES.THE_ONLY_UNBREAKABLE_LAW,
+
   REFERENCES.AN_INFINITY_OF_WORLDS_COSMIC_INFLATION_AND_THE_BEGINNING_OF_THE_UNIVERSE,
   REFERENCES.STATE_OF_AI_IN_2026_LLMS_CODING_SCALING_LAWS_CHINA_AGENTS_GPUS_AGI_490,
   REFERENCES.OPENCLAW_THE_VIRAL_AI_AGENT_THAT_BROKE_THE_INTERNET___PETER_STEINBERGER_491,
