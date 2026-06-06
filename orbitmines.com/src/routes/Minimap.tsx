@@ -87,10 +87,10 @@ const Minimap = () => {
               <Row middle="xs" center="xs">
                 <Col style={{maxWidth: '500px'}}>
                   <Row style={{alignItems: 'center'}}>
-                    <Col xs={2}>
-                      <img src="/E.svg" alt="E" style={{width: '100%', maxHeight: '100px'}} />
+                    <Col xs={3}>
+                      <img src="/almanac/almanac.png" alt="E" style={{width: '100%', maxHeight: '100px'}} />
                     </Col>
-                    <Col xs={10}>
+                    <Col xs={9}>
                       <Reference
                         index={0}
                         reference={ETHERS_ALMANAC.reference}
