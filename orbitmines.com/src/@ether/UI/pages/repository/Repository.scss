@@ -721,7 +721,7 @@ $line-height: 20px;
   .nav-actions .clone-btn { gap: 4px; padding: 0 6px; }
 
   .action-icon-default { display: none !important; }
-  .action-icon-small { display: flex !important; }
+  .action-btn .action-icon-small { display: flex !important; }
 }
 
 @media (max-width: 400px) {
