@@ -130,6 +130,14 @@ export const BrowserRouter: React.FC<{ children?: React.ReactNode }> = ({ childr
 export const Routes: React.FC<{ children?: React.ReactNode }> = ({ children }) => <>{children}</>;
 export const Route: React.FC<any> = () => null;
 
+const decodePathname = (pathname: string): string => {
+  try {
+    return decodeURIComponent(pathname);
+  } catch {
+    return pathname;
+  }
+};
+
 // ---------------------------------------------------------------------------
 // Hooks. They read from MemoryRouterCtx first (so PDF rendering's memory URL
 // wins inside its subtree) and fall back to next/navigation otherwise.
@@ -152,7 +160,7 @@ export const useLocation = (): Location => {
     return { pathname: memory.pathname, search: memory.search, hash: '', state: null, key: 'memory' };
   }
   return {
-    pathname: nextPathname || '/',
+    pathname: decodePathname(nextPathname || '/'),
     search,
     hash: '',
     state: null,

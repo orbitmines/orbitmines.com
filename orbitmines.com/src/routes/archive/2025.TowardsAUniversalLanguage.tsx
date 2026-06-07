@@ -1,3 +1,4 @@
+import { TOWARDS_A_UNIVERSAL_LANGUAGE } from "../references";
 import React, {ReactNode} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
@@ -23,39 +24,15 @@ import {
   CanvasContainer,
   Continuation,
   Line,
-  ON_ORBITS,
   Ray,
   RenderedRay,
   torus
 } from "./2023.OnOrbits";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
+import {ON_ORBITS,_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../references";
 import {PROFILES} from "../profiles/profiles";
-import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
+import {ON_INTELLIGIBILITY} from "../references";
 import {Highlight, Prism, themes} from "prism-react-renderer";
 import "../../lib/prism/ray";
-
-export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
-  reference: {
-    title: "2025 Progress Update: Towards A Universal Language",
-    subtitle: "An initial look at the text-based Ray programming language and subsequent design notes for its IDE: The Ether.",
-    draft: false,
-    link: 'https://orbitmines.com/archive/towards-a-universal-language',
-    year: "2025",
-    date: "2025-12-31",
-    external: {
-      discord: {
-        serverId: '1055502602365845534',
-        channelId: '1455223851825762475',
-        link: () => "https://discord.com/channels/1055502602365845534/1455223851825762475"
-      }
-    },
-    organizations: [ORGANIZATIONS.orbitmines_research],
-    authors: [{
-      ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-    }],
-  }, status: Viewed.VIEWED, found_at: "2025", viewed_at: "December, 2025"
-}
 
 const highlight = (code: string) => (
   // @ts-ignore

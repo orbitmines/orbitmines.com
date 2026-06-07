@@ -1,3 +1,4 @@
+import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "../references";
 import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
@@ -16,25 +17,6 @@ import Post, {
 import {PROFILES} from "../profiles/profiles";
 import WEBGL from "three/examples/jsm/capabilities/WebGL";
 import {CanvasContainer} from "./2023.OnOrbits";
-
-export const _2024_02_ORBITMINES_AS_A_GAME_PROJECT: Content = {
-  reference: {
-    title: "OrbitMines as a Game Project",
-    subtitle: "A comprehensive guide on how to be frustrated with pixels. An open call for funding, collaboration or anyone curious to learn more.",
-    draft: false,
-    link: 'https://orbitmines.com/archive/2024-02-orbitmines-as-a-game-project',
-    year: "2024",
-    date: "2024-02-22",
-    external: {
-      discord: {serverId: '1055502602365845534', channelId: '1194769877542649938', link: () => "https://discord.com/channels/1055502602365845534/1194769877542649938/1194769877542649938"}
-    },
-    organizations: [ORGANIZATIONS.orbitmines_research],
-    authors: [{
-      ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-    }],
-  }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "February, 2024"
-}
 
 const _2024_02_OrbitMines_as_a_Game_Project = () => {
   const navigate = useNavigate();

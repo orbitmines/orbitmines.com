@@ -1,3 +1,4 @@
+import { ETHERS_ALMANAC } from "./references";
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "./profiles/profiles";
 import React, {ReactNode, useEffect, useLayoutEffect, useRef, useState} from "react";
@@ -25,46 +26,7 @@ ReactPrism.languages.bash = Prism.languages.bash
 import "prismjs/components/prism-bash";
 import { add, CachedVisualizationCanvas, CanvasContainer, Continuation, Line, Ray, RenderedRay, torus, Vertex } from "./archive/2023.OnOrbits";
 import REFERENCES from "./profiles/fadi-shawki/fadi_shawki";
-import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "./archive/2024.02.OrbitMines_as_a_Game_Project";
-export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
-  title: "Ether's Almanac",
-  subtitle: "Your handbook for anything Ether, Ray & OrbitMines.",
-  draft: true,
-  date: "Last update: 2026-12-31",
-  year: "2026",
-  external: {
-    discord: {serverId: '1055502602365845534', channelId: '1463219913044005018', link: () => "https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018"}
-  },
-  organizations: [ORGANIZATIONS.orbitmines_research],
-  authors: [{
-    ...PROFILES.fadi_shawki,
-    external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-  }],
-  published: [ORGANIZATIONS.orbitmines_research],
-  link: "https://orbitmines.com/almanac"
-}, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026",
-
-  UPDATES: [
-    { reference: {
-      title: "2026 Ether's Almanac: The v0 specification runtime for the Ray programming language",
-      subtitle: "The Ray Programming Language",
-      draft: true,
-      date: "2026-12-31",
-      year: "2026",
-      external: {
-        discord: {serverId: '1055502602365845534', channelId: '1463219913044005018', link: () => "https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018"}
-      },
-      organizations: [ORGANIZATIONS.orbitmines_research],
-      authors: [{
-        ...PROFILES.fadi_shawki,
-        external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-      }],
-      published: [ORGANIZATIONS.orbitmines_research],
-      link: "https://orbitmines.com/almanac"
-    }, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026" }
-  ]
-
-}
+import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "./references";
 
 
 
@@ -235,7 +197,7 @@ const Almanac = () => {
     book: true,
     ...ETHERS_ALMANAC.reference,
     title: renderable<React.ReactNode>((ETHERS_ALMANAC.reference.title as any), (value: any) => <>
-      <img src="/almanac/almanac.png" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '100%', height: '25Alam0px'}}/>
+      <img src="/almanac/almanac.png" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '100%', height: '250px'}}/>
       <Title>Ether's Almanac</Title>
     </>),
     pdf: {

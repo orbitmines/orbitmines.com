@@ -2,11 +2,9 @@ import React from 'react';
 import {ARTICLES_2021, ARTICLES_2022, ARTICLES_2023, ARTICLES_2024, ARTICLES_2025, ARTICLES_2026} from "./fadi_shawki";
 import ORGANIZATIONS, {Viewed} from "../../../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "../profiles";
-import {ON_INTELLIGIBILITY} from "../../archive/2022.OnIntelligibility";
-import {CanvasContainer, ON_ORBITS} from "../../archive/2023.OnOrbits";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../../archive/2024.02.OrbitMines_as_a_Game_Project";
+import {CanvasContainer} from "../../archive/2023.OnOrbits";
 import {Arc, Section, Reference, Category, Profile} from "../../../lib/post/Post";
-import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "../../archive/2025.TowardsAUniversalLanguage";
+import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ORBITMINES_MINECRAFT_ARCHIVE, ETHERS_ALMANAC} from "../../references";
 
 interface TimelineEntry {
     when: string;
@@ -96,34 +94,50 @@ const Timeline = ({title, entries, leftHeader, heading = 'Timeline', showHeading
                                             boxSizing: 'border-box',
                                         }}/>
                                     ) : null}
-                                    {!sameAsPrev || !isSmall ? (
-                                        <span
-                                            className={future ? 'bp5-text-disabled' : undefined}
-                                            style={{display: 'inline-block', minWidth: isSmall ? 0 : 90, marginRight: isSmall ? 0 : 12, color: future ? undefined : activeDot, visibility: sameAsPrev && !isSmall ? 'hidden' : 'visible'}}
-                                        >{!sameAsPrev ? label : ''}</span>
-                                    ) : null}
-                                    {isSmall ? <div style={{height: 0}}/> : null}
-                                    <span
-                                        className={future ? 'bp5-text-muted' : undefined}
-                                        style={{color: future ? undefined : activeText, fontSize: compact ? '0.8rem' : undefined}}
-                                    >{entry.what}</span>
-                                    {entry.description || moreSpecific ? (
-                                        isSmall ? (
-                                            <span className="bp5-text-muted" style={{marginLeft: 8, fontSize: compact ? '0.7rem' : '0.9rem'}}>
-                                                {moreSpecific ? (
-                                                    <span style={{marginRight: entry.description ? 8 : 0}}>{entry.when}{entry.description ? '.' : ''}</span>
+                                    {isSmall ? (
+                                        <>
+                                            {!sameAsPrev ? (
+                                                <span
+                                                    className={future ? 'bp5-text-disabled' : undefined}
+                                                    style={{color: future ? undefined : activeDot}}
+                                                >{label}</span>
+                                            ) : null}
+                                            <div style={{height: 0}}/>
+                                            <span
+                                                className={future ? 'bp5-text-muted' : undefined}
+                                                style={{color: future ? undefined : activeText, fontSize: compact ? '0.8rem' : undefined}}
+                                            >{entry.what}</span>
+                                            {entry.description || moreSpecific ? (
+                                                <span className="bp5-text-muted" style={{marginLeft: 8, fontSize: compact ? '0.7rem' : '0.9rem'}}>
+                                                    {moreSpecific ? (
+                                                        <span style={{marginRight: entry.description ? 8 : 0}}>{entry.when}{entry.description ? '.' : ''}</span>
+                                                    ) : null}
+                                                    {entry.description}
+                                                </span>
+                                            ) : null}
+                                        </>
+                                    ) : (
+                                        <div style={{display: 'flex', alignItems: 'flex-start'}}>
+                                            <span
+                                                className={future ? 'bp5-text-disabled' : undefined}
+                                                style={{flex: '0 0 90px', marginRight: 12, color: future ? undefined : activeDot, visibility: sameAsPrev ? 'hidden' : 'visible'}}
+                                            >{!sameAsPrev ? label : ''}</span>
+                                            <div style={{flex: '1 1 auto', minWidth: 0}}>
+                                                <span
+                                                    className={future ? 'bp5-text-muted' : undefined}
+                                                    style={{color: future ? undefined : activeText, fontSize: compact ? '0.8rem' : undefined}}
+                                                >{entry.what}</span>
+                                                {entry.description || moreSpecific ? (
+                                                    <div className="bp5-text-muted" style={{fontSize: compact ? '0.7rem' : '0.9rem', marginTop: 2}}>
+                                                        {moreSpecific ? (
+                                                            <span style={{marginRight: entry.description ? 8 : 0}}>{entry.when}{entry.description ? '.' : ''}</span>
+                                                        ) : null}
+                                                        {entry.description}
+                                                    </div>
                                                 ) : null}
-                                                {entry.description}
-                                            </span>
-                                        ) : (
-                                            <div className="bp5-text-muted" style={{marginLeft: 102, fontSize: compact ? '0.7rem' : '0.9rem', marginTop: 2}}>
-                                                {moreSpecific ? (
-                                                    <span style={{marginRight: entry.description ? 8 : 0}}>{entry.when}{entry.description ? '.' : ''}</span>
-                                                ) : null}
-                                                {entry.description}
                                             </div>
-                                        )
-                                    ) : null}
+                                        </div>
+                                    )}
                                 </div>
                             );
                         });
@@ -471,8 +485,9 @@ export const FadiShawkiBody = () => {
 
         <Timeline
             heading="Writings"
+            groupByYear
             leftHeader={<img src="/logo.png" alt="orbitmines.com" style={{width: '100%', height: 'auto', opacity: 0.9}}/>}
-            entries={[TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper) => {
+            entries={[ETHERS_ALMANAC.UPDATES[0], ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper) => {
                 const icon = paper.reference.organizations?.[0] ? renderOrgIcon(paper.reference.organizations[0], 0) : null;
                 const inner = <>{icon}{paper.reference.title as React.ReactNode}</>;
                 return {

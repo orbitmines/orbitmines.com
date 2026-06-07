@@ -1,16 +1,12 @@
 import React from 'react';
 const logo = "/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
-import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
-import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
+import {CanvasContainer} from "./archive/2023.OnOrbits";
 import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/post/Post";
 import {PROFILES} from "./profiles/profiles";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
-import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";
-import {ETHERS_ALMANAC} from "./Almanac";
 import {Button} from "@blueprintjs/core";
 import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
-import {ORBITMINES_MINECRAFT_ARCHIVE} from "./archive/2026.MinecraftArchive";
+import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ETHERS_ALMANAC, ORBITMINES_MINECRAFT_ARCHIVE} from "./references";
 
 
 const Minimap = () => {

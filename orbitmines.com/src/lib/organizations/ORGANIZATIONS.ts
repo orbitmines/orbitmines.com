@@ -28,6 +28,7 @@ const toe_icon = "/organizations/toe/toe.jpg";
 const syco_icon = "/organizations/syco/logo.png";
 const cool_worlds_podcast_icon = "/organizations/cool_worlds/channels4_profile.jpg";
 const demystifysci_icon = "/organizations/demystifysci/channels4_profile.jpg";
+const ether_icon = "/E.svg";
 import {ReferenceProps, Renderable} from "../post/Post";
 import {ReactNode} from "react";
 
@@ -106,6 +107,13 @@ export type TProfile = {
 
 
 const ORGANIZATIONS = {
+  ether: <TOrganization>{
+    key: 'ether',
+    name: "Ether",
+    assets: {
+      icon_png: ether_icon,
+    }
+  },
   orbitmines_research: <TOrganization>{
     key: 'orbitmines-research',
     name: "OrbitMines Research",

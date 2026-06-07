@@ -1282,22 +1282,21 @@ export const PaperHeader = (props: PaperProps) => {
     authors
   } = props;
 
+  const profiledOrganizations = (organizations ?? []).filter((organization) => (organization as any).profile);
+
   return <>
     <Title><Rendered renderable={title}/></Title>
     {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
 
     <Row center="xs" middle="xs">
-      {organizations ? <>
-        {organizations.map((organization) => {
-          const { key: orgKey, ...rest } = organization as any;
-          return <Col key={orgKey} xl={5} xs={12}>
-            <Organization key={orgKey} {...rest} />
-          </Col>;
-        })}
+      {profiledOrganizations.map((organization) => {
+        const { key: orgKey, ...rest } = organization as any;
+        return <Col key={orgKey} xl={5} xs={12}>
+          <Organization key={orgKey} {...rest} />
+        </Col>;
+      })}
 
-      </> : <></>}
-
-      {(authors || []).map((author, i) => (<Col key={(author as any)?.profile ?? i} xl={organizations ? 5 : 12} xs={12}>
+      {(authors || []).map((author, i) => (<Col key={(author as any)?.profile ?? i} xl={profiledOrganizations.length ? 5 : 12} xs={12}>
         <Author {...author} />
 
       </Col>))}
@@ -1420,7 +1419,10 @@ export const PaperContent = (props: PaperProps) => {
     </>}
   </>
 
-  const footnotes = getFootnotes(Content);
+  const isPdf = generate === 'button' || generate === 'pdf';
+  const footnotes = (book && !isPdf)
+    ? (!isStartPage && !isSearching ? getFootnotes(util.getContentChildren(util.current())) : [])
+    : getFootnotes(Content);
   if (footnotes.length == 0)
     exclude_footnotes = true
 

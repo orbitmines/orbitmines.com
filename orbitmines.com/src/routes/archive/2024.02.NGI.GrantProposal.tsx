@@ -1,3 +1,4 @@
+import { _2024_02_NGI_GRANT_PROPOSAL } from "../references";
 import React from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import Post, {
@@ -13,24 +14,6 @@ import Post, {
 } from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
-
-export const _2024_02_NGI_GRANT_PROPOSAL: Content = {
-  reference: {
-    title: "NGI Grant Proposal: OrbitMines' (Hypergraphic) Version Control System through Rays",
-    subtitle: "",
-    draft: false,
-    link: 'https://orbitmines.com/archive/2024-02-ngi-grant-proposal',
-    year: "2024",
-    date: "2024-01-31",
-    external: {
-    },
-    organizations: [ORGANIZATIONS.orbitmines_research],
-    authors: [{
-      ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-    }],
-  }, status: Viewed.VIEWED, found_at: "2024", viewed_at: "January, 2024"
-}
 
 const _2024_02_NGI_GrantProposal = () => {
   const referenceCounter = useCounter();

@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {Button} from '@blueprintjs/core';
 import Markdown from '../../util/MarkdownView';
 import {getAPI} from '../../data';
 import type {Repository as RepoData} from '../../data';
@@ -40,6 +41,7 @@ const Profile: React.FC<ProfileProps> = ({
   settingsUrl,
   chatUrl,
 }) => {
+  const navigate = useNavigate();
   const currentPlayer = getCurrentPlayer();
   const isOwner = effectiveUser === currentPlayer;
   const defaults = useMemo(() => getProfileDefaults(effectiveUser), [effectiveUser]);
@@ -115,6 +117,10 @@ const Profile: React.FC<ProfileProps> = ({
   }, [repository, effectiveUser, base, versions, path]);
 
   return (
+    <>
+    <div className="pt-10 px-15">
+      <Button icon="arrow-left" minimal onClick={() => navigate('/')} />
+    </div>
     <div className="repo-page">
       {defaults ? <ProfileMeta profile={defaults} user={effectiveUser} /> : null}
       <div className="profile-layout">
@@ -157,6 +163,7 @@ const Profile: React.FC<ProfileProps> = ({
         </div>
       </div>
     </div>
+    </>
   );
 };
 
