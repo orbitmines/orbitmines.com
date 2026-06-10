@@ -263,8 +263,6 @@ const Almanac = () => {
       <BR/>
       How does one advance the way software is made and interacted with?
       <BR/>
-      It's clear to me that the group of people that concern themselves with this question is relatively small, and I think to some extend that will always be the case. Which in our case is great, it gives the asymmetrical leverage one needs to create something truely useful.
-      <BR/>
       Over the years, this line of thinking has brought me to two distinct ideas for the future of tool use. These two things are definitely distinct; they don't depend on one another, but they do complement eachother. Eventually I could see the world going in the direction of these two ideas, but I have seen no serious attempts at them. The two ideas are as follows:
       <BR/>
       <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
