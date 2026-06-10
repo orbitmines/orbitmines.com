@@ -213,19 +213,23 @@ const Almanac = () => {
     <Arc head="Introduction">
       Greetings! This is the Ether's Almanac! Anything OrbitMines-related you may need like using the Ether and the Ray programming language is contained in it. We'll update the almanac regularly, expect larger updates at the end of each year.
       <BR/>
-      The Ether is a collective name for projects at OrbitMines. OrbitMines' goal is to eventually do research on the gamification of science, engineering and education: literally turning them into a sandbox videogame! But my judgement is that this in practice turns out to be a particularly difficult problem to think about. So instead (for the moment) we turn ourselves to a more practical problem: Programming infrastructure. If it is such a difficult problem to think about, why not advance the very tools with which we do our thinking! The thinking being that it might stimulate future thought towards this hard problem.
+      Ether is a collective name for projects at OrbitMines. OrbitMines' goal is to eventually do research on the gamification of science, engineering and education: literally turning them into a sandbox videogame! But my judgement is that this in practice turns out to be a particularly difficult problem to think about. So instead (for the moment) we turn ourselves to a more practical problem: Programming infrastructure. If it is such a difficult problem to think about, why not advance the very tools with which we do our thinking! In the hopes of stimulating future thought towards this hard problem.
       <BR/>
       Currently, the plan is as follows:
+      <span style={{textAlign: 'left'}}>
       <BR/>
-      - (1) Develop the Ray programming language, as a temporary placeholder to build out infrastructure for the future.
+      - (1) Develop the Ray programming language, as a placeholder to build out infrastructure for the future.
       <BR/>
-      - (2) Build a reprogrammable visual interface (an IDE) which will allow us to go beyond what a typical programming language does.
+      - (2) Build an ecosystem around Ray which will allow us to go beyond what a typical programming language does. A new <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined /> with programmable <SectionButton section="§3.4 Access Permissions" rightIcon="arrow-right" text="§3.4 Access Permissions" minimal outlined />. And a reprogrammable visual interface (an IDE) - which will later become the Ether.
       <BR/>
       - (3) Build tools within that interface for analyzing, comparing and cherry-picking features of ALL existing (programming) languages and their libraries: The Ether Library Project.
       <BR/>
       - (4) Do the same for rendering/physics/visual/game engines.
       <BR/>
-      - (5) By the time this is all set in motion, have thought of an idea to get started with gamification.
+      - (5a) By the time this is all set in motion, have thought of an idea to get started with gamification.
+      <BR/>
+      - (5b) Alongside gamification, attack the problem of the adaptive interface: The Ether; An interface which interoperates with all applications ever made.
+      </span>
 
       <BR/>
         If you're interesting in following along with these projects, or even contributing!, join <Reference is="reference" simple inline index={referenceCounter()} reference={{
@@ -237,10 +241,11 @@ const Almanac = () => {
       <span style={{textAlign: 'left'}}>If you're here to learn more, then let me, without (much) further ado, get you started on <SectionButton section="A. The Ray Programming Language" rightIcon="arrow-right" text="A. The Ray Programming Language" minimal outlined />!</span>
 
       If it's more ado you're after - and if you want to understand the *why* first - then let me expand on that short introduction with a more general mission statement:
+    </Arc>
+    <Arc head="Why?: Extended Introduction">
 
-      <H4 className="bp5-text-muted">Mission Statement</H4>
-
-      Ok... Ignoring previous attempts <Reference is="footnote" index={referenceCounter()} reference={{ ..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{
+      <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
+        Ok... Ignoring previous attempts <Reference is="footnote" index={referenceCounter()} reference={{ ..._2024_02_ORBITMINES_AS_A_GAME_PROJECT.reference}} /> <Reference is="footnote" index={referenceCounter()} reference={{
         title: "What is OrbitMines?, Implementing Aleks Kissinger's Chyp and maybe looking at Tinygrad",
         draft: false,
         link: 'https://www.youtube.com/watch?v=O6v_gzlI1kY',
@@ -252,62 +257,72 @@ const Almanac = () => {
           external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
         }],
       }} />. The *why* of OrbitMines, of Ether, of Ray:
-      <BR/>
-      Whenever I account a problem, my tendency seems to be: "But how do I solve the more general problem?". Naturally in the software space, you end up thinking about programming infrastructure and tools themselves. Whether it's their shortcomings, stagnation, fragmentation or inherent complexity. And somewhere a driver is: What are people currently NOT doing, and what should they be doing?
-      <BR/>
-      Over the years, this line of thinking has brought me to two distinct ideas for the future of tool use. These two things are definitely distinct; they don't depend on one another, but they do complement eachother. Eventually I could see the world going in the direction of these two ideas, but I have seen no serious attempts at them. And so they satisfy my two conditions of what problem I would like to work on. The two ideas are as follows.
-      <BR/>
-      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
-        - (1) An interface which interactively adapts itself to you. Knows what tools you know, suggest what you might want to learn next. And interoperates with all applications ever made.
-        <BR/>
-        - (2) The gamification of tool use, enabling education and the citizen scientist through a sandbox videogame.
       </span>
       <BR/>
-      Now while both maybe sound interesting, their practicality isn't entirely obvious. Let's start by breaking down the adaptive interface idea first:
-      <H6 className="bp5-text-muted">Adaptive Interface</H6>
-      This idea comes from the general principle you see in everything. There's a new idea, it gets explored. Then there become many different explorers in their own different ecosystems. And eventually people want unification of these different branches which are supposed to be the same thing. Whether it's (programming) languages, ideas of physics, examples from history, dataformats, databases; you name it!
+      Whenever I account a problem, my tendency seems to be: "But how do I solve the more general problem?". Naturally in the software space, you end up thinking about programming infrastructure and tools themselves. Whether it's their shortcomings, stagnation, fragmentation or inherent complexity. And the burning question becomes:
       <BR/>
-      Always the approach by someone trying to generalize is; let's build the next thing which will make all previous things obsolete. Now at least in software what happens is that those things barely actually become obsolete. Even if they do, we kind of still want to be able to use those old things.
+      How does one advance the way software is made and interacted with?
       <BR/>
-      While my attempt to attack these problems does include a new programming language, that is for a very specific purpose. Instead of expecting that new programming language to be the 'one to rule them all' as you say, it is merely a tool with which I will build bridges: Interoperability. That is the key. Instead of creating the language that everyone will use, make all languages interoperable! Instead of making the adaptive interface with all the features known to man kind: Make existing applications interopable. That's the attempt: By first making languages interopable, and then by extension their libraries and applications built on them.<BR/>
-      I foresee a future then, where the idea of platforms dissappears. Instead you have people focussing on infrastructure (servers etc.), optimization (databases, dataformats etc.) and look (representations, UI etc.). And they all interoperate with eachother because they will be forced to by the usefulness of the adaptive interface: I will not make the everything app, I will connect everything in an app.
+      It's clear to me that the group of people that concern themselves with this question is relatively small, and I think to some extend that will always be the case. Which in our case is great, it gives the asymmetrical leverage one needs to create something truely useful.
       <BR/>
-      What you need for this then, was my realization, is a kind of universal language. You must be able to compare semantics of widly different things. Now how I've come to define a universal language is always that it's a cultural one. It's not that something is THE universal language, it's that culturally everything is expressed in that language, and therefore it operates as one. Technically pretty much any language could be a universal language!
+      Over the years, this line of thinking has brought me to two distinct ideas for the future of tool use. These two things are definitely distinct; they don't depend on one another, but they do complement eachother. Eventually I could see the world going in the direction of these two ideas, but I have seen no serious attempts at them. The two ideas are as follows:
       <BR/>
-      And it does in fact already exist. The semantics of all compilers (still in use) are expressed through a single universal language. Or rather a collection of universal languages which all differ slightly: <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "Assembly Languages", link: "https://en.wikipedia.org/wiki/Assembly_language" }}/>. Instead of basically making new compiler backends for existing compilers; which would probably be faulty and too much of an undertaking anyway. We could go start this adventure by (de)compiling assembly.
+      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
+        - (1) Interoperability: An interface which interoperates with all applications ever made. Interactively adapts itself to you. Knows what tools you know, shows only what you've learned so far and combines and equivalences similar applications into one.
+        <BR/>
+        - (2) Gamification: The gamification of tool use, enabling education and the citizen scientist through a sandbox videogame.
+      </span>
       <BR/>
-      There are of course challenges to that idea. Compilation is lossy, decompilation is hard. But it should theoretically be possible to interpret all compilers/interpreters in assembly, then because you have access to the semantics of the compiler, you'll have access to the semantics of the languages it compiles/interprets as frontends or intermediate representations (IRs). And so on. Don't get me wrong, this is an undertaking nobody has attempted because it is simply too wild an idea; "this would never work!" That's exactly why it qualifies as one of my projects. This is The Ether Library Project.
+      Starting with interoperability; Let me first divide this into several subproblems:
+      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
+      - (1a) A high-level (cultural) universal language: A language capable of expression all other programming language's semantics.
+      </span>
+      You must be able to compare semantics of widly different things. Now when I say universal language, I mean that in the sense that it is always a cultural one. If culturally everything is expressed in that language, it therefore operates as one.
       <BR/>
-      If this can be achieved on the level of programming languages, it will make the harder problem which is user applications much more tractable. Their semantics are much more varied and complex than programming languages, overlap less, and act on wildly different kinds of structures for which one would have to find equivalences.
-      <H6 className="bp5-text-muted">Gamification</H6>
-      Now if you're entertaining that wild idea, let me expand on the second, to me more wilder, idea. Though easier to explain, it's hard to properly grasp what it would mean, it just doesn't exist: The gamification of tools and by extension education, science and engineering.
+      And they do in fact already exist. The semantics of pretty much all compilers (still in use) are expressed through a single universal language. Or rather a collection of universal languages which all differ slightly: <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "Assembly Languages", link: "https://en.wikipedia.org/wiki/Assembly_language" }}/>.
+      But what we need is a way of doing what assembly currently is, in a high-level language. A language which can operate as an assembly language, a systems language or even a high-level interpreted scripting language.
+      <BR/>
+      <span style={{textAlign: 'left', width: '100%'}}>
+      This is what <SectionButton section="A. The Ray Programming Language" rightIcon="arrow-right" text="A. The Ray Programming Language" minimal outlined /> is supposed to be.
+      </span>
+      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
+      - (1b) Compile existing low-level universal languages to this new high-level universal language.
+      </span>
+      Instead of expecting to create a language, or standard that everyone will use, expecting to make the previous thing obsolete (as if that ever happens in software). Take what they're already using and just work with that: Instead of creating backends to all the compilers in existance, you could (de)compile the backends they are already targeting instead.
+      <BR/>
+      There are of course challenges to that idea. Compilation is lossy, (de)compilation is hard, especially if we're talking many different compilers. But possible is all we need here.
+      <BR/>
+      (The actual way this would probably happen is by implementing the assembly inside the new language, where assembly is just valid syntax in the new language. And then we have program equivalences to bring something seemingly low-level up to something higher-level, as long as it's written in this language.)
+      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
+      - (1c) Language interoperability
+      </span>
+      All that before is just required infrastructure for the thing we were actually after: interoperability. But interoperability of applications is way too hard a problem to just attack directly. So to make our lives easier, we first make languages themselves interopable.
+      <BR/>
+      I want to be able to say: Take any compiler, as long as it's written in one of the (universal) assembly languages we already support. And then use that compiler to gain access to the semantics of other programming languages. And compile the compiler into a new version which supports interoperability.
+      <BR/>
+      There are also challenges to this idea, but you could see a future where you pick and choose features and what to do when you cross language boundaries. (I) Use libraries written in other programming languages without having access to a shared library. (II) Choose a particular language's memory model across language boundaries. (III) Or simply define what it means for shared access to a kind of structure, without having to communicate it over a channel. (IV) Mixed-language code in a single, or across multiple files.
+      <BR/>
+      (1b) and (1c) are the Ether Library Project.
+      <BR/>
+      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
+      - (1d) The Ether: The adaptive interface; Interoperability of applications.
+      </span>
+      If this can be achieved, the next frontier would be the interoperability of apps. I foresee a future then, where the idea of platforms dissappears. Instead you have people focussing on infrastructure (servers, networking etc.), optimization (databases, dataformats etc.) and look (representations, UI etc.). And they all interoperate with eachother because they will be forced to by the usefulness of the adaptive interface.
+      <BR/>
+      But there is again another challenging problem: Their semantics are much more varied and complex than programming languages, overlap less, and act on wildly different kinds of structures for which one would have to find equivalences. But it is a problem we can formulate, and definite steps can be made towards this goal.
+      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
+      - (2) Gamification
+      </span>
+      Then there is to me the wilder problem. Though easier to explain, it's hard to properly grasp what it would mean, it just doesn't exist: The gamification of tools and by extension education, science and engineering.
       <BR/>
       It's probably useful to come out of the gate and say that certain problems probably can't or resist being gamified. It's the conflict of the fact that problems, are often open problems, and that games are often very constrained closed environments.
       <BR/>
       This is why this is an open research problem to me, one which I hopefully will properly attack once I've attempted the other one. My current thinking is that perhaps optimization problems might lend themselves to be the kind of problem which might deliver the feedback loops required for a game. But you'd need some form of interpretability of the thing doing the optimization. And it's then a whole different ballgame to make it *fun*.
       <BR/>
       This is why we need an example. We need a working example that shows promise of being fun-to-play. While being an actual practical tool.
-      <H6 className="bp5-text-muted">The Programming Language</H6>
-      Back to reality a bit, what infrastructure is required to make this possible? This is where the Ray programming language comes in. With these two ideas we want to execute in the future in the back of our mind, what are its requirements? In essence we're saying how do we lift the universal languages that are assembly, to a high level language which will become our new (cultural) universal language. And more generally; how do we improve upon those systems which already exist?
-      <BR/>
 
-      {/* TODO Maybe change this to be better than just a list of features */}
-      <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
-      - <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "Homoiconicity", link: "https://en.wikipedia.org/wiki/Homoiconicity" }}/>. The fundamental unit of which everything is made is a 'Ray', you'll explore those in <SectionButton section="§2.2 Rays: Arrays, Trees, Graphs" rightIcon="arrow-right" text="§2.2 Rays: Arrays, Trees, Graphs" minimal outlined />.
       <BR/>
-      - It needs to express what all other languages can express. This is particularly explored in <SectionButton section="§2.4 Types: Patterns" rightIcon="arrow-right" text="§2.4 Types: Patterns" minimal outlined />.
-      <BR/>
-      - Interoperability of accounts/avatars whatever we'll call them. At the programming-language level <SectionButton section="§3.2 Player Instances & Networking" rightIcon="arrow-right" text="§3.2 Player Instances & Networking" minimal outlined />.
-      <BR/>
-      - A version control system which is more than just for textfiles, but is interoperable with Git <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined />.
-      <BR/>
-      - Beyond operating system-level control of access permissions. A security model which allows us to track who is allowed to access which variable. Who is allowed to execute what kind of code on my machine. <SectionButton section="§3.4 Access Permissions" rightIcon="arrow-right" text="§3.4 Access Permissions" minimal outlined />.
-      <BR/>
-      - The controlflow of programs needs to be accessible, and (de)compilers essentially become equivalence graphs of those programs: <SectionButton section="§4.4 Program Types" rightIcon="arrow-right" text="§4.4 Program Types" minimal outlined />.
-      <BR/>
-      - Separating optimizations from specifications, by for instance reinterpreting databases as just as an optimization problem: <SectionButton section="§4.5 Optimizations" rightIcon="arrow-right" text="§4.5 Optimizations" minimal outlined />.
-      </span>
-      Then, now that you understand my why, let's start with the what...
+      But first, let us focus on the thing at hand, a language made for solving these problems:
     </Arc>
     <Arc head="A. The Ray Programming Language">
       If you're a beginner and have never looked at a programming language before, no worries, we got you covered! But especially for those who are already familiar with a programming language, let me right out of the gate throw some code at you to look at, without having explained anything yet about the programming language. Perhaps that might already give you quite some information.
