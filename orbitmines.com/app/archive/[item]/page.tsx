@@ -8,8 +8,6 @@ import ArchiveClient from './ArchiveClient';
 // `title: "..."` literal at build time, so titles stay in sync with the source
 // rather than being hand-duplicated here.
 export const ITEM_SOURCES: Record<string, string> = {
-  '2025-09-ngi-grant-proposal': 'src/routes/archive/2025.09.NGI.GrantProposal3.tsx',
-  '2024-02-ngi-grant-proposal': 'src/routes/archive/2024.02.NGI.GrantProposal.tsx',
   '2024-02-orbitmines-as-a-game-project': 'src/routes/archive/2024.02.OrbitMines_as_a_Game_Project.tsx',
   'on-intelligibility': 'src/routes/archive/2022.OnIntelligibility.tsx',
   'on-orbits-equivalence-and-inconsistencies': 'src/routes/archive/2023.OnOrbits.tsx',
