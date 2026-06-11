@@ -1,14 +1,14 @@
 import { ETHERS_ALMANAC } from "./references";
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "./profiles/profiles";
-import React, {ReactNode, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, ReactNode, useEffect, useLayoutEffect, useRef, useState} from "react";
 import Post, {
   Arc, Block,
   BlueprintIcons16,
-  BlueprintIcons20, BR, Children, CustomIcon,
+  BlueprintIcons20, BR, Children, Col, CustomIcon,
   JetBrainsMono,
   PaperProps, Reference,
-  renderable, Section, SectionButton,
+  renderable, Row, Section, SectionButton,
   Title,
   useCounter
 } from "../lib/post/Post";
@@ -27,6 +27,7 @@ import "prismjs/components/prism-bash";
 import { add, CachedVisualizationCanvas, CanvasContainer, Continuation, Line, Ray, RenderedRay, torus, Vertex } from "./archive/2023.OnOrbits";
 import REFERENCES from "./profiles/fadi-shawki/fadi_shawki";
 import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "./references";
+import { Html, Text } from "@react-three/drei";
 
 
 
@@ -183,8 +184,8 @@ const Shell = ({children}: Children) => {
   </Block>
 }
 
-export const CodeBlock = ({children, after}: Children & { after?: React.ReactNode }) => {
-  return <Block style={{textAlign: 'left'}}>
+export const CodeBlock = ({children, after, style = {}}: Children & { after?: React.ReactNode } & React.HTMLAttributes<HTMLElement>) => {
+  return <Block style={{textAlign: 'left', ...style}}>
     <Highlighted code={string(children)}/>
     {after}
   </Block>;
@@ -366,7 +367,143 @@ const Almanac = () => {
       <Section head="§0. For Beginners">
         <span style={{textAlign: 'left'}}>If you're starting out learning a programming language for the first time, great! This section is for you. If not <SectionButton section="§1. How to Install" rightIcon="arrow-right" text="Skip ahead to §1" minimal outlined />.</span>
 
-        <Section head="§0.1 ">
+        <BR/>
+        Though there are probably better ways to starting out with a programming language for the first time, I did want to attempt at making something for complete beginners. There was this instance where I was explaining programming language concepts to someone, and it struck me how much knowledge I just assumed should be obvious about my writing. It's likely that if you continue to read the rest of this book on the Ray programming language, that you'll get stuck on terminology that I use.
+        <BR/>
+        I want to be able to give this section of the book to anyone; As long as they're a little curious about programming languages. If you get through this section and are able to create something simple, I'd consider that a win. But you'll likely hit a steeper learning curve after this section. I do approach each problem from the ground up, but there are a lot of throwaway comments which may fly over your head - and that is fine.
+        <BR/>
+        I'll start off assuming that even the smallest bit of code looks alien to you. I won't even assume knowledge of much mathematics. And see if we can start to build up a vocabulary which will enable you to do this great thing that is programming!
+
+        <Section head="§0.1 Variables">
+          Let's set a goal for ourselves. A lot of learning about programming languages is getting comfortable with abstract knowledge. This book for instance lists a lot of tools, without really explaining what you could use them for. The fun thing about programming is that it is a sandbox, the complexity of the things you can do come from you, not necessarily from the language. Whether that's a website or something as complicated as a videogame. So... a simple example. Let's say we wanted to build a calculator. The language already gives you a lot of tools to do the complicated stuff for that, but you don't necessarily know how to use them yet. How would we go about doing that? 
+          <BR/>
+
+          Where to begin... Perhaps with a temporal and spatial intuition! A program is just a set of steps the computers follows. A long line of things to do essentially. Because programs are typically written in text we read that line from top to bottom. (First we do A, then B, then C.)
+          <Row style={{width: '100%'}}>
+            <Col md={6} xs={9}>
+              <Block style={{width: '100%'}}>
+                <Row center="xs" style={{flexDirection: 'row'}}>
+                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A"/></Col>
+                   <Col style={{width: '10px'}}><Highlighted code="B"/></Col>
+                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C"/></Col>
+                </Row>
+                <CachedVisualizationCanvas alt="graph" context={book} style={{height: '85.6px', marginTop: '-60px'}}>
+                  <group scale={1.5}>
+                    <RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} color="orange"/>
+                    <RenderedRay reference={Ray.size(1)} position={[0, 0, 0]} scale={1.5} color="orange"/>
+                    <RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} color="orange"/>
+                  </group>
+                  
+                </CachedVisualizationCanvas>
+              </Block>
+            </Col>
+            <Col md={6} xs={3}>
+              <CodeBlock style={{width: '100%'}}>
+                A<BR/>
+                B<BR/>
+                C
+              </CodeBlock>
+            </Col>
+            <Col md={6} xs={9}>
+              <Row center="xs"><span className="bp5-text-muted">Graph (read left-to-right)</span></Row>
+            </Col>
+            <Col md={6} xs={3}>
+              <Row center="xs" className="hidden-xs"><span className="bp5-text-muted">Program</span></Row>
+            </Col>
+          </Row>
+          
+          Sometimes that road has junctions in it. Sometimes there's a highway and there are many parallel paths.
+          <Row style={{width: '100%'}}>
+            <Col md={6} xs={12}>
+              <Block style={{width: '100%'}}>
+                <Row center="xs" style={{flexDirection: 'row'}}>
+                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D"/></Col>
+                   <Col style={{width: '25px'}}><Highlighted code="E1"/></Col>
+                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F"/></Col>
+                </Row>
+                <CachedVisualizationCanvas alt="graph" context={book} style={{height: '93.6px', marginTop: '-60px'}}>
+                  <group scale={1.5}>
+                    <Continuation position={[-60, 0, 0]} color="orange"/>
+                    <Continuation position={[60, 0, 0]} color="orange"/>
+                  </group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} renderContinuations={false} color="orange"/></group>
+                  <group scale={1.5}>
+                    <Continuation position={[-20, 0, 0]} color="orange"/>
+                    <Line start={add([-20, 0, 0], [-torus.radius, 0, 0])} end={add([-20, 0, 0], [-20, 0, 0])} scale={1.5}
+                          color="orange"/>
+                    <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                          color="orange"/>
+                    <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                          color="orange"/>
+                  </group>
+                  
+                  <group scale={1.5}>
+                    <Continuation position={[20, 0, 0]} color="orange"/>
+                    <Line start={add([20, 0, 0], [torus.radius, 0, 0])} end={add([20, 0, 0], [20, 0, 0])} scale={1.5}
+                          color="orange"/>
+                    <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                          color="orange"/>
+                    <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                          color="orange"/>
+                  </group>
+                  <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} renderContinuations={false} color="orange"/></group>
+
+                  <group scale={1.5}>
+                    <Vertex position={[0, 10, 0]} color="orange"/>
+                    <Vertex position={[0, -10, 0]} color="orange"/>
+                  </group>
+                </CachedVisualizationCanvas>
+                <Row center="xs" style={{flexDirection: 'row'}}>
+                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2"/></Col>
+                </Row>
+              </Block>
+            </Col>
+            <Col md={6} xs={12}>
+              <Row middle="xs" style={{height: '100%'}}>
+                <CodeBlock style={{width: '100%'}}>
+                  D<BR/>
+                  branch E1<BR/>
+                  branch E2<BR/>
+                  F
+                </CodeBlock>
+              </Row>
+            </Col>
+          </Row>
+          
+          We call something like that road a graph.
+          <BR/>
+          The graphs on the left, are simply to give you an intuition on how to read through code. To introduce the fact that there is a flow of the program, and there are things in the program that tell you what happens next. The specifics of what, is something we'll get to.
+          <BR/>
+          Let's zoom into one of the lines: one of the steps. And see what we can do in one of those steps.
+          <BR/>
+          The first idea you're always introduced to is the idea of variables. (Or in a different context they're sometimes called parameters.) They are essentially names we attach to things, so that we can then use those names to refer to them. It would be difficult if I had to refer to you by describing what you looked like each time, or I could just refer to you by your name.
+          <BR/>
+          <span style={{textAlign: 'left'}}>So when I want to call something by its name I just type that name! In ray this can be any bit of text as long as there's no spaces in it. <span className="bp5-text-muted">(In other languages this is often more restrictive.)</span></span>
+          <CodeBlock>a</CodeBlock>
+          Of course there's the problem that we haven't called anything 'a' yet. Like grammar in our natural languages, there is syntax in a programming language which says how I can interact with a name - variable - like that. In ray that looks like the following:
+          <CodeBlock>a := 2</CodeBlock>
+          <span style={{textAlign: 'left'}}>We're giving a thing, in this case a number 2, the name 'a'! <span className="bp5-text-muted">(The syntax ':=' essentially says, initialize a new variable with a given value)</span></span>
+          <BR/>
+          Now whenever we refer to 'a'. We get the number 2 back.
+          <CodeBlock>a</CodeBlock>
+          We can then do things, since it's a number, like adding:
+          <BR/>
+          <CodeBlock>a + 5</CodeBlock>
+          Or multiply with star:
+          <CodeBlock>a * 5</CodeBlock>
+          Just like the ':=' syntax, there is all kinds of syntax to interact with a number.
+          <BR/>
+          You can even use the variable more than once:
+          <CodeBlock>a + a</CodeBlock>
+          We can also change a variable with a new value in a single line by setting it with '='.
+          <CodeBlock>a = a + a</CodeBlock>
+          Now anytime I refer to after this line, it's no longer 2, it's 2 + 2, so 4.
+          <BR/>
+          Now that you know that you'd be suprised what kind of things you can already do! Essentially you now have a (primitive) calculator at your fingertips, just in text form.
+        </Section>
+        <Section head="§0.2 Data Types">
+        </Section>
+        <Section head="§0.3 Functions">
         </Section>
       </Section>
       <Section head="§1. How to Install">
