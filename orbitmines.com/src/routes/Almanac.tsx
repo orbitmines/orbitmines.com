@@ -348,24 +348,20 @@ const Almanac = () => {
       <span className="bp5-text-muted" style={{textAlign: 'left'}}>Note that all the codeblocks in this book are executable and editable! Try for instance changing the hexadecimal codepoint to another unicode character!</span>
 
       <BR/>
-      <BR/>
-      <BR/>
-      <BR/>
-      <BR/>
 
       The Ray programming language hopefully should feel somewhat familiar, somewhat alien to anyone with a programming language background. While it has many characteristics of a usual programming language, it deviates from the typical in quite a few ways, as you'll see.
 
       <BR/>
 
-      <span style={{textAlign: 'left'}}>The hope is that the language is particularly useful for modelling the behavior of other (programming) languages (and replace them where convenient), whether low-level (close to the machine's instructions) or high-level. <span className="bp5-text-muted">At least for the UTF-8 example above, the code to express what that encoding means is very minimal.</span> With that comes the additional complexity of being able to express everything that they do<span className="bp5-text-muted">, and hopefully better.</span></span>
+      <span style={{textAlign: 'left'}}>The hope is that the language is particularly useful for modelling the semantics of other (programming) languages, whether low-level or high-level. One of the main goals of the language is to enable interoperability with other programming languages. With that comes the additional complexity of being able to express everything that they do<span className="bp5-text-muted">, and hopefully better.</span> <Reference is="reference" index={referenceCounter()} reference={{title: "Expressivity", link: "https://en.wikipedia.org/wiki/Expressive_power_(computer_science)"}} simple inline />, is therefore a key driver.</span>
 
       <BR/>
 
-      Aesthetically, the aim is to minimize verbosity while maximizing clarity. Of course there will be a certain know-how required to feel completely comfortable with a programming language. But especially if you're used to existing programming languages, the hope is that working with the Ray programming language feels very freeing.
+      Aesthetically, the aim is to minimize verbosity while maximizing clarity. Of course there will be a certain know-how required to feel completely comfortable with a programming language. But especially if you're used to existing programming languages, hopefully working with the Ray programming language feels very freeing.
 
       <BR/>
 
-      <span style={{textAlign: 'left'}}>So whether you're interested in developing web applications, compiler engineering<span className="bp5-text-muted">, (future) game programming</span> or formalizing mathematics. This should be for you!</span>
+      <span style={{textAlign: 'left'}}>Its general nature makes it applicable in pretty much any area of programming. So whether you're interested in developing web applications, compilers<span className="bp5-text-muted">, (future) game programming</span> or formalizing mathematics. This should be for you!</span>
 
       <Section head="§0. For Beginners">
         <span style={{textAlign: 'left'}}>If you're starting out learning a programming language for the first time, great! This section is for you. If not <SectionButton section="§1. How to Install" rightIcon="arrow-right" text="Skip ahead to §1" minimal outlined />.</span>
@@ -483,7 +479,7 @@ const Almanac = () => {
           But for that we must turn to the next section to unpack what that means. Starting with what this 'equipped structure' called a Ray is.
         </Section>
         <Section head="§2.2 Rays: Arrays, Trees, Graphs">
-          <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff (as one of the goals is to be able to model any existing programming language)</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
+          <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
 
           <BR/>
 
@@ -616,7 +612,7 @@ const Almanac = () => {
 
           <BR/>
 
-          (3) Each boundary defines many other boundaries. (Which is the typical definition of a hyperedge)
+          <span style={{textAlign: 'left', minWidth: '100%'}}>(3) Each boundary defines <span style={{color: '#5555FF'}}>many other boundaries</span>. (Which is the typical definition of a hyperedge)</span>
 
           <Block>
             <CanvasContainer style={{height: '50px'}}>
@@ -632,8 +628,8 @@ const Almanac = () => {
             </CanvasContainer>
           </Block>
 
-          <span style={{textAlign: 'left', minWidth: '100%'}}>And (4) each boundary is connected to many <span
-            style={{color: 'orange'}}>vertices</span>.</span>
+          <span style={{textAlign: 'left', minWidth: '100%'}}>And (4) each boundary is connected to <span
+            style={{color: 'orange'}}>many vertices</span>.</span>
 
           <Block>
             <CanvasContainer style={{height: '65px'}}>
