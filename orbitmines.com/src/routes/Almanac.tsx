@@ -478,7 +478,7 @@ const Almanac = () => {
           <BR/>
           The first idea you're always introduced to is the idea of variables. (Or in a different context they're sometimes called parameters.) They are essentially names we attach to things, so that we can then use those names to refer to them. It would be difficult if I had to refer to you by describing what you looked like each time, or I could just refer to you by your name.
           <BR/>
-          <span style={{textAlign: 'left'}}>So when I want to call something by its name I just type that name! In ray this can be any bit of text as long as there's no spaces in it. <span className="bp5-text-muted">(In other languages this is often more restrictive.)</span></span>
+          <span style={{textAlign: 'left'}}>So when I want to call something by its name I just type that name! In Ray this can be any bit of text as long as there's no spaces in it. <span className="bp5-text-muted">(In other languages this is often more restrictive.)</span></span>
           <CodeBlock>a</CodeBlock>
           Of course there's the problem that we haven't called anything 'a' yet. Like grammar in our natural languages, there is syntax in a programming language which says how I can interact with a name - variable - like that. In ray that looks like the following:
           <CodeBlock>a := 2</CodeBlock>
@@ -889,7 +889,7 @@ const Almanac = () => {
           It's worth noting that mapping, retains structure. So if we for instance have the following graph.
           <CodeBlock after={
 
-            <CachedVisualizationCanvas alt="graph" context={book} style={{height: '120px'}}>
+            <CachedVisualizationCanvas alt="graph" context={book} style={{height: '130px'}}>
               <group scale={1.5}>
                 <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
                 <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
@@ -948,10 +948,59 @@ const Almanac = () => {
           </CodeBlock>
           Structure is retained:
           <Block>
+            <CachedVisualizationCanvas alt="graph" context={book} style={{height: '100px'}}>
+              <group scale={1.5}>
+                <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
+                <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
+              </group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+              <group scale={1.5}>
+                <Continuation position={[-20, 0, 0]} color="#5f6b7c"/>
+                <Line start={add([-20, 0, 0], [-torus.radius, 0, 0])} end={add([-20, 0, 0], [-20, 0, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+              </group>
+              
+              <group scale={1.5}>
+                <Continuation position={[20, 0, 0]} color="#5f6b7c"/>
+                <Line start={add([20, 0, 0], [torus.radius, 0, 0])} end={add([20, 0, 0], [20, 0, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+                <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                      color="#5f6b7c"/>
+              </group>
+              <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
 
+              <group scale={1.5}>
+                <Vertex position={[0, 10, 0]} color="#5f6b7c"/>
+                <Vertex position={[0, -10, 0]} color="#5f6b7c"/>
+              </group>
+              
+              <group scale={0.5} position={[-60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+                <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+              </group>
+              <group scale={0.5} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+               </group>
+              <group scale={0.5} position={[0, -15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+                <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+              </group>
+              <group scale={0.5} position={[0, 15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+                <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+                <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+              </group>
+
+            </CachedVisualizationCanvas>
           </Block>
 
-          That however leaves one thing I haven't yet explained about Rays, so the Nodes with structural information, which is the way booleans and numbers are encoded as Rays.
+          That however leaves one thing I haven't yet explained about Rays, which is the way booleans and numbers are encoded as Rays.
           <BR/>
           For that we'll turn towards the next section.
         </Section>
@@ -1391,7 +1440,7 @@ const Almanac = () => {
       </Section>
       <Section head="§6. The v0 Runtime & Compiler">
         <Section head="§6.1 Self-modifying Types">
-          In order to understand the runtime, we must first extend the fundamentals with one more concept; a further generalization of dependent types: self-modifying types.
+          In order to understand the runtime, we must first extend the fundamentals with one more concept; a further generalization of types: self-modifying types.
           <BR/>
           While dependent types are incredibly useful, in both looking ahead or behind in a pattern, there is one thing that they typically can't do. Which is to express a pattern which arbitrarily modifies itself.
           <BR/>
@@ -1402,7 +1451,7 @@ const Almanac = () => {
           </span>
           <BR/>
           The Ray programming language uses such an adaptive grammar (or self-modifying type), and usual type matching also supports it!<BR/>
-          Throughout the standard library you might find definitions for additional syntax like:
+          Throughout the language you might find definitions for additional syntax like:
           <CodeBlock>
             `An example` // Can also be used in front of definitions<BR/>
             <BR/>
@@ -1414,7 +1463,7 @@ const Almanac = () => {
 
         </Section>
       </Section>
-      <Section head="§7. Other Features of the Standard Library">
+      <Section head="§7. Other Features">
         <Section head="§7.1 (Unicode) Strings">
 
         </Section>
