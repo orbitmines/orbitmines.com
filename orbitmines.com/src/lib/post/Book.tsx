@@ -299,6 +299,9 @@ const Book = (props: PaperProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const preSearchState = useRef<{ section: string | null; scrollTop: number } | null>(null);
   const prevSearch = useRef<string | null>(null);
+  // Remembers the vertical scroll position per section slug, so swiping back to
+  // a section returns you to where you were reading rather than to the top.
+  const scrollPositions = useRef<Record<string, number>>({});
 
   // Memoise the (deep) section-tree traversal so re-renders (e.g. search
   // keystrokes) don't re-walk the whole book; props.children is stable unless
@@ -309,10 +312,21 @@ const Book = (props: PaperProps) => {
   const search = params.get('search');
   const highlight = params.get('highlight');
 
+  // Continuously record the scroll position for the active section so we can
+  // restore it later (see the section-change effect below).
+  useEffect(() => {
+    const key = section ?? '';
+    const onScroll = () => { scrollPositions.current[key] = document.documentElement.scrollTop; };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [section]);
+
   const prevSection = useRef(section);
   useEffect(() => {
     if (prevSection.current !== section && !highlight) {
-      document.documentElement.scrollTop = 0;
+      // Restore the remembered position for this section (0 if never visited),
+      // so swiping back resumes where you left off.
+      document.documentElement.scrollTop = scrollPositions.current[section ?? ''] ?? 0;
     }
     prevSection.current = section;
   }, [section]);
@@ -389,6 +403,53 @@ const Book = (props: PaperProps) => {
 
   const util = new BookUtil(props, currentSlug)
 
+  // Horizontal swipe between sections (touch). We only act on touchend once the
+  // gesture has clearly resolved as horizontal, and never call preventDefault,
+  // so vertical scrolling stays fully native and uninterrupted. Swipe right
+  // (finger left-to-right) goes to the previous section; swipe left, the next.
+  useEffect(() => {
+    if (isSearching || isStartPage) return;
+
+    let startX = 0, startY = 0, startT = 0, tracking = false;
+
+    const onStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) { tracking = false; return; }
+      const target = e.target as HTMLElement | null;
+      // Leave horizontally-scrollable content (code blocks, tables) alone.
+      if (target?.closest('pre, code, table')) { tracking = false; return; }
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; startT = Date.now();
+      tracking = true;
+    };
+
+    const onEnd = (e: TouchEvent) => {
+      if (!tracking) return;
+      tracking = false;
+      const t = e.changedTouches[0];
+      if (!t) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const DISTANCE = 60;   // min horizontal travel
+      const DOMINANCE = 1.5; // horizontal must beat vertical by this factor
+      const MAX_DURATION = 700;
+      if (Date.now() - startT > MAX_DURATION) return;
+      if (Math.abs(dx) < DISTANCE || Math.abs(dx) < Math.abs(dy) * DOMINANCE) return;
+
+      if (dx < 0) {
+        if (util.next()) navigateSection(util.nextSection());
+      } else {
+        if (util.previous()) navigateSection(util.previousSection());
+      }
+    };
+
+    window.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('touchend', onEnd, { passive: true });
+    return () => {
+      window.removeEventListener('touchstart', onStart);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [section, isSearching, isStartPage]);
+
   const handleBack = () => {
     const saved = preSearchState.current;
     // saved.section is a slug; navigateSection slugifies (idempotent) and
@@ -441,7 +502,7 @@ const Book = (props: PaperProps) => {
     </Col>
     <Col xs={12}>
       <Row between="xs">
-        {util.previous() ? <Button icon="arrow-left" text={util.previousSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => navigateSection(util.previousSection())} /> : <div/>}
+        {util.previous() ? <div style={{maxWidth: '50%'}}><Button icon="arrow-left" text={util.previousSection()} minimal style={{fontSize: '18px'}} onClick={() => navigateSection(util.previousSection())} className="hidden-sm hidden-xs" /></div> : <div/>}
         {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px', maxWidth: '50%'}} onClick={() => navigateSection(util.nextSection())} /> : null}
       </Row>
     </Col>

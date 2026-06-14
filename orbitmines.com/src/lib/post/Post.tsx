@@ -803,7 +803,9 @@ export const Block = ({children, className, style = {}, ...props}: Children & Re
   return (
       <pre {...props} className={classNames(className, 'bp5-code-block')} style={{
         fontSize: '1.1rem',
-        whiteSpace: 'pre-wrap',
+        whiteSpace: 'pre',
+        overflowX: 'auto',
+        maxWidth: '100%',
         ...style,
       }}>
       {children}
@@ -1441,7 +1443,7 @@ export const PaperContent = (props: PaperProps) => {
         </div>
       </> : <></>}
 
-      {showSidebar ? <Col xs={0} sm={5} md={4} className="scrollbar-hidden" style={{position: 'sticky', top: 0, height: '100vh', overflowY: 'auto'}}>
+      {showSidebar ? <Col xs={0} sm={5} md={4} className="scrollbar-hidden hidden-xs" style={{position: 'sticky', top: 0, height: '100vh', overflowY: 'auto'}}>
         <Navigation {...props} />
       </Col> : <></>}
 

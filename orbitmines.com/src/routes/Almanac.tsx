@@ -64,7 +64,7 @@ const Highlighted = (props: { code: string }) => {
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, [code]);
-  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%" }}>
+  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%", overflowX: "auto" }}>
     <span
       ref={measureRef}
       style={{
@@ -86,6 +86,7 @@ const Highlighted = (props: { code: string }) => {
       value={code}
       onChange={handleChange}
       spellCheck={false}
+      wrap="off"
       style={{
         lineHeight: "1.4",
         position: "relative",
@@ -100,11 +101,11 @@ const Highlighted = (props: { code: string }) => {
         textShadow: "0 0 0 transparent",
         resize: "none",
         fontFamily: "monospace",
-        whiteSpace: "pre-wrap",
+        whiteSpace: "pre",
         overflow: "hidden",
         border: "none",
-        wordBreak: 'break-word',
-        overflowWrap: 'break-word'
+        wordBreak: 'normal',
+        overflowWrap: 'normal'
       }}
     />
 
@@ -119,13 +120,14 @@ const Highlighted = (props: { code: string }) => {
             top: 0,
             left: 0,
             pointerEvents: "none",
-            whiteSpace: "pre-wrap",
+            whiteSpace: "pre",
             background: "transparent",
-            width: "100%",
+            width: "max-content",
+            minWidth: "100%",
             height: height,
             overflow: "hidden",
-            wordBreak: 'break-word',
-            overflowWrap: 'break-word'
+            wordBreak: 'normal',
+            overflowWrap: 'normal'
           }}
         >
         {tokens.map((line, i) => {
@@ -279,7 +281,7 @@ const Almanac = () => {
       You must be able to compare semantics of widly different things. Now when I say universal language, I mean that in the sense that it is always a cultural one. If culturally everything is expressed in that language, it therefore operates as one.
       <BR/>
       And they do in fact already exist. The semantics of pretty much all compilers (still in use) are expressed through a single universal language. Or rather a collection of universal languages which all differ slightly: <Reference is="reference" simple inline index={referenceCounter()} reference={{ title: "Assembly Languages", link: "https://en.wikipedia.org/wiki/Assembly_language" }}/>.
-      But what we need is a way of doing what assembly currently is, in a high-level language. A language which can operate as an assembly language, a systems language or even a high-level interpreted scripting language.
+      But what we need is a way of doing what assembly currently is, in a high-level language. A language which can operate as an assembly language, a systems language or even a high-level interpreted language.
       <BR/>
       <span style={{textAlign: 'left', width: '100%'}}>
       This is what <SectionButton section="A. The Ray Programming Language" rightIcon="arrow-right" text="A. The Ray Programming Language" minimal outlined /> is supposed to be.
@@ -476,7 +478,7 @@ const Almanac = () => {
           <BR/>
           Let's zoom into one of the lines: one of the steps. And see what we can do in one of those steps.
           <BR/>
-          The first idea you're always introduced to is the idea of variables. (Or in a different context they're sometimes called parameters.) They are essentially names we attach to things, so that we can then use those names to refer to them. It would be difficult if I had to refer to you by describing what you looked like each time, or I could just refer to you by your name.
+          The first idea you're always introduced to is the idea of variables <Reference is="footnote" index={referenceCounter()} reference={{title: "Or in a different context they're sometimes called parameters. But we'll get to that later."}} simple inline />. They are essentially names we attach to things, so that we can then use those names to refer to them. It would be difficult if I had to refer to you by describing what you looked like each time, or I could just refer to you by your name.
           <BR/>
           <span style={{textAlign: 'left'}}>So when I want to call something by its name I just type that name! In Ray this can be any bit of text as long as there's no spaces in it. <span className="bp5-text-muted">(In other languages this is often more restrictive.)</span></span>
           <CodeBlock>a</CodeBlock>
