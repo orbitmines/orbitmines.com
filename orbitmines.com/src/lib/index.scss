@@ -1,10 +1,10 @@
-@import "paper/blueprintjs";
-@import "paper/flexbox";
+@import "post/blueprintjs";
+@import "post/flexbox";
 @import "fonts/font";
 
-@import "paper/spacing";
+@import "post/spacing";
 
-@import "~@blueprintjs/core/lib/scss/variables";
+@import "blueprintjs/variables";
 
 * {
   margin: 0;
@@ -15,7 +15,34 @@
 }
 
 body {
-  background-color: $dark-gray1;
+  background-color: rgb(10, 10, 10);
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.bp5-code-block {
+  width: 100%;
+  background: rgba(17, 20, 24, 1) !important;
+}
+
+.bp5-dark .bp5-popover,
+.bp5-popover.bp5-dark {
+  .bp5-popover-content {
+    background: rgb(10, 10, 10) !important;
+  }
+  .bp5-popover-arrow-fill {
+    fill: rgb(10, 10, 10) !important;
+  }
+}
+
+/* md and up (≥ 768px, Blueprint breakpoint) */
+@media (min-width: 768px) {
+  .bp5-code-block {
+    width: 80%;
+  }
 }
 
 // TODO These under the specific theme

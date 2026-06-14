@@ -1,0 +1,297 @@
+$phosphor: #ffffff;
+
+.pr-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-family: 'Courier New', Courier, monospace;
+  color: $phosphor;
+  box-sizing: border-box;
+
+  .repo-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 22px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.5), 0 0 11px rgba(255, 255, 255, 0.22);
+
+    .user { color: rgba(255, 255, 255, 0.55); }
+    .sep { color: rgba(255, 255, 255, 0.25); }
+    .repo-name { color: $phosphor; font-weight: bold; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+.pr-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 13px;
+  margin: 8px 0 18px;
+  cursor: pointer;
+
+  &:hover { color: $phosphor; }
+  svg { width: 16px; height: 16px; }
+}
+
+// ---- List view ----
+
+.pr-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pr-new-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 6px 12px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover { color: $phosphor; border-color: rgba(255, 255, 255, 0.3); }
+  svg { width: 14px; height: 14px; }
+}
+
+.pr-filter-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 12px;
+}
+
+.pr-filter-tab {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 4px;
+  border-bottom: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover { color: rgba(255, 255, 255, 0.7); }
+  &--active { color: $phosphor; border-bottom-color: $phosphor; }
+}
+
+.pr-filter-count {
+  font-size: 11px;
+  padding: 1px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pr-list { display: flex; flex-direction: column; }
+
+.pr-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+
+  &__icon {
+    flex: 0 0 18px;
+    margin-top: 2px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--open    { color: #56d364; }
+    &--closed  { color: #f85149; }
+    &--merged  { color: #b87cf0; }
+    svg { width: 18px; height: 18px; }
+  }
+
+  &__body { flex: 1; min-width: 0; }
+  &__title {
+    color: $phosphor;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  &__meta {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  &__path {
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 6px;
+  }
+}
+
+.pr-status-badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 4px;
+
+  &.open   { background: rgba(86, 211, 100, 0.15); color: #56d364; }
+  &.closed { background: rgba(248, 81, 73, 0.15); color: #f85149; }
+  &.merged { background: rgba(184, 124, 240, 0.15); color: #b87cf0; }
+}
+
+.pr-empty {
+  padding: 32px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+}
+
+// ---- Category rows ----
+
+.pr-category {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+
+  &__icon { width: 18px; height: 18px; color: rgba(255, 255, 255, 0.55); }
+  &__body { flex: 1; }
+  &__name { color: $phosphor; font-size: 14px; }
+  &__meta { font-size: 11px; color: rgba(255, 255, 255, 0.45); }
+}
+
+// ---- Detail view ----
+
+.pr-detail {
+  max-width: 1120px;
+  margin: 0 auto;
+
+  &__sticky {
+    position: sticky;
+    top: 0;
+    background: #0a0a0a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 24px;
+    z-index: 10;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $phosphor;
+    font-size: 18px;
+  }
+
+  &__meta {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 4px;
+  }
+
+  &__body {
+    padding: 16px 24px;
+  }
+
+  &__section {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    margin-bottom: 14px;
+    overflow: hidden;
+
+    &-title {
+      padding: 8px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.4);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    &-body { padding: 10px 12px; font-size: 13px; }
+  }
+}
+
+// ---- New PR form ----
+
+.pr-form {
+  max-width: 700px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 4px;
+  }
+
+  input[type='text'],
+  textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px 10px;
+    color: $phosphor;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    margin-bottom: 14px;
+
+    &:focus { border-color: rgba(255, 255, 255, 0.3); }
+  }
+
+  textarea { min-height: 140px; resize: vertical; }
+}
+
+.pr-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pr-form-btn {
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: $phosphor;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:hover { background: rgba(255, 255, 255, 0.12); }
+  &--primary {
+    background: rgba(86, 211, 100, 0.15);
+    border-color: rgba(86, 211, 100, 0.4);
+    color: #56d364;
+    &:hover { background: rgba(86, 211, 100, 0.22); }
+  }
+}

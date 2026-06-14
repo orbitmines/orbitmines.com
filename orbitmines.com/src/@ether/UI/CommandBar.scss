@@ -1,0 +1,37 @@
+@use './CRTShell.scss';
+
+.ether-command {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.85);
+  opacity: 0;
+  transition: opacity 0.35s ease-in;
+  overflow: hidden;
+  touch-action: none;
+  font-family: 'Courier New', Courier, monospace;
+
+  &--visible { opacity: 1; }
+  &--closing { transition: opacity 0.3s ease-out; opacity: 0; }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 90%;
+    max-height: 100%;
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  &__row {
+    display: flex;
+    align-items: baseline;
+    font-size: 18px;
+    line-height: 1.8;
+    white-space: pre;
+  }
+}

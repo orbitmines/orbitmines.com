@@ -1,3 +1,4 @@
+import { ORBITMINES_MINECRAFT_ARCHIVE } from "../references";
 import React, {ReactNode} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
@@ -16,46 +17,22 @@ import Paper, {
   Row,
   Section, TODO,
   useCounter
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {
   add,
   CachedVisualizationCanvas,
   CanvasContainer,
   Continuation,
   Line,
-  ON_ORBITS,
   Ray,
   RenderedRay,
   torus
 } from "./2023.OnOrbits";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
+import {ON_ORBITS,_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../references";
 import {PROFILES} from "../profiles/profiles";
-import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
+import {ON_INTELLIGIBILITY} from "../references";
 import {Highlight, Prism, themes} from "prism-react-renderer";
-import {ImageGallery} from "../../lib/paper/ImageGallery";
-
-export const ORBITMINES_MINECRAFT_ARCHIVE: Content = {
-  reference: {
-    title: "The OrbitMines Minecraft Server (2013-2019)",
-    subtitle: "A trip back into the past, a piece of OrbitMines history when it was a Minecraft server. And a look at the OrbitMines Minecraft Archive which includes a remastered version of the server through its lifetime!",
-    draft: false,
-    link: 'https://orbitmines.com/archive/the-orbitmines-minecraft-server',
-    year: "2026",
-    date: "2026-04-04",
-    external: {
-      discord: {
-        serverId: '221293899967102976',
-        channelId: '1488917711982694461',
-        link: () => "https://discord.com/channels/221293899967102976/1488917711982694461" // TODO
-      }
-    },
-    organizations: [ORGANIZATIONS.orbitmines_research],
-    authors: [{
-      ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-    }],
-  }, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026"
-}
+import {ImageGallery} from "../../lib/post/ImageGallery";
 
 const MinecraftArchive = () => {
   const navigate = useNavigate();

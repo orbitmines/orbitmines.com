@@ -1,0 +1,19 @@
+
+@orbitmines = Organization(
+  avatars:
+    // These two would have to be registered under the orbitmines organization
+    | @"fadi.shawki@orbitmines.com" = Avatar()
+    | @"discord.orbitmines.com" = Avatar(@: "https://discord.orbitmines.com")
+
+    | @github.@orbitmines = Avatar(@: "https://github.com/orbitmines")
+    | @x.@OrbitMines = Avatar(@: "https://x.com/OrbitMines")
+    | @instagram.@orbitmines = Avatar(@: "https://www.instagram.com/orbitmines/")
+    | @youtube.@OrbitMines = Avatar(@: "https://www.youtube.com/@OrbitMines")
+    | @twitch.@orbitmines = Avatar(@: "https://www.twitch.tv/orbitmines")
+    | @linkedin.@orbitmines = Avatar(@: "https://www.linkedin.com/company/orbitmines/")
+    //| @gitlab.@orbitmines = Avatar(@: "https://gitlab.com/orbitmines") //TODO This would be set to private since it's not in use
+    | @facebook.@OrbitMines = Avatar(@: "https://www.facebook.com/profile.php?id=61550528503885")
+  profile_picture: ./lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png
+)
+
+// TODO All the organizations
