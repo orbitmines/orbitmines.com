@@ -31,7 +31,8 @@ import { Html, Text } from "@react-three/drei";
 
 
 
-const Highlighted = (props: { code: string }) => {
+const Highlighted = (props: { code: string, scroll?: boolean }) => {
+  const { scroll = true } = props;
   const textareaRef = useRef(null);
   const measureRef = useRef<HTMLSpanElement | null>(null);
 
@@ -64,7 +65,7 @@ const Highlighted = (props: { code: string }) => {
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, [code]);
-  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%", overflowX: "auto" }}>
+  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%", overflowX: scroll ? "auto" : "visible" }}>
     <span
       ref={measureRef}
       style={{
@@ -385,9 +386,9 @@ const Almanac = () => {
             <Col md={6} xs={9}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A"/></Col>
-                   <Col style={{width: '10px'}}><Highlighted code="B"/></Col>
-                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C"/></Col>
+                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" scroll={false}/></Col>
+                   <Col style={{width: '10px'}}><Highlighted code="B" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" scroll={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '85.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -419,9 +420,9 @@ const Almanac = () => {
             <Col md={6} xs={12}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D"/></Col>
-                   <Col style={{width: '25px'}}><Highlighted code="E1"/></Col>
-                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F"/></Col>
+                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" scroll={false}/></Col>
+                   <Col style={{width: '25px'}}><Highlighted code="E1" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" scroll={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '93.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -456,7 +457,7 @@ const Almanac = () => {
                   </group>
                 </CachedVisualizationCanvas>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2"/></Col>
+                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" scroll={false}/></Col>
                 </Row>
               </Block>
             </Col>
