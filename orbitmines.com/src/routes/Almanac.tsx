@@ -287,6 +287,9 @@ const Almanac = () => {
       <span style={{textAlign: 'left', width: '100%'}}>
       This is what <SectionButton section="A. The Ray Programming Language" rightIcon="arrow-right" text="A. The Ray Programming Language" minimal outlined /> is supposed to be.
       </span>
+      <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
+      It's worth noting here that due to the nature of the grammar, it being a very minimal <SectionButton section="§6.1 Self-modifying Types" rightIcon="arrow-right" text="§6.1 Self-modifying Type" minimal outlined />. That it is possible that the language will be, if setup properly for a stable release, <Reference is="reference" index={referenceCounter()} reference={{title: "forwards-compatible", link: "https://en.wikipedia.org/wiki/Forward_compatibility"}} simple inline />. Not just merely compatible, but also able to directly support all new features. All that would be required would be partially providing the source of the language definitions you've designed your system against alongside your applications code. This is an unachievable standard for any other way of maintaining a programming language. I'm not yet saying that I'm committing to it being so. But the possibility, especially if you'd want to consider using it as a standard for future web-like technologies <Reference is="footnote" index={referenceCounter()} reference={{ title: "You could also design future systems against a state-machine like WebAssembly, but having it in a high-level language has its own merits." }}/> (since we're talking interoperability), is intruiging. 
+      </span>
       <span style={{paddingLeft: '30px', textAlign: 'left', width: '100%'}}>
       - (1b) Compile existing low-level universal languages to this new high-level universal language.
       </span>
@@ -1463,7 +1466,6 @@ const Almanac = () => {
             `An example` // Valid syntax
           </CodeBlock>
           Let's get started on the definition of expressions in the language to understand how that works:
-
         </Section>
       </Section>
       <Section head="§7. Other Features">
