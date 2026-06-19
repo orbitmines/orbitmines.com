@@ -1,0 +1,299 @@
+// Lore reader / codex styling. The reading surface is a warm "paper" A5 page
+// floating on the dark app stage so virtual pages feel like a physical book.
+
+// "muted" = legible-but-soft, not the dim disabled-looking ink-soft.
+$lore-muted-text: rgba(214, 211, 204, 0.62);
+
+.lore-root {
+  --paper: #f3ead8;
+  --paper-edge: #e4d8bf;
+  --ink: #2b2620;
+  --ink-soft: #6a6253;
+  --accent: #b07b3a;
+  --stage: #0d0e10;
+
+  min-height: 100vh;
+  background: var(--stage);
+  color: #d6d3cc;
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  position: relative;
+}
+
+.lore-muted { color: var(--ink-soft); opacity: 0.95; }
+.lore-page-wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; }
+.lore-section-title {
+  font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: #b9b3a6; margin: 28px 0 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ----------------------------------------------------------------- links */
+.lore-html { line-height: 1.7; }
+a.lore-link {
+  color: var(--accent); text-decoration: none;
+  border-bottom: 1px solid rgba(176, 123, 58, 0.4); cursor: pointer;
+}
+a.lore-link:hover { border-bottom-color: var(--accent); }
+.lore-link--broken { color: #c0392b; border-bottom: 1px dotted #c0392b; }
+
+/* --------------------------------------------------------------- landing */
+.lore-landing__header { text-align: center; margin: 24px 0 12px; }
+.lore-landing__header h1 { font-size: 40px; margin: 0 0 8px; }
+.lore-landing__header p { max-width: 560px; margin: 0 auto; }
+.lore-landing__subtitle {
+  max-width: 560px; margin: 0 auto; color: $lore-muted-text; line-height: 1.6;
+  text-align: left;
+}
+
+.lore-cover-grid {
+  display: grid; gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+.lore-cover-grid--feature { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+.lore-cover {
+  background: none; border: none; cursor: pointer; padding: 0; text-align: left;
+  color: inherit; display: flex; flex-direction: column; gap: 10px;
+  transition: transform 0.15s ease;
+}
+.lore-cover:hover { transform: translateY(-4px); }
+.lore-cover img {
+  width: 100%; aspect-ratio: 148 / 210; object-fit: cover; border-radius: 4px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5); display: block;
+}
+.lore-cover__title { font-size: 17px; }
+.lore-cover__subtitle { font-size: 13px; color: $lore-muted-text; }
+.lore-cover__code {
+  font-size: 13px; letter-spacing: 0.08em; color: $lore-muted-text;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+/* ---------------------------------------------------- landing: staged arc */
+// The featured book stands large and centred; the character books cradle it
+// from below in a downward "U" fan (see CharacterArc in LoreLanding.tsx).
+.lore-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+}
+.lore-stage__feature {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  position: relative;
+  z-index: 50; // always above the arc below it
+}
+.lore-cover--feature {
+  width: 300px;
+}
+.lore-cover--feature img {
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.6);
+}
+.lore-cover--feature .lore-cover__meta { text-align: center; }
+.lore-cover--feature .lore-cover__title { font-size: 22px; }
+.lore-cover--feature .lore-cover__code { font-size: 15px; }
+.lore-cover--feature .lore-cover__subtitle {
+  font-size: 13px; font-style: italic; line-height: 1.5; text-align: center;
+}
+
+.lore-stage__arc-title { margin-top: 8px; }
+
+.lore-arc {
+  position: relative;
+  width: min(100%, 1000px);
+  // height = arc drop (130px) + a book (~210px) + label room
+  height: 420px;
+  // pull the whole fan up so the rising outer books flank the feature,
+  // while the sunken centre books stay just below it (see DROP in the .tsx)
+  margin-top: -80px;
+}
+.lore-arc__slot {
+  position: absolute;
+  top: 0;
+  width: 150px;
+  transform-origin: 50% 0%;
+  transition: transform 0.2s ease;
+}
+.lore-arc__slot:hover {
+  // straighten and lift the hovered book clear of its neighbours
+  transform: translateX(-50%) translateY(0) rotate(0deg) scale(1.06) !important;
+  z-index: 100 !important;
+}
+
+/* -------------------------------------------------------------- bookhome */
+.lore-back { margin-bottom: 8px; }
+.lore-bookhome__hero { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-start; }
+.lore-bookhome__cover {
+  width: 220px; aspect-ratio: 148 / 210; object-fit: cover; border-radius: 5px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+}
+.lore-bookhome__body { flex: 1; min-width: 280px; }
+.lore-bookhome__body h1 { font-size: 32px; margin: 0 0 6px; }
+.lore-bookhome__subtitle { font-style: italic; color: var(--ink-soft); margin: 0 0 14px; }
+.lore-bookhome__actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+
+.lore-pick-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.lore-pick, .lore-codex-cell {
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px; padding: 14px 10px; cursor: pointer; color: inherit;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.lore-pick:hover, .lore-codex-cell:hover { border-color: var(--accent); transform: translateY(-3px); }
+.lore-pick img, .lore-codex-cell img {
+  width: 84px; height: 84px; object-fit: cover; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+}
+.lore-pick__name, .lore-codex-cell__name { font-size: 15px; }
+.lore-pick__role, .lore-codex-cell__role { font-size: 12px; color: var(--ink-soft); }
+.lore-pick--main img { border-radius: 6px; width: 64px; height: 90px; }
+
+/* ---------------------------------------------------------------- reader */
+.lore-reader { display: flex; flex-direction: column; min-height: 100vh; }
+.lore-reader__bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.lore-reader__crumb { display: flex; align-items: center; gap: 10px; }
+.lore-reader__chaptertitle { font-size: 16px; }
+
+.lore-reader__stage {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 28px 12px; flex: 1;
+}
+.lore-flip { align-self: center; flex: 0 0 auto; }
+
+.lore-book {
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.6));
+}
+.lore-page {
+  width: min(86vw, 460px); aspect-ratio: 148 / 210;
+  background: var(--paper);
+  background-image: linear-gradient(90deg, rgba(0,0,0,0.06), rgba(0,0,0,0) 6%);
+  border: 1px solid var(--paper-edge); border-radius: 3px;
+  color: var(--ink); padding: 44px 42px; overflow: auto;
+  box-shadow: inset 0 0 60px rgba(120, 96, 50, 0.08);
+}
+.lore-page__chapter { text-align: center; margin-bottom: 18px; }
+.lore-page__chapter-eyebrow {
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent);
+}
+.lore-page__chapter h2 { margin: 4px 0 0; font-size: 24px; }
+.lore-page__body { font-size: 17px; }
+.lore-page__body p { margin: 0 0 1em; text-align: justify; hyphens: auto; }
+
+.lore-reader__foot { text-align: center; padding: 6px 0 14px; }
+
+.lore-marginalia {
+  max-width: 560px; margin: 0 auto 40px; padding: 14px 18px;
+  border-left: 2px solid var(--accent); background: rgba(255, 255, 255, 0.02);
+}
+.lore-marginalia h4 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* ------------------------------------------------------------ facts/codex */
+.lore-fact { display: flex; gap: 8px; align-items: baseline; margin: 8px 0; flex-wrap: wrap; }
+.lore-fact__type { text-transform: lowercase; }
+.lore-fact__who { font-size: 12px; color: var(--accent); }
+.lore-fact__text { display: inline; }
+.lore-fact__text p { margin: 0; display: inline; }
+.lore-fact--secret .lore-fact__type { background: rgba(192, 57, 43, 0.25); }
+.lore-fact--reveal .lore-fact__type { background: rgba(176, 123, 58, 0.3); }
+
+.lore-codex__note { margin-bottom: 8px; }
+.lore-codex-grid {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.lore-codex-cell--locked { cursor: default; opacity: 0.45; }
+.lore-codex-cell--locked:hover { transform: none; border-color: rgba(255,255,255,0.07); }
+.lore-codex-cell__lock {
+  width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 28px; background: rgba(255, 255, 255, 0.05);
+}
+.lore-timeline { padding-left: 0; list-style: none; }
+.lore-timeline__chapter { font-size: 12px; }
+
+/* --------------------------------------------------------------- drawer */
+.lore-drawer__backdrop {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 30;
+}
+.lore-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 92vw); z-index: 31;
+  background: #15171a; border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 20px 60px; overflow: auto; box-shadow: -16px 0 40px rgba(0, 0, 0, 0.5);
+}
+.lore-drawer__head { display: flex; align-items: center; justify-content: space-between; }
+.lore-drawer__hero { display: flex; gap: 16px; align-items: center; margin: 12px 0 16px; }
+.lore-drawer__hero img { width: 96px; height: 96px; object-fit: cover; border-radius: 10px; }
+.lore-drawer__hero h2 { margin: 0; font-size: 22px; }
+.lore-drawer__role { color: var(--accent); font-size: 14px; }
+.lore-drawer__locked {
+  font-size: 13px; color: var(--ink-soft); background: rgba(255,255,255,0.03);
+  border-radius: 6px; padding: 8px 10px;
+}
+.lore-drawer__first { font-size: 13px; }
+.lore-drawer__desc { font-size: 15px; line-height: 1.6; }
+.lore-drawer__relations ul, .lore-drawer__facts ul { padding-left: 18px; }
+.lore-drawer h4 {
+  margin: 18px 0 8px; font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+
+/* ---------------------------------------------------------------- toplinks */
+.lore-toplinks { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+
+/* ------------------------------------------------------------ merge graph */
+.lore-graph__hint { max-width: 720px; margin: 8px 16px 0; }
+.lore-graph__scroll { overflow: auto; padding: 12px 16px 48px; }
+.lore-graph__canvas { position: relative; }
+.lore-graph__svg { position: absolute; inset: 0; pointer-events: none; }
+
+.lore-graph__lane {
+  position: absolute; left: 0; width: 138px; display: flex; align-items: center; gap: 8px;
+  background: none; border: none; color: #cfcabf; cursor: pointer; text-align: left; padding: 0;
+  transform: translateY(-50%); // centre on the lane line
+}
+.lore-graph__swatch { width: 12px; height: 12px; border-radius: 3px; flex: 0 0 auto; }
+.lore-graph__lane-title { font-size: 13px; font-weight: 600; }
+
+.lore-graph__node {
+  position: absolute; background: #15171a; border: 1px solid; border-radius: 8px;
+  padding: 7px 9px; cursor: pointer; color: #e6e2d8; text-align: left;
+  display: flex; flex-direction: column; gap: 3px; box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+  transform: translateY(-50%); // anchor by centre regardless of node height
+}
+.lore-graph__node:hover { filter: brightness(1.2); }
+.lore-graph__node-title { font-size: 12.5px; line-height: 1.2; }
+.lore-graph__node-pov {
+  align-self: flex-start; font-size: 10px; letter-spacing: 0.05em;
+  background: rgba(255,255,255,0.1); border-radius: 8px; padding: 1px 6px; color: #d8c39a;
+}
+.lore-graph__node-pov:hover { background: rgba(176,123,58,0.5); }
+.lore-graph__col {
+  position: absolute; font-family: monospace; font-size: 10px; color: #6f6a5f;
+  text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.lore-graph__node.is-selected { box-shadow: 0 0 0 2px var(--accent), 0 6px 16px rgba(0,0,0,0.5); }
+.lore-graph__lane.is-selected .lore-graph__lane-title { color: #fff; text-decoration: underline; }
+
+/* locked (unread) stations in the reader's gated map */
+.lore-graph__node--locked {
+  background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.16);
+  display: grid; place-items: center; height: 30px; box-shadow: none; cursor: default;
+}
+.lore-graph__lock { font-size: 12px; filter: grayscale(1); opacity: 0.6; }
+
+/* embedded (editor strip) tightening */
+.lore-graph--embedded .lore-graph__node { padding: 5px 8px; }
+.lore-graph--embedded .lore-graph__node-title { font-size: 11.5px; }
+
+/* reader map view */
+.lore-reader__bar-right { display: flex; align-items: center; gap: 4px; }
+.lore-reader__map { flex: 1; overflow: auto; padding-bottom: 24px; }
+.lore-reader__map .lore-graph__hint { margin: 12px 16px; }

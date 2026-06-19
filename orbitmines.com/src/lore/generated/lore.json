@@ -1,0 +1,712 @@
+{
+  "generatedAt": "2026-06-19T21:35:11.585Z",
+  "books": {
+    "B": {
+      "id": "B",
+      "title": "[B] — The Head",
+      "kind": "character",
+      "subtitle": "0.B0.4F.31",
+      "subtitleHtml": "0.B0.4F.31",
+      "cover": "/lore-assets/covers/B.svg",
+      "order": 5,
+      "characters": [],
+      "chapterIds": [],
+      "descriptionHtml": "<p>[B]&#39;s account. (To be written.)</p>",
+      "flow": [],
+      "pageCount": 0,
+      "file": "content/lore/books/B.md"
+    },
+    "I": {
+      "id": "I",
+      "title": "[I] — The Younger",
+      "kind": "character",
+      "subtitle": "Sixteen, and certain he's already figured it out.",
+      "subtitleHtml": "Sixteen, and certain he&#39;s already figured it out.",
+      "cover": "/lore-assets/covers/I.svg",
+      "order": 1,
+      "characters": [],
+      "chapterIds": [
+        "i-first-day",
+        "i-online"
+      ],
+      "descriptionHtml": "<p>The week as [I] lived it: school, his sister&#39;s strange new mood, and a stranger\nonline who knows too much. He sees only his own slice — and fills the rest in\nwith confidence.</p>",
+      "flow": [
+        {
+          "chapterId": "i-first-day",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "i-first-day",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "i-online",
+          "pageIndex": 0,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "i-online",
+          "pageIndex": 1,
+          "globalIndex": 3
+        }
+      ],
+      "pageCount": 4,
+      "file": "content/lore/books/I.md"
+    },
+    "II": {
+      "id": "II",
+      "title": "[II] — The Elder",
+      "kind": "character",
+      "subtitle": "Computer science, and a lecture that doesn't add up.",
+      "subtitleHtml": "Computer science, and a lecture that doesn&#39;t add up.",
+      "cover": "/lore-assets/covers/II.svg",
+      "order": 2,
+      "characters": [],
+      "chapterIds": [
+        "ii-lecture"
+      ],
+      "descriptionHtml": "<p>[II]&#39;s account: the university, professor [S], and the first time she suspects\nthe coursework is describing something real.</p>",
+      "flow": [
+        {
+          "chapterId": "ii-lecture",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "ii-lecture",
+          "pageIndex": 1,
+          "globalIndex": 1
+        }
+      ],
+      "pageCount": 2,
+      "file": "content/lore/books/II.md"
+    },
+    "III": {
+      "id": "III",
+      "title": "[III] — The Researcher",
+      "kind": "character",
+      "subtitle": "0.E2026.0A.1",
+      "subtitleHtml": "0.E2026.0A.1",
+      "cover": "/lore-assets/covers/III.svg",
+      "order": 3,
+      "characters": [],
+      "chapterIds": [],
+      "descriptionHtml": "<p>[III]&#39;s account. (To be written.)</p>",
+      "flow": [],
+      "pageCount": 0,
+      "file": "content/lore/books/III.md"
+    },
+    "S": {
+      "id": "S",
+      "title": "[S] — The Professor",
+      "kind": "character",
+      "subtitle": "0.S0.0A.1",
+      "subtitleHtml": "0.S0.0A.1",
+      "cover": "/lore-assets/covers/S.svg",
+      "order": 4,
+      "characters": [],
+      "chapterIds": [],
+      "descriptionHtml": "<p>[S]&#39;s account. (To be written.)</p>",
+      "flow": [],
+      "pageCount": 0,
+      "file": "content/lore/books/S.md"
+    },
+    "main": {
+      "id": "main",
+      "title": "The Main Story",
+      "kind": "main",
+      "subtitle": "1.E2047.0A.1",
+      "subtitleHtml": "1.E2047.0A.1",
+      "cover": "/lore-assets/covers/main.svg",
+      "order": 0,
+      "characters": [
+        "I",
+        "II",
+        "III",
+        "S",
+        "B"
+      ],
+      "chapterIds": [
+        "prologue",
+        "i-first-day",
+        "ii-lecture",
+        "i-online"
+      ],
+      "descriptionHtml": "<p>Five people, one week, and a thing at the university that should not be\npossible. The main account braids together everything the separate witnesses\nsaw — read it straight through, or step into any single character&#39;s book to see\nhow much they actually knew at the time.</p>",
+      "flow": [
+        {
+          "chapterId": "prologue",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "i-first-day",
+          "pageIndex": 0,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "i-first-day",
+          "pageIndex": 1,
+          "globalIndex": 3
+        },
+        {
+          "chapterId": "ii-lecture",
+          "pageIndex": 0,
+          "globalIndex": 4
+        },
+        {
+          "chapterId": "ii-lecture",
+          "pageIndex": 1,
+          "globalIndex": 5
+        },
+        {
+          "chapterId": "i-online",
+          "pageIndex": 0,
+          "globalIndex": 6
+        },
+        {
+          "chapterId": "i-online",
+          "pageIndex": 1,
+          "globalIndex": 7
+        }
+      ],
+      "pageCount": 8,
+      "file": "content/lore/books/main.md"
+    }
+  },
+  "chapters": {
+    "i-first-day": {
+      "id": "i-first-day",
+      "title": "First Day",
+      "pov": "I",
+      "summary": "A new semester, and a sister in a strange mood.",
+      "characters": [
+        "I",
+        "IC",
+        "IA"
+      ],
+      "books": [
+        "main",
+        "I"
+      ],
+      "pages": [
+        {
+          "html": "<p><a class=\"lore-link\" data-ref=\"I\">[I]</a> was sixteen and already bored of the assembly before it started.</p>\n<p>His mother — <a class=\"lore-link\" data-ref=\"IC\">mom</a> — had dropped him and his sister at the gate without a\nword, which was not like her.</p>",
+          "refs": [
+            "I",
+            "IC"
+          ],
+          "factIds": [
+            "i-first-day#0#0"
+          ]
+        },
+        {
+          "html": "<p><a class=\"lore-link\" data-ref=\"IA\">[IA]</a> found him by the lockers. &quot;Your sister okay? She looked like she&#39;d seen\na ghost.&quot;</p>\n<p>He shrugged it off. He was good at shrugging things off — better than he was at\nbeing right about them.</p>",
+          "refs": [
+            "IA",
+            "I",
+            "II"
+          ],
+          "factIds": [
+            "i-first-day#1#0",
+            "i-first-day#1#1"
+          ]
+        }
+      ],
+      "file": "content/lore/chapters/i-first-day.md"
+    },
+    "i-online": {
+      "id": "i-online",
+      "title": "The Message",
+      "pov": "I",
+      "summary": "A stranger online who knows too much.",
+      "characters": [
+        "I",
+        "IB"
+      ],
+      "books": [
+        "main",
+        "I"
+      ],
+      "pages": [
+        {
+          "html": "<p>That night <a class=\"lore-link\" data-ref=\"I\">[I]</a> logged on and <a class=\"lore-link\" data-ref=\"IB\">[IB]</a> was already typing.</p>",
+          "refs": [
+            "I",
+            "IB",
+            "II"
+          ],
+          "factIds": [
+            "i-online#0#0"
+          ]
+        },
+        {
+          "html": "<p>He stared at the message for a long time.</p>",
+          "refs": [
+            "IB",
+            "I",
+            "university"
+          ],
+          "factIds": [
+            "i-online#1#0",
+            "i-online#1#1"
+          ]
+        }
+      ],
+      "file": "content/lore/chapters/i-online.md"
+    },
+    "ii-lecture": {
+      "id": "ii-lecture",
+      "title": "The Lecture",
+      "pov": "II",
+      "summary": "The coursework starts describing something real.",
+      "characters": [
+        "II",
+        "IID",
+        "S"
+      ],
+      "books": [
+        "main",
+        "II"
+      ],
+      "pages": [
+        {
+          "html": "<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> had taken <a class=\"lore-link\" data-ref=\"IID\">the professor</a>&#39;s course three times now in different\nforms, and never seen the slide that went up that morning.</p>\n<p>It was not on the syllabus. It was, as far as she could tell, not on anyone&#39;s\nsyllabus.</p>",
+          "refs": [
+            "II",
+            "IID"
+          ],
+          "factIds": [
+            "ii-lecture#0#0"
+          ]
+        },
+        {
+          "html": "<p>The visiting lecturer introduced himself only as <a class=\"lore-link\" data-ref=\"S\">[S]</a>.</p>",
+          "refs": [
+            "S",
+            "II",
+            "ether"
+          ],
+          "factIds": [
+            "ii-lecture#1#0",
+            "ii-lecture#1#1"
+          ]
+        }
+      ],
+      "file": "content/lore/chapters/ii-lecture.md"
+    },
+    "prologue": {
+      "id": "prologue",
+      "title": "Prologue",
+      "pov": "S",
+      "summary": "Before any of them noticed.",
+      "characters": [
+        "S"
+      ],
+      "books": [
+        "main"
+      ],
+      "pages": [
+        {
+          "html": "<p>Before any of them noticed, the thing was already running.</p>\n<p><a class=\"lore-link\" data-ref=\"S\">[S]</a> had a way of phrasing it that made it sound like a coincidence — that you\nwould arrive here, that you would read exactly this far, and no further, until\nyou chose to.</p>",
+          "refs": [
+            "S",
+            "university"
+          ],
+          "factIds": [
+            "prologue#0#0"
+          ]
+        },
+        {
+          "html": "<p>He wrote the first names on the board himself. Five of them, and two letters\nthat were not names at all.</p>",
+          "refs": [
+            "S"
+          ],
+          "factIds": [
+            "prologue#1#0"
+          ]
+        }
+      ],
+      "file": "content/lore/chapters/prologue.md"
+    }
+  },
+  "entities": {
+    "B": {
+      "id": "B",
+      "type": "character",
+      "name": "[B]",
+      "role": "Head of the University",
+      "age": null,
+      "image": "/lore-assets/characters/B.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "The head of the university.",
+      "descriptionHtml": "<p>The head of the university.</p>",
+      "refs": []
+    },
+    "I": {
+      "id": "I",
+      "type": "character",
+      "name": "[I]",
+      "role": "Highschool student",
+      "age": 16,
+      "image": "/lore-assets/characters/I.svg",
+      "aliases": [
+        "the younger"
+      ],
+      "relations": [
+        "sibling of [[II]]"
+      ],
+      "body": "Tech-savvy and confident — sometimes past the point his evidence supports. The\nyounger of two siblings; spends as much time with people online as in the\nhallways.",
+      "descriptionHtml": "<p>Tech-savvy and confident — sometimes past the point his evidence supports. The\nyounger of two siblings; spends as much time with people online as in the\nhallways.</p>",
+      "refs": []
+    },
+    "IA": {
+      "id": "IA",
+      "type": "character",
+      "name": "[IA]",
+      "role": "Friend from highschool",
+      "age": null,
+      "image": "/lore-assets/characters/IA.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[I]]"
+      ],
+      "body": "[I]'s friend from school.",
+      "descriptionHtml": "<p>[I]&#39;s friend from school.</p>",
+      "refs": []
+    },
+    "IB": {
+      "id": "IB",
+      "type": "character",
+      "name": "[IB]",
+      "role": "Online friend",
+      "age": null,
+      "image": "/lore-assets/characters/IB.svg",
+      "aliases": [],
+      "relations": [
+        "knows [[I]] online"
+      ],
+      "body": "Someone [I] only knows through a screen.",
+      "descriptionHtml": "<p>Someone [I] only knows through a screen.</p>",
+      "refs": []
+    },
+    "IC": {
+      "id": "IC",
+      "type": "character",
+      "name": "[IC]",
+      "role": "Parent",
+      "age": null,
+      "image": "/lore-assets/characters/IC.svg",
+      "aliases": [],
+      "relations": [
+        "parent of [[I]] and [[II]]"
+      ],
+      "body": "Parent to [[I]] and [[II]].",
+      "descriptionHtml": "<p>Parent to <a class=\"lore-link\" data-ref=\"I\">[I]</a> and <a class=\"lore-link\" data-ref=\"II\">[II]</a>.</p>",
+      "refs": [
+        "I",
+        "II"
+      ]
+    },
+    "II": {
+      "id": "II",
+      "type": "character",
+      "name": "[II]",
+      "role": "University student — Computer Science",
+      "age": 24,
+      "image": "/lore-assets/characters/II.svg",
+      "aliases": [
+        "the elder"
+      ],
+      "relations": [
+        "sibling of [[I]]",
+        "student of [[IID]]"
+      ],
+      "body": "Computer-science student, eight years older than her brother. Careful where he\nis impulsive; the first to notice the coursework has started describing\nsomething that behaves like it's real.",
+      "descriptionHtml": "<p>Computer-science student, eight years older than her brother. Careful where he\nis impulsive; the first to notice the coursework has started describing\nsomething that behaves like it&#39;s real.</p>",
+      "refs": []
+    },
+    "IIA": {
+      "id": "IIA",
+      "type": "character",
+      "name": "[IIA]",
+      "role": "Friend (from highschool)",
+      "age": null,
+      "image": "/lore-assets/characters/IIA.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[II]]"
+      ],
+      "body": "[II]'s friend since highschool.",
+      "descriptionHtml": "<p>[II]&#39;s friend since highschool.</p>",
+      "refs": []
+    },
+    "IIB": {
+      "id": "IIB",
+      "type": "character",
+      "name": "[IIB]",
+      "role": "Friend (from university)",
+      "age": null,
+      "image": "/lore-assets/characters/IIB.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[II]]"
+      ],
+      "body": "[II]'s friend from university.",
+      "descriptionHtml": "<p>[II]&#39;s friend from university.</p>",
+      "refs": []
+    },
+    "IIC": {
+      "id": "IIC",
+      "type": "character",
+      "name": "[IIC]",
+      "role": "Friend (from university)",
+      "age": null,
+      "image": "/lore-assets/characters/IIC.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[II]]"
+      ],
+      "body": "[II]'s friend from university.",
+      "descriptionHtml": "<p>[II]&#39;s friend from university.</p>",
+      "refs": []
+    },
+    "IID": {
+      "id": "IID",
+      "type": "character",
+      "name": "[IID]",
+      "role": "Professor of Computer Science",
+      "age": null,
+      "image": "/lore-assets/characters/IID.svg",
+      "aliases": [],
+      "relations": [
+        "teaches [[II]]"
+      ],
+      "body": "[II]'s computer-science professor.",
+      "descriptionHtml": "<p>[II]&#39;s computer-science professor.</p>",
+      "refs": []
+    },
+    "III": {
+      "id": "III",
+      "type": "character",
+      "name": "[III]",
+      "role": "A researcher at Ether.",
+      "age": null,
+      "image": "/lore-assets/characters/III.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "A researcher at Ether.",
+      "descriptionHtml": "<p>A researcher at Ether.</p>",
+      "refs": []
+    },
+    "S": {
+      "id": "S",
+      "type": "character",
+      "name": "[S]",
+      "role": "Professor",
+      "age": null,
+      "image": "/lore-assets/characters/S.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "A professor. Uncanny in a way nobody can quite name — and somehow everyone you\nmeet turns out to have been his student.",
+      "descriptionHtml": "<p>A professor. Uncanny in a way nobody can quite name — and somehow everyone you\nmeet turns out to have been his student.</p>",
+      "refs": []
+    },
+    "university": {
+      "id": "university",
+      "type": "location",
+      "name": "The University",
+      "role": "",
+      "age": null,
+      "image": "/lore-assets/covers/university.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "Where [[II]] studies, [[S]] teaches, and [[B]] presides.",
+      "descriptionHtml": "<p>Where <a class=\"lore-link\" data-ref=\"II\">[II]</a> studies, <a class=\"lore-link\" data-ref=\"S\">[S]</a> teaches, and <a class=\"lore-link\" data-ref=\"B\">[B]</a> presides.</p>",
+      "refs": [
+        "II",
+        "S",
+        "B"
+      ]
+    },
+    "ether": {
+      "id": "ether",
+      "type": "organization",
+      "name": "Ether",
+      "role": "",
+      "age": null,
+      "image": "/lore-assets/covers/ether.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "The research outfit [[III]] works for.",
+      "descriptionHtml": "<p>The research outfit <a class=\"lore-link\" data-ref=\"III\">[III]</a> works for.</p>",
+      "refs": [
+        "III"
+      ]
+    }
+  },
+  "facts": [
+    {
+      "id": "i-first-day#0#0",
+      "type": "knows",
+      "who": [
+        "I"
+      ],
+      "refs": [
+        "I",
+        "IC"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"I\">[I]</a> notices <a class=\"lore-link\" data-ref=\"IC\">[IC]</a> is hiding something, but not what.",
+      "chapterId": "i-first-day",
+      "pageIndex": 0
+    },
+    {
+      "id": "i-first-day#1#0",
+      "type": "knows",
+      "who": [
+        "I",
+        "IA"
+      ],
+      "refs": [
+        "I",
+        "IA",
+        "II"
+      ],
+      "html": "Both <a class=\"lore-link\" data-ref=\"I\">[I]</a> and <a class=\"lore-link\" data-ref=\"IA\">[IA]</a> saw that <a class=\"lore-link\" data-ref=\"II\">[II]</a> was shaken this morning.",
+      "chapterId": "i-first-day",
+      "pageIndex": 1
+    },
+    {
+      "id": "i-first-day#1#1",
+      "type": "secret",
+      "who": [
+        "I"
+      ],
+      "refs": [
+        "I",
+        "II"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"I\">[I]</a> decides not to ask <a class=\"lore-link\" data-ref=\"II\">[II]</a> about it. He&#39;ll regret that.",
+      "chapterId": "i-first-day",
+      "pageIndex": 1
+    },
+    {
+      "id": "i-online#0#0",
+      "type": "knows",
+      "who": [
+        "I",
+        "IB"
+      ],
+      "refs": [
+        "IB",
+        "II",
+        "I"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"IB\">[IB]</a> knows about the slide <a class=\"lore-link\" data-ref=\"II\">[II]</a> saw — which <a class=\"lore-link\" data-ref=\"I\">[I]</a> never mentioned to anyone.",
+      "chapterId": "i-online",
+      "pageIndex": 0
+    },
+    {
+      "id": "i-online#1#0",
+      "type": "secret",
+      "who": [
+        "IB"
+      ],
+      "refs": [
+        "IB",
+        "I"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"IB\">[IB]</a> is not who <a class=\"lore-link\" data-ref=\"I\">[I]</a> thinks they are.",
+      "chapterId": "i-online",
+      "pageIndex": 1
+    },
+    {
+      "id": "i-online#1#1",
+      "type": "event",
+      "who": [],
+      "refs": [
+        "I",
+        "university"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"I\">[I]</a> realises someone outside the family is tracking what happens at the <a class=\"lore-link\" data-ref=\"university\">The University</a>.",
+      "chapterId": "i-online",
+      "pageIndex": 1
+    },
+    {
+      "id": "ii-lecture#0#0",
+      "type": "knows",
+      "who": [
+        "II"
+      ],
+      "refs": [
+        "II"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"II\">[II]</a> realises the lecture material is describing a real system, not a model.",
+      "chapterId": "ii-lecture",
+      "pageIndex": 0
+    },
+    {
+      "id": "ii-lecture#1#0",
+      "type": "meets",
+      "who": [
+        "II",
+        "S"
+      ],
+      "refs": [
+        "II",
+        "S"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"II\">[II]</a> meets <a class=\"lore-link\" data-ref=\"S\">[S]</a> for the first time.",
+      "chapterId": "ii-lecture",
+      "pageIndex": 1
+    },
+    {
+      "id": "ii-lecture#1#1",
+      "type": "reveal",
+      "who": [],
+      "refs": [
+        "S",
+        "ether"
+      ],
+      "html": "<a class=\"lore-link\" data-ref=\"S\">[S]</a> is somehow connected to both the university and to <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.",
+      "chapterId": "ii-lecture",
+      "pageIndex": 1
+    },
+    {
+      "id": "prologue#0#0",
+      "type": "reveal",
+      "who": [],
+      "refs": [
+        "university"
+      ],
+      "html": "Whatever is happening at <a class=\"lore-link\" data-ref=\"university\">the university</a> did not begin this week.",
+      "chapterId": "prologue",
+      "pageIndex": 0
+    },
+    {
+      "id": "prologue#1#0",
+      "type": "event",
+      "who": [],
+      "refs": [
+        "S"
+      ],
+      "html": "The account opens with <a class=\"lore-link\" data-ref=\"S\">[S]</a> already expecting each of them.",
+      "chapterId": "prologue",
+      "pageIndex": 1
+    }
+  ],
+  "landing": {
+    "title": "Ether’s Universe",
+    "subtitle": "*A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you're in a more stable state, can you more closely represent what reality is?*",
+    "titleHtml": "Ether’s Universe",
+    "subtitleHtml": "<em>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</em>"
+  }
+}

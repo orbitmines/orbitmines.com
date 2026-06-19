@@ -9,8 +9,10 @@
     "@react-three/postprocessing": "^3.0.0",
     "@types/three": "^0.183.1",
     "classnames": "^2.5.1",
+    "gray-matter": "^4.0.3",
     "html-to-image": "^1.11.13",
     "lodash": "^4.17.23",
+    "marked": "^18.0.5",
     "next": "^16.2.6",
     "postprocessing": "^6.38.3",
     "prism-react-renderer": "^2.4.1",
@@ -32,8 +34,13 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
+    "lore:build": "node scripts/lore/build-lore.mjs",
+    "lore:images": "node scripts/lore/gen-images.mjs",
+    "lore:editor": "node scripts/lore/editor-server.mjs",
+    "predev": "node scripts/lore/build-lore.mjs",
     "dev": "next dev",
     "start": "next start",
+    "prebuild": "node scripts/lore/build-lore.mjs",
     "build": "next build",
     "lint": "next lint"
   },
