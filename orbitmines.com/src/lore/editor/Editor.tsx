@@ -7,6 +7,7 @@ import './editor.scss';
 import { useLoreNav } from '../LoreNav';
 import LoreHtml from '../components/LoreHtml';
 import Graph from '../components/Graph';
+import { useMeasuredPages, splitTopLevel, type PageBlock } from '../components/useMeasuredPages';
 import { allBooks } from '../data';
 import type { LoreData } from '../types';
 import { editorApi, editorBase, setEditorBase, type PreviewResult, type VaultFile } from './api';
@@ -23,7 +24,7 @@ const KIND_LABEL: Record<string, string> = {
 function template(kind: string, id: string): string {
   switch (kind) {
     case 'chapters':
-      return `---\nid: ${id}\ntitle: \npov: \nbooks: []\ncharacters: []\nsummary: \n---\n\nWrite the chapter here. Reference entities with [[id]] and split A5 pages with a <!-- page --> line.\n`;
+      return `---\nid: ${id}\ntitle: \npov: \nbooks: []\ncharacters: []\nsummary: \n---\n\nWrite the chapter here. Reference entities with [[id]]; it's split into A5 pages automatically.\n`;
     case 'books':
       return `---\nid: ${id}\ntitle: \nkind: character\nsubtitle: \ncover: /lore-assets/covers/${id}.svg\norder: 99\nchapters: []\n---\n\nBack-cover blurb.\n`;
     case 'characters':
@@ -375,36 +376,57 @@ const Editor: React.FC = () => {
 };
 
 const PreviewPane: React.FC<{ preview: PreviewResult | null }> = ({ preview }) => {
+  const chapter = preview?.chapter ?? null;
+  // Measure-paginate the chapter into A5 pages, exactly like the reader.
+  const blocks = useMemo<PageBlock[]>(() => {
+    if (!chapter) return [];
+    const out: PageBlock[] = [];
+    for (const pg of chapter.pages) {
+      for (const html of splitTopLevel(pg.html)) {
+        out.push({ html, gi: 0, chapterId: chapter.id, chapterTitle: chapter.title });
+      }
+    }
+    return out;
+  }, [chapter]);
+  const { pages: measured, probe } = useMeasuredPages(blocks, 'lore-editor__a5');
+
   if (!preview) return <div className="lore-muted">Preview…</div>;
+
+  // Until measured (first paint), fall back to the build pages.
+  const chapterPages = chapter
+    ? (measured.length
+        ? measured
+        : chapter.pages.map((p, i) => ({ html: p.html, chapterStart: i === 0, chapterTitle: chapter.title, chapterId: chapter.id, gi: 0 })))
+    : [];
+
   return (
     <div className="lore-editor__previewbody">
+      {probe}
       {preview.warnings.length > 0 && (
         <div className="lore-editor__warnings">
           {preview.warnings.map((w, i) => <div key={i}>⚠ {w}</div>)}
         </div>
       )}
-      {preview.chapter && (
+      {chapter && (
         <>
           <div className="lore-editor__preview-meta">
-            <Tag minimal>{preview.chapter.pov ? `POV ${preview.chapter.pov}` : 'no POV'}</Tag>
-            <strong>{preview.chapter.title}</strong>
-            <span className="lore-muted">{preview.chapter.pages.length} page(s)</span>
+            <Tag minimal>{chapter.pov ? `POV ${chapter.pov}` : 'no POV'}</Tag>
+            <strong>{chapter.title}</strong>
+            <span className="lore-muted">{chapterPages.length} page(s)</span>
           </div>
-          {preview.chapter.pages.map((p, i) => (
+          {chapterPages.map((p, i) => (
             <div key={i} className="lore-editor__a5">
-              {i === 0 && (
+              {p.chapterStart && (
                 <header className="lore-page__chapter">
                   <div className="lore-page__chapter-eyebrow">Chapter</div>
-                  <h2>{preview.chapter!.title}</h2>
+                  <h2>{chapter.title}</h2>
                 </header>
               )}
               <LoreHtml html={p.html} className="lore-page__body" />
-              {/* Page count is within the chapter — the editor doesn't know which book this belongs to. */}
               <footer className="lore-page__foot">
-                <span className="lore-page__foot-chapter">{preview.chapter!.title}</span>
-                <span className="lore-page__foot-num">{i + 1} / {preview.chapter!.pages.length}</span>
+                <span className="lore-page__foot-chapter">{chapter.title}</span>
+                <span className="lore-page__foot-num">{i + 1} / {chapterPages.length}</span>
               </footer>
-              {p.factIds.length > 0 && <div className="lore-muted lore-editor__pagemeta">{p.factIds.length} reveal(s) · introduces {p.refs.join(', ') || '—'}</div>}
             </div>
           ))}
         </>

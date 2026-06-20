@@ -57,12 +57,14 @@ books: [main, I]       # informational; book.chapters controls order
 characters: [I, IC, IA]  # present in the scene (auto-augmented from wikilinks)
 summary: One-line summary for the chapter list.
 ---
-Prose. Reference entities with [[I]] / [[IC|his mother]].
+Prose. Reference entities with [[I]] / [[IC|his mother]]. Just write — the
+chapter is split into A5 pages automatically (no page markers needed), for both
+the web reader and the PDF.
 
 <!-- page -->
 
-A `<!-- page -->` line on its own starts a new A5 page. Reader progress and
-knowledge gating are tracked per page, so split where the physical book would.
+A `<!-- page -->` line on its own is optional: it forces a page break where you
+want one (auto-pagination still applies within each forced section).
 ```
 
 ### Reveal callouts

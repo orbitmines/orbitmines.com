@@ -14,8 +14,20 @@ export const CONTENT = path.join(ROOT, 'content', 'lore');
 export const OUT = path.join(ROOT, 'src', 'lore', 'generated', 'lore.json');
 
 const PAGE_BREAK = /^[ \t]*<!--\s*page\s*-->[ \t]*$/im;
+const PAGE_BREAK_LINE = /^[ \t]*<!--\s*page\s*-->[ \t]*$/;
 const CALLOUT = /^>\s*\[!([a-zA-Z]+)(?:\|([^\]]*))?\]\s*(.*)$/;
 const WIKILINK = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+
+// Automatic A5 pagination: paragraphs are packed into pages sized to roughly an
+// A5 text column at the reader's 9pt body — authors never place page breaks
+// (an explicit <!-- page --> is still honoured as a forced break). Tuned to the
+// real A5 text area (~118mm × ~170mm at 9pt / 1.5): ~74 chars/line, ~34 lines.
+const CHARS_PER_LINE = 74;
+const LINES_PER_PAGE = 34;
+function estimateLines(text) {
+  const len = text.replace(/\s+/g, ' ').trim().length;
+  return len ? Math.ceil(len / CHARS_PER_LINE) + 1 : 0; // +1 ≈ paragraph spacing
+}
 
 marked.setOptions({ mangle: false, headerIds: false });
 
@@ -141,34 +153,66 @@ export function buildLore(options = {}) {
   const chapters = {};
   const facts = [];
   for (const f of chapterFiles) {
-    const pageSources = f.body.split(PAGE_BREAK);
-    const pages = [];
-    pageSources.forEach((src, pageIndex) => {
-      const proseLines = [];
-      for (const line of src.split('\n')) {
-        const m = line.match(CALLOUT);
-        if (m) {
-          const [, type, csv, txt] = m;
-          const refs = [];
-          const html = renderInline(txt, refs);
-          const who = (csv ? csv.split(',') : []).map((w) => resolve(w)).filter(Boolean);
-          for (const w of who) if (!refs.includes(w)) refs.push(w);
-          facts.push({
-            id: `${f.id}#${pageIndex}#${facts.filter((x) => x.chapterId === f.id && x.pageIndex === pageIndex).length}`,
-            type: type.toLowerCase(), who, refs, html, chapterId: f.id, pageIndex,
-          });
-        } else {
-          proseLines.push(line);
-        }
+    // 1) Tokenise the body into paragraphs / reveal-callouts / forced breaks.
+    const tokens = [];
+    let para = [];
+    const flushPara = () => { if (para.join('\n').trim()) tokens.push({ type: 'para', text: para.join('\n') }); para = []; };
+    for (const line of f.body.split('\n')) {
+      if (PAGE_BREAK_LINE.test(line)) { flushPara(); tokens.push({ type: 'break' }); continue; }
+      const cm = line.match(CALLOUT);
+      if (cm) { flushPara(); tokens.push({ type: 'callout', m: cm }); continue; }
+      if (line.trim() === '') { flushPara(); continue; }
+      para.push(line);
+    }
+    flushPara();
+
+    // 2) Pack paragraphs into A5-sized pages; callouts become facts on the
+    //    current page (they take no visible space); honour forced breaks.
+    const pageParas = [[]];
+    let pageIdx = 0;
+    let lineCount = 0;
+    const newPage = () => { pageIdx += 1; pageParas[pageIdx] = []; lineCount = 0; };
+    for (const tok of tokens) {
+      if (tok.type === 'break') {
+        if (pageParas[pageIdx].length) newPage();
+        continue;
       }
+      if (tok.type === 'callout') {
+        const [, type, csv, txt] = tok.m;
+        const refs = [];
+        const html = renderInline(txt, refs);
+        const who = (csv ? csv.split(',') : []).map((w) => resolve(w)).filter(Boolean);
+        for (const w of who) if (!refs.includes(w)) refs.push(w);
+        facts.push({
+          id: `${f.id}#${pageIdx}#${facts.filter((x) => x.chapterId === f.id && x.pageIndex === pageIdx).length}`,
+          type: type.toLowerCase(), who, refs, html, chapterId: f.id, pageIndex: pageIdx,
+        });
+        continue;
+      }
+      // paragraph
+      let lines = estimateLines(tok.text);
+      // The opening italic epigraph carries extra spacing below it.
+      if (pageIdx === 0 && pageParas[0].length === 0 && /^\s*[*_]/.test(tok.text)) lines += 2;
+      if (lineCount > 0 && lineCount + lines > LINES_PER_PAGE) newPage();
+      pageParas[pageIdx].push(tok.text);
+      lineCount += lines;
+    }
+    // Drop a trailing empty page (e.g. a break at the very end).
+    while (pageParas.length > 1
+      && pageParas[pageParas.length - 1].length === 0
+      && !facts.some((x) => x.chapterId === f.id && x.pageIndex === pageParas.length - 1)) {
+      pageParas.pop();
+    }
+
+    // 3) Render each page.
+    const pages = pageParas.map((paras, pageIndex) => {
       const refs = [];
-      let html = renderMarkdown(proseLines.join('\n'), refs);
-      // Only the chapter's opening paragraph can become a header.
-      if (pageIndex === 0) html = markLeadingHeader(html);
+      let html = renderMarkdown(paras.join('\n\n'), refs);
+      if (pageIndex === 0) html = markLeadingHeader(html); // epigraph only on page 1
       const pageFacts = facts.filter((x) => x.chapterId === f.id && x.pageIndex === pageIndex);
       const allRefs = [...refs];
       for (const fc of pageFacts) for (const r of fc.refs) if (!allRefs.includes(r)) allRefs.push(r);
-      pages.push({ html, refs: allRefs, factIds: pageFacts.map((x) => x.id) });
+      return { html, refs: allRefs, factIds: pageFacts.map((x) => x.id) };
     });
     chapters[f.id] = {
       id: f.id,

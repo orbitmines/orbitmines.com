@@ -287,12 +287,13 @@ a.lore-link:hover { border-bottom-color: var(--accent); }
 }
 .lore-page__chapter h2 { margin: 4px 0 0; font-size: 18pt; }
 .lore-page__body { font-size: 9pt; line-height: 1.5; }
-.lore-page__body p { margin: 0 0 1em; text-align: justify; hyphens: none; }
+// Book style: tight inter-paragraph gap + a first-line indent.
+.lore-page__body p { margin: 0 0 0.25em; text-indent: 2.8em; text-align: justify; hyphens: none; }
 // Epigraph/header: a chapter that opens in italics — smaller, tighter leading,
-// with extra breathing room around it.
+// with extra breathing room around it (and no first-line indent).
 .lore-page__body .lore-page__header {
   font-size: 1em; line-height: 1.05; text-align: justify; hyphens: none;
-  width: 90%; margin: 0 auto 3em;
+  width: 90%; margin: 0 auto 3em; text-indent: 0;
 }
 // The line after the header's final break (an attribution) sits on its own
 // line, aligned right.

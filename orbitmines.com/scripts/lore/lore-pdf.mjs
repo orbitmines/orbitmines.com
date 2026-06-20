@@ -43,7 +43,7 @@ const styles = {
     paddingHorizontal: 46,
   },
   body: { flexGrow: 1 },
-  p: { marginBottom: 9, textAlign: 'justify' },
+  p: { marginBottom: 2, textIndent: 28, textAlign: 'justify' },
   headerWrap: { marginBottom: 14, paddingHorizontal: 8 },
   header: { fontStyle: 'italic', fontSize: 10, textAlign: 'justify' },
   headerBy: { fontStyle: 'italic', fontSize: 10, textAlign: 'right', marginTop: 2 },
@@ -171,17 +171,21 @@ function coverPage(book) {
     book.subtitle ? h(Text, { style: styles.coverSub }, book.subtitle) : null);
 }
 
-function contentPage(data, entry, key) {
-  const ch = data.chapters[entry.chapterId];
-  const pg = ch?.pages[entry.pageIndex];
-  if (!pg) return null;
-  const blockEls = [];
-  if (entry.pageIndex === 0) {
-    blockEls.push(h(Text, { key: 'eyebrow', style: styles.eyebrow }, 'CHAPTER'));
-    blockEls.push(h(Text, { key: 'chtitle', style: styles.h2 }, ch.title));
+// One wrapping A5 Page per chapter: react-pdf auto-paginates (and splits text)
+// to fill each page, so no manual page breaks are needed and pages aren't left
+// half-empty. The footer is `fixed`, repeating on every page of the chapter.
+function chapterDoc(data, chapterId, key) {
+  const ch = data.chapters[chapterId];
+  if (!ch || !ch.pages.length) return null;
+  const blockEls = [
+    h(Text, { key: 'eyebrow', style: styles.eyebrow }, 'CHAPTER'),
+    h(Text, { key: 'chtitle', style: styles.h2 }, ch.title),
+  ];
+  let bi = 0;
+  for (const pg of ch.pages) {
+    for (const b of blocks(pg.html)) { const el = renderBlock(b, bi++); if (el) blockEls.push(el); }
   }
-  blocks(pg.html).forEach((b, i) => { const el = renderBlock(b, i); if (el) blockEls.push(el); });
-  return h(Page, { key, size: 'A5', style: styles.page },
+  return h(Page, { key, size: 'A5', style: styles.page, wrap: true },
     h(View, { style: styles.body }, ...blockEls),
     h(View, { style: styles.foot, fixed: true },
       h(Text, {}, ch.title),
@@ -192,8 +196,8 @@ function contentPage(data, entry, key) {
 export function buildBookDocument(data, bookId) {
   const book = data.books[bookId];
   if (!book) throw new Error(`Unknown book: ${bookId}`);
-  const pages = book.flow
-    .map((entry, i) => contentPage(data, entry, `p${i}`))
+  const pages = book.chapterIds
+    .map((cid, i) => chapterDoc(data, cid, `c${i}`))
     .filter(Boolean);
   return h(Document, { title: book.title, author: 'OrbitMines' }, coverPage(book), ...pages);
 }
