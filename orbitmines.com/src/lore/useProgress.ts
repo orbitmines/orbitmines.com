@@ -11,6 +11,7 @@ export interface BookProgress {
 
 const DEFAULT: BookProgress = { current: 0, furthest: -1 };
 const key = (bookId: string) => `lore:progress:${bookId}`;
+const LAST_KEY = 'lore:lastBook';
 
 function read(bookId: string): BookProgress {
   if (typeof window === 'undefined') return DEFAULT;
@@ -45,6 +46,7 @@ export function useProgress(bookId: string) {
       if (typeof window !== 'undefined') {
         try {
           window.localStorage.setItem(key(bookId), JSON.stringify(next));
+          if (bookId) window.localStorage.setItem(LAST_KEY, bookId);
         } catch {
           /* ignore quota/availability errors */
         }
@@ -59,4 +61,14 @@ export function useProgress(bookId: string) {
 // Read another book's furthest position without subscribing (for landing cards).
 export function readFurthest(bookId: string): number {
   return read(bookId).furthest;
+}
+
+// The book the reader most recently opened (for the landing feature slot).
+export function lastReadBookId(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage.getItem(LAST_KEY);
+  } catch {
+    return null;
+  }
 }

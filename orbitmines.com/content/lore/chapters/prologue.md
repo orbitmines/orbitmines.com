@@ -2,21 +2,13 @@
 id: prologue
 title: Prologue
 pov: S
-books: [main]
-characters: [S]
-summary: Before any of them noticed.
+books:
+  - main
+characters:
+  - S
+summary: ""
 ---
-Before any of them noticed, the thing was already running.
+*A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you're in a more stable state, can you more closely represent what reality is?*
+**2026**
 
-[[S]] had a way of phrasing it that made it sound like a coincidence — that you
-would arrive here, that you would read exactly this far, and no further, until
-you chose to.
-
-> [!reveal] Whatever is happening at [[university|the university]] did not begin this week.
-
-<!-- page -->
-
-He wrote the first names on the board himself. Five of them, and two letters
-that were not names at all.
-
-> [!event] The account opens with [[S]] already expecting each of them.
+The sun burned brightly even though it was an early spring day. In particular it seemed the rays of light had chosen a particular person that day, casually sitting on a bench in a small park. Perhaps it was the fact that he stood out particularly against the background. The brightest of green colors around him, against his casual black outfit which blended well with his skin. He remembered not exactly how he got there but it seemed an age of the universe had gone by, by the time he became aware of himself.

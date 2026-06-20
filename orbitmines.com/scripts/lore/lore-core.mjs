@@ -23,6 +23,26 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
+// A chapter that opens with an italic paragraph treats that whole first
+// paragraph (the contiguous block, up to the first blank line) as a header /
+// epigraph: rendered smaller and tighter. We tag the very first <p> when it
+// starts with emphasis. If that header contains a hard line break, whatever
+// follows the LAST break (e.g. an attribution) is wrapped so it can be
+// right-aligned — "— Author" on its own line under the epigraph.
+function markLeadingHeader(html) {
+  return html.replace(/^(\s*)<p>(\s*<(?:em|i)>[\s\S]*?)<\/p>/, (_full, ws, inner) => {
+    // The epigraph's last line — split off by a hard break (<br>) OR a soft
+    // newline — becomes a right-aligned attribution; the rest flows as one line.
+    const parts = inner.split(/\s*(?:<br\s*\/?>|\n)\s*/).filter((s) => s !== '');
+    let body = inner;
+    if (parts.length > 1) {
+      const tail = parts.pop();
+      body = `${parts.join(' ')}<span class="lore-page__header-by">${tail}</span>`;
+    }
+    return `${ws}<p class="lore-page__header">${body}</p>`;
+  });
+}
+
 // `overlay` (optional): { path: <relpath from ROOT>, content } substitutes (or
 // injects, for a not-yet-saved new file) one file's body without touching disk.
 function readDir(dir, overlay) {
@@ -142,7 +162,9 @@ export function buildLore(options = {}) {
         }
       }
       const refs = [];
-      const html = renderMarkdown(proseLines.join('\n'), refs);
+      let html = renderMarkdown(proseLines.join('\n'), refs);
+      // Only the chapter's opening paragraph can become a header.
+      if (pageIndex === 0) html = markLeadingHeader(html);
       const pageFacts = facts.filter((x) => x.chapterId === f.id && x.pageIndex === pageIndex);
       const allRefs = [...refs];
       for (const fc of pageFacts) for (const r of fc.refs) if (!allRefs.includes(r)) allRefs.push(r);
@@ -201,6 +223,13 @@ export function buildLore(options = {}) {
     titleHtml: renderInline(landingTitle, []),
     subtitleHtml: renderInline(landingSubtitle, []),
   };
+
+  // The base filename a book's PDF is published under (URL + downloaded name),
+  // so browsers save it as "{site} - {book}.pdf" rather than the bare id.
+  const sanitizePdfName = (s) => String(s).replace(/[\\/:*?"<>|]+/g, '-').replace(/\s+/g, ' ').trim();
+  for (const b of Object.values(books)) {
+    b.pdfName = `${sanitizePdfName(landingTitle)} - ${sanitizePdfName(b.title)}`;
+  }
 
   const data = { generatedAt: new Date().toISOString(), books, chapters, entities, facts, landing };
 

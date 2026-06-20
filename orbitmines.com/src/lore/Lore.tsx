@@ -8,7 +8,6 @@ import { editorApi } from './editor/api';
 import { useProgress } from './useProgress';
 import { LoreNavProvider } from './LoreNav';
 import LoreLanding from './components/LoreLanding';
-import BookHome from './components/BookHome';
 import Reader from './components/Reader';
 import Codex from './components/Codex';
 import EntityDrawer from './components/EntityDrawer';
@@ -100,12 +99,11 @@ const Lore: React.FC = () => {
         <button className="lore-link" onClick={() => goto('')}>Back to the Library</button>
       </div>
     );
-  } else if (view === 'read') {
-    content = <Reader book={book} current={progress.current} furthest={progress.furthest} visit={progress.visit} />;
   } else if (view === 'codex') {
     content = <Codex book={book} knowledge={knowledge!} />;
   } else {
-    content = <BookHome book={book} furthest={progress.furthest} />;
+    // No more per-book homepage: /lore/<book> opens the reader directly.
+    content = <Reader book={book} current={progress.current} furthest={progress.furthest} visit={progress.visit} />;
   }
 
   return (

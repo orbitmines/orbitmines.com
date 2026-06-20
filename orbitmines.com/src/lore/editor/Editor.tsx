@@ -50,7 +50,14 @@ const Editor: React.FC = () => {
   const [showMap, setShowMap] = useState(true);
   const [loreData, setLoreData] = useState<LoreData | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [treeOrder, setTreeOrder] = useState<Record<string, string[]>>({});
+  const dragPath = useRef<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  // Manual per-kind ordering of the vault tree (drag to reorder; editor-local).
+  useEffect(() => {
+    try { const raw = localStorage.getItem('lore:treeOrder'); if (raw) setTreeOrder(JSON.parse(raw)); } catch { /* ignore */ }
+  }, []);
 
   const dirty = content !== baseline;
   const kind = useMemo(() => files.find((f) => f.path === selected)?.kind ?? 'other', [files, selected]);
@@ -231,7 +238,32 @@ const Editor: React.FC = () => {
     );
   }
 
-  const grouped = KIND_ORDER.map((k) => ({ k, items: files.filter((f) => f.kind === k) })).filter((g) => g.items.length);
+  const applyOrder = (kind: string, items: VaultFile[]) => {
+    const saved = treeOrder[kind] || [];
+    const rank = (p: string) => { const i = saved.indexOf(p); return i === -1 ? Number.MAX_SAFE_INTEGER : i; };
+    return [...items].sort((a, b) => (rank(a.path) - rank(b.path)) || a.name.localeCompare(b.name));
+  };
+  const onDragStartItem = (e: React.DragEvent, f: VaultFile) => {
+    dragPath.current = f.path; e.dataTransfer.effectAllowed = 'move';
+  };
+  const onDragOverItem = (e: React.DragEvent, f: VaultFile) => {
+    const from = dragPath.current;
+    if (from && files.find((x) => x.path === from)?.kind === f.kind) e.preventDefault(); // only within a kind
+  };
+  const onDropItem = (e: React.DragEvent, f: VaultFile) => {
+    e.preventDefault();
+    const from = dragPath.current; dragPath.current = null;
+    if (!from || from === f.path || files.find((x) => x.path === from)?.kind !== f.kind) return;
+    const ordered = applyOrder(f.kind, files.filter((x) => x.kind === f.kind)).map((x) => x.path);
+    const fi = ordered.indexOf(from), ti = ordered.indexOf(f.path);
+    if (fi < 0 || ti < 0) return;
+    ordered.splice(ti, 0, ordered.splice(fi, 1)[0]);
+    const next = { ...treeOrder, [f.kind]: ordered };
+    setTreeOrder(next);
+    try { localStorage.setItem('lore:treeOrder', JSON.stringify(next)); } catch { /* ignore */ }
+  };
+
+  const grouped = KIND_ORDER.map((k) => ({ k, items: applyOrder(k, files.filter((f) => f.kind === k)) })).filter((g) => g.items.length);
   const mapBooks = (loreData ? Object.values(loreData.books) : allBooks())
     .slice().sort((a, b) => a.order - b.order);
 
@@ -276,11 +308,24 @@ const Editor: React.FC = () => {
         {grouped.map(({ k, items }) => (
           <div key={k} className="lore-editor__group">
             <div className="lore-editor__group-label">{KIND_LABEL[k]}</div>
-            {items.map((f) => (
-              <button key={f.path}
-                className={`lore-editor__file ${selected === f.path ? 'is-active' : ''}`}
-                onClick={() => open(f.path)}>{f.name}</button>
-            ))}
+            {items.map((f) => {
+              const ent = (f.kind === 'characters' || f.kind === 'codex') ? loreData?.entities[f.name] : undefined;
+              const bk = f.kind === 'books' ? loreData?.books[f.name] : undefined;
+              const label = ent?.name ?? bk?.title;
+              return (
+                <button key={f.path}
+                  className={`lore-editor__file ${selected === f.path ? 'is-active' : ''}`}
+                  draggable
+                  onDragStart={(e) => onDragStartItem(e, f)}
+                  onDragOver={(e) => onDragOverItem(e, f)}
+                  onDrop={(e) => onDropItem(e, f)}
+                  onClick={() => open(f.path)}>
+                  {label
+                    ? <><span className="lore-editor__file-id">{f.name}</span> {label}</>
+                    : f.name}
+                </button>
+              );
+            })}
           </div>
         ))}
       </aside>
@@ -347,7 +392,18 @@ const PreviewPane: React.FC<{ preview: PreviewResult | null }> = ({ preview }) =
           </div>
           {preview.chapter.pages.map((p, i) => (
             <div key={i} className="lore-editor__a5">
+              {i === 0 && (
+                <header className="lore-page__chapter">
+                  <div className="lore-page__chapter-eyebrow">Chapter</div>
+                  <h2>{preview.chapter!.title}</h2>
+                </header>
+              )}
               <LoreHtml html={p.html} className="lore-page__body" />
+              {/* Page count is within the chapter — the editor doesn't know which book this belongs to. */}
+              <footer className="lore-page__foot">
+                <span className="lore-page__foot-chapter">{preview.chapter!.title}</span>
+                <span className="lore-page__foot-num">{i + 1} / {preview.chapter!.pages.length}</span>
+              </footer>
               {p.factIds.length > 0 && <div className="lore-muted lore-editor__pagemeta">{p.factIds.length} reveal(s) · introduces {p.refs.join(', ') || '—'}</div>}
             </div>
           ))}

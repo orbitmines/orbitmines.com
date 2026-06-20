@@ -10,6 +10,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { buildLore, CONTENT, ROOT } from './lore-core.mjs';
+import { generateBookPdfBuffer } from './lore-pdf.mjs';
 
 const PORT = Number(process.env.LORE_EDITOR_PORT) || 4317;
 
@@ -182,6 +183,29 @@ const server = http.createServer(async (req, res) => {
     // On-demand: regenerate the reader bundle (one intentional HMR).
     if (route === '/api/lore/rebuild' && req.method === 'POST') {
       return send(res, 200, { ok: true, warnings: rebuild() });
+    }
+
+    // Dev PDF: generate a fresh A5 PDF from the current pages, write it to
+    // public (so the production path is primed) and stream it as a download.
+    if (route === '/api/lore/pdf' && req.method === 'GET') {
+      const bookId = url.searchParams.get('book');
+      if (!bookId) return send(res, 400, { error: 'book required' });
+      const { data } = buildLore({ write: false });
+      const book = data.books[bookId];
+      if (!book) return send(res, 404, { error: 'unknown book' });
+      const buf = await generateBookPdfBuffer(bookId, data);
+      const out = path.join(ROOT, 'public', 'lore-assets', 'pdf', `${book.pdfName}.pdf`);
+      await fs.mkdir(path.dirname(out), { recursive: true });
+      await fs.writeFile(out, buf);
+      // Download name matches the production filename (RFC 5987 for unicode).
+      const name = `${book.pdfName}.pdf`;
+      const ascii = name.replace(/[^\x20-\x7E]/g, '_');
+      res.writeHead(200, {
+        'content-type': 'application/pdf',
+        'content-disposition': `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(name)}`,
+        'access-control-allow-origin': '*',
+      });
+      return res.end(buf);
     }
 
     if (route === '/api/lore/preview' && req.method === 'POST') {

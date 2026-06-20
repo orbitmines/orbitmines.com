@@ -26,7 +26,7 @@ const EntityCell: React.FC<{ entity: Entity }> = ({ entity }) => {
   );
 };
 
-const Codex: React.FC<{ book: Book; knowledge: Knowledge }> = ({ book, knowledge }) => {
+const Codex: React.FC<{ book: Book; knowledge: Knowledge; embedded?: boolean }> = ({ book, knowledge, embedded }) => {
   const { goto } = useLoreNav();
   const [showLocked, setShowLocked] = useState(false);
 
@@ -49,12 +49,16 @@ const Codex: React.FC<{ book: Book; knowledge: Knowledge }> = ({ book, knowledge
     (knowledge.firstSeen.get(a.id) ?? Infinity) - (knowledge.firstSeen.get(b.id) ?? Infinity);
 
   return (
-    <div className="lore-page-wrap lore-codex">
-      <div className="lore-reader__bar">
-        <Button minimal icon="chevron-left" onClick={() => goto(`/${book.id}`)}>{book.title}</Button>
-        <span className="lore-reader__chaptertitle">Codex</span>
-        <Button minimal icon="book" onClick={() => goto(`/${book.id}/read`)}>Read</Button>
-      </div>
+    <div className={embedded ? 'lore-codex lore-codex--embedded' : 'lore-page-wrap lore-codex'}>
+      {embedded ? (
+        <h3 className="lore-section-title">Codex</h3>
+      ) : (
+        <div className="lore-reader__bar">
+          <Button minimal icon="chevron-left" onClick={() => goto(`/${book.id}`)}>{book.title}</Button>
+          <span className="lore-reader__chaptertitle">Codex</span>
+          <Button minimal icon="book" onClick={() => goto(`/${book.id}/read`)}>Read</Button>
+        </div>
+      )}
 
       <p className="lore-muted lore-codex__note">
         Everything you’ve discovered so far in <em>{book.title}</em>. Read further

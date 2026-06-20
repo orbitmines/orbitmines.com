@@ -3,7 +3,7 @@ id: main
 title: The Main Story
 kind: main
 subtitle: 1.E2047.0A.1
-cover: /lore-assets/covers/main.svg
+cover: /lore-assets/covers/main.jpg
 order: 0
 characters: [I, II, III, S, B]
 chapters:

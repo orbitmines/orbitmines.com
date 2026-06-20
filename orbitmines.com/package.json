@@ -34,13 +34,15 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
+    "lore": "npm run dev & npm run lore:editor",
     "lore:build": "node scripts/lore/build-lore.mjs",
     "lore:images": "node scripts/lore/gen-images.mjs",
-    "lore:editor": "node scripts/lore/editor-server.mjs",
+    "lore:pdf": "node scripts/lore/gen-pdf.mjs",
+    "lore:editor": "node --watch scripts/lore/editor-server.mjs",
     "predev": "node scripts/lore/build-lore.mjs",
     "dev": "next dev",
     "start": "next start",
-    "prebuild": "node scripts/lore/build-lore.mjs",
+    "prebuild": "node scripts/lore/build-lore.mjs && node scripts/lore/gen-pdf.mjs",
     "build": "next build",
     "lint": "next lint"
   },

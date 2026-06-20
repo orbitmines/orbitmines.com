@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-19T21:35:11.585Z",
+  "generatedAt": "2026-06-20T09:05:08.709Z",
   "books": {
     "B": {
       "id": "B",
       "title": "[B] — The Head",
       "kind": "character",
-      "subtitle": "0.B0.4F.31",
-      "subtitleHtml": "0.B0.4F.31",
+      "subtitle": "0.B0.4F.1",
+      "subtitleHtml": "0.B0.4F.1",
       "cover": "/lore-assets/covers/B.svg",
       "order": 5,
       "characters": [],
@@ -14,14 +14,15 @@
       "descriptionHtml": "<p>[B]&#39;s account. (To be written.)</p>",
       "flow": [],
       "pageCount": 0,
-      "file": "content/lore/books/B.md"
+      "file": "content/lore/books/B.md",
+      "pdfName": "Ether’s Universe - [B] — The Head"
     },
     "I": {
       "id": "I",
       "title": "[I] — The Younger",
       "kind": "character",
-      "subtitle": "Sixteen, and certain he's already figured it out.",
-      "subtitleHtml": "Sixteen, and certain he&#39;s already figured it out.",
+      "subtitle": "1.E2031.16G.1",
+      "subtitleHtml": "1.E2031.16G.1",
       "cover": "/lore-assets/covers/I.svg",
       "order": 1,
       "characters": [],
@@ -53,14 +54,15 @@
         }
       ],
       "pageCount": 4,
-      "file": "content/lore/books/I.md"
+      "file": "content/lore/books/I.md",
+      "pdfName": "Ether’s Universe - [I] — The Younger"
     },
     "II": {
       "id": "II",
       "title": "[II] — The Elder",
       "kind": "character",
-      "subtitle": "Computer science, and a lecture that doesn't add up.",
-      "subtitleHtml": "Computer science, and a lecture that doesn&#39;t add up.",
+      "subtitle": "1.E2024.23B.1",
+      "subtitleHtml": "1.E2024.23B.1",
       "cover": "/lore-assets/covers/II.svg",
       "order": 2,
       "characters": [],
@@ -81,7 +83,8 @@
         }
       ],
       "pageCount": 2,
-      "file": "content/lore/books/II.md"
+      "file": "content/lore/books/II.md",
+      "pdfName": "Ether’s Universe - [II] — The Elder"
     },
     "III": {
       "id": "III",
@@ -96,7 +99,8 @@
       "descriptionHtml": "<p>[III]&#39;s account. (To be written.)</p>",
       "flow": [],
       "pageCount": 0,
-      "file": "content/lore/books/III.md"
+      "file": "content/lore/books/III.md",
+      "pdfName": "Ether’s Universe - [III] — The Researcher"
     },
     "S": {
       "id": "S",
@@ -111,7 +115,8 @@
       "descriptionHtml": "<p>[S]&#39;s account. (To be written.)</p>",
       "flow": [],
       "pageCount": 0,
-      "file": "content/lore/books/S.md"
+      "file": "content/lore/books/S.md",
+      "pdfName": "Ether’s Universe - [S] — The Professor"
     },
     "main": {
       "id": "main",
@@ -119,7 +124,7 @@
       "kind": "main",
       "subtitle": "1.E2047.0A.1",
       "subtitleHtml": "1.E2047.0A.1",
-      "cover": "/lore-assets/covers/main.svg",
+      "cover": "/lore-assets/covers/main.jpg",
       "order": 0,
       "characters": [
         "I",
@@ -134,7 +139,7 @@
         "ii-lecture",
         "i-online"
       ],
-      "descriptionHtml": "<p>Five people, one week, and a thing at the university that should not be\npossible. The main account braids together everything the separate witnesses\nsaw — read it straight through, or step into any single character&#39;s book to see\nhow much they actually knew at the time.</p>",
+      "descriptionHtml": "<p>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</p>",
       "flow": [
         {
           "chapterId": "prologue",
@@ -142,43 +147,39 @@
           "globalIndex": 0
         },
         {
-          "chapterId": "prologue",
-          "pageIndex": 1,
+          "chapterId": "i-first-day",
+          "pageIndex": 0,
           "globalIndex": 1
         },
         {
           "chapterId": "i-first-day",
-          "pageIndex": 0,
+          "pageIndex": 1,
           "globalIndex": 2
         },
         {
-          "chapterId": "i-first-day",
-          "pageIndex": 1,
+          "chapterId": "ii-lecture",
+          "pageIndex": 0,
           "globalIndex": 3
         },
         {
           "chapterId": "ii-lecture",
-          "pageIndex": 0,
+          "pageIndex": 1,
           "globalIndex": 4
         },
         {
-          "chapterId": "ii-lecture",
-          "pageIndex": 1,
+          "chapterId": "i-online",
+          "pageIndex": 0,
           "globalIndex": 5
         },
         {
           "chapterId": "i-online",
-          "pageIndex": 0,
-          "globalIndex": 6
-        },
-        {
-          "chapterId": "i-online",
           "pageIndex": 1,
-          "globalIndex": 7
+          "globalIndex": 6
         }
       ],
-      "pageCount": 8,
-      "file": "content/lore/books/main.md"
+      "pageCount": 7,
+      "file": "content/lore/books/main.md",
+      "pdfName": "Ether’s Universe - The Main Story"
     }
   },
   "chapters": {
@@ -306,7 +307,7 @@
       "id": "prologue",
       "title": "Prologue",
       "pov": "S",
-      "summary": "Before any of them noticed.",
+      "summary": "",
       "characters": [
         "S"
       ],
@@ -315,23 +316,9 @@
       ],
       "pages": [
         {
-          "html": "<p>Before any of them noticed, the thing was already running.</p>\n<p><a class=\"lore-link\" data-ref=\"S\">[S]</a> had a way of phrasing it that made it sound like a coincidence — that you\nwould arrive here, that you would read exactly this far, and no further, until\nyou chose to.</p>",
-          "refs": [
-            "S",
-            "university"
-          ],
-          "factIds": [
-            "prologue#0#0"
-          ]
-        },
-        {
-          "html": "<p>He wrote the first names on the board himself. Five of them, and two letters\nthat were not names at all.</p>",
-          "refs": [
-            "S"
-          ],
-          "factIds": [
-            "prologue#1#0"
-          ]
+          "html": "<p class=\"lore-page__header\"><em>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</em><span class=\"lore-page__header-by\"><strong>2026</strong></span></p>\n<p>The sun burned brightly even though it was an early spring day.</p>",
+          "refs": [],
+          "factIds": []
         }
       ],
       "file": "content/lore/chapters/prologue.md"
@@ -678,28 +665,6 @@
       ],
       "html": "<a class=\"lore-link\" data-ref=\"S\">[S]</a> is somehow connected to both the university and to <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.",
       "chapterId": "ii-lecture",
-      "pageIndex": 1
-    },
-    {
-      "id": "prologue#0#0",
-      "type": "reveal",
-      "who": [],
-      "refs": [
-        "university"
-      ],
-      "html": "Whatever is happening at <a class=\"lore-link\" data-ref=\"university\">the university</a> did not begin this week.",
-      "chapterId": "prologue",
-      "pageIndex": 0
-    },
-    {
-      "id": "prologue#1#0",
-      "type": "event",
-      "who": [],
-      "refs": [
-        "S"
-      ],
-      "html": "The account opens with <a class=\"lore-link\" data-ref=\"S\">[S]</a> already expecting each of them.",
-      "chapterId": "prologue",
       "pageIndex": 1
     }
   ],

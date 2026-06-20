@@ -69,6 +69,7 @@ export interface Book {
   descriptionHtml: string;
   flow: FlowEntry[];
   pageCount: number;
+  pdfName: string; // base filename the book's PDF is published under
   file?: string; // source path, present in generated data (used by the editor)
 }
 
