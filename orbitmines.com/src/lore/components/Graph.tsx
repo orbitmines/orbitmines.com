@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { getChapter } from '../data';
+import { getChapter, getEntity } from '../data';
 import { useLoreNav } from '../LoreNav';
 import type { Book, Chapter } from '../types';
 
@@ -26,6 +26,9 @@ export interface GraphProps {
   /** live chapter lookup (editor) so the map reflects unsaved-bundle edits;
    *  falls back to the generated bundle when omitted (reader). */
   chapters?: Record<string, Chapter>;
+  /** entity ids the reader has discovered. A POV shows its name once discovered,
+   *  otherwise just its id. Omit (editor) to always show names. */
+  discovered?: Set<string> | null;
 }
 
 function hue(str: string): number {
@@ -37,6 +40,7 @@ const laneColor = (id: string) => `hsl(${hue(id)} 70% 62%)`;
 
 const Graph: React.FC<GraphProps> = ({
   books, revealed = null, selectedFile = null, onSelectChapter, onSelectBook, embedded = false, chapters,
+  discovered = null,
 }) => {
   const { openEntity } = useLoreNav();
   const chapterOf = (id: string) => chapters?.[id] ?? getChapter(id);
@@ -120,6 +124,10 @@ const Graph: React.FC<GraphProps> = ({
             const left = MARGIN_LEFT + colIndex[c] * COL_W;
             const shown = isRevealed(c);
             const selected = selectedFile && ch?.file === selectedFile;
+            // POV: show the character's name once discovered, else just the id.
+            const pov = ch?.pov ?? null;
+            const povDiscovered = pov ? (discovered ? discovered.has(pov) : !revealed) : false;
+            const povLabel = pov && povDiscovered ? (getEntity(pov)?.name ?? pov) : pov;
             if (!shown) {
               return (
                 <div key={`n-${b.id}-${c}`} className="lore-graph__node lore-graph__node--locked"
@@ -135,10 +143,10 @@ const Graph: React.FC<GraphProps> = ({
                 style={{ left, top: y(li), width: NODE_W, borderColor: laneColor(b.id) }}
                 onClick={() => ch && onSelectChapter?.(ch)}>
                 <span className="lore-graph__node-title">{ch?.title ?? c}</span>
-                {ch?.pov && (
+                {pov && (
                   <span className="lore-graph__node-pov"
-                    onClick={(e) => { e.stopPropagation(); openEntity(ch.pov!); }}>
-                    {ch.pov}
+                    onClick={(e) => { e.stopPropagation(); openEntity(pov); }}>
+                    {povLabel}
                   </span>
                 )}
               </button>

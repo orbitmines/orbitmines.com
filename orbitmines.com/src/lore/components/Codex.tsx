@@ -6,6 +6,7 @@ import type { Book, Entity, EntityType } from '../types';
 import { entitiesByType, getChapter, getFact, lore, type Knowledge } from '../data';
 import { useLoreNav } from '../LoreNav';
 import LoreHtml from './LoreHtml';
+import LoreMeta, { toText } from './LoreMeta';
 
 const TYPE_ORDER: { type: EntityType; label: string }[] = [
   { type: 'character', label: 'Characters' },
@@ -50,6 +51,15 @@ const Codex: React.FC<{ book: Book; knowledge: Knowledge; embedded?: boolean }> 
 
   return (
     <div className={embedded ? 'lore-codex lore-codex--embedded' : 'lore-page-wrap lore-codex'}>
+      {!embedded && (
+        <LoreMeta
+          title={`${book.title} — Codex`}
+          description={toText(book.descriptionHtml) || `The codex for ${book.title}.`}
+          pathname={`/lore/${book.id}/codex`}
+          image={book.cover}
+          type="book"
+        />
+      )}
       {embedded ? (
         <h3 className="lore-section-title">Codex</h3>
       ) : (

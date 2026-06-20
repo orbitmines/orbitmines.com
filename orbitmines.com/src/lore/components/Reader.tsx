@@ -7,6 +7,7 @@ import type { Book } from '../types';
 import { allBooks, knowledgeUpTo, pageAt } from '../data';
 import { useLoreNav } from '../LoreNav';
 import LoreHtml from './LoreHtml';
+import LoreMeta, { toText } from './LoreMeta';
 import Graph from './Graph';
 import Codex from './Codex';
 import { editorBase } from '../editor/api';
@@ -155,6 +156,13 @@ const Reader: React.FC<{
 
   return (
     <div className="lore-reader">
+      <LoreMeta
+        title={`${book.title} — ${chapter.title} · p. ${pos + 1}`}
+        description={toText(book.descriptionHtml) || book.subtitle}
+        pathname={`/lore/${book.id}/read`}
+        image={book.cover}
+        type="book"
+      />
       <div className="lore-reader__bar">
         <Button minimal icon="chevron-left" onClick={() => goto('')}>
           {book.title}
@@ -195,7 +203,8 @@ const Reader: React.FC<{
         <p className="lore-muted lore-graph__hint">
           How far the accounts have merged, up to where you’ve read. Tap a chapter to jump there.
         </p>
-        <Graph books={mapBooks} revealed={revealed} onSelectChapter={(ch) => jumpToChapter(ch.id)} />
+        <Graph books={mapBooks} revealed={revealed} discovered={knowledge.entityIds}
+          onSelectChapter={(ch) => jumpToChapter(ch.id)} />
       </section>
 
       {/* …then the codex. */}

@@ -222,6 +222,9 @@ export function buildLore(options = {}) {
     subtitle: landingSubtitle,
     titleHtml: renderInline(landingTitle, []),
     subtitleHtml: renderInline(landingSubtitle, []),
+    // The landing file's body — ambient "mystery" text shown dimmed in the
+    // background of the landing page.
+    contentHtml: renderMarkdown(landingFile?.body || '', []),
   };
 
   // The base filename a book's PDF is published under (URL + downloaded name),

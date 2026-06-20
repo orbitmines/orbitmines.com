@@ -47,6 +47,27 @@ a.lore-link:hover { border-bottom-color: var(--accent); }
   text-align: justify; hyphens: none;
 }
 
+// Ambient "mystery" landing content — dimmed, small, non-interactive.
+.lore-landing__content {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 10px; line-height: 1.45;
+  color: #d6d3cc05;
+  pointer-events: none; user-select: none;
+  word-break: break-word;
+}
+.lore-landing__content p { margin: 0 0 0.6em; }
+// Desktop: a wide block in the lower-right of the stage, behind both the
+// feature cover and the character-book arc (it's the stage's first child and
+// they're positioned siblings drawn after it).
+.lore-stage > .lore-landing__content {
+  position: absolute; z-index: 0; overflow: hidden;
+  top: 38%; left: 16%; right: 5%; bottom: 3%;
+}
+// Mobile: full-width block all the way at the bottom, below the books.
+.lore-landing__content--bottom {
+  margin: 48px auto 0; width: 100%;
+}
+
 .lore-cover-grid {
   display: grid; gap: 22px;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));

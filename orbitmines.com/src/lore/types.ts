@@ -79,6 +79,7 @@ export interface Landing {
   subtitle: string;
   titleHtml: string;     // title rendered from Markdown
   subtitleHtml: string;  // subtitle rendered from Markdown
+  contentHtml: string;   // body of landing.md — ambient background text
 }
 
 export interface LoreData {

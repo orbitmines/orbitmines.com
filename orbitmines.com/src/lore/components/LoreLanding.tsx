@@ -7,6 +7,7 @@ import { allBooks, getBook, getChapter, landing } from '../data';
 import type { Book } from '../types';
 import { useLoreNav } from '../LoreNav';
 import LoreHtml from './LoreHtml';
+import LoreMeta, { toText } from './LoreMeta';
 import { lastReadBookId, readFurthest } from '../useProgress';
 
 const Cover: React.FC<{ book: Book; className?: string; style?: React.CSSProperties; feature?: boolean }> = ({
@@ -154,6 +155,8 @@ const LoreLanding: React.FC = () => {
 
   return (
     <div className="lore-page-wrap">
+      <LoreMeta title={site.title} description={toText(site.subtitleHtml || site.subtitle)}
+        pathname="/lore" image={main?.cover} />
       <Button className="lore-home-btn" minimal icon="arrow-left"
         onClick={() => navigate('/')} aria-label="Home" />
       <header className="lore-landing__header">
@@ -172,6 +175,9 @@ const LoreLanding: React.FC = () => {
         <div className="lore-stage-placeholder" aria-hidden />
       ) : wide ? (
         <section className="lore-stage">
+          {site.contentHtml && (
+            <LoreHtml html={site.contentHtml} className="lore-landing__content" />
+          )}
           <div className="lore-feature">
             <Cover book={feature} className="lore-cover--feature" feature />
             <Continue book={feature} />
@@ -188,6 +194,10 @@ const LoreLanding: React.FC = () => {
             <div className="lore-cover-grid">
               {below.map((b) => <Cover key={b.id} book={b} />)}
             </div>
+          )}
+          {site.contentHtml && (
+            <LoreHtml html={site.contentHtml}
+              className="lore-landing__content lore-landing__content--bottom" />
           )}
         </>
       )}
