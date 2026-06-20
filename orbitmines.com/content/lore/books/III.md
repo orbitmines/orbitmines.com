@@ -1,6 +1,6 @@
 ---
 id: III
-title: "[III] — The Researcher"
+title: "[III]"
 kind: character
 subtitle: 0.E2026.0A.1
 cover: /lore-assets/covers/III.svg
