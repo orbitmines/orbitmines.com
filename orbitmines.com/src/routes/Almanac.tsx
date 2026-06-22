@@ -232,7 +232,7 @@ const Almanac = () => {
       <BR/>
       - (5a) By the time this is all set in motion, have thought of an idea to get started with gamification.
       <BR/>
-      - (5b) Alongside gamification, attack the problem of the adaptive interface: The Ether; An interface which interoperates with all applications ever made.
+      - (5b) Alongside gamification, attack the problem of the adaptive interface: Ether; An interface which interoperates with all applications ever made.
       </span>
 
       <BR/>
@@ -566,7 +566,7 @@ const Almanac = () => {
           Or a little more verbose:
           </span>
           <CodeBlock>
-            func (a) a + 1<BR/>
+            func (a) ={`>`} a + 1<BR/>
             [1, 2].map(func) // [2, 3]
           </CodeBlock>
           <span style={{textAlign: 'left', width: '100%'}} className="bp5-text-muted">
@@ -579,7 +579,7 @@ const Almanac = () => {
           or you can call functions with it:
           </span>
           <CodeBlock>
-            func (a) a + 1<BR/>
+            func (a) ={`>`} a + 1<BR/>
             func(1 & 2) // 2 & 3
           </CodeBlock>
           So that's the core of superposed variables, it's a very simple but powerful idea! It originated out of the idea that you can always ask the simple question: "What instead of one, you had many of them?". And typically, at least for software related issues, that tends to be a useful question or feature to have: What if I could have one or more accounts? One or more devices? One or more locations? One or more node-edge-relations? Typically this question leads to generalization, as we'll explore later. For now let's move on to another place you can ask that question: components. 
@@ -1049,17 +1049,17 @@ const Almanac = () => {
 
           In many languages you have a spread operator if you want to pattern match to an array. So typically that would mean:
           <CodeBlock>
-            first, middle: String[], last = "A", "B", "C", "D"
+            first, middle: String[], last := "A", "B", "C", "D"
           </CodeBlock>
           <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>The middle here, matching to both "B" and "C".</span>
           Then for convenience, this spread operator is defined:
           <CodeBlock>
-            first, ...middle, last = "A", "B", "C", "D"
+            first, ...middle, last := "A", "B", "C", "D"
           </CodeBlock>
           Which is just alternative syntax for defining an array ([]). So any place you have ([]), you can also use the prefix (...)<BR/>
           This for instance would also work:
           <CodeBlock>
-            first, middle: ...String, last = "A", "B", "C", "D"
+            first, middle: ...String, last := "A", "B", "C", "D"
           </CodeBlock>
 
 
@@ -1104,7 +1104,7 @@ const Almanac = () => {
           {/* => overrides, &=> etc.., () doesnt override but = () => does */}
           Those familiar with other programming languages, might think: what about <Reference is="reference" index={referenceCounter()} reference={{title: "Variadic functions", link: "https://en.wikipedia.org/wiki/Variadic_function"}} simple inline />? (A function with a variable number of arguments) There's a simple interpretation of what that means. If you remember that in types the comma (,) operator just concatenates structures. The same is true for functions. So given the following function:
           <CodeBlock>
-            varargs (a: String, b: Number[], c: String[])
+            varargs (a: String, b: Number[], c: String[]) ={`>`}
           </CodeBlock>
           <span style={{textAlign: 'left'}}>We actually have, like all functions, only a single argument, it's just that it is described structurally by the variables a, b & c, in sequence. <span className="bp5-text-disabled">In a future version of the language which isn't just text-based, you can imagine that this 'single' argument which is described structurally, doesn't just need to be an Array. It could be some Graph for instance.</span></span><BR/>
           We can call it with a variable number of arguments, whether they originate from other arrays or not.
@@ -1125,9 +1125,7 @@ const Almanac = () => {
           </CodeBlock>
 
         </Section>
-        <Section head="§2.7 Classes & Namespaces">
-          {/* Classes without parameters are namespace since they call their own constructor */}
-
+        <Section head="§2.7 Classes, Enums & Namespaces">
           Classes and Namespaces are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the standard library!
 
           <BR/>
@@ -1139,28 +1137,32 @@ const Almanac = () => {
           Anything called on static which doesn't depend on an instance's parameters or which wouldn't be effected by getting called multiple times, gets taken out of the constructor if possible. So the following things aren't actually in the constructor:
 
           <CodeBlock>
-            class Example<BR/>
-            <></>  static Var = 5<BR/>
+            Example := class {`{`}<BR/>
+            <></>  static Var := 5<BR/>
             <></><BR/>
-            <></>  static class InnerClass
+            <></>  InnerClass := class {`{}`}<BR/>
+            <>{`}`}</>
           </CodeBlock>
           Things like this (+1) would be part of the constructor:
           <CodeBlock>
-            class Example<BR/>
-            <></>  static Var = 5<BR/>
+            Example := class {`{`}<BR/>
+            <></>  static Var := 5<BR/>
             <BR/>
-            <></>  Var += 1
+            <></>  Var += 1<BR/>
+            <>{`}`}</>
           </CodeBlock>
 
           If you want you can accept any positional argument like a function definition:
 
           <CodeBlock>
-            class Example (x: String)
+            Example := class (x: String) ={`>`} single_line<BR/>
+            Example := class (x: String) {`{`} multi_line{`}`}
           </CodeBlock>
           Any variable defined on the type is automatically also part of the constructor, by passing it named to the constructor:
           <CodeBlock>
-            class Example (x: String)<BR/>
+            Example := class (x: String) {`{`}<BR/>
             <></>  y: String<BR/>
+            <>{`}`}</><BR/>
             <BR/>
             Example("X", y: "Y")
           </CodeBlock>
@@ -1170,33 +1172,28 @@ const Almanac = () => {
           If for sake of code clarity you still want to separate the constructors, you can by overriding the static constructor (you can omit (super) in it, in which case it will run before your defined constructor):
 
           <CodeBlock>
-            class Example<BR/>
-            <></>  static ()<BR/>
-            <></>    this // is available in this context.<BR/>
+            Example := class {`{`}<BR/>
+            <></>  static () ={`>`} this // is available in this context.<BR/>
             <BR/>
-            <></>  static (a: String)<BR/>
-            <></>    super(property: a)
+            <></>  static (a: String) {`{`}<BR/>
+            <></>    super(property: a)<BR/>
+            <></>  {`}`}<BR/>
+            <>{`}`}</>
           </CodeBlock>
 
 
           <CodeBlock>
-            enum Enum {'<'} A | B | C(: String)
-          </CodeBlock>
-
-          <CodeBlock>
-            class Enum {'<'} A | B | C<BR/>
-            <></>  class A<BR/>
-            <></>  class B<BR/>
-            <></>  class C (var: String)
+            ExampleEnum := enum A | B | C(: String)
           </CodeBlock>
 
           or equivalently:
 
           <CodeBlock>
-            class Enum {'<'}<BR/>
-            <></>  | class A<BR/>
-            <></>  | class B<BR/>
-            <></>  | class C (var: String)
+            ExampleEnum: A | B | C = class {`{`}<BR/>
+            <></>  A := class {`{}`}<BR/>
+            <></>  B := class {`{}`}<BR/>
+            <></>  C := class (: String) {`{}`}<BR/>
+            {`}`}
           </CodeBlock>
 
           <CodeBlock>
@@ -1293,14 +1290,12 @@ const Almanac = () => {
           </CodeBlock>
           You might do this:
           <CodeBlock>
-            var.(condition ? == 5 : {'<'}= 5)
+            var (condition ? == 5 : {'<'}= 5)
           </CodeBlock>
           Or even:
           <CodeBlock>
-            var.(condition ? == : {'<'}=) 5
+            var (condition ? == : {'<'}=) 5
           </CodeBlock>
-
-          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Note that you have to include a preceding (.), as the syntax for [ ()] is reserved for for function definitions.</span><BR/>
 
           The same can be done with property getters, so you can have things like:
           <CodeBlock>
@@ -1308,7 +1303,7 @@ const Almanac = () => {
           </CodeBlock>
           Which superposes both properties with the (|) operator.
           <BR/>
-          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Note that anything within parenthesis is always a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'closure', link: 'https://en.wikipedia.org/wiki/Closure_(computer_programming)'}} />. In it, the entire variable you're accessing is loaded in the context. So if it defines a (.next) method, and your scope also has a (.next) method, the .next from the object is used! This could be unexpected behavior.</span>
+          <span className="bp5-text-muted" style={{textAlign: 'left'}}>Note that anything within parenthesis is always a <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'closure', link: 'https://en.wikipedia.org/wiki/Closure_(computer_programming)'}} />. In it, the entire variable you're accessing is loaded in the context. So if it defines a (.next) method, and your scope also has a (.next) method, the .next from the object is used!</span>
 
           <BR/>
           <BR/>
@@ -1344,13 +1339,13 @@ const Almanac = () => {
           </CodeBlock>
           Additionally it can also be used after newlines and with if statements which optionally wrap the line.
           <CodeBlock>
-            class IPv6<BR/>
-            <></>  as (== String)<BR/>
-            <></>    this<BR/>
-            <></>      -- .embed_ipv4 if ==.instance_of "::ffff:0.0.0.0/96"<BR/>
-            <></>      -- .embed_ipv4 if ==.instance_of "64:ff9b::/96"<BR/>
-            <></>      .compress_zeros<BR/>
-            <></>      .lowercase
+            this: IPv6 ={`>`} String {`{`}<BR/>
+            <></>  this<BR/>
+            <></>    -- .embed_ipv4 if ==.instance_of "::ffff:0.0.0.0/96"<BR/>
+            <></>    -- .embed_ipv4 if ==.instance_of "64:ff9b::/96"<BR/>
+            <></>    .compress_zeros<BR/>
+            <></>    .lowercase<BR/>
+            {`}`}
           </CodeBlock>
 
           Then there is the (~~) operator, which does the exact same thing, but returns the original thing you call the successive functions on. Which is useful for creating one-liners like:
@@ -1431,13 +1426,16 @@ const Almanac = () => {
         </Section>
       </Section>
       <Section head="§5. Playerfacing">
-        <Section head="§5.1 Syntax Highlighting">
+        <Section head="§5.1 Error Handling">
 
         </Section>
-        <Section head="§5.2 Theorem Proving">
+        <Section head="§5.2 Syntax Highlighting">
 
         </Section>
-        <Section head="§5.3 Geometry">
+        <Section head="§5.3 Theorem Proving">
+
+        </Section>
+        <Section head="§5.4 Geometry">
 
         </Section>
         <Section head="§5.4 UI">
