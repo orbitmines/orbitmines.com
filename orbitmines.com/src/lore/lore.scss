@@ -269,7 +269,7 @@ a.lore-link:hover { border-bottom-color: var(--accent); }
   background: var(--paper);
   background-image: linear-gradient(90deg, rgba(0,0,0,0.06), rgba(0,0,0,0) 6%);
   border: 1px solid var(--paper-edge); border-radius: 3px;
-  color: var(--ink); padding: 16mm 15mm; overflow: auto;
+  color: var(--ink); padding: 8mm 7.5mm; overflow: auto;
   box-shadow: inset 0 0 60px rgba(120, 96, 50, 0.08);
   display: flex; flex-direction: column;
 }
@@ -288,7 +288,7 @@ a.lore-link:hover { border-bottom-color: var(--accent); }
 .lore-page__chapter h2 { margin: 4px 0 0; font-size: 18pt; }
 .lore-page__body { font-size: 9pt; line-height: 1.5; }
 // Book style: tight inter-paragraph gap + a first-line indent.
-.lore-page__body p { margin: 0 0 0.25em; text-indent: 2.8em; text-align: justify; hyphens: none; }
+.lore-page__body p { margin: 0 0 0.25em; text-indent: 2em; text-align: justify; hyphens: none; }
 // Epigraph/header: a chapter that opens in italics — smaller, tighter leading,
 // with extra breathing room around it (and no first-line indent).
 .lore-page__body .lore-page__header {

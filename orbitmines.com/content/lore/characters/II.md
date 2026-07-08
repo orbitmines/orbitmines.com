@@ -1,7 +1,7 @@
 ---
 id: II
 type: character
-name: "[II]"
+name: "Hana"
 role: University student — Computer Science
 age: 24
 image: /lore-assets/characters/II.svg

@@ -129,7 +129,7 @@
 // True A5 (148mm × 210mm), matching the reader, so what fits a page here is
 // what fits a printed page. The preview pane scrolls if it's narrower.
 .lore-editor__a5 {
-  background: #f3ead8; color: #2b2620; border-radius: 3px; padding: 16mm 15mm;
+  background: #f3ead8; color: #2b2620; border-radius: 3px; padding: 8mm 7.5mm;
   width: 148mm; height: 210mm; flex: 0 0 auto; overflow: auto; margin: 0 auto 16px;
   box-shadow: 0 10px 26px rgba(0,0,0,0.45); font-family: Georgia, serif;
   display: flex; flex-direction: column; // footer pins to the page bottom

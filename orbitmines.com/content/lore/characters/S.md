@@ -1,7 +1,7 @@
 ---
 id: S
 type: character
-name: "[S]"
+name: "Raafar"
 role: Professor
 image: /lore-assets/characters/S.svg
 ---

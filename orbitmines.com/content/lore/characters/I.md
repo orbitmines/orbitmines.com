@@ -1,7 +1,7 @@
 ---
 id: I
 type: character
-name: "[I]"
+name: "Jay"
 role: Highschool student
 age: 16
 image: /lore-assets/characters/I.svg

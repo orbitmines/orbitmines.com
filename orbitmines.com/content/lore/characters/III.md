@@ -1,7 +1,7 @@
 ---
 id: III
 type: character
-name: "[III]"
+name: "Bjorne"
 role: A researcher at Ether.
 image: /lore-assets/characters/III.svg
 ---

@@ -1,65 +1,64 @@
 {
-  "generatedAt": "2026-06-20T10:47:53.807Z",
+  "generatedAt": "2026-07-08T13:51:07.193Z",
   "books": {
     "B": {
       "id": "B",
-      "title": "[B] — The Head",
+      "title": "[B]",
       "kind": "character",
       "subtitle": "0.B0.4F.1",
       "subtitleHtml": "0.B0.4F.1",
       "cover": "/lore-assets/covers/B.svg",
       "order": 5,
       "characters": [],
-      "chapterIds": [],
+      "chapterIds": [
+        "prologue"
+      ],
       "descriptionHtml": "<p>[B]&#39;s account. (To be written.)</p>",
-      "flow": [],
-      "pageCount": 0,
+      "flow": [
+        {
+          "chapterId": "prologue",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 2,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 3,
+          "globalIndex": 3
+        }
+      ],
+      "pageCount": 4,
       "file": "content/lore/books/B.md",
-      "pdfName": "Ether’s Universe - [B] — The Head"
+      "pdfName": "Ether’s Universe - [B]"
     },
     "I": {
       "id": "I",
-      "title": "[I] — The Younger",
+      "title": "[I]",
       "kind": "character",
       "subtitle": "1.E2031.16G.1",
       "subtitleHtml": "1.E2031.16G.1",
       "cover": "/lore-assets/covers/I.svg",
       "order": 1,
       "characters": [],
-      "chapterIds": [
-        "i-first-day",
-        "i-online"
-      ],
+      "chapterIds": [],
       "descriptionHtml": "<p>The week as [I] lived it: school, his sister&#39;s strange new mood, and a stranger\nonline who knows too much. He sees only his own slice — and fills the rest in\nwith confidence.</p>",
-      "flow": [
-        {
-          "chapterId": "i-first-day",
-          "pageIndex": 0,
-          "globalIndex": 0
-        },
-        {
-          "chapterId": "i-first-day",
-          "pageIndex": 1,
-          "globalIndex": 1
-        },
-        {
-          "chapterId": "i-online",
-          "pageIndex": 0,
-          "globalIndex": 2
-        },
-        {
-          "chapterId": "i-online",
-          "pageIndex": 1,
-          "globalIndex": 3
-        }
-      ],
-      "pageCount": 4,
+      "flow": [],
+      "pageCount": 0,
       "file": "content/lore/books/I.md",
-      "pdfName": "Ether’s Universe - [I] — The Younger"
+      "pdfName": "Ether’s Universe - [I]"
     },
     "II": {
       "id": "II",
-      "title": "[II] — The Elder",
+      "title": "[II]",
       "kind": "character",
       "subtitle": "1.E2024.23B.1",
       "subtitleHtml": "1.E2024.23B.1",
@@ -67,28 +66,33 @@
       "order": 2,
       "characters": [],
       "chapterIds": [
-        "ii-lecture"
+        "II.1"
       ],
       "descriptionHtml": "<p>[II]&#39;s account: the university, professor [S], and the first time she suspects\nthe coursework is describing something real.</p>",
       "flow": [
         {
-          "chapterId": "ii-lecture",
+          "chapterId": "II.1",
           "pageIndex": 0,
           "globalIndex": 0
         },
         {
-          "chapterId": "ii-lecture",
+          "chapterId": "II.1",
           "pageIndex": 1,
           "globalIndex": 1
+        },
+        {
+          "chapterId": "II.1",
+          "pageIndex": 2,
+          "globalIndex": 2
         }
       ],
-      "pageCount": 2,
+      "pageCount": 3,
       "file": "content/lore/books/II.md",
-      "pdfName": "Ether’s Universe - [II] — The Elder"
+      "pdfName": "Ether’s Universe - [II]"
     },
     "III": {
       "id": "III",
-      "title": "[III] — The Researcher",
+      "title": "[III]",
       "kind": "character",
       "subtitle": "0.E2026.0A.1",
       "subtitleHtml": "0.E2026.0A.1",
@@ -100,23 +104,46 @@
       "flow": [],
       "pageCount": 0,
       "file": "content/lore/books/III.md",
-      "pdfName": "Ether’s Universe - [III] — The Researcher"
+      "pdfName": "Ether’s Universe - [III]"
     },
     "S": {
       "id": "S",
-      "title": "[S] — The Professor",
+      "title": "[S]",
       "kind": "character",
       "subtitle": "0.S0.0A.1",
       "subtitleHtml": "0.S0.0A.1",
       "cover": "/lore-assets/covers/S.svg",
       "order": 4,
       "characters": [],
-      "chapterIds": [],
+      "chapterIds": [
+        "prologue"
+      ],
       "descriptionHtml": "<p>[S]&#39;s account. (To be written.)</p>",
-      "flow": [],
-      "pageCount": 0,
+      "flow": [
+        {
+          "chapterId": "prologue",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 2,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 3,
+          "globalIndex": 3
+        }
+      ],
+      "pageCount": 4,
       "file": "content/lore/books/S.md",
-      "pdfName": "Ether’s Universe - [S] — The Professor"
+      "pdfName": "Ether’s Universe - [S]"
     },
     "main": {
       "id": "main",
@@ -135,9 +162,7 @@
       ],
       "chapterIds": [
         "prologue",
-        "i-first-day",
-        "ii-lecture",
-        "i-online"
+        "II.1"
       ],
       "descriptionHtml": "<p>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</p>",
       "flow": [
@@ -152,161 +177,80 @@
           "globalIndex": 1
         },
         {
-          "chapterId": "i-first-day",
-          "pageIndex": 0,
+          "chapterId": "prologue",
+          "pageIndex": 2,
           "globalIndex": 2
         },
         {
-          "chapterId": "i-first-day",
-          "pageIndex": 1,
+          "chapterId": "prologue",
+          "pageIndex": 3,
           "globalIndex": 3
         },
         {
-          "chapterId": "ii-lecture",
+          "chapterId": "II.1",
           "pageIndex": 0,
           "globalIndex": 4
         },
         {
-          "chapterId": "ii-lecture",
+          "chapterId": "II.1",
           "pageIndex": 1,
           "globalIndex": 5
         },
         {
-          "chapterId": "i-online",
-          "pageIndex": 0,
+          "chapterId": "II.1",
+          "pageIndex": 2,
           "globalIndex": 6
-        },
-        {
-          "chapterId": "i-online",
-          "pageIndex": 1,
-          "globalIndex": 7
         }
       ],
-      "pageCount": 8,
+      "pageCount": 7,
       "file": "content/lore/books/main.md",
       "pdfName": "Ether’s Universe - The Main Story"
     }
   },
   "chapters": {
-    "i-first-day": {
-      "id": "i-first-day",
-      "title": "First Day",
-      "pov": "I",
-      "summary": "A new semester, and a sister in a strange mood.",
-      "characters": [
-        "I",
-        "IC",
-        "IA"
-      ],
-      "books": [
-        "main",
-        "I"
-      ],
-      "pages": [
-        {
-          "html": "<p><a class=\"lore-link\" data-ref=\"I\">[I]</a> was sixteen and already bored of the assembly before it started.</p>\n<p>His mother — <a class=\"lore-link\" data-ref=\"IC\">mom</a> — had dropped him and his sister at the gate without a\nword, which was not like her.</p>",
-          "refs": [
-            "I",
-            "IC"
-          ],
-          "factIds": [
-            "i-first-day#0#0"
-          ]
-        },
-        {
-          "html": "<p><a class=\"lore-link\" data-ref=\"IA\">[IA]</a> found him by the lockers. &quot;Your sister okay? She looked like she&#39;d seen\na ghost.&quot;</p>\n<p>He shrugged it off. He was good at shrugging things off — better than he was at\nbeing right about them.</p>",
-          "refs": [
-            "IA",
-            "I",
-            "II"
-          ],
-          "factIds": [
-            "i-first-day#1#0",
-            "i-first-day#1#1"
-          ]
-        }
-      ],
-      "file": "content/lore/chapters/i-first-day.md"
-    },
-    "i-online": {
-      "id": "i-online",
-      "title": "The Message",
-      "pov": "I",
-      "summary": "A stranger online who knows too much.",
-      "characters": [
-        "I",
-        "IB"
-      ],
-      "books": [
-        "main",
-        "I"
-      ],
-      "pages": [
-        {
-          "html": "<p>That night <a class=\"lore-link\" data-ref=\"I\">[I]</a> logged on and <a class=\"lore-link\" data-ref=\"IB\">[IB]</a> was already typing.</p>",
-          "refs": [
-            "I",
-            "IB",
-            "II"
-          ],
-          "factIds": [
-            "i-online#0#0"
-          ]
-        },
-        {
-          "html": "<p>He stared at the message for a long time.</p>",
-          "refs": [
-            "IB",
-            "I",
-            "university"
-          ],
-          "factIds": [
-            "i-online#1#0",
-            "i-online#1#1"
-          ]
-        }
-      ],
-      "file": "content/lore/chapters/i-online.md"
-    },
-    "ii-lecture": {
-      "id": "ii-lecture",
-      "title": "The Lecture",
+    "II.1": {
+      "id": "II.1",
+      "title": "II.1",
       "pov": "II",
-      "summary": "The coursework starts describing something real.",
+      "summary": "",
       "characters": [
         "II",
-        "IID",
-        "S"
+        "IIB",
+        "IIC"
       ],
       "books": [
-        "main",
-        "II"
+        "II",
+        "main"
       ],
       "pages": [
         {
-          "html": "<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> had taken <a class=\"lore-link\" data-ref=\"IID\">the professor</a>&#39;s course three times now in different\nforms, and never seen the slide that went up that morning.</p>\n<p>It was not on the syllabus. It was, as far as she could tell, not on anyone&#39;s\nsyllabus.</p>",
+          "html": "<p class=\"lore-page__header\"><em>It&#39;s difficult to imagine what life is like without certain technologies. They transform our world. They were once radical, and now they are obvious. For our parents it was the coming of computers and daresay the internet. For us it is its natural expansion as what is now known as the <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.</em><span class=\"lore-page__header-by\"><strong>2032</strong></span></p>\n<p>The door swung open loudly. Taking everyone&#39;s attention in the room for a brief moment. All the way in the back of the room sat two students who recognized the person who just entered.</p>\n<p>&quot;Perfectly on time <a class=\"lore-link\" data-ref=\"IIC\">[IIC]</a>!&quot; shouted one of the two.</p>\n<p>&quot;No need to embarass him further <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a>&quot;. Said the other one.</p>\n<p>&quot;There is in fact every need to embarass him further,&quot; teasingly adding in a slow voice: &quot;<a class=\"lore-link\" data-ref=\"II\">[II]</a>&quot;.</p>\n<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> rolled her eyes in an over-the-top way.</p>\n<p>&quot;A you&#39;re like this because it&#39;s a hoodie-day. I see.&quot; he fired at her.</p>\n<p>&quot;You&#39;re making friends today.&quot; she shot a glance up, bringing the pen in her hand to her lips. &quot;But you&#39;re right, it is in fact a hoodie-day.&quot;</p>\n<p>&quot;Ah, here he comes waddling in&quot; said <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> as their friend came up the stairs running towards them.</p>\n<p>Seeming to need air incredibly badly, out of breath, he quickly said: &quot;You guys got-to see this.&quot;</p>\n<p>At the same time <a class=\"lore-link\" data-ref=\"II\">[II]</a> and <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> started speaking:</p>",
           "refs": [
-            "II",
-            "IID"
+            "ether",
+            "IIC",
+            "IIB",
+            "II"
           ],
-          "factIds": [
-            "ii-lecture#0#0"
-          ]
+          "factIds": []
         },
         {
-          "html": "<p>The visiting lecturer introduced himself only as <a class=\"lore-link\" data-ref=\"S\">[S]</a>.</p>",
+          "html": "<p>&quot;I am seeing it.&quot;</p>\n<p>&quot;See what?&quot;</p>\n<p>They exchanged a quick glance, after which <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> shrugged.</p>\n<p>&quot;You guys got-to see this.&quot; he repeated even faster.</p>\n<p>&quot;See what?&quot; repeated <a class=\"lore-link\" data-ref=\"II\">[II]</a> too</p>\n<p>&quot;We&#39;re supposed to be starting Distributed Systems 5 minutes ago.&quot; said <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> dismissively.</p>\n<p>&quot;No seriously, here.&quot; as <a class=\"lore-link\" data-ref=\"IIC\">[IIC]</a> quickly opened his backpack. And took out his laptop.</p>\n<p>&quot;I got told by <a class=\"lore-link\" data-ref=\"IIE\">IIE</a> about this just now. Apparently there&#39;s this new game - well he told me it was kind of a game or something - called the <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.&quot;</p>\n<p>&quot;A game? The Ether as in The Nether? Minecraft?&quot; said <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> jokingly.</p>\n<p>In a sarcastic tone the friend replied with &quot;Yeah, yeah, of course, exactly, The Nether...&quot;</p>\n<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> intruigingly said: &quot;As in the luminif- something aether? The physics thing? But then a ... game?&quot;</p>\n<p>Before the friend could respond <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> shot a random: &quot;Well <a class=\"lore-link\" data-ref=\"IIE\">IIE</a>&#39;s family is from The Netherlands right? Or should I say The Etherlands? That must be where they got the name from.&quot;</p>\n<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> now looked at him once more glaringly, which caused a second shrug.</p>",
           "refs": [
-            "S",
+            "IIB",
             "II",
+            "IIC",
+            "IIE",
             "ether"
           ],
-          "factIds": [
-            "ii-lecture#1#0",
-            "ii-lecture#1#1"
-          ]
+          "factIds": []
+        },
+        {
+          "html": "<p>&quot;Hell if I know where they got the name from, what does it matter? Let me just show you.&quot;</p>",
+          "refs": [],
+          "factIds": []
         }
       ],
-      "file": "content/lore/chapters/ii-lecture.md"
+      "file": "content/lore/chapters/II.1.md"
     },
     "prologue": {
       "id": "prologue",
@@ -314,20 +258,38 @@
       "pov": "S",
       "summary": "",
       "characters": [
-        "S"
+        "S",
+        "B"
       ],
       "books": [
-        "main"
+        "main",
+        "S",
+        "B"
       ],
       "pages": [
         {
-          "html": "<p class=\"lore-page__header\"><em>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</em><span class=\"lore-page__header-by\"><strong>Ether&#39;s Bicentennial address 2247</strong></span></p>\n<p>The sun burned brightly even though it was an early spring day. In particular it seemed the rays of light had chosen a particular person that day, casually sitting on a bench in a small park. Perhaps it was the fact that he stood out particularly against the background. The brightest of green colors around him, against his casual black outfit which blended well with his skin. He remembered not exactly how he got there... by the time he became aware of himself, it seemed an age of the universe had gone by.</p>\n<p>Something gravitated him towards where he was now, though that too he couldn&#39;t recall. The only thing he could remember was the constant state of day, and the stories of others playing out in front of him.</p>\n<p>He could imagine the construction of the park, whilst he sat there in its center. - He had seen it being built after all - People coming and going all throughout that long day.</p>",
+          "html": "<p class=\"lore-page__header\"><em>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</em><span class=\"lore-page__header-by\"><strong>Ether&#39;s Bicentennial address 2247</strong></span></p>\n<p>The sun burned brightly even though it was an early spring day. In particular it seemed the rays of light had chosen a particular person that day, casually sitting on a bench in a small park. Perhaps it was the fact that he stood out particularly against the background. The brightest of green colors around him, against his casual black outfit which blended well with his skin. He remembered not exactly how he got there... by the time he became aware of himself, it seemed an age of the universe had gone by.</p>\n<p>Something gravitated him towards where he was now, though that too he couldn&#39;t recall. The only thing he could remember was the constant state of day, and the stories of others playing out in front of him.</p>\n<p>He could imagine the construction of the park, whilst he sat there in its center. - He had seen it being built after all - People coming and going all throughout that long day.</p>\n<p>Most were children, whose entire histories were being shaped within the park. Friendships born and die. The occasional fight had caused as much. Some groups larger than others. Even a pair, seemingly sisters, one younger than the other, were playing in one corner of the park.</p>\n<p>Nothing striked him particularly about any of the groups, of course the children didn&#39;t know who he was anyway. The occasional student wondered in the park, a few of them close to that sisterly pair. But they didn&#39;t seem to notice him either.</p>",
           "refs": [],
           "factIds": []
         },
         {
-          "html": "<p>Most were children, whose entire histories were being shaped within the park. Friendships born and die. The occasional fight had caused as much. Some groups larger than others. Even a pair, seemingly sisters, one younger than the other, were playing in one corner of the park.</p>\n<p>Nothing striked him particularly about any of the groups, of course the children didn&#39;t know who he was anyway. The occasional student wondered in the park, a few of them close to that sisterly pair. But they didn&#39;t seem to notice him either.</p>\n<p>Until at one point, he knew not what caused it, the elder of the sisters seemed to take the hand of one of those students. Together they explored the park. And naturally, they ended up where he was sitting.</p>\n<p>The child tugged at his knee.</p>\n<p>&quot;Mister, mister&quot;</p>",
+          "html": "<p>Until at one point, he knew not what caused it, the elder of the sisters seemed to take the hand of one of those students. Together they explored the park. And naturally, they ended up where he was sitting.</p>\n<p>The child tugged at his knee.</p>\n<p>&quot;Mister, mister&quot;</p>\n<p>The student quickly took her hand away and said &quot;I&#39;m sorry professor. She&#39;s a little eager this one.&quot;</p>\n<p>He smiled. And slowly turned towards the girl. &quot;What is it, little one?&quot;</p>\n<p>It seemed like her original courage dissappeared as quickly as it had come to her as she quickly grabbed the leg of the student in shame.</p>\n<p>A quick laugh also came across the student&#39;s face. &quot;She wants to know who you are professor.&quot;</p>\n<p>...</p>\n<p>&quot;Professor, professor?&quot; the students voice echoed into nothing.</p>\n<p>...</p>\n<p>The next instant he found himself, still on a bench, but in a completely different environment. Students scurrying all around him, though unlike the one from earlier, these ones barely recognized his existance.</p>\n<p>Once the hall cleared, still feeling dissociated. Another - this time demanding voice - called out to him.</p>\n<p>&quot;Professor&quot;... &quot;Professor!&quot;</p>",
           "refs": [],
+          "factIds": []
+        },
+        {
+          "html": "<p>He came to his senses and looked up at the strong gravity of the voice. Curious to see what could have possibly produced it.</p>\n<p>&quot;Ah, <a class=\"lore-link\" data-ref=\"S\">[S]</a>! You&#39;re finally here with me.&quot;</p>\n<p>Evidently it matched the only person standing nearby, ponytailed with a distinct set of glasses, she looked almost the exact opposite of <a class=\"lore-link\" data-ref=\"S\">[S]</a>.</p>\n<p>&quot;I&#39;ve been expecting you!&quot; she said while pointing her finger at him while a big smile struck her face.</p>\n<p>&quot;We&#39;ve got a lot to learn from you,&quot; as she forcefully took his hand and lifted him up with a small grunt. &quot;and not a lot of time to do it.&quot;</p>\n<p>&quot;Now, 21 standard years ago.&quot; she stopped for a brief moment. And interrupted herself with: &quot;Do you call them standard years yet?&quot; - &quot;No, no, perhaps not. Years then. 21 years.&quot; </p>\n<p>Looking at him briefly. Giving a hand gesture to start moving.</p>\n<p>&quot;Like I was saying. 21 years ago I first heard about you. And recently we&#39;ve been busy at getting the other professors at the university up to speed with your work. Of course it might take a long while before they&#39;re there. But in the meantime I&#39;d like to get you started with your program for the students who&#39;ve already come here - thanks to you. Now as I understand it, now that you&#39;ve got something working, you&#39;re planning to massively upscale the number of students that follow your program?&quot;</p>\n<p>He nodded. Though still in his dazy spell, he followed her as they walked the hallways of the university.</p>\n<p>&quot;Good. I&#39;ll give you access to the resources I have at my disposal which will hopefully grant you proper time to make that work.&quot;</p>",
+          "refs": [
+            "S"
+          ],
+          "factIds": []
+        },
+        {
+          "html": "<p>She continued. &quot;Now personally, I want to know how you got started in the first place. But we must first allow you to get this experiment, your &#39;system&#39; as you call it? Up and running properly. I&#39;ve got a meeting coming up with a couple of the other universities and they&#39;re all very excited about the prospects.&quot;</p>\n<p>They neared an auditorium, before going inside she stopped.</p>\n<p>&quot;Oh, and I almost forgot, I&#39;m called <a class=\"lore-link\" data-ref=\"B\">[B]</a>. So now you know how to refer to me. This thing has got me quite busy, I&#39;ll let you know how that meeting goes. For now, we&#39;ve got a room full of technically inclined students waiting to hear the latest from you. One word of caution though, education has stagnated across the universities and your new system might ruffle some feathers.&quot;</p>\n<p>And just like that she was gone.</p>\n<p><a class=\"lore-link\" data-ref=\"S\">[S]</a> stood there for a little while. Before heading towards the large door of the auditorium and placing his hand on the handle.</p>",
+          "refs": [
+            "B",
+            "S"
+          ],
           "factIds": []
         }
       ],
@@ -491,6 +453,19 @@
       "descriptionHtml": "<p>[II]&#39;s computer-science professor.</p>",
       "refs": []
     },
+    "IIE": {
+      "id": "IIE",
+      "type": "character",
+      "name": "IIE",
+      "role": "",
+      "age": null,
+      "image": "/lore-assets/characters/IIE.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "Description.",
+      "descriptionHtml": "<p>Description.</p>",
+      "refs": []
+    },
     "III": {
       "id": "III",
       "type": "character",
@@ -550,134 +525,7 @@
       ]
     }
   },
-  "facts": [
-    {
-      "id": "i-first-day#0#0",
-      "type": "knows",
-      "who": [
-        "I"
-      ],
-      "refs": [
-        "I",
-        "IC"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"I\">[I]</a> notices <a class=\"lore-link\" data-ref=\"IC\">[IC]</a> is hiding something, but not what.",
-      "chapterId": "i-first-day",
-      "pageIndex": 0
-    },
-    {
-      "id": "i-first-day#1#0",
-      "type": "knows",
-      "who": [
-        "I",
-        "IA"
-      ],
-      "refs": [
-        "I",
-        "IA",
-        "II"
-      ],
-      "html": "Both <a class=\"lore-link\" data-ref=\"I\">[I]</a> and <a class=\"lore-link\" data-ref=\"IA\">[IA]</a> saw that <a class=\"lore-link\" data-ref=\"II\">[II]</a> was shaken this morning.",
-      "chapterId": "i-first-day",
-      "pageIndex": 1
-    },
-    {
-      "id": "i-first-day#1#1",
-      "type": "secret",
-      "who": [
-        "I"
-      ],
-      "refs": [
-        "I",
-        "II"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"I\">[I]</a> decides not to ask <a class=\"lore-link\" data-ref=\"II\">[II]</a> about it. He&#39;ll regret that.",
-      "chapterId": "i-first-day",
-      "pageIndex": 1
-    },
-    {
-      "id": "i-online#0#0",
-      "type": "knows",
-      "who": [
-        "I",
-        "IB"
-      ],
-      "refs": [
-        "IB",
-        "II",
-        "I"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"IB\">[IB]</a> knows about the slide <a class=\"lore-link\" data-ref=\"II\">[II]</a> saw — which <a class=\"lore-link\" data-ref=\"I\">[I]</a> never mentioned to anyone.",
-      "chapterId": "i-online",
-      "pageIndex": 0
-    },
-    {
-      "id": "i-online#1#0",
-      "type": "secret",
-      "who": [
-        "IB"
-      ],
-      "refs": [
-        "IB",
-        "I"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"IB\">[IB]</a> is not who <a class=\"lore-link\" data-ref=\"I\">[I]</a> thinks they are.",
-      "chapterId": "i-online",
-      "pageIndex": 1
-    },
-    {
-      "id": "i-online#1#1",
-      "type": "event",
-      "who": [],
-      "refs": [
-        "I",
-        "university"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"I\">[I]</a> realises someone outside the family is tracking what happens at the <a class=\"lore-link\" data-ref=\"university\">The University</a>.",
-      "chapterId": "i-online",
-      "pageIndex": 1
-    },
-    {
-      "id": "ii-lecture#0#0",
-      "type": "knows",
-      "who": [
-        "II"
-      ],
-      "refs": [
-        "II"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"II\">[II]</a> realises the lecture material is describing a real system, not a model.",
-      "chapterId": "ii-lecture",
-      "pageIndex": 0
-    },
-    {
-      "id": "ii-lecture#1#0",
-      "type": "meets",
-      "who": [
-        "II",
-        "S"
-      ],
-      "refs": [
-        "II",
-        "S"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"II\">[II]</a> meets <a class=\"lore-link\" data-ref=\"S\">[S]</a> for the first time.",
-      "chapterId": "ii-lecture",
-      "pageIndex": 1
-    },
-    {
-      "id": "ii-lecture#1#1",
-      "type": "reveal",
-      "who": [],
-      "refs": [
-        "S",
-        "ether"
-      ],
-      "html": "<a class=\"lore-link\" data-ref=\"S\">[S]</a> is somehow connected to both the university and to <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.",
-      "chapterId": "ii-lecture",
-      "pageIndex": 1
-    }
-  ],
+  "facts": [],
   "landing": {
     "title": "Ether’s Universe",
     "subtitle": "*A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you're in a more stable state, can you more closely represent what reality is?*",
