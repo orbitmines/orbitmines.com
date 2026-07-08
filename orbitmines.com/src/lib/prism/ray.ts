@@ -25,8 +25,8 @@ if (!Prism.languages['ray.txt']) {
       greedy: true,
     },
     'number': /(-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b)|(\bU\+([a-fA-F0-9]+)?\b)|(\b0x([a-fA-F0-9]+)?\b)/i,
+    'punctuation': /[{}[\],()]|=>|:|=|:=|[|&.⸨⸩]|\$|[⊣⊢∙⊙₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾]/,
     'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
-    'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]|[⊣⊢∙⊙₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾]/,
     'keyword': {
       pattern: /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b|[0-9a-f-]{36}/,
       greedy: true,
