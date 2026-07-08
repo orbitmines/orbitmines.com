@@ -3,7 +3,7 @@ import IModule from "./IModule";
 import useHoveringModule from "./hooks/useHovering";
 import useHotkeysModule from "./hooks/useHotkeys";
 import IEventListener, {mergeListeners} from "./IEventListener";
-import {Children} from "../../../lib/paper/Paper";
+import {Children} from "../../../lib/post/Post";
 
 export const ModulesContext = createContext<IModule<any>[]>([]);
 

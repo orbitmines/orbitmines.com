@@ -1,41 +1,46 @@
 import React from 'react';
-import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
+const logo = "/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
-import {Helmet} from "react-helmet";
-import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
-import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
-import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/paper/Paper";
+import {CanvasContainer} from "./archive/2023.OnOrbits";
+import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/post/Post";
 import {PROFILES} from "./profiles/profiles";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
-import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";
-import {ORBITMINES_MINECRAFT_ARCHIVE} from "./archive/2026.MinecraftArchive";
+import {Button} from "@blueprintjs/core";
+import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
+import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ETHERS_ALMANAC, ORBITMINES_MINECRAFT_ARCHIVE} from "./references";
 
 
 const Minimap = () => {
-  const papers = [ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [ETHERS_ALMANAC.UPDATES[0], ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
   return <div style={{
     ...pageStyles
   }}>
-    <Helmet>
-      <title lang="en">OrbitMines Research</title>
+    {/* <title> comes from the root layout's metadata; the description and OG
+        tags for the home page are rendered (and hoisted) here. */}
+    <>
+      <meta name="description" content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:type" content="website"/>
-      <meta name="description"
-            content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:image" content="https://orbitmines.com/logo.png"/>
       <meta property="og:image:type" content="image/jpeg"/>
-
-    </Helmet>
+    </>
 
     <Layer zIndex="0" className="">
       <div style={{height: '100%'}}>
         <Row style={{height: '100%', minHeight: '100vh'}} center="xs" middle="xs" between="xs">
           <Col xs={12}>
-            <Col xs={12}><Row center="xs"><img src={logo} alt="logo"
-                                               style={{maxWidth: '400px', width: '90%'}}/></Row></Col>
             <Col xs={12}>
+              <Row center="xs">
+                <Col xs={12} style={{maxWidth: '1240px'}}><Row end="xs" middle="xs" className="child-px-5">
+                  <Col><DownloadButton/></Col>
+                </Row></Col>
+              </Row>
+            </Col>
+            <Col xs={12}><Row center="xs">
+              <Col><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Col>
+            </Row></Col>
+            <Col xs={12} className="pt-5">
               <Row center="xs">
                 <Col xl={4} lg={6} md={8} sm={10} xs={12}>
                   <Row center="xs">
@@ -52,7 +57,7 @@ const Minimap = () => {
                 <Col xs={12}>
                   <Row center="xs" className="child-pt-5 child-px-2">
                     {(profile?.external || []).filter(profile => PLATFORMS.includes(profile.organization.key)).map(profile =>
-                      <Col>
+                      <Col key={profile.organization.key}>
                         <a href={profile.link} target="_blank">
                           <CustomIcon icon={profile.organization.key} size={20}/>
                         </a>
@@ -77,17 +82,21 @@ const Minimap = () => {
             <Col xs={12}>
               <Row middle="xs" center="xs">
                 <Col style={{maxWidth: '500px'}}>
-                  <CanvasContainer style={{height: '140px'}} className="hidden-xs">
-                    <canvas
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_2.png')`,
-                        backgroundPosition: 'center center',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
-                  </CanvasContainer>
+                  <Row style={{alignItems: 'center'}}>
+                    <Col xs={3}>
+                      <img src="/almanac/almanac.png" alt="E" style={{width: '100%', maxHeight: '100px'}} />
+                    </Col>
+                    <Col xs={9}>
+                      <Reference
+                        index={0}
+                        reference={ETHERS_ALMANAC.reference}
+                        start="xs"
+                        style={{fontSize: '0.8rem'}} target="_self"
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                <Col style={{maxWidth: '500px'}}>
                   <Reference
                     index={0}
                     reference={{
@@ -131,46 +140,39 @@ const Minimap = () => {
                     />
                   </div>
                 </Col>
-                <Col style={{maxWidth: '500px'}}>
-                  {/*<Row start="xs">*/}
-                  <Reference
-                    index={0}
-                    reference={{
-                      title: "/updates",
-                      organizations: [ORGANIZATIONS.orbitmines_research]
-                    }}
-                    start="xs"
-                    style={{fontSize: '0.8rem'}} className="bp5-text-muted" target="_blank"
-                  />
-                  {/*</Row>*/}
-
-                  <div className="pl-9">
-                    {papers.map(paper => (
-                      <Reference index={0}
-                                 reference={{...paper.reference, subtitle: undefined, notes: undefined}}
-                                 start="xs"
-                                 style={{fontSize: '0.8rem'}} target="_self"/>
-                    ))}
-                  </div>
-
-                  <CanvasContainer style={{height: '150px'}} className="hidden-xs">
-                    <canvas
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
-                        backgroundPosition: 'center center',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
-                  </CanvasContainer>
-                </Col>
               </Row>
             </Col>
 
             <Col xs={12} style={{marginTop: '5%', marginBlock: '5%'}}>
               <Author {...PROFILES.fadi_shawki}
                       filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
+            </Col>
+
+            <Col xs={12}>
+              <Row center="xs">
+                <Col style={{maxWidth: '500px'}}> {/*<Row start="xs">*/}
+                  <Row><span className="bp5-text-disabled" style={{
+                    fontSize: '0.8rem',
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    paddingBottom: "6px",
+                    textAlign: 'left'
+                  }}>
+                    /updates
+                  </span></Row>
+                
+                  <div className="pl-9">
+                    {papers.map((paper, i) => (
+                      <Reference key={paper.reference?.link ?? i}
+                                  index={0}
+                                  reference={{...paper.reference, subtitle: undefined, notes: undefined}}
+                                  start="xs"
+                                  dark
+                                  style={{fontSize: '0.8rem'}} target="_self"/>
+                    ))}
+                  </div>
+                </Col>
+              </Row>
             </Col>
           </Col>
         </Row>

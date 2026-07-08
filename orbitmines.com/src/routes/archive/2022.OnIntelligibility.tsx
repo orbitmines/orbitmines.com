@@ -1,9 +1,10 @@
+import { ON_INTELLIGIBILITY } from "../references";
 import React from 'react';
 import REFERENCES from "../profiles/fadi-shawki/fadi_shawki";
 
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {
+import Post, {
   BR,
   PaperProps,
   Reference,
@@ -12,7 +13,7 @@ import Paper, {
   CodeBlock,
   Row,
   JetBrainsMono, BlueprintIcons20, BlueprintIcons16
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {PROFILES} from "../profiles/profiles";
 
 const {
@@ -22,33 +23,6 @@ const {
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY,
 } = REFERENCES;
 
-export const ON_INTELLIGIBILITY: Content = { reference: {
-    title: "On the Intelligibility of (dynamic) Systems and Conceptual Uncertainty",
-    subtitle:"A collection of my thoughts on intelligibility. An attempt to edge towards a basic theory for understanding dynamic systems by computationally bounded observers. While the aim is to have practical implications for the design of sophisticated observers, these ideas are quite far-reaching and do tend to border on philosophy (an inevitability, perhaps).",
-    date: "2022-12-31",
-    year: "2022",
-    external: {
-      discord: {serverId: '1055502602365845534', channelId: '1105246681915732108', link: () => "https://discord.com/channels/1055502602365845534/1105246681915732108/1105246681915732108"}
-    },
-    organizations: [ORGANIZATIONS.orbitmines_research],
-    authors: [{
-      ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-    }],
-    published: [ORGANIZATIONS.orbitmines_research],
-    link: "https://orbitmines.com/archive/on-intelligibility",
-    notes: [{
-      date: '2023-11-27',
-      render: () => <span>
-        I started distilling a years' worth of thoughts/explorations on 2023-12-11. Already - on the first day -, distributing them within the buckets of two titles: "On the intelligibility of (dynamic) systems and associated uncertainty" and "On Functional Equivalence and Compression". Though I initially didn't intend to publish these thoughts quickly, that changed on 2022-12-22. While exploring Melanie Mitchell's Mastodon account, I found her <a href="https://sigmoid.social/@melaniemitchell/109303350293539759" target="_blank">post</a> on the Lab42 essay competition, which prompted me to accelerate my timeline.
-      </span>
-    }, {
-      date: '2023-08-03',
-      render: () => <span>
-        It's probably worth noting that I currently take issue with a lot of phrasings I use here. I've noticed that many of the ideas I'm thinking about rarely hold the same viewpoint for over a few months. But as an exercise it was quite useful to distill a year of thoughts into a few pages. It has helped quite tremendously in me working through some confusions.
-      </span>
-    }]
-  }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022" }
 
 const OnIntelligibility = () => {
   const navigate = useNavigate();
@@ -64,7 +38,7 @@ const OnIntelligibility = () => {
     references: referenceCounter
   }
 
-  return <Paper {...paper}>
+  return <Post {...paper}>
     <Row center="xs">
       <Section head="Abstract">
         Central to the theme of this paper lies the conceptual framework of framing all ideas and concepts (or generally; information) as perceived superpositions. Building on prior ideas of an observer's limitations and how such a framework is a necessity. One might believe there is such a thing as objective reality, but perfect knowledge of such a thing seems to lie in the space of impossibilities. I consider this mentioning of 'perfect' and other extremes quite susceptible to misinterpretation, which I believe are necessary conditions and imperfections of observers.
@@ -175,7 +149,7 @@ const OnIntelligibility = () => {
         Below a list of references can be found which I explicitly mentioned in this paper. I intend to release a full list of books, papers and other information I've exposed myself to leading up to this paper for additional reference in the future in the case that I fell short of mentioning them here.
       </Section>
     </Row>
-  </Paper>;
+  </Post>;
 }
 
 export default OnIntelligibility;

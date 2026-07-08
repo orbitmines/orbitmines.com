@@ -26,7 +26,7 @@ export const REFERENCES = {
           organizations: [],  
           year: '(2024)',      
           link: "https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'     
   },
   THE_DECOMPILATION_WIKI: <Content>{  
     reference: {                 title: 'The Decompilation Wiki',      
@@ -114,8 +114,8 @@ export const REFERENCES = {
           authors: [{name: 'Will Kinney'}],      
           organizations: [],  
           year: '(2022)',      
-          link: "https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+          link: "https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   STATE_OF_AI_IN_2026_LLMS_CODING_SCALING_LAWS_CHINA_AGENTS_GPUS_AGI_490: <Content>{  
     reference: {                 title: 'State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | #490',      
@@ -221,7 +221,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2009)',
       link: "https://en.wikipedia.org/wiki/The_Strangest_Man"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   ECCE_HOMO: <Content>{
     reference: {
@@ -230,7 +230,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(1908)',
       link: "https://en.wikipedia.org/wiki/Ecce_Homo_(book)"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   THE_THREE_BODY_PROBLEM: <Content>{
     reference: {
@@ -239,7 +239,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2008)',
       link: "https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   WOOL: <Content>{
     reference: {
@@ -248,7 +248,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Silo_(series)"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   SHIFT: <Content>{
     reference: {
@@ -257,7 +257,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2013)',
       link: "https://en.wikipedia.org/wiki/Silo_(series)"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   HARRY_POTTER_1_7: <Content>{
     reference: {
@@ -266,7 +266,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(1997-2007)',
       link: "https://en.wikipedia.org/wiki/Harry_Potter"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   PROPOSITIONS_AS_TYPES: <Content>{
     reference: {
@@ -374,7 +374,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2021)',
       link: "https://www.craftinginterpreters.com/"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   FUNCTIONAL_PROGRAMMING_IN_LEAN: <Content>{
     reference: {
@@ -383,7 +383,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2023)',
       link: "https://lean-lang.org/functional_programming_in_lean/"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   REFLECTIONS_ON_EQUALITY: <Content>{
     reference: {
@@ -428,7 +428,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Leviathan_Wakes"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   CUBICAL_TYPES_FOR_THE_WORKING_FORMALIZER: <Content>{
     reference: {
@@ -537,7 +537,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Ready_Player_One"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   READY_PLAYER_TWO: <Content>{
     reference: {
@@ -546,7 +546,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2020)',
       link: "https://en.wikipedia.org/wiki/Ready_Player_Two"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   MSP_101_GENERALISATION_IN_LLMS_PETAR_VELIČKOVIĆ: <Content>{
     reference: {
@@ -763,7 +763,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2007)',
       link: "https://en.wikipedia.org/wiki/Einstein:_His_Life_and_Universe"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY: <Content>{
     reference: {
@@ -873,7 +873,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2006)',
       link: "https://en.wikipedia.org/wiki/Hunters_of_Dune"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   THE_LITTLE_BOOK_OF_DEEP_LEARNING: <Content>{
     reference: {
@@ -1135,7 +1135,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2023)',
       link: "https://en.wikipedia.org/wiki/Elon_Musk_(Isaacson_book)"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   FUN_RAISING_FUNDING_SCHOOL_QA_SEMF: <Content>{
     reference: {
@@ -1712,7 +1712,7 @@ export const REFERENCES = {
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Steve_Jobs_(book)"
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
   JOHN_CLEESE_ON_CREATIVITY_IN_MANAGEMENT: <Content>{
     reference: {
@@ -2722,7 +2722,7 @@ export const REFERENCES = {
       published: [{name: 'Ace Books'}],
       year: '1965',
       link: "https://en.wikipedia.org/wiki/Dune_(novel)"
-    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021"
+    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
   },
   DUNE_MESSIAH: <Content>{
     reference: {
@@ -2731,7 +2731,7 @@ export const REFERENCES = {
       published: [{name: 'Ace Books'}],
       year: '1969',
       link: 'https://en.wikipedia.org/wiki/Dune_Messiah'
-    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021"
+    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
   },
   CHILDREN_OF_DUNE: <Content>{
     reference: {
@@ -2740,7 +2740,7 @@ export const REFERENCES = {
       published: [{name: "Ace Books"}],
       year: "1976",
       link: "https://en.wikipedia.org/wiki/Children_of_Dune"
-    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021"
+    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
   },
   GOD_EMPEROR_OF_DUNE: <Content>{
     reference: {
@@ -2749,7 +2749,7 @@ export const REFERENCES = {
       published: [{name: "Ace Books"}],
       year: "1981",
       link: "https://en.wikipedia.org/wiki/God_Emperor_of_Dune",
-    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2022"
+    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2022", type: 'book'
   },
   HERETICS_OF_DUNE: <Content>{
     reference: {
@@ -2758,7 +2758,7 @@ export const REFERENCES = {
       published: [{name: "Ace Books"}],
       year: "1984",
       link: "https://en.wikipedia.org/wiki/Heretics_of_Dune"
-    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2022"
+    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2022", type: 'book'
   },
   CHAPTERHOUSE_DUNE: <Content>{
     reference: {
@@ -2767,7 +2767,7 @@ export const REFERENCES = {
       published: [{name: "Ace Books"}],
       year: "1985",
       link: "https://en.wikipedia.org/wiki/Chapterhouse:_Dune"
-    }, status: Viewed.IN_PROGRESS, found_at: "2021", viewed_at: "2022 - "
+    }, status: Viewed.IN_PROGRESS, found_at: "2021", viewed_at: "2022 - ", type: 'book'
   },
 
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES: <Content>{
@@ -2777,7 +2777,7 @@ export const REFERENCES = {
       published: [{name: "Basic books"}],
       year: "1995",
       link: "https://en.wikipedia.org/wiki/Fluid_Concepts_and_Creative_Analogies",
-    }, status: Viewed.VIEWED, found_at: "January, 2022", viewed_at: "January, 2022 - May, 2022"
+    }, status: Viewed.VIEWED, found_at: "January, 2022", viewed_at: "January, 2022 - May, 2022", type: 'book'
   },
 
   GODEL_ESCHER_BACH: <Content>{
@@ -2787,7 +2787,7 @@ export const REFERENCES = {
       published: [{name: "New York: Basic books"}],
       year: "1979",
       link: "https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach",
-    }, status: Viewed.IN_PROGRESS, found_at: "March, 2022", viewed_at: "March, 2022 - "
+    }, status: Viewed.IN_PROGRESS, found_at: "March, 2022", viewed_at: "March, 2022 - ", type: 'book'
   },
 
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY: <Content>{
@@ -2797,7 +2797,7 @@ export const REFERENCES = {
       published: [{name: "Icon Books Ltd"}],
       year: "2008",
       link: "https://en.wikipedia.org/wiki/Quantum_(book)",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "2022 - October, 2022"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "2022 - October, 2022", type: 'book'
   },
 
   THE_ART_OF_WAR: <Content>{
@@ -2807,7 +2807,7 @@ export const REFERENCES = {
       published: [{name: "Thomas Clearly translation. Shambhala Publications"}],
       year: "6th cent. B.C.",
       link: "https://en.wikipedia.org/wiki/Thomas_Cleary",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "2022", archived: true
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "2022", archived: true, type: 'book'
   },
 
   _1984: <Content>{
@@ -2817,7 +2817,7 @@ export const REFERENCES = {
       published: [{name: "Secker & Warburg"}],
       year: "1949",
       link: "https://en.wikipedia.org/wiki/Nineteen_Eighty-Four",
-    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021"
+    }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
   },
 
   ANIMAL_FARM: <Content>{
@@ -2847,7 +2847,7 @@ export const REFERENCES = {
       published: [{name: "Gnome Press"}],
       year: "1951",
       link: "https://en.wikipedia.org/wiki/Foundation_(Asimov_novel)",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October, 2022"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October, 2022", type: 'book'
   },
 
   SECOND_FOUNDATION: <Content>{
@@ -2857,7 +2857,7 @@ export const REFERENCES = {
       published: [{name: "Gnome Press"}],
       year: "1953",
       link: "https://en.wikipedia.org/wiki/Second_Foundation",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October, 2022 - January, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October, 2022 - January, 2023", type: 'book'
   },
 
   FOUNDATION_AND_EMPIRE: <Content>{
@@ -2867,7 +2867,7 @@ export const REFERENCES = {
       published: [{name: "Gnome Press"}],
       year: "1952",
       link: "https://en.wikipedia.org/wiki/Foundation_and_Empire",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "January, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "January, 2023", type: 'book'
   },
 
   PRELUDE_TO_FOUNDATION: <Content>{
@@ -2877,7 +2877,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1988",
       link: "https://en.wikipedia.org/wiki/Prelude_to_Foundation",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "April, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "April, 2023", type: 'book'
   },
 
   FOUNDATIONS_EDGE: <Content>{
@@ -2887,7 +2887,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1982",
       link: "https://en.wikipedia.org/wiki/Foundation%27s_Edge",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "March, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "March, 2023", type: 'book'
   },
 
   FOUNDATION_AND_EARTH: <Content>{
@@ -2897,7 +2897,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1986",
       link: "https://en.wikipedia.org/wiki/Foundation_and_Earth",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "March, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "March, 2023", type: 'book'
   },
 
   FORWARD_THE_FOUNDATION: <Content>{
@@ -2907,7 +2907,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1993",
       link: "https://en.wikipedia.org/wiki/Forward_the_Foundation",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May, 2023", type: 'book'
   },
 
   I_ROBOT: <Content>{
@@ -2917,7 +2917,7 @@ export const REFERENCES = {
       published: [{name: "Gnome Press"}],
       year: "1950",
       link: "https://en.wikipedia.org/wiki/I,_Robot",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "April, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "April, 2023", type: 'book'
   },
 
   THE_REST_OF_THE_ROBOTS: <Content>{
@@ -2927,7 +2927,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1964",
       link: "https://en.wikipedia.org/wiki/The_Rest_of_the_Robots",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May, 2023", type: 'book'
   },
 
   THE_COMPLETE_ROBOT: <Content>{
@@ -2937,7 +2937,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1982",
       link: "https://en.wikipedia.org/wiki/The_Complete_Robot",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "June, 2023"
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "June, 2023", type: 'book'
   },
 
   THE_CAVES_OF_STEEL: <Content>{
@@ -2947,7 +2947,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1954",
       link: "https://en.wikipedia.org/wiki/The_Caves_of_Steel",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023"
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023", type: 'book'
   },
 
   THE_NAKED_SUN: <Content>{
@@ -2957,7 +2957,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1957",
       link: "https://en.wikipedia.org/wiki/The_Naked_Sun",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023"
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023", type: 'book'
   },
 
   THE_ROBOTS_OF_DAWN: <Content>{
@@ -2967,7 +2967,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1983",
       link: "https://en.wikipedia.org/wiki/The_Robots_of_Dawn",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "September, 2023"
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "September, 2023", type: 'book'
   },
 
   ROBOTS_AND_EMPIRE: <Content>{
@@ -2977,7 +2977,7 @@ export const REFERENCES = {
       published: [{name: "Doubleday"}],
       year: "1985",
       link: "https://en.wikipedia.org/wiki/Robots_and_Empire",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "October, 2023"
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "October, 2023", type: 'book'
   },
 
   THE_RISE_AND_FALL_OF_THE_THIRD_REICH: <Content>{
@@ -2987,7 +2987,7 @@ export const REFERENCES = {
       published: [{name: "Simon & Schuster"}],
       year: "1960",
       link: "https://en.wikipedia.org/wiki/The_Rise_and_Fall_of_the_Third_Reich",
-    }, status: Viewed.IN_PROGRESS, found_at: "July, 2022", viewed_at: "September, 2022 - "
+    }, status: Viewed.IN_PROGRESS, found_at: "July, 2022", viewed_at: "September, 2022 - ", type: 'book'
   },
 
   A_NEW_KIND_OF_SCIENCE: <Content>{
@@ -3007,7 +3007,7 @@ export const REFERENCES = {
       published: [{name: "Wolfram Media, Inc."}],
       year: "2020",
       link: "https://www.wolframphysics.org/",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "December, 2022 - "
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "December, 2022 - ", type: 'book'
   },
 
   COMBINATORS_A_CENTENNIAL_VIEW: <Content>{
@@ -3017,7 +3017,7 @@ export const REFERENCES = {
       published: [{name: "Wolfram Media, Inc."}],
       year: "2021",
       link: "https://arxiv.org/pdf/2103.12811.pdf",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022 - January, 2023"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022 - January, 2023", type: 'book'
   },
 
   METAMATHEMATICS: <Content>{
@@ -3027,7 +3027,7 @@ export const REFERENCES = {
       published: [{name: "Wolfram Media, Inc."}],
       year: "2022",
       link: "https://arxiv.org/abs/2204.05123",
-    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "May, 2023"
+    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "May, 2023", type: 'book'
   },
 
   TWENTY_YEARS_NKS: <Content>{
@@ -3037,7 +3037,7 @@ export const REFERENCES = {
       published: [{name: "Wolfram Media, Inc."}],
       year: "2022",
       link: "https://www.wolfram-media.com/products/twenty-years-of-a-new-kind-of-science/",
-    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June, 2023"
+    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June, 2023", type: 'book'
   },
 
   THE_SELFISH_GENE: <Content>{
@@ -3047,7 +3047,7 @@ export const REFERENCES = {
       published: [{name: "Oxford University Press"}],
       year: "1976",
       link: "https://en.wikipedia.org/wiki/The_Selfish_Gene",
-    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "February 2023 - "
+    }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "February 2023 - ", type: 'book'
   },
 
   TRANSFORMER: <Content>{
@@ -3077,7 +3077,7 @@ export const REFERENCES = {
       published: [{name: ""}],
       year: "2021",
       link: "https://www.numenta.com/resources/books/a-thousand-brains-by-jeff-hawkins/",
-    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
+    }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022", type: 'book'
   },
 
   REASONING_WITH_BELIEF_FUNCTIONS: <Content>{
@@ -3815,7 +3815,7 @@ export const REFERENCES = {
       published: [{name: "Quantinuum"}],
       year: "2023",
       link: "https://www.quantinuum.com/news/quantum-in-pictures",
-    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023"
+    }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023", type: 'book'
   },
 
   CATEGORY_THEORY_I: <Content>{
@@ -4782,11 +4782,11 @@ export const fadi_shawki = <TProfile>{
 
   picture: 'https://orbitmines.com/profiles/fadi-shawki/profile-picture.png',
 
-  date: '2026-05-01',
+  date: '2026-12-31',
 
   email: 'fadi.shawki@orbitmines.com',
 
-  title: "2026. Fadi Shawki",
+  title: "Fadi Shawki",
   subtitle: "A self-profile by some 26-solar-orbiting explorer.",
 
   reference: {
@@ -4828,11 +4828,11 @@ export const fadi_shawki = <TProfile>{
     {organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki'},
     {organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki'},
     {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
-    {
-      organization: ORGANIZATIONS.mastodon,
-      display: '@fadishawki',
-      link: 'https://mastodon.orbitmines.com/@fadishawki'
-    },
+    // {
+    //   organization: ORGANIZATIONS.mastodon,
+    //   display: '@fadishawki',
+    //   link: 'https://mastodon.orbitmines.com/@fadishawki'
+    // },
     {
       organization: ORGANIZATIONS.facebook,
       display: 'Fadi Shawki',

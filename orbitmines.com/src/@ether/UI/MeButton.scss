@@ -1,0 +1,30 @@
+@use './CRTShell.scss';
+
+.ether-me {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  color: #fff;
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.5),
+    0 0 11px rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  z-index: 1000;
+  user-select: none;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  white-space: pre;
+
+  // One-shot mount fade. CSS animations fire when the class is first added
+  // and don't replay on subsequent renders — perfect for "show on first
+  // appearance, never again". No `forwards` so we end at the natural opacity.
+  animation: ether-me-enter 0.6s ease-in;
+}
+
+@keyframes ether-me-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

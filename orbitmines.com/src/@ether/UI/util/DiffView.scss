@@ -1,0 +1,65 @@
+.ether-diff {
+  font-family: 'JetBrains Mono', Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: auto;
+
+  &__line {
+    display: grid;
+    grid-template-columns: 48px 48px 18px 1fr;
+    white-space: pre;
+
+    &--add { background: rgba(56, 200, 110, 0.08); }
+    &--remove { background: rgba(220, 80, 80, 0.08); }
+  }
+
+  &__num {
+    text-align: right;
+    padding-right: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    user-select: none;
+  }
+
+  &__prefix {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  &__text { padding-right: 10px; }
+}
+
+.ether-diff-sbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-family: 'JetBrains Mono', Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+
+  &__row { display: contents; }
+
+  &__cell {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    padding: 0 8px;
+    white-space: pre;
+    color: rgba(255, 255, 255, 0.85);
+
+    &--add    { background: rgba(56, 200, 110, 0.08); }
+    &--remove { background: rgba(220, 80, 80, 0.08); }
+    &--empty  { background: rgba(255, 255, 255, 0.015); }
+  }
+
+  &__num {
+    text-align: right;
+    padding-right: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    user-select: none;
+  }
+}

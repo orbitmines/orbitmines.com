@@ -33,7 +33,7 @@ git clone git@github.com:orbitmines/orbitmines.com.git # Website to the internet
     npm install
     ```
   - ```
-    npm start
+    npm run dev
     ```
 
 ---

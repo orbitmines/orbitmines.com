@@ -1,0 +1,8 @@
+class Article (name: String) < name
+
+class Book < Article
+
+class Profile < Article
+
+class Author
+
