@@ -1,0 +1,288 @@
+// Shared lore parser. Used by build-lore.mjs (CLI) and editor-server.mjs (dev
+// API). buildLore() turns content/lore/**.md into the data object the reader
+// consumes, optionally overlaying one in-memory file for live preview.
+//
+// See content/lore/SCHEMA.md for the authoring format.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import matter from 'gray-matter';
+import { marked } from 'marked';
+
+export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+export const CONTENT = path.join(ROOT, 'content', 'lore');
+export const OUT = path.join(ROOT, 'src', 'lore', 'generated', 'lore.json');
+
+const PAGE_BREAK = /^[ \t]*<!--\s*page\s*-->[ \t]*$/im;
+const PAGE_BREAK_LINE = /^[ \t]*<!--\s*page\s*-->[ \t]*$/;
+const CALLOUT = /^>\s*\[!([a-zA-Z]+)(?:\|([^\]]*))?\]\s*(.*)$/;
+const WIKILINK = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
+
+// Automatic A5 pagination: paragraphs are packed into pages sized to roughly an
+// A5 text column at the reader's 9pt body — authors never place page breaks
+// (an explicit <!-- page --> is still honoured as a forced break). Tuned to the
+// real A5 text area (~118mm × ~170mm at 9pt / 1.5): ~74 chars/line, ~34 lines.
+const CHARS_PER_LINE = 74;
+const LINES_PER_PAGE = 34;
+function estimateLines(text) {
+  const len = text.replace(/\s+/g, ' ').trim().length;
+  return len ? Math.ceil(len / CHARS_PER_LINE) + 1 : 0; // +1 ≈ paragraph spacing
+}
+
+marked.setOptions({ mangle: false, headerIds: false });
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+// A chapter that opens with an italic paragraph treats that whole first
+// paragraph (the contiguous block, up to the first blank line) as a header /
+// epigraph: rendered smaller and tighter. We tag the very first <p> when it
+// starts with emphasis. If that header contains a hard line break, whatever
+// follows the LAST break (e.g. an attribution) is wrapped so it can be
+// right-aligned — "— Author" on its own line under the epigraph.
+function markLeadingHeader(html) {
+  return html.replace(/^(\s*)<p>(\s*<(?:em|i)>[\s\S]*?)<\/p>/, (_full, ws, inner) => {
+    // The epigraph's last line — split off by a hard break (<br>) OR a soft
+    // newline — becomes a right-aligned attribution; the rest flows as one line.
+    const parts = inner.split(/\s*(?:<br\s*\/?>|\n)\s*/).filter((s) => s !== '');
+    let body = inner;
+    if (parts.length > 1) {
+      const tail = parts.pop();
+      body = `${parts.join(' ')}<span class="lore-page__header-by">${tail}</span>`;
+    }
+    return `${ws}<p class="lore-page__header">${body}</p>`;
+  });
+}
+
+// `overlay` (optional): { path: <relpath from ROOT>, content } substitutes (or
+// injects, for a not-yet-saved new file) one file's body without touching disk.
+function readDir(dir, overlay) {
+  const out = [];
+  const overlayRel = overlay ? overlay.path.replace(/\\/g, '/') : null;
+  let overlaySeen = false;
+  if (fs.existsSync(dir)) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) { out.push(...readDir(full, overlay)); continue; }
+      if (!entry.name.endsWith('.md')) continue;
+      if (entry.name === 'SCHEMA.md') continue;
+      const rel = path.relative(ROOT, full).replace(/\\/g, '/');
+      let text = fs.readFileSync(full, 'utf8');
+      if (overlayRel && rel === overlayRel) { text = overlay.content; overlaySeen = true; }
+      out.push(parseFile(rel, text));
+    }
+  }
+  // Inject a brand-new overlay file that lives in (or under) this directory.
+  if (overlayRel && !overlaySeen) {
+    const dirRel = path.relative(ROOT, dir).replace(/\\/g, '/') + '/';
+    if (overlayRel.startsWith(dirRel) && !overlayRel.slice(dirRel.length).includes('/')) {
+      out.push(parseFile(overlayRel, overlay.content));
+      overlay._injected = true;
+    }
+  }
+  return out;
+}
+
+function parseFile(rel, text) {
+  const parsed = matter(text);
+  const id = parsed.data.id || path.basename(rel).replace(/\.md$/, '');
+  return { id: String(id), data: parsed.data, body: parsed.content, file: rel };
+}
+
+export function buildLore(options = {}) {
+  const { overlay = null, write = false } = options;
+  const warnings = [];
+  const warn = (m) => warnings.push(m);
+
+  const bookFiles = readDir(path.join(CONTENT, 'books'), overlay);
+  const chapterFiles = readDir(path.join(CONTENT, 'chapters'), overlay);
+  const characterFiles = readDir(path.join(CONTENT, 'characters'), overlay);
+  const codexFiles = readDir(path.join(CONTENT, 'codex'), overlay);
+  const siteFiles = readDir(path.join(CONTENT, 'site'), overlay);
+
+  // ----- entity registry (characters + codex + books are link targets) -----
+  const entities = {};
+  const aliasMap = {};
+  const registerAlias = (key, id) => {
+    const k = String(key).toLowerCase();
+    if (aliasMap[k] && aliasMap[k] !== id) warn(`alias clash: "${key}" -> ${aliasMap[k]} & ${id}`);
+    aliasMap[k] = id;
+  };
+  const resolve = (ref) => aliasMap[String(ref).trim().toLowerCase()] || null;
+
+  for (const f of [...characterFiles, ...codexFiles]) {
+    const e = {
+      id: f.id,
+      type: f.data.type || 'character',
+      name: f.data.name || f.id,
+      role: f.data.role || '',
+      age: f.data.age ?? null,
+      image: f.data.image || null,
+      aliases: f.data.aliases || [],
+      relations: f.data.relations || [],
+      body: f.body.trim(),
+      descriptionHtml: '',
+      refs: [],
+    };
+    entities[e.id] = e;
+    registerAlias(e.id, e.id);
+    for (const a of e.aliases) registerAlias(a, e.id);
+    if (e.name) registerAlias(e.name, e.id);
+  }
+  for (const b of bookFiles) registerAlias(b.id, b.id);
+
+  // ----- wikilink + markdown rendering -----
+  const renderWikilinks = (text, sink) => text.replace(WIKILINK, (_, rawRef, label) => {
+    const ref = rawRef.trim();
+    const id = resolve(ref);
+    const display = (label != null ? label : (id && entities[id] ? entities[id].name : ref)).trim();
+    if (!id) {
+      warn(`unresolved wikilink [[${rawRef}${label ? '|' + label : ''}]]`);
+      return `<span class="lore-link lore-link--broken">${escapeHtml(display)}</span>`;
+    }
+    if (sink && !sink.includes(id)) sink.push(id);
+    return `<a class="lore-link" data-ref="${id}">${escapeHtml(display)}</a>`;
+  });
+  const renderMarkdown = (md, sink) => marked.parse(renderWikilinks(md, sink)).trim();
+  const renderInline = (md, sink) => marked.parseInline(renderWikilinks(md, sink)).trim();
+
+  for (const e of Object.values(entities)) e.descriptionHtml = renderMarkdown(e.body, e.refs);
+
+  // ----- chapters -> pages + facts -----
+  const chapters = {};
+  const facts = [];
+  for (const f of chapterFiles) {
+    // 1) Tokenise the body into paragraphs / reveal-callouts / forced breaks.
+    const tokens = [];
+    let para = [];
+    const flushPara = () => { if (para.join('\n').trim()) tokens.push({ type: 'para', text: para.join('\n') }); para = []; };
+    for (const line of f.body.split('\n')) {
+      if (PAGE_BREAK_LINE.test(line)) { flushPara(); tokens.push({ type: 'break' }); continue; }
+      const cm = line.match(CALLOUT);
+      if (cm) { flushPara(); tokens.push({ type: 'callout', m: cm }); continue; }
+      if (line.trim() === '') { flushPara(); continue; }
+      para.push(line);
+    }
+    flushPara();
+
+    // 2) Pack paragraphs into A5-sized pages; callouts become facts on the
+    //    current page (they take no visible space); honour forced breaks.
+    const pageParas = [[]];
+    let pageIdx = 0;
+    let lineCount = 0;
+    const newPage = () => { pageIdx += 1; pageParas[pageIdx] = []; lineCount = 0; };
+    for (const tok of tokens) {
+      if (tok.type === 'break') {
+        if (pageParas[pageIdx].length) newPage();
+        continue;
+      }
+      if (tok.type === 'callout') {
+        const [, type, csv, txt] = tok.m;
+        const refs = [];
+        const html = renderInline(txt, refs);
+        const who = (csv ? csv.split(',') : []).map((w) => resolve(w)).filter(Boolean);
+        for (const w of who) if (!refs.includes(w)) refs.push(w);
+        facts.push({
+          id: `${f.id}#${pageIdx}#${facts.filter((x) => x.chapterId === f.id && x.pageIndex === pageIdx).length}`,
+          type: type.toLowerCase(), who, refs, html, chapterId: f.id, pageIndex: pageIdx,
+        });
+        continue;
+      }
+      // paragraph
+      let lines = estimateLines(tok.text);
+      // The opening italic epigraph carries extra spacing below it.
+      if (pageIdx === 0 && pageParas[0].length === 0 && /^\s*[*_]/.test(tok.text)) lines += 2;
+      if (lineCount > 0 && lineCount + lines > LINES_PER_PAGE) newPage();
+      pageParas[pageIdx].push(tok.text);
+      lineCount += lines;
+    }
+    // Drop a trailing empty page (e.g. a break at the very end).
+    while (pageParas.length > 1
+      && pageParas[pageParas.length - 1].length === 0
+      && !facts.some((x) => x.chapterId === f.id && x.pageIndex === pageParas.length - 1)) {
+      pageParas.pop();
+    }
+
+    // 3) Render each page.
+    const pages = pageParas.map((paras, pageIndex) => {
+      const refs = [];
+      let html = renderMarkdown(paras.join('\n\n'), refs);
+      if (pageIndex === 0) html = markLeadingHeader(html); // epigraph only on page 1
+      const pageFacts = facts.filter((x) => x.chapterId === f.id && x.pageIndex === pageIndex);
+      const allRefs = [...refs];
+      for (const fc of pageFacts) for (const r of fc.refs) if (!allRefs.includes(r)) allRefs.push(r);
+      return { html, refs: allRefs, factIds: pageFacts.map((x) => x.id) };
+    });
+    chapters[f.id] = {
+      id: f.id,
+      title: f.data.title || f.id,
+      pov: f.data.pov ? resolve(f.data.pov) || f.data.pov : null,
+      summary: f.data.summary || '',
+      characters: (f.data.characters || []).map((c) => resolve(c) || c),
+      books: f.data.books || [],
+      pages,
+      file: f.file,
+    };
+  }
+
+  // ----- books -> ordered reading flow -----
+  const books = {};
+  for (const f of bookFiles) {
+    const chapterIds = (f.data.chapters || []).filter((cid) => {
+      if (!chapters[cid]) { warn(`book "${f.id}" lists unknown chapter "${cid}"`); return false; }
+      return true;
+    });
+    let globalIndex = 0;
+    const flow = [];
+    for (const cid of chapterIds) {
+      chapters[cid].pages.forEach((_, pageIndex) => {
+        flow.push({ chapterId: cid, pageIndex, globalIndex: globalIndex++ });
+      });
+    }
+    books[f.id] = {
+      id: f.id,
+      title: f.data.title || f.id,
+      kind: f.data.kind || 'character',
+      subtitle: f.data.subtitle || '',
+      subtitleHtml: renderInline(f.data.subtitle || '', []),
+      cover: f.data.cover || null,
+      order: f.data.order ?? 999,
+      characters: (f.data.characters || []).map((c) => resolve(c) || c),
+      chapterIds,
+      descriptionHtml: renderMarkdown(f.body, []),
+      flow,
+      pageCount: flow.length,
+      file: f.file,
+    };
+  }
+
+  // ----- site: singleton landing config (heading + intro for /lore) -----
+  const landingFile = siteFiles.find((f) => f.id === 'landing') || siteFiles[0];
+  const landingTitle = landingFile?.data.title || 'The Library';
+  const landingSubtitle = landingFile?.data.subtitle || '';
+  const landing = {
+    title: landingTitle,
+    subtitle: landingSubtitle,
+    titleHtml: renderInline(landingTitle, []),
+    subtitleHtml: renderInline(landingSubtitle, []),
+    // The landing file's body — ambient "mystery" text shown dimmed in the
+    // background of the landing page.
+    contentHtml: renderMarkdown(landingFile?.body || '', []),
+  };
+
+  // The base filename a book's PDF is published under (URL + downloaded name),
+  // so browsers save it as "{site} - {book}.pdf" rather than the bare id.
+  const sanitizePdfName = (s) => String(s).replace(/[\\/:*?"<>|]+/g, '-').replace(/\s+/g, ' ').trim();
+  for (const b of Object.values(books)) {
+    b.pdfName = `${sanitizePdfName(landingTitle)} - ${sanitizePdfName(b.title)}`;
+  }
+
+  const data = { generatedAt: new Date().toISOString(), books, chapters, entities, facts, landing };
+
+  if (write) {
+    fs.mkdirSync(path.dirname(OUT), { recursive: true });
+    fs.writeFileSync(OUT, JSON.stringify(data, null, 2));
+  }
+  return { data, warnings };
+}

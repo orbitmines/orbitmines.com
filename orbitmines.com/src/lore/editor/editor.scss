@@ -1,0 +1,150 @@
+// Lore editor (dev-only). Three columns: vault tree, raw markdown + structured
+// frontmatter, and a live preview rendered by the same parser as production.
+
+.lore-editor-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #0d0e10;
+  color: #d6d3cc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+// Collapsible merge-map strip that doubles as the editor's chapter navigation.
+.lore-editor__map {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0f1113;
+  display: flex; flex-direction: column;
+  max-height: 340px;
+}
+.lore-editor__map.is-collapsed { max-height: none; }
+.lore-editor__map-head {
+  display: flex; align-items: center; gap: 10px; padding: 4px 10px; font-size: 12px;
+}
+.lore-editor__sync { margin-left: auto; }
+.lore-editor__map .lore-graph__scroll { max-height: 296px; padding: 4px 12px 14px; }
+
+.lore-editor {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  color: #d6d3cc;
+  background: #0d0e10;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.lore-editor-shell .lore-editor { height: auto; flex: 1; min-height: 0; }
+
+.lore-editor--offline { display: grid; place-items: center; }
+.lore-editor__offline-card {
+  max-width: 460px; background: #15171a; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 24px 28px;
+}
+.lore-editor__cmd {
+  background: #000; color: #8fe; padding: 10px 12px; border-radius: 6px; font-family: monospace;
+}
+.lore-editor__offline-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+
+/* ------------------------------------------------------------------- tree */
+.lore-editor__tree {
+  border-right: 1px solid rgba(255,255,255,0.07); overflow: auto; padding: 10px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.lore-editor__brand { display: flex; align-items: center; gap: 8px; font-weight: 600; padding: 4px; }
+.lore-editor__new { display: flex; gap: 4px; margin: 6px 0 10px; }
+.lore-editor__new .lore-input { padding: 4px 6px; font-size: 12px; }
+.lore-editor__group-label {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #7c766a;
+  margin: 12px 0 4px;
+}
+.lore-editor__file {
+  display: block; width: 100%; text-align: left; background: none; border: none;
+  color: #c8c4bb; padding: 5px 8px; border-radius: 5px; cursor: pointer; font-size: 13px;
+}
+.lore-editor__file:hover { background: rgba(255,255,255,0.05); }
+.lore-editor__file.is-active { background: rgba(176,123,58,0.22); color: #fff; }
+.lore-editor__file:active { cursor: grabbing; }
+.lore-editor__file[draggable] { cursor: grab; }
+.lore-editor__file-id { color: #6f6a5f; font-family: ui-monospace, 'SFMono-Regular', monospace; font-size: 12px; }
+.lore-editor__graphlink { margin-top: auto; }
+
+/* ------------------------------------------------------------------- main */
+.lore-editor__main { display: flex; flex-direction: column; min-width: 0; }
+.lore-editor__empty { display: grid; place-items: center; height: 100%; }
+.lore-editor__bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.lore-editor__path { font-family: monospace; font-size: 12px; color: #9a948a; }
+.lore-editor__path em { color: #e0a860; font-style: normal; }
+.lore-editor__bar-actions { display: flex; gap: 8px; align-items: center; }
+.lore-editor__savestate { font-size: 12px; color: #837c70; font-style: italic; }
+
+.lore-editor__panes { display: grid; grid-template-columns: 1fr 1fr; flex: 1; min-height: 0; }
+.lore-editor__edit { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid rgba(255,255,255,0.07); }
+.lore-editor__toolbar {
+  display: flex; gap: 2px; padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap;
+}
+.lore-editor__textarea {
+  flex: 1; min-height: 220px; resize: none; border: none; outline: none;
+  background: #111316; color: #e6e2d8; padding: 16px 18px;
+  font-family: 'SF Mono', ui-monospace, monospace; font-size: 13.5px; line-height: 1.6;
+}
+
+/* ------------------------------------------------------- frontmatter form */
+.lore-fmform {
+  border-top: 1px solid rgba(255,255,255,0.07); padding: 12px 16px; overflow: auto;
+  max-height: 42%; background: #0f1113;
+}
+.lore-field { display: block; margin-bottom: 10px; }
+.lore-field__label {
+  display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #837c70; margin-bottom: 4px;
+}
+.lore-input {
+  width: 100%; background: #1a1d20; border: 1px solid rgba(255,255,255,0.1);
+  color: #e6e2d8; border-radius: 5px; padding: 6px 8px; font-size: 13px; font-family: inherit;
+}
+.lore-input--area { min-height: 54px; resize: vertical; }
+.lore-input--inline { width: auto; flex: 1; min-width: 80px; }
+
+.lore-chips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.lore-chip {
+  background: #1a1d20; border: 1px solid rgba(255,255,255,0.12); color: #b8b3a8;
+  border-radius: 12px; padding: 3px 9px; font-size: 12px; cursor: pointer;
+}
+.lore-chip--on { background: rgba(176,123,58,0.28); border-color: var(--accent, #b07b3a); color: #fff; }
+.lore-chip__x { background: none; border: none; color: inherit; cursor: pointer; margin-left: 4px; padding: 0; }
+
+.lore-ordered ol { padding-left: 18px; margin: 0 0 8px; }
+.lore-ordered li { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.lore-ordered__name { font-family: monospace; font-size: 12px; }
+
+/* ---------------------------------------------------------------- preview */
+.lore-editor__preview { overflow: auto; background: #141518; padding: 16px; }
+.lore-editor__warnings {
+  background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.4);
+  border-radius: 6px; padding: 8px 10px; margin-bottom: 12px; font-size: 12px; color: #f0b9b2;
+}
+.lore-editor__preview-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+// True A5 (148mm × 210mm), matching the reader, so what fits a page here is
+// what fits a printed page. The preview pane scrolls if it's narrower.
+.lore-editor__a5 {
+  background: #f3ead8; color: #2b2620; border-radius: 3px; padding: 8mm 7.5mm;
+  width: 148mm; height: 210mm; flex: 0 0 auto; overflow: auto; margin: 0 auto 16px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.45); font-family: Georgia, serif;
+  display: flex; flex-direction: column; // footer pins to the page bottom
+}
+.lore-editor__a5--auto { width: min(100%, 148mm); height: auto; }
+.lore-editor__a5 .lore-page__body { font-size: 9pt; line-height: 1.5; }
+.lore-editor__a5 .lore-page__chapter h2 { font-size: 13.5pt; }
+.lore-editor__pagemeta { font-size: 11px; margin-top: 10px; border-top: 1px dashed #cdbf9f; padding-top: 6px; }
+.lore-editor__entityimg { width: 96px; height: 96px; object-fit: cover; border-radius: 10px; }
+.lore-editor__message {
+  padding: 8px 14px; border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 12px; color: #cbb68a;
+}
+
+@media (max-width: 900px) {
+  .lore-editor { grid-template-columns: 1fr; height: auto; }
+  .lore-editor__panes { grid-template-columns: 1fr; }
+}

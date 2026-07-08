@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 594" width="420" height="594">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0.6" y2="1">
+    <stop offset="0" stop-color="hsl(342 50% 22%)"/><stop offset="1" stop-color="hsl(12 55% 10%)"/>
+  </linearGradient></defs>
+  <rect width="420" height="594" fill="url(#g)"/>
+  <rect x="22" y="22" width="376" height="550" rx="6" fill="none" stroke="hsl(342 65% 82%)" stroke-opacity="0.35"/>
+  <text x="210" y="300" text-anchor="middle" font-family="Georgia, serif"
+    font-size="150" font-weight="700" fill="hsl(342 65% 82%)">Uni</text>
+</svg>

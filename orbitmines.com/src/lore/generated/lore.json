@@ -1,0 +1,536 @@
+{
+  "generatedAt": "2026-07-08T13:51:07.193Z",
+  "books": {
+    "B": {
+      "id": "B",
+      "title": "[B]",
+      "kind": "character",
+      "subtitle": "0.B0.4F.1",
+      "subtitleHtml": "0.B0.4F.1",
+      "cover": "/lore-assets/covers/B.svg",
+      "order": 5,
+      "characters": [],
+      "chapterIds": [
+        "prologue"
+      ],
+      "descriptionHtml": "<p>[B]&#39;s account. (To be written.)</p>",
+      "flow": [
+        {
+          "chapterId": "prologue",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 2,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 3,
+          "globalIndex": 3
+        }
+      ],
+      "pageCount": 4,
+      "file": "content/lore/books/B.md",
+      "pdfName": "Ether’s Universe - [B]"
+    },
+    "I": {
+      "id": "I",
+      "title": "[I]",
+      "kind": "character",
+      "subtitle": "1.E2031.16G.1",
+      "subtitleHtml": "1.E2031.16G.1",
+      "cover": "/lore-assets/covers/I.svg",
+      "order": 1,
+      "characters": [],
+      "chapterIds": [],
+      "descriptionHtml": "<p>The week as [I] lived it: school, his sister&#39;s strange new mood, and a stranger\nonline who knows too much. He sees only his own slice — and fills the rest in\nwith confidence.</p>",
+      "flow": [],
+      "pageCount": 0,
+      "file": "content/lore/books/I.md",
+      "pdfName": "Ether’s Universe - [I]"
+    },
+    "II": {
+      "id": "II",
+      "title": "[II]",
+      "kind": "character",
+      "subtitle": "1.E2024.23B.1",
+      "subtitleHtml": "1.E2024.23B.1",
+      "cover": "/lore-assets/covers/II.svg",
+      "order": 2,
+      "characters": [],
+      "chapterIds": [
+        "II.1"
+      ],
+      "descriptionHtml": "<p>[II]&#39;s account: the university, professor [S], and the first time she suspects\nthe coursework is describing something real.</p>",
+      "flow": [
+        {
+          "chapterId": "II.1",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "II.1",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "II.1",
+          "pageIndex": 2,
+          "globalIndex": 2
+        }
+      ],
+      "pageCount": 3,
+      "file": "content/lore/books/II.md",
+      "pdfName": "Ether’s Universe - [II]"
+    },
+    "III": {
+      "id": "III",
+      "title": "[III]",
+      "kind": "character",
+      "subtitle": "0.E2026.0A.1",
+      "subtitleHtml": "0.E2026.0A.1",
+      "cover": "/lore-assets/covers/III.svg",
+      "order": 3,
+      "characters": [],
+      "chapterIds": [],
+      "descriptionHtml": "<p>[III]&#39;s account. (To be written.)</p>",
+      "flow": [],
+      "pageCount": 0,
+      "file": "content/lore/books/III.md",
+      "pdfName": "Ether’s Universe - [III]"
+    },
+    "S": {
+      "id": "S",
+      "title": "[S]",
+      "kind": "character",
+      "subtitle": "0.S0.0A.1",
+      "subtitleHtml": "0.S0.0A.1",
+      "cover": "/lore-assets/covers/S.svg",
+      "order": 4,
+      "characters": [],
+      "chapterIds": [
+        "prologue"
+      ],
+      "descriptionHtml": "<p>[S]&#39;s account. (To be written.)</p>",
+      "flow": [
+        {
+          "chapterId": "prologue",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 2,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 3,
+          "globalIndex": 3
+        }
+      ],
+      "pageCount": 4,
+      "file": "content/lore/books/S.md",
+      "pdfName": "Ether’s Universe - [S]"
+    },
+    "main": {
+      "id": "main",
+      "title": "The Main Story",
+      "kind": "main",
+      "subtitle": "1.E2047.0A.1",
+      "subtitleHtml": "1.E2047.0A.1",
+      "cover": "/lore-assets/covers/main.jpg",
+      "order": 0,
+      "characters": [
+        "I",
+        "II",
+        "III",
+        "S",
+        "B"
+      ],
+      "chapterIds": [
+        "prologue",
+        "II.1"
+      ],
+      "descriptionHtml": "<p>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</p>",
+      "flow": [
+        {
+          "chapterId": "prologue",
+          "pageIndex": 0,
+          "globalIndex": 0
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 1,
+          "globalIndex": 1
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 2,
+          "globalIndex": 2
+        },
+        {
+          "chapterId": "prologue",
+          "pageIndex": 3,
+          "globalIndex": 3
+        },
+        {
+          "chapterId": "II.1",
+          "pageIndex": 0,
+          "globalIndex": 4
+        },
+        {
+          "chapterId": "II.1",
+          "pageIndex": 1,
+          "globalIndex": 5
+        },
+        {
+          "chapterId": "II.1",
+          "pageIndex": 2,
+          "globalIndex": 6
+        }
+      ],
+      "pageCount": 7,
+      "file": "content/lore/books/main.md",
+      "pdfName": "Ether’s Universe - The Main Story"
+    }
+  },
+  "chapters": {
+    "II.1": {
+      "id": "II.1",
+      "title": "II.1",
+      "pov": "II",
+      "summary": "",
+      "characters": [
+        "II",
+        "IIB",
+        "IIC"
+      ],
+      "books": [
+        "II",
+        "main"
+      ],
+      "pages": [
+        {
+          "html": "<p class=\"lore-page__header\"><em>It&#39;s difficult to imagine what life is like without certain technologies. They transform our world. They were once radical, and now they are obvious. For our parents it was the coming of computers and daresay the internet. For us it is its natural expansion as what is now known as the <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.</em><span class=\"lore-page__header-by\"><strong>2032</strong></span></p>\n<p>The door swung open loudly. Taking everyone&#39;s attention in the room for a brief moment. All the way in the back of the room sat two students who recognized the person who just entered.</p>\n<p>&quot;Perfectly on time <a class=\"lore-link\" data-ref=\"IIC\">[IIC]</a>!&quot; shouted one of the two.</p>\n<p>&quot;No need to embarass him further <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a>&quot;. Said the other one.</p>\n<p>&quot;There is in fact every need to embarass him further,&quot; teasingly adding in a slow voice: &quot;<a class=\"lore-link\" data-ref=\"II\">[II]</a>&quot;.</p>\n<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> rolled her eyes in an over-the-top way.</p>\n<p>&quot;A you&#39;re like this because it&#39;s a hoodie-day. I see.&quot; he fired at her.</p>\n<p>&quot;You&#39;re making friends today.&quot; she shot a glance up, bringing the pen in her hand to her lips. &quot;But you&#39;re right, it is in fact a hoodie-day.&quot;</p>\n<p>&quot;Ah, here he comes waddling in&quot; said <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> as their friend came up the stairs running towards them.</p>\n<p>Seeming to need air incredibly badly, out of breath, he quickly said: &quot;You guys got-to see this.&quot;</p>\n<p>At the same time <a class=\"lore-link\" data-ref=\"II\">[II]</a> and <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> started speaking:</p>",
+          "refs": [
+            "ether",
+            "IIC",
+            "IIB",
+            "II"
+          ],
+          "factIds": []
+        },
+        {
+          "html": "<p>&quot;I am seeing it.&quot;</p>\n<p>&quot;See what?&quot;</p>\n<p>They exchanged a quick glance, after which <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> shrugged.</p>\n<p>&quot;You guys got-to see this.&quot; he repeated even faster.</p>\n<p>&quot;See what?&quot; repeated <a class=\"lore-link\" data-ref=\"II\">[II]</a> too</p>\n<p>&quot;We&#39;re supposed to be starting Distributed Systems 5 minutes ago.&quot; said <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> dismissively.</p>\n<p>&quot;No seriously, here.&quot; as <a class=\"lore-link\" data-ref=\"IIC\">[IIC]</a> quickly opened his backpack. And took out his laptop.</p>\n<p>&quot;I got told by <a class=\"lore-link\" data-ref=\"IIE\">IIE</a> about this just now. Apparently there&#39;s this new game - well he told me it was kind of a game or something - called the <a class=\"lore-link\" data-ref=\"ether\">Ether</a>.&quot;</p>\n<p>&quot;A game? The Ether as in The Nether? Minecraft?&quot; said <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> jokingly.</p>\n<p>In a sarcastic tone the friend replied with &quot;Yeah, yeah, of course, exactly, The Nether...&quot;</p>\n<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> intruigingly said: &quot;As in the luminif- something aether? The physics thing? But then a ... game?&quot;</p>\n<p>Before the friend could respond <a class=\"lore-link\" data-ref=\"IIB\">[IIB]</a> shot a random: &quot;Well <a class=\"lore-link\" data-ref=\"IIE\">IIE</a>&#39;s family is from The Netherlands right? Or should I say The Etherlands? That must be where they got the name from.&quot;</p>\n<p><a class=\"lore-link\" data-ref=\"II\">[II]</a> now looked at him once more glaringly, which caused a second shrug.</p>",
+          "refs": [
+            "IIB",
+            "II",
+            "IIC",
+            "IIE",
+            "ether"
+          ],
+          "factIds": []
+        },
+        {
+          "html": "<p>&quot;Hell if I know where they got the name from, what does it matter? Let me just show you.&quot;</p>",
+          "refs": [],
+          "factIds": []
+        }
+      ],
+      "file": "content/lore/chapters/II.1.md"
+    },
+    "prologue": {
+      "id": "prologue",
+      "title": "Prologue",
+      "pov": "S",
+      "summary": "",
+      "characters": [
+        "S",
+        "B"
+      ],
+      "books": [
+        "main",
+        "S",
+        "B"
+      ],
+      "pages": [
+        {
+          "html": "<p class=\"lore-page__header\"><em>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</em><span class=\"lore-page__header-by\"><strong>Ether&#39;s Bicentennial address 2247</strong></span></p>\n<p>The sun burned brightly even though it was an early spring day. In particular it seemed the rays of light had chosen a particular person that day, casually sitting on a bench in a small park. Perhaps it was the fact that he stood out particularly against the background. The brightest of green colors around him, against his casual black outfit which blended well with his skin. He remembered not exactly how he got there... by the time he became aware of himself, it seemed an age of the universe had gone by.</p>\n<p>Something gravitated him towards where he was now, though that too he couldn&#39;t recall. The only thing he could remember was the constant state of day, and the stories of others playing out in front of him.</p>\n<p>He could imagine the construction of the park, whilst he sat there in its center. - He had seen it being built after all - People coming and going all throughout that long day.</p>\n<p>Most were children, whose entire histories were being shaped within the park. Friendships born and die. The occasional fight had caused as much. Some groups larger than others. Even a pair, seemingly sisters, one younger than the other, were playing in one corner of the park.</p>\n<p>Nothing striked him particularly about any of the groups, of course the children didn&#39;t know who he was anyway. The occasional student wondered in the park, a few of them close to that sisterly pair. But they didn&#39;t seem to notice him either.</p>",
+          "refs": [],
+          "factIds": []
+        },
+        {
+          "html": "<p>Until at one point, he knew not what caused it, the elder of the sisters seemed to take the hand of one of those students. Together they explored the park. And naturally, they ended up where he was sitting.</p>\n<p>The child tugged at his knee.</p>\n<p>&quot;Mister, mister&quot;</p>\n<p>The student quickly took her hand away and said &quot;I&#39;m sorry professor. She&#39;s a little eager this one.&quot;</p>\n<p>He smiled. And slowly turned towards the girl. &quot;What is it, little one?&quot;</p>\n<p>It seemed like her original courage dissappeared as quickly as it had come to her as she quickly grabbed the leg of the student in shame.</p>\n<p>A quick laugh also came across the student&#39;s face. &quot;She wants to know who you are professor.&quot;</p>\n<p>...</p>\n<p>&quot;Professor, professor?&quot; the students voice echoed into nothing.</p>\n<p>...</p>\n<p>The next instant he found himself, still on a bench, but in a completely different environment. Students scurrying all around him, though unlike the one from earlier, these ones barely recognized his existance.</p>\n<p>Once the hall cleared, still feeling dissociated. Another - this time demanding voice - called out to him.</p>\n<p>&quot;Professor&quot;... &quot;Professor!&quot;</p>",
+          "refs": [],
+          "factIds": []
+        },
+        {
+          "html": "<p>He came to his senses and looked up at the strong gravity of the voice. Curious to see what could have possibly produced it.</p>\n<p>&quot;Ah, <a class=\"lore-link\" data-ref=\"S\">[S]</a>! You&#39;re finally here with me.&quot;</p>\n<p>Evidently it matched the only person standing nearby, ponytailed with a distinct set of glasses, she looked almost the exact opposite of <a class=\"lore-link\" data-ref=\"S\">[S]</a>.</p>\n<p>&quot;I&#39;ve been expecting you!&quot; she said while pointing her finger at him while a big smile struck her face.</p>\n<p>&quot;We&#39;ve got a lot to learn from you,&quot; as she forcefully took his hand and lifted him up with a small grunt. &quot;and not a lot of time to do it.&quot;</p>\n<p>&quot;Now, 21 standard years ago.&quot; she stopped for a brief moment. And interrupted herself with: &quot;Do you call them standard years yet?&quot; - &quot;No, no, perhaps not. Years then. 21 years.&quot; </p>\n<p>Looking at him briefly. Giving a hand gesture to start moving.</p>\n<p>&quot;Like I was saying. 21 years ago I first heard about you. And recently we&#39;ve been busy at getting the other professors at the university up to speed with your work. Of course it might take a long while before they&#39;re there. But in the meantime I&#39;d like to get you started with your program for the students who&#39;ve already come here - thanks to you. Now as I understand it, now that you&#39;ve got something working, you&#39;re planning to massively upscale the number of students that follow your program?&quot;</p>\n<p>He nodded. Though still in his dazy spell, he followed her as they walked the hallways of the university.</p>\n<p>&quot;Good. I&#39;ll give you access to the resources I have at my disposal which will hopefully grant you proper time to make that work.&quot;</p>",
+          "refs": [
+            "S"
+          ],
+          "factIds": []
+        },
+        {
+          "html": "<p>She continued. &quot;Now personally, I want to know how you got started in the first place. But we must first allow you to get this experiment, your &#39;system&#39; as you call it? Up and running properly. I&#39;ve got a meeting coming up with a couple of the other universities and they&#39;re all very excited about the prospects.&quot;</p>\n<p>They neared an auditorium, before going inside she stopped.</p>\n<p>&quot;Oh, and I almost forgot, I&#39;m called <a class=\"lore-link\" data-ref=\"B\">[B]</a>. So now you know how to refer to me. This thing has got me quite busy, I&#39;ll let you know how that meeting goes. For now, we&#39;ve got a room full of technically inclined students waiting to hear the latest from you. One word of caution though, education has stagnated across the universities and your new system might ruffle some feathers.&quot;</p>\n<p>And just like that she was gone.</p>\n<p><a class=\"lore-link\" data-ref=\"S\">[S]</a> stood there for a little while. Before heading towards the large door of the auditorium and placing his hand on the handle.</p>",
+          "refs": [
+            "B",
+            "S"
+          ],
+          "factIds": []
+        }
+      ],
+      "file": "content/lore/chapters/prologue.md"
+    }
+  },
+  "entities": {
+    "B": {
+      "id": "B",
+      "type": "character",
+      "name": "[B]",
+      "role": "Head of the University",
+      "age": null,
+      "image": "/lore-assets/characters/B.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "The head of the university.",
+      "descriptionHtml": "<p>The head of the university.</p>",
+      "refs": []
+    },
+    "I": {
+      "id": "I",
+      "type": "character",
+      "name": "[I]",
+      "role": "Highschool student",
+      "age": 16,
+      "image": "/lore-assets/characters/I.svg",
+      "aliases": [
+        "the younger"
+      ],
+      "relations": [
+        "sibling of [[II]]"
+      ],
+      "body": "Tech-savvy and confident — sometimes past the point his evidence supports. The\nyounger of two siblings; spends as much time with people online as in the\nhallways.",
+      "descriptionHtml": "<p>Tech-savvy and confident — sometimes past the point his evidence supports. The\nyounger of two siblings; spends as much time with people online as in the\nhallways.</p>",
+      "refs": []
+    },
+    "IA": {
+      "id": "IA",
+      "type": "character",
+      "name": "[IA]",
+      "role": "Friend from highschool",
+      "age": null,
+      "image": "/lore-assets/characters/IA.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[I]]"
+      ],
+      "body": "[I]'s friend from school.",
+      "descriptionHtml": "<p>[I]&#39;s friend from school.</p>",
+      "refs": []
+    },
+    "IB": {
+      "id": "IB",
+      "type": "character",
+      "name": "[IB]",
+      "role": "Online friend",
+      "age": null,
+      "image": "/lore-assets/characters/IB.svg",
+      "aliases": [],
+      "relations": [
+        "knows [[I]] online"
+      ],
+      "body": "Someone [I] only knows through a screen.",
+      "descriptionHtml": "<p>Someone [I] only knows through a screen.</p>",
+      "refs": []
+    },
+    "IC": {
+      "id": "IC",
+      "type": "character",
+      "name": "[IC]",
+      "role": "Parent",
+      "age": null,
+      "image": "/lore-assets/characters/IC.svg",
+      "aliases": [],
+      "relations": [
+        "parent of [[I]] and [[II]]"
+      ],
+      "body": "Parent to [[I]] and [[II]].",
+      "descriptionHtml": "<p>Parent to <a class=\"lore-link\" data-ref=\"I\">[I]</a> and <a class=\"lore-link\" data-ref=\"II\">[II]</a>.</p>",
+      "refs": [
+        "I",
+        "II"
+      ]
+    },
+    "II": {
+      "id": "II",
+      "type": "character",
+      "name": "[II]",
+      "role": "University student — Computer Science",
+      "age": 24,
+      "image": "/lore-assets/characters/II.svg",
+      "aliases": [
+        "the elder"
+      ],
+      "relations": [
+        "sibling of [[I]]",
+        "student of [[IID]]"
+      ],
+      "body": "Computer-science student, eight years older than her brother. Careful where he\nis impulsive; the first to notice the coursework has started describing\nsomething that behaves like it's real.",
+      "descriptionHtml": "<p>Computer-science student, eight years older than her brother. Careful where he\nis impulsive; the first to notice the coursework has started describing\nsomething that behaves like it&#39;s real.</p>",
+      "refs": []
+    },
+    "IIA": {
+      "id": "IIA",
+      "type": "character",
+      "name": "[IIA]",
+      "role": "Friend (from highschool)",
+      "age": null,
+      "image": "/lore-assets/characters/IIA.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[II]]"
+      ],
+      "body": "[II]'s friend since highschool.",
+      "descriptionHtml": "<p>[II]&#39;s friend since highschool.</p>",
+      "refs": []
+    },
+    "IIB": {
+      "id": "IIB",
+      "type": "character",
+      "name": "[IIB]",
+      "role": "Friend (from university)",
+      "age": null,
+      "image": "/lore-assets/characters/IIB.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[II]]"
+      ],
+      "body": "[II]'s friend from university.",
+      "descriptionHtml": "<p>[II]&#39;s friend from university.</p>",
+      "refs": []
+    },
+    "IIC": {
+      "id": "IIC",
+      "type": "character",
+      "name": "[IIC]",
+      "role": "Friend (from university)",
+      "age": null,
+      "image": "/lore-assets/characters/IIC.svg",
+      "aliases": [],
+      "relations": [
+        "friend of [[II]]"
+      ],
+      "body": "[II]'s friend from university.",
+      "descriptionHtml": "<p>[II]&#39;s friend from university.</p>",
+      "refs": []
+    },
+    "IID": {
+      "id": "IID",
+      "type": "character",
+      "name": "[IID]",
+      "role": "Professor of Computer Science",
+      "age": null,
+      "image": "/lore-assets/characters/IID.svg",
+      "aliases": [],
+      "relations": [
+        "teaches [[II]]"
+      ],
+      "body": "[II]'s computer-science professor.",
+      "descriptionHtml": "<p>[II]&#39;s computer-science professor.</p>",
+      "refs": []
+    },
+    "IIE": {
+      "id": "IIE",
+      "type": "character",
+      "name": "IIE",
+      "role": "",
+      "age": null,
+      "image": "/lore-assets/characters/IIE.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "Description.",
+      "descriptionHtml": "<p>Description.</p>",
+      "refs": []
+    },
+    "III": {
+      "id": "III",
+      "type": "character",
+      "name": "[III]",
+      "role": "A researcher at Ether.",
+      "age": null,
+      "image": "/lore-assets/characters/III.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "A researcher at Ether.",
+      "descriptionHtml": "<p>A researcher at Ether.</p>",
+      "refs": []
+    },
+    "S": {
+      "id": "S",
+      "type": "character",
+      "name": "[S]",
+      "role": "Professor",
+      "age": null,
+      "image": "/lore-assets/characters/S.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "A professor. Uncanny in a way nobody can quite name — and somehow everyone you\nmeet turns out to have been his student.",
+      "descriptionHtml": "<p>A professor. Uncanny in a way nobody can quite name — and somehow everyone you\nmeet turns out to have been his student.</p>",
+      "refs": []
+    },
+    "university": {
+      "id": "university",
+      "type": "location",
+      "name": "The University",
+      "role": "",
+      "age": null,
+      "image": "/lore-assets/covers/university.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "Where [[II]] studies, [[S]] teaches, and [[B]] presides.",
+      "descriptionHtml": "<p>Where <a class=\"lore-link\" data-ref=\"II\">[II]</a> studies, <a class=\"lore-link\" data-ref=\"S\">[S]</a> teaches, and <a class=\"lore-link\" data-ref=\"B\">[B]</a> presides.</p>",
+      "refs": [
+        "II",
+        "S",
+        "B"
+      ]
+    },
+    "ether": {
+      "id": "ether",
+      "type": "organization",
+      "name": "Ether",
+      "role": "",
+      "age": null,
+      "image": "/lore-assets/covers/ether.svg",
+      "aliases": [],
+      "relations": [],
+      "body": "The research outfit [[III]] works for.",
+      "descriptionHtml": "<p>The research outfit <a class=\"lore-link\" data-ref=\"III\">[III]</a> works for.</p>",
+      "refs": [
+        "III"
+      ]
+    }
+  },
+  "facts": [],
+  "landing": {
+    "title": "Ether’s Universe",
+    "subtitle": "*A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you're in a more stable state, can you more closely represent what reality is?*",
+    "titleHtml": "Ether’s Universe",
+    "subtitleHtml": "<em>A mind incapable of being reprogrammed is a vulnerable one. But you are never more vulnerable when you are being reprogrammed! Whether this is self-inflicted or is done so by your environment is of little consequence. After you&#39;re in a more stable state, can you more closely represent what reality is?</em>",
+    "contentHtml": "<p>[@eu-west-8] Broadcasting...\n07:32:03.013   INSTANCE   @ether/@eu-west-8   &gt;   @public   :   EP,   length 2cm</p>\n<p>07:32:03.013   INSTANCE   @ether/@eu-west-8   &gt;   @public   :   EP,   length 2cm</p>\n<p>07:32:03.013   INSTANCE   @ether/@eu-west-8   &gt;   @public   :   EP,   length 2cm</p>\n<p>07:32:03.014   INSTANCE   @ether/@eu-west-8   &gt;   @public   :   EP,   length 2cm</p>\n<p>e2e2e2f327f69667163502e2e2e202f3c6c61666e677f64402e2e2e202f3555555f4f49502562716024716867502e2e2e202e2e2e202e2e2e20237963797c616e61602e2e2e20237963797c616e61602e2e2e20237963797c616e61402e2e2e202d58636e61627260276e696a796c616964796e6965625b502e2e2e202e2e2e202e2e2e20212544514c4f435940244e4140245255465542502e2e2e202e2e2e202e2e2e202f32756473716d402e2e2e237e6f676162744021237569702e2e2e20237e6f67616274402e29727f647962727564702e677f6e6b6e65702e2e2e20256864702e69602e2e2e20256271602567502e2e2e202e246562796571756270247563756270227d2d2f602e2e2e20237963797c616e61402e2e2e202f3b627f677d24796d246964402e2e2e202e277f6e602d202f3b61656073702d202e61636029402e2e2e202e2e2e202f3379686470237724716867502e2e2e202e2e2e202e2e2e2cnntcmputetimeevrythngslwnw...</p>\n<p>07:40:13.529   INSTANCE   @ether/@eu-west-8   &gt;   @me   :   EP,   length 2cm</p>\n<p>07:40:13.530   INSTANCE   @ether/@eu-west-8   &gt;   @me   :   EP,   length 2cm</p>\n<p>07:40:13.530   INSTANCE   @ether/@eu-west-8   &gt;   @me   :   EP,   length 2cm</p>\n<p>[Ether 1.E2047.0A.1] Initializing...</p>"
+  }
+}

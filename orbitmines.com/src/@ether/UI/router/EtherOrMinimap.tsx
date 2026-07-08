@@ -2,9 +2,11 @@ import React from 'react';
 import {useLocation} from 'react-router-dom';
 import EtherRoutes from './EtherRoutes';
 import Minimap from '../../../routes/Minimap';
+import Lore from '../../../lore/Lore';
 
 // Catch-all that decides whether a path belongs to the ether surface
-// (`/@user/...` or `/$...`) or falls back to the orbitmines.com Minimap.
+// (`/@user/...` or `/$...`), the lore reader (`/lore/...`), or falls back to
+// the orbitmines.com Minimap.
 //
 // Without this split, react-router would route every unmatched path to
 // Minimap, swallowing the ether URL space. Adding ether's URL shapes as
@@ -14,6 +16,9 @@ const EtherOrMinimap: React.FC = () => {
   const {pathname} = useLocation();
   if (pathname.startsWith('/@') || pathname.startsWith('/$')) {
     return <EtherRoutes />;
+  }
+  if (pathname === '/lore' || pathname.startsWith('/lore/')) {
+    return <Lore />;
   }
   return <Minimap />;
 };
