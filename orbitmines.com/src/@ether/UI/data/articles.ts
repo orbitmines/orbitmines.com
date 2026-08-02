@@ -52,6 +52,12 @@ const ARTICLES: Article[] = [
     modified: '2025',
   },
   {
+    slug: 'ray-calculi-and-physics',
+    title: '2026 — Notes on Ray Calculi & Physics',
+    fileName: '2026.ray-calculi-and-physics',
+    modified: '2026',
+  },
+  {
     slug: '2025-09-ngi-grant-proposal',
     title: '2025.09 — NGI Grant Proposal (3)',
     fileName: '2025.09.ngi-grant-proposal',
