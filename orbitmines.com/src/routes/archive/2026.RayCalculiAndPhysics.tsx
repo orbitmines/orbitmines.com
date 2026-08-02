@@ -17,10 +17,10 @@ import Post, {
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@blueprintjs/core";
 
-enum Op {
-  Repell,
-  Attract,
-  Neutral
+// A boundary now carries a polarity instead of an annihilation/creation op.
+enum Polarity {
+  Positive,
+  Negative
 }
 
 class Universe {
@@ -33,11 +33,8 @@ class Universe {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  static randomOp() {
-    const r = Math.random();
-    if (r < 0.4) return Op.Repell;
-    if (r < 0.7) return Op.Attract;
-    return Op.Neutral;
+  static randomPolarity() {
+    return Math.random() < 0.5 ? Polarity.Positive : Polarity.Negative;
   }
 }
 
@@ -56,14 +53,13 @@ class Graph {
 
   gridPos = new Map<node, number[]>();
 
-  // Lattice dimensionality and the current outermost Chebyshev ring — the
-  // repell dynamic walks this outward one shell per tick.
+  // Lattice dimensionality and the seed's initial radius (used only by the
+  // cube→sphere layout morph now).
   dims = 3;
   ringRadius = 0;
 
-  // Transient per-tick state used by the repell expansion (Boundary.repell).
+  // Monotonic tick counter.
   _tickId = 0;
-  _tickIndex?: Map<string, node>;
 
   get edges(): [node, node][] {
     const seen = new Set<string>();
@@ -106,38 +102,166 @@ class Graph {
         boundary.target = target;
   }
 
+  // A ray "turns around" to one of its OTHER boundaries (superposed — one
+  // chosen at random for now). Returns the current one if there's nothing
+  // else to turn to.
+  private otherBoundary(ray: Ray, exclude: Boundary): Boundary {
+    const others = ray.boundaries.filter(b => b !== exclude);
+    if (!others.length) return exclude;
+    return others[Math.floor(Math.random() * others.length)];
+  }
+
+  // Annihilate a single connection (the mutual boundaries a↔b) and MERGE the
+  // two nodes into one, keeping every other connection (spatial direction) of
+  // both. Only this one link is destroyed. The `removed` set records nodes
+  // that were merged away so the tick loop skips them.
+  private mergeConnection(rA: Ray, a: Boundary, rB: Ray, b: Boundary, removed: Set<node>) {
+    const A = rA.node, B = rB.node;
+
+    // Destroy just this connection.
+    rA.boundaries = rA.boundaries.filter(x => x !== a);
+    rB.boundaries = rB.boundaries.filter(x => x !== b);
+    if (rA.moving === a) rA.moving = rA.boundaries.length ? rA.boundaries[Math.floor(Math.random() * rA.boundaries.length)] : undefined;
+    if (rB.moving === b) rB.moving = rB.boundaries.length ? rB.boundaries[Math.floor(Math.random() * rB.boundaries.length)] : undefined;
+
+    if (A === B) return; // already the same node — the connection was internal
+
+    // Merge B's rays into A (every remaining boundary comes along; their
+    // targets still point at the same Boundary objects, now reachable via A).
+    for (const ray of B) {
+      ray.node = A;
+      A.push(ray);
+    }
+
+    this.gridPos.delete(B);
+    this.nodes = this.nodes.filter(n => n !== B);
+    removed.add(B);
+  }
+
   tick() {
-    // One tick fires every boundary once. Repeller boundaries push their
-    // node outward (Boundary.repell), so the frontier grows the next shell.
-    // The boundary list is snapshotted first, so cells created this tick
-    // aren't fired until the next one — exactly one shell per tick.
     this._tickId++;
 
-    const byCoord = new Map<string, node>();
-    for (const nd of this.nodes) {
-      const g = this.gridPos.get(nd);
-      if (g) byCoord.set(g.join(","), nd);
-    }
-    this._tickIndex = byCoord;
+    // Every node is evaluated, but each acts on only its single `moving`
+    // direction. Snapshot the rays first so structural changes (merges,
+    // new points) don't disturb iteration.
+    const rays: Ray[] = [];
+    for (const node of this.nodes)
+      for (const ray of node)
+        rays.push(ray);
 
-    const buffer: Boundary[] = [];
-    for (const node of this.nodes) {
-      for (const ray of node) {
-        buffer.push(...ray.boundaries);
+    const removed = new Set<node>();
+
+    for (const r of rays) {
+      if (removed.has(r.node)) continue;
+
+      const a = r.moving;              // the single direction this ray executes
+      if (!a) continue;
+
+      const b = a.target;              // the boundary it is moving towards
+      if (!b) continue;
+
+      const r2 = b.at;                 // the ray on the far side
+      if (removed.has(r2.node)) continue;
+      if (r.node === r2.node) continue; // already merged into one node
+
+      // Is the far side moving back towards us along this same connection?
+      const mutual = r2.moving === b && b.target === a;
+
+      if (mutual) {
+        if (a.polarity !== b.polarity) {
+          // Opposite polarities head-on → annihilate this connection and
+          // merge the two nodes (keeping their other spatial directions).
+          this.mergeConnection(r, a, r2, b, removed);
+        } else {
+          // Same polarity head-on → both turn around to (superposed) their
+          // other boundaries.
+          r.moving = this.otherBoundary(r, a);
+          r2.moving = this.otherBoundary(r2, b);
+        }
+      } else {
+        // One-sided: r is moving into b's node, but b isn't pointing back.
+        // Take the spatial structure of the node we're moving towards and
+        // place it on ourselves.
+        const from = this.gridPos.get(r2.node);
+        if (from) {
+          // TODO: decide what to do with my OWN previous spatial structure —
+          // for now it is simply overwritten by the one we moved into.
+          this.gridPos.set(r.node, from.slice());
+        }
       }
     }
 
-    for (const boundary of buffer) {
-      boundary.tick();
+    // Space creation: a same-polarity connection whose two nodes are BOTH
+    // moving away from it (neither's single direction is this connection)
+    // sprouts a new spatial point in between.
+    const seen = new Set<Boundary>();
+    const toCreate: [Boundary, Boundary][] = [];
+    for (const node of this.nodes) {
+      if (removed.has(node)) continue;
+      for (const ray of node) {
+        for (const a of ray.boundaries) {
+          const b = a.target;
+          if (!b || seen.has(a) || seen.has(b)) continue;
+          seen.add(a); seen.add(b);
+          if (a.polarity !== b.polarity) continue;          // must be same polarity
+          const rA = a.at, rB = b.at;
+          if (!rA.moving || !rB.moving) continue;           // both must be moving
+          if (rA.moving === a || rB.moving === b) continue; // and moving AWAY, not into
+          toCreate.push([a, b]);
+        }
+      }
     }
+    for (const [a, b] of toCreate) this.createSpaceBetween(a, b);
 
-    this._tickIndex = undefined;
-    this.ringRadius += 1;
     this.invalidateLayout();
   }
 
-  static expandingGrid(dims: number, size = 3): Graph {
+  // Insert a fresh spatial point X between the nodes connected by a↔b, so
+  // A—X—B. X sits at their midpoint, with two boundaries (facing A and B) of
+  // random polarity, and a random movement direction.
+  private createSpaceBetween(a: Boundary, b: Boundary) {
+    const A = a.at.node, B = b.at.node;
+    const pA = this.gridPos.get(A), pB = this.gridPos.get(B);
+    if (!pA || !pB) return;
+    const mid = pA.map((v, i) => (v + pB[i]) / 2);
+
+    const x: node = [];
+    const rx = new Ray(x, this);
+    rx.boundaries = []; // drop the constructor's default
+
+    const xa = new Boundary(rx, this); // faces A
+    xa.polarity = Universe.randomPolarity();
+    xa.target = a;
+
+    const xb = new Boundary(rx, this); // faces B
+    xb.polarity = Universe.randomPolarity();
+    xb.target = b;
+
+    rx.boundaries.push(xa, xb);
+
+    // Splice X into the connection: A—X—B.
+    a.target = xa;
+    b.target = xb;
+
+    // Random initial movement direction.
+    rx.moving = Universe.random(rx.boundaries);
+
+    this.nodes.push(x);
+    this.gridPos.set(x, mid);
+  }
+
+  /**
+   * Seed an initial "expanding universe": a small connected patch of nodes,
+   * each a single ray with one boundary per orthogonal neighbour. Every
+   * boundary gets a random polarity, and every ray a random `moving`
+   * direction (one of its boundaries). From there the tick rules —
+   * annihilation (opposite polarities meeting head-on), turn-around (like
+   * polarities meeting head-on), and structure-absorption (one-sided
+   * approach) — drive the evolution.
+   */
+  static expandingGrid(dims: number, size = 10): Graph {
     const graph = new Graph();
+    graph.dims = dims;
     const center = Math.floor(size / 2);
 
     const coords: number[][] = [];
@@ -152,77 +276,64 @@ class Graph {
 
     const byCoord = new Map<string, node>();
     const coordOf = new Map<node, number[]>();
-
     const key = (c: number[]) => c.join(",");
 
-    // Create nodes.
+    // One node per cell — each is a single ray with no boundaries yet.
     for (const idx of coords) {
       const coord = idx.map(v => v - center);
-      const isCenter = coord.every(v => v === 0);
-
       const node: node = [];
-
-      if (isCenter) {
-        const ray = new Ray(node, graph);
-        ray.boundaries[0].repeller();
-      } else {
-        // Seed condition: one inward-pointing repeller per inward direction
-        // (one per non-zero coordinate axis), so a corner repels along ALL
-        // its axes — 3 in 3D, 2 in 2D, etc. — not just a fixed two. Ops
-        // only diverge from this later (as the graph grows), not on frame one.
-        const inwardDirs = coord.filter(v => v !== 0).length;
-        for (let i = 0; i < inwardDirs; i++) {
-          const ray = new Ray(node, graph);
-          ray.boundaries[0].repeller();
-        }
-      }
+      const ray = new Ray(node, graph);
+      ray.boundaries = []; // drop the constructor's default boundary
 
       graph.nodes.push(node);
-
-      // remember where this lattice cell belongs
       graph.gridPos.set(node, coord);
-
       byCoord.set(key(coord), node);
       coordOf.set(node, coord);
     }
 
-    // Semantic lattice links.
-    // Every node connects to its orthogonal neighbours.
-    // Boundary.target is the source of truth for Graph.edges.
+    // One boundary per orthogonal neighbour, each a random polarity. Remember
+    // which boundary of a node faces which neighbour, so the pair can be
+    // wired as mutual targets afterwards.
+    const facing = new Map<node, Map<node, Boundary>>();
     for (const node of graph.nodes) {
       const coord = coordOf.get(node)!;
+      const ray = node[0];
+      const m = new Map<node, Boundary>();
+      facing.set(node, m);
 
       for (let axis = 0; axis < dims; axis++) {
         for (const dir of [-1, 1]) {
-          const neighbourCoord = [...coord];
-          neighbourCoord[axis] += dir;
+          const nc = coord.slice();
+          nc[axis] += dir;
+          const neighbour = byCoord.get(key(nc));
+          if (!neighbour) continue;
 
-          const currentDistance =
-            coord.reduce((s, v) => s + Math.abs(v), 0);
-          const neighbourDistance =
-            neighbourCoord.reduce((s, v) => s + Math.abs(v), 0);
-
-          if (neighbourDistance >= currentDistance)
-            continue;
-
-          const neighbour = byCoord.get(key(neighbourCoord));
-
-          if (!neighbour)
-            continue;
-
-          // Need one boundary per connection.
-          const ray = node[0];
-          const boundary = new Boundary(ray, graph);
-
-          boundary.target = neighbour[0].boundaries[0];
-          boundary.repeller();
-
-          ray.boundaries.push(boundary);
+          const b = new Boundary(ray, graph);
+          b.polarity = Universe.randomPolarity();
+          ray.boundaries.push(b);
+          m.set(neighbour, b);
         }
       }
     }
 
-    graph.dims = dims;
+    // Wire mutual targets: this node's boundary facing a neighbour points at
+    // that neighbour's boundary facing back.
+    for (const node of graph.nodes) {
+      const m = facing.get(node)!;
+      for (const [neighbour, b] of m) {
+        const back = facing.get(neighbour)!.get(node);
+        if (back) b.target = back;
+      }
+    }
+
+    // Give every ray an initial movement direction — a random one of its
+    // boundaries.
+    for (const node of graph.nodes) {
+      const ray = node[0];
+      if (ray.boundaries.length)
+        ray.moving = ray.boundaries[Math.floor(Math.random() * ray.boundaries.length)];
+    }
+
     graph.ringRadius = center;
 
     return graph;
@@ -473,8 +584,13 @@ class Ray {
   id: number;
   boundaries: Boundary[] = [];
 
+  // The directional movement of this ray: the boundary (one of its own) it
+  // is currently moving towards. It heads towards the node on the far side
+  // of that boundary's connection (moving.target's node).
+  moving?: Boundary;
+
   constructor(
-    public readonly node: node,
+    public node: node, // reassignable: nodes merge on annihilation
     graph: Graph
   ) {
     this.id = NEXT_ID++;
@@ -485,147 +601,20 @@ class Ray {
       new Boundary(this, graph)
     );
   }
-
-
-  tick() {
-    for (const boundary of this.boundaries)
-      boundary.tick();
-  }
 }
 
 class Boundary {
-  op: Op = Op.Neutral
+  polarity: Polarity = Polarity.Positive;
 
   get source(): Boundary { return Universe.random(this.at.boundaries.filter(x => x !== this)); }
-  target?: Boundary
+
+  // The boundary on the neighbouring node this one connects to / points at.
+  target?: Boundary;
 
   constructor(public at: Ray, private readonly graph: Graph) { }
 
-  repeller() { this.op = Op.Repell; }
-  attractor() { this.op = Op.Attract; }
-
-  tick() {
-    switch (this.op) {
-      case Op.Repell:
-        this.repell();
-        break;
-
-      case Op.Attract:
-        this.attract();
-        break;
-    }
-  }
-
-  repell() {
-    const graph = this.graph;
-    const node = this.at.node;
-
-    // A node's repellers act TOGETHER — their products are what make the
-    // diagonals — so the whole node repels once per tick, however many
-    // repeller boundaries it has. (Firing per-boundary would only give the
-    // single-axis directions, i.e. a diamond, not the filled square.)
-    if ((node as any)._repelledTick === graph._tickId) return;
-    (node as any)._repelledTick = graph._tickId;
-
-    const g = graph.gridPos.get(node);
-    const byCoord = graph._tickIndex;
-    if (!g || !byCoord) return;
-
-    const key = (c: number[]) => c.join(",");
-
-    // One outward push direction per repeller (per non-zero axis).
-    const dirs: number[][] = [];
-    for (let axis = 0; axis < g.length; axis++) {
-      if (g[axis] !== 0) {
-        const d = g.map(() => 0);
-        d[axis] = Math.sign(g[axis]);
-        dirs.push(d);
-      }
-    }
-    const k = dirs.length;
-    if (k === 0) return; // the center pushes nowhere
-
-    // The node pushes itself outward to the PRODUCT of all its directions
-    // (the diagonal). The cell it vacates, and the intermediate cells
-    // between (the "left" and "up" of a corner's "left, up, and product"),
-    // become new NEUTRAL space — sitting inward of the node, in the
-    // direction its boundaries face, and keeping the moved node connected to
-    // the lattice. The node itself stays a repeller.
-    const full = g.slice();
-    for (const d of dirs) for (let i = 0; i < full.length; i++) full[i] += d[i];
-    if (byCoord.has(key(full))) return; // boxed in by a cell already there
-
-    const makeNeutral = (pos: number[]) => {
-      const kk = key(pos);
-      if (byCoord.has(kk)) return;
-      const space: node = [];
-      new Ray(space, graph); // neutral — plain space, it doesn't repel
-      graph.nodes.push(space);
-      graph.gridPos.set(space, pos.slice());
-      byCoord.set(kk, space);
-    };
-
-    // Intermediate cells: every PROPER non-empty combination of the outward
-    // directions (all but the full product) — neutral space that keeps the
-    // moved node orthogonally connected.
-    for (let mask = 1; mask < (1 << k) - 1; mask++) {
-      const np = g.slice();
-      for (let b = 0; b < k; b++) {
-        if (mask & (1 << b)) {
-          for (let i = 0; i < np.length; i++) np[i] += dirs[b][i];
-        }
-      }
-      makeNeutral(np);
-    }
-
-    // Move the node out to the product cell; its vacated cell becomes neutral.
-    byCoord.delete(key(g));
-    graph.gridPos.set(node, full);
-    byCoord.set(key(full), node);
-    makeNeutral(g.slice());
-  }
-
-
-  attract() {
-    if (!this.target) return;
-
-    const consumed = this.target.at.node;
-
-
-    //
-    // Remove all boundaries pointing at the consumed node.
-    //
-    for (const node of this.graph.nodes) {
-      for (const ray of node) {
-
-        ray.boundaries =
-          ray.boundaries.filter(
-            b => b.target?.at.node !== consumed
-          );
-
-      }
-    }
-
-
-    //
-    // Remove the consumed spatial node.
-    //
-    this.graph.nodes =
-      this.graph.nodes.filter(
-        n => n !== consumed
-      );
-
-
-    //
-    // This connection has been consumed.
-    //
-    this.target = undefined;
-  }
-
-  annihilate() {
-
-  }
-
+  positive() { this.polarity = Polarity.Positive; }
+  negative() { this.polarity = Polarity.Negative; }
 }
 
 
@@ -682,10 +671,9 @@ const CalculusVisualization = ({ repeated = false }: { repeated?: boolean }) => 
   const camRef = useRef({ scale: 44, rot: Math.PI / 4, tilt: 0.6155, anchor: null, dist: null, distMult: 1.5, scaleMult: 1 });
 
   const [running, setRunning] = useState(false);
-  // Start as a bare 3×3 seed; the repell dynamic (Graph.tick → each cell's
-  // repellers pushing outward, driven by the frame loop while running) is
-  // what grows it outward one shell at a time.
-  const [graph, setGraph] = useState(() => Graph.expandingGrid(2));
+  // Seed the initial polarity universe; Graph.tick (annihilation /
+  // turn-around / structure-absorption) evolves it while running.
+  const [graph, setGraph] = useState(() => Graph.expandingGrid(3));
 
   // TODO Right click/left click cursor=grab
   useEffect(() => {
@@ -971,28 +959,33 @@ const CalculusVisualization = ({ repeated = false }: { repeated?: boolean }) => 
       const cullMargin = cam.scale * 2;
       const onScreen = (p) => p.x > -cullMargin && p.x < w + cullMargin && p.y > -cullMargin && p.y < h + cullMargin;
 
-      // Lattice — full, connected edges (each drawn once, from a cell
-      // toward its +axis neighbour), so the mesh stays continuous with no
-      // gaps. The colored boundaries are drawn on top of these edges.
+      // Connections — one faint line per boundary link (deduped), following
+      // the actual graph structure, so merged and newly-created nodes read
+      // correctly wherever they sit.
       ctx.strokeStyle = "rgba(140,150,180,0.3)";
+      ctx.lineWidth = 2.2;
+      const idxOf = new Map<node, number>();
+      graph.nodes.forEach((nd, i) => idxOf.set(nd, i));
+      const drawnEdge = new Set<string>();
       for (const nd of graph.nodes) {
-        const g = graph.gridPos.get(nd);
-        if (!g) continue;
         const a = pts.get(nd);
-        if (!a || a.clipped || !onScreen(a)) continue;
-        const depth = Math.min(Math.max(a.depth, 0.4), 1.6);
-        ctx.lineWidth = 2.2 * depth;
-        for (let axis = 0; axis < g.length; axis++) {
-          const nc = g.slice();
-          nc[axis] += 1;
-          const nb = byCoord.get(keyOf(nc));
-          if (!nb) continue;
-          const b = pts.get(nb);
-          if (!b || b.clipped) continue;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+        if (!a || a.clipped) continue;
+        for (const ray of nd) {
+          for (const bd of ray.boundaries) {
+            const other = bd.target?.at.node;
+            if (!other || other === nd) continue;
+            const ia = idxOf.get(nd)!, ib = idxOf.get(other)!;
+            const ek = ia < ib ? ia + "-" + ib : ib + "-" + ia;
+            if (drawnEdge.has(ek)) continue;
+            drawnEdge.add(ek);
+            const b = pts.get(other);
+            if (!b || b.clipped) continue;
+            if (!onScreen(a) && !onScreen(b)) continue;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
         }
       }
 
@@ -1004,17 +997,12 @@ const CalculusVisualization = ({ repeated = false }: { repeated?: boolean }) => 
       // the nodes, so it navigates identically.
       const sources: { pos: Vec; sign: number; w: number }[] = [];
       for (const nd of graph.nodes) {
-        let a = false, r = false;
-        for (const ray of nd) {
-          const op = ray.boundaries[0].op;
-          if (op === Op.Attract) a = true;
-          if (op === Op.Repell) r = true;
-        }
-        if (a && r) continue; // both at once cancel to net-neutral matter
+        const mv = nd[0] && nd[0].moving;
+        if (!mv) continue;
         const wpos = layout.get(nd);
         if (!wpos) continue;
-        if (a) sources.push({ pos: wpos, sign: 1, w: 1 });
-        else if (r) sources.push({ pos: wpos, sign: -1, w: 1 });
+        // Positive polarity glows one way, Negative the other.
+        sources.push({ pos: wpos, sign: mv.polarity === Polarity.Positive ? 1 : -1, w: 1 });
       }
       const MAX_SOURCES = 220;
       if (sources.length > MAX_SOURCES) {
@@ -1107,81 +1095,52 @@ const CalculusVisualization = ({ repeated = false }: { repeated?: boolean }) => 
           continue;
         }
 
-        // Existing orthogonal lattice neighbours, split into inward
-        // (closer to center) and outward. Boundaries are drawn along one of
-        // these REAL edges, so a highlight always overlaps a lattice line
-        // instead of pointing off into empty space.
-        const g = graph.gridPos.get(n);
-        const inwardNs: node[] = [];
-        const outwardNs: node[] = [];
-        if (g) {
-          const cur = g.reduce((s, v) => s + Math.abs(v), 0);
-          for (let axis = 0; axis < g.length; axis++) {
-            for (const dir of [-1, 1]) {
-              const nc = g.slice();
-              nc[axis] += dir;
-              const nb = byCoord.get(keyOf(nc));
-              if (!nb) continue;
-              const md = nc.reduce((s, v) => s + Math.abs(v), 0);
-              if (md < cur) inwardNs.push(nb); else outwardNs.push(nb);
-            }
-          }
-        }
-
-        // One boundary per inward direction: ray i is drawn along inward
-        // edge i (the counts match — a cell has one ray per inward axis), so
-        // a corner shows a boundary on every axis. Each starts exactly at
-        // the node and lies on its lattice edge (no offset), so where a cell
-        // has several they emanate cleanly from the same corner. The op only
-        // sets the colour.
-        const BOUNDARY_FRAC = 0.25;
-        // Round caps so the thick segments fill the shared corner at the
-        // node instead of leaving a square notch between them.
+        // Movement: draw each ray's selected `moving` direction as a thick
+        // segment towards the node it is heading into, coloured by that
+        // boundary's polarity (Positive amber, Negative cyan).
         ctx.lineCap = "round";
-        n.forEach((ray, i) => {
-          const op = ray.boundaries[0].op;
-          if (op === Op.Neutral) return;
-
-          const pool = inwardNs.length ? inwardNs : outwardNs;
-          if (!pool.length) return;
-          const target = pool[i % pool.length];
-          if (!target) return;
-
-          const tp = pts.get(target);
-          if (!tp || tp.clipped) return;
+        for (const ray of n) {
+          const mv = ray.moving;
+          if (!mv || !mv.target) continue;
+          const tp = pts.get(mv.target.at.node);
+          if (!tp || tp.clipped) continue;
 
           const dx = tp.x - p.x, dy = tp.y - p.y;
           const len = Math.hypot(dx, dy);
-          if (len < 1) return;
+          if (len < 1) continue;
           const ux = dx / len, uy = dy / len;
-          const L = len * BOUNDARY_FRAC;
+          const L = len * 0.4;
 
-          ctx.strokeStyle = op === Op.Repell ? "#FF7A45" : "#3DDCFF";
+          ctx.strokeStyle = mv.polarity === Polarity.Positive ? "#FF7A45" : "#3DDCFF";
           ctx.lineWidth = 4 * depth;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p.x + ux * L, p.y + uy * L);
           ctx.stroke();
-        });
+        }
         ctx.lineCap = "butt";
+
+        // Node dot.
+        ctx.fillStyle = "#EDEFF5";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(1.5, 2.4 * depth), 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    // Grow one full shell every GROW_INTERVAL seconds while running, out to
-    // MAX_RING — this is the dynamic that expands the 3×3×3 seed into a
-    // sphere, one deterministic ring at a time.
-    const GROW_INTERVAL = 0.45;
-    const MAX_RING = 9;
-    let growAccum = 0;
+    // Step the polarity dynamics once every TICK_INTERVAL seconds while
+    // running — annihilation / turn-around / structure-absorption.
+    const TICK_INTERVAL = 0.45;
+    let tickAccum = 0;
 
     function frame(now) {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
-      if (running && graph.ringRadius < MAX_RING) {
-        growAccum += dt;
-        while (growAccum >= GROW_INTERVAL && graph.ringRadius < MAX_RING) {
-          growAccum -= GROW_INTERVAL;
+      if (running && graph.nodes.length > 0) {
+        tickAccum += dt;
+        while (tickAccum >= TICK_INTERVAL) {
+          tickAccum -= TICK_INTERVAL;
           graph.tick();
         }
       }
