@@ -34,6 +34,14 @@ type PairSide = {
   moving: 'towards' | 'away';
 };
 
+// One charge in a line of them: its polarity, and which way along the line it
+// goes. With more than two there is no "towards each other" to name a
+// direction by, so the line itself is what they are named against.
+type LineSide = {
+  polarity: Polarity;
+  moving: 'left' | 'right';
+};
+
 class Universe {
   static _2D = () => Universe.nD_Expanding(2);
   static _3D = () => Universe.nD_Expanding(3);
@@ -931,36 +939,65 @@ class Graph {
    * structure and moving into it.
    */
   static pair(a: PairSide, b: PairSide): Graph {
+    // "Towards" and "away" are the two ends of a line seen from each other:
+    // the left one heads right to close the gap, the right one heads left.
+    return Graph.line([
+      { polarity: a.polarity, moving: a.moving === 'towards' ? 'right' : 'left' },
+      { polarity: b.polarity, moving: b.moving === 'towards' ? 'left' : 'right' },
+    ]);
+  }
+
+  /**
+   * The same universe with room in it: n charges in a row, each with a
+   * polarity and a direction along the line, every point connected to the
+   * next.
+   *
+   * A pair can only do the one thing its two ends do to each other. A line
+   * of three or four has an inside — charges with something on both sides of
+   * them — so what one interaction leaves behind is what the next one has to
+   * work with. Annihilations close the line up behind them, movement trades
+   * places with the space between, and the ends grow more line to move into.
+   *
+   * Both ends carry an OUTWARD boundary (no target, pointing off the end).
+   * Without it an end moving outwards would have nowhere to be moving — it is
+   * at an actual boundary of the structure, and moves by making more of it.
+   */
+  static line(sides: LineSide[]): Graph {
     const graph = new Graph();
     graph.dims = 3;
     graph.ringRadius = 1;
 
-    const side = (s: PairSide, coord: number[], outward: number[]): Boundary => {
+    const n = sides.length;
+    const lefts: Boundary[] = [];
+    const rights: Boundary[] = [];
+
+    sides.forEach((side, i) => {
       const nd: node = [];
       const ray = new Ray(nd, graph);
       ray.boundaries = []; // drop the constructor's default
 
-      const facing = new Boundary(ray, graph);
-      facing.polarity = s.polarity;
+      const left = new Boundary(ray, graph);
+      left.polarity = side.polarity;
+      if (i === 0) left.outward = [-1, 0, 0];
 
-      const away = new Boundary(ray, graph);
-      away.polarity = s.polarity;
-      away.outward = outward;
+      const right = new Boundary(ray, graph);
+      right.polarity = side.polarity;
+      if (i === n - 1) right.outward = [1, 0, 0];
 
-      ray.boundaries.push(facing, away);
-      ray.moving = s.moving === 'towards' ? facing : away;
+      ray.boundaries.push(left, right);
+      ray.moving = side.moving === 'left' ? left : right;
+
+      lefts.push(left);
+      rights.push(right);
 
       graph.nodes.push(nd);
-      graph.gridPos.set(nd, coord);
+      graph.gridPos.set(nd, [i - (n - 1) / 2, 0, 0]);
+    });
 
-      return facing;
-    };
-
-    const fa = side(a, [-1, 0, 0], [-1, 0, 0]);
-    const fb = side(b, [1, 0, 0], [1, 0, 0]);
-
-    fa.target = fb;
-    fb.target = fa;
+    for (let i = 0; i + 1 < n; i++) {
+      rights[i].target = lefts[i + 1];
+      lefts[i + 1].target = rights[i];
+    }
 
     return graph;
   }
@@ -2166,6 +2203,78 @@ const ANTI_GROUPS: Pair[][] = (() => {
   return groups;
 })();
 
+// The same four states a side of a pair can be in, named against the line
+// rather than against a partner.
+const LINE_STATES: LineSide[] = [
+  { polarity: Polarity.Positive, moving: 'right' },
+  { polarity: Polarity.Positive, moving: 'left' },
+  { polarity: Polarity.Negative, moving: 'right' },
+  { polarity: Polarity.Negative, moving: 'left' },
+];
+
+// Every arrangement of n charges in a row: each of them either polarity, each
+// of them going either way. 4ⁿ of them before the symmetries are taken out.
+const linesOf = (n: number): LineSide[][] =>
+  n === 0
+    ? [[]]
+    : linesOf(n - 1).flatMap(rest => LINE_STATES.map(side => [side, ...rest]));
+
+// Read back to front with every direction reversed, a line is the same
+// experiment watched from the other end.
+const mirrored = (line: LineSide[]): LineSide[] =>
+  [...line].reverse().map(s => ({
+    polarity: s.polarity,
+    moving: s.moving === 'left' ? 'right' : 'left',
+  }));
+
+// Every polarity flipped, every direction kept: the anti-line.
+const antiLine = (line: LineSide[]): LineSide[] =>
+  line.map(s => ({
+    polarity: s.polarity === Polarity.Positive ? Polarity.Negative : Polarity.Positive,
+    moving: s.moving,
+  }));
+
+// Identity up to mirroring: whichever way round the line reads first.
+const lineKey = (line: LineSide[]): string => {
+  const read = (l: LineSide[]) => l.map(s => `${s.polarity}${s.moving}`).join(",");
+  const [x, y] = [read(line), read(mirrored(line))];
+
+  return x < y ? x : y;
+};
+
+/**
+ * The distinct lines of n charges, each grouped with its anti-line so the two
+ * sit one above the other — the same experiment run on matter and on
+ * antimatter. A line that is its own anti up to mirroring is a group of one.
+ */
+const lineGroups = (n: number): LineSide[][][] => {
+  const byKey = new Map<string, LineSide[]>();
+  for (const line of linesOf(n)) {
+    const key = lineKey(line);
+    if (!byKey.has(key)) byKey.set(key, line);
+  }
+
+  const taken = new Set<string>();
+  const groups: LineSide[][][] = [];
+
+  for (const [key, line] of byKey) {
+    if (taken.has(key)) continue;
+    taken.add(key);
+
+    const group = [line];
+
+    const opposite = lineKey(antiLine(line));
+    if (!taken.has(opposite) && byKey.has(opposite)) {
+      taken.add(opposite);
+      group.push(byKey.get(opposite)!);
+    }
+
+    groups.push(group);
+  }
+
+  return groups;
+};
+
 const RayCalculiAndPhysics = () => {
   const navigate = useNavigate();
 
@@ -2217,6 +2326,29 @@ const RayCalculiAndPhysics = () => {
               />
             ))}
           </div>
+        ))}
+
+        {/* The same thing with an inside to it: every arrangement of three,
+            then of four, charges in a line. Each runs for as many steps as
+            there are charges, since that is roughly how long it takes for
+            what happens at one end to be felt at the other. */}
+        {[3, 4].map(n => (
+          <Fragment key={`line-${n}`}>
+            {lineGroups(n).map((group, i) => (
+              <div key={i} style={{ marginBottom: '1.5rem' }}>
+                {group.map((line, j) => (
+                  <CalculusVisualization
+                    key={j}
+                    graph={() => Graph.line(line)}
+                    repeated={n}
+                    filmstrip
+                    height={60}
+                    density={false}
+                  />
+                ))}
+              </div>
+            ))}
+          </Fragment>
         ))}
 
       </Section>
