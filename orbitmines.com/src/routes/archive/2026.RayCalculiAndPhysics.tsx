@@ -112,6 +112,13 @@ class Graph {
   // Monotonic tick counter.
   _tickId = 0;
 
+  // Something the seed has arranged for the world to go on doing, run at the
+  // start of every tick before the rules get their say. Nothing in the rules
+  // needs one — it is how a source that is never itself an event gets to be
+  // one, which is the only way to ask what a thing that keeps emitting does
+  // to the space around it.
+  onTick?: (graph: Graph) => void;
+
   get edges(): [node, node][] {
     const seen = new Set<string>();
     const edges: [node, node][] = [];
@@ -666,6 +673,8 @@ class Graph {
   tick() {
     this._tickId++;
 
+    this.onTick?.(this);
+
     // Snapshot the rays first, so structural changes don't disturb iteration.
     const rays: Ray[] = [];
     for (const node of this.nodes)
@@ -924,6 +933,139 @@ class Graph {
   }
 
   /**
+   * The same two blocks, but not touching: a wide field of neutral space
+   * between them, and neither of them moving. Nothing here is told to fall
+   * towards anything.
+   *
+   * What they do instead is emit. Every tick each block writes a charge onto
+   * the space at its face and points it across the gap — alternating, so a
+   * charged pulse goes out every other tick and a neutral one in between. A
+   * pulse is not a new thing added to the world: it is a point of the space
+   * that was already there, told what it is and which way it is going. It
+   * crosses by trading places with the space in front of it, so the field
+   * stays the same size while something travels through it.
+   *
+   * The two streams meet in the middle, and what they do there is the whole
+   * experiment:
+   *
+   *  - opposite charges annihilate, and annihilation is the one rule that
+   *    takes space out of the world. The two points that cancelled are gone
+   *    and what was behind each closes directly onto what was behind the
+   *    other, so every meeting leaves the two blocks fewer points apart than
+   *    they were. Nothing moved them. The distance between them is just
+   *    smaller — which is what it would mean, here, for them to be falling
+   *    towards each other. Once the first pair meets there is a meeting every
+   *    tick, each eating the two columns that met, and it runs until the field
+   *    is gone and the two blocks are directly connected.
+   *  - like charges can't cancel, so they turn around and go home instead.
+   *    The field is exactly as wide as it was — and what comes back is a
+   *    charge arriving at a block that isn't moving, which the block has no
+   *    way to refuse, so the blocks end up being driven apart by their own
+   *    emissions rather than drawn together.
+   *
+   * So `left` and `right` are what each block emits, and that alone is the
+   * difference between attraction and repulsion.
+   *
+   * What is drawn is still where each point was put down, and annihilation
+   * doesn't move what it leaves behind: the field empties from the middle
+   * outwards and the blocks stay where they were drawn, joined across the
+   * emptied part by the connection that closed up over it. The gap in the
+   * picture is the space that no longer exists.
+   *
+   * `every` is how many ticks apart the emissions are, and `spin` flips what
+   * each block is emitting between one emission and the next — a magnet being
+   * turned over and over rather than held still. `left` and `right` are then
+   * only what each side starts as, and what matters is whether the two are
+   * turning together or against each other.
+   */
+  static emitters(
+    left: Polarity,
+    right: Polarity,
+    {
+      size = 2,
+      gap = 16,
+      height = 3,
+      every = 2,
+      spin = false,
+    }: {
+      size?: number, gap?: number, height?: number,
+      every?: number, spin?: boolean,
+    } = {},
+  ): Graph {
+    const graph = new Graph();
+    graph.dims = 2;
+    graph.ringRadius = 1; // a flat lattice: nothing here wants rounding off
+
+    const half = Math.floor(height / 2);
+
+    // The field is an even number of columns wide, so that the two streams
+    // end up adjacent and meet each other rather than both arriving at the
+    // same empty cell — which is two things trying to be in one place, and
+    // not a meeting at all.
+    const width = gap + (gap % 2);
+    const l0 = -width / 2, r0 = width / 2 - 1; // the two columns at the faces
+
+    const coords: number[][] = [];
+    for (let x = l0 - size; x <= r0 + size; x++)
+      for (let y = -half; y <= half; y++)
+        coords.push([x, y]);
+
+    // Only the blocks are charged. The field between them is what space is
+    // when nothing has happened to it yet.
+    const { byCoord, key } = Graph.wire(graph, coords, coord =>
+      coord[0] < l0 ? left
+        : coord[0] > r0 ? right
+          : Polarity.Neutral);
+
+    // The two faces: the innermost column of each block, and the way out of
+    // it. Blocks never move, so these stay the points they are.
+    const faces: { at: node, dir: number[], polarity: Polarity }[] = [];
+
+    for (let y = -half; y <= half; y++) {
+      const l = byCoord.get(key([l0 - 1, y]));
+      const r = byCoord.get(key([r0 + 1, y]));
+
+      if (l) faces.push({ at: l, dir: [1, 0], polarity: left });
+      if (r) faces.push({ at: r, dir: [-1, 0], polarity: right });
+    }
+
+    graph.onTick = g => {
+      // Ticks are counted from the first one, so `every = 2` puts a step of
+      // untouched space between one pulse and the next — the tick in between
+      // emits neutral, and emitting neutral is emitting what the space at the
+      // face already is, which is to say nothing leaves. `every = 1` is a
+      // block that never stops: one pulse directly behind the last, with no
+      // space in between for either of them to move through.
+      if ((g._tickId - 1) % every !== 0) return;
+
+      // Which way round the magnet is by now.
+      const turned = spin && Math.floor((g._tickId - 1) / every) % 2 === 1;
+
+      for (const face of faces) {
+        const here = g.gridPos.get(face.at);
+        if (!here) continue;
+
+        const ahead = g.nodeAt(here.map((v, i) => v + face.dir[i]));
+        const ray = ahead?.[0];
+
+        // Only space can be told what to be. Anything already going somewhere
+        // is somebody, and the face waits rather than overwriting it.
+        if (!ray || ray.moving) continue;
+
+        const polarity = !turned ? face.polarity
+          : face.polarity === Polarity.Positive ? Polarity.Negative : Polarity.Positive;
+
+        for (const bd of ray.boundaries)
+          bd.polarity = polarity;
+
+        ray.moving = g.along(ray, face.dir, 1);
+      }
+    };
+
+    return graph;
+  }
+
+  /**
    * The smallest possible universe: two spatial points A—B, one ray each,
    * joined by a mutual boundary pair. Every permutation of (polarity,
    * movement direction) over the two sides is one isolated experiment in the
@@ -1016,6 +1158,7 @@ class Graph {
     graph.dims = this.dims;
     graph.ringRadius = this.ringRadius;
     graph._tickId = this._tickId;
+    graph.onTick = this.onTick;
 
     const rays = new Map<Ray, Ray>();
     const boundaries = new Map<Boundary, Boundary>();
@@ -2227,12 +2370,12 @@ const mirrored = (line: LineSide[]): LineSide[] =>
     moving: s.moving === 'left' ? 'right' : 'left',
   }));
 
+const opposite = (p: Polarity): Polarity =>
+  p === Polarity.Positive ? Polarity.Negative : Polarity.Positive;
+
 // Every polarity flipped, every direction kept: the anti-line.
 const antiLine = (line: LineSide[]): LineSide[] =>
-  line.map(s => ({
-    polarity: s.polarity === Polarity.Positive ? Polarity.Negative : Polarity.Positive,
-    moving: s.moving,
-  }));
+  line.map(s => ({ polarity: opposite(s.polarity), moving: s.moving }));
 
 // Identity up to mirroring: whichever way round the line reads first.
 const lineKey = (line: LineSide[]): string => {
@@ -2243,13 +2386,13 @@ const lineKey = (line: LineSide[]): string => {
 };
 
 /**
- * The distinct lines of n charges, each grouped with its anti-line so the two
- * sit one above the other — the same experiment run on matter and on
+ * The distinct lines among the given ones, each grouped with its anti-line so
+ * the two sit one above the other — the same experiment run on matter and on
  * antimatter. A line that is its own anti up to mirroring is a group of one.
  */
-const lineGroups = (n: number): LineSide[][][] => {
+const antiGroups = (lines: LineSide[][]): LineSide[][][] => {
   const byKey = new Map<string, LineSide[]>();
-  for (const line of linesOf(n)) {
+  for (const line of lines) {
     const key = lineKey(line);
     if (!byKey.has(key)) byKey.set(key, line);
   }
@@ -2274,6 +2417,86 @@ const lineGroups = (n: number): LineSide[][][] => {
 
   return groups;
 };
+
+// Every arrangement of n charges, grouped with its anti.
+const lineGroups = (n: number): LineSide[][][] => antiGroups(linesOf(n));
+
+/**
+ * One side of a head-on collision: `size` charges all going the same way,
+ * their polarity flipping from one to the next. `inner` is the polarity of
+ * the one at the interface, and the block alternates outward from there —
+ * so what a block is doing at the meeting point is what names it, and the
+ * rest of it follows.
+ */
+const alternatingBlock = (size: number, inner: Polarity, moving: 'left' | 'right'): LineSide[] => {
+  const outward = Array.from({ length: size }, (_, i) => ({
+    polarity: i % 2 === 0 ? inner : opposite(inner),
+    moving,
+  }));
+
+  // Written from the interface outward. A block moving right sits to the left
+  // of the interface, so it reads the other way round along the line.
+  return moving === 'right' ? outward.reverse() : outward;
+};
+
+/**
+ * Two alternating blocks run at each other. Once the alternation is fixed the
+ * only freedom left is the phase of each block — which polarity it presents
+ * at the interface — so these four are all of them:
+ *
+ *   ..0101 → ← 1010..  the alternation carries straight through the meeting
+ *                      point; the line is one alternating line, cut in two and
+ *                      told to move at itself.
+ *   ..1010 → ← 1010..  both blocks in the same phase; the alternation breaks
+ *                      exactly where they meet, and the two innermost charges
+ *                      are alike rather than opposite.
+ *
+ * and the anti of each. Head-on opposites annihilate and head-on likes turn
+ * around, so the phase decides whether the interface eats the line or reflects
+ * it — and after the first tick the block behind is one step further in, with
+ * its own phase to present.
+ */
+const COLLISION_PHASES: [Polarity, Polarity][] = [
+  [Polarity.Positive, Polarity.Negative],
+  [Polarity.Negative, Polarity.Positive],
+  [Polarity.Positive, Polarity.Positive],
+  [Polarity.Negative, Polarity.Negative],
+];
+
+const collision = (size: number, [left, right]: [Polarity, Polarity]): LineSide[] => [
+  ...alternatingBlock(size, left, 'right'),
+  ...alternatingBlock(size, right, 'left'),
+];
+
+// The distinct collisions of two alternating blocks of `size`, grouped with
+// their antis. Mirroring identifies the two through-alternating phases, so
+// what is left is: alternation-through, and alternation-broken with its anti.
+const collisionGroups = (size: number): LineSide[][][] =>
+  antiGroups(COLLISION_PHASES.map(phases => collision(size, phases)));
+
+/**
+ * A block with no phase to it: `size` charges all going the same way, each
+ * polarity drawn on its own. There is nothing to name such a block by — every
+ * draw is a different block — so what it says about an interface is only what
+ * survives being watched a few times over.
+ */
+const randomBlock = (size: number, moving: 'left' | 'right'): LineSide[] =>
+  Array.from({ length: size }, () => ({ polarity: Universe.randomPolarity(), moving }));
+
+/**
+ * An alternating block driven into an unstructured one. The left side arrives
+ * at the interface with a polarity that was decided the moment the block was
+ * written; the right side arrives with one that wasn't decided by anything.
+ *
+ * So the two phases above stop being two experiments: which of them is
+ * happening is redrawn at every step, as whatever the other side happens to
+ * have put in front. What is left to watch is whether the alternation
+ * survives being met by something that isn't one.
+ */
+const alternatingIntoRandom = (size: number, inner: Polarity): LineSide[] => [
+  ...alternatingBlock(size, inner, 'right'),
+  ...randomBlock(size, 'left'),
+];
 
 const RayCalculiAndPhysics = () => {
   const navigate = useNavigate();
@@ -2313,6 +2536,43 @@ const RayCalculiAndPhysics = () => {
           />
         ))}
 
+        {/* The same two blocks held apart by a wide field of neutral space,
+            neither of them moving, each writing a charge onto the space at
+            its face every other tick. Opposite charges annihilate in the
+            middle and the field between them is eaten two columns at a time
+            until there is none of it left; like charges only bounce off each
+            other and come home. */}
+        {([
+          [Polarity.Positive, Polarity.Negative],
+          [Polarity.Positive, Polarity.Positive],
+        ] as [Polarity, Polarity][]).map(([left, right], i) => (
+          <CalculusVisualization
+            key={`emitters-${i}`}
+            graph={() => Graph.emitters(left, right)}
+            repeated={18}
+            height={140}
+          />
+        ))}
+
+        {/* The same two blocks with the magnets turned on: each side flips
+            what it is emitting every tick, and emits on every one of them, so
+            the field fills with alternating charge rather than with one thing
+            over and over. Spinning is what makes it unconditional — held
+            still, two blocks emitting alike only push each other away; turned
+            over fast enough, both ways round end up eating the field between
+            them, the second one in bursts rather than steadily. */}
+        {([
+          [Polarity.Positive, Polarity.Negative],
+          [Polarity.Positive, Polarity.Positive],
+        ] as [Polarity, Polarity][]).map(([left, right], i) => (
+          <CalculusVisualization
+            key={`spinning-${i}`}
+            graph={() => Graph.emitters(left, right, { gap: 20, every: 1, spin: true })}
+            repeated={22}
+            height={140}
+          />
+        ))}
+
         {ANTI_GROUPS.map((group, i) => (
           <div key={i} style={{ marginBottom: '1.5rem' }}>
             {group.map((pair, j) => (
@@ -2346,6 +2606,49 @@ const RayCalculiAndPhysics = () => {
                     density={false}
                   />
                 ))}
+              </div>
+            ))}
+          </Fragment>
+        ))}
+
+        {/* Not every arrangement now, but the one arrangement with a pattern
+            to it: alternating polarities driven head-on into alternating
+            polarities. Blocks of two, three and four a side, each run for as
+            many steps as the whole line is long. */}
+        {[2, 3, 4].map(size => (
+          <Fragment key={`collision-${size}`}>
+            {collisionGroups(size).map((group, i) => (
+              <div key={i} style={{ marginBottom: '1.5rem' }}>
+                {group.map((line, j) => (
+                  <CalculusVisualization
+                    key={j}
+                    graph={() => Graph.line(line)}
+                    repeated={size * 2}
+                    height={60}
+                    density={false}
+                  />
+                ))}
+              </div>
+            ))}
+          </Fragment>
+        ))}
+
+        {/* And the same collision with the structure taken out of one side:
+            alternating into randomly assigned. There is no permutation to
+            enumerate here — a draw is not a case — so it is a handful of runs,
+            the alternating side starting from either polarity in turn. */}
+        {[3, 4].map(size => (
+          <Fragment key={`mixed-${size}`}>
+            {Array.from({ length: 4 }, (_, i) => (
+              <div key={i} style={{ marginBottom: '1.5rem' }}>
+                <CalculusVisualization
+                  graph={() => Graph.line(
+                    alternatingIntoRandom(size, i % 2 === 0 ? Polarity.Positive : Polarity.Negative)
+                  )}
+                  repeated={size * 2}
+                  height={60}
+                  density={false}
+                />
               </div>
             ))}
           </Fragment>
