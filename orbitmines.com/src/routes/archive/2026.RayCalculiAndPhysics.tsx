@@ -42,6 +42,70 @@ type LineSide = {
   moving: 'left' | 'right';
 };
 
+// One source in a space with directions to spare: what it emits, which of
+// those directions it is itself going in, and whether it starts turned the
+// same way round as the other one or the other way.
+//
+// `moving` is a lattice step, not a named side. With twenty-six ways out of a
+// point there is no "left" to mean anything, so a direction has to be said in
+// full — and saying it in full is what lets the two be set going across each
+// other rather than only at each other.
+type MagnetSide = {
+  emits: Polarity;
+  moving?: number[];
+  phase?: number;
+
+  /**
+   * Which way round it is, if it is a magnet rather than a lamp.
+   *
+   * Without this a source puts the same charge out in all twenty-six
+   * directions and turns the lot over together — something that alternates,
+   * but with no sides to it. A magnet has sides: `emits` goes out of the half
+   * pointing along this, its opposite out of the half pointing against, and
+   * the ring exactly across it puts out nothing at all. Turning it over swaps
+   * the two, which is what `spin` was always meant to be doing to something.
+   *
+   * It matters for two magnets facing each other because it decides what
+   * arrives. Both given the same axis, the face of one that looks at the
+   * other is its north and the face looking back is the other's south — so
+   * what crosses the gap is opposite to what it meets, every tick, and
+   * opposite charges meeting is the one event that destroys space.
+   */
+  axis?: number[];
+};
+
+/**
+ * How much harder a source is to move than the charges it emits: a multiple
+ * of the step's own length, paid out of the same one-per-tick everything else
+ * is paid (see the movement half of `tick`). It is mass, arrived at from the
+ * only direction this model offers — the cost of going somewhere.
+ *
+ * A source at mass m covers 1/m cells a tick. Two conditions decide whether a
+ * moving pair can interact at all, and both are arithmetic rather than
+ * judgement:
+ *
+ *  - One step a tick is this model's top speed — a ray moves at most once per
+ *    tick, so nothing goes faster and the field cannot be sped up to keep
+ *    pace. Two sources heading opposite ways separate at 2/m, and their light
+ *    closes at 1, so anything each emits can only ever reach the other while
+ *    2/m < 1. At m = 1 they are outrunning their own field from the first
+ *    tick; at m = 2 the light exactly keeps pace and never gains. It takes
+ *    m > 2 before a pulse can cross from one to the other at all.
+ *
+ *  - And a source can only emit onto a point it is connected to. Once it has
+ *    travelled out of the seeded ball it is in territory `grow` laid down one
+ *    node at a time as it went, with nothing on the far side of its other
+ *    twenty-five directions, so it stops radiating in all but the one it is
+ *    heading in. Over a 60-tick run it moves 60/m, and starting 8 out along x
+ *    it stays inside the absorbing edge at 11 while √(8² + (60/m)²) ≤ 11 —
+ *    which wants m ≥ 8.
+ *
+ * Eight, then. Not a tuned number: it is the smaller mass the two conditions
+ * allow, and below it a moving pair stops interacting partway through for one
+ * of those two reasons rather than for any reason to do with the physics.
+ */
+const MAGNET_MASS = 3;
+
 class Universe {
   static _2D = () => Universe.nD_Expanding(2);
   static _3D = () => Universe.nD_Expanding(3);
@@ -95,6 +159,75 @@ function stepAway(from: number[], to: number[]): number[] {
   );
 }
 
+/**
+ * The direction a lattice offset names, as the shortest step that goes that
+ * way: every component in {-1, 0, 1}.
+ *
+ * (1,0,0) is already one step. (3,0,0) is the same direction, three steps at
+ * a time — which is what a connection looks like once the space it used to
+ * pass through has been annihilated out of it. (2,2,0) is the diagonal
+ * (1,1,0).
+ *
+ * This is what keeps a direction a direction rather than a distance. It is
+ * also what a boundary with no neighbour has to hold: `outward` is a way to
+ * go, and a way to go is one step, however far apart the last two points that
+ * went that way happened to end up.
+ */
+function latticeStep(offset: number[]): number[] | undefined {
+  const norm = Math.max(...offset.map(Math.abs));
+  if (!norm) return undefined;
+
+  return offset.map(v => Math.round(v / norm));
+}
+
+/**
+ * Every way out of a point: all 3^d − 1 non-zero offsets with components in
+ * {-1, 0, 1}. In 2D that is the eight directions of a compass rose; in 3D the
+ * twenty-six ways off a cell — six through a face, twelve through an edge,
+ * eight through a corner.
+ *
+ * This is what "360°" is when space is discrete. Not a circle cut into 360
+ * pieces: a lattice has exactly as many directions as a point has neighbours,
+ * and the honest thing is to take all of them rather than the six that happen
+ * to line up with the axes. A point wired only to its faces cannot be moved
+ * through diagonally, so a wave leaving it can only ever go six ways, and
+ * anything built on that is a cross rather than a sphere.
+ *
+ * The price is that the directions are not the same length — a face step
+ * covers 1, an edge step √2, a corner step √3 — so a pulse emitted into all
+ * of them at once, one step per tick, is a cube shell and not a round one.
+ * That IS the sphere of this space: the set of points one move away.
+ */
+// The subset of those that lie along an axis: the 2d faces of a cell. A
+// lattice wired only with these is the one everything up to here has run on.
+function axes(dims: number): number[][] {
+  const out: number[][] = [];
+
+  for (let axis = 0; axis < dims; axis++)
+    for (const dir of [-1, 1]) {
+      const v = new Array(dims).fill(0);
+      v[axis] = dir;
+      out.push(v);
+    }
+
+  return out;
+}
+
+function directions(dims: number): number[][] {
+  const out: number[][] = [];
+
+  (function build(prefix: number[]) {
+    if (prefix.length === dims) {
+      if (prefix.some(v => v !== 0)) out.push(prefix);
+      return;
+    }
+
+    for (const v of [-1, 0, 1]) build([...prefix, v]);
+  })([]);
+
+  return out;
+}
+
 class Graph {
   buffer: node[] = []
 
@@ -104,13 +237,255 @@ class Graph {
 
   gridPos = new Map<node, number[]>();
 
+  // gridPos read the other way round, so that "what is at this coordinate"
+  // isn't a scan over the whole universe. Positions are real-valued and two
+  // points can briefly share one, so this is last-writer-wins: it is an
+  // index, and `gridPos` above is the truth it indexes.
+  private at = new Map<string, node>();
+
+  private static posKey(pos: number[]): string {
+    return pos.map(v => Math.round(v * 1e6)).join(",");
+  }
+
+  // Every write to a position goes through these, so the index can never
+  // fall behind the thing it indexes.
+  private setPos(nd: node, pos: number[]) {
+    this.unindex(nd);
+    this.gridPos.set(nd, pos);
+    this.at.set(Graph.posKey(pos), nd);
+  }
+
+  private delPos(nd: node) {
+    this.unindex(nd);
+    this.gridPos.delete(nd);
+  }
+
+  private unindex(nd: node) {
+    const was = this.gridPos.get(nd);
+    if (!was) return;
+
+    const key = Graph.posKey(was);
+    if (this.at.get(key) === nd) this.at.delete(key);
+  }
+
   // Lattice dimensionality and the seed's initial radius (used only by the
   // cube→sphere layout morph now).
   dims = 3;
   ringRadius = 0;
 
+  /**
+   * What the camera is for, if it isn't for everything: a radius in grid
+   * coordinates, and everything inside it is the subject.
+   *
+   * A universe that grows has no fixed size to frame, and framing whatever is
+   * currently furthest out means the picture zooms out to chase whichever
+   * charge has got the furthest — so the thing being watched shrinks away in
+   * the middle while nothing much happens at the edges.
+   *
+   * It has to be a region rather than a list of the points that were there at
+   * the start, because those points do not stay. Moving is a swap with space:
+   * every charge that goes anywhere eats a point of the original ball and
+   * leaves a new one behind it. Name the seed's points and within a few ticks
+   * you are framing a handful of survivors; name the seed's extent and you
+   * are framing the same place throughout, whatever is currently in it.
+   */
+  focus?: number;
+
+  inFocus(nd: node): boolean {
+    if (this.focus === undefined) return true;
+
+    const pos = this.gridPos.get(nd);
+
+    return !!pos && Math.hypot(...pos) <= this.focus;
+  }
+
+  /**
+   * How often a ray takes one of the ways its direction is made of, instead
+   * of the direction itself. Nought is movement strictly conserved, which is
+   * what everything before this ran on.
+   *
+   * A direction like (1,1,1) is not one thing: it is three axial steps taken
+   * at once, and a point that can go that way can also go any of the three
+   * separately, or any of them backwards. So at each move a ray either
+   * carries on along the whole diagonal or takes one of the pieces it is
+   * composed of — chosen at random, with the pieces' opposites in the draw
+   * too, so it can give ground on an axis as well as gain it.
+   *
+   * What that buys is the thing a field made of travelling charges needs and
+   * did not have: a path that can curve. Movement conserved exactly means a
+   * ray leaves its source in one of twenty-six directions and is committed to
+   * it forever, so two streams either coincide or never touch, and no line
+   * can go looking for anything. Wandering makes a trajectory a random walk
+   * with a drift down its original direction, which spreads it over the space
+   * between — and since annihilation removes exactly those that find their
+   * opposite, what survives to be seen is selected by what met. The lines
+   * find each other by searching and being culled where they succeed, rather
+   * than by being aimed.
+   *
+   * The drift is what keeps it a field rather than a fog: the whole diagonal
+   * is one option among its pieces, and the pieces' opposites cancel in the
+   * average, so the mean step still points the way it set out.
+   */
+  wander = 0;
+
+  /**
+   * No holes, ever.
+   *
+   * A direction with nothing on the far side of it is a way out of the
+   * lattice. In a line that is exactly right — the end of a line is where you
+   * can walk off it, and growing the structure by moving into nothing is how
+   * these universes expand. In a closed lattice it is a tear, and every rule
+   * that removes a point has been quietly making them: hundreds a tick, tens
+   * of thousands over a run, all of them in the region where the two fields
+   * are trying to reach each other.
+   *
+   * Sealed, a direction is a direction TO something. Take away what it
+   * pointed at and it is not a direction any more — it is dropped, and
+   * whatever else the vanished point joined stays joined (`closeUp`). Nothing
+   * is ever left facing nowhere, so nothing can leak out through a face that
+   * was never there, and the space contracts instead of coming apart.
+   *
+   * Off by default: the line and grid seeds are open worlds with real edges,
+   * and they need to be able to grow.
+   */
+  sealed = false;
+
+  // A direction that is not one any more.
+  private drop(bd: Boundary) {
+    bd.target = undefined;
+    bd.outward = undefined;
+    bd.at.boundaries = bd.at.boundaries.filter(x => x !== bd);
+  }
+
+  // Left pointing at nothing — dropped in a sealed world, kept as a bare way
+  // out in an open one.
+  private loose(bd: Boundary) {
+    if (this.sealed) { this.drop(bd); return; }
+
+    const d = this.bare(bd);
+    bd.target = undefined;
+    bd.outward = d;
+  }
+
+  // Whether the drawn positions are the coordinates, or the structure.
+  //
+  // Off, a point is drawn where its coordinate says it is, and space that has
+  // been annihilated out of the world leaves a hole in the picture. On, the
+  // picture is relaxed against the connections that actually exist, so a
+  // connection that has closed up over destroyed space pulls its two ends
+  // together — which is the whole of what attraction is here.
+  relax = false;
+
   // Monotonic tick counter.
   _tickId = 0;
+
+  /**
+   * What just happened, and where.
+   *
+   * Every interaction in this model is over in the tick it occurs in: two
+   * charges cancel and the points they were are gone, or two turn round and
+   * are indistinguishable a moment later from two that were always going that
+   * way. Drawn only as the state they leave behind, the events themselves are
+   * invisible — the picture shows a field that is quietly a bit smaller than
+   * it was, and never shows the cancelling that made it so.
+   *
+   * So each one is noted as it happens, at the place it happened, and kept
+   * for a tick or two afterwards. Nothing in the dynamics reads this; it is
+   * the record, not the thing.
+   */
+  events: { at: Vec, kind: 'annihilate' | 'turn', tick: number }[] = [];
+
+  /**
+   * A count of what the last tick consisted of.
+   *
+   * A universe of a dozen points can be read off the picture. One of several
+   * thousand cannot: "nothing seems to be happening any more" has half a
+   * dozen quite different causes — the sources have stopped emitting, or
+   * everything has jammed and nothing can move, or things are moving fine and
+   * simply never meeting — and they look identical from outside. These are
+   * the numbers that tell them apart.
+   */
+  stats = { emitted: 0, moved: 0, blocked: 0, annihilated: 0, turned: 0, path: 0, holes: 0 };
+
+  // How far apart the two sources have been, tick by tick.
+  history: number[] = [];
+
+  // And the way between them as it currently runs.
+  route: node[] = [];
+
+  /**
+   * How far it is from one source to the other — in steps through the
+   * structure, not in coordinates.
+   *
+   * This is the measurement the whole thing is for, and it is the only one
+   * that answers the question without argument. Coordinates say nothing: the
+   * sources sit at the coordinates they were seeded at and will do forever,
+   * whether or not anything has happened between them. The picture is
+   * suggestive but it is a solve, and a solve can be stiff, or slow, or
+   * simply drawn small.
+   *
+   * The number of points you have to pass through to get from one to the
+   * other is neither. It starts at whatever the seed made it, and it goes
+   * down when and only when the space between them is annihilated. If two
+   * things gravitate in this model, THIS is what it means, and if it doesn't
+   * fall then nothing else on screen is attraction however much it looks
+   * like it.
+   */
+  shortestPath(): node[] {
+    const sources: node[] = [];
+    for (const nd of this.nodes) if (nd.some(r => r.magnet)) sources.push(nd);
+    if (sources.length < 2) return [];
+
+    const [from, to] = sources;
+    const cameFrom = new Map<node, node>([[from, from]]);
+
+    let frontier = [from];
+
+    while (frontier.length) {
+      const next: node[] = [];
+
+      for (const nd of frontier) {
+        for (const ray of nd) {
+          for (const bd of ray.boundaries) {
+            const other = bd.target?.at.node;
+            if (!other || cameFrom.has(other)) continue;
+
+            cameFrom.set(other, nd);
+
+            if (other === to) {
+              const route = [other];
+              while (route[0] !== from) route.unshift(cameFrom.get(route[0])!);
+
+              return route;
+            }
+
+            next.push(other);
+          }
+        }
+      }
+
+      frontier = next;
+    }
+
+    return []; // no way from one to the other at all
+  }
+
+  private mark(kind: 'annihilate' | 'turn', ...rays: Ray[]) {
+    const at: Vec[] = [];
+
+    for (const ray of rays) {
+      const p = this.relaxed?.at.get(ray.node) ?? this.layoutCache?.get(ray.node);
+      if (p) at.push(p);
+    }
+
+    if (!at.length) return;
+
+    const centre = new Array(at[0].length).fill(0);
+    for (const p of at)
+      for (let k = 0; k < centre.length; k++) centre[k] += p[k] / at.length;
+
+    this.events.push({ at: centre, kind, tick: this._tickId });
+  }
 
   // Something the seed has arranged for the world to go on doing, run at the
   // start of every tick before the rules get their say. Nothing in the rules
@@ -160,23 +535,45 @@ class Graph {
         boundary.target = target;
   }
 
-  // Which way a boundary points, as a unit vector in grid space. A bare
-  // direction says so itself; a connection is the step from the point it is
-  // on to the point on the other side.
-  private direction(bd: Boundary): number[] | undefined {
-    if (bd.outward) {
-      const length = Math.hypot(...bd.outward);
-      return length ? bd.outward.map(v => v / length) : undefined;
-    }
+  // How far and which way a boundary reaches, in grid units. A bare direction
+  // says so itself; a connection is the offset from the point it is on to the
+  // point on the other side, which after an annihilation can be several steps
+  // rather than one.
+  private offset(bd: Boundary): number[] | undefined {
+    if (bd.outward) return bd.outward;
 
     const from = this.gridPos.get(bd.at.node);
     const to = bd.target && this.gridPos.get(bd.target.at.node);
     if (!from || !to) return undefined;
 
-    const step = to.map((v, i) => v - from[i]);
-    const length = Math.hypot(...step);
+    return to.map((v, i) => v - from[i]);
+  }
 
-    return length ? step.map(v => v / length) : undefined;
+  // Which way a boundary points, as a unit vector — for comparing directions
+  // against each other, where only the way they face matters.
+  private direction(bd: Boundary): number[] | undefined {
+    const offset = this.offset(bd);
+    if (!offset) return undefined;
+
+    const length = Math.hypot(...offset);
+
+    return length ? offset.map(v => v / length) : undefined;
+  }
+
+  /**
+   * The same direction as one step of the lattice — components in {-1, 0, 1}.
+   *
+   * This is what goes into a position (a new point is put down one step over,
+   * not a unit distance over, which off the axes is not the same thing) and
+   * what a boundary with nothing on the far side is left holding. A unit
+   * vector would be neither: in a 360° discrete space the corner directions
+   * have length √3, and normalising them puts new points at coordinates the
+   * lattice doesn't have.
+   */
+  private bare(bd: Boundary): number[] | undefined {
+    const offset = this.offset(bd);
+
+    return offset && latticeStep(offset);
   }
 
   // The boundary of `ray` pointing most nearly along `dir` (`sign` of -1 for
@@ -232,11 +629,14 @@ class Graph {
   // real-valued (space instantiated between two points lands at their
   // midpoint), so this is a tolerance match rather than a key lookup.
   private nodeAt(pos: number[]): node | undefined {
-    for (const [nd, p] of this.gridPos)
-      if (p.length === pos.length && p.every((v, i) => Math.abs(v - pos[i]) < 1e-6))
-        return nd;
+    const found = this.at.get(Graph.posKey(pos));
+    if (!found) return undefined;
 
-    return undefined;
+    const p = this.gridPos.get(found);
+
+    return p && p.length === pos.length && p.every((v, i) => Math.abs(v - pos[i]) < 1e-6)
+      ? found
+      : undefined;
   }
 
   /**
@@ -296,13 +696,73 @@ class Graph {
     const dirA = this.direction(a), dirB = this.direction(b);
 
     const backA = this.behind(r, dirA, a), backB = this.behind(r2, dirB, b);
-    const homeA = backA?.target?.at, homeB = backB?.target?.at;
+
+    // What was behind each — but never a source. A source is not somewhere
+    // space can be put down; it is the thing space is coming out of. Handing
+    // it what a dying charge was carrying leaves it holding connections to
+    // half the world, which it then radiates down, and every one of those
+    // comes back to leave more. Treated as nothing behind, the structure goes
+    // to the other side, or the two collapse onto each other as they do when
+    // there is nowhere behind either.
+    const behindA = backA?.target?.at;
+    const behindB = backB?.target?.at;
+
+    const homeA = behindA?.magnet ? undefined : behindA;
+    const homeB = behindB?.magnet ? undefined : behindB;
+
+    /**
+     * The connection between the two of them, severed first of all.
+     *
+     * It is the one thing this event actually destroys, and it has to go
+     * before anything else is decided — both of its ends are on points that
+     * are about to stop existing, so any rule that tries to preserve it later
+     * preserves a connection to a corpse. Done here, every branch below is
+     * dealing only with connections that genuinely survive.
+     *
+     * Meeting head-on that is `a` and `b`. Arriving at the same place from
+     * different directions there is no such connection at all — `a` leads to
+     * the point they were both making for, which is somebody else and stays.
+     */
+    for (const bd of [a, b]) {
+      const partner = bd.target;
+      if (!partner || (partner.at !== r && partner.at !== r2)) continue;
+
+      partner.target = undefined;
+      bd.target = undefined;
+    }
 
     if (homeA || homeB) {
-      // Each side's space goes to whatever is behind it — or, for a side with
-      // nothing behind it, to the other's, that being the only way left.
-      this.hand(this.transverse([r], dirA, backA), homeA ?? homeB!);
-      this.hand(this.transverse([r2], dirB, backB), homeB ?? homeA!);
+      /**
+       * Everything each of them held goes to the point behind it.
+       *
+       * Not just what it held across its line of travel — everything, bar the
+       * two that this event is actually about: the connection between the two
+       * of them, which is what they were approaching each other along and is
+       * the one thing here that genuinely ceases to exist, and the connection
+       * to the point behind, which is where all of it is going and so becomes
+       * internal to that.
+       *
+       * Handing only the transverse part is what leaves the rest to be
+       * guessed at, and every version of that guess loses something: a
+       * direction with no readable heading gets dropped, two that lead to the
+       * same neighbour refuse to pair, and the point on the other end of them
+       * quietly loses a connection it never gave up. Measured, that is
+       * hundreds of points falling below three connections and some to none
+       * at all, cut out of the world by an event two cells away.
+       *
+       * Handed wholesale, nothing has to be decided and nothing can be lost.
+       * The point stops existing; what it was holding is held by the place
+       * behind it; and every point that was connected to it is still
+       * connected to exactly as much as it was.
+       */
+      // Everything either of them is still joined to, bar the way back —
+      // which is where all of it is going, and so becomes internal to that.
+      // The approach between them is already severed, so it cannot be here.
+      const inherit = (dying: Ray, back: Boundary | undefined, onto: Ray) =>
+        this.hand(dying.boundaries.filter(bd => bd !== back && bd.target), onto);
+
+      inherit(r, backA, homeA ?? homeB!);
+      inherit(r2, backB, homeB ?? homeA!);
 
       // The line closes up: what was behind one is now directly onto what was
       // behind the other.
@@ -315,10 +775,9 @@ class Graph {
         if (!p) continue;
 
         // Nothing on the far side to close onto, so the direction is all that
-        // is left of what used to be there.
-        const d = this.direction(p);
-        p.target = undefined;
-        p.outward = d;
+        // is left of what used to be there — and in a sealed world, not even
+        // that.
+        this.loose(p);
       }
 
       this.discard(r, homeA ?? homeB!, removed);
@@ -328,8 +787,9 @@ class Graph {
     }
 
     // Nowhere behind either of them: everything the two were carrying ends up
-    // on one point, which is all that is left of both.
-    this.hand(this.transverse([r2], dirB, backB), r);
+    // on one point, which is all that is left of both — and here that one
+    // point is the place behind, there being no other.
+    this.hand(r2.boundaries.filter(bd => bd.target), r);
 
     r.boundaries = r.boundaries.filter(x => x !== a);
     this.discard(r2, r, removed);
@@ -346,20 +806,146 @@ class Graph {
    * direction — the way is still that way, there is just nothing there — and
    * anything still sitting on it goes wherever its structure went.
    */
-  private discard(ray: Ray, onto: Ray, removed: Set<node>) {
-    const nd = ray.node;
+  /**
+   * A point stops being anywhere, and every way through it closes up.
+   *
+   * Whatever was on one side of it and whatever was on the other are now
+   * directly connected — the connection still exists, it is simply shorter
+   * now by the point that is no longer in it. Done for all thirteen axes
+   * through the point rather than only the one something happened to be
+   * travelling along, because a point in a lattice is in the middle of
+   * thirteen lines at once and every one of them has to survive losing it.
+   *
+   * Only a direction with nothing coming the other way is left bare, and that
+   * is a genuine edge of the world rather than a tear in it.
+   */
+  private closeUp(boundaries: Boundary[], of: Ray) {
+    const facing = new Map<string, Boundary>();
+    const waiting: Boundary[] = [];
 
-    for (const bd of ray.boundaries) {
+    const join = (x: Boundary, y: Boundary) => {
+      x.target = y;
+      x.outward = undefined;
+      y.target = x;
+      y.outward = undefined;
+    };
+
+    for (const bd of boundaries) {
       const partner = bd.target;
 
       // Only if it is still pointing back at us: a connection that has
       // already been closed up onto something else is not ours to break.
       if (!partner || partner.target !== bd) continue;
 
-      const d = this.direction(partner);
-      partner.target = undefined;
-      partner.outward = d;
+      const step = this.bare(bd);
+      if (!step) { waiting.push(partner); continue; }
+
+      const key = step.join(",");
+      const opposite = step.map(v => -v).join(",");
+      const back = facing.get(opposite);
+
+      // Straight through: the two that were either side of us are now either
+      // side of nothing, so they are next to each other.
+      if (back && back !== partner && back.at.node !== partner.at.node) {
+        join(back, partner);
+        facing.delete(opposite);
+
+        continue;
+      }
+
+      if (facing.has(key)) waiting.push(partner);
+      else facing.set(key, partner);
     }
+
+    /**
+     * And whatever had nothing coming the other way is joined up anyway.
+     *
+     * Every one of these was a neighbour of the point that has gone, so they
+     * are all within a step of where it was and so within two of each other:
+     * joining them is contraction, the same as the straight-through case, not
+     * a shortcut between places that were never near. What it is not is a
+     * hole. A direction left pointing at nothing is a way out of the lattice
+     * that was not there before, and thousands of them are what stop a wave
+     * ever crossing the middle — which is measurable, and was the whole of
+     * why two magnets stopped interacting after a dozen ticks.
+     *
+     * A point removed from a line leaves its two ends facing each other. A
+     * point removed from a lattice leaves twenty-six neighbours facing each
+     * other, and all of them staying connected is what "the space contracts"
+     * has to mean when there is more than one way through.
+     */
+    const left = [...facing.values(), ...waiting]
+      .filter(p => p.target?.at === of);
+
+    for (let i = 0; i + 1 < left.length; i += 2)
+      if (left[i].at.node !== left[i + 1].at.node) join(left[i], left[i + 1]);
+
+    // An odd one out: joined to whoever it was just beside, rather than left
+    // facing nowhere.
+    if (left.length % 2) {
+      const last = left[left.length - 1];
+      const mate = left.find(p => p !== last && p.at.node !== last.at.node);
+
+      if (mate) {
+        const spare = new Boundary(mate.at, this);
+        spare.polarity = Polarity.Neutral;
+        mate.at.boundaries.push(spare);
+        join(last, spare);
+      } else this.loose(last);
+    }
+  }
+
+  private discard(ray: Ray, onto: Ray, removed: Set<node>) {
+    const nd = ray.node;
+
+    /**
+     * Everything that was connected to us is now connected to where our
+     * structure went.
+     *
+     * This used to leave them holding a bare direction — the way is still
+     * that way, there is just nothing there — which is right for a line and
+     * catastrophic for a lattice. On a line a point has two neighbours, the
+     * two ends get spliced onto each other by the caller, and nothing is left
+     * dangling. Here a point has twenty-six, one of them gets the splice, and
+     * the other twenty-five are left pointing at nowhere.
+     *
+     * That is a hole, and every annihilation punches two dozen of them. They
+     * accumulate exactly where the action is, the lattice between the sources
+     * comes apart into fragments joined by fewer and fewer connections, and
+     * the way from one source to the other has to start going round. Which
+     * is why the distance between them falls for a while and then stops
+     * falling: it is not that they have finished coming together, it is that
+     * the space they were coming together through has been shredded.
+     *
+     * Following the structure instead keeps the lattice whole. The point is
+     * gone and its structure is at `onto`, so its neighbours are neighbours
+     * of `onto` now — which is the same rule the annihilation itself runs on,
+     * applied to every direction rather than only to the one behind.
+     */
+    /**
+     * The space closes up across itself, direction by direction.
+     *
+     * Two earlier versions of this were wrong in opposite ways. Leaving every
+     * neighbour holding a bare direction tears two dozen holes per removal.
+     * Reconnecting them all to wherever the structure went does keep the
+     * lattice joined — but `onto` can be anywhere, so every removal welds a
+     * couple of dozen points to one distant point, and after a few thousand
+     * of them the lattice is a mass of long-range shortcuts. That is
+     * measurable rather than theoretical: the shortest way from one source to
+     * the other ends up running (−8,0,0) → (−9,0,0) → (−1,9,9) → (7,0,0) →
+     * (8,0,0), hopping through a point in the far corner of the world, and it
+     * stops changing at all. Both sources still have their whole
+     * neighbourhood; what has gone is any relation between being connected
+     * and being near, and with it any sense in which the two are approaching.
+     *
+     * What a point actually is, to its neighbours, is the thing between them:
+     * take it away and the two on opposite sides of it are what close up.
+     * That is the same rule the annihilation uses along its own line, applied
+     * to every direction through the point rather than only that one — so the
+     * ways through survive, and none of them reaches anywhere the two ends
+     * were not already either side of.
+     */
+    this.closeUp(ray.boundaries, ray);
 
     ray.boundaries = [];
 
@@ -372,8 +958,12 @@ class Graph {
 
     nd.length = 0;
 
-    this.gridPos.delete(nd);
-    this.nodes = this.nodes.filter(n => n !== nd);
+    this.delPos(nd);
+    // Taken out of the world at the end of the tick rather than here: `nodes`
+    // is scanned by everything, and cutting one point out of it costs a pass
+    // over all of them, which with a few thousand points and a few thousand
+    // of them moving is the whole frame. `removed` is what everything in the
+    // tick actually consults, so the array can be caught up with once.
     removed.add(nd);
   }
 
@@ -390,14 +980,34 @@ class Graph {
 
     let back = this.behind(ray, dir, a);
 
+    // Nothing behind it at all, so the way back is something it has to have —
+    // except in a sealed world, where a direction it hasn't got is not a
+    // direction it may invent. There it comes back along whichever of its own
+    // ways points most nearly backwards, and if it truly has only the one, it
+    // stays where it is rather than tearing a way out to leave by.
     if (!back) {
+      if (this.sealed) {
+        back = this.along(ray, dir, -1, a);
+
+        if (back) ray.moving = back;
+
+        return;
+      }
+
+      const step = this.bare(a);
+
       back = new Boundary(ray, this);
       back.polarity = a.polarity;
-      if (dir) back.outward = dir.map(v => -v);
+      if (step) back.outward = step.map(v => -v);
       ray.boundaries.push(back);
     }
 
     ray.moving = back;
+
+    // It is genuinely going somewhere else now, so the way it was going is
+    // not a detour from anything. Taken up afresh from wherever it now
+    // points.
+    ray.heading = undefined;
   }
 
   /**
@@ -411,21 +1021,43 @@ class Graph {
    * of one point in isolation.
    */
   private canMove(ray: Ray, a: Boundary, blocked: Set<Ray>): boolean {
-    if (!a.target) return true; // an actual boundary of the structure: we make our own way
+    // An actual boundary of the structure: we make our own way — as long as
+    // there is a way to make. A direction we can't name is one we can't grow
+    // into, and setting off into it means putting down the space we are
+    // leaving and then not leaving.
+    if (!a.target) return !!this.bare(a);
 
     const dir = this.direction(a);
 
     for (const other of a.target.at.node) {
+      // A source is never space, whether or not it happens to be going
+      // anywhere. Without this a charge arriving at a standing magnet reads
+      // it as somewhere to be, walks into it, and finds it can't — having
+      // already put down the space it was leaving, which is space made out of
+      // nothing, every tick, forever.
+      if (other.magnet) return false;
+
       if (!other.moving) continue; // space: ours to move through
 
-      const d = this.direction(other.moving);
-      if (!d || !dir) return false;
-
-      // Not leaving the way we are going, so it is in the way.
-      if (d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0) < 0.9) return false;
-
-      // Leaving, but blocked itself, so it isn't leaving after all.
-      if (blocked.has(other)) return false;
+      /**
+       * It is going somewhere, so its place will be free — whichever way it
+       * happens to be going. What it leaves behind is one point of space,
+       * spliced in on its way out, and that point is what we move into.
+       *
+       * Only one of us can have it, and which one is settled by the claim
+       * below rather than by geometry: a point being moved out of typically
+       * has several things coming up behind it at various angles, and if
+       * whoever is actually following has to also be the one lying exactly
+       * opposite the direction of travel, then in a field where directions
+       * change from tick to tick almost nobody qualifies and almost
+       * everything is stuck waiting on a queue that is moving fine.
+       *
+       * So: it is leaving, therefore it can be followed. Whoever claims the
+       * place gets it (`claimed`), and `emitBehind` puts the space it leaves
+       * on that one's connection rather than on whichever happens to be
+       * behind.
+       */
+      if (blocked.has(other)) return false; // not leaving after all
     }
 
     return true;
@@ -442,11 +1074,20 @@ class Graph {
    * and giving it a charge at random would be an event this model didn't
    * have.
    */
-  private emitBehind(ray: Ray, a: Boundary, vacated: Map<node, number[]>) {
+  private emitBehind(ray: Ray, a: Boundary, vacated: Map<node, number[]>, heir?: Ray) {
     const dir = this.direction(a);
+    const step = this.bare(a);
     const here = this.gridPos.get(ray.node);
 
-    let back = this.behind(ray, dir, a);
+    // The space we leave goes to whoever is actually moving into our place,
+    // if anyone is — spliced in on the connection they are coming along, so
+    // that what they find in front of them next is it. Failing that (nobody
+    // following), it goes behind us in the geometric sense, which is where it
+    // would have gone anyway.
+    let back = heir
+      && ray.boundaries.find(bd => bd !== a && bd.target?.at.node === heir.node);
+
+    if (!back) back = this.behind(ray, dir, a);
     const was = back?.target;
     const there = was && this.gridPos.get(was.at.node);
 
@@ -470,14 +1111,22 @@ class Graph {
     back.target = facing;
     facing.target = back;
 
-    // Whatever was behind us is behind the point we just put there.
     const onward = new Boundary(fresh, this);
     onward.polarity = Polarity.Neutral;
 
-    if (was) { onward.target = was; was.target = onward; }
-    else if (dir) onward.outward = dir.map(v => -v);
-
-    fresh.boundaries.push(onward);
+    // Whatever was behind us is behind the point we just put there — and if
+    // there was nothing behind us at all, then the point we put down has
+    // nothing behind it either. In an open world that is a way out, and it
+    // gets one; sealed, it is simply a point with one fewer direction, which
+    // is not a hole because there was never anything there to lose.
+    if (was) {
+      onward.target = was;
+      was.target = onward;
+      fresh.boundaries.push(onward);
+    } else if (!this.sealed) {
+      if (step) onward.outward = step.map(v => -v);
+      fresh.boundaries.push(onward);
+    }
 
     this.nodes.push(nd);
 
@@ -488,9 +1137,9 @@ class Graph {
     // direction between them for anything else to read. So it waits between
     // us and what is behind us, and is put down properly once the moving is
     // over.
-    this.gridPos.set(nd, !here ? []
+    this.setPos(nd, !here ? []
       : there ? here.map((v, i) => (v + there[i]) / 2)
-        : dir ? here.map((v, i) => v - dir[i])
+        : step ? here.map((v, i) => v - step[i])
           : here.slice());
 
     if (here) vacated.set(nd, here.slice());
@@ -524,10 +1173,15 @@ class Graph {
     const nd = ahead.at.node;
     if (nd === ray.node || removed.has(nd)) return;
 
+    // Only space is ever eaten. Anything going somewhere is somebody — and so
+    // is a magnet, which is a somebody that happens to be standing still: it
+    // is the source of everything happening here, and a source that its own
+    // first pulse can swallow is not a source.
     for (const other of nd)
-      if (other.moving) return;
+      if (other.moving || other.magnet) return;
 
     const dir = this.direction(a);
+    const bareA = this.bare(a);
 
     // Where it is going to be, which is not yet where it is if it is space
     // something else has just put down on its way out.
@@ -537,7 +1191,7 @@ class Graph {
     // across. Our own direction of travel is rewired onto that, so the line
     // we are moving along stays a line.
     let onward: Boundary | undefined;
-    let onwardDir: number[] | undefined;
+    let onwardStep: number[] | undefined;
 
     for (const other of nd) {
       for (const bd of other.boundaries) {
@@ -548,7 +1202,7 @@ class Graph {
 
         if (d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0) > 0.9) {
           onward = bd;
-          onwardDir = d;
+          onwardStep = this.bare(bd);
         }
       }
     }
@@ -563,31 +1217,39 @@ class Graph {
       beyond.target = a;
     } else {
       // Nothing beyond it: what we are moving along is a bare direction
-      // again, and growing into it is the next thing we do.
-      a.target = undefined;
-      a.outward = onwardDir ?? dir;
+      // again, and growing into it is the next thing we do. Sealed, there is
+      // no growing into anything, so it simply stops being one of our
+      // directions.
+      if (this.sealed) this.drop(a);
+      else {
+        a.target = undefined;
+        a.outward = onwardStep ?? bareA;
+      }
     }
 
-    // Anything still pointing at it is pointing at nowhere; the direction
-    // survives the point, so it is left as a bare one.
+    // And everything else it was holding is held by us, since we are where it
+    // was. Same rule as annihilation: the point stops existing and the place
+    // behind takes what it had — here the place behind is the mover, which
+    // has just arrived. Anything left out of this is a connection whose far
+    // end is still pointing at a point that no longer exists.
     for (const other of nd) {
-      for (const bd of other.boundaries) {
-        const partner = bd.target;
-        if (!partner || partner === a || partner === beyond) continue;
-
-        const d = this.direction(partner);
-        partner.target = undefined;
-        partner.outward = d;
-      }
+      this.hand(
+        other.boundaries.filter(bd => bd !== ahead && bd !== onward && bd.target !== a),
+        ray,
+      );
 
       other.boundaries = [];
     }
 
     // Its place is our place: we have moved.
-    if (there) this.gridPos.set(ray.node, there.slice());
+    if (there) this.setPos(ray.node, there.slice());
 
-    this.gridPos.delete(nd);
-    this.nodes = this.nodes.filter(n => n !== nd);
+    this.delPos(nd);
+    // Taken out of the world at the end of the tick rather than here: `nodes`
+    // is scanned by everything, and cutting one point out of it costs a pass
+    // over all of them, which with a few thousand points and a few thousand
+    // of them moving is the whole frame. `removed` is what everything in the
+    // tick actually consults, so the array can be caught up with once.
     removed.add(nd);
     vacated.delete(nd);
   }
@@ -603,11 +1265,11 @@ class Graph {
    * same tick, which is what moving into nothing amounts to.
    */
   private grow(ray: Ray, a: Boundary) {
-    const dir = this.direction(a);
+    const step = this.bare(a);
     const here = this.gridPos.get(ray.node);
-    if (!dir || !here) return;
+    if (!step || !here) return;
 
-    const pos = here.map((v, i) => v + dir[i]);
+    const pos = here.map((v, i) => v + step[i]);
 
     const nd: node = [];
     const fresh = new Ray(nd, this);
@@ -622,7 +1284,7 @@ class Graph {
     a.target = facing;
 
     this.nodes.push(nd);
-    this.gridPos.set(nd, pos);
+    this.setPos(nd, pos);
 
     // Connected to what we are connected to: one direction for each of ours,
     // a real connection where a point is already there and a bare direction
@@ -630,11 +1292,16 @@ class Graph {
     for (const boundary of ray.boundaries) {
       if (boundary === a) continue;
 
-      const d = this.direction(boundary);
+      const d = this.bare(boundary);
       if (!d) continue;
 
       const neighbour = this.nodeAt(pos.map((v, i) => v + d[i]));
       if (neighbour === ray.node || neighbour === nd) continue; // back at us
+
+      // Nowhere there yet: an open world gets a bare direction so the
+      // frontier can keep going, a sealed one simply doesn't have that
+      // direction.
+      if (!neighbour && this.sealed) continue;
 
       const side = new Boundary(fresh, this);
       side.polarity = Polarity.Neutral;
@@ -673,6 +1340,10 @@ class Graph {
   tick() {
     this._tickId++;
 
+    // Zeroed before the sources get their say, so what they emit this tick is
+    // counted against this tick.
+    this.stats = { emitted: 0, moved: 0, blocked: 0, annihilated: 0, turned: 0, path: 0, holes: 0 };
+
     this.onTick?.(this);
 
     // Snapshot the rays first, so structural changes don't disturb iteration.
@@ -680,6 +1351,58 @@ class Graph {
     for (const node of this.nodes)
       for (const ray of node)
         rays.push(ray);
+
+    /**
+     * Before anything is read off: whoever is wandering, wanders.
+     *
+     * Done here rather than at the point of moving, because a change of
+     * direction has to be settled before it is asked who is meeting whom —
+     * otherwise a ray is judged to be about to collide on a heading it has
+     * already given up, and half the interactions in the tick are worked out
+     * against a world nobody is in any more.
+     */
+    for (const r of rays) if (r.moving && !r.magnet) r.age = (r.age ?? 0) + 1;
+
+    if (this.wander > 0) {
+      for (const r of rays) {
+        if (!r.moving || r.magnet) continue;
+
+        // Where it is going, remembered — not where it went last time.
+        const head = r.heading ?? this.bare(r.moving);
+        if (!head) continue;
+
+        r.heading = head;
+
+        // The ways this direction is made of. Its own pieces only: a step of
+        // (1,1,1) is (1,0,0) and (0,1,0) and (0,0,1) taken at once, and those
+        // three are the whole of what taking it apart can mean. Their
+        // opposites are not detours down the same road, they are a different
+        // road — a ray that takes them is not going where it was going, and
+        // the direction stops meaning anything.
+        const ways: number[][] = [head];
+
+        for (let axis = 0; axis < head.length; axis++) {
+          if (!head[axis]) continue;
+
+          const one = new Array(head.length).fill(0);
+          one[axis] = head[axis];
+
+          ways.push(one);
+        }
+
+        // Straight on unless it draws otherwise, and always the whole
+        // direction if there is nothing it can be broken into — an axial
+        // heading has no longer way round.
+        const way = ways.length > 2 && Math.random() < this.wander
+          ? ways[1 + Math.floor(Math.random() * (ways.length - 1))]
+          : head;
+
+        const length = Math.hypot(...way) || 1;
+
+        const chosen = this.along(r, way.map(v => v / length), 1);
+        if (chosen) r.moving = chosen;
+      }
+    }
 
     // Which way each ray was headed when the tick began. Read once, so that
     // acting in some order doesn't let the earlier actions decide what the
@@ -691,6 +1414,7 @@ class Graph {
     // tick: turning around, or cancelling, is the whole of what they do in
     // it.
     const collisions: Interaction[] = [];
+    const reflections: { r: Ray, a: Boundary }[] = [];
     const met = new Set<Ray>();
 
     for (const r of rays) {
@@ -699,11 +1423,56 @@ class Graph {
       const a = headed.get(r);
       if (!a) continue;
 
-      const b = a.target;
-      const r2 = b?.at;
+      const ahead = a.target?.at.node;
+      if (!ahead || ahead === r.node) continue;
 
-      // Is the far side coming back at us along this same connection?
-      if (!b || !r2 || r2.node === r.node || headed.get(r2) !== b || b.target !== a) continue;
+      // Arriving at a source. It carries no charge, so there is nothing to
+      // cancel with, and it is never space, so there is no moving through it
+      // — which leaves the only other thing anything does here: it turns
+      // around. A source reflects what reaches it, and it does so whether or
+      // not it is itself going anywhere, which is what makes it different
+      // from every other head-on case.
+      if (ahead.some(x => x.magnet)) {
+        met.add(r);
+        reflections.push({ r, a });
+        continue;
+      }
+
+      /**
+       * Whoever over there is coming back at us.
+       *
+       * Not necessarily along the same connection. On a line there is only
+       * one way to be coming the other way, and "head-on" can be checked by
+       * asking whether the far side is moving along this very boundary. With
+       * twenty-six directions two things can be moving into each other
+       * without being anywhere near opposite — one going along an edge, one
+       * through a corner — and by that test neither of them is meeting
+       * anything.
+       *
+       * Which is worse than a missed case: neither can move, because the
+       * other is in the way and isn't leaving, so two fronts that should pass
+       * through each other (cancelling as they go) instead stop dead against
+       * each other and stay there. Nothing happens, and nothing goes on
+       * happening.
+       *
+       * So the test is the thing itself: I am moving into where you are, and
+       * you are moving into where I am.
+       */
+      let r2: Ray | undefined;
+      let b: Boundary | undefined;
+
+      for (const other of ahead) {
+        if (met.has(other)) continue;
+
+        const bd = headed.get(other);
+        if (!bd || bd.target?.at.node !== r.node) continue;
+
+        r2 = other;
+        b = bd;
+        break;
+      }
+
+      if (!r2 || !b) continue;
 
       met.add(r); met.add(r2);
 
@@ -717,15 +1486,167 @@ class Graph {
       collisions.push({ kind: opposed ? 'annihilate' : 'turn', r, a, r2, b });
     }
 
+    /**
+     * Two charges arriving at the same point.
+     *
+     * Everything above asks whether two things are moving into each other,
+     * which is to say whether they are next to each other and pointed the
+     * opposite way. On a line that is the only way two things can meet, and
+     * it is where this rule came from.
+     *
+     * In three dimensions it is the exceptional way. Two shells sweeping
+     * through each other are made of rays coming in at all angles, and what
+     * those rays overwhelmingly do is converge on the SAME cell from
+     * different directions — never becoming neighbours, never pointed at each
+     * other, both pointed at the same third place. By the test above neither
+     * of them is meeting anything. They are resolved as traffic instead: one
+     * takes the place, the other waits, and two fields pass straight through
+     * one another with nothing to show for it.
+     *
+     * Which is the answer to why the fields overlap and never attract. It was
+     * never that the shells missed each other; it is that arriving together
+     * was not on the list of ways to meet.
+     *
+     * So it is now, and it is the same event: two opposite charges cancel,
+     * their points go, and what was behind each closes onto what was behind
+     * the other — the whole of it exactly as for two that met head-on, since
+     * `annihilate` cares about what is BEHIND the two rather than about how
+     * they came to be in the same place. Alike charges arriving together are
+     * left to traffic, as before: they cannot cancel, and nothing about
+     * wanting the same cell makes them turn around.
+     */
+    const arriving = new Map<node, Ray>();
+
+    for (const r of rays) {
+      if (met.has(r) || r.magnet) continue;
+
+      const a = headed.get(r);
+      const there = a?.target?.at.node;
+      if (!a || !there || there === r.node) continue;
+
+      const other = arriving.get(there);
+
+      if (!other) { arriving.set(there, r); continue; }
+
+      const b = headed.get(other)!;
+
+      const opposed =
+        (a.polarity === Polarity.Positive && b.polarity === Polarity.Negative) ||
+        (a.polarity === Polarity.Negative && b.polarity === Polarity.Positive);
+
+      met.add(r); met.add(other);
+
+      /**
+       * Alike, and both wanting the same place: they turn around.
+       *
+       * This used to be left to traffic — one takes the place, the other
+       * waits — and that is why two sources turning in step do nothing at
+       * all. They emit the same charge on the same tick, so their shells are
+       * the same polarity, so the two that meet in the middle are always
+       * alike. Never opposite, so nothing ever cancelled there; and merely
+       * queued rather than turned, so nothing ever came back either. The
+       * whole interaction between them was one of them waiting a tick.
+       *
+       * Turning is what actually happens: neither can cancel the other and
+       * neither can pass through it, which is the same situation as meeting
+       * head-on and has the same answer. And it is what makes the two spin
+       * cases the same thing in the end — each of them comes back into the
+       * opposite-charged shell following behind it, and cancels against that.
+       * The space between the two still gets eaten; it takes one more step
+       * about it.
+       */
+      if (!opposed) {
+        arriving.delete(there); // both going back the way they came
+
+        collisions.push({ kind: 'turn', r, a, r2: other, b });
+
+        continue;
+      }
+
+      arriving.delete(there); // both gone; the place is free again
+
+      collisions.push({ kind: 'annihilate', r, a, r2: other, b });
+    }
+
     const removed = new Set<node>();
 
+    // Only the last couple of ticks' worth is kept: an event is a thing that
+    // happened, not a thing that is there.
+    this.events = this.events.filter(e => e.tick > this._tickId - 2);
+
+    /**
+     * Whether an interaction worked out at the top of the tick is still an
+     * interaction by the time we get to it.
+     *
+     * They were all found against the world as it was when the tick began,
+     * and then they are carried out one after another — so each one is
+     * carried out against a world the ones before it have been changing.
+     * Annihilating splices two points out and hands what they were carrying
+     * to whatever was behind them, which can pick a ray up off the node it
+     * was on and leave it holding none of the boundaries it had.
+     *
+     * With one interface between two waves there is only ever one of these a
+     * tick and it cannot happen. With a field full of shells there are
+     * hundreds, and the ones that are stale get carried out anyway: rewiring
+     * `target`s across connections that have already been spliced, in exactly
+     * the region where everything is happening. What comes of it is a
+     * knot — points connected to points that no longer exist, rays that can
+     * no longer move, nothing more able to reach anything else — which looks
+     * from outside like the first wave interacting beautifully and every
+     * wave after it doing nothing at all.
+     *
+     * Every other phase of the tick already checks this (see `movers`). This
+     * one didn't.
+     */
+    const alive = (r: Ray, bd: Boundary) =>
+      !removed.has(r.node) && r.boundaries.includes(bd);
+
     for (const it of collisions) {
+      if (!alive(it.r, it.a) || !alive(it.r2, it.b)) continue;
+
+      // Noted before it is carried out — an annihilation removes both of the
+      // points it happened between, and afterwards there is nowhere to say it
+      // happened at.
+      this.mark(it.kind, it.r, it.r2);
+
       if (it.kind === 'annihilate') {
+        this.stats.annihilated++;
         this.annihilate(it.r, it.a, it.r2, it.b, removed);
       } else {
+        this.stats.turned++;
         this.turnAround(it.r, it.a);
         this.turnAround(it.r2, it.b);
       }
+    }
+
+    /**
+     * What arrives at a source is taken back into it.
+     *
+     * This used to turn around, on the grounds that a source can neither
+     * cancel a charge nor be moved through, so the only thing left was to
+     * come back the way it came. True as far as it goes, and it silts the
+     * source up: a reflected charge is still a charge, still sitting in one
+     * of the couple of dozen cells its source has to emit into, and free to
+     * wander straight back. A handful of them and the source is walled in by
+     * its own output — emitting nothing, ever again.
+     *
+     * A thing that writes charge onto space can take it off again; a source
+     * is a sink for the same reason it is a source. So the charge is simply
+     * undone — its polarity goes, it stops going anywhere, and it is space
+     * once more. No point is created or destroyed by it, and the source is
+     * left with somewhere to emit next tick, which is the whole condition of
+     * it going on being a source at all.
+     */
+    for (const { r, a } of reflections) {
+      if (!alive(r, a)) continue;
+
+      r.moving = undefined;
+      r.wave = undefined;
+      r.age = 0;
+      r.fanned = false;
+      r.heading = undefined;
+
+      for (const bd of r.boundaries) bd.polarity = Polarity.Neutral;
     }
 
     // 2. Everything else moves — read off the world as the collisions have
@@ -737,16 +1658,99 @@ class Graph {
       && !removed.has(r.node)
       && r.boundaries.includes(r.moving));
 
-    // Who is actually going anywhere. Being behind something that is leaving
-    // is fine; being behind something that turns out not to be leaving after
-    // all is not, so this settles rather than being decided in one pass.
     const blocked = new Set<Ray>();
+
+    /**
+     * A step is a step, whichever way it goes.
+     *
+     * The alternative is to charge a step its own length — a face costs 1, an
+     * edge √2, a corner √3 — which makes every direction advance the same
+     * distance per tick and the front of a pulse perfectly round. It is the
+     * tidier physics and it was what this did.
+     *
+     * But it makes the diagonals worse than useless. A corner connection
+     * exists precisely so that a point can get somewhere without going round
+     * two sides of a square, and charging it for the shortcut takes the
+     * shortcut away again: √3 of distance for √3 of time is the same speed as
+     * the long way round, so nothing is ever reached sooner by going
+     * diagonally and the twenty-six directions collapse back into six with
+     * extra steps.
+     *
+     * A step per tick regardless makes a diagonal a genuine shortcut, which
+     * is what gives a ray somewhere to get to faster than the lattice would
+     * otherwise allow. The price is that a pulse's front is a cube rather
+     * than a sphere — corners running out at 1.73 times the speed of faces —
+     * which is the true shape of "one move a tick" in this space and no
+     * longer worth hiding.
+     *
+     * Every direction in a lattice wired only to its faces costs 1 either
+     * way, so none of the earlier examples can tell the difference.
+     */
+    const cost = new Map<Ray, number>();
+
+    for (const r of movers) {
+      const price = r.mass ?? 1;
+
+      cost.set(r, price);
+      r.credit = (r.credit ?? 0) + 1;
+
+      // Not yet paid for. It is still going where it was going, and anything
+      // queued up behind it is still behind something that isn't leaving —
+      // which is exactly what `blocked` means, so it goes in there and the
+      // settling below carries it back down the queue.
+      if (r.credit + 1e-9 < price) blocked.add(r);
+    }
+
+    /**
+     * Who is actually going anywhere.
+     *
+     * Two conditions, settled together rather than one after the other,
+     * because each can undo the other's answer: something cleared to follow a
+     * mover has to be reconsidered if that mover turns out not to be going
+     * after all, whatever the reason it isn't.
+     *
+     * The first is traffic — being behind something that is leaving is fine,
+     * being behind something that only looked like it was leaving is not.
+     *
+     * The second is that a place can only be taken by one thing. Two points
+     * can both be moving into the same empty cell — on a line they can't, but
+     * with twenty-six directions to come from it is the ordinary case — and
+     * both are clear to go by every other test, since every other test is
+     * about whether the way ahead is clear and for both of them it is. Then
+     * they go: both put down the space they are leaving, the first to arrive
+     * consumes the cell, and the second finds the place it was moving to no
+     * longer exists and stops, having already emitted. One point made out of
+     * nothing, and one charge that has not moved.
+     *
+     * So the place is claimed before anything sets off, and whoever doesn't
+     * get it waits — which is what being behind something else amounts to,
+     * arrived at sideways.
+     */
+    const order = Universe.shuffle(movers);
+    const claimed = new Map<node, Ray>();
+
     for (let pass = 0; pass < movers.length; pass++) {
       let changed = false;
 
-      for (const r of movers) {
+      for (const r of order) {
         if (blocked.has(r)) continue;
         if (this.canMove(r, r.moving!, blocked)) continue;
+
+        blocked.add(r);
+        changed = true;
+      }
+
+      claimed.clear();
+
+      for (const r of order) {
+        if (blocked.has(r)) continue;
+
+        const there = r.moving!.target?.at.node;
+        if (!there) continue; // making its own way: nowhere yet to be claimed
+
+        const holder = claimed.get(there);
+
+        if (!holder) { claimed.set(there, r); continue; }
 
         blocked.add(r);
         changed = true;
@@ -755,7 +1759,14 @@ class Graph {
       if (!changed) break;
     }
 
-    const going = Universe.shuffle(movers.filter(r => !blocked.has(r)));
+    const going = order.filter(r => !blocked.has(r));
+
+    // Paid on going, not on being ready to: something held up in traffic
+    // keeps what it has saved and leaves the moment the way is clear.
+    for (const r of going) r.credit = (r.credit ?? 0) - (cost.get(r) ?? 1);
+
+    this.stats.moved = going.length;
+    this.stats.blocked = movers.length - going.length;
 
     // Two passes over the same rays. Everything puts down the space it is
     // leaving before anything goes anywhere, because the space one of them
@@ -764,13 +1775,34 @@ class Graph {
     // hasn't left yet.
     const vacated = new Map<node, number[]>();
 
-    for (const r of going) this.emitBehind(r, r.moving!, vacated);
+    // `claimed` says who is taking each place, so for anything leaving it
+    // also says who is coming up behind it — which is who its space goes to.
+    for (const r of going) this.emitBehind(r, r.moving!, vacated, claimed.get(r.node));
     for (const r of going) this.consumeAhead(r, r.moving!, removed, vacated);
 
     // Everything has gone where it was going, so the space left behind can
     // take the places that were left.
     for (const [nd, pos] of vacated)
-      if (!removed.has(nd)) this.gridPos.set(nd, pos);
+      if (!removed.has(nd)) this.setPos(nd, pos);
+
+    // And everything that stopped being anywhere during the tick stops being
+    // in the world, in one pass rather than one pass each.
+    if (removed.size) this.nodes = this.nodes.filter(n => !removed.has(n));
+
+    // Directions with nothing on the far side of them. A handful at the rim
+    // of the world is the world having a rim; a number that climbs tick after
+    // tick is the lattice being torn apart from the inside, which is what a
+    // path that stops shortening usually means.
+    this.stats.holes = 0;
+    for (const nd of this.nodes)
+      for (const ray of nd)
+        for (const bd of ray.boundaries)
+          if (!bd.target) this.stats.holes++;
+
+    this.route = this.shortestPath();
+    this.stats.path = Math.max(this.route.length - 1, 0);
+    this.history.push(this.stats.path);
+    if (this.history.length > 240) this.history.shift();
 
     this.invalidateLayout();
   }
@@ -822,8 +1854,16 @@ class Graph {
 
   /**
    * Lay a patch of points out on a lattice: one point per coordinate, each a
-   * single ray carrying one boundary per orthogonal neighbour present in the
-   * patch, wired to that neighbour's boundary facing back.
+   * single ray carrying one boundary per neighbour present in the patch,
+   * wired to that neighbour's boundary facing back.
+   *
+   * `neighbourhood` is which neighbours those are, and it is the whole of
+   * what "how many ways out of here are there" means. The default is the
+   * axes — the six faces of a cell in 3D — which is all anything moving along
+   * a line ever needs. Passing `directions(dims)` instead gives a point all
+   * 3^d − 1 of them, and that is what a source radiating in every direction
+   * at once requires: it can only emit into directions the space it is
+   * sitting in actually has.
    *
    * Returns everything a caller needs to say which way things move: the
    * points in coordinate order, a lookup by coordinate, and, per point, which
@@ -833,6 +1873,7 @@ class Graph {
     graph: Graph,
     coords: number[][],
     polarity: (coord: number[]) => Polarity,
+    neighbourhood?: number[][],
   ) {
     const key = (c: number[]) => c.join(",");
 
@@ -846,7 +1887,7 @@ class Graph {
       ray.boundaries = []; // drop the constructor's default boundary
 
       graph.nodes.push(nd);
-      graph.gridPos.set(nd, coord);
+      graph.setPos(nd, coord);
 
       nodes.push(nd);
       byCoord.set(key(coord), nd);
@@ -860,18 +1901,16 @@ class Graph {
       const m = new Map<node, Boundary>();
       facing.set(nd, m);
 
-      for (let axis = 0; axis < coord.length; axis++) {
-        for (const dir of [-1, 1]) {
-          const nc = coord.slice();
-          nc[axis] += dir;
-          const neighbour = byCoord.get(key(nc));
-          if (!neighbour) continue;
+      const around = neighbourhood ?? axes(coord.length);
 
-          const b = new Boundary(ray, graph);
-          b.polarity = polarity(coord);
-          ray.boundaries.push(b);
-          m.set(neighbour, b);
-        }
+      for (const step of around) {
+        const neighbour = byCoord.get(key(coord.map((v, i) => v + step[i])));
+        if (!neighbour) continue;
+
+        const b = new Boundary(ray, graph);
+        b.polarity = polarity(coord);
+        ray.boundaries.push(b);
+        m.set(neighbour, b);
       }
     }
 
@@ -1095,6 +2134,487 @@ class Graph {
   }
 
   /**
+   * The same two magnets, in three dimensions, radiating in every direction
+   * there is.
+   *
+   * `emitters` above is a flat experiment: two walls facing each other across
+   * a corridor, each writing a charge onto the one column of space in front
+   * of it. Everything that happens there happens along one axis, which is
+   * exactly why it is legible — and exactly why it can't answer the question
+   * it raises. Two things pulling on each other along the line between them
+   * can only ever move along that line. Nothing can go round anything.
+   *
+   * So: a ball of neutral space wired with all twenty-six directions (see
+   * `directions`), and in it two sources, each of which every `every` ticks
+   * writes its charge onto every point it is connected to and sends each one
+   * outward along the direction it was written in. With `spin` it puts out
+   * the opposite of what it put out last time, so what fills the ball is
+   * alternating shells rather than one thing over and over — and `phase` says
+   * whether the two sources are doing that in step or against each other,
+   * which decides whether the shells meeting in the middle are alike (and
+   * bounce) or opposite (and cancel, taking the space between the two
+   * sources with them).
+   *
+   * A pulse is a shell rather than a beam, and it stays one: see the Huygens
+   * step in `onTick`, without which it is twenty-six bullets that get further
+   * apart the further they go and almost never meet anything.
+   *
+   * Three things had to be decided to make this work at all, and each one is
+   * a claim rather than a convenience:
+   *
+   *  - A direction is one step of the lattice, not a unit of distance. Off
+   *    the axes those differ (`latticeStep`), and using the second is what
+   *    puts points at coordinates the lattice hasn't got.
+   *
+   *  - The body of a magnet is NEUTRAL. A charged one is cancelled by the
+   *    first opposite pulse that reaches it, and two magnets that annihilate
+   *    each other on contact have no chance to orbit anything. Neutral, it
+   *    can't cancel and can't be cancelled: a charge arriving head-on turns
+   *    it round instead, which is the only way anything here is ever pushed.
+   *
+   *  - What is drawn is the structure, not the coordinates (`relax`). Two
+   *    magnets attract in this model by the space between them being
+   *    annihilated and the connection closing up over the gap — which, drawn
+   *    by coordinate, is two bodies sitting exactly where they were with a
+   *    hole between them. Drawn by structure, a connection that now spans
+   *    three cells of nothing pulls its ends together, and attraction is
+   *    something you can watch instead of something you have to be told.
+   *
+   * `a.moving` and `b.moving` are each an initial direction — any of the
+   * twenty-six — and they are the interesting knob: head-on, apart, both the
+   * same way, opposite ways across the line between them. `phase` offsets one
+   * magnet's turning against the other's, so the two are spinning together or
+   * against each other.
+   */
+  static magnets(
+    a: MagnetSide,
+    b: MagnetSide,
+    {
+      // Far enough apart to have somewhere to go.
+      //
+      // Every direction counts as a step here, diagonals included, so two
+      // points `sep` either side of the origin are only 2·sep steps apart
+      // however far that is in coordinates — at four, eight steps, which the
+      // first few pulses eat through before there is anything to watch. What
+      // is left afterwards is two sources sitting next to each other not
+      // moving into one another, which is not them failing to attract, it is
+      // them having finished: neither is space, so neither can be moved
+      // through, and adjacent is as close as adjacent gets.
+      radius = 13,
+      sep = 8,
+      every = 1,
+      spin = true,
+      alone = false,
+      // Half the moves taken as one of the pieces the direction is made of:
+      // enough that a stream genuinely searches the space around it, while
+      // the whole diagonal being one option among its pieces keeps the drift
+      // pointing the way it set out.
+      wander = 0.5,
+
+      /**
+       * How many moves a charge lasts before it is space again.
+       *
+       * Without this the field has no way of losing anything except by
+       * cancelling or by reaching the rim, and both are far too slow: a
+       * source puts fifty charges a tick into a finite ball, the fan
+       * multiplies each of them, and nothing takes them out again. The space
+       * between the two fills — measurably, two hundred and thirty-three
+       * charges in a box of two hundred and twenty-five cells — and then
+       * every single thing in the model stops at once, because moving is
+       * trading places with space and there is no space left to trade with.
+       * Not a slowdown: the population, the distance between the sources and
+       * the connections of both of them go constant on the same tick and
+       * never change again.
+       *
+       * A range fixes the population instead of letting it climb: emitted per
+       * tick times how long each lasts, which is a number that can be kept
+       * well under what the ball holds. And it is the right shape of rule —
+       * a pulse spreading over a bigger and bigger shell is thinning as it
+       * goes, and at some distance it is no longer anything the space it is
+       * crossing can tell from space.
+       */
+      range = 14,
+      spread = 0.45,
+      // Far enough out that a shell has room for its fan, and close enough in
+      // that it has fanned before it gets to the other source — which is at
+      // `sep` from one and `sep` from the other, so halfway there.
+      fanAt = Math.max(Math.floor(sep / 2), 2),
+    }: {
+      radius?: number, sep?: number, every?: number,
+      spin?: boolean, alone?: boolean, wander?: number,
+      spread?: number, fanAt?: number, range?: number,
+    } = {},
+  ): Graph {
+    const graph = new Graph();
+    graph.dims = 3;
+    graph.ringRadius = 1; // the lattice is the picture; nothing to round off
+    graph.relax = true;
+    graph.wander = wander;
+    graph.sealed = true; // a closed ball: no edges to walk off, no tears
+
+    // A ball rather than a cube, so that "the same in every direction" is
+    // true of the space as well as of what is emitted into it.
+    const coords: number[][] = [];
+    for (let x = -radius; x <= radius; x++)
+      for (let y = -radius; y <= radius; y++)
+        for (let z = -radius; z <= radius; z++)
+          if (x * x + y * y + z * z <= radius * radius) coords.push([x, y, z]);
+
+    // Nothing is charged to begin with. Every charge in this universe comes
+    // out of one of the two sources, so there is nothing to confuse a pulse
+    // with — what you see moving was emitted.
+    const { byCoord, key } = Graph.wire(
+      graph, coords, () => Polarity.Neutral, directions(3),
+    );
+
+    // The camera is for the part of the ball that anything ever happens in,
+    // which is the part inside the absorbing edge below. Framing the whole
+    // ball instead leaves a fifth of the picture as lattice nothing can reach
+    // — and makes the shells look as though they vanish well short of the
+    // edge, when in fact they are running the whole way to it.
+    graph.focus = radius - 2;
+
+    // One source at the middle, or two facing each other across the gap.
+    const sides: [number[], MagnetSide][] = alone
+      ? [[[0, 0, 0], a]]
+      : [[[-sep, 0, 0], a], [[sep, 0, 0], b]];
+
+    sides.forEach(([coord, side], source) => {
+      const nd = byCoord.get(key(coord));
+      if (!nd) return;
+
+      const ray = nd[0];
+      ray.magnet = true;
+      ray.source = source;
+      ray.emits = side.emits;
+      ray.phase = side.phase ?? 0;
+      ray.mass = MAGNET_MASS;
+      ray.axis = side.axis;
+
+      // An initial direction is named as a lattice step and resolved to the
+      // boundary that actually goes that way, so a direction the point hasn't
+      // got lands on the nearest one it has rather than on nothing.
+      if (side.moving) {
+        const length = Math.hypot(...side.moving) || 1;
+        ray.moving = graph.along(ray, side.moving.map(v => v / length), 1);
+      }
+    });
+
+    graph.onTick = g => {
+      /**
+       * The edge of the world absorbs.
+       *
+       * Left to itself this universe does not run: it fills. Every pulse
+       * charges more space than the last, nothing ever gives its charge back
+       * (a charge only stops being one by meeting its opposite head-on), and
+       * within a dozen ticks every point in the ball is a charge going
+       * somewhere. At which point the sources have nothing left to emit
+       * into — a source can only write onto space, and there isn't any — so
+       * the pulsing stops, and what is left is a ball of stuff drifting
+       * outwards, dragging the frame after it as it goes.
+       *
+       * So a charge that reaches the edge is simply undone: its polarity goes
+       * and it stops going anywhere, which is to say it becomes space again.
+       * Space is neither created nor destroyed by it — the point is still
+       * there, it is just nobody. The ball stays the size it was, the
+       * frame stays where it was, and there is always somewhere for the next
+       * pulse to go, so the pulsing is continuous rather than a burst that
+       * silts the world up.
+       *
+       * It is a boundary condition and not a rule: it says what happens at
+       * the edge of the part we are looking at, which in a universe that
+       * didn't have an edge would be nothing at all.
+       */
+      // How far out the world is still live. Ordinarily the seeded ball —
+      // held two in from its edge, since the longest step here is a corner
+      // one at √3 ≈ 1.74 and nothing may step over the edge before it is
+      // reached. But sources that travel take the experiment with them:
+      // absorbing at a fixed distance from where they STARTED would undo
+      // their field the moment they had gone anywhere, and framing there
+      // would leave them sailing off the edge of a picture of the space they
+      // had left.
+      let reach = radius - 2;
+
+      for (const nd of g.nodes) {
+        if (!nd.some(r => r.magnet)) continue;
+
+        const pos = g.gridPos.get(nd);
+        if (pos) reach = Math.max(reach, Math.hypot(...pos) + 4);
+      }
+
+      g.focus = reach;
+
+      // Spent, or out at the rim: either way it stops being a charge and goes
+      // back to being somewhere. No point is made or destroyed by it — see
+      // `range` for why the second condition alone is not enough.
+      for (const nd of g.nodes) {
+        const pos = g.gridPos.get(nd);
+        if (!pos) continue;
+
+        const out = Math.hypot(...pos) >= reach;
+
+        for (const ray of nd) {
+          if (ray.magnet) continue;
+          if (!out && (ray.age ?? 0) < range) continue;
+
+          ray.moving = undefined;
+          ray.wave = undefined;
+          ray.heading = undefined;
+          ray.age = 0;
+          ray.fanned = false;
+          for (const bd of ray.boundaries) bd.polarity = Polarity.Neutral;
+        }
+      }
+
+      /**
+       * Huygens: every point of a front is itself a source of the front to
+       * come.
+       *
+       * Without this a pulse is twenty-six bullets. Moving is a swap with
+       * space, so the number of charges in a pulse is fixed at the number of
+       * directions the source had — while the shell they are supposed to make
+       * up needs more points the bigger it gets. Twenty-six points on a shell
+       * of radius one is a shell; twenty-six on a shell of radius ten is
+       * twenty-six rays with nothing in between, and two of those crossing
+       * almost never meet.
+       *
+       * So a charge in flight writes its polarity onto the neutral space
+       * around it that lies AHEAD — `spread` is how far round the front
+       * counts as ahead, as a dot product against where it is going — and
+       * each of those goes on in the direction it was written in. Nothing is
+       * created by this: a point that was space becomes a point that is a
+       * charge, and the population is what it was. What grows is how much of
+       * the space the wave passes through it is actually in.
+       */
+      const since = g._tickId - 1;
+
+      // Which way round the magnets are by now. `phase` is what makes this a
+      // property of each one rather than of the clock they share.
+      const pulse = Math.floor(since / every);
+
+      /*
+       * There was a rule here that cleared every cell touching a source, on
+       * the grounds that the space around a source belongs to it. It kept the
+       * sources emitting, and it is why the distance between them stops
+       * falling.
+       *
+       * A cell that is wiped clean every tick can never be holding a charge,
+       * so it can never be one of two that cancel, so it can never be
+       * destroyed. Each source was therefore wrapped in a shell of
+       * indestructible space, and two such shells with the sources inside
+       * them are a floor under how close the two can get — around six steps,
+       * which is exactly where it stopped. Nothing was wrong with the
+       * attraction; it had eaten everything it was allowed to eat.
+       *
+       * What the sources actually needed was not to be silted up by charges
+       * arriving back at them, and that is handled where it happens: a charge
+       * that moves into a source is absorbed by it (see `reflections` in
+       * `tick`). One rule, at the point of contact, and no protected region
+       * anywhere.
+       */
+
+      /**
+       * The sources emit FIRST, before the front below spreads.
+       *
+       * This is not a detail of ordering, it is what decides whether there is
+       * more than one pulse at all. A source can only write onto space, and
+       * the only space it ever has is the shell of points immediately around
+       * it — which is fresh every tick, because last tick's pulse moved off
+       * it and left new space behind. Spread the existing front first and
+       * that shell is claimed by the pulse that has just left it, tagged with
+       * the pulse before's name; the source then looks round, finds itself
+       * walled in by its own last emission, and emits nothing.
+       *
+       * What comes of that is one blob rather than a train of shells: a
+       * single wave id filling outwards, whose middle radius climbs much
+       * faster than one step a tick because it is thickening as well as
+       * travelling.
+       */
+      if (since % every === 0) {
+        for (const nd of [...g.nodes]) {
+          for (const ray of [...nd]) {
+            if (!ray.magnet) continue;
+
+            const here = g.gridPos.get(nd);
+            if (!here) continue;
+
+            // One point per place, and only places next door.
+            //
+            // A source emits onto the space AROUND it, which is the couple of
+            // dozen points a step away. What it must not do is emit down
+            // every connection it happens to hold: annihilation hands what
+            // the dying points were carrying to whatever was behind them, and
+            // a charge that turns round and cancels next to its own source
+            // leaves all of it there. The source accumulates connections
+            // reaching right across the world, emits down all of them, and
+            // each emission makes more charges to come back and leave more —
+            // which is a few dozen a tick becoming a few thousand, and a
+            // universe several times the size it was seeded at.
+            const written = new Set<node>();
+
+            const emits = ray.emits ?? Polarity.Positive;
+            const turned = spin && (pulse + (ray.phase ?? 0)) % 2 === 1;
+
+            const polarity = !turned ? emits
+              : emits === Polarity.Positive ? Polarity.Negative : Polarity.Positive;
+
+            // Every direction at once: the pulse is written onto everything
+            // the source is connected to, and each point of it leaves along
+            // the direction it was written in. A boundary with nothing on the
+            // far side is a direction with nowhere yet to put anything, so it
+            // waits — the frontier grows by things moving into it, not by the
+            // source shouting past the end of the world.
+            for (const bd of [...ray.boundaries]) {
+              const facing = bd.target;
+              if (!facing) continue;
+
+              const there = facing.at.node;
+              if (there === nd || written.has(there)) continue;
+
+              const at = g.gridPos.get(there);
+              if (!at) continue;
+
+              // Next door, and not down some connection that closed up over
+              // the space it used to pass through.
+              if (Math.max(...here.map((v, i) => Math.abs(at[i] - v))) !== 1) continue;
+
+              written.add(there);
+
+              // Only space can be told what to be. Anything already going
+              // somewhere is somebody, and so is the other magnet.
+              if (there.some(r => r.moving || r.magnet)) continue;
+
+              const dir = g.direction(bd);
+              if (!dir) continue;
+
+              // Which pole this direction is out of. A source with no axis
+              // has no poles and puts the same thing out everywhere; one with
+              // an axis puts `polarity` out of the half facing along it and
+              // the opposite out of the half facing back, with the ring
+              // exactly across it emitting nothing — an equator, which is
+              // what makes it a magnet and not a lamp.
+              let out = polarity;
+
+              if (ray.axis) {
+                const along = dir.reduce((sum, v, i) => sum + v * (ray.axis![i] ?? 0), 0);
+                if (Math.abs(along) < 1e-9) continue;
+
+                if (along < 0) out = polarity === Polarity.Positive
+                  ? Polarity.Negative
+                  : Polarity.Positive;
+              }
+
+              for (const r of there)
+                for (const x of r.boundaries) x.polarity = out;
+
+              facing.at.moving = g.along(facing.at, dir, 1);
+
+              // Which emission this is: one pulse per source per turn of it,
+              // which is what makes a pulse a thing with a surface.
+              facing.at.wave = pulse * sides.length + (ray.source ?? 0);
+
+              g.stats.emitted++;
+            }
+          }
+        }
+      }
+
+      /**
+       * Once each, and not straight away.
+       *
+       * Concentric shells one step apart, one per tick, moving one step per
+       * tick, are exactly the shells that tile a ball — so filling every one
+       * of them fills the ball completely, and a ball with no space in it is
+       * a ball in which nothing can move, since moving is trading places with
+       * space. That is not a near miss to be tuned around; unit shells at
+       * every radius sum to the volume they sit in, and it is why spreading
+       * on every tick froze the field solid.
+       *
+       * What is affordable is a fixed number of points per shell rather than
+       * a filled one: each ray fans out ONCE, into the ring of directions
+       * across its path, and its children never fan again. A pulse is then
+       * twenty-six rays and their fan — a couple of hundred points — however
+       * far out it gets.
+       *
+       * And it waits until `fanAt` before doing it. A shell of radius two has
+       * only a few dozen cells in it and is already as full as it can be, so
+       * fanning immediately puts every child straight into the crush around
+       * the source, walls the source in, and stops the emission. Waiting
+       * until the shell is wide enough to have somewhere to put them spends
+       * the same points where there is room for them — and where they are
+       * wanted, since what a shell is for is meeting the other one, and that
+       * happens out at the distance between the sources rather than next
+       * door.
+       */
+      if (spread <= 1) {
+        const front: { ray: Ray, dir: number[], polarity: Polarity, wave?: number }[] = [];
+
+        for (const nd of g.nodes) {
+          for (const ray of nd) {
+            if (ray.magnet || !ray.moving) continue;
+            if (ray.moving.polarity === Polarity.Neutral) continue;
+
+            // Age is counted in `tick`, once, for everything in flight.
+            if (ray.fanned || (ray.age ?? 0) < fanAt) continue;
+
+            const dir = g.direction(ray.moving);
+            if (!dir) continue;
+
+            ray.fanned = true;
+            front.push({ ray, dir, polarity: ray.moving.polarity, wave: ray.wave });
+          }
+        }
+
+        for (const { ray, dir, polarity, wave } of front) {
+          for (const bd of ray.boundaries) {
+            const facing = bd.target;
+            if (!facing) continue;
+
+            const there = facing.at.node;
+            if (there === ray.node) continue;
+            if (there.some(r => r.moving || r.magnet)) continue;
+
+            const d = g.direction(bd);
+            if (!d) continue;
+
+            // BESIDE us — not behind, and not ahead either.
+            //
+            // Behind is everywhere the wave has already been, and filling
+            // that in is a wave that never leaves anywhere. Ahead is where we
+            // are going ourselves, and filling that in is a wave that thickens
+            // into a solid ball instead of staying a surface. What is left is
+            // the ring of directions across our path, which is the front
+            // itself: the shell grows sideways, into the room a bigger shell
+            // has that a smaller one didn't.
+            const along = d.reduce((sum, v, i) => sum + v * dir[i], 0);
+            if (along < spread || along > 0.9) continue;
+
+            for (const r of there)
+              for (const x of r.boundaries) x.polarity = polarity;
+
+            // And it leaves in the direction between ours and its own, so the
+            // front fans out as it goes rather than travelling as a sheaf of
+            // parallel lines. Twenty-six directions repeatedly split between
+            // is how a lattice with twenty-six of them makes a round shell.
+            const bias = dir.map((v, i) => v + d[i]);
+
+            facing.at.moving = g.along(facing.at, bias, 1);
+            facing.at.wave = wave; // still the same pulse, spread wider
+
+            // Already fanned, as far as it is concerned. Otherwise each child
+            // fans in turn and the shell doubles every tick until it has
+            // filled everything, which is where this started.
+            facing.at.fanned = true;
+            facing.at.age = ray.age;
+          }
+        }
+      }
+    };
+
+    return graph;
+  }
+
+  /**
    * The smallest possible universe: two spatial points A—B, one ray each,
    * joined by a mutual boundary pair. Every permutation of (polarity,
    * movement direction) over the two sides is one isolated experiment in the
@@ -1162,7 +2682,7 @@ class Graph {
       rights.push(right);
 
       graph.nodes.push(nd);
-      graph.gridPos.set(nd, [i - (n - 1) / 2, 0, 0]);
+      graph.setPos(nd, [i - (n - 1) / 2, 0, 0]);
     });
 
     for (let i = 0; i + 1 < n; i++) {
@@ -1188,6 +2708,12 @@ class Graph {
     graph.ringRadius = this.ringRadius;
     graph._tickId = this._tickId;
     graph.onTick = this.onTick;
+    graph.relax = this.relax;
+    graph.wander = this.wander;
+    graph.sealed = this.sealed;
+    graph.focus = this.focus;
+    graph.events = this.events.map(e => ({ ...e, at: e.at.slice() }));
+    graph.history = this.history.slice();
 
     const rays = new Map<Ray, Ray>();
     const boundaries = new Map<Boundary, Boundary>();
@@ -1200,6 +2726,17 @@ class Graph {
         r.id = ray.id;
         r.node = copy;
         r.boundaries = [];
+        r.magnet = ray.magnet;
+        r.emits = ray.emits;
+        r.phase = ray.phase;
+        r.source = ray.source;
+        r.wave = ray.wave;
+        r.credit = ray.credit;
+        r.mass = ray.mass;
+        r.age = ray.age;
+        r.fanned = ray.fanned;
+        r.axis = ray.axis;
+        r.heading = ray.heading?.slice();
         rays.set(ray, r);
         copy.push(r);
 
@@ -1216,7 +2753,7 @@ class Graph {
       graph.nodes.push(copy);
 
       const pos = this.gridPos.get(nd);
-      if (pos) graph.gridPos.set(copy, pos.slice());
+      if (pos) graph.setPos(copy, pos.slice());
     }
 
     // Second pass — every boundary now exists, so the references between
@@ -1239,12 +2776,252 @@ class Graph {
   private dirty = true;
 
   get layout(): Map<node, Vec> {
+    // A relaxed layout is never done: it eases towards the shape the
+    // connections are asking for, and is recomputed every time it is looked
+    // at rather than once per tick, so what the structure does to it is
+    // something that happens over frames instead of in one jump.
+    if (this.relax) return this.relaxedLayout();
+
     if (!this.layoutCache || this.dirty) {
       this.layoutCache = this.sphereLayout({ scale: LATTICE_STEP });
       this.dirty = false;
     }
 
     return this.layoutCache;
+  }
+
+  /**
+   * The last relaxed layout, which the next one starts from — and, with it,
+   * the working set the solve runs on.
+   *
+   * This is cached across frames on purpose. The connections only change when
+   * the world does, which is once a tick, while the solve runs every frame:
+   * rebuilding the list of them sixty times a second means allocating some
+   * eighty thousand of them sixty times a second, for a list that was already
+   * correct. So the structure is rebuilt when the structure changes, and in
+   * between, the passes run over what is already there — mutating the
+   * position vectors in place, which is also why the map handed to the
+   * renderer doesn't have to be rebuilt either.
+   */
+  private relaxed?: {
+    at: Map<node, Vec>;
+    P: Vec[];
+    links: { i: number, j: number, rest: number, weight: number }[];
+    correction: Vec[];
+    asked: number[];
+  };
+
+  /**
+   * Where the points are, if where they are is decided by what they are
+   * connected to.
+   *
+   * Every connection wants to be one step long — one step in ITS direction,
+   * so a face connection wants 1 and a corner connection √3, which is what
+   * keeps a lattice wired in all twenty-six directions from crumpling. A
+   * connection whose two ends are three cells apart in coordinates still
+   * wants to be one step, because the two cells in between were annihilated
+   * and are not anywhere any more. That single sentence is the gravity in
+   * this model: destroyed space is shorter space, and shorter space pulls
+   * whatever is on either side of it together.
+   *
+   * It is a positional solve rather than a force integration — each pass
+   * moves every point by the average of what its connections are asking of
+   * it — so there is no velocity to blow up and no timestep to tune. It
+   * cannot overshoot at stiffness ≤ 1, which matters when the thing being
+   * solved gains and loses points every tick.
+   */
+  relaxedLayout(
+    {
+      scale = LATTICE_STEP,
+      iterations = 3,
+      stiffness = 0.65,
+      adjacency = 12,
+    }: {
+      scale?: number, iterations?: number,
+      stiffness?: number, adjacency?: number,
+    } = {},
+  ): Map<node, Vec> {
+    const dims = this.dims;
+
+    if (!this.dirty && this.relaxed) {
+      this.solve(this.relaxed, iterations, stiffness, dims);
+
+      return this.relaxed.at;
+    }
+
+    this.dirty = false;
+
+    const previous = this.relaxed?.at;
+    const list = this.nodes;
+
+    const index = new Map<node, number>();
+    list.forEach((nd, i) => index.set(nd, i));
+
+    const P: Vec[] = new Array(list.length);
+    const fresh: number[] = [];
+
+    for (let i = 0; i < list.length; i++) {
+      const was = previous?.get(list[i]);
+
+      if (was) { P[i] = was; continue; }
+
+      fresh.push(i);
+      const grid = this.gridPos.get(list[i]);
+      P[i] = grid && grid.length ? grid.map(v => v * scale) : new Array(dims).fill(0);
+    }
+
+    // A point that has only just come into being appears where its neighbours
+    // already are, one step off them in the direction its coordinate says it
+    // lies — not at the coordinate itself. It was put down in space that has
+    // already been bent, and dropping it in at the unbent position would be a
+    // kick delivered every time anything moves.
+    const isFresh = new Set(fresh);
+
+    for (const i of fresh) {
+      const here = this.gridPos.get(list[i]);
+      if (!here) continue;
+
+      const sum = new Array(dims).fill(0);
+      let n = 0;
+
+      for (const ray of list[i]) {
+        for (const bd of ray.boundaries) {
+          const other = bd.target?.at.node;
+          if (!other) continue;
+
+          const j = index.get(other);
+          if (j === undefined || isFresh.has(j)) continue;
+
+          const there = this.gridPos.get(other);
+          if (!there) continue;
+
+          const step = latticeStep(here.map((v, k) => v - there[k]));
+          if (!step) continue;
+
+          for (let k = 0; k < dims; k++) sum[k] += P[j][k] + step[k] * scale;
+          n++;
+        }
+      }
+
+      if (n) P[i] = sum.map(v => v / n);
+    }
+
+    /**
+     * Every connection, once, with the length it is asking for and how loudly
+     * it asks. Built up front rather than per pass, since it is the same list
+     * every pass.
+     *
+     * `adjacency` is how much more a connection that spans destroyed space
+     * counts than an ordinary one, per cell it spans. At 1 they count the
+     * same, and the picture is the honest compromise: two sources that have
+     * eaten their way to each other are held apart anyway, because each of
+     * them has twenty-six other connections all quite happy where they are,
+     * and one voice against twenty-six moves nothing.
+     *
+     * Above 1 the picture takes a side. It says that a connection standing
+     * where sixteen points used to be is a stronger claim about what is next
+     * to what than a connection that has never had anything happen to it —
+     * that adjacency arrived at by destroying everything in between should
+     * win against the undisturbed shape of the lattice around it.
+     *
+     * That is a decision about the drawing and not a law of the model, and it
+     * is worth being plain that nothing derives it. What it buys is a picture
+     * in which two things that have become neighbours are drawn as
+     * neighbours, which is the thing the whole exercise is trying to show and
+     * which the even-handed version will not show at any zoom.
+     */
+    const links: { i: number, j: number, rest: number, weight: number }[] = [];
+
+    for (let i = 0; i < list.length; i++) {
+      const here = this.gridPos.get(list[i]);
+
+      for (const ray of list[i]) {
+        for (const bd of ray.boundaries) {
+          const other = bd.target?.at.node;
+          if (!other) continue;
+
+          const j = index.get(other);
+          if (j === undefined || j <= i) continue; // once per pair
+
+          const there = this.gridPos.get(other);
+          const offset = here && there ? here.map((v, k) => v - there[k]) : undefined;
+          const step = offset && latticeStep(offset);
+
+          // How far apart the two ends still are in coordinates — which, for
+          // a connection, is how much has been taken out from between them.
+          const spans = offset ? Math.max(...offset.map(Math.abs)) : 1;
+
+          links.push({
+            i, j,
+            rest: (step ? Math.hypot(...step) : 1) * scale,
+            weight: 1 + Math.max(spans - 1, 0) * adjacency,
+          });
+        }
+      }
+    }
+
+    const at = new Map<node, Vec>();
+    for (let i = 0; i < list.length; i++) at.set(list[i], P[i]);
+
+    this.relaxed = {
+      at, P, links,
+      correction: list.map(() => new Array(dims).fill(0)),
+      asked: new Array(list.length).fill(0),
+    };
+
+    this.solve(this.relaxed, iterations, stiffness, dims);
+
+    return at;
+  }
+
+  // One or more passes of the solve above, over a working set that is already
+  // built. Positions are moved in place, so everything holding a reference to
+  // one — the map the renderer reads, above all — is up to date by the time
+  // this returns.
+  private solve(
+    { P, links, correction, asked }: NonNullable<Graph['relaxed']>,
+    iterations: number,
+    stiffness: number,
+    dims: number,
+  ) {
+    for (let pass = 0; pass < iterations; pass++) {
+      for (let i = 0; i < P.length; i++) {
+        correction[i].fill(0);
+        asked[i] = 0;
+      }
+
+      for (const { i, j, rest, weight } of links) {
+        let lengthSq = 0;
+
+        for (let k = 0; k < dims; k++) {
+          const d = P[j][k] - P[i][k];
+          lengthSq += d * d;
+        }
+
+        const length = Math.sqrt(lengthSq);
+        if (length < 1e-6) continue;
+
+        // Half the error each, so neither end is privileged over the other.
+        const pull = ((length - rest) / length) * 0.5 * stiffness * weight;
+
+        for (let k = 0; k < dims; k++) {
+          const d = (P[j][k] - P[i][k]) * pull;
+          correction[i][k] += d;
+          correction[j][k] -= d;
+        }
+
+        // A weighted average, so a connection that counts for more moves its
+        // ends more — rather than a louder constraint simply overshooting,
+        // which is what an unweighted divisor would turn it into.
+        asked[i] += weight;
+        asked[j] += weight;
+      }
+
+      for (let i = 0; i < P.length; i++) {
+        const n = asked[i] || 1;
+        for (let k = 0; k < dims; k++) P[i][k] += correction[i][k] / n;
+      }
+    }
   }
 
   /**
@@ -1485,6 +3262,64 @@ class Ray {
   // of that boundary's connection (moving.target's node).
   moving?: Boundary;
 
+  // A source: something that goes on writing a charge onto the space around
+  // it, tick after tick, rather than being written once and then only ever
+  // interacting. Nothing in the rules makes one — the rules have no way to
+  // begin anything — so it is the seed's doing, and the only thing the rules
+  // have to know about it is that it is never mistaken for space.
+  //
+  // `emits` is the polarity it puts out, and `phase` offsets its turning
+  // against the other sources, so two magnets can be spinning together or
+  // against each other.
+  magnet?: boolean;
+  emits?: Polarity;
+  phase?: number;
+
+  // Which way round it is: `emits` out of the half pointing this way, the
+  // opposite out of the half pointing back, nothing across the middle. Absent
+  // for a source with no sides, which puts the same thing out everywhere.
+  axis?: number[];
+
+  // What a step costs this ray, as a multiple of the step's own length. One
+  // for everything the rules make; more for a source, which is the only thing
+  // here heavy enough to be worth pushing. See `MAGNET_MASS`.
+  mass?: number;
+
+  // Which source, for a source; which emission of it, for a charge that came
+  // out of one. The dynamics never read either — a charge is a charge and
+  // what it does depends on nothing but its polarity and where it is going.
+  // It is bookkeeping for the picture: what makes one pulse one pulse, and
+  // therefore something that can be drawn as a surface instead of as a few
+  // thousand unrelated points.
+  source?: number;
+  wave?: number;
+
+  // How many ticks a charge has been in flight, and whether it has yet fanned
+  // out into the room a bigger shell has that a smaller one hadn't. See the
+  // Huygens step in `Graph.magnets`.
+  age?: number;
+  fanned?: boolean;
+
+  /**
+   * The way it is going in the large, which is not the same as the step it is
+   * taking this tick.
+   *
+   * Wandering takes a direction apart — a ray heading along (1,1,1) may spend
+   * this move going (1,0,0) instead — and without somewhere to keep the whole
+   * direction, taking it apart destroys it: the step becomes the direction,
+   * its only piece is itself, and the ray is committed to an axis forever
+   * after one unlucky move. Kept here, the pieces are only ever a detour, and
+   * the way it was going is still there to come back to.
+   */
+  heading?: number[];
+
+  // How much of its next step it has paid for. A step costs its own length
+  // and a tick pays one, so a ray going along an axis is always ready and one
+  // going through a corner is ready five times in nine — which is what makes
+  // every direction travel at the same speed. See the movement half of
+  // `tick`.
+  credit?: number;
+
   constructor(
     public node: node, // reassignable: nodes merge on annihilation
     graph: Graph
@@ -1572,6 +3407,24 @@ function initialPosition(
 // is passed as a bare boolean rather than a count.
 const DEFAULT_STEPS = 8;
 
+/**
+ * How much of the universe is worth drawing.
+ *
+ * `lattice` draws all of it: every boundary of every point, one stroke each.
+ * That is the right thing for a universe of a dozen points, where each one is
+ * the subject.
+ *
+ * `field` is for the ones with thousands. A point wired in all twenty-six
+ * directions has twenty-six boundaries, and a ball of a thousand such points
+ * has some thirteen thousand connections — drawn one stroke at a time it is
+ * both unaffordable and a solid grey fog. So the space is drawn as its
+ * axis-aligned connections only, batched into a single path, and everything
+ * on top of it is only what is HAPPENING: the sources, and the charges in
+ * flight. The lattice bending is then something you can see, because there is
+ * a lattice to see rather than a fill.
+ */
+type RenderMode = 'lattice' | 'field';
+
 export interface CalculusVisualizationProps {
   // The universe to run. A factory, not an instance: it is called again on
   // every reset, so each cycle starts from a freshly seeded graph.
@@ -1594,6 +3447,13 @@ export interface CalculusVisualizationProps {
   // costs a few hundred gradient fills a frame, times however many of these
   // are on the page).
   density?: boolean;
+
+  mode?: RenderMode;
+
+  // Seconds per tick. The default is slow enough to read one interaction at a
+  // time; a universe whose interest is in what it does over a hundred ticks
+  // wants to be quicker than that.
+  interval?: number;
 }
 
 /**
@@ -1610,6 +3470,7 @@ const GraphView = ({
   graph: current,
   animate = false,
   density = true,
+  mode = 'lattice',
   onFrame,
 }: {
   // Read afresh every frame, so a reset that swaps the whole graph out is
@@ -1617,6 +3478,7 @@ const GraphView = ({
   graph: () => Graph;
   animate?: boolean;
   density?: boolean;
+  mode?: RenderMode;
   onFrame?: (dt: number) => void;
 }) => {
   const canvasRef = useRef(null);
@@ -1739,6 +3601,7 @@ const GraphView = ({
     function draw() {
       const cam = camRef.current;
       const graph = latest.current.current();
+      const field = mode === 'field';
 
       const w = canvas.clientWidth, h = canvas.clientHeight;
 
@@ -1754,13 +3617,19 @@ const GraphView = ({
 
       const layout = graph.layout;
 
+      // What the camera measures itself against. Everything, unless the
+      // universe has said which part of itself is the subject — see `focus`.
+      const framed = graph.focus === undefined
+        ? [...layout]
+        : [...layout].filter(([nd]) => graph.inFocus(nd));
+
       // Raw world extent (unprojected) — this is what the base pixel scale
       // tracks, deliberately independent of camera distance/perspective, so
       // there's no feedback loop between "how far the camera has dollied" and
       // "how much of the grid fits on screen". A real camera doesn't refit
       // its FOV to guarantee everything stays visible as it moves closer.
       let worldExtent = 1e-6;
-      for (const [node, pos] of layout) {
+      for (const [node, pos] of framed) {
         const r = Math.hypot(...pos);
         if (r > worldExtent) worldExtent = r;
       }
@@ -1775,7 +3644,7 @@ const GraphView = ({
       // rather than snapping.
       const lo = [Infinity, Infinity, Infinity];
       const hi = [-Infinity, -Infinity, -Infinity];
-      for (const [, pos] of layout) {
+      for (const [, pos] of framed) {
         for (let k = 0; k < 3; k++) {
           const v = pos[k] || 0;
           if (v < lo[k]) lo[k] = v;
@@ -1853,7 +3722,7 @@ const GraphView = ({
         if (y > hiY) hiY = y;
       };
       for (const [n, p] of projected) {
-        if (p.clipped) continue;
+        if (p.clipped || !graph.inFocus(n)) continue;
         consider(p.x, p.y);
 
         for (const ray of n) {
@@ -1921,25 +3790,74 @@ const GraphView = ({
       // Connections — one faint line per boundary link (deduped), following
       // the actual graph structure, so merged and newly-created nodes read
       // correctly wherever they sit.
-      ctx.strokeStyle = "rgba(140,150,180,0.3)";
-      ctx.lineWidth = 2.2;
+      //
+      // In `field` mode this is the whole of how space is drawn, and it is
+      // one path stroked once rather than a stroke per connection — a lattice
+      // wired in every direction has too many of them for anything else. Only
+      // the axis-aligned ones are taken: the diagonals are just as real, but
+      // drawing all twenty-six through every point is a grey fill you can
+      // read nothing off, where three lines through every point is a grid
+      // whose bending is the thing worth seeing.
+      // Faint enough to be the paper rather than the drawing: what the
+      // lattice is here for is to be bent, and reading a bend needs only
+      // enough of a grid to see it against.
+      ctx.strokeStyle = field ? "rgba(124,136,176,0.08)" : "rgba(140,150,180,0.3)";
+      ctx.lineWidth = field ? 1 : 2.2;
       const idxOf = new Map<node, number>();
       graph.nodes.forEach((nd, i) => idxOf.set(nd, i));
-      const drawnEdge = new Set<string>();
+
+      if (field) ctx.beginPath();
       for (const nd of graph.nodes) {
         const a = pts.get(nd);
         if (!a || a.clipped) continue;
+
+        // Outside the frame there is lattice nothing can reach — the edge
+        // absorbs before anything gets there — so it is a few thousand
+        // segments a frame drawn beyond the edge of the picture.
+        if (field && !graph.inFocus(nd)) continue;
+
         for (const ray of nd) {
           for (const bd of ray.boundaries) {
             const other = bd.target?.at.node;
             if (!other || other === nd) continue;
-            const ia = idxOf.get(nd)!, ib = idxOf.get(other)!;
-            const ek = ia < ib ? ia + "-" + ib : ib + "-" + ia;
-            if (drawnEdge.has(ek)) continue;
-            drawnEdge.add(ek);
+
+            // Each connection drawn once, from its lower-numbered end. This
+            // was a set of "ia-ib" strings, which on a lattice wired in
+            // twenty-six directions is a couple of hundred thousand strings
+            // built and hashed every frame to answer a question two integers
+            // already answer.
+            if (idxOf.get(nd)! > idxOf.get(other)!) continue;
+
             const b = pts.get(other);
             if (!b || b.clipped) continue;
             if (!onScreen(a) && !onScreen(b)) continue;
+
+            if (field) {
+              const from = graph.gridPos.get(nd), to = graph.gridPos.get(other);
+              if (!from || !to) continue;
+
+              // One step, along an axis. Anything longer is a connection that
+              // has closed up over space that was annihilated out from
+              // between its two ends — real, and the reason the two ends are
+              // now near each other, but it is not an event and must not look
+              // like one. They accumulate: every cancellation there has ever
+              // been leaves one behind, permanently, so marking them out puts
+              // a growing web of bright lines over the picture that reads as
+              // things happening everywhere at once and never stopping.
+              //
+              // What they do is already visible without drawing them, because
+              // the layout is solved against them (`relaxedLayout`): they pull
+              // their ends together, and that pulling IS the attraction. So
+              // they are left to act rather than shown acting.
+              const off = from.map((v, i) => to[i] - v);
+              if (off.filter(v => v !== 0).length !== 1) continue;
+              if (Math.max(...off.map(Math.abs)) > 1) continue;
+
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              continue;
+            }
+
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -1947,6 +3865,8 @@ const GraphView = ({
           }
         }
       }
+
+      if (field) ctx.stroke();
 
       // Gravity-flow density cloud — the warm glow that fills the dense
       // core. A continuous scalar potential sampled on a real 3D grid,
@@ -2034,13 +3954,276 @@ const GraphView = ({
         ctx.globalCompositeOperation = prevComposite;
       }
 
+      /**
+       * The way from one source to the other, as it currently runs.
+       *
+       * Two sources that have eaten the space between them end up one step
+       * apart along ONE route, and as far apart as they ever were along every
+       * other — because what a pulse meeting a pulse destroys is a line, not
+       * a region. That structure has no faithful drawing in three dimensions:
+       * asked to put two points both next to each other and far apart, a
+       * layout can only compromise, and that compromise is the dimple you see
+       * instead of two things arriving.
+       *
+       * So the closeness is drawn as what it actually is — the chain of
+       * points you would have to pass through to get from one source to the
+       * other. Long and wandering to begin with, a short bright link between
+       * two neighbours by the end. That shortening IS the attraction, and it
+       * is visible here whether or not the two are ever drawn near each
+       * other.
+       */
+      if (field && graph.route.length > 1) {
+        const chain = graph.route
+          .map(nd => pts.get(nd))
+          .filter(p => p && !p.clipped) as { x: number, y: number }[];
+
+        if (chain.length > 1) {
+          ctx.strokeStyle = "rgba(255,214,66,0.45)";
+          ctx.lineWidth = 2.4;
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(chain[0].x, chain[0].y);
+          for (let i = 1; i < chain.length; i++) ctx.lineTo(chain[i].x, chain[i].y);
+          ctx.stroke();
+
+          ctx.fillStyle = "rgba(255,232,150,0.8)";
+          for (const p of chain) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.lineCap = "butt";
+        }
+      }
+
+      /**
+       * Wavefronts, drawn as what they actually are.
+       *
+       * A pulse is hundreds of charges and drawing them one at a time is a
+       * snowstorm — least of all can you tell where one pulse ends and the
+       * next begins, which is the thing worth seeing when two sources are
+       * turning over and putting out alternating shells. So each is drawn as
+       * one translucent surface, coloured by the charge it carries.
+       *
+       * Not as a sphere, though. A sphere is a claim about the space it is
+       * drawn in — that a pulse is the same distance out in every direction,
+       * from a centre — and it is exactly the claim this picture exists to
+       * deny. Space here is warped by what has been destroyed in it: the
+       * layout is solved against the connections rather than laid out on a
+       * grid, so a shell that left its source evenly is drawn dented wherever
+       * the space it is crossing has been eaten. Fitting a circle to that
+       * puts a ring somewhere near the points and centred on nothing in
+       * particular — which is why the rings did not appear to come out of
+       * their source.
+       *
+       * So the surface is taken from the points themselves: the outline that
+       * encloses them as they are actually drawn. It has no centre and no
+       * radius and assumes no shape. It surrounds its pulse — dented where
+       * the pulse is dented, and starting at the source because that is where
+       * the pulse starts.
+       */
+      if (field) {
+        /**
+         * Grouped by pulse AND by charge, not by pulse alone.
+         *
+         * A source with poles puts opposite charges out of its two halves in
+         * the same breath, so one pulse is two things: positive over here and
+         * negative over there. Collected under the pulse alone they are one
+         * set of points, drawn as one outline, in whichever of the two
+         * charges happened to be looked at first — a magnet drawn as a plain
+         * ring of one polarity, with the entire fact that it has sides thrown
+         * away in the grouping.
+         *
+         * Split by charge as well and each half gets its own surface in its
+         * own colour: two lobes leaving together, one warm and one cold, with
+         * the equator between them that emits nothing.
+         */
+        const waves = new Map<string, {
+          id: number, at: { x: number, y: number }[], depth: number, polarity: Polarity,
+        }>();
+
+        for (const nd of graph.nodes) {
+          // A pulse that has left the space we set up has left the picture
+          // with it. Drawn anyway, every shell ever emitted is still on
+          // screen as an ever-larger outline, and the thing being watched is
+          // behind forty of them.
+          if (!graph.inFocus(nd)) continue;
+
+          for (const ray of nd) {
+            if (ray.magnet || !ray.moving || ray.wave === undefined) continue;
+
+            const p = pts.get(nd);
+            if (!p || p.clipped) continue;
+
+            const polarity = ray.moving.polarity;
+            const key = `${ray.wave}|${polarity}`;
+
+            let wave = waves.get(key);
+            if (!wave) waves.set(key, wave = { id: ray.wave, at: [], depth: 0, polarity });
+
+            wave.at.push({ x: p.x, y: p.y });
+            wave.depth += p.depth;
+            break; // one point per point, however many rays are sitting on it
+          }
+        }
+
+        // Pulses go out in order, so the largest id is the newest, and a
+        // handful before it are the ones still in flight. Anything older than
+        // that is a straggler — a few charges that jammed against each other
+        // long ago and have been sitting there since, still carrying the id
+        // of the pulse they set out with. Drawn, they are a shell that never
+        // leaves.
+        let newest = -Infinity;
+        for (const wave of waves.values()) if (wave.id > newest) newest = wave.id;
+
+        /**
+         * How far back to keep drawing, and it is a question about reading
+         * rather than about honesty.
+         *
+         * Every pulse still in flight is really there, and drawing all of
+         * them puts a dozen nested outlines around each source with a dozen
+         * more from the other laid over the top. Nothing in that is wrong and
+         * none of it can be followed.
+         *
+         * What has to survive the trim is that the pulses ALTERNATE, and that
+         * takes about as many of them as it takes to see warm, cold, warm —
+         * half a dozen, fading out with age so the sequence reads as a train
+         * going outwards rather than as a set of rings that happen to be
+         * nested. The older ones are still in the world doing their work; the
+         * picture just stops insisting on them.
+         */
+        const LIVE = 12; // ids — six ticks' worth, across two sources
+
+        // The outline enclosing a set of points, as drawn. Andrew's monotone
+        // chain: sort, then walk once along the bottom and once back along
+        // the top, dropping any point the walk turns the wrong way at.
+        const outline = (at: { x: number, y: number }[]) => {
+          const p = at.slice().sort((a, b) => a.x - b.x || a.y - b.y);
+          const turn = (o: typeof p[0], a: typeof p[0], b: typeof p[0]) =>
+            (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+
+          const half = (source: typeof p) => {
+            const out: typeof p = [];
+
+            for (const q of source) {
+              while (out.length >= 2 && turn(out[out.length - 2], out[out.length - 1], q) <= 0) out.pop();
+              out.push(q);
+            }
+
+            out.pop();
+
+            return out;
+          };
+
+          return half(p).concat(half(p.slice().reverse()));
+        };
+
+        const shells = [...waves.values()]
+          .filter(wave => wave.id >= newest - LIVE && wave.at.length >= 3)
+          .map(wave => ({
+            hull: outline(wave.at),
+            depth: wave.depth / wave.at.length,
+            polarity: wave.polarity,
+            // 0 for the pulse just emitted, 1 for the oldest still drawn.
+            age: Math.min((newest - wave.id) / LIVE, 1),
+          }))
+          .filter(shell => shell.hull.length >= 3)
+          // Far ones first, so a near shell reads as being in front of one
+          // behind it rather than the two just adding up.
+          .sort((a, b) => b.depth - a.depth);
+
+        const prev = ctx.globalCompositeOperation;
+        ctx.globalCompositeOperation = "lighter";
+
+        for (const shell of shells) {
+          const tint = shell.polarity === Polarity.Positive ? "255,122,69"
+            : shell.polarity === Polarity.Negative ? "61,220,255"
+              : "150,157,178";
+
+          // Drawn as a smooth closed curve rather than as the corners it was
+          // computed from. A surface through a few dozen points is a surface;
+          // the straight lines between them are an artefact of there being
+          // finitely many, and drawing those says the shell has flat facets
+          // and sharp edges, which is a claim about it that nothing supports.
+          //
+          // Catmull-Rom: each span is bent by where the points on either side
+          // of it are, so the curve passes through every point and leaves it
+          // heading towards the next one.
+          const h = shell.hull;
+          const at = (i: number) => h[(i % h.length + h.length) % h.length];
+
+          ctx.beginPath();
+          ctx.moveTo(h[0].x, h[0].y);
+
+          for (let i = 0; i < h.length; i++) {
+            const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+
+            ctx.bezierCurveTo(
+              p1.x + (p2.x - p0.x) / 6, p1.y + (p2.y - p0.y) / 6,
+              p2.x - (p3.x - p1.x) / 6, p2.y - (p3.y - p1.y) / 6,
+              p2.x, p2.y,
+            );
+          }
+
+          ctx.closePath();
+
+          // Newest brightest, oldest nearly gone — which is what makes half a
+          // dozen outlines read as one train going outwards instead of as a
+          // stack of rings all insisting equally.
+          const fade = 1 - shell.age * 0.85;
+
+          // Barely there through the middle, so shells behind and the lattice
+          // through them stay visible, with the surface itself on the edge.
+          ctx.fillStyle = `rgba(${tint},${0.025 * fade})`;
+          ctx.fill();
+
+          ctx.strokeStyle = `rgba(${tint},${0.42 * fade})`;
+          ctx.lineWidth = 1.1;
+          ctx.stroke();
+        }
+
+        ctx.globalCompositeOperation = prev;
+      }
+
       for (const n of graph.nodes) {
         const p = pts.get(n);
         if (!p || p.clipped || !onScreen(p)) continue;
         const depth = Math.min(Math.max(p.depth, 0.4), 1.6);
 
-        // Center seed: a soft glow marking where the universe started.
-        if (isCenterNode(n)) {
+        // In field mode everything in flight has already been drawn, as the
+        // surface it belongs to. What is left to draw one point at a time is
+        // what isn't a surface: the sources, and (below) the places where
+        // something is about to happen.
+        const magnet = n.some(r => r.magnet);
+        if (field && !magnet) continue;
+
+        // The origin of the waves. Everything charged in this universe came
+        // out of one of these, so it is the one thing that isn't an event but
+        // a cause of them — drawn as its own colour rather than as a polarity,
+        // since it has none.
+        if (magnet) {
+          const r = Math.min(Math.max(cam.scale * 0.2 * depth, 2), 30);
+
+          const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.2);
+          halo.addColorStop(0, "rgba(255,214,66,0.85)");
+          halo.addColorStop(0.35, "rgba(255,186,40,0.3)");
+          halo.addColorStop(1, "rgba(255,186,40,0)");
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, r * 3.2, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "#FFE066";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(r * 0.4, 1.6), 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Center seed: a soft glow marking where the universe started. In
+        // field mode the origin is only the point halfway between the two
+        // sources, and glowing there would read as a third one.
+        if (!field && isCenterNode(n)) {
           const r = Math.min(Math.max(cam.scale * 0.16 * depth, 0.8), 26);
           const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3);
           g.addColorStop(0, "rgba(255,217,168,0.9)");
@@ -2148,14 +4331,192 @@ const GraphView = ({
           }
         }
 
-        // Dim pass first, so the highlighted one is never overdrawn by it.
+        // Dim pass first, so the highlighted one is never overdrawn by it —
+        // and skipped entirely in field mode, where the twenty-five
+        // directions a charge ISN'T going are twenty-five stubs saying
+        // nothing, per charge, per frame.
         for (const { bd, moving } of slots.values())
-          if (!moving) stub(bd, false);
+          if (!moving && !field) stub(bd, false);
 
         for (const { bd, moving } of slots.values())
           if (moving) stub(bd, true);
 
         ctx.lineCap = "butt";
+      }
+
+      // What is about to happen — and only ever one thing.
+      //
+      // Everything in this universe is charges moving, and almost all of the
+      // time a charge moving is nothing happening: it swaps places with the
+      // space in front of it and the world is as it was. Two alike meeting
+      // head-on and turning each other round is barely more than that —
+      // nothing is lost by it, the pair carry on the other way, and there are
+      // thousands of them a tick all over the field.
+      //
+      // Cancelling is the only event that leaves the world a different size.
+      // It is the whole of what gravity is here, and marking anything else
+      // alongside it buries it in the general bustle.
+      if (field) {
+        // Drawn plainly, NOT added together like the shells above.
+        //
+        // Additive blending is right for a few translucent surfaces and wrong
+        // for a thousand marks: where the fields properly meet there are
+        // hundreds of these on top of one another, and adding a hundred faint
+        // whites gives solid white. The middle of the picture — which is the
+        // part being watched — turns into a lamp. Ordinary alpha means a
+        // hundred stacked marks are no brighter than a few, so a dense region
+        // reads as dense rather than as blown out.
+        const prev = ctx.globalCompositeOperation;
+
+        for (const nd of graph.nodes) {
+          for (const ray of nd) {
+            const a = ray.moving;
+            const b = a?.target;
+            if (!a || !b) continue;
+
+            const other = b.at.node;
+            if (other === nd) continue;
+
+            // Each moving into where the other is — the same test the tick
+            // itself uses, so what is marked is what will actually happen.
+            const met = other.find(x => x.moving?.target?.at.node === nd);
+            if (!met) continue;
+
+            // Found from both ends; drawn from one.
+            if (idxOf.get(nd)! > idxOf.get(other)!) continue;
+
+            // Against what the other one is actually carrying towards us,
+            // which is its own moving boundary — the same pair of polarities
+            // the tick will compare. Only one of each cancels; everything
+            // else meeting head-on turns around, and turning around leaves
+            // the world exactly as big as it was.
+            const facing = met.moving!.polarity;
+
+            const opposed =
+              (a.polarity === Polarity.Positive && facing === Polarity.Negative) ||
+              (a.polarity === Polarity.Negative && facing === Polarity.Positive);
+
+            if (!opposed) continue;
+
+            const p = pts.get(nd), q = pts.get(other);
+            if (!p || !q || p.clipped || q.clipped) continue;
+
+            const x = (p.x + q.x) / 2, y = (p.y + q.y) / 2;
+            if (!onScreen({ x, y })) continue;
+
+            // Sized in pixels with only a little from the zoom. These are
+            // marks ON the picture rather than things in it — scaled to the
+            // lattice they are two or three pixels across on a ball this big,
+            // which is to say invisible, which is to say the one thing the
+            // picture is for isn't in it.
+            // Sized in pixels rather than scaled to the lattice, but only
+            // just: there are a great many of these once the fields properly
+            // meet, and at full brightness they stop being marks on the
+            // picture and become the picture.
+            const r = 3 + cam.scale * 0.012 * p.depth;
+
+            const flash = ctx.createRadialGradient(x, y, 0, x, y, r);
+            flash.addColorStop(0, "rgba(255,240,214,0.28)");
+            flash.addColorStop(0.4, "rgba(255,240,214,0.1)");
+            flash.addColorStop(1, "rgba(255,240,214,0)");
+            ctx.fillStyle = flash;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.fill();
+
+            // A small hard centre, so it still reads as a point where
+            // something is happening rather than as one more soft glow.
+            ctx.fillStyle = "rgba(255,244,224,0.4)";
+            ctx.beginPath();
+            ctx.arc(x, y, 1, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        // And what DID happen — the same events a tick later, at the place
+        // they happened, fading. An annihilation is over inside the tick it
+        // occurs in and takes both of the points it occurred between with it,
+        // so without this the one thing in this universe that changes how
+        // much space there is is the one thing never shown happening.
+        for (const event of graph.events) {
+          if (event.kind !== 'annihilate') continue;
+
+          const age = graph._tickId - event.tick;
+          if (age > 1) continue;
+
+          const pr = place(project(event.at, cam.rot, cam.tilt, cam.dist || 1));
+          if (pr.clipped || !onScreen(pr)) continue;
+
+          const fade = age === 0 ? 0.3 : 0.12;
+          const r = 5 + cam.scale * 0.018 * pr.depth;
+
+          const burst = ctx.createRadialGradient(pr.x, pr.y, 0, pr.x, pr.y, r);
+          burst.addColorStop(0, `rgba(255,236,196,${fade})`);
+          burst.addColorStop(0.35, `rgba(255,236,196,${0.35 * fade})`);
+          burst.addColorStop(1, "rgba(255,236,196,0)");
+          ctx.fillStyle = burst;
+          ctx.beginPath();
+          ctx.arc(pr.x, pr.y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.globalCompositeOperation = prev;
+
+        // What the last tick actually consisted of. "Nothing is happening"
+        // has several quite different causes that look identical on screen,
+        // and these are what tell them apart: emitted 0 means the sources are
+        // walled in, moved 0 with blocked high means everything has jammed,
+        // and annihilated 0 with both of those healthy means the waves are
+        // travelling perfectly well and simply never meeting.
+        const s = graph.stats;
+        const line = `t${graph._tickId}  pts ${graph.nodes.length}  emit ${s.emitted}  move ${s.moved}  block ${s.blocked}  kill ${s.annihilated}  turn ${s.turned}  holes ${s.holes}`;
+
+        ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = "rgba(150,158,180,0.75)";
+        ctx.fillText(line, 10, 8);
+
+        /**
+         * How far apart the two sources are, in steps through the structure,
+         * plotted against time.
+         *
+         * Flat means they are not gravitating, whatever the picture above it
+         * appears to be doing. Every step down is space between them that has
+         * been annihilated and is not there any more. It is the one reading
+         * here that cannot be argued with by looking harder: the layout is a
+         * solve and can be stiff or slow, and the coordinates never move at
+         * all, but a path is a count of points and either there are fewer of
+         * them than there were or there are not.
+         */
+        const history = graph.history;
+
+        // Nothing to measure with one source: there is no "apart".
+        if (history.length > 1 && graph.route.length > 1) {
+          const W = 150, H = 38, X = 10, Y = h - H - 12;
+
+          const top = Math.max(...history, 1);
+          const now = history[history.length - 1];
+
+          ctx.strokeStyle = "rgba(150,158,180,0.22)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(X, Y, W, H);
+
+          ctx.strokeStyle = "rgba(120,230,180,0.85)";
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+
+          for (let i = 0; i < history.length; i++) {
+            const x = X + (i / Math.max(history.length - 1, 1)) * W;
+            const y = Y + H - (Math.max(history[i], 0) / top) * (H - 4) - 2;
+
+            if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+          }
+
+          ctx.stroke();
+
+          ctx.fillStyle = "rgba(150,158,180,0.75)";
+          ctx.fillText(`source to source: ${now} steps (from ${history[0]})`, X, Y - 15);
+        }
       }
     }
 
@@ -2183,7 +4544,7 @@ const GraphView = ({
       // window.removeEventListener("mousemove", onMouseMove);
       // window.removeEventListener("mouseup", onMouseUp);
     };
-  }, [animate, density]);
+  }, [animate, density, mode]);
 
 
   return <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />;
@@ -2198,6 +4559,8 @@ const CalculusPlayer = ({
   autoplay = repeated !== false,
   height = 150,
   density = true,
+  mode = 'lattice',
+  interval = 0.45,
 }: CalculusVisualizationProps) => {
   const [running, setRunning] = useState(autoplay);
 
@@ -2223,17 +4586,16 @@ const CalculusPlayer = ({
     stepsRef.current++;
   };
 
-  // Step the polarity dynamics once every TICK_INTERVAL seconds while
-  // running — annihilation / turn-around / structure-absorption.
-  const TICK_INTERVAL = 0.45;
+  // Step the polarity dynamics once every `interval` seconds while running —
+  // annihilation / turn-around / structure-absorption.
   const accum = useRef(0);
 
   const onFrame = (dt: number) => {
     if (!running || !graphRef.current!.nodes.length) return;
 
     accum.current += dt;
-    while (accum.current >= TICK_INTERVAL) {
-      accum.current -= TICK_INTERVAL;
+    while (accum.current >= interval) {
+      accum.current -= interval;
 
       // A repeating pattern spends one interval showing the seed again
       // before stepping on, so the loop point is legible rather than an
@@ -2245,7 +4607,7 @@ const CalculusPlayer = ({
 
   return <div>
     <div style={{ height }}>
-      <GraphView graph={() => graphRef.current!} animate density={density} onFrame={onFrame} />
+      <GraphView graph={() => graphRef.current!} animate density={density} mode={mode} onFrame={onFrame} />
     </div>
     <Row end="xs" className="child-px-2">
       {running
@@ -2278,6 +4640,7 @@ const CalculusFilmstrip = ({
   repeated = false,
   height = 150,
   density = true,
+  mode = 'lattice',
 }: CalculusVisualizationProps) => {
   const cycle = typeof repeated === 'number' ? repeated : DEFAULT_STEPS;
 
@@ -2300,7 +4663,7 @@ const CalculusFilmstrip = ({
           ? <div style={{ flex: '0 0 auto', padding: '0 0.5em', color: '#515254' }}>→</div>
           : null}
         <div style={{ flex: '1 1 120px', height }}>
-          <GraphView graph={() => graph} density={density} />
+          <GraphView graph={() => graph} density={density} mode={mode} />
         </div>
       </Fragment>
     ))}
@@ -2527,6 +4890,174 @@ const alternatingIntoRandom = (size: number, inner: Polarity): LineSide[] => [
   ...randomBlock(size, 'left'),
 ];
 
+/**
+ * Two spinning magnets in a 3D space that has every direction in it, and the
+ * ways they can be set going.
+ *
+ * They are laid out along x with the origin between them, so:
+ *
+ *  - `towards` / `apart` are along the line joining them — the only thing the
+ *    flat two-block version could express at all;
+ *  - `across` is both of them going the same way perpendicular to it, which
+ *    is the two of them travelling together and asks whether whatever holds
+ *    them holds them while they move;
+ *  - `shear` is each going the opposite way across that line, which is the
+ *    setup an orbit is made of: angular momentum about the midpoint, with an
+ *    attraction to bend it into something closed;
+ *  - `corner` sends each along a body diagonal, which no lattice wired only
+ *    to its faces has at all, and which is the case that says whether "every
+ *    direction" is a real claim here or just six of them dressed up;
+ *  - `still` is the control — neither of them going anywhere, so anything
+ *    that moves, moved because of the field.
+ *
+ * Each is run twice: with the two magnets turning together (both emitting the
+ * same thing at the same time) and turning against each other (one always
+ * putting out the opposite of what the other is).
+ *
+ * It is tempting to read that as the difference between annihilating and not
+ * — like shells bouncing, opposite shells cancelling — and it isn't. A magnet
+ * that turns over every tick lays down alternating shells, so directly behind
+ * every shell is one of the opposite charge. Two like shells meeting in the
+ * middle do turn each other round, and what each of them then runs into is
+ * the opposite-charged shell coming along behind it, and THAT cancels. Both
+ * ways round eat the space between the two sources; turning together just
+ * takes one more step about it.
+ */
+const MAGNET_CASES: {
+  name: string, a?: number[], b?: number[],
+  axis?: number[], spin?: boolean, alone?: boolean,
+}[] = [
+  /**
+   * One magnet, on its own, held still — and the answer to whether anything
+   * here loops from one pole round to the other is no, by construction.
+   *
+   * What comes out is two opposed caps: the one charge straight out of the
+   * half facing along the axis, the other straight out of the half facing
+   * back, and nothing at all off the equator. They go out radially and they
+   * keep going. Nothing bends.
+   *
+   * Nothing CAN bend. A ray in this calculus does exactly two things — it
+   * moves the way it is going, or it meets something head-on and turns
+   * completely around. There is no rule anywhere that alters a direction by a
+   * little, so no path here is ever a curve; every path is a straight run
+   * with the occasional reversal in it. A field line that leaves the north
+   * pole, arcs over, and comes back into the south would need a charge to be
+   * continuously deflected by the space it is passing through, and space here
+   * does not act on anything: it is what gets traded places with.
+   *
+   * There is also a reason it shouldn't be expected. Magnetic field lines
+   * close because the field has no sources to start or stop on. This field is
+   * nothing BUT sources — every charge on screen was written onto space by a
+   * magnet and is on its way out of it. So the thing being drawn is much
+   * closer to two opposite charges radiating than to a dipole, and radiating
+   * is what it looks like.
+   *
+   * What DOES happen, and is worth watching for, is at the equator: the two
+   * caps fan sideways as they travel (see the Huygens step), so their edges
+   * eventually reach around into each other's half. Where a positive edge
+   * meets a negative one they cancel. That is not a line curving from pole to
+   * pole. It is the nearest thing these rules have to one: the two halves of
+   * the field closing on each other, around the middle, some way out.
+   */
+  { name: 'one magnet, on its own', axis: [1, 0, 0], spin: false, alone: true },
+
+  // Neither going anywhere: the baseline, in which anything that moves, moved
+  // because of the field.
+  { name: 'still' },
+
+  /**
+   * Angular momentum, both the same way round.
+   *
+   * The sources sit at −sep and +sep along x. Take the one on the left up
+   * (+y) and the one on the right down (−y) and the pair is circulating about
+   * the point between them — clockwise, looking down the z axis at the plane
+   * they are in. Checking the sign rather than trusting it: a rotation about
+   * +z carries a point at −x towards −y, so a point at −x heading towards +y
+   * is going round the other way, which is the clockwise one.
+   *
+   * Both of them the same way round is what makes this angular momentum
+   * rather than two things passing. Opposite ways round would cancel about
+   * the midpoint and be a shear — the two sliding past each other with
+   * nothing going round anything.
+   *
+   * Whether it closes into an orbit is the question, and it is a real one
+   * rather than a foregone conclusion: an orbit needs the pull to bend the
+   * motion by just as much as the motion carries it past, and nothing here
+   * has been arranged to make those two match. The likely outcomes are all
+   * legible — they spiral together, they curve and escape, or the radiation
+   * knocks them off course before either.
+   */
+  // { name: 'both clockwise', a: [0, 1, 0], b: [0, -1, 0] },
+
+  /**
+   * Closing, but not on each other.
+   *
+   * The left one goes up and to the right, the right one down and to the
+   * left. Along x they are approaching; along y they are pulling apart. So
+   * they converge without ever being aimed at one another, and pass at an
+   * offset rather than meeting — which is the one arrangement where a pull
+   * has something to work with.
+   *
+   * Head-on, attraction can only make them arrive sooner; there is nothing
+   * for it to bend. Set going sideways (`both clockwise`), they were already
+   * leaving and it has to catch them. Between the two is this: a fly-by with
+   * an impact parameter, coming in fast enough to pass and close enough to be
+   * turned, which is the case where a pull either bends the path into
+   * something that comes back round or doesn't — and either answer is worth
+   * having.
+   *
+   * The angular momentum is the same sense for both, as above, so what they
+   * carry past each other is a rotation about the midpoint rather than two
+   * things sliding by.
+   *
+   * Both directions are edge steps rather than axis ones, √2 long, which the
+   * clock in `tick` charges accordingly — so these two cover the same ground
+   * per tick as everything else and arrive when they would have arrived.
+   */
+  // { name: 'closing at an angle', a: [1, 1, 0], b: [-1, -1, 0] },
+
+  /**
+   * Two actual magnets, poles along the line between them, not turning.
+   *
+   * Everything above is a source with no sides that flips over every tick:
+   * the same charge in every direction, reversed, again and again. That is
+   * where the waves come from — the alternation IS the wave, and a train of
+   * shells is a record of a thing being turned over.
+   *
+   * A magnet doesn't do that. It has a north and a south and it holds them:
+   * `emits` out of the half facing +x, its opposite out of the half facing
+   * −x, nothing across the equator, tick after tick without reversing. So
+   * there are no shells here at all — no alternation to make a front out of.
+   * What comes off each pole is a steady stream of the one charge, and the
+   * field between the two is not a sequence of arrivals but a standing thing
+   * that is simply there.
+   *
+   * Both get the same axis, which is what faces them at each other properly:
+   * the left one's right-hand side is its north and the right one's left-hand
+   * side is its south. So everything crossing the gap is the opposite of what
+   * it meets, permanently. Between two turning sources the two streams were
+   * alike as often as not, and alike charges bounce; here every meeting in
+   * the gap cancels, and cancelling is the one event that takes space out of
+   * the world.
+   *
+   * Which makes this the arrangement to ask the question of. If a steady
+   * one-sided cancellation right along the line between them does not draw
+   * them together, nothing built out of these rules will, and the answer is
+   * about the rules rather than about the setup.
+   */
+  { name: 'two magnets, poles facing', axis: [1, 0, 0], spin: false },
+];
+
+const MAGNET_SPINS: { name: string, phase: number }[] = [
+  { name: 'turning together', phase: 0 },
+  { name: 'turning against', phase: 1 },
+];
+
+
+const Caption = ({ children }: { children: any }) => (
+  <div style={{ color: '#8a8d99', fontSize: '0.8em', paddingTop: '0.6em' }}>{children}</div>
+);
+
 const RayCalculiAndPhysics = () => {
   const navigate = useNavigate();
 
@@ -2616,6 +5147,47 @@ const RayCalculiAndPhysics = () => {
             repeated={22}
             height={140}
           />
+        ))}
+
+        {/* The same two magnets, in three dimensions, each radiating into all
+            twenty-six directions of the lattice instead of down one corridor,
+            and each set going a different way to begin with. The sources are
+            the yellow points; every charge on screen came out of one of them.
+            What is drawn is the structure rather than the coordinates, so
+            space that has been annihilated out of the world is not a hole in
+            the picture — it is two things that are now nearer each other. */}
+        {MAGNET_CASES.map(({ name, a, b, axis, spin: turning = true, alone }) => (
+          <Fragment key={`magnets-${name}`}>
+            {/* Which way round each is turning only means something if they
+                are turning. Held still, "together" and "against" are the same
+                run twice. */}
+            {(turning ? MAGNET_SPINS : [{ name: 'held', phase: 0 }]).map(spin => (
+              <div key={spin.name} style={{ marginBottom: '1.5rem' }}>
+                <CalculusVisualization
+                  graph={() => Graph.magnets(
+                    { emits: Polarity.Positive, moving: a, axis },
+                    { emits: Polarity.Positive, moving: b, phase: spin.phase, axis },
+                    { spin: turning, alone },
+                  )}
+                  repeated={60}
+                  // Said outright rather than left to follow from `repeated`,
+                  // which is what it defaults to: turn the repeat off to
+                  // watch one run go on indefinitely and the whole thing
+                  // silently stops autoplaying too, which looks exactly like
+                  // a universe in which nothing happens.
+                  autoplay
+                  height={320}
+                  interval={0.2}
+                  mode="field"
+                  // The glow is a sum over every charge, and with a pulse
+                  // going out every tick that is most of the ball — one even
+                  // wash, hiding the shells it is drawn from.
+                  density={false}
+                />
+                <Caption>{name} — {spin.name}</Caption>
+              </div>
+            ))}
+          </Fragment>
         ))}
 
         {ANTI_GROUPS.map((group, i) => (
