@@ -72,7 +72,43 @@ type MagnetSide = {
    * opposite charges meeting is the one event that destroys space.
    */
   axis?: number[];
+
+  /**
+   * Which way round it turns, if it turns: +1 or −1, and nothing for a magnet
+   * held still.
+   *
+   * `spin` flips a source's poles over on the spot — north becomes south,
+   * south becomes north, and nothing has moved. Turning is the other thing,
+   * and the one a magnet actually does: the axis itself comes round, so north
+   * is somewhere else than it was, and a direction that was looking at the
+   * north pole is looking at the equator a moment later and at the south pole
+   * after that.
+   *
+   * Which means a turning magnet needs no `spin` at all. Standing anywhere
+   * off its axis you are swept by north, then nothing, then south, then
+   * nothing — an alternation that is a consequence of the thing going round
+   * rather than a property stipulated of it. That is where the waves come
+   * from here, and unlike flipping in place it has a handedness: two magnets
+   * can turn the same way or against each other, and what crosses the gap
+   * between them depends on which.
+   */
+  turning?: 1 | -1;
 };
+
+/**
+ * A turn, in a space that has eight directions to a plane.
+ *
+ * These are the in-plane directions in order round the circle, so stepping
+ * along the list by one is a rotation of an eighth of a turn and stepping by
+ * eight is back where it started. It is the whole of what "rotating" can mean
+ * on a lattice: there is no angle between neighbouring directions to subdivide
+ * further, and a magnet whose axis moved by less than this would not have
+ * moved at all.
+ */
+const TURN: number[][] = [
+  [1, 0, 0], [1, 1, 0], [0, 1, 0], [-1, 1, 0],
+  [-1, 0, 0], [-1, -1, 0], [0, -1, 0], [1, -1, 0],
+];
 
 /**
  * How much harder a source is to move than the charges it emits: a multiple
@@ -2205,6 +2241,25 @@ class Graph {
       every = 1,
       spin = true,
       alone = false,
+
+      /**
+       * Ticks per eighth of a turn, and one is as fast as turning goes.
+       *
+       * Not a tuning choice: an eighth of a turn is the smallest rotation
+       * this space has, because there are eight directions to a plane and
+       * nothing between neighbouring ones to move through. So one step per
+       * tick is a magnet coming round as fast as anything here does anything.
+       * Anything quicker is not a faster rotation but a coarser one — two
+       * steps a tick is the axis jumping a quarter turn and never facing the
+       * directions in between, which is a magnet being teleported round
+       * rather than turned.
+       *
+       * A full revolution is therefore eight ticks, and with a pulse leaving
+       * every tick that is exactly one pulse per direction: the emission
+       * sweeps the plane once per revolution, laying down a spiral rather
+       * than a stack of shells.
+       */
+      turnEvery = 1,
       // Half the moves taken as one of the pieces the direction is made of:
       // enough that a stream genuinely searches the space around it, while
       // the whole diagonal being one option among its pieces keeps the drift
@@ -2241,7 +2296,7 @@ class Graph {
       fanAt = Math.max(Math.floor(sep / 2), 2),
     }: {
       radius?: number, sep?: number, every?: number,
-      spin?: boolean, alone?: boolean, wander?: number,
+      spin?: boolean, alone?: boolean, turnEvery?: number, wander?: number,
       spread?: number, fanAt?: number, range?: number,
     } = {},
   ): Graph {
@@ -2290,6 +2345,7 @@ class Graph {
       ray.phase = side.phase ?? 0;
       ray.mass = MAGNET_MASS;
       ray.axis = side.axis;
+      ray.turning = side.turning;
 
       // An initial direction is named as a lattice step and resolved to the
       // boundary that actually goes that way, so a direction the point hasn't
@@ -2451,6 +2507,16 @@ class Graph {
             // which is a few dozen a tick becoming a few thousand, and a
             // universe several times the size it was seeded at.
             const written = new Set<node>();
+
+            // A magnet that turns is somewhere else by now. Its axis steps
+            // round the plane an eighth of a turn every `turnEvery` ticks,
+            // one way or the other, and everything below reads it as it
+            // stands rather than as it was set.
+            if (ray.turning) {
+              const step = Math.floor(since / turnEvery) * ray.turning + (ray.phase ?? 0);
+
+              ray.axis = TURN[((step % TURN.length) + TURN.length) % TURN.length];
+            }
 
             const emits = ray.emits ?? Polarity.Positive;
             const turned = spin && (pulse + (ray.phase ?? 0)) % 2 === 1;
@@ -2735,7 +2801,8 @@ class Graph {
         r.mass = ray.mass;
         r.age = ray.age;
         r.fanned = ray.fanned;
-        r.axis = ray.axis;
+        r.axis = ray.axis?.slice();
+        r.turning = ray.turning;
         r.heading = ray.heading?.slice();
         rays.set(ray, r);
         copy.push(r);
@@ -3279,6 +3346,10 @@ class Ray {
   // opposite out of the half pointing back, nothing across the middle. Absent
   // for a source with no sides, which puts the same thing out everywhere.
   axis?: number[];
+
+  // Which way the axis comes round, an eighth of a turn at a time, or nothing
+  // for a magnet that is held still. See `TURN`.
+  turning?: number;
 
   // What a step costs this ray, as a multiple of the step's own length. One
   // for everything the rules make; more for a source, which is the only thing
@@ -4925,7 +4996,7 @@ const alternatingIntoRandom = (size: number, inner: Polarity): LineSide[] => [
  */
 const MAGNET_CASES: {
   name: string, a?: number[], b?: number[],
-  axis?: number[], spin?: boolean, alone?: boolean,
+  axis?: number[], spin?: boolean, alone?: boolean, turning?: 1 | -1,
 }[] = [
   /**
    * One magnet, on its own, held still — and the answer to whether anything
@@ -5046,6 +5117,45 @@ const MAGNET_CASES: {
    * about the rules rather than about the setup.
    */
   { name: 'two magnets, poles facing', axis: [1, 0, 0], spin: false },
+
+  /**
+   * One magnet, actually turning.
+   *
+   * Its axis comes round an eighth of a turn at a time, so north sweeps
+   * through every direction in the plane and comes back. It emits the whole
+   * while and nothing about it flips: standing anywhere off the axis you are
+   * passed by north, then the equator, then south, then the equator again,
+   * which is an alternation that happens TO you because the thing is going
+   * round rather than one stipulated of it.
+   *
+   * What that should make is the difference between this and every source
+   * above. A source flipping in place puts out shells — the same in every
+   * direction, one polarity after another, and drawn as a surface a shell is
+   * a sphere. A source turning puts out two lobes that are pointing somewhere
+   * different each time, so what leaves it is a fan sweeping the plane it
+   * turns in, and what is left behind is a spiral of alternating charge
+   * rather than a stack of shells. Flat, because the turn is flat.
+   */
+  { name: 'one magnet, turning', axis: [1, 0, 0], spin: false, alone: true, turning: 1 },
+
+  /**
+   * Two of them, turning opposite ways.
+   *
+   * Same as above with a second magnet across the gap, and it comes round the
+   * other way — so the two are counter-rotating, like a pair of gears rather
+   * than a pair of clocks. Which is the arrangement where what crosses the
+   * gap is not the same twice: the face each presents to the other is
+   * changing, and changing in opposite senses, so the charge arriving from
+   * one is sometimes alike to what it meets and sometimes opposite, on a
+   * cycle set by how fast they turn rather than by anything about the space.
+   *
+   * Both turning the same way is the other half of the experiment and is what
+   * the pairing below draws alongside it — there the two present matching
+   * faces to each other throughout, which is a different thing entirely from
+   * two counter-rotating ones and should not eat the space between them the
+   * same way.
+   */
+  { name: 'two magnets, turning', axis: [1, 0, 0], spin: false, turning: 1 },
 ];
 
 const MAGNET_SPINS: { name: string, phase: number }[] = [
@@ -5156,18 +5266,32 @@ const RayCalculiAndPhysics = () => {
             What is drawn is the structure rather than the coordinates, so
             space that has been annihilated out of the world is not a hole in
             the picture — it is two things that are now nearer each other. */}
-        {MAGNET_CASES.map(({ name, a, b, axis, spin: turning = true, alone }) => (
+        {MAGNET_CASES.map(({ name, a, b, axis, spin: flipping = true, alone, turning }) => (
           <Fragment key={`magnets-${name}`}>
-            {/* Which way round each is turning only means something if they
-                are turning. Held still, "together" and "against" are the same
-                run twice. */}
-            {(turning ? MAGNET_SPINS : [{ name: 'held', phase: 0 }]).map(spin => (
+            {/* What the pair of runs is contrasting depends on what the
+                sources are doing. Flipping in place, it is whether they flip
+                in step; turning, it is whether they turn the same way or
+                against each other, which is the only sense in which a thing
+                going round has a hand. Doing neither, there is nothing to
+                contrast and it is one run. */}
+            {((turning
+              ? [{ name: 'turning the same way', phase: 0, sense: 1 },
+                 { name: 'turning opposite ways', phase: 0, sense: -1 }]
+              : flipping
+                ? MAGNET_SPINS.map(s => ({ ...s, sense: 1 }))
+                : [{ name: 'held', phase: 0, sense: 1 }]
+            ) as { name: string, phase: number, sense: 1 | -1 }[]).map(spin => (
               <div key={spin.name} style={{ marginBottom: '1.5rem' }}>
                 <CalculusVisualization
                   graph={() => Graph.magnets(
-                    { emits: Polarity.Positive, moving: a, axis },
-                    { emits: Polarity.Positive, moving: b, phase: spin.phase, axis },
-                    { spin: turning, alone },
+                    { emits: Polarity.Positive, moving: a, axis, turning },
+                    {
+                      emits: Polarity.Positive, moving: b, phase: spin.phase, axis,
+                      // The second one comes round the other way when they
+                      // are set against each other.
+                      turning: turning ? (turning * spin.sense) as 1 | -1 : undefined,
+                    },
+                    { spin: flipping, alone },
                   )}
                   repeated={60}
                   // Said outright rather than left to follow from `repeated`,
