@@ -93,6 +93,12 @@ type MagnetSide = {
    * between them depends on which.
    */
   turning?: 1 | -1;
+
+  // The plane it turns in, as the two directions it turns between. Anything
+  // in three dimensions, not only the one the code happens to be written
+  // around — two magnets can be set turning in different planes, which is a
+  // thing only a 3D world can be asked.
+  plane?: [number[], number[]];
 };
 
 /**
@@ -105,10 +111,49 @@ type MagnetSide = {
  * further, and a magnet whose axis moved by less than this would not have
  * moved at all.
  */
-const TURN: number[][] = [
-  [1, 0, 0], [1, 1, 0], [0, 1, 0], [-1, 1, 0],
-  [-1, 0, 0], [-1, -1, 0], [0, -1, 0], [1, -1, 0],
-];
+/**
+ * The eight of them, in whatever plane is asked for.
+ *
+ * A turn is only ever a turn in a plane, and a plane is two directions to
+ * turn between. Given those, this walks the circle they span in eighths and
+ * rounds each step onto the nearest direction the lattice actually has — so a
+ * magnet can come round in the xy-plane, or the xz, or about any diagonal,
+ * and the axis it sweeps is the axis it was given rather than the one the
+ * code was written with.
+ *
+ * The default is x towards y, which is the plane the two sources are laid out
+ * in, so a pair of them turn in the plane they face each other across.
+ */
+function turnRing(u: number[] = [1, 0, 0], v: number[] = [0, 1, 0]): number[][] {
+  const out: number[][] = [];
+
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2;
+    const c = Math.cos(a), s = Math.sin(a);
+
+    const dir = u.map((x, i) => x * c + (v[i] ?? 0) * s);
+    const step = latticeStep(dir.map(x => (Math.abs(x) < 0.3827 ? 0 : x)));
+
+    if (step) out.push(step);
+  }
+
+  return out;
+}
+
+const TURN = turnRing();
+
+/**
+ * How many ticks a source takes to come back to what it was doing.
+ *
+ * The same for every kind of source, which is the whole point of it. A
+ * rotation through the eight directions of a plane and a flip held half the
+ * time each way are both one cycle, and both lay their structure down at the
+ * same spacing: a wave advances a cell a tick, so a cycle of this many ticks
+ * puts the same charge every this many cells — bands half that wide with the
+ * same again between them, whether those bands come out as rings or as
+ * spirals.
+ */
+const CYCLE = TURN.length;
 
 /**
  * How much harder a source is to move than the charges it emits: a multiple
@@ -1397,7 +1442,17 @@ class Graph {
      * already given up, and half the interactions in the tick are worked out
      * against a world nobody is in any more.
      */
-    for (const r of rays) if (r.moving && !r.magnet) r.age = (r.age ?? 0) + 1;
+    /*
+     * Age is counted in the movement phase below, in steps actually taken
+     * rather than in ticks lived through.
+     *
+     * It is read as a distance everywhere it is used — how far out a charge
+     * has got, for fanning and for the range at which it gives up being one —
+     * and for anything moving at a cell a tick the two are the same number.
+     * For anything slower they are not: a charge held to a cell every third
+     * tick ages three times as fast as it travels, so it expires a third of
+     * the way out and the field never reaches the edge of the world.
+     */
 
     if (this.wander > 0) {
       for (const r of rays) {
@@ -1500,6 +1555,11 @@ class Graph {
       for (const other of ahead) {
         if (met.has(other)) continue;
 
+        // Not against itself: two charges of the same source are two parts of
+        // one field, and a field arriving where it already is is not an
+        // event. See the arriving-together case below.
+        if (r.source !== undefined && r.source === other.source) continue;
+
         const bd = headed.get(other);
         if (!bd || bd.target?.at.node !== r.node) continue;
 
@@ -1565,6 +1625,30 @@ class Graph {
       if (!other) { arriving.set(there, r); continue; }
 
       const b = headed.get(other)!;
+
+      /**
+       * A field does not interact with itself.
+       *
+       * Two charges thrown out by the same source are two parts of one thing
+       * it is doing, and one part of a field arriving where another part of
+       * the same field already is has never been an event. Left to interact,
+       * they are a disaster: a source that turns puts consecutive shells out
+       * at an eighth of a turn from each other, so where one shell's north
+       * lobe overtakes the next one's south they are opposite, and they
+       * cancel — the field eats itself as fast as it is made. What survives
+       * blocks, stalls, and is overtaken, and the shells lose their order.
+       * Measured: waves emitted fourteen, twelve, nine and eight pulses ago
+       * all sitting at the same radius, each pointing a different way, their
+       * lobes averaging out to nothing in particular.
+       *
+       * Each shell is a clean two-lobed thing on its own — that much is
+       * emitted correctly and always was. It is only in being allowed to
+       * annihilate against its own neighbours that the order is lost.
+       *
+       * Charges from DIFFERENT sources still meet in the ordinary way, which
+       * is the whole of what two magnets do to each other.
+       */
+      if (r.source !== undefined && r.source === other.source) continue;
 
       const opposed =
         (a.polarity === Polarity.Positive && b.polarity === Polarity.Negative) ||
@@ -1697,30 +1781,26 @@ class Graph {
     const blocked = new Set<Ray>();
 
     /**
-     * A step is a step, whichever way it goes.
+     * One step, one tick, whichever way it goes.
      *
-     * The alternative is to charge a step its own length — a face costs 1, an
-     * edge √2, a corner √3 — which makes every direction advance the same
-     * distance per tick and the front of a pulse perfectly round. It is the
-     * tidier physics and it was what this did.
+     * Everything moves away every tick, and that is the whole of it: a cell
+     * emptied this tick is available the next, so a source is never waiting
+     * on its own last pulse and every shell leaves complete.
      *
-     * But it makes the diagonals worse than useless. A corner connection
-     * exists precisely so that a point can get somewhere without going round
-     * two sides of a square, and charging it for the shortcut takes the
-     * shortcut away again: √3 of distance for √3 of time is the same speed as
-     * the long way round, so nothing is ever reached sooner by going
-     * diagonally and the twenty-six directions collapse back into six with
-     * extra steps.
+     * The alternative is to charge a step its own length — √2 through an
+     * edge, √3 through a corner — so that every direction covers the same
+     * DISTANCE per tick and a shell stays a round shell. It is the tidier
+     * geometry and it costs too much: the corner directions then take nearly
+     * two ticks a step, the cells they occupy are still occupied when the
+     * next pulse is due, and what leaves is fourteen of the twenty-six
+     * directions with holes in the same places every time.
      *
-     * A step per tick regardless makes a diagonal a genuine shortcut, which
-     * is what gives a ray somewhere to get to faster than the lattice would
-     * otherwise allow. The price is that a pulse's front is a cube rather
-     * than a sphere — corners running out at 1.73 times the speed of faces —
-     * which is the true shape of "one move a tick" in this space and no
-     * longer worth hiding.
-     *
-     * Every direction in a lattice wired only to its faces costs 1 either
-     * way, so none of the earlier examples can tell the difference.
+     * A step per tick makes the front a cube rather than a sphere — the
+     * corners of it run out at 1.73 times the speed of the faces — and that
+     * is simply the true shape of "one move a tick" in a space with
+     * twenty-six directions. It is a coherent front either way: shell k is
+     * the points k steps out, all of them, and no shell ever overtakes
+     * another.
      */
     const cost = new Map<Ray, number>();
 
@@ -1799,7 +1879,12 @@ class Graph {
 
     // Paid on going, not on being ready to: something held up in traffic
     // keeps what it has saved and leaves the moment the way is clear.
-    for (const r of going) r.credit = (r.credit ?? 0) - (cost.get(r) ?? 1);
+    for (const r of going) {
+      r.credit = (r.credit ?? 0) - (cost.get(r) ?? 1);
+
+      // One cell older, because it is one cell further on.
+      if (!r.magnet) r.age = (r.age ?? 0) + 1;
+    }
 
     this.stats.moved = going.length;
     this.stats.blocked = movers.length - going.length;
@@ -2346,6 +2431,7 @@ class Graph {
       ray.mass = MAGNET_MASS;
       ray.axis = side.axis;
       ray.turning = side.turning;
+      if (side.plane) ray.ring = turnRing(side.plane[0], side.plane[1]);
 
       // An initial direction is named as a lattice step and resolved to the
       // boundary that actually goes that way, so a direction the point hasn't
@@ -2513,13 +2599,43 @@ class Graph {
             // one way or the other, and everything below reads it as it
             // stands rather than as it was set.
             if (ray.turning) {
+              const ring = ray.ring ?? TURN;
               const step = Math.floor(since / turnEvery) * ray.turning + (ray.phase ?? 0);
 
-              ray.axis = TURN[((step % TURN.length) + TURN.length) % TURN.length];
+              ray.axis = ring[((step % ring.length) + ring.length) % ring.length];
             }
 
             const emits = ray.emits ?? Polarity.Positive;
-            const turned = spin && (pulse + (ray.phase ?? 0)) % 2 === 1;
+
+            /**
+             * One turn of a source takes a turn's worth of ticks, whatever
+             * kind of turning it does.
+             *
+             * A source that rotates comes round through the eight directions
+             * of its plane, one a tick, and is back where it started after
+             * eight. A source that only flips over has two states rather than
+             * eight — and flipping between them every tick made its cycle
+             * four times shorter than the other's, which is not a difference
+             * in kind between the two sources but an accident of counting.
+             *
+             * What it cost was space. Each ring a wave lays down is one
+             * tick's emission, and a wave advances a cell a tick, so a cycle
+             * of two ticks puts the same charge every other cell: bands one
+             * cell wide with one cell between them, which no drawing can
+             * separate and which average to nothing the moment they are
+             * smoothed. Held for half a cycle each way, the same source lays
+             * down bands four cells wide with four cells between them, and
+             * they are bands you can see.
+             *
+             * The two then differ only in what the state is FOR. A flip is
+             * the same everywhere at once, so what it writes is rings. A
+             * rotation points somewhere, so what it writes is spirals. Same
+             * clock, same wave, same spacing — the difference is whether the
+             * source's state has a direction in it.
+             */
+            const beat = ray.turning ? TURN.length : CYCLE;
+            const turn = pulse + (ray.phase ?? 0) * (beat / 2);
+            const turned = spin && ((turn % beat) + beat) % beat >= beat / 2;
 
             const polarity = !turned ? emits
               : emits === Polarity.Positive ? Polarity.Negative : Polarity.Positive;
@@ -2561,23 +2677,108 @@ class Graph {
               // what makes it a magnet and not a lamp.
               let out = polarity;
 
-              if (ray.axis) {
-                const along = dir.reduce((sum, v, i) => sum + v * (ray.axis![i] ?? 0), 0);
-                if (Math.abs(along) < 1e-9) continue;
+              // How nearly this direction lies along the magnet's axis: +1
+              // straight out of the north pole, −1 out of the south, 0 on the
+              // equator between them.
+              const cos = ray.axis
+                ? dir.reduce((sum, v, i) => sum + v * (ray.axis![i] ?? 0), 0)
+                  / (Math.hypot(...ray.axis) || 1)
+                : 0;
 
-                if (along < 0) out = polarity === Polarity.Positive
+              if (ray.axis) {
+                if (Math.abs(cos) < 1e-9) continue; // the equator emits nothing
+
+                if (cos < 0) out = polarity === Polarity.Positive
                   ? Polarity.Negative
                   : Polarity.Positive;
               }
+
+              /**
+               * A magnet that turns radiates into the plane it turns in.
+               *
+               * Its poles are in that plane and sweeping round it, so a
+               * direction lying in the plane is swept by north, then the
+               * equator, then south — the full stroke, once per revolution.
+               * A direction along the axis it turns ABOUT is perpendicular to
+               * the poles at every moment of the turn: it sits on the dipole's
+               * equator permanently, and the equator is exactly what emits
+               * nothing. In between, the further out of the plane you are,
+               * the less of the stroke reaches you.
+               *
+               * So the emission is thrown outward rather than all around, and
+               * a revolution lays down a disk. Which is not something added
+               * to make the picture flat — the poles being in the plane is
+               * what makes it flat, and the version without this was drawing
+               * a sphere for a source that has no business making one.
+               */
+              /**
+               * A turning magnet emits along its poles, not out of half of
+               * itself.
+               *
+               * Held still, a pole is a hemisphere: everything on the north
+               * side gets north's charge, and it does not matter that the
+               * side is a hundred and eighty degrees wide, because the thing
+               * is not going anywhere and every direction in that half is
+               * being given the same answer forever.
+               *
+               * Turning, the width is the whole problem. A hemisphere pointed
+               * one way overlaps almost entirely with a hemisphere pointed an
+               * eighth of a turn later, so consecutive pulses land on top of
+               * one another and what winds out from the source is not a
+               * pattern but a wash. Measured: the distance from the source
+               * tracks how long ago a pulse left, cleanly — but the direction
+               * of it does not track where the magnet was pointing at all,
+               * because a lobe spanning half the sky has no direction to
+               * speak of.
+               *
+               * Narrowed to the poles themselves, each pulse goes one way,
+               * the next goes an eighth of a turn round from it, and the
+               * locus of them is an arm winding outward. Which is what a
+               * lighthouse is, and a pulsar, and why the beam has to be a
+               * beam for there to be a sweep at all.
+               */
+              /*
+               * Every direction, here as everywhere else.
+               *
+               * There was a cone here, narrowing a turning magnet's emission
+               * to a beam near its poles, on the reasoning that a lighthouse
+               * needs a beam to have a sweep. It does — but this is not a
+               * lighthouse, and the sweep does not have to be made of where
+               * the pulse went.
+               *
+               * A pulse goes everywhere, as it does for every other source in
+               * this article. What rotates is WHICH WAY ROUND it goes: the
+               * half of the sky facing the north pole gets one charge and the
+               * half facing south gets the other, and the line between those
+               * halves comes round an eighth of a turn every tick. So the
+               * charge a given direction receives alternates as the poles
+               * sweep past it, and the boundary between the two — traced
+               * outward through everything already in flight, each shell
+               * having been laid down with the magnet pointing somewhere
+               * slightly different — is a spiral. Not a spiral anything
+               * travels along. A spiral in the arrangement of what was
+               * emitted, which is what a rotating dipole actually makes.
+               */
 
               for (const r of there)
                 for (const x of r.boundaries) x.polarity = out;
 
               facing.at.moving = g.along(facing.at, dir, 1);
 
+// Nothing travels slower than anything else: a charge is a
+              // charge, and it leaves at one step a tick like everything
+              // here does.
+              
+
               // Which emission this is: one pulse per source per turn of it,
               // which is what makes a pulse a thing with a surface.
               facing.at.wave = pulse * sides.length + (ray.source ?? 0);
+
+              // And whose it is, which for a turning source is what says
+              // which arm a charge is on — see the spiral pass in the
+              // renderer.
+              facing.at.source = ray.source;
+              facing.at.turning = ray.turning;
 
               g.stats.emitted++;
             }
@@ -2666,6 +2867,20 @@ class Graph {
 
             facing.at.moving = g.along(facing.at, bias, 1);
             facing.at.wave = wave; // still the same pulse, spread wider
+            facing.at.source = ray.source;
+            facing.at.turning = ray.turning;
+            facing.at.age = ray.age;
+
+            // And it travels at the speed its parent does.
+            //
+            // Without this a fanned charge is quick and the charge it came
+            // from is slow — three times as quick, where the source is one
+            // that turns — so it runs out through the shell ahead of it and
+            // the one ahead of that, carrying its own polarity into the
+            // middle of theirs. Every shell ends up holding both charges at
+            // once, mixed, and the neat alternation that IS the spiral is
+            // stirred out of the field before anything gets to draw it.
+            facing.at.mass = ray.mass;
 
             // Already fanned, as far as it is concerned. Otherwise each child
             // fans in turn and the shell doubles every tick until it has
@@ -2803,6 +3018,7 @@ class Graph {
         r.fanned = ray.fanned;
         r.axis = ray.axis?.slice();
         r.turning = ray.turning;
+        r.ring = ray.ring;
         r.heading = ray.heading?.slice();
         rays.set(ray, r);
         copy.push(r);
@@ -3348,8 +3564,10 @@ class Ray {
   axis?: number[];
 
   // Which way the axis comes round, an eighth of a turn at a time, or nothing
-  // for a magnet that is held still. See `TURN`.
+  // for a magnet that is held still, and the ring of directions it comes
+  // round through. See `turnRing`.
   turning?: number;
+  ring?: number[][];
 
   // What a step costs this ray, as a multiple of the step's own length. One
   // for everything the rules make; more for a source, which is the only thing
@@ -3494,7 +3712,7 @@ const DEFAULT_STEPS = 8;
  * flight. The lattice bending is then something you can see, because there is
  * a lattice to see rather than a fill.
  */
-type RenderMode = 'lattice' | 'field';
+type RenderMode = 'lattice' | 'shells' | 'field';
 
 export interface CalculusVisualizationProps {
   // The universe to run. A factory, not an instance: it is called again on
@@ -3570,6 +3788,11 @@ const GraphView = ({
     const ctx = canvas.getContext("2d");
     let raf: number;
     let last = performance.now();
+
+    // The field as drawn, which lags the field as computed and catches up a
+    // fraction every frame. Kept across frames because that lag is the whole
+    // of what makes the animation flow rather than step.
+    let eased: Float32Array | null = null;
 
     function resize() {
       const parent = canvas.parentElement;
@@ -3672,7 +3895,34 @@ const GraphView = ({
     function draw() {
       const cam = camRef.current;
       const graph = latest.current.current();
-      const field = mode === 'field';
+      // The outline enclosing a set of points. Andrew's monotone chain:
+      // sort, then walk once along the bottom and once back along the top,
+      // dropping any point the walk turns the wrong way at.
+      const outline = (at: { x: number, y: number }[]) => {
+        const p = at.slice().sort((a, b) => a.x - b.x || a.y - b.y);
+        const turn = (o: typeof p[0], a: typeof p[0], b: typeof p[0]) =>
+          (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+
+        const half = (source: typeof p) => {
+          const out: typeof p = [];
+
+          for (const q of source) {
+            while (out.length >= 2 && turn(out[out.length - 2], out[out.length - 1], q) <= 0) out.pop();
+            out.push(q);
+          }
+
+          out.pop();
+
+          return out;
+        };
+
+        return half(p).concat(half(p.slice().reverse()));
+      };
+
+      // Both of the two field renderings want the lattice, the sources and
+      // the marks; they differ in what they make of the charges.
+      const field = mode !== 'lattice';
+      const contours = mode === 'field';
 
       const w = canvas.clientWidth, h = canvas.clientHeight;
 
@@ -3872,7 +4122,7 @@ const GraphView = ({
       // Faint enough to be the paper rather than the drawing: what the
       // lattice is here for is to be bent, and reading a bend needs only
       // enough of a grid to see it against.
-      ctx.strokeStyle = field ? "rgba(124,136,176,0.08)" : "rgba(140,150,180,0.3)";
+      ctx.strokeStyle = field ? "rgba(124,136,176,0.05)" : "rgba(140,150,180,0.3)";
       ctx.lineWidth = field ? 1 : 2.2;
       const idxOf = new Map<node, number>();
       graph.nodes.forEach((nd, i) => idxOf.set(nd, i));
@@ -4069,161 +4319,75 @@ const GraphView = ({
       }
 
       /**
-       * Wavefronts, drawn as what they actually are.
+       * One surface per pulse: the shells as they were drawn before.
        *
-       * A pulse is hundreds of charges and drawing them one at a time is a
-       * snowstorm — least of all can you tell where one pulse ends and the
-       * next begins, which is the thing worth seeing when two sources are
-       * turning over and putting out alternating shells. So each is drawn as
-       * one translucent surface, coloured by the charge it carries.
+       * Each emission is taken on its own and given the outline that encloses
+       * it — split by charge as well as by pulse, because a source with poles
+       * throws opposite charges out of its two halves in the same breath and
+       * collecting them together loses the fact that it has sides at all.
        *
-       * Not as a sphere, though. A sphere is a claim about the space it is
-       * drawn in — that a pulse is the same distance out in every direction,
-       * from a centre — and it is exactly the claim this picture exists to
-       * deny. Space here is warped by what has been destroyed in it: the
-       * layout is solved against the connections rather than laid out on a
-       * grid, so a shell that left its source evenly is drawn dented wherever
-       * the space it is crossing has been eaten. Fitting a circle to that
-       * puts a ring somewhere near the points and centred on nothing in
-       * particular — which is why the rings did not appear to come out of
-       * their source.
-       *
-       * So the surface is taken from the points themselves: the outline that
-       * encloses them as they are actually drawn. It has no centre and no
-       * radius and assumes no shape. It surrounds its pulse — dented where
-       * the pulse is dented, and starting at the source because that is where
-       * the pulse starts.
+       * Not drawn as circles: the outline is taken from where the charges
+       * actually are, so a shell crossing space that has been eaten comes out
+       * dented, which is the thing worth seeing in the examples where the two
+       * magnets are pulling on each other.
        */
-      if (field) {
-        /**
-         * Grouped by pulse AND by charge, not by pulse alone.
-         *
-         * A source with poles puts opposite charges out of its two halves in
-         * the same breath, so one pulse is two things: positive over here and
-         * negative over there. Collected under the pulse alone they are one
-         * set of points, drawn as one outline, in whichever of the two
-         * charges happened to be looked at first — a magnet drawn as a plain
-         * ring of one polarity, with the entire fact that it has sides thrown
-         * away in the grouping.
-         *
-         * Split by charge as well and each half gets its own surface in its
-         * own colour: two lobes leaving together, one warm and one cold, with
-         * the equator between them that emits nothing.
-         */
+      if (field && !contours) {
         const waves = new Map<string, {
-          id: number, at: { x: number, y: number }[], depth: number, polarity: Polarity,
+          at: { x: number, y: number }[], depth: number, out: number, polarity: Polarity,
         }>();
 
         for (const nd of graph.nodes) {
-          // A pulse that has left the space we set up has left the picture
-          // with it. Drawn anyway, every shell ever emitted is still on
-          // screen as an ever-larger outline, and the thing being watched is
-          // behind forty of them.
           if (!graph.inFocus(nd)) continue;
 
           for (const ray of nd) {
             if (ray.magnet || !ray.moving || ray.wave === undefined) continue;
+            if (ray.moving.polarity === Polarity.Neutral) continue;
 
             const p = pts.get(nd);
             if (!p || p.clipped) continue;
 
-            const polarity = ray.moving.polarity;
-            const key = `${ray.wave}|${polarity}`;
+            const key = `${ray.wave}|${ray.moving.polarity}`;
 
             let wave = waves.get(key);
-            if (!wave) waves.set(key, wave = { id: ray.wave, at: [], depth: 0, polarity });
+            if (!wave) waves.set(key, wave = {
+              at: [], depth: 0, out: 0, polarity: ray.moving.polarity,
+            });
 
             wave.at.push({ x: p.x, y: p.y });
             wave.depth += p.depth;
-            break; // one point per point, however many rays are sitting on it
+
+            const wp = layout.get(nd);
+            if (wp) wave.out += Math.hypot(...wp) / ((graph.focus ?? 12) * LATTICE_STEP);
+
+            break;
           }
         }
 
-        // Pulses go out in order, so the largest id is the newest, and a
-        // handful before it are the ones still in flight. Anything older than
-        // that is a straggler — a few charges that jammed against each other
-        // long ago and have been sitting there since, still carrying the id
-        // of the pulse they set out with. Drawn, they are a shell that never
-        // leaves.
-        let newest = -Infinity;
-        for (const wave of waves.values()) if (wave.id > newest) newest = wave.id;
-
-        /**
-         * How far back to keep drawing, and it is a question about reading
-         * rather than about honesty.
-         *
-         * Every pulse still in flight is really there, and drawing all of
-         * them puts a dozen nested outlines around each source with a dozen
-         * more from the other laid over the top. Nothing in that is wrong and
-         * none of it can be followed.
-         *
-         * What has to survive the trim is that the pulses ALTERNATE, and that
-         * takes about as many of them as it takes to see warm, cold, warm —
-         * half a dozen, fading out with age so the sequence reads as a train
-         * going outwards rather than as a set of rings that happen to be
-         * nested. The older ones are still in the world doing their work; the
-         * picture just stops insisting on them.
-         */
-        const LIVE = 12; // ids — six ticks' worth, across two sources
-
-        // The outline enclosing a set of points, as drawn. Andrew's monotone
-        // chain: sort, then walk once along the bottom and once back along
-        // the top, dropping any point the walk turns the wrong way at.
-        const outline = (at: { x: number, y: number }[]) => {
-          const p = at.slice().sort((a, b) => a.x - b.x || a.y - b.y);
-          const turn = (o: typeof p[0], a: typeof p[0], b: typeof p[0]) =>
-            (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
-
-          const half = (source: typeof p) => {
-            const out: typeof p = [];
-
-            for (const q of source) {
-              while (out.length >= 2 && turn(out[out.length - 2], out[out.length - 1], q) <= 0) out.pop();
-              out.push(q);
-            }
-
-            out.pop();
-
-            return out;
-          };
-
-          return half(p).concat(half(p.slice().reverse()));
-        };
-
         const shells = [...waves.values()]
-          .filter(wave => wave.id >= newest - LIVE && wave.at.length >= 3)
+          .filter(wave => wave.at.length >= 3)
           .map(wave => ({
             hull: outline(wave.at),
             depth: wave.depth / wave.at.length,
+            out: Math.min(wave.out / wave.at.length, 1),
             polarity: wave.polarity,
-            // 0 for the pulse just emitted, 1 for the oldest still drawn.
-            age: Math.min((newest - wave.id) / LIVE, 1),
           }))
           .filter(shell => shell.hull.length >= 3)
-          // Far ones first, so a near shell reads as being in front of one
-          // behind it rather than the two just adding up.
+          // Far ones first, so a near shell reads as in front of one behind
+          // it rather than the two adding up.
           .sort((a, b) => b.depth - a.depth);
 
         const prev = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = "lighter";
 
         for (const shell of shells) {
-          const tint = shell.polarity === Polarity.Positive ? "255,122,69"
-            : shell.polarity === Polarity.Negative ? "61,220,255"
-              : "150,157,178";
-
-          // Drawn as a smooth closed curve rather than as the corners it was
-          // computed from. A surface through a few dozen points is a surface;
-          // the straight lines between them are an artefact of there being
-          // finitely many, and drawing those says the shell has flat facets
-          // and sharp edges, which is a claim about it that nothing supports.
-          //
-          // Catmull-Rom: each span is bent by where the points on either side
-          // of it are, so the curve passes through every point and leaves it
-          // heading towards the next one.
+          const tint = shell.polarity === Polarity.Positive ? "255,122,69" : "61,220,255";
           const h = shell.hull;
           const at = (i: number) => h[(i % h.length + h.length) % h.length];
 
+          // A smooth closed curve rather than the corners it was computed
+          // from: the straight lines between them are an artefact of there
+          // being finitely many charges, and drawing those claims the shell
+          // has facets and edges, which nothing supports.
           ctx.beginPath();
           ctx.moveTo(h[0].x, h[0].y);
 
@@ -4239,19 +4403,760 @@ const GraphView = ({
 
           ctx.closePath();
 
-          // Newest brightest, oldest nearly gone — which is what makes half a
-          // dozen outlines read as one train going outwards instead of as a
-          // stack of rings all insisting equally.
-          const fade = 1 - shell.age * 0.85;
+          // Bright where it was emitted, faint by the time it is far out — a
+          // wave spreading the same charge over a larger and larger surface.
+          const lift = Math.max(1 - shell.out, 0);
+          const fade = 0.1 + lift * lift * 0.9;
 
-          // Barely there through the middle, so shells behind and the lattice
-          // through them stay visible, with the surface itself on the edge.
-          ctx.fillStyle = `rgba(${tint},${0.025 * fade})`;
+          ctx.fillStyle = `rgba(${tint},${0.06 * fade})`;
           ctx.fill();
 
-          ctx.strokeStyle = `rgba(${tint},${0.42 * fade})`;
-          ctx.lineWidth = 1.1;
+          ctx.strokeStyle = `rgba(${tint},${0.55 * fade})`;
+          ctx.lineWidth = 1.2;
           ctx.stroke();
+        }
+
+        ctx.globalCompositeOperation = prev;
+      }
+
+      /**
+       * ONE of two ways of drawing the same charges, and they answer
+       * different questions.
+       *
+       * `shells` draws each pulse: one surface per emission, so what you see
+       * is the source letting go of shell after shell and each of them
+       * travelling. It is the honest picture of a thing that emits, and for a
+       * source that only flips over it is the whole story, since every shell
+       * is the same in every direction and there is nothing else to say about
+       * one.
+       *
+       * `field` draws what the pulses add up to: the region where the field
+       * is one charge and the region where it is the other, with the boundary
+       * between them. For a source that TURNS, that is the only way to see
+       * what it is doing — a turning source lays down a spiral, and a spiral
+       * is a property of a whole train of shells and of none of them
+       * separately. Drawn shell by shell it is a stack of lobes, and the
+       * winding they make is nowhere in the picture.
+       *
+       * Two surfaces. Not two hundred.
+       *
+       * A charge at distance r in direction θ left r cells ago, when the
+       * magnet's north pole pointed at α − ωr rather than at α. So its sign
+       * depends on θ − ωr: the positive charges are one Archimedean spiral
+       * winding out from the source, and the negative ones fill exactly the
+       * gaps between its turns. One body each, connected from the middle to
+       * the edge, and neither is ever where the other is.
+       *
+       * Drawing per pulse guarantees the one thing that must not happen. A
+       * pulse is a ring, so a picture made of pulses is a stack of rings
+       * lying across one another — when what is actually there is two
+       * interleaved spirals that never cross at all.
+       *
+       * So the outline is still an outline, drawn exactly as the shells were:
+       * a smooth closed curve, barely filled, its own colour at the edge,
+       * fading with distance. What changed is what it goes round. Instead of
+       * enclosing the charges of one pulse, it follows the edge of the region
+       * where the field has that sign — which is found by reconstructing the
+       * field from the charges and walking the line along which it crosses.
+       * The result is one curve per body rather than one per pulse, it is
+       * shaped like the body (so it winds, because the body winds), and two
+       * of them can no more overlap than a place can be both positive and
+       * negative.
+       */
+      if (contours) {
+        const CELL = 4;                                 // pixels per sample
+        const cols = Math.max(Math.ceil(w / CELL), 1);
+        const rows = Math.max(Math.ceil(h / CELL), 1);
+
+        const sum = new Float32Array(cols * rows);
+        const weight = new Float32Array(cols * rows);
+        const near = new Float32Array(cols * rows);
+        const cut = new Float32Array(cols * rows);
+
+        /**
+         * How far one charge speaks for, and it is bounded on both sides.
+         *
+         * Too small and the charges never meet: the region comes apart into
+         * one little ring per charge, which is the picture of points that
+         * keeps coming back. Too large and a band bleeds into the next band
+         * round, the alternation averages itself away, and there is one grey
+         * body instead of two winding ones.
+         *
+         * The right size is set by the winding itself. A source turning an
+         * eighth of a turn a tick, whose wave advances a cell every third
+         * tick, comes right round every two and two thirds cells — so bands
+         * of one sign lie that far apart, and a charge should speak for about
+         * half of that. Then a band closes up along its own length and still
+         * stops dead against its neighbour.
+         */
+        const step = cam.scale * LATTICE_STEP;          // pixels per cell
+
+        /**
+         * And it reaches further ALONG a band than across to the next one.
+         *
+         * A round reach has to be a compromise between two things that want
+         * opposite sizes. The holes to be closed are the gaps between charges
+         * of one shell, which open up as the shell grows and are the reason
+         * the bands come out as strings of islands; closing them wants a
+         * generous reach. What must not be closed is the gap between one turn
+         * of the spiral and the next, which is where the alternation lives;
+         * keeping that wants a mean one. Round, there is no size that does
+         * both, and the picture is either beads or porridge.
+         *
+         * But the two gaps are not in the same direction. A band runs the way
+         * a shell runs — around the source — and the next band along is
+         * further out from it. So the reach is made an ellipse: long the way
+         * round, short the way out. Charges of one shell run together along
+         * their own arc, and the arc still stops dead against the arc beyond
+         * it. Nothing is invented by this — it is a statement about which
+         * neighbours a charge has, and a charge on a shell has its neighbours
+         * beside it rather than in front.
+         */
+        const along = Math.max((step * 3.4) / CELL, 4);   // the way round
+        const across = Math.max((step * 0.6) / CELL, 1.2); // the way out
+        const span = Math.ceil(along);
+
+        // Where each source is on the screen, which is what "out from it"
+        // means. Anything with no source of its own is measured from the
+        // middle of the picture.
+        const origin = new Map<number, { x: number, y: number }>();
+        for (const nd of graph.nodes) {
+          for (const ray of nd) {
+            if (!ray.magnet || ray.source === undefined) continue;
+
+            const p = pts.get(nd);
+            if (p && !p.clipped) origin.set(ray.source, { x: p.x, y: p.y });
+          }
+        }
+
+        for (const nd of graph.nodes) {
+          if (!graph.inFocus(nd)) continue;
+
+          for (const ray of nd) {
+            if (ray.magnet || !ray.moving) continue;
+            if (ray.moving.polarity === Polarity.Neutral) continue;
+
+            const p = pts.get(nd);
+            if (!p || p.clipped) continue;
+
+            const cx = p.x / CELL, cy = p.y / CELL;
+            const sign = ray.moving.polarity === Polarity.Positive ? 1 : -1;
+
+            const wp = layout.get(nd);
+            const out = wp
+              ? Math.min(Math.hypot(...wp) / ((graph.focus ?? 12) * LATTICE_STEP), 1)
+              : 0;
+
+            // Which way is "out" here, and so which way is "round".
+            const from = origin.get(ray.source ?? 0);
+            let ox = from ? cx - from.x / CELL : 0;
+            let oy = from ? cy - from.y / CELL : 0;
+            const len = Math.hypot(ox, oy);
+
+            if (len > 1e-6) { ox /= len; oy /= len; } else { ox = 1; oy = 0; }
+
+            for (let y = Math.max(Math.floor(cy - span), 0); y <= Math.min(Math.ceil(cy + span), rows - 1); y++) {
+              for (let x = Math.max(Math.floor(cx - span), 0); x <= Math.min(Math.ceil(cx + span), cols - 1); x++) {
+                const dx = x - cx, dy = y - cy;
+
+                // Split into how far out and how far round, and measure each
+                // against its own reach.
+                const out2 = dx * ox + dy * oy;
+                const round2 = dx * -oy + dy * ox;
+
+                const d = Math.hypot(out2 / across, round2 / along);
+                if (d >= 1) continue;
+
+                // Smooth to nothing at the edge of its reach, so no charge
+                // leaves a rim of its own in the field.
+                const k = (1 - d * d) ** 2;
+                const i = y * cols + x;
+
+                sum[i] += sign * k;
+                weight[i] += k;
+                if (1 - out > near[i]) near[i] = 1 - out;
+              }
+            }
+
+            /**
+             * Two charges moving into each other are never one thing.
+             *
+             * They are about to meet — next tick they cancel, or they turn
+             * each other round — and the whole meaning of that is that they
+             * came from different places and are arriving at each other. A
+             * body cannot be approaching itself. Yet nothing said so: the
+             * field is built from where charges are and not from where they
+             * are going, so two shells closing on one another read as one
+             * thick region of the same charge, with the interface that is
+             * about to be an event drawn straight through its middle as if it
+             * were the inside of something.
+             *
+             * So the place between them is cut. Where a charge is moving into
+             * a point that holds a charge coming back at it, the field is
+             * held to nothing along the line between the two — and a boundary
+             * is what gets drawn there, which is what puts them in different
+             * islands and keeps them there right up until the tick where they
+             * resolve.
+             */
+            const ahead = ray.moving.target?.at.node;
+
+            if (ahead && ahead !== nd
+              && ahead.some(x => x.moving?.target?.at.node === nd)) {
+              const q = pts.get(ahead);
+
+              if (q && !q.clipped) {
+                const mx = (p.x + q.x) / 2 / CELL, my = (p.y + q.y) / 2 / CELL;
+                const bite = Math.max(across, 2);
+
+                for (let y = Math.max(Math.floor(my - bite), 0); y <= Math.min(Math.ceil(my + bite), rows - 1); y++) {
+                  for (let x = Math.max(Math.floor(mx - bite), 0); x <= Math.min(Math.ceil(mx + bite), cols - 1); x++) {
+                    const d = Math.hypot(x - mx, y - my) / bite;
+                    if (d >= 1) continue;
+
+                    const k = (1 - d * d) ** 2;
+                    const i = y * cols + x;
+
+                    if (k > cut[i]) cut[i] = k;
+                  }
+                }
+              }
+            }
+
+            break; // one sample per point, however many rays are on it
+          }
+        }
+
+        // How positive or negative each part of the picture is: +1 well
+        // inside an amber band, −1 well inside a cyan one, and nothing where
+        // no charge reaches or where the two meet.
+        const target = new Float32Array(cols * rows);
+        const known = new Uint8Array(cols * rows);
+
+        for (let i = 0; i < target.length; i++) {
+          if (weight[i] <= 0) continue;
+
+          target[i] = Math.max(Math.min(sum[i] / weight[i], 1), -1);
+          known[i] = 1;
+        }
+
+        /**
+         * Places no charge reached take the value their surroundings imply.
+         *
+         * A charge is a sample of the field, not the extent of it. Where two
+         * of them happen to fall a little far apart the reading in between is
+         * not "no field" — it is a place nothing was measured, and treating
+         * unmeasured as zero puts a boundary through the middle of a band
+         * wherever the sampling thinned. That is what the holes in the arms
+         * are: not gaps in the field, gaps in the record of it.
+         *
+         * So a value is grown into them from their edges, a ring at a time,
+         * and each takes the average of whatever is already known beside it.
+         * Somewhere with amber on all sides fills in amber, and the band
+         * closes; somewhere between amber and cyan fills in with what is
+         * between them, which is nothing, and the boundary stays exactly
+         * where it was. Only a few rings of it, so a genuinely empty part of
+         * the world stays empty rather than being papered over.
+         */
+        for (let pass = 0; pass < 5; pass++) {
+          const grown: [number, number][] = [];
+
+          for (let y = 1; y + 1 < rows; y++) {
+            for (let x = 1; x + 1 < cols; x++) {
+              const i = y * cols + x;
+              if (known[i]) continue;
+
+              let total = 0, n = 0, warm = 0, cold = 0;
+
+              for (const j of [i - 1, i + 1, i - cols, i + cols]) {
+                if (!known[j]) continue;
+
+                total += target[j];
+                n++;
+
+                if (target[j] > 0.05) warm++;
+                else if (target[j] < -0.05) cold++;
+              }
+
+              /**
+               * Filled only where its surroundings agree.
+               *
+               * Averaging whatever is beside it is right in the middle of a
+               * band and wrong on the edge of one. A place with amber on one
+               * side and cyan on the other is not a hole in either — it is
+               * the seam between them, and filling it with the average is
+               * filling it with something halfway, which is a step towards
+               * one band and the next one out becoming a single band. Enough
+               * of those and the layers close up into each other and the
+               * winding goes.
+               *
+               * So a gap is only closed from the inside. Where the known
+               * neighbours are all of one charge it fills with that charge
+               * and the band mends; where they disagree it is left as it is,
+               * because what is there is a boundary and a boundary is
+               * supposed to be empty.
+               */
+              if (warm && cold) continue;
+
+              if (n >= 2) grown.push([i, total / n]);
+            }
+          }
+
+          if (!grown.length) break;
+
+          // All of them at once, so a ring fills from the ring outside it
+          // rather than from itself half-filled.
+          for (const [i, v] of grown) { target[i] = v; known[i] = 1; }
+        }
+
+        /**
+         * Eased from the last frame rather than replaced.
+         *
+         * The world only changes on a tick, and a tick is a whole cell — a
+         * charge is here, and then it is a cell further out, with nothing in
+         * between because there is nothing in between to be in. Drawn
+         * directly, the picture stands still for a fifth of a second and then
+         * jumps, which is honest about the model and awful to watch: the eye
+         * reads the jump instead of the movement.
+         *
+         * The FIELD, though, is a continuous quantity — how positive a place
+         * is — and there is nothing wrong with a place becoming more positive
+         * gradually. So the drawn field walks towards the true one a fraction
+         * each frame instead of arriving at it at once. A band that moves one
+         * cell out fades out of where it was and into where it has got to,
+         * and what you see is the wave travelling rather than a slideshow of
+         * where it has been.
+         *
+         * It is a property of the drawing and not of the model. Nothing here
+         * is fed back into the dynamics, and a still of any frame is the same
+         * picture the unsmoothed version would have reached a moment later.
+         */
+        if (!eased || eased.length !== target.length) eased = target.slice();
+        else for (let i = 0; i < eased.length; i++)
+          eased[i] += (target[i] - eased[i]) * 0.2;
+
+        /**
+         * And smoothed across itself before anything is traced from it.
+         *
+         * The field is built by dropping a kernel at every charge, so it
+         * carries the charges in it: little bumps where one landed, little
+         * dips between two, all at the scale of a single lattice cell. A line
+         * traced through that follows every one of them, and the arm comes
+         * out scalloped — which is not the shape of the arm, it is the shape
+         * of the fact that it was measured at points.
+         *
+         * A few passes of each sample settling towards the average of the
+         * ones around it takes that out. It is the same operation as the
+         * kernel and could be folded into it, but it is far cheaper here:
+         * spreading a wider kernel costs its area at every charge, while this
+         * costs four additions per sample however wide it ends up being. The
+         * arm is a band across many cells and survives it untouched; the
+         * bumps are one cell across and do not.
+         */
+        // On a copy, never on the eased field itself: that one is carried
+        // from frame to frame, and smoothing something that is then smoothed
+        // again next frame is not a smoothing, it is a slow erasure — after a
+        // few seconds there would be nothing left of the field at all.
+        const f = eased.slice();
+
+        const blur = (a: Float32Array, passes: number) => {
+          for (let pass = 0; pass < passes; pass++) {
+            for (let y = 1; y + 1 < rows; y++) {
+              for (let x = 1; x + 1 < cols; x++) {
+                const i = y * cols + x;
+
+                a[i] = (
+                  a[i] * 4
+                  + a[i - 1] + a[i + 1]
+                  + a[i - cols] + a[i + cols]
+                ) / 8;
+              }
+            }
+          }
+
+          return a;
+        };
+
+        blur(f, 3);
+
+        /**
+         * And the valley between two bands is deepened until it separates
+         * them.
+         *
+         * Where an arm of one charge passes close to another arm of the same
+         * charge, what lies between them is a thin band of the other — and
+         * thin means weak, because the two sides of it are pulling the
+         * average back towards themselves. If it is weak enough that the
+         * field never quite crosses the level being traced, the two arms are
+         * drawn as one: an island that is really two islands with a seam in
+         * it that did not print.
+         *
+         * Comparing the field against a blurred copy of itself says exactly
+         * where that is happening. A place in the middle of a wide band looks
+         * like its own surroundings and the two agree; a place in a narrow
+         * gap is much less positive than its surroundings, because its
+         * surroundings are the arms on either side of it. Taking the
+         * difference and pushing it back in leaves the middles of the bands
+         * where they were and drives the gaps between them down through zero
+         * — which is where a boundary is, so a boundary is what gets drawn,
+         * and the two arms come apart into the two islands they are.
+         */
+        const wide = blur(f.slice(), 9);
+
+        for (let i = 0; i < f.length; i++)
+          f[i] = Math.max(Math.min(f[i] + (f[i] - wide[i]) * 1.6, 1), -1);
+
+        // And nothing survives where two charges are about to meet: the field
+        // there belongs to neither of them, because in a tick it will belong
+        // to whatever they become.
+        for (let i = 0; i < f.length; i++) f[i] *= 1 - cut[i];
+
+        // And the pulses they were emitted in, kept separately, so the grain
+        // of the thing can be drawn under its shape.
+        const waves = new Map<string, {
+          at: { x: number, y: number }[], out: number, n: number, polarity: Polarity,
+        }>();
+
+        for (const nd of graph.nodes) {
+          if (!graph.inFocus(nd)) continue;
+
+          for (const ray of nd) {
+            if (ray.magnet || !ray.moving || ray.wave === undefined) continue;
+            if (ray.moving.polarity === Polarity.Neutral) continue;
+
+            const p = pts.get(nd);
+            if (!p || p.clipped) continue;
+
+            const key = `${ray.wave}|${ray.moving.polarity}`;
+
+            let wave = waves.get(key);
+            if (!wave) waves.set(key, wave = {
+              at: [], out: 0, n: 0, polarity: ray.moving.polarity,
+            });
+
+            wave.at.push({ x: p.x, y: p.y });
+
+            const wp = layout.get(nd);
+            if (wp) wave.out += Math.hypot(...wp) / ((graph.focus ?? 12) * LATTICE_STEP);
+            wave.n++;
+
+            break;
+          }
+        }
+
+
+        /**
+         * The line along which the field crosses a value.
+         *
+         * Marching squares: each little square of four neighbouring samples
+         * is wholly above the value, wholly below, or cut by it — and which
+         * of its sides the cut passes through follows from which corners are
+         * on which side. Where on a side is solved for rather than snapped to
+         * the grid, so the curve is placed to a fraction of a sample and does
+         * not come out looking like stairs.
+         *
+         * The segments come out unordered, so they are then strung together
+         * end to end into runs. That is what turns a scatter of little lines
+         * into a curve that can be smoothed and filled — and a run that
+         * arrives back where it began is a closed one, which is what the
+         * boundary of a body is.
+         */
+        const trace = (level: number) => {
+          const segs: [number, number, number, number][] = [];
+
+          for (let y = 0; y + 1 < rows; y++) {
+            for (let x = 0; x + 1 < cols; x++) {
+              const v = [
+                f[y * cols + x], f[y * cols + x + 1],
+                f[(y + 1) * cols + x + 1], f[(y + 1) * cols + x],
+              ];
+
+              let mask = 0;
+              for (let c = 0; c < 4; c++) if (v[c] > level) mask |= 1 << c;
+              if (mask === 0 || mask === 15) continue;
+
+              const corner = [[x, y], [x + 1, y], [x + 1, y + 1], [x, y + 1]];
+
+              const cut = (a: number, b: number): [number, number] => {
+                const t = Math.max(Math.min((level - v[a]) / ((v[b] - v[a]) || 1e-9), 1), 0);
+
+                return [
+                  (corner[a][0] + (corner[b][0] - corner[a][0]) * t) * CELL,
+                  (corner[a][1] + (corner[b][1] - corner[a][1]) * t) * CELL,
+                ];
+              };
+
+              const on: [number, number][] = [];
+              for (let c = 0; c < 4; c++) {
+                const d = (c + 1) % 4;
+                if (((mask >> c) & 1) !== ((mask >> d) & 1)) on.push(cut(c, d));
+              }
+
+              if (on.length === 2) segs.push([on[0][0], on[0][1], on[1][0], on[1][1]]);
+              else if (on.length === 4) {
+                segs.push([on[0][0], on[0][1], on[1][0], on[1][1]]);
+                segs.push([on[2][0], on[2][1], on[3][0], on[3][1]]);
+              }
+            }
+          }
+
+          // Strung end to end. Endpoints are shared exactly between
+          // neighbouring squares, so matching them to the nearest tenth of a
+          // pixel is enough to find which segment continues which.
+          const key = (x: number, y: number) => `${Math.round(x * 10)},${Math.round(y * 10)}`;
+          const ends = new Map<string, number[]>();
+
+          segs.forEach(([ax, ay, bx, by], i) => {
+            for (const k of [key(ax, ay), key(bx, by)]) {
+              const list = ends.get(k);
+              if (list) list.push(i); else ends.set(k, [i]);
+            }
+          });
+
+          const used = new Array(segs.length).fill(false);
+          const runs: { x: number, y: number }[][] = [];
+
+          for (let i = 0; i < segs.length; i++) {
+            if (used[i]) continue;
+            used[i] = true;
+
+            const [ax, ay, bx, by] = segs[i];
+            const run = [{ x: ax, y: ay }, { x: bx, y: by }];
+
+            // Follow it forwards, then turn round and follow the other way.
+            for (let pass = 0; pass < 2; pass++) {
+              for (; ;) {
+                const tip = run[run.length - 1];
+                const next = (ends.get(key(tip.x, tip.y)) ?? []).find(j => !used[j]);
+                if (next === undefined) break;
+
+                used[next] = true;
+
+                const [cx2, cy2, dx2, dy2] = segs[next];
+                const near = Math.hypot(cx2 - tip.x, cy2 - tip.y) < Math.hypot(dx2 - tip.x, dy2 - tip.y);
+
+                run.push(near ? { x: dx2, y: dy2 } : { x: cx2, y: cy2 });
+              }
+
+              run.reverse();
+            }
+
+            if (run.length >= 4) runs.push(run);
+          }
+
+          return runs;
+        };
+
+        /**
+         * A run, eased.
+         *
+         * Marching squares places every point on the edge of a sample square,
+         * so a curve through them carries the grid's own fret in it — a
+         * regular little waver at the scale of one sample, which is nothing
+         * about the field and everything about how it was measured. A few
+         * passes of each point drifting towards the middle of its neighbours
+         * takes that out and leaves the shape, which is at the scale of a
+         * band and untouched by it.
+         */
+        const ease = (run: { x: number, y: number }[], closed: boolean) => {
+          let cur = run;
+
+          for (let pass = 0; pass < 10; pass++) {
+            const next = cur.map((p, i) => {
+              if (!closed && (i === 0 || i === cur.length - 1)) return p;
+
+              const a = cur[(i - 1 + cur.length) % cur.length];
+              const b = cur[(i + 1) % cur.length];
+
+              return { x: (a.x + 2 * p.x + b.x) / 4, y: (a.y + 2 * p.y + b.y) / 4 };
+            });
+
+            cur = next;
+          }
+
+          return cur;
+        };
+
+        const prev = ctx.globalCompositeOperation;
+        ctx.globalCompositeOperation = "lighter";
+
+        /**
+         * The waves themselves, underneath and barely there.
+         *
+         * The spirals are what the field IS, and they are drawn above. But a
+         * spiral is made of something — one shell after another, each thrown
+         * off a moment later than the last and a little further round — and
+         * with only the boundaries drawn there is nothing in the picture that
+         * says so. A faint outline per pulse puts that back: the rings are
+         * the grain of the thing, and the winding is the thing.
+         */
+        for (const [id, wave] of waves) {
+          if (wave.at.length < 3) continue;
+
+          const hull = outline(wave.at);
+          if (hull.length < 3) continue;
+
+          const tint = wave.polarity === Polarity.Positive ? "255,122,69" : "61,220,255";
+          const at = (i: number) => hull[(i % hull.length + hull.length) % hull.length];
+
+          ctx.beginPath();
+          ctx.moveTo(hull[0].x, hull[0].y);
+
+          for (let i = 0; i < hull.length; i++) {
+            const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+
+            ctx.bezierCurveTo(
+              p1.x + (p2.x - p0.x) / 6, p1.y + (p2.y - p0.y) / 6,
+              p2.x - (p3.x - p1.x) / 6, p2.y - (p3.y - p1.y) / 6,
+              p2.x, p2.y,
+            );
+          }
+
+          ctx.closePath();
+          /**
+           * And the older ones stop being drawn rather than piling up.
+           *
+           * A dozen pulses in the air at once is a dozen rings, and the
+           * further out they are the longer their outlines are and the more
+           * of them cross each other — so the outside of the picture ends up
+           * carrying most of the ink for the part of the field that has least
+           * in it. Cut off once they are past halfway out, what is left is
+           * the handful nearest the source, which are the ones that read as
+           * pulses.
+           */
+          const lift = Math.max(1 - wave.out / wave.n, 0);
+          if (lift < 0.45) continue;
+
+          // Faint enough to be texture. There are several of these to every
+          // band and their outlines run alongside it, so at anything like the
+          // band's own weight they stop being the grain of it and become a
+          // second set of edges arguing with the first.
+          ctx.strokeStyle = `rgba(${tint},${lift * lift * 0.18})`;
+          ctx.lineWidth = 0.9;
+          ctx.stroke();
+        }
+
+        // Traced where the field is only weakly one thing rather than
+        // firmly so. A high level draws a line well inside each band and the
+        // arm comes out thin, broken wherever it happens to be weak; a low
+        // one follows the band right out to where it gives way to its
+        // neighbour, which is where the two actually meet.
+        /**
+         * A fill that dims with distance from the source rather than with
+         * which island it belongs to.
+         *
+         * A fill takes one colour for the whole shape it fills, so a band
+         * cannot be shaded along itself the way its edge can. What it can be
+         * given is a colour that is already a gradient — bright at the middle
+         * of the picture and thin at the rim — and then every band is dim
+         * where it is far out and bright where it is close in, including the
+         * ones that are both.
+         */
+        const centre = origin.size
+          ? [...origin.values()].reduce((a, p) => ({
+            x: a.x + p.x / origin.size, y: a.y + p.y / origin.size,
+          }), { x: 0, y: 0 })
+          : { x: w / 2, y: h / 2 };
+
+        const span2 = (graph.focus ?? 12) * LATTICE_STEP * cam.scale;
+
+        const wash = (tint: string) => {
+          const g = ctx.createRadialGradient(
+            centre.x, centre.y, 0, centre.x, centre.y, Math.max(span2, 1),
+          );
+
+          g.addColorStop(0, `rgba(${tint},0.3)`);
+          g.addColorStop(0.45, `rgba(${tint},0.14)`);
+          g.addColorStop(1, `rgba(${tint},0.03)`);
+
+          return g;
+        };
+
+        const strength = (p: { x: number, y: number }) => {
+          const i = Math.min(Math.max(Math.round(p.y / CELL), 0), rows - 1) * cols
+            + Math.min(Math.max(Math.round(p.x / CELL), 0), cols - 1);
+
+          const lift = near[i];
+
+          return 0.08 + lift * lift * 0.92;
+        };
+
+        for (const [level, tint] of [[0.22, "255,122,69"], [-0.22, "61,220,255"]] as [number, string][]) {
+          const runs = trace(level).map(raw => {
+            const closed = Math.hypot(
+              raw[0].x - raw[raw.length - 1].x, raw[0].y - raw[raw.length - 1].y,
+            ) < CELL * 2;
+
+            return { run: ease(raw, closed), closed };
+          });
+
+          const curve = (into: Path2D, run: { x: number, y: number }[], closed: boolean) => {
+            const at = (i: number) => run[closed
+              ? (i % run.length + run.length) % run.length
+              : Math.max(Math.min(i, run.length - 1), 0)];
+
+            into.moveTo(run[0].x, run[0].y);
+
+            for (let i = 0; i < run.length - (closed ? 0 : 1); i++) {
+              const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+
+              into.bezierCurveTo(
+                p1.x + (p2.x - p0.x) / 6, p1.y + (p2.y - p0.y) / 6,
+                p2.x - (p3.x - p1.x) / 6, p2.y - (p3.y - p1.y) / 6,
+                p2.x, p2.y,
+              );
+            }
+
+            if (closed) into.closePath();
+          };
+
+          /**
+           * All of one charge's boundaries filled as ONE shape, with the
+           * even-odd rule.
+           *
+           * A body of one charge is not simply a blob with an edge. An arm
+           * that winds round has the other charge inside the loop it makes,
+           * and that shows up here as a second closed curve lying within the
+           * first — the hole, not another island. Filled one curve at a time,
+           * the hole gets filled too, and amber is painted straight over the
+           * cyan that lives there: two regions that cannot overlap in the
+           * field, overlapping in the picture, purely as an artefact of
+           * filling their boundaries separately.
+           *
+           * Taken together under the even-odd rule, a place is inside the
+           * body when the boundary wraps it an odd number of times — so the
+           * inside of the arm is filled, the hole within it is not, and what
+           * is drawn is the region rather than everything its edges happen to
+           * enclose.
+           */
+          const body = new Path2D();
+          for (const { run, closed } of runs) if (closed) curve(body, run, closed);
+
+          ctx.fillStyle = wash(tint);
+          ctx.fill(body, "evenodd");
+
+          // A brighter rim on top of it, stroked span by span so that its
+          // strength is the strength of the field where each piece of it
+          // actually lies rather than the average over the whole run.
+          ctx.lineWidth = 1.4;
+          ctx.lineCap = "round";
+
+          for (const { run, closed } of runs) {
+            const at = (i: number) => run[closed
+              ? (i % run.length + run.length) % run.length
+              : Math.max(Math.min(i, run.length - 1), 0)];
+
+            for (let i = 0; i + 1 < run.length + (closed ? 1 : 0); i++) {
+              const a = at(i), b = at(i + 1);
+
+              ctx.strokeStyle = `rgba(${tint},${0.75 * strength(a)})`;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+
+          ctx.lineCap = "butt";
         }
 
         ctx.globalCompositeOperation = prev;
@@ -4997,6 +5902,7 @@ const alternatingIntoRandom = (size: number, inner: Polarity): LineSide[] => [
 const MAGNET_CASES: {
   name: string, a?: number[], b?: number[],
   axis?: number[], spin?: boolean, alone?: boolean, turning?: 1 | -1,
+  crossed?: boolean,
 }[] = [
   /**
    * One magnet, on its own, held still — and the answer to whether anything
@@ -5030,7 +5936,7 @@ const MAGNET_CASES: {
    * pole. It is the nearest thing these rules have to one: the two halves of
    * the field closing on each other, around the middle, some way out.
    */
-  { name: 'one magnet, on its own', axis: [1, 0, 0], spin: false, alone: true },
+  // { name: 'one magnet, on its own', axis: [1, 0, 0], spin: false, alone: true },
 
   // Neither going anywhere: the baseline, in which anything that moves, moved
   // because of the field.
@@ -5116,7 +6022,7 @@ const MAGNET_CASES: {
    * them together, nothing built out of these rules will, and the answer is
    * about the rules rather than about the setup.
    */
-  { name: 'two magnets, poles facing', axis: [1, 0, 0], spin: false },
+  // { name: 'two magnets, poles facing', axis: [1, 0, 0], spin: false },
 
   /**
    * One magnet, actually turning.
@@ -5156,6 +6062,26 @@ const MAGNET_CASES: {
    * same way.
    */
   { name: 'two magnets, turning', axis: [1, 0, 0], spin: false, turning: 1 },
+
+  /**
+   * The two of them turning in planes at right angles to each other.
+   *
+   * Everything above turns in the plane the pair are laid out in, which is
+   * the flat case dressed up in three dimensions: both arms wind in the same
+   * plane, and a picture of it says nothing a drawing on paper could not.
+   * Here the left one comes round from x towards y and the right one from x
+   * towards z, so the two spirals lie in surfaces at right angles and cross
+   * rather than overlap.
+   *
+   * It is the one arrangement in this article that could not exist in fewer
+   * than three dimensions — two planes meeting in a line — and the thing to
+   * watch is that line, which is where the only directions belonging to both
+   * of them are, and so the only places their fields can meet at all.
+   */
+  // {
+  //   name: 'two magnets, turning in crossed planes',
+  //   axis: [1, 0, 0], spin: false, turning: 1, crossed: true,
+  // },
 ];
 
 const MAGNET_SPINS: { name: string, phase: number }[] = [
@@ -5266,7 +6192,7 @@ const RayCalculiAndPhysics = () => {
             What is drawn is the structure rather than the coordinates, so
             space that has been annihilated out of the world is not a hole in
             the picture — it is two things that are now nearer each other. */}
-        {MAGNET_CASES.map(({ name, a, b, axis, spin: flipping = true, alone, turning }) => (
+        {MAGNET_CASES.map(({ name, a, b, axis, spin: flipping = true, alone, turning, crossed }) => (
           <Fragment key={`magnets-${name}`}>
             {/* What the pair of runs is contrasting depends on what the
                 sources are doing. Flipping in place, it is whether they flip
@@ -5287,11 +6213,102 @@ const RayCalculiAndPhysics = () => {
                     { emits: Polarity.Positive, moving: a, axis, turning },
                     {
                       emits: Polarity.Positive, moving: b, phase: spin.phase, axis,
+                      // The second one turning in a plane at right angles to
+                      // the first: x towards z rather than x towards y.
+                      plane: crossed
+                        ? [[1, 0, 0], [0, 0, 1]] as [number[], number[]]
+                        : undefined,
                       // The second one comes round the other way when they
                       // are set against each other.
                       turning: turning ? (turning * spin.sense) as 1 | -1 : undefined,
                     },
-                    { spin: flipping, alone },
+                    {
+                      spin: flipping, alone,
+                      // A spiral is where each pulse went. Wandering is each
+                      // pulse going somewhere slightly else on the way, which
+                      // is exactly the information an arm is made of, rubbed
+                      // out — measurably: the distance out stops tracking how
+                      // long ago it left.
+                      wander: turning ? 0 : undefined,
+
+                      /**
+                       * One pulse per cell the wave advances, which for a
+                       * turning source means one every third tick.
+                       *
+                       * The two have to agree. Charges from a turning magnet
+                       * are held to a cell every third tick, so that the
+                       * magnet gets three eighths of a turn round between one
+                       * ring of the wave and the next and the winding is
+                       * tight. Emit every tick against that and the ring of
+                       * cells around the source has not cleared when the next
+                       * pulse is due: it goes out as one or two charges
+                       * instead of two dozen, and most of the shells are too
+                       * thin to be anything. Measured, that leaves gaps at
+                       * two thirds of the radii and under a full turn of
+                       * winding across the whole ball.
+                       *
+                       * Matched, every pulse leaves into empty space and
+                       * lands one cell further out than the one before, so
+                       * the ball is layered the whole way from the source to
+                       * the edge with a hundred and thirty-five degrees
+                       * between each layer and the next.
+                       */
+                      /**
+                       * Long enough that every direction has cleared, which
+                       * is set by the slowest of them.
+                       *
+                       * A step costs its own length, so a charge leaving
+                       * through a corner of its cell takes √3 times as long
+                       * to be gone as one leaving through a face. Emit again
+                       * before that and the corner directions are still
+                       * occupied by the last pulse: what goes out is the six
+                       * faces and a few edges — fourteen of the twenty-six —
+                       * and the shell has holes in it in exactly the
+                       * directions that were slowest, every time, in the same
+                       * places. Which is a spiral with pieces missing out of
+                       * it wherever the lattice is coarsest.
+                       *
+                       * Waiting the √3·3 ≈ 6 ticks a corner needs, every
+                       * pulse leaves whole. The wave advances two cells in
+                       * that time and the magnet turns three quarters of the
+                       * way round, so the pitch is what it was — an eighth of
+                       * a turn per third of a cell — with half as many shells
+                       * in the air, each of them entire.
+                       */
+                      // Every tick, like everything else here. A cell
+                      // emptied this tick is free the next, so the source is
+                      // never waiting on its own last pulse: a shell leaves
+                      // whole every tick, lands one cell further out than the
+                      // one before, and the magnet has turned an eighth of a
+                      // turn in between. The ball is layered the whole way
+                      // from the source to the edge, each layer rotated from
+                      // the one inside it, which is what a spiral is.
+                      every: undefined,
+
+                      /**
+                       * And fanning as early as it can, which is what closes
+                       * the gaps.
+                       *
+                       * A shell is the two dozen directions the source has,
+                       * and two dozen points spread over a sphere of radius
+                       * ten are nowhere near each other — the band they are
+                       * supposed to make is dots with holes between them, and
+                       * no amount of care in the drawing joins up something
+                       * that is not joined. Every charge fanning sideways
+                       * into the room around it as soon as it has any
+                       * multiplies each shell several times over, and it does
+                       * it where the gaps are: out at the far end, where a
+                       * shell has grown and its charges have drifted apart.
+                       */
+                      // Out where there is room for it, rather than at the
+                      // first opportunity. Fanning close in crowds the few
+                      // cells near the source and thickens the shells there
+                      // (measured: half again as thick, and half of
+                      // everything waiting to move); fanning out where a
+                      // shell has already grown puts the extra charges
+                      // exactly where the gaps between them have opened.
+                      fanAt: turning ? 5 : undefined,
+                    },
                   )}
                   repeated={60}
                   // Said outright rather than left to follow from `repeated`,
@@ -5302,7 +6319,13 @@ const RayCalculiAndPhysics = () => {
                   autoplay
                   height={320}
                   interval={0.2}
-                  mode="field"
+                  // A turning source lays down a spiral, and a spiral
+                  // belongs to a whole train of shells rather than to any one
+                  // of them — drawn pulse by pulse it is a stack of lobes and
+                  // the winding is nowhere. Everything else is a source that
+                  // emits the same thing in every direction, where the pulse
+                  // IS the object and the shells say it best.
+                  mode={turning ? "field" : "shells"}
                   // The glow is a sum over every charge, and with a pulse
                   // going out every tick that is most of the ball — one even
                   // wash, hiding the shells it is drawn from.
