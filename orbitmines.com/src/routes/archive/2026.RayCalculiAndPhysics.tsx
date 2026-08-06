@@ -905,6 +905,40 @@ class Graph {
    * every column is simply moving.
    */
   static blocks(left: Polarity, right: Polarity, size = 3): Graph {
+    return Graph.facingBlocks(size, coord => coord[0] < 0 ? left : right);
+  }
+
+  /**
+   * The same two blocks with nothing uniform about either of them: every
+   * point's charge is drawn on its own, so the interface is not one thing
+   * happening to a surface but a different thing happening at every row of
+   * it. Opposite pairs cancel and take their space with them, like pairs turn
+   * around and start heading back out through their own block — at the same
+   * moment, along the same surface.
+   *
+   * What a block is, then, isn't decided by the block. It is decided pair by
+   * pair, and the two of them come apart along a line neither of them had.
+   */
+  static mixedBlocks(size = 3): Graph {
+    // `wire` asks per boundary, but a point is one thing: the draw is
+    // remembered by coordinate so every boundary of a point carries the same
+    // charge, and it is the point that is positive or negative.
+    const drawn = new Map<string, Polarity>();
+
+    return Graph.facingBlocks(size, coord => {
+      const key = coord.join(",");
+
+      if (!drawn.has(key)) drawn.set(key, Universe.randomPolarity());
+
+      return drawn.get(key)!;
+    });
+  }
+
+  // Two solid blocks side by side along x, each point charged by `polarity`
+  // and every one of them moving into the other block. So the two innermost
+  // columns meet head-on, and every column behind them is moving into the
+  // back of the one in front.
+  private static facingBlocks(size: number, polarity: (coord: number[]) => Polarity): Graph {
     const graph = new Graph();
     graph.dims = 2;
     graph.ringRadius = size;
@@ -916,13 +950,8 @@ class Graph {
       for (let y = -half; y <= half; y++)
         coords.push([x, y]);
 
-    const { nodes, byCoord, facing, key } = Graph.wire(
-      graph, coords, coord => coord[0] < 0 ? left : right,
-    );
+    const { nodes, byCoord, facing, key } = Graph.wire(graph, coords, polarity);
 
-    // Every point heads for the interface: the left block moves +x, the right
-    // block -x. So the two innermost columns meet head-on, and every column
-    // behind them is moving into the back of the one in front.
     for (const nd of nodes) {
       const coord = graph.gridPos.get(nd)!;
       const towards = byCoord.get(key([coord[0] + (coord[0] < 0 ? 1 : -1), coord[1]]));
@@ -2532,6 +2561,22 @@ const RayCalculiAndPhysics = () => {
             graph={() => Graph.blocks(left, right)}
             repeated={15}
             height={140}
+            density={false}
+          />
+        ))}
+
+        {/* The same two blocks heading into each other with nothing uniform
+            about either of them: every point drawn positive or negative on
+            its own. The interface is then a different thing at every row of
+            it, so the two come apart along a line neither of them had — three
+            draws, since a draw is not a case. */}
+        {[0, 1, 2].map(i => (
+          <CalculusVisualization
+            key={`mixed-blocks-${i}`}
+            graph={() => Graph.mixedBlocks()}
+            repeated={5}
+            filmstrip
+            height={90}
             density={false}
           />
         ))}
