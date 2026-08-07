@@ -1268,11 +1268,47 @@ class Graph {
     // something else has just put down on its way out.
     const there = vacated.get(nd) ?? this.gridPos.get(nd);
 
-    // What lies beyond it the way we are going — carrying on, rather than
-    // across. Our own direction of travel is rewired onto that, so the line
-    // we are moving along stays a line.
+    /**
+     * What lies beyond it the way we are going — carrying on, rather than
+     * across. Our own direction of travel is rewired onto that, so the line
+     * we are moving along stays a line.
+     *
+     * And this is where gravity is, which is worth saying plainly because
+     * nothing here looks like it.
+     *
+     * "The way we are going" is not a remembered vector. It is `dir`, the
+     * direction of the connection we are moving along, measured between the
+     * two points it currently joins — so it is a fact about the lattice as it
+     * stands rather than about where we set out. What continues it is
+     * likewise chosen from the connections the point ahead actually has, now.
+     * Nothing in this reads an absolute frame, and nothing in it remembers
+     * anything.
+     *
+     * So when an annihilation somewhere nearby splices two points together
+     * that were not joined before, the fan of directions at this point is a
+     * different fan, and the best continuation of our line is a connection
+     * that was not there and does not lead where the old one led. The ray
+     * does exactly what it always does — carry on — and arrives somewhere it
+     * would not have. That is a path bending with nothing bending it, which
+     * is the whole of what a geodesic is.
+     *
+     * What used to prevent it was asking for a continuation within about
+     * twenty-five degrees of dead ahead, and taking nothing at all otherwise.
+     * That is a fine rule in a lattice that is still square, and it is
+     * precisely wrong where one is not: exactly where the space has been bent
+     * by an annihilation, the ray would find nothing straight enough, give up
+     * its line, and either stop having a direction or walk out of a bare one.
+     * The deflection was there to be had and was being thrown away for not
+     * being small.
+     *
+     * Best available, then, and forwards. A ray follows the straightest thing
+     * this point has got, whatever that has become — which in flat lattice is
+     * the same connection it would have taken anyway, and near a collision is
+     * the one that has been moved.
+     */
     let onward: Boundary | undefined;
     let onwardStep: number[] | undefined;
+    let straightest = 0;
 
     for (const other of nd) {
       for (const bd of other.boundaries) {
@@ -1281,10 +1317,15 @@ class Graph {
         const d = this.direction(bd);
         if (!d || !dir) continue;
 
-        if (d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0) > 0.9) {
-          onward = bd;
-          onwardStep = this.bare(bd);
-        }
+        const dot = d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0);
+
+        // Forwards, at least. A connection at right angles or behind is not a
+        // continuation of anything, it is a different journey.
+        if (dot <= straightest) continue;
+
+        straightest = dot;
+        onward = bd;
+        onwardStep = this.bare(bd);
       }
     }
 
@@ -3784,6 +3825,38 @@ export interface CalculusVisualizationProps {
  * exactly once, with the camera snapped straight to its target orientation
  * rather than eased into it, since there are no later frames to ease over.
  */
+/**
+ * Runs something while an element is worth drawing, and stops it when it is
+ * not.
+ *
+ * An article like this one is thirty-odd universes stacked up a page, of
+ * which at most two are on screen. Every one of them left running is a frame
+ * loop, a tick, and a canvas the size of the viewport being filled sixty
+ * times a second for nobody — which is most of what the page costs, and the
+ * reason it got slower the further down it went.
+ *
+ * A margin, so that a view is going by the time it is looked at rather than
+ * starting the moment it is: half a screen is enough at any speed a page is
+ * read at, and costs nothing when it turns out to be wrong.
+ */
+const whileOnScreen = (el: Element, show: (visible: boolean) => void) => {
+  if (typeof IntersectionObserver === "undefined") {
+    // Nothing to watch with: the old behaviour, which is to run regardless.
+    show(true);
+
+    return () => { };
+  }
+
+  const watcher = new IntersectionObserver(
+    entries => show(entries[entries.length - 1].isIntersecting),
+    { rootMargin: "50% 0px" },
+  );
+
+  watcher.observe(el);
+
+  return () => watcher.disconnect();
+};
+
 const GraphView = ({
   graph: current,
   animate = false,
@@ -6304,19 +6377,10 @@ const GraphView = ({
       canvas.height = 0;
     };
 
-    const watcher = typeof IntersectionObserver === "undefined"
-      ? undefined
-      : new IntersectionObserver(
-        entries => show(entries[entries.length - 1].isIntersecting),
-        { rootMargin: "50% 0px" },
-      );
-
-    // Nothing to watch with: the old behaviour, which is to run regardless.
-    if (watcher) watcher.observe(canvas);
-    else show(true);
+    const unwatch = whileOnScreen(canvas, show);
 
     return () => {
-      watcher?.disconnect();
+      unwatch();
       stop();
       window.removeEventListener("resize", onResizeIfSeen);
       // canvas.removeEventListener("wheel", onWheel);
@@ -6502,6 +6566,1960 @@ const CalculusVisualization = ({ filmstrip, ...props }: CalculusVisualizationPro
   filmstrip
     ? <CalculusFilmstrip {...props} />
     : <CalculusPlayer {...props} />;
+
+/**
+ * The whole of it as one expression, which is the other way of having it.
+ *
+ * Everything above is the model run: a few thousand points, each one moved
+ * or not moved by a rule that looks only at its neighbours, and a picture
+ * reconstructed afterwards from where they all ended up. That is the honest
+ * order to do it in — the rules are the claim, and the shape is whatever
+ * comes out of them — but it is expensive twice over. Once in the running,
+ * and once in the reading: a field made of points has to be turned back into
+ * a field, and every choice in that reconstruction is a chance to draw
+ * something the rules did not say.
+ *
+ * There is a second way, available only once you already know what the rules
+ * make, and it is worth having precisely because it is derived rather than
+ * assumed. A source at the origin turning at ω radians a tick, emitting the
+ * charge of whichever pole faces a direction, and a wave that travels one
+ * cell a tick. Then the charge at distance r in direction θ at time t is the
+ * charge that left the source r ticks ago, when its axis pointed at
+ * α + ω(t − r) rather than at α + ωt. So the field is
+ *
+ *     F(r, θ, t) = cos( lobes·θ − ω·(t − r) − α )
+ *
+ * and there is nothing else to it. No points, no reconstruction, no
+ * neighbours to decide between: at any place and any moment the answer is
+ * one cosine, and the picture is that cosine evaluated at every pixel.
+ *
+ * `lobes` is the only thing that separates the two cases in this article, and
+ * it is not a parameter so much as a question about the source. One: it has
+ * an axis, so what it emits depends on the direction — the field carries a θ
+ * in it, the zero set is θ = ω(t − r) + const, and that is an Archimedean
+ * spiral. Nought: it has no sides, so direction drops out altogether, the
+ * zero set is r = t − const, and that is a set of rings travelling outward.
+ * A spiral and a ring are the same function with and without an angle in it,
+ * which is what it means to say the difference between the two sources is
+ * that one turns and the other only flips.
+ *
+ * Several of them add. That is a claim rather than a definition, and it is
+ * the one place this parts company with the model above: charges there do
+ * not superpose, they meet and annihilate. But annihilation IS what addition
+ * does to two opposite numbers, and the thing that survives it — the region
+ * where one charge is left over — is what a sum of cosines has where they do
+ * not cancel. So it is the right continuous shadow of a discrete rule, and
+ * the places where the two disagree are exactly the places worth looking at.
+ */
+const LIGHT = 1;                                  // cells a wave goes in a tick
+
+type Emitter = {
+  // Where it is, in cells.
+  at: [number, number];
+
+  // One if it has an axis and so has sides; nought if it puts out the same
+  // thing in every direction at once.
+  lobes: 0 | 1;
+
+  // Radians of pattern per tick, signed. Which way round it turns, for a
+  // source with sides; how fast it flips over, for one without.
+  omega: number;
+
+  // Where in the cycle it starts, which is the only thing one source can be
+  // against another.
+  phase: number;
+
+  /**
+   * How it is already going, in cells a tick, and it keeps going that way.
+   *
+   * There is no force in this model and so there is nothing for a velocity to
+   * be changed BY. A source that was set moving carries on moving, at the one
+   * speed its mass allows, in the direction it was sent; nothing here
+   * accelerates anything, and nothing here can slow anything down. What
+   * happens to a pair with momentum is not that they are pulled off course —
+   * it is that the space they are crossing goes on being eaten while they
+   * cross it, so the two end up closer together than their courses would have
+   * left them, without either having gone anywhere it was not already going.
+   *
+   * Which is a strange enough thing to be worth watching, and is the whole
+   * reason for these cases. An orbit that comes out of this is not a balance
+   * of a pull against an inertia. It is a drift that keeps carrying the two
+   * sideways while the gap between them keeps shortening underneath.
+   */
+  drift?: [number, number];
+
+  /**
+   * Ticks between one pulse and the next, or nothing for a source whose
+   * emission is continuous.
+   *
+   * The cases above emit without pause: the cosine is defined everywhere, so
+   * every point in the field is carrying something and there are no shells,
+   * only a phase that varies. That is the smooth reading of the model and it
+   * is a fair one, but it hides the thing the lattice version makes obvious —
+   * that what is emitted is a shell, that shells are discrete, and that
+   * annihilation is one of them meeting one of them.
+   *
+   * Given a beat, the emission becomes a train: a pulse leaves at every
+   * multiple of it and nothing leaves in between, so what travels out is a
+   * set of rings with space between them rather than a filled field. Which
+   * changes the arithmetic of the eating, and changes it in the direction
+   * that matters. Two sources pulsing every tick have a meeting every tick;
+   * two pulsing every OTHER tick have a meeting every other tick, so the gap
+   * between them goes at half the rate while their courses carry them along
+   * at exactly the speed they did. Moving as fast and eating half as quickly
+   * is the difference between a pair that is captured and a pair that has
+   * time to get somewhere first.
+   */
+  beat?: number;
+};
+
+// How wide a pulse is, in ticks — so a ring is about this many cells thick to
+// either side of where its front is.
+const PULSE = 0.5;
+
+/**
+ * As fast as a source goes, and here it goes almost as fast as anything can.
+ *
+ * One step a tick is this model's ceiling — a ray moves at most once per tick,
+ * so nothing outruns the wave it emits — and mass is the only thing that
+ * keeps anything under it: a step costs a source `MAGNET_MASS`, a tick pays
+ * one, so a heavy source crawls. Set to within a percent of the ceiling
+ * instead, these are as light as a thing can be and still be a thing.
+ *
+ * Not a percent short for safety's sake. At the ceiling exactly, everything a
+ * source ever emitted in the direction it is going arrives at the same
+ * moment, and the retarded time ahead of it stops having one answer — that is
+ * a real feature of moving at the speed of your own light and not a numerical
+ * complaint, but it is also the point past which nothing can be drawn,
+ * because what is being asked for is not a number. A percent under, the
+ * pile-up ahead is a hundredfold compression, which is a great deal to look
+ * at and is still a finite thing.
+ */
+const PACE = 0.5 * LIGHT;
+
+
+
+/**
+ * A source as it currently stands, and everywhere it has been.
+ *
+ * The past is not optional here. What is at distance r left r ticks ago, from
+ * wherever the source was then — so a ring already in the air belongs to a
+ * place, and that place does not move again however the thing that made it
+ * carries on. Once these start eating they travel at half of light, and a
+ * ring emitted twenty ticks ago is centred ten cells from where its source
+ * now is; drawn from the present position instead, the whole field is hauled
+ * about every time the speed changes, which is every frame, and what should
+ * be a stack of settled layers becomes one object flapping.
+ *
+ * So it is remembered rather than extrapolated, at a couple of samples a
+ * tick, which is finer than anything in the picture varies over.
+ */
+const TRAIL = 0.5;                                // ticks between remembered places
+
+type Live = Emitter & {
+  // x then y, one pair per TRAIL of t, from the beginning of the run.
+  path: number[];
+
+  // How it is going now, which starts as its `drift` and is then turned by
+  // the space it is going through. Nothing ever changes its SPEED; see the
+  // flow below.
+  vel: [number, number];
+};
+
+// The corner and spacing of the grid every shadow is sampled on, which is the
+// survey's grid — they are the same question asked at the same places.
+let GRID = 0, GRID_X = 0, GRID_Y = 0, GRID_STEP = 1;
+
+// Where it was at a given moment, and how fast it was going then. Between
+// samples, and before the run began, the nearest thing it can honestly say.
+const RETARD: [number, number] = [0, 0];
+const CARRY: [number, number] = [0, 0];
+
+// Which way the thing `emit` just reported on is going.
+const WAY: [number, number] = [0, 0];
+
+const was = (s: Live, when: number) => {
+  const last = s.path.length / 2 - 1;
+  const k = Math.min(Math.max(when / TRAIL, 0), last);
+
+  const i = Math.floor(k), j = Math.min(i + 1, last);
+  const f = k - i;
+
+  RETARD[0] = s.path[2 * i] * (1 - f) + s.path[2 * j] * f;
+  RETARD[1] = s.path[2 * i + 1] * (1 - f) + s.path[2 * j + 1] * f;
+};
+
+const wasGoing = (s: Live, when: number) => {
+  was(s, when);
+
+  const ax = RETARD[0], ay = RETARD[1];
+
+  was(s, when - TRAIL);
+
+  CARRY[0] = (ax - RETARD[0]) / TRAIL;
+  CARRY[1] = (ay - RETARD[1]) / TRAIL;
+
+  RETARD[0] = ax; RETARD[1] = ay;
+};
+
+/**
+ * When what is at a point now left the source that made it.
+ *
+ * The retarded time is the root of |x − p(te)| = t − te, and how it is found
+ * matters entirely at these speeds. The obvious way — guess r from where the
+ * source is now, look up where it was that long ago, measure again — walks
+ * towards the answer, and how fast it walks is exactly the source's speed:
+ * each round takes off a fraction v of what is left. At a third of light that
+ * is three good rounds and done. At ninety-nine hundredths it is six hundred,
+ * which is not a thing that can be done once per source per sample of a
+ * picture, sixty times a second.
+ *
+ * So it is solved rather than approached. Over the short stretch of trail the
+ * answer lies in, the source is going in a straight line at a steady rate,
+ * and for a straight line the equation is a quadratic in te and can simply be
+ * written down. Two rounds of that — one to find roughly where to look, one
+ * to solve properly with the velocity found there — lands on the answer
+ * regardless of how near the ceiling the thing is travelling.
+ *
+ * The position is then read from the trail rather than from the straight
+ * line, so the answer is still a record of where the source actually was.
+ * Nothing already emitted moves, which was the whole reason for keeping a
+ * trail; the straight line is only ever used to work out WHEN to look.
+ */
+const retard = (s: Live, x: number, y: number, t: number) => {
+  let te = t - Math.hypot(x - s.at[0], y - s.at[1]) / LIGHT;
+
+  /**
+   * Two passes, and the second one earned rather than assumed.
+   *
+   * The quadratic below is exact for a source going in a straight line at a
+   * steady rate — but the FIRST guess it starts from is taken from where the
+   * source is now, and for one travelling at ninety-nine hundredths of the
+   * speed of its own light that guess can be most of the picture out. The
+   * velocity then gets looked up at the wrong moment, the quadratic is solved
+   * for the wrong straight line, and the answer is wrong by however far the
+   * source moved in between. Which is not a small error politely spread
+   * about: it is a radius, so it comes out as rings in the wrong place, and
+   * they go wrong only where the source has been quick, which is why it looks
+   * like something tearing rather than something blurred.
+   *
+   * A second pass starts from an answer that is already close and settles it.
+   * Standing still, though, the first pass is exact and the second is a
+   * measurement of nothing — so it is skipped, which is most of the time in
+   * most of these pictures.
+   */
+  for (let pass = 0; pass < 2; pass++) {
+    wasGoing(s, te);
+
+    if (pass > 0 && Math.abs(CARRY[0]) + Math.abs(CARRY[1]) < 1e-6) break;
+
+    const ex = x - RETARD[0], ey = y - RETARD[1];
+    const vx = CARRY[0], vy = CARRY[1];
+
+    // How long there is between te and now, which is what the light has to
+    // cover — less however much further back the answer turns out to be.
+    const a = t - te;
+
+    const A = vx * vx + vy * vy - LIGHT * LIGHT;
+    const B = 2 * (a * LIGHT * LIGHT - (ex * vx + ey * vy));
+    const C = ex * ex + ey * ey - a * a * LIGHT * LIGHT;
+
+    let step = 0;
+
+    if (Math.abs(A) < 1e-9) {
+      if (Math.abs(B) > 1e-9) step = -C / B;
+    } else {
+      const disc = B * B - 4 * A * C;
+      if (disc < 0) break;
+
+      /**
+       * Solved the stable way, which at these speeds is not a nicety.
+       *
+       * A is v² − 1, and a source travelling at ninety-nine hundredths of
+       * light makes that about a fiftieth. Dividing by it is the textbook
+       * formula and it is exactly where the textbook formula falls apart:
+       * one of the two roots comes out as a small difference of two nearly
+       * equal numbers divided by a nearly vanishing one, and what it returns
+       * is not an approximation of the answer, it is thousands of cells of
+       * nonsense. Which is then used as a radius, so the rings it draws are
+       * nowhere near where anything is — and only where the source has been
+       * quick, which is why it tore rather than blurred.
+       *
+       * Taking the well-conditioned root first and getting the other from
+       * the product of the two has neither subtraction of like quantities nor
+       * division by the small coefficient.
+       */
+      const root = Math.sqrt(disc);
+      const q = -0.5 * (B + (B >= 0 ? root : -root));
+
+      const p1 = q / A, p2 = Math.abs(q) > 1e-12 ? C / q : q / A;
+
+      // Of the two, the one that leaves the light a non-negative time to
+      // travel in. The other is the advanced solution, which is the same
+      // algebra describing something arriving before it left.
+      const ok1 = a - p1 >= 0, ok2 = a - p2 >= 0;
+
+      step = ok1 && ok2 ? (Math.abs(p1) < Math.abs(p2) ? p1 : p2)
+        : ok1 ? p1
+          : ok2 ? p2
+            : 0;
+    }
+
+    te = Math.min(te + step, t);
+  }
+
+  return te;
+};
+
+/**
+ * What ONE source puts at a point.
+ *
+ * Two things temper the bare cosine, and both are properties of the world
+ * above rather than decoration. A wave has not arrived yet where r > t·c, so
+ * there is nothing there — softened over a cell, since a lattice front is not
+ * a razor either. And it thins as it goes, because the same emission is
+ * spread over a bigger and bigger circle; in the model that shows up as the
+ * shells growing apart, here as one over the distance.
+ *
+ * And it is measured from where the source WAS, not from where it is: the
+ * ring through this point left when the source was at p(t − r), and it is
+ * centred there for good. Which is what makes a moving source's rings bunch
+ * up ahead of it and stretch out behind, and at the speeds these reach once
+ * they start eating, that bunching is most of what the picture shows.
+ *
+ * r is on both sides of that, so it is solved for rather than computed —
+ * guess it from where the source is now, look up where it was that long ago,
+ * measure again. Three rounds, because a source that is eating closes at the
+ * speed of its own light and the answer directly ahead of it is then a near
+ * thing: everything it emitted on the way arrives at once, which is a real
+ * pile-up and not an artefact, and it takes a round or two to find. The trail
+ * it looks things up in is a record rather than a projection, so nothing
+ * already emitted can move again however hard the solve works.
+ */
+const emit = (
+  s: Live, w: Emitter, x: number, y: number, t: number, reach: number,
+  known?: number,
+) => {
+  // Solving the retarded time is the most expensive thing here, and whoever
+  // called this has usually just done it — for the ray, for the cut, for the
+  // meeting surface. Told the answer, this does not do it a second time.
+  let te = known === undefined ? retard(s, x, y, t) : known;
+
+  was(s, te);
+
+  const dx = x - RETARD[0], dy = y - RETARD[1];
+  const r = Math.hypot(dx, dy);
+
+  // Which way what is here is travelling, which is out from wherever it left.
+  // Local, and needed by anything asking whether two things are meeting or
+  // merely crossing.
+  WAY[0] = r > 1e-9 ? dx / r : 1;
+  WAY[1] = r > 1e-9 ? dy / r : 0;
+
+  /**
+   * Nothing has arrived where the wave has not reached yet, softened over a
+   * cell because a lattice front is not a razor either.
+   *
+   * Only for a source emitting without pause. A pulse train has its own
+   * edges — the shape below is nought outside the pulse and that is the whole
+   * of where it is not — and applying this to one as well says something
+   * false about the first pulse of the train, which left at the very
+   * beginning and so IS the front: its own arrival is used as evidence that
+   * it has not arrived, and it is never drawn at all.
+   */
+  const front = w.beat ? 1 : Math.min((t * LIGHT - r) / 1.5, 1);
+  if (front <= 0) return 0;
+
+  const fade = 1 / (1 + r / reach);
+
+  /**
+   * cos(θ − ψ) without ever working out θ.
+   *
+   * The direction to here is wanted only inside a cosine, and cos(θ − ψ) is
+   * cos θ·cos ψ + sin θ·sin ψ — where cos θ and sin θ are dx/r and dy/r,
+   * which are already to hand. So the arctangent, which is the most expensive
+   * thing in this whole expression and is evaluated once per source per
+   * sample of the picture, is not needed at all.
+   */
+  /**
+   * When what is here left, and — if this source pulses — whether anything
+   * left then at all.
+   *
+   * A pulse train is not a sum over pulses. The nearest multiple of the beat
+   * to the emission time IS the pulse this point could belong to, since the
+   * pulses are narrower than the gaps between them, so one rounding finds it
+   * and one bump says how much of it is here. Everything stays O(1) in the
+   * number of pulses in the air, which by now is a great many.
+   */
+  let shape = 1;
+
+  if (w.beat) {
+    const beat = Math.round(te / w.beat) * w.beat;
+    const u = (te - beat) / PULSE;
+
+    if (u <= -1 || u >= 1 || beat < 0) return 0;
+
+    shape = (1 - u * u) ** 2;
+    te = beat;
+  }
+
+  const psi = w.omega * te + w.phase;
+
+  const wave = w.lobes
+    ? (dx * Math.cos(psi) + dy * Math.sin(psi)) / (r || 1)
+    : Math.cos(psi);
+
+  return front * fade * shape * wave;
+};
+
+/**
+ * And what the two of them do to each other when they are ALIKE, which the
+ * sum on its own does not contain.
+ *
+ * Opposite charges meeting head-on annihilate, and that is the gravity above.
+ * Like charges meeting head-on turn each other around, and nothing so far has
+ * said so — the closed form adds the two contributions and lets them through
+ * one another.
+ *
+ * For most of these pictures that is not the omission it looks like. Two
+ * identical shells bouncing off each other are indistinguishable from two
+ * shells passing through and swapping names: A's charge ends up where B's
+ * would have been and B's where A's would have been, so the set of places
+ * that are charged is the same either way, and so is the phase at each of
+ * them — the bounced charge has travelled exactly as far as the one that came
+ * the other way. The field cannot tell, because the field does not record
+ * which source anything belongs to. Superposition is already right, and the
+ * waves not visibly turning around is not a thing going wrong.
+ *
+ * It stops being right the moment the two are not interchangeable. A bounced
+ * wave carries the phase and the cadence of the source it came from, and
+ * fades with the distance IT has travelled — and if the two sources are half
+ * a cycle apart, or pulsing at different rates, or one of them is moving and
+ * the other is not, then what comes back is not what would have gone through
+ * and the exchange does not cancel.
+ *
+ * A reflection is an image: the wave that bounced arrives as though it had
+ * come from the mirror of its source in the surface it bounced off. That
+ * surface, for a pair, is the plane halfway between them — so the mirror of
+ * one source is the position of the other, and what comes back is the OTHER
+ * one's geometry carrying THIS one's phase. Which is why the two swap out
+ * exactly when they are alike, and why they do not otherwise.
+ *
+ * So the field is the two readings blended by how much of the meeting is
+ * alike rather than opposite, which `survey` measures on its way past. For
+ * matched sources the reflected pair is the direct pair with the names
+ * exchanged, the blend is between a thing and itself, and it reduces to the
+ * plain sum with nothing left over.
+ */
+/**
+ * How far a wave of `a`'s gets before it runs into one of `b`'s.
+ *
+ * Both travel a cell a tick, so waves that left at the same moment meet
+ * halfway — and along a ray that is not aimed straight at the other source,
+ * further, because the surface they meet on is a plane and a slanted ray has
+ * further to go to reach it. Aimed away from the other source it never meets
+ * anything at all, and goes on for ever.
+ *
+ * This is the only thing that stops a wave, and it stops it completely. There
+ * is no thinning, no optical depth, no fraction getting through. A charge
+ * meets another charge and one of two things happens, and neither of them is
+ * "carries on a bit weaker".
+ */
+const HERE: [number, number] = [0, 0];
+const THERE: [number, number] = [0, 0];
+
+const meets = (
+  a: Live, b: Live, dx: number, dy: number, when: number,
+) => {
+  /**
+   * Worked out from where the two of them WERE, not from where they are.
+   *
+   * This is the whole of what makes it local, and getting it wrong is
+   * unmistakable: a wave that left long ago has its stopping place decided by
+   * a surface built out of the sources' present positions, so every time
+   * either of them turns or drifts, the surface swings and every wave already
+   * in the air swings with it. Rings that were laid down years of ticks ago
+   * get up and rotate, which is not a thing waves do. Nothing that has
+   * already happened is allowed to depend on anything that happened after it.
+   *
+   * So both are asked where they were when this wave was in the air, and the
+   * answer is a record — see the trail — rather than anything derived from
+   * now. What was decided then stays decided.
+   */
+  was(a, when);
+  HERE[0] = RETARD[0]; HERE[1] = RETARD[1];
+
+  was(b, when);
+  THERE[0] = RETARD[0]; THERE[1] = RETARD[1];
+
+  let ux = THERE[0] - HERE[0], uy = THERE[1] - HERE[1];
+  const gap = Math.hypot(ux, uy);
+  if (gap < 1e-6) return Infinity;
+
+  ux /= gap; uy /= gap;
+
+  const aim = dx * ux + dy * uy;
+
+  /**
+   * And only where the two would actually be head-on when they got there.
+   *
+   * The surface halfway between a pair is a whole plane, and it is tempting
+   * to stop everything at it — but two waves arriving at a point far out on
+   * that plane are not meeting, they are travelling side by side. Their
+   * directions there are mirror images about the plane, so the angle between
+   * them is set by how squarely the ray was aimed: dead at the other source
+   * they are exactly opposed, and at forty-five degrees off they are already
+   * at right angles and past caring about each other.
+   *
+   * Beyond that the encounter is a crossing. Charges crossing at an angle do
+   * nothing to each other in this model — they pass, and both carry on — so
+   * stopping them there would put a seam down the middle of every picture
+   * where none belongs, and it is why the arms far from the axis have to go
+   * through one another. They are not meeting. They are just both there.
+   */
+  if (aim <= 0.71) return Infinity;
+
+  return (gap / 2) / aim;
+};
+
+/**
+ * A wave of `a`'s that has met one of `b`'s and turned around.
+ *
+ * Which of the two things happened at that meeting is decided THERE, by what
+ * the two of them were, and not by any running average over the picture. Two
+ * charges meeting head-on are alike or they are opposite; alike, they turn
+ * each other round and both go back the way they came; opposite, they
+ * annihilate and neither of them is anywhere afterwards. So this asks the
+ * question at the place and the moment it was settled: what was `a` putting
+ * out along this ray when it got to the meeting, and what was `b` putting
+ * into the same spot at the same instant. Same sign, and there is a wave
+ * coming home. Opposite, and there is nothing — which is the annihilation,
+ * and it needs no separate machinery, because a thing that annihilated simply
+ * has no return.
+ *
+ * And what comes home runs into the shells its own source has emitted since,
+ * head-on, going the other way. A source that turns over is putting out the
+ * opposite charge by then, so what the returning wave meets is its opposite,
+ * and the two cancel. That is the second half of what makes the space between
+ * a pair empty, and it falls out of the arithmetic rather than being put in:
+ * these are all terms in one sum, and terms of opposite sign cancel.
+ *
+ * The going-out and the coming-back are the same wave with the sign of the
+ * radius flipped. Outgoing at distance r left r ago, so its phase runs on
+ * t − r and crests move outward. Having gone to the meeting at R and come
+ * back to r it has travelled 2R − r, so its phase runs on t − 2R + r and
+ * crests move inward. One sign, and that sign is the whole of what bouncing
+ * is.
+ */
+const bounced = (
+  a: Live, b: Live, x: number, y: number, t: number, reach: number,
+  known?: number, given?: number,
+) => {
+  // From where it was when this left it, for the reason given in `fieldAt`.
+  const left = known === undefined ? retard(a, x, y, t) : known;
+
+  was(a, left);
+
+  let dx = x - RETARD[0], dy = y - RETARD[1];
+  const r = Math.hypot(dx, dy);
+  if (r < 1e-6) return 0;
+
+  dx /= r; dy /= r;
+
+  // Asked of the moment this wave was crossing, not of now — or handed
+  // straight over by whoever has already asked.
+  const mirror = given === undefined ? meets(a, b, dx, dy, left) : given;
+  if (!isFinite(mirror) || r >= mirror) return 0;   // nothing has come back to here
+
+  // Out to the meeting and back again: how far this has travelled, and so
+  // how long ago it left.
+  const path = 2 * mirror - r;
+  const te = t - path / LIGHT;
+  if (te < 0) return 0;
+
+  // As above: a train's own pulse shape says where it is, and this would
+  // erase the first of them.
+  const front = a.beat ? 1 : Math.min((t * LIGHT - path) / 1.5, 1);
+  if (front <= 0) return 0;
+
+  let when = te, shape = 1;
+
+  if (a.beat) {
+    const beat = Math.round(when / a.beat) * a.beat;
+    const u = (when - beat) / PULSE;
+
+    if (u <= -1 || u >= 1 || beat < 0) return 0;
+
+    shape = (1 - u * u) ** 2;
+    when = beat;
+  }
+
+  const psi = a.omega * when + a.phase;
+
+  // The angle is the one it LEFT along, since that is the half of the source
+  // it came out of.
+  const mine = a.lobes ? dx * Math.cos(psi) + dy * Math.sin(psi) : Math.cos(psi);
+  if (mine === 0) return 0;
+
+  // What the other one had at that spot when this arrived there. Same sign,
+  // and the two turned each other round; opposite, and they are both gone.
+  was(a, left);
+
+  const hitX = RETARD[0] + dx * mirror, hitY = RETARD[1] + dy * mirror;
+  const struck = t - (mirror - r) / LIGHT;
+
+  const theirs = emit(b, b, hitX, hitY, struck, reach);
+
+  const agree = (mine * theirs) / (Math.abs(mine) * Math.abs(theirs) + 1e-9);
+  const alike = Math.max(agree, 0);
+  if (alike <= 1e-3) return 0;
+
+  // Softened right at the meeting surface, which is a place and not a knife.
+  const edge = Math.min(Math.max((mirror - r) / 1.5, 0), 1);
+
+  /**
+   * Thinned by where it IS, not by how far it has been — which is the
+   * opposite of what it looks like it should be, and is why this was so hard
+   * to see.
+   *
+   * The thinning is a shell spread round a growing circle: the same emission
+   * stretched over a longer and longer ring, so it goes as the radius. A
+   * shell coming home sits on a circle exactly the size of an outgoing
+   * shell's at the same radius, and it is CONTRACTING — its charges are being
+   * gathered back onto a shorter and shorter ring, so it gets denser as it
+   * returns rather than fainter.
+   *
+   * Faded by the whole path instead, as it was, a returning wave is dimmed by
+   * twice the distance to the surface while the outgoing wave drawn at the
+   * same place is dimmed by almost nothing. It was in the arithmetic and
+   * underneath the wave it had bounced off, worst of all near the source
+   * where it should have been brightest.
+   *
+   * The path still sets the phase. How far a thing has travelled is when it
+   * left; it is not how spread out it is.
+   */
+  return alike * edge * front * shape * mine / (1 + r / reach);
+};
+
+/**
+ * What is at a place: everything that got there, going out and coming back.
+ *
+ * A plain sum, and it can be, because nothing in it is a wave that should not
+ * be there. A wave stops dead at the first thing it meets — that is `meets`
+ * above, applied to every outgoing term — so two sources' waves never overlap
+ * beyond their meeting surface and there is no crossing to suppress. What is
+ * left to add up is a handful of waves that genuinely coexist, and adding is
+ * the right thing to do with those: where two of them are opposite they
+ * cancel, which is annihilation, drawn.
+ *
+ * Which is why the returning wave puts out the space between a pair without
+ * anything being written to make it. It comes home into shells its own source
+ * threw out later, and a source that turns over threw the opposite charge;
+ * they are opposite terms in a sum, and they go.
+ */
+const MIRRORS: number[] = [];
+
+const fieldAt = (
+  x: number, y: number, t: number, sources: Live[], reach: number,
+) => {
+  let total = 0;
+
+  for (const a of sources) {
+    /**
+     * Measured from where this source WAS when the wave here left it.
+     *
+     * Not from where it is. The two are the same thing only for a source
+     * standing still, and these travel at ninety-nine hundredths of the speed
+     * of what they emit — so the distance to the present source and the
+     * distance the wave actually came differ by most of the picture. Taking
+     * the ray and the radius from the present position while the surface it
+     * is being cut against is worked out from the past one is two different
+     * geometries compared against each other, and what that produces is a
+     * cut at the wrong radius: a hole where a wave was stopped that never met
+     * anything, standing between the pair and following them about.
+     */
+    const when = retard(a, x, y, t);
+
+    was(a, when);
+
+    let dx = x - RETARD[0], dy = y - RETARD[1];
+    const r = Math.hypot(dx, dy) || 1e-9;
+
+    dx /= r; dy /= r;
+
+    // As far as the nearest thing that was in the way when it went past, and
+    // no further.
+    let stop = Infinity;
+    let seen = 0;
+
+    for (const b of sources) {
+      if (b === a) continue;
+
+      const at = meets(a, b, dx, dy, when);
+
+      MIRRORS[seen++] = at;
+      if (at < stop) stop = at;
+    }
+
+    if (r < stop) {
+      // Faded over a cell at the surface, so the end of a wave is a place
+      // rather than an event.
+      const edge = isFinite(stop) ? Math.min((stop - r) / 1.5, 1) : 1;
+
+      total += emit(a, a, x, y, t, reach, when) * edge;
+    }
+
+    // Only where something was in the way. Over most of any of these pictures
+    // nothing is — a ray not aimed at the other source never meets it — and
+    // asking `bounced` anyway means solving a retarded time and a meeting
+    // surface all over again to be told so.
+    seen = 0;
+
+    for (const b of sources) {
+      if (b === a) continue;
+
+      const mirror = MIRRORS[seen++];
+      if (!isFinite(mirror) || r >= mirror) continue;
+
+      total += bounced(a, b, x, y, t, reach, when, mirror);
+    }
+  }
+
+  return total;
+};
+
+/**
+ * Where space is being destroyed, asked of places rather than of pairs.
+ *
+ * This is the piece that adding cosines does not give you, and without it the
+ * continuous version is not the same physics — it is the same picture with
+ * the gravity left out. Two opposite charges meeting in the model do not
+ * average to nothing and stay where they are. They ANNIHILATE, and
+ * annihilating takes the point each of them was on out of the world, which
+ * leaves whatever was on either side of them nearer together. That is the
+ * whole of why two magnets attract here: not a force between them, an ongoing
+ * loss of the space in between.
+ *
+ * The first version of this asked the question of a PAIR — walk the line
+ * joining two named sources, see how much of what meets there is opposite.
+ * It gives the right rate and it is the wrong question, because it is not a
+ * question about anywhere. It needs to know which sources exist and which two
+ * of them are being considered, and it produces one number for the pair
+ * rather than a fact about each place. Nothing built on it can deflect a
+ * third thing, because a third thing is not in the sum.
+ *
+ * Asked of a place, it is local, and everything it needs is at that place.
+ * How much of each charge is here; which way each of them is travelling; and
+ * therefore how much of what is here is meeting head-on rather than crossing.
+ * Two things annihilate when they are opposite in charge AND opposed in
+ * direction — one without the other is a crossing, not a collision — so both
+ * factors are in it, and both are readable on the spot.
+ *
+ * What comes out is the field this model puts where mass usually goes:
+ * annihilation per unit of space per tick. It is not a property anything has.
+ * It is something that happens somewhere.
+ */
+const SITES: number[] = [];                       // x, y, eaten, nx, ny, met — six at a time
+let siteCount = 0;
+
+/**
+ * How much space a tick's worth of meeting destroys, which is the one number
+ * tying the continuous rate to the discrete one.
+ *
+ * A source emits a shell every tick and shells travel a cell a tick, so along
+ * any line between two of them one shell meets one shell every tick, and a
+ * meeting of opposites takes two cells out of the world. That is the whole of
+ * the rate, and it is a COUNT — one meeting, two cells — with nothing in it
+ * about how large the region is where the meeting happens.
+ *
+ * Which is the thing the survey below cannot supply and must not be asked to.
+ * It measures a density, and a density integrated over an area gives a number
+ * that grows with the area: two sources far apart overlap over more of the
+ * picture than two close together, and reading their annihilation off that
+ * integral has them eating faster the further apart they are, which is not
+ * merely wrong but backwards. Everything the survey knows is WHERE the eating
+ * is happening and along what. How MUCH is set here, by the cadence, and
+ * shared out over the places in proportion to what is going on at each.
+ *
+ * So the survey's numbers are a shape and this is the size of it. The one
+ * thing left for the survey to say about magnitude is the share — how much of
+ * what meets is opposite rather than alike — which is dimensionless, is
+ * between nought and one, and is exactly what it should be reporting: a pair
+ * eating all of what they send each other, or half of it, or none.
+ */
+const BITE = 2 * LIGHT;
+
+/**
+ * And how far the loss of a point is felt, which is not far.
+ *
+ * A collision removes the two points its charges were on and joins what was
+ * behind each directly to the other. That shortens the LINE they were on and
+ * does nothing whatever to a point off to the side, which is joined to the
+ * world by paths that never went through the collision. So the influence of
+ * an annihilation is confined to a neighbourhood of it, and this is the size
+ * of that neighbourhood.
+ *
+ * Which is a real claim and an unusual one. Gravity here is not long-range,
+ * and it is not something a mass has and radiates. It acts along the lines
+ * where annihilation is actually happening, which is to say between things
+ * that are cancelling each other's emissions. A body that emits nothing feels
+ * nothing, however much is going on beside it.
+ *
+ * But it must not be smaller than the grid the annihilation was surveyed on,
+ * and that is what it was. A few cells, against sites laid out one every few
+ * cells, gives a field that is a row of separate little pushes with nothing
+ * between them: a body sitting on the axis is either on top of one, where the
+ * transverse falloff is flat because it is at the peak of it, or between two,
+ * where there is nothing at all. Either way it feels no gradient, and a body
+ * that feels no gradient is never turned — which was the whole complaint. The
+ * loss has to be smeared over at least the spacing of the places it was
+ * measured at, or what is being drawn is the grid rather than the field.
+ */
+let LOCAL = 3;                                    // cells, set by the survey
+
+// How far apart the closest pair are, which is the distance the pull has to
+// work over. Also set by the survey.
+let SPREAD = 1;
+
+/**
+ * Survey the framed region for it, once a tick.
+ *
+ * A coarse grid is enough: what is being looked for is where the annihilation
+ * is, and it is spread over the overlap of two fields rather than
+ * concentrated at points. Everything below a fraction of the strongest is
+ * dropped, because most of any of these pictures is space where nothing is
+ * meeting anything and summing a few hundred nothings into every query is the
+ * whole cost of this.
+ */
+const survey = (live: Live[], t: number, reach: number, span: number) => {
+  const STEPS = 22;
+
+  siteCount = 0;
+  SITES.length = 0;
+
+  if (live.length < 2) return;
+
+  // Centred on the sources, since that is where anything is.
+  let mx = 0, my = 0;
+  for (const s of live) { mx += s.at[0] / live.length; my += s.at[1] / live.length; }
+
+  /**
+   * And it looks at the pair, not at the picture.
+   *
+   * The grid was laid across the whole view, so its cells are a couple of
+   * cells of world across — which is fine while the two are far apart and
+   * useless the moment they are not. A pair three cells apart has the whole
+   * of its encounter inside ONE cell of that grid: the survey finds a site or
+   * two in roughly the right place, or none at all, and the pull collapses
+   * exactly as the two are closing on each other. They drifted together,
+   * slowed for no reason in the model, and stopped short.
+   *
+   * Framed on the pair instead, the resolution follows them down. What is
+   * being measured is where annihilation is happening, and that is between
+   * them, wherever they have got to and however little room it now takes.
+   */
+  let nearest = Infinity;
+
+  for (let i = 0; i < live.length; i++)
+    for (let j = i + 1; j < live.length; j++)
+      nearest = Math.min(nearest, Math.hypot(
+        live[j].at[0] - live[i].at[0], live[j].at[1] - live[i].at[1],
+      ));
+
+  const look = Math.min(span, Math.max(isFinite(nearest) ? nearest * 1.6 : span, 5));
+  const step = (2 * look) / STEPS;
+
+  GRID = STEPS;
+  GRID_STEP = step;
+  GRID_X = mx - look + step / 2;
+  GRID_Y = my - look + step / 2;
+
+  // Wide enough that the sites blend into a field rather than staying a row
+  // of separate pushes, which is what gives it a gradient to turn anything
+  // with. See `LOCAL`.
+  LOCAL = Math.max(step * 2, 1.5);
+  SPREAD = Math.max(isFinite(nearest) ? nearest / 4 : step, 0.75);
+
+  const val: number[] = [];
+  const dirX: number[] = [];
+  const dirY: number[] = [];
+
+  let strongest = 0;
+
+  // What the picture is doing as a whole: how much of what meets is opposite,
+  // and how much meets at all. Their ratio is the only thing about magnitude
+  // the survey has any business reporting.
+  let cancelling = 0, meeting = 0;
+
+  for (let gy = 0; gy < STEPS; gy++) {
+    const y = my - look + (gy + 0.5) * step;
+
+    for (let gx = 0; gx < STEPS; gx++) {
+      const x = mx - look + (gx + 0.5) * step;
+
+      for (let i = 0; i < live.length; i++) {
+        val[i] = emit(live[i], live[i], x, y, t, reach);
+        dirX[i] = WAY[0]; dirY[i] = WAY[1];
+      }
+
+      // What is annihilating here, and what is meeting here at all — which
+      // is more, because alike charges meeting head-on turn around rather
+      // than cancelling, and either way they stop going forwards.
+      let rate = 0, here = 0, nx = 0, ny = 0;
+
+      for (let i = 0; i < live.length; i++) {
+        for (let j = i + 1; j < live.length; j++) {
+          const both = val[i] * val[j];
+
+          // How much of what is here is one field against the other at all,
+          // whichever way round — the denominator of the share.
+          const closing = Math.max(-(dirX[i] * dirX[j] + dirY[i] * dirY[j]), 0);
+          if (closing <= 0) continue;             // crossing, not meeting
+
+          here += Math.abs(both) * closing;
+          meeting += Math.abs(both) * closing;
+
+          // Opposite in charge as well as opposed in direction: annihilation
+          // rather than a bounce.
+          const against = Math.max(-both, 0) * closing;
+          if (against <= 0) continue;
+
+          rate += against;
+
+          // The line they are meeting along, which is the line that shortens.
+          nx += (dirX[i] - dirX[j]) * against;
+          ny += (dirY[i] - dirY[j]) * against;
+        }
+      }
+
+      if (here <= 0) continue;
+
+      cancelling += rate;
+
+      const len = Math.hypot(nx, ny) || 1;
+
+      SITES.push(x, y, rate, nx / len, ny / len, here);
+      siteCount++;
+
+      if (here > strongest) strongest = here;
+    }
+  }
+
+  // Note there is no global reading of how much bounces and how much
+  // annihilates. That question is settled at each meeting by what the two
+  // charges there are, in `bounced` above — a share taken over the whole
+  // picture is an average of a decision, and an average of a decision is not
+  // a thing anything experiences.
+
+  if (!strongest) { SITES.length = 0; siteCount = 0; return; }
+
+  // Thinned to what is worth summing over, and the total kept with it so that
+  // what is dropped is not quietly handed to what is not.
+  const floor = strongest * 0.05;
+  let kept = 0, total = 0;
+
+  let seen = 0;
+
+  for (let k = 0; k < siteCount; k++) {
+    if (SITES[k * 6 + 5] < floor) continue;
+
+    for (let c = 0; c < 6; c++) SITES[kept * 6 + c] = SITES[k * 6 + c];
+
+    total += SITES[kept * 6 + 2];
+    seen += SITES[kept * 6 + 5];
+    kept++;
+  }
+
+  SITES.length = kept * 6;
+  siteCount = kept;
+
+  // The meeting is kept as it was measured — a density, per unit of space,
+  // per tick. Normalising it to a share of the whole encounter, which is what
+  // it used to do, is what made the shadow useless: a wave crossing the gap
+  // met "a fifth of the total" however thick the thing it was crossing, so
+  // the attenuation stopped depending on how much was actually in the way.
+  // What a wave loses is a density times a path, and both of those have to
+  // survive to the place that multiplies them.
+
+  /**
+   * Rebuilt whatever else is true of this tick, and before anything can
+   * return early.
+   *
+   * A shadow is a fact about where the sources are NOW. Left over from the
+   * tick before while they have moved on — which is what happened whenever a
+   * pair was bouncing without annihilating, since there was nothing to scale
+   * and the function gave up before reaching this — it darkens places nothing
+   * is crossing any more, and the picture fills with patches of black that
+   * belong to a configuration that has gone.
+   */
+
+  if (!kept || total <= 0) return;
+
+  /**
+   * And the whole of it scaled to what a tick's meeting actually costs.
+   *
+   * The share is how much of the encounter annihilates rather than bounces,
+   * which is between nought and one and says nothing about how big the
+   * encounter is. Multiplied by `BITE`, that is the space a tick destroys.
+   * Divided out over the sites in proportion to what each is doing, the
+   * distribution stays exactly what was measured and the total stops being an
+   * accident of how much of the picture the two fields happen to overlap in.
+   */
+  const share = meeting > 1e-12 ? cancelling / meeting : 0;
+
+  /**
+   * And the size of it is fixed by what the pair actually do to each other,
+   * not by what the sites happen to add up to.
+   *
+   * A meeting costs two cells: the charge arriving is on a point, the charge
+   * it meets is on the next one, and annihilating is both of them ceasing to
+   * be anywhere. One meeting a tick, so two cells a tick, times the share of
+   * the encounter that is opposite rather than alike. That is the whole rate
+   * and it is a count — it does not know or care how the annihilation is
+   * spread about.
+   *
+   * Scaling the SITES to sum to it is not the same thing and was the error.
+   * What a source is moved by is not the sum of the sites, it is the flow it
+   * stands in — the sum after each site's reach has fallen away across the
+   * distance and off to the side. Most of it never arrives. So the sites
+   * summed to two cells a tick and the pair closed at a fifth of one, and
+   * every picture of two things attracting was running at a fraction of the
+   * rate the rule gives, with the fraction set by how the survey's kernels
+   * happened to overlap.
+   *
+   * Measured at the sources instead: lay the sites down at whatever relative
+   * strengths they were found with, ask how fast the gap between the pair is
+   * closing under that, and scale the lot until the answer is two cells a
+   * tick. Then the shape is the survey's and the size is the rule's, which is
+   * the right division of labour between the two.
+   */
+  for (let k = 0; k < kept; k++) SITES[k * 6 + 2] /= total;
+
+  let closes = 0;
+
+  for (let i = 0; i < live.length; i++) {
+    for (let j = i + 1; j < live.length; j++) {
+      const a = live[i], b = live[j];
+
+      let ux = b.at[0] - a.at[0], uy = b.at[1] - a.at[1];
+      const apart = Math.hypot(ux, uy);
+      if (apart < 1e-6) continue;
+
+      ux /= apart; uy /= apart;
+
+      flowAt(a.at[0], a.at[1]);
+      const ain = FLOW[0] * ux + FLOW[1] * uy;
+
+      flowAt(b.at[0], b.at[1]);
+      const bin = -(FLOW[0] * ux + FLOW[1] * uy);
+
+      closes += ain + bin;
+    }
+  }
+
+  if (closes <= 1e-9) return;
+
+  const want = BITE * share;
+
+  for (let k = 0; k < kept; k++) SITES[k * 6 + 2] *= want / closes;
+};
+
+// The optical-depth shadow that used to live here is gone. A wave is not
+// thinned by what it passes through — it stops dead at the first thing it
+// meets, which is `meets` above — so there was nothing left for it to say,
+// and it was still being rebuilt over the whole grid every tick.
+
+/**
+ * The flow of space, which is where gravity actually is.
+ *
+ * Each place that is destroying space draws what is around it inwards along
+ * the line the collision there is happening on: everything on one side comes
+ * one way, everything on the other side comes the other, and a point off to
+ * the side barely moves at all. Summed over everywhere that is doing it, that
+ * is the whole field, and nothing in the sum knows about sources or pairs —
+ * only about places and what is happening at them.
+ *
+ * And there is the deflection, for free and without a force anywhere. The
+ * flow has a gradient, so it does not merely carry a body — it turns it. A
+ * velocity is a displacement per tick, and a displacement in a space that is
+ * being sheared comes out pointing somewhere else. Nothing accelerates: the
+ * body's own motion is untouched and its speed never changes. It is carried,
+ * and what carries it is not uniform.
+ */
+const FLOW: [number, number] = [0, 0];
+
+const flowAt = (x: number, y: number) => {
+  FLOW[0] = 0; FLOW[1] = 0;
+
+  for (let k = 0; k < siteCount; k++) {
+    const sx = SITES[k * 6], sy = SITES[k * 6 + 1];
+    const q = SITES[k * 6 + 2];
+    const nx = SITES[k * 6 + 3], ny = SITES[k * 6 + 4];
+
+    const ex = x - sx, ey = y - sy;
+
+    const on = ex * nx + ey * ny;
+    const off = ex * -ny + ey * nx;
+
+    /**
+     * Everything on one side comes one way and everything on the other comes
+     * the other, so the line through it is shorter by `q` and the place
+     * itself does not move.
+     *
+     * Saturating over the distance the pair are apart, not over the size of
+     * the picture. Tied to the picture, the pull quietly gave out exactly
+     * when it should have been strongest: a pair a few cells apart has every
+     * site a few cells from each of them, and `tanh` of a few cells over a
+     * width set by the whole view is almost nothing — so they drifted
+     * together, slowed, and stopped short of touching for no reason in the
+     * model at all.
+     */
+    const side = Math.tanh(on / SPREAD);
+    const fade = Math.exp(-((off / LOCAL) ** 2));
+
+    FLOW[0] -= (q / 2) * side * fade * nx;
+    FLOW[1] -= (q / 2) * side * fade * ny;
+  }
+};
+
+// A 4x4 ordered pattern, centred on nought and worth about one level of an
+// eight-bit channel. See the use below.
+const DITHER = [
+  0, 8, 2, 10,
+  12, 4, 14, 6,
+  3, 11, 1, 9,
+  15, 7, 13, 5,
+].map(v => (v / 16) - 0.5);
+
+/**
+ * One canvas of it, evaluated rather than simulated.
+ *
+ * Every sample is independent of every other, so there is no state to carry
+ * between frames and nothing to ease: the drawn field IS the field, at
+ * whatever real-valued t the clock has reached. Which is the visible payoff
+ * of having a function rather than a run — the animation above has to walk
+ * towards each tick because the world only exists at whole ones, and this
+ * one is simply continuous, so it moves the way a wave moves.
+ *
+ * Drawn small and stretched. The field has no detail below the scale of its
+ * own bands, so sampling it at every pixel is spending several times over
+ * for a picture that is smooth by construction; a quarter-scale buffer drawn
+ * up with the canvas's own interpolation is the same image for a sixteenth
+ * of the arithmetic.
+ */
+const ContinuousField = ({
+  sources,
+  height = 320,
+  span = 14,
+  rate = 10,
+  cycle = 200,
+}: {
+  sources: Emitter[];
+
+  // How much of the world is on screen, as a radius in cells.
+  span?: number;
+
+  // Ticks a second, and it need not be a whole number of anything.
+  rate?: number;
+
+  // Ticks before it starts again from the beginning. A pair that closes on
+  // each other ends up adjacent and then has nothing left to do — neither is
+  // space, so neither can be moved through, and adjacent is as close as
+  // adjacent gets. Watching that happen is the point; watching it having
+  // happened is not.
+  cycle?: number;
+
+  height?: number;
+}) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const latest = useRef({ sources, span, rate, cycle });
+  latest.current = { sources, span, rate, cycle };
+
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext("2d")!;
+
+    // The small buffer the field is evaluated into, before being drawn up to
+    // the size of the canvas.
+    const buf = document.createElement("canvas");
+    const bufCtx = buf.getContext("2d")!;
+
+    let img: ImageData | null = null;
+
+    let raf = 0;
+    let seen = false;
+    let t = 0;
+    let last = performance.now();
+
+    // Where the sources have got to. The ones handed in say where they start,
+    // and nothing about where they stay.
+    let live: Live[] = [];
+
+    const reset = () => {
+      t = 0;
+      live = latest.current.sources.map(s => ({
+        ...s,
+        at: [...s.at] as [number, number],
+        path: [s.at[0], s.at[1]],
+        vel: [s.drift?.[0] ?? 0, s.drift?.[1] ?? 0] as [number, number],
+      }));
+    };
+
+    // Everywhere each of them has been, kept up to the moment. Filled to the
+    // current time rather than appended to once per frame, so the record is
+    // evenly spaced whatever the frame rate happens to be doing.
+    const remember = () => {
+      for (const s of live) {
+        for (let k = s.path.length / 2; k <= t / TRAIL; k++) {
+          s.path.push(s.at[0], s.at[1]);
+        }
+      }
+    };
+
+    reset();
+
+
+
+    function resize() {
+      const parent = canvas.parentElement!;
+      const w = parent.clientWidth, h = parent.clientHeight;
+      const ratio = window.devicePixelRatio || 1;
+
+      canvas.width = w * ratio;
+      canvas.height = h * ratio;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+
+      // Everything below draws in css pixels; the field's own buffer is
+      // coarser than either and gets stretched over the top.
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    function draw() {
+      const { span } = latest.current;
+      const sources = live;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      if (!w || !h) return;
+
+      /**
+       * Css pixels to a sample, and it cannot be one number.
+       *
+       * What has to be resolved is a band, and a band is `CYCLE/2` cells of
+       * world however the view is set — so how many pixels it covers depends
+       * entirely on how far out the camera is. A single source framed at
+       * fourteen cells gives a band forty-odd pixels and four pixels a sample
+       * is plenty. The same four pixels against a pair framed at sixty gives a
+       * band ten pixels wide and two and a half samples across it, which is
+       * under what it takes to see a wave at all: what gets drawn there is not
+       * a coarse version of the field, it is the moiré of a grid beating
+       * against one, and no amount of smoothing afterwards recovers it.
+       *
+       * So the sampling follows the bands rather than the screen. Five or so to
+       * a band everywhere, which is what the wide views were missing and what
+       * the close ones were spending several times over.
+       */
+      const bandPx = (CYCLE / 2) * (Math.min(w, h) / (2 * Math.max(span, 1)));
+
+      const SAMPLE = Math.max(Math.min(bandPx / 5, 4), 1.4);
+
+      const cols = Math.max(Math.round(w / SAMPLE), 1);
+      const rows = Math.max(Math.round(h / SAMPLE), 1);
+
+      if (buf.width !== cols || buf.height !== rows) {
+        buf.width = cols; buf.height = rows;
+        img = null;
+      }
+
+      // Asked for once and written over ever after. At this sampling it is a
+      // hundred thousand pixels a frame, and handing that back to be
+      // collected sixty times a second is most of what the drawing would
+      // otherwise cost.
+      if (!img) img = bufCtx.createImageData(cols, rows);
+
+      const px = img.data;
+
+      // Cells to the shorter side of the picture, so the same world is framed
+      // whatever shape the canvas is.
+      const scale = Math.min(w, h) / (2 * span);
+      const reach = span * 0.6;
+
+      for (let y = 0; y < rows; y++) {
+        const wy = ((y + 0.5) * (h / rows) - h / 2) / scale;
+
+        for (let x = 0; x < cols; x++) {
+          const wx = ((x + 0.5) * (w / cols) - w / 2) / scale;
+
+          const v = Math.max(Math.min(fieldAt(wx, wy, t, sources, reach), 1), -1);
+
+          /**
+           * Amber one way, cyan the other, and the background where the two
+           * meet — so a seam is a dark channel and needs no line drawn on it.
+           *
+           * Shown at the strength it actually has, which it was not. A gamma
+           * of about a half lifts the faint parts of a picture towards the
+           * bright ones, and here that is a lie with consequences: a wave
+           * thinned to a hundredth of itself by distance and by everything it
+           * has crossed was being drawn at a fifth, so the outer half of
+           * every picture looked like a place where something was happening.
+           * It is not. Gravity here goes as the product of two waves meeting,
+           * so it falls away faster than either of them does — and if the
+           * waves are drawn brighter than they are, the eye is being told the
+           * opposite of the truth about where anything can still act.
+           *
+           * Straight through, then. What is visible is what is there, and
+           * where the picture goes dark is where the two have nothing left to
+           * do to each other.
+           */
+          const k = Math.abs(v);
+          const i = (y * cols + x) * 4;
+
+          /**
+           * And a little noise added before it is rounded to a byte.
+           *
+           * The field is smooth and the colours it maps to are eight bits, so
+           * a gradient that takes two hundred pixels to go from one shade to
+           * the next has a hard edge every two hundred pixels — a set of
+           * contour lines nothing asked for, which read as the picture being
+           * coarse when what is coarse is only the counting. Half a level of
+           * dither, from a fixed pattern rather than from a random number so
+           * that a still frame is stable, turns each of those edges into a
+           * scatter that averages to the right value and has no edge in it.
+           */
+          const d = DITHER[(y & 3) * 4 + (x & 3)];
+
+          px[i] = 6 + (v > 0 ? 249 : 55) * k + d;
+          px[i + 1] = 7 + (v > 0 ? 115 : 213) * k + d;
+          px[i + 2] = 12 + (v > 0 ? 57 : 243) * k + d;
+          px[i + 3] = 255;
+        }
+      }
+
+      bufCtx.putImageData(img, 0, 0);
+
+      ctx.fillStyle = "#06070c";
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(buf, 0, 0, w, h);
+
+      // The sources, in the same yellow they are given above.
+      for (const s of sources) {
+        const sx = w / 2 + s.at[0] * scale, sy = h / 2 + s.at[1] * scale;
+
+        const halo = ctx.createRadialGradient(sx, sy, 0, sx, sy, 14);
+        halo.addColorStop(0, "rgba(255,214,66,0.85)");
+        halo.addColorStop(0.35, "rgba(255,186,40,0.3)");
+        halo.addColorStop(1, "rgba(255,186,40,0)");
+
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 14, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#FFE066";
+        ctx.beginPath();
+        ctx.arc(sx, sy, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    /**
+     * And everything is carried by the flow of the space it is in.
+     *
+     * Three things, in this order, and the order says what the model claims.
+     * A source goes on going the way it was going, because nothing here
+     * accelerates anything. The space it is in is carried by `flowAt`,
+     * wherever annihilation is shortening it. And the source's own direction
+     * is turned by the same flow — not by being pushed, but because a
+     * direction is a displacement per tick and the space that displacement
+     * lives in is being sheared underneath it.
+     *
+     * The turning is the gradient of the flow, taken as a difference over
+     * half a cell either side. Nothing about the speed appears in it: a
+     * velocity carried through a shear comes out pointing elsewhere, at
+     * whatever length the shear leaves it, and the drift is renormalised back
+     * to the speed it was given so that this stays a change of direction and
+     * never becomes a change of pace.
+     *
+     * They stop when they are adjacent, which is not a fudge to keep them
+     * apart: a source is not space, so there is nothing left between them to
+     * annihilate and nothing either could move through if there were.
+     */
+    const TOUCH = 1;                              // as close as adjacent gets
+    const NUDGE = 0.5;                            // cells, for reading a gradient
+
+    function pull(dt: number) {
+      const span = latest.current.span;
+      const reach = span * 0.6;
+
+      // Where space is going, worked out once for the whole picture. After
+      // this nothing asks about sources again — only about places.
+      survey(live, t, reach, span);
+
+      // The flow as it stands, before anything has moved in it.
+      const carry = live.map(s => {
+        flowAt(s.at[0], s.at[1]);
+
+        return [FLOW[0], FLOW[1]] as [number, number];
+      });
+
+      const turned = live.map((s, i) => {
+        /**
+         * Turned along the way it is ACTUALLY going, which is its own motion
+         * and the flow carrying it, together.
+         *
+         * Taken along `vel` alone, as it was, this asks how the flow varies
+         * down a line the source is not travelling on. For anything with a
+         * drift that is merely the wrong line; for anything without one it is
+         * no line at all, and the whole thing gave up at the first test —
+         * so a pair set going by nothing but gravity had its direction left
+         * entirely alone, and gravity could displace them but never steer
+         * them. Which is exactly the complaint: the middle alive, and the two
+         * of them never coming round to face each other.
+         */
+        const goX = s.vel[0] + carry[i][0], goY = s.vel[1] + carry[i][1];
+
+        const speed = Math.hypot(s.vel[0], s.vel[1]);
+        const going = Math.hypot(goX, goY);
+        if (going < 1e-9) return s.vel;
+
+        // How the flow differs a little either way along the direction it is
+        // going: that difference, over that distance, is what turns it.
+        const hx = goX / going, hy = goY / going;
+
+        flowAt(s.at[0] + hx * NUDGE, s.at[1] + hy * NUDGE);
+        const ax = FLOW[0], ay = FLOW[1];
+
+        flowAt(s.at[0] - hx * NUDGE, s.at[1] - hy * NUDGE);
+
+        const gx = (ax - FLOW[0]) / (2 * NUDGE), gy = (ay - FLOW[1]) / (2 * NUDGE);
+
+        let vx = s.vel[0] + gx * going * dt;
+        let vy = s.vel[1] + gy * going * dt;
+
+        // Turned, never sped up or slowed down. A source with no drift of its
+        // own has nothing to keep the length of, and stays at nothing.
+        const now = Math.hypot(vx, vy);
+        if (now < 1e-9 || speed < 1e-9) return s.vel;
+
+        return [vx * speed / now, vy * speed / now] as [number, number];
+      });
+
+      for (let i = 0; i < live.length; i++) {
+        const s = live[i];
+
+        s.vel = turned[i];
+
+        s.at[0] += (s.vel[0] + carry[i][0]) * dt;
+        s.at[1] += (s.vel[1] + carry[i][1]) * dt;
+      }
+
+      // Not through one another: a source is not space.
+      for (let i = 0; i < live.length; i++) {
+        for (let j = i + 1; j < live.length; j++) {
+          const a = live[i], b = live[j];
+
+          const dx = b.at[0] - a.at[0], dy = b.at[1] - a.at[1];
+          const gap = Math.hypot(dx, dy);
+          if (gap >= TOUCH || gap < 1e-9) continue;
+
+          const back = (TOUCH - gap) / 2;
+          const ux = dx / gap, uy = dy / gap;
+
+          a.at[0] -= ux * back; a.at[1] -= uy * back;
+          b.at[0] += ux * back; b.at[1] += uy * back;
+        }
+      }
+
+      /**
+       * And the trail is NOT carried with it, which is the whole of what
+       * makes any of this local.
+       *
+       * It was, and the argument for it sounded right: a ring is centred
+       * where its source was when it left, that place is in the space too,
+       * and if the space is going then so is everywhere in it. What that
+       * argument misses is that the trail is not a set of places. It is a
+       * RECORD of where something was at a moment, and a record that gets
+       * amended is not a record of anything.
+       *
+       * Amended every frame, every position in it drifts a little further
+       * from what was actually the case — so `was` gives a different answer
+       * today than it gave yesterday for the same instant, and every wave in
+       * the air, however old, quietly re-centres itself on the answer. Rings
+       * laid down a hundred ticks ago get up and move because their source
+       * has since been pulled somewhere. Nothing that has already happened
+       * may depend on anything that happened after it, and this was the last
+       * place in the model where it did.
+       */
+    }
+
+    function frame(now: number) {
+      const dt = Math.min((now - last) / 1000, 0.05) * latest.current.rate;
+      last = now;
+
+      t += dt;
+
+      if (t >= latest.current.cycle) reset();
+      else pull(dt);
+
+      remember();
+
+      draw();
+
+      raf = requestAnimationFrame(frame);
+    }
+
+    const stop = () => {
+      if (!raf) return;
+
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+
+    const show = (visible: boolean) => {
+      if (visible === seen) return;
+      seen = visible;
+
+      if (visible) {
+        resize();
+        reset();
+        last = performance.now();
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+
+      stop();
+
+      // Both buffers handed back, which between them are the whole of what
+      // this holds on to. There is no state in it besides a clock.
+      canvas.width = 0; canvas.height = 0;
+      buf.width = 0; buf.height = 0;
+      img = null;
+    };
+
+    const onResize = () => { if (seen) resize(); };
+    window.addEventListener("resize", onResize);
+
+    const unwatch = whileOnScreen(canvas, show);
+
+    return () => {
+      unwatch();
+      stop();
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  return <div style={{ height }}>
+    <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+  </div>;
+};
+
+// A turn per CYCLE ticks, which is the rate the lattice above comes round at:
+// eight directions to a plane and one step of them a tick.
+const SPIN = (Math.PI * 2) / CYCLE;
+
+/**
+ * How far apart a pair starts, and how much of the world is watched.
+ *
+ * Far, now that the closing is at its real rate. A cell a tick is quick
+ * enough that a pair set eight apart — which is what the lattice examples
+ * above can afford — is over in eight ticks, and what there is to see is not
+ * the arrangement but the end of it. Set forty apart there is time for the
+ * two to reach each other, for the fringes between them to establish
+ * themselves, and for the closing to be watched as a thing with a rate rather
+ * than as a fact about the next frame.
+ *
+ * Note also what the first stretch of every one of these is: nothing at all
+ * happening. Neither source knows the other is there until light has crossed
+ * the gap, and until then nothing between them cancels and neither moves.
+ * That is not dead time in the animation. It is the model's whole position on
+ * action at a distance, which is that there is none.
+ */
+const APART = 34;
+const WIDE = 40;
+
+/**
+ * And how many ticks each is given before it starts again.
+ *
+ * Not the same number for both kinds, because they do not have the same
+ * amount to do. A lone source never finishes: it is laying down a pattern
+ * that goes on getting bigger, and every extra turn of it out towards the rim
+ * is another turn there is to see, so it is given a long run. A pair does
+ * finish — they reach each other, and adjacent is as close as adjacent gets —
+ * so what a long run buys there is a great deal of two sources sitting still.
+ * Enough after they arrive to see that they have arrived, and then round
+ * again.
+ */
+/**
+ * And the fly-by's own scale, which is larger than everything else here.
+ *
+ * `FAR` is far enough that light takes a good while to cross — nothing at all
+ * happens for the first fifty-odd ticks of that case, which is the model
+ * being honest about there being no action at a distance — and `MISS` is the
+ * impact parameter, the distance they would pass at if nothing were eaten.
+ * Both are the dials for that one picture: closer or more head-on and it is a
+ * collision, further or wider and they are gone before the gap notices them.
+ */
+// How far out the three sit from their common centre. Their sides are RING
+// times root three, so light takes about that long to cross between any two
+// of them and nothing at all happens before it has.
+const RING = 30;
+
+const FAR = 52;
+const MISS = 34;
+const ROOM = 62;
+
+const ALONE_FOR = 260;
+const PAIR_FOR = 200;
+
+const CONTINUOUS_CASES: {
+  name: string, note: string, sources: Emitter[], span?: number, cycle?: number,
+}[] = [
+  {
+    name: 'one magnet, turning',
+    cycle: ALONE_FOR,
+    note: 'lobes = 1, so the field carries an angle and its zero set winds.',
+    sources: [{ at: [0, 0], lobes: 1, omega: SPIN, phase: 0 }],
+  },
+  {
+    name: 'one source, not turning',
+    cycle: ALONE_FOR,
+    note: 'The same expression with the angle taken out: lobes = 0, and rings.',
+    sources: [{ at: [0, 0], lobes: 0, omega: SPIN, phase: 0 }],
+  },
+  {
+    name: 'two magnets, turning the same way',
+    span: WIDE,
+    cycle: PAIR_FOR,
+    note: 'Two congruent spirals, and the first pair here that closes: what '
+      + 'they eat between them is what brings them together.',
+    sources: [
+      { at: [-APART, 0], lobes: 1, omega: SPIN, phase: 0 },
+      { at: [APART, 0], lobes: 1, omega: SPIN, phase: 0 },
+    ],
+  },
+  {
+    name: 'two magnets, turning opposite ways',
+    span: WIDE,
+    cycle: PAIR_FOR,
+    note: 'Mirrored winding, so along the line between them the two arrive in '
+      + 'step and out of step by turns — and close in bursts rather than '
+      + 'steadily, which is the beat showing up as a rate.',
+    sources: [
+      { at: [-APART, 0], lobes: 1, omega: SPIN, phase: 0 },
+      { at: [APART, 0], lobes: 1, omega: -SPIN, phase: 0 },
+    ],
+  },
+  {
+    name: 'two sources, pulsing in step',
+    span: WIDE,
+    cycle: PAIR_FOR,
+    note: 'Rings launched together. They agree on the midline and cancel in '
+      + 'rings either side of it, and it is the cancelling that closes them.',
+    sources: [
+      { at: [-APART, 0], lobes: 0, omega: SPIN, phase: 0 },
+      { at: [APART, 0], lobes: 0, omega: SPIN, phase: 0 },
+    ],
+  },
+  {
+    name: 'two sources, pulsing against each other',
+    span: WIDE,
+    cycle: PAIR_FOR,
+    note: 'Half a cycle apart: the midline is now where they always cancel, '
+      + 'so the same pair closes faster on the same rules.',
+    sources: [
+      { at: [-APART, 0], lobes: 0, omega: SPIN, phase: 0 },
+      { at: [APART, 0], lobes: 0, omega: SPIN, phase: Math.PI },
+    ],
+  },
+
+  /**
+   * One of them, going somewhere.
+   *
+   * Nothing for it to interact with, so nothing about it changes: it travels
+   * at the one speed a source can, and goes on emitting the whole way. What
+   * that shows is the retardation on its own, with no gravity mixed into it.
+   * Every ring it leaves is centred where it was when that ring left, so the
+   * rings ahead of it are crowded together and the ones behind are stretched
+   * apart — the same shape as a Doppler shift, arrived at by nothing more
+   * than a source outrunning some of its own past.
+   */
+  {
+    name: 'one magnet, turning, and moving',
+    cycle: ALONE_FOR,
+    note: 'No second source, so nothing is eaten and nothing bends. The rings '
+      + 'bunch ahead and stretch behind because each was left where it left '
+      + 'from, and the source has gone on.',
+    sources: [{ at: [-12, 0], lobes: 1, omega: SPIN, phase: 0, drift: [PACE, 0] }],
+  },
+
+  /**
+   * Two of them, set going the same way round.
+   *
+   * The one on the left sent up and the one on the right sent down, so the
+   * pair are circulating about the point between them rather than passing
+   * each other. This is the case the lattice version could not really put to
+   * the question — a hundred ticks of a nine-thousand-point ball is a long
+   * wait to find out — and it is the one worth asking, because it is where
+   * gravity that is only ever a shortening of a gap either does or does not
+   * come out looking like an orbit.
+   *
+   * What to watch is whether the closing keeps up with the carrying. Neither
+   * changes speed, ever; the drift is what it was set to and stays there. So
+   * the only question is whether the space between them is eaten as fast as
+   * their courses take them apart, and the three answers — they wind
+   * together, they part, or they hold — are all legible and none of them is
+   * arranged for.
+   */
+  {
+    name: 'two magnets, turning, with angular momentum',
+    span: WIDE,
+    cycle: PAIR_FOR,
+    note: 'Set going the same way round the middle. Nothing accelerates: what '
+      + 'brings them in is the gap being eaten while they carry on.',
+    sources: [
+      { at: [-APART, 0], lobes: 1, omega: SPIN, phase: 0, drift: [0, PACE] },
+      { at: [APART, 0], lobes: 1, omega: SPIN, phase: 0, drift: [0, -PACE] },
+    ],
+  },
+
+  /**
+   * And two set to miss each other, which is the fly-by, and the one case
+   * here that could come round.
+   *
+   * Given far more room than any of the others, and the room is the point. An
+   * orbit is a thing that needs somewhere to happen: the two have to be far
+   * enough apart that the gap between them survives being eaten for long
+   * enough to be carried round, and close enough passing that there is
+   * anything to carry. Set eight apart, as the lattice examples can afford,
+   * there is no such interval — light crosses, the gap goes, and they are
+   * together before either has been carried anywhere at all.
+   *
+   * The courses are straight and stay straight. Neither source is aimed at
+   * the other; each is sent along x on its own side of the line, so that
+   * left alone they would pass with the whole of `MISS` between them and go
+   * on for ever. What can happen instead is that the ground between them
+   * starts going while they are still crossing it, and the question — a real
+   * one, with a determinate answer nobody has arranged — is whether it goes
+   * fast enough to catch them and slowly enough to leave them anywhere to be
+   * carried to.
+   *
+   * Three outcomes, all legible. They close before they are past each other,
+   * and it is a collision with extra steps. They are past before enough is
+   * gone, and they leave. Or the gap shortens at about the rate their passing
+   * lengthens it, which is the whole of what an orbit is here — noting again
+   * that neither of them ever changes speed, so if this comes round it comes
+   * round without anything being accelerated by anything.
+   */
+  {
+    name: 'two sources, pulsing, passing at a distance',
+    span: ROOM,
+    cycle: PAIR_FOR,
+    note: 'Set to miss each other by a long way. Both courses stay straight; '
+      + 'it is the ground between them that goes.',
+    sources: [
+      { at: [-FAR, -MISS / 2], lobes: 0, omega: SPIN, phase: 0, drift: [PACE, 0] },
+      { at: [FAR, MISS / 2], lobes: 0, omega: SPIN, phase: 0, drift: [-PACE, 0] },
+    ],
+  },
+
+  /**
+   * Three of them, which is where this stops being arithmetic.
+   *
+   * Nothing in the rules changes. Every pair does exactly what a pair does —
+   * meets head-on, annihilates where opposite and turns round where alike,
+   * and loses the space between them at two cells a tick for as much of the
+   * meeting as cancels. Add a third and not one line of that is different.
+   * What is different is that there are now three gaps going at once, each at
+   * its own rate, and no symmetry left holding any of them.
+   *
+   * Which is the point of putting it here. Two of anything is a special case:
+   * whatever they do, they do it along the one line between them, and the
+   * whole configuration is that line's length. Three have a shape, and the
+   * shape can change — so this is the first arrangement in the article where
+   * the question "what happens" does not have an answer that could have been
+   * worked out from a single number.
+   *
+   * Set going the same way round a common centre, so what they carry is
+   * angular momentum rather than three approaches. Whether that survives the
+   * eating is a real question and it is the same one the pair asked, with the
+   * difference that a pair either closes or does not, and three can shed one
+   * and keep the other two. Nothing here is arranged to produce that. It is
+   * arranged to be legible if it happens.
+   *
+   * Worth watching for two things the pairs cannot show. Each source is
+   * eating with BOTH of the others at once, along two different lines, so
+   * what moves it is a sum of two contractions pointing different ways — and
+   * it will not point at either of them. And a wave leaving one of them meets
+   * whichever of the other two it runs into first, so the surface it stops at
+   * is no longer a plane: it is two planes, and which one applies depends on
+   * the direction it left in.
+   */
+  {
+    name: 'three sources, going round',
+    span: ROOM,
+    cycle: PAIR_FOR,
+    note: 'The same pairwise rule, three times over. Nothing is aimed at '
+      + 'anything; each carries on the way it was sent while the space '
+      + 'between all three of them goes.',
+    sources: [0, 1, 2].map(k => {
+      const turn = Math.PI / 2 + k * (Math.PI * 2) / 3;
+
+      return {
+        at: [RING * Math.cos(turn), RING * Math.sin(turn)] as [number, number],
+        lobes: 0 as const,
+        omega: SPIN,
+        phase: 0,
+        // Tangentially, all the same way round, so the three of them carry a
+        // rotation about the middle rather than three separate approaches.
+        drift: [-PACE * Math.sin(turn), PACE * Math.cos(turn)] as [number, number],
+      };
+    }),
+  },
+
+  /**
+   * And the same three aimed straight at one another.
+   *
+   * The other arrangement of three, and the one that isolates what the
+   * turning was doing. There every source was carrying past the other two
+   * while the ground went, and it was never clear how much of what happened
+   * was the eating and how much was the momentum. Here the momentum is
+   * pointed at the same place the eating is pulling, so the two agree, and
+   * whatever comes out is what these rules do when nothing is working against
+   * them.
+   *
+   * Which makes the arithmetic worth stating in advance, because it is
+   * checkable. Each pair loses two cells a tick for as much of what they send
+   * each other as cancels, so a side of the triangle goes at about a cell a
+   * tick from the eating alone; on top of that the two ends of it are already
+   * closing at nearly two cells a tick under their own steam. And every
+   * source is on two sides at once. The three should arrive together, at the
+   * middle, sooner than any pair in this article manages it.
+   *
+   * The thing to watch for is whether they arrive at a POINT. Three bodies
+   * aimed at one place have every reason to miss it — the least asymmetry in
+   * what each is emitting when puts one of the three gaps ahead of the other
+   * two, that pair closes first, and what was a collapse becomes a pair with
+   * a third thing falling towards it. Nothing here decides which. The phases
+   * are identical and the geometry is exact, so if they do not arrive
+   * together it is because the encounter itself is not stable, and that is a
+   * result rather than a fault.
+   */
+  {
+    name: 'three sources, aimed at each other',
+    span: ROOM,
+    cycle: PAIR_FOR,
+    note: 'The same three, sent inwards instead of round. Momentum and the '
+      + 'loss of space now agree, so nothing is holding them apart.',
+    sources: [0, 1, 2].map(k => {
+      const turn = Math.PI / 2 + k * (Math.PI * 2) / 3;
+
+      return {
+        at: [RING * Math.cos(turn), RING * Math.sin(turn)] as [number, number],
+        lobes: 0 as const,
+        omega: SPIN,
+        phase: 0,
+        // Straight at the middle, which is straight at the other two.
+        drift: [-PACE * Math.cos(turn), -PACE * Math.sin(turn)] as [number, number],
+      };
+    }),
+  },
+
+  /**
+   * Three turning magnets, not sent anywhere.
+   *
+   * The other two threes are about momentum — one carrying round, one aimed
+   * in — and both of them have sides that put out the same charge in every
+   * direction. This one takes the momentum away and gives them poles instead.
+   * Nothing is thrown at anything. The only thing that moves them is the
+   * space between them going, so whatever they end up doing is gravity
+   * unaccompanied, which is the thing the article is actually arguing about.
+   *
+   * And it is the first arrangement here where what each of them presents to
+   * the others is CHANGING. A pulsing source is the same all round, so a pair
+   * of them either cancel or they do not and that stays true. A magnet has a
+   * north and a south, and a turning magnet sweeps them past everything —
+   * so each of the three faces each of the others with something different
+   * every tick, and the three gaps go at three rates that are not only
+   * unequal but keep swapping which is largest.
+   *
+   * All three given the same phase, so they start pointing the same way and
+   * come round together. That is deliberate and it is not the same as facing
+   * each other: a pair with matching axes presents opposite poles across the
+   * gap, permanently, which is why the pair above eats so steadily. Three at
+   * the corners of a triangle cannot all do that with all of the others —
+   * there is no way to orient three things so that every pair is opposed —
+   * and what happens instead is the question. Some of the pairs are eating
+   * and some are bouncing, and which is which comes round with the axes.
+   */
+  {
+    name: 'three magnets, turning',
+    span: ROOM,
+    cycle: PAIR_FOR,
+    note: 'Three of them with poles, coming round together, sent nowhere. '
+      + 'Nothing moves them but the space between them going.',
+    sources: [0, 1, 2].map(k => {
+      const turn = Math.PI / 2 + k * (Math.PI * 2) / 3;
+
+      return {
+        at: [RING * Math.cos(turn), RING * Math.sin(turn)] as [number, number],
+        lobes: 1 as const,
+        omega: SPIN,
+        phase: 0,
+      };
+    }),
+  },
+
+  /**
+   * And the same fly-by again, moving as fast and emitting a fifth as often.
+   *
+   * One pulse every fifth tick, and everything else exactly as above: the
+   * same distance, the same miss, the same speed, the same rules. What
+   * changes is only how often the two have anything to say to each other.
+   *
+   * Which is not a small change, because it is the one term that was making
+   * capture inevitable. A source travels at a third of a cell a tick, and a
+   * pair pulsing every tick has a meeting every tick, each meeting taking two
+   * cells out of the gap. Two cells a tick against a third of one: the eating
+   * was six times quicker than the moving, no amount of distance was going to
+   * outrun it, and every pair above ends up together with the only question
+   * being how long it took.
+   *
+   * A pulse every fifth tick is a meeting every fifth tick, so the gap goes
+   * at two fifths of a cell a tick — and nothing has been slowed down to
+   * achieve it. The two are carried exactly as far as they were. For the
+   * first time in any of these the two rates are within reach of each other,
+   * and the outcome stops being obvious.
+   *
+   * It is worth being clear that nothing here is tuned to produce an orbit.
+   * The beat is a property of the source — how often it lets go of a shell —
+   * and the speed is a property of its mass. Two independent facts about a
+   * thing, whose ratio decides whether it falls in, escapes, or comes round.
+   * Which is the shape of the question every orbiting system asks, arrived at
+   * here with no force anywhere in it.
+   *
+   * There is a second thing this makes visible, which the filled field could
+   * not. With four cells of nothing between one ring and the next, most of
+   * the space between the two sources is space where neither of them has
+   * anything, and the eating happens in bursts as the rings pass through each
+   * other rather than continuously. The gap does not shorten smoothly. It
+   * shortens whenever two shells arrive at the same place, and holds still in
+   * between, which is what a discrete rule looks like when it is still
+   * discrete.
+   */
+  {
+    name: 'the same, pulsing every fifth tick',
+    span: ROOM,
+    cycle: PAIR_FOR,
+    note: 'Moving every tick, emitting every fifth one. A fifth as many '
+      + 'meetings, so the gap goes a fifth as fast — and the two are carried '
+      + 'just as far while it does.',
+    sources: [
+      { at: [-FAR, -MISS / 2], lobes: 0, omega: SPIN, phase: 0, drift: [PACE, 0], beat: 5 },
+      { at: [FAR, MISS / 2], lobes: 0, omega: SPIN, phase: 0, drift: [-PACE, 0], beat: 5 },
+    ],
+  },
+];
 
 // The four states one end of a two-point universe can be in: its polarity,
 // and whether its ray moves into the connection or away from it.
@@ -7247,6 +9265,26 @@ const RayCalculiAndPhysics = () => {
               </div>
             ))}
           </Fragment>
+        ))}
+
+        {/* And the same dynamics again, written down instead of run.
+
+            Everything above this is the model: points, a local rule, and a
+            field reconstructed afterwards from where the points ended up.
+            What follows is the closed form of what that model makes — one
+            cosine per source, evaluated at every pixel, with no simulation
+            behind it and nothing to reconstruct. It is not a cheaper way of
+            getting the pictures above; it is a different claim, and the value
+            of it is in where the two disagree.
+
+            Cheap, though, and that shows: there is no state carried between
+            frames and no tick, so t is a real number and the waves travel
+            smoothly rather than a cell at a time. */}
+        {CONTINUOUS_CASES.map(({ name, note, sources, span, cycle }) => (
+          <div key={`continuous-${name}`} style={{ marginBottom: '1.5rem' }}>
+            <ContinuousField sources={sources} span={span} cycle={cycle} height={320} />
+            <Caption>{name} — {note}</Caption>
+          </div>
         ))}
 
         {ANTI_GROUPS.map((group, i) => (
