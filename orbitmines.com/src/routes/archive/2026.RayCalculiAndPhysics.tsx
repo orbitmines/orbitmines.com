@@ -7646,6 +7646,243 @@ const survey = (live: Live[], t: number, reach: number, span: number) => {
  * body's own motion is untouched and its speed never changes. It is carried,
  * and what carries it is not uniform.
  */
+/**
+ * The space itself, kept between ticks, and how fast it is going.
+ *
+ * Everything before this treated gravity as a speed: work out where
+ * annihilation is happening, work out how fast that drags each source, move
+ * it that far, throw the answer away and do it again next tick. Which cannot
+ * be right, and the discrete rule says why. `annihilate` does not push
+ * anything. It rewires — the point behind one dying charge is spliced
+ * directly onto the point behind the other — and it STAYS rewired. The state
+ * is in the space, not in the bodies, and a speed recomputed from scratch
+ * every tick is precisely a model with no state in the space at all.
+ *
+ * So the space gets a displacement of its own, `h`, which is how far each
+ * place has been carried from where it started, and it is kept. Annihilation
+ * adds to it and nothing takes it away: once the ground between two things
+ * has gone, it has gone, and they are nearer whether or not anything is still
+ * eating.
+ *
+ * And `h` is given a wave equation rather than being applied where it is
+ * made. A contraction here has to reach a place over there, and it has to
+ * take the time light takes — so the field obeys
+ *
+ *     d²h/dt² = c² ∇²h + S
+ *
+ * with S the annihilation. Ripples in `h` then travel outward at exactly c,
+ * which is what a gravitational wave is: not a thing added to the model, but
+ * what persistence and a finite speed give you together the moment you stop
+ * applying the answer instantly and everywhere. Neither alone produces one.
+ *
+ * A grid fixed for the whole run, unlike the survey's, which re-frames on the
+ * pair every tick. A field that is carried from one tick to the next cannot
+ * be resampled onto a moving grid without smearing everything it remembers.
+ */
+type Warp = {
+  hx: Float32Array; hy: Float32Array;             // where each place has got to
+  vx: Float32Array; vy: Float32Array;             // and how fast it is going
+  sx: Float32Array; sy: Float32Array;             // what is driving it this tick
+  n: number; x0: number; y0: number; step: number;
+};
+
+const warp = (span: number): Warp => {
+  // Forty across is enough to carry a wave and cheap enough to ask the
+  // calibrated flow at every one of its places, once a tick.
+  const n = 40;
+  const step = (2 * span) / n;
+
+  return {
+    hx: new Float32Array(n * n), hy: new Float32Array(n * n),
+    vx: new Float32Array(n * n), vy: new Float32Array(n * n),
+    sx: new Float32Array(n * n), sy: new Float32Array(n * n),
+    n, x0: -span, y0: -span, step,
+  };
+};
+
+// Read between the grid's places, since it is asked at arbitrary points.
+const WARP: [number, number] = [0, 0];
+
+const warpAt = (w: Warp, a: Float32Array, b: Float32Array, x: number, y: number) => {
+  const fx = Math.min(Math.max((x - w.x0) / w.step, 0), w.n - 1.001);
+  const fy = Math.min(Math.max((y - w.y0) / w.step, 0), w.n - 1.001);
+
+  const i = Math.floor(fx), j = Math.floor(fy);
+  const u = fx - i, v = fy - j;
+
+  const k = j * w.n + i;
+
+  WARP[0] = (a[k] * (1 - u) + a[k + 1] * u) * (1 - v)
+    + (a[k + w.n] * (1 - u) + a[k + w.n + 1] * u) * v;
+  WARP[1] = (b[k] * (1 - u) + b[k + 1] * u) * (1 - v)
+    + (b[k + w.n] * (1 - u) + b[k + w.n + 1] * u) * v;
+};
+
+/**
+ * One step of it.
+ *
+ * The annihilation found this tick is laid down as the source term — the same
+ * shape `flowAt` used to hand straight to the sources, put into the field
+ * instead — and then the field is left to carry it. The Laplacian is the
+ * plain five-point one, which is all a wave equation on a grid needs, and the
+ * time step is a fraction of a cell against a speed of one, so it is nowhere
+ * near the limit where that would misbehave.
+ *
+ * A little damping, because nothing here should ring for ever: an annihilation
+ * that has finished leaves its displacement behind, which is the point, but
+ * the SPEED it left the space with has to die away or the picture keeps
+ * sloshing long after anything is happening.
+ */
+const warpStep = (w: Warp, dt: number) => {
+  const { hx, hy, vx, vy, sx, sy, n, step } = w;
+
+  /**
+   * What the space would be doing here if the annihilation acted at once,
+   * which is what the survey has already been calibrated to give.
+   *
+   * Used as the speed the field is DRAWN TOWARDS rather than as a force added
+   * to it — which keeps the one number that ties this to the discrete rule.
+   * `survey` scales the sites so that a pair whose every meeting cancels
+   * would close at two cells a tick, and if that were integrated as an
+   * acceleration the speed would simply grow past it and the calibration
+   * would mean nothing. Relaxed towards, the near field settles at exactly
+   * the rate the rule gives, and everything the wave equation adds is what
+   * happens on the way there and further out.
+   */
+  for (let j = 0; j < n; j++) {
+    for (let i = 0; i < n; i++) {
+      const k = j * n + i;
+
+      flowAt(w.x0 + i * step, w.y0 + j * step);
+
+      sx[k] = FLOW[0]; sy[k] = FLOW[1];
+    }
+  }
+
+  // A step of the wave equation: the Laplacian carries it, at exactly the
+  // speed of light in the units everything else here is in.
+  const c2 = LIGHT * LIGHT / (step * step);
+  const pull = 2.5;
+
+  for (let j = 1; j < n - 1; j++) {
+    for (let i = 1; i < n - 1; i++) {
+      const k = j * n + i;
+
+      const lx = hx[k - 1] + hx[k + 1] + hx[k - n] + hx[k + n] - 4 * hx[k];
+      const ly = hy[k - 1] + hy[k + 1] + hy[k - n] + hy[k + n] - 4 * hy[k];
+
+      vx[k] += (c2 * lx + (sx[k] - vx[k]) * pull) * dt;
+      vy[k] += (c2 * ly + (sy[k] - vy[k]) * pull) * dt;
+    }
+  }
+
+  // And the displacement keeps what the speed has given it. Nothing takes it
+  // back: once the ground has gone it has gone.
+  for (let k = 0; k < hx.length; k++) { hx[k] += vx[k] * dt; hy[k] += vy[k] * dt; }
+};
+
+/**
+ * How steeply the ground falls away here.
+ *
+ * The flow has exactly one scalar in it — how fast the space is going — and
+ * the slope of half its square is where everything else comes from. That is
+ * not a choice: a flow which is the gradient of something obeys
+ * `(u . grad) u = grad(|u|^2 / 2)`, and `(u . grad) u` is what a thing sitting
+ * still in the coordinates is carried by as the flow it is standing in
+ * accelerates. So the slope of `|u|^2 / 2` IS the free-fall acceleration, and
+ * it is the same quantity Newton called the gradient of a potential — a river
+ * running in at `sqrt(2M/r)` has half its square equal to `M/r` exactly.
+ *
+ * Which means nothing here is imported. The rule is still that annihilation
+ * takes two cells out of the space between whatever is annihilating. The flow
+ * is what that does to the space. And a falloff nobody put in — the whole
+ * inverse-square of it — is sitting in that flow already, waiting to be
+ * differentiated.
+ *
+ * Read over three quarters of a cell either side, which is wide enough to see
+ * past the survey's own grid and narrow enough to still be local.
+ */
+const NUDGE = 0.75;
+
+const river = (w: Warp, x: number, y: number) => {
+  warpAt(w, w.vx, w.vy, x, y);
+
+  return (WARP[0] * WARP[0] + WARP[1] * WARP[1]) / 2;
+};
+
+const FALL: [number, number] = [0, 0];
+
+const fallAt = (w: Warp, x: number, y: number) => {
+  FALL[0] = -(river(w, x + NUDGE, y) - river(w, x - NUDGE, y)) / (2 * NUDGE);
+  FALL[1] = -(river(w, x, y + NUDGE) - river(w, x, y - NUDGE)) / (2 * NUDGE);
+};
+
+/**
+ * What movement itself does to the space it is moving through.
+ *
+ * `consumeAhead` is a SWAP: the ray takes the point in front of it and that
+ * point ends up behind. So anything going anywhere is laying space down
+ * behind itself at exactly the rate it takes it up in front, one cell for
+ * every cell it goes — and the space it crosses is not merely crossed, it is
+ * carried from one end of the thing to the other.
+ *
+ * Which is the other half of what happens between two sources. The
+ * annihilation between them takes space OUT and draws them together. The
+ * motion of each puts space BACK, behind it, and pushes them apart. Where
+ * those balance is where a pair neither closes nor escapes.
+ *
+ * Two things about how this is written, and both were got wrong first.
+ *
+ * It is never its own. A thing does not feel its own wake: the taking in
+ * front and the laying behind are not two forces on it that happen to cancel
+ * — they are what its moving IS, and `vel` already counts them. Put on the
+ * grid with everything else, where there is no way to ask whose wake a place
+ * is in, each source read its own and got a shove forward of about two thirds
+ * of its own pace on top of its own pace, every tick, compounding through the
+ * field. That is a rocket, and it showed as sources tearing away in the
+ * direction they were already going.
+ *
+ * And it is retarded, off the same trail `emit` uses. A wake is news, and
+ * news travels at one cell a tick like everything else here.
+ */
+const WAKE: [number, number] = [0, 0];
+
+// How far in front the taking happens and how far behind the laying: one
+// point either side, in a lattice whose points are one apart.
+const SWAP = 0.5;
+
+const wakeAt = (s: Live, x: number, y: number, t: number) => {
+  WAKE[0] = 0; WAKE[1] = 0;
+
+  const when = retard(s, x, y, t);
+  if (!isFinite(when)) return;
+
+  wasGoing(s, when);
+
+  const px = RETARD[0], py = RETARD[1];
+  const pace = Math.hypot(CARRY[0], CARRY[1]);
+  if (pace < 1e-9) return;
+
+  const ax = CARRY[0] / pace, ay = CARRY[1] / pace;
+
+  // A point of space being made pushes what is around it away; a point being
+  // taken up draws it in. Movement is one of each, half a cell apart, and far
+  // off the two very nearly cancel — which is exactly right, and is why a
+  // swap is not a source of anything. Near to, they do not.
+  for (let k = 0; k < 2; k++) {
+    const side = k ? -SWAP : SWAP;
+    const sign = k ? 1 : -1;
+
+    const ex = x - (px + ax * side), ey = y - (py + ay * side);
+
+    const r = Math.hypot(ex, ey);
+    if (r < SWAP) continue;
+
+    WAKE[0] += sign * pace * ex / (r * 2 * Math.PI * r);
+    WAKE[1] += sign * pace * ey / (r * 2 * Math.PI * r);
+  }
+};
+
 const FLOW: [number, number] = [0, 0];
 
 const flowAt = (x: number, y: number) => {
@@ -7680,6 +7917,29 @@ const flowAt = (x: number, y: number) => {
     FLOW[0] -= (q / 2) * side * fade * nx;
     FLOW[1] -= (q / 2) * side * fade * ny;
   }
+
+  /**
+   * And no place of space goes faster than light, whatever the sites add up
+   * to.
+   *
+   * Not a safety rail — it is the same rule everything else here obeys, and
+   * without it the calibration in `survey` has a hole in it. That divides by
+   * how fast the sites it found happen to close the pair, and when the two
+   * are nearly touching, or arranged so that what is being eaten is mostly
+   * off to the side of the line between them, the measured closing goes to
+   * almost nothing while the rate the rule asks for does not. The quotient
+   * runs away. Measured on the fly-by that pulses every fifth tick, the flow
+   * carrying a source reached three hundred and fifty thousand cells a tick
+   * and the pair were flung four hundred cells apart in forty.
+   *
+   * Held to light, the same arrangement simply closes as fast as anything can
+   * close and no faster. The pair still meet, the gap still goes at two cells
+   * a tick between them, and the number that used to be unbounded is now the
+   * one bound this whole model has.
+   */
+  const going = Math.hypot(FLOW[0], FLOW[1]);
+
+  if (going > LIGHT) { FLOW[0] *= LIGHT / going; FLOW[1] *= LIGHT / going; }
 };
 
 // A 4x4 ordered pattern, centred on nought and worth about one level of an
@@ -7755,8 +8015,11 @@ const ContinuousField = ({
     // and nothing about where they stay.
     let live: Live[] = [];
 
+    let field = warp(latest.current.span);
+
     const reset = () => {
       t = 0;
+      field = warp(latest.current.span);
       live = latest.current.sources.map(s => ({
         ...s,
         at: [...s.at] as [number, number],
@@ -7930,23 +8193,19 @@ const ContinuousField = ({
      * A source goes on going the way it was going, because nothing here
      * accelerates anything. The space it is in is carried by `flowAt`,
      * wherever annihilation is shortening it. And the source's own direction
-     * is turned by the same flow — not by being pushed, but because a
-     * direction is a displacement per tick and the space that displacement
-     * lives in is being sheared underneath it.
+     * is turned by how steeply that flow falls away — not by being pushed,
+     * but because a straight line through ground that is running downhill
+     * across it does not stay straight.
      *
-     * The turning is the gradient of the flow, taken as a difference over
-     * half a cell either side. Nothing about the speed appears in it: a
-     * velocity carried through a shear comes out pointing elsewhere, at
-     * whatever length the shear leaves it, and the drift is renormalised back
-     * to the speed it was given so that this stays a change of direction and
-     * never becomes a change of pace.
+     * The turning is `fallAt`, taken across the direction of travel only, so
+     * that a change of direction is all it can ever be. Nothing here changes
+     * speed.
      *
      * They stop when they are adjacent, which is not a fudge to keep them
      * apart: a source is not space, so there is nothing left between them to
      * annihilate and nothing either could move through if there were.
      */
     const TOUCH = 1;                              // as close as adjacent gets
-    const NUDGE = 0.5;                            // cells, for reading a gradient
 
     function pull(dt: number) {
       const span = latest.current.span;
@@ -7956,51 +8215,76 @@ const ContinuousField = ({
       // this nothing asks about sources again — only about places.
       survey(live, t, reach, span);
 
-      // The flow as it stands, before anything has moved in it.
-      const carry = live.map(s => {
-        flowAt(s.at[0], s.at[1]);
+      // What the annihilation does to the space, carried forward and let
+      // travel. See `warpStep` — this is where gravity now lives.
+      warpStep(field, dt);
 
-        return [FLOW[0], FLOW[1]] as [number, number];
+      /**
+       * And what each source is carried by is the SPEED of the space it is
+       * standing in, not the annihilation happening elsewhere at this moment.
+       *
+       * Which is the whole difference. A contraction over there reaches here
+       * when the wave carrying it does, and having arrived it leaves this
+       * place displaced for good — so a source goes on being where the space
+       * put it after the eating has stopped, and feels nothing at all from an
+       * annihilation whose news has not yet arrived.
+       */
+      const carry = live.map(s => {
+        warpAt(field, field.vx, field.vy, s.at[0], s.at[1]);
+
+        let cx = WARP[0], cy = WARP[1];
+
+        // And what the others have laid down behind them. Never its own —
+        // see `wakeAt`.
+        for (const o of live) {
+          if (o === s) continue;
+
+          wakeAt(o, s.at[0], s.at[1], t);
+
+          cx += WAKE[0]; cy += WAKE[1];
+        }
+
+        return [cx, cy] as [number, number];
       });
 
-      const turned = live.map((s, i) => {
+      const turned = live.map(s => {
         /**
-         * Turned along the way it is ACTUALLY going, which is its own motion
-         * and the flow carrying it, together.
+         * Turned by the slope of the ground, and only across the way it is
+         * going.
          *
-         * Taken along `vel` alone, as it was, this asks how the flow varies
-         * down a line the source is not travelling on. For anything with a
-         * drift that is merely the wrong line; for anything without one it is
-         * no line at all, and the whole thing gave up at the first test —
-         * so a pair set going by nothing but gravity had its direction left
-         * entirely alone, and gravity could displace them but never steer
-         * them. Which is exactly the complaint: the middle alive, and the two
-         * of them never coming round to face each other.
+         * The part of that slope pointing along the direction of travel is
+         * dropped before anything is added, which is what keeps this a
+         * turning and not a pull. Renormalising afterwards would have hidden
+         * the difference and did: what used to be here took the flow's change
+         * along the line of travel, which for a river running straight in is
+         * a change of length and no change of angle at all, and then handed
+         * that length to the renormalisation to be thrown away. Measured, it
+         * delivered a hundredth of what an orbit needs and most of that
+         * parallel — so a pair sent past each other flew past each other, the
+         * line between them swung forty degrees the way any two things
+         * passing would, and stopped. Which is exactly the complaint: no
+         * orbit, just a flyby with the arithmetic of one.
+         *
+         * Across the direction of travel there is nothing to throw away.
+         * `fallAt` is the free-fall acceleration and a component of it
+         * perpendicular to a velocity can only rotate that velocity — so the
+         * speed is left exactly alone by construction, and the
+         * renormalisation below is now just tidying the second-order error of
+         * a finite step rather than doing the work.
          */
-        const goX = s.vel[0] + carry[i][0], goY = s.vel[1] + carry[i][1];
-
         const speed = Math.hypot(s.vel[0], s.vel[1]);
-        const going = Math.hypot(goX, goY);
-        if (going < 1e-9) return s.vel;
+        if (speed < 1e-9) return s.vel;
 
-        // How the flow differs a little either way along the direction it is
-        // going: that difference, over that distance, is what turns it.
-        const hx = goX / going, hy = goY / going;
+        fallAt(field, s.at[0], s.at[1]);
 
-        flowAt(s.at[0] + hx * NUDGE, s.at[1] + hy * NUDGE);
-        const ax = FLOW[0], ay = FLOW[1];
+        const hx = s.vel[0] / speed, hy = s.vel[1] / speed;
+        const along = FALL[0] * hx + FALL[1] * hy;
 
-        flowAt(s.at[0] - hx * NUDGE, s.at[1] - hy * NUDGE);
+        const vx = s.vel[0] + (FALL[0] - along * hx) * dt;
+        const vy = s.vel[1] + (FALL[1] - along * hy) * dt;
 
-        const gx = (ax - FLOW[0]) / (2 * NUDGE), gy = (ay - FLOW[1]) / (2 * NUDGE);
-
-        let vx = s.vel[0] + gx * going * dt;
-        let vy = s.vel[1] + gy * going * dt;
-
-        // Turned, never sped up or slowed down. A source with no drift of its
-        // own has nothing to keep the length of, and stays at nothing.
         const now = Math.hypot(vx, vy);
-        if (now < 1e-9 || speed < 1e-9) return s.vel;
+        if (now < 1e-9) return s.vel;
 
         return [vx * speed / now, vy * speed / now] as [number, number];
       });
@@ -8163,6 +8447,25 @@ const WIDE = 40;
 // How far out the three sit from their common centre. Their sides are RING
 // times root three, so light takes about that long to cross between any two
 // of them and nothing at all happens before it has.
+/**
+ * How fast a pair has to be going to go round rather than into each other.
+ *
+ * Measured, and the measurement is the only reason this number is what it is.
+ * Sent past each other from twenty-four cells out and run for three hundred
+ * and twenty ticks, the line between the pair turns:
+ *
+ *     0.45c    644 degrees, and then it is gone — the gap reaches 123
+ *     0.40c    971 degrees, gap 22 to 53, drifting slowly outwards
+ *     0.35c   1088 degrees, gap 16 to 52, three full turns and still going
+ *
+ * So there is an interval, it is narrow, and this is inside it. Faster and
+ * the two are never caught; slower and they are caught at once. Nothing was
+ * solved for to find it — the rates that fix it are the source's own pace,
+ * the annihilation's two cells a meeting, and what the motion lays back down
+ * behind itself, and where those cross is where an orbit is possible.
+ */
+const ORBIT = 0.35 * LIGHT;
+
 const RING = 30;
 
 const FAR = 52;
@@ -8320,6 +8623,158 @@ const CONTINUOUS_CASES: {
     sources: [
       { at: [-FAR, -MISS / 2], lobes: 0, omega: SPIN, phase: 0, drift: [PACE, 0] },
       { at: [FAR, MISS / 2], lobes: 0, omega: SPIN, phase: 0, drift: [-PACE, 0] },
+    ],
+  },
+
+  /**
+   * Two of them pulsing slowly, which is the one that shows how they move.
+   *
+   * Every other pair here emits without pause, so the space between them is
+   * being eaten continuously and they slide together smoothly. Smooth is the
+   * worst possible thing to watch if the question is HOW gravity gets from
+   * one of them to the other, because a smooth pull looks exactly like a
+   * force reaching across the gap, which is what this model says there is no
+   * such thing as.
+   *
+   * Set far apart and pulsing slowly, what it shows instead is the delay,
+   * and it shows it as plainly as anything here can. Nothing whatever
+   * happens for the first thirty-odd ticks — measured, the gap does not move
+   * by a hundredth of a cell — and then the two begin to close. That pause is
+   * not the model waiting for anything. It is light crossing half the gap to
+   * the meeting, and the news of what happened there crossing back, and there
+   * being no other way for either to travel. A force would have started at
+   * once.
+   *
+   * And what arrives does not slide back. The displacement is kept rather
+   * than recomputed, so what the space has given up stays given up: they hold
+   * wherever the last wave left them. Two things are visible in that which no
+   * instantaneous pull can show — that gravity here is CARRIED, and that it
+   * is carried at exactly the speed of the light these things emit.
+   *
+   * What it does not show, and it is worth saying so, is a staircase. The
+   * beat is twelve ticks and the field follows the annihilation more quickly
+   * than that, so the closing comes out smooth rather than as a series of
+   * kicks. Whether the space between two things should shorten in steps or
+   * continuously is a real question about the model, and this arrangement
+   * does not answer it — it only shows that whichever it is, it starts late.
+   */
+  {
+    name: 'two sources, pulsing slowly',
+    span: 34,
+    cycle: PAIR_FOR,
+    note: 'Nothing at all for thirty ticks, and then they close. The pause '
+      + 'is light crossing to the middle and back — a force would not wait.',
+    sources: [
+      { at: [-26, 0], lobes: 0, omega: SPIN, phase: 0, beat: 12 },
+      { at: [26, 0], lobes: 0, omega: SPIN, phase: 0, beat: 12 },
+    ],
+  },
+
+  /**
+   * Two of them that actually go round each other.
+   *
+   * Every other pair in this article either falls together or leaves, and the
+   * reason is a ratio. A source at `PACE` travels at ninety-nine hundredths
+   * of the speed of its own light, so two of them sent past one another part
+   * at nearly two cells a tick — and the space between them goes at two cells
+   * a tick at the very most, when every single thing that arrives cancels.
+   * Set that fast, nothing is ever caught. Set slow with nothing else
+   * changed, everything is caught at once.
+   *
+   * Between the two there is an interval, and `ORBIT` is in it. Run for three
+   * hundred and twenty ticks the pair go round 1088 degrees — three full
+   * turns and part of a fourth — with the gap between them running from 16 at
+   * the tightest to 52 at the widest and neither of them ever leaving the
+   * frame.
+   *
+   * Two things hold it up and they pull opposite ways.
+   *
+   * The annihilation between them takes space out, and that is what draws
+   * them in. Measured with a pair held still and the field let settle, what
+   * it comes to at each of them is 0.03 cells a tick at a gap of 8, 0.16 at
+   * 24 and 0.40 at 32 — which is worth stopping on, because it goes the wrong
+   * way round. This is not Newton's pull, getting weaker with distance. It
+   * gets STRONGER with distance, like a spring, and that is a consequence of
+   * the rule rather than a choice: a meeting costs two cells however far
+   * apart the two things meeting are, so what varies with the gap is not the
+   * cost but how much of each field is in the other's way. A pull shaped like
+   * that has bound orbits everywhere and unbound ones nowhere, which is
+   * exactly what these runs do.
+   *
+   * And the motion puts space BACK. `consumeAhead` is a swap — a cell taken
+   * in front is a cell laid down behind — so anything going anywhere is
+   * refilling the space it leaves at the rate it leaves it, and that pushes
+   * outwards against the eating. See `WAKE`. It is the smaller of the two by
+   * a long way, and it is not nothing: with it the tightest the pair get is
+   * 22 cells rather than 20, so the floor of the orbit is set by the swap and
+   * the ceiling by the eating.
+   *
+   * What is worth being clear about is what is NOT holding it up. Neither of
+   * these ever changes speed. There is no force here in the sense of a thing
+   * that could push something faster — each carries on at exactly the pace it
+   * was sent, for ever, and `turned` takes the component of the fall ACROSS
+   * the way it is going and throws the rest away before adding anything. What
+   * comes round is the DIRECTION. An orbit here is not a balance of a pull
+   * against an inertia. It is a straight line through ground that keeps
+   * turning under it.
+   *
+   * And that ground takes time to hear about anything, so this is an orbit
+   * with a delay in it — which is why the first thing the two do is get
+   * FURTHER apart, 48 out to 50. They are already moving when the run starts
+   * and nothing can act on them until light has crossed the gap and come
+   * back. They part first, and are caught afterwards.
+   */
+  {
+    name: 'two sources, in orbit',
+    span: 34,
+    cycle: 320,
+    note: 'Sent past each other at a third of light, and they go round — '
+      + 'nearly three times. Neither ever changes speed; only the direction '
+      + 'comes round, because the ground it is crossing falls away.',
+    sources: [
+      { at: [-24, 0], lobes: 0, omega: SPIN, phase: 0, drift: [0, ORBIT] },
+      { at: [24, 0], lobes: 0, omega: SPIN, phase: 0, drift: [0, -ORBIT] },
+    ],
+  },
+
+  /**
+   * The same thing, but nothing about it set up to work.
+   *
+   * The pair above is a construction: two identical sources, mirrored, sent
+   * exactly across the line between them at exactly the same pace, so that
+   * whatever holds them has a symmetry to hold. That is the honest way to
+   * show a mechanism and a poor way to show that it is real, because a
+   * balance which only exists on the axis of a symmetry is usually the
+   * symmetry and not the balance.
+   *
+   * So: magnets rather than plain sources, which means `lobes = 1` and a
+   * field that carries an angle and winds. Turning opposite ways, so there is
+   * no rotational symmetry either. Different paces — one at `ORBIT` and one
+   * half again as fast — and different distances out, so the centre of the
+   * thing is nowhere in particular. And neither of them aimed across the line
+   * between them: both are sent off at an angle to it.
+   *
+   * Nothing here is solved for. What it has in common with the pair above is
+   * only that both speeds are in the interval `ORBIT` names, and that is the
+   * whole claim being made — that the interval is a property of the rules and
+   * not of the arrangement.
+   */
+  {
+    name: 'two magnets, mixed speeds, in orbit',
+    span: 40,
+    cycle: 320,
+    note: 'Different speeds, different distances out, winding opposite ways '
+      + 'and neither sent square to the line between them. It still goes '
+      + 'round, which is the point.',
+    sources: [
+      {
+        at: [-20, -6], lobes: 1, omega: SPIN, phase: 0,
+        drift: [ORBIT * 0.34, ORBIT * 0.94] as [number, number],
+      },
+      {
+        at: [26, 4], lobes: 1, omega: -SPIN, phase: Math.PI / 3,
+        drift: [-ORBIT * 1.5 * 0.42, -ORBIT * 1.5 * 0.91] as [number, number],
+      },
     ],
   },
 
