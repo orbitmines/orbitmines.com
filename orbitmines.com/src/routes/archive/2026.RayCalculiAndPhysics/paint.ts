@@ -1,4 +1,11 @@
-import { Polarity } from "./lattice";
+/**
+ * EQUATIONS IN THIS FILE
+ *
+ *   pixel = BACKGROUND + (tint − BACKGROUND)·|v|  the ground, plus the lean
+ *
+ */
+
+import { Polarity } from "./physics";
 
 /**
  * The colours, said once for both readings.

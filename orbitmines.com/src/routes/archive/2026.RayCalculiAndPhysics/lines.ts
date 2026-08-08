@@ -1,5 +1,5 @@
 import { LineSide } from "./discrete";
-import { opposite, Polarity, randomPolarity } from "./lattice";
+import { opposite, Polarity, randomPolarity } from "./physics";
 
 /**
  * Charges in a row, enumerated.

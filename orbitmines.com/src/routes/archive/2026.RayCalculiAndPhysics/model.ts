@@ -1,7 +1,7 @@
-import { Emitter, emitterOf } from "./continuous";
+import { Emitter, emitterOf } from "./field";
 import { Graph } from "./discrete";
 import { RenderMode } from "./GraphCanvas";
-import { World } from "./lattice";
+import { World } from "./physics";
 
 /**
  * How far apart a pair is put, on each side of the middle — and the one
@@ -63,6 +63,14 @@ export type Model = {
 
   /** The closed form, or `false` where there is nothing to write down. */
   closed?: false | Closed;
+
+  /**
+   * And the same closed form again, with gravity read as a shortage of space
+   * rather than as a flow — see `metric.tsx`. Off unless asked for, because
+   * it is a third heavy picture on a page that already has two, and because
+   * the point of it is the comparison rather than the coverage.
+   */
+  metric?: Closed;
 
   /**
    * Models drawn in the same block as this one, because they are the same
@@ -197,3 +205,26 @@ export const closedOf = (model: Model): Closed | undefined =>
 
     return sized(world, (model.closed || {}).scale ?? 1).sources.map(emitterOf);
   });
+
+/**
+ * And the same, read as a metric.
+ *
+ * Framed exactly as the flow reading is unless told otherwise — same scale,
+ * same span, same run length — because the whole purpose of it is that the
+ * two are looked at side by side, and two pictures of the same arrangement at
+ * different sizes are not a comparison. So enabling it is `metric: {}`, and
+ * anything set on it is a deliberate departure.
+ */
+export const metricOf = (model: Model): Closed | undefined => {
+  if (!model.metric) return undefined;
+
+  const like = model.closed === false ? {} : (model.closed ?? {});
+  const given = { ...like, ...model.metric };
+
+  return reading<Closed, 'sources'>(given, 'sources', () => {
+    const world = model.world;
+    if (!world) return undefined;
+
+    return sized(world, given.scale ?? 1).sources.map(emitterOf);
+  });
+};

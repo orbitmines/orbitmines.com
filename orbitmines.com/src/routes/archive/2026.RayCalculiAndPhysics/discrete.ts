@@ -1,7 +1,51 @@
+/**
+ * EQUATIONS IN THIS FILE
+ *
+ *   the tick, per ray:
+ *     meeting head-on  →  outcome(a, b)           annihilate, or turn around
+ *     otherwise        →  move, which is a swap
+ *
+ *   movement is a swap:
+ *     emitBehind   a fresh point spliced in behind, at (here + there)/2
+ *     consumeAhead the point in front taken, and its structure kept
+ *     so the population is unchanged by moving: one made, one eaten
+ *
+ *   credit += 1 each tick,  a step costs `mass`   one cell per mass ticks
+ *
+ *   annihilate: the two points go, and what was behind each closes onto what
+ *   was behind the other — so the path between two things is shorter by
+ *   exactly the points that met. That IS the gravity.
+ *
+ *   layout, relaxed against the structure:
+ *     rest_ij   = |step(pi − pj)| · scale         one step, in its direction
+ *     weight_ij = 1 + (spans − 1)·adjacency       a connection over dead space
+ *     dpi       = Sum_j w·(|p| − rest)/|p| · (pj − pi)/2  /  Sum_j w
+ *
+ *   layout, cube to sphere:
+ *     p = cube·(1 − t) + sphere·t,  t = smoothstep(ring)
+ *
+ */
+
 import {
-  axes, CYCLE, directions, latticeStep, LATTICE_STEP, opposite, Polarity,
-  randomPolarity, shuffle, Source, speedOf, TURN, turnRing, Vec, World,
+  axes, directions, dot, latticeStep, LATTICE_STEP, TURN, turnRing, unit, Vec,
 } from "./lattice";
+import {
+  ALONG, bearing, emission, massFor, opposite, outcome, Polarity, quantised,
+  randomPolarity, sided, Source, speedOf, World,
+} from "./physics";
+
+// A fresh order, so that what interacts with what is a draw rather than an
+// artefact of the order things happen to sit in.
+const shuffle = <T,>(arr: T[]): T[] => {
+  const out = arr.slice();
+
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+
+  return out;
+};
 
 // Every coordinate of a `size`-wide box in `dims` dimensions, from the origin
 // out. What a seed does with them is its own business; enumerating them is
@@ -58,49 +102,6 @@ export const perPoint = (draw: () => Polarity = randomPolarity) => {
     return drawn.get(key)!;
   };
 };
-
-/**
- * How much harder a source is to move than the charges it emits: a multiple
- * of the step's own length, paid out of the same one-per-tick everything else
- * is paid (see the movement half of `tick`). It is mass, arrived at from the
- * only direction this model offers — the cost of going somewhere.
- *
- * A source at mass m covers 1/m cells a tick. Two conditions decide whether a
- * moving pair can interact at all, and both are arithmetic rather than
- * judgement:
- *
- *  - One step a tick is this model's top speed — a ray moves at most once per
- *    tick, so nothing goes faster and the field cannot be sped up to keep
- *    pace. Two sources heading opposite ways separate at 2/m, and their light
- *    closes at 1, so anything each emits can only ever reach the other while
- *    2/m < 1. At m = 1 they are outrunning their own field from the first
- *    tick; at m = 2 the light exactly keeps pace and never gains. It takes
- *    m > 2 before a pulse can cross from one to the other at all.
- *
- *  - And a source can only emit onto a point it is connected to. Once it has
- *    travelled out of the seeded ball it is in territory `grow` laid down one
- *    node at a time as it went, with nothing on the far side of its other
- *    twenty-five directions, so it stops radiating in all but the one it is
- *    heading in. Over a 60-tick run it moves 60/m, and starting 8 out along x
- *    it stays inside the absorbing edge at 11 while √(8² + (60/m)²) ≤ 11 —
- *    which wants m ≥ 8.
- *
- * Eight is what those two conditions ask for together. The value below is the
- * one the runs in this article are actually set to, and it is smaller: these
- * are shorter runs at closer quarters than that derivation assumes, and a
- * source at eight barely moves within one of them. A source given a `drift`
- * overrides it outright — see `massFor` — since a stated speed is a stated
- * mass, and this is only what a source that was never told how fast to go
- * falls back on.
- */
-export const MAGNET_MASS = 3;
-
-// What a step costs a source that was told how fast to go. A step is one
-// cell, a tick pays one, so covering `speed` cells a tick costs 1/speed —
-// and nothing goes quicker than a cell a tick, which is where the floor
-// comes from.
-export const massFor = (speed?: number) =>
-  speed && speed > 0 ? Math.max(1 / speed, 1) : MAGNET_MASS;
 
 // Two rays meeting head-on, over the connection whose mutual boundaries are
 // `a` and `b`. Opposite charges cancel; like ones turn around. Movement isn't
@@ -442,8 +443,8 @@ export class Graph {
       const d = this.direction(option);
       if (!d) continue;
 
-      const dot = sign * d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0);
-      if (dot > bestDot) { bestDot = dot; best = option; }
+      const along = sign * dot(d, dir);
+      if (along > bestDot) { bestDot = along; best = option; }
     }
 
     return best ?? options[0];
@@ -467,8 +468,8 @@ export class Graph {
       const d = this.direction(option);
       if (!d) continue;
 
-      const dot = -d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0);
-      if (dot > bestDot) { bestDot = dot; best = option; }
+      const back = -dot(d, dir);
+      if (back > bestDot) { bestDot = back; best = option; }
     }
 
     return best;
@@ -508,8 +509,7 @@ export class Graph {
         const d = this.direction(bd);
         if (!d) continue;
 
-        const along = Math.abs(d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0));
-        if (along < 0.9) out.push(bd);
+        if (Math.abs(dot(d, dir)) < ALONG) out.push(bd);
       }
     }
 
@@ -1083,13 +1083,13 @@ export class Graph {
         const d = this.direction(bd);
         if (!d || !dir) continue;
 
-        const dot = d.reduce((sum, v, i) => sum + v * (dir[i] || 0), 0);
+        const forward = dot(d, dir);
 
         // Forwards, at least. A connection at right angles or behind is not a
         // continuation of anything, it is a different journey.
-        if (dot <= straightest) continue;
+        if (forward <= straightest) continue;
 
-        straightest = dot;
+        straightest = forward;
         onward = bd;
         onwardStep = this.bare(bd);
       }
@@ -1379,14 +1379,7 @@ export class Graph {
 
       met.add(r); met.add(r2);
 
-      // Only two actual charges, one of each, cancel. Neutral space has no
-      // charge to cancel with, so anything else that meets head-on turns
-      // around instead.
-      const opposed =
-        (a.polarity === Polarity.Positive && b.polarity === Polarity.Negative) ||
-        (a.polarity === Polarity.Negative && b.polarity === Polarity.Positive);
-
-      collisions.push({ kind: opposed ? 'annihilate' : 'turn', r, a, r2, b });
+      collisions.push({ kind: outcome(a.polarity, b.polarity), r, a, r2, b });
     }
 
     /**
@@ -1457,9 +1450,7 @@ export class Graph {
        */
       if (r.source !== undefined && r.source === other.source) continue;
 
-      const opposed =
-        (a.polarity === Polarity.Positive && b.polarity === Polarity.Negative) ||
-        (a.polarity === Polarity.Negative && b.polarity === Polarity.Positive);
+      const kind = outcome(a.polarity, b.polarity);
 
       met.add(r); met.add(other);
 
@@ -1482,17 +1473,11 @@ export class Graph {
        * The space between the two still gets eaten; it takes one more step
        * about it.
        */
-      if (!opposed) {
-        arriving.delete(there); // both going back the way they came
+      // Both gone, or both going back the way they came: either way the
+      // place is free again.
+      arriving.delete(there);
 
-        collisions.push({ kind: 'turn', r, a, r2: other, b });
-
-        continue;
-      }
-
-      arriving.delete(there); // both gone; the place is free again
-
-      collisions.push({ kind: 'annihilate', r, a, r2: other, b });
+      collisions.push({ kind, r, a, r2: other, b });
     }
 
     const removed = new Set<node>();
@@ -2385,53 +2370,40 @@ export class Graph {
             // universe several times the size it was seeded at.
             const written = new Set<node>();
 
-            // A magnet that turns is somewhere else by now. Its axis steps
-            // round the plane an eighth of a turn every `turnEvery` ticks,
-            // one way or the other, and everything below reads it as it
-            // stands rather than as it was set.
+            /**
+             * Where this one is pointing by now, in turns.
+             *
+             * One expression for both kinds of source, which is the article's
+             * claim about them rather than a convenience: a rotation through
+             * the eight directions of a plane and a flip held half the time
+             * each way take exactly as long, so both lay their structure down
+             * at the same spacing. What separates them is not the clock — it
+             * is whether the state the clock advances has a direction in it.
+             * See `bearing` and `sided`.
+             */
+            const beta = bearing(ray, since);
+
+            // A magnet that turns is somewhere else by now: its axis is that
+            // bearing rounded onto the directions the plane actually has, an
+            // eighth of a turn at a time, one way or the other. Everything
+            // below reads it as it stands rather than as it was set.
             if (ray.turning) {
               const ring = ray.ring ?? TURN;
-              // `phase` is in turns, so a whole ring of them is what it
-              // counts against.
-              const step = Math.floor(since / turnEvery) * ray.turning
-                + Math.round((ray.phase ?? 0) * ring.length);
+              const step = Math.round(beta * ring.length / turnEvery) * turnEvery;
 
               ray.axis = ring[((step % ring.length) + ring.length) % ring.length];
             }
 
             const emits = ray.emits ?? Polarity.Positive;
 
-            /**
-             * One turn of a source takes a turn's worth of ticks, whatever
-             * kind of turning it does.
-             *
-             * A source that rotates comes round through the eight directions
-             * of its plane, one a tick, and is back where it started after
-             * eight. A source that only flips over has two states rather than
-             * eight — and flipping between them every tick made its cycle
-             * four times shorter than the other's, which is not a difference
-             * in kind between the two sources but an accident of counting.
-             *
-             * What it cost was space. Each ring a wave lays down is one
-             * tick's emission, and a wave advances a cell a tick, so a cycle
-             * of two ticks puts the same charge every other cell: bands one
-             * cell wide with one cell between them, which no drawing can
-             * separate and which average to nothing the moment they are
-             * smoothed. Held for half a cycle each way, the same source lays
-             * down bands four cells wide with four cells between them, and
-             * they are bands you can see.
-             *
-             * The two then differ only in what the state is FOR. A flip is
-             * the same everywhere at once, so what it writes is rings. A
-             * rotation points somewhere, so what it writes is spirals. Same
-             * clock, same wave, same spacing — the difference is whether the
-             * source's state has a direction in it.
-             */
-            const cycle = ray.turning ? TURN.length : CYCLE;
-            const turn = pulse + (ray.phase ?? 0) * cycle;
-            const turned = ray.flips && ((turn % cycle) + cycle) % cycle >= cycle / 2;
+            // Whether it has sides at all, which is the whole of what
+            // separates a magnet from a lamp — and the one thing that decides
+            // whether what leaves it is a spiral or a set of rings.
+            const hasSides = sided(ray);
 
-            const polarity = turned ? opposite(emits) : emits;
+            // North, one long, so that a direction can be resolved against
+            // it. A source with no sides has none, and does not need one.
+            const north = ray.axis && unit(ray.axis);
 
             // Every direction at once: the pulse is written onto everything
             // the source is connected to, and each point of it leaves along
@@ -2462,27 +2434,33 @@ export class Graph {
               const dir = g.direction(bd);
               if (!dir) continue;
 
-              // Which pole this direction is out of. A source with no axis
-              // has no poles and puts the same thing out everywhere; one with
-              // an axis puts `polarity` out of the half facing along it and
-              // the opposite out of the half facing back, with the ring
-              // exactly across it emitting nothing — an equator, which is
-              // what makes it a magnet and not a lamp.
-              let out = polarity;
+              /**
+               * What this source puts out in this direction, by the one law
+               * both readings are written against — see `emission`.
+               *
+               * A source with no sides has no poles and puts the same thing
+               * out everywhere, so the direction drops out and what is left
+               * is a cosine of where it is in its cycle. One with sides puts
+               * `emits` out of the half facing north and the opposite out of
+               * the half facing back, with the ring exactly across it putting
+               * out nothing at all — an equator, which is what makes it a
+               * magnet and not a lamp.
+               *
+               * The lattice then rounds that to a charge, because a point
+               * either carries one or does not. `quantised` is where the
+               * rounding is stated, including the one place it differs
+               * between the two kinds: an equator is a real answer of nought,
+               * and a source with no equator has no such answer to give.
+               */
+              const strength = emission(hasSides, beta, () => dot(dir, north!));
 
-              // How nearly this direction lies along the magnet's axis: +1
-              // straight out of the north pole, −1 out of the south, 0 on the
-              // equator between them.
-              const cos = ray.axis
-                ? dir.reduce((sum, v, i) => sum + v * (ray.axis![i] ?? 0), 0)
-                  / (Math.hypot(...ray.axis) || 1)
-                : 0;
+              const charge = quantised(strength, hasSides, beta);
+              if (charge === Polarity.Neutral) continue; // the equator
 
-              if (ray.axis) {
-                if (Math.abs(cos) < 1e-9) continue; // the equator emits nothing
-
-                if (cos < 0) out = opposite(polarity);
-              }
+              // Which way round the source is putting it out. `emits` is what
+              // its north pole gives, so a positive strength is that and a
+              // negative one is its opposite.
+              const out = charge === Polarity.Positive ? emits : opposite(emits);
 
               /**
                * A magnet that turns radiates into the plane it turns in.
@@ -2644,8 +2622,8 @@ export class Graph {
             // the ring of directions across our path, which is the front
             // itself: the shell grows sideways, into the room a bigger shell
             // has that a smaller one didn't.
-            const along = d.reduce((sum, v, i) => sum + v * dir[i], 0);
-            if (along < spread || along > 0.9) continue;
+            const along = dot(d, dir);
+            if (along < spread || along > ALONG) continue;
 
             for (const r of there)
               for (const x of r.boundaries) x.polarity = polarity;

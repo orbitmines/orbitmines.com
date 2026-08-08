@@ -1,8 +1,31 @@
+/**
+ * EQUATIONS IN THIS FILE
+ *
+ *   projection, world to screen:
+ *     x1 = x cos r − z sin r,   z1 = x sin r + z cos r      turn
+ *     y1 = y cos p − z1 sin p,  z2 = y sin p + z1 cos p     tilt
+ *     persp = dist / (z2 + dist)                            a real camera
+ *   fit: scale = min(w/2·margin / halfX, h/2·margin / halfY)
+ *
+ *   the field, reconstructed from the charges (mode 'field'):
+ *     band   = (CYCLE/2) cells                    one band of one charge
+ *     kernel = (1 − d²)²,  d² = (across/a)² + (along/b)²
+ *                                                 an ellipse across the path
+ *     f      = Sum sign·k / (Sum k + trust)       how positive a place is
+ *     eased += (f − eased)·0.2                    walked towards, per frame
+ *     sharpen: f += (f − blur(f))·gain            the valley between two bands
+ *     contour: marching squares at f = ±0.17
+ *
+ *   density cloud:  potential = Sum q / (|p − s|² + soften)
+ *
+ */
+
 import { useRef } from "react";
 
 import { CanvasView, Surface } from "./canvas";
 import { Boundary, Graph, node } from "./discrete";
-import { BOUNDARY_STUB, CYCLE, LATTICE_STEP, Polarity, Vec } from "./lattice";
+import { BOUNDARY_STUB, CYCLE, LATTICE_STEP, Vec } from "./lattice";
+import { outcome, Polarity } from "./physics";
 import {
   AMBER, channels, CYAN, ground, HALO, rgba, SOURCE, source, tintOf,
 } from "./paint";
@@ -2236,11 +2259,11 @@ export const GraphCanvas = ({
             // the world exactly as big as it was.
             const facing = met.moving!.polarity;
 
-            const opposed =
-              (a.polarity === Polarity.Positive && facing === Polarity.Negative) ||
-              (a.polarity === Polarity.Negative && facing === Polarity.Positive);
-
-            if (!opposed) continue;
+            // Only one of each cancels; everything else meeting head-on turns
+            // around, and turning around leaves the world exactly as big as it
+            // was. The same law the tick itself will apply a moment from now,
+            // so what is marked is what will actually happen.
+            if (outcome(a.polarity, facing) !== 'annihilate') continue;
 
             const p = pts.get(nd), q = pts.get(other);
             if (!p || !q || p.clipped || q.clipped) continue;

@@ -5,7 +5,8 @@ import { Row } from "../../../lib/post/Post";
 import { ContinuousField } from "./continuous";
 import { Graph } from "./discrete";
 import { GraphCanvas } from "./GraphCanvas";
-import { Closed, closedOf, Lattice, latticeOf, Model } from "./model";
+import { MetricField } from "./metric";
+import { Closed, closedOf, Lattice, latticeOf, metricOf, Model } from "./model";
 
 // The transport icons, which are the only things here that are only pictures.
 // Font Awesome Free v7.3.1 by @fontawesome — https://fontawesome.com/license/free
@@ -192,6 +193,9 @@ const LatticeView = ({ filmstrip, ...rest }: Lattice) =>
 const ClosedView = ({ sources = [], span, cycle, rate, height = 320 }: Closed) =>
   <ContinuousField sources={sources} span={span} cycle={cycle} rate={rate} height={height} />;
 
+const MetricView = ({ sources = [], span, cycle, rate, height = 320 }: Closed) =>
+  <MetricField sources={sources} span={span} cycle={cycle} rate={rate} height={height} />;
+
 const Caption = ({ children }: { children: any }) => (
   <div style={{ color: '#8a8d99', fontSize: '0.8em', paddingTop: '0.6em' }}>{children}</div>
 );
@@ -219,8 +223,10 @@ const Label = ({ children }: { children: any }) => (
 export const ModelView = ({ model }: { model: Model }) => {
   const lattice = latticeOf(model);
   const closed = closedOf(model);
+  const metric = metricOf(model);
 
-  const both = !!lattice && !!closed;
+  const readings = [lattice, closed, metric].filter(Boolean).length;
+  const many = readings > 1;
 
   // A run repeated, where the arrangement is a draw rather than a case.
   const runs = Array.from({ length: lattice?.runs ?? 1 }, (_, i) => i);
@@ -228,18 +234,23 @@ export const ModelView = ({ model }: { model: Model }) => {
   return <div style={{ marginBottom: '1.5rem' }}>
     <div style={{
       display: 'grid',
-      gridTemplateColumns: both ? 'repeat(auto-fit, minmax(280px, 1fr))' : '1fr',
+      gridTemplateColumns: many ? 'repeat(auto-fit, minmax(280px, 1fr))' : '1fr',
       gap: '1rem',
       alignItems: 'start',
     }}>
       {lattice ? <div>
-        {both ? <Label>run on a lattice</Label> : null}
+        {many ? <Label>run on a lattice</Label> : null}
         {runs.map(i => <LatticeView key={i} {...lattice} />)}
       </div> : null}
 
       {closed ? <div>
-        {both ? <Label>written down</Label> : null}
+        {many ? <Label>written down — gravity as a flow</Label> : null}
         <ClosedView {...closed} />
+      </div> : null}
+
+      {metric ? <div>
+        {many ? <Label>written down — gravity as a metric</Label> : null}
+        <MetricView {...metric} />
       </div> : null}
     </div>
 

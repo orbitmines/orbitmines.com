@@ -1,6 +1,6 @@
-import { LIGHT, PACE } from "./continuous";
+import { LIGHT, PACE } from "./physics";
 import { bySide, Graph, perPoint } from "./discrete";
-import { Polarity, Source } from "./lattice";
+import { Polarity, Source } from "./physics";
 import { RenderMode } from "./GraphCanvas";
 import { alternatingIntoRandom, collisionGroups, lineGroups } from "./lines";
 import { APART, Model, NEAR } from "./model";
@@ -113,7 +113,10 @@ const flatAndRound = (model: Model): Model => ({
     name: `${model.name}, in three dimensions`,
     note: undefined,
     world: { ...model.world!, dims: 3 },
+    // The closed form is flat and has no round version to offer, so both
+    // readings of it stay with the flat run they are the closed form of.
     closed: false,
+    metric: undefined,
     alongside: undefined,
   }],
 });
@@ -162,6 +165,7 @@ const worlds: Model[] = ([
     note: 'Rings launched together. They agree on the midline and cancel in '
       + 'rings either side of it, and it is the cancelling that closes them.',
     sources: [{ at: LEFT }, { at: RIGHT }],
+    metric: true,
     draw: asShells,
   },
   {
@@ -169,6 +173,7 @@ const worlds: Model[] = ([
     note: 'Half a cycle apart: the midline is now where they always cancel, '
       + 'so the same pair closes faster on the same rules.',
     sources: [{ at: LEFT }, { at: RIGHT, phase: 0.5 }],
+    metric: true,
     draw: asShells,
   },
   {
@@ -197,6 +202,7 @@ const worlds: Model[] = ([
       { at: LEFT, axis: POLES, turning: 1 },
       { at: RIGHT, axis: POLES, turning: 1 },
     ],
+    metric: true,
     draw: asField,
   },
   {
@@ -208,10 +214,14 @@ const worlds: Model[] = ([
       { at: LEFT, axis: POLES, turning: 1 },
       { at: RIGHT, axis: POLES, turning: -1 },
     ],
+    metric: true,
     draw: asField,
   },
-] as { name: string, note: string, sources: Source[], alone?: boolean, draw: Draw }[])
-  .map(({ name, note, sources, alone, draw }) => flatAndRound({
+] as {
+  name: string, note: string, sources: Source[],
+  alone?: boolean, metric?: boolean, draw: Draw,
+}[])
+  .map(({ name, note, sources, alone, metric, draw }) => flatAndRound({
     name,
     note,
     world: { sources, wander: draw.wander, fanAt: draw.fanAt },
@@ -233,6 +243,8 @@ const worlds: Model[] = ([
       span: alone ? 14 : APART * ROOM,
       cycle: alone ? ALONE_FOR : PAIR_FOR,
     },
+    // Framed like the flow reading, so the two can be read against each other.
+    metric: metric ? {} : undefined,
   }));
 
 /**
@@ -263,6 +275,7 @@ const closedOnly: Model[] = [
       + 'from, and the source has gone on.',
     world: { sources: [{ at: [-12, 0], turning: 1, drift: [PACE, 0] }] },
     lattice: false,
+    metric: {},
     closed: { span: 14, cycle: ALONE_FOR },
   },
 
@@ -295,6 +308,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
+    metric: {},
     closed: { span: APART * ROOM, cycle: PAIR_FOR },
   },
 
@@ -328,6 +342,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
+    metric: {},
     closed: { span: WIDE, cycle: PAIR_FOR },
   },
 
@@ -367,6 +382,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
+    metric: {},
     closed: { span: 34, cycle: PAIR_FOR },
   },
 
@@ -435,6 +451,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
+    metric: {},
     closed: { span: 34, cycle: 320 },
   },
 
@@ -478,6 +495,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
+    metric: {},
     closed: { span: 40, cycle: 320 },
   },
 
@@ -519,6 +537,7 @@ const closedOnly: Model[] = [
       }),
     },
     lattice: false,
+    metric: {},
     closed: { span: WIDE, cycle: PAIR_FOR },
   },
 
@@ -553,6 +572,7 @@ const closedOnly: Model[] = [
       }),
     },
     lattice: false,
+    metric: {},
     closed: { span: WIDE, cycle: PAIR_FOR },
   },
 
@@ -588,6 +608,7 @@ const closedOnly: Model[] = [
       + 'Nothing moves them but the space between them going.',
     world: { sources: triangle({ lobed: true }) },
     lattice: false,
+    metric: {},
     closed: { span: WIDE, cycle: PAIR_FOR },
   },
 
@@ -637,6 +658,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
+    metric: {},
     closed: { span: WIDE, cycle: PAIR_FOR },
   },
 ];
