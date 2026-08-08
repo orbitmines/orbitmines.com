@@ -62,7 +62,7 @@ export const NewtonField = ({
 
     // How much of the path to keep, in samples. Enough for a whole period of
     // the slowest of them.
-    const TRAIL = 900;
+    const TRAIL = 5000;
 
     let t = 0;
     let at: [number, number][] = [];
