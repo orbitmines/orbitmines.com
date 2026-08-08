@@ -1,7 +1,9 @@
 /**
  * EQUATIONS IN THIS FILE
  *
- *   pixel = BACKGROUND + (tint − BACKGROUND)·|v|  the ground, plus the lean
+ *   pixel = BACKGROUND + (tint − BACKGROUND)·shown(v)
+ *   shown(v) = log(1 + |v|/floor) / log(1 + 1/floor),  floor = 10^−DECADES
+ *                                                 a log scale, and it says so
  *
  */
 
@@ -115,4 +117,77 @@ export const source = (
   ctx.beginPath();
   ctx.arc(x, y, dot, 0, Math.PI * 2);
   ctx.fill();
+};
+
+
+/**
+ * How much of a value to show, on a log scale — and the picture says so.
+ *
+ * The field falls as one over the square of the distance, so across one of
+ * these frames it spans some thousands to one. Drawn faithfully, everything
+ * past a few cells of a source is nought at eight bits and the picture is two
+ * dots on black: true, and no use.
+ *
+ * The version of this that hides is to flatten the physics until it looks
+ * right — which is what a falloff length tied to the width of the picture was
+ * doing, and it silently made the distance law wrong. So the flattening goes
+ * where flattening belongs: in the drawing, stated on the drawing, and
+ * nowhere near the model.
+ *
+ * Three decades, which is what fits in eight bits without banding and covers
+ * a pair from touching to the edge of the frame.
+ */
+export const DECADES = 3;
+
+const FLOOR = Math.pow(10, -DECADES);
+const TOP = Math.log(1 + 1 / FLOOR);
+
+export const shown = (v: number) =>
+  Math.log(1 + Math.abs(v) / FLOOR) / TOP;
+
+/** Said on the picture, because a scale that is not stated is a claim. */
+export const legend = (
+  ctx: CanvasRenderingContext2D, w: number, h: number, note?: string,
+) => {
+  ctx.font = "10px ui-monospace, SFMono-Regular, Menlo, monospace";
+  ctx.textBaseline = "bottom";
+  ctx.fillStyle = rgba(NEUTRAL, 0.55);
+  ctx.fillText(note ?? `field 1/r², shown log over ${DECADES} decades`, 10, h - 8);
+};
+
+
+/**
+ * Where something has been, which is what a picture drawn from far away has
+ * to say instead of what it is doing.
+ *
+ * A field is only worth drawing while its detail is resolvable. Zoomed out to
+ * a three-body arrangement the rings are a few pixels apart and the far field
+ * is a thousandth of the near one — so what the picture can honestly carry is
+ * no longer the field but the SHAPE of the motion, which is the thing being
+ * compared anyway. Drawn the same way on both sides, so a closed curve beside
+ * one that is not is a comparison and not two different kinds of picture.
+ */
+export const trail = (
+  ctx: CanvasRenderingContext2D,
+  path: number[],
+  sx: (x: number) => number,
+  sy: (y: number) => number,
+  alpha = 0.32,
+) => {
+  if (path.length < 4) return;
+
+  ctx.strokeStyle = rgba(HALO, alpha);
+  ctx.lineWidth = 1.1;
+  ctx.lineCap = "round";
+
+  ctx.beginPath();
+
+  for (let k = 0; k < path.length; k += 2) {
+    const x = sx(path[k]), y = sy(path[k + 1]);
+
+    if (k) ctx.lineTo(x, y); else ctx.moveTo(x, y);
+  }
+
+  ctx.stroke();
+  ctx.lineCap = "butt";
 };

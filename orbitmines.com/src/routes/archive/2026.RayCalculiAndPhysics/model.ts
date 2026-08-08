@@ -73,6 +73,12 @@ export type Model = {
   metric?: Closed;
 
   /**
+   * And what NEWTON would do with the same arrangement, drawn to the left of
+   * it. Not a reading of this model — the thing it is being compared against.
+   */
+  newton?: Closed;
+
+  /**
    * Models drawn in the same block as this one, because they are the same
    * experiment asked twice: a line and its anti-line, an arrangement flat and
    * the same arrangement round. Read together rather than one after another,
@@ -157,7 +163,29 @@ export type Closed = {
   /** Ticks a second, and it need not be a whole number of anything. */
   rate?: number;
 
+  /**
+   * Whether to draw what is happening, or a summary of it.
+   *
+   * A field is worth drawing only while its detail is resolvable. Close in —
+   * a pair a few tens of cells apart — the rings are far enough apart to
+   * count and the spiral of a turning source is the whole point. Zoomed out
+   * to a three-body arrangement the rings are a few pixels apart, the far
+   * field is a thousandth of the near one, and what the picture can honestly
+   * carry is no longer the field but the SHAPE of the motion.
+   *
+   * Left unset it follows the span, since that is exactly the thing that
+   * decides it.
+   */
+  summary?: boolean;
+
   height?: number;
+
+  /**
+   * G·m, in cells and ticks — the Newtonian reading only. The published
+   * three-body solutions are in units where G, the masses and the extent are
+   * all one, so putting them at this size and this pace needs `UNIT·SWING²`.
+   */
+  gm?: number;
 };
 
 // The same arrangement, at the size the reading asking for it can afford.
@@ -220,6 +248,21 @@ export const metricOf = (model: Model): Closed | undefined => {
 
   const like = model.closed === false ? {} : (model.closed ?? {});
   const given = { ...like, ...model.metric };
+
+  return reading<Closed, 'sources'>(given, 'sources', () => {
+    const world = model.world;
+    if (!world) return undefined;
+
+    return sized(world, given.scale ?? 1).sources.map(emitterOf);
+  });
+};
+
+/** And what Newton makes of it, which is not a reading of this model at all. */
+export const newtonOf = (model: Model): Closed | undefined => {
+  if (!model.newton) return undefined;
+
+  const like = model.closed === false ? {} : (model.closed ?? {});
+  const given = { ...like, ...model.newton };
 
   return reading<Closed, 'sources'>(given, 'sources', () => {
     const world = model.world;

@@ -6,7 +6,8 @@ import { ContinuousField } from "./continuous";
 import { Graph } from "./discrete";
 import { GraphCanvas } from "./GraphCanvas";
 import { MetricField } from "./metric";
-import { Closed, closedOf, Lattice, latticeOf, metricOf, Model } from "./model";
+import { Closed, closedOf, Lattice, latticeOf, metricOf, Model, newtonOf } from "./model";
+import { NewtonField } from "./newton";
 
 // The transport icons, which are the only things here that are only pictures.
 // Font Awesome Free v7.3.1 by @fontawesome — https://fontawesome.com/license/free
@@ -193,8 +194,14 @@ const LatticeView = ({ filmstrip, ...rest }: Lattice) =>
 const ClosedView = ({ sources = [], span, cycle, rate, height = 320 }: Closed) =>
   <ContinuousField sources={sources} span={span} cycle={cycle} rate={rate} height={height} />;
 
-const MetricView = ({ sources = [], span, cycle, rate, height = 320 }: Closed) =>
-  <MetricField sources={sources} span={span} cycle={cycle} rate={rate} height={height} />;
+const MetricView = ({ sources = [], span, cycle, rate, summary, height = 320 }: Closed) =>
+  <MetricField
+    sources={sources} span={span} cycle={cycle} rate={rate}
+    summary={summary} height={height}
+  />;
+
+const NewtonView = ({ sources = [], span, cycle, rate, gm, height = 320 }: Closed) =>
+  <NewtonField sources={sources} span={span} cycle={cycle} rate={rate} gm={gm} height={height} />;
 
 const Caption = ({ children }: { children: any }) => (
   <div style={{ color: '#8a8d99', fontSize: '0.8em', paddingTop: '0.6em' }}>{children}</div>
@@ -224,8 +231,9 @@ export const ModelView = ({ model }: { model: Model }) => {
   const lattice = latticeOf(model);
   const closed = closedOf(model);
   const metric = metricOf(model);
+  const newton = newtonOf(model);
 
-  const readings = [lattice, closed, metric].filter(Boolean).length;
+  const readings = [lattice, closed, newton, metric].filter(Boolean).length;
   const many = readings > 1;
 
   // A run repeated, where the arrangement is a draw rather than a case.
@@ -246,6 +254,11 @@ export const ModelView = ({ model }: { model: Model }) => {
       {closed ? <div>
         {many ? <Label>written down — gravity as a flow</Label> : null}
         <ClosedView {...closed} />
+      </div> : null}
+
+      {newton ? <div>
+        {many ? <Label>what Newton expects</Label> : null}
+        <NewtonView {...newton} />
       </div> : null}
 
       {metric ? <div>

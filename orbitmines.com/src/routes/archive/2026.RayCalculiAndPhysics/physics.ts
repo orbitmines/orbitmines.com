@@ -130,38 +130,9 @@ export const BITE = 2 * LIGHT;
  * a mass and moves when it has paid for it, the closed form states a pace and
  * moves at it, and this is the one converting the other.
  */
-export const massFor = (speed?: number) =>
-  speed && speed > 0 ? Math.max(1 / speed, 1) : MAGNET_MASS;
+export const massFor = (speed: number) => Math.max(LIGHT / speed, 1);
 
-/**
- * What a source weighs when it was never told how fast to go.
- *
- * A source at mass m covers 1/m cells a tick. Two conditions decide whether a
- * moving pair can interact at all, and both are arithmetic rather than
- * judgement:
- *
- *  - Two sources heading opposite ways separate at 2/m, and their light
- *    closes at 1, so anything each emits can only ever reach the other while
- *    2/m < 1. At m = 1 they are outrunning their own field from the first
- *    tick; at m = 2 the light exactly keeps pace and never gains. It takes
- *    m > 2 before a pulse can cross from one to the other at all.
- *
- *  - And a source can only emit onto a point it is connected to. Once it has
- *    travelled out of the seeded ball it is in territory `grow` laid down one
- *    node at a time as it went, with nothing on the far side of its other
- *    twenty-five directions, so it stops radiating in all but the one it is
- *    heading in. Over a 60-tick run it moves 60/m, and starting 8 out along x
- *    it stays inside the absorbing edge at 11 while √(8² + (60/m)²) ≤ 11 —
- *    which wants m ≥ 8.
- *
- * Eight is what those two conditions ask for together. The value below is the
- * one the runs in this article are actually set to, and it is smaller: these
- * are shorter runs at closer quarters than that derivation assumes, and a
- * source at eight barely moves within one of them. A source given a `drift`
- * overrides it outright — a stated speed is a stated mass — so this is only
- * what a source that was never told how fast to go falls back on.
- */
-export const MAGNET_MASS = 3;
+
 
 /**
  * As fast as a source is ever sent, and it is nearly as fast as anything can
@@ -240,17 +211,7 @@ export const closing = (a: number[], b: number[]): number =>
  */
 export const HEAD_ON = Math.SQRT1_2;
 
-/**
- * And past which a direction counts as being the way we are going rather than
- * across it.
- *
- * Twenty-five degrees or so, which on a lattice is comfortably inside the gap
- * between neighbouring directions — so what it actually selects is the
- * direction of travel itself and nothing else. Everything else is what a
- * point IS as opposed to where it is, and is what gets handed over as
- * something moves through.
- */
-export const ALONG = 0.9;
+
 
 // —— what a source is doing at a given moment ————————————————————————————
 
@@ -287,6 +248,39 @@ export type Source = Spin & {
 
   // Ticks between one pulse and the next. One is a source that never pauses.
   beat?: number;
+
+  /**
+   * Whether it has been emitting for ever, so the world starts with its waves
+   * already in it rather than with a front crawling out of an empty picture.
+   *
+   * The metric account's gravity is instantaneous — its shortfall has no time
+   * in it — so a picture that opens empty is showing a delay the dynamics do
+   * not have. Turning this on makes what is drawn agree with what is acting.
+   */
+  settled?: boolean;
+
+  /**
+   * What it weighs — and here that is HOW OFTEN it pulses, not how hard.
+   *
+   * A heavier thing does not write more charge onto the space around it in
+   * one go. It writes just as much, more often: `beat = 1/mass`. Which is the
+   * same thing mass already means on the movement side — a step costs its own
+   * length and a tick pays one, so mass there is a rate too (see `massFor`).
+   * One quantity, one meaning, on both halves of what a body does.
+   *
+   * And it is what puts the configuration into the pull, which the model was
+   * missing entirely. Annihilation between two of them goes as how much each
+   * is putting out, so it goes as the product of the rates — and with each
+   * field thinning as one over the square of the distance, what is eaten
+   * between them carries both the masses and the separation. Without it every
+   * source emitted exactly as hard as every other, so the pull between any
+   * two was the same number whatever they were, and the only thing deciding
+   * whether a pair stayed together was how fast it had been thrown. Measured
+   * on six known three-body orbits: at every coupling the slow ones collapsed
+   * and the fast ones escaped, and no value bound all six. Newton binds all
+   * six, because his pull knows what it is pulling on.
+   */
+  mass?: number;
 };
 
 /**

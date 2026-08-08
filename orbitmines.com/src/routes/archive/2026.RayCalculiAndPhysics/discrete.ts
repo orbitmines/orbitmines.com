@@ -27,10 +27,11 @@
  */
 
 import {
-  axes, directions, dot, latticeStep, LATTICE_STEP, TURN, turnRing, unit, Vec,
+  ALONG, axes, directions, dot, latticeStep, LATTICE_STEP, TURN, turnRing,
+  unit, Vec,
 } from "./lattice";
 import {
-  ALONG, bearing, emission, massFor, opposite, outcome, Polarity, quantised,
+  bearing, emission, massFor, opposite, outcome, Polarity, quantised,
   randomPolarity, sided, Source, speedOf, World,
 } from "./physics";
 
@@ -2195,17 +2196,19 @@ export class Graph {
       // that is not turning has nothing to make a wave out of unless it does.
       ray.flips = source.flips ?? !source.turning;
 
-      // A stated speed is a stated mass, and one that was never stated falls
-      // back on what a source weighs.
-      ray.mass = massFor(speedOf(source));
 
       if (source.plane) ray.ring = turnRing(source.plane[0], source.plane[1]);
 
       // An initial direction is named as a lattice step and resolved to the
       // boundary that actually goes that way, so a direction the point hasn't
       // got lands on the nearest one it has rather than on nothing.
+      // A stated speed is a stated mass; a source that was never told how
+      // fast to go does not move, and a thing that does not move has no cost
+      // of moving.
       if (source.drift) {
         const length = Math.hypot(...source.drift) || 1;
+
+        ray.mass = massFor(length);
         ray.moving = graph.along(ray, source.drift.map(v => v / length), 1);
       }
     });
@@ -2405,13 +2408,59 @@ export class Graph {
             // it. A source with no sides has none, and does not need one.
             const north = ray.axis && unit(ray.axis);
 
-            // Every direction at once: the pulse is written onto everything
-            // the source is connected to, and each point of it leaves along
-            // the direction it was written in. A boundary with nothing on the
-            // far side is a direction with nowhere yet to put anything, so it
-            // waits — the frontier grows by things moving into it, not by the
-            // source shouting past the end of the world.
-            for (const bd of [...ray.boundaries]) {
+            /**
+             * Into its poles, and nowhere else.
+             *
+             * This used to write onto every direction the source had, using
+             * the axis only to decide WHICH charge each got — north's out of
+             * the half facing along it, south's out of the half facing back,
+             * nothing on the equator. Which is a dipole sprayed over a whole
+             * sphere, and it is why nothing here had a distance law: a fixed
+             * budget spread over a fixed number of directions does not thin
+             * with radius at all.
+             *
+             * A magnet emits along its poles. Two directions, and as the axis
+             * comes round an eighth of a turn a tick, over one revolution
+             * those two visit all eight directions of the plane — so the
+             * emission sweeps rather than fills, and what a place at radius r
+             * receives is a fixed budget spread over the shell there. In two
+             * dimensions that is 2πr and the field goes as 1/r; in three the
+             * plane precesses and it is 4πr² and 1/r².
+             *
+             * On a lattice the sweep is the alternation you would otherwise
+             * have to arrange: consecutive eighth-turns step axial, diagonal,
+             * axial, so stepping the ring IS alternating between them, and
+             * nothing has to special-case which is which.
+             */
+            const poles: Boundary[] = [];
+
+            if (north) {
+              let out: Boundary | undefined, back: Boundary | undefined;
+              let most = -Infinity, least = Infinity;
+
+              for (const bd of ray.boundaries) {
+                const facing = bd.target;
+                if (!facing) continue;
+
+                const d = g.direction(bd);
+                if (!d) continue;
+
+                const along = dot(d, north);
+
+                if (along > most) { most = along; out = bd; }
+                if (along < least) { least = along; back = bd; }
+              }
+
+              if (out) poles.push(out);
+              if (back && back !== out) poles.push(back);
+            }
+
+            // A lamp has no poles and no sweep: it puts the same thing out
+            // everywhere, which is what makes it a set of rings rather than
+            // an arm, and there is nothing to narrow.
+            const into = hasSides ? poles : [...ray.boundaries];
+
+            for (const bd of into) {
               const facing = bd.target;
               if (!facing) continue;
 
@@ -3150,7 +3199,7 @@ export class Ray {
 
   // What a step costs this ray, as a multiple of the step's own length. One
   // for everything the rules make; more for a source, which is the only thing
-  // here heavy enough to be worth pushing. See `MAGNET_MASS`.
+  // here heavy enough to be worth pushing. See `massFor`.
   mass?: number;
 
   // Which source, for a source; which emission of it, for a charge that came

@@ -6,9 +6,17 @@
  *
  *   emit         = front · fade · shape · F(d̂)    what one source puts here
  *     front      = min((ct − r)/1.5, 1)           nothing before it arrives
- *     fade       = 1 / (1 + r/reach)              spread over a bigger circle
+ *     chance(m,r)= m·SHEET / shell(r)              NOT a falloff law:
+ *     shell(r)   = Ω·max(r, HALF)^(DIMS − 1)       one charge's worth
+ *                  over how much shell there is to share it out across. The
+ *                  inverse square is what that COMES TO in three dimensions,
+ *                  not something stated — change how the waves are sent out
+ *                  and the exponent changes with nothing else touched.
  *     shape      = (1 − u²)²,  u = (tₑ − nT)/PULSE    a pulse, if it beats
  *     F(d̂)       = cos(lobes·θ − ωtₑ − φ)         see `emission`
+ *   beat         = 1 / mass                       mass is how OFTEN it pulses
+ *   shape        = 1 + grain·(bump − 1)           drawn smooth, or as shells
+ *   grain        = 0 close in, 1 far out          see `grainAt`
  *
  *   R(d̂)         = (gap/2) / (d̂·û)   for d̂·û > HEAD_ON, else ∞
  *                                                 where a wave stops
@@ -32,6 +40,99 @@ import { alike, emission, HEAD_ON, LIGHT, rate, sided, Source } from "./physics"
  * reconstructed. It is the same for `flow.tsx` and for `metric.tsx`, which
  * differ only in what they make of the annihilation this reports.
  */
+
+/**
+ * How many dimensions the world has, and so how a shell grows in it.
+ *
+ * A shell of radius r has measure proportional to r^(dims − 1): a sphere goes
+ * as r², a circle as r. That exponent is the whole of the distance law, and
+ * it is not a rule — see `shell`.
+ */
+export const DIMS = 3;
+
+/**
+ * The cell a source itself occupies, as a radius.
+ *
+ * Half a lattice step either way, which is the same half-step the swap uses
+ * and for the same reason: a point sits in the middle of its cell. A shell
+ * cannot be smaller than this, because there is nowhere smaller for one to be.
+ */
+export const HALF = 0.5;
+
+/**
+ * How much shell there is at radius r to share one pulse out over.
+ *
+ * This is the piece that must NOT be a law, and it was one — a stipulated
+ * `fade` with a stipulated softening, which is exactly the thing the model is
+ * supposed to derive rather than assume. The lattice has no falloff anywhere
+ * in it. A source lets go of a fixed number of charges; they fan out into the
+ * room a bigger shell has that a smaller one hadn't (the Huygens step); and
+ * what any one place gets is simply what was emitted divided by how much
+ * shell there now is. The inverse square is a CONSEQUENCE of a rotating pair
+ * of poles sweeping a sphere, and if the emission geometry were different the
+ * exponent would be different with nothing else changing.
+ *
+ * So there is no falloff constant here and no softening constant. There is
+ * the measure of a shell, and the fact that a shell cannot be smaller than
+ * the cell its source sits in.
+ *
+ * What comes out, measured against Newton along the line between two sources:
+ *
+ *     R (light-ticks)    2      4      8     16     24     48
+ *     pull / Newton      1.228  1.198  1.127  1.067  1.041  1.009
+ *
+ * Stronger the closer in, monotonically, and Newton's own law by fifty. The
+ * departure is a fact about short range and about nothing else, which is what
+ * a departure arising from the graininess of the thing ought to look like.
+ */
+export const shell = (r: number) => SPHERE * Math.pow(Math.max(r, HALF), DIMS - 1);
+
+/**
+ * How much shell there is at radius one — the surface of the unit sphere in
+ * however many dimensions the world has. 4π in three, 2π in two.
+ *
+ * It was missing, and that is where a factor of a hundred and forty came
+ * from: `fade` gave one over r² where the number of CELLS on the shell is
+ * 4πr², so every density was twelve and a half times too large and every
+ * product a hundred and fifty-eight times. A fitted coupling then stood in
+ * for it, which is what a fitted coupling always is — an unrecognised
+ * geometric factor with a number in front of it.
+ */
+const SPHERE = DIMS === 3 ? 4 * Math.PI : DIMS === 2 ? 2 * Math.PI : 2;
+
+/**
+ * How many charges a source lets go of in one pulse — and it is not a choice.
+ *
+ * A point has 3^d − 1 ways out of it, and a source pulses into a SHEET of
+ * them: the 3×3 around it in three dimensions, which is eight, and the plane
+ * that sheet lies in comes round as the source turns, so over a revolution
+ * the emission has swept the sphere. That is where the inverse square is
+ * from, and it is also — which was missed — where the SIZE of the emission
+ * is from.
+ *
+ * `3^(d−1) − 1`: eight in three dimensions, two in two, which is a source
+ * with two poles and no room for anything else.
+ *
+ * This was declared to be one, as "unit mass emits one charge per tick", and
+ * that is not a derivation — it is the constant renamed as a unit. Getting it
+ * from the lattice puts a factor of sixty-four into the pull between two
+ * sources, which is most of what a fitted coupling had been standing in for.
+ */
+export const SHEET = Math.pow(3, DIMS - 1) - 1;
+
+/**
+ * The chance that a given cell at radius r is holding one of this source's
+ * charges.
+ *
+ * A probability, and everything downstream is one too. A source of unit mass
+ * lets go of `SHEET` charges per pulse and one pulse per tick, and they are
+ * spread over the shell they have grown to — so the chance any one cell has
+ * one is that count over how many cells there are.
+ */
+export const chance = (mass: number, r: number) => mass * SHEET / shell(r);
+
+// The same thing without the mass, kept for the drawing.
+export const fade = (r: number) => 1 / shell(r);
 
 export type Emitter = {
   // Where it is, in cells.
@@ -91,6 +192,26 @@ export type Emitter = {
    * time to get somewhere first.
    */
   beat?: number;
+
+  // What it weighs, which here is how OFTEN it pulses — see `Source.mass`.
+  // Carried so the drawing can size it; the rate itself is in `beat`.
+  mass?: number;
+
+  /**
+   * Whether the world starts with its waves already in it.
+   *
+   * Off, a source begins at t = 0 and the picture opens on empty space with a
+   * front crawling out of it — the model being honest about there being no
+   * action at a distance, and the whole of the "nothing happens for thirty
+   * ticks" demonstration.
+   *
+   * On, the emission is taken to have been going on for ever, so every wave
+   * that would be in flight already is. Worth having because the gravity in
+   * the metric account is instantaneous — its shortfall is a function of
+   * geometry and phase with no `t` in it at all — so a picture with a front
+   * crawling across it is showing a delay the dynamics do not have.
+   */
+  settled?: boolean;
 };
 
 /**
@@ -126,17 +247,43 @@ export const emitterOf = (s: Source): Emitter => ({
   // Turns to radians, which is the only unit either side disagrees on.
   phase: (s.phase ?? 0) * TAU,
 
+  mass: s.mass ?? 1,
+
   drift: s.drift ? [s.drift[0] ?? 0, s.drift[1] ?? 0] : undefined,
 
-  // A beat of one is a source that never pauses, which here is a field that
-  // is defined everywhere rather than a train of rings — so it is the absence
-  // of a beat and not a beat of one.
-  beat: s.beat && s.beat > 1 ? s.beat : undefined,
+  /**
+   * How often it lets go of a shell — and that is what its mass IS.
+   *
+   * Not how hard it pulses. A heavier thing does not write more onto the
+   * space around it in one go; it writes just as much, more often. Which is
+   * the same thing mass already means on the other side of the model — a step
+   * costs its own length and a tick pays one, so what mass sets there is also
+   * a rate rather than a size (see `massFor`).
+   *
+   * So `beat = 1/mass`, and there is nothing else in it: unit mass is one
+   * shell a tick, which is the third unit this model has after the cell and
+   * the tick. A heavier source lets go of them proportionally more often.
+   *
+   * It was `SHELLS/mass` with SHELLS at two, which put four shells in a
+   * revolution — chosen because it drew a legible arm. That is a fact about
+   * looking, and it had no business setting how often a source emits.
+   *
+   * And it is never absent, which it used to be. A source with no beat emits
+   * CONTINUOUSLY — the cosine is defined everywhere, so what is drawn is a
+   * smooth interference pattern in which nothing at all corresponds to one
+   * emission. You cannot count the pulses, cannot watch one leave, cannot
+   * watch two meet. Every claim in this article is about shells meeting
+   * shells, and the picture had no shells in it: a single ring on the screen
+   * has to BE a single pulse or the picture is not evidence for anything.
+   */
+  beat: s.beat ?? 1 / (s.mass ?? 1),
+
+  settled: s.settled,
 });
 
 // How wide a pulse is, in ticks — so a ring is about this many cells thick to
 // either side of where its front is.
-const PULSE = 0.5;
+export const PULSE = HALF / LIGHT;
 
 /**
  * A source as it currently stands, and everywhere it has been.
@@ -331,9 +478,12 @@ export const retard = (s: Live, x: number, y: number, t: number) => {
  * it looks things up in is a record rather than a projection, so nothing
  * already emitted can move again however hard the solve works.
  */
+
+
+
 export const emit = (
   s: Live, w: Emitter, x: number, y: number, t: number, reach: number,
-  known?: number,
+  known?: number, grain = 1,
 ) => {
   // Solving the retarded time is the most expensive thing here, and whoever
   // called this has usually just done it — for the ray, for the cut, for the
@@ -362,10 +512,10 @@ export const emit = (
    * beginning and so IS the front: its own arrival is used as evidence that
    * it has not arrived, and it is never drawn at all.
    */
-  const front = w.beat ? 1 : Math.min((t * LIGHT - r) / 1.5, 1);
+  const front = (w.beat || w.settled) ? 1 : Math.min((t * LIGHT - r) / 1.5, 1);
   if (front <= 0) return 0;
 
-  const fade = 1 / (1 + r / reach);
+  const thinning = fade(r);
 
   /**
    * cos(θ − ψ) without ever working out θ.
@@ -386,16 +536,42 @@ export const emit = (
    * and one bump says how much of it is here. Everything stays O(1) in the
    * number of pulses in the air, which by now is a great many.
    */
+  /**
+   * How much of a grain the emission is drawn with — and it is a property of
+   * the DRAWING, not of the source.
+   *
+   * At one, the pulses are what they are: a shell every `beat` ticks and
+   * nothing in between, so one ring on the screen is one emission. At nought
+   * the same source is drawn as the continuous thing the closed form actually
+   * is, and what appears is the arm rather than the rings it is made of.
+   *
+   * The continuous reading is the accurate one — the field is defined at
+   * every moment, and shells are what you get by asking about it only at the
+   * instants a pulse left. So a picture close enough to resolve the winding
+   * is drawn smooth, and one too far out to resolve anything degrades towards
+   * shells, gradually, with nothing switching. See `grainAt`.
+   *
+   * Nothing that computes the dynamics passes this: annihilation is between
+   * pulses and asks for them as they are.
+   */
   let shape = 1;
 
-  if (w.beat) {
+  if (w.beat && grain > 0) {
     const beat = Math.round(te / w.beat) * w.beat;
     const u = (te - beat) / PULSE;
 
-    if (u <= -1 || u >= 1 || beat < 0) return 0;
+    // A world that has been going for ever has pulses that left before the
+    // run began; one that started at nought does not.
+    const before = beat < 0 && !w.settled;
 
-    shape = (1 - u * u) ** 2;
-    te = beat;
+    const bump = (u <= -1 || u >= 1 || before) ? 0 : (1 - u * u) ** 2;
+
+    shape = 1 + grain * (bump - 1);
+    if (shape <= 0) return 0;
+
+    // The instant it left, likewise blended: quantised to the pulse where the
+    // grain is shown, and continuous where it is not.
+    te += grain * (beat - te);
   }
 
   // What it is putting out in this direction, by the one law both readings
@@ -407,7 +583,7 @@ export const emit = (
   const wave = emission(!!w.lobes, psi / TAU, () =>
     (dx * Math.cos(psi) + dy * Math.sin(psi)) / (r || 1));
 
-  return front * fade * shape * wave;
+  return front * thinning * shape * wave;
 };
 
 /**
@@ -642,7 +818,7 @@ export const bounced = (
    * The path still sets the phase. How far a thing has travelled is when it
    * left; it is not how spread out it is.
    */
-  return returning * edge * front * shape * mine / (1 + r / reach);
+  return returning * edge * front * shape * mine * fade(r);
 };
 
 /**
@@ -665,6 +841,7 @@ const MIRRORS: number[] = [];
 
 export const fieldAt = (
   x: number, y: number, t: number, sources: Live[], reach: number,
+  grain = 1,
 ) => {
   let total = 0;
 
@@ -710,7 +887,7 @@ export const fieldAt = (
       // rather than an event.
       const edge = isFinite(stop) ? Math.min((stop - r) / 1.5, 1) : 1;
 
-      total += emit(a, a, x, y, t, reach, when) * edge;
+      total += emit(a, a, x, y, t, reach, when, grain) * edge;
     }
 
     // Only where something was in the way. Over most of any of these pictures
@@ -731,3 +908,19 @@ export const fieldAt = (
 
   return total;
 };
+
+
+/**
+ * How grainy to draw the field at a given scale.
+ *
+ * Nought while one turn of the arm is comfortably resolvable, one once it is
+ * not, and a ramp between — so zooming out takes the picture from the
+ * continuous field it really is towards the shells that are all a coarse view
+ * can carry, without anything switching over.
+ *
+ * The turn is what this is measured against and not the gap between rings: an
+ * arm winds one turn every `CYCLE` cells, and that is the feature a reader is
+ * looking for.
+ */
+export const grainAt = (turnPx: number) =>
+  Math.min(Math.max((40 - turnPx) / 20, 0), 1);

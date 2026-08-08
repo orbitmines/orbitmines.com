@@ -19,12 +19,14 @@
 
 import { CanvasView, Surface } from "./canvas";
 import {
-  Emitter, emit, fieldAt, Live, retard, TRAIL, was, wasGoing,
+  Emitter, emit, fieldAt, grainAt, Live, retard, TRAIL, was, wasGoing,
   CARRY, RETARD, WAY,
 } from "./field";
 import { CYCLE } from "./lattice";
 import { BITE, cancelling, closing, LIGHT } from "./physics";
-import { AMBER, BACKGROUND, CYAN, ground, lift, source } from "./paint";
+import {
+  AMBER, BACKGROUND, CYAN, ground, legend, lift, shown, source,
+} from "./paint";
 
 /**
  * Gravity as a flow: space is given a speed, and everything is carried by it.
@@ -799,6 +801,9 @@ export const ContinuousField = ({
        * a band everywhere, which is what the wide views were missing and what
        * the close ones were spending several times over.
        */
+      // Smooth where the winding can be read, grainy where it cannot.
+      const grain = grainAt(CYCLE * (Math.min(w, h) / (2 * Math.max(span, 1))));
+
       const bandPx = (CYCLE / 2) * (Math.min(w, h) / (2 * Math.max(span, 1)));
 
       const SAMPLE = Math.max(Math.min(bandPx / 5, 4), 1.4);
@@ -830,7 +835,7 @@ export const ContinuousField = ({
         for (let x = 0; x < cols; x++) {
           const wx = ((x + 0.5) * (w / cols) - w / 2) / scale;
 
-          const v = Math.max(Math.min(fieldAt(wx, wy, t, live, reach), 1), -1);
+          const v = Math.max(Math.min(fieldAt(wx, wy, t, live, reach, grain), 1), -1);
 
           /**
            * Amber one way, cyan the other, and the background where the two
@@ -851,7 +856,8 @@ export const ContinuousField = ({
            * where the picture goes dark is where the two have nothing left to
            * do to each other.
            */
-          const k = Math.abs(v);
+          // Shown on a log scale — see `shown`, and the legend below.
+          const k = shown(v);
           const i = (y * cols + x) * 4;
 
           /**
@@ -888,6 +894,8 @@ export const ContinuousField = ({
 
       ctx.imageSmoothingEnabled = true;
       ctx.drawImage(buf, 0, 0, w, h);
+
+      legend(ctx, w, h);
 
       // The sources, drawn exactly as the lattice draws its own.
       for (const s of live)

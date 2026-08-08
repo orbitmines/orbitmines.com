@@ -188,3 +188,32 @@ export const CYCLE = TURN.length;
 // CYCLE ticks, because the lattice has eight directions to a plane and takes
 // one step of them a tick.
 export const SPIN = TAU / CYCLE;
+
+/**
+ * How closely two of the lattice's directions ever lie, in cosine.
+ *
+ * The smallest angle between any two ways out of a point — 35.26° in three
+ * dimensions, between an edge step and the corner step beside it. Half of
+ * that is the most a direction can be off one of them and still be nearer to
+ * it than to any other, which is the only sense the lattice has of "along
+ * this way rather than across it".
+ *
+ * Derived rather than chosen. It was 0.9, which is cos 26° and corresponds to
+ * nothing.
+ */
+export const ALONG = (() => {
+  const ways = directions(3).map(unit);
+
+  let closest = 1;
+
+  for (let i = 0; i < ways.length; i++)
+    for (let j = i + 1; j < ways.length; j++) {
+      const d = dot(ways[i], ways[j]);
+
+      // Not a direction against its own opposite, which is not "close".
+      if (d < 0.999 && d > closest) closest = d;
+    }
+
+  // Half the smallest angle there is.
+  return Math.cos(Math.acos(closest) / 2);
+})();

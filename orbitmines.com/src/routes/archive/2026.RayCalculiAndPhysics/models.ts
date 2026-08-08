@@ -3,6 +3,7 @@ import { bySide, Graph, perPoint } from "./discrete";
 import { Polarity, Source } from "./physics";
 import { RenderMode } from "./GraphCanvas";
 import { alternatingIntoRandom, collisionGroups, lineGroups } from "./lines";
+import { GRAVITY } from "./metric";
 import { APART, Model, NEAR } from "./model";
 
 /**
@@ -18,6 +19,31 @@ import { APART, Model, NEAR } from "./model";
 // How far out the sources of a pair start, framed. A little more than the gap
 // itself, so there is somewhere for what they emit to go.
 const ROOM = 1.2;
+
+/**
+ * And how far apart a pair is put when the picture is ABOUT the field.
+ *
+ * `APART` is what a pair needs when the question is how they move; this is
+ * what they need when the question is what they emit. A shell leaves every
+ * `1/mass` ticks and is that many cells from the next, so an arm is legible
+ * only while that spacing is more than a few pixels — which at a span of
+ * forty it is not. Twelve either side puts the pair in a frame where the
+ * winding can actually be seen, which is what these particular pictures are
+ * for.
+ */
+const CLOSE = 8;
+
+/**
+ * And how much world a picture of an arm needs to show.
+ *
+ * Not the separation — those are two different questions and tying them
+ * together is what made these unreadable. The pair wants to be CLOSE, so that
+ * what is drawn is two things at short range rather than two dots at opposite
+ * corners. The FRAME wants to be several turns of the arm wide, because a
+ * spiral you can see less than one turn of is not visibly a spiral. One turn
+ * is `CYCLE` cells, so four of them is thirty-two.
+ */
+const ARM = 32;
 
 /**
  * And how many ticks each is given before it starts again.
@@ -239,8 +265,14 @@ const worlds: Model[] = ([
     closed: {
       // A lone source is already at the middle and has nothing to be apart
       // from, so there is nothing to scale it against.
-      scale: alone ? 1 : APART,
-      span: alone ? 14 : APART * ROOM,
+      //
+      // And a pair is put CLOSE, because these are the pictures the spirals
+      // are in: a shell leaves every 1/mass ticks and is that many cells from
+      // the next, so whether an arm can be read at all is whether that many
+      // cells is more than a few pixels. Far out it is not, and the picture
+      // says so and draws the path instead — see `summary`.
+      scale: alone ? 1 : CLOSE,
+      span: ARM,
       cycle: alone ? ALONE_FOR : PAIR_FOR,
     },
     // Framed like the flow reading, so the two can be read against each other.
@@ -803,10 +835,140 @@ const lines: Model[] = [
   }))),
 ];
 
+
+/**
+ * Known periodic solutions of the three-body problem, as a benchmark.
+ *
+ * These are not arrangements this model invents. They are published closed
+ * orbits of NEWTONIAN gravity with three equal masses, and they are here to
+ * be failed against: this model's gravity is not Newton's — it has no force,
+ * it acts only where two things are actually annihilating each other's
+ * emissions, and its distance law comes out of how a rotating pair of poles
+ * spreads over a shell. So the question is not whether these come out right.
+ * It is HOW they come out wrong, which is a far more useful thing to be able
+ * to look at than another arrangement chosen because it behaves.
+ *
+ * Every one was checked by integrating Newton over one stated period and
+ * measuring how far the state came back: figure eight 1.8e-5, moth I 1.6e-4,
+ * lagrange 2.8e-5, euler 5.4e-5, goggles 3.4e-3, butterfly I 4.8e-3. All
+ * close. (Dragonfly, at the values commonly quoted, came back only to 5e-2
+ * over one period and is left out rather than presented as periodic.)
+ *
+ * The published conditions are in units where G, the masses and the extent
+ * are all one; the two constants below put them into cells and ticks. Note
+ * that scaling length and speed independently is not a Newtonian similarity
+ * transform, so what is preserved here is the SHAPE of the initial condition
+ * and not its Newtonian periodicity — which costs nothing, because the thing
+ * being run is not Newtonian either.
+ */
+const UNIT = 18;      // cells per unit of the published solutions
+const SWING = 0.25;   // cells a tick per unit of their velocity
+
+// Three equal masses: two out at ±1 and one at the middle, the outer pair
+// given the same velocity and the middle one twice it the other way, so the
+// centre of mass is still. Suvakov and Dmitrasinovic's family is this one
+// setup with different p and q.
+const trio = (p: number, q: number): Source[] => ([
+  { at: [-1, 0], drift: [p, q] },
+  { at: [1, 0], drift: [p, q] },
+  { at: [0, 0], drift: [-2 * p, -2 * q] },
+]).map(s => ({
+  at: s.at.map(v => v * UNIT),
+  drift: s.drift.map(v => v * SWING),
+}));
+
+const KNOWN: { name: string, note: string, sources: Source[] }[] = [
+  {
+    name: 'figure eight',
+    note: 'Chenciner and Montgomery. Three equal masses chasing one another '
+      + 'round a single closed curve, all on the same track.',
+    sources: (() => {
+      const v = [0.93240737 / 2, 0.86473146 / 2];
+
+      return ([
+        { at: [0.97000436, -0.24308753], drift: [v[0], v[1]] },
+        { at: [-0.97000436, 0.24308753], drift: [v[0], v[1]] },
+        { at: [0, 0], drift: [-2 * v[0], -2 * v[1]] },
+      ]).map(s => ({
+        at: s.at.map(x => x * UNIT),
+        drift: s.drift.map(x => x * SWING),
+      }));
+    })(),
+  },
+  {
+    name: 'Lagrange, equilateral',
+    note: 'The oldest of them: three masses at the corners of a triangle, '
+      + 'turning rigidly. Nothing changes shape, only orientation.',
+    sources: [0, 1, 2].map(k => {
+      const a = k * (Math.PI * 2) / 3;
+      const w = Math.sqrt(3 / Math.pow(Math.sqrt(3), 3));
+
+      return {
+        at: [Math.cos(a) * UNIT, Math.sin(a) * UNIT],
+        drift: [-w * Math.sin(a) * SWING, w * Math.cos(a) * SWING],
+      };
+    }),
+  },
+  {
+    name: 'Euler, collinear',
+    note: 'Three in a row, turning rigidly about the middle one — which sits '
+      + 'at the centre of mass and does not move at all.',
+    sources: (() => {
+      const w = Math.sqrt(1.25);
+
+      return [
+        { at: [-UNIT, 0], drift: [0, -w * SWING] },
+        { at: [0, 0], drift: [0, 0] },
+        { at: [UNIT, 0], drift: [0, w * SWING] },
+      ];
+    })(),
+  },
+  {
+    name: 'butterfly I',
+    note: 'One of the thirteen families Suvakov and Dmitrasinovic found in '
+      + '2013, all of them this same starting line with a different push.',
+    sources: trio(0.30689, 0.12551),
+  },
+  {
+    name: 'moth I',
+    note: 'The same starting line again. Only the two numbers differ, and the '
+      + 'orbit it closes on is nothing like the one above.',
+    sources: trio(0.46444, 0.39606),
+  },
+  {
+    name: 'goggles',
+    note: 'And the slowest of them, which is the one this model has the best '
+      + 'chance with: the least speed to hold against.',
+    sources: trio(0.08330, 0.12789),
+  },
+];
+
+const known: Model[] = KNOWN.map(({ name, note, sources }) => ({
+  name: `three bodies: ${name}`,
+  note,
+  world: { sources },
+  lattice: false,
+
+  // Only the metric reading, with what Newton expects beside it — the flow
+  // account is a third picture of the same thing and would only crowd the
+  // comparison these are here for.
+  closed: false,
+  // Newton, given the model's OWN gravitational constant — so the two panels
+  // are the same law with the same strength, and the only question left is
+  // whether that law traces the published curve.
+  newton: { span: UNIT * 2.6, cycle: 400, gm: GRAVITY },
+
+  // Far too wide to resolve a shell, so the picture says what it can
+  // carry: the path each has taken, drawn exactly as Newton's panel
+  // draws its own.
+  metric: { span: UNIT * 2.6, cycle: 400, summary: true },
+}));
+
 /** Everything, in the order it is read in. */
 export const MODELS: Model[] = [
   ...blocks,
   ...worlds,
   ...closedOnly,
+  ...known,
   ...lines,
 ];
