@@ -6,8 +6,10 @@ import { ContinuousField } from "./continuous";
 import { Graph } from "./discrete";
 import { GraphCanvas } from "./GraphCanvas";
 import { MetricField } from "./metric";
-import { Closed, closedOf, Lattice, latticeOf, metricOf, Model, newtonOf } from "./model";
-import { NewtonField } from "./newton";
+import {
+  Closed, closedOf, Lattice, latticeOf, metricOf, Model, newtonOf, relativityOf,
+} from "./model";
+import { NewtonField, RelativityField } from "./newton";
 
 // The transport icons, which are the only things here that are only pictures.
 // Font Awesome Free v7.3.1 by @fontawesome — https://fontawesome.com/license/free
@@ -203,6 +205,11 @@ const MetricView = ({ sources = [], span, cycle, rate, summary, height = 320 }: 
 const NewtonView = ({ sources = [], span, cycle, rate, gm, height = 320 }: Closed) =>
   <NewtonField sources={sources} span={span} cycle={cycle} rate={rate} gm={gm} height={height} />;
 
+const RelativityView = ({ sources = [], span, cycle, rate, gm, height = 320 }: Closed) =>
+  <RelativityField
+    sources={sources} span={span} cycle={cycle} rate={rate} gm={gm} height={height}
+  />;
+
 const Caption = ({ children }: { children: any }) => (
   <div style={{ color: '#8a8d99', fontSize: '0.8em', paddingTop: '0.6em' }}>{children}</div>
 );
@@ -232,8 +239,10 @@ export const ModelView = ({ model }: { model: Model }) => {
   const closed = closedOf(model);
   const metric = metricOf(model);
   const newton = newtonOf(model);
+  const einstein = relativityOf(model);
 
-  const readings = [lattice, closed, newton, metric].filter(Boolean).length;
+  const readings =
+    [lattice, closed, newton, einstein, metric].filter(Boolean).length;
   const many = readings > 1;
 
   // A run repeated, where the arrangement is a draw rather than a case.
@@ -259,6 +268,11 @@ export const ModelView = ({ model }: { model: Model }) => {
       {newton ? <div>
         {many ? <Label>what Newton expects</Label> : null}
         <NewtonView {...newton} />
+      </div> : null}
+
+      {einstein ? <div>
+        {many ? <Label>what general relativity expects</Label> : null}
+        <RelativityView {...einstein} />
       </div> : null}
 
       {metric ? <div>

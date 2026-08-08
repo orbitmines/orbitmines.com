@@ -79,6 +79,18 @@ export type Model = {
   newton?: Closed;
 
   /**
+   * And what GENERAL RELATIVITY would do with it, between the two.
+   *
+   * Worth having beside Newton rather than instead of him, because everything
+   * here runs at a tenth to a third of the speed of light — see the note in
+   * `newton.tsx` for why that is forced rather than chosen — and at those
+   * speeds the two classical answers are visibly different curves. Which of
+   * them this model's own account lands nearer is the question the row of
+   * panels is asking.
+   */
+  relativity?: Closed;
+
+  /**
    * Models drawn in the same block as this one, because they are the same
    * experiment asked twice: a line and its anti-line, an arrangement flat and
    * the same arrangement round. Read together rather than one after another,
@@ -257,12 +269,19 @@ export const metricOf = (model: Model): Closed | undefined => {
   });
 };
 
-/** And what Newton makes of it, which is not a reading of this model at all. */
-export const newtonOf = (model: Model): Closed | undefined => {
-  if (!model.newton) return undefined;
+/**
+ * And what the two classical accounts make of it, neither of which is a
+ * reading of this model at all.
+ *
+ * Framed like the closed form unless told otherwise, for the same reason the
+ * metric reading is: panels of the same arrangement at different sizes are not
+ * a comparison.
+ */
+const against = (model: Model, own: Closed | undefined): Closed | undefined => {
+  if (!own) return undefined;
 
   const like = model.closed === false ? {} : (model.closed ?? {});
-  const given = { ...like, ...model.newton };
+  const given = { ...like, ...own };
 
   return reading<Closed, 'sources'>(given, 'sources', () => {
     const world = model.world;
@@ -271,3 +290,7 @@ export const newtonOf = (model: Model): Closed | undefined => {
     return sized(world, given.scale ?? 1).sources.map(emitterOf);
   });
 };
+
+export const newtonOf = (model: Model) => against(model, model.newton);
+
+export const relativityOf = (model: Model) => against(model, model.relativity);

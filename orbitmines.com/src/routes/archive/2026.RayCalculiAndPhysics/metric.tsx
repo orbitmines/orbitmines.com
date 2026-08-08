@@ -1,40 +1,61 @@
 /**
  * EQUATIONS IN THIS FILE
  *
- *   ds²        = e^{2φ}(dx² + dy²)                space, as a metric
+ *   opposed(ψ)  = |ψ| / π                         how much of a meeting cancels
+ *   screen(x)   = Π_c through(m_c, |x − r_c|)     what a third body shadows
  *
- *   S(x)       = Σ_{a<b} cancelling(Fa,Fb)·|Fa·Fb|·closing(d̂a,d̂b)
- *                                                 annihilation, per place
- *   φ(x)       = max(−K·S·dt, −1/4)               what is going, this tick
- *                                                 (per-tick: no ledger — see below)
+ *   S(a,b)      = BITE ∫₀^R chance(m_a,s)·chance(m_b,R−s)·opposed·screen ds
+ *                                                 meetings a tick along a→b
  *
- *   apart(a,b) = ∫ e^φ ds  along a→b              how far apart they really are
- *   opposed(ψ) = |ψ| / π                          how much of a meeting cancels
- *   u̇          = deficit / 2   per pair, per tick  an ACCELERATION, not a speed
- *   ṙ          = v + u,  |u| ≤ LIGHT              the body's own motion, carried
+ *   the density of space, which is the whole of gravity here:
+ *     u        = LIGHT · n / (SHEET + n)          what a count of n comes to
+ *     free(v)  = (1 − v/LIGHT)² / SHEET           ... and so what one more buys
+ *     u̇_a      = free(|v_a|) · S(a,b) / m_a       the pull, per body, per tick
+ *     ṙ_a      = v_a + u_a                        its own course, plus that
  *
- *   bend       = ∇φ − (∇φ·ĥ)ĥ                     the geodesic turn, across ĥ
+ *   An annihilation leaves the space where it happened denser: the next path
+ *   out of that point is twice as likely to go the way it went, a second one
+ *   makes it three to one, a third four. So a direction carrying n of them
+ *   weighs 1 + n against the SHEET ways out that weigh one each, and the share
+ *   of paths taking it over the share coming back is n / (SHEET + n).
  *
- *   how much space a place has, which the bodies define:
- *     room(x)  = 1 / (1 + Σ_i (1/beat_i) / (1 + |x − r_i|))
- *     reach(x) = LIGHT · room(x)                  how far a pulse gets a tick
+ *   Everything else here falls out of that, and none of it is stated:
  *
- *   movement is a swap:
- *     wake     = −v·dt/step ahead, +v·dt/step behind      taken in front, laid behind
- *     carry    = v·dt / e^φ                       and it advances by that much
+ *     at rest     free(0) = 1/SHEET               NEWTON, with no free constant
+ *     u̇ ∝ ṅ      a shortage of space is an ACCELERATION and not a speed,
+ *                 because what accumulates is the count and what drifts is a
+ *                 function of the count. That is the one-over-time this file
+ *                 could not previously account for.
+ *     at speed    free(v) → 0 as v → LIGHT        gravity weakens on a body
+ *                 already moving, because moving spends the same budget of
+ *                 paths that being pulled does. At light speed there is
+ *                 nothing left and light does not fall — which relativity says
+ *                 otherwise, and it has been measured. See `free`.
+ *     ÷ m_a       a_a ∝ m_b/R², a_b ∝ m_a/R²      the equivalence principle:
+ *                 heavier things have proportionally more paths to bias, so
+ *                 the same fraction of them bends. Inertia IS path count.
+ *
+ *   G           = S(1,1) · free(0) · R²           measured off the above, once
+ *
+ *   the picture only (φ drives nothing — see `spaceStep`):
+ *     φ(x)      = max(−K·S(x)·dt, −1/4)           where space is going
+ *     ds²       = e^{2φ}(dx² + dy²)
+ *     apart(a,b)= ∫ e^φ ds  along a→b             how far apart they really are
+ *     wake      = −v·dt/step ahead, +v·dt/step behind    taken in front, laid behind
  *
  */
 
 import { CanvasView, Surface } from "./canvas";
 import {
-  chance, Emitter, fade, grainAt, Live, PULSE, WAY, emit, fieldAt, TRAIL,
+  Emitter, fade, grainAt, HALF, Live, sparse, WAY, emit, fieldAt, TRAIL,
 } from "./field";
-import { CYCLE, SPIN } from "./lattice";
+import { free, shortfall } from "./gravity";
+import { CYCLE, SPIN, TAU } from "./lattice";
 import {
-  AMBER, BACKGROUND, CYAN, DECADES, ground, legend, lift, shown, source,
+  AMBER, BACKGROUND, CYAN, decadesFor, ground, legend, lift, shown, source,
   trail,
 } from "./paint";
-import { BITE, cancelling, closing, LIGHT } from "./physics";
+import { cancelling, closing } from "./physics";
 
 /**
  * Gravity as a shortage of space, which is what the lattice actually does.
@@ -100,8 +121,18 @@ export type Space = {
   n: number; x0: number; y0: number; step: number;
 };
 
-export const space = (span: number): Space => {
-  const n = 64;
+export const space = (span: number, sources = 2): Space => {
+  /**
+   * Coarsened by how much is in the picture, exactly as the field sampling is.
+   *
+   * Every cell of this costs a retarded time per source, so a five-body frame
+   * is five times the work of a two-body one — and unlike the field, this grid
+   * is only shading. It says where annihilation is happening, which is a broad
+   * smooth thing; there is nothing in it a finer grid would resolve and a
+   * coarser one would lose.
+   */
+  const n = Math.min(Math.max(
+    Math.round(64 / Math.sqrt(Math.max(sources, 2) / 2)), 24), 64);
 
   return {
     phi: new Float32Array(n * n),
@@ -133,11 +164,11 @@ export const phiAt = (w: Space, x: number, y: number): number => {
  * collision, so both factors are in it, and both are readable on the spot
  * without knowing which sources exist or which two of them are meant.
  */
-const eaten = (live: Live[], x: number, y: number, t: number, reach: number) => {
+const eaten = (live: Live[], x: number, y: number, t: number) => {
   const val: number[] = [], dx: number[] = [], dy: number[] = [];
 
   for (let i = 0; i < live.length; i++) {
-    val[i] = emit(live[i], live[i], x, y, t, reach);
+    val[i] = emit(live[i], live[i], x, y, t);
     dx[i] = WAY[0]; dy[i] = WAY[1];
   }
 
@@ -168,7 +199,7 @@ const eaten = (live: Live[], x: number, y: number, t: number, reach: number) => 
  * ringing for ever after the eating has finished.
  */
 export const spaceStep = (
-  w: Space, live: Live[], t: number, reach: number, dt: number,
+  w: Space, live: Live[], t: number, dt: number,
 ) => {
   const { phi, n, step } = w;
 
@@ -200,252 +231,30 @@ export const spaceStep = (
    * retarded fields and is nought until the two have reached each other.
    */
   /**
-   * How dark to draw a place that is losing space — a DISPLAY number, and
-   * the only one left in this file.
+   * How dark to draw a place that is losing space — a DISPLAY number, and the
+   * only one left in this file.
    *
-   * `phi` no longer has anything to do with the gravity: the pull is counted
-   * along the line between two things out of probabilities (see `shortfall`)
-   * and never consults this grid. What is left here is the picture of where
-   * annihilation is happening, and how strongly to shade it is a question
-   * about looking, not about physics.
+   * `phi` has nothing whatever to do with the gravity here, and it used to,
+   * which was a quiet mistake worth naming. The pull is counted along the line
+   * between two things out of probabilities (see `shortfall`) and never
+   * consults this grid — but `bend` and `carry` did consult it, so a number
+   * chosen to make the shading legible was setting how far a body was turned
+   * and how far a step carried it. A display gain of ten thousand was in the
+   * dynamics. Both of those are gone; what is left is a picture of where
+   * annihilation is happening, and how dark to draw it is a question about
+   * looking.
    */
   const gain = 1e4;
 
   for (let j = 0; j < n; j++)
     for (let i = 0; i < n; i++) {
-      const s = eaten(live, w.x0 + i * step, w.y0 + j * step, t, reach);
+      const s = eaten(live, w.x0 + i * step, w.y0 + j * step, t);
 
       // Never more than a place has to give.
       phi[j * n + i] = Math.max(-gain * s * dt, -0.25);
     }
 };
 
-/**
- * How much space a place has, which is a thing the bodies decide.
- *
- * This is the piece the model was missing, and it is what makes the whole
- * thing depend on SCALE rather than only on shape. A body is a thing that
- * pulses, and pulsing is what charges the space around it; where two of them
- * are close in units of their own pulsing there is little room between them,
- * and where they are far apart in those units there is a great deal. The same
- * three bodies in the same arrangement are therefore not the same experiment
- * at one size as at another — which is exactly the objection to a model whose
- * only lengths come from the viewport, and it is why nothing here reproduced
- * a three-body orbit at any coupling: the arrangement had no size.
- *
- * Bounded in (0, 1] by construction: a place can be crowded down towards
- * having no room at all, and never has more than empty space has.
- *
- * And it is read off the bodies as they stand rather than accumulated, so
- * there is no ledger to run away and no halo — the shortage is a fact about
- * where things ARE, which is the same reason it can be drawn.
- */
-export const room = (live: Live[], x: number, y: number) => {
-  let crowd = 0;
-
-  for (const s of live) {
-    const r = Math.hypot(x - s.at[0], y - s.at[1]);
-
-    // How often it pulses is what it weighs — see `Source.mass`. Scaled so
-    // that one cell from a source of unit mass, half the room is gone; the
-    // rest follows from the one over r, which is a gentle thing by nature
-    // and opens out slowly across a frame.
-    crowd += (CYCLE / (s.beat ?? CYCLE)) * 2 / (1 + r);
-  }
-
-  return 1 / (1 + crowd);
-};
-
-/**
- * And so how far a pulse gets in a tick.
- *
- * One cell where there is a cell to cross, and less where the space has been
- * crowded down. Which is the same statement as the metric — a step is a step
- * of PROPER length, and where there is less of it a tick covers less ground.
- */
-export const reach = (live: Live[], x: number, y: number) => room(live, x, y);
-
-/*
- * Both of the two above are DEFINED AND NOT YET WIRED, which is worth saying
- * plainly rather than leaving to be discovered. A pulse still travels a flat
- * cell a tick whatever room it is crossing, and the retarded time is still
- * solved on straight-line distance. Wiring `reach` into the propagation is
- * what would close the loop — the bodies deciding how much space there is,
- * and the space deciding how far a pulse gets — and it is the next thing.
- */
-
-/**
- * How hard the annihilation pulls on the space. One constant, and the only
- * one in this account.
- */
-
-
-/**
- * How finely the line between two things is walked, in cells.
- *
- * A LENGTH, and that is the point: nothing about how hard two things pull on
- * each other may depend on how far out the camera is. This was read off the
- * grid the field is drawn on — `n = 64` across whatever the frame happened to
- * be — and measured, that made gravity proportional to the cell size: a pair
- * held at sixteen cells pulled five times harder drawn at a span of sixty-four
- * than at twelve.
- */
-const SAMPLE = 0.25;
-
-// One whole turn.
-const TURN_ROUND = Math.PI * 2;
-
-/**
- * How much of what meets here is OPPOSITE rather than alike.
- *
- * The single most important thing in this file, and it took the whole
- * three-body benchmark to find. A wave here is not a shell with a sign at
- * every point — it is an AGGREGATE over the paths a great many discrete
- * charges take, and what it carries at a place is a density. So what two of
- * them do where they meet is not decided by testing one sign against another.
- * It is a FRACTION: of all the pairings happening there over a cycle, how
- * many are opposite.
- *
- * Two cosines a phase ψ apart disagree in sign for ψ/π of the time, which is
- * the whole of this function. Smooth, bounded, and never exactly nought
- * unless the two are perfectly in step at that very place.
- *
- * Testing signs instead — which is what this did — produced every failure
- * this account has had. It made the pull a function of `R mod CYCLE`, because
- * the answer was set by the phase at the ends of the line, swinging it
- * twenty-three fold with an eight-cell period. And it made two sources in
- * step attract with EXACTLY nothing, at every separation from twelve cells to
- * seven hundred, because on the surface between them their fields are
- * identically equal. Neither survives being averaged, which is what an
- * aggregate is.
- *
- * Coherence still matters, but as a strength rather than as a switch: two
- * sources in step come out about half as strong as two half a cycle apart,
- * which is the difference showing up where it belongs.
- */
-const opposed = (psi: number) => {
-  let w = psi % TURN_ROUND;
-
-  if (w > Math.PI) w -= TURN_ROUND;
-  if (w < -Math.PI) w += TURN_ROUND;
-
-  return Math.abs(w) / Math.PI;
-};
-
-/**
- * How much of a source's emission is present at a place, on aggregate.
- *
- * One pulse's worth over the shell it has grown to (see `fade`), times how
- * much it is putting out — which is its mass.
- *
- * This was the duty cycle of the pulse train, `min(2·PULSE/beat, 1)`, and the
- * cap in it was silently clipping every mass above two: measured, the pull
- * between two sources went as the product of their masses up to two and then
- * stopped, so a pair at four and one pulled exactly as hard as a pair at two
- * and one. Which is a real ceiling on a duty cycle — nothing can be present
- * more than all of the time — but it is the wrong quantity to be reading.
- *
- * On aggregate what matters is the RATE at which charge is emitted, and
- * whether that rate is reached by letting go of a shell more often or by
- * putting more into each one is a detail below the level an aggregate sees.
- * Mass is that rate. `beat` goes on setting the grain of the picture, which
- * is what it is for.
- */
-const density = (s: Live, r: number) => chance(s.mass ?? 1, r);
-
-/**
- * How much space goes from between two things, per tick.
- *
- * Walked along the line between them, because that is the line that shortens:
- * an annihilation takes two cells out of the world, and what it does to the
- * distance between a and b is decided by whether those cells were on the way.
- * Everything on that line is head-on by construction, so there is no
- * `closing` factor to apply.
- *
- * At each place: how much of a is here, times how much of b, times how much
- * of that is opposite. The first two are aggregates going as one over the
- * square of the distance, so the line integral of their product goes as one
- * over the square of the separation — measured flat to within four per cent
- * by twenty-four cells and one and a half by forty-eight. Newton's law, out
- * of a shell growing and two densities meeting on it.
- */
-const shortfall = (
-  one: Live, two: Live, t: number, reach: number, dt: number,
-) => {
-  const dx = two.at[0] - one.at[0], dy = two.at[1] - one.at[1];
-
-  const R = Math.hypot(dx, dy);
-  if (R < 1e-9) return 0;
-
-  const steps = Math.max(Math.ceil(R / SAMPLE), 2);
-
-  // Sources turning at different rates drift through every phase against each
-  // other, so half of everything they do is opposite. Turning together, the
-  // phase between them at a place is fixed and set by the path difference.
-  const drifting = Math.abs(one.omega - two.omega) > 1e-9;
-
-  let met = 0;
-
-  for (let k = 0; k < steps; k++) {
-    const x = (k + 0.5) / steps * R;
-
-    const share = drifting ? 0.5
-      : opposed(one.omega * (R - 2 * x) + (one.phase - two.phase));
-
-    met += density(one, x) * density(two, R - x) * share * (R / steps);
-  }
-
-  /**
-   * And each of those meetings takes its own bite out of the line.
-   *
-   * No coupling constant: `met` is a count of coincidences per tick, because
-   * every factor in it is a probability or a count, and `BITE` is what the
-   * rule says one costs. What used to be `GAIN` was a fitted 1.776 standing
-   * in for the surface of the unit sphere squared — measured, exactly a
-   * hundred and forty times what the geometry asks for, which is (4π)²/BITE.
-   *
-   * One honest caveat, and it is the last free thing in this file. What comes
-   * out here is cells per tick — a SPEED of approach, which is what removing
-   * space from between two things gives you. It is added to `carry`, a
-   * velocity, so it acts as an acceleration. That extra one-over-time is not
-   * derivable from any of the above: it is the open question of whether a
-   * shortage of space is a rate or a rate of a rate, and the model has not
-   * said. Everything else here is now a consequence.
-   */
-  return BITE * met * dt;
-};
-
-/**
- * The gravitational constant this model HAS, for two unit masses.
- *
- * Not a number put in — a number that comes out, measured off the model's own
- * pull at a reference separation. `a_rel = 2·G·m/R²` is the definition, so
- * this is that read backwards, once, at load.
- *
- * Which is what makes the Newtonian panel beside these an actual comparison.
- * It used to be handed `UNIT·SWING²`, a number invented out of two scaling
- * choices — so the question it asked was "does the model match a Newton
- * calibrated against the model", which nothing can fail. Handed this, it asks
- * whether the model's OWN constant produces the published orbits, which
- * something can.
- *
- * The two came out within four per cent of each other, which is luck.
- */
-export const GRAVITY = (() => {
-  const R = 32;
-
-  const held = (x: number, phase: number) => ({
-    at: [x, 0], vel: [0, 0], path: [x, 0],
-    lobes: 0, omega: SPIN, phase, beat: 1, mass: 1,
-  } as unknown as Live);
-
-  return shortfall(held(-R / 2, 0), held(R / 2, 0), 0, 0, 1) * R * R / 2;
-})();
-
-/**
- * How far apart two places are, in the metric rather than in the picture.
-/**
- * How far apart two places are, in the metric rather than in the picture.
 /**
  * How far apart two places are, in the metric rather than in the picture.
  *
@@ -479,33 +288,23 @@ export const apart = (
   return (total / steps) * straight;
 };
 
-/**
- * Which way a course bends, when it is going straight in a space that is not.
+/*
+ * There used to be a `bend` here — the geodesic turn, taken as the part of ∇φ
+ * lying across the direction of travel — and a `carry` that advanced a body by
+ * `speed·dt / e^φ`, so that a step of proper length covered more coordinate
+ * where the ground had been thinned.
  *
- * For a conformal metric the geodesic turns by the part of ∇φ lying ACROSS
- * the direction of travel, and by nothing else — so a straight line stays the
- * same length and only comes round, which is the one thing this model allows.
- * Nothing accelerates: there is no force here, and this is not one. It is
- * what "carry on the way you were going" comes to when the ground it is
- * measured against has been shortened on one side.
+ * Both are gone, and the reason is not that the idea was wrong. It is that
+ * they read `phi`, and `phi` is scaled by a number chosen to make the shading
+ * legible (see `spaceStep`). A picture's contrast setting was deciding how
+ * hard bodies turned. Whatever those two terms were worth, that was not a
+ * measurement of it.
+ *
+ * What replaced them is smaller and says the same thing without a grid in the
+ * middle: a body goes the way it was going, plus however much the space around
+ * it has been biased (`drawn`). One velocity, made of two parts, and the
+ * second part is the whole of gravity.
  */
-const TURN: [number, number] = [0, 0];
-
-export const bend = (
-  w: Space, x: number, y: number, hx: number, hy: number,
-) => {
-  const d = w.step;
-
-  const gx = (phiAt(w, x + d, y) - phiAt(w, x - d, y)) / (2 * d);
-  const gy = (phiAt(w, x, y + d) - phiAt(w, x, y - d)) / (2 * d);
-
-  // Across the way it is going. The part along it would be a change of speed,
-  // and there is nothing here that changes speed.
-  const along = gx * hx + gy * hy;
-
-  TURN[0] = gx - along * hx;
-  TURN[1] = gy - along * hy;
-};
 
 /**
  * Movement, which is not a value being changed.
@@ -525,10 +324,11 @@ export const bend = (
  * Written this way, movement and gravity stop being two mechanisms. Both are
  * the same operation on the space and differ only in shape: annihilation is a
  * loss BETWEEN two things, which brings them together; movement is a loss in
- * front and a gain behind, which carries one along. And the second is the
- * counterweight to the first — measured, a pair sent past each other at half
- * of light hold at eleven cells rather than collapsing, because what their
- * motion lays down behind them pushes out against what their meeting eats.
+ * front and a gain behind, which carries one along.
+ *
+ * Drawn rather than acted on. It is written into `phi`, which is the picture,
+ * so what this shows is the wake of a moving source and not a term in its
+ * dynamics — see the note where `bend` and `carry` used to be.
  */
 const SWAP = 0.5;
 
@@ -541,12 +341,16 @@ const deposit = (w: Space, x: number, y: number, q: number) => {
   w.phi[j * w.n + i] += q;
 };
 
-export const wake = (w: Space, live: Live[], dt: number) => {
+export const wake = (
+  w: Space, live: Live[], going: (s: Live) => [number, number], dt: number,
+) => {
   for (const s of live) {
-    const speed = Math.hypot(s.vel[0], s.vel[1]);
+    const [vx, vy] = going(s);
+
+    const speed = Math.hypot(vx, vy);
     if (speed < 1e-9) continue;
 
-    const hx = s.vel[0] / speed, hy = s.vel[1] / speed;
+    const hx = vx / speed, hy = vy / speed;
 
     // How much of a cell it gets through this tick, which is the whole of
     // what its speed is.
@@ -554,32 +358,6 @@ export const wake = (w: Space, live: Live[], dt: number) => {
 
     deposit(w, s.at[0] + hx * SWAP, s.at[1] + hy * SWAP, -q);  // taken in front
     deposit(w, s.at[0] - hx * SWAP, s.at[1] - hy * SWAP, +q);  // laid behind
-  }
-};
-
-/**
- * And it advances by however much coordinate the space it destroyed was
- * worth.
- *
- * Which is the whole coupling between moving and gravity, and it falls out
- * rather than being put in: a step is one step of PROPER length, so where the
- * ground has been thinned by something else eating it, the same step covers
- * more of the picture. A thing crossing a region two things are annihilating
- * gets further for the same effort — and light does too, which is why the
- * pair start hearing each other sooner as they close.
- */
-export const carry = (w: Space, live: Live[], dt: number) => {
-  for (const s of live) {
-    const speed = Math.hypot(s.vel[0], s.vel[1]);
-    if (speed < 1e-9) continue;
-
-    const hx = s.vel[0] / speed, hy = s.vel[1] / speed;
-
-    const left = Math.max(Math.exp(phiAt(w, s.at[0], s.at[1])), 0.05);
-    const advance = speed * dt / left;
-
-    s.at[0] += hx * advance;
-    s.at[1] += hy * advance;
   }
 };
 
@@ -620,65 +398,148 @@ export const MetricField = ({
     let img: ImageData | null = null;
 
     let t = 0;
-    let world = space(span);
+    let world = space(span, sources.length);
 
-    type Carried = Live & { carry: [number, number] };
+    /**
+     * `pulled` is how much the space around this body has been biased into
+     * carrying it — a velocity, and the whole of what gravity does here.
+     *
+     * It is not a force having been applied. It is the running count of
+     * annihilations, turned into a drift by `drawn`, and accumulated with the
+     * marginal gain `free` gives at whatever speed the body has already
+     * reached. Which is why it accelerates rather than merely displaces: the
+     * count persists, and the drift is a function of the count.
+     */
+    type Carried = Live & { pulled: [number, number], mark: number[] };
 
     let live: Carried[] = [];
 
     const reset = () => {
       t = 0;
-      world = space(span);
+      world = space(span, sources.length);
       live = sources.map(s => ({
         ...s,
         at: [...s.at] as [number, number],
         path: [s.at[0], s.at[1]],
         vel: [s.drift?.[0] ?? 0, s.drift?.[1] ?? 0] as [number, number],
-        carry: [0, 0] as [number, number],
+        pulled: [0, 0] as [number, number],
+        mark: [s.at[0], s.at[1]],
       }));
+      kept = 0;
     };
 
-    // Everywhere each of them has been, kept up to the moment, so that a ring
-    // already in the air belongs to a place and stays there.
+    // Its own course plus whatever the space around it has been biased into
+    // doing. One velocity, made of two parts — and the split between them is
+    // bookkeeping, not physics: `free` is asked about the sum.
+    const going = (s: Live): [number, number] => {
+      const p = (s as Carried).pulled;
+
+      return [s.vel[0] + p[0], s.vel[1] + p[1]];
+    };
+
+    /**
+     * Everywhere each of them has been, kept two ways, because two different
+     * things want it and they want it at wildly different resolutions.
+     *
+     * `path` is the EMISSION history: what is at distance r left r ticks ago,
+     * from wherever the source was then, so a ring already in the air belongs
+     * to a place and stays there however the thing that made it carries on.
+     * It has to be fine — twice a tick — and `was` indexes it by dividing by
+     * exactly that, so the interval is not adjustable.
+     *
+     * `mark` is the DRAWN trail, and it wants the opposite. A run of ninety
+     * thousand ticks is a hundred and eighty thousand samples of `path` per
+     * body, which is tens of megabytes across a page of these and rather more
+     * points than a curve a few hundred pixels wide has anywhere to put.
+     *
+     * So the fine one is only kept while the field is actually being drawn —
+     * nothing else reads it, since `retard` is only reached from `fieldAt` —
+     * and the coarse one is always kept, at whatever interval leaves a few
+     * thousand points across the whole run.
+     */
+    const EVERY = Math.max(cycle / 3000, TRAIL);
+
+    let kept = 0;
+
     const remember = () => {
-      for (const s of live)
-        for (let k = s.path.length / 2; k <= t / TRAIL; k++)
-          s.path.push(s.at[0], s.at[1]);
+      if (showing)
+        for (const s of live)
+          for (let k = s.path.length / 2; k <= t / TRAIL; k++)
+            s.path.push(s.at[0], s.at[1]);
+
+      while (kept < t / EVERY) {
+        kept++;
+        for (const s of live) s.mark.push(s.at[0], s.at[1]);
+      }
     };
 
     reset();
 
-    /**
-     * The contraction, which gives the space a RATE and not a displacement.
-     *
-     * This moved the two ends of the line together directly, by however much
-     * the line had lost, and that was wrong in a way that took the whole
-     * three-body benchmark to see. It made gravity a VELOCITY of approach —
-     * and Newton's is an acceleration. Measured, the difference is everything
-     * the model was failing at: a velocity law has no inertia in the radial
-     * direction, so nothing can overshoot and swing round, and there is no
-     * orbit to be had at any coupling. Every scan came back at the same
-     * forty-five degrees, which is not a dynamics at all — it is the
-     * geometric asymptote of two things on fixed courses being drawn together.
-     *
-     * The distance law was never the problem and is worth saying so plainly:
-     * the eating between two sources already goes as one over the square of
-     * the separation, measured flat to within a percent from twenty-four
-     * cells out. That is Newton's law, and it comes out of how a rotating
-     * pair of poles spreads over a shell rather than being put in.
-     *
-     * So the shortage gives the space a rate of contraction, which persists
-     * and accumulates, and the bodies are CARRIED by it. Their own motion is
-     * untouched — nothing changes speed, which is the model's own rule — and
-     * what accumulates belongs to the space. With that one change the
-     * benchmark stops escaping and stops collapsing: the figure eight holds
-     * between nineteen and fifty-seven cells and comes round three hundred
-     * and twenty-six degrees, and moth and goggles likewise.
-     */
+    // As close as adjacent gets: a source is not space, so neither can be
+    // moved through.
     const TOUCH = 1;
 
+    /**
+     * What the meetings along each line come to, added to each body's count.
+     *
+     * Divided by its OWN mass, which is the whole of the equivalence principle
+     * here and is worth being exact about why. `deficit` is a number of
+     * meetings, and a meeting needs one charge from each side — so it already
+     * carries both masses, and a body twice as heavy has twice as many
+     * meetings simply by having brought twice as much to them. What decides
+     * how far it is bent is not how many of its paths were biased but what
+     * FRACTION of them were, and the count of paths it has is its mass. So the
+     * two masses in `deficit` and the one divided out here leave exactly one
+     * behind: a_a ∝ m_b, a_b ∝ m_a, which is Newton, and it falls out of
+     * counting rather than being imposed.
+     *
+     * This was `deficit·(m_other/(m_a+m_b))` — the momentum-conserving split
+     * of a shared displacement — which also conserves momentum and is not the
+     * same law: it makes the relative acceleration go as m_a·m_b instead of
+     * m_a + m_b, so a light body barely falls towards a heavy one. Momentum is
+     * conserved either way (m_a·ṅ_a = deficit = m_b·ṅ_b here too); what the
+     * old split got wrong was which of the two ways to conserve it.
+     */
+    /**
+     * Below what share of a body's own strongest pull a pair is not walked.
+     *
+     * Walking the line is the whole cost of the dynamics, and it is paid per
+     * PAIR — nine bodies is thirty-six of them, of which eight are a Sun and a
+     * planet and the other twenty-eight are two planets whose pull on each
+     * other is a millionth of a millionth of that. Every one of those was
+     * being integrated to four decimal places to arrive at nothing.
+     *
+     * What is skipped is decided by estimate, not by measurement of the thing
+     * being skipped, which would defeat the point. `shortfall` comes to about
+     * 3.3·m_a·m_b/R² (see the flatness of `S·R²` there), so the acceleration
+     * it gives A is about m_b/R² up to constants that are the same for every
+     * pair — and only ratios are wanted here, so they cancel.
+     *
+     * Kept relative to each body's own strongest pull rather than against an
+     * absolute floor, so that a light body far from everything still feels
+     * whatever is nearest to it. At a tenth of a millionth, real perturbations
+     * survive comfortably — Jupiter's pull on Saturn is five parts in a
+     * thousand of the Sun's and is nowhere near this — and what goes is only
+     * what could not move anything in the length of the run.
+     */
+    const NOTHING = 1e-7;
+
+    const most: number[] = [];
+
     const spend = (dt: number) => {
-      const reach = span * 0.6;
+      for (let i = 0; i < live.length; i++) most[i] = 0;
+
+      for (let i = 0; i < live.length; i++)
+        for (let j = i + 1; j < live.length; j++) {
+          const dx = live[j].at[0] - live[i].at[0];
+          const dy = live[j].at[1] - live[i].at[1];
+
+          const rr = dx * dx + dy * dy;
+          if (rr < 1e-12) continue;
+
+          most[i] = Math.max(most[i], (live[j].mass ?? 1) / rr);
+          most[j] = Math.max(most[j], (live[i].mass ?? 1) / rr);
+        }
 
       for (let i = 0; i < live.length; i++)
         for (let j = i + 1; j < live.length; j++) {
@@ -688,107 +549,47 @@ export const MetricField = ({
           const coord = Math.hypot(dx, dy);
           if (coord < 1e-6) continue;
 
-          const deficit = shortfall(a, b, t, reach, dt);
-          if (deficit <= 1e-9) continue;
+          const rr = coord * coord;
+
+          // Nothing either end could feel — see `NOTHING`.
+          if ((b.mass ?? 1) / rr < NOTHING * most[i]
+            && (a.mass ?? 1) / rr < NOTHING * most[j]) continue;
+
+          const deficit = shortfall(a, b, live, dt);
+          if (deficit <= 1e-12) continue;
 
           dx /= coord; dy /= coord;
 
-          /**
-           * And shared out by weight, not evenly.
-           *
-           * The line between them has lost this much, and both ends move to
-           * take it up — but not equally: the heavier one moves less, in
-           * exactly the proportion that leaves the momentum where it was.
-           * Split evenly, as this did, a pair at four and one accelerated
-           * the same amount each and the momentum grew every tick out of
-           * nothing.
-           *
-           * Which is Newton's rule arrived at from the other side. There the
-           * acceleration of one body carries the mass of the OTHER, so the
-           * two accelerations are in inverse proportion to the masses. Here
-           * nothing is pulled at all — a length has gone from between them —
-           * and how a shortening is taken up by its two ends is settled by
-           * the same thing.
-           */
-          const ma = a.mass ?? 1, mb = b.mass ?? 1;
-          const both = ma + mb;
+          for (const [s, ux, uy] of [[a, dx, dy], [b, -dx, -dy]] as const) {
+            const [vx, vy] = going(s);
 
-          const toA = deficit * (mb / both);
-          const toB = deficit * (ma / both);
+            // Divided by its own mass — the fraction of ITS paths that got
+            // bent — and scaled by how many of them are still free to bend at
+            // the speed it is already going. See `free`.
+            const got = free(Math.hypot(vx, vy)) * deficit / (s.mass ?? 1);
 
-          a.carry[0] += dx * toA; a.carry[1] += dy * toA;
-          b.carry[0] -= dx * toB; b.carry[1] -= dy * toB;
+            s.pulled[0] += ux * got; s.pulled[1] += uy * got;
+          }
         }
-
-      // And no place of space goes faster than light, whatever the sum of
-      // what is eating it comes to.
-      for (const s of live) {
-        const going = Math.hypot(s.carry[0], s.carry[1]);
-
-        if (going > LIGHT) {
-          s.carry[0] *= LIGHT / going;
-          s.carry[1] *= LIGHT / going;
-        }
-      }
     };
 
-    function advance(dt: number) {
-      const reach = span * 0.6;
-
-      spaceStep(world, live, t, reach, dt);
-
-      /**
-       * Each carries on the way it was going, turned by the ground it is
-       * crossing and by nothing else. Nothing changes speed, and nothing is
-       * pushed towards anything.
-       *
-       * Turned before its own wake is laid down, because a thing does not
-       * feel what it is itself putting behind it — the taking in front and
-       * the laying behind are not two forces on it that happen to cancel,
-       * they are what its moving IS.
-       */
-      for (const s of live) {
-        const speed = Math.hypot(s.vel[0], s.vel[1]);
-        if (speed < 1e-9) continue;
-
-        bend(world, s.at[0], s.at[1], s.vel[0] / speed, s.vel[1] / speed);
-
-        /**
-         * Per STEP, not per tick — a thing is only deflected when it moves.
-         *
-         * The geodesic turns by ∂φ/∂n per unit of PROPER LENGTH travelled,
-         * and a body covers `speed·dt` of that in a tick, so the turn rate
-         * goes as the speed. Adding a perpendicular of length `|∇φ|·dt` to a
-         * velocity of length `speed` rotates it by `|∇φ|·dt / speed` — which
-         * is the wrong way round, and wrong by a factor of speed squared.
-         *
-         * Which is the lattice's own position, arrived at dimensionally: a
-         * ray is deflected because the connection it takes next is not where
-         * the last one pointed, and it only takes one by moving. Something
-         * standing still is not on a geodesic at all.
-         */
-        const step = speed * speed * dt;
-
-        const vx = s.vel[0] + TURN[0] * step;
-        const vy = s.vel[1] + TURN[1] * step;
-
-        const now = Math.hypot(vx, vy);
-        if (now > 1e-9) s.vel = [vx * speed / now, vy * speed / now];
-      }
-
-      // Movement: the space in front destroyed, the same laid down behind,
-      // and the thing carried by however much coordinate that was worth.
-      carry(world, live, dt);
-      wake(world, live, dt);
-
-      // And carried by the space itself, which is where the gravity is.
-      for (const s of live) {
-        s.at[0] += s.carry[0] * dt;
-        s.at[1] += s.carry[1] * dt;
-      }
-
-      // And whatever space has gone from between them, goes.
+    /**
+     * One step of the dynamics, and there is very little left of it.
+     *
+     * Count the meetings, add them to each body's density, and move each body
+     * by its own course plus whatever that density comes to. No force, no
+     * potential, no field consulted, no gradient — and nothing that reads the
+     * grid `phi` is drawn on, which is the whole point of the note above.
+     */
+    const step = (dt: number) => {
       spend(dt);
+
+      for (const s of live) {
+        const [vx, vy] = going(s);
+
+        s.at[0] += vx * dt;
+        s.at[1] += vy * dt;
+      }
 
       // Not through one another: a source is not space.
       for (let i = 0; i < live.length; i++)
@@ -804,6 +605,47 @@ export const MetricField = ({
           a.at[0] -= dx / gap * back; a.at[1] -= dy / gap * back;
           b.at[0] += dx / gap * back; b.at[1] += dy / gap * back;
         }
+    };
+
+    /**
+     * How many of those to a frame.
+     *
+     * The dynamics are cheap — a line walk per pair — and the picture is not,
+     * so there is no reason to run them at the frame rate. A close pass is
+     * stiff, and at a tenth of a tick per frame it is walked through in
+     * strides; Newton's panel beside it has always sub-stepped, and comparing
+     * a finely integrated orbit against a coarsely integrated one is comparing
+     * two integrators rather than two laws.
+     */
+    /**
+     * The longest step worth taking, in ticks — so the number of them follows
+     * the clock rather than being fixed at it.
+     *
+     * This was twelve a frame whatever `rate` was, which ties the accuracy of
+     * the integration to how fast the picture is being played: at ten ticks a
+     * second each step was a sixtieth of a tick, and at nine hundred it was
+     * one and a quarter. The same arrangement integrated two ways, and the
+     * faster one silently the coarser. Fixing the STEP instead and counting
+     * how many fit is the same choice `newton.tsx` makes when it sub-steps
+     * twenty-four times, and it means the pace is free.
+     */
+    const STRIDE = 0.25;
+
+    // Whether the last frame drew the field at all — see `draw`. Nothing that
+    // feeds only the picture is computed when the picture has no room for it.
+    let showing = true;
+
+    function advance(dt: number) {
+      const n = Math.min(Math.max(Math.ceil(dt / STRIDE), 1), 64);
+
+      for (let k = 0; k < n; k++) step(dt / n);
+
+      // And the picture, which is the expensive half and is worth nothing at
+      // a scale where no shell can be resolved.
+      if (showing) {
+        spaceStep(world, live, t, dt);
+        wake(world, live, going, dt);
+      }
     }
 
     function draw({ ctx, width: w, height: h }: Surface) {
@@ -819,14 +661,110 @@ export const MetricField = ({
        * and the field is thrown away at scales where the arm is perfectly
        * legible and only its grain is not, which is most of them.
        */
-      const turnPx = CYCLE * (Math.min(w, h) / (2 * Math.max(span, 1)));
+      const scale = Math.min(w, h) / (2 * span);
+
+      /**
+       * How long the field's own pattern is, in cells — read off the sources
+       * rather than assumed.
+       *
+       * A source turns over `rate` times per `CYCLE` ticks and what it lays
+       * down travels a cell a tick, so the pattern repeats every `CYCLE/rate`
+       * cells, which is `TAU/ω`. At the lattice's own pace that is `CYCLE`,
+       * and this was written as `CYCLE`; for a body flipping once per `SLOW`
+       * ticks it is twelve times longer, and everything downstream — whether
+       * the picture can be resolved at all, how finely to sample it, whether
+       * to draw shells — was answering about a wavelength none of these
+       * sources has. It had the solar systems sampling at the finest spacing
+       * allowed, over the widest frames in the article, for a pattern a
+       * hundred cells long.
+       */
+      const wave = Math.max(...live.map(s =>
+        TAU / Math.max(Math.abs(s.omega), SPIN / 1e3)));
+
+      const turnPx = wave * scale;
+
+      const paths = () => {
+        for (const s of live)
+          trail(ctx, s.mark, x => w / 2 + x * scale, y => h / 2 + y * scale, 0.5);
+      };
+
+      const dots = () => {
+        for (const s of live)
+          source(ctx, w / 2 + s.at[0] * scale, h / 2 + s.at[1] * scale,
+            { halo: 14, dot: 2.2 });
+      };
+
+      /**
+       * And where it cannot be resolved at all, it is not drawn.
+       *
+       * The legend used to say "too far out to resolve the arm" while the
+       * field was computed and drawn underneath it anyway — a wash of
+       * unresolvable interference behind the one thing the picture was about,
+       * costing the most on exactly the arrangements with the most bodies,
+       * since every sample solves a retarded time per source and a meeting
+       * surface per pair.
+       *
+       * Left where it was, and opted out of rather than lowered. Below thirty
+       * pixels to a turn the shells are under three pixels apart and drawing
+       * them is drawing moiré — so the arrangements that want their field at a
+       * wide span say `summary: false` and get it, and everything else keeps
+       * the picture it had.
+       */
       const brief = summary ?? (turnPx < 30);
 
-      // Smooth where the winding can be read, grainy where it cannot.
-      const grain = grainAt(turnPx);
+      showing = !brief;
 
-      const bandPx = (CYCLE / 2) * (Math.min(w, h) / (2 * Math.max(span, 1)));
-      const SAMPLE = Math.max(Math.min(bandPx / 5, 4), 1.4);
+      if (brief) {
+        ground(ctx, w, h);
+
+        legend(ctx, w, h,
+          `too far out to resolve a band — showing the path each has taken`);
+
+        paths();
+        dots();
+
+        return;
+      }
+
+      /**
+       * Smooth where the structure can be read, grainy where it cannot — and
+       * smooth outright where there is no grain to show.
+       *
+       * Shells are worth drawing as shells only in the window where one of
+       * them is a thing you can see, and it is bounded at both ends.
+       *
+       * Too far apart, and there is no train: a body of tiny mass lets go of
+       * one every `1/mass` ticks, which for anything planetary is further than
+       * the frame is wide, so what would be drawn is one lonely ring and an
+       * empty picture. See `sparse`.
+       *
+       * Too close together, and there is no ring: at four pixels the shells
+       * are already finer than the screen can hold them apart, and drawing
+       * them produces moiré that moves when the source does — a pattern that
+       * looks like physics and is an artefact of the sampling. Below that the
+       * continuous reading is not merely nicer, it is the only one the picture
+       * can carry, and it is the accurate one anyway.
+       */
+      const shellPx = Math.min(...live.map(s => s.beat ?? 1)) * scale;
+
+      const grain = live.some(s => sparse(s.beat, span)) || shellPx < 4
+        ? 0 : grainAt(turnPx);
+
+      const bandPx = (wave / 2) * scale;
+
+      /**
+       * How finely to sample the picture — and it is coarsened by how much is
+       * IN the picture.
+       *
+       * Every sample costs a retarded time per source and a meeting surface
+       * per PAIR, so the work per sample goes as the number of bodies and
+       * then some: nine of them is eighty-one meeting surfaces where two is
+       * one. So the grid opens out in proportion — the same total work over
+       * fewer, bigger pixels, which is the right thing to give up when the
+       * alternative is an accurate picture nobody can watch move.
+       */
+      const crowd = Math.max(live.length, 2) / 2;
+      const SAMPLE = Math.max(Math.min(bandPx / 5, 4) * crowd, 1.4);
 
       const cols = Math.max(Math.round(w / SAMPLE), 1);
       const rows = Math.max(Math.round(h / SAMPLE), 1);
@@ -840,8 +778,26 @@ export const MetricField = ({
 
       const px = img.data;
 
-      const scale = Math.min(w, h) / (2 * span);
-      const reach = span * 0.6;
+      /**
+       * What counts as full brightness, and how far down from it to draw.
+       *
+       * Both were fixed, and both had to stop being fixed once there was a
+       * frame with a Sun in it. The brightest thing any of these pictures can
+       * hold is one source's own cell — `mass·fade(HALF)` — and how far the
+       * field falls from there to the corner is set by how wide the frame is,
+       * since it goes as one over r². Three decades covers a fourteen-cell
+       * picture and blacks out most of a thirty-six-cell one.
+       *
+       * So the top of the scale is measured off the sources actually present
+       * and the range is worked out from the span. Which is auto-exposure, and
+       * it is a drawing decision — it is stated on the picture, and nothing
+       * downstream of it is a number this model claims.
+       */
+      let peak = 0;
+
+      for (const s of live) peak = Math.max(peak, (s.mass ?? 1) * fade(HALF));
+
+      const decades = decadesFor(span);
 
       for (let y = 0; y < rows; y++) {
         const wy = ((y + 0.5) * (h / rows) - h / 2) / scale;
@@ -849,10 +805,10 @@ export const MetricField = ({
         for (let x = 0; x < cols; x++) {
           const wx = ((x + 0.5) * (w / cols) - w / 2) / scale;
 
-          const v = Math.max(Math.min(fieldAt(wx, wy, t, live, reach, grain), 1), -1);
+          const v = fieldAt(wx, wy, t, live, grain);
 
           // Shown on a log scale — see `shown`, and the legend below.
-          const k = shown(v);
+          const k = shown(Math.max(Math.min(v / peak, 1), -1), decades);
           const i = (y * cols + x) * 4;
           const d = DITHER[(y & 3) * 4 + (x & 3)];
 
@@ -899,22 +855,16 @@ export const MetricField = ({
       ctx.imageSmoothingEnabled = true;
       ctx.drawImage(buf, 0, 0, w, h);
 
-      legend(ctx, w, h, brief
-        ? `too far out to resolve the arm — showing the path each has taken`
-        : `field 1/r², log over ${DECADES} decades · ${
-          grain < 0.05 ? 'spiral, drawn continuous'
-            : grain > 0.95 ? 'shells' : 'spiral fading to shells'}`);
+      legend(ctx, w, h, `field 1/r², log over ${decades} decades · ${
+        grain < 0.05 ? 'drawn continuous'
+          : grain > 0.95 ? 'shells' : 'fading to shells'}`);
 
-      // And the shape of the motion, which is what survives being drawn from
-      // far away — the same picture Newton's panel draws, so the two can be
-      // read against each other.
-      if (brief)
-        for (const s of live)
-          trail(ctx, s.path, x => w / 2 + x * scale, y => h / 2 + y * scale, 0.5);
-
-      for (const s of live)
-        source(ctx, w / 2 + s.at[0] * scale, h / 2 + s.at[1] * scale,
-          { halo: 14, dot: 2.2 });
+      // And where each has been, over the field it laid down getting there.
+      // Both, now, rather than one or the other: the waves are what the model
+      // says is happening and the path is what came of it, and a picture of a
+      // solar system wants to show that the orbit was traced THROUGH this.
+      paths();
+      dots();
     }
 
     return {

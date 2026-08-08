@@ -330,11 +330,38 @@ export type Spin = {
    */
   turning?: number;
 
-  // Whether it alternates at all. A source that turns is already alternating
-  // and defaults to off; one that does not is a source with nothing to make a
-  // wave out of unless it flips, and defaults to on. Off for both is a magnet
-  // simply held, which puts out one steady stream per pole.
-  flips?: boolean;
+  /**
+   * Whether it alternates at all, and if so how fast.
+   *
+   * A source that turns is already alternating and defaults to off; one that
+   * does not is a source with nothing to make a wave out of unless it flips,
+   * and defaults to on. Off for both is a magnet simply held, which puts out
+   * one steady stream per pole.
+   *
+   * A NUMBER is how many times it turns over per `CYCLE` ticks, so one is as
+   * fast as anything here alternates — an eighth of a turn a tick, which is
+   * the smallest rotation this space has — and a fraction is slower. There is
+   * no such thing as faster, for the same reason `turnEvery` cannot go below
+   * one: anything quicker is not a faster alternation but a coarser one.
+   *
+   * Which matters for two reasons that have nothing to do with each other.
+   *
+   * A body's alternation sets the WAVELENGTH of what it puts out, and so how
+   * fast the picture of it moves: the pattern travels a cell a tick whatever
+   * it is, so a source flipping every `P` ticks lays down bands `P` cells
+   * apart and a viewer sees them go by at `rate/P` a second. At the lattice's
+   * own pace that is a strobe in any picture watched at a watchable speed, and
+   * the two demands — a clock that moves and a wave that can be looked at —
+   * are only separable because this can be turned down.
+   *
+   * And nothing makes two independent bodies alternate in step. Given
+   * different rates they drift through every phase against each other, which
+   * is what `shortfall` means by `drifting`, and half of everything they do
+   * is opposite. Which is also what the coherent calculation converges to
+   * beyond a wavelength — so at solar-system separations this changes the
+   * picture and does not change the pull.
+   */
+  flips?: boolean | number;
 
   // Where in the cycle it starts, in turns. The only thing one source can be
   // against another, and the reason two of them meeting are alike or
@@ -371,8 +398,15 @@ export const sided = (s: Spin) => !!(s.axis || s.turning);
  * same spacing. What separates them is not the clock. It is whether the state
  * the clock advances has a direction in it — see `sided`.
  */
-export const rate = (s: Spin): number =>
-  s.turning ?? ((s.flips ?? !s.turning) ? 1 : 0);
+export const rate = (s: Spin): number => {
+  if (s.turning !== undefined) return s.turning;
+
+  // How many turns per CYCLE, said outright — never more than one, which is
+  // as fast as this space alternates.
+  if (typeof s.flips === "number") return Math.min(Math.abs(s.flips), 1);
+
+  return (s.flips ?? true) ? 1 : 0;
+};
 
 /**
  * Where its north points at a given tick, in turns.

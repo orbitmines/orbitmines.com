@@ -141,7 +141,7 @@ let SPREAD = 1;
  * meeting anything and summing a few hundred nothings into every query is the
  * whole cost of this.
  */
-const survey = (live: Live[], t: number, reach: number, span: number) => {
+const survey = (live: Live[], t: number, span: number) => {
   const STEPS = 22;
 
   siteCount = 0;
@@ -203,7 +203,7 @@ const survey = (live: Live[], t: number, reach: number, span: number) => {
       const x = mx - look + (gx + 0.5) * step;
 
       for (let i = 0; i < live.length; i++) {
-        val[i] = emit(live[i], live[i], x, y, t, reach);
+        val[i] = emit(live[i], live[i], x, y, t);
         dirX[i] = WAY[0]; dirY[i] = WAY[1];
       }
 
@@ -827,7 +827,6 @@ export const ContinuousField = ({
       // Cells to the shorter side of the picture, so the same world is framed
       // whatever shape the canvas is.
       const scale = Math.min(w, h) / (2 * span);
-      const reach = span * 0.6;
 
       for (let y = 0; y < rows; y++) {
         const wy = ((y + 0.5) * (h / rows) - h / 2) / scale;
@@ -835,7 +834,7 @@ export const ContinuousField = ({
         for (let x = 0; x < cols; x++) {
           const wx = ((x + 0.5) * (w / cols) - w / 2) / scale;
 
-          const v = Math.max(Math.min(fieldAt(wx, wy, t, live, reach, grain), 1), -1);
+          const v = Math.max(Math.min(fieldAt(wx, wy, t, live, grain), 1), -1);
 
           /**
            * Amber one way, cyan the other, and the background where the two
@@ -925,11 +924,9 @@ export const ContinuousField = ({
     const TOUCH = 1;                              // as close as adjacent gets
 
     function pull(dt: number) {
-      const reach = span * 0.6;
-
       // Where space is going, worked out once for the whole picture. After
       // this nothing asks about sources again — only about places.
-      survey(live, t, reach, span);
+      survey(live, t, span);
 
       // What the annihilation does to the space, carried forward and let
       // travel. See `warpStep` — this is where gravity now lives.

@@ -3184,7 +3184,7 @@ export class Ray {
   // than of the clock every source shares, so two of them in one world can be
   // doing different things at different rates.
   beat?: number;
-  flips?: boolean;
+  flips?: boolean | number;
 
   // Which way round it is: `emits` out of the half pointing this way, the
   // opposite out of the half pointing back, nothing across the middle. Absent

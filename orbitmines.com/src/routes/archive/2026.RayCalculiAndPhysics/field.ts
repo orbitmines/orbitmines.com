@@ -19,11 +19,15 @@
  *   grain        = 0 close in, 1 far out          see `grainAt`
  *
  *   R(d̂)         = (gap/2) / (d̂·û)   for d̂·û > HEAD_ON, else ∞
- *                                                 where a wave stops
+ *                                                 where a wave MAY stop
+ *   through(m,r) = max(1 − chance(m, r), 0)       and how much of it doesn't:
+ *                  the chance the cell it arrives at is EMPTY. Close in that is
+ *                  nought and the surface is a wall; far out it is nearly one
+ *                  and the two fields pass straight through each other.
  *   bounced      = alike(mine, theirs) · emit at path 2R − r
  *                                                 what turned round and came back
  *
- *   field(x,t)   = Σ_a [ emit_a·Θ(R−r) + Σ_b bounced_ab ]
+ *   field(x,t)   = Σ_a [ emit_a·Π_b through_b + Σ_b bounced_ab ]
  *
  */
 
@@ -133,6 +137,39 @@ export const chance = (mass: number, r: number) => mass * SHEET / shell(r);
 
 // The same thing without the mass, kept for the drawing.
 export const fade = (r: number) => 1 / shell(r);
+
+/**
+ * And the chance it gets past — which is the same number read the other way.
+ *
+ * This is the answer to "do the waves go through each other", and the answer
+ * the model gives is: SOMETIMES, and how often is not a new rule. A charge
+ * arriving at a cell either finds one of this source's charges in it, in which
+ * case something happens — they annihilate, or they turn each other round —
+ * or it finds the cell empty and carries straight on. `chance` is the
+ * probability of the first, so this is the probability of the second, and
+ * there is nothing else to it.
+ *
+ * What that fixes is a thing this file was getting wrong in both directions at
+ * once. The drawing stopped every wave DEAD at the surface halfway between two
+ * sources, whatever the distance — so a pair a hundred cells apart cast an
+ * infinite shadow across the whole picture, and no third body could ever be
+ * reached through it. The dynamics did the opposite and let everything through
+ * unattenuated, so a body directly behind another felt it as though the one in
+ * front were not there.
+ *
+ * Neither is what a shell of discrete charges does. Close in, the shell is
+ * crowded and nearly everything meets something: `chance` exceeds one and this
+ * is nought, which is the wall the drawing used to assume everywhere. Far out
+ * the same shell has spread over 4πr² cells and is mostly gaps, so nearly
+ * everything sails through — and that, rather than an angle cut, is why the
+ * arms of two distant sources overlap instead of eclipsing.
+ *
+ * The falloff and the transparency are therefore ONE fact about the geometry,
+ * counted once. Nothing was added to get this; it is `chance` subtracted from
+ * certainty.
+ */
+export const through = (mass: number, r: number) =>
+  Math.max(1 - chance(mass, r), 0);
 
 export type Emitter = {
   // Where it is, in cells.
@@ -482,7 +519,7 @@ export const retard = (s: Live, x: number, y: number, t: number) => {
 
 
 export const emit = (
-  s: Live, w: Emitter, x: number, y: number, t: number, reach: number,
+  s: Live, w: Emitter, x: number, y: number, t: number,
   known?: number, grain = 1,
 ) => {
   // Solving the retarded time is the most expensive thing here, and whoever
@@ -515,7 +552,25 @@ export const emit = (
   const front = (w.beat || w.settled) ? 1 : Math.min((t * LIGHT - r) / 1.5, 1);
   if (front <= 0) return 0;
 
-  const thinning = fade(r);
+  /**
+   * Thinned by the shell it has spread over, AND by how much was put into it.
+   *
+   * Which is `chance(m, r)` up to the constant `SHEET` — the same quantity the
+   * pull is counted out of in `shortfall` — so the picture and the dynamics
+   * are drawing the same number. Without the mass every source came out the
+   * same brightness whatever it weighed, and the one thing a field picture is
+   * for is showing where the gravity is: a thing a millionth of the weight
+   * drawn as bright as the thing it orbits is not a picture of that.
+   *
+   * The cost is worth stating rather than discovering. In a real system the
+   * mass ratios are millions to one, so this is a picture of the Sun and
+   * essentially nothing else: at Mercury's distance the Sun's field is some
+   * sixty thousand times what Mercury is putting out at its own doorstep, and
+   * no exposure separates those, because the disagreement is not about
+   * exposure. The planets are in the picture as sources moving through a field
+   * rather than as sources with fields — which is what they are.
+   */
+  const thinning = (w.mass ?? 1) * fade(r);
 
   /**
    * cos(θ − ψ) without ever working out θ.
@@ -726,7 +781,7 @@ export const meets = (
  * is.
  */
 export const bounced = (
-  a: Live, b: Live, x: number, y: number, t: number, reach: number,
+  a: Live, b: Live, x: number, y: number, t: number,
   known?: number, given?: number,
 ) => {
   // From where it was when this left it, for the reason given in `fieldAt`.
@@ -784,7 +839,7 @@ export const bounced = (
   const hitX = RETARD[0] + dx * mirror, hitY = RETARD[1] + dy * mirror;
   const struck = t - (mirror - r) / LIGHT;
 
-  const theirs = emit(b, b, hitX, hitY, struck, reach);
+  const theirs = emit(b, b, hitX, hitY, struck);
 
   // Same sign and the two turned each other round; opposite, and they are
   // both gone. The identical expression the lattice takes at ±1 to get
@@ -840,7 +895,7 @@ export const bounced = (
 const MIRRORS: number[] = [];
 
 export const fieldAt = (
-  x: number, y: number, t: number, sources: Live[], reach: number,
+  x: number, y: number, t: number, sources: Live[],
   grain = 1,
 ) => {
   let total = 0;
@@ -868,9 +923,23 @@ export const fieldAt = (
 
     dx /= r; dy /= r;
 
-    // As far as the nearest thing that was in the way when it went past, and
-    // no further.
-    let stop = Infinity;
+    /**
+     * Thinned by everything that was in the way when it went past — and
+     * thinned rather than stopped.
+     *
+     * This tested `r < stop` and dropped the term outright beyond the first
+     * surface, which says that two sources cast perfect shadows of unlimited
+     * range on each other. They do not. What is at the surface is a shell of
+     * discrete charges spread over 4πR² cells, and whether an arriving charge
+     * meets one is a coin weighted by how crowded that shell is — see
+     * `through`. Close in it is a wall; a hundred cells out it is mostly gaps
+     * and nearly everything sails past.
+     *
+     * Which is what lets a third body be reached THROUGH a pair that is busy
+     * annihilating between themselves, and it is the same number that sets the
+     * falloff, so nothing was added to get it.
+     */
+    let clear = 1;
     let seen = 0;
 
     for (const b of sources) {
@@ -879,16 +948,17 @@ export const fieldAt = (
       const at = meets(a, b, dx, dy, when);
 
       MIRRORS[seen++] = at;
-      if (at < stop) stop = at;
+      if (!isFinite(at)) continue;
+
+      // How far past the surface this sample is, softened over a cell — the
+      // end of a wave is a place rather than an event.
+      const past = Math.min(Math.max((r - at) / 1.5, 0), 1);
+      if (past <= 0) continue;
+
+      clear *= 1 + past * (through(b.mass ?? 1, at) - 1);
     }
 
-    if (r < stop) {
-      // Faded over a cell at the surface, so the end of a wave is a place
-      // rather than an event.
-      const edge = isFinite(stop) ? Math.min((stop - r) / 1.5, 1) : 1;
-
-      total += emit(a, a, x, y, t, reach, when, grain) * edge;
-    }
+    if (clear > 1e-4) total += emit(a, a, x, y, t, when, grain) * clear;
 
     // Only where something was in the way. Over most of any of these pictures
     // nothing is — a ray not aimed at the other source never meets it — and
@@ -902,13 +972,37 @@ export const fieldAt = (
       const mirror = MIRRORS[seen++];
       if (!isFinite(mirror) || r >= mirror) continue;
 
-      total += bounced(a, b, x, y, t, reach, when, mirror);
+      // And only the part of it that met anything can have come back. What
+      // got through is already counted above, going the other way.
+      const met = 1 - through(b.mass ?? 1, mirror);
+      if (met <= 1e-4) continue;
+
+      total += bounced(a, b, x, y, t, when, mirror) * met;
     }
   }
 
   return total;
 };
 
+
+/**
+ * Whether a source's shells are far enough apart to be worth drawing as
+ * shells at all.
+ *
+ * A body lets go of one every `beat` ticks and they travel a cell a tick, so
+ * `beat` is also the gap between them in cells. Unit mass puts one a cell and
+ * a picture of that is rings; the Earth, at three millionths of the Sun, puts
+ * one every three hundred thousand cells, and there is not a second one of
+ * them anywhere in any frame. Drawing THAT as a pulse train is drawing one
+ * ring and calling the rest of the picture empty.
+ *
+ * Which is not what the model says is there. The closed form is defined at
+ * every moment; shells are what you get by asking about it only at the
+ * instants a pulse left, and where the pulses are further apart than the
+ * picture is wide, the aggregate is the only honest reading left.
+ */
+export const sparse = (beat: number | undefined, span: number) =>
+  (beat ?? 1) > span;
 
 /**
  * How grainy to draw the field at a given scale.

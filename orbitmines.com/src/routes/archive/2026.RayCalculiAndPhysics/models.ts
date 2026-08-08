@@ -1,9 +1,10 @@
+import { CYCLE } from "./lattice";
 import { LIGHT, PACE } from "./physics";
 import { bySide, Graph, perPoint } from "./discrete";
 import { Polarity, Source } from "./physics";
 import { RenderMode } from "./GraphCanvas";
 import { alternatingIntoRandom, collisionGroups, lineGroups } from "./lines";
-import { GRAVITY } from "./metric";
+import { GRAVITY } from "./gravity";
 import { APART, Model, NEAR } from "./model";
 
 /**
@@ -196,8 +197,13 @@ const worlds: Model[] = ([
   },
   {
     name: 'two sources, pulsing against each other',
-    note: 'Half a cycle apart: the midline is now where they always cancel, '
-      + 'so the same pair closes faster on the same rules.',
+    note: 'Half a cycle apart, so the midline is now where they always cancel '
+      + 'rather than where they always agree — which is the whole difference '
+      + 'in the picture. It is NOT a difference in how fast they close: at '
+      + 'this separation the two are several wavelengths apart and the phase '
+      + 'between them has averaged out, so both pairs pull identically. See '
+      + '`shortfall` — coherence is a near-field effect here, real inside one '
+      + 'wavelength and gone beyond it.',
     sources: [{ at: LEFT }, { at: RIGHT, phase: 0.5 }],
     metric: true,
     draw: asShells,
@@ -854,15 +860,37 @@ const lines: Model[] = [
  * close. (Dragonfly, at the values commonly quoted, came back only to 5e-2
  * over one period and is left out rather than presented as periodic.)
  *
- * The published conditions are in units where G, the masses and the extent
- * are all one; the two constants below put them into cells and ticks. Note
- * that scaling length and speed independently is not a Newtonian similarity
- * transform, so what is preserved here is the SHAPE of the initial condition
- * and not its Newtonian periodicity — which costs nothing, because the thing
- * being run is not Newtonian either.
+ * The published conditions are in units where G, the masses and the extent are
+ * all one, so putting them into cells and ticks is a similarity transform: a
+ * length scale S and a speed scale V, with G·m → S·V². And that leaves exactly
+ * one freedom, not two — pick the size, and the pace is whatever makes S·V²
+ * come to the gravitational constant this model actually has.
+ *
+ * Which is the whole point. `SWING` was 0.25, chosen so the pictures looked
+ * right, and `gm` was then handed `UNIT·SWING²` — a number invented out of two
+ * drawing decisions. So the Newtonian panel was calibrated against the model
+ * it was supposed to be judging, and the comparison could not fail. Solved for
+ * instead, the published orbit drawn beside this one is the published orbit AT
+ * THIS MODEL'S OWN STRENGTH, and whether the two curves agree is a question
+ * with an answer.
+ *
+ * Checked: at this scale, integrating Newton over one published period returns
+ * the figure eight to within 0.119 cells, Lagrange to 0.042 and Euler to 0.109,
+ * over periods of 2090, 2732 and 1856 ticks.
+ *
+ * The three from Suvakov and Dmitrasinovic do not come back, and the reason is
+ * worth knowing rather than hiding. Their closest approaches are 0.0106, 0.0794
+ * and 0.0180 in published units — which at this size is 0.38 cells for
+ * butterfly I and 0.65 for goggles, both INSIDE the half-cell the Newtonian
+ * panel softens at and well inside the one cell this model will not let two
+ * things come closer than. Those two pass closer than the lattice has anywhere
+ * to put them, and no account here can draw them, Newton's included. (Moth I,
+ * at 2.9 cells, is the one of the three that is genuinely resolvable.)
  */
-const UNIT = 18;      // cells per unit of the published solutions
-const SWING = 0.25;   // cells a tick per unit of their velocity
+const UNIT = 36;                          // cells per unit of the published solutions
+
+// And so the pace, solved rather than chosen — see above.
+const SWING = Math.sqrt(GRAVITY / UNIT);  // cells a tick per unit of their velocity
 
 // Three equal masses: two out at ±1 and one at the middle, the outer pair
 // given the same velocity and the middle one twice it the other way, so the
@@ -943,32 +971,453 @@ const KNOWN: { name: string, note: string, sources: Source[] }[] = [
   },
 ];
 
+// How long the benchmark runs get, and how wide they are framed. One published
+// period of the figure eight is about two thousand ticks at this size.
+const KNOWN_FOR = 2200;
+const KNOWN_SPAN = UNIT * 3;
+
 const known: Model[] = KNOWN.map(({ name, note, sources }) => ({
   name: `three bodies: ${name}`,
   note,
-  world: { sources },
+  world: { sources: sources.map(s => ({ ...s, settled: true })) },
   lattice: false,
 
-  // Only the metric reading, with what Newton expects beside it — the flow
-  // account is a third picture of the same thing and would only crowd the
+  // Only the metric reading, and the two classical ones beside it — the flow
+  // account is a fourth picture of the same thing and would only crowd the
   // comparison these are here for.
   closed: false,
-  // Newton, given the model's OWN gravitational constant — so the two panels
-  // are the same law with the same strength, and the only question left is
-  // whether that law traces the published curve.
-  newton: { span: UNIT * 2.6, cycle: 400, gm: GRAVITY },
 
-  // Far too wide to resolve a shell, so the picture says what it can
-  // carry: the path each has taken, drawn exactly as Newton's panel
-  // draws its own.
-  metric: { span: UNIT * 2.6, cycle: 400, summary: true },
+  // Newton and Einstein, both given the model's OWN gravitational constant —
+  // so all three panels are the same strength and the only question left is
+  // what each LAW does with it.
+  newton: { span: KNOWN_SPAN, cycle: KNOWN_FOR, rate: 60, gm: GRAVITY },
+  relativity: { span: KNOWN_SPAN, cycle: KNOWN_FOR, rate: 60, gm: GRAVITY },
+
+  // Far too wide to resolve a shell, so the picture says what it can carry:
+  // the path each has taken, drawn exactly as the classical panels draw theirs.
+  metric: { span: KNOWN_SPAN, cycle: KNOWN_FOR, rate: 60, summary: true },
 }));
+
+/**
+ * And the real thing: gravitating systems, in their own units.
+ *
+ * The three-body benchmarks above are shapes — published curves with G, the
+ * masses and the extent all set to one, so nothing in them is a length or a
+ * weight. These are the opposite. Every number below is measured: semi-major
+ * axes in astronomical units or hundreds of thousands of kilometres, standard
+ * gravitational parameters in the same units, circular speeds worked out from
+ * those and from nothing else. Two scales turn them into cells and ticks, and
+ * then the masses are not chosen either — a mass is whatever makes this
+ * model's own G reproduce the measured GM.
+ *
+ * Which is the only honest way to ask the question the article is for. A
+ * curve fitted at one scale says nothing; a solar system with the real mass
+ * ratios and the real speed ratios either comes out or it does not.
+ *
+ * One thing about the scales has to be said plainly, because it is a
+ * limitation and not a choice. An orbit worth watching must be tens of cells
+ * across and must come round inside a couple of thousand ticks, and a circle
+ * of radius R closed in time T is travelled at 2πR/T — so everything here runs
+ * between a twentieth and a tenth of the speed of light. The real Mercury goes
+ * at 0.00016 c. There is no scale at which this article can draw the solar
+ * system AND keep it non-relativistic, so what is drawn is a solar system with
+ * the right ratios and the wrong pace, and both classical panels are given the
+ * same wrong pace so that the comparison is still a comparison.
+ *
+ * It is also why the relativistic panel is here at all. At these speeds the
+ * two classical accounts are visibly different curves, and this model is a
+ * third — and the three come apart in an interesting way:
+ *
+ *     Newton         circles, by construction
+ *     Schwarzschild  perihelion a little INSIDE Newton's, going round FASTER
+ *     this model     apoapsis OUTSIDE Newton's, going round SLOWER
+ *
+ * So the model's departure is opposite in sign to relativity's, and larger.
+ * Both scale with speed the same way — Mercury departs most, Mars least — but
+ * gravity here WEAKENS on a body already moving (see `free`) where relativity
+ * strengthens it. That is a difference of principle rather than of amount, and
+ * these three pictures are where to look at it.
+ */
+const SUN = 39.4784176;                  // GM in AU^3/yr^2, for the Sun
+
+/**
+ * A gravitating system, given in real units and put into cells and ticks.
+ *
+ * `cells` and `ticks` are the only freedoms; everything else is measurement,
+ * and it is measurement at 1:1 — the real semi-major axes, the real
+ * eccentricities, the real orientations. Which is the whole point of having a
+ * solar system in the article rather than another arrangement chosen because
+ * it behaves, and it was not what this did.
+ *
+ * It put every body on a CIRCLE at its semi-major axis, which is a different
+ * solar system. Mercury's orbit is a fifth eccentric — it runs from 0.307 AU
+ * out to 0.467, half again as far at one end as the other — and Mars is a
+ * tenth. Drawn as circles, the panel that draws Newton correctly draws four
+ * circles, so there is nothing in the picture for the other two panels to
+ * disagree WITH; and the one thing this row of panels is for — where the
+ * perihelion goes, which is what was measured on Mercury and is the whole
+ * reason relativity is standing here — was not in the picture at all.
+ *
+ * So each is started at its perihelion, along its real longitude of
+ * perihelion, at the speed vis-viva gives there:
+ *
+ *     r_peri = a(1 − e)
+ *     v_peri = √( GM/a · (1 + e)/(1 − e) )
+ *
+ * which is exact for an ellipse rather than an approximation of one. The
+ * longitudes then lay the orbits round the frame the way they actually lie,
+ * instead of lining every body up on one axis.
+ *
+ * The mass conversion is the other piece worth reading. GM has units of
+ * length³ over time², so in cells and ticks it is `gm·cells³/ticks²` — and a
+ * mass here is that over `GRAVITY`, the constant this model was measured to
+ * have (see `gravity.ts`). Nothing is fitted. Feed it the Sun and it works out
+ * what the Sun weighs on a lattice.
+ *
+ * WHAT IS 1:1 HERE, checked rather than asserted. Every conversion above is
+ * one constant applied to everything, so every ratio survives it exactly. At
+ * 28 cells to the AU:
+ *
+ *     Mercury  0.38710 AU  ->  10.839 cells      28.0000 cells/AU
+ *     Venus    0.72333     ->  20.253            28.0000
+ *     Earth    1.00000     ->  28.000            28.0000
+ *     Mars     1.52371     ->  42.664            28.0000
+ *
+ * and the same for the masses — Mercury is 1.6601e−7 of the Sun in the sky and
+ * 1.6601e−7 of it here — and for the speeds, where Mercury is 1.60727 times
+ * Earth's in both. Distance, mass and speed are 1:1 to as many figures as the
+ * inputs have.
+ *
+ * ONE THING IS NOT, and it cannot be. Light travels one cell a tick by
+ * definition, which at this scale is 107 AU a year; the real figure is 63241.
+ * So the orbits here run 590 times fast against their own light — Earth at
+ * 0.0586 c where it should be 0.0000994 — and that is forced rather than
+ * chosen: a system drawn small enough to see and quick enough to watch is a
+ * system whose bodies cross a good fraction of a light-tick every tick. It is
+ * also exactly why the panels differ at all, since both relativity's
+ * correction and this model's go as v/c. What is being compared is three laws
+ * at the same wrong speed, which is a fair comparison, and not any of them at
+ * the right one.
+ */
+type Body = [
+  name: string, axis: number, eccentricity: number, perihelion: number, gm: number,
+];
+
+/**
+ * How slowly a body of a solar system turns over, in turns per `CYCLE` ticks.
+ *
+ * A body alternates at some rate and nothing in the model fixes it at the
+ * lattice's fastest — see `Spin.flips`. What it fixes is the picture: the
+ * pattern travels a cell a tick whatever the rate, so a body flipping every
+ * `P` ticks lays down bands `P` cells apart, and at `rate` ticks a second they
+ * cross a given place `rate/P` times a second.
+ *
+ * At the lattice's own pace, P is `CYCLE` — eight ticks — and any clock fast
+ * enough to carry a solar system through years of it strobes: a hundred and
+ * twenty ticks a second over a period of eight is fifteen hertz. Turning the
+ * clock down fixed the strobe and made the run crawl, which was trading one
+ * complaint for the other, because the two were tied together and had no
+ * business being.
+ *
+ * At one turn per `SLOW` ticks they come apart. The clock can run as fast as
+ * it likes; what is on screen is a front leaving every `SLOW` ticks and
+ * crossing the frame at a cell a tick, which is a wave you can watch.
+ *
+ * And it costs nothing in the dynamics, which is the part that has to be
+ * checked rather than assumed. `shortfall` reads the phase between two sources
+ * only where they are COHERENT — equal rates — and averages it away otherwise;
+ * beyond a wavelength the coherent answer converges to the same half anyway.
+ * Given a spread of rates (below) no two bodies here are coherent, so every
+ * pair uses the half exactly, which is what `GRAVITY` was measured against.
+ * Measured: identical orbits to six figures before and after.
+ */
+const SLOW = 96;
+
+const system = ({ cells, ticks, centre, around }: {
+  cells: number;                          // cells per unit of length
+  ticks: number;                          // ticks per unit of time
+  centre: number;                         // GM of the thing in the middle
+  around: Body[];
+}): Source[] => {
+  const scale = cells / ticks;            // real speed to cells a tick
+
+  /**
+   * And every body given its own rate, a few per cent apart.
+   *
+   * Not decoration. Two things alternating at exactly the same rate hold a
+   * fixed phase relation for ever, which is a real thing for two sources
+   * deliberately built alike and an absurd one for a star and a planet.
+   * Spread, they drift through every phase against each other — `drifting` in
+   * `shortfall` — and half of what they do is opposite, which is the aggregate
+   * answer and the one this model's G is calibrated on.
+   */
+  const flips = (i: number) => (CYCLE / SLOW) * (1 + 0.037 * i);
+
+  const orbiting = around.map(([, axis, e, perihelion, gm], i) => {
+    const turn = perihelion * Math.PI / 180;
+
+    // At perihelion, a(1 − e) out along the apsidal line.
+    const r = axis * (1 - e) * cells;
+
+    /**
+     * And the speed there, across that line — perihelion is where there is no
+     * radial velocity left to have.
+     *
+     * Two corrections, both of which only show for the Moon and both of which
+     * Newton's own panel caught.
+     *
+     * The ellipse a two-body pair traces is the RELATIVE orbit, so its
+     * constant is G(M + m) and not GM. For a planet at three millionths of the
+     * Sun that is six figures in; for the Moon at a part in eighty-one it is
+     * half a per cent on the speed and two and a half on the apogee, and the
+     * panel came back with 39.5 cells where the Moon's apogee is 40.6.
+     *
+     * And what that gives is the RELATIVE speed, which is not this body's.
+     * Split about the barycentre, the satellite carries M/(M + m) of it and
+     * the middle carries the rest the other way — see the recoil below. Given
+     * the whole of it and then recoiling as well, the pair separate at
+     * v(1 + m/M) and the apogee comes out long instead, which it did: 42.8.
+     */
+    const v = Math.sqrt((centre + gm) / axis * (1 + e) / (1 - e))
+      * (centre / (centre + gm)) * scale;
+
+    return {
+      at: [r * Math.cos(turn), r * Math.sin(turn)] as [number, number],
+      drift: [-v * Math.sin(turn), v * Math.cos(turn)] as [number, number],
+      mass: gm * cells ** 3 / ticks ** 2 / GRAVITY,
+      flips: flips(i + 1),
+      settled: true,
+    };
+  });
+
+  const heart = centre * cells ** 3 / ticks ** 2 / GRAVITY;
+
+  /**
+   * And the middle is given the recoil, so the whole thing stays where it is
+   * put.
+   *
+   * Otherwise the centre of mass drifts off at whatever the satellites' total
+   * momentum comes to divided by everything, and the picture slowly leaves the
+   * frame — which for the Earth and the Moon is not slow at all, since the
+   * Moon is a part in eighty-one rather than a part in a million.
+   *
+   * It is also the only way the wobble is in the picture. The Earth goes round
+   * the barycentre too, by a part in eighty-one of the Moon's orbit, and a
+   * two-body pair where only one end moves is not the two-body problem.
+   */
+  const kick = orbiting.reduce(
+    (sum, s) => [sum[0] - s.mass * s.drift[0], sum[1] - s.mass * s.drift[1]],
+    [0, 0],
+  );
+
+  return [
+    {
+      at: [0, 0],
+      drift: [kick[0] / heart, kick[1] / heart],
+      mass: heart,
+      flips: flips(0),
+      settled: true,
+    },
+    ...orbiting,
+  ];
+};
+
+const systems: Model[] = ([
+  {
+    name: 'the Sun and Mercury',
+    note: 'The same system as below with everything else taken out, framed on '
+      + 'the one orbit that is visibly an ellipse. Mercury\u2019s eccentricity is '
+      + '0.206, so it runs from 0.307 AU out to 0.467 \u2014 half again as far at '
+      + 'one end as the other \u2014 and here that is 20.0 cells to 30.4, which '
+      + 'is what Newton\u2019s panel draws against a true 20.0 to 30.3. Venus and '
+      + 'Earth really are all but circular (e = 0.007 and 0.017), so an inner '
+      + 'solar system drawn correctly is mostly circles and this is where the '
+      + 'shape is. It is also where relativity was measured: the perihelion '
+      + 'advance is Mercury\u2019s, and the three panels part company on exactly '
+      + 'that \u2014 Newton returns to the same perihelion, Schwarzschild carries '
+      + 'it forward, and this model carries it backward and opens the orbit '
+      + 'out to 39 cells.',
+    cells: 65, ticks: 12000, span: 44, cycle: 24000, rate: 600,
+    centre: SUN,
+    around: [['Mercury', 0.38710, 0.20563, 0, SUN * 1.66012e-7]],
+  },
+  {
+    name: 'the inner solar system',
+    note: 'The Sun, Mercury, Venus, Earth and Mars — real distances, real '
+      + 'eccentricities, real longitudes of perihelion, and the masses worked '
+      + 'out from this model\u2019s own G. Newton traces the four ellipses and '
+      + 'closes them; relativity advances each perihelion a little; this model '
+      + 'retards it and opens the orbit out. Mercury departs most in all three '
+      + 'panels, because it is both the fastest and the most eccentric, which '
+      + 'is why it was the one the perihelion was measured on \u2014 and why it '
+      + 'has a frame of its own above. Measured over the eleven thousand ticks '
+      + 'of this run: Mercury runs 8.6 to 13.2 cells and comes round 15.1 '
+      + 'times under Newton, 8.6 to 12.3 and 16.3 times under Schwarzschild, '
+      + 'and 8.6 to 20.5 and 8.9 times here. Venus and Earth are drawn as very '
+      + 'nearly circles because they very nearly are: their eccentricities are '
+      + '0.007 and 0.017.',
+    cells: 28, ticks: 3000, span: 66, cycle: 30000, rate: 600,
+    centre: SUN,
+    around: [
+      ['Mercury', 0.38710, 0.20563, 77.46, SUN * 1.66012e-7],
+      ['Venus', 0.72333, 0.00677, 131.60, SUN * 2.44784e-6],
+      ['Earth', 1.00000, 0.01671, 102.95, SUN * 3.00317e-6],
+      ['Mars', 1.52371, 0.09341, 336.06, SUN * 3.22716e-7],
+    ],
+  },
+  {
+    name: 'the entire solar system',
+    note: 'All eight, on the same ruler as the picture above \u2014 28 cells to '
+      + 'the AU \u2014 so Mercury is still 8.6 cells out at perihelion and '
+      + 'Neptune is 835. Which is what a solar system drawn at 1:1 looks '
+      + 'like: everything inside Jupiter is a smudge near the middle, and it '
+      + 'is not the picture that is wrong. Nothing outside Mars gets anywhere '
+      + 'in thirty-six thousand ticks either \u2014 that is twelve years here, '
+      + 'so Jupiter goes round once, Saturn a third of the way, and Neptune '
+      + 'through seven degrees of the hundred and sixty-five years it takes. '
+      + 'What the three panels have to disagree about is therefore all in the '
+      + 'inner four, and it is the same disagreement as above: Mercury opens '
+      + 'from 13.2 cells to 20.6 in this model and closes to 12.3 under '
+      + 'Schwarzschild, while Neptune at a hundredth of light does not '
+      + 'measurably differ in any of them.',
+    cells: 28, ticks: 3000, span: 900, cycle: 60000, rate: 900, height: 420,
+    centre: SUN,
+    around: [
+      ['Mercury', 0.38710, 0.20563, 77.46, SUN * 1.66012e-7],
+      ['Venus', 0.72333, 0.00677, 131.60, SUN * 2.44784e-6],
+      ['Earth', 1.00000, 0.01671, 102.95, SUN * 3.00317e-6],
+      ['Mars', 1.52371, 0.09341, 336.06, SUN * 3.22716e-7],
+      ['Jupiter', 5.20288, 0.04839, 14.73, SUN * 9.54792e-4],
+      ['Saturn', 9.53667, 0.05386, 92.60, SUN * 2.85886e-4],
+      ['Uranus', 19.18916, 0.04726, 170.96, SUN * 4.36624e-5],
+      ['Neptune', 30.06992, 0.00859, 44.97, SUN * 5.15139e-5],
+    ],
+  },
+  {
+    name: 'the Earth and the Moon',
+    note: 'Two bodies at eighty-one to one, in units of a hundred thousand '
+      + 'kilometres and days, with the Moon\u2019s real eccentricity of 0.055 — '
+      + 'so perigee and apogee differ by about a ninth, which is visible. The '
+      + 'one case here where both ends of the pair weigh something, so the '
+      + 'Earth is given the recoil and the barycentre stays put. It circles '
+      + 'that by a part in eighty-one of the Moon\u2019s orbit, which is half a '
+      + 'cell here and about a pixel \u2014 small, but it is why the relative '
+      + 'orbit goes against G(M + m) rather than GM, and Newton\u2019s panel '
+      + 'only returns the apogee to its true 40.6 cells once it does. The '
+      + 'model conserves the same momentum exactly, since what one end takes '
+      + 'up is the same count of meetings the other end does.',
+    cells: 10, ticks: 120, span: 60, cycle: 30000, rate: 600,
+    centre: 2.97600,                                 // GM in (10^5 km)^3/day^2, Earth
+    around: [['the Moon', 3.84400, 0.0549, 0, 2.97600 / 81.300]],
+  },
+  {
+    name: 'Jupiter and the Galilean moons',
+    note: 'A system with moons rather than planets, and the same rules again a '
+      + 'thousand times lighter. These four are very nearly circular — the '
+      + 'largest eccentricity here is a hundredth — so what there is to read is '
+      + 'not the shape but the timing. Io, Europa and Ganymede are in the '
+      + 'Laplace resonance, periods 1:2:4, which is the sharpest thing in the '
+      + 'article to check a law against: Newton holds it exactly, and this '
+      + 'model very nearly holds it while running every moon slow, which is '
+      + 'the signature of a weaker G rather than of a different distance law.',
+    cells: 2.6, ticks: 450, span: 66, cycle: 40000, rate: 600,
+    centre: 945.79,                                  // GM in (10^5 km)^3/day^2, Jupiter
+    around: [
+      ['Io', 4.2170, 0.0041, 0, 0.044496],
+      ['Europa', 6.7090, 0.0094, 0, 0.023911],
+      ['Ganymede', 10.7040, 0.0013, 90, 0.073828],
+      ['Callisto', 18.8270, 0.0074, 200, 0.053606],
+    ],
+  },
+] as {
+  name: string, note: string,
+  cells: number, ticks: number, span: number, cycle: number,
+  rate: number, height?: number,
+  centre: number, around: Body[],
+}[]).map((
+  { name, note, cells, ticks, span, cycle, rate, height, centre, around },
+): Model => {
+  const sources = system({ cells, ticks, centre, around });
+
+  /**
+   * And the pace, which is now free outright.
+   *
+   * It was tied to the wave twice over and is tied to nothing now. A source's
+   * charge reverses every `CYCLE/rate` ticks, so the field panel flickered at
+   * the clock over that; `SLOW` broke the first knot by making the pattern
+   * long, and taking the field out of these pictures altogether broke the
+   * second. What is drawn here is a path, and a path does not flicker.
+   *
+   * The other thing that used to make this a compromise was the integration:
+   * twelve sub-steps a FRAME meant a quicker clock was a coarser integration.
+   * Fixed at a quarter-tick STRIDE instead (see `metric.tsx`), the number of
+   * sub-steps follows the pace and the accuracy does not move — so the only
+   * cost of running faster is arithmetic per second, and the entire solar
+   * system, which has to carry Jupiter round, gets the most of it.
+   */
+  const framed = { span, cycle, rate, height };
+
+  return {
+    name,
+    note,
+    world: { sources },
+
+    // No lattice run: a ball with room for a solar system is more points than
+    // there are anything. And no flow reading, for the same reason as the
+    // benchmarks — three panels is already the comparison.
+    lattice: false,
+    closed: false,
+
+    newton: { ...framed, gm: GRAVITY },
+    relativity: { ...framed, gm: GRAVITY },
+
+    /**
+     * And the model's own panel draws the WAVES, not only the path.
+     *
+     * Which is the whole difference between this panel and the two beside it,
+     * and leaving it out made the row a comparison of three curves — three
+     * pictures of the same kind, where only one of them has anything of its
+     * own to show. There is no field in Newton's account and none in
+     * Einstein's; here the orbit is a consequence of what is drawn, and the
+     * shells crossing the frame are what is doing it.
+     *
+     * Said outright rather than left to the span, because at fifty-three cells
+     * the automatic reading would call it too wide — a rule about resolving a
+     * turning source's arm, and these do not turn. What they emit is a shell
+     * every `1/mass` ticks, and at planetary masses that is one shell in a
+     * frame and an aggregate everywhere else, which draws perfectly well.
+     */
+    /**
+     * And the model's panel draws the PATH, not the field.
+     *
+     * The field went in and came out again, and it is worth leaving the reason
+     * rather than the argument. There is a real thing it could show — the
+     * orbit here is a consequence of what a body emits, where Newton's and
+     * Einstein's are consequences of a law — but not at this scale and not
+     * with these masses. Drawn at equal brightness it says every body puts out
+     * as much as the Sun, which is false by six orders. Drawn by strength it
+     * says only the Sun is there, which is true and is a picture of one
+     * object. And whatever it is drawn as, the pattern travels a cell a tick,
+     * so at any clock fast enough to carry a solar system through years of
+     * itself the field is moving faster than it can be looked at.
+     *
+     * None of those is a rendering problem. They are three faces of the same
+     * fact: the wave is a light-tick across and the orbit is a hundred million
+     * of them, and one picture does not hold both. The wave pictures earlier
+     * in the article are where the field is drawn, at the scale it is a fact
+     * at; here what carries over is the shape of the motion, which is also
+     * what the two panels beside it can be compared against.
+     */
+    metric: { ...framed, summary: true },
+  };
+});
 
 /** Everything, in the order it is read in. */
 export const MODELS: Model[] = [
   ...blocks,
   ...worlds,
   ...closedOnly,
+  ...systems,
   ...known,
   ...lines,
 ];

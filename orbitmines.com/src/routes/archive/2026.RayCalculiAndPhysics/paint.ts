@@ -35,6 +35,7 @@ export const CYAN = [61, 220, 255];
 // Space that has not been charged by anything.
 export const NEUTRAL = [140, 147, 168];
 
+
 // A source, which is neither: everything charged came out of one of these, so
 // it is the one thing that isn't an event but a cause of them.
 export const SOURCE = [255, 224, 102];
@@ -139,11 +140,28 @@ export const source = (
  */
 export const DECADES = 3;
 
-const FLOOR = Math.pow(10, -DECADES);
-const TOP = Math.log(1 + 1 / FLOOR);
+/**
+ * And how many a given frame needs, which is a question about the frame.
+ *
+ * Three covers a pair from touching to the edge of a fourteen-cell picture,
+ * and that was every picture here until there were solar systems in the
+ * article. A frame thirty-six cells across spans (36/HALF)² in the field —
+ * nearly four decades — so drawn over three, everything past a third of the
+ * way out is below the floor and the picture is a bright dot on black.
+ *
+ * So it is worked out rather than fixed: enough decades to carry one over r²
+ * from the cell a source sits in to the corner of the frame, and never fewer
+ * than the three that were there before. Stated on the picture, as always,
+ * because a scale that is not stated is a claim.
+ */
+export const decadesFor = (span: number) =>
+  Math.max(DECADES, Math.ceil(2 * Math.log10(2 * Math.max(span, 1))));
 
-export const shown = (v: number) =>
-  Math.log(1 + Math.abs(v) / FLOOR) / TOP;
+export const shown = (v: number, decades = DECADES) => {
+  const floor = Math.pow(10, -decades);
+
+  return Math.log(1 + Math.abs(v) / floor) / Math.log(1 + 1 / floor);
+};
 
 /** Said on the picture, because a scale that is not stated is a claim. */
 export const legend = (
@@ -167,6 +185,13 @@ export const legend = (
  * compared anyway. Drawn the same way on both sides, so a closed curve beside
  * one that is not is a comparison and not two different kinds of picture.
  */
+// How many points of a path are worth stroking. A path kept at two samples a
+// tick over twelve thousand ticks is twenty-four thousand points, and a curve
+// a few hundred pixels wide has nowhere to put them — so it is walked at
+// whatever stride keeps it near this, and the last point is always included so
+// the trail reaches the thing that drew it.
+const STROKE = 2000;
+
 export const trail = (
   ctx: CanvasRenderingContext2D,
   path: number[],
@@ -174,19 +199,22 @@ export const trail = (
   sy: (y: number) => number,
   alpha = 0.32,
 ) => {
-  if (path.length < 4) return;
+  const points = path.length / 2;
+  if (points < 2) return;
+
+  const stride = Math.max(Math.floor(points / STROKE), 1) * 2;
 
   ctx.strokeStyle = rgba(HALO, alpha);
   ctx.lineWidth = 1.1;
   ctx.lineCap = "round";
 
   ctx.beginPath();
+  ctx.moveTo(sx(path[0]), sy(path[1]));
 
-  for (let k = 0; k < path.length; k += 2) {
-    const x = sx(path[k]), y = sy(path[k + 1]);
+  for (let k = stride; k < path.length; k += stride)
+    ctx.lineTo(sx(path[k]), sy(path[k + 1]));
 
-    if (k) ctx.lineTo(x, y); else ctx.moveTo(x, y);
-  }
+  ctx.lineTo(sx(path[path.length - 2]), sy(path[path.length - 1]));
 
   ctx.stroke();
   ctx.lineCap = "butt";
