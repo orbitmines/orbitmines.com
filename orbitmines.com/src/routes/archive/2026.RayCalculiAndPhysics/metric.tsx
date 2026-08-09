@@ -8,34 +8,42 @@
  *                                                 meetings a tick along a→b
  *
  *   the density of space, which is the whole of gravity here:
- *     u        = LIGHT · n / (SHEET + n)          what a count of n comes to
- *     free(v)  = (1 − v/LIGHT)² / SHEET           ... and so what one more buys
- *     u̇_a      = free(|v_a|) · S(a,b) / m_a       the pull, per body, per tick
- *     ṙ_a      = v_a + u_a                        its own course, plus that
+ *     u_a       = own_a + pulled_a                its count, in cells a tick of
+ *                                                 ITS OWN clock
+ *     u̇_a      = BIAS · S(a,b) / m_a             the pull, per body, per tick
+ *     ṙ_a      = pace(u_a) = u_a/√(1 + |u_a|²)   ... and what that comes to
+ *                                                 as a speed in the picture
  *
  *   An annihilation leaves the space where it happened denser: the next path
  *   out of that point is twice as likely to go the way it went, a second one
  *   makes it three to one, a third four. So a direction carrying n of them
- *   weighs 1 + n against the SHEET ways out that weigh one each, and the share
- *   of paths taking it over the share coming back is n / (SHEET + n).
+ *   weighs 1 + n against the SHEET ways out that weigh one each, and what that
+ *   leans a path by is LIGHT·n/SHEET — linear, with no ceiling in it.
  *
  *   Everything else here falls out of that, and none of it is stated:
  *
- *     at rest     free(0) = 1/SHEET               NEWTON, with no free constant
+ *     BIAS        one annihilation buys LIGHT/SHEET, whatever else is going on
+ *                 — so at rest, NEWTON, with no free constant
  *     u̇ ∝ ṅ      a shortage of space is an ACCELERATION and not a speed,
  *                 because what accumulates is the count and what drifts is a
  *                 function of the count. That is the one-over-time this file
  *                 could not previously account for.
- *     at speed    free(v) → 0 as v → LIGHT        gravity weakens on a body
- *                 already moving, because moving spends the same budget of
- *                 paths that being pulled does. At light speed there is
- *                 nothing left and light does not fall — which relativity says
- *                 otherwise, and it has been measured. See `free`.
+ *     at speed    the count is per tick of the BODY'S clock, so `pace` is what
+ *                 the picture sees. Differentiated, that is 1/γ³ along the way
+ *                 it is going and 1/γ across — special relativity's own
+ *                 response, out of a count of ways out of a point, and it puts
+ *                 Mercury's perihelion +0.56° an orbit against Schwarzschild's
+ *                 +3.21°: same sign, one sixth the size. See `pace`.
  *     ÷ m_a       a_a ∝ m_b/R², a_b ∝ m_a/R²      the equivalence principle:
  *                 heavier things have proportionally more paths to bias, so
  *                 the same fraction of them bends. Inertia IS path count.
  *
- *   G           = S(1,1) · free(0) · R²           measured off the above, once
+ *   G           = SHEET / (4π²·HALF)              the far-field limit, closed
+ *                                                 form. `S·R²` is 8.5% above
+ *                                                 it at 24 cells and decays as
+ *                                                 ln R/R — the model's largest
+ *                                                 departure, and now a stated
+ *                                                 one. See `GRAVITY`.
  *
  *   the picture only (φ drives nothing — see `spaceStep`):
  *     φ(x)      = max(−K·S(x)·dt, −1/4)           where space is going
@@ -49,7 +57,7 @@ import { CanvasView, Surface } from "./canvas";
 import {
   Emitter, fade, grainAt, HALF, Live, sparse, WAY, emit, fieldAt, TRAIL,
 } from "./field";
-import { free, shortfall } from "./gravity";
+import { BIAS, count, pace, shortfall } from "./gravity";
 import { CYCLE, SPIN, TAU } from "./lattice";
 import {
   AMBER, BACKGROUND, CYAN, decadesFor, ground, legend, lift, shown, source,
@@ -302,8 +310,8 @@ export const apart = (
  *
  * What replaced them is smaller and says the same thing without a grid in the
  * middle: a body goes the way it was going, plus however much the space around
- * it has been biased (`drawn`). One velocity, made of two parts, and the
- * second part is the whole of gravity.
+ * it has been biased. One count, made of two parts (`own` and `pulled`), and
+ * the second part is the whole of gravity.
  */
 
 /**
@@ -402,15 +410,23 @@ export const MetricField = ({
 
     /**
      * `pulled` is how much the space around this body has been biased into
-     * carrying it — a velocity, and the whole of what gravity does here.
+     * carrying it, and `own` is the course it was sent on — both as COUNTS,
+     * which is to say in cells per tick of the body's own clock.
      *
-     * It is not a force having been applied. It is the running count of
-     * annihilations, turned into a drift by `drawn`, and accumulated with the
-     * marginal gain `free` gives at whatever speed the body has already
-     * reached. Which is why it accelerates rather than merely displaces: the
-     * count persists, and the drift is a function of the count.
+     * Neither is a force having been applied. `pulled` is the running tally of
+     * annihilations and nothing else; `own` is the same quantity read off the
+     * drift the source was given, because a body already going somewhere got
+     * there by having been biased and its opening tally is not empty (see
+     * `count`). Keeping them apart is bookkeeping — the dynamics only ever ask
+     * for the sum — but it is the bookkeeping the picture wants, since one of
+     * them is what was set up and the other is what gravity did.
+     *
+     * Which is why it accelerates rather than merely displaces: the count
+     * persists, and what the picture shows is a function of the count.
      */
-    type Carried = Live & { pulled: [number, number], mark: number[] };
+    type Carried = Live & {
+      own: [number, number], pulled: [number, number], mark: number[],
+    };
 
     let live: Carried[] = [];
 
@@ -422,19 +438,20 @@ export const MetricField = ({
         at: [...s.at] as [number, number],
         path: [s.at[0], s.at[1]],
         vel: [s.drift?.[0] ?? 0, s.drift?.[1] ?? 0] as [number, number],
+        own: count(s.drift?.[0] ?? 0, s.drift?.[1] ?? 0),
         pulled: [0, 0] as [number, number],
         mark: [s.at[0], s.at[1]],
       }));
       kept = 0;
     };
 
-    // Its own course plus whatever the space around it has been biased into
-    // doing. One velocity, made of two parts — and the split between them is
-    // bookkeeping, not physics: `free` is asked about the sum.
+    // Its own count plus whatever the space around it has added to it, turned
+    // into the speed the picture can show. See `pace`: the sum is a proper
+    // velocity and this is the only place it becomes a coordinate one.
     const going = (s: Live): [number, number] => {
-      const p = (s as Carried).pulled;
+      const { own, pulled } = s as Carried;
 
-      return [s.vel[0] + p[0], s.vel[1] + p[1]];
+      return pace(own[0] + pulled[0], own[1] + pulled[1]);
     };
 
     /**
@@ -516,13 +533,27 @@ export const MetricField = ({
      * pair — and only ratios are wanted here, so they cancel.
      *
      * Kept relative to each body's own strongest pull rather than against an
-     * absolute floor, so that a light body far from everything still feels
-     * whatever is nearest to it. At a tenth of a millionth, real perturbations
-     * survive comfortably — Jupiter's pull on Saturn is five parts in a
-     * thousand of the Sun's and is nowhere near this — and what goes is only
-     * what could not move anything in the length of the run.
+     * absolute floor, so a light body far from everything still feels whatever
+     * is nearest to it. A body's dominant pull is by definition at ratio one,
+     * so nothing that matters is ever at risk: Jupiter's pull on Saturn is
+     * four parts in ten thousand of the Sun's and survives with room to spare.
+     *
+     * Measured on the entire solar system, against the same run with every
+     * pair walked:
+     *
+     *     threshold   pairs walked   speed    worst orbit moved by
+     *     1e−6            81%        1.30x           4.0e−6
+     *     1e−5            51%        2.71x           9.1e−4
+     *     1e−4            39%        3.83x           7.3e−4
+     *     1e−3            27%        5.68x           7.3e−4
+     *
+     * The shift stops moving at 1e−4 and stays put however much further this
+     * is pushed, which is the signal to stop: what is left is Mercury, whose
+     * orbit in this model is wide and sensitive enough that seven parts in ten
+     * thousand is the integrator rather than the pruning. So 1e−4, which is
+     * where the last pair that changes anything drops out.
      */
-    const NOTHING = 1e-7;
+    const NOTHING = 1e-4;
 
     const most: number[] = [];
 
@@ -561,12 +592,10 @@ export const MetricField = ({
           dx /= coord; dy /= coord;
 
           for (const [s, ux, uy] of [[a, dx, dy], [b, -dx, -dy]] as const) {
-            const [vx, vy] = going(s);
-
             // Divided by its own mass — the fraction of ITS paths that got
-            // bent — and scaled by how many of them are still free to bend at
-            // the speed it is already going. See `free`.
-            const got = free(Math.hypot(vx, vy)) * deficit / (s.mass ?? 1);
+            // bent — and multiplied by what one bent path is worth, which is
+            // the same number however fast it is already going. See `BIAS`.
+            const got = BIAS * deficit / (s.mass ?? 1);
 
             s.pulled[0] += ux * got; s.pulled[1] += uy * got;
           }

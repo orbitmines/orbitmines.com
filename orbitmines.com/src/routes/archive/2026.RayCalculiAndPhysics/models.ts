@@ -1028,15 +1028,35 @@ const known: Model[] = KNOWN.map(({ name, note, sources }) => ({
  * two classical accounts are visibly different curves, and this model is a
  * third — and the three come apart in an interesting way:
  *
- *     Newton         circles, by construction
- *     Schwarzschild  perihelion a little INSIDE Newton's, going round FASTER
- *     this model     apoapsis OUTSIDE Newton's, going round SLOWER
+ *     Newton         closed ellipses, by construction
+ *     Schwarzschild  perihelion advancing  +3.2° an orbit for Mercury here
+ *     this model     perihelion advancing  +11.5°, and the same way round
  *
- * So the model's departure is opposite in sign to relativity's, and larger.
- * Both scale with speed the same way — Mercury departs most, Mars least — but
- * gravity here WEAKENS on a body already moving (see `free`) where relativity
- * strengthens it. That is a difference of principle rather than of amount, and
- * these three pictures are where to look at it.
+ * So the model's departure is now the SAME sign as relativity's and about
+ * three and a half times the size, where it used to be the opposite sign and
+ * three times the size. Both of those are worth reading against what changed.
+ *
+ * The sign came from the velocity term, which is gone. Gravity here used to
+ * weaken on a body already moving, by an amount first order in v/c and read
+ * off the frame the canvas happened to be drawn in — so it retarded the
+ * perihelion, opened the orbit out, and could be made to do almost anything by
+ * boosting the whole picture sideways. What replaced it is the observation
+ * that a count of annihilations is a count per tick of the BODY'S clock (see
+ * `pace` in `gravity.ts`), which is second order, frame-stable, and worth
+ * +0.56° an orbit — one sixth of Schwarzschild's, which is what relativistic
+ * momentum on its own has always given.
+ *
+ * What is left is not a velocity effect at all. `shortfall` is not exactly
+ * inverse square — the two ends of the line give the 1/R² and the middle of it
+ * adds about (0.54·ln R + 0.23)/R on top — so the model pulls 8.5% harder than
+ * its own far-field constant at twenty-four cells, and that is the whole of
+ * the remaining +10.9°. It is a SHORT-RANGE departure rather than a fast one,
+ * which is a different claim and a checkable one: drawn at the same speeds and
+ * eight times the size, Mercury's advance here falls from 11.5° to 3.6° while
+ * Schwarzschild's stays at 3.2°. These panels are drawn at the small end on
+ * purpose — a solar system with a visible wave in it has to be — so what they
+ * show is the model at its least Newtonian, and the departure they show is a
+ * statement about cells and not about speed.
  */
 const SUN = 39.4784176;                  // GM in AU^3/yr^2, for the Sun
 
@@ -1235,8 +1255,12 @@ const systems: Model[] = ([
       + 'shape is. It is also where relativity was measured: the perihelion '
       + 'advance is Mercury\u2019s, and the three panels part company on exactly '
       + 'that \u2014 Newton returns to the same perihelion, Schwarzschild carries '
-      + 'it forward, and this model carries it backward and opens the orbit '
-      + 'out to 39 cells.',
+      + 'it forward by 3.2\u00b0 an orbit, and this model carries it forward the '
+      + 'same way by 11.5\u00b0 and closes the orbit in to 25.2 cells. The '
+      + 'direction is right and the size is not, and what is wrong with the '
+      + 'size is short range rather than fast: at eight times this scale and '
+      + 'the same speeds it comes down to 3.6\u00b0 while Schwarzschild\u2019s stays '
+      + 'where it is.',
     cells: 65, ticks: 12000, span: 44, cycle: 24000, rate: 600,
     centre: SUN,
     around: [['Mercury', 0.38710, 0.20563, 0, SUN * 1.66012e-7]],
@@ -1247,13 +1271,16 @@ const systems: Model[] = ([
       + 'eccentricities, real longitudes of perihelion, and the masses worked '
       + 'out from this model\u2019s own G. Newton traces the four ellipses and '
       + 'closes them; relativity advances each perihelion a little; this model '
-      + 'retards it and opens the orbit out. Mercury departs most in all three '
-      + 'panels, because it is both the fastest and the most eccentric, which '
-      + 'is why it was the one the perihelion was measured on \u2014 and why it '
-      + 'has a frame of its own above. Measured over the eleven thousand ticks '
-      + 'of this run: Mercury runs 8.6 to 13.2 cells and comes round 15.1 '
-      + 'times under Newton, 8.6 to 12.3 and 16.3 times under Schwarzschild, '
-      + 'and 8.6 to 20.5 and 8.9 times here. Venus and Earth are drawn as very '
+      + 'advances it the same way and too far, and pulls the orbit in. Mercury '
+      + 'departs most in all three panels \u2014 not because it is fastest, '
+      + 'which is what the velocity term this model used to have would have '
+      + 'said, but because it is CLOSEST: the departure goes as one over the '
+      + 'separation in cells, so the innermost body sees the most of it. '
+      + 'Measured over the eleven thousand ticks of this run: Mercury runs 8.6 '
+      + 'to 13.2 cells and comes round 15.1 times under Newton, 8.6 to 12.3 '
+      + 'and 16.3 times under Schwarzschild, and 8.6 to 9.5 and 21.4 times '
+      + 'here \u2014 which at 8.6 cells is the model well inside the range '
+      + 'where it agrees with anything. Venus and Earth are drawn as very '
       + 'nearly circles because they very nearly are: their eccentricities are '
       + '0.007 and 0.017.',
     cells: 28, ticks: 3000, span: 66, cycle: 30000, rate: 600,
@@ -1276,10 +1303,13 @@ const systems: Model[] = ([
       + 'so Jupiter goes round once, Saturn a third of the way, and Neptune '
       + 'through seven degrees of the hundred and sixty-five years it takes. '
       + 'What the three panels have to disagree about is therefore all in the '
-      + 'inner four, and it is the same disagreement as above: Mercury opens '
-      + 'from 13.2 cells to 20.6 in this model and closes to 12.3 under '
-      + 'Schwarzschild, while Neptune at a hundredth of light does not '
-      + 'measurably differ in any of them.',
+      + 'inner four, and it is the same disagreement as above: Mercury closes '
+      + 'from 13.7 cells to 9.5 in this model and to 12.3 under '
+      + 'Schwarzschild, while Neptune — eight hundred and thirty-five cells '
+      + 'out, where this model’s short-range excess is under two parts in a '
+      + 'thousand — does not measurably differ in any of them. Which is the '
+      + 'clearest thing this frame has to say: the disagreement is with the '
+      + 'near, not with the fast.',
     cells: 28, ticks: 3000, span: 900, cycle: 60000, rate: 900, height: 420,
     centre: SUN,
     around: [
