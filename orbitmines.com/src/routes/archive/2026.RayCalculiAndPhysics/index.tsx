@@ -16,9 +16,9 @@ import { Models } from "./views";
  *
  * Which means there is nothing to edit here. To change an arrangement, add
  * one, or change the order they are read in, edit `models.ts`; to change what
- * an arrangement MEANS, edit `discrete.ts` and `continuous.tsx`, which are
- * the two readings, and which share their vocabulary through `lattice.ts` so
- * that neither can drift from the other by redefining a term.
+ * an arrangement MEANS, edit `discrete.ts` and `metric.tsx`, which are the
+ * two readings, and which share their vocabulary through `lattice.ts` and
+ * `physics.ts` so that neither can drift from the other by redefining a term.
  */
 const RayCalculiAndPhysics = () => {
   const referenceCounter = useCounter();

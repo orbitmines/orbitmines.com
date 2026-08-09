@@ -140,9 +140,8 @@ const flatAndRound = (model: Model): Model => ({
     name: `${model.name}, in three dimensions`,
     note: undefined,
     world: { ...model.world!, dims: 3 },
-    // The closed form is flat and has no round version to offer, so both
-    // readings of it stay with the flat run they are the closed form of.
-    closed: false,
+    // The closed form is flat and has no round version to offer, so it stays
+    // with the flat run it is the closed form of.
     metric: undefined,
     alongside: undefined,
   }],
@@ -151,22 +150,25 @@ const flatAndRound = (model: Model): Model => ({
 /**
  * A source that turns: it has an axis, and the axis comes round. What it lays
  * down is a spiral, which belongs to a whole train of shells and to none of
- * them separately — so it is drawn as the field rather than pulse by pulse,
- * and it must not wander, since wandering is each pulse going somewhere
- * slightly else on the way and that is exactly the information an arm is made
- * of, rubbed out.
+ * them separately — so it is drawn as the field rather than pulse by pulse.
+ *
+ * It used to be held to `wander: 0` as well, on the reasoning that wandering
+ * is each pulse going somewhere slightly else on the way, and that is exactly
+ * the information an arm is made of, rubbed out. That reasoning was right
+ * about what wandering does and wrong about whether it can be done without.
+ *
+ * A turning source emits into the plane it turns in — its poles are in that
+ * plane and the axis it turns about sits on the permanently silent equator.
+ * So without wandering the field is a disk made of eight spokes, and it never
+ * thins as anything: what a fixed number of rays does as it goes out is get
+ * further apart, not fainter. The inverse square is the emission SPREADING
+ * over a shell that grows as r², and the only thing here that spreads it is
+ * the wander. So the arm is drawn through a wandering field now, and what
+ * blurs it is the same thing that makes it fall off correctly.
  */
-type Draw = { mode: RenderMode, fanAt?: number, wander?: number };
+type Draw = { mode: RenderMode, wander?: number };
 
-const asField: Draw = {
-  mode: 'field',
-  // Out where there is room for it, rather than at the first opportunity.
-  // Fanning close in crowds the few cells near the source and thickens the
-  // shells there; fanning out where a shell has already grown puts the extra
-  // charges exactly where the gaps between them have opened.
-  fanAt: 5,
-  wander: 0,
-};
+const asField: Draw = { mode: 'field' };
 
 // A source that only flips: the same charge in every direction, reversed and
 // reversed again, so what it lays down is shells and a shell is the object.
@@ -256,7 +258,7 @@ const worlds: Model[] = ([
   .map(({ name, note, sources, alone, metric, draw }) => flatAndRound({
     name,
     note,
-    world: { sources, wander: draw.wander, fanAt: draw.fanAt },
+    world: { sources, wander: draw.wander },
     lattice: {
       scale: NEAR,
       ticks: LATTICE_FOR,
@@ -268,7 +270,7 @@ const worlds: Model[] = ([
       // is drawn from.
       density: false,
     },
-    closed: {
+    metric: metric ? {
       // A lone source is already at the middle and has nothing to be apart
       // from, so there is nothing to scale it against.
       //
@@ -280,9 +282,7 @@ const worlds: Model[] = ([
       scale: alone ? 1 : CLOSE,
       span: ARM,
       cycle: alone ? ALONE_FOR : PAIR_FOR,
-    },
-    // Framed like the flow reading, so the two can be read against each other.
-    metric: metric ? {} : undefined,
+    } : undefined,
   }));
 
 /**
@@ -313,8 +313,7 @@ const closedOnly: Model[] = [
       + 'from, and the source has gone on.',
     world: { sources: [{ at: [-12, 0], turning: 1, drift: [PACE, 0] }] },
     lattice: false,
-    metric: {},
-    closed: { span: 14, cycle: ALONE_FOR },
+    metric: { span: 14, cycle: ALONE_FOR },
   },
 
   /**
@@ -346,8 +345,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
-    metric: {},
-    closed: { span: APART * ROOM, cycle: PAIR_FOR },
+    metric: { span: APART * ROOM, cycle: PAIR_FOR },
   },
 
   /**
@@ -380,8 +378,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
-    metric: {},
-    closed: { span: WIDE, cycle: PAIR_FOR },
+    metric: { span: WIDE, cycle: PAIR_FOR },
   },
 
   /**
@@ -420,8 +417,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
-    metric: {},
-    closed: { span: 34, cycle: PAIR_FOR },
+    metric: { span: 34, cycle: PAIR_FOR },
   },
 
   /**
@@ -489,8 +485,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
-    metric: {},
-    closed: { span: 34, cycle: 320 },
+    metric: { span: 34, cycle: 320 },
   },
 
   /**
@@ -533,8 +528,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
-    metric: {},
-    closed: { span: 40, cycle: 320 },
+    metric: { span: 40, cycle: 320 },
   },
 
   /**
@@ -575,8 +569,7 @@ const closedOnly: Model[] = [
       }),
     },
     lattice: false,
-    metric: {},
-    closed: { span: WIDE, cycle: PAIR_FOR },
+    metric: { span: WIDE, cycle: PAIR_FOR },
   },
 
   /**
@@ -610,8 +603,7 @@ const closedOnly: Model[] = [
       }),
     },
     lattice: false,
-    metric: {},
-    closed: { span: WIDE, cycle: PAIR_FOR },
+    metric: { span: WIDE, cycle: PAIR_FOR },
   },
 
   /**
@@ -646,8 +638,7 @@ const closedOnly: Model[] = [
       + 'Nothing moves them but the space between them going.',
     world: { sources: triangle({ lobed: true }) },
     lattice: false,
-    metric: {},
-    closed: { span: WIDE, cycle: PAIR_FOR },
+    metric: { span: WIDE, cycle: PAIR_FOR },
   },
 
   /**
@@ -696,8 +687,7 @@ const closedOnly: Model[] = [
       ],
     },
     lattice: false,
-    metric: {},
-    closed: { span: WIDE, cycle: PAIR_FOR },
+    metric: { span: WIDE, cycle: PAIR_FOR },
   },
 ];
 
@@ -716,7 +706,6 @@ const blocks: Model[] = [
     note: 'Every point charged at random and set going at random. From there '
       + 'the rules alone: cancel, turn around, or move.',
     lattice: { seed: () => Graph.grid({ dims: 3 }), autoplay: false },
-    closed: false,
   },
 
   ...([
@@ -734,7 +723,6 @@ const blocks: Model[] = [
       seed: () => Graph.blocks({ charge: bySide(left, right) }),
       ticks: 15, height: 140, density: false,
     },
-    closed: false,
   })),
 
   {
@@ -746,7 +734,6 @@ const blocks: Model[] = [
       seed: () => Graph.blocks({ charge: perPoint() }),
       ticks: 5, filmstrip: true, runs: 3, height: 90, density: false,
     },
-    closed: false,
   },
 
   ...([
@@ -765,7 +752,6 @@ const blocks: Model[] = [
       seed: () => Graph.emitters({ left, right }),
       ticks: 18, height: 140,
     },
-    closed: false,
   })),
 
   ...([
@@ -782,7 +768,6 @@ const blocks: Model[] = [
       seed: () => Graph.emitters({ left, right, gap: 20, every: 1, spin: true }),
       ticks: 22, height: 140,
     },
-    closed: false,
   })),
 ];
 
@@ -794,7 +779,6 @@ const asGroup = (
   const of = (line: Parameters<typeof Graph.line>[0]): Model => ({
     name: '',
     lattice: { seed: () => Graph.line(line), ...(lattice || {}) },
-    closed: false,
   });
 
   return {
@@ -837,7 +821,6 @@ const lines: Model[] = [
       seed: () => Graph.line(alternatingIntoRandom(size, inner)),
       ticks: size * 2, runs: 2, height: 60, density: false,
     },
-    closed: false,
   }))),
 ];
 
@@ -889,8 +872,38 @@ const lines: Model[] = [
  */
 const UNIT = 36;                          // cells per unit of the published solutions
 
-// And so the pace, solved rather than chosen — see above.
-const SWING = Math.sqrt(GRAVITY / UNIT);  // cells a tick per unit of their velocity
+/**
+ * How fast they are drawn, in cells a tick per unit of the published velocity.
+ *
+ * The similarity transform has two freedoms and only one equation. A published
+ * solution has `G = m = extent = 1`, and putting it on a length `S` and a speed
+ * `V` needs `G·m = S·V²` — so given the model's own `G`, one of the mass and
+ * the pace is chosen and the other is solved for.
+ *
+ * THE PACE IS THE ONE TO CHOOSE, and this had it the other way round. It used
+ * to fix the mass at one and solve `V = √(G/S)`, which was fine while `G` was
+ * a number near a half. It is no longer: `GRAVITY` now carries the grain (see
+ * `gravity.ts`), so it is of order 1e11, and solving for the pace asked these
+ * three bodies to travel fifty-nine thousand cells a tick — past light by six
+ * orders, and every one of the six benchmarks flew apart on the first frame.
+ *
+ * A mass is a free choice of units here and a pace is not: it decides whether
+ * a period fits in a run and whether the picture can be watched at all. So the
+ * pace is fixed at what these panels were always drawn at, and the mass is
+ * what gets solved. Which is also what `system()` does for the solar bodies —
+ * their masses are `gm·cells³/ticks²/GRAVITY` — so the two halves of the
+ * article now scale the same way.
+ */
+const SWING = 0.10951;                    // cells a tick per unit of their velocity
+
+/**
+ * And so what each of them weighs, solved from `G·m = S·V²`.
+ *
+ * Not a stated mass: `UNIT` and `SWING` are the two scaling choices, `GRAVITY`
+ * is the model's own, and this is the only value that leaves the published
+ * orbit the orbit it was published as.
+ */
+const TRIO = SWING * SWING * UNIT / GRAVITY;
 
 // Three equal masses: two out at ±1 and one at the middle, the outer pair
 // given the same velocity and the middle one twice it the other way, so the
@@ -979,13 +992,14 @@ const KNOWN_SPAN = UNIT * 3;
 const known: Model[] = KNOWN.map(({ name, note, sources }) => ({
   name: `three bodies: ${name}`,
   note,
-  world: { sources: sources.map(s => ({ ...s, settled: true })) },
+  // Every one of them weighing what the transform says — see `TRIO`. Set here
+  // rather than in each seed so no benchmark can be given a different one.
+  world: { sources: sources.map(s => ({ ...s, mass: TRIO, settled: true })) },
   lattice: false,
 
   // Only the metric reading, and the two classical ones beside it — the flow
   // account is a fourth picture of the same thing and would only crowd the
   // comparison these are here for.
-  closed: false,
 
   // Newton and Einstein, both given the model's OWN gravitational constant —
   // so all three panels are the same strength and the only question left is
@@ -1090,9 +1104,10 @@ const SUN = 39.4784176;                  // GM in AU^3/yr^2, for the Sun
  *
  * The mass conversion is the other piece worth reading. GM has units of
  * length³ over time², so in cells and ticks it is `gm·cells³/ticks²` — and a
- * mass here is that over `GRAVITY`, the constant this model was measured to
- * have (see `gravity.ts`). Nothing is fitted. Feed it the Sun and it works out
- * what the Sun weighs on a lattice.
+ * mass here is that over `GRAVITY`, the constant this model HAS (see
+ * `gravity.ts`, where it is a closed form rather than a calibration). Nothing
+ * is fitted. Feed it the Sun and it works out what the Sun weighs on a
+ * lattice.
  *
  * WHAT IS 1:1 HERE, checked rather than asserted. Every conversion above is
  * one constant applied to everything, so every ratio survives it exactly. At
@@ -1148,7 +1163,7 @@ type Body = [
  * only where they are COHERENT — equal rates — and averages it away otherwise;
  * beyond a wavelength the coherent answer converges to the same half anyway.
  * Given a spread of rates (below) no two bodies here are coherent, so every
- * pair uses the half exactly, which is what `GRAVITY` was measured against.
+ * pair uses the half exactly, which is what `GRAVITY` is derived against.
  * Measured: identical orbits to six figures before and after.
  */
 const SLOW = 96;
@@ -1396,7 +1411,6 @@ const systems: Model[] = ([
     // there are anything. And no flow reading, for the same reason as the
     // benchmarks — three panels is already the comparison.
     lattice: false,
-    closed: false,
 
     newton: { ...framed, gm: GRAVITY },
     relativity: { ...framed, gm: GRAVITY },

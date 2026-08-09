@@ -2,12 +2,11 @@ import { Button } from "@blueprintjs/core";
 import { Fragment, useMemo, useRef, useState } from "react";
 
 import { Row } from "../../../lib/post/Post";
-import { ContinuousField } from "./continuous";
 import { Graph } from "./discrete";
 import { GraphCanvas } from "./GraphCanvas";
 import { MetricField } from "./metric";
 import {
-  Closed, closedOf, Lattice, latticeOf, metricOf, Model, newtonOf, relativityOf,
+  Closed, Lattice, latticeOf, metricOf, Model, newtonOf, relativityOf,
 } from "./model";
 import { NewtonField, RelativityField } from "./newton";
 
@@ -193,9 +192,6 @@ const LatticeFilmstrip = ({
 const LatticeView = ({ filmstrip, ...rest }: Lattice) =>
   filmstrip ? <LatticeFilmstrip {...rest} /> : <LatticePlayer {...rest} />;
 
-const ClosedView = ({ sources = [], span, cycle, rate, height = 320 }: Closed) =>
-  <ContinuousField sources={sources} span={span} cycle={cycle} rate={rate} height={height} />;
-
 const MetricView = ({ sources = [], span, cycle, rate, summary, height = 320 }: Closed) =>
   <MetricField
     sources={sources} span={span} cycle={cycle} rate={rate}
@@ -236,13 +232,12 @@ const Label = ({ children }: { children: any }) => (
  */
 export const ModelView = ({ model }: { model: Model }) => {
   const lattice = latticeOf(model);
-  const closed = closedOf(model);
   const metric = metricOf(model);
   const newton = newtonOf(model);
   const einstein = relativityOf(model);
 
   const readings =
-    [lattice, closed, newton, einstein, metric].filter(Boolean).length;
+    [lattice, newton, einstein, metric].filter(Boolean).length;
   const many = readings > 1;
 
   // A run repeated, where the arrangement is a draw rather than a case.
@@ -260,11 +255,6 @@ export const ModelView = ({ model }: { model: Model }) => {
         {runs.map(i => <LatticeView key={i} {...lattice} />)}
       </div> : null}
 
-      {closed ? <div>
-        {many ? <Label>written down — gravity as a flow</Label> : null}
-        <ClosedView {...closed} />
-      </div> : null}
-
       {newton ? <div>
         {many ? <Label>what Newton expects</Label> : null}
         <NewtonView {...newton} />
@@ -276,7 +266,7 @@ export const ModelView = ({ model }: { model: Model }) => {
       </div> : null}
 
       {metric ? <div>
-        {many ? <Label>written down — gravity as a metric</Label> : null}
+        {many ? <Label>written down</Label> : null}
         <MetricView {...metric} />
       </div> : null}
     </div>

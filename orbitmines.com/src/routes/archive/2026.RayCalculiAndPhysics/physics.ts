@@ -6,8 +6,23 @@
  *   alike(a,b)     = max(agreement, 0)            ... how much turns around
  *   cancelling(a,b)= max(−agreement, 0)           ... and how much annihilates
  *   outcome(a,b)   = cancelling > 0 ? annihilate : turn      the same, at ±1
- *   closing(u,v)   = max(−u·v, 0)                 meeting rather than crossing
+ *
+ *   MEETING IS BEING IN THE SAME CELL, at any angle. `closing` and `HEAD_ON`
+ *   below are the LINE's test — two things next to each other pointed the
+ *   opposite way — and on a line that is the only way to meet. In three
+ *   dimensions it is the exceptional way: two shells sweeping through each
+ *   other converge on the same cell from all angles, never neighbours and
+ *   never pointed at each other. So `outcome` decides it on polarity alone,
+ *   and what the angle sets is not WHETHER but HOW MUCH:
+ *
+ *   closing(u,v)   = max(−u·v, 0)                 still used by the drawing
  *   HEAD_ON        = 1/√2                         past which it is a crossing
+ *   splice(u,v)    = |û − v̂| = 2 sin(θ/2)         how much a meeting shortens:
+ *                                                 two cells head-on, nothing
+ *                                                 for two going the same way
+ *
+ *   alike charges leave along each other's headings — `^` in, `v` out, a full
+ *   reversal only when they met head-on. See `Graph.scatter`.
  *
  *   LIGHT          = 1 cell / tick                nothing goes faster
  *   BITE           = 2 LIGHT                      cells a meeting destroys
@@ -502,10 +517,13 @@ export type World = {
   // the direction itself. See `Graph.wander`.
   wander?: number;
 
-  // How many moves a charge lasts before it is space again, how far round the
-  // front counts as ahead when it fans, and how far out it waits before
-  // fanning at all. See `Graph.sources`.
+  // How many moves a charge lasts before it is space again. See
+  // `Graph.sources`.
+  //
+  // `spread` and `fanAt` used to sit here, tuning a fan that copied a charge
+  // into the ring of directions across its path so a pulse stayed a filled
+  // surface however far out it got. It is gone: a fixed count per shell does
+  // not thin, and the thinning IS the inverse square. See the note where the
+  // fan used to be.
   range?: number;
-  spread?: number;
-  fanAt?: number;
 };

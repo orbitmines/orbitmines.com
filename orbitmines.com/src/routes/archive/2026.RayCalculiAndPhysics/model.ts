@@ -61,14 +61,21 @@ export type Model = {
   /** The lattice run, or `false` where there is nothing to run. */
   lattice?: false | Lattice;
 
-  /** The closed form, or `false` where there is nothing to write down. */
-  closed?: false | Closed;
-
   /**
-   * And the same closed form again, with gravity read as a shortage of space
-   * rather than as a flow — see `metric.tsx`. Off unless asked for, because
-   * it is a third heavy picture on a page that already has two, and because
-   * the point of it is the comparison rather than the coverage.
+   * The closed form: the same claim written down instead of run, with gravity
+   * read as a shortage of space — see `metric.tsx`.
+   *
+   * There used to be a second one beside it that read gravity as a FLOW:
+   * measure where annihilation is happening, turn that into a velocity for
+   * the space itself, give the velocity a wave equation, carry each source by
+   * the flow it is standing in. It worked, and every step of it was a thing
+   * ADDED — a mechanism laid on top of the lattice rather than read off it.
+   *
+   * The metric reading is what the lattice actually does. `annihilate` pushes
+   * nothing; it removes two points and splices what was behind each onto the
+   * other, and afterwards there is simply less space between the two things
+   * than there was. Nothing moved. So there is one closed form now, and it is
+   * that one.
    */
   metric?: Closed;
 
@@ -237,29 +244,16 @@ export const latticeOf = (model: Model): Lattice | undefined =>
     return () => Graph.sources(at);
   });
 
-/** And how it is written down, if it can be. */
-export const closedOf = (model: Model): Closed | undefined =>
-  reading<Closed, 'sources'>(model.closed, 'sources', () => {
-    const world = model.world;
-    if (!world) return undefined;
-
-    return sized(world, (model.closed || {}).scale ?? 1).sources.map(emitterOf);
-  });
-
 /**
- * And the same, read as a metric.
+ * And how it is written down, if it can be.
  *
- * Framed exactly as the flow reading is unless told otherwise — same scale,
- * same span, same run length — because the whole purpose of it is that the
- * two are looked at side by side, and two pictures of the same arrangement at
- * different sizes are not a comparison. So enabling it is `metric: {}`, and
- * anything set on it is a deliberate departure.
+ * Enabling it is `metric: {}`; anything set on it is a deliberate departure
+ * from what the arrangement would otherwise be drawn at.
  */
 export const metricOf = (model: Model): Closed | undefined => {
   if (!model.metric) return undefined;
 
-  const like = model.closed === false ? {} : (model.closed ?? {});
-  const given = { ...like, ...model.metric };
+  const given = { ...model.metric };
 
   return reading<Closed, 'sources'>(given, 'sources', () => {
     const world = model.world;
@@ -273,14 +267,13 @@ export const metricOf = (model: Model): Closed | undefined => {
  * And what the two classical accounts make of it, neither of which is a
  * reading of this model at all.
  *
- * Framed like the closed form unless told otherwise, for the same reason the
- * metric reading is: panels of the same arrangement at different sizes are not
- * a comparison.
+ * Framed like the model's own reading unless told otherwise: panels of the
+ * same arrangement at different sizes are not a comparison.
  */
 const against = (model: Model, own: Closed | undefined): Closed | undefined => {
   if (!own) return undefined;
 
-  const like = model.closed === false ? {} : (model.closed ?? {});
+  const like = model.metric ?? {};
   const given = { ...like, ...own };
 
   return reading<Closed, 'sources'>(given, 'sources', () => {

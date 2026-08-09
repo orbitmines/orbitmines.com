@@ -825,6 +825,46 @@ export class Graph {
    * came instead of setting off somewhere new — and if there is no way back
    * yet then the way back is something it has to have, so it gets one.
    */
+  /**
+   * Two alike charges, each leaving along the other's heading.
+   *
+   * NOT a reversal, which is what this used to do to both of them. Reversing
+   * is the head-on answer, and head-on is one case out of the twenty-six: it
+   * was being applied at every angle, so two charges crossing at a corner both
+   * turned straight back down the roads they came on, which is not a bounce,
+   * it is two bounces that happen to be drawn on top of each other.
+   *
+   * Swapping their headings is what a bounce between equal partners is. Read
+   * the three cases and it is the whole rule:
+   *
+   *   head-on      →  ←     they swap, so each goes back  →  ←  becomes ←  →
+   *   at an angle  ↗  ↖     they swap, so the pair comes in as a ^ and leaves
+   *                         as a v — converging before, diverging after
+   *   side by side ↗  ↗     they swap, and nothing changes, which is right:
+   *                         two charges going the same way have not met so
+   *                         much as arrived together
+   *
+   * Momentum is conserved by construction, since the two headings are only
+   * exchanged and never invented. And the scattered pair is not spent: each is
+   * still a charge going somewhere, and what it meets next is likely to be the
+   * shell behind the one it just met, which carries the opposite charge. So a
+   * turn is a DELAY rather than a loss — measured in transport, letting the
+   * scattered charge carry on and meet its own source's earlier shells makes
+   * the pull 16% stronger at eight cells, falling away to nothing by ninety.
+   */
+  private scatter(one: Ray, a: Boundary, two: Ray, b: Boundary) {
+    // Where each is going now, before either is changed.
+    const mine = this.bare(a), theirs = this.bare(b);
+
+    // Each leaves along the other's, by whichever of its own ways out comes
+    // nearest to it — a ray may only use directions it has.
+    const onto = (ray: Ray, want: number[] | undefined, was: Boundary) =>
+      ray.moving = (want && this.along(ray, want, 1)) ?? this.along(ray, this.bare(was), -1) ?? ray.moving;
+
+    onto(one, theirs, a);
+    onto(two, mine, b);
+  }
+
   private turnAround(ray: Ray, a: Boundary) {
     const dir = this.direction(a);
 
@@ -1272,27 +1312,70 @@ export class Graph {
 
         r.heading = head;
 
-        // The ways this direction is made of. Its own pieces only: a step of
-        // (1,1,1) is (1,0,0) and (0,1,0) and (0,0,1) taken at once, and those
-        // three are the whole of what taking it apart can mean. Their
-        // opposites are not detours down the same road, they are a different
-        // road — a ray that takes them is not going where it was going, and
-        // the direction stops meaning anything.
+        /**
+         * The ways this direction can be taken — and there are two kinds,
+         * where there used to be one.
+         *
+         * TAKING IT APART, which is what this always did. A step of (1,1,1)
+         * is (1,0,0) and (0,1,0) and (0,0,1) taken at once, and those three
+         * are the whole of what breaking it up can mean. Their opposites are
+         * not detours down the same road, they are a different road — a ray
+         * that takes them is not going where it was going.
+         *
+         * AND PUTTING SOMETHING ON IT, which is new and is the half that
+         * matters. A ray heading (1,0,0) can go (1,1,0) or (1,0,1) or
+         * (1,0,−1) instead: still going the way it was going — the component
+         * it had is untouched — with one step of sideways added. `heading`
+         * is not changed by either kind, so whatever it does it comes back
+         * onto the line it set out on, and the deviation is a wander about
+         * that line rather than a change of course.
+         *
+         * WHY IT HAS TO EXIST. Without it a heading can only ever LOSE
+         * components, so a ray emitted into a plane stays in that plane for
+         * ever — (1,1,0) breaks into (1,0,0) and (0,1,0) and neither has a z
+         * to speak of. And a turning magnet emits into a plane by
+         * construction: its poles are in the plane and the axis it turns
+         * about sits on the equator, which emits nothing (see the emission
+         * pass below). So the field it lays down was a disk made of eight
+         * spokes, and the closed form beside it assumes a sphere — `chance`
+         * in `field.ts` divides by 4πr², which is the surface of one, and
+         * that is where its inverse square comes from.
+         *
+         * With this, the emission is still a disk and the TRAVEL is not: a
+         * charge put out into the plane wanders off it a step at a time,
+         * comes back towards the line it was given, and the aggregate over
+         * many charges and many pulses is a sphere. Which is the only way
+         * the two readings can be saying the same thing — a disk of spokes
+         * thins as 1/r and a sphere thins as 1/r², and only one of those is
+         * Newton.
+         */
         const ways: number[][] = [head];
 
         for (let axis = 0; axis < head.length; axis++) {
-          if (!head[axis]) continue;
+          if (head[axis]) {
+            // Taken apart: this piece of it on its own.
+            const one = new Array(head.length).fill(0);
+            one[axis] = head[axis];
 
-          const one = new Array(head.length).fill(0);
-          one[axis] = head[axis];
+            ways.push(one);
+          } else {
+            // Or the same direction with one step of sideways on it, either
+            // way round. Both, so the wander has no handedness and a great
+            // many charges spread evenly about the line rather than drifting
+            // off it.
+            for (const side of [1, -1]) {
+              const off = head.slice();
+              off[axis] = side;
 
-          ways.push(one);
+              ways.push(off);
+            }
+          }
         }
 
-        // Straight on unless it draws otherwise, and always the whole
-        // direction if there is nothing it can be broken into — an axial
-        // heading has no longer way round.
-        const way = ways.length > 2 && Math.random() < this.wander
+        // Straight on unless it draws otherwise. Every heading has somewhere
+        // sideways to go now, so there is no longer a case with nothing to
+        // choose from.
+        const way = ways.length > 1 && Math.random() < this.wander
           ? ways[1 + Math.floor(Math.random() * (ways.length - 1))]
           : head;
 
@@ -1527,8 +1610,7 @@ export class Graph {
         this.annihilate(it.r, it.a, it.r2, it.b, removed);
       } else {
         this.stats.turned++;
-        this.turnAround(it.r, it.a);
-        this.turnAround(it.r2, it.b);
+        this.scatter(it.r, it.a, it.r2, it.b);
       }
     }
 
@@ -1556,7 +1638,6 @@ export class Graph {
       r.moving = undefined;
       r.wave = undefined;
       r.age = 0;
-      r.fanned = false;
       r.heading = undefined;
 
       for (const bd of r.boundaries) bd.polarity = Polarity.Neutral;
@@ -2131,8 +2212,6 @@ export class Graph {
        * crossing can tell from space.
        */
       range = 14,
-      spread = 0.45,
-      fanAt,
     }: World,
   ): Graph {
     const graph = new Graph();
@@ -2167,13 +2246,6 @@ export class Graph {
     // — and makes the shells look as though they vanish well short of the
     // edge, when in fact they are running the whole way to it.
     graph.focus = radius - 2;
-
-    // Far enough out that a shell has room for its fan, and close enough in
-    // that it has fanned before it gets to whatever it is going to meet —
-    // which is halfway to the nearest other source.
-    const gap = spacing(sources);
-
-    const fan = fanAt ?? Math.max(Math.floor((gap ?? radius / 1.5) / 4), 2);
 
     const count = sources.length;
 
@@ -2274,7 +2346,6 @@ export class Graph {
           ray.wave = undefined;
           ray.heading = undefined;
           ray.age = 0;
-          ray.fanned = false;
           for (const bd of ray.boundaries) bd.polarity = Polarity.Neutral;
         }
       }
@@ -2409,56 +2480,85 @@ export class Graph {
             const north = ray.axis && unit(ray.axis);
 
             /**
-             * Into its poles, and nowhere else.
+             * Into the SHEET its axis lies in — eight directions, not two.
              *
-             * This used to write onto every direction the source had, using
-             * the axis only to decide WHICH charge each got — north's out of
-             * the half facing along it, south's out of the half facing back,
-             * nothing on the equator. Which is a dipole sprayed over a whole
-             * sphere, and it is why nothing here had a distance law: a fixed
-             * budget spread over a fixed number of directions does not thin
-             * with radius at all.
+             * A point has `3^d − 1` ways out of it and a source pulses into a
+             * plane of them: the 3×3 around it, which is eight in three
+             * dimensions and is what `SHEET` in `field.ts` counts. That is
+             * where the size of the emission comes from, and this emitted two
+             * — its poles alone — so every density downstream was a quarter of
+             * what the closed form assumes.
              *
-             * A magnet emits along its poles. Two directions, and as the axis
-             * comes round an eighth of a turn a tick, over one revolution
-             * those two visit all eight directions of the plane — so the
-             * emission sweeps rather than fills, and what a place at radius r
-             * receives is a fixed budget spread over the shell there. In two
-             * dimensions that is 2πr and the field goes as 1/r; in three the
-             * plane precesses and it is 4πr² and 1/r².
+             * WHICH plane, and it has to be the one containing the axis and
+             * the axis it turns ABOUT. Not the turn's own plane: that one is
+             * already fixed, so a sheet lying in it never goes anywhere and
+             * what comes out is the disk this had before. Containing `north`
+             * and `up`, the sheet stands on edge and comes round WITH the
+             * axis, and over a revolution it has swept the sphere — which is
+             * the claim `field.ts` makes and the thing the lattice was not
+             * doing.
              *
-             * On a lattice the sweep is the alternation you would otherwise
-             * have to arrange: consecutive eighth-turns step axial, diagonal,
-             * axial, so stepping the ring IS alternating between them, and
-             * nothing has to special-case which is which.
+             * So `side` is the one direction perpendicular to both, and the
+             * sheet is everything with no component along it.
+             *
+             * TWO OF THE EIGHT ARE SILENT, and it is worth knowing rather
+             * than discovering. Any plane containing `north` also contains
+             * the two directions square to it, and those sit on the dipole's
+             * equator, which emits nothing (see `quantised`). So a sheet of
+             * eight puts out six, and the sweep is what covers the rest.
              */
-            const poles: Boundary[] = [];
+            const sheet: Boundary[] = [];
+
+            // The in-sheet direction square to north, so a boundary's bearing
+            // WITHIN the sheet can be worked out and split half-open.
+            let perp: number[] | undefined;
 
             if (north) {
-              let out: Boundary | undefined, back: Boundary | undefined;
-              let most = -Infinity, least = Infinity;
+              // The axis it turns about: square to the plane the ring lies
+              // in. A quarter of the way round the ring is square to the
+              // start of it, so the two of them span that plane.
+              const ring = ray.ring ?? TURN;
+              const a = ring[0], b = ring[Math.floor(ring.length / 4)] ?? ring[1];
+
+              const up = unit([
+                (a[1] ?? 0) * (b[2] ?? 0) - (a[2] ?? 0) * (b[1] ?? 0),
+                (a[2] ?? 0) * (b[0] ?? 0) - (a[0] ?? 0) * (b[2] ?? 0),
+                (a[0] ?? 0) * (b[1] ?? 0) - (a[1] ?? 0) * (b[0] ?? 0),
+              ]);
+
+              const side = unit([
+                (north[1] ?? 0) * (up[2] ?? 0) - (north[2] ?? 0) * (up[1] ?? 0),
+                (north[2] ?? 0) * (up[0] ?? 0) - (north[0] ?? 0) * (up[2] ?? 0),
+                (north[0] ?? 0) * (up[1] ?? 0) - (north[1] ?? 0) * (up[0] ?? 0),
+              ]);
+
+              const flat = side.some(v => v);
+
+              // up x north: in the sheet, square to north. With `north` it
+              // spans the sheet, so any direction in there resolves against
+              // the two of them into a bearing.
+              perp = unit([
+                (up[1] ?? 0) * (north[2] ?? 0) - (up[2] ?? 0) * (north[1] ?? 0),
+                (up[2] ?? 0) * (north[0] ?? 0) - (up[0] ?? 0) * (north[2] ?? 0),
+                (up[0] ?? 0) * (north[1] ?? 0) - (up[1] ?? 0) * (north[0] ?? 0),
+              ]);
 
               for (const bd of ray.boundaries) {
-                const facing = bd.target;
-                if (!facing) continue;
+                if (!bd.target) continue;
 
                 const d = g.direction(bd);
                 if (!d) continue;
 
-                const along = dot(d, north);
-
-                if (along > most) { most = along; out = bd; }
-                if (along < least) { least = along; back = bd; }
+                // In the sheet: nothing along the one way out of it. The
+                // threshold is the same eighth-turn `turnRing` rounds at.
+                if (!flat || Math.abs(dot(d, side)) < 0.3827) sheet.push(bd);
               }
-
-              if (out) poles.push(out);
-              if (back && back !== out) poles.push(back);
             }
 
-            // A lamp has no poles and no sweep: it puts the same thing out
+            // A lamp has no axis and no sheet: it puts the same thing out
             // everywhere, which is what makes it a set of rings rather than
             // an arm, and there is nothing to narrow.
-            const into = hasSides ? poles : [...ray.boundaries];
+            const into = hasSides ? sheet : [...ray.boundaries];
 
             for (const bd of into) {
               const facing = bd.target;
@@ -2501,10 +2601,47 @@ export class Graph {
                * between the two kinds: an equator is a real answer of nought,
                * and a source with no equator has no such answer to give.
                */
-              const strength = emission(hasSides, beta, () => dot(dir, north!));
+              /**
+               * FOUR ONE WAY AND FOUR THE OTHER, which is what makes it eight.
+               *
+               * Read by the direction's bearing WITHIN the sheet, half-open,
+               * rather than by the sign of its resolution against north — and
+               * the difference is exactly the two directions square to north.
+               *
+               * By the dot product those two are a genuine nought: they sit
+               * on the dipole's equator, `quantised` calls them Neutral, and
+               * the sheet puts out six. But a ring of eight split by a line
+               * through two of them is three, two silent, three — and a
+               * source that emits six of its eight has no inverse square,
+               * because `chance` divides the emission by the shell and the
+               * emission has to be all of it.
+               *
+               * Split half-open instead and the eight come out four and four,
+               * with the two on the line falling opposite ways. Which is not
+               * a new rule: `quantised` already does exactly this for a
+               * source with no sides, and says why — "half-open, so the two
+               * instants fall opposite ways and the halves come out equal —
+               * four cells of one charge and four of the other". The sided
+               * branch never got it. It has it now, and a magnet and a lamp
+               * are quantised the same way.
+               */
+              let charge: Polarity;
 
-              const charge = quantised(strength, hasSides, beta);
-              if (charge === Polarity.Neutral) continue; // the equator
+              if (hasSides && perp) {
+                // Where this direction lies in the sheet, in turns from north.
+                const turns =
+                  Math.atan2(dot(dir, perp), dot(dir, north!)) / (Math.PI * 2);
+
+                const half = turns + 0.25;
+
+                charge = half - Math.floor(half) < 0.5
+                  ? Polarity.Positive : Polarity.Negative;
+              } else {
+                const strength = emission(hasSides, beta, () => dot(dir, north!));
+
+                charge = quantised(strength, hasSides, beta);
+                if (charge === Polarity.Neutral) continue;
+              }
 
               // Which way round the source is putting it out. `emits` is what
               // its north pole gives, so a positive strength is that and a
@@ -2605,109 +2742,30 @@ export class Graph {
       }
 
       /**
-       * Once each, and not straight away.
+       * A SHELL IS NOT REPOPULATED, and this is where it used to be.
        *
-       * Concentric shells one step apart, one per tick, moving one step per
-       * tick, are exactly the shells that tile a ball — so filling every one
-       * of them fills the ball completely, and a ball with no space in it is
-       * a ball in which nothing can move, since moving is trading places with
-       * space. That is not a near miss to be tuned around; unit shells at
-       * every radius sum to the volume they sit in, and it is why spreading
-       * on every tick froze the field solid.
+       * There was a fan here: once a charge got out past `fanAt` it spawned
+       * copies of itself into the ring of directions across its path, so that
+       * a pulse stayed a filled surface however far out it got. It was put
+       * there before it was understood what the falloff had to be, and it is
+       * exactly what stops the falloff happening.
        *
-       * What is affordable is a fixed number of points per shell rather than
-       * a filled one: each ray fans out ONCE, into the ring of directions
-       * across its path, and its children never fan again. A pulse is then
-       * twenty-six rays and their fan — a couple of hundred points — however
-       * far out it gets.
+       * A source lets go of a fixed number of charges and they spread. That
+       * spreading is the whole of the inverse square: the same count over a
+       * shell that has grown as r², which is `chance` in `field.ts` and the
+       * reason it divides by 4πr². Duplicating the charges as they go keeps
+       * the count up with the shell instead, and a fixed count per shell does
+       * not thin at all — measured, the density fell as r^-0.66 where it has
+       * to fall as r^-2, and the missing power was the fan putting back what
+       * the spreading had just taken away.
        *
-       * And it waits until `fanAt` before doing it. A shell of radius two has
-       * only a few dozen cells in it and is already as full as it can be, so
-       * fanning immediately puts every child straight into the crush around
-       * the source, walls the source in, and stops the emission. Waiting
-       * until the shell is wide enough to have somewhere to put them spends
-       * the same points where there is room for them — and where they are
-       * wanted, since what a shell is for is meeting the other one, and that
-       * happens out at the distance between the sources rather than next
-       * door.
+       * What fills the shell instead is `wander`: a charge deviates onto a
+       * diagonal and comes back onto the line it was given, so the emission
+       * is a disk and the TRAVEL is a sphere, and the aggregate over many
+       * charges and many pulses is round without anything being copied. One
+       * charge emitted is one charge in flight, from the source to wherever
+       * it stops being one.
        */
-      if (spread <= 1) {
-        const front: { ray: Ray, dir: number[], polarity: Polarity, wave?: number }[] = [];
-
-        for (const nd of g.nodes) {
-          for (const ray of nd) {
-            if (ray.magnet || !ray.moving) continue;
-            if (ray.moving.polarity === Polarity.Neutral) continue;
-
-            // Age is counted in `tick`, once, for everything in flight.
-            if (ray.fanned || (ray.age ?? 0) < fan) continue;
-
-            const dir = g.direction(ray.moving);
-            if (!dir) continue;
-
-            ray.fanned = true;
-            front.push({ ray, dir, polarity: ray.moving.polarity, wave: ray.wave });
-          }
-        }
-
-        for (const { ray, dir, polarity, wave } of front) {
-          for (const bd of ray.boundaries) {
-            const facing = bd.target;
-            if (!facing) continue;
-
-            const there = facing.at.node;
-            if (there === ray.node) continue;
-            if (there.some(r => r.moving || r.magnet)) continue;
-
-            const d = g.direction(bd);
-            if (!d) continue;
-
-            // BESIDE us — not behind, and not ahead either.
-            //
-            // Behind is everywhere the wave has already been, and filling
-            // that in is a wave that never leaves anywhere. Ahead is where we
-            // are going ourselves, and filling that in is a wave that thickens
-            // into a solid ball instead of staying a surface. What is left is
-            // the ring of directions across our path, which is the front
-            // itself: the shell grows sideways, into the room a bigger shell
-            // has that a smaller one didn't.
-            const along = dot(d, dir);
-            if (along < spread || along > ALONG) continue;
-
-            for (const r of there)
-              for (const x of r.boundaries) x.polarity = polarity;
-
-            // And it leaves in the direction between ours and its own, so the
-            // front fans out as it goes rather than travelling as a sheaf of
-            // parallel lines. Twenty-six directions repeatedly split between
-            // is how a lattice with twenty-six of them makes a round shell.
-            const bias = dir.map((v, i) => v + d[i]);
-
-            facing.at.moving = g.along(facing.at, bias, 1);
-            facing.at.wave = wave; // still the same pulse, spread wider
-            facing.at.source = ray.source;
-            facing.at.turning = ray.turning;
-            facing.at.age = ray.age;
-
-            // And it travels at the speed its parent does.
-            //
-            // Without this a fanned charge is quick and the charge it came
-            // from is slow — three times as quick, where the source is one
-            // that turns — so it runs out through the shell ahead of it and
-            // the one ahead of that, carrying its own polarity into the
-            // middle of theirs. Every shell ends up holding both charges at
-            // once, mixed, and the neat alternation that IS the spiral is
-            // stirred out of the field before anything gets to draw it.
-            facing.at.mass = ray.mass;
-
-            // Already fanned, as far as it is concerned. Otherwise each child
-            // fans in turn and the shell doubles every tick until it has
-            // filled everything, which is where this started.
-            facing.at.fanned = true;
-            facing.at.age = ray.age;
-          }
-        }
-      }
     };
 
     return graph;
@@ -2809,7 +2867,6 @@ export class Graph {
         r.credit = ray.credit;
         r.mass = ray.mass;
         r.age = ray.age;
-        r.fanned = ray.fanned;
         r.axis = ray.axis?.slice();
         r.turning = ray.turning;
         r.ring = ray.ring;
@@ -3211,11 +3268,10 @@ export class Ray {
   source?: number;
   wave?: number;
 
-  // How many ticks a charge has been in flight, and whether it has yet fanned
+  // How many ticks a charge has been in flight.
   // out into the room a bigger shell has that a smaller one hadn't. See the
   // Huygens step in `Graph.sources`.
   age?: number;
-  fanned?: boolean;
 
   /**
    * The way it is going in the large, which is not the same as the step it is

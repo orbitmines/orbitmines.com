@@ -7,7 +7,7 @@
  *   emit         = front · fade · shape · F(d̂)    what one source puts here
  *     front      = min((ct − r)/1.5, 1)           nothing before it arrives
  *     chance(m,r)= m·SHEET / shell(r)              NOT a falloff law:
- *     shell(r)   = Ω·max(r, HALF)^(DIMS − 1)       one charge's worth
+ *     shell(r)   = Ω·max(r, HALF)^(DIMS−1) + FLOOR one charge's worth
  *                  over how much shell there is to share it out across. The
  *                  inverse square is what that COMES TO in three dimensions,
  *                  not something stated — change how the waves are sent out
@@ -20,6 +20,13 @@
  *
  *   R(d̂)         = (gap/2) / (d̂·û)   for d̂·û > HEAD_ON, else ∞
  *                                                 where a wave MAY stop
+ *   SHEET  = 3^(d−1) − 1 = 8      how many charges one pulse is
+ *   WAYS   = 3^d − 1     = 26      how many ways out of a point there are —
+ *                                  a DIFFERENT number, and the one the
+ *                                  counting argument in `gravity.ts` needs
+ *   FLOOR                          the innermost shell is not nought cells
+ *                                  across. See `shell`.
+ *
  *   through(m,r) = max(1 − chance(m, r), 0)       and how much of it doesn't:
  *                  the chance the cell it arrives at is EMPTY. Close in that is
  *                  nought and the surface is a wall; far out it is nearly one
@@ -89,7 +96,36 @@ export const HALF = 0.5;
  * departure is a fact about short range and about nothing else, which is what
  * a departure arising from the graininess of the thing ought to look like.
  */
-export const shell = (r: number) => SPHERE * Math.pow(Math.max(r, HALF), DIMS - 1);
+export const shell = (r: number) =>
+  SPHERE * Math.pow(Math.max(r, HALF), DIMS - 1) + FLOOR;
+
+/**
+ * How many cells the innermost shell has, which is not nought and was being
+ * taken as nought.
+ *
+ * `SPHERE·r^(d−1)` is the surface of a CONTINUUM sphere, and `SHEET` is a
+ * count off the LATTICE — eight of the twenty-six ways out of a point. Divide
+ * one by the other at r = HALF and the model puts eight charges onto
+ * `4π(0.5)² = 3.14` places, so `chance` comes out at 2.546: a probability, over
+ * one. Nobody had evaluated the floor to see what number it gives.
+ *
+ * The lattice's own shell at d steps is the surface of a cube, `24d² + 2` in
+ * three dimensions — twenty-six at one step, which is exactly the ways out of
+ * a point. The `+2` is the two caps the continuum formula has no room for, and
+ * it is the whole of the difference at the core: with it, `chance` at HALF is
+ * `8/(4π·0.25 + 2)`, and with `SPHERE` read off the same cube it is 8/8 = 1
+ * exactly. Saturated, never exceeded, which is what a probability may do.
+ *
+ * WHAT IS STILL OPEN, because this only half-settles it. `24d²` counts cells
+ * at CHEBYSHEV distance d — where a charge has got to after d ticks — while
+ * `chance(m, r)` is asked with the EUCLIDEAN separation of two bodies. On a
+ * 26-connected lattice those differ by up to √3 depending on direction, and
+ * that is the same graph-distance-against-coordinates confusion that makes the
+ * lattice's occupancy hard to read at all. The floor here is the piece that is
+ * certainly wrong without it; the factor of 24/4π between the two measures is
+ * the piece that needs that question answered first.
+ */
+export const FLOOR = 2;
 
 /**
  * How much shell there is at radius one — the surface of the unit sphere in
@@ -123,6 +159,24 @@ const SPHERE = DIMS === 3 ? 4 * Math.PI : DIMS === 2 ? 2 * Math.PI : 2;
  * sources, which is most of what a fitted coupling had been standing in for.
  */
 export const SHEET = Math.pow(3, DIMS - 1) - 1;
+
+/**
+ * And how many ways out of a point there are ALTOGETHER, which is a different
+ * number and was being conflated with the one above.
+ *
+ * `3^d − 1`: twenty-six in three dimensions, eight in two. Measured on the
+ * lattice directly — a breadth-first walk from any point reaches exactly 26 at
+ * one step in three dimensions and exactly 8 in two.
+ *
+ * The distinction matters because `SHEET` is an EMISSION count — how many
+ * charges a source lets go of in one pulse, which is the plane it pulses into
+ * — while the counting argument behind `BIAS` needs the number of ALTERNATIVE
+ * directions a biased path could have taken instead. Those are the ways out of
+ * the point, all of them, not the ones this particular source happened to emit
+ * along. `gravity.ts` used `SHEET` for both, which understated the denominator
+ * by a factor of 3.25 in three dimensions.
+ */
+export const WAYS = Math.pow(3, DIMS) - 1;
 
 /**
  * The chance that a given cell at radius r is holding one of this source's

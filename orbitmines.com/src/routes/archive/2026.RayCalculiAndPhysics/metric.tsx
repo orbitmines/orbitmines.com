@@ -4,8 +4,12 @@
  *   opposed(ψ)  = |ψ| / π                         how much of a meeting cancels
  *   screen(x)   = Π_c through(m_c, |x − r_c|)     what a third body shadows
  *
- *   S(a,b)      = BITE ∫₀^R chance(m_a,s)·chance(m_b,R−s)·opposed·screen ds
- *                                                 meetings a tick along a→b
+ *   S(a,b)      = BITE·share·screen·m_a·m_b·EMIT²·met(R)    meetings a tick
+ *                                                 along a→b. `met` is that
+ *                                                 line integral in closed
+ *                                                 form — see `gravity.ts`,
+ *                                                 where the running of G with
+ *                                                 separation lives.
  *
  *   the density of space, which is the whole of gravity here:
  *     u_a       = own_a + pulled_a                its count, in cells a tick of
@@ -17,12 +21,12 @@
  *   An annihilation leaves the space where it happened denser: the next path
  *   out of that point is twice as likely to go the way it went, a second one
  *   makes it three to one, a third four. So a direction carrying n of them
- *   weighs 1 + n against the SHEET ways out that weigh one each, and what that
- *   leans a path by is LIGHT·n/SHEET — linear, with no ceiling in it.
+ *   weighs 1 + n against the WAYS out that weigh one each, and what that leans
+ *   a path by is LIGHT·n/WAYS — linear, with no ceiling in it.
  *
  *   Everything else here falls out of that, and none of it is stated:
  *
- *     BIAS        one annihilation buys LIGHT/SHEET, whatever else is going on
+ *     BIAS        one annihilation buys LIGHT/WAYS, whatever else is going on
  *                 — so at rest, NEWTON, with no free constant
  *     u̇ ∝ ṅ      a shortage of space is an ACCELERATION and not a speed,
  *                 because what accumulates is the count and what drifts is a
@@ -38,12 +42,12 @@
  *                 heavier things have proportionally more paths to bias, so
  *                 the same fraction of them bends. Inertia IS path count.
  *
- *   G           = SHEET / (4π²·HALF)              the far-field limit, closed
- *                                                 form. `S·R²` is 8.5% above
- *                                                 it at 24 cells and decays as
- *                                                 ln R/R — the model's largest
- *                                                 departure, and now a stated
- *                                                 one. See `GRAVITY`.
+ *   G           = SHEET² / (4π²·CORE·WAYS)       closed form, nothing fitted.
+ *                                                 `S·R²` runs above it by
+ *                                                 CORE·ln(R/CORE)/R — which
+ *                                                 is nothing at a separation
+ *                                                 of any real bodies. See
+ *                                                 `GRAIN` in `gravity.ts`.
  *
  *   the picture only (φ drives nothing — see `spaceStep`):
  *     φ(x)      = max(−K·S(x)·dt, −1/4)           where space is going
@@ -55,24 +59,28 @@
 
 import { CanvasView, Surface } from "./canvas";
 import {
-  Emitter, fade, grainAt, HALF, Live, sparse, WAY, emit, fieldAt, TRAIL,
+  Emitter, fade, grainAt, HALF, Live, sparse, emit, fieldAt, TRAIL,
 } from "./field";
-import { BIAS, count, pace, shortfall } from "./gravity";
+import {
+  annihilation, BIAS, coherence, count, pace, shortfall,
+} from "./gravity";
 import { CYCLE, SPIN, TAU } from "./lattice";
 import {
-  AMBER, BACKGROUND, CYAN, decadesFor, ground, legend, lift, shown, source,
-  trail,
+  AMBER, BACKGROUND, CYAN, decadesFor, ground, legend, lift, NEUTRAL, rgba,
+  shown, source, trail,
 } from "./paint";
-import { cancelling, closing } from "./physics";
+import { cancelling } from "./physics";
 
 /**
  * Gravity as a shortage of space, which is what the lattice actually does.
  *
- * `continuous.tsx` is the other account, and it is the one this article was
- * written with: measure where annihilation is happening, turn that into a
- * velocity for the space itself, give the velocity a wave equation, carry
- * each source by the flow it is standing in, and turn it by how steeply that
- * flow falls away. It works, and every step of it is a thing added.
+ * There used to be another account beside this one — gravity as a FLOW —
+ * and it is worth saying what it was, because this file is what replaced it
+ * and the reason is the whole argument. It measured where annihilation was
+ * happening, turned that into a velocity for the space itself, gave the
+ * velocity a wave equation, carried each source by the flow it was standing
+ * in, and turned it by how steeply that flow fell away. It worked, and every
+ * step of it was a thing ADDED.
  *
  * None of which the lattice does. `annihilate` pushes nothing. It removes two
  * points and splices what was behind each onto what was behind the other, and
@@ -126,6 +134,85 @@ import { cancelling, closing } from "./physics";
  */
 export type Space = {
   phi: Float32Array;
+
+  /**
+   * And the same thing kept one moment further out: not how much folding there
+   * is at a place but WHICH WAY it went, as the three parts of a symmetric
+   * 2×2.
+   *
+   * `phi` is the trace of this and nothing more. Which is the whole point of
+   * having it: a scalar can say a place has had space taken out of it, and it
+   * cannot say that the space taken out was taken RADIALLY and not across.
+   * Those are different statements about the same place and general relativity
+   * needs the second one — the metric it wants is
+   *
+   *     ds² = −A dt² + B(dx² + dy² + dz²)
+   *
+   * and A alone, which is all a scalar can be, gives Newton's law, one sixth
+   * of Mercury's perihelion advance, and half of the deflection of light. The
+   * other five sixths and the other half are B, and B is a statement about
+   * direction.
+   *
+   * The counting argument this whole file rests on was always about direction.
+   * `BIAS` says a place that has taken an annihilation has more ways of going
+   * the way it went "while every other way out of the point still weighs
+   * exactly what it always did" — which is a count PER WAY OUT, twenty-six of
+   * them in three dimensions, and what has been kept until now is only how big
+   * it is and, per body, where it pointed. The direction was being computed
+   * and thrown away on the same line.
+   *
+   * So this keeps it. Nothing new is measured: `shortfall` already walks the
+   * line between every pair and already knows which way it is walking, so
+   * every meeting it counts can say where it happened and along what for
+   * nothing (see its `onto`). It is fed from there and NOT from `eaten`,
+   * which measures the same physical thing off the drawn field in the
+   * drawing's units — a count that is going to be read against `SHEET` has to
+   * be in the units `GRAVITY` was derived in.
+   *
+   * AND IT ACCUMULATES, which `phi` explicitly does not (see `spaceStep`).
+   * That is the whole of what makes it a field rather than a snapshot, and it
+   * is worth being exact about why it does not do what the old accumulating
+   * `phi` did, which was to eat the frame:
+   *
+   *  - it is BOUNDED IN SPACE by construction. `shortfall` only ever walks
+   *    between two bodies, so nothing is ever deposited outside the segment,
+   *    and there is no far tail to creep outwards.
+   *
+   *  - it is BOUNDED IN EFFECT by the counting argument itself. The count
+   *    grows without limit and what a count DOES saturates: `n/(SHEET + n)`
+   *    goes to one and stops, because a direction cannot take more than all
+   *    the paths. Measured on a held pair twelve cells apart, the count at a
+   *    body goes 0.41 → 4.5 → 49 → 123 over 200, 2200, 24 000 and 60 000
+   *    ticks while the bias goes 0.049 → 0.36 → 0.86 → 0.94. That is the
+   *    saturation in `drawn` finally doing the job it was written for.
+   *
+   * WHAT IT IS FOR. A snapshot of this is a strand along one pair's line, and
+   * that was the reason for thinking it could not be a metric. It was the
+   * wrong thing to look at. Accumulated over an orbit the line SWEEPS, and
+   * wherever it passes through a place the line IS the radius there — so what
+   * builds up round the middle of a system is radial and very nearly
+   * axisymmetric. Measured on Sun and Mercury over the panel's own run: every
+   * one of 72 bearings lit at every radius out to 20 cells, the axis within
+   * 0.4° to 2.7° of radial, and `spread` at 0.995 to 1.000 — folded radially
+   * and not at all across, which is the shape general relativity's B has.
+   *
+   * WHAT IS WRONG WITH IT, stated plainly because it is not small. The count
+   * that builds up at planetary mass ratios is about 1e−10, so the bias is
+   * 1e−11 where the effect being chased is 1e−3. And worse than small, it is
+   * not scale-free: `shortfall` goes as m_a·m_b and a mass in cells is
+   * `gm·cells³/ticks²/GRAVITY`, so drawing the same system twice as large
+   * folds space twice as hard. The pairwise law has no such problem because
+   * the response divides by the body's own mass, which is the equivalence
+   * principle; a count at a place has nothing to divide by. So `SHEET` is
+   * probably not what this should be read against, and what it should be is
+   * the open question.
+   *
+   * IT DRIVES NOTHING. What a body does is still settled pairwise in `spend`.
+   * This is here to be looked at and measured against, and it is behind
+   * `folded` so that nothing pays for it unless it is being looked at.
+   */
+  nxx: Float32Array; nxy: Float32Array; nyy: Float32Array;
+
   n: number; x0: number; y0: number; step: number;
 };
 
@@ -144,6 +231,9 @@ export const space = (span: number, sources = 2): Space => {
 
   return {
     phi: new Float32Array(n * n),
+    nxx: new Float32Array(n * n),
+    nxy: new Float32Array(n * n),
+    nyy: new Float32Array(n * n),
     n, x0: -span, y0: -span, step: (2 * span) / n,
   };
 };
@@ -166,29 +256,37 @@ export const phiAt = (w: Space, x: number, y: number): number => {
 /**
  * How much space is being destroyed at a place, per tick.
  *
- * The one thing both accounts read off the field, and the whole of what
- * annihilation is: two charges cancel where they are opposite in charge AND
- * opposed in direction. One without the other is a crossing rather than a
- * collision, so both factors are in it, and both are readable on the spot
+ * The whole of what annihilation is: two charges cancel where they are
+ * opposite in charge and IN THE SAME PLACE. Both are readable on the spot,
  * without knowing which sources exist or which two of them are meant.
+ *
+ * There used to be a `closing` factor here as well — nought unless the two
+ * were coming at each other within a right angle — and it is gone, on the
+ * lattice's own authority. `discrete.ts` has two ways for charges to meet,
+ * and arriving together is the one that matters in three dimensions: two
+ * shells sweeping through each other are made of rays coming in at all
+ * angles, converging on the same cell from different directions, never
+ * neighbours and never pointed at each other. What happens when they land
+ * together is `outcome(a.polarity, b.polarity)`, with no angular factor
+ * anywhere in it. Being in the same place is the event. See `annihilation`
+ * in `gravity.ts`, which is the same correction on the dynamics side.
+ *
+ * This is the DRAWING's measure of it, and its scale is the drawing's — see
+ * the `gain` in `spaceStep`. The folding grid is fed from `annihilation`
+ * instead, which is the same physical quantity in the units the dynamics are
+ * actually in. A number that is going to be compared against `SHEET` cannot
+ * come from here.
  */
 const eaten = (live: Live[], x: number, y: number, t: number) => {
-  const val: number[] = [], dx: number[] = [], dy: number[] = [];
+  const val: number[] = [];
 
-  for (let i = 0; i < live.length; i++) {
-    val[i] = emit(live[i], live[i], x, y, t);
-    dx[i] = WAY[0]; dy[i] = WAY[1];
-  }
+  for (let i = 0; i < live.length; i++) val[i] = emit(live[i], live[i], x, y, t);
 
   let total = 0;
 
   for (let i = 0; i < live.length; i++)
-    for (let j = i + 1; j < live.length; j++) {
-      const closes = closing([dx[i], dy[i]], [dx[j], dy[j]]);
-      if (closes <= 0) continue;                  // crossing, not meeting
-
-      total += cancelling(val[i], val[j]) * Math.abs(val[i] * val[j]) * closes;
-    }
+    for (let j = i + 1; j < live.length; j++)
+      total += cancelling(val[i], val[j]) * Math.abs(val[i] * val[j]);
 
   return total;
 };
@@ -261,6 +359,81 @@ export const spaceStep = (
       // Never more than a place has to give.
       phi[j * n + i] = Math.max(-gain * s * dt, -0.25);
     }
+};
+
+/**
+ * One tick's worth of folding, added everywhere it happened.
+ *
+ * SAMPLED, not binned, and the difference is the whole of what this pass is
+ * for. `annihilation` is a density per lattice cell at a position — a field,
+ * with no grid anywhere in it — so what is stored at a grid place is the value
+ * of that field THERE, times how long has passed. Halve the grid spacing and
+ * every stored number is unchanged; the picture gets finer and the physics
+ * does not move. The first version of this binned a line walk into the grid
+ * and therefore said space was folded harder when the canvas had more pixels
+ * in it, which is the same class of mistake as `phi`'s `gain` and worse, since
+ * that one only ever changed the shading.
+ *
+ * `share` is settled once per pair, as it is in `shortfall`: it is a fact
+ * about how two things are keeping time against each other, and not about any
+ * place in particular.
+ */
+const foldStep = (w: Space, live: Live[], dt: number) => {
+  const { n, step } = w;
+
+  for (let a = 0; a < live.length; a++)
+    for (let b = a + 1; b < live.length; b++) {
+      const dx = live[b].at[0] - live[a].at[0];
+      const dy = live[b].at[1] - live[a].at[1];
+
+      const R = Math.hypot(dx, dy);
+      if (R < 1e-9) continue;
+
+      const share = coherence(live[a], live[b], R);
+
+      for (let j = 0; j < n; j++)
+        for (let i = 0; i < n; i++) {
+          const f = annihilation(
+            live[a], live[b], w.x0 + i * step, w.y0 + j * step, share);
+
+          if (f[0] <= 0) continue;
+
+          const k = j * n + i;
+
+          w.nxx[k] += f[1] * dt;
+          w.nxy[k] += f[2] * dt;
+          w.nyy[k] += f[3] * dt;
+        }
+    }
+};
+
+/**
+ * What the folding at a place comes to: how one-sided it is, and which way.
+ *
+ * The eigen-decomposition of a symmetric 2×2, which is short enough to write
+ * out. `spread` is (λ₁ − λ₂)/(λ₁ + λ₂) — nought where the place has been
+ * folded the same amount every way, one where it has been folded along a
+ * single axis and not at all across it. `turn` is where that axis points, and
+ * it is a direction modulo π rather than a bearing, because an axis is.
+ *
+ * This is the number the whole exercise is about. A scalar account can only
+ * ever report the trace, which is `size`; if `spread` is nought everywhere
+ * then the model's folding is isotropic and there is no B in it to find. If it
+ * is not, there is, and what it looks like is the next question.
+ */
+export const AXIS: [number, number, number] = [0, 0, 0];   // size, spread, turn
+
+export const folding = (w: Space, k: number) => {
+  const a = w.nxx[k], b = w.nxy[k], c = w.nyy[k];
+
+  const size = a + c;
+  const gap = Math.hypot((a - c) / 2, b) * 2;
+
+  AXIS[0] = size;
+  AXIS[1] = size > 1e-30 ? gap / size : 0;
+  AXIS[2] = 0.5 * Math.atan2(2 * b, a - c);
+
+  return AXIS;
 };
 
 /**
@@ -389,6 +562,7 @@ export const MetricField = ({
   rate = 10,
   cycle = 200,
   summary,
+  folded,
 }: {
   sources: Emitter[];
   span?: number;
@@ -396,9 +570,22 @@ export const MetricField = ({
   cycle?: number;
   height?: number;
   summary?: boolean;
+
+  /**
+   * Draw which WAY the space is being folded, over the top of everything else.
+   *
+   * Off everywhere by default, because it is a second picture on one canvas
+   * and most of these panels are about the first one. On, it strokes the
+   * principal axis of `folding` on a coarse grid — the direction the
+   * annihilation at each place came together along, with the length of the
+   * stroke saying how one-sided it is.
+   *
+   * It drives nothing. See `Space.nxx`.
+   */
+  folded?: boolean;
 }) => <CanvasView
   height={height}
-  deps={[sources, span, rate, cycle, summary]}
+  deps={[sources, span, rate, cycle, summary, folded]}
   paint={() => {
     const buf = document.createElement("canvas");
     const bufCtx = buf.getContext("2d")!;
@@ -586,8 +773,14 @@ export const MetricField = ({
           if ((b.mass ?? 1) / rr < NOTHING * most[i]
             && (a.mass ?? 1) / rr < NOTHING * most[j]) continue;
 
+          // Nothing to spend, and NOT "less than some small number": what
+          // `shortfall` returns is in units of `GRAVITY`, and `GRAVITY` scales
+          // with `GRAIN` — so an absolute floor here is a floor on the drawing
+          // scale, and at a grain of a trillion it silently swallowed every
+          // pair in the system. The relative test above (`NOTHING`) is what
+          // decides whether a pair is worth walking.
           const deficit = shortfall(a, b, live, dt);
-          if (deficit <= 1e-12) continue;
+          if (deficit <= 0) continue;
 
           dx /= coord; dy /= coord;
 
@@ -675,6 +868,11 @@ export const MetricField = ({
         spaceStep(world, live, t, dt);
         wake(world, live, going, dt);
       }
+
+      // And the folding, which is wanted whenever it is being looked at and
+      // never otherwise. Unlike the two above it accumulates, so it is a time
+      // integral and has to be handed the same `dt` the step was taken with.
+      if (folded) foldStep(world, live, dt);
     }
 
     function draw({ ctx, width: w, height: h }: Surface) {
@@ -724,6 +922,68 @@ export const MetricField = ({
       };
 
       /**
+       * And which way the folding went, as a stroke per place.
+       *
+       * A director field rather than arrows, because what is stored is an axis
+       * (see `eaten`): each stroke lies along the principal direction of
+       * `folding` and is drawn through its place rather than from it, so a
+       * stroke has two ends and no head.
+       *
+       * Two things are being said at once and they are separated on purpose.
+       * The LENGTH is `spread` — how one-sided the folding is, nought to one —
+       * and it is the whole question this overlay exists to answer, so it is
+       * on the axis the eye reads first. The OPACITY is the size of the
+       * folding, log-scaled off the largest in the frame, and it is there only
+       * so that the empty corners do not shout as loudly as the middle. A
+       * place where nothing is happening but what little happens is one-sided
+       * still draws a long faint stroke, which is correct and is exactly the
+       * case a linear scale would have hidden.
+       */
+      const strokes = () => {
+        const { n } = world;
+
+        let top = 0;
+
+        for (let k = 0; k < n * n; k++)
+          top = Math.max(top, world.nxx[k] + world.nyy[k]);
+
+        if (top <= 0) return;
+
+        // Every other place, so the strokes have room to be seen as strokes.
+        const skip = Math.max(Math.round(n / 28), 1);
+        const reach = world.step * scale * skip * 0.45;
+
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineWidth = 1.1;
+
+        for (let j = 0; j < n; j += skip)
+          for (let i = 0; i < n; i += skip) {
+            const [size, spread, turn] = folding(world, j * n + i);
+            if (size <= 0 || spread < 0.02) continue;
+
+            // Three decades of it, which is what the field itself is drawn
+            // over — see `decadesFor`.
+            const lit = Math.max(0, 1 + Math.log10(size / top) / 3);
+            if (lit <= 0.02) continue;
+
+            const px = w / 2 + (world.x0 + i * world.step) * scale;
+            const py = h / 2 + (world.y0 + j * world.step) * scale;
+
+            const ex = Math.cos(turn) * reach * spread;
+            const ey = Math.sin(turn) * reach * spread;
+
+            ctx.strokeStyle = rgba(NEUTRAL, 0.15 + 0.65 * lit);
+            ctx.beginPath();
+            ctx.moveTo(px - ex, py - ey);
+            ctx.lineTo(px + ex, py + ey);
+            ctx.stroke();
+          }
+
+        ctx.restore();
+      };
+
+      /**
        * And where it cannot be resolved at all, it is not drawn.
        *
        * The legend used to say "too far out to resolve the arm" while the
@@ -746,8 +1006,11 @@ export const MetricField = ({
       if (brief) {
         ground(ctx, w, h);
 
-        legend(ctx, w, h,
-          `too far out to resolve a band — showing the path each has taken`);
+        legend(ctx, w, h, folded
+          ? `too far out to resolve a band — path taken, and which way space folded`
+          : `too far out to resolve a band — showing the path each has taken`);
+
+        if (folded) strokes();
 
         paths();
         dots();
@@ -886,7 +1149,12 @@ export const MetricField = ({
 
       legend(ctx, w, h, `field 1/r², log over ${decades} decades · ${
         grain < 0.05 ? 'drawn continuous'
-          : grain > 0.95 ? 'shells' : 'fading to shells'}`);
+          : grain > 0.95 ? 'shells' : 'fading to shells'}${
+        folded ? ' · strokes: which way space is folding' : ''}`);
+
+      // Which way each place is being folded, under the paths and over the
+      // field — it is a statement about the field, so it belongs on top of it.
+      if (folded) strokes();
 
       // And where each has been, over the field it laid down getting there.
       // Both, now, rather than one or the other: the waves are what the model
