@@ -3,6 +3,7 @@ import Post, {
   useCounter,
 } from "../../../lib/post/Post";
 import { RAY_CALCULI_AND_PHYSICS } from "../../references";
+import { Law } from "./law";
 import { MODELS } from "./models";
 import { Models } from "./views";
 
@@ -19,6 +20,12 @@ import { Models } from "./views";
  * an arrangement MEANS, edit `discrete.ts` and `metric.tsx`, which are the
  * two readings, and which share their vocabulary through `lattice.ts` and
  * `physics.ts` so that neither can drift from the other by redefining a term.
+ *
+ * The one thing that is not an arrangement is `law.tsx`, which states the
+ * whole model as an equation before any of them — and, more to the point,
+ * says which of its constants are put in and which come out. It reads its
+ * numbers from `gravity.ts` rather than restating them, so there is no second
+ * copy to drift.
  */
 const RayCalculiAndPhysics = () => {
   const referenceCounter = useCounter();
@@ -35,6 +42,7 @@ const RayCalculiAndPhysics = () => {
   return <Post {...paper}>
     <Arc head="">
       <Section head="">
+        <Law />
         <Models models={MODELS} />
       </Section>
     </Arc>

@@ -13,16 +13,16 @@
  *
  *   the pull, and it is an integral along ONE line — the line whose length is
  *   the distance between them, which is the line annihilation shortens:
- *     met(R)      = ∫₀^R dx / (max(x,CORE)²·max(R−x,CORE)²)   exactly:
- *                 = 2/(CORE·R(R−CORE))                the two cores
- *                 + (2/R²)(1/CORE − 1/(R−CORE))       their outsides
- *                 + (4/R³)·ln((R−CORE)/CORE)          the open middle
+ *     met(R)      = ∫₀^R dx / (max(x,c)²·max(R−x,c)²)     the line, exactly:
+ *                 = 4/(c·R²) · ( 1 + (c/R)·ln((R−c)/c) )
+ *                    ╰─────╯     ╰────────────────────╯
+ *                     Newton       what the middle adds
  *     S(a,b)      = BITE·share·screen·m_a·m_b·EMIT²·met(R)     meetings a tick
  *
- *   The first two terms are the inverse square and go as 1/CORE. The third is
- *   a RUNNING of the constant with separation, and it carries no CORE at all —
- *   so the ratio between them is CORE/R, and how many core radii apart two
- *   things are is the only thing that has ever moved it. See `GRAIN`.
+ *   One inverse square times one bracket that goes to one. The bracket is the
+ *   whole of the model's departure from Newton at a distance, its size is the
+ *   ratio of a source's core to the separation, and how many core radii apart
+ *   two things are is the only thing that has ever moved it. See `GRAIN`.
  *
  *   what a count of annihilations does to a body:
  *     BIAS        = LIGHT / WAYS                   what one of them buys, and
@@ -90,33 +90,37 @@ export const GRAIN = 1e12;
 const CORE = HALF / GRAIN;
 
 /**
- * The line between two things, integrated — exactly, with no walk.
+ * The line between two things, integrated — exactly, and it is Newton times a
+ * bracket.
  *
- * There used to be a numerical walk here: a few hundred samples along the
- * line, crowded into the ends by `x = R(1 − cos θ)/2` because that is where
- * the integrand lives. It is gone, and not because the integral is gone —
- * because `∫₀^R dx / (max(x,h)²·max(R−x,h)²)` has a closed form, and sampling
- * something you can write down buys nothing but a sample count.
+ * `∫₀^R dx / (max(x,c)²·max(R−x,c)²)` has a closed form, and the closed form
+ * collapses: the two core terms and the two outside them differ by `(R − c)`,
+ * which cancels, leaving
  *
- * It buys nothing and it COSTS the thing that matters: a walk can only resolve
- * a core it puts samples inside, and the innermost sample of that substitution
- * lands at about `R·π²/16N²`. Resolving a core a trillionth of a cell across
- * would have taken ten million samples a pair a step. Done exactly, the core
- * can be as small as it physically is rather than as small as an integrator
- * can afford.
+ *     met(R) = 4/(c R²) · ( 1 + (c/R)·ln((R−c)/c) )
+ *                ╰──────╯   ╰────────────────────╯
+ *                 Newton      what the middle adds
  *
- *     ends    2 / (h·R·(R−h))                    the two half-cells
- *     near    (2/R²)(1/h − 1/(R−h))              their outsides
- *     middle  (4/R³)·ln((R−h)/h)                 the open line, and the log
+ * — one inverse square, times one bracket that goes to one. Which says the
+ * whole thing at a glance: the model IS Newton, with a correction whose entire
+ * size is the ratio of a source's core to the separation, log-enhanced. At a
+ * core of half a lattice step and Mercury's separation the bracket is 1.08; at
+ * the grain a real lattice would have, it is 1 + 10⁻³⁸.
  *
- * The first two are the inverse square and go as `1/h`. The third is the
- * running, and it carries no `h` at all — which is why the ratio between them
- * is `h/R` and why shrinking the core is the only thing that ever moved it.
+ * There used to be a numerical walk here — a few hundred samples along the
+ * line, crowded into the ends by `x = R(1 − cos θ)/2` because that is where the
+ * integrand lives. Sampling something you can write down buys nothing, and it
+ * COSTS the thing that matters: a walk can only resolve a core it puts samples
+ * inside, and the innermost sample of that substitution lands at about
+ * `R·π²/16N²`. Resolving a core a trillionth of a cell across would have taken
+ * ten million samples a pair a step. Written down, the core can be as small as
+ * it physically is rather than as small as an integrator can afford.
+ *
+ * It is also better conditioned than the form it replaces, which had two large
+ * terms of opposite construction to add.
  */
-const met = (R: number, h: number) =>
-  2 / (h * R * (R - h))
-  + (2 / (R * R)) * (1 / h - 1 / (R - h))
-  + (4 / (R * R * R)) * Math.log((R - h) / h);
+const met = (R: number, c: number) =>
+  4 / (c * R * R) * (1 + (c / R) * Math.log((R - c) / c));
 
 /** What a source of unit mass puts on the line, per unit of it. */
 const EMIT = SHEET / (4 * Math.PI);
