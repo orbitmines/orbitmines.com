@@ -21,6 +21,21 @@ import { GRAIN } from "./gravity";
  * whose constants are all counts and a model with six fitted parameters look
  * identical once they are drawn, and the only way to tell them apart is to be
  * able to ask any line where it came from and get an answer.
+ *
+ * THE NUMBERS ON THIS PAGE ARE MEASURED and every one of them is reproducible
+ * from `models.ts` — the sixths, the deflection, the a and e of each orbit.
+ * They are quoted here rather than computed here, which is a second copy and
+ * therefore a thing that can drift; `GRAIN` is imported instead, and the rest
+ * would be too if the panels were cheap enough to run at render.
+ *
+ * WHAT CHANGED, since a reader who saw this page before will notice. It used
+ * to end by owning up: a sixth of Mercury's perihelion, half of light's
+ * deflection, and the missing part named as a spatial metric "this keeps one
+ * number per place, and cannot say it". That was wrong twice over. The one
+ * sixth was the FORCE LAW's, not A's — A alone, taken as a metric, gives four
+ * sixths — and one number per place says it perfectly well, because the
+ * spatial part at this order is a scalar. What was missing was not a second
+ * field but the second READING of the count already being taken. See `METRIC`.
  */
 
 const INK = '#c6c9d4';
@@ -317,31 +332,64 @@ const LAW: Derivation = {
       counts.
     </Step>
 
-    <Because>per tick of whose clock</Because>
+    <Because>that is a ratio, and a ratio is not all of it</Because>
     <Step eq={<>
-      <B>v</B> = <Frac over={<B>u</B>}
-        under={<>√(1 + |<B>u</B>|<Sup>2</Sup>/<K>LIGHT</K><Sup>2</Sup>)</>} />
+      <Frac over={<>1 + <V>n</V></>} under={<K>WAYS</K>} />
+      &nbsp;the lean&nbsp;&nbsp;·&nbsp;&nbsp;
+      <K>WAYS</K> + <V>n</V>&nbsp; the total
+    </>}>
+      The line above compares one direction against the others and throws away
+      how many there are. But the ways out of that point no longer{' '}
+      number <K>WAYS</K> — they number <K>WAYS</K> + <V>n</V>, and{' '}
+      <b style={{ color: INK }}>a point with more ways out of it holds more
+        space</b>. The lean is the first moment of the count; the total is the
+      zeroth. Both are the same annihilations, read twice.
+    </Step>
+
+    <Step eq={<>
+      <V>A</V> = <Paren><Frac over={<>1 − <V>s</V></>} under={<>1 + <V>s</V></>} /></Paren><Sup>2</Sup>
+      <span style={{ padding: '0 1.2em' }} />
+      <V>B</V> = (1 + <V>s</V>)<Sup>4</Sup>
+      <span style={{ padding: '0 1.2em' }} />
+      <V>s</V> = <V>u</V>/2
+    </>}>
+      Which is a metric: <V>A</V> is how much slower a clock there runs and{' '}
+      <V>B</V> is how many steps a drawn cell holds. To first order they are
+      1 − 2<V>u</V> + 2<V>u</V><Sup>2</Sup> and 1 + 2<V>u</V>, and they carry
+      the <i>same</i> <V>u</V> with the same coefficient — which is not a
+      choice, it is the statement that a point’s lean and a point’s thickness
+      are one event seen twice. Written closed rather than as the series
+      because <V>A</V>/<V>B</V> is then at most one, so the ceiling{' '}
+      <V>c</V>√(<V>A</V>/<V>B</V>) is light and stays light.
+    </Step>
+
+    <Because>per tick of whose clock, and in whose space</Because>
+    <Step eq={<>
+      <B>v</B> = <Frac
+        over={<><V>A</V> <B>u</B></>}
+        under={<><V>B</V> √(<V>A</V>(1 + |<B>u</B>|<Sup>2</Sup>/<V>B</V><K>LIGHT</K><Sup>2</Sup>))</>} />
     </>}>
       The counting happens on the body’s own worldline, so{' '}
       <K>LIGHT</K>·<V>n</V>/<K>WAYS</K> is cells per tick of <i>its</i> clock —
       a proper velocity, not a coordinate one. Turning that into what the
-      picture shows is one line of arithmetic the model does not get to choose.
-      Nothing is clamped: the ceiling at <K>LIGHT</K> is the one arithmetic
-      already has.
+      picture shows is one line of arithmetic the model does not get to choose,
+      and how many cells it is worth depends on how thick the place is. Flat, it
+      is <B>u</B>/√(1 + |<B>u</B>|<Sup>2</Sup>) exactly as before. Nothing is
+      clamped: the ceiling is the one arithmetic already has.
     </Step>
 
     <Because>and so</Because>
     <Step eq={<>
       <Frac over={<>d</>} under={<>d<V>t</V></>} />
       ( <V>m</V><Sub>a</Sub> <B>u</B><Sub>a</Sub> ) &nbsp;=&nbsp;
-      <K>BIAS</K> · <V>S</V><Sub>ab</Sub>
+      <K>BIAS</K> · <V>S</V><Sub>ab</Sub> · carry
     </>}>
       A body’s count grows by <K>BIAS</K>·<V>S</V> divided by its own mass —
       the <i>fraction</i> of its paths that were bent, since its path count is
       its mass. Multiply back through and the mass cancels out of the statement
-      entirely. And <V>m</V><B>u</B> = <V>γm</V><B>v</B> is momentum, so what
-      the equation says is that <b style={{ color: INK }}>momentum gained is{' '}
-        <K>BIAS</K> times annihilations taken part in</b>.
+      entirely. <i>carry</i> is what one meeting is worth where it happened,
+      and it is one wherever nothing is going on; at leading order it is
+      1 + 2<V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup>.
     </Step>
 
     <Because>what falls out of it</Because>
@@ -349,9 +397,222 @@ const LAW: Derivation = {
       Dividing by <V>m</V><Sub>a</Sub> leaves{' '}
       <V>a</V><Sub>a</Sub> ∝ <V>m</V><Sub>b</Sub>/<V>R</V><Sup>2</Sup> — the
       equivalence principle as a counting statement rather than a postulate.
-      And differentiating <B>v</B>(<B>u</B>) gives 1/<V>γ</V><Sup>3</Sup> along
-      the way a thing is going and 1/<V>γ</V> across it: special relativity’s
-      own response, out of a count of ways out of a point.
+      Differentiating <B>v</B>(<B>u</B>) at <V>u</V> = 0 gives
+      1/<V>γ</V><Sup>3</Sup> along the way a thing is going and 1/<V>γ</V>{' '}
+      across it: special relativity’s own response, out of a count of ways out
+      of a point. And the two readings together give general relativity’s, to
+      first order in the field and with the next term the size it should be.
+    </Step>
+  </>,
+};
+
+const METRIC: Derivation = {
+  label: 'A and B',
+  title: <>the count, read a second time</>,
+  body: <>
+    <Because>what the lean threw away</Because>
+    <Step eq={<>
+      <Frac over={<>1 + <V>n</V></>} under={<>1 each, <K>WAYS</K> of them</>} />
+    </>}>
+      <K>BIAS</K> compares the direction that took an annihilation against the
+      others. Every other way out still weighs one — which is true, and is a{' '}
+      <i>ratio</i>, and a ratio has no opinion about how many there are. That
+      was the whole of the pull, and on its own it is worth exactly{' '}
+      <b style={{ color: INK }}>one sixth</b> of Mercury’s perihelion advance
+      and <b style={{ color: INK }}>none at all</b> of light’s deflection.
+    </Step>
+
+    <Because>the total, which is the other reading</Because>
+    <Step eq={<><K>WAYS</K> + <V>n</V>&nbsp;&nbsp;ways out, not <K>WAYS</K></>}>
+      A point that has taken <V>n</V> annihilations has more ways out of it
+      than its neighbours do, so it{' '}
+      <b style={{ color: INK }}>holds more space</b> — and a neighbourhood of
+      such points contains more places than the drawn cell it occupies, so
+      crossing it takes more steps. Nothing new is measured. It is the same{' '}
+      <V>n</V>, and it is a fact about the <i>place</i> rather than about the
+      direction.
+    </Step>
+
+    <Because>which is a metric, and needs no tensor</Because>
+    <Step eq={<>d<V>s</V><Sup>2</Sup> = −<V>A</V> d<V>t</V><Sup>2</Sup> +
+      <V>B</V> (d<V>x</V><Sup>2</Sup> + d<V>y</V><Sup>2</Sup> + d<V>z</V><Sup>2</Sup>)</>}>
+      <V>A</V> is the lean — how much slower a clock there runs — and{' '}
+      <V>B</V> is the total. <V>B</V> is a <i>scalar</i> here, and that is not
+      an approximation: radial-against-transverse is a fact about a choice of
+      radial coordinate, and at this order the spatial part is
+      (1 + 2<V>u</V>)δ for any arrangement of masses whatever. A lattice has no
+      coordinates to choose between, so the question never arises for it.
+    </Step>
+
+    <Because>written closed rather than as the series</Because>
+    <Step eq={<>
+      <V>A</V> = <Paren><Frac over={<>1 − <V>s</V></>} under={<>1 + <V>s</V></>} /></Paren><Sup>2</Sup>
+      = 1 − 2<V>u</V> + 2<V>u</V><Sup>2</Sup> − …
+      <span style={{ padding: '0 1em' }} />
+      <V>B</V> = (1 + <V>s</V>)<Sup>4</Sup> = 1 + 2<V>u</V> + …
+    </>}>
+      A series used outside where it converges stops being a metric: at{' '}
+      <V>u</V> = 1 the series for <V>A</V> comes back up through one, and since
+      the coordinate speed of light is <V>c</V>√(<V>A</V>/<V>B</V>), that puts
+      the ceiling <i>above</i> light. Closed,{' '}
+      <V>A</V>/<V>B</V> = (1 − <V>s</V>)<Sup>2</Sup>/(1 + <V>s</V>)<Sup>6</Sup>{' '}
+      is at most one for any <V>s</V> ≥ 0, so light is the ceiling again as a
+      property of the functions rather than a clamp.
+    </Step>
+
+    <Because>and the coefficient is not free</Because>
+    <Step>
+      <V>A</V> and <V>B</V> carry the same <V>u</V> with the same coefficient,
+      which is the statement that a point’s lean and a point’s thickness are
+      one event seen twice. That fixes{' '}
+      <V>γ</V><Sub>PPN</Sub> = 1, and Cassini has{' '}
+      <V>γ</V><Sub>PPN</Sub> at 1 ± 2·10<Sup>−5</Sup> — so it is the sharpest
+      thing here to be wrong about, and it is a prediction rather than a knob.
+    </Step>
+
+    <Because>measured</Because>
+    <Step eq={<>6.05 … 6.20 sixths&nbsp;&nbsp;=&nbsp;&nbsp;6 + 3.3<V>u</V></>}>
+      Five orbits over two panels at two scales, each against its own
+      6π<V>GM</V>/<V>c</V><Sup>2</Sup><V>a</V>(1−<V>e</V><Sup>2</Sup>): Mars
+      6.05, Earth 6.08, Mercury 6.07, Venus 6.10, Mercury on the closer panel
+      6.20 — ordered by how deep the orbit sits and by nothing else. Light,
+      traced through √(<V>B</V>/<V>A</V>), goes 1.0181 → 0.9998 of
+      4<V>GM</V>/<V>bc</V><Sup>2</Sup> as the ray is taken out from 12.5 cells
+      to 200, with the same 3<V>u</V> on the way in. One coefficient, two
+      unrelated measurements, nothing fitted in either.
+    </Step>
+  </>,
+};
+
+const SPACE: Derivation = {
+  label: 'where space comes from',
+  title: <>the three rewrites, and what they buy</>,
+  body: <>
+    <Because>the rules, in full</Because>
+    <Step eq={<>neutral &nbsp;→&nbsp; + &nbsp; −</>}>
+      One point becomes the two a ± pair needs. <b style={{ color: INK }}>Net
+        +1 point</b> — making a charge <i>makes space</i>, and that is the
+      whole of where <V>B</V> comes from.
+    </Step>
+
+    <Step eq={<>+ &nbsp; − &nbsp;→&nbsp; neutral</>}>
+      A meeting merges them back. <b style={{ color: INK }}>Net −1</b>, which
+      is <K>BITE</K> = 1 — and it has to be one, because a meeting consumes
+      exactly one creation’s worth of charge. At two, a perfectly paired
+      universe would leave itself a point smaller every cycle and contract for
+      free.
+    </Step>
+
+    <Step eq={<>a move &nbsp;→&nbsp; consume ahead, emit behind</>}>
+      <b style={{ color: INK }}>Net 0.</b> A point is unmade in one place and
+      remade in the next. Nothing travels — but a <i>surplus</i> can be carried,
+      and that is what makes the rest settle.
+    </Step>
+
+    <Because>a worked example — one body, one tick</Because>
+    <Step>
+      A body of mass <V>m</V> lets go of <V>m</V>·<K>SHEET</K> charges. Each
+      costs a neutral point, so the body makes <V>m</V>·<K>SHEET</K> points, at
+      its own place. Not in its field — <i>at the body</i>. That is a point
+      source, and it is the one thing every earlier account of <V>B</V> did not
+      have: they all sourced from chance ∝ 1/<V>r</V><Sup>2</Sup>, and a source
+      spread like that gives a logarithm, not a potential.
+    </Step>
+
+    <Because>and what the moves then do with it</Because>
+    <Step eq={<>
+      <Frac over={<>∂<V>δ</V></>} under={<>∂<V>t</V></>} /> =
+      <V>D</V>∇<Sup>2</Sup><V>δ</V> + <V>S</V>·<V>δ</V><Sup>3</Sup>(<V>x</V>)
+      &nbsp;&nbsp;⇒&nbsp;&nbsp;
+      <V>δ</V>(<V>r</V>) = <Frac over={<V>S</V>} under={<>4<V>π D r</V></>} />
+    </>}>
+      <b style={{ color: INK }}>Static</b>, because the flux carries the
+      surplus away as fast as it is made — every version of this that did not
+      carry it grew without bound instead. And{' '}
+      <b style={{ color: INK }}>1/<V>r</V></b>, because that is what the
+      inverse Laplacian of a point is. Solved on a radial grid, <V>δ</V>·<V>r</V>{' '}
+      stops moving to five figures over a sixfold longer run.
+    </Step>
+
+    <Because>which fixes D</Because>
+    <Step eq={<>
+      <V>D</V> = <Frac over={<><K>SHEET</K> <V>c</V><Sup>2</Sup></>}
+        under={<>12<V>π</V> <V>G</V></>} /> =
+      <Frac over={<><V>π</V> <K>WAYS</K> <V>c</V></>}
+        under={<>3 <K>BITE</K> <K>SHEET</K></>} /> = 3.403
+    </>}>
+      From <V>δ</V> = 3<V>u</V> and <V>u</V> = <V>GM</V>/<V>rc</V><Sup>2</Sup>.
+      A pure count, no <K>GRAIN</K>, and order one: for a lattice whose things
+      move a step a tick, 3.4 steps² a tick is a mean free path of about three
+      steps. <b style={{ color: INK }}>It is not independent of ε</b> —{' '}
+      <V>D</V> = <V>c</V>/<V>ε</V> exactly. Both are the same requirement,
+      written as a rate and as a spread, so the agreement is bookkeeping.
+    </Step>
+
+    <Because>and what falls out</Because>
+    <Step eq={<><V>u</V> = <Frac over={<V>Gm</V>}
+      under={<><V>r c</V><Sup>2</Sup></>} /></>}>
+      Linear in the <i>other</i> mass alone, so a fact about the place rather
+      than the pair — which is what the folding could never say before. It can
+      be asked anywhere, not only at a body. And every number it produces is
+      identical to the old reading that took the pull and called its potential{' '}
+      <V>u</V>: same orbits, same 1/6, same deflection. What changed is that it
+      is now derived.
+    </Step>
+  </>,
+};
+
+const MADE_FROM: Derivation = {
+  label: 'ε',
+  title: <>what a charge would have to make</>,
+  body: <>
+    <Because>the rule</Because>
+    <Step>
+      Space is made, and every created point emits a ± pair. The vacuum’s pairs
+      are made <i>with</i> their point and take it back when they meet, so they
+      are net nothing. A body’s charges are emitted <i>without</i> one, and the
+      space they make as they go is the part not already accounted for.
+    </Step>
+
+    <Because>what that leaves at a distance</Because>
+    <Step eq={<>
+      <V>δ</V>(<V>r</V>) =
+      <Frac over={<><V>ε m</V> <K>SHEET</K></>}
+        under={<>4<V>π r c</V></>} />
+    </>}>
+      Creation spread as the charges are, which is{' '}
+      chance ∝ 1/<V>r</V><Sup>2</Sup>, integrated over the shell it sits on —
+      and the <V>r</V><Sup>2</Sup> cancels, so the flux goes as <V>r</V> and
+      what it leaves per unit volume goes as 1/<V>r</V>.
+    </Step>
+
+    <Because>and a metric wants</Because>
+    <Step eq={<><V>δ</V> = <V>B</V><Sup>3/2</Sup> − 1 = 3<V>u</V></>}>
+      A spatial metric <V>g</V><Sub>ij</Sub> = <V>B</V><V>δ</V><Sub>ij</Sub>{' '}
+      makes proper volume go as <V>B</V><Sup>3/2</Sup>, so a <i>volume</i>{' '}
+      excess is three times the <V>u</V> in <V>B</V> = 1 + 2<V>u</V>.
+    </Step>
+
+    <Because>so</Because>
+    <Step eq={<>
+      <V>ε</V> =
+      <Frac over={<>3 <K>BITE</K> <K>SHEET</K></>}
+        under={<><V>π</V> <K>WAYS</K></>} /> = 0.2938
+    </>}>
+      About a third of a point per charge per lattice tick. Every symbol a
+      count, no <K>GRAIN</K> in it, and order one — which is what a fundamental
+      rule should look like. <b style={{ color: INK }}>No rule produces it.</b>{' '}
+      It is solved for, not derived, and that is exactly the gap.
+    </Step>
+
+    <Because>one constraint on whatever closes it</Because>
+    <Step>
+      An ambient field <i>screens</i>. A body’s charges annihilate against it
+      too, so they reach only <V>λ</V> = <V>c</V>/(<K>BITE</K>·share·<V>Φ</V><Sub>0</Sub>),
+      and gravity becomes Yukawa with that range. Working out to cluster scale
+      needs <V>Φ</V><Sub>0</Sub> ≲ 10<Sup>−58</Sup> charges a lattice cell — so
+      a vacuum dense enough to carry anything is dense enough to switch gravity
+      off within about seven steps.
     </Step>
   </>,
 };
@@ -400,8 +661,10 @@ const MEETINGS: Derivation = {
       <V>S</V><Sub>ab</Sub> = <K>BITE</K> · share · screen ·
       <V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub> · EMIT<Sup>2</Sup> · met(<V>R</V>)
     </>}>
-      <K>BITE</K> = 2 is what the rule says one meeting costs — a point for
-      each charge. <i>share</i> is how much of what meets is opposite rather
+      <K>BITE</K> = 1 is what the rule says one meeting costs. It used to be
+      two — a point for each charge — and one is what makes creation and
+      annihilation exact inverses: a ± pair is made by one point becoming the
+      two a pair needs, and a meeting consumes exactly one creation’s worth. <i>share</i> is how much of what meets is opposite rather
       than alike, which is a half unless two sources keep time together.{' '}
       <i>screen</i> is what a third body standing in the way blocks, and it is
       a genuine prediction: Newton has no such term, and neither does
@@ -530,10 +793,12 @@ const CONSTANTS: Derivation = {
     </Step>
 
     <Because>c</Because>
-    <Step eq={<><V>c</V> = <Frac over={<K>HALF</K>} under={<K>GRAIN</K>} /></>}>
-      A source’s core, in drawn cells. <K>HALF</K> is half a lattice step — a
-      shell is never smaller than the cell its source sits in — and{' '}
-      <K>GRAIN</K> is how many lattice steps a drawn cell stands for.
+    <Step eq={<><V>c</V> = <K>HALF</K></>}>
+      A source’s core — half a <i>lattice</i> step, because a shell is never
+      smaller than the cell its source sits in. The law is stated in the
+      lattice’s own units throughout: a step, a tick, half a step of core.{' '}
+      <K>GRAIN</K> is not in it. That is the drawing’s scale, and it enters
+      once, where a drawn separation is turned into steps.
     </Step>
 
     <Because>why the second one has to exist</Because>
@@ -564,7 +829,7 @@ const FULL: Derivation = {
       the two densities integrated along the line.
     </Step>
 
-    <Because>substitute met, with share = ½ and BITE = 2</Because>
+    <Because>substitute met, with share = ½ and BITE = 1</Because>
     <Step eq={<>
       <Frac over={<>d<V>p</V></>} under={<>d<V>t</V></>} /> =
       <Frac over={<><K>SHEET</K><Sup>2</Sup></>}
@@ -574,7 +839,7 @@ const FULL: Derivation = {
       <Paren>1 + <Frac over={<V>c</V>} under={<V>R</V>} /> ln
         <Frac over={<><V>R</V>−<V>c</V></>} under={<V>c</V>} /></Paren>
     </>}>
-      The 4 from met, the 2 from <K>BITE</K> and the ½ from <i>share</i> fold
+      The 4 from met, the <K>BITE</K> and the ½ from <i>share</i> fold
       into the (4<V>π</V>)<Sup>2</Sup> in EMIT<Sup>2</Sup>, and everything left
       standing is a count.
     </Step>
@@ -592,8 +857,21 @@ const FULL: Derivation = {
     <Because>and so</Because>
     <Step>
       <b style={{ color: INK }}>Newton, times a bracket that goes to one.</b>{' '}
-      The whole of the model’s departure from Newton at a distance is that
-      bracket, and its size is the ratio of a source’s core to the separation.
+      The whole of the model’s departure from Newton AT A DISTANCE is that
+      bracket, and its size is the ratio of a source’s core to the separation —
+      which at the grain a real lattice would have is 1 + 10<Sup>−38</Sup>, and
+      could not move a perihelion if it tried.
+    </Step>
+
+    <Because>so where does relativity come from</Because>
+    <Step>
+      Not from that bracket, and not from anything short-range. It comes from
+      the two places the count is read. Read as a <i>direction</i>, on the
+      body’s own worldline, it gives special relativity’s response and one
+      sixth of Mercury. Read as a <i>size</i> — <K>WAYS</K> + <V>n</V> ways out
+      of a point rather than <K>WAYS</K> — it gives the spatial part of a
+      metric, and with it the other five sixths and the whole of light’s
+      deflection. Same annihilations, same constant, counted twice.
     </Step>
   </>,
 };
@@ -633,11 +911,22 @@ export const Law = () => {
     </Note>
 
     <Eq derive={LAW} open={show}
-      note="the momentum a body gains is BIAS times the annihilations it took part in">
+      note="the momentum a body gains is BIAS times the annihilations it took part in, and what one is worth depends on where it happened">
       <Frac over={<>d</>} under={<>d<V>t</V></>} />
       ( <V>γ</V> <V>m</V><Sub>a</Sub> <B>v</B><Sub>a</Sub> )
       &nbsp;=&nbsp; <K>BIAS</K> · <span style={{ fontSize: '1.3em' }}>Σ</span>
       <Sub>b ≠ a</Sub> &nbsp;<V>S</V><Sub>ab</Sub> <Hat>r</Hat><Sub>ab</Sub>
+      &nbsp;· carry
+    </Eq>
+
+    <Eq derive={METRIC} open={show}
+      note="the same count read as a size rather than a direction — which is a metric, and is the other five sixths">
+      <V>A</V>(<V>s</V>) =
+      <Paren><Frac over={<>1 − <V>s</V></>} under={<>1 + <V>s</V></>} /></Paren><Sup>2</Sup>
+      <span style={{ padding: '0 1.4em' }} />
+      <V>B</V>(<V>s</V>) = (1 + <V>s</V>)<Sup>4</Sup>
+      <span style={{ padding: '0 1.4em' }} />
+      <V>s</V> = <Frac over={<V>u</V>} under={<>2</>} />
     </Eq>
 
     <Eq derive={MEETINGS} open={show}>
@@ -671,8 +960,9 @@ export const Law = () => {
         <>ways out of a point — the 3×3×3 block around it, minus itself</>],
       [<><K>SHEET</K> = 3<Sup>2</Sup> − 1 = 8</>,
         <>charges in one pulse: the plane a source emits into, which turns with it</>],
-      [<><K>BITE</K> = 2</>,
-        <>points an annihilation removes — one for each charge</>],
+      [<><K>BITE</K> = 1</>,
+        <>points an annihilation removes — one, so that making and unmaking
+          a ± pair are exact inverses</>],
       [<><K>LIGHT</K> = 1</>,
         <>points per tick, and nothing goes faster</>],
       [<><K>HALF</K> = ½</>,
@@ -711,6 +1001,28 @@ export const Law = () => {
         <>Along the way a thing is going, and across it — special relativity’s
           own response, out of the count being a count on the body’s own
           worldline.</>],
+      [<span style={{ color: DERIVED }}>
+        <V>A</V> = 1 − 2<V>u</V> + 2<V>u</V><Sup>2</Sup>,{' '}
+        <V>B</V> = 1 + 2<V>u</V></span>,
+      <><b style={{ color: INK }}>A metric, out of the same count.</b> The lean
+        is a <i>ratio</i> — 1 + <V>n</V> against the <K>WAYS</K> that weigh one
+        each — and a ratio throws away the total. There are{' '}
+        <K>WAYS</K> + <V>n</V> ways out of that point now, and a point with
+        more ways out holds more space. The lean is <V>A</V>; the total
+        is <V>B</V>.</>],
+      [<span style={{ color: DERIVED }}>
+        6π<V>GM</V>/<V>c</V><Sup>2</Sup><V>a</V>(1−<V>e</V><Sup>2</Sup>)</span>,
+      <><b style={{ color: INK }}>The perihelion advance, all of it.</b> Five
+        orbits over two panels come to 6.05 to 6.20 sixths of it, ordered by
+        how deep each orbit sits and by nothing else. The lean alone gives one
+        sixth, and gives it to a part in a hundred for every one of them.</>],
+      [<span style={{ color: DERIVED }}>
+        4<V>GM</V>/<V>bc</V><Sup>2</Sup></span>,
+      <><b style={{ color: INK }}>The deflection of light, all of it.</b> Which
+        the lean could not touch at all — at <V>v</V> = <V>c</V> the count is
+        already infinite, so one more annihilation turns it by nothing. A
+        thickness needs no mass to divide by: the cell in front is simply
+        longer.</>],
       [<span style={{ color: DERIVED }}>screen</span>,
         <>Three bodies in a row do not simply add. Newton has no such term and
           neither does relativity at this order.</>],
@@ -754,13 +1066,103 @@ export const Law = () => {
       <b style={{ color: INK }}>Newton, times a bracket that goes to one</b> —
       and a constant written entirely in counts. The whole of the model’s
       departure from Newton at a distance is that bracket, and its size is the
-      ratio of a source’s core to the separation. The <V>γ</V> on the left is
-      worth <b style={{ color: INK }}>+1.67°</b> of Mercury’s perihelion an
-      orbit where Schwarzschild gives <b style={{ color: INK }}>+10.41°</b> —
-      the right sign, and a sixth of the size. The missing five sixths, and the
-      whole of light’s deflection, are the part of a metric that says how
-      lengths differ radially against transversely. This keeps one number per
-      place, and cannot say it.
+      ratio of a source’s core to the separation.
+    </Note>
+
+    <Note>
+      The <V>γ</V> on the left is worth <b style={{ color: INK }}>+1.66°</b> of
+      Mercury’s perihelion an orbit where 6π<V>GM</V>/<V>c</V><Sup>2</Sup>
+      <V>a</V>(1−<V>e</V><Sup>2</Sup>) is{' '}
+      <b style={{ color: INK }}>+9.93°</b> — the right sign, and{' '}
+      <b style={{ color: INK }}>a sixth</b> of the size. Measured on Venus,
+      Earth and Mars too, and on a second panel at a different scale, it is a
+      sixth every time to a part in a hundred.
+    </Note>
+
+    <Note>
+      That sixth is the count read as a <i>direction</i>. Read a second time as
+      a <i>size</i> — the same annihilations saying how much space a point
+      holds rather than which way it leans — the same orbit advances{' '}
+      <b style={{ color: INK }}>+10.35°</b>, which is{' '}
+      <b style={{ color: INK }}>6.20 sixths</b>, and a ray grazing the sun
+      bends by the whole <V>4GM</V>/<V>bc</V><Sup>2</Sup> rather than half of
+      it. Nothing is added to get it: <V>A</V> and <V>B</V> carry the same{' '}
+      <V>u</V> with the same coefficient, which is the statement that a point’s
+      lean and a point’s thickness are one event seen twice — and is the
+      sharpest thing here to be wrong about, since it is what fixes{' '}
+      <V>γ</V><Sub>PPN</Sub> = 1, and Cassini has that to 2·10<Sup>−5</Sup>.
+    </Note>
+
+    <Head>and where the space comes from</Head>
+
+    <Note>
+      Everything above is one rule — what a meeting does to a path. <V>B</V>{' '}
+      needs a second, and it is about what a meeting does to the <i>amount</i>{' '}
+      of space rather than to its lean. Three rewrites, and nothing else:
+    </Note>
+
+    <Eq derive={SPACE} open={show}
+      note="making a charge makes space; a meeting takes it back; a move carries it">
+      neutral &nbsp;→&nbsp; + &nbsp;−
+      <span style={{ padding: '0 1.4em', color: FAINT }}>+1</span>
+      + &nbsp;− &nbsp;→&nbsp; neutral
+      <span style={{ padding: '0 1.4em', color: FAINT }}>−1</span>
+      move
+      <span style={{ padding: '0 0.8em', color: FAINT }}>0</span>
+    </Eq>
+
+    <Note>
+      A body emitting <V>m</V><K>SHEET</K> charges a tick is therefore a{' '}
+      <b style={{ color: INK }}>point source of space</b> — at the body, not in
+      its field. Every earlier attempt at <V>B</V> sourced from{' '}
+      chance ∝ 1/<V>r</V><Sup>2</Sup>, and a source spread like that gives a
+      logarithm. A point gives a potential. The moves then carry it, and a
+      carried point source settles:
+    </Note>
+
+    <Eq derive={SPACE} open={show}
+      note="static, because the flux carries the surplus away as fast as it is made">
+      <V>δ</V>(<V>r</V>) = <Frac over={<V>S</V>}
+        under={<>4<V>π D r</V></>} /> = 3<V>u</V>
+      <span style={{ padding: '0 1.6em' }} />
+      <V>D</V> = <Frac over={<><V>π</V> <K>WAYS</K> <V>c</V></>}
+        under={<>3 <K>BITE</K> <K>SHEET</K></>} /> = 3.403
+      <span style={{ padding: '0 1.6em' }} />
+      ⇒ <V>u</V> = <Frac over={<V>Gm</V>}
+        under={<><V>r c</V><Sup>2</Sup></>} />
+    </Eq>
+
+    <Note>
+      Which is the metric’s own potential, out of a rate and a spread. It is
+      linear in the <i>other</i> mass alone — a fact about the place rather
+      than the pair, which the folding could never say before — and it gives
+      every number the old reading gave, to the digit. The difference is that
+      the old one took the pull and called its potential <V>u</V>, and this one
+      is derived.
+    </Note>
+
+    <Head>and what is still owed</Head>
+
+    <Note>
+      <b style={{ color: INK }}>One thing, and it is in the lattice rather than
+        here.</b> The third rewrite is what carries the surplus, and on the
+      lattice that is consume-ahead-emit-behind — measured, an exact swap that
+      displaces nothing net. Whether it can carry a surplus outward at{' '}
+      <V>D</V> ≈ 3.4 steps² a tick is a question about that rule, not a new
+      one. Until it is answered, <V>D</V> is a number the continuum needs and
+      the lattice has not been shown to supply.
+    </Note>
+
+    <Note>
+      Two things bound whatever answers it. An ambient charge{' '}
+      <b style={{ color: INK }}>screens</b>: a body’s charges annihilate
+      against it too, so they reach only{' '}
+      <V>λ</V> = <V>c</V>/(<K>BITE</K>·share·<V>Φ</V><Sub>0</Sub>) and gravity
+      becomes Yukawa with that range — cluster scale needs{' '}
+      <V>Φ</V><Sub>0</Sub> ≲ 10<Sup>−58</Sup> a lattice cell. And a body{' '}
+      <b style={{ color: INK }}>cannot take back</b> what it emits: measured on
+      a running lattice, at most two parts in a thousand return, because a
+      source emits into 4<V>π</V> and subtends nothing.
     </Note>
 
     {open ? <Panel of={open} onClose={hide} /> : null}

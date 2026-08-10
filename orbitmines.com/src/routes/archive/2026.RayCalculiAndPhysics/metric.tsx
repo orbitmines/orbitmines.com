@@ -14,8 +14,15 @@
  *   the density of space, which is the whole of gravity here:
  *     u_a       = own_a + pulled_a                its count, in cells a tick of
  *                                                 ITS OWN clock
- *     u̇_a      = BIAS · S(a,b) / m_a             the pull, per body, per tick
- *     ṙ_a      = pace(u_a) = u_a/√(1 + |u_a|²)   ... and what that comes to
+ *     u̇_a      = BIAS · S(a,b) / m_a · carry     the pull, per body, per tick
+ *     fold_a    = Σ_b  G·m_b / (r_ab c²)         how thick the place it stands
+ *                                                 in is — the steady state of
+ *                                                 a point source of space at
+ *                                                 each body, carried. Linear
+ *                                                 in the OTHER mass alone, so
+ *                                                 a fact about the place. See
+ *                                                 `settle` and `foldAt`.
+ *     ṙ_a      = pace(u_a, fold_a)               ... and what that comes to
  *                                                 as a speed in the picture
  *
  *   An annihilation leaves the space where it happened denser: the next path
@@ -23,6 +30,12 @@
  *   makes it three to one, a third four. So a direction carrying n of them
  *   weighs 1 + n against the WAYS out that weigh one each, and what that leans
  *   a path by is LIGHT·n/WAYS — linear, with no ceiling in it.
+ *
+ *   THAT IS A RATIO, and a ratio is not all a count says. The ways out of that
+ *   point no longer number WAYS; they number WAYS + n. The lean is the first
+ *   moment of the count and is the whole of the pull; the total is the zeroth,
+ *   and is how much space the point holds. One scalar, read twice — the pull
+ *   for A and the thickness for B. See `slowing` and `thickness`.
  *
  *   Everything else here falls out of that, and none of it is stated:
  *
@@ -35,14 +48,16 @@
  *     at speed    the count is per tick of the BODY'S clock, so `pace` is what
  *                 the picture sees. Differentiated, that is 1/γ³ along the way
  *                 it is going and 1/γ across — special relativity's own
- *                 response, out of a count of ways out of a point, and it puts
- *                 Mercury's perihelion +0.56° an orbit against Schwarzschild's
- *                 +3.21°: same sign, one sixth the size. See `pace`.
+ *                 response, out of a count of ways out of a point. On its own
+ *                 that is Mercury's perihelion at one sixth of Schwarzschild's;
+ *                 with the count's other reading in, 6.07 sixths, and light
+ *                 deflected by the whole 4GM/bc². See `pace` and `thickness`.
  *     ÷ m_a       a_a ∝ m_b/R², a_b ∝ m_a/R²      the equivalence principle:
  *                 heavier things have proportionally more paths to bias, so
  *                 the same fraction of them bends. Inertia IS path count.
  *
- *   G           = SHEET² / (4π²·CORE·WAYS)       closed form, nothing fitted.
+ *   G           = BITE·SHEET²·c/(8π²·HALF·WAYS)  closed form, nothing fitted,
+ *                                                 and in the lattice's own units
  *                                                 `S·R²` runs above it by
  *                                                 CORE·ln(R/CORE)/R — which
  *                                                 is nothing at a separation
@@ -62,14 +77,14 @@ import {
   Emitter, fade, grainAt, HALF, Live, sparse, emit, fieldAt, TRAIL,
 } from "./field";
 import {
-  annihilation, BIAS, coherence, count, pace, shortfall,
+  annihilation, BIAS, carry, coherence, count, foldAt, pace, shortfall,
 } from "./gravity";
 import { CYCLE, SPIN, TAU } from "./lattice";
 import {
   AMBER, BACKGROUND, CYAN, decadesFor, ground, legend, lift, NEUTRAL, rgba,
   shown, source, trail,
 } from "./paint";
-import { cancelling } from "./physics";
+import { cancelling, LIGHT } from "./physics";
 
 /**
  * Gravity as a shortage of space, which is what the lattice actually does.
@@ -110,6 +125,16 @@ import { cancelling } from "./physics";
  *    same metric, so as a pair close, they begin to hear each other sooner
  *    — which the lattice does and the flow account cannot.
  *
+ *    WITH A SIGN TO WATCH, since this sentence can be read two ways and only
+ *    one of them is true. If it means the pair have got CLOSER, it is just
+ *    attraction said over again and there is nothing else in it. If it means
+ *    the same separation now costs fewer ticks, it is the wrong way round:
+ *    light near a mass is DELAYED, not hurried, and the whole of `thickness`
+ *    is that a folded place holds more steps and so takes longer to cross.
+ *    `φ` here is the drawing's own scalar and drives nothing (see
+ *    `spaceStep`), so nothing is computed off the wrong reading — but the two
+ *    are opposite, and the one the dynamics uses is the second.
+ *
  *  - Deflection is one line. A course that stays straight in the metric does
  *    not stay straight in the coordinates, and the turn is the component of
  *    ∇φ across the way it is going. No potential, no gradient of half a
@@ -140,26 +165,41 @@ export type Space = {
    * is at a place but WHICH WAY it went, as the three parts of a symmetric
    * 2×2.
    *
-   * `phi` is the trace of this and nothing more. Which is the whole point of
-   * having it: a scalar can say a place has had space taken out of it, and it
-   * cannot say that the space taken out was taken RADIALLY and not across.
-   * Those are different statements about the same place and general relativity
-   * needs the second one — the metric it wants is
+   * `phi` is the trace of this and nothing more.
+   *
+   * WHICH TURNED OUT TO BE THE PART THAT MATTERED, and this comment used to
+   * say the opposite, at length, and was wrong. What it said was that a scalar
+   * can record that a place has had space taken out of it and cannot record
+   * that the space was taken RADIALLY and not across; that general relativity
+   * needs the second statement; and that the five sixths of Mercury and the
+   * half of light's deflection this model was missing were therefore locked
+   * behind a tensor.
+   *
+   * The metric it wants was written out on the next line and refutes it:
    *
    *     ds² = −A dt² + B(dx² + dy² + dz²)
    *
-   * and A alone, which is all a scalar can be, gives Newton's law, one sixth
-   * of Mercury's perihelion advance, and half of the deflection of light. The
-   * other five sixths and the other half are B, and B is a statement about
-   * direction.
+   * B is a scalar there. Radial-against-transverse is a fact about SCHWARZSCHILD
+   * coordinates and not about the geometry — write the same spacetime in
+   * isotropic coordinates and the spatial part is conformally flat, and at the
+   * order any of this is being worked to it is `(1 + 2u)δᵢⱼ` for any
+   * arrangement of masses whatever. A lattice has no coordinates to choose
+   * between, so the question never even arises for it.
    *
-   * The counting argument this whole file rests on was always about direction.
-   * `BIAS` says a place that has taken an annihilation has more ways of going
-   * the way it went "while every other way out of the point still weighs
-   * exactly what it always did" — which is a count PER WAY OUT, twenty-six of
-   * them in three dimensions, and what has been kept until now is only how big
-   * it is and, per body, where it pointed. The direction was being computed
-   * and thrown away on the same line.
+   * What was actually missing was not a direction. It was the OTHER READING of
+   * the number already being computed. `BIAS` says a place that has taken an
+   * annihilation has more ways of going the way it went "while every other way
+   * out of the point still weighs exactly what it always did" — and that is
+   * true, and it is a RATIO, and a ratio throws away the total. There are now
+   * WAYS + n ways out of that point rather than WAYS, and a point with more
+   * ways out of it holds more space. The lean is A. The total is B. See
+   * `slowing` and `thickness` in `gravity.ts`, and `settle` below, which is
+   * the whole of the fix and is four lines.
+   *
+   * So this array is not what buys the five sixths, and it never was. What it
+   * is still for is the thing a scalar genuinely cannot do — a transverse
+   * traceless part, which is radiation — and that is a long way past anything
+   * measured here.
    *
    * So this keeps it. Nothing new is measured: `shortfall` already walks the
    * line between every pair and already knows which way it is walking, so
@@ -194,7 +234,13 @@ export type Space = {
    * axisymmetric. Measured on Sun and Mercury over the panel's own run: every
    * one of 72 bearings lit at every radius out to 20 cells, the axis within
    * 0.4° to 2.7° of radial, and `spread` at 0.995 to 1.000 — folded radially
-   * and not at all across, which is the shape general relativity's B has.
+   * and not at all across.
+   *
+   * That measurement stands; the conclusion drawn from it did not. Radial
+   * against transverse is a statement about a choice of radial coordinate, and
+   * `settle` gets the whole of B out of the trace without one. What is
+   * genuinely here is axisymmetry — which is a check that the sweep does what
+   * it was supposed to, and not a metric the model needed.
    *
    * WHAT IS WRONG WITH IT, stated plainly because it is not small. The count
    * that builds up at planetary mass ratios is about 1e−10, so the bias is
@@ -611,11 +657,72 @@ export const MetricField = ({
      * Which is why it accelerates rather than merely displaces: the count
      * persists, and what the picture shows is a function of the count.
      */
+    /**
+     * `fold` is the third thing, and it is not a ledger: it is how thick the
+     * place this body is standing in is, RIGHT NOW, and it is recomputed from
+     * scratch every step (see `settle`). `pulled` accumulates because a count
+     * of annihilations accumulates; `fold` does not, because where you are
+     * standing is not a history. That difference is the whole of A against B.
+     */
     type Carried = Live & {
       own: [number, number], pulled: [number, number], mark: number[],
+      fold: number,
     };
 
     let live: Carried[] = [];
+
+    /**
+     * How thick the place each of them stands in is — the SAME meetings the
+     * pull is counted out of, read as a size instead of as a direction.
+     *
+     * `shortfall` gives the meetings a pair has per tick; divided by a body's
+     * own mass and by the step it is the acceleration that body feels, and an
+     * acceleration times the separation is the potential it is the gradient
+     * of. So there is no new field here and no second source term — it is one
+     * scalar read twice, which is what `slowing` and `thickness` are for.
+     *
+     * WHAT THIS USED TO BE, and why it changed, because the objection it
+     * carried was the right one.
+     *
+     * This line read `BIAS·shortfall/m_a · R/c²` — an acceleration off the
+     * pull, times the separation. Which is the correct number and is not an
+     * argument: it takes a force and calls its potential `u`. Worse, it went
+     * as `m_a·m_b`, so what came out was a fact about a PAIR, and a thickness
+     * is a fact about a PLACE. Nothing could be asked of it away from a body.
+     *
+     * `foldAt` answers both. Space is MADE — one neutral point becoming the
+     * two a ± pair needs — so a body emitting `m·SHEET` charges a tick is a
+     * point source of it. The moves carry it, and a carried point source
+     * settles to `S/(4πDr)`, which is `G·m/(r c²)` once `D` is what it has to
+     * be. That is linear in the other mass alone, it can be evaluated
+     * anywhere, and it is derived rather than read off.
+     *
+     * The value does not move — every orbit, the 1/6, the deflection, all
+     * identical to the digit. What moved is what it is a statement about.
+     *
+     * WHAT IS STILL OWED is now one thing and it is in the DISCRETE case: the
+     * third rewrite carries the surplus, and on the lattice that is
+     * `emitBehind`/`consumeAhead`, which is an exact swap that displaces
+     * nothing net. Whether it can carry a surplus outward at `D ≈ 3.4` steps²
+     * a tick is a question about the rule and not a new rule. See `SPREAD`.
+     */
+    const settle = () => {
+      for (const s of live) s.fold = 0;
+
+      for (let i = 0; i < live.length; i++)
+        for (let j = 0; j < live.length; j++) {
+          if (i === j) continue;
+
+          const a = live[i], b = live[j];
+
+          const R = Math.hypot(b.at[0] - a.at[0], b.at[1] - a.at[1]);
+          if (R < 1e-6) continue;
+
+          // what b's own source puts here — see `foldAt`. Nothing about a is
+          // in it, which is the whole difference from what this used to be.
+          a.fold += foldAt(b.mass ?? 1, R);
+        }
+    };
 
     const reset = () => {
       t = 0;
@@ -625,20 +732,32 @@ export const MetricField = ({
         at: [...s.at] as [number, number],
         path: [s.at[0], s.at[1]],
         vel: [s.drift?.[0] ?? 0, s.drift?.[1] ?? 0] as [number, number],
-        own: count(s.drift?.[0] ?? 0, s.drift?.[1] ?? 0),
+        own: [0, 0] as [number, number],
         pulled: [0, 0] as [number, number],
         mark: [s.at[0], s.at[1]],
+        fold: 0,
       }));
+
+      // A body already going somewhere got there by having been biased, so its
+      // opening count is a ledger reading (see `count`) — and what a count
+      // comes to depends on where it is standing, so the folding has to be
+      // known before the reading can be taken.
+      settle();
+
+      for (const s of live)
+        s.own = count(s.drift?.[0] ?? 0, s.drift?.[1] ?? 0, s.fold);
+
       kept = 0;
     };
 
     // Its own count plus whatever the space around it has added to it, turned
     // into the speed the picture can show. See `pace`: the sum is a proper
-    // velocity and this is the only place it becomes a coordinate one.
+    // velocity, this is the only place it becomes a coordinate one, and how
+    // many cells it is worth depends on how thick the place is.
     const going = (s: Live): [number, number] => {
-      const { own, pulled } = s as Carried;
+      const { own, pulled, fold } = s as Carried;
 
-      return pace(own[0] + pulled[0], own[1] + pulled[1]);
+      return pace(own[0] + pulled[0], own[1] + pulled[1], fold);
     };
 
     /**
@@ -745,6 +864,10 @@ export const MetricField = ({
     const most: number[] = [];
 
     const spend = (dt: number) => {
+      // Where everything is standing, before anything is asked what a count is
+      // worth there. A snapshot and not a tally — see `settle`.
+      settle();
+
       for (let i = 0; i < live.length; i++) most[i] = 0;
 
       for (let i = 0; i < live.length; i++)
@@ -790,7 +913,20 @@ export const MetricField = ({
             // the same number however fast it is already going. See `BIAS`.
             const got = BIAS * deficit / (s.mass ?? 1);
 
-            s.pulled[0] += ux * got; s.pulled[1] += uy * got;
+            /**
+             * And what that count is worth WHERE IT IS, which is one wherever
+             * nothing is going on. See `carry`: the meetings are still
+             * counted the same way and still weigh `BIAS` each, but a step is
+             * not worth a step in a place that has been folded, and a body
+             * already moving samples the folding across its motion as well as
+             * along it. That factor is the other five sixths.
+             */
+            const worth = carry(
+              s.own[0] + s.pulled[0], s.own[1] + s.pulled[1], s.fold,
+            );
+
+            s.pulled[0] += ux * got * worth;
+            s.pulled[1] += uy * got * worth;
           }
         }
     };

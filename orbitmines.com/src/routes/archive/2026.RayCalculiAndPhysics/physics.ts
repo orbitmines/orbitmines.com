@@ -124,14 +124,31 @@ export const LIGHT = 1;
  * How much space a meeting destroys, which is the one number tying the
  * continuous rate to the discrete one.
  *
- * Two opposite charges meeting head-on cancel, and cancelling takes the point
- * each of them was on out of the world — two cells, however far apart the two
- * things meeting happen to be. On the lattice that is not a rate at all, it
- * is what `annihilate` does; in the closed form it is what the survey's
- * measured distribution is scaled to, so that the shape is measured and the
- * size is the rule's.
+ * ONE, not two, and the change is worth its paragraph because the number used
+ * to be two and the reason it is not is a piece of bookkeeping that has to
+ * close.
+ *
+ * Two opposite charges meeting cancel, and cancelling takes the point each of
+ * them was on out of the world — which is two cells, and was what this said.
+ * But a charge does not come from nowhere. A ± pair is made by one point
+ * becoming the two that a pair needs, so a creation is worth ONE point; and a
+ * meeting consumes exactly one creation's worth of charge. If a meeting gave
+ * back two, every made-and-unmade cycle would leave the world one point
+ * smaller and a perfectly paired universe would contract for free.
+ *
+ * So creation and annihilation are exact inverses only at one. On the lattice
+ * that is `annihilate` MERGING the two points into one rather than deleting
+ * both — which is the A-B-C → Y reading, and `closeUp` already keeps the
+ * lattice whole under it.
+ *
+ * IT COSTS NOTHING MEASURED, which is why it can be changed on an argument.
+ * `spend` has `accel = BIAS·shortfall/m_a ∝ BITE·m_b`, while `models.ts` sets
+ * `mass = gm·cells³/ticks²/GRAVITY` and `GRAVITY ∝ BITE`. The two cancel
+ * exactly: halving this halves G and halves every mass, the physical GM that
+ * every panel actually uses does not move, and every orbit, the 1/6 and the
+ * deflection are identical to the digit.
  */
-export const BITE = 2 * LIGHT;
+export const BITE = 1 * LIGHT;
 
 /**
  * What a step costs a source, as a multiple of the step's own length: a step

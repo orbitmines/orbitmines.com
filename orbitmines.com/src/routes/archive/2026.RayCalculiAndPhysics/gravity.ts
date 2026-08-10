@@ -17,7 +17,8 @@
  *                 = 4/(c·R²) · ( 1 + (c/R)·ln((R−c)/c) )
  *                    ╰─────╯     ╰────────────────────╯
  *                     Newton       what the middle adds
- *     S(a,b)      = BITE·share·screen·m_a·m_b·EMIT²·met(R)     meetings a tick
+ *     S(a,b)      = BITE·share·screen·m_a·m_b·EMIT²·met(R·GRAIN)·GRAIN³
+ *                                                  meetings a tick
  *
  *   One inverse square times one bracket that goes to one. The bracket is the
  *   whole of the model's departure from Newton at a distance, its size is the
@@ -27,22 +28,59 @@
  *   what a count of annihilations does to a body:
  *     BIAS        = LIGHT / WAYS                   what one of them buys, and
  *                                                  the only constant here
- *     u̇_a         = BIAS · S(a,b) / m_a            ÷ its OWN mass, which is
+ *     u̇_a         = BIAS · S(a,b) / m_a · carry    ÷ its OWN mass, which is
  *                                                  the equivalence principle
- *     pace(u)     = u / √(1 + |u|²/LIGHT²)         and what a count comes to
- *                                                  as a speed in the picture
+ *
+ *   AND WHERE THE SPACE COMES FROM, which is a second rule and is the whole
+ *   of B. Three rewrites, and everything after is their arithmetic:
+ *
+ *     neutral   →  +  −      one point becomes the two a pair needs    +1
+ *     +  −      →  neutral   a meeting merges them back — this is BITE −1
+ *     a move    →  consume ahead, emit behind                           0
+ *
+ *   A body emitting m·SHEET charges a tick therefore MAKES SPACE, at its own
+ *   place, at that rate — a point source, not a field. The moves carry it, and
+ *   a carried point source has a steady state, which is a Green's function:
+ *
+ *     S           = m·SHEET                        what a body makes a tick
+ *     D           = π·WAYS·c/(3·BITE·SHEET) = 3.4  how fast a move spreads it
+ *     δ(r)        = S/(4π·D·r) = 3u                STATIC, and 1/r
+ *     ⇒  u        = G·m/(r c²)                     the metric's own potential,
+ *                                                  out of a rate and a spread
+ *
+ *   which then reads as a metric:
+ *     A(s)        = ((1−s)/(1+s))²   s = u/2      how much slower its own
+ *                 = 1 − 2u + 2u² − ...                ticks go
+ *     B(s)        = (1+s)⁴                        how many steps a drawn cell
+ *                 = 1 + 2u + 1.5u² + ...              holds
+ *     pace(u,f)   = A·u / (B·√(A(1 + |u|²/B c²)))  what a count comes to as a
+ *                                                  speed in the picture
+ *     carry       = −(A' + (A/B)'|u|²/c²) / 2H     what one meeting is worth
+ *                                                  where it happened
  *
  *   Everything below falls out of those and none of it is stated: at rest,
  *   Newton; differentiated, 1/γ³ along the way a thing is going and 1/γ
  *   across it, which is special relativity's own response; and ÷ m_a leaves
  *   a_a ∝ m_b/R², so a feather and a hammer fall together.
  *
- *   G           = SHEET² / (4π²·CORE·WAYS)         the far limit of `met`, in
- *                                                  closed form. Every symbol
- *                                                  is a count. Nothing fitted.
+ *   G           = BITE·SHEET²·c / (8π²·HALF·WAYS)  the far limit of `met`, in
+ *                                                  closed form, and IN THE
+ *                                                  LATTICE'S OWN UNITS — a
+ *                                                  step, a tick, half a step
+ *                                                  of core. Every symbol a
+ *                                                  count; nothing fitted, and
+ *                                                  no GRAIN in it. `GRAIN` is
+ *                                                  the drawing's scale and
+ *                                                  enters once, in `shortfall`,
+ *                                                  turning cells into steps.
  *
- *   what it still owes: at v = c the count is already infinite, so one more
- *   annihilation turns it by nothing — light does not fall here. See `pace`.
+ *   And reading the count the second way is worth the rest of relativity:
+ *   Mercury 6.07/6 of Schwarzschild's perihelion advance where the pull alone
+ *   gave 1/6, and a ray 4GM/bc² where the pull alone gave half of it.
+ *
+ *   what it still owes: `fold` is only defined AT a body, because `shortfall`
+ *   is a fact about a pair and a thickness is a fact about a place. See
+ *   `settle` in `metric.tsx`.
  *
  */
 
@@ -86,8 +124,22 @@ import { BITE, LIGHT } from "./physics";
  */
 export const GRAIN = 1e12;
 
-/** And so the core, in drawn cells. */
-const CORE = HALF / GRAIN;
+/**
+ * And the core is half a step — a LATTICE step, which is the whole point.
+ *
+ * This used to be `HALF/GRAIN`: the core expressed in drawn cells, so that the
+ * law could be evaluated on drawn separations. It gave the right answer and it
+ * read as though the picture's zoom were part of the physics, which it is not.
+ * A source is one lattice point across whatever anything is drawn at.
+ *
+ * So the law below is stated in the lattice's own units — c = 1 step a tick,
+ * the core half a step — and `shortfall` converts a drawn separation into
+ * steps before asking it anything. That is the only place the two scales meet,
+ * and `GRAIN` appears nowhere else in the physics. It is exact rather than a
+ * rearrangement: `met(R, HALF/G) = G³·met(G·R, HALF)`, because the bracket
+ * depends only on `c/R` and the prefactor on `c·R²`.
+ */
+const CORE = HALF;
 
 /**
  * The line between two things, integrated — exactly, and it is Newton times a
@@ -234,32 +286,298 @@ export const BIAS = LIGHT / WAYS;
  * What comes out, unstated and unfitted, is the rest of it. Differentiating
  * the line above gives `dv/du = 1/γ³` along the way a thing is going and
  * `1/γ` across it — the longitudinal and transverse response of special
- * relativity, exactly, arrived at from a count of ways out of a point. And the
- * perihelion advance that leaves on Mercury is +0.56° an orbit against
- * Schwarzschild's +3.21°: prograde, same sign, and 0.176 of it, which is the
- * one sixth that relativistic momentum alone has always given.
+ * relativity, exactly, arrived at from a count of ways out of a point.
  *
- * WHAT IT STILL OWES, stated here rather than buried. At v = c the count is
- * infinite, so a finite one more does not turn it: light does not fall, and it
- * bends round the sun. What that costs is one identifiable thing rather than
- * the whole account — `shortfall` couples to the rest masses, and an emission
- * rate standing for ENERGY rather than for rest mass would deflect light by
- * 2GM/bc². Which is half of what was measured, and getting the other half
- * needs a metric's spatial part that a model counting one number per place
- * does not have.
+ * WHAT THIS IS WORTH ON ITS OWN, and it is exactly a sixth. With `fold` held
+ * at nought — the pull alone, which is all this file used to have — Mercury's
+ * perihelion advances +0.56° an orbit on the Sun and Mercury panel and +1.66°
+ * on the inner solar system, against a 6πGM/c²a(1−e²) of +3.36° and +9.93°.
+ * Prograde, same sign, and 0.167 of it in both — and 0.167 again for Venus,
+ * Earth and Mars, which is the one sixth that relativistic momentum alone has
+ * always given and is not a coincidence of one orbit.
+ *
+ * The other five sixths are NOT in here. They are in the same count read a
+ * second time — see `slowing`, `thickness` and `carry` below — and with that
+ * read the same five bodies come out at 6.05 to 6.20 sixths, and what is over
+ * six is first order in how deep the orbit sits — see the table there.
+ *
+ * The `fold` argument is what carries it, and it defaults to nought, at which
+ * these two functions are identically what they were.
  */
-export const pace = (ux: number, uy: number): [number, number] => {
-  const g = Math.sqrt(1 + (ux * ux + uy * uy) / (LIGHT * LIGHT));
+export const pace = (
+  ux: number, uy: number, fold = 0,
+): [number, number] => {
+  const A = slowing(fold), B = thickness(fold);
 
-  return [ux / g, uy / g];
+  // Nothing moves at all where A has gone to nought, and saying so is finite
+  // where dividing by it is not.
+  if (!(A > 0)) return [0, 0];
+
+  const g = Math.sqrt(A * (1 + (ux * ux + uy * uy) / (LIGHT * LIGHT * B)));
+
+  return [A * ux / (B * g), A * uy / (B * g)];
 };
 
-/** And back: what a stated course is, as a count. See `pace`. */
-export const count = (vx: number, vy: number): [number, number] => {
-  const g = 1 / Math.sqrt(Math.max(1 - (vx * vx + vy * vy) / (LIGHT * LIGHT), 1e-12));
+/**
+ * And back: what a stated course is, as a count. See `pace`.
+ *
+ * With the one thing this direction has to answer for and the other does not.
+ * `pace` is handed a count, and any count whatever is allowed — that is the
+ * whole of why the ceiling is arithmetic rather than a rule. This is handed a
+ * SPEED, and a speed has a ceiling where it is being stated: `c√(A/B)`, which
+ * is light in flat space and less than light anywhere folded. Above it there is
+ * no count to return, because there is no such course to be on.
+ *
+ * So it is held just under, rather than allowed to divide by nought. That is
+ * not a fudge covering a physical case — it is a caller handing this a course
+ * that does not exist where it put it, and the honest answers are the fastest
+ * one that does, and nothing at all where nothing can move.
+ */
+export const count = (
+  vx: number, vy: number, fold = 0,
+): [number, number] => {
+  const A = slowing(fold), B = thickness(fold);
+
+  const top = A / B;                                 // (c√(A/B))², over c²
+  if (!(top > 0)) return [0, 0];
+
+  const of = Math.min(
+    (vx * vx + vy * vy) / (LIGHT * LIGHT * top), 1 - 1e-12);
+
+  const g = B / Math.sqrt(A * (1 - of));
 
   return [vx * g, vy * g];
 };
+
+/**
+ * THE SECOND THING THE COUNT SAYS, which was being computed and thrown away.
+ *
+ * `BIAS` above reads the count as a RATIO: the way that took an annihilation
+ * weighs `1 + n` against the `WAYS` out that weigh one each, so a path leans by
+ * `LIGHT·n/WAYS`. That is the first moment of the count — WHICH WAY the extra
+ * weight points — and it is the whole of the pull, and it is worth exactly one
+ * sixth of Mercury's perihelion advance and nothing at all of light.
+ *
+ * What is thrown away is the TOTAL. The ways out of that point no longer number
+ * `WAYS`; they number `WAYS + n`. The line above this one used to say "while
+ * every other way out of the point still weighs exactly what it always did",
+ * and that is true and is not the point: every other way weighs one, and there
+ * are now more of them. A point with more ways out of it holds more space, so a
+ * neighbourhood of such points contains more places than the drawn cell it
+ * occupies, so crossing it takes more steps.
+ *
+ * Which is the spatial part, out of the same count, with nothing new measured
+ * and no second field:
+ *
+ *     A = 1 − 2u + 2u²        how much slower a body's own ticks go
+ *     B = 1 + 2u              how many steps a drawn cell holds
+ *
+ * — and `u` is one scalar, read twice. It is NOT a tensor and does not need to
+ * be. The claim in `metric.tsx` that a scalar cannot say space was taken out
+ * radially rather than across is a fact about SCHWARZSCHILD coordinates; the
+ * form written down two lines beneath it, `−A dt² + B(dx² + dy² + dz²)`, has a
+ * scalar B, and the spatial part of the metric at this order is `(1 + 2u)δᵢⱼ`
+ * for any arrangement of masses whatever. The tensor buys radiation, later.
+ *
+ * WHAT IT COSTS, and this is the one thing in the file that is BORROWED rather
+ * than counted: that A and B carry the same u with the same coefficient. That
+ * is γ = 1, Cassini has γ at 1 ± 2·10⁻⁵, and it is the sharpest thing here to
+ * be wrong about — so it wants deriving, and it has not been.
+ *
+ * The rest of this comment is the record of trying, because the failures are
+ * more informative than the assertion is, and because nobody should have to
+ * repeat them. See the note under `carry`.
+ *
+ * MEASURED. Every body of both solar panels, as a fraction of that body's own
+ * 6πGM/c²a(1−e²) — the pull alone, and the same pull read as a metric:
+ *
+ *                     Mars    Earth   Mercury   Venus   Mercury
+ *                                        (65)             (28)
+ *     u at perihelion  0.0025  0.0035   0.0038  0.0048   0.0112
+ *     pull alone        1.00    1.00     1.00    1.00     1.00   sixths
+ *     as a metric       6.05    6.08     6.07    6.10     6.20
+ *
+ * — five orbits over two panels at two scales. The first row does not move off
+ * a sixth by a part in a hundred. The second is six plus about 3.3·u, ordered
+ * by how deep the orbit sits and by nothing else, which is what a theory right
+ * to first order in the field and not beyond it is supposed to do: the next
+ * term is there and it is the size it should be. Nothing is fitted in either.
+ *
+ * And light, which the pull could not touch at all, traced through `√(B/A)` at
+ * 12.5 to 200 cells:
+ *
+ *     u = GM/bc²   6.0e−3  3.0e−3  1.5e−3  7.5e−4  3.8e−4
+ *     A alone      0.5048  0.5024  0.5011  0.5004  0.4997   of 4GM/bc²
+ *     A and B      1.0181  1.0089  1.0043  1.0019  0.9998
+ *
+ * — exactly a half and exactly one in the limit, with the same 3·u on the way
+ * in. One coefficient, two completely different measurements.
+ *
+ * AND THE ORBIT IS THE ORBIT ASKED FOR, which it was not at first and is
+ * worth recording, because the failure looked like the law and was not.
+ * `models.ts` used to hand every body a Newtonian vis-viva speed at
+ * perihelion, and in a metric the same stated speed is a different COUNT (see
+ * `count`) — so Mercury opened out to 14.7 cells where the ellipse it had been
+ * asked for goes to 13.1, and the panels showed a law that precessed correctly
+ * round a visibly wrong ellipse.
+ *
+ * Solving the turning points in the metric instead — `folded` in `models.ts`,
+ * which is exact and closed form — puts every one of them back:
+ *
+ *                  a wanted   a drawn      e wanted   e drawn
+ *     Mercury       10.839     10.84        0.20563    0.2055
+ *     Venus         20.253     20.25        0.00677    0.0068
+ *     Earth         28.000     28.00        0.01671    0.0167
+ *     Mars          42.664     42.66        0.09341    0.0934
+ *
+ * — four figures on all eight, with the perihelion advance unmoved. Nothing
+ * about the law changed; what changed is that the body is started in the space
+ * that is there rather than in Newton's.
+ */
+/**
+ * WRITTEN CLOSED RATHER THAN AS THE SERIES, and that is not tidiness.
+ *
+ * `1 − 2u + 2u²` and `1 + 2u` are the first terms of an expansion, and an
+ * expansion used outside where it converges does not merely lose accuracy — it
+ * loses the facts that made it a metric. At `u = 1` the series for A comes back
+ * up through one, so a place deep enough to stop a clock reads as though
+ * nothing were there; and since the coordinate speed of light is `c√(A/B)`,
+ * A rising and B not rising fast enough puts the ceiling ABOVE light. Measured
+ * on a panel whose masses put `u` at 1.8e9, that ceiling was forty thousand
+ * times light and two bodies left the frame at seventeen hundred cells a tick.
+ *
+ * The closed form these are the first terms of is the isotropic one, in
+ * `s = u/2`:
+ *
+ *     A = ((1 − s)/(1 + s))²        = 1 − 2u + 2u² − ...
+ *     B = (1 + s)⁴                  = 1 + 2u + 1.5u² + ...
+ *
+ * — same to the order anything here is worked to, and honest everywhere else.
+ * `A/B = (1 − s)²/(1 + s)⁶` is at most one for any `s ≥ 0`, so `c√(A/B) ≤ c`
+ * and LIGHT IS THE CEILING AGAIN, as a fact about the functions rather than a
+ * clamp. A goes to nought at `s = 1` and is held there beyond it, which is a
+ * horizon and is the honest thing for a place that deep to do.
+ *
+ * Nothing measured moves: the solar panels sit at `u ~ 10⁻³` where the series
+ * and the closed form agree to ten figures.
+ */
+const S_OF = (fold: number) => Math.max(fold, 0) / 2;
+
+export const slowing = (fold: number) => {
+  const s = S_OF(fold);
+  if (s >= 1) return 0;                              // at or past the horizon
+
+  const q = (1 - s) / (1 + s);
+
+  return q * q;
+};
+
+export const thickness = (fold: number) => {
+  const s = S_OF(fold);
+
+  return Math.pow(1 + s, 4);
+};
+
+/**
+ * And what a folded place does to the pull itself — the factor the count
+ * accumulates at, which is one where there is no folding.
+ *
+ * A count is still a count of annihilations and still goes up by `BIAS` each
+ * one. What changes is that a step is no longer worth a step: `dp/dt` is the
+ * gradient of the metric rather than of a potential, so the same meeting buys
+ * more where the place is thick and where the body is already fast.
+ *
+ * At leading order this is `1 + 2v²/c²`, which is the whole of the difference
+ * between one sixth and six sixths, and it is NOT something that could have
+ * been reached by patching a velocity factor onto the force: `1 + 2v²/c²` on
+ * its own gets the perihelion and overshoots light by half again. The rest of
+ * it is in `pace` and `count` above, where the same folding decides what a
+ * count is worth in cells. The two have to move together or neither is right.
+ */
+export const carry = (px: number, py: number, fold: number) => {
+  const A = slowing(fold), B = thickness(fold);
+  const p2 = px * px + py * py;
+
+  // H, in units of c². One where there is nothing going on.
+  const H = Math.sqrt(A * (1 + p2 / (LIGHT * LIGHT * B)));
+  if (!(H > 1e-12)) return 0;                        // nothing left to turn
+
+  // Differentiated against the fold, and these are the closed forms' own
+  // derivatives rather than the series' — −2 and +2 at the origin, as they
+  // have to be. See `slowing`.
+  const s = S_OF(fold);
+
+  const dA = s >= 1 ? 0 : -2 * (1 - s) / Math.pow(1 + s, 3);
+  const dB = 2 * Math.pow(1 + s, 3);
+
+  const dAB = (dA * B - A * dB) / (B * B);
+
+  return -(dA + dAB * p2 / (LIGHT * LIGHT)) / (2 * H);
+};
+
+/**
+ * WHERE B WOULD HAVE TO COME FROM — the record of ten attempts, and the one
+ * fact underneath all of them.
+ *
+ * `slowing` and `thickness` are the isotropic Schwarzschild functions of a `u`
+ * that `settle` reads off the pull. They work — 6.07 sixths and the whole of
+ * light's deflection — and they are general relativity's functions, borrowed.
+ * What follows is what happened when the lattice was asked to produce them.
+ *
+ * THE ONE FACT. General relativity sources the metric from MASS: `∇²u = 4πGρ`,
+ * and for a body ρ is concentrated, so the solution is `1/r`. This model has
+ * nothing concentrated to source from. `physics.ts` says it outright — mass
+ * here IS the emission rate — so every quantity attached to a body is attached
+ * to its FIELD, and a field around a point goes as `1/r²`. One integration
+ * apart, and no coefficient closes it.
+ *
+ * Measured, and each of these was run rather than argued:
+ *
+ *   annihilations tallied at a place        n ∝ r^−1.997     wrong power
+ *   the same, integrated outward            1/r, but ∝ 1/R²  a pair, not a place
+ *   A-B-C merging into Y                    C/r rises        deficit radius
+ *   emission carried with the charge        1/r²             deflection ∝ 1/b²
+ *   emission laid down as it passes         1/r  ✓           coefficient unfound
+ *   creation at the source, static Poisson  —                a rate is not a source
+ *   annihilation as a Painlevé flow         v ∝ r^−0.956     GR needs r^−0.5
+ *   sheet-confined creation                 1/r  ✓           anisotropic 100:1
+ *   the same, sheet tumbling                1/r²             averaging undoes it
+ *   creation per charge per tick            1/r  ✓           lattice has no transport
+ *
+ * Everything that fails, fails because it is built from `chance ∝ 1/r²`. The
+ * three that pass the shape test do it by an integration or a dimensional
+ * reduction, and neither has a mechanism behind it.
+ *
+ * WHAT DOES WORK, and it is one idea: put the source AT THE BODY. If making a
+ * charge converts one neutral point into the two a ± pair needs, the body is a
+ * point source of space at a rate proportional to its mass — a delta function,
+ * which is the thing the model did not have. Measured on Lagrangian shells,
+ * the deviation `1 − C/2πr` comes out flat in `×r` to every digit across a
+ * factor of eight in radius. That is `1/r`, and it is the only mechanism here
+ * that produced it without an integration put in by hand.
+ *
+ * WHAT IT STILL OWES: it is a rate, so it accumulates. `deviation = m·SHEET·t/r`
+ * passes GR's `G·m/r` at `t = G/SHEET ≈ 0.008` ticks and keeps going. Having
+ * annihilation give the point back (see `BITE`) conserves the total but not the
+ * distribution — space is made at the body and unmade where the charges get to,
+ * so the distortion between still accumulates. Nothing static has been found.
+ *
+ * AND TWO CONSTRAINTS ON ANYTHING THAT TRIES NEXT.
+ *
+ * An ambient field SCREENS. If the vacuum carries charge at density Φ₀ then a
+ * body's charges annihilate against it too, and only reach `λ = 1/(BITE·share·Φ₀)`.
+ * Gravity becomes Yukawa with that range. Working at cluster scale needs
+ * `Φ₀ ≲ 10⁻⁵⁸` per lattice cell, which is no vacuum at all — so a vacuum dense
+ * enough to do anything is dense enough to switch gravity off at seven steps.
+ *
+ * And BITE is not free either. If every created point emits a ± pair, then one
+ * meeting consumes one creation's worth of charge and must return one point, so
+ * `BITE = 1`. It costs nothing measured — `accel ∝ BITE·m_b` while `models.ts`
+ * sets `m ∝ 1/GRAVITY ∝ 1/BITE`, so every orbit is identical — but it is a
+ * change to the lattice rule (annihilation MERGING two points rather than
+ * deleting both), and that rule has not been established, so `physics.ts` still
+ * says two.
+ */
 
 /**
  * How many places along the line between two things are looked at.
@@ -576,7 +894,8 @@ export const shortfall = (
   if (R <= 2 * CORE) return 0;
 
   return BITE * share * screen
-    * (one.mass ?? 1) * (two.mass ?? 1) * EMIT * EMIT * met(R, CORE) * dt;
+    * (one.mass ?? 1) * (two.mass ?? 1) * EMIT * EMIT
+    * met(R * GRAIN, CORE) * GRAIN ** 3 * dt;
 };
 
 /**
@@ -804,5 +1123,145 @@ export const annihilation = (
  * FRACTION of your paths that got biased, and a heavier thing brought
  * proportionally more paths to the meeting.
  */
-export const GRAVITY =
-  SHEET * SHEET / (4 * Math.PI * Math.PI * CORE * WAYS);
+export const G_LATTICE =
+  BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+
+/**
+ * And the same constant in the units a panel is drawn in, which is the only
+ * thing `GRAIN` is for.
+ *
+ * A drawn cell is `GRAIN` steps across and a drawn tick is `GRAIN` ticks, and
+ * `G` has units of length³/time²/mass — so the conversion is one factor of
+ * `GRAIN` and nothing else. Every panel divides its masses by this, so it
+ * cancels out of every orbit and nothing measured depends on it.
+ */
+export const GRAVITY = G_LATTICE * GRAIN;
+
+/**
+ * WHAT B WOULD COST, IF SPACE WERE MADE — the surviving account, stated in
+ * code because it is a claim about a number, and not wired in because it does
+ * not yet produce a static one.
+ *
+ * `slowing` and `thickness` above are general relativity's functions, borrowed.
+ * The account below is the only one of ten that survives being measured, and it
+ * is short: SPACE IS MADE, and a body's charges are what make it.
+ *
+ *   every created point emits a ± pair, so creation and annihilation are exact
+ *   inverses and `BITE = 1` (see `physics.ts`). The vacuum's pairs are made
+ *   WITH their point and take it back when they meet, so they are net nothing;
+ *   a body's charges are emitted WITHOUT one, and the space they make as they
+ *   go is the part that is not already accounted for.
+ *
+ * Requiring that to come to `B = 1 + 2u` fixes the rate outright:
+ *
+ *     δ(r)  = ε·m·SHEET / (4π r c)          what the flux leaves at r
+ *     δ     = B^(3/2) − 1 = 3u,  u = GM/rc²
+ *     ⇒ ε   = 12π·G/(SHEET·c) = 3·BITE·SHEET/(π·WAYS)
+ *
+ * — a pure count, no `GRAIN` in it, and about a third of a point per charge
+ * per tick. That is the whole of the prediction, and it is the number a lattice
+ * rule would have to produce on its own for γ = 1 to be derived rather than
+ * assumed.
+ *
+ * WHY IT IS NOT WIRED IN. Three things were measured and two of them work:
+ *
+ *   the sign     right. Space made near a mass gives C/r < 2π, excess radius,
+ *                which is what general relativity has and what every earlier
+ *                mechanism got backwards.
+ *   the profile  right, but only with the source AT THE BODY — one neutral
+ *                point becoming the two a pair needs. Measured on Lagrangian
+ *                shells the deviation is flat in ×r to every digit over a
+ *                factor of eight in radius, which is 1/r. Sourced from the
+ *                charges instead it is 1/r², because `chance` is.
+ *   static       no. It is a rate, so it accumulates: `m·SHEET·t/r` passes
+ *                `G·m/r` at t = G/SHEET ≈ 0.008 ticks and keeps going. Letting
+ *                annihilation give the point back conserves the total and not
+ *                the distribution — made at the body, unmade wherever the
+ *                charges get to — so the distortion between still grows.
+ *
+ * AND ONE CONSTRAINT ON WHATEVER FIXES THAT. An ambient field SCREENS: a
+ * body's charges annihilate against it too, so they reach only
+ * `λ = c/(BITE·share·Φ₀)` and gravity becomes Yukawa with that range. Working
+ * out to cluster scale needs `Φ₀ ≲ 10⁻⁵⁸` charges a lattice cell — which is no
+ * vacuum worth the name. A vacuum dense enough to carry anything is dense
+ * enough to switch gravity off within about seven steps.
+ */
+export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
+
+/**
+ * HOW FAST THE SURPLUS SPREADS — and with it, the whole of B, derived.
+ *
+ * `MADE` above says a body makes space. This says what happens to it, and the
+ * two together are what turn a rate into a metric.
+ *
+ * THE REWRITE RULES, in full, because everything below is just their arithmetic:
+ *
+ *     neutral            →  +  −          one point becomes the two a pair
+ *                                         needs. NET +1 POINT.
+ *     +  −               →  neutral       a meeting merges them back. NET −1.
+ *                                         This is `BITE` = 1, and it is what
+ *                                         makes the two exact inverses.
+ *     charge moves       →  consume ahead, emit behind      NET 0. A point is
+ *                                         unmade in one place and remade in
+ *                                         the next, which is how a surplus
+ *                                         gets carried without anything
+ *                                         travelling.
+ *
+ * A body emits `m·SHEET` charges a tick and each costs one neutral point, so a
+ * body is a POINT SOURCE of space of strength `S = m·SHEET`. That is the whole
+ * of the difference from every earlier attempt, which sourced from `chance` and
+ * so from the field — spread as 1/r², and a spread source gives a logarithm.
+ * A point source gives a Green's function.
+ *
+ * The third rule then carries it, and carrying is what makes it settle. Write
+ * that as a diffusivity and the steady state is immediate:
+ *
+ *     ∂δ/∂t = D∇²δ + S·δ³(x)      ⇒      δ(r) = S / (4π D r)
+ *
+ * — STATIC, because the flux carries the surplus away exactly as fast as it is
+ * made, and 1/r, because that is what ∇⁻² of a point is. Measured on a radial
+ * solve: δ·r settles to five figures and stops moving over a sixfold longer
+ * run, matching (S/4πD)(1 − r/R) with the 1−r/R being the box and not the
+ * physics. Every accumulating version of this failed on exactly those two
+ * counts, and they close together rather than one at a time.
+ *
+ * WHAT D HAS TO BE. Setting `δ = 3u` (a volume excess is three times the u in
+ * B = 1 + 2u) and `u = GM/rc²`:
+ *
+ *     D = SHEET·c² / (12π·G) = π·WAYS·c / (3·BITE·SHEET) = 3.403
+ *
+ * — a pure count, no GRAIN, and order one. For a lattice whose things move a
+ * step a tick that is a mean free path of about three steps, which is an
+ * ordinary number for a medium that scatters.
+ *
+ * IT IS NOT INDEPENDENT OF `MADE`, and saying so matters: D = c/MADE exactly.
+ * Both are the same requirement — how much space has to end up at radius r —
+ * written once as a rate per charge and once as a diffusivity. One constraint,
+ * not two agreeing, and the second decimal place is not a confirmation.
+ */
+export const SPREAD = Math.PI * WAYS * LIGHT / (3 * BITE * SHEET);
+
+/**
+ * And so what a body puts at a distance, as a fold — which is `settle`'s whole
+ * job, done from the SOURCE rather than from the force.
+ *
+ * `δ = S/(4πDr)` with `S = m·SHEET` and `δ = 3u` comes to `u = G·m/(r c²)`,
+ * which is the same number `settle` used to get by reading an acceleration off
+ * `shortfall` and multiplying by R. The difference is not the value, it is what
+ * it is a statement ABOUT:
+ *
+ *   - it goes as m_b ALONE. `shortfall` goes as m_a·m_b, so what came out of it
+ *     was a fact about a PAIR, and a thickness is a fact about a PLACE. That
+ *     objection has stood in `settle` since the folding was put in, and this
+ *     is what answers it.
+ *   - it can be asked ANYWHERE, not only at a body, because there is no second
+ *     mass in it. `Space.nxx` wanted that and could not have it.
+ *   - and it is a derivation rather than a reading. The old line took the pull
+ *     and called its potential `u`, which is true and is not an argument.
+ *
+ * In the drawing's units, because that is where the panels live — `GRAVITY` is
+ * `G` times `GRAIN` (see there), and the lattice statement above is what it is
+ * a conversion of.
+ */
+export const foldAt = (mass: number, R: number) =>
+  GRAVITY * mass / (R * LIGHT * LIGHT);

@@ -4,7 +4,8 @@ import { bySide, Graph, perPoint } from "./discrete";
 import { Polarity, Source } from "./physics";
 import { RenderMode } from "./GraphCanvas";
 import { alternatingIntoRandom, collisionGroups, lineGroups } from "./lines";
-import { GRAVITY } from "./gravity";
+import { GRAVITY, pace, slowing, thickness } from "./gravity";
+import { emitterOf } from "./field";
 import { APART, Model, NEAR } from "./model";
 
 /**
@@ -84,6 +85,58 @@ const LATTICE_FOR = 60;
  */
 const ORBIT = 0.35 * LIGHT;
 
+/**
+ * What the sources of the small panels weigh — and until now, nothing, which
+ * meant one.
+ *
+ * These panels were written when a mass here was a number near a half and a
+ * source with no mass stated was a source weighing one of them. `GRAVITY` now
+ * carries the grain (see `gravity.ts`) and is of order 1e11, so an unstated
+ * mass is a body whose `GM/Rc²` at the separations drawn here is 1.8e9 — which
+ * is not a heavy body, it is thirty-odd cells inside a horizon. It went unseen
+ * for exactly as long as the dynamics could not tell: `pace` saturates at
+ * light whatever it is handed, so an absurd pull and a merely large one drew
+ * the same picture. Reading the count as a metric as well can tell, instantly
+ * and loudly, and that is how this was found.
+ *
+ * Solved rather than picked, by the same similarity the three-body panels use
+ * (see `TRIO`): two equal masses a distance D apart, each going round the
+ * middle at v, need `v² = Gm/2D`. Fixing D and v at what the orbit panel is
+ * drawn with leaves the mass, and every panel in this family is at the same
+ * scale, so they all take it.
+ *
+ * Which puts `GM/Rc²` between 0.1 and 0.45 across this family, and that is not
+ * a weak field. It is forced rather than chosen: these panels are drawn at a
+ * third to a half of light so that anything can be watched inside a few
+ * hundred ticks, and a pair bound at that speed needs a fold of that order —
+ * `v² ≈ GM/2D` is the same equation read either way round. There is no mass
+ * that makes them both watchable and weakly curved.
+ *
+ * SO THEY DO NOT CLOSE, and the note on `two sources, in orbit` claiming three
+ * turns is now wrong. Measured, an equal-mass pair started for a circular orbit
+ * at a separation of 48:
+ *
+ *     v/c        0.35    0.25    0.18    0.12    0.08    0.05
+ *     fold      0.245   0.125   0.065   0.029   0.013   0.005
+ *     ends at    1024     351      93      61      53      50   cells apart
+ *
+ * — unbound at the top, and still creeping out at the bottom where the field
+ * is weak enough that it should not. The first is real: a Newtonian circular
+ * condition is not a relativistic one, and at a quarter it is nowhere near.
+ * The second is not the law — it is `step` in `metric.tsx` being a forward
+ * Euler at a quarter-tick where `newton.tsx` is a velocity Verlet, which gains
+ * energy round an orbit. Both wanted before these panels say anything again.
+ *
+ * The three-body panels are unaffected: `TRIO` puts them at a fold of 0.024,
+ * and the figure eight stays inside 44.9 cells of the middle over its whole
+ * run, which is what it did before any of this.
+ */
+const PAIR = 2 * (2 * 24) * ORBIT * ORBIT / GRAVITY;
+
+/** The same, on a list of sources that did not say. */
+const weighed = (sources: Source[]): Source[] =>
+  sources.map(s => ({ ...s, mass: s.mass ?? PAIR }));
+
 // The fly-by's own scale: `FLY` is far enough that light takes a good while
 // to cross, and `MISS` is the impact parameter — the distance they would pass
 // at if nothing were eaten.
@@ -111,6 +164,9 @@ const triangle = (
     at: [RING * Math.cos(turn), RING * Math.sin(turn)],
     turning: lobed ? 1 as const : undefined,
     drift: going?.(turn),
+
+    // What they weigh, which they never used to say. See `PAIR`.
+    mass: PAIR,
   };
 });
 
@@ -311,7 +367,7 @@ const closedOnly: Model[] = [
     note: 'No second source, so nothing is eaten and nothing bends. The rings '
       + 'bunch ahead and stretch behind because each was left where it left '
       + 'from, and the source has gone on.',
-    world: { sources: [{ at: [-12, 0], turning: 1, drift: [PACE, 0] }] },
+    world: { sources: weighed([{ at: [-12, 0], turning: 1, drift: [PACE, 0] }]) },
     lattice: false,
     metric: { span: 14, cycle: ALONE_FOR },
   },
@@ -336,13 +392,14 @@ const closedOnly: Model[] = [
    */
   {
     name: 'two magnets, turning, with angular momentum',
-    note: 'Set going the same way round the middle. Nothing accelerates: what '
-      + 'brings them in is the gap being eaten while they carry on.',
+    note: 'Set going the same way round the middle. The gap between them is '
+      + 'eaten while they carry on, and here that is not enough to hold '
+      + 'them: at half of light they part.',
     world: {
-      sources: [
+      sources: weighed([
         { at: [-APART, 0], axis: POLES, turning: 1, drift: [0, PACE] },
         { at: [APART, 0], axis: POLES, turning: 1, drift: [0, -PACE] },
-      ],
+      ]),
     },
     lattice: false,
     metric: { span: APART * ROOM, cycle: PAIR_FOR },
@@ -372,10 +429,10 @@ const closedOnly: Model[] = [
     note: 'Set to miss each other by a long way. Both courses stay straight; '
       + 'it is the ground between them that goes.',
     world: {
-      sources: [
+      sources: weighed([
         { at: [-FLY, -MISS / 2], drift: [PACE, 0] },
         { at: [FLY, MISS / 2], drift: [-PACE, 0] },
-      ],
+      ]),
     },
     lattice: false,
     metric: { span: WIDE, cycle: PAIR_FOR },
@@ -411,10 +468,10 @@ const closedOnly: Model[] = [
     note: 'Nothing at all for thirty ticks, and then they close. The pause '
       + 'is light crossing to the middle and back — a force would not wait.',
     world: {
-      sources: [
+      sources: weighed([
         { at: [-26, 0], beat: 12 },
         { at: [26, 0], beat: 12 },
-      ],
+      ]),
     },
     lattice: false,
     metric: { span: 34, cycle: PAIR_FOR },
@@ -431,58 +488,50 @@ const closedOnly: Model[] = [
    * ever caught. Set slow with nothing else changed, everything is caught at
    * once.
    *
-   * Between the two there is an interval, and `ORBIT` is in it. Run for three
-   * hundred and twenty ticks the pair go round 1088 degrees — three full
-   * turns and part of a fourth — with the gap between them running from 16 at
-   * the tightest to 52 at the widest and neither of them ever leaving the
-   * frame.
+   * ALL OF WHICH DESCRIBED A DIFFERENT MODEL, and the whole of what used to be
+   * here is gone rather than patched, because none of it survives.
    *
-   * Two things hold it up and they pull opposite ways.
+   * What stood here said: that the pull gets STRONGER with distance, like a
+   * spring, because a meeting costs two cells however far apart the two things
+   * are; that such a pull has bound orbits everywhere and unbound ones nowhere;
+   * that nothing ever changes speed and only the direction comes round; and
+   * that run for three hundred and twenty ticks this pair goes round three full
+   * turns and part of a fourth, from 16 cells at the tightest to 52 at the
+   * widest.
    *
-   * The annihilation between them takes space out, and that is what draws
-   * them in. Measured with a pair held still and the field let settle, what
-   * it comes to at each of them is 0.03 cells a tick at a gap of 8, 0.16 at
-   * 24 and 0.40 at 32 — which is worth stopping on, because it goes the wrong
-   * way round. This is not Newton's pull, getting weaker with distance. It
-   * gets STRONGER with distance, like a spring, and that is a consequence of
-   * the rule rather than a choice: a meeting costs two cells however far
-   * apart the two things meeting are, so what varies with the gap is not the
-   * cost but how much of each field is in the other's way. A pull shaped like
-   * that has bound orbits everywhere and unbound ones nowhere, which is
-   * exactly what these runs do.
+   * `shortfall` is an inverse square (see `gravity.ts`) and `spend` changes
+   * speeds. The spring is gone, and with it every consequence drawn from it.
    *
-   * And the motion puts space BACK. `consumeAhead` is a swap — a cell taken
-   * in front is a cell laid down behind — so anything going anywhere is
-   * refilling the space it leaves at the rate it leaves it, and that pushes
-   * outwards against the eating. See `WAKE`. It is the smaller of the two by
-   * a long way, and it is not nothing: with it the tightest the pair get is
-   * 22 cells rather than 20, so the floor of the orbit is set by the swap and
-   * the ceiling by the eating.
+   * WHAT IT DOES NOW, measured rather than described: this pair does not come
+   * round at all. Started for a circular orbit at a separation of 48 it is
+   * unbound, and at the speeds these panels are drawn at that is not a bug to
+   * be tuned out — `v² ≈ GM/2D` says a pair held at a third of light needs a
+   * `GM/Rc²` of about a quarter, and a quarter is not a weak field. Slowing it
+   * until the field is weak leaves an orbit too slow to watch in a few hundred
+   * ticks. See `PAIR`, which has the numbers.
    *
-   * What is worth being clear about is what is NOT holding it up. Neither of
-   * these ever changes speed. There is no force here in the sense of a thing
-   * that could push something faster — each carries on at exactly the pace it
-   * was sent, for ever, and only the component of the fall ACROSS the way it
-   * is going is ever added. What comes round is the DIRECTION. An orbit here
-   * is not a balance of a pull against an inertia. It is a straight line
-   * through ground that keeps turning under it.
+   * There is also a second thing wrong that is not the law: `step` in
+   * `metric.tsx` is a forward Euler at a quarter-tick where `newton.tsx` is a
+   * velocity Verlet, and a forward Euler gains energy round an orbit. Even at
+   * a fold of 0.005, where the pair ought to close, it creeps out four per
+   * cent over three turns.
    *
-   * And that ground takes time to hear about anything, so this is an orbit
-   * with a delay in it — which is why the first thing the two do is get
-   * FURTHER apart, 48 out to 50. They are already moving when the run starts
-   * and nothing can act on them until light has crossed the gap and come
-   * back. They part first, and are caught afterwards.
+   * So this panel is honestly broken, and it is left drawing what it draws
+   * rather than given a mass that flatters it. What it needs is a slower
+   * `ORBIT` over a much longer `cycle`, and an integrator that conserves.
    */
   {
     name: 'two sources, in orbit',
-    note: 'Sent past each other at a third of light, and they go round — '
-      + 'nearly three times. Neither ever changes speed; only the direction '
-      + 'comes round, because the ground it is crossing falls away.',
+    note: 'Sent past each other at a third of light — and they are not '
+      + 'caught. A pair bound at that speed needs a fold of about a quarter, '
+      + 'which is not a weak field, and this panel is drawn fast so that it '
+      + 'can be watched at all. It used to claim three turns, under a pull '
+      + 'that grew with distance; that pull is gone.',
     world: {
-      sources: [
+      sources: weighed([
         { at: [-24, 0], drift: [0, ORBIT] },
         { at: [24, 0], drift: [0, -ORBIT] },
-      ],
+      ]),
     },
     lattice: false,
     metric: { span: 34, cycle: 320 },
@@ -516,7 +565,7 @@ const closedOnly: Model[] = [
       + 'and neither sent square to the line between them. It still goes '
       + 'round, which is the point.',
     world: {
-      sources: [
+      sources: weighed([
         {
           at: [-20, -6], axis: POLES, turning: 1,
           drift: [ORBIT * 0.34, ORBIT * 0.94],
@@ -525,7 +574,7 @@ const closedOnly: Model[] = [
           at: [26, 4], axis: POLES, turning: -1, phase: 1 / 6,
           drift: [-ORBIT * 1.5 * 0.42, -ORBIT * 1.5 * 0.91],
         },
-      ],
+      ]),
     },
     lattice: false,
     metric: { span: 40, cycle: 320 },
@@ -681,10 +730,10 @@ const closedOnly: Model[] = [
       + 'meetings, so the gap goes a fifth as fast — and the two are carried '
       + 'just as far while it does.',
     world: {
-      sources: [
+      sources: weighed([
         { at: [-FLY, -MISS / 2], drift: [PACE, 0], beat: 5 },
         { at: [FLY, MISS / 2], drift: [-PACE, 0], beat: 5 },
-      ],
+      ]),
     },
     lattice: false,
     metric: { span: WIDE, cycle: PAIR_FOR },
@@ -1042,35 +1091,59 @@ const known: Model[] = KNOWN.map(({ name, note, sources }) => ({
  * two classical accounts are visibly different curves, and this model is a
  * third — and the three come apart in an interesting way:
  *
- *     Newton         closed ellipses, by construction
- *     Schwarzschild  perihelion advancing  +3.2° an orbit for Mercury here
- *     this model     perihelion advancing  +11.5°, and the same way round
+ * Measured over forty orbits on the Sun and Mercury panel, in degrees of
+ * perihelion an orbit, against each run's own 6πGM/c²a(1−e²):
  *
- * So the model's departure is now the SAME sign as relativity's and about
- * three and a half times the size, where it used to be the opposite sign and
- * three times the size. Both of those are worth reading against what changed.
+ *     Newton         −0.23     closed, to the softening in `newton.tsx`
+ *     Schwarzschild  +3.18     0.94 of the closed form, at these speeds
+ *     this model     +3.41     1.01, and the same way round
  *
- * The sign came from the velocity term, which is gone. Gravity here used to
- * weaken on a body already moving, by an amount first order in v/c and read
- * off the frame the canvas happened to be drawn in — so it retarded the
- * perihelion, opened the orbit out, and could be made to do almost anything by
- * boosting the whole picture sideways. What replaced it is the observation
- * that a count of annihilations is a count per tick of the BODY'S clock (see
- * `pace` in `gravity.ts`), which is second order, frame-stable, and worth
- * +0.56° an orbit — one sixth of Schwarzschild's, which is what relativistic
- * momentum on its own has always given.
+ * So the model now sits ON relativity rather than three and a half times past
+ * it, and the whole of the difference between those two rows is one reading of
+ * one number. It is worth being exact about which, because for a long time
+ * this comment blamed the wrong thing.
  *
- * What is left is not a velocity effect at all. `shortfall` is not exactly
- * inverse square — the two ends of the line give the 1/R² and the middle of it
- * adds about (0.54·ln R + 0.23)/R on top — so the model pulls 8.5% harder than
- * its own far-field constant at twenty-four cells, and that is the whole of
- * the remaining +10.9°. It is a SHORT-RANGE departure rather than a fast one,
- * which is a different claim and a checkable one: drawn at the same speeds and
- * eight times the size, Mercury's advance here falls from 11.5° to 3.6° while
- * Schwarzschild's stays at 3.2°. These panels are drawn at the small end on
- * purpose — a solar system with a visible wave in it has to be — so what they
- * show is the model at its least Newtonian, and the departure they show is a
- * statement about cells and not about speed.
+ * The SIGN came from the old velocity term, which is gone: gravity here used
+ * to weaken on a body already moving, first order in v/c and read off the
+ * frame the canvas happened to be drawn in. What replaced it is that a count
+ * of annihilations is a count per tick of the BODY'S clock (see `pace`) —
+ * second order, frame-stable, and worth exactly one sixth of Schwarzschild's
+ * advance, which is what relativistic momentum on its own has always given.
+ *
+ * The SIZE was then blamed on `shortfall` not being exactly inverse square,
+ * and that was a real effect and the wrong culprit: at a `GRAIN` of a trillion
+ * the running is 1 + 10⁻³⁸ and could not move a perihelion if it tried. What
+ * was actually missing was the other five sixths, and they were never a
+ * velocity effect or a short-range one. They are the same count read as a size
+ * rather than as a direction — a point that has taken n annihilations has
+ * WAYS + n ways out of it and not WAYS, so it holds more space — which is the
+ * spatial part of a metric. See `slowing` and `thickness` in `gravity.ts` and
+ * `settle` in `metric.tsx`.
+ *
+ * Every body of both panels, as sixths of its own 6πGM/c²a(1−e²):
+ *
+ *                    Mercury  Mercury   Venus   Earth    Mars
+ *                     (65)     (28)
+ *     the pull        1.00     1.00     1.00    1.00     1.00
+ *     and the size    6.07     6.20     6.10    6.08     6.05
+ *
+ * WHAT IS SHARED, which had to be settled before any of the above could be
+ * read as a comparison at all.
+ *
+ * The three panels used to share one set of sources, and so one speed at
+ * perihelion. A speed is not a statement about an orbit until you say which
+ * space it is in — so whichever law that number had been worked out in got the
+ * ellipse this table specifies, and the other two got something else. Worked
+ * out in Newton's space the model ran out to 14.7 cells where the ellipse goes
+ * to 13.1; worked out in the metric, Newton's panel ran out to 11.9 instead.
+ * Either way a reader was being shown two curves that differ in setup and told
+ * they differ in law.
+ *
+ * So what is shared is the ELLIPSE. Each panel is handed the same two turning
+ * points, in cells, and solves for the speed that reaches them under its own
+ * law — `keplerian` for the classical pair, `folded` here. All three now draw
+ * the same orbit and the only thing left between them is where the perihelion
+ * goes, which is the whole of what the row was ever for.
  */
 const SUN = 39.4784176;                  // GM in AU^3/yr^2, for the Sun
 
@@ -1168,13 +1241,151 @@ type Body = [
  */
 const SLOW = 96;
 
-const system = ({ cells, ticks, centre, around }: {
+/**
+ * Whether a body is started in the space that is actually there, or in Newton's.
+ *
+ * The sibling of `settled` on a source, and the same idea one level in. A
+ * source with `settled` on has been emitting for ever, so the picture opens
+ * with its waves already in it rather than with a front crawling out of an
+ * empty frame — because the dynamics have no delay in them and a picture that
+ * opened empty would be showing one that is not there.
+ *
+ * This is that for MOTION. `settle` in `metric.tsx` fills in how thick the
+ * place each body stands in is before anything moves, so the space is already
+ * populated at t = 0 — but the speed each body was handed came from Newton's
+ * vis-viva, which is a statement about a space with no thickness in it. The
+ * two disagree, and the disagreement is not small: given a Newtonian speed at
+ * perihelion, Mercury on the close panel runs out to 14.7 cells where the
+ * ellipse it was asked for goes to 13.2, because the same stated speed is a
+ * different COUNT where `A/B` is not one (see `pace`).
+ *
+ * So the turning points are solved for in the metric instead, which is exact
+ * and closed form rather than an approximation of Newton's: `folded` below.
+ * Nothing about the law changes — this is what the body is HANDED, not what
+ * happens to it afterwards — and the perihelion advance is the same either
+ * way. What changes is that the ellipse drawn is the ellipse asked for:
+ *
+ *                  a wanted   a drawn      e wanted   e drawn
+ *     Mercury       10.839     10.84        0.20563    0.2055
+ *     Venus         20.253     20.25        0.00677    0.0068
+ *     Earth         28.000     28.00        0.01671    0.0167
+ *     Mars          42.664     42.66        0.09341    0.0934
+ *
+ * This decides the MODEL'S panel only. The two classical panels are handed the
+ * same two turning points and solve for themselves with `keplerian` and
+ * `precessing`, so all three draw the same ellipse whatever this is set to.
+ *
+ * Off, this panel is started the old way, which is what every measurement in
+ * this file that predates it was taken with.
+ */
+const SETTLED = true;
+
+/**
+ * The speed at perihelion that puts the far turning point at `ra` — Newton.
+ *
+ * `√(GM/a · (1+e)/(1−e))`, written in the turning points themselves so that it
+ * reads against the one below rather than against a semi-major axis.
+ */
+const keplerian = (gm: number, rp: number, ra: number) =>
+  Math.sqrt(2 * gm * ra / (rp * (rp + ra)));
+
+/**
+ * And the same thing where space has thickness in it, which is exact.
+ *
+ * A body in `−A dt² + B dx²` conserves its energy and its angular momentum,
+ * and at a turning point there is no radial momentum left to have — so `p` is
+ * across the folded line and is `L/r`. Setting the energy at the two turning
+ * points equal,
+ *
+ *     A(r)·(1 + L²/(r²c²B(r)))      equal at rp and ra
+ *
+ * is one linear equation in `L²` and solves outright:
+ *
+ *     L² = c²·(A_a − A_p) / ( A_p/(rp²B_p) − A_a/(ra²B_a) )
+ *
+ * — which collapses to Newton's `2GM·rp·ra/(rp + ra)` when A → 1 − 2u and
+ * B → 1, so this is the same statement with the thickness left in rather than
+ * a correction bolted onto it. What comes back is the COUNT at perihelion,
+ * and `pace` turns that into the speed the picture shows.
+ *
+ * The two-body part is left where it was: `gm` is `G(M + m)`, which is the
+ * relative orbit's constant, and the split about the barycentre happens at the
+ * call. That is the leading approximation rather than the two-body problem in
+ * a metric, and at the mass ratios here — a millionth for the planets, a part
+ * in eighty-one for the Moon — it is well under what the panels can show.
+ */
+/**
+ * And for the panel in between, whose law is neither of those.
+ *
+ * `newton.tsx` does relativity as a factor on the PULL — `1 + 3L²/(c²r²)` —
+ * which is the Schwarzschild orbit and is not a statement about what a
+ * velocity means, so neither of the two above solves it. Measured: handed
+ * Newton's speed it runs Mercury out to 12.3 cells where the ellipse asked for
+ * goes to 13.1, and handed the metric's, to 11.1. Both visibly wrong, in the
+ * same direction, for two different reasons.
+ *
+ * Its own solve is the same energy argument as `folded` in a flat space with
+ * the extra term carried, `Φ = −GM/r − GM·L²/c²r³`, and it is linear in L²
+ * again:
+ *
+ *     L² = GM(1/rp − 1/ra)
+ *          ────────────────────────────────────────────────
+ *          (1/2rp² − 1/2ra²) − (GM/c²)(1/rp³ − 1/ra³)
+ *
+ * which collapses to Newton's when the second bracket goes.
+ */
+const precessing = (gm: number, rp: number, ra: number) => {
+  const k = gm / (LIGHT * LIGHT);
+
+  const under = (1 / (2 * rp * rp) - 1 / (2 * ra * ra))
+    - k * (1 / (rp * rp * rp) - 1 / (ra * ra * ra));
+
+  if (!(under > 0)) return keplerian(gm, rp, ra);
+
+  return Math.sqrt(gm * (1 / rp - 1 / ra) / under) / rp;
+};
+
+const folded = (gm: number, rp: number, ra: number) => {
+  const k = gm / (LIGHT * LIGHT);                     // GM/c², in cells
+
+  const Ap = slowing(k / rp), Bp = thickness(k / rp);
+  const Aa = slowing(k / ra), Ba = thickness(k / ra);
+
+  const over = Ap / (rp * rp * Bp) - Aa / (ra * ra * Ba);
+  if (!(over > 0)) return keplerian(gm, rp, ra);      // degenerate: rp === ra
+
+  const L = Math.sqrt(LIGHT * LIGHT * (Aa - Ap) / over);
+
+  // The count at perihelion is L/rp, and what that comes to as a speed depends
+  // on how thick it is there.
+  return Math.hypot(...pace(0, L / rp, k / rp));
+};
+
+const system = ({ cells, ticks, centre, around, speed = folded }: {
   cells: number;                          // cells per unit of length
   ticks: number;                          // ticks per unit of time
   centre: number;                         // GM of the thing in the middle
   around: Body[];
+
+  /**
+   * And which law solves for the speed that reaches the far turning point.
+   *
+   * The panels share the ORBIT and not the speed. Handing all three the same
+   * number meant at most one of them could draw the ellipse it was asked for,
+   * and which one depended on whose space the number had been worked out in;
+   * handing each the turning points instead and letting it solve for itself
+   * means all three draw the same ellipse and the only thing left between them
+   * is where the perihelion goes, which is the whole of what the row is for.
+   *
+   * That is a change to what the comparison MEANS, and it is worth saying
+   * plainly. `newton.tsx` says the arrangements are shared so that a departure
+   * is a difference of law rather than of setup. It still is — the setup is
+   * the ellipse, stated in cells, identical across the three — but the setup
+   * is no longer a velocity, because a velocity is not a statement about an
+   * orbit unless you also say which space it is in.
+   */
+  speed?: (gm: number, rp: number, ra: number) => number;
 }): Source[] => {
-  const scale = cells / ticks;            // real speed to cells a tick
 
   /**
    * And every body given its own rate, a few per cent apart.
@@ -1191,7 +1402,7 @@ const system = ({ cells, ticks, centre, around }: {
   const orbiting = around.map(([, axis, e, perihelion, gm], i) => {
     const turn = perihelion * Math.PI / 180;
 
-    // At perihelion, a(1 − e) out along the apsidal line.
+    // At perihelion, a(1 − e) out along the folded line.
     const r = axis * (1 - e) * cells;
 
     /**
@@ -1213,8 +1424,10 @@ const system = ({ cells, ticks, centre, around }: {
      * the whole of it and then recoiling as well, the pair separate at
      * v(1 + m/M) and the apogee comes out long instead, which it did: 42.8.
      */
-    const v = Math.sqrt((centre + gm) / axis * (1 + e) / (1 - e))
-      * (centre / (centre + gm)) * scale;
+    const v = speed(
+      (centre + gm) * cells ** 3 / ticks ** 2,
+      axis * (1 - e) * cells, axis * (1 + e) * cells,
+    ) * (centre / (centre + gm));
 
     return {
       at: [r * Math.cos(turn), r * Math.sin(turn)] as [number, number],
@@ -1270,12 +1483,15 @@ const systems: Model[] = ([
       + 'shape is. It is also where relativity was measured: the perihelion '
       + 'advance is Mercury\u2019s, and the three panels part company on exactly '
       + 'that \u2014 Newton returns to the same perihelion, Schwarzschild carries '
-      + 'it forward by 3.2\u00b0 an orbit, and this model carries it forward the '
-      + 'same way by 11.5\u00b0 and closes the orbit in to 25.2 cells. The '
-      + 'direction is right and the size is not, and what is wrong with the '
-      + 'size is short range rather than fast: at eight times this scale and '
-      + 'the same speeds it comes down to 3.6\u00b0 while Schwarzschild\u2019s stays '
-      + 'where it is.',
+      + 'it forward by 3.18\u00b0 an orbit, and this model carries it forward the '
+      + 'same way by 3.41\u00b0, which is 1.01 of the 6\u03c0GM/c\u00b2a(1\u2212e\u00b2) '
+      + 'the advance was measured against. It used to be a sixth of that, and '
+      + 'the other five sixths are not a new force \u2014 they are the same count '
+      + 'of annihilations read as how much space a point holds rather than as '
+      + 'which way it leans. And the ellipse is the one asked for: 20.0 cells '
+      + 'to 30.3, against the 20.0 to 30.3 Mercury\u2019s real eccentricity '
+      + 'specifies, because the body is started in the space that is there '
+      + 'rather than in Newton\u2019s.',
     cells: 65, ticks: 12000, span: 44, cycle: 24000, rate: 600,
     centre: SUN,
     around: [['Mercury', 0.38710, 0.20563, 0, SUN * 1.66012e-7]],
@@ -1286,16 +1502,18 @@ const systems: Model[] = ([
       + 'eccentricities, real longitudes of perihelion, and the masses worked '
       + 'out from this model\u2019s own G. Newton traces the four ellipses and '
       + 'closes them; relativity advances each perihelion a little; this model '
-      + 'advances it the same way and too far, and pulls the orbit in. Mercury '
-      + 'departs most in all three panels \u2014 not because it is fastest, '
-      + 'which is what the velocity term this model used to have would have '
-      + 'said, but because it is CLOSEST: the departure goes as one over the '
-      + 'separation in cells, so the innermost body sees the most of it. '
-      + 'Measured over the eleven thousand ticks of this run: Mercury runs 8.6 '
-      + 'to 13.2 cells and comes round 15.1 times under Newton, 8.6 to 12.3 '
-      + 'and 16.3 times under Schwarzschild, and 8.6 to 9.5 and 21.4 times '
-      + 'here \u2014 which at 8.6 cells is the model well inside the range '
-      + 'where it agrees with anything. Venus and Earth are drawn as very '
+      + 'advances it the same way and by very nearly the same amount. Four '
+      + 'bodies is the point of this panel rather than one: measured against '
+      + 'each orbit\u2019s own 6\u03c0GM/c\u00b2a(1\u2212e\u00b2), the advance here comes to 6.20, '
+      + '6.10, 6.08 and 6.05 sixths for Mercury, Venus, Earth and Mars \u2014 '
+      + 'ordered by how deep each orbit sits and by nothing else, which is the '
+      + 'next term along being the size it should be. It is a law rather than a '
+      + 'fit to one orbit, and it was one sixth flat '
+      + 'across all four before the same annihilations were read a second '
+      + 'time. The four ellipses are also the four asked for, to four figures '
+      + 'in both the axis and the eccentricity, which they were not until the '
+      + 'starting speed was solved for in the space that is actually there '
+      + 'instead of being taken from Newton\u2019s vis-viva. Venus and Earth are drawn as very '
       + 'nearly circles because they very nearly are: their eccentricities are '
       + '0.007 and 0.017.',
     cells: 28, ticks: 3000, span: 66, cycle: 30000, rate: 600,
@@ -1318,13 +1536,20 @@ const systems: Model[] = ([
       + 'so Jupiter goes round once, Saturn a third of the way, and Neptune '
       + 'through seven degrees of the hundred and sixty-five years it takes. '
       + 'What the three panels have to disagree about is therefore all in the '
-      + 'inner four, and it is the same disagreement as above: Mercury closes '
-      + 'from 13.7 cells to 9.5 in this model and to 12.3 under '
-      + 'Schwarzschild, while Neptune — eight hundred and thirty-five cells '
-      + 'out, where this model’s short-range excess is under two parts in a '
-      + 'thousand — does not measurably differ in any of them. Which is the '
-      + 'clearest thing this frame has to say: the disagreement is with the '
-      + 'near, not with the fast.',
+      + 'inner four, and it is the same disagreement as above — but it is '
+      + 'now a small one. All three draw the same ellipse, because each is '
+      + 'handed the same two turning points and solves for its own speed to '
+      + 'reach them, so what is left between them is where the perihelion '
+      + 'goes. On this ruler that advance comes to 6.20 sixths of '
+      + '6πGM/c²a(1−e²) for Mercury and 6.05 for Mars, against a '
+      + 'relativity that would give six flat. Neptune, eight hundred and '
+      + 'thirty-five cells out, does not measurably differ in any of them. '
+      + 'Which is the clearest thing this frame has to say, and it survives '
+      + 'the reason for it having changed: what is over six goes as GM/rc², '
+      + 'so the disagreement is with the DEEP, not with the fast. It used to '
+      + 'be blamed on a short-range excess in the pull, which at the grain a '
+      + 'real lattice would have is one part in 10³⁸ and could not move a '
+      + 'perihelion if it tried.',
     cells: 28, ticks: 3000, span: 900, cycle: 60000, rate: 900, height: 420,
     centre: SUN,
     around: [
@@ -1382,7 +1607,35 @@ const systems: Model[] = ([
 }[]).map((
   { name, note, cells, ticks, span, cycle, rate, height, centre, around },
 ): Model => {
-  const sources = system({ cells, ticks, centre, around });
+  const sources = system({
+    cells, ticks, centre, around, speed: SETTLED ? folded : keplerian,
+  });
+
+  /**
+   * And the same ellipse for the two classical panels, solved in THEIR space.
+   *
+   * The three used to share one `sources`, which meant sharing one speed at
+   * perihelion — and a speed is not a statement about an orbit until you say
+   * which space it is in, so at most one panel could draw the ellipse the
+   * table above actually specifies. Whichever law the number had been worked
+   * out in got its ellipse and the other two got something else.
+   *
+   * So what is shared is the ellipse. Each panel is handed the same two
+   * turning points in cells and solves for the speed that reaches them under
+   * its OWN law — three laws, three solves, and they are three different
+   * numbers: `keplerian`, `precessing` and `folded`.
+   *
+   * `keplerian` is exact for Newton's panel up to the half-cell softening in
+   * `newton.tsx`, which leaves Mercury's aphelion 0.06 cells long out of 30.3
+   * and is well under a pixel.
+   */
+  const kepler = system({
+    cells, ticks, centre, around, speed: keplerian,
+  }).map(emitterOf);
+
+  const einstein = system({
+    cells, ticks, centre, around, speed: precessing,
+  }).map(emitterOf);
 
   /**
    * And the pace, which is now free outright.
@@ -1412,8 +1665,8 @@ const systems: Model[] = ([
     // benchmarks — three panels is already the comparison.
     lattice: false,
 
-    newton: { ...framed, gm: GRAVITY },
-    relativity: { ...framed, gm: GRAVITY },
+    newton: { ...framed, gm: GRAVITY, sources: kepler },
+    relativity: { ...framed, gm: GRAVITY, sources: einstein },
 
     /**
      * And the model's own panel draws the WAVES, not only the path.

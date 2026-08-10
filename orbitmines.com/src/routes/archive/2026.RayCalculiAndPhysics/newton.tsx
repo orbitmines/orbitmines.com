@@ -40,6 +40,23 @@ import { LIGHT } from "./physics";
  * that is known to close, and any departure in the panels beside it is a
  * difference of law rather than of setup.
  *
+ * WHICH IS STILL TRUE AND IS NO LONGER TRUE OF THE VELOCITY. It used to be:
+ * one set of sources went to all three panels, so they shared a position and a
+ * speed and there was nothing else to share. But a speed at perihelion is not
+ * a statement about an orbit until you say which space it is stated in, and
+ * the three panels do not agree about that — so whichever law the number had
+ * been worked out in got the ellipse the table asked for, and the other two
+ * quietly drew something else. Worked out in Newton's space the model ran out
+ * to 14.7 cells where the ellipse goes to 13.1; worked out in the metric's,
+ * this panel ran out to 11.9 instead.
+ *
+ * So what is shared is now the ELLIPSE — the same two turning points, in
+ * cells — and each panel solves for the speed that reaches them under its own
+ * law: `keplerian` for this one, `precessing` for the relativistic one beside
+ * it, and `folded` for the model's. See `system` in `models.ts`. The setup is
+ * identical across the three and the departure is still a difference of law;
+ * it is simply that the shared thing is a geometry rather than a number.
+ *
  * The relativistic panel matters here more than it usually would, and the
  * reason is a fact about drawing orbits on a lattice rather than about
  * gravity. An orbit worth watching has to be tens of cells across and has to
