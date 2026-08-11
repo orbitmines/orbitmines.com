@@ -136,6 +136,23 @@ export type Lattice = {
   filmstrip?: boolean;
 
   /**
+   * And which way along the strip time runs.
+   *
+   * The seed is normally leftmost and the arrows point right. Set this and the
+   * strip is laid out the other way round — last state first, arrows pointing
+   * back — which is what a sentence wants when it is naming the OUTCOME before
+   * the arrangement that produced it, as the annihilation rule does.
+   *
+   * The arrow is flipped with the order, and so is every charge's HEADING —
+   * reversing the order alone is not enough, because a charge drawn mid-run is
+   * still drawn going the way it was going, and a run played backwards would
+   * show two charges converging on a neutral point rather than leaving one.
+   * Reversing time reverses velocities, and only both together read as the
+   * rule run the other way.
+   */
+  backwards?: boolean;
+
+  /**
    * How many times to run it. The dynamics are stochastic, and where the
    * arrangement itself is a draw rather than a case — every point charged on
    * its own, say — one run says nothing that survives being watched twice.

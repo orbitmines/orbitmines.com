@@ -156,12 +156,39 @@ const LatticePlayer = ({
  * is stepped through, and each state along the way is cloned out of it, so
  * the strip really is consecutive states of a single universe.
  */
+/**
+ * Every ray in a state turned round, for drawing a run the other way along.
+ *
+ * A ray's heading is which of its two boundaries is the `moving` one, so
+ * turning it is picking the other. Safe to do in place: these are clones kept
+ * only to be drawn, never ticked again.
+ *
+ * It is NOT a claim that the dynamics are reversible. Annihilation loses which
+ * side carried which polarity, so the run backwards is one of the states that
+ * COULD have led here rather than the one that did — which is exactly what the
+ * creation rule is, since nothing says which way round a new pair comes out.
+ */
+const turned = (graph: Graph) => {
+  for (const nd of graph.nodes)
+    for (const ray of nd) {
+      if (!ray.moving) continue;
+
+      const other = ray.boundaries.find(b => b !== ray.moving);
+      if (other) ray.moving = other;
+
+      if (ray.heading) ray.heading = ray.heading.map(v => -v);
+    }
+
+  return graph;
+};
+
 const LatticeFilmstrip = ({
   seed = () => Graph.grid(),
   ticks = 8,
   height = 150,
   density = true,
   mode = 'lattice',
+  backwards = false,
 }: Lattice) => {
   const frames = useMemo(() => {
     const graph = seed();
@@ -172,14 +199,24 @@ const LatticeFilmstrip = ({
       states.push(graph.clone());
     }
 
-    return states;
+    // Reversed here rather than at the draw, so `i > 0` still means "not the
+    // first one shown" and the arrow lands between the same pairs either way.
+    //
+    // AND EVERY HEADING TURNED WITH IT, which reversing the order alone does
+    // not do: a charge drawn mid-run is still drawn going the way it was
+    // going, so a run played backwards shows two charges converging on a
+    // neutral point rather than leaving one. Reversing time reverses
+    // velocities, and only both together read as the rule run the other way.
+    return backwards ? states.reverse().map(turned) : states;
   }, []);
 
   return <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
     {frames.map((graph, i) => (
       <Fragment key={i}>
         {i > 0
-          ? <div style={{ flex: '0 0 auto', padding: '0 0.5em', color: '#515254' }}>→</div>
+          ? <div style={{ flex: '0 0 auto', padding: '0 0.5em', color: '#515254' }}>
+            {backwards ? '←' : '→'}
+          </div>
           : null}
         <div style={{ flex: '1 1 120px', height }}>
           <GraphCanvas graph={() => graph} density={density} mode={mode} />
@@ -243,7 +280,7 @@ export const ModelView = ({ model }: { model: Model }) => {
   // A run repeated, where the arrangement is a draw rather than a case.
   const runs = Array.from({ length: lattice?.runs ?? 1 }, (_, i) => i);
 
-  return <div style={{ marginBottom: '1.5rem' }}>
+  return <div>
     <div style={{
       display: 'grid',
       gridTemplateColumns: many ? 'repeat(auto-fit, minmax(280px, 1fr))' : '1fr',

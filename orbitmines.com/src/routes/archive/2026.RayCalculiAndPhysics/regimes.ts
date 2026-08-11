@@ -113,9 +113,20 @@ export type Regime = {
    * it begins above u², at a depth nothing has yet fixed. Route one costs
    * nothing and follows from rules already here.
    *
-   * BOTH ARE KEPT because they differ observationally: route one leaves a
-   * SURFACE (ringdown echoes, no information loss), route two does not. Neither
-   * fixes the neutron star. See the foot of `gravity.ts`.
+   * BOTH ARE KEPT, but NOT because they differ observationally — they do not.
+   * Route one leaves a surface and route two a horizon, and the surface is so
+   * deep that the echo delay carries e^(9·10³⁷), so nothing ever comes back
+   * from either (see `echoes.tsx`). The image is the same too, since they share
+   * the exterior down to the photon sphere. The only candidate discriminator is
+   * Hawking radiation, and it rests on an unsettled question. Neither fixes the
+   * neutron star. See the foot of `gravity.ts`.
+   *
+   * AND BOTH ARE NOW OPTIONAL IN A SECOND SENSE. They were built because the
+   * model appeared to have no dark objects at all — the densest ordinary matter
+   * capping at u = 0.196. With the screening's geometry corrected that cap is
+   * u = 0.693, past the photon sphere at u = ½, so ordinary matter at the
+   * ceiling already casts a full-size shadow. These two are now ways of going
+   * FURTHER than that rather than the only way of getting anywhere.
    */
   boost: number;
 
@@ -263,10 +274,12 @@ export const borrows = (r: Regime): string[] => {
 export const untested = (r: Regime): string[] => {
   const owed: string[] = [];
 
-  if (r.fold > 0 && r.compose > 0) owed.push(
-    '`carry` is the stationary-phase limit of the path sum — shown to match to '
-    + '1e-7 — but the checkerboard behind it was measured in FLAT space. A '
-    + 'position-dependent reversal amplitude has not been run.');
+  // `carry` used to sit here: the stationary-phase limit of a path sum that
+  // had only ever been run in FLAT space. The position-dependent checkerboard
+  // has now been built and run (see `gravity.ts`) — the packet follows the
+  // classical path, and the residual halves each time the geometry doubles,
+  // which is the semiclassical 1/λ and not a disagreement. So it is off this
+  // list, and this list is EMPTY for the model's own setting.
 
   if (r.hold > 0) owed.push(
     '`hold` rests on one emitter per edge, which is a reading of what a cell '

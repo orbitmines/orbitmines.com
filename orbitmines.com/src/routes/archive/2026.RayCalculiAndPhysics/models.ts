@@ -815,14 +815,14 @@ const blocks: Model[] = [
       + 'between them, the second in bursts rather than steadily.',
     lattice: {
       seed: () => Graph.emitters({ left, right, gap: 20, every: 1, spin: true }),
-      ticks: 22, height: 140,
+      ticks: 22, height: 160,
     },
   })),
 ];
 
 // A group of lines drawn in one block: the experiment on matter, and the same
 // experiment on antimatter, one under the other.
-const asGroup = (
+export const asGroup = (
   name: string, group: Parameters<typeof Graph.line>[0][], lattice: Model['lattice'],
 ): Model => {
   const of = (line: Parameters<typeof Graph.line>[0]): Model => ({
@@ -835,6 +835,32 @@ const asGroup = (
     name,
     alongside: group.slice(1).map(of),
   };
+};
+
+/**
+ * The same group, drawn the other way up.
+ *
+ * `asGroup` puts the first line of a group in the model itself and the rest in
+ * `alongside`, and `views.tsx` draws them in that order — so a line and its
+ * anti-line come out matter-on-top. Which of the two reads better depends on
+ * what the surrounding sentence is pointing at, and that is a decision about
+ * the prose rather than about the arrangement.
+ *
+ * The group's LABEL stays at the top where it belongs, rather than travelling
+ * with the line it happened to be attached to: the name and note move to
+ * whichever model is now first, and the one that used to be first gives its
+ * name up. Otherwise reversing a group silently moves its heading into the
+ * middle of it.
+ */
+export const reversed = (model: Model): Model => {
+  const all: Model[] = [{ ...model, name: '', note: undefined },
+    ...(model.alongside ?? [])];
+
+  if (all.length < 2) return model;
+
+  const [head, ...rest] = all.reverse();
+
+  return { ...head, name: model.name, note: model.note, alongside: rest };
 };
 
 const lines: Model[] = [

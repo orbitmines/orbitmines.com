@@ -209,8 +209,8 @@ export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
 }
 
 export const RAY_CALCULI_AND_PHYSICS: Content = { reference: {
-  title: "2026 Notes on Ray Calculi & Physics",
-  subtitle: "An initial look at a Ray Calculus for programs and physics.",
+  title: "2026 Physics: Notes on an XOR Universe",
+  subtitle: "An initial look at a discrete Ray Calculus for physics: specifically for gravity and electromagnetism, and a continuous model based on ideas of that discrete setup.",
   draft: true,
   date: "2026-12-31",
   year: "2026",

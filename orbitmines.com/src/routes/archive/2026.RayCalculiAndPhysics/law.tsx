@@ -1658,15 +1658,17 @@ export const Law = () => {
           between <V>e</V><Sup>2<V>u</V></Sup> and (1+<V>u</V>/2)<Sup>4</Sup>,
           and nothing else. Light’s deflection is untouched, since it depends
           on γ alone.</>],
-      [<span style={{ color: BORROWED }}>what is owed instead</span>,
-        <>A different kind of debt, and a smaller one. The checkerboard was
-          measured in <i>flat</i> space, with a reversal amplitude constant
-          everywhere; letting it vary as <V>m e</V><Sup>−<V>u</V><Sub>0</Sub></Sup>{' '}
-          is standard for a slowly varying mass term and{' '}
-          <b style={{ color: INK }}>has not been run</b>. So the chain closes
-          analytically and its last link is unmeasured —{' '}
-          <i>regimes.ts</i> tracks that under <i>untested</i> rather than{' '}
-          <i>borrows</i>.</>],
+      [<span style={{ color: DERIVED }}>the checkerboard in a fold</span>,
+        <>The last link, and it is now measured too. A folded node dilutes{' '}
+          <i>every</i> edge by the same <V>e</V><Sup>−<V>u</V><Sub>0</Sub></Sup>,
+          since it is one count in one denominator — so in cells{' '}
+          <b style={{ color: INK }}>gravity is a position-dependent tick rate
+            and nothing else</b>, <V>H</V> = <V>e</V><Sup>−<V>u</V><Sub>0</Sub></Sup>√(<V>m</V><Sup>2</Sup>+<V>p</V><Sup>2</Sup>),
+          which is <V>A</V> and <V>B</V> both, out of the one number. Run as a
+          lattice walk, a packet through a fold follows the classical path to{' '}
+          <b style={{ color: INK }}>0.3 cells in a 44-cell bend</b>, and the
+          residual halves each time the geometry doubles — the semiclassical
+          1/λ, not a disagreement. <i>untested</i> is now empty as well.</>],
     ]} />
 
     <Head>so is that general relativity</Head>
@@ -1694,8 +1696,9 @@ export const Law = () => {
         <><V>e</V><Sup>−2<V>u</V></Sup> never reaches nought, so{' '}
           <b style={{ color: INK }}>no horizons</b>; the shadow is{' '}
           <b style={{ color: INK }}>4.6% larger</b> at the same mass; and a
-          neutron star shows about half its mass, which is outside any equation
-          of state and is the one place the model is probably just wrong.</>],
+          neutron star shows about two thirds of its mass, which is outside any
+          equation of state and is the one place the model is probably just
+          wrong.</>],
     ]} />
 
     <Note>
@@ -2021,7 +2024,7 @@ export const Law = () => {
       The rules fix one whether or not one was wanted. Matter makes space,
       meetings unmake it, and the net is what escapes — a real expansion, and
       it compounds, so <V>H</V> is constant and the growth exponential. Ask it
-      for the <i>observed</i> <V>H</V> and it fails five separate ways, each
+      for the <i>observed</i> <V>H</V> and it fails seven separate ways, each
       worth recording because each is a fact rather than a failure to try:
     </Note>
 
@@ -2055,13 +2058,43 @@ export const Law = () => {
           clock, and still <V>H</V> = 8·10<Sup>−80</Sup>/s against
           2·10<Sup>−18</Sup>. <b style={{ color: INK }}>Sixty-one orders
             short</b>, wanting 10<Sup>61</Sup> times the matter there is.</>],
+      [<span style={{ color: DERIVED }}>and light cannot tire</span>,
+        <>The escape from needing expansion at all is a photon that loses
+          energy on the way. <i>through</i> gives a charge arriving at an
+          occupied cell exactly two outcomes and no third —{' '}
+          <i>annihilate</i>, or <i>reverse</i> — and both are extinction. A
+          step is one cell and a heading is one of <K>WAYS</K>, so there is no
+          soft forward channel anywhere in the rules:{' '}
+          <b style={{ color: INK }}>the lattice can dim light and cannot redden
+            it</b>. A structural no-go rather than a number coming out
+          wrong.</>],
+      [<span style={{ color: DERIVED }}>and it cannot thermalise</span>,
+        <>The same missing channel, counted a second time. <i>Reversal</i>{' '}
+          redistributes direction, so the model <i>can</i> isotropise; neither
+          outcome moves energy between frequencies, so nothing can make a
+          spectrum. FIRAS has the microwave background as a blackbody to a part
+          in 10<Sup>5</Sup>, and{' '}
+          <b style={{ color: INK }}>this model has no mechanism that would
+            produce one at any temperature</b>. The strongest of the seven,
+          because it is a missing channel rather than a small number.</>],
     ]} />
 
     <Note>
-      <b style={{ color: INK }}>And all five have the same sign</b>, which is
+      And that same fact tightens the first row by thirty orders, because{' '}
+      <V>Φ</V><Sub>0</Sub> sets light’s extinction length too — and we can see
+      quasars. Requiring the sky to be transparent rather than merely requiring
+      gravity to reach 1 AU puts <V>Φ</V><Sub>0</Sub> below
+      1.0·10<Sup>−61</Sup> and <V>H</V> below 3·10<Sup>−80</Sup>/s:{' '}
+      <b style={{ color: INK }}>sixty-two orders</b>, beside the matter route’s
+      sixty-one. The two independent routes now agree on the size of the hole,
+      which they did not before.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And all seven have the same sign</b>, which is
       the thing worth noticing. The usual embarrassment is a vacuum energy
       10<Sup>120</Sup> too <i>large</i>; every mechanism this lattice has runs
-      the other way — 35 orders short on the vacuum route, 61 on the matter
+      the other way — 62 orders short on the vacuum route, 61 on the matter
       route. So the model does not have the cosmological constant problem, it
       has its mirror image, and a model that cannot make the universe expand at
       all is wrong in a way that can be stated and looked for.
@@ -2070,6 +2103,440 @@ export const Law = () => {
     <Note>
       So: no expansion, no dark energy, no thermal history, and — since ± pairs
       are made in pairs — no matter/antimatter asymmetry either.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>How fast, then, and how old?</b> Both routes
+      land together and neither is adjustable: <V>H</V> ~ 10<Sup>−79</Sup>/s,
+      so 1/<V>H</V> = 4·10<Sup>71</Sup> years —{' '}
+      <b style={{ color: INK }}>10<Sup>122</Sup> ticks</b>, which is the
+      cosmological constant problem’s own 10<Sup>120</Sup> arriving from the
+      other side. Whether that is one number twice or two large numbers once,
+      nothing here can tell. And the age is{' '}
+      <b style={{ color: INK }}>eternal</b>, which is derived rather than
+      dodged: the rate is <i>constant</i>, because new points can split too, so
+      the growth is exponential and has no first moment. Over our universe’s
+      13.8 Gyr such a universe grows by one part in 10<Sup>61</Sup>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And one thing was quietly borrowed</b>, caught
+      while writing that down. <K>REACHES</K> = 0.361 — “gravity reaches a
+      third of the way to the horizon in <i>any</i> universe this model
+      describes” — got the density to cancel by using{' '}
+      <V>ρ</V> = 3<V>H</V><Sup>2</Sup>/8π<V>G</V>. That is <i>Friedmann</i>, and
+      this model has no Friedmann equation. The absolute length survives —{' '}
+      <V>λ</V> = 1.60 Gpc at the observed density — and the universality of the
+      fraction does not. It is a fact about <i>our</i> density, not about any.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Olbers, with a real sink.</b> A static eternal
+      universe should glow like a stellar surface, and this model is the rare
+      one with an answer: annihilation <i>destroys</i>, and the neutral point it
+      leaves is inert — it has to be, or the universe expands. So nothing
+      re-radiates and the sky saturates at <V>ρ</V><Sub>L</Sub><V>λ</V>/4π
+      rather than at a temperature. Starlight would reach the microwave
+      background’s energy density at <V>λ</V> ≈ 156 Gpc, which is not absurd —
+      and beside the point, because of the seventh closure above.
+    </Note>
+
+    <Head>unless the creation goes somewhere else</Head>
+
+    <Note>
+      Every route above makes space <i>throughout the volume</i>, and every one
+      dies of the same thing — the vacuum that makes the space is the fog that
+      kills the gravity. That is an assumption, and it was never argued for.{' '}
+      <b style={{ color: INK }}>Put the creation only where there is no space
+        yet.</b> A cell on the <i>frontier</i> of the lattice has nothing on one
+      side: a charge emitted outward meets nothing ever, so it never gives its
+      point back and that point is new space. A charge emitted inward meets the
+      bulk and annihilates. The interior makes none at all.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="one emission a cell a tick is the ceiling — so it is also the rate">
+      <Frac over={<>d<V>R</V></>} under={<>d<V>t</V></>} /> = 1
+      <span style={{ padding: '0 0.6em', color: FAINT }}>cell/tick</span> = <V>c</V>
+      <span style={{ padding: '0 1.4em', color: FAINT }}>⇒</span>
+      <V>R</V> = <V>ct</V>
+    </Eq>
+
+    <Note>
+      No density, no <V>Φ</V>, no tuning, nothing fitted — the ceiling{' '}
+      <i>is</i> the rate rather than a bound on it. And the half-way house is
+      worth recording because it is the version that fails: keep creation in the
+      bulk and count the escaping fraction properly and it integrates to a
+      surface, d<V>R</V>/d<V>t</V> = √(<V>C</V>/<V>k</V>), which reaches{' '}
+      <V>c</V> at <V>C</V> = ½ — <i>under</i> the ceiling where the bulk route
+      needed 2. But that same <V>C</V> puts <V>λ</V> at two cells, so gravity
+      dies at two Planck lengths. A bulk vacuum cannot be rescued by counting
+      better. The frontier has to be the only source.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>five of the seven dissolve</span>,
+        <>And for one reason rather than seven, since all five were consequences
+          of making space in the bulk: no bulk vacuum means{' '}
+          <b style={{ color: INK }}>no screening</b>, the attractor’s 3<V>HΦ</V>{' '}
+          term assumed bulk expansion, density no longer sources anything, and
+          one-a-tick <i>is</i> the rate rather than half of what was
+          needed.</>],
+      [<span style={{ color: DERIVED }}>a Hubble law by kinematics</span>,
+        <>Matter that left the origin at <V>t</V> = 0 and free-streams sits at{' '}
+          <V>x</V> = <V>vt</V>, so the relative velocity of two of them is{' '}
+          <V>r</V>/<V>t</V>. Every observer inside sees{' '}
+          <b style={{ color: INK }}><V>v</V> = <V>Hr</V> with <V>H</V> = 1/<V>t</V></b>,
+          linear and isotropic. No metric expansion, no stretched wavelengths,
+          no tired light — the redshift is ordinary Doppler, so the sixth
+          closure stops mattering.</>],
+      [<span style={{ color: DERIVED }}>and the age is forced</span>,
+        <>Not fitted: <V>t</V> = 1/<V>H</V><Sub>0</Sub> exactly. At{' '}
+          <V>H</V><Sub>0</Sub> = 67.4 that is 14.51 Gyr, at 73.0 it is 13.39,
+          and the measured age is{' '}
+          <b style={{ color: INK }}>13.80 ± 0.02 Gyr</b>.{' '}
+          <b style={{ color: INK }}>The Hubble tension brackets it.</b> A model
+          with no freedom to miss does not miss.</>],
+    ]} />
+
+    <Note>
+      In the model’s own units the universe is{' '}
+      <b style={{ color: INK }}>8.49·10<Sup>60</Sup> ticks old and
+        8.49·10<Sup>60</Sup> cells in radius</b> — the same number, which is
+      what <V>R</V> = <V>ct</V> means and is worth seeing written down. That is
+      4.45 Gpc, 2.6·10<Sup>183</Sup> cells, with a frontier
+      9.1·10<Sup>122</Sup> cells across. And a tight consistency check: were
+      that frontier ceiling-density <i>matter</i> rather than fresh neutral
+      space it would weigh 10<Sup>62</Sup> times the universe. It has to make
+      space and not matter — which is what <K>BITE</K> already said.
+    </Note>
+
+    <Head>and where the middle would be</Head>
+
+    <Note>
+      Now that the lattice is finite and growing, the question has an owner.
+      Ask it first the naive way — a <i>static</i> ball of radius <V>R</V>, an
+      observer at <V>d</V> from the middle, and the extinction length{' '}
+      <V>λ</V> — because that version is wrong in an instructive way and the
+      arithmetic is reusable:
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="how much universe lies along a given line of sight">
+      <V>B</V>(ψ) = 1 − <V>e</V><Sup>−<V>L</V>(ψ)/<V>λ</V></Sup>
+      <span style={{ padding: '0 1.2em', color: FAINT }}>,</span>
+      <V>L</V>(ψ) = −<V>d</V> cos ψ + √(<V>R</V><Sup>2</Sup> − <V>d</V><Sup>2</Sup> sin<Sup>2</Sup>ψ)
+    </Eq>
+
+    <Note>
+      Brighter looking <i>across</i> the middle, where there is more of it. One
+      function, two parameters — so two measured multipoles fix it and every
+      other one is a prediction. Taking the dipole as entirely positional and
+      the quadrupole as the second constraint gives{' '}
+      <V>R</V>/<V>λ</V> = 2.556 and <V>d</V>/<V>λ</V> = 0.0147, so we would sit{' '}
+      <b style={{ color: INK }}>half a percent of the way out</b>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>the direction</span>,
+        <>The one thing that is not a floor. Brightness rises where the chord is
+          longest, so the middle lies at the dipole’s <i>hot</i> pole:{' '}
+          <b style={{ color: INK }}>(<V>l</V>, <V>b</V>) = (264.0°, +48.3°)</b>,
+          which is RA 11<Sup>h</Sup>12<Sup>m</Sup>, Dec −7.2° — in Crater.</>],
+      [<span style={{ color: DERIVED }}>the distances</span>,
+        <>Floors, not measurements: <V>λ</V> is bounded below by the sky being
+          clear and not bounded above at all. At <V>λ</V> = 10 Gpc the universe
+          is 25.6 Gpc across and the middle is{' '}
+          <b style={{ color: INK }}>147 Mpc away</b>; at 100 Gpc, ten times
+          each.</>],
+      [<span style={{ color: BORROWED }}>and the octupole kills it</span>,
+        <>One offset fixes every multipole at once — that is the appeal — and
+          fixes them falling as (<V>d</V>/<V>λ</V>)<Sup><V>l</V></Sup>. Fit the
+          dipole and quadrupole and the octupole arrives at{' '}
+          <b style={{ color: INK }}>8.4 nK against an observed 25 µK</b>. Three
+          thousand times too small, with both parameters already spent.</>],
+      [<span style={{ color: BORROWED }}>the dipole is motion anyway</span>,
+        <>A boost aberrates the small-scale pattern and couples neighbouring
+          multipoles; Planck detected exactly that, at a velocity agreeing with
+          the dipole. Standing off-centre aberrates nothing — so the fit above
+          is an upper bound on the offset, not a determination.</>],
+      [<span style={{ color: BORROWED }}>and nothing above <V>l</V> = 3</span>,
+        <>The measured spectrum has acoustic peaks at <V>l</V> ≈ 220, 540, 810
+          at percent precision. No oscillating fluid, no last scattering, no
+          peaks — the seventh closure wearing a different hat.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>But the growing version answers it differently,
+        and better.</b> The dipole cannot measure the offset at all, for a
+      structural reason. An observer at <V>d</V> sees a shell of radius{' '}
+      <V>D</V> around <i>themselves</i>; a point on it sits at{' '}
+      <V>d</V>n̂<Sub>d</Sub> + <V>D</V>n̂ and moves at that over <V>t</V>, and
+      averaging over the shell the <V>D</V>n̂ part vanishes by symmetry —{' '}
+      ⟨<V>v</V>⟩ = <V>d</V>/<V>t</V>, our own velocity.{' '}
+      <b style={{ color: INK }}>We are at rest in its frame.</b> The positional
+      dipole cancels exactly to first order, which is the same cancellation that
+      makes a freely expanding universe look isotropic to everybody in it — and
+      it agrees, from the opposite direction, with Planck’s aberration
+      measurement that the dipole is our own motion.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The origin is an ordinary place, though.</b>{' '}
+      Our past light cone reaches <V>t</V> = 0 on a sphere of radius{' '}
+      <V>ct</V><Sub>0</Sub> around <i>us</i>, and the origin is a single point
+      at <V>d</V> ≪ <V>ct</V><Sub>0</Sub>, well inside it. The frontier at{' '}
+      <V>t</V>′ sits at <V>ct</V>′ from the origin and our backward cone at{' '}
+      <V>t</V>′ is at <V>c</V>(<V>t</V><Sub>0</Sub>−<V>t</V>′) from us, and both
+      at once give{' '}
+      <V>s</V>(ψ) ≈ <V>ct</V><Sub>0</Sub>/2 − (<V>d</V>/2)cos ψ:{' '}
+      <b style={{ color: INK }}>the frontier appears at half the horizon
+        distance, 6.9 Gly, with its distance dipolar at amplitude{' '}
+        <V>d</V>/<V>R</V></b>. There is a preferred direction.
+    </Note>
+
+    <Note>
+      It is invisible all the same, for a better reason than geometry: the
+      frontier recedes at exactly <V>c</V>, so <V>γ</V> = ∞ and it is
+      infinitely redshifted. Just inside, the redshift is large but finite — so
+      the model <i>does</i> have a surface of last visibility at{' '}
+      <V>z</V> → ∞ whose distance carries a dipole of size <V>d</V>/<V>R</V>.
+      Which is exactly the structure a microwave background would test, if the
+      model could make one.
+    </Note>
+
+    <Note>
+      For the record, the sky <i>does</i> say the soup differs by direction, and
+      it is not the temperature dipole: a{' '}
+      <b style={{ color: INK }}>7% hemispherical power asymmetry</b> below{' '}
+      <V>l</V> = 64, toward (<V>l</V>, <V>b</V>) ≈ (220°, −20°) — the{' '}
+      <i>amplitude</i> of the fluctuations differing by hemisphere, which is the
+      primordial conditions themselves differing. Read as an offset it gives{' '}
+      <V>d</V> ≈ 310 Mpc. Read off the temperature dipole instead it gives 5.5
+      Mpc, a factor of 57 apart, in directions 70° from each other.{' '}
+      <b style={{ color: INK }}>No single geometry does both</b> — which is what
+      the cancellation above already predicted.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Does gravity decelerate it?</b> Mostly not, and
+      the reason is countable. “It cannot reach because it is moving away” is
+      false as stated — the interior recedes at <V>β</V> &lt; 1 while gravity
+      travels at 1, so it does arrive. But gravity here is a <i>meeting rate of
+        two fluxes</i>, and a receding source is thinned by{' '}
+      <V>D</V> = √((1−<V>β</V>)/(1+<V>β</V>)), which is{' '}
+      <b style={{ color: INK }}>exactly nought beyond <V>ct</V></b>: that mass
+      recedes at or above <V>c</V> and its pull never arrives at all.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>a third of the pull survives</span>,
+        <>The pull is ∫dΩ cos ψ ∫<Sub>0</Sub><Sup>chord</Sup> <V>D</V> d<V>s</V>{' '}
+          — the inverse square’s <V>s</V><Sup>2</Sup> cancels the volume
+          element’s, and at <V>D</V> = 1 it returns −(4/3)π<V>Gρr</V> exactly.
+          With <V>D</V> the ratio runs 0.068 at the centre to 0.399 at the edge,{' '}
+          <b style={{ color: INK }}>0.309 mass-weighted</b>. Strongest in the
+          middle, which is right: there the pull is a small residual of a nearly
+          cancelling sphere, and killing the far side kills the residual.</>],
+      [<span style={{ color: DERIVED }}>so the age survives too</span>,
+        <>Ω is not a choice, and this model has no dark matter particle.
+          Pure free-streaming gives 14.51 Gyr; baryons thinned by recession give{' '}
+          <b style={{ color: INK }}>14.10</b>; baryons unthinned 13.58; ΛCDM’s
+          dark matter 11.66 — <i>younger than the globular clusters</i>, which
+          is the age crisis Λ was invented to fix. The thinned case is exactly
+          13.80 Gyr at <V>H</V><Sub>0</Sub> = 68.9, inside the disputed range.{' '}
+          <b style={{ color: INK }}>Free-streaming is recovered to three
+            percent.</b></>],
+      [<span style={{ color: BORROWED }}>nucleosynthesis, by 5·10<Sup>7</Sup></span>,
+        <>Radiation-dominated BBN has <V>H</V> ∝ <V>T</V><Sup>2</Sup>; coasting
+          has <V>H</V> ∝ <V>T</V> — a different <i>power</i>. 1 MeV arrives at
+          10<Sup>8</Sup> s rather than 1 s, freeze-out drops 85× to 9.5 keV, and{' '}
+          <V>n</V>/<V>p</V> = <V>e</V><Sup>−137</Sup>.{' '}
+          <b style={{ color: INK }}>Zero helium</b> against a measured{' '}
+          <V>Y</V><Sub>p</Sub> = 0.245. Not a tension, an absence.</>],
+      [<span style={{ color: BORROWED }}>and that is the lesser problem</span>,
+        <>It is moot, which is worse: with no hot phase at all the model never
+          gets as far as running BBN badly. The sharpest bill is{' '}
+          <b style={{ color: INK }}>deuterium</b> — stars destroy it, nothing
+          much makes it, and pristine clouds show <V>D</V>/<V>H</V> =
+          2.5·10<Sup>−5</Sup>. One number, and the cleanest evidence there is
+          for an early hot dense phase.</>],
+    ]} />
+
+    <Head>and whether any of that is dark matter</Head>
+
+    <Note>
+      The missing dark matter is what saved the age, so it is worth asking
+      whether the same construction can pay it back. State the target so it can
+      be failed: flat rotation curves want <V>v</V><Sup>2</Sup> = <V>GM</V>(<V>r</V>)/<V>r</V>{' '}
+      constant, so <V>M</V> ∝ <V>r</V>, so{' '}
+      <b style={{ color: INK }}><V>ρ</V> ∝ 1/<V>r</V><Sup>2</Sup>, and the extra
+        pull is <i>inward</i></b>. Both halves matter.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>the shell theorem</span>,
+        <>Space made in a shell <i>outside</i> an orbit has no inside — a
+          uniform shell has no preferred direction within it, so it moves
+          nothing there. Only space made <i>inside</i> the orbit acts, and it
+          pushes <b style={{ color: INK }}>outward</b>. For a circular orbit{' '}
+          <V>v</V><Sup>2</Sup>/<V>r</V> = <V>g</V> − <V>g</V><Sub>push</Sub>, so
+          an outward push <i>lowers</i> the speed a star can hold. Dark matter
+          is missing centripetal force; this supplies the opposite.</>],
+      [<span style={{ color: BORROWED }}>and it undoes the cosmology</span>,
+        <>The whole virtue of the frontier was that{' '}
+          <i>the bulk makes no space</i> — which is what dissolved four
+          closures. Wanting voids to create locally puts it back in the bulk and
+          brings all four failures with it. The two ideas cannot both hold.</>],
+      [<span style={{ color: DERIVED }}>but the screening objection was never about this</span>,
+        <>A bulk vacuum was fatal because one <V>Φ</V> both makes space and
+          stops gravity — priced at the density <i>expansion</i> needs. Dark
+          matter needs <V>Φ</V> = 1.4·10<Sup>−118</Sup> per cell, whose
+          screening length is 10<Sup>57</Sup> Hubble radii.{' '}
+          <b style={{ color: INK }}>Eighty-eight orders below</b> what killed
+          it. A gravitating vacuum at this density is perfectly fine — the whole
+          question is the <i>profile</i>.</>],
+    ]} />
+
+    <Note>
+      And three profiles are available. A <i>uniform</i> vacuum gives{' '}
+      <V>ρ</V> = const, <V>v</V> ∝ <V>r</V>. A vacuum <i>depleted</i> by the
+      galaxy’s own field — screening, <V>Φ</V> ≈ <V>C</V>/<V>kΦ</V><Sub>gal</Sub>{' '}
+      — gives <V>ρ</V> ∝ <V>r</V><Sup>2</Sup>, worse. But a vacuum{' '}
+      <i>stimulated</i> by it — a neutral point splitting when a charge{' '}
+      <i>arrives</i>, which is rule 3 made stimulated rather than spontaneous —
+      gives <V>Φ</V> ∝ <V>Φ</V><Sub>gal</Sub> ∝ <V>M</V>/<V>r</V><Sup>2</Sup>:{' '}
+      <b style={{ color: INK }}>an isothermal halo, exactly, with no new
+        constant</b>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And that dies on Tully–Fisher.</b> With{' '}
+      <V>ρ</V> = <V>κM</V>/4π<V>r</V><Sup>2</Sup> the enclosed halo is{' '}
+      <V>κMr</V>, so <V>v</V><Sup>2</Sup> = <V>GκM</V> and{' '}
+      <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>2</Sup>. The baryonic Tully–Fisher
+      relation is <V>v</V><Sup>4</Sup> = <V>GMa</V><Sub>0</Sub> — that is{' '}
+      <V>v</V><Sup>4</Sup> ∝ <V>M</V>, under 0.1 dex of scatter across five
+      decades. Anchored at 10<Sup>10</Sup> M☉ the two run apart by a factor of
+      ten at each end. Not a tension, a different law. The model can make flat
+      rotation curves and cannot make them scale.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The one hook that is native is an
+        acceleration.</b> <V>a</V><Sub>0</Sub> = 1.20·10<Sup>−10</Sup> m/s²,{' '}
+      <V>c</V>/<V>t</V><Sub>0</Sub> = 6.88·10<Sup>−10</Sup>, and their ratio is
+      0.174 against 1/2π = 0.159 — so{' '}
+      <V>a</V><Sub>0</Sub> ≈ <V>c</V>/(2π<V>t</V><Sub>0</Sub>) to ten percent.
+      Everywhere else that is an embarrassment: why should a galaxy know the age
+      of the universe?{' '}
+      <b style={{ color: INK }}>Here it is structural</b>, because the frontier
+      makes <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub> exactly and{' '}
+      <V>t</V><Sub>0</Sub> a <i>count of ticks</i>. “An acceleration of order{' '}
+      <V>c</V> per age” and “one unit of velocity per tick, delivered once over
+      the whole run” become the same sentence — and the second is the smallest
+      acceleration a discrete lattice can represent at all.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the other try: a wake.</b> If the vacuum
+      pulses, a star <i>moving</i> through it meets the space ahead differently
+      from the space behind, and that asymmetry should be a force. Good
+      instinct — it is the test that killed Le Sage’s gravity — and it fails
+      four ways, each a different lesson.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>zero for uniform motion, and it must be</span>,
+        <>A source moving steadily through a homogeneous isotropic vacuum
+          carries the <i>boosted static</i> field — flattened transversely, but
+          still symmetric under reflection through the source perpendicular to{' '}
+          <V>v</V>. Fore and aft balance term by term, at{' '}
+          <i>every</i> order in <V>β</V>. And if they did not, the model would
+          have an <b style={{ color: INK }}>aether</b>: a pulsing vacuum defines
+          a rest frame, and preferred-frame effects are bounded at
+          10<Sup>−17</Sup>. It would die on a bench in a basement long before it
+          got near a galaxy.</>],
+      [<span style={{ color: BORROWED }}>and it points the wrong way</span>,
+        <>A force along ±<V>v̂</V> is <i>tangential</i> on a circular orbit, so
+          it adds nothing centripetal — it spins the star up or down. At{' '}
+          <V>a</V><Sub>0</Sub> for 10 Gyr that is{' '}
+          <b style={{ color: INK }}>Δ<V>v</V> = 3.8·10<Sup>4</Sup> km/s</b>{' '}
+          against an orbital 220. Not a halo, a demolition.</>],
+      [<span style={{ color: BORROWED }}>velocity is the wrong variable</span>,
+        <>The Earth and a star at 30 kpc differ by{' '}
+          <b style={{ color: INK }}>6.7× in velocity and 1.4·10<Sup>8</Sup> in
+            acceleration</b>. Velocity cannot tell a planet from a galactic
+          outskirt, which is why every scheme that works is written in
+          accelerations.</>],
+      [<span style={{ color: BORROWED }}>so it is already excluded</span>,
+        <>Tuned to matter at 200 km/s it gives 1.8·10<Sup>−11</Sup> m/s² at the
+          Earth’s 30 if it scales as <V>v</V>, 2.7·10<Sup>−12</Sup> as{' '}
+          <V>v</V><Sup>2</Sup>, 4·10<Sup>−13</Sup> as <V>v</V><Sup>3</Sup> —
+          against an ephemeris bound near 10<Sup>−13</Sup>. No exponent switches
+          off fast enough between 30 and 200 km/s, because there is nothing to
+          switch off on.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>What survives, and it is not nothing.</b> The
+      instinct that <i>motion through the field matters</i> is right, and the
+      model already says so — <i>carry</i> <b style={{ color: INK }}>is</b>{' '}
+      that, and its 1 + 2<V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup> is the whole
+      difference between one sixth of Mercury’s perihelion advance and six
+      sixths. But it enters at <V>O</V>(<V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup>)
+      and through the <i>metric</i> rather than as a wake, and at 220 km/s that
+      is 5.4·10<Sup>−7</Sup> — nine orders under what a rotation curve wants.
+      The model has the velocity-dependent gravity this asks for; it is
+      measured, it is right, and it is far too small.
+    </Note>
+
+    <Note>
+      What would have to be shown: <i>spend</i> gives accel = <K>BIAS</K> ×
+      (annihilation rate), and a rate below one meeting per{' '}
+      <V>t</V><Sub>0</Sub> is not a small acceleration but <i>no</i>{' '}
+      acceleration, since there is no such event. So a floor is expected near{' '}
+      <K>BIAS</K>/<V>t</V><Sub>0</Sub> = 2.6·10<Sup>−11</Sup> m/s² against{' '}
+      <V>a</V><Sub>0</Sub> = 1.2·10<Sup>−10</Sup> — the right{' '}
+      <i>size</i>, with the counting factor unfixed at 4.5.{' '}
+      <b style={{ color: INK }}>A hint and not a derivation</b>, and a factor of
+      4.5 is exactly what gets fitted rather than counted. But it is the only
+      place in the model where a galactic number and a cosmological one are
+      forced to be the same number.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So what is left owed</b>, ranked: the light
+      elements, with no mechanism and no room for one; the microwave background,
+      untouched by any of this; the rotation curves, which the missing dark
+      matter costs; and the initial condition, since{' '}
+      <V>v</V> = <V>x</V>/<V>t</V> still needs everything to have left the
+      origin at once with a spread of velocities. What is{' '}
+      <i>not</i> owed any more is the deceleration — the reason to doubt the
+      free-streaming, and a third of an already small number.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What is worth keeping out of it.</b> The{' '}
+      <i>shape</i> this predicts is a dipole, quadrupole and octupole all
+      aligned on one axis with amplitudes falling geometrically — and that is
+      the shape of the known anomaly, the “axis of evil”: the quadrupole and
+      octupole aligned with each other and roughly with the dipole, both
+      anomalously low, unexplained in ΛCDM. The model gets the shape and misses
+      the size by three orders. Which is a more interesting kind of wrong than
+      usual, and the only place in the whole cosmology where it says something
+      specific about a measurement nobody can currently account for.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Which is a claim and not a silence.</b> A static
+      universe predicts surface brightness ∝ (1+<V>z</V>)<Sup>0</Sup> against
+      the observed (1+<V>z</V>)<Sup>−4</Sup>, no microwave background at all,
+      and — sharpest of the three — supernova light curves the{' '}
+      <i>same width</i> at every redshift, where the measurement finds them
+      stretched by (1+<V>z</V>). At <V>z</V> = 1 that is a factor of two, not a
+      percent. It is the one place in this model that is not merely short but{' '}
+      <b style={{ color: INK }}>contradicted</b>.
     </Note>
 
     <Head>what you can switch off</Head>
@@ -2122,16 +2589,17 @@ export const Law = () => {
 
     <Rows of={[
       [<span style={{ color: BORROWED }}>argued, not measured</span>,
-        <><i>carry</i> matches stationary phase to 10<Sup>−7</Sup>, but the
-          checkerboard behind it was run in <i>flat</i> space. A
-          position-dependent reversal amplitude has not been tried. Likewise{' '}
-          <i>hold</i> rests on one emitter per edge, and <i>boost</i> on a
-          threshold nothing fixes. <i>regimes.ts</i> lists these under{' '}
-          <i>untested</i>.</>],
+        <>Only the two optional routes to a dark object now: <i>hold</i> rests
+          on one emitter per edge, and <i>boost</i> on a threshold nothing
+          fixes. <i>carry</i> has left this list — the position-dependent
+          checkerboard was run and the packet follows the classical path.{' '}
+          <i>regimes.ts</i> lists what remains under <i>untested</i>, and for
+          the model’s own setting that is nothing.</>],
       [<span style={{ color: BORROWED }}>probably just wrong</span>,
-        <>A neutron star shows about half its mass — outside any equation of
-          state, and pulsar timing measures those directly. And cosmology comes
-          out empty five separate ways, every one of them short rather than
+        <>A neutron star shows about two thirds of its mass — outside any
+          equation of state, and pulsar timing measures those directly. And
+          cosmology comes
+          out empty seven separate ways, every one of them short rather than
           long.</>],
       [<span style={{ color: DERIVED }}>and one thing to shoot at</span>,
         <>The shadow, 4.6% larger than general relativity’s at the same mass.
@@ -2308,55 +2776,71 @@ export const Law = () => {
           to six figures. Nothing changes anywhere the model was tested.</>],
       [<span style={{ color: BORROWED }}>a neutron star is not</span>,
         <><V>R</V>/<V>λ</V> = 3.4, so it shows{' '}
-          <b style={{ color: INK }}>about half its mass</b>. Pulsar timing
-          measures those masses directly and a factor of two in baryon content
-          is outside any equation of state. The second falsifiable claim, and
-          it looks worse for the model than the first.</>],
+          <b style={{ color: INK }}>about two thirds of its mass</b> — it was a
+          half until the screening’s geometry was done properly, and that
+          correction is worth a third of the gap and no more. Pulsar timing
+          measures those masses directly and a third of the baryon content is
+          outside any equation of state. The second falsifiable claim, and it
+          looks worse for the model than the first.</>],
       [<span style={{ color: DERIVED }}>and it is holographic</span>,
         <>For <V>R</V> ≫ <V>λ</V>, <V>M</V><Sub>eff</Sub> → 4π<V>R</V><Sup>2</Sup><V>λρ</V>{' '}
-          — the <i>area</i>, not the volume (0.029406 against 3<V>λ</V>/<V>R</V>{' '}
-          = 0.030000). The interior is sealed off by its own opacity rather
+          — the <i>area</i>, not the volume (10.6066 against{' '}
+          <V>k</V> = 3/<K>SKIN</K> = 15/√2). The interior is sealed off by its
+          own opacity rather
           than by a horizon, and what the universe knows about a big clump is a
           surface.</>],
     ]} />
 
     <Eq derive={REACH} open={show}
       note="the densest thing the lattice permits, and where it sits">
-      <V>M</V><Sub>eff</Sub> = <V>πR</V>
+      <V>M</V><Sub>eff</Sub> = <Frac over={<V>k</V>} under={<>3</>} /><V>πR</V>
       <span style={{ padding: '0 1.4em', color: FAINT }}>⇒</span>
       <Frac over={<V>R</V>} under={<><V>R</V><Sub>s</Sub></>} /> =
-      <Frac over={<>1</>} under={<>2π<V>G</V></>} /> =
-      <Frac over={<>2π<K>WAYS</K></>} under={<><K>SHEET</K><Sup>2</Sup></>} /> = 2.5525
+      <Frac over={<>3</>} under={<>2π<V>Gk</V></>} /> = 0.7219
     </Eq>
 
     <Note>
       Once a tick is the ceiling, so the densest matter is one emitter a cell.
       Then <V>M</V><Sub>eff</Sub> ∝ <V>R</V> — Schwarzschild’s own scaling — so
-      the ratio is the same at every size, measured at 2.5525 from{' '}
-      10<Sup>10</Sup> to 10<Sup>40</Sup> cells, and it is a pure count.{' '}
-      <b style={{ color: INK }}>The densest thing the lattice permits sits at
-        two and a half of its own Schwarzschild radii and can never be
-        inside.</b> So black holes do not fail to form because the metric lacks
-      a horizon — they fail because matter runs out of room first, and those are
-      two independent facts that happen to agree.
+      the ratio is the same at every size, measured flat from 10<Sup>5</Sup> to
+      10<Sup>30</Sup> cells, and it is a pure count.{' '}
+      <b style={{ color: INK }}>The densest thing the lattice permits sits
+        inside its own Schwarzschild radius.</b>{' '}
+      Which is a reversal: with the fog counted as still and even, the same
+      arithmetic gave <V>M</V><Sub>eff</Sub> = π<V>R</V> and 2.5525, and this
+      page used to say in bold that matter ran out of room before a black hole
+      could form. It does not.
     </Note>
 
     <Note>
-      <b style={{ color: INK }}>And the leakage is not Hawking radiation.</b> At
-      the surface <V>u</V> = <V>πG</V> = 0.1959, so light leaves redshifted by
-      0.822 — an 18% shift, and <i>M-independent</i>, the same for a
-      stellar-mass object and a galactic one. Hawking needs <V>T</V> ∝ 1/<V>M</V>{' '}
-      and a lifetime ∝ <V>M</V><Sup>3</Sup>; this gives <V>T</V> ∝ <V>M</V><Sup>0</Sup>{' '}
-      and no evaporation at all, because nothing is trapped to begin with. The
-      “never quite vanishing” path is ordinary light out of a shallow well, and
-      it is not even slow.
+      <b style={{ color: INK }}>And it is inside its own photon sphere, which
+        is the part that matters.</b> A ray leaves radius <V>r</V> with impact
+      parameter <V>r·e</V><Sup>2<V>u</V></Sup>, whose extremum is at{' '}
+      <V>u</V> = ½ and whose value there is 2<V>e·GM</V>/<V>c</V><Sup>2</Sup>{' '}
+      — the shadow this page already had. The surface sits at{' '}
+      <V>u</V> = 0.693, past it, so the object{' '}
+      <b style={{ color: INK }}>casts a shadow of the full size</b> and keeps
+      all but a 70° cone of its own light: a third gets out, at half frequency.
+      Under the other defensible measure of what “meeting” means it is{' '}
+      <V>u</V> = 1.18, a 37° cone and a tenth of the light. The threshold is{' '}
+      <V>k</V> = 3/(2π<V>G</V>) = 7.66 and both clear it, so the convention
+      moves how dark it is and not whether.
     </Note>
 
     <Note>
-      Which reads as a bill until you ask what is actually blocking it — and it
-      is not the metric.{' '}
+      <b style={{ color: INK }}>Still not Hawking radiation, though.</b>{' '}
+      <V>u</V> is <i>M-independent</i> — the same for a stellar-mass object and
+      a galactic one — so <V>T</V> ∝ <V>M</V><Sup>0</Sup> where Hawking needs{' '}
+      <V>T</V> ∝ 1/<V>M</V> and a lifetime ∝ <V>M</V><Sup>3</Sup>. No
+      evaporation, because nothing is trapped to begin with. And dark is not
+      black: a tenth to a third of the surface’s light does escape, which
+      something ought to see in a hot merger remnant.
+    </Note>
+
+    <Note>
+      What would take it further is not the metric.{' '}
       <b style={{ color: INK }}>It is the self-screening.</b> With it,{' '}
-      <V>R</V>/<V>R</V><Sub>s</Sub> = 2.55 at every size, a floor. Without it,{' '}
+      <V>R</V>/<V>R</V><Sub>s</Sub> = 0.72 at every size, a floor. Without it,{' '}
       <V>M</V> = (4/3)π<V>R</V><Sup>3</Sup> and the ratio falls as{' '}
       <V>R</V><Sup>2</Sup>, crossing one at 1.384 cells — after which{' '}
       <V>u</V> grows without bound and <V>e</V><Sup>−<V>u</V></Sup> does the
@@ -2398,8 +2882,8 @@ export const Law = () => {
           thousandth of a fermi. No exotic matter needed.</>],
       [<span style={{ color: BORROWED }}>what it does not fix</span>,
         <>A neutron star is twenty orders too big to cohere, so it still shows
-          about half its mass, and that is still outside any equation of
-          state.</>],
+          about two thirds of its mass, and that is still outside any equation
+          of state.</>],
     ]} />
 
     <Note>
@@ -2417,7 +2901,7 @@ export const Law = () => {
       <b style={{ color: INK }}>And the collapse has nothing to stop it.</b> In
       general relativity a star reaches its horizon and is done; here no radius
       is marked, so it continues. On the way it passes through the screened
-      regime as a compact object with <V>u</V> pinned at 0.196 — which is{' '}
+      regime as a compact object with <V>u</V> pinned at 0.693 — which is{' '}
       <i>not</i> a support, since screening attenuates only what <i>leaves</i>{' '}
       while the field between neighbours is short-range and unscreened. So it
       runs to the lattice ceiling, and a solar mass ends as a ball

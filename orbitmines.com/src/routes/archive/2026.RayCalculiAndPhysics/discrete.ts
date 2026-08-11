@@ -1958,12 +1958,9 @@ export class Graph {
     graph.dims = 2;
     graph.ringRadius = size;
 
-    const half = Math.floor(size / 2);
-
     const coords: number[][] = [];
     for (let x = -size; x < size; x++)
-      for (let y = -half; y <= half; y++)
-        coords.push([x, y]);
+      coords.push([x, 0]);
 
     const { nodes, at, facing } = Graph.lay(graph, coords, { charge });
 
@@ -2052,8 +2049,8 @@ export class Graph {
 
     const coords: number[][] = [];
     for (let x = l0 - size; x <= r0 + size; x++)
-      for (let y = -half; y <= half; y++)
-        coords.push([x, y]);
+      // for (let y = -half; y <= half; y++)
+        coords.push([x, 0]);
 
     // Only the blocks are charged. The field between them is what space is
     // when nothing has happened to it yet.
