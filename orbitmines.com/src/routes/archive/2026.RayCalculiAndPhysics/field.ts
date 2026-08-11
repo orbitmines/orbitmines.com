@@ -1495,9 +1495,16 @@ export const wave = (v: number, omega: number, sync = 1) =>
  * that needs no simultaneity convention at all. `relax`/`synced`/`wave` stay
  * useful as a dial, but they are no longer the account.
  *
+ * NOT DELETED, SWITCHED OFF. Both accounts live in `regimes.ts` as knobs —
+ * `sync` for the simultaneity route and `turn` for the zigzag — with a check
+ * that refuses to have both on at once, since they are two roads to λ = h/p
+ * and not two effects. `RECOVERS` names the settings that give Newton, general
+ * relativity, light, Dirac, and the superseded construction, so a superseded
+ * account stays runnable and can be argued with rather than remembered.
+ *
  * WHAT IS STILL OWED. This is 1+1 dimensions, where the checkerboard is clean;
  * nobody has a fully satisfactory 3+1 version, so the next thing is to find out
- * whether `WAYS` gives one — which is the emitter's-option count the audit in
- * `gravity.ts` said was missing, now with a specific job to do. And none of it
- * touches `SPREAD`'s factor of 3.4034, which remains a separate problem.
+ * whether a spinor gives one — it does, and the cost is recorded at the foot
+ * of `regimes.ts`. And none of it touches `SPREAD`'s factor of 3.4034, which
+ * remains a separate problem, and which no dimension closes.
  */

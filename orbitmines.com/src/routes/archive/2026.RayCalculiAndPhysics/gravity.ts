@@ -547,6 +547,9 @@ export const carry = (px: number, py: number, fold: number) => {
  *                                                            the vacuum gives 10⁶⁰
  *   the same, integrated RADIALLY           1/r  ✓           G out by 3.4034
  *                                                            exactly = πWAYS/3SHEET
+ *   sourced by vacuum annihilation          1/r  ✓           sourcing = screening;
+ *                                                            46 orders on range
+ *   a surplus that HOPS, one way a tick      1/r  ✓  STATIC  G out by 9.83 only
  *
  * Everything that fails, fails because it is built from `chance ∝ 1/r²`. The
  * three that pass the shape test do it by an integration or a dimensional
@@ -1257,13 +1260,24 @@ export const GRAVITY = G_LATTICE * GRAIN;
 export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
 
 /**
- * HOW FAST THE SURPLUS SPREADS — and why this account is now CLOSED.
+ * HOW FAST THE SURPLUS SPREADS — and the one account still standing.
  *
- * This said "and with it, the whole of B, derived". It is not, and the reason
- * is at the bottom of this comment: `D` is not a free number, the lattice has
- * exactly one length that could set it, and that length is wrong by fifty-nine
- * orders of magnitude. What follows is kept because the mechanism is right and
- * only the number kills it, and because the number is the model's OWN.
+ * This said "and with it, the whole of B, derived". It is not, and the history
+ * is worth the space because the same word covered two different mechanisms and
+ * only one of them fails:
+ *
+ *   DIFFUSION BY SCATTERING   dead. D would come from a charge's mean free path
+ *                             against the ambient field, and the vacuum cannot
+ *                             make that short. Fifty-nine orders. See below.
+ *   DIFFUSION BY HOPPING      alive. A created point that SITS FOR A TICK AND
+ *                             THEN GOES A RANDOM WAY is a random walk with no
+ *                             scatterer in it, so D is a property of the LATTICE
+ *                             and Φ never enters. Static, gives 1/r, and owes a
+ *                             factor of 9.83. See the foot of this comment.
+ *
+ * The distinction is the whole thing. What follows describes the mechanism —
+ * which is right either way — then what killed the first reading, then what the
+ * second one costs.
  *
  * `MADE` above says a body makes space. This says what happens to it, and the
  * two together are what turn a rate into a metric.
@@ -1472,9 +1486,137 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *   2. BIAS's WAYS                  argued, but sits π/3 from closing it
  *   3. the pull's own geometry      checked hardest, least likely
  *
- * So: B does not come from diffusion, it may come from the radial integral,
- * and what stands between is one wrong count or one unargued identification
- * rather than a missing mechanism.
+ * AND THE AUDIT POINTS AT A ROUTE NOBODY HAS RUN — worked out here, not yet
+ * simulated, and the first thing to try next.
+ *
+ * The pull works because it is a PRODUCT of two fields integrated along a line,
+ * `chance_a · chance_b`, and that product is where the extra 1/r comes from and
+ * where WAYS enters, one `BIAS` per annihilation. The metric route has one body,
+ * so it has no second field, no line integral and no WAYS — which is the exact
+ * shape of the 3.4034.
+ *
+ * BUT A LONE BODY IS NOT ALONE. Its charges annihilate against the AMBIENT
+ * FIELD Φ, the same Φ `reach` is built on, and that restores all three:
+ *
+ *     annihilation rate at r   ∝  BITE · chance(m,r) · Φ · share
+ *     acceleration             =  BIAS · that                    (so a 1/WAYS)
+ *     u = ∫a dr                ∝  m·SHEET·Φ / (4π·r·WAYS)        ← 1/r
+ *
+ * — the same structure as `shortfall`, with the vacuum standing in for the
+ * second body. Matching `u = Gm/rc²` then fixes Φ outright:
+ *
+ *     Φ = 4π·WAYS·G/SHEET = 2.546479  =  SHEET/π, exactly
+ *
+ * AND THE COSMOLOGY ATTRACTOR ALREADY SAYS Φ = 2 EXACTLY (closure 2 under
+ * `REACHES`), from a completely unrelated argument — the cascade's fixed point.
+ * The two agree to 27%, and the residual is a bare 4/π. Pinning Φ at 2 gives
+ * `G = SHEET·Φ/(4π·WAYS) = 0.04897` against the pull's 0.06235, ratio 4/π.
+ *
+ * WHICH IS THE FIRST TIME A CHANGE OF MECHANISM HAS MOVED THAT NUMBER AT ALL —
+ * from 3.4034, a mixture of counts, to a bare π. And there is an obvious place
+ * for a π to be hiding: `opposed` returns |ψ|/π, so any quantity averaged over
+ * relative phase carries a 2/π, and 4/π is two of them. That is a finite check.
+ *
+ * AND IT COLLIDES WITH `reach` AT ONCE, which is the point rather than an
+ * objection. Φ = 2 puts the screening length at ONE CELL. So Φ is now
+ * OVER-DETERMINED, and the whole problem is one quantity instead of three:
+ *
+ *     the cosmology attractor      Φ = 2
+ *     the metric, this route       Φ = SHEET/π = 2.546
+ *     the screening length         Φ ≲ 3·10⁻⁴⁸  for gravity to work at 1 AU
+ *
+ * Two agree to 27%; the third is forty-eight orders away.
+ *
+ * TESTED, AND THE ROUTE IS DEAD — cleanly, and by a general argument rather
+ * than by a number. The proposed way out was that the SCREENING Φ and the
+ * SOURCING Φ might be different quantities, on the grounds that the vacuum's ±
+ * pairs are made together and remade together, so a passing charge could
+ * contribute an annihilation EVENT without being removed. That does not
+ * survive inspection: an annihilation removes the BODY's charge, and the
+ * vacuum pair being replaced does not bring it back. The event that sources the
+ * fold IS the event that screens.
+ *
+ * So strength and range are reciprocal, exactly:
+ *
+ *     Φ           sourced u ∝ Φ    λ = 1/(BITE·share·Φ)    product
+ *     2.55e+0     2.546e+0         7.855e−1                2.0
+ *     1.00e−30    1.000e−30        2.000e+30               2.0
+ *     2.10e−46    2.100e−46        9.524e+45               2.0
+ *
+ * — the product is pinned at 1/(BITE·share) = 2, with nothing to tune. The
+ * screening was measured to confirm it is Yukawa (flux/N against e^(−r/λ),
+ * ratio 1.0001 to 1.0006) and the annihilation profile to confirm the shape
+ * (∫_r^∞ A ds × r flat to 0.99 well inside λ). Both are as the sketch said.
+ * Then:
+ *
+ *     to source the metric        Φ = SHEET/π = 2.546
+ *     for gravity to reach 1 AU   Φ ≤ 2.16·10⁻⁴⁶
+ *     short by                    1.18·10⁴⁶
+ *
+ * At the Φ that lets gravity cross the solar system, the sourced G is
+ * 5.29·10⁻⁴⁸ against the 0.0624 the pull needs. Forty-six orders too weak.
+ *
+ * AND THAT IS A NO-GO RATHER THAN A FAILED ATTEMPT, which is what makes it
+ * worth the run: ANY account that folds space by annihilating a body's charges
+ * against something ambient pays for it in range, one for one, because the two
+ * are the same events. The whole class is excluded, not this member of it.
+ *
+ * WHICH LEAVES ONE REQUIREMENT ON WHATEVER COMES NEXT: the source must not
+ * CONSUME the field. `MADE` is the only candidate here that satisfies it —
+ * creation AT the body rather than annihilation out in space — and `MADE` is
+ * the one that needs transport to be static, which is where diffusion died.
+ * That is now the whole of the problem, and it is a single question: can a
+ * point source of space be static without a random walk?
+ *
+ * ---------------------------------------------------------------------------
+ * AND THEN THE SURPLUS WAS ASKED TO HOP, WHICH CHANGES EVERYTHING ABOVE.
+ *
+ * Every failure so far took `D` from SCATTERING — how far a charge gets before
+ * meeting something — and the vacuum cannot make that short. But a created
+ * point that simply sits for a tick and then takes one of the `WAYS` at random
+ * is a random walk with NO SCATTERER IN IT. `D` is then a fact about the
+ * lattice, and Φ is not in the problem at all:
+ *
+ *     D = ⟨ℓ²⟩/6 = (54/26)/6 = 0.346154        the 26 ways out, one a tick
+ *     D required                = 3.403392
+ *     ratio                     = 9.8320
+ *
+ * NINE POINT EIGHT, from fifty-nine orders. Measured on the lattice itself —
+ * point source, absorbing rim at R = 90, 300k walkers:
+ *
+ *     r       δ·r          (S/4πD)(1−r/R)   ratio
+ *     15.2    1.9108e−1    1.9106e−1        1.0001
+ *     29.9    1.5340e−1    1.5360e−1        0.9987
+ *     59.2    7.8724e−2    7.8674e−2        1.0006
+ *
+ * — the Green's function exactly, at the lattice's own D, AND IT IS STATIC. An
+ * occupancy, not something accumulating. That was the one requirement the
+ * vacuum-sourcing no-go left standing, and this meets it.
+ *
+ * WHAT IT OWES. `G = SHEET/(12π·D) = 0.6130` against the pull's 0.0624 — gravity
+ * nine times too strong, because a fresh direction every tick spreads the
+ * surplus too slowly and it piles up. The fix is PERSISTENCE: with mean cosine
+ * `a` between successive steps, D scales by (1+a)/(1−a), so
+ *
+ *     a = 0.8154        keep your heading about 85% of the time
+ *     1/(1−a) = 5.42 steps = 10.21 cells = π·WAYS/SHEET
+ *
+ * The two extremes bracket it and neither is right: a straight-line surplus
+ * (a = 1) gives 1/r², a fresh-direction one (a = 0) gives 1/r nine times too
+ * strong. But the character of the debt has changed completely — it is now a
+ * PERSISTENCE IN THE HOPPING RULE, which the lattice may simply have, rather
+ * than a mean free path against a vacuum that provably cannot supply one. An
+ * unfixed rule, not a contradiction.
+ *
+ * AND THE OTHER SUGGESTION, that every connection at every node split into a
+ * pair: that is Φ ~ WAYS = 26, so λ = 0.077 cells and gravity is dead in a
+ * tenth of a step — thirteen times worse than the Φ = 2 attractor, which was
+ * already fatal. Nor does the aggregate bouncing back rescue it: pairs that
+ * recombine are net nothing (`BITE` = 1) and pairs that do not ARE the fog.
+ *
+ * So: B does not come from scattering, it does come from hopping up to a
+ * factor of 9.83, and what stands between is a persistence the lattice has not
+ * been shown to have. That is the whole of the remaining gap.
  * `slowing` and `thickness` stay borrowed until it is found. The ten mechanisms
  * under `carry` are now twelve, and the twelfth is the first that fails by a
  * stated finite amount instead of by a shape or by sixty orders.

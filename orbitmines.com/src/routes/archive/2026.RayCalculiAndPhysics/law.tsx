@@ -44,6 +44,7 @@ const FAINT = '#6c7080';
 const RULE = '#1c1e27';
 const NAMED = '#e0a878';        // a count the lattice fixes
 const DERIVED = '#7fb8d4';      // something that came out
+const BORROWED = '#b58a8a';     // something taken from general relativity
 
 const SERIF = 'Georgia, "Times New Roman", serif';
 
@@ -542,9 +543,9 @@ const SPACE: Derivation = {
         under={<>3 <K>BITE</K> <K>SHEET</K></>} /> = 3.403
     </>}>
       From <V>δ</V> = 3<V>u</V> and <V>u</V> = <V>GM</V>/<V>rc</V><Sup>2</Sup>.
-      A pure count, no <K>GRAIN</K>, and order one: for a lattice whose things
-      move a step a tick, 3.4 steps² a tick is a mean free path of about three
-      steps. <b style={{ color: INK }}>It is not independent of ε</b> —{' '}
+      A pure count, no <K>GRAIN</K>, and order one — but read as a mean free
+      path it is 10.21 cells, and where that could come from is the whole
+      difficulty. <b style={{ color: INK }}>It is not independent of ε</b> —{' '}
       <V>D</V> = <V>c</V>/<V>ε</V> exactly. Both are the same requirement,
       written as a rate and as a spread, so the agreement is bookkeeping.
     </Step>
@@ -684,6 +685,50 @@ const MADE_FROM: Derivation = {
         to every digit</b>. Which says what it always was: not a diffusivity,
       but the factor by which the metric route’s <V>G</V> exceeds the pull
       route’s, wearing the name of a mechanism it does not have.
+    </Step>
+
+    <Because>and the route the audit implied — tried, and excluded</Because>
+    <Step eq={<>
+      <V>Φ</V> · <V>λ</V> =
+      <Frac over={<>1</>} under={<><K>BITE</K>·share</>} /> = 2
+      <span style={{ padding: '0 1.2em', color: FAINT }}>pinned</span>
+    </>}>
+      The pull works because it is a <i>product</i> of two fields along a line —
+      which is where <K>WAYS</K> enters. A lone body has no second field, and
+      that is the shape of the 3.4034. But a lone body is not alone: its charges
+      annihilate against the ambient <V>Φ</V>, restoring product, bias and{' '}
+      <K>WAYS</K> at once. It gives 1/<V>r</V>, and matching{' '}
+      <V>u</V> = <V>Gm</V>/<V>rc</V><Sup>2</Sup> fixes{' '}
+      <V>Φ</V> = <K>SHEET</K>/π = 2.546 —{' '}
+      <b style={{ color: INK }}>against the cosmology attractor’s independent{' '}
+        <V>Φ</V> = 2, a ratio of exactly 4/π</b>. The discrepancy drops from a
+      mixture of counts to a bare π, the first time any change of mechanism has
+      moved it.
+    </Step>
+
+    <Because>and then it dies, by a general argument rather than a number</Because>
+    <Step>
+      The hoped-for escape was that the <i>sourcing</i> <V>Φ</V> and the{' '}
+      <i>screening</i> <V>Φ</V> might differ — the vacuum’s pairs being remade,
+      so a charge could contribute an event without being consumed. It does not
+      survive inspection:{' '}
+      <b style={{ color: INK }}>an annihilation removes the <i>body’s</i>{' '}
+        charge, and replacing the vacuum pair does not bring it back.</b> The
+      event that sources the fold <i>is</i> the event that screens, so strength
+      and range are reciprocal with their product pinned at 2. Sourcing needs{' '}
+      <V>Φ</V> = 2.546; reaching 1 AU allows 2.16·10<Sup>−46</Sup>. Forty-six
+      orders, nothing to tune.
+    </Step>
+
+    <Because>which excludes a class, not an attempt</Because>
+    <Step>
+      Any account that folds space by annihilating a body’s charges against
+      something ambient pays for it in range, one for one.{' '}
+      <b style={{ color: INK }}>So the source must not <i>consume</i> the
+        field</b> — and <V>ε</V> is the only candidate here that doesn’t,
+      being creation <i>at</i> the body rather than annihilation out in space.
+      Which returns the whole problem to one question: can a point source of
+      space be static without a random walk?
     </Step>
 
     <Because>which is a far better place to be stuck</Because>
@@ -864,8 +909,8 @@ const CLOCK: Derivation = {
 };
 
 const IGNORANCE: Derivation = {
-  label: 'de Broglie from not knowing where',
-  title: <>λ = <V>h</V>/<V>p</V> as the price of not knowing which side you are on</>,
+  label: 'the matter wave',
+  title: <>λ = <V>h</V>/<V>p</V>, twice — by ignorance, and then by zigzag</>,
   body: <>
     <Because>a moving source has two retarded branches, and one of them is yours</Because>
     <Step eq={<>
@@ -1075,6 +1120,88 @@ const IGNORANCE: Derivation = {
       ignorance over paths gives the propagator. Two things are owed — what
       sets sync, and why the modulus is flat — and the second now has a shape:
       it needs the emitter’s options counted, not the charge’s.
+    </Step>
+
+    <Because>and counting them properly retires most of this panel</Because>
+    <Step eq={<>cos <V>Ω</V> = cos <V>m</V> · cos <V>k</V></>}>
+      One action a tick: move, or update your own state. Light spends all of it
+      moving, which is why it has no clock.{' '}
+      <b style={{ color: INK }}>But <i>idling</i> the spare ticks gives
+        (1 − <V>β</V>) where relativity wants √(1−<V>β</V><Sup>2</Sup>)</b> —
+      one Doppler factor with the other dropped, and not even symmetric under{' '}
+      <V>β</V> → −<V>β</V>, so a left-mover would age at 1.5 and a right-mover
+      at 0.5. Spend it on <i>direction</i> instead — move every tick, always at{' '}
+      <V>c</V>, and let the heading alternate — and the missing (1+<V>β</V>) is
+      carried by the backward steps. That rule is local, uses one global tick,
+      and its transfer matrix gives the dispersion above exactly.
+    </Step>
+
+    <Because>from which everything comes out</Because>
+    <Step eq={<><V>Ω</V><Sup>2</Sup> = <V>k</V><Sup>2</Sup> + <V>m</V><Sup>2</Sup></>}>
+      To six figures. And then <V>k</V> <i>is</i> <V>mγv</V>, <V>Ω</V> <i>is</i>{' '}
+      <V>mγ</V>, λ <i>is</i> λ<Sub>dB</Sub>, and the internal rate{' '}
+      <V>Ω</V> − <V>k·v</V> is <V>m</V>/<V>γ</V> — so{' '}
+      <b style={{ color: INK }}>time dilation falls out</b>. The reversal
+      spacing is 1/tan <V>m</V> + 1 → 1/<V>m</V>, which is <V>X</V>: mass as a
+      pulse rate and mass as a zigzag rate are one quantity, and{' '}
+      <i>physics.ts</i> already had it.
+    </Step>
+
+    <Because>and the modulus is no longer a postulate</Because>
+    <Step eq={<>cos<Sup><V>N</V>−<V>R</V></Sup> <V>m</V> · sin<Sup><V>R</V></Sup> <V>m</V></>}>
+      A path of <V>N</V> steps with <V>R</V> reversals weighs that — set
+      entirely by how often it turns, which is set entirely by the mass. Feynman
+      postulates a flat modulus; here it is derived, and cos<Sup>2</Sup> +
+      sin<Sup>2</Sup> = 1 makes it unitary for free.{' '}
+      <b style={{ color: INK }}>The amplitude rule is the pulse rate.</b>
+    </Step>
+
+    <Because>which retires a conclusion drawn above, and it should be said plainly</Because>
+    <Step>
+      The claim was that de Broglie needs per-body rest-frame simultaneity and
+      that the global tick was the obstruction.{' '}
+      <b style={{ color: INK }}>This derivation uses a global tick, is local,
+        and gets λ<Sub>dB</Sub> anyway — so that claim is false as stated.</b>{' '}
+      What was actually shown is narrower: a composite carrying <i>internal
+        phases</i> needs rest-frame synchrony for those to add to a matter wave.
+      The zigzag carries the phase in the amplitude over paths instead, and
+      needs no simultaneity convention at all. The dial stays useful; it is no
+      longer the account. Still owed: this is 1+1 dimensions, where the
+      checkerboard is clean and where nobody has a satisfactory 3+1 version —
+      so a spinor is what pays for it — see below.
+    </Step>
+
+    <Because>and in 3+1 it does work, at a stated cost</Because>
+    <Step eq={<>
+      <V>U</V>(<b>k</b>) = [cos <V>m</V> − <V>i</V> sin <V>m</V> <V>β</V>] ·
+      Π<Sub>j</Sub>[cos <V>k</V><Sub>j</Sub> − <V>i</V> sin <V>k</V><Sub>j</Sub> <V>α</V><Sub>j</Sub>]
+    </>}>
+      Every step still at <V>c</V>; what chooses the heading is an internal
+      state, which is a spinor, and the algebra fixes its size. It reduces to
+      the 1+1 checkerboard exactly at <V>d</V> = 1, and in 3+1 gives{' '}
+      <b style={{ color: INK }}><V>Ω</V><Sup>2</Sup> = |<b>k</b>|<Sup>2</Sup> +{' '}
+        <V>m</V><Sup>2</Sup> to five figures</b>, trace real to machine
+      precision. The cost is anisotropy at finite <V>k</V> — the <V>α</V><Sub>j</Sub>{' '}
+      do not commute, so 0.94 on the diagonal against the axis at |<b>k</b>| = 1,
+      growing as <V>k</V><Sup>2</Sup> and gone in the continuum. That is the
+      same defect <K>FLOOR</K> already flags, reached from somewhere else
+      entirely.
+    </Step>
+
+    <Because>and fractional dimensions do not survive it</Because>
+    <Step eq={<>2<Sup>⌊(<V>d</V>+1)/2⌋</Sup> components</>}>
+      <K>SHEET</K> and <K>WAYS</K> are 3<Sup><V>d</V>−1</Sup> − 1 and
+      3<Sup><V>d</V></Sup> − 1, perfectly happy at <V>d</V> = 2.5 (4.196 and
+      14.588), and every counting argument would still run. But a Clifford
+      algebra has no fractional representation — you cannot have 2.83
+      anticommuting matrices.{' '}
+      <b style={{ color: INK }}>The counts interpolate and the spinor does
+        not</b>, so a fractional-dimension version would have a gravity and no
+      fermions. Either the spinor is fundamental and <V>d</V> is an integer, or
+      the counts are and four components at <V>d</V> = 3 has to be derived.
+      Nothing here decides it. It does settle one thing negatively:{' '}
+      <K>WAYS</K>/<K>SHEET</K> is bounded below by 3 at <i>every</i> <V>d</V>,
+      so no dimension — fractional or not — closes the 3.4034.
     </Step>
   </>,
 };
@@ -1464,30 +1591,49 @@ export const Law = () => {
           own response, out of the count being a count on the body’s own
           worldline.</>],
       [<span style={{ color: DERIVED }}>
-        <V>A</V> = 1 − 2<V>u</V> + 2<V>u</V><Sup>2</Sup>,{' '}
-        <V>B</V> = 1 + 2<V>u</V></span>,
-      <><b style={{ color: INK }}>A metric, out of the same count.</b> The lean
-        is a <i>ratio</i> — 1 + <V>n</V> against the <K>WAYS</K> that weigh one
-        each — and a ratio throws away the total. There are{' '}
-        <K>WAYS</K> + <V>n</V> ways out of that point now, and a point with
-        more ways out holds more space. The lean is <V>A</V>; the total
-        is <V>B</V>.</>],
-      [<span style={{ color: DERIVED }}>
-        6π<V>GM</V>/<V>c</V><Sup>2</Sup><V>a</V>(1−<V>e</V><Sup>2</Sup>)</span>,
-      <><b style={{ color: INK }}>The perihelion advance, all of it.</b> Five
-        orbits over two panels come to 6.05 to 6.20 sixths of it, ordered by
-        how deep each orbit sits and by nothing else. The lean alone gives one
-        sixth, and gives it to a part in a hundred for every one of them.</>],
-      [<span style={{ color: DERIVED }}>
-        4<V>GM</V>/<V>bc</V><Sup>2</Sup></span>,
-      <><b style={{ color: INK }}>The deflection of light, all of it.</b> Which
-        the lean could not touch at all — at <V>v</V> = <V>c</V> the count is
-        already infinite, so one more annihilation turns it by nothing. A
-        thickness needs no mass to divide by: the cell in front is simply
-        longer.</>],
+        one sixth of 6π<V>GM</V>/<V>c</V><Sup>2</Sup><V>a</V>(1−<V>e</V><Sup>2</Sup>)</span>,
+      <><b style={{ color: INK }}>The perihelion advance, the part the pull
+        owns.</b> The lean alone gives exactly one sixth, and gives it to a
+        part in a hundred for every one of five orbits over two panels. This
+        much is counted.</>],
       [<span style={{ color: DERIVED }}>screen</span>,
         <>Three bodies in a row do not simply add. Newton has no such term and
           neither does relativity at this order.</>],
+    ]} />
+
+    <Head>what is borrowed</Head>
+
+    <Note>
+      Kept separate from what is derived, because the difference is the whole
+      state of the thing and it is easy to lose.{' '}
+      <b style={{ color: INK }}>The pull is counted. The metric is not.</b>
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>
+        <V>A</V> = 1 − 2<V>u</V> + 2<V>u</V><Sup>2</Sup>,{' '}
+        <V>B</V> = 1 + 2<V>u</V></span>,
+      <>General relativity’s isotropic functions, written closed rather than as
+        the series. There is a counting <i>story</i> for them — the lean is a
+        ratio and a ratio throws away the total, so <K>WAYS</K> + <V>n</V> ways
+        out means more space — but a story is not a derivation, and the
+        coefficient has never come out. See below.</>],
+      [<span style={{ color: BORROWED }}><i>carry</i></span>,
+        <>The geodesic equation. What a count is worth once the place is
+          folded, which at leading order is 1 + 2<V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup>{' '}
+          — and that alone does not do it, so it is taken whole.</>],
+      [<span style={{ color: BORROWED }}>
+        the other five sixths, and 4<V>GM</V>/<V>bc</V><Sup>2</Sup></span>,
+        <>Everything the metric buys: 6.05 to 6.20 sixths measured, and the
+          whole of light’s deflection, which the lean could not touch at all.
+          Correct to four figures, and <i>correct because A and B were put
+          in</i>.</>],
+      [<span style={{ color: DERIVED }}>how close it came</span>,
+        <><V>u</V> = <V>Gm</V>/<V>rc</V><Sup>2</Sup> as a fact about a place
+          does come out — from a point source of space and a surplus that hops
+          — static, 1/<V>r</V>, and{' '}
+          <b style={{ color: INK }}>wrong in <V>G</V> by 9.83</b>. That factor
+          is the entire remaining distance to a derived metric.</>],
     ]} />
 
     <Head>what is a choice</Head>
@@ -1582,25 +1728,59 @@ export const Law = () => {
       carried point source settles:
     </Note>
 
-    <Eq derive={SPACE} open={show}
-      note="static, because the flux carries the surplus away as fast as it is made">
+    <Eq derive={MADE_FROM} open={show}
+      note="a point source settles to a potential — if something carries the surplus away, and that is the whole difficulty">
       <V>δ</V>(<V>r</V>) = <Frac over={<V>S</V>}
         under={<>4<V>π D r</V></>} /> = 3<V>u</V>
-      <span style={{ padding: '0 1.6em' }} />
-      <V>D</V> = <Frac over={<><V>π</V> <K>WAYS</K> <V>c</V></>}
-        under={<>3 <K>BITE</K> <K>SHEET</K></>} /> = 3.403
       <span style={{ padding: '0 1.6em' }} />
       ⇒ <V>u</V> = <Frac over={<V>Gm</V>}
         under={<><V>r c</V><Sup>2</Sup></>} />
     </Eq>
 
     <Note>
-      Which is the metric’s own potential, out of a rate and a spread. It is
-      linear in the <i>other</i> mass alone — a fact about the place rather
-      than the pair, which the folding could never say before — and it gives
-      every number the old reading gave, to the digit. The difference is that
-      the old one took the pull and called its potential <V>u</V>, and this one
-      is derived.
+      That is the metric’s own potential out of a rate and a spread, and it is
+      linear in the <i>other</i> mass alone — a fact about the <i>place</i>{' '}
+      rather than the pair, which the folding could never say before.{' '}
+      <b style={{ color: INK }}>The source is not the difficulty. The transport
+        is.</b> <V>D</V> is not free — for anything moving at <V>c</V> it is{' '}
+      <V>cλ</V>/3 — so the account is only as good as the <V>λ</V> the lattice
+      can supply, and that has had three answers.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>by scattering</span>,
+        <><b style={{ color: INK }}>Dead.</b> <V>λ</V> would be a charge’s mean
+          free path against the ambient field, and the only constant-density
+          scatterer is the vacuum — whose length the reach below already fixes
+          at 10<Sup>60</Sup> cells against the 10 this needs.{' '}
+          <b style={{ color: INK }}>Fifty-nine orders</b>, and the two cannot
+          both stand.</>],
+      [<span style={{ color: FAINT }}>ballistically</span>,
+        <><b style={{ color: INK }}>Wrong shape.</b> Which is where that leaves
+          it: measured, <V>δ</V>·<V>r</V><Sup>2</Sup> flat to 0.6%, so{' '}
+          <V>u</V> ∝ 1/<V>r</V><Sup>2</Sup> — not a potential, and not Newton
+          either.</>],
+      [<span style={{ color: DERIVED }}>by hopping</span>,
+        <><b style={{ color: INK }}>Alive.</b> A created point that sits a tick
+          and then takes one of the <K>WAYS</K> at random is a random walk with{' '}
+          <i>no scatterer in it</i>, so <V>D</V> = ⟨ℓ<Sup>2</Sup>⟩/6 = 0.3462 is
+          a fact about the lattice and <V>Φ</V> never enters. Measured on the
+          lattice: the Green’s function to 0.1%, and <i>static</i> — an
+          occupancy, not an accumulation.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Nine point eight, from fifty-nine orders.</b>{' '}
+      Hopping gives <V>G</V> = <K>SHEET</K>/(12π<V>D</V>) = 0.6130 against the
+      pull’s 0.0624 — gravity nine times too strong, because a fresh direction
+      every tick spreads the surplus too slowly and it piles up. The fix is{' '}
+      <i>persistence</i>: with mean cosine <V>a</V> between steps, <V>D</V>{' '}
+      scales by (1+<V>a</V>)/(1−<V>a</V>), so <V>a</V> = 0.815 — keep your
+      heading about 85% of the time, which is 10.21 cells, which is{' '}
+      π<K>WAYS</K>/<K>SHEET</K>. The two extremes bracket it and neither is
+      right, and{' '}
+      <b style={{ color: INK }}>the debt is now a rule the lattice may simply
+        have, rather than a contradiction it cannot resolve.</b>
     </Note>
 
     <Head>how far it reaches</Head>
@@ -1692,7 +1872,7 @@ export const Law = () => {
     </Note>
 
     <Eq derive={IGNORANCE} open={show}
-      note="know how fast it is going but not where, and what you are holding is a de Broglie wave">
+      note="two routes to the same wavelength — one by not knowing where it is, one by letting the worldline turn">
       <V>λ</V> = <Frac over={<><V>λ</V><Sub>C</Sub></>} under={<><V>γβ</V></>} /> =
       <Frac over={<V>h</V>} under={<V>p</V>} />
       <span style={{ padding: '0 1.4em', color: FAINT }}>at ignorance = ½</span>
@@ -1821,25 +2001,75 @@ export const Law = () => {
       are made in pairs — no matter/antimatter asymmetry either.
     </Note>
 
+    <Head>what you can switch off</Head>
+
+    <Note>
+      The model kept producing accounts that were right about something and
+      then superseded, and deleting them lost information — a superseded
+      account is usually the same physics along a worse road. So every place it
+      could have gone another way is a knob in <i>regimes.ts</i>, and each
+      named theory below is a claim about which knobs to turn down.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>Newton</span>,
+        <>fold 0, screen 0. Flat space, infinite range. One sixth of the
+          perihelion advance.</>],
+      [<span style={{ color: FAINT }}>general relativity</span>,
+        <>fold 1, screen 0. Six sixths and the whole of light’s deflection —
+          and <b style={{ color: INK }}>borrowed, not counted</b>.</>],
+      [<span style={{ color: FAINT }}>light</span>,
+        <>turn 0. Never reverses, so no clock, so no mass. Not “a classical
+          particle” — a photon.</>],
+      [<span style={{ color: DERIVED }}>Dirac</span>,
+        <>turn 1. The zigzag: <V>Ω</V><Sup>2</Sup> = <V>k</V><Sup>2</Sup> +{' '}
+          <V>m</V><Sup>2</Sup>, λ<Sub>dB</Sub>, time dilation, and a modulus
+          that is derived rather than postulated.</>],
+      [<span style={{ color: FAINT }}>de Broglie by simultaneity</span>,
+        <>sync 1. The superseded route to the same wavelength, kept switchable
+          because it is the only account here that says anything about what a{' '}
+          <i>composite</i> must do.</>],
+    ]} />
+
+    <Note>
+      <i>check</i> refuses sync and turn together — they are two roads to
+      λ = <V>h</V>/<V>p</V>, not two effects, and having both would count it
+      twice. <i>borrows</i> is a separate question from <i>coherent</i>, and it
+      returns non-empty for every setting with fold on, including this model’s
+      own.
+    </Note>
+
     <Head>and what is still owed</Head>
 
     <Note>
-      <b style={{ color: INK }}>One thing, and it is in the lattice rather than
-        here.</b> The third rewrite is what carries the surplus, and on the
-      lattice that is consume-ahead-emit-behind — measured, an exact swap that
-      displaces nothing net. Whether it can carry a surplus outward at{' '}
-      <V>D</V> ≈ 3.4 steps² a tick is a question about that rule, not a new
-      one. Until it is answered, <V>D</V> is a number the continuum needs and
-      the lattice has not been shown to supply.
+      <b style={{ color: INK }}>One number.</b> The pull is counted, <V>G</V>{' '}
+      is counted, the reach is counted, <V>E</V> = ħω and λ = <V>h</V>/<V>p</V>{' '}
+      and the amplitude rule all fall out of mass being a rate.{' '}
+      <b style={{ color: INK }}><V>A</V> and <V>B</V> are general relativity’s,
+        and <i>carry</i> is its geodesic equation</b> — which is five sixths of
+      the perihelion advance and all of the deflection, borrowed. Everything
+      else on this page is downstream of closing that.
+    </Note>
+
+    <Note>
+      And it has narrowed to a single question. The source is settled: creation{' '}
+      <i>at</i> the body, which is the only mechanism that does not{' '}
+      <i>consume</i> the field — and consuming it is fatal, because the event
+      that sources a fold is the event that screens, so strength and range are
+      reciprocal with their product pinned at 2. The transport is settled up to
+      a factor: a surplus that hops is static and gives 1/<V>r</V> and misses{' '}
+      <V>G</V> by 9.83. So:{' '}
+      <b style={{ color: INK }}>does the lattice have a reason for a hopping
+        point to keep its heading about 85% of the time?</b> That is the whole
+      of the remaining gap, and 10.21 = π<K>WAYS</K>/<K>SHEET</K> being a pure
+      count is either the answer in plain sight or a coincidence.
     </Note>
 
     <Note>
       Two things bound whatever answers it. An ambient charge{' '}
-      <b style={{ color: INK }}>screens</b>: a body’s charges annihilate
-      against it too, so they reach only{' '}
-      <V>λ</V> = <V>c</V>/(<K>BITE</K>·share·<V>Φ</V><Sub>0</Sub>) and gravity
-      becomes Yukawa with that range — cluster scale needs{' '}
-      <V>Φ</V><Sub>0</Sub> ≲ 10<Sup>−58</Sup> a lattice cell. And a body{' '}
+      <b style={{ color: INK }}>screens</b>, so a vacuum dense enough to carry
+      anything is dense enough to switch gravity off within a few steps — which
+      is why the hop matters, since it needs no vacuum at all. And a body{' '}
       <b style={{ color: INK }}>cannot take back</b> what it emits: measured on
       a running lattice, at most two parts in a thousand return, because a
       source emits into 4<V>π</V> and subtends nothing.
