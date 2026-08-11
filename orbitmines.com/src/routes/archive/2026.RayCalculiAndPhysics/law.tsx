@@ -614,6 +614,468 @@ const MADE_FROM: Derivation = {
       a vacuum dense enough to carry anything is dense enough to switch gravity
       off within about seven steps.
     </Step>
+
+    <Because>and that constraint turned out to be the one that closes it — the other way</Because>
+    <Step eq={<>
+      <V>D</V> = <V>cλ</V>/3
+      <span style={{ padding: '0 1.2em', color: FAINT }}>needs 10.2 cells</span>
+      <V>λ</V> = <K>REACHES</K>·<V>R</V><Sub>h</Sub>
+      <span style={{ padding: '0 1.2em', color: FAINT }}>is 2.9·10<Sup>60</Sup></span>
+    </>}>
+      The same number written as a diffusivity is <V>D</V> = <V>c</V>/<V>ε</V> =
+      3.403, and a diffusivity <i>is not free</i>: for anything moving at{' '}
+      <V>c</V> it is <V>cλ</V>/3. So the account is only as good as the{' '}
+      <V>λ</V> the lattice can supply — and the only constant-density scatterer
+      here is the vacuum, whose length the panel below already computes.{' '}
+      <b style={{ color: INK }}>They disagree by fifty-nine orders of
+        magnitude.</b> Sourcing the scattering from the body’s own field
+      instead does not save it: chance ∝ 1/<V>r</V><Sup>2</Sup> makes{' '}
+      <V>λ</V> ∝ <V>r</V><Sup>2</Sup> and the profile comes out
+      1/<V>r</V><Sup>3</Sup>.
+    </Step>
+
+    <Because>which puts the surplus in the ballistic limit — measured</Because>
+    <Step eq={<span style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '0.8em' }}>
+      λ=10.2 → 1/r ✓&nbsp;&nbsp;&nbsp;λ=10³ → 1/r²&nbsp;&nbsp;&nbsp;λ=10⁶ → 1/r²
+    </span>}>
+      Point source, charges streaming at <V>c</V>, exponential free path,
+      tallying path per shell. At <V>λ</V> = 10.2 the profile is 1/<V>r</V> at
+      exactly the assumed coefficient — ratio 0.989 in the window{' '}
+      <V>λ</V> ≪ <V>r</V> ≪ <V>R</V> — so the <i>mechanism</i> is sound. At{' '}
+      <V>λ</V> ≫ <V>r</V> it is 1/<V>r</V><Sup>2</Sup>, equal to{' '}
+      <V>S</V>/4π<V>c</V> to 0.6%. And{' '}
+      <b style={{ color: INK }}><V>δ</V> ∝ 1/<V>r</V><Sup>2</Sup> is not a
+        potential</b> — it does not give Newton, never mind the metric.
+    </Step>
+
+    <Because>so the honest statement changed</Because>
+    <Step>
+      It was <i>the coefficient is unfound</i>. It is now: <V>ε</V> and the
+      reach are the same vacuum read twice, and they demand lengths fifty-nine
+      orders apart, so <b style={{ color: INK }}>they cannot both be right</b>.
+      Drop the reach and <V>λ</V> is free, but 0.361 is the one full prediction
+      here and it goes with it. Keep it and diffusion cannot be where the metric
+      comes from.{' '}
+      <b style={{ color: INK }}>Keep it</b>: it is counted and <V>ε</V> was
+      solved for, and a derived number outranks a fitted one.
+    </Step>
+
+    <Because>and spending it that way pays, which was not expected</Because>
+    <Step eq={<>∫<Sub><V>r</V></Sub><Sup>∞</Sup> d<V>s</V>/<V>s</V><Sup>2</Sup> = 1/<V>r</V></>}>
+      Killing diffusion does not kill the point source, because there is a way
+      to get 1/<V>r</V> from a 1/<V>r</V><Sup>2</Sup> density that needs no
+      transport at all and had not been tried:{' '}
+      <b style={{ color: INK }}>integrate it radially</b>. One integration,
+      nothing free. Measured with <V>δ</V> = chance/<V>c</V>, it lands on{' '}
+      <V>m</V>·<K>SHEET</K>/(4π<V>rc</V>) to six figures. And it is not
+      “read <V>u</V> off the force” — <V>δ</V> goes as <V>m</V><Sub>b</Sub>{' '}
+      alone where the pull goes as <V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub>, so
+      it is a fact about a <i>place</i>, which was the whole objection.
+    </Step>
+
+    <Because>so it predicts G rather than absorbing it — and gets it wrong, precisely</Because>
+    <Step eq={<>
+      <Frac over={<><K>SHEET</K>·<V>c</V>/12π</>}
+        under={<><K>SHEET</K><Sup>2</Sup>/4π<Sup>2</Sup><K>WAYS</K></>} /> =
+      <Frac over={<>π<K>WAYS</K></>} under={<>3<K>SHEET</K></>} /> = 3.4034
+    </>}>
+      Predicted <V>G</V> = 0.21221, the pull’s <V>G</V> = 0.06235, ratio
+      3.403392 — and <b style={{ color: INK }}>that is <V>ε</V>’s own number,
+        to every digit</b>. Which says what it always was: not a diffusivity,
+      but the factor by which the metric route’s <V>G</V> exceeds the pull
+      route’s, wearing the name of a mechanism it does not have.
+    </Step>
+
+    <Because>which is a far better place to be stuck</Because>
+    <Step eq={<span style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '0.8em' }}>
+      d=2 4.000&nbsp;&nbsp;d=3 3.250&nbsp;&nbsp;d=4 3.077&nbsp;&nbsp;d=5 3.025&nbsp;&nbsp;(want 3/π = 0.955)
+    </span>}>
+      Two routes, both counted, neither with a free parameter, disagreeing by a{' '}
+      <i>pure count</i> — so it is a statement about the lattice’s geometry and
+      nothing else, and the search is finite. The fix is not a coefficient and
+      not a dimension: they agree iff <K>WAYS</K>/<K>SHEET</K> = 3/π, which is
+      irrational, while <K>WAYS</K>/<K>SHEET</K> is a ratio of integers tending
+      to 3 from above.{' '}
+      <b style={{ color: INK }}>So one of the two counts is being used for a job
+        it is not the count for</b> — and they are not even the same kind of
+      thing, <K>SHEET</K> being what a source emits and <K>WAYS</K> what a path
+      could have done instead. That is the same mistake this file already made
+      once, and recorded.
+    </Step>
+  </>,
+};
+
+const REACH: Derivation = {
+  label: 'how far gravity reaches',
+  title: <>the ambient field, and the end of the pull</>,
+  body: <>
+    <Because>every source is putting charges everywhere</Because>
+    <Step eq={<>
+      <V>Φ</V> = ∫ <V>ρ</V>·<K>SHEET</K> d<V>r</V>
+    </>}>
+      A shell of the universe at <V>r</V> holds <V>ρ</V>·4π<V>r</V><Sup>2</Sup>d<V>r</V>{' '}
+      of mass and puts <V>m</V><K>SHEET</K>/4π<V>r</V><Sup>2</Sup> on you — so it
+      contributes <V>ρ</V><K>SHEET</K>d<V>r</V> and{' '}
+      <b style={{ color: INK }}>every shell counts the same</b>. That is Olbers’
+      paradox in the same form, and the sum does not converge.
+    </Step>
+
+    <Because>it converges because it screens itself</Because>
+    <Step eq={<>
+      <V>Φ</V> = <V>ρ</V><K>SHEET</K><V>λ</V>,&nbsp;&nbsp;
+      <V>λ</V> = 1/<V>k</V><V>Φ</V>
+      &nbsp;&nbsp;⇒&nbsp;&nbsp;
+      <V>λ</V> = 1/√(<V>k</V>·<K>SHEET</K>·<V>ρ</V>)
+    </>}>
+      Those distant charges were attenuated by the fog they crossed. Solving
+      the two together is what makes the integral finite —{' '}
+      <V>k</V> = <K>BITE</K>·share.
+    </Step>
+
+    <Because>and a body’s own charges are attenuated too</Because>
+    <Step eq={<>
+      <V>S</V>(<V>a</V>,<V>b</V>) ∝
+      <Frac over={<>e<Sup>−<V>R</V>/<V>λ</V></Sup></>}
+        under={<><V>R</V><Sup>2</Sup></>} />
+    </>}>
+      The two attenuations multiply to e<Sup>−<V>R</V>/<V>λ</V></Sup> wherever
+      along the line the meeting happens. So the pull is{' '}
+      <b style={{ color: INK }}>Yukawa</b>, and gravity has a range.
+    </Step>
+
+    <Because>which is a fixed fraction of the horizon</Because>
+    <Step eq={<>
+      <Frac over={<V>λ</V>} under={<><V>R</V><Sub>h</Sub></>} /> =
+      √<Paren><Frac over={<>8<V>π G</V></>}
+        under={<>3 <K>BITE</K>·share·<K>SHEET</K></>} /></Paren> = 0.361
+    </>}>
+      Friedmann has <V>ρ</V> = 3<V>H</V><Sup>2</Sup>/8π<V>G</V>, and the
+      density <i>cancels</i>. Gravity reaches about a third of the way to the
+      horizon in <b style={{ color: INK }}>any</b> universe this model
+      describes — a denser one screens harder in exactly the proportion that it
+      expands faster. At our density, 1.55 Gpc.
+    </Step>
+
+    <Because>what that looks like</Because>
+    <Step>
+      Nothing at all in the solar system or the Galaxy. 0.6% down across a
+      cluster, <b style={{ color: INK }}>9.2% down at the BAO scale</b>, half
+      gone by a gigaparsec. This is the one thing here that is a prediction in
+      the full sense — not fitted, not borrowed, not a reproduction — and it
+      sits on the <i>derived</i> half of the model. If 0.361 is excluded by
+      large-scale structure then the pull is wrong, independently of everything{' '}
+      <i>carry</i> and <V>D</V> are still borrowing.
+    </Step>
+  </>,
+};
+
+const IDENTICAL: Derivation = {
+  label: 'gravity between identical things',
+  title: <>two of the same, closer than a wavelength</>,
+  body: <>
+    <Because>ω is not free any more</Because>
+    <Step eq={<><V>ω</V> = <V>m</V>,&nbsp;&nbsp; one wavelength = 2π/<V>m</V> = 2π<V>G</V><V>λ</V><Sub>C</Sub></>}>
+      Mass is how often a thing pulses, so the rate at which its charge
+      reverses is the mass. It used to be set by <K>SLOW</K> in{' '}
+      <i>models.ts</i> — a drawing choice — and spread 3.7% a body so that no
+      two ever matched. That spread was standing in for a fact.
+    </Step>
+
+    <Because>a body made of things has no phase</Because>
+    <Step eq={<>⟨|<V>ψ</V>|/π⟩ = ½&nbsp;&nbsp; over uniform <V>ψ</V></>}>
+      Nothing elementary weighs more than <V>G</V>·<V>m</V><Sub>Planck</Sub> ≈
+      1.36 µg, and the Sun is 1.2·10<Sup>57</Sup> nucleons. A sum of that many
+      emitters with no reason to agree has a uniform phase, and the average of{' '}
+      <i>opposed</i> over uniform phase is exactly a half.{' '}
+      <b style={{ color: INK }}>So share = ½ is derived, not arranged</b> — it
+      is what being made of things does.
+    </Step>
+
+    <Because>but two of the SAME thing do share a phase</Because>
+    <Step eq={<>
+      <V>G</V><Sub>eff</Sub>/<V>G</V> = 2·share
+    </>}>
+      Same mass, same ω, so they hold a fixed relation for as long as they
+      exist and <i>coherence</i> walks instead of returning a half. Measured
+      from it directly:
+    </Step>
+
+    <Step eq={<>
+      <span style={{ fontFamily: 'monospace', fontSize: '0.82em', whiteSpace: 'pre' }}>
+        {`R/λ        0.02   0.10   0.20   0.50   1.00   ≥1.5
+in step    0.02   0.12   0.24   0.59   1.00   1.00
+half out   1.98   1.88   1.76   1.41   1.00   1.00`}
+      </span>
+    </>}>
+      <b style={{ color: INK }}>In step and close together there is no gravity
+        between them at all.</b> They put out the same sign at the same moment,
+      so nothing cancels, so nothing is annihilated, so the interval between
+      them does not shorten. Out of step, every meeting cancels and the pull is
+      doubled. Beyond one wavelength both settle to the ordinary law.
+    </Step>
+
+    <Because>so</Because>
+    <Step>
+      Between two of the same elementary thing, <V>G</V> runs anywhere from
+      nought to 2<V>G</V> over the first Compton wavelength, and which one
+      depends on their relative phase. Inside <V>λ</V><Sub>C</Sub> that is not
+      a correction to gravity — it is a different interaction, and one that
+      already knows about phase. None of it was added: <i>coherence</i>,{' '}
+      <i>opposed</i> and ω have been here since the pull was written. Telling
+      ω that it is the mass is what turned them into this.
+    </Step>
+  </>,
+};
+
+const CLOCK: Derivation = {
+  label: 'mass as a period',
+  title: <>once a tick is the ceiling</>,
+  body: <>
+    <Because>mass is how often, so turn it round</Because>
+    <Step eq={<><V>X</V> = 1/<V>m</V> ticks between pulses,&nbsp;&nbsp;<V>m</V> ≤ 1</>}>
+      A heavier thing pulses more often, and nothing pulses more than once a
+      tick. So mass is a <i>period</i>, and there is a largest elementary
+      mass: the lattice mass unit is <V>G</V>·<V>m</V><Sub>Planck</Sub> ≈
+      1.36 µg. Anything heavier has to be many emitters — which is what matter
+      is.
+    </Step>
+
+    <Because>turn the period into a length</Because>
+    <Step eq={<>
+      <V>X</V>·<V>c</V> = <V>G</V> ·
+      <Frac over={<>ħ</>} under={<><V>mc</V></>} /> = <V>G</V> · <V>λ</V><Sub>Compton</Sub>
+    </>}>
+      Exactly, at every mass. Measured across twenty orders — electron, proton,
+      uranium atom, virus, grain of sand — the ratio is 0.062329 every time,
+      against <V>G</V> = 0.062351.
+    </Step>
+
+    <Because>and it is not a coincidence</Because>
+    <Step>
+      <V>m</V><Sub>P</Sub>·<V>l</V><Sub>P</Sub> = ħ/<V>c</V>, so “period = 1/mass”
+      in the lattice’s own units <i>is</i> the Compton relation.{' '}
+      <b style={{ color: INK }}>The identity was put here to make the
+        equivalence principle fall out of counting, and it turns out to have
+        been a quantum statement the whole time.</b> The lattice is not a
+      classical model waiting to have quantum mechanics added — <V>E</V> = ħω
+      is a consequence of what it already means by mass.
+    </Step>
+  </>,
+};
+
+const IGNORANCE: Derivation = {
+  label: 'de Broglie from not knowing where',
+  title: <>λ = <V>h</V>/<V>p</V> as the price of not knowing which side you are on</>,
+  body: <>
+    <Because>a moving source has two retarded branches, and one of them is yours</Because>
+    <Step eq={<>
+      <V>t</V><Sub>r</Sub> = <Frac over={<><V>t</V> − <V>x</V>/<V>c</V></>} under={<>1 − <V>β</V></>} />
+      <span style={{ padding: '0 1.2em', color: FAINT }}>ahead</span>
+      <V>t</V><Sub>r</Sub> = <Frac over={<><V>t</V> + <V>x</V>/<V>c</V></>} under={<>1 + <V>β</V></>} />
+      <span style={{ padding: '0 1.2em', color: FAINT }}>behind</span>
+    </>}>
+      A source pulses at its own rate ω, which <i>is</i> its mass, and a place
+      carries the phase the source had when the shell left. Moving, that has
+      two branches — blue ahead, red behind — and exactly one is true of you.
+      Nothing is superposed: a point receives one shell, from one side, at a
+      time. Solve the retarded equation at any x and only one branch ever comes
+      back consistent.
+    </Step>
+
+    <Because>so weight them by how likely you are to be on each side</Because>
+    <Step eq={<>
+      <V>φ</V> = <V>ω</V><V>γ</V>[ (1 − <V>β</V> + 2<V>pβ</V>)<V>t</V> +
+      (1 − <V>β</V> − 2<V>p</V>)<V>x</V>/<V>c</V> ]
+    </>}>
+      Know how fast the thing is going but not <i>where</i>, and you do not
+      know which branch applies. Weight them <V>p</V> and 1 − <V>p</V> — that
+      is <i>expected</i> in <i>field.ts</i>, and <V>p</V> is a parameter, not a
+      constant, so the ignorance is tunable.
+    </Step>
+
+    <Because>and at a half it is de Broglie, exactly</Because>
+    <Step eq={<>
+      <V>φ</V> = <V>ω</V><V>γ</V>(<V>t</V> − <V>vx</V>/<V>c</V><Sup>2</Sup>)
+      <span style={{ padding: '0 1.2em', color: FAINT }}>at <V>p</V> = ½</span>
+      <V>λ</V> = <V>λ</V><Sub>C</Sub>/<V>γβ</V> = <V>h</V>/<V>p</V>
+    </>}>
+      Measured to nine figures at every β and every x. The phase speed is{' '}
+      <V>c</V><Sup>2</Sup>/<V>v</V>, which is de Broglie’s and is allowed to
+      beat light because it carries nothing. And the half-<i>difference</i> is{' '}
+      <V>ω</V><V>γ</V>(<V>βt</V> − <V>x</V>/<V>c</V>) — the Compton
+      oscillation at <V>λ</V><Sub>C</Sub>/<V>γ</V>, with its zero at{' '}
+      <V>x</V> = <V>vt</V>, travelling <i>with</i> the thing.{' '}
+      <b style={{ color: INK }}>The mean is the wave and the difference is the
+        particle.</b>
+    </Step>
+
+    <Because>the half is doing real work — this is a test, not a detail</Because>
+    <Step eq={<>
+      <V>k</V> = <V>ω</V><V>γ</V>(2<V>p</V> − 1 + <V>β</V>)/<V>c</V>
+    </>}>
+      At <V>p</V> = 0.4 or 0.6 the wavelength is 20–40% off <V>h</V>/<V>p</V>.
+      At <V>p</V> = (1 − <V>β</V>)/2 the wavenumber is <i>zero</i> — no x in
+      the phase at all, a bare oscillation with no wavelength — and past that
+      it changes sign and the wave runs backwards. So this is not a dial with
+      de Broglie somewhere on it: there is a zero, a sign change, and one point
+      that gives <V>h</V>/<V>p</V>.
+    </Step>
+
+    <Because>and a half is what it has to be, for a reason that is not about radiation</Because>
+    <Step>
+      Relativistic beaming puts (1+<V>β</V>)/2 of a moving source’s output into
+      the forward hemisphere, which would give exactly <i>half</i> the de
+      Broglie wavelength — measured, at every β. But beaming is the wrong
+      quantity.{' '}
+      <b style={{ color: INK }}>What is weighted is not how much goes each way,
+        it is how likely you are to be on one side rather than the other</b> —
+      a fact about not knowing the source’s <i>position</i>, not about its
+      radiation pattern. A position you know nothing about is equally likely
+      either side of you.
+    </Step>
+
+    <Because>and it is the fields that average, not just the phases</Because>
+    <Step eq={<>
+      ½(cos <V>φ</V><Sub>A</Sub> + cos <V>φ</V><Sub>B</Sub>) =
+      cos <V>φ</V><Sub>dB</Sub> · cos <V>φ</V><Sub>C</Sub>
+    </>}>
+      An identity, to 6·10<Sup>−15</Sup> — so nothing had to be chosen about{' '}
+      <i>which object</i> to average, and the de Broglie wave comes out as a
+      factor of the mean field rather than as an interpretation of it. Off a
+      half it stops factorising at all.{' '}
+      <b style={{ color: INK }}>One number puts the wavelength at <V>h</V>/<V>p</V>{' '}
+        and makes the field split into de Broglie times Compton — the same
+        number, both jobs.</b>
+    </Step>
+
+    <Because>so does the lattice itself average? — three tries</Because>
+    <Step eq={<span style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '0.8em' }}>
+      scatter → phase speed c, not c²/v
+    </span>}>
+      <b>Scatter</b> turns the backward emission round, so the red phase does
+      reach a point that is ahead — but it then travels <i>+x</i>, so its{' '}
+      <V>k</V> adds where the behind-branch’s subtracts. Mean{' '}
+      <V>k</V> = <V>ω</V><Sub>0</Sub><V>γ</V>/<V>c</V>, phase speed exactly{' '}
+      <V>c</V>. A light wave, not de Broglie. To get <V>k</V><Sub>B</Sub> the
+      red phase must <i>arrive from ahead</i>, which needs the backward
+      emission to have overtaken the source.
+    </Step>
+
+    <Step eq={<>
+      <V>φ</V><Sub>i</Sub> = <V>ω</V><Sub>0</Sub>(<V>t</V>/<V>γ</V> −
+      <V>vξ</V><Sub>i</Sub>/<V>c</V><Sup>2</Sup>)
+    </>}>
+      <b>A composite source</b> is the promising one, because a body above
+      1.36 µg is many emitters and a receiver really <i>is</i> ahead of some and
+      behind others — a physical average, not an epistemic one. Which pushes
+      the question to what sets the constituents’ phases, and there it is sharp:
+      measured as the phase gradient across the body,{' '}
+      <b style={{ color: INK }}>in step in the body’s frame gives{' '}
+        <V>k</V> = 5.7735·10<Sup>−3</Sup>, exactly λ<Sub>dB</Sub>; in step in
+        the lattice’s frame gives <V>k</V> = 0 and no wave at all.</b>
+    </Step>
+
+    <Because>so the obstruction is one specific thing: the global tick</Because>
+    <Step>
+      <V>ω</V><V>γ</V>(<V>t</V> − <V>vx</V>/<V>c</V><Sup>2</Sup>) is{' '}
+      <V>ω</V> times the source’s proper time at the event simultaneous with{' '}
+      (<V>t</V>,<V>x</V>) <i>in its own rest frame</i>. Averaging the branches
+      reconstructs rest-frame simultaneity; rest-frame synchrony assumes it.
+      They agree to every digit because they are one statement — and{' '}
+      <i>tick()</i> advancing everything at once is exactly its denial.{' '}
+      <b style={{ color: INK }}>For de Broglie to be derived, a composite body
+        must be in step with itself in its own frame</b> — a per-body
+      simultaneity, not a global one. That is a statement about what the update
+      rule would have to be, and it can be tried. It is also uncomfortable,
+      because the global tick is most of how this model stays simple.
+    </Step>
+
+    <Because>so make it a dial rather than a choice</Because>
+    <Step eq={<>
+      ahead = (1 − <V>β</V>(1 − sync))/2
+      <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+      <V>k</V> = sync · <V>ωγβ</V>/<V>c</V>
+    </>}>
+      The two conventions are not two models — they are two values of the same
+      weight, and everything between them is defined.{' '}
+      <b style={{ color: INK }}>sync = 0 is the global tick and has no matter
+        wave at all; sync = 1 is de Broglie</b>, and <V>k</V> is exactly linear
+      in between with nothing discontinuous. So the model can be <i>asked</i>{' '}
+      for the other theory instead of having to pick one — <i>relax</i>,{' '}
+      <i>synced</i> and <i>wave</i> in <i>field.ts</i>.
+    </Step>
+
+    <Because>and the dial is the classical limit</Because>
+    <Step>
+      <i>sync</i> is how much of a body is in step with <i>itself</i> in its{' '}
+      <i>own</i> frame. A lone elementary emitter is trivially in step with
+      itself, so sync = 1 and it carries a full de Broglie wave; a body of
+      10<Sup>57</Sup> emitters updated by one global tick is in step in the{' '}
+      <i>lattice’s</i> frame, so its internal gradient is nought and sync → 0.{' '}
+      <b style={{ color: INK }}>Small things are quantum and big things are
+        not, and it falls out rather than being imposed.</b> A conjecture, and
+      a testable one: it says λ = λ<Sub>dB</Sub>/sync should degrade with
+      internal temperature and not only with mass. What sets sync from the
+      constituent count is not derived — the dial exists so the question can be
+      asked with numbers.
+    </Step>
+
+    <Because>and at sync = 1 the phase is the action, which is the whole point</Because>
+    <Step eq={<>
+      <V>φ</V> = <V>ωγ</V>(<V>t</V> − <V>vx</V>/<V>c</V><Sup>2</Sup>) =
+      −(<b>p</b>·<b>x</b> − <V>Et</V>)/ħ
+    </>}>
+      To nine figures at every <V>β</V>, and along the worldline{' '}
+      <V>x</V> = <V>vt</V> it collapses to <V>ω</V><V>τ</V> = −<V>mc</V><Sup>2</Sup>∫d<V>τ</V>/ħ,
+      the relativistic free action.{' '}
+      <b style={{ color: INK }}>Nothing put it there</b> — it is what{' '}
+      mass = rate plus rest-frame simultaneity comes to.
+    </Step>
+
+    <Because>which makes ignorance of WHICH PATH the right next move</Because>
+    <Step eq={<>Σ<Sub>paths</Sub> e<Sup>i<V>φ</V></Sup> = ∫𝒟<V>x</V> e<Sup>i<V>S</V>/ħ</Sup></>}>
+      The two-slit test put openings and a screen in by hand, so what came out
+      depended on the arrangement — and the arrangement is not the physics. Sum
+      over <i>all</i> paths from A to B instead. Measured on the free
+      propagator, arg(amplitude) − <V>k·X</V> converges to{' '}
+      <b style={{ color: INK }}>0.7862, 0.7845, 0.7837 against π/4 = 0.7854</b>,
+      with the amplitude going as √<V>X</V> — ratios 1.4141 and 1.4142 against
+      √2. So the sum gives the straight-line action <i>plus</i> the Fresnel
+      phase the free propagator is known to carry: stationary phase picks the
+      classical path out of the ignorance, with nothing selecting it and no
+      screen anywhere. Two slits are then a corollary, for any geometry.
+    </Step>
+
+    <Because>and the one thing still assumed — tried, and it fails</Because>
+    <Step eq={<span style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '0.8em' }}>
+      k_eff = 0.016&nbsp;&nbsp;against&nbsp;&nbsp;k = 0.30
+    </span>}>
+      <b style={{ color: INK }}>Every path gets the same modulus.</b> Feynman
+      postulates it, and <K>WAYS</K> looked like the answer: every way out of a
+      point equally available, one step a tick so path length ∝ time, hence all
+      equal-time paths equally likely. Summed over every 8-neighbour path of 130
+      steps, the phase does <i>not</i> track <V>k·x</V> — fitted
+      <V>k</V><Sub>eff</Sub> is 5% of <V>k</V> — and |A| falls twenty-two orders
+      across the span. Not a wave: the large-deviation tail of a random walk.
+    </Step>
+
+    <Because>and the diagnosis is the same mistake as the audit found</Because>
+    <Step>
+      Every charge here moves at exactly <V>c</V>, so every step is{' '}
+      <i>lightlike</i> and every path has the same proper time — nought. A
+      massive particle’s phase is −<V>mc</V><Sup>2</Sup>∫d<V>τ</V>/ħ, which
+      along a lightlike path is nought too.{' '}
+      <b style={{ color: INK }}>A charge’s path is not a particle’s path</b>,
+      and <K>WAYS</K> counts a charge’s options; the path integral needs the
+      worldlines of the <i>emitter</i>, which moves at <V>v</V> &lt; <V>c</V>.
+      Two independent things now point at one structural gap — the lattice has
+      one kind of mover, and both quantum mechanics and the metric want
+      statements about the other kind. So the ladder reads: mass = rate gives <V>E</V> = ħω; rest-frame
+      simultaneity gives λ = <V>h</V>/<V>p</V> and makes the phase the action;
+      ignorance over paths gives the propagator. Two things are owed — what
+      sets sync, and why the modulus is flat — and the second now has a shape:
+      it needs the emitter’s options counted, not the charge’s.
+    </Step>
   </>,
 };
 
@@ -1139,6 +1601,224 @@ export const Law = () => {
       every number the old reading gave, to the digit. The difference is that
       the old one took the pull and called its potential <V>u</V>, and this one
       is derived.
+    </Note>
+
+    <Head>how far it reaches</Head>
+
+    <Note>
+      Every source is putting charges everywhere, so what any place holds is a
+      thin fog of everyone else’s — and a body’s charges annihilate against
+      that fog on the way to wherever they were going. Beyond a mean free path
+      none of them arrive.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="the pull is Yukawa, and its range is a fixed fraction of the horizon">
+      <V>S</V>(<V>a</V>,<V>b</V>) ∝
+      <Frac over={<>e<Sup>−<V>R</V>/<V>λ</V></Sup></>}
+        under={<><V>R</V><Sup>2</Sup></>} />
+      <span style={{ padding: '0 1.6em' }} />
+      <Frac over={<V>λ</V>} under={<><V>R</V><Sub>h</Sub></>} /> =
+      √<Paren><Frac over={<>8<V>π G</V></>}
+        under={<>3 <K>BITE</K>·share·<K>SHEET</K></>} /></Paren> = 0.361
+    </Eq>
+
+    <Note>
+      The density cancels, so it is the same fraction in any universe this
+      model describes. At ours, 1.55 Gpc: invisible in the solar system and the
+      Galaxy, 0.6% down across a cluster,{' '}
+      <b style={{ color: INK }}>9.2% down at the BAO scale</b>, half gone by a
+      gigaparsec. <b style={{ color: INK }}>This is the one prediction on the
+        page</b> — nothing fitted and nothing borrowed — and it lands on the
+      derived half of the model, so large-scale structure can falsify the pull
+      without touching anything <V>B</V> is still assuming.
+    </Note>
+
+    <Note>
+      And it <b style={{ color: INK }}>costs something</b>, which is how you
+      tell a prediction from a decoration. This <V>λ</V> is the only
+      constant-density scattering length the lattice has, so it is also the
+      only thing that could have set the diffusivity behind <V>ε</V> — and at
+      10<Sup>60</Sup> cells it sets it fifty-nine orders too high, which puts
+      the surplus in the ballistic limit and kills the one account of where{' '}
+      <V>B</V> might have come from.{' '}
+      <b style={{ color: INK }}>The reach and <V>ε</V> cannot both stand.</b>{' '}
+      Keeping this one is right — it is counted, <V>ε</V> was solved for — but
+      it is a choice with a bill, and the bill is that the metric stays
+      borrowed. So the answer to <i>can the last assumption be removed</i> is
+      no, and now for a stated reason rather than for want of trying.
+    </Note>
+
+    <Note>
+      The audit that followed found <K>WAYS</K> enters the dynamics in exactly
+      one place — <K>BIAS</K>. Putting <K>SHEET</K> there instead closes the gap
+      from three and a half <i>times</i> to{' '}
+      <b style={{ color: INK }}>π/3, four and a half per cent</b> — a striking
+      near miss, and not a fix, since the argument for <K>WAYS</K> is good and
+      4.7% is not nought. Keeping <K>WAYS</K>, the metric route’s 3 would have
+      to be 10.21, and the 3 was there because a volume excess is three times a
+      linear one. So the likeliest error is neither count but{' '}
+      <b style={{ color: INK }}>the identification ∫<V>δ</V> = 3<V>u</V>{' '}
+        itself</b> — a choice, and one this page came close to calling a
+      derivation.
+    </Note>
+
+    <Head>and what mass turns out to be</Head>
+
+    <Eq derive={CLOCK} open={show}
+      note="a heavier thing pulses more often, and nothing pulses more than once a tick">
+      <V>X</V> = 1/<V>m</V>
+      <span style={{ padding: '0 1.4em', color: FAINT }}>ticks between pulses</span>
+      <V>X</V>·<V>c</V> = <V>G</V> · <V>λ</V><Sub>Compton</Sub>
+    </Eq>
+
+    <Eq derive={IDENTICAL} open={show}
+      note="two of the same thing, closer than a wavelength — no gravity in step, double out of it">
+      <Frac over={<><V>G</V><Sub>eff</Sub></>} under={<V>G</V>} /> = 2·share
+      <span style={{ padding: '0 1.4em', color: FAINT }}>0 … 2</span>
+      within&nbsp; 2π<V>G</V><V>λ</V><Sub>C</Sub>
+    </Eq>
+
+    <Note>
+      And once ω is the mass, <i>coherence</i> stops being bookkeeping.{' '}
+      <b style={{ color: INK }}>share = ½ becomes derived</b> — a body of
+      10<Sup>57</Sup> emitters has uniform phase, and ⟨|<V>ψ</V>|/π⟩ = ½ — so
+      the 3.7% spread of rates in <i>models.ts</i> was standing in for being
+      made of things. But two of the <i>same</i> elementary thing do hold a
+      phase, and then <V>G</V> runs from nought (in step: same sign at the same
+      moment, nothing cancels, no pull at all) to 2<V>G</V> (out of step:
+      everything cancels), settling to the ordinary law beyond one Compton
+      wavelength.
+    </Note>
+
+    <Eq derive={IGNORANCE} open={show}
+      note="know how fast it is going but not where, and what you are holding is a de Broglie wave">
+      <V>λ</V> = <Frac over={<><V>λ</V><Sub>C</Sub></>} under={<><V>γβ</V></>} /> =
+      <Frac over={<V>h</V>} under={<V>p</V>} />
+      <span style={{ padding: '0 1.4em', color: FAINT }}>at ignorance = ½</span>
+      <V>v</V><Sub>phase</Sub> = <V>c</V><Sup>2</Sup>/<V>v</V>
+    </Eq>
+
+    <Note>
+      A moving source has two retarded branches and exactly one of them is
+      yours. Weight them by how likely you are to be ahead rather than behind —{' '}
+      <i>expected</i> in <i>field.ts</i> takes that weight as a parameter — and
+      at a half the expected phase is <V>ω</V><V>γ</V>(<V>t</V> − <V>vx</V>/
+      <V>c</V><Sup>2</Sup>) to nine figures, which is de Broglie’s wave, while
+      the half-<i>difference</i> is the Compton oscillation contracted and
+      travelling with the thing.{' '}
+      <b style={{ color: INK }}>The mean is the wave, the difference is the
+        particle</b> — and ½(cos <V>φ</V><Sub>A</Sub> + cos <V>φ</V><Sub>B</Sub>)
+      = cos <V>φ</V><Sub>dB</Sub>·cos <V>φ</V><Sub>C</Sub> is an identity, so
+      the fields average as cleanly as the phases.
+    </Note>
+
+    <Note>
+      The half is <b style={{ color: INK }}>load-bearing, which makes it a
+        test</b>. Bias it to 0.6 and the wavelength is 30% off <V>h</V>/<V>p</V>;
+      at (1−<V>β</V>)/2 the wave vanishes outright and past that runs backwards;
+      and anywhere but a half the field stops factorising. It is not radiation
+      that sets it — beaming would put (1+<V>β</V>)/2 forward and give exactly
+      half the de Broglie wavelength — but <i>position</i>: what is weighted is
+      which side of the thing you are on, and a position you know nothing about
+      is equally likely either side of you.{' '}
+      <b style={{ color: INK }}>So <V>E</V> = ħω comes from what mass is, and{' '}
+        <V>λ</V> = <V>h</V>/<V>p</V> from not knowing where it is</b> — with the
+      bridge between them being that the ignorance is symmetric, which is the
+      uncertainty relation doing the work rather than being assumed.
+    </Note>
+
+    <Note>
+      And the lattice does <i>not</i> do the averaging itself — scatter
+      delivers the red phase travelling the wrong way, and a composite body
+      only carries the de Broglie gradient if its emitters are in step in{' '}
+      <i>its own</i> frame.{' '}
+      <b style={{ color: INK }}>The obstruction is the global tick</b>, and
+      that is a sharper thing to be stuck on than “the observer’s ignorance”
+      was: it names the update rule that would have to change. So it is made a{' '}
+      <b style={{ color: INK }}>dial</b> rather than a choice — sync = 0 is the
+      global tick and sync = 1 is de Broglie, with <V>k</V> linear between — and
+      the dial doubles as the classical limit, since being in step with itself
+      in its own frame is free for one emitter and hard for 10<Sup>57</Sup>.
+    </Note>
+
+    <Note>
+      And at sync = 1 the phase <i>is</i> the relativistic free action over ħ,
+      to nine figures — which is what makes summing e<Sup>i<V>φ</V></Sup> over
+      paths literally ∫𝒟<V>x</V> e<Sup>i<V>S</V>/ħ</Sup>. Measured on the free
+      propagator it gives the straight-line action plus{' '}
+      <b style={{ color: INK }}>π/4 to three figures</b>, amplitude ∝ √<V>X</V>{' '}
+      — so stationary phase picks the classical path out of the ignorance with
+      nothing selecting it, and two slits are a corollary rather than a setup.{' '}
+      <b style={{ color: INK }}>One thing is left assumed: that every path gets
+        the same modulus.</b>
+    </Note>
+
+    <Note>
+      Exactly, at every mass, across twenty orders. Because{' '}
+      <V>m</V><Sub>P</Sub><V>l</V><Sub>P</Sub> = ħ/<V>c</V>, “period = 1/mass”
+      in the lattice’s units <i>is</i> the Compton relation — so the identity
+      that was put here to make the equivalence principle fall out of counting
+      has been a quantum statement all along. And the ceiling gives a largest
+      elementary mass, <V>G</V>·<V>m</V><Sub>Planck</Sub> ≈ 1.36 µg; anything
+      heavier is many emitters, which is what matter is.
+    </Note>
+
+    <Head>and the cosmology, which comes out empty</Head>
+
+    <Note>
+      The rules fix one whether or not one was wanted. Matter makes space,
+      meetings unmake it, and the net is what escapes — a real expansion, and
+      it compounds, so <V>H</V> is constant and the growth exponential. Ask it
+      for the <i>observed</i> <V>H</V> and it fails five separate ways, each
+      worth recording because each is a fact rather than a failure to try:
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>screening</span>,
+        <>The pairs that make the space <i>are</i> the fog that stops the
+          gravity. One <V>Φ</V>, two jobs, opposite values: observed <V>H</V>{' '}
+          wants <V>λ</V> = 38 µm; gravity at 1 AU wants{' '}
+          <V>H</V> ≲ 10<Sup>−96</Sup>. Thirty-five orders apart.</>],
+      [<span style={{ color: DERIVED }}>the attractor</span>,
+        <>With the cascade and the expansion’s own dilution,{' '}
+          (<V>C</V>−<V>k</V><V>Φ</V><Sup>2</Sup>)(2−<V>Φ</V>) = 0 — so either
+          nothing expands, or <V>Φ</V> = 2 <i>exactly</i>, at any rate. And{' '}
+          <V>Φ</V> = 2 puts <V>λ</V> at one lattice step.</>],
+      [<span style={{ color: DERIVED }}>matter is too thin</span>,
+        <>Bound regions not expanding does not clear the fog, because{' '}
+          <V>C</V> is what empty space does and there is empty space between
+          the Earth and the Sun. Integrated over its volume, <V>Φ</V> inside
+          the Sun is 1.5·10<Sup>−48</Sup>. The gap is the mass hierarchy, not
+          the geometry.</>],
+      [<span style={{ color: DERIVED }}>the clock</span>,
+        <>The expanding state needs <V>C</V> = 2 pairs a cell a tick, and once
+          a tick is the ceiling. It asks empty space to pulse twice as fast as
+          the lattice permits — a contradiction, not a shortfall.</>],
+      [<span style={{ color: DERIVED }}>escaping charges</span>,
+        <>The four above are all about the <i>vacuum</i> making pairs. This one
+          needs no vacuum: a body’s charges that cross the horizon never meet
+          anything, so they never give their point back —{' '}
+          e<Sup>−1/0.361</Sup> = <b style={{ color: INK }}>6.3% of everything
+            emitted leaves for good</b>. Immune to screening, uncapped by the
+          clock, and still <V>H</V> = 8·10<Sup>−80</Sup>/s against
+          2·10<Sup>−18</Sup>. <b style={{ color: INK }}>Sixty-one orders
+            short</b>, wanting 10<Sup>61</Sup> times the matter there is.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And all five have the same sign</b>, which is
+      the thing worth noticing. The usual embarrassment is a vacuum energy
+      10<Sup>120</Sup> too <i>large</i>; every mechanism this lattice has runs
+      the other way — 35 orders short on the vacuum route, 61 on the matter
+      route. So the model does not have the cosmological constant problem, it
+      has its mirror image, and a model that cannot make the universe expand at
+      all is wrong in a way that can be stated and looked for.
+    </Note>
+
+    <Note>
+      So: no expansion, no dark energy, no thermal history, and — since ± pairs
+      are made in pairs — no matter/antimatter asymmetry either.
     </Note>
 
     <Head>and what is still owed</Head>

@@ -25,8 +25,21 @@
  *   reversal only when they met head-on. See `Graph.scatter`.
  *
  *   LIGHT          = 1 cell / tick                nothing goes faster
- *   BITE           = 2 LIGHT                      cells a meeting destroys
+ *   BITE           = 1 LIGHT                      cells a meeting destroys —
+ *                                                 one, so that making and
+ *                                                 unmaking a ± pair are exact
+ *                                                 inverses. See `BITE`.
  *   mass(v)        = max(1/v, 1)                  the cost of going somewhere
+ *
+ *   and mass on the EMITTING side is a period, not a rate:
+ *     X              = 1/m ticks between pulses,  m ≤ 1 — once a tick is
+ *                                                 the ceiling, so there is a
+ *                                                 largest elementary mass,
+ *                                                 G·m_Planck ≈ 1.36 µg
+ *     X·c            = G · ħ/(mc) = G · λ_Compton exactly, at every mass.
+ *                                                 `period = 1/mass` in the
+ *                                                 lattice's units IS the
+ *                                                 Compton relation. See `mass`.
  *
  *   rate(s)        = turning, or ±1 flipping, or 0    turns per CYCLE ticks
  *   β(s,t)         = phase + t·rate / CYCLE       where its north points
@@ -311,6 +324,32 @@ export type Source = Spin & {
    * on six known three-body orbits: at every coupling the slow ones collapsed
    * and the fast ones escaped, and no value bound all six. Newton binds all
    * six, because his pull knows what it is pulling on.
+   *
+   * AND ONCE A TICK IS THE CEILING, which turns the identity round: mass is a
+   * PERIOD rather than a rate, `X = 1/m` ticks between pulses, with `m ≤ 1`.
+   * Two things follow, and the second is not small.
+   *
+   * A LARGEST ELEMENTARY MASS. The lattice mass unit is `G·m_Planck`, about
+   * 1.36 µg, so nothing that pulses on its own can weigh more than that.
+   * Anything heavier has to be many emitters — which is what matter is.
+   *
+   * AND THE PERIOD IS THE COMPTON WAVELENGTH. Turn `X` into a length:
+   *
+   *     X·c = G · ħ/(m c) = G · λ_Compton
+   *
+   * exactly, at every mass. Measured across twenty orders — electron, proton,
+   * uranium atom, virus, grain of sand — the ratio is 0.062329 every time,
+   * against `G` = 0.062351. It is not a coincidence: `m_P·l_P = ħ/c`, so
+   * "period = 1/mass" in the lattice's own units IS the Compton relation.
+   *
+   * Which is worth stopping on. This identity was put here to make the
+   * equivalence principle fall out of counting — `a ∝ m_b/R²` because a
+   * heavier thing brings proportionally more paths to the meeting. It turns
+   * out to have been a quantum statement the whole time: `E = ħω`, arrived at
+   * from how often a thing lets go of a charge, with nothing quantum put
+   * anywhere near it. The lattice is not a classical model waiting to have
+   * quantum mechanics added; the Compton relation is a consequence of what it
+   * already means by mass.
    */
   mass?: number;
 };

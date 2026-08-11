@@ -229,6 +229,24 @@ export type Emitter = {
   // Where it is, in cells.
   at: [number, number];
 
+  /**
+   * Whether this is ONE emitter or a body made of them — and it decides
+   * whether `coherence` has anything to say.
+   *
+   * `mass` here is how often a thing pulses, and once a tick is the ceiling
+   * (see `mass` in `physics.ts`), so nothing elementary weighs more than about
+   * a microgram. Everything in the panels is far past that: the Sun is 1.5e39
+   * in lattice units, which is 1.2e57 nucleons. A body like that has no single
+   * phase — it is 1e57 emitters with no reason to agree — so two such bodies
+   * are incoherent and `share` is exactly ½.
+   *
+   * That is where the ½ comes from, and it is derived rather than arranged.
+   * `models.ts` used to get the same number by spreading `flips` 3.7% a body
+   * on purpose so that no pair ever matched; the right answer for the wrong
+   * reason. Set this only on something that really is a single pulse.
+   */
+  lone?: boolean;
+
   // One if it has an axis and so has sides; nought if it puts out the same
   // thing in every direction at once.
   lobes: 0 | 1;
@@ -1072,3 +1090,414 @@ export const sparse = (beat: number | undefined, span: number) =>
  */
 export const grainAt = (turnPx: number) =>
   Math.min(Math.max((40 - turnPx) / 20, 0), 1);
+
+/**
+ * WHAT A MOVING SOURCE'S PHASE LOOKS LIKE FROM SOMEWHERE ELSE — and what is
+ * left of it when you do not know where the source IS.
+ *
+ * A source pulses at its own rate ω, which is its mass (see `mass` in
+ * `physics.ts`), and the field at a place carries the phase the source had at
+ * the RETARDED time. Moving at v, that equation has two branches, and exactly
+ * one of them is true of you:
+ *
+ *     you are AHEAD of it    t_r = (t − x/c)/(1 − β)
+ *     you are BEHIND it      t_r = (t + x/c)/(1 + β)
+ *
+ * Both are ordinary Doppler — blue ahead, red behind — and a point receives
+ * one shell, from one side, at a time. Nothing here is superposed.
+ *
+ * THE IGNORANCE IS THE OBSERVER'S. If you know how fast the thing is going but
+ * not where it is, you do not know which branch applies. Weight them `ahead`
+ * and `1 − ahead` and the expected phase is
+ *
+ *     φ = ωγ[ (1 − β + 2pβ)·t  +  (1 − β − 2p)·x/c ]
+ *     ⇒  k = ωγ(2p − 1 + β)/c
+ *
+ * and at p = ½ that is
+ *
+ *     φ = ωγ(t − vx/c²)        λ = λ_C/γβ = h/p       phase speed c²/v
+ *
+ * — the de Broglie wave, exactly. The half-difference is ωγ(βt − x/c), which
+ * is λ_C/γ with its zero at x = vt: the Compton oscillation, contracted, moving
+ * WITH the source. So the mean is the wave and the difference is the particle.
+ *
+ * IT IS NOT ROBUST, AND THAT IS THE INTERESTING PART. At p = 0.4 or 0.6 the
+ * wavelength is 20–40% off h/p, and the mean FIELD — which is
+ * `cos(φ_deBroglie)·cos(φ_Compton)` exactly at a half, to 6·10⁻¹⁵ — stops
+ * factorising at all. One number does both jobs.
+ *
+ * Tune it far enough and the wave dies outright: k = 0 at p = (1−β)/2, where
+ * the expected phase has no x in it at all and the observer holds a bare
+ * oscillation with no wavelength. Past that k turns over and the wave runs
+ * backwards. So the range is not a smooth dial with de Broglie somewhere on
+ * it — there is a zero, a sign change, and one point that gives h/p.
+ *
+ * And a half is what it has to be, for a reason that is not about radiation.
+ * Relativistic beaming puts (1+β)/2 of a moving source's output into the
+ * forward hemisphere, which would give exactly HALF the de Broglie wavelength —
+ * but beaming is the wrong quantity. What is being weighted is not how much
+ * goes each way, it is how likely YOU are to be on one side rather than the
+ * other, which is a fact about not knowing the source's POSITION. A position
+ * you know nothing about is equally likely either side of you.
+ *
+ * So: ω = m gives E = ħω from what mass is, and p = ½ gives λ = h/p from not
+ * knowing where the thing is. The bridge between them is that the ignorance is
+ * symmetric — which is the uncertainty relation doing the work, rather than
+ * being assumed.
+ *
+ * WHAT IS STILL OPEN, said plainly: in the model a point receives one efinite
+ * shell from one definite side. The ignorance is the observer's and not the
+ * lattice's. Whether that distinction is a defect or the whole content is the
+ * measurement question, and this puts it where it can be argued about dinstead
+ * of buried.
+ */
+const stretch = (v: number) => 1 / Math.sqrt(1 - (v * v) / (LIGHT * LIGHT));
+
+/** The retarded phase where the source is behind you — blue, and t_r/(1−β). */
+export const fromBehind = (x: number, t: number, v: number, omega: number) =>
+  omega * ((t - x / LIGHT) / (1 - v / LIGHT)) / stretch(v);
+
+/** And where it is in front of you — red, and t_r/(1+β). */
+export const fromAhead = (x: number, t: number, v: number, omega: number) =>
+  omega * ((t + x / LIGHT) / (1 + v / LIGHT)) / stretch(v);
+
+/**
+ * What an observer holds who knows `v` and not where the source is. `ahead` is
+ * how likely they think they are to be on the far side of it; a half is what
+ * knowing nothing comes to, and is the only value that gives h/p.
+ */
+export const expected = (
+  x: number, t: number, v: number, omega: number, ahead = 0.5,
+) =>
+  ahead * fromBehind(x, t, v, omega)
+  + (1 - ahead) * fromAhead(x, t, v, omega);
+
+/**
+ * And the wave that leaves — its wavenumber, wavelength and phase speed, as a
+ * function of how ignorant the observer is. At `ahead` = ½ this is de Broglie;
+ * anywhere else it is not, and the mean field no longer factorises.
+ */
+export const carried = (v: number, omega: number, ahead = 0.5) => {
+  const b = v / LIGHT, g = stretch(v);
+
+  const k = omega * g * (2 * ahead - 1 + b) / LIGHT;
+  const w = omega * g * (1 - b + 2 * ahead * b);
+
+  return { k, omega: w, wavelength: 2 * Math.PI / k, speed: w / k };
+};
+
+/**
+ * AND WHETHER THE LATTICE ITSELF DOES THE AVERAGING — which is what would turn
+ * the construction above into a derivation. It does not, and the obstruction
+ * turns out to be one specific thing rather than a vague worry.
+ *
+ * THREE CANDIDATES for supplying the second branch physically:
+ *
+ * a. SCATTER. Other matter turns the backward emission round, so the red phase
+ *    reaches a point that is ahead. Solving the arrival —
+ *    `t = t_e + (βt_e − X_s)/c + (x − X_s)/c` — gives
+ *    `t_e = (t − x/c + 2X_s/c)/(1 + β)`, the behind-branch with `x → 2X_s − x`.
+ *    So the scattered charge carries the RED FREQUENCY BUT TRAVELS +x, and its
+ *    k ADDS where the behind-branch's subtracts:
+ *
+ *      β     k_A        k_scattered   mean k      λ        phase speed
+ *      0.2   1.22e−2    8.17e−3       1.02e−2    615.6     1.0000
+ *      0.5   1.73e−2    5.77e−3       1.16e−2    544.1     1.0000
+ *      0.8   3.00e−2    3.33e−3       1.67e−2    377.0     1.0000
+ *
+ *    Mean k = ω₀γ/c, λ = λ_C/γ, phase speed exactly c. That is a light wave,
+ *    not de Broglie — which needs c²/v. To get k_B the red phase must ARRIVE
+ *    FROM AHEAD, and that needs the backward emission to have overtaken the
+ *    source. No scattering geometry does it. (This also sharpens the older
+ *    result that reflecting the FORWARD wave gives a plain standing wave: both
+ *    ways of turning a charge round fail, for the same reason.)
+ *
+ * b. A COMPOSITE SOURCE, which is the promising one, because it makes the
+ *    average PHYSICAL rather than epistemic. Anything above 1.36 µg is many
+ *    emitters (see `mass` in `physics.ts`), so a receiver really is ahead of
+ *    some constituents and behind others, and averaging over them is a fact
+ *    about the body rather than about anyone's knowledge.
+ *
+ * c. WHICH ONLY PUSHES THE QUESTION TO WHAT SETS THE CONSTITUENTS' PHASES —
+ *    and there the answer is sharp. With rest positions ξ and lab positions
+ *    x = vt + ξ/γ, measured as the gradient of phase across the body:
+ *
+ *      in step in the BODY's frame     k = 5.7735e−3    λ = 1088.3
+ *      in step in the LATTICE's frame  k = 0            λ = ∞, no wave
+ *      de Broglie wants                k = 5.7735e−3    λ = 1088.3
+ *
+ *    Rest-frame synchrony puts the de Broglie wavenumber straight into the
+ *    body's own internal phase pattern — no retardation, no averaging, nothing
+ *    borrowed. It is `φ_i = ω₀(t/γ − vξ_i/c²)`, and the `−vξ/c²` IS the wave.
+ *    Lattice synchrony puts nothing there at all: one global tick means one
+ *    phase, so the gradient is zero.
+ *
+ * SO THE OBSTRUCTION IS THE GLOBAL TICK, and it is the same obstruction twice.
+ * `ω₀γ(t − vx/c²)` is ω₀ times the source's proper time at the event
+ * simultaneous with (t,x) IN ITS OWN REST FRAME. Averaging the branches
+ * reconstructs rest-frame simultaneity; rest-frame synchrony assumes it. They
+ * agree to every digit because they are one statement. And `tick()` advancing
+ * everything at once is exactly the denial of it.
+ *
+ * WHICH IS A REAL STRUCTURAL REQUIREMENT, and worth more than the open question
+ * was: for de Broglie to be derived, a composite body must be IN STEP WITH
+ * ITSELF IN ITS OWN FRAME — a per-body simultaneity, not a global one. That is
+ * a statement about what the lattice's update rule would have to be, and it can
+ * be tried. It is also uncomfortable, because a global tick is most of how
+ * this model stays simple.
+ *
+ * AND (2) TWO SOURCES — the phase does interfere, at the right spacing.
+ *
+ * `φ = ω₀γ(t − v·r/c²)` has `∇φ = −ω₀γv/c²`: constant everywhere, along v,
+ * magnitude ω₀γβ/c. A genuine three-dimensional plane wave at the de Broglie
+ * wavelength, not a one-dimensional artefact. Split a path and rejoin it:
+ *
+ *      d        D         measured     λ_dB·D/d     ratio
+ *      1.0e5    4.0e6      43612.8      43531.2     1.0019
+ *      2.0e5    4.0e6      21779.2      21765.6     1.0006
+ *      1.0e5    1.2e7     130838.4     130593.6     1.0019
+ *
+ * The residual is the PARAXIAL comparison and not the model — `λ_dB·D/d` is the
+ * small-angle form, and the error halves as the angle halves. `d` must exceed
+ * λ_dB or there is no fringe at all, since the path difference saturates at d.
+ *
+ * The phase must be carried ALONG THE PATH (`φ = |k|·L`), and the model gives
+ * that without a choice being made: v in `ω₀γ(t − v·r/c²)` is the source's own
+ * velocity, so a particle that went through the upper slit has v along the
+ * upper path. Holding v fixed instead gives `|k|·L·cos θ`, both paths get the
+ * same projection, and there is no pattern whatever.
+ *
+ * WHAT IT DOES NOT GET, and this matters more than what it does: the pattern
+ * needs both paths to contribute at one screen point, and the model has one
+ * particle taking one path. So this is the fringe SPACING — geometry on top of
+ * a wavelength — and not interference. The wavelength is derived; the amplitude
+ * rule is not. Getting `λ_dB·D/d` right once λ_dB is right is close to
+ * automatic, so it confirms the wave is really three-dimensional and really
+ * travels with the particle, and it is not independent evidence.
+ */
+
+/**
+ * THE RELAXATION — one dial from the lattice's own rule to rest-frame
+ * simultaneity, so the model can be ASKED for the other theory rather than
+ * having to choose between them.
+ *
+ * The two conventions above are not two models. They are two values of the
+ * weight `ahead` already in `expected`, and everything between them is defined:
+ *
+ *     ahead = (1 − β)/2      k = 0            the global tick. No matter wave.
+ *     ahead = ½              k = ω γ β / c    rest-frame sync. de Broglie.
+ *
+ * The first is exactly where the wave was found to vanish when the weight was
+ * swept, which was recorded above as a curiosity and is not one: `k = 0` IS
+ * lattice simultaneity, because one global tick means one phase means no
+ * spatial gradient. So write the dial as
+ *
+ *     ahead = (1 − β(1 − sync))/2
+ *
+ * and the whole family collapses to one line:
+ *
+ *     k = sync · ω γ β / c          λ = λ_deBroglie / sync
+ *     Ω = ω/γ + sync · ω γ β²       at sync = 1 this is ωγ = E/ħ
+ *
+ * — linear in `sync`, with the classical particle at nought and the quantum one
+ * at one, and no discontinuity anywhere between.
+ *
+ * WHAT THE DIAL IS FOR. `sync` is how much of a body is in step with ITSELF in
+ * its OWN frame. A lone elementary emitter is trivially in step with itself, so
+ * sync = 1 and it carries a full de Broglie wave. A body of 10⁵⁷ emitters
+ * updated by one global tick is in step in the LATTICE's frame instead, so its
+ * internal phase gradient is nought and sync → 0.
+ *
+ * WHICH IS THE CLASSICAL LIMIT, and it falls out rather than being imposed:
+ * small things are quantum and big things are not, because "in step with itself
+ * in its own frame" is free for one emitter and hard for 10⁵⁷. That is a
+ * conjecture and it is testable — it predicts the matter wavelength of a
+ * composite is λ_dB/sync with sync set by how well its constituents hold a
+ * common phase, so it should degrade with internal temperature and not only
+ * with mass. Nothing here derives sync from the constituent count yet; the dial
+ * exists so that the question can be asked with numbers.
+ *
+ * AND AT sync = 1 THE PHASE IS THE ACTION. `φ = ωγ(t − vx/c²)` is `−(p·x − Et)/ħ`
+ * with `p = mγv` and `E = mγ` in lattice units where ω = m — and along the
+ * body's own worldline `x = vt` it collapses to `ωt/γ = ω·τ`, which is
+ * `−mc²∫dτ/ħ`, the relativistic free action. Not a coincidence and not put in:
+ * it is what `mass = rate` plus rest-frame simultaneity comes to. That is what
+ * makes a sum over paths meaningful at all — see the note after `wave`.
+ */
+export const relax = (v: number, sync: number) =>
+  (1 - (v / LIGHT) * (1 - sync)) / 2;
+
+/** The expected phase at a given simultaneity. `sync` = 1 is de Broglie. */
+export const synced = (
+  x: number, t: number, v: number, omega: number, sync = 1,
+) => expected(x, t, v, omega, relax(v, sync));
+
+/** And the wave that leaves, as a function of the same dial. */
+export const wave = (v: number, omega: number, sync = 1) =>
+  carried(v, omega, relax(v, sync));
+
+/**
+ * IGNORANCE OF WHICH PATH — which is the same move as `expected` made once more,
+ * and doing it properly removes the thing that was wrong with the two-slit test.
+ *
+ * That test put two openings and a screen in by hand and then measured a fringe
+ * spacing, so what came out depended on the arrangement. The arrangement is not
+ * the physics. The right object is the one that has no screen in it: a particle
+ * goes from A to B, you do not know by which path, so sum over ALL of them —
+ * each weighted `e^{iφ}` with φ its own phase.
+ *
+ * AND THAT IS ONLY MEANINGFUL BECAUSE THE PHASE IS THE ACTION. Measured, at
+ * sync = 1, to nine figures at every β:
+ *
+ *     φ = ωγ(t − vx/c²)  =  −(p·x − E·t)/ħ        p = mγv, E = mγ, ω = m
+ *     along x = vt       =  ω·τ  =  −mc²∫dτ/ħ     the relativistic free action
+ *
+ * — so summing `e^{iφ}` over paths IS `∫𝒟x e^{iS/ħ}`, with nothing inserted.
+ * The model did not have Feynman's rule put into it; it has `mass = rate` and
+ * rest-frame simultaneity, and the action is what those two come to.
+ *
+ * MEASURED, on the free propagator — paths A → midpoint y → B, summed over y
+ * with a Gaussian taper of width w (the standard regulator for an oscillatory
+ * integral, in units of the Fresnel zone √(πX/2k)):
+ *
+ *     w      X=20000   X=40000   X=80000
+ *     0.5     0.3326    0.3327    0.3328      arg(amplitude) − k·X
+ *     1.0     0.6337    0.6325    0.6319      wanting π/4 = 0.7854
+ *     2.0     0.7489    0.7473    0.7465
+ *     4.0     0.7787    0.7771    0.7763
+ *     8.0     0.7862    0.7845    0.7837
+ *
+ * and the amplitude goes as √X — ratios 1.4141 and 1.4142 against √2 = 1.4142.
+ * So the sum over paths gives the straight-line action PLUS the Fresnel phase
+ * the free propagator is known to carry. Stationary phase picks the classical
+ * path out of the ignorance, with nothing selecting it and no screen anywhere.
+ *
+ * TWO SLITS ARE THEN A COROLLARY rather than a setup — restrict the intermediate
+ * points to two openings and the same sum gives the fringes, for any geometry.
+ * Which is the answer to the objection: the pattern was never the result, the
+ * propagator is, and the pattern is one of its consequences.
+ *
+ * WHAT IS STILL ASSUMED, and it is now ONE thing rather than a gap: every path
+ * gets the SAME MODULUS. Feynman postulates it. `WAYS` looked like the obvious
+ * candidate — every way out of a point equally available — and the argument is
+ * three lines:
+ *
+ *   1. every way out of a point is equally available; that is what WAYS is
+ *   2. a charge takes exactly one step per tick, so path length ∝ time
+ *   3. so all paths from A to B in time T have N = T/τ steps and probability
+ *      (1/WAYS)^N — the same for every one of them
+ *
+ * IT DOES NOT WORK, and the reason is worth more than the argument was. Summed
+ * over every 8-neighbour lattice path of 130 steps in two dimensions, with each
+ * step weighted 1/WAYS and phased by k·|δ|:
+ *
+ *     x       |A|          arg(A)     k·x     fitted k_eff = 0.01616
+ *     40      3.17e−7      −3.036     12.0    against k = 0.30
+ *     70      4.06e−15     −2.652     21.0    ratio 0.054
+ *     100     4.69e−29     −1.956     30.0    λ_eff 389 cells, not 21
+ *
+ * The phase does not track `k·x` at all, and |A| falls twenty-two orders across
+ * that span — which is not a propagating wave but the large-deviation tail of a
+ * random walk. Most N-step paths end near the origin; the ones reaching x are
+ * exponentially rare and dominate by their own statistics instead of cancelling
+ * down to the straight line.
+ *
+ * AND THE DIAGNOSIS IS THE SAME MISTAKE TWICE. Every charge here moves at
+ * exactly c, so every step is LIGHTLIKE and every path has the same proper
+ * time: nought. A massive particle's phase is `−mc²∫dτ/ħ`, which along a
+ * lightlike path is also nought. A CHARGE'S PATH IS NOT A PARTICLE'S PATH, and
+ * `WAYS` counts a charge's options. The path integral needs the worldlines of
+ * the EMITTER, which moves at v < c and whose available directions are not
+ * WAYS at all.
+ *
+ * So the flat modulus is not derived, and it failed by exactly the error the
+ * `SHEET`/`WAYS` audit in `gravity.ts` was looking for elsewhere: a count used
+ * for a job it is not the count for. Two independent things now point at the
+ * same structural gap — the lattice has one kind of mover, and both quantum
+ * mechanics and the metric want statements about the other kind.
+ *
+ * SO THE LADDER NOW READS: mass = rate gives E = ħω; rest-frame simultaneity
+ * gives λ = h/p and makes the phase the action; ignorance over paths gives the
+ * propagator. Two things are owed — what sets `sync` for a composite, and why
+ * the modulus is flat — and neither is any longer a question about gravity.
+ */
+
+/**
+ * AND THEN THE ZIGZAG, WHICH SUPERSEDES MOST OF THE ABOVE.
+ *
+ * Everything before this got λ = h/p by averaging over what an observer does
+ * not know. This gets it from the dynamics, and it answers the modulus question
+ * the same way — so it is the better account, and the earlier one should be
+ * read as the route that found the target rather than as the derivation.
+ *
+ * THE MOVE-OR-UPDATE BUDGET. A thing has one action a tick: move, or update its
+ * own state. Light spends all of it moving and so has no clock at all, which is
+ * why it is massless. A slow thing spends most of it on itself. That is the
+ * right instinct and it has two cash-outs, only one of which survives.
+ *
+ *   IDLING   move on a fraction β of ticks, update on the other (1 − β)
+ *   ZIGZAG   move EVERY tick, always at c, and let the DIRECTION alternate;
+ *            net speed is the imbalance, and the updates ARE the reversals
+ *
+ * IDLING IS WRONG, and measurably:
+ *
+ *     β        1 − β       1/γ = √(1−β²)    ratio
+ *     0.30     0.700000    0.953939         0.7338
+ *     0.50     0.500000    0.866025         0.5774
+ *     0.95     0.050000    0.312250         0.1601
+ *
+ * It gives `(1−β)` where relativity wants `√((1−β)(1+β))` — one Doppler factor,
+ * with the other dropped. And it is not symmetric under β → −β, so a left-mover
+ * would age at 1.5 and a right-mover at 0.5. Anything that idles has a
+ * preferred frame: the one it idles in.
+ *
+ * THE ZIGZAG PUTS THE MISSING FACTOR BACK, because the `(1+β)` is carried by the
+ * backward steps, which idling has none of. Write it as the lattice rule it is:
+ *
+ *     ψ_R(x, t+1) = a·ψ_R(x−1, t) + b·ψ_L(x−1, t)
+ *     ψ_L(x, t+1) = a·ψ_L(x+1, t) + b·ψ_R(x+1, t)     a = cos m,  b = i·sin m
+ *
+ * — local, one global tick, everything at c, and `b` the amplitude to turn.
+ * The transfer matrix has determinant `a² − b² = 1` and trace `2a cos k`, so
+ *
+ *     cos Ω = cos m · cos k          exact, at every m and k
+ *
+ * and in the continuum `Ω² = k² + m²` to six figures. From that, measured:
+ *
+ *     m        k        v = dΩ/dk    mγv (want k)   mγ (want Ω)   λ/λ_dB
+ *     0.004    0.001    0.242534     0.001000       0.004123      0.999995
+ *     0.004    0.004    0.707104     0.004000       0.005657      0.999992
+ *     0.004    0.008    0.894424     0.008000       0.008944      0.999984
+ *
+ * k IS mγv, Ω IS mγ, λ IS λ_dB. And the internal rate `Ω − k·v` — the phase
+ * along the worldline x = vt — comes to `m/γ` to six figures, so TIME DILATION
+ * FALLS OUT rather than being imposed.
+ *
+ * THE REVERSAL RATE IS `CLOCK`'S OWN PULSE PERIOD. Paths with R reversals carry
+ * `(i sin m)^R` and there are C(N,R) of them, so the weighted mean gap is
+ * `1/tan(m) + 1 → 1/m` — which is X, the ticks between pulses, to the leading
+ * order everything here is worked to. So MASS-AS-PULSE-RATE AND MASS-AS-ZIGZAG-
+ * RATE ARE ONE QUANTITY, and `physics.ts` already had it.
+ *
+ * AND THE MODULUS IS DERIVED, WHICH WAS THE WHOLE QUESTION. Feynman postulates
+ * that every path counts the same. Here it does not: a path of N steps with R
+ * reversals weighs `cos^(N−R) m · sin^R m`, set entirely by how often it turns,
+ * which is set entirely by the mass. `a² + b² = 1` makes it unitary for free.
+ * The amplitude rule is the pulse rate.
+ *
+ * WHICH RETIRES A CONCLUSION DRAWN ABOVE, and it should be said plainly. The
+ * claim was that de Broglie requires per-body rest-frame simultaneity and that
+ * the GLOBAL TICK was the obstruction. This derivation uses a global tick, is
+ * local, and gets λ_dB anyway — so that claim is false as stated. What was
+ * actually shown is narrower: a composite whose constituents carry INTERNAL
+ * PHASES needs rest-frame synchrony for those phases to add up to a matter
+ * wave. The zigzag carries the phase in the AMPLITUDE OVER PATHS instead, and
+ * that needs no simultaneity convention at all. `relax`/`synced`/`wave` stay
+ * useful as a dial, but they are no longer the account.
+ *
+ * WHAT IS STILL OWED. This is 1+1 dimensions, where the checkerboard is clean;
+ * nobody has a fully satisfactory 3+1 version, so the next thing is to find out
+ * whether `WAYS` gives one — which is the emitter's-option count the audit in
+ * `gravity.ts` said was missing, now with a specific job to do. And none of it
+ * touches `SPREAD`'s factor of 3.4034, which remains a separate problem.
+ */

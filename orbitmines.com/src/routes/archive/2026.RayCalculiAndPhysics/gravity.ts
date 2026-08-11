@@ -543,10 +543,29 @@ export const carry = (px: number, py: number, fold: number) => {
  *   sheet-confined creation                 1/r  ✓           anisotropic 100:1
  *   the same, sheet tumbling                1/r²             averaging undoes it
  *   creation per charge per tick            1/r  ✓           lattice has no transport
+ *   point source + diffusion                1/r  ✓           needs λ = 10 cells;
+ *                                                            the vacuum gives 10⁶⁰
+ *   the same, integrated RADIALLY           1/r  ✓           G out by 3.4034
+ *                                                            exactly = πWAYS/3SHEET
  *
  * Everything that fails, fails because it is built from `chance ∝ 1/r²`. The
  * three that pass the shape test do it by an integration or a dimensional
  * reduction, and neither has a mechanism behind it.
+ *
+ * AND THE TWELFTH IS THE ONE TO CHASE — the last entry. It needs no transport
+ * at all: a 1/r² density integrated radially outward IS 1/r, one integration
+ * and nothing free. It gets the shape, it is a fact about a place rather than
+ * about a pair, and it PREDICTS G instead of absorbing it — wrongly, by
+ * `π·WAYS/(3·SHEET)` exactly. A pure count, so a finite thing to hunt. See the
+ * bottom of `SPREAD`.
+ *
+ * THE ELEVENTH IS THE OTHER INFORMATIVE ONE. It has a
+ * mechanism, it is static, it gives 1/r, and it fixes its own coefficient — and
+ * it fails on ARITHMETIC THE MODEL DOES ELSEWHERE. `D = c·λ/3` is not
+ * negotiable for anything moving at c, and the only constant-density scatterer
+ * here is the vacuum, whose length `reach` already computes. See the bottom of
+ * `SPREAD`. Ten of these failed on a shape; this one failed on the model
+ * contradicting itself, which has not happened before and is worth more.
  *
  * WHAT DOES WORK, and it is one idea: put the source AT THE BODY. If making a
  * charge converts one neutral point into the two a ± pair needs, the body is a
@@ -729,20 +748,64 @@ const density = (s: Live, r: number) => chance(s.mass ?? 1, r);
  * cosine says that and nothing more: full weight in the middle, nothing at
  * the ends, no parameter.
  *
- *     R (cells)      1      2      4      8     16     32
- *     in step        0.07   0.15   0.30   0.50   0.50   0.50
- *     half a cycle   0.93   0.85   0.70   0.50   0.50   0.50
+ * Measured against the wavelength, which is where it belongs — ω IS the mass
+ * (see `mass` in `physics.ts`), so one wavelength is 2π/m = 2π·G·λ_Compton:
  *
- * — a real, strong effect inside one wavelength, gone beyond it, and gone
- * SMOOTHLY: the residual ripple over R from twenty to thirty-four cells
- * falls from 8.45% of the share to 0.32%. Two things a long way apart cannot
- * be in step in any way that matters, and the model now actually says so
- * rather than saying it on average and oscillating about it.
+ *     R/λ            0.02   0.05   0.10   0.20   0.50   0.70   1.00   ≥1.5
+ *     in step        0.012  0.030  0.059  0.119  0.297  0.409  0.500  0.500
+ *     half a cycle   0.988  0.941  0.881  0.762  0.405  ...    0.500  0.500
+ *
+ * — rising almost exactly linearly from nought to a half across one
+ * wavelength, and flat for ever after. Gone SMOOTHLY, too: the residual
+ * ripple over R from twenty to thirty-four cells falls from 8.45% of the
+ * share to 0.32%.
+ *
+ * WHAT THAT IS A STATEMENT ABOUT, now that ω is not free. The pull goes as
+ * `share` and the incoherent value is a half, so `G_eff/G = 2·share`:
+ *
+ *     two identical emitters IN STEP and close      G_eff → 0
+ *     two identical emitters OUT OF STEP and close  G_eff → 2G
+ *     anything further apart than one wavelength    G_eff = G
+ *
+ * In step and on top of each other there is no gravity between them AT ALL —
+ * they put out the same sign at the same moment, so nothing cancels, so
+ * nothing is annihilated, so the interval between them does not shorten. Out
+ * of step, every meeting cancels and the pull is doubled.
+ *
+ * So between two of the SAME elementary thing, G runs anywhere from 0 to 2G
+ * over the first Compton wavelength and which one depends on their relative
+ * phase. Inside λ_C that is not a correction to gravity; it is a different
+ * interaction, and one that already knows about phase. Beyond λ_C the
+ * ordinary inverse square returns, which is why nothing above the Compton
+ * scale has ever seen it.
+ *
+ * None of this was added. `coherence`, `opposed` and ω have been here since
+ * the pull was written, doing what looked like bookkeeping about interference.
+ * Telling ω that it is the mass — which the Compton relation forces — is what
+ * turned them into a statement about identical particles at their own scale.
  *
  * Sources turning at DIFFERENT rates never had a fixed relation to average
  * in the first place, and go straight to a half.
  */
 export const coherence = (one: Live, two: Live, R: number) => {
+  /**
+   * A BODY MADE OF THINGS HAS NO PHASE, so it can never be coherent with
+   * anything — and that, rather than an arranged spread of rates, is why
+   * `share` is a half for everything in this article.
+   *
+   * `mass` is how often a thing pulses and once a tick is the ceiling, so an
+   * elementary emitter weighs at most `G·m_Planck` ≈ 1.36 µg. Every source in
+   * every panel is enormously past that — the Sun is 1.2e57 nucleons — and a
+   * sum of 1e57 emitters with no reason to agree has a uniform phase. The
+   * average of `opposed(ψ) = |ψ|/π` over a uniform ψ is exactly ½, which is
+   * the number this used to be given by hand.
+   *
+   * So the walk below is not about stars. It is about two of the SAME
+   * elementary thing, which do share an ω because ω IS the mass, and which
+   * therefore hold a fixed phase relation for as long as they exist.
+   */
+  if (!one.lone || !two.lone) return 0.5;
+
   if (Math.abs(one.omega - two.omega) > 1e-9) return 0.5;
 
   const steps = WALK(R);
@@ -1163,6 +1226,11 @@ export const GRAVITY = G_LATTICE * GRAIN;
  * rule would have to produce on its own for γ = 1 to be derived rather than
  * assumed.
  *
+ * IT DOES NOT. See the bottom of `SPREAD`: `MADE` and `SPREAD` are one
+ * constraint written twice (`D = c/MADE`), and read as a diffusivity it demands
+ * a mean free path of ten cells where the model's own vacuum gives 10⁶⁰. The
+ * account below is kept for its mechanism and not for its number.
+ *
  * WHY IT IS NOT WIRED IN. Three things were measured and two of them work:
  *
  *   the sign     right. Space made near a mass gives C/r < 2π, excess radius,
@@ -1189,7 +1257,13 @@ export const GRAVITY = G_LATTICE * GRAIN;
 export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
 
 /**
- * HOW FAST THE SURPLUS SPREADS — and with it, the whole of B, derived.
+ * HOW FAST THE SURPLUS SPREADS — and why this account is now CLOSED.
+ *
+ * This said "and with it, the whole of B, derived". It is not, and the reason
+ * is at the bottom of this comment: `D` is not a free number, the lattice has
+ * exactly one length that could set it, and that length is wrong by fifty-nine
+ * orders of magnitude. What follows is kept because the mechanism is right and
+ * only the number kills it, and because the number is the model's OWN.
  *
  * `MADE` above says a body makes space. This says what happens to it, and the
  * two together are what turn a rate into a metric.
@@ -1238,6 +1312,172 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * Both are the same requirement — how much space has to end up at radius r —
  * written once as a rate per charge and once as a diffusivity. One constraint,
  * not two agreeing, and the second decimal place is not a confirmation.
+ *
+ * ---------------------------------------------------------------------------
+ * AND HERE IS WHAT KILLS IT. `D` was SOLVED FOR, by requiring δ = 3u. That is
+ * the last place γ_PPN = 1 is assumed rather than counted, so the whole point
+ * of it is to be derived independently — and a diffusivity cannot be posted as
+ * a free parameter, because for anything moving at c it is
+ *
+ *     D = c·λ/3
+ *
+ * with λ the distance between scatters. So the account is only as good as the
+ * λ the lattice can supply, and that is a question with an answer.
+ *
+ * WHAT D DEMANDS.  λ = 3D/c = π·WAYS/SHEET = 10.21 cells.
+ *
+ * WHAT THE LATTICE HAS. Diffusion needs a CONSTANT-density scatterer, because
+ * a constant D is the only thing that gives 1/r — source it from the body's own
+ * field instead and `chance ∝ 1/r²` makes λ(r) ∝ r², hence D(r) ∝ r², hence
+ * `4πr²D dδ/dr = −S` gives δ ∝ 1/r³. So it has to be the vacuum, and the model
+ * ALREADY COMPUTES that length: it is `reach`, the thing that makes gravity
+ * Yukawa, at `λ/R_horizon = REACHES = 0.361`. With the cell at the Planck
+ * length — which `physics.ts` fixes, since the mass unit is G·m_Planck —
+ *
+ *     needed     1.02·10¹    cells
+ *     have       2.91·10⁶⁰   cells
+ *     ratio      2.85·10⁵⁹
+ *
+ * and it is not a factor-of-two argument about scattering versus annihilating.
+ * A charge meeting an opposite one annihilates and an alike one scatters, at
+ * share = ½ each, so the two lengths differ by about two. Fifty-nine orders is
+ * not two.
+ *
+ * WHICH PUTS THE MODEL DEEP IN THE BALLISTIC LIMIT, and that is measured, not
+ * argued. Point source, charges streaming at c, exponential free path, isotropic
+ * re-scatter, tallying path per shell:
+ *
+ *     λ          δ·r  (flat ⇒ 1/r)          δ·r² (flat ⇒ 1/r²)
+ *                r=4     r=32    r=256      r=4     r=32    r=256
+ *     10.21    3.3e−2  2.1e−2  9.9e−3     1.4e−1  6.8e−1  2.3e+0
+ *     10³      1.8e−2  2.7e−3  4.2e−4     8.0e−2  8.4e−2  9.6e−2
+ *     10⁶      1.8e−2  2.5e−3  3.4e−4     7.9e−2  8.0e−2  7.9e−2
+ *
+ * At λ = 10.21 the profile is 1/r at exactly the coefficient assumed —
+ * `(S/4πD)(1 − r/R)`, ratio 0.989 in the window λ ≪ r ≪ R, the `1 − r/R` being
+ * the box. So the MECHANISM is sound. At λ ≫ r it is 1/r² and equals `S/4πc` to
+ * 0.6%, which is the regime the lattice is actually in.
+ *
+ * AND δ ∝ 1/r² IS NOT A POTENTIAL. `u ∝ 1/r²` does not give Newton, never mind
+ * the metric — so this route does not produce a weakened B, it produces the
+ * wrong law entirely.
+ *
+ * SO THE HONEST STATEMENT CHANGED. It was "the coefficient is unfound". It is
+ * now: `SPREAD` and `reach` are the same vacuum read twice, and they demand
+ * lengths fifty-nine orders apart, so THEY CANNOT BOTH BE RIGHT. That is worth
+ * more than the open question was — an unfound coefficient waits, whereas a
+ * contradiction has to be spent, and there are only two ways to spend it.
+ *
+ *   drop `reach`     then λ is free and D can be 10.21 — but `REACHES = 0.361`
+ *                    is the one full prediction in this file, and it goes.
+ *   keep `reach`     then transport is ballistic, δ goes as 1/r², and space
+ *                    being made cannot be where the metric comes from at all.
+ *
+ * The second is the one to take, because `reach` is counted and `SPREAD` was
+ * solved for, and a derived number outranks a fitted one.
+ *
+ * ---------------------------------------------------------------------------
+ * AND SPENDING IT THAT WAY PAYS, WHICH WAS NOT EXPECTED. Killing diffusion does
+ * NOT kill the point source, because there is a way to get 1/r out of a 1/r²
+ * density that needs no transport whatever, and it had not been tried:
+ *
+ *     ∫_r^∞ (1/s²) ds = 1/r
+ *
+ * INTEGRATE IT RADIALLY. One integration, no diffusivity, no mean free path,
+ * nothing free. And it is not "read u off the force" — δ goes as `m_b` ALONE
+ * where `shortfall` goes as `m_a·m_b`, so this is a fact about a PLACE, which
+ * was the entire objection to the old `settle`.
+ *
+ * MEASURED, with `δ(s) = chance(m,s)/c`, the surplus read ballistically:
+ *
+ *     r        ∫_r^∞ δ ds     m·SHEET/(4πrc)    ratio
+ *     10       6.362817e−2    6.366198e−2       0.999469
+ *     100      6.366158e−3    6.366198e−3       0.999994
+ *     1000     6.366191e−4    6.366198e−4       0.999999
+ *
+ * — 1/r, exactly, with nothing fitted. So it PREDICTS G rather than absorbing
+ * it. Setting `∫δ = 3u` and `u = G·m/(rc²)`:
+ *
+ *     predicted    G = SHEET·c/(12π)      = 0.21220659
+ *     the pull's   G = SHEET²/(4π²·WAYS)  = 0.06235150
+ *     ratio                                 3.403392
+ *     π·WAYS/(3·SHEET)                      3.403392
+ *     SPREAD                                3.403392
+ *
+ * THE THREE ARE ONE NUMBER, and that says what `SPREAD` actually is. It is NOT
+ * a diffusivity. It is the factor by which the METRIC route's G exceeds the
+ * PULL route's G, and it was given the name of a mechanism it does not have.
+ * The mechanism is dead by fifty-nine orders; the NUMBER is real, and it is a
+ * measured disagreement between two independent derivations of one constant.
+ *
+ * WHICH IS A FAR BETTER PLACE TO BE STUCK. Before: an unfound coefficient and a
+ * mechanism needing a length the lattice has not got. Now: two routes, both
+ * counted, neither with a free parameter, disagreeing by `π·WAYS/(3·SHEET)`
+ * exactly — a pure count, so a statement about the lattice's geometry and
+ * nothing else. Something in one of the two counts is wrong and it is a
+ * COUNTABLE thing. That is a finite search, which "unfound" never was.
+ *
+ * AND THE FIX IS NOT A COEFFICIENT. The two agree iff `WAYS/SHEET = 3/π`:
+ *
+ *     d = 2   WAYS 8     SHEET 2    ratio 4.0000
+ *     d = 3   WAYS 26    SHEET 8    ratio 3.2500      want 0.9549
+ *     d = 4   WAYS 80    SHEET 26   ratio 3.0769
+ *     d = 5   WAYS 242   SHEET 80   ratio 3.0250
+ *
+ * `3/π` is irrational and `WAYS/SHEET` is a ratio of integers that tends to 3
+ * from above, so no dimension closes it and no lattice of this shape can. The
+ * two counts cannot both be right AS THEY STAND. Since they are not even the
+ * same kind of count — SHEET is what a source EMITS, WAYS is what a path could
+ * have DONE INSTEAD — the honest reading is that one of them is being used for
+ * a job it is not the count for, which is the same mistake `gravity.ts` already
+ * made once and recorded under `WAYS`.
+ *
+ * THE AUDIT, done. `WAYS` enters the DYNAMICS in exactly one place — `BIAS` —
+ * and `SHEET` in `chance` and `reach`. Everything else (G, MADE, SPREAD) is
+ * built from those. So there are three places the error can be, and they can be
+ * ranked:
+ *
+ *   substituting into BIAS      G_pull       ratio to G_metric
+ *     WAYS   (current)          0.06235150   3.403392
+ *     SHEET                     0.20264237   1.047198   ← π/3
+ *     WAYS−1                    0.06484556   3.272492
+ *     WAYS+1                    0.06004218   3.534292
+ *
+ * `SHEET` in `BIAS` closes it from three and a half TIMES to four and a half
+ * PER CENT — and the residual is exactly π/3. That is a striking near miss and
+ * it is NOT a fix: the argument for WAYS is good (alternatives a path could
+ * have taken, not charges emitted) and 4.7% is not nought. It is recorded
+ * because a residual of exactly π/3 is either meaningless or the whole answer,
+ * and those can be told apart by finding where a π/3 would live.
+ *
+ * Keeping WAYS, the metric route's `k` would have to be `π·WAYS/SHEET = 10.21`
+ * instead of 3 — and 3 was there because a VOLUME excess is three times a
+ * linear one, which is DIMS. 10.21 is not a metric factor at all, so the
+ * discrepancy cannot be hidden in `k` without throwing away the only reason `k`
+ * had a value.
+ *
+ * AND THE WEAKEST LINK IS NOT EITHER COUNT — it is the identification itself,
+ * which should have been flagged harder when it was found. `∫_r^∞ δ ds = 3u`
+ * is a PROPOSAL. δ is a density of charges per cell, a local dimensionless
+ * occupancy, and integrating it along a radial ray gives "how many of the
+ * body's charges you meet going out from r to infinity" — a perfectly good
+ * lattice quantity that does go as 1/r. Identifying that with a VOLUME excess
+ * is a choice, and the competing reading (δ ITSELF is the local volume excess)
+ * gives 1/r² and is arguably the more natural one. The shape came out right;
+ * the reason for preferring the integral is still that it works, which is the
+ * thing this file refuses to accept everywhere else.
+ *
+ * Ranked, most likely wrong first:
+ *   1. the identification ∫δ = 3u   a choice, unargued
+ *   2. BIAS's WAYS                  argued, but sits π/3 from closing it
+ *   3. the pull's own geometry      checked hardest, least likely
+ *
+ * So: B does not come from diffusion, it may come from the radial integral,
+ * and what stands between is one wrong count or one unargued identification
+ * rather than a missing mechanism.
+ * `slowing` and `thickness` stay borrowed until it is found. The ten mechanisms
+ * under `carry` are now twelve, and the twelfth is the first that fails by a
+ * stated finite amount instead of by a shape or by sixty orders.
  */
 export const SPREAD = Math.PI * WAYS * LIGHT / (3 * BITE * SHEET);
 
@@ -1265,3 +1505,146 @@ export const SPREAD = Math.PI * WAYS * LIGHT / (3 * BITE * SHEET);
  */
 export const foldAt = (mass: number, R: number) =>
   GRAVITY * mass / (R * LIGHT * LIGHT);
+
+/**
+ * HOW FAR GRAVITY REACHES — and it is not for ever.
+ *
+ * A body's charges do not only meet the other body's. Every source in the
+ * universe is putting charges everywhere, so what any place holds is a thin
+ * fog of everyone else's — an AMBIENT FIELD, and a's charges annihilate
+ * against it on their way to b like anything else. Beyond a mean free path,
+ * none of a's charges reach b, and the pull is Yukawa:
+ *
+ *     S(a,b)  ∝  exp(−R/λ) / R²        λ = 1/(BITE·share·Φ)
+ *
+ * because the two attenuations multiply to `exp(−R/λ)` wherever along the line
+ * the meeting happens.
+ *
+ * WHAT Φ IS. A shell of the universe at r holds ρ·4πr² dr of mass and puts
+ * `m·SHEET/4πr²` on you, so it contributes `ρ·SHEET·dr` — the r² cancels and
+ * EVERY SHELL COUNTS THE SAME. That is Olbers' paradox in the same form, and
+ * the sum does not converge on its own. It converges because the fog screens
+ * itself: distant charges are attenuated by what they crossed, so
+ *
+ *     Φ = ∫ρ·SHEET·e^{−r/λ} dr = ρ·SHEET·λ,   λ = 1/kΦ
+ *     ⇒  Φ = √(ρ·SHEET/k),   λ = 1/√(k·SHEET·ρ)
+ *
+ * AND IT IS A FIXED FRACTION OF THE HORIZON. Friedmann has ρ = 3H²/8πG, and
+ * the density cancels outright:
+ *
+ *     λ/R_h = √( 8π·G / (3·BITE·share·SHEET) ) = 0.361
+ *
+ * A pure count. Gravity reaches about a third of the way to the horizon in ANY
+ * universe this model describes, whatever its density — a denser one screens
+ * harder in exactly the proportion that it expands faster. At our density that
+ * is 1.55 Gpc: nothing at all in the solar system or the Galaxy, 0.6% down
+ * across a cluster, 9.2% down at the BAO scale, and half gone by a gigaparsec.
+ *
+ * This is the one thing in the file that is a prediction in the full sense —
+ * not fitted, not borrowed, not a reproduction of something already known —
+ * and it lands on the DERIVED half of the model. If 0.361 is excluded by
+ * large-scale structure then the pull is wrong, independently of everything
+ * `carry` and `SPREAD` are still borrowing.
+ *
+ * AND IT NOW COSTS SOMETHING, which is how you tell a prediction from a
+ * decoration. This same λ is the only constant-density scattering length the
+ * lattice has, so it is also the only thing that could have set `SPREAD`'s
+ * diffusivity — and at 10⁶⁰ cells it sets it fifty-nine orders too high, which
+ * puts the surplus in the ballistic limit and kills the one account of where B
+ * might come from. `reach` and `SPREAD` cannot both stand. Keeping this one is
+ * the right call — it is counted and `SPREAD` was solved for — but it is a
+ * choice with a bill attached, and the bill is that the metric stays borrowed.
+ *
+ * AND IT IS WHY THE VACUUM CANNOT BE THE EXPANSION. Space is made when a pair
+ * gets away without meeting anything, so a vacuum making pairs at C would
+ * expand the world at H = C/3 — and would settle at Φ = √(C/k), which screens.
+ * One Φ, both jobs, and they pull opposite ways:
+ *
+ *     for H as observed        Φ = 8.4·10⁻³¹   ⇒  λ = 38 µm
+ *     for gravity at 1 AU      Φ ≲ 3·10⁻⁴⁸     ⇒  H ≲ 10⁻⁹⁶, short by 10³⁵
+ *
+ * Thirty-five orders, with nothing left to choose. The λ the expansion demands
+ * is √(l_P·R_h/3k) — the geometric mean of the Planck length and the Hubble
+ * radius, which is the dark-energy length scale that short-range experiments
+ * were built to look at. It is a pretty number and it is the scale at which
+ * gravity would DIE, not the scale at which it would start. So the vacuum
+ * makes space and cannot be what expands the universe, and this model has no
+ * cosmology.
+ */
+export const reach = (density: number) =>
+  LIGHT / Math.sqrt(BITE * 0.5 * SHEET * density);
+
+/** And what that is as a fraction of the horizon, which is where it is a count. */
+export const REACHES = Math.sqrt(
+  8 * Math.PI * G_LATTICE / (3 * BITE * 0.5 * SHEET));
+
+/**
+ * AND SO THE COSMOLOGY, which the rules fix whether or not one was wanted —
+ * and which comes out empty, four separate ways. Written down because each
+ * closure is a fact about the model rather than a failure to try.
+ *
+ * WHAT THE MODEL DOES SAY. Matter makes space (`MADE`), meetings unmake it
+ * (`BITE`), so the net is what escapes without meeting anything. That is a
+ * real expansion and it compounds — new points can split too, so H is constant
+ * and the growth is exponential. de Sitter, for free.
+ *
+ * AND WHAT IT CANNOT. Ask it for the observed H and it fails five times over:
+ *
+ *  1. SCREENING. The pairs that make the space ARE the fog that stops the
+ *     gravity — one Φ doing both jobs, wanting opposite values. For H as
+ *     observed, Φ = 8·10⁻³¹ and λ = 38 µm; for gravity at 1 AU, Φ ≲ 2·10⁻⁴⁶
+ *     and H ≲ 10⁻⁹⁶. Thirty-five orders apart with nothing left to choose.
+ *
+ *  2. THE ATTRACTOR. Take the cascade seriously — creation, annihilation and
+ *     the expansion's own dilution together — and the charge density is not
+ *     free at all. `2C − 2kΦ² − 3HΦ = 0` with `3H = C − kΦ²` gives
+ *     `(C − kΦ²)(2 − Φ) = 0`: either nothing expands, or Φ = 2 EXACTLY, at any
+ *     rate, in any such universe. And Φ = 2 puts λ at ONE lattice step.
+ *
+ *  3. MATTER IS TOO THIN TO GATE IT. The obvious escape is that bound regions
+ *     do not expand, so the fog is only in the voids. But C is one number and
+ *     it is what empty space does, and there is empty space between the Earth
+ *     and the Sun. For matter to suppress it, `chance` at a body would have to
+ *     approach one; with the volume properly integrated (`ρ·SHEET·R`, not a
+ *     point — worth a factor of three) it is 1.5·10⁻⁴⁸ inside the Sun and
+ *     8·10⁻³⁹ inside a neutron star. The gap is the mass hierarchy, not the
+ *     geometry: a proton is 10⁻¹⁹ of a Planck mass and mass IS the pulse rate,
+ *     so its field is 10⁻¹⁸ even one step away.
+ *
+ *  4. THE CLOCK. The expanding steady state needs C = 2 pairs a cell a tick,
+ *     and once a tick is the ceiling (see `mass` in `physics.ts`). It asks
+ *     empty space to pulse twice as fast as the lattice permits. Not a
+ *     shortfall — a contradiction.
+ *
+ *  5. AND A FIFTH, WHICH THE BALLISTIC RESULT OPENED. All four above are about
+ *     the VACUUM making pairs. There is a route that needs no vacuum at all,
+ *     and it had not been checked: a body's charges that cross the horizon
+ *     never meet anything, so they never give their point back (see `BITE`) —
+ *     a net creation sourced by MATTER, immune to (1) because it needs no Φ,
+ *     and not capped by (4) because it is a fraction of an emission rather
+ *     than a rate. The escaping fraction is not small:
+ *
+ *         e^(−R_h/λ) = e^(−1/REACHES) = 0.0628
+ *
+ *     Six per cent of everything emitted leaves for good. What that expands:
+ *
+ *         ρ = 8.6·10⁻²⁷ kg/m³   →  2.68·10⁻¹²² mass units a cell
+ *         emission                 2.14·10⁻¹²¹ charges a cell a tick
+ *         net creation             1.35·10⁻¹²² points a cell a tick
+ *         H = (dV/V)/3             8.3·10⁻⁸⁰ /s,  against 2.19·10⁻¹⁸
+ *
+ *     Sixty-one orders short, and it would want 2·10³⁵ kg/m³ — 10⁶¹ times the
+ *     matter there is — to close. It fails on the plainest thing available:
+ *     there is not enough matter.
+ *
+ * AND THE SIGN OF ALL FIVE IS THE SAME, which is the thing worth noticing. The
+ * usual embarrassment is a vacuum energy 10¹²⁰ too LARGE. Every mechanism this
+ * lattice has runs the other way — 35 orders short on the vacuum route, 61 on
+ * the matter route — so the model does not have the cosmological constant
+ * problem, it has its mirror image. A model that cannot make the universe
+ * expand at all is wrong in a way that can be stated and looked for.
+ *
+ * So: no expansion, no dark energy, no thermal history, and — since ± pairs
+ * are made in exact pairs — no matter/antimatter asymmetry either. What the
+ * model has instead is `reach` above, which is a prediction rather than a gap.
+ */
