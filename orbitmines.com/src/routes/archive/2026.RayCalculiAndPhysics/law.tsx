@@ -2,6 +2,7 @@ import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 
 import { GRAIN } from "./gravity";
 import { Echoes } from "./echoes";
+import { Rotation, Split } from "./rotation";
 import { Overlay, Routes, Seam, Shadows } from "./shadow";
 
 /**
@@ -2367,9 +2368,49 @@ export const Law = () => {
 
     <Note>
       The missing dark matter is what saved the age, so it is worth asking
-      whether the same construction can pay it back. State the target so it can
-      be failed: flat rotation curves want <V>v</V><Sup>2</Sup> = <V>GM</V>(<V>r</V>)/<V>r</V>{' '}
-      constant, so <V>M</V> ∝ <V>r</V>, so{' '}
+      whether the same construction can pay it back. And rather than argue it,
+      run it: below is the Milky Way put through the model’s own force law,{' '}
+      <b style={{ color: INK }}>summed directly over its baryons, ring by ring
+        and angle by angle</b> — no shell theorem, no enclosed-mass shortcut,
+      so nothing about what the outside does is assumed.
+    </Note>
+
+    <Rotation />
+
+    <Note>
+      Every other term the model owns is checked and negligible: <i>reach</i>{' '}
+      costs 2·10<Sup>−3</Sup>% at 30 kpc, <i>carry</i> 1.1·10<Sup>−6</Sup> at
+      220 km/s, <i>shows</i> nothing at all — a galaxy is transparent. So the
+      model’s prediction here is Newton on the baryons, and it{' '}
+      <b style={{ color: INK }}>peaks at 192 km/s and falls to 104 by 30 kpc</b>{' '}
+      where the disc is measured flat at 220. The gap to close at 20 kpc is
+      +195%; the largest correction the model has is five orders under that.
+      There is no dial in it that reaches.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So does the mass outside the orbit cancel?</b>{' '}
+      It does not — a disc is not a sphere, and only for a sphere is an exterior
+      shell worth exactly nothing. But the sign runs the other way from the
+      intuition, and the sum says so directly:
+    </Note>
+
+    <Split />
+
+    <Note>
+      The exterior pulls <b style={{ color: INK }}>outward</b>, because the near
+      arc of an exterior ring is closer than the far arc and wins the inverse
+      square. It takes 27% off the pull at 2 kpc and 4% off at 30. So the
+      missing gravity cannot come from the outside failing to cancel:{' '}
+      <b style={{ color: INK }}>the outside is already counted, already fails to
+        cancel, and already subtracts</b>. The curve above is what is left after
+      that is included.
+    </Note>
+
+    <Note>
+      Which fixes the target so it can be failed: flat rotation curves want{' '}
+      <V>v</V><Sup>2</Sup> = <V>GM</V>(<V>r</V>)/<V>r</V> constant, so{' '}
+      <V>M</V> ∝ <V>r</V>, so{' '}
       <b style={{ color: INK }}><V>ρ</V> ∝ 1/<V>r</V><Sup>2</Sup>, and the extra
         pull is <i>inward</i></b>. Both halves matter.
     </Note>
@@ -2377,12 +2418,13 @@ export const Law = () => {
     <Rows of={[
       [<span style={{ color: BORROWED }}>the shell theorem</span>,
         <>Space made in a shell <i>outside</i> an orbit has no inside — a
-          uniform shell has no preferred direction within it, so it moves
-          nothing there. Only space made <i>inside</i> the orbit acts, and it
-          pushes <b style={{ color: INK }}>outward</b>. For a circular orbit{' '}
-          <V>v</V><Sup>2</Sup>/<V>r</V> = <V>g</V> − <V>g</V><Sub>push</Sub>, so
-          an outward push <i>lowers</i> the speed a star can hold. Dark matter
-          is missing centripetal force; this supplies the opposite.</>],
+          uniform <i>spherical</i> shell has no preferred direction within it.
+          A disc does, and as measured above it points{' '}
+          <b style={{ color: INK }}>outward</b>. Either way the sign is wrong:
+          for a circular orbit <V>v</V><Sup>2</Sup>/<V>r</V> = <V>g</V> −{' '}
+          <V>g</V><Sub>push</Sub>, so an outward push <i>lowers</i> the speed a
+          star can hold. Dark matter is missing centripetal force; this supplies
+          the opposite.</>],
       [<span style={{ color: BORROWED }}>and it undoes the cosmology</span>,
         <>The whole virtue of the frontier was that{' '}
           <i>the bulk makes no space</i> — which is what dissolved four
@@ -2492,6 +2534,67 @@ export const Law = () => {
     </Note>
 
     <Note>
+      <b style={{ color: INK }}>And a third try: more space gathers around
+        mass, so the outskirts have less of it.</b> The model already says the
+      first half — that is <i>thickness</i>,{' '}
+      <V>B</V> = <V>e</V><Sup>+2<V>u</V></Sup>, more proper length per unit
+      coordinate exactly where the node is folded. It is not a missing
+      ingredient; it is the metric, derived rather than borrowed, and it is what
+      gives six sixths of Mercury’s perihelion advance. At 20 kpc it is worth{' '}
+      √<V>B</V> − 1 = 1.7·10<Sup>−7</Sup> — one part in six million, far under
+      the width of the line on the plot above.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So stop testing mechanisms one at a time.</b>{' '}
+      Every idea has died on a number rather than a story, and it has been the
+      same number each time. Enumerate instead: every dimensionless quantity the
+      model can build at 20 kpc in a galaxy, out of <V>G</V>, <V>c</V>, the
+      cell, the tick, the age, and the galaxy’s own <V>M</V>, <V>r</V> and{' '}
+      <V>v</V>. Closing the gap needs +195%, which needs an{' '}
+      <V>O</V>(1) number.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}><V>GM</V>/<V>rc</V><Sup>2</Sup></span>,
+        <>how folded the place is — 1.70·10<Sup>−7</Sup></>],
+      [<span style={{ color: FAINT }}><V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup></span>,
+        <>how fast the star goes — 5.39·10<Sup>−7</Sup></>],
+      [<span style={{ color: FAINT }}><V>r</V>/<V>λ</V><Sub>reach</Sub></span>,
+        <>against gravity’s Yukawa range — 1.25·10<Sup>−5</Sup></>],
+      [<span style={{ color: FAINT }}><V>r</V>/<V>ct</V><Sub>0</Sub></span>,
+        <>against the horizon — 4.73·10<Sup>−6</Sup></>],
+      [<span style={{ color: FAINT }}>ℓ<Sub>P</Sub>/<V>r</V>, <V>t</V><Sub>P</Sub><V>v</V>/<V>r</V></span>,
+        <>the lattice spacing and the tick — 10<Sup>−56</Sup>, 10<Sup>−59</Sup></>],
+      [<span style={{ color: DERIVED }}><V>g·t</V><Sub>0</Sub>/<V>c</V></span>,
+        <>the pull against <V>c</V> per age —{' '}
+          <b style={{ color: INK }}>3.86·10<Sup>−2</Sup></b></>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And that is the whole list.</b> Seven of the
+      eight sit between 10<Sup>−5</Sup> and 10<Sup>−56</Sup>. Exactly one is
+      anywhere near unity, and it is the last. So{' '}
+      <b style={{ color: INK }}>no mechanism built from the others can work</b>,
+      whatever its story, because it has nothing to make an{' '}
+      <V>O</V>(1) correction out of — which closes the whole family at once
+      instead of one idea at a time, and is worth more than any of the
+      individual tests.
+    </Note>
+
+    <Note>
+      The survivor is an <i>acceleration</i>, measured against <V>c</V> per age.
+      Set it to one and it reads{' '}
+      <V>c</V>/<V>t</V><Sub>0</Sub> = 6.88·10<Sup>−10</Sup> m/s², against a
+      measured <V>a</V><Sub>0</Sub> = 1.20·10<Sup>−10</Sup> —{' '}
+      <V>a</V><Sub>0</Sub><V>t</V><Sub>0</Sub>/<V>c</V> = 0.174 against
+      1/2π = 0.159.{' '}
+      <b style={{ color: INK }}>The one number this model has at galactic scale
+        is the MOND scale, to 2π.</b> Not a mechanism, not a derivation — but
+      the search space is now one-dimensional.
+    </Note>
+
+    <Note>
       What would have to be shown: <i>spend</i> gives accel = <K>BIAS</K> ×
       (annihilation rate), and a rate below one meeting per{' '}
       <V>t</V><Sub>0</Sub> is not a small acceleration but <i>no</i>{' '}
@@ -2503,6 +2606,1388 @@ export const Law = () => {
       4.5 is exactly what gets fitted rather than counted. But it is the only
       place in the model where a galactic number and a cosmological one are
       forced to be the same number.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So can the floor be found by enumerating?</b>{' '}
+      Twice over, and the two enumerations have opposite worth. If the mechanism
+      is one <K>BIAS</K> kick per age then{' '}
+      <V>a</V><Sub>0</Sub> = <K>BIAS</K>·<V>κ</V>/<V>t</V><Sub>0</Sub>, so{' '}
+      <V>κ</V> = 4.5323 and the job is to find that from the lattice constants.
+      Building every <V>ab</V>/<V>c</V>, <V>a</V>/<V>bc</V> and √(<V>ab</V>)/<V>c</V>{' '}
+      out of sixteen constants the file already owns gives 12816 expressions:
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>within 20%</span>, <>661 expressions, 107 distinct values</>],
+      [<span style={{ color: FAINT }}>within 10%</span>, <>341, 60</>],
+      [<span style={{ color: FAINT }}>within 5%</span>, <>175, 31</>],
+      [<span style={{ color: FAINT }}>within 2%</span>, <>95, 12</>],
+      [<span style={{ color: BORROWED }}>within 1%</span>,
+        <><b style={{ color: INK }}>20 expressions, 4 distinct values</b> — the
+          closest √(<K>WAYS</K>·π)/2 = 4.51889, at −0.30%</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Twenty expressions land inside a percent.</b> A
+      search over numbers cannot tell a derivation from an accident here, so a
+      hit is worth nothing even when it is close, and √(<K>WAYS</K>·π)/2 goes
+      down as a curiosity and nothing else. This is the one place where{' '}
+      <i>count it, do not fit it</i> has to be enforced by refusing to look
+      rather than by looking carefully.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The search over constraints is not worthless.</b>{' '}
+      The floor must be <i>universal</i> — so it cannot depend on the test mass,
+      which kills the per-particle reading where a heavier body would have a{' '}
+      <i>lower</i> floor. It must be an <i>acceleration</i>, since
+      low-surface-brightness galaxies deviate at <i>small</i> radius and a length
+      scale forbids that. It must be a <i>square root</i>, since a constant
+      addition gives <V>v</V> ∝ √<V>r</V> rather than flat. It must{' '}
+      <i>switch off</i> faster than linearly, since the solar system bounds
+      anomalies at 10<Sup>−13</Sup> where <V>g</V>/<V>a</V><Sub>0</Sub> is
+      5·10<Sup>7</Sup>. It implies an <i>external field effect</i>, measurable in
+      wide binaries. And it must <i>run with time</i> — which is the one that
+      pays.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Because a₀ = c/2π<V>t</V> makes it a function of
+        the age.</b> In a coasting universe <V>a</V> ∝ <V>t</V> exactly, so
+      1 + <V>z</V> = <V>t</V><Sub>0</Sub>/<V>t</V> — the redshift{' '}
+      <i>is</i> the age ratio, nothing fitted. Then{' '}
+      <V>a</V><Sub>0</Sub>(<V>z</V>) = <V>a</V><Sub>0</Sub>(1+<V>z</V>) and{' '}
+      <V>v</V><Sub>flat</Sub> ∝ (1+<V>z</V>)<Sup>¼</Sup>: at{' '}
+      <V>z</V> = 2 the same baryonic mass should rotate{' '}
+      <b style={{ color: INK }}>32% faster</b>, putting Tully–Fisher{' '}
+      <b style={{ color: INK }}>0.48 dex</b> off its local place — which is
+      measured to under 0.1 dex. Not subtle.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And is the missing factor 1/<K>SHEET</K>?</b>{' '}
+      Taken literally, no: <V>K</V> = 1/<K>SHEET</K> gives
+      8.61·10<Sup>−11</Sup> against a measured 1.20·10<Sup>−10</Sup>, 28% low.
+      (1/2π is 8.7% low, <K>HALF</K>/<K>DIMS</K> 4.4% — and by the count above,
+      none of that is evidence.) But the question underneath it is the sharpest
+      one in this section, because{' '}
+      <b style={{ color: INK }}>it is not √<V>r</V> that is wanted</b>.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="the two halves have very different costs">
+      <V>g</V> = √(<V>a</V><Sub>0</Sub>·<V>g</V><Sub>N</Sub>) =
+      <Frac over={<>√(<V>a</V><Sub>0</Sub><V>GM</V>)</>} under={<V>r</V>} />
+    </Eq>
+
+    <Note>
+      <V>g</V> ∝ 1/<V>r</V> instead of 1/<V>r</V><Sup>2</Sup> is{' '}
+      <i>easy</i> — plenty of things give 1/<V>r</V>. <V>g</V> ∝ √<V>M</V>{' '}
+      instead of <V>M</V> is the whole problem.{' '}
+      <b style={{ color: INK }}>The radius is not square-rooted at all. The mass
+        is.</b> And the exponent is forced rather than chosen: for any deep
+      limit <V>g</V> → <V>k·g</V><Sub>N</Sub><Sup><V>p</V></Sup>, a flat curve
+      needs 1 − 2<V>p</V> = 0 and Tully–Fisher needs 4<V>p</V> = 1 —{' '}
+      <b style={{ color: INK }}>both land on <V>p</V> = ½</b>, which is why MOND
+      has no freedom in its deep limit at all. Measured across the forms, only
+      those containing a <i>geometric mean</i> of{' '}
+      <V>g</V><Sub>N</Sub> and <V>a</V><Sub>0</Sub> survive — <V>p</V> = ½{' '}
+      <i>is</i> the geometric mean, and everything else is an arithmetic one.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Which is exactly what this model cannot do, and
+        now the reason has a name.</b> Every force here is a meeting rate of two
+      fluxes, <i>shortfall</i> ∝ <V>m</V><Sub>a</Sub>·<V>m</V><Sub>b</Sub> —{' '}
+      strictly <i>bilinear</i>, because each emitter emits independently. So any
+      change to the geometry, the propagation or the counting moves the{' '}
+      <V>r</V>-dependence and leaves the mass linear.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>flux ∝ 1/<V>r</V><Sup>2</Sup> both</span>,
+        <>Newton — <V>g</V> ∝ <V>M</V>/<V>r</V><Sup>2</Sup>, <V>p</V> = 1</>],
+      [<span style={{ color: FAINT }}>diffusive, ∝ 1/<V>r</V> both</span>,
+        <>flat curve, but <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>2</Sup></>],
+      [<span style={{ color: FAINT }}>effective dimension 2</span>,
+        <>flat curve, but <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>2</Sup></>],
+      [<span style={{ color: FAINT }}>stimulated halo, <V>ρ</V> ∝ <V>M</V>/<V>r</V><Sup>2</Sup></span>,
+        <>flat curve, but <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>2</Sup></>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>All of them land on v⁴ ∝ M², for one reason.</b>{' '}
+      Bilinearity forces <V>v</V><Sup>2</Sup> ∝ <V>M</V> whatever the geometry
+      does. Which means the three mechanisms above{' '}
+      <i>did not fail separately</i> — the halo, the wake and the spatial
+      gradient are one failure wearing three hats, and that was worth finding
+      out. So the requirement is sharp: a response{' '}
+      <b style={{ color: INK }}>nonlinear in the source</b>, going as √<V>M</V>{' '}
+      below <V>a</V><Sub>0</Sub> and back to <V>M</V> above it. Nothing built
+      from how the flux <i>travels</i> can do it, because travel does not know
+      how much was emitted. It has to be the emission or the response
+      saturating — and the model has exactly one saturating quantity, the
+      one-a-tick ceiling, which acts at the other end of the scale entirely.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And it is worse than bilinearity — it is a
+        theorem.</b> Two things the model already satisfies and would not want
+      to give up: <i>action and reaction</i>, since the force <i>is</i> a count
+      of meetings and both parties count the same ones; and{' '}
+      <i>equivalence</i>, since <V>a</V><Sub>a</Sub> = <V>F</V>/<V>m</V><Sub>a</Sub>{' '}
+      must not depend on <V>m</V><Sub>a</Sub>. The second gives{' '}
+      <V>F</V> = <V>m</V><Sub>a</Sub>·<V>h</V>(<V>m</V><Sub>b</Sub>). Feed it
+      into the first and{' '}
+      <V>m</V><Sub>a</Sub><V>h</V>(<V>m</V><Sub>b</Sub>) ={' '}
+      <V>m</V><Sub>b</Sub><V>h</V>(<V>m</V><Sub>a</Sub>), so{' '}
+      <V>h</V>(<V>m</V>)/<V>m</V> is constant and{' '}
+      <b style={{ color: INK }}><V>F</V> ∝ <V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub>{' '}
+        exactly</b>, with no freedom at all.
+    </Note>
+
+    <Note>
+      So <b style={{ color: INK }}>no two-body force law can give √<V>M</V></b> —
+      not a modified one, not a screened one, not one with a different geometry.
+      The mechanisms above were not unlucky, they were forbidden before they
+      started, which is why nobody has ever written MOND as a pairwise law.{' '}
+      <b style={{ color: INK }}>And that leaves exactly one door.</b> The theorem
+      is about a force between <i>two</i> things; it says nothing about whether
+      the field of a <i>composite</i> is the sum of its parts. Here it is,
+      because every emitter emits independently. Break superposition and the
+      theorem does not apply — a galaxy is then not the sum of its stars.
+    </Note>
+
+    <Head>a second graph</Head>
+
+    <Note>
+      Which is what a <i>second layer</i> would buy: a graph over the spatial
+      one, with its own ± polarities and its own XOR, moving under its own
+      dynamics, deciding <i>where mass is</i>. That makes the emitters{' '}
+      <b style={{ color: INK }}>non-independent</b> — whether one contributes
+      now depends on what the layer is doing, which depends on the others. It is
+      the first proposal here that goes <i>through</i> the obstruction rather
+      than around it.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the XOR hands over the root for free.</b>{' '}
+      <V>N</V> contributions with random ± signs do not sum to <V>N</V>; they
+      sum to a walk, √(2<V>N</V>/π) — measured at 7.91, 80.01, 800.42 against
+      7.98, 79.79, 797.88 for <V>N</V> = 10<Sup>2</Sup>, 10<Sup>4</Sup>,
+      10<Sup>6</Sup>. If gravity couples to the <i>net</i> polarity rather than
+      the <i>count</i>, the source enters as √<V>M</V> with nothing put in by
+      hand — out of the same XOR the whole model is built on.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>but √M alone is not enough</span>,
+        <>An effective mass gives <V>G</V>√(<V>MM</V><Sub>0</Sub>)/<V>r</V><Sup>2</Sup>,
+          hence <V>v</V> ∝ <V>r</V><Sup>−½</Sup> — not flat. The layer must
+          produce a <i>halo</i>,{' '}
+          <V>ρ</V> ∝ √<V>M</V>/<V>r</V><Sup>2</Sup>, which then gives{' '}
+          <b style={{ color: INK }}>182.7 km/s flat from 10 to 30 kpc and{' '}
+            <V>v</V><Sup>4</Sup> = <V>GMa</V><Sub>0</Sub> exactly</b>. The XOR
+          supplies the √; nothing yet supplies the 1/<V>r</V><Sup>2</Sup>.</>],
+      [<span style={{ color: BORROWED }}>and a walk has a width</span>,
+        <>|Σ±1| is Rayleigh — mean √(2<V>N</V>/π), deviation 0.655√<V>N</V>. A
+          single realisation scatters 76% in the net, 19% in{' '}
+          <V>v</V> = <V>M</V><Sub>eff</Sub><Sup>¼</Sup>, i.e.{' '}
+          <b style={{ color: INK }}>0.244 dex</b> of Tully–Fisher scatter
+          against a relation measured under 0.1. A <i>static</i> walk is
+          excluded outright.</>],
+      [<span style={{ color: DERIVED }}>unless the layer is fast</span>,
+        <>Averaging <V>K</V> samples an orbit cuts it by √<V>K</V>: at a
+          megayear correlation time the scatter is 0.021 dex, at a year or below
+          it is under 10<Sup>−4</Sup>. A lattice layer decorrelates in{' '}
+          <i>ticks</i>, so this is not close — but it is a real constraint, and
+          it says the layer must be <b style={{ color: INK }}>fast-moving</b>,
+          which is what “moves on its own” already proposed.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>What it would still owe.</b> The{' '}
+      <i>crossover</i> — why the cancellation turns on below{' '}
+      <V>a</V><Sub>0</Sub> and off above it — which is the whole of the
+      unexplained part, and the second graph makes the root <i>possible</i>{' '}
+      without making it <i>happen</i> at the right scale. The{' '}
+      1/<V>r</V><Sup>2</Sup> reach. The solar system, where superposition holds
+      exquisitely, so the breaking must vanish above <V>a</V><Sub>0</Sub> faster
+      than linearly. And <i>what mass is</i> — the layer decides where mass sits,
+      so <i>mass = pulse rate</i> has to be re-derived on it rather than
+      assumed, which reaches back into <i>physics.ts</i> and is not a small edit.
+      An <i>external field effect</i> is not a cost: it is unavoidable once
+      superposition fails, it is MOND’s own signature, and it is measurable in
+      wide binaries — so it arrives as a prediction.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And if that layer has emitters too, the other
+        half arrives from the same place.</b> The spatial graph already gets its
+      inverse square from emitters — <i>chance</i> = <V>m</V><K>SHEET</K>/<i>shell</i>,
+      a point spreading over a sphere. Give the second layer emitters as well
+      and the geometry follows, with the XOR doing the rest:{' '}
+      <V>N</V> emitters each ∝ 1/<V>r</V><Sup>2</Sup>, random ± polarity, so
+      they do not add — they <i>walk</i>:{' '}
+      <b style={{ color: INK }}>net ∝ √<V>N</V>/<V>r</V><Sup>2</Sup> =
+        √<V>M</V>/<V>r</V><Sup>2</Sup></b>. Both halves, out of one
+      construction, neither put in by hand.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="κ is fixed by a₀, and everything else follows">
+      <V>ρ</V> =
+      <Frac over={<><V>κ</V>√<V>M</V></>} under={<><V>r</V><Sup>2</Sup></>} />
+      <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+      <V>v</V><Sup>4</Sup> = (4π<V>Gκ</V>)<Sup>2</Sup><V>M</V> = <V>GMa</V><Sub>0</Sub>
+    </Eq>
+
+    <Note>
+      Flat at every radius, and <V>v</V><Sup>4</Sup> ∝ <V>M</V> exactly —{' '}
+      182.7 km/s from the profile against 182.7 from (<V>GMa</V><Sub>0</Sub>)<Sup>¼</Sup>.{' '}
+      <b style={{ color: INK }}>Both conditions, one exponent, nothing fitted
+        but κ ↔ a₀.</b> The <i>shape</i> of the dark matter problem is closed.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>but the solar system kills it</span>,
+        <>The same halo forms around the Sun:{' '}
+          <b style={{ color: INK }}>1.4·10<Sup>−4</Sup> of a solar mass inside
+            the Earth’s orbit</b>, 4.3·10<Sup>−3</Sup> inside 30 AU.
+          Ephemerides pin <V>GM</V><Sub>☉</Sub> to a part in 10<Sup>10</Sup> —
+          out by six orders, and it would show as an anomalous{' '}
+          <i>precession</i>, since the mass is distributed rather than
+          central.</>],
+      [<span style={{ color: BORROWED }}>and the obvious crossover is out</span>,
+        <>The natural story — a strong field <i>aligns</i> the polarities so
+          they add, a weak one leaves them random — switches where{' '}
+          <V>αN</V> ≈ √<V>N</V>, so <V>α</V> ≈ 1/√<V>N</V>, which{' '}
+          <i>counts constituents</i>. Between the Sun and the Galaxy that
+          threshold moves by <b style={{ color: INK }}>10<Sup>5.4</Sup></b>, so{' '}
+          <V>a</V><Sub>0</Sub> would be mass-dependent — and it is measured
+          universal well inside a factor of two across five decades.</>],
+      [<span style={{ color: DERIVED }}>which is a constraint, not a wall</span>,
+        <>It says the crossover cannot be a competition between an aligned part
+          and a random part, because any such competition counts constituents
+          and <V>a</V><Sub>0</Sub> must not. It has to switch the{' '}
+          <i>whole layer</i> without reference to how many emitters sit in it —{' '}
+          <b style={{ color: INK }}>a property of the place, not of the
+            body</b>. Which is suggestive, since that is exactly what{' '}
+          <i>fold</i> already is, and <V>g·t</V><Sub>0</Sub>/<V>c</V> is already
+          a statement about a place.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So must the two layers touch?</b> Yes, and
+      which way decides everything.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>independent</span>,
+        <>The property that has to go. If each layer evolves entirely on its
+          own, the second is a <i>relabelling</i> — layer one still sums over
+          whatever sources it sees, superposition still holds inside it, and the
+          theorem applies word for word. Independence is not a detail of the
+          picture; it is what stands between it and working.</>],
+      [<span style={{ color: BORROWED }}>one-way — “it says where the mass is”</span>,
+        <>The reading one falls into by default, and it fails by a computable
+          amount. Gravity counts + against −, so with{' '}
+          <V>N</V><Sub>±</Sub> = <V>N</V>/2 ± <V>s</V>/2 the rate is{' '}
+          (<V>NM</V> − <V>su</V>)/2. The root <i>is</i> there —{' '}
+          <V>su</V> ~ √(<V>NM</V>) — but as a <i>correction</i> carrying a
+          random sign. For a star in the Galaxy it is{' '}
+          <b style={{ color: INK }}>3·10<Sup>−63</Sup></b> of the Newtonian
+          term, where MOND wants it comparable (2.13 at 20 kpc). Sixty-three
+          orders, which is a deletion rather than a switch.</>],
+      [<span style={{ color: DERIVED }}>two-way — layer two has its own field</span>,
+        <>The picture as described, and the only one that works. The halo is not
+          a correction to layer one’s counting but layer <i>two’s</i> own
+          emitted field, which layer one feels. Its size is set by an{' '}
+          <b style={{ color: INK }}>inter-layer coupling κ</b> rather than by
+          1/√(<V>NM</V>), so it is free to be whatever{' '}
+          <V>a</V><Sub>0</Sub> says.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And that is the real cost, stated plainly:</b>{' '}
+      <V>a</V><Sub>0</Sub> becomes a new fundamental constant — the strength
+      with which layer two’s field gravitates in layer one — rather than
+      something counted out of <K>SHEET</K> and <K>WAYS</K>. For a model whose
+      whole method is counting, that is a genuine loss, and it belongs in the
+      ledger rather than hidden inside a κ.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And a requirement nobody asked for, which is a
+        point in favour.</b> The net polarity has a <i>random sign</i>. Couple
+      to the net and half of all halos are repulsive; couple to net<Sup>2</Sup>{' '}
+      and it is ∝ <V>M</V> again with the root gone. It must couple to{' '}
+      |net| — and an absolute value is a strange thing to couple to,{' '}
+      <i>and it is exactly what MOND already has</i>. AQUAL’s field equation is
+      ∇·[<V>μ</V>(|∇<V>φ</V>|/<V>a</V><Sub>0</Sub>)∇<V>φ</V>] = 4π<V>Gρ</V> —
+      the nonlinearity is an absolute value of a field, for precisely this
+      reason: it makes the response sub-linear without making it signed. So the
+      second layer is not being asked for something exotic. It is being asked
+      for{' '}
+      <b style={{ color: INK }}>MOND’s own nonlinearity, arrived at from the
+        other side</b> — |net polarity of a random ± layer| in place of
+      |∇<V>φ</V>|. Two constructions with nothing in common landing on the same
+      odd requirement is the one encouraging thing here.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And is the compounding the nonlinearity?</b>{' '}
+      Layer two moves <i>through</i> layer one, so layer one’s fold decides
+      where layer two can go and the effects feed each other. That is the right
+      shape of argument — it is the one that already paid once, since{' '}
+      1 + <V>u</V> = <V>e</V><Sup><V>u</V><Sub>0</Sub></Sup> came from exactly
+      this move, and it remains the only nonlinearity this file has{' '}
+      <i>derived</i> rather than assumed.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>but the one already here is the wrong function</span>,
+        <>At 20 kpc, <V>u</V> = 1.68·10<Sup>−7</Sup> and the compounded part{' '}
+          <V>e</V><Sup><V>u</V></Sup> − 1 − <V>u</V> is 1.41·10<Sup>−14</Sup> —
+          fourteen orders under a linear term already seven orders short. And
+          the <i>shape</i> matters more:{' '}
+          <b style={{ color: INK }}>there is no limit of an exponential that
+            behaves like a square root</b>. 1 + <V>u</V> + <V>u</V><Sup>2</Sup>/2
+          is integer powers forever.</>],
+      [<span style={{ color: DERIVED }}>the version that could work</span>,
+        <>Not “the fold compounds itself” but{' '}
+          <b style={{ color: INK }}>the fold decides how fast layer two
+            forgets</b>. <i>slowing</i> = <V>e</V><Sup>−2<V>u</V></Sup> holds
+          motion back where the fold is deep: deep in a well layer two is held
+          and the polarities stay aligned (net ~ <V>N</V>, Newton); far out it
+          runs free and they randomise (net ~ √<V>N</V>, MOND). A property of
+          the <i>place</i>, not the body — precisely what the
+          constituent-counting argument demanded.</>],
+      [<span style={{ color: BORROWED }}>and it has a sharp tension</span>,
+        <>The decorrelation time <V>τ</V> must do two jobs. The crossover needs{' '}
+          <V>g·τ</V>/<V>c</V> ≈ 1 at <V>a</V><Sub>0</Sub>, so{' '}
+          <V>τ</V> = <V>c</V>/<V>a</V><Sub>0</Sub> ={' '}
+          <b style={{ color: INK }}>79 Gyr</b> — 5.7× the age, essentially
+          frozen. The scatter needs more than 8.5 draws an orbit, so{' '}
+          <V>τ</V> &lt; <b style={{ color: INK }}>26 Myr</b> — fast.{' '}
+          <b style={{ color: INK }}>3.5 orders apart, in opposite
+            directions.</b></>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And one escape, which follows from the |net|
+        result rather than being added to save it.</b> The scatter argument
+      assumed <i>one</i> walk for the whole body. But the sign argument already
+      forced the coupling to |net| — and if that is <i>local</i>, the halo sums
+      |net| over <V>K</V> patches instead of taking |Σ| once: the total goes as
+      √(<V>KN</V>) and the width falls as 1/√<V>K</V>. Spatial averaging kills
+      the scatter without needing fast forgetting, so <V>τ</V> is freed and the
+      tension dissolves — at the price of a new length. A patch anywhere under
+      ten kiloparsecs suffices (27 patches, 0.059 dex). What it then owes is
+      that the √<V>K</V> be absorbed into κ{' '}
+      <i>without</i> introducing a mass or radius dependence, or Tully–Fisher
+      moves. A real constraint on the patch size, checkable, and where this goes
+      next.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And checked, that escape does not survive.</b>{' '}
+      Three lines: <V>M</V><Sub>eff</Sub> = √(<V>KN</V>) with{' '}
+      <V>K</V> = <V>V</V>/ℓ<Sup>3</Sup> gives{' '}
+      √(<V>VM</V>/ℓ<Sup>3</Sup><V>m</V><Sub>p</Sub>), and Tully–Fisher wants{' '}
+      √<V>M</V> <i>and nothing else</i> — so ℓ<Sup>3</Sup> ∝ <V>V</V>, i.e.{' '}
+      <b style={{ color: INK }}>the same number of patches for every system</b>,
+      dwarf to cluster. That is not a length, it is a fixed fraction of whatever
+      it sits in, which no local rule produces. With a fixed ℓ the halo picks up
+      the galaxy’s <i>size</i> as well as its mass and Tully–Fisher moves by
+      whole dex. So the spatial escape is out, and the temporal tension stands:
+      79 Gyr against 26 Myr.
+    </Note>
+
+    <Head>the whole thing in one line</Head>
+
+    <Note>
+      The machinery has got ahead of the question. Strip out the layers, the
+      polarities and the patches, and what is left is a statement about{' '}
+      <i>which flux is conserved</i>:
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="both flat, both equal to the baryonic mass, at every radius">
+      <V>g·r</V><Sup>2</Sup> = <V>GM</V>
+      <span style={{ padding: '0 1.6em', color: FAINT }}>vs</span>
+      <V>g</V><Sup>2</Sup><V>·r</V><Sup>2</Sup> = <V>GM·a</V><Sub>0</Sub>
+    </Eq>
+
+    <Note>
+      <b style={{ color: INK }}>Newton conserves the flux of <V>g</V>. Deep MOND
+        conserves the flux of <V>g</V><Sup>2</Sup>.</b> Both checked at 10, 20
+      and 40 kpc, both flat at 1.39·10<Sup>41</Sup> kg — the Milky Way’s
+      baryons. The interpolation between them is exactly AQUAL,{' '}
+      <V>μ</V>(<V>g</V>/<V>a</V><Sub>0</Sub>)·<V>g·r</V><Sup>2</Sup> = <V>GM</V>.
+      That is the entire problem, and everything above is machinery for making
+      that one switch happen.
+    </Note>
+
+    <Note>
+      Which <b style={{ color: INK }}>collapses three questions into one</b>.
+      “Where does √<V>M</V> come from”, “where does 1/<V>r</V> come from” and
+      “what switches at <V>a</V><Sub>0</Sub>” are the same question, because{' '}
+      <V>g</V><Sup>2</Sup><V>r</V><Sup>2</Sup> = <V>GMa</V><Sub>0</Sub> contains
+      all three at once: the square gives the root, the square gives the
+      1/<V>r</V>, and <V>a</V><Sub>0</Sub> is only the constant that makes two
+      conserved quantities carry the same units.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>a wrong turn, recorded</span>,
+        <>“Count <i>pairs</i> instead of charges — pairs among <V>n</V> go as{' '}
+          <V>n</V><Sup>2</Sup>, so a conserved pair-flux makes the charge-count
+          its root.” It does not survive: pair density goes as{' '}
+          <V>M</V><Sup>2</Sup>/<V>r</V><Sup>4</Sup>, so pairs in a shell go as{' '}
+          <V>M</V><Sup>2</Sup>/<V>r</V><Sup>2</Sup> — <i>falling</i> rather than
+          conserved. Counting pairs concentrates at the centre, the opposite of
+          a halo.</>],
+      [<span style={{ color: DERIVED }}>the right statement is simpler</span>,
+        <><V>g</V><Sup>2</Sup><V>r</V><Sup>2</Sup> = const is just{' '}
+          <V>g</V> ∝ 1/<V>r</V>, and <V>g</V> is the density of whatever
+          mediates — so it is entirely about how that density falls. Ballistic
+          in 3D gives 1/<V>r</V><Sup>2</Sup> (Newton); diffusive in 3D, or
+          ballistic in 2D, gives 1/<V>r</V>. With the amplitude √<V>M</V> from
+          the random signs, the deep law is{' '}
+          <b style={{ color: INK }}>random signs × a 1/<V>r</V> profile</b> —
+          two things the model has words for, since <K>SPREAD</K> is diffusion
+          and the XOR is the signs. A much smaller ask than a second layer with
+          its own gravity.</>],
+      [<span style={{ color: BORROWED }}>and the remaining trap</span>,
+        <>The natural switch from ballistic to diffusive is the{' '}
+          <i>mean free path</i> — one regime inside <V>λ</V>, another outside.
+          That is a <b style={{ color: INK }}>length</b>, and a length is already
+          excluded: low-surface-brightness galaxies deviate from Newton at{' '}
+          <i>small</i> radius, which no <V>r</V>-threshold can do. The switch has
+          to be driven by field <i>strength</i>, not distance.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Which leaves one question, in one sentence:
+        what makes the mediator stop travelling straight when <V>g</V> falls
+        below <V>a</V><Sub>0</Sub>?</b> Everything above is scaffolding for
+      that, and anything that answers it makes most of the scaffolding
+      unnecessary.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>“Below what”, though</b> — because “below{' '}
+      <V>a</V><Sub>0</Sub>” is circular, <V>a</V><Sub>0</Sub> being the thing to
+      derive. Said in the model’s own units it stops being circular. The model
+      has one carrier, at occupancy{' '}
+      <i>chance</i> = <V>m</V><K>SHEET</K>/<i>shell</i>, and the pull is{' '}
+      <V>g</V> = <K>GRAVITY</K>·<V>m</V>/<V>r</V><Sup>2</Sup>. Divide them and{' '}
+      <V>m</V> and <V>r</V> both vanish:{' '}
+      <V>g</V>/<i>chance</i> = 4π<K>GRAVITY</K>/<K>SHEET</K> = 0.0979, a
+      constant.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So <V>g</V> <i>is</i> the carrier density</b>,
+      times a fixed number. In general relativity the field strength is not a
+      density of anything; here it is exactly one — which is why this model can
+      state the condition <i>locally</i> at all. “The field is weak” and “the
+      carriers are sparse” are not two facts about a place. And that gives the
+      threshold a value in carriers per cell: <V>a</V><Sub>0</Sub> is
+      2.16·10<Sup>−62</Sup> in lattice units, so the crossover occupancy is
+      2.20·10<Sup>−61</Sup> — <b style={{ color: INK }}>one carrier per
+        4.54·10<Sup>60</Sup> cells</b>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the statement is about a path, not a
+        volume.</b> Said as “one carrier per horizon” it compared a volume count
+      against a linear one, and those differ by 10<Sup>121</Sup> here — the
+      occupancy was right and the phrase was not. The mean spacing is
+      1.66·10<Sup>20</Sup> cells, 2.68 fm. What <i>is</i> order one is a{' '}
+      <i>path</i> count: a carrier moves one cell a tick, so over the age it
+      crosses <V>t</V><Sub>0</Sub> cells and meets{' '}
+      <V>n</V><Sub>c</Sub>·<V>t</V><Sub>0</Sub> = 1.78 others.{' '}
+      <b style={{ color: INK }}>The crossover is where a carrier meets about one
+        other in the whole history of the universe</b> — below it, a carrier
+      travels its life alone. Which is{' '}
+      <V>a</V><Sub>0</Sub> ≈ <V>c</V>/<V>t</V><Sub>0</Sub> in the model’s own
+      words, now saying something physical: <i>a carrier that never meets
+        another has nothing to keep it straight</i>. A condition on the carrier, evaluated where the
+      carrier is, with no reference to the mass that sent it or the distance it
+      has come — a property of the place and not the body, and not a length, so
+      the low-surface-brightness objection does not touch it.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>Earth’s surface</span>,
+        <>1.46·10<Sup>11</Sup> carriers per horizon</>],
+      [<span style={{ color: FAINT }}>the Sun at 1 AU</span>,
+        <>8.80·10<Sup>7</Sup></>],
+      [<span style={{ color: DERIVED }}>the Galaxy at 8 kpc</span>,
+        <><b style={{ color: INK }}>2.91</b> — just above the switch</>],
+      [<span style={{ color: DERIVED }}>the Galaxy at 20 kpc</span>,
+        <><b style={{ color: INK }}>0.395</b> — just below it</>],
+      [<span style={{ color: FAINT }}>the Galaxy at 100 kpc</span>,
+        <>0.016</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>The switch at one sits between the solar circle
+        and 20 kpc</b> — exactly where rotation curves start to depart — and the
+      solar system is eight orders clear of it. That separation is what every
+      earlier candidate failed to produce, and here it falls out of the counting
+      rather than being asked for.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So the question in its smallest form, and no
+        longer circular: what does a carrier do when there is less than one
+        other carrier within reach of it — and why would that be a wander rather
+        than nothing at all?</b> Which is answerable by <i>simulation</i> rather
+      than by argument, for the first time in this line of work: two carriers, a
+      lattice, and whatever rule makes one of them notice the other.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So the search, run.</b> Every family of local
+      rule that could bend the radial law, and how each dies.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>free streaming</span>,
+        <><V>n</V> ∝ 1/<V>r</V><Sup>2</Sup> — nothing wrong with it; it{' '}
+          <i>is</i> Newton</>],
+      [<span style={{ color: BORROWED }}>scattering, <V>λ</V> = 1/<V>σn</V></span>,
+        <>Dense → 1/<V>r</V>. <b style={{ color: INK }}>The sign is
+          backwards</b> — the model’s own <i>through</i> rule makes meetings{' '}
+          <i>deflect</i>, so it wanders where it is crowded. And{' '}
+          <V>λ</V> = <V>r</V> is a length.</>],
+      [<span style={{ color: BORROWED }}>scattering, <V>λ</V> ∝ <V>n</V></span>,
+        <>Right sign, still a length. Any such rule switches where{' '}
+          <V>λ</V>(<V>n</V>) = <V>r</V>, but the switch must sit at fixed{' '}
+          <V>n</V><Sub>c</Sub> while <V>r</V><Sub>c</Sub> = √(<V>GM</V>/<V>a</V><Sub>0</Sub>)
+          moves with mass — 0.3, 3.4 and 34 kpc for 10<Sup>8</Sup>,
+          10<Sup>10</Sup>, 10<Sup>12</Sup> M☉. One number against three.</>],
+      [<span style={{ color: BORROWED }}>creation ∝ <V>n</V><Sup>2</Sup>, i.e. meetings</span>,
+        <>Dimensions demand <V>p</V> = 2 for <V>Φ</V> ∝ <V>r</V>, and{' '}
+          <V>n</V><Sup>2</Sup> is a meeting rate — the only interaction the model
+          has. It looked like the answer.{' '}
+          <b style={{ color: INK }}>It is a knife edge, not an attractor:</b>{' '}
+          1/<V>Φ</V> = 1/<V>Φ</V><Sub>0</Sub> + (<V>γ</V>/4π)(1/<V>r</V> −
+          1/<V>r</V><Sub>0</Sub>) either saturates back to Newton or runs away,
+          and the threshold between them is in the <i>source strength</i> — so
+          heavy galaxies would have halos and light ones none.</>],
+      [<span style={{ color: DERIVED }}>carriers slowing, <V>v</V> ∝ 1/<V>r</V></span>,
+        <>Gives <V>n</V> ∝ 1/<V>r</V> ✓ — and contradicts the model outright.
+          Everything moving at <V>c</V> is what gives the metric and the
+          checkerboard.</>],
+      [<span style={{ color: DERIVED }}>effectively two-dimensional</span>,
+        <>Gives <V>n</V> ∝ 1/<V>r</V> ✓, and nothing forbids it.{' '}
+          <b style={{ color: INK }}>The one live candidate</b> — and nothing
+          here supplies a rule that would do it. <K>FLOOR</K> and the
+          fractional-dimension work in <i>regimes.ts</i> is where the vocabulary
+          already is.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And the mass is still a separate problem.</b>{' '}
+      None of these produce √<V>M</V> — they are all rates, so all bilinear, so
+      the theorem holds over every one of them. The radial law and the mass law
+      are two problems and this search only ever addressed the first.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the live candidate has a candidate
+        mechanism: lock layer two to layer one’s <K>SHEET</K>.</b>{' '}
+      <K>WAYS</K> = 3<Sup>3</Sup>−1 = 26 is every direction out of a cell;{' '}
+      <K>SHEET</K> = 3<Sup>2</Sup>−1 = 8 is the directions in <i>one plane</i>{' '}
+      through it. And <i>chance</i> = <V>m</V><K>SHEET</K>/<i>shell</i> already
+      uses <K>SHEET</K> rather than <K>WAYS</K> — the pull was always counted
+      through a plane. This is not adding a structure; it is taking one the file
+      already has and making it <i>bind</i>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>but not “always” 2D</span>,
+        <>A source spreading into a plane gives <V>n</V> ∝ 1/<V>r</V> at{' '}
+          <i>every</i> radius, including the solar system where
+          1/<V>r</V><Sup>2</Sup> holds to a part in 10<Sup>10</Sup>. The locking
+          must be conditional, and the condition is the whole content of the
+          proposal.</>],
+      [<span style={{ color: DERIVED }}>and the condition runs the right way round</span>,
+        <>A plane needs <i>two</i> independent directions to be defined. Many
+          carriers met → many planes, all disagreeing → isotropic →{' '}
+          <b style={{ color: INK }}>3D, Newton</b>. About one met → one plane,
+          uncontested → locked → <b style={{ color: INK }}>2D, MOND</b>. Dense
+          is Newtonian and thin is not — which everything earlier got backwards.
+          And the threshold is a <i>count of meetings</i>, not a length and not
+          a mass.</>],
+      [<span style={{ color: DERIVED }}>so it predicts <V>a</V><Sub>0</Sub></span>,
+        <>“About one meeting in a carrier’s life” means{' '}
+          <V>n</V><Sub>c</Sub> = 1/<V>t</V><Sub>0</Sub> = 1.24·10<Sup>−61</Sup>{' '}
+          a cell, and <V>g</V> = 4π<V>G</V>/<K>SHEET</K>·<V>n</V> gives{' '}
+          <b style={{ color: INK }}><V>a</V><Sub>0</Sub> = 6.74·10<Sup>−11</Sup> m/s²</b>{' '}
+          against a measured 1.20·10<Sup>−10</Sup> —{' '}
+          <b style={{ color: INK }}>a factor of 1.78, with nothing fitted</b>.
+          The inputs are <K>GRAVITY</K> and <K>SHEET</K>, both counted, and the
+          age, which the frontier already fixes at 1/<V>H</V><Sub>0</Sub>.
+          Against <K>BIAS</K>/<V>t</V><Sub>0</Sub>, which was 4.53 out, that is
+          a real improvement — and it comes from a <i>stated rule</i> rather
+          than from trying combinations.</>],
+    ]} />
+
+    <Note>
+      Checked in meetings over a carrier’s whole life: 1.5·10<Sup>11</Sup> at
+      the Earth’s surface, 8.8·10<Sup>7</Sup> at 1 AU, 2.91 at 8 kpc, 0.395 at
+      20 kpc, 0.016 at 100 kpc.{' '}
+      <b style={{ color: INK }}>Eight orders of margin in the solar system,
+        crossing between 8 and 20 kpc.</b> The separation is not asked for; it
+      falls out of the counting.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the mass, where the second half of the idea
+        points.</b> Two dimensions alone is not enough and fails the familiar
+      way: a source of strength <V>M</V> over 2π<V>r</V> gives{' '}
+      <V>n</V> ∝ <V>M</V>/<V>r</V>, so <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>2</Sup>{' '}
+      — the third appearance of that exact failure. But layer one’s pulses both{' '}
+      <i>constitute</i> the mass and <i>set</i> the sheet: if the sheet a carrier
+      locks to is chosen by the pulse it met, and pulses carry ± which XOR, the
+      sheet directions inherit the cancellation. <V>N</V> pulses agree on a
+      direction only to √<V>N</V>, so the coherently-locked fraction is
+      √<V>N</V>/<V>N</V> and the effective source is √<V>N</V>.{' '}
+      <b style={{ color: INK }}>That would be the √<V>M</V></b>, from the same
+      mechanism as the radial law rather than a second one.{' '}
+      <i>A sketch and not a result</i> — nothing here shows that sheet
+      directions XOR the way polarities do, and everything turns on that. But it
+      is the first version where both halves have the same cause.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>But the sheet rotates — so what stops it being
+        3D again?</b> The objection is right, and answering it pins the
+      mechanism down rather than breaking it. A straight line is 1D and lies in
+      infinitely many planes, so confining a carrier to a plane does nothing on
+      its own. The distinction is about <i>spreading</i>: a beam widening in two
+      transverse directions covers area ∝ <V>r</V><Sup>2</Sup> and gives
+      1/<V>r</V><Sup>2</Sup>; widening in <i>one</i> covers ∝ <V>r</V> and gives
+      1/<V>r</V>. The plane holds the carrier’s <i>own</i> outward line, so
+      every sky direction is still covered — the picture stays isotropic and
+      only the widening flattens. (Which also disposes of the obvious worry: a
+      globally fixed plane would make halos <i>discs</i> and rotation curves
+      depend on sky direction, and they do not.)
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And then the rotation matters exactly as
+        said</b> — if the plane turns about the <i>radial</i> axis mid-journey,
+      the widening fills both directions and 1/<V>r</V><Sup>2</Sup> comes
+      straight back. So the sheet must hold about that axis for the whole trip.
+      And <i>“reset only by a meeting”</i> is precisely that stability — with a
+      dividend nobody asked for. Meetings are independent and rare, so they are{' '}
+      <b style={{ color: INK }}>Poisson</b> with mean{' '}
+      <V>x</V> = <V>g</V>/<V>a</V><Sub>0</Sub> over a carrier’s life: never
+      reset with probability <V>e</V><Sup>−<V>x</V></Sup> (stays 2D), reset at
+      least once with 1 − <V>e</V><Sup>−<V>x</V></Sup> (3D).
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="the fraction that has gone 3D is the interpolation function">
+      <V>μ</V>(<V>x</V>) = 1 − <V>e</V><Sup>−<V>x</V></Sup>
+      <span style={{ padding: '0 1.4em', color: FAINT }}>→ <V>x</V> as <V>x</V> → 0,</span>
+      <span style={{ color: FAINT }}>→ 1 as <V>x</V> → ∞</span>
+    </Eq>
+
+    <Note>
+      <b style={{ color: INK }}>Both limits correct, and neither put in</b> —
+      they are what “at least one reset” means when resets are Poisson. Every
+      MOND paper picks an interpolation function by hand out of a family; this
+      one picks itself out of the counting statistics of the mechanism, which is
+      the difference between a fit and a derivation.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>and it is distinguishable</span>,
+        <>Solving <V>μ</V>(<V>g</V>/<V>a</V><Sub>0</Sub>)·<V>g</V> ={' '}
+          <V>g</V><Sub>N</Sub> for the Milky Way: at 10 kpc the Poisson form
+          gives 208.7 km/s against 227.3 for <V>x</V>/(1+<V>x</V>) and 201.7 for{' '}
+          <V>x</V>/√(1+<V>x</V><Sup>2</Sup>) —{' '}
+          <b style={{ color: INK }}>a 25 km/s spread through the transition at
+            5–20 kpc</b>, exactly where curves are best measured. SPARC-quality
+          fits distinguish interpolation functions at that level.</>],
+      [<span style={{ color: DERIVED }}>and the shape is distinctive</span>,
+        <>1 − <V>e</V><Sup>−<V>x</V></Sup> reaches Newton much faster than either
+          standard form — 0.993 at <V>x</V> = 5 against 0.833 and 0.981. So the
+          model says the transition is{' '}
+          <b style={{ color: INK }}>sharper than the usual fits assume</b>, which
+          is a statement about the <i>inner</i> parts of galaxies rather than the
+          outskirts — the opposite end from where these arguments usually
+          live.</>],
+      [<span style={{ color: BORROWED }}>and the mass is untouched</span>,
+        <>The sheet story is about how carriers <i>travel</i>; √<V>M</V> is about
+          how many of them there effectively <i>are</i>. Six of the seven
+          requirements are now met and the seventh is the one the theorem says
+          needs superposition to fail — a different kind of thing entirely.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>How many emitters — per body, or in the
+        universe?</b> The question has a fork in it and one side is already
+      settled. The root runs over <i>the body</i>, and that is forced rather
+      than preferred: over the body gives{' '}
+      <V>M</V><Sub>eff</Sub> ∝ √<V>M</V> and{' '}
+      <V>v</V><Sup>4</Sup> ∝ <V>M</V> ✓, while over the universe gives{' '}
+      <V>M</V><Sub>eff</Sub> = const and every galaxy rotating at the same speed
+      whatever its mass ✗. Tully–Fisher holds across five decades with under 0.1
+      dex of scatter.
+    </Note>
+
+    <Note>
+      The universe total is worth having anyway, and the model fixes its own
+      rather than borrowing one: a ball of radius{' '}
+      <V>ct</V><Sub>0</Sub> = 4.23 Gpc, 9.32·10<Sup>78</Sup> m³, baryons
+      3.92·10<Sup>51</Sup> kg —{' '}
+      <b style={{ color: INK }}>2.34·10<Sup>78</Sup> emitters</b> if an emitter
+      is a proton, one per 9.4·10<Sup>104</Sup> cells. The familiar
+      10<Sup>80</Sup> is quoted for ΛCDM’s <i>comoving</i> observable universe,
+      14.3 Gpc rather than 4.2 — a volume 39× larger, giving
+      9.0·10<Sup>79</Sup>. Consistent, and a good check that the smaller ball is
+      not quietly losing matter.
+    </Note>
+
+    <Note>
+      √<V>N</V><Sub>universe</Sub> = 1.53·10<Sup>39</Sup>, beside the
+      proton–electron electric-to-gravitational ratio of 2.27·10<Sup>39</Sup> —
+      Dirac’s large numbers in Eddington’s version.{' '}
+      <b style={{ color: INK }}>Recorded and not claimed.</b> The enumeration
+      above measured how worthless this is: 341 of 12816 expressions land within
+      10% of an arbitrary target and 20 within 1%. It is the same discipline
+      that made <V>a</V><Sub>0</Sub> ≈ <V>c</V>/<V>t</V><Sub>0</Sub> worth
+      something only once a <i>rule</i> produced it.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>where the universe does enter</span>,
+        <>Not the count. The halo is{' '}
+          <V>ρ</V> = <V>κ</V>√<V>M</V>/<V>r</V><Sup>2</Sup> and κ is fixed by{' '}
+          <V>a</V><Sub>0</Sub> — 0.1067 measured, 0.0800 predicted, the ratio
+          being √1.78. So{' '}
+          <b style={{ color: INK }}>the root runs over the body and the
+            coefficient runs over the horizon</b>: the mass scaling is local,
+          the scale is cosmological, and nothing counts the universe’s
+          emitters.</>],
+      [<span style={{ color: BORROWED }}>but what <i>is</i> an emitter?</span>,
+        <>If the root is over constituents, the answer depends on what counts as
+          one. For 7·10<Sup>10</Sup> M☉:{' '}
+          <V>M</V><Sub>eff</Sub>/<V>M</V> is 1.1·10<Sup>−34</Sup> per proton,
+          4.0·10<Sup>−25</Sup> per Planck mass, 3.8·10<Sup>−6</Sup> per solar
+          mass — <b style={{ color: INK }}>twenty-nine orders</b>. And since κ is
+          fixed by <V>a</V><Sub>0</Sub>, choosing the emitter <i>is</i> choosing{' '}
+          <V>a</V><Sub>0</Sub>. The mechanism cannot be agnostic about it.</>],
+      [<span style={{ color: DERIVED }}>so the next concrete thing</span>,
+        <>Not “how many in the universe” but <b style={{ color: INK }}>what is
+          one</b>. The model already believes there is a smallest emitter — the
+          ceiling is one emission a cell a tick — so that is where the count has
+          to come from, and it is a question about <i>physics.ts</i> rather than
+          about galaxies.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So posit the ratio</b> — one layer-two pulse for
+      every <V>x</V> of layer one’s — and check before asking why. In the
+      obvious reading it fails, and the way it fails says what the rule has to
+      be. <V>N</V> in, <V>N</V>/<V>x</V> out: for the output to be √<V>N</V> you
+      need <V>x</V> = √<V>N</V>, so <V>x</V> is not a ratio at all — it grows
+      with the body. “One in a thousand” is still <i>linear</i>, and just
+      rescales the mass.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>1 for 1, or 1 for every 1000</span>,
+        <><V>N</V><Sup>1</Sup> — <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>4</Sup></>],
+      [<span style={{ color: FAINT }}>1 per dead-time (saturates)</span>,
+        <><V>N</V><Sup>0</Sup> — no mass dependence at all</>],
+      [<span style={{ color: FAINT }}>1 per coincidence of two</span>,
+        <><V>N</V><Sup>2</Sup> — the wrong way entirely</>],
+      [<span style={{ color: DERIVED }}>XOR cancellation</span>,
+        <><b style={{ color: INK }}><V>N</V><Sup>½</Sup></b> — the only one</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So the root is specifically cancellation, not a
+        rate ratio</b> — which is worth having, because it means the rule is
+      forced rather than chosen. <i>But there is a version of the idea that
+        works, and it is a ratio after all — just not of counts.</i> Let the
+      trigger be <b style={{ color: INK }}>phase</b> rather than tally: one
+      layer-two pulse per 2π of accumulated layer-one phase. Phase is{' '}
+      <i>signed</i>, so it random-walks where a tally cannot —{' '}
+      <V>N</V> pulses of ±<V>δ</V> accumulate to <V>δ</V>√<V>N</V>, giving{' '}
+      <V>δ</V>√<V>N</V>/2π pulses out. <b style={{ color: INK }}>√<V>N</V>, from
+        a fixed rule.</b> And the file already carries <i>phase</i> on a source,
+      and <i>inStep</i> already turns on whether phases add.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="one equation, two unknowns — and both were already owed">
+      <V>M</V><Sub>2</Sub> = √(<V>M·m</V><Sub>0</Sub>)
+      <span style={{ padding: '0 1.4em', color: FAINT }}>⇒</span>
+      <V>m</V><Sub>0</Sub> = <Frac over={<><V>a</V><Sub>0</Sub><V>L</V><Sup>2</Sup></>} under={<V>G</V>} />
+    </Eq>
+
+    <Note>
+      The effective source is the <i>geometric mean</i> of the body and the
+      elementary emitter, and matching deep MOND locks the emitter to a length.
+      A proton wants <V>L</V> = 3.05·10<Sup>−14</Sup> m; an electron
+      7.12·10<Sup>−16</Sup>; a Planck mass 1.10·10<Sup>−4</Sup>. Going the other
+      way, 2.68 fm wants a 7.24 MeV emitter.{' '}
+      <b style={{ color: INK }}>Two of those are worth a second look and neither
+        is a claim</b> — a Planck-mass emitter wants 0.11 mm, which is the length
+      short-range gravity experiments were built to probe and the one the
+      dark-energy density picks out. Recorded so they are not rediscovered later
+      and mistaken for evidence.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What it actually buys is real.</b> Before, κ was
+      one fitted number with no interpretation. Now it is{' '}
+      <V>m</V><Sub>0</Sub> = <V>a</V><Sub>0</Sub><V>L</V><Sup>2</Sup>/<V>G</V> —
+      a relation between two things the model already owes an opinion on:{' '}
+      <i>physics.ts</i> owes a smallest emitter, since the one-a-tick ceiling
+      implies one, and the sheet mechanism owes a length, being how far a locked
+      plane holds. <b style={{ color: INK }}>Two separate debts, now one
+        equation.</b> Fix either and <V>a</V><Sub>0</Sub> follows; fix{' '}
+      <V>a</V><Sub>0</Sub> and they are locked to each other. Which is exactly
+      what “check it works before asking why” was supposed to produce. Still
+      missing: why phases should <i>cancel</i> rather than add — the same
+      question <i>inStep</i> asks, already measured for two identical emitters,
+      and never once asked of a whole body.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And if the universe reuses its abstractions,
+        <i>inStep</i> already answers it.</b> The criterion is in the file,
+      derived and measured for two identical emitters: phases hold together only
+      closer than a Compton wavelength, <V>R</V> &lt; 2π/<V>m</V>, and beyond it
+      they drift through every phase and cancel. For a proton that is
+      1.32·10<Sup>−15</Sup> m, so a galaxy is{' '}
+      <b style={{ color: INK }}>7·10<Sup>35</Sup> of them across</b> — utterly
+      out of step, phases cancelling completely, surviving net √<V>N</V>. Not a
+      new postulate; the model’s own criterion. Which is what “the same
+      abstraction is reused” would predict, so the assumption pays for itself
+      instead of costing something.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>but not for layer one</span>,
+        <>The Sun is 1.19·10<Sup>57</Sup> protons, so √<V>N</V>/<V>N</V> =
+          2.9·10<Sup>−29</Sup>. Gravity would be 10<Sup>−29</Sup> of itself. The
+          two layers cannot read the pulse train the same way.</>],
+      [<span style={{ color: DERIVED }}>one object, two observables</span>,
+        <>Layer one reads the <b style={{ color: INK }}>count</b> — how many
+          pulses, unsigned, which is mass. Layer two reads the{' '}
+          <b style={{ color: INK }}>phase</b> — where in the cycle, signed, which
+          cancels. A pulse train has both, and the file already carries both:{' '}
+          <i>mass = pulse rate</i> is the count and <i>phase</i> is on the
+          Source type. The abstraction <i>is</i> shared; only the aspect coupled
+          to differs.</>],
+      [<span style={{ color: DERIVED }}>which may mean there is no second layer</span>,
+        <>If layer two is the <i>phase</i> of layer one’s pulses, it is the same
+          graph read differently rather than a new one over it. That removes the
+          part hardest to justify — a second set of emitters with their own
+          gravity — and explains why the coupling had to be two-way, since a
+          phase cannot be independent of the pulses carrying it.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And is it the charge of an electron? Probably
+        not — and not for the obvious reason.</b> The composition test is too
+      weak to settle it: charges per kilogram are 1.196·10<Sup>27</Sup> for
+      hydrogen and 1.029·10<Sup>27</Sup> at <V>Y</V> = 0.28, a 2.3% spread
+      across the real range, which is 0.57% in <V>v</V> — twenty times under
+      Tully–Fisher’s own scatter. In ordinary matter charge and mass are
+      proportional to better than a percent.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What kills it is the opposite end.</b> If layer
+      two were charge, a body of <i>neutral</i> constituents would get no halo
+      at all. But the most dark-dominated systems known — clusters and dwarf
+      spheroidals — show the <i>largest</i> discrepancies, and they are the ones
+      with the fewest charges per unit mass. The mechanism predicts exactly the
+      reverse ordering. The phase reading is better here too:{' '}
+      <b style={{ color: INK }}>a phase belongs to every pulse</b>, so every
+      gram of anything has one, charged or not — and the halo goes to all matter
+      equally, which is what is observed.
+    </Note>
+
+    <Head>and then it was tested</Head>
+
+    <Note>
+      <b style={{ color: INK }}>Test A — do the model’s own phases cancel to
+        √<V>N</V>?</b> Not assumed random: <i>inStep</i> says two emitters differ
+      in phase by <V>ω</V>Δ<V>r</V>/<V>c</V> = <V>m</V>Δ<V>r</V>. So{' '}
+      <V>N</V> emitters at random places in a ball of radius <V>R</V>, each given
+      the phase its position implies, summed. At{' '}
+      <V>mR</V> = 10<Sup>−2</Sup> the sum is 1.000·10<Sup>3</Sup> out of
+      10<Sup>3</Sup> — fully coherent. At <V>mR</V> = 10<Sup>4</Sup> it is
+      3.164·10<Sup>2</Sup> against √<V>N</V> = 3.16·10<Sup>2</Sup> —{' '}
+      <b style={{ color: INK }}>exactly the root</b>, with the crossover at{' '}
+      <V>mR</V> ≈ 2π where <i>inStep</i> puts it. The √<V>M</V> half is real,
+      and it is not an assumption about randomness.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Test B — does locking to a plane change the
+        radial law? It does not.</b> Carriers from a point, turning by a small
+      angle each step, locked to one transverse direction or free in two:
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>turn 0.002/step</span>,
+        <>locked −2.000, free −2.000 — difference <b style={{ color: INK }}>0.000</b></>],
+      [<span style={{ color: FAINT }}>turn 0.010/step</span>,
+        <>locked −2.000, free −1.998 — difference 0.002</>],
+      [<span style={{ color: FAINT }}>turn 0.050/step</span>,
+        <>locked −1.964, free −1.929 — difference 0.034</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Locked and free agree to three decimal
+        places.</b> The number of transverse directions makes no difference to
+      the radial law at all — and the reason is{' '}
+      <i>flux conservation</i>, which sideways wandering cannot beat.{' '}
+      <V>N</V> carriers leave, <V>N</V> cross every sphere, the sphere has area
+      4π<V>r</V><Sup>2</Sup>. The 1/<V>r</V> appears only when the walk turns{' '}
+      <i>diffusive</i>, because then radial progress slows as{' '}
+      <V>cλ</V>/2<V>r</V> — and diffusion needs <i>many</i> resets, not few.
+      (A first run of this had the per-step turn at 0.25 rad, so every case had
+      already diffused and all four came out identical; and a fourth row at 0.2
+      gives −3.2 and −5.4, which is a truncation artefact rather than a
+      measurement of the diffusive slope.)
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So the sheet claim was wrong, and it is worth
+        saying where.</b> “The plane holds the carrier’s own line, so only the
+      widening flattens” does not give 1/<V>r</V>; widening does not touch the
+      radial profile. The permutation search two steps earlier had this right —
+      dense → 1/<V>r</V>, thin → 1/<V>r</V><Sup>2</Sup>,{' '}
+      <i>sign backwards</i> — and the sheet story talked its way out of a correct
+      result. The simulation puts it back.{' '}
+      <b style={{ color: INK }}>That retires the 2D transport mechanism</b>, and
+      with it the <V>a</V><Sub>0</Sub> prediction that rode on it and the derived
+      interpolation function, both of which assumed the locking worked. They are
+      kept above as a route that was tried, not as results.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What survives is Test A.</b> Phase cancellation
+      is real, measured, and follows from the model’s own <i>inStep</i> rather
+      than from a new assumption — so the √<V>M</V> half stands on its own. The
+      radial law is unexplained again, and the obstruction is exactly what it was
+      before any of this: <V>n</V> ∝ 1/<V>r</V> needs the carriers to slow, and
+      everything in this model moves at <V>c</V>.
+    </Note>
+
+    <Head>and speed is a budget, not a constant</Head>
+
+    <Note>
+      “Everything moves at <V>c</V>” was quoting half the file at the other
+      half. It rejects <i>idling</i> for massive particles — moving on a
+      fraction <V>β</V> of ticks gives (1−<V>β</V>) where relativity wants
+      √((1−<V>β</V>)(1+<V>β</V>)), and picks a frame. But the{' '}
+      <i>zigzag</i> says a thing steps <i>every</i> tick and its net speed is the
+      imbalance, and that <b style={{ color: INK }}>the updates <i>are</i> the
+        reversals</b>. A net drift below <V>c</V> is not forbidden; it is this
+      model’s own account of what speed is.
+    </Note>
+
+    <Note>
+      And that reopens everything, because flux conservation reads{' '}
+      <V>Φ</V> = 4π<V>r</V><Sup>2</Sup><V>nv</V>. With <V>v</V> constant,{' '}
+      <V>n</V> ∝ 1/<V>r</V><Sup>2</Sup> and no wandering changes it — which is
+      what the last test showed. With <V>v</V> varying, what is needed is simply{' '}
+      <V>v</V> ∝ 1/<V>r</V>. And the model has a reason for the drift to depend
+      on density, out of pieces already here: speed is the share of ticks spent
+      moving rather than updating; a carrier accumulates phase while travelling
+      free; <i>through</i> says a meeting resets it; so the accumulated state ∝
+      the distance since the last meeting, 1/<V>σn</V>, and the moving share ∝{' '}
+      <V>σn</V>.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="dense and the budget caps at c; thin and the carrier crawls">
+      <V>v</V> = <V>c</V>·min(1, <V>n</V>/<V>n</V><Sub>c</Sub>)
+    </Eq>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>dense, <V>n</V> &gt; <V>n</V><Sub>c</Sub></span>,
+        <><V>v</V> = <V>c</V>, so <V>n</V> = <V>Φ</V>/4π<V>r</V><Sup>2</Sup><V>c</V>{' '}
+          ∝ 1/<V>r</V><Sup>2</Sup> — <b style={{ color: INK }}>Newton</b></>],
+      [<span style={{ color: DERIVED }}>thin, <V>n</V> &lt; <V>n</V><Sub>c</Sub></span>,
+        <><V>v</V> = <V>cn</V>/<V>n</V><Sub>c</Sub>, so flux conservation goes{' '}
+          <i>quadratic</i>: <V>n</V> = √(<V>Φn</V><Sub>c</Sub>/4π<V>c</V>)/<V>r</V>{' '}
+          ∝ 1/<V>r</V> — <b style={{ color: INK }}>MOND</b></>],
+      [<span style={{ color: DERIVED }}>and the mass comes free</span>,
+        <>In the thin branch <V>n</V> ∝ √<V>Φ</V> and <V>Φ</V> ∝ <V>M</V>, so{' '}
+          <V>g</V> ∝ √<V>M</V>/<V>r</V> and{' '}
+          <b style={{ color: INK }}><V>v</V><Sub>rot</Sub><Sup>4</Sup> ∝ <V>M</V></b>.
+          Both halves from one mechanism — and the √<V>M</V> is not the phase
+          cancellation at all. It falls out because the flux equation becomes
+          quadratic in <V>n</V> once the speed is proportional to <V>n</V>.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>That is the non-linearity the theorem
+        demanded</b>, and it lives in the <i>transport</i> rather than in the
+      source — which is why every earlier attempt to put it in the source failed.
+      And the switch is at a <i>fixed occupancy</i>, hence fixed <V>g</V>, since{' '}
+      <V>g</V> ∝ <V>n</V>. Not a length, not a mass, not a count of
+      constituents. Every requirement the search accumulated, at once.
+    </Note>
+
+    <Note>
+      Measured by integrating the transport rather than trusting the algebra:{' '}
+      <b style={{ color: INK }}>−2.0000 inside and −1.0000 outside</b>, and the
+      outer density against √<V>Φ</V> comes to 10.0000 for a hundredfold mass
+      against √100 = 10. Exact.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What it costs.</b> A carrier that crawls is a
+      carrier that is <i>late</i>. At 20 kpc the drift is 0.4<V>c</V> and a
+      galaxy’s crossing time goes from 98 to 244 kyr — harmless. Further out it
+      is not: at <V>n</V>/<V>n</V><Sub>c</Sub> = 10<Sup>−3</Sup> a cluster-scale
+      field takes 10<Sup>7</Sup> years to establish.{' '}
+      <b style={{ color: INK }}>Gravity should lag in the deep-field regime</b>,
+      and merging systems are where that would show. It is not relativity broken
+      — the carriers still step one cell a tick, and the density setting the
+      drift is a scalar, so nothing exceeds <V>c</V> and nothing picks a frame.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And chasing that link turns up a sign conflict
+        in the chain above.</b> It used “a meeting <i>resets</i> the accumulated
+      state, so meetings free up ticks and the carrier moves faster”. But{' '}
+      <i>through</i> — the model’s own rule, and a measured one — says a charge
+      arriving at an occupied cell annihilates or <i>reverses</i>. A reversal
+      does not clear internal state; it turns the carrier round, which{' '}
+      <i>slows</i> the net drift. So <i>through</i> gives{' '}
+      <V>v</V> falling with <V>n</V> and the chain gives it rising, and{' '}
+      <V>v</V> ∝ <V>n</V> is exactly what the √<V>M</V> depends on.{' '}
+      <b style={{ color: INK }}>A real problem, not a detail</b> — and the sort
+      that would have gone unnoticed if the link had been left as an IOU.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>But there is a connection with the right sign,
+        and it is already here: <i>inStep</i>.</b> It says emitters closer than
+      a Compton wavelength hold a common phase and further apart drift
+      independently. Read as a <i>budget</i> rather than an interference
+      condition: <b style={{ color: INK }}>in step</b>, one phase is shared
+      between many carriers, the update is paid <i>once</i>, and each is free to
+      spend its ticks moving — dense → fast. <b style={{ color: INK }}>Out of
+        step</b>, each carries its own phase and pays every tick — thin → slow.
+      Right sign, no new rule, and it does not fight <i>through</i>: reversals
+      still happen, but what sets the drift is what a tick is <i>spent on</i>,
+      not which way the step points.
+    </Note>
+
+    <Eq derive={REACH} open={show}
+      note="a Compton wavelength is a fixed density — the shape the search demanded">
+      in step ⇔ spacing &lt; 2π/<V>m</V>
+      <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+      <V>n</V><Sub>c</Sub> = (<V>m</V>/2π)<Sup>3</Sup>
+    </Eq>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>which fixes the emitter</span>,
+        <>The required <V>n</V><Sub>c</Sub> = 2.203·10<Sup>−61</Sup> per cell
+          gives <V>m</V> = 5.150·10<Sup>−29</Sup> kg ={' '}
+          <b style={{ color: INK }}>28.9 MeV/<V>c</V><Sup>2</Sup></b>.</>],
+      [<span style={{ color: BORROWED }}>and there is no such particle</span>,
+        <>The proton gives <V>n</V><Sub>c</Sub> 3.4·10<Sup>4</Sup> too dense, the
+          electron 5.5·10<Sup>−6</Sup> too thin. The muon at 106 MeV and the
+          pion at 135 are the nearest things and both are four to eight times
+          too heavy.</>],
+      [<span style={{ color: DERIVED }}>but three of four are fixed</span>,
+        <>The <i>sign</i>, the <i>crossover shape</i>, and{' '}
+          <i>no new rule needed</i> — all by something already derived and
+          measured in the file. Only the number is wrong, and it is wrong by a
+          stateable amount.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Which says exactly what to look for:</b> either
+      an emitter near 29 MeV, or a reason the relevant Compton wavelength is not
+      the constituent’s own. And there is an obvious place to look for the
+      second — <i>inStep</i> takes the mass of what is <i>emitting</i>. If the
+      phase that matters belongs to the <i>carrier</i> rather than the source,
+      then 29 MeV is a statement about the carrier — and this model has{' '}
+      <b style={{ color: INK }}>never assigned the carrier a mass at all</b>.
+      The pull is carried by charges whose own rate was never fixed, which makes
+      this a gap rather than a contradiction, and the first thing{' '}
+      <i>physics.ts</i> would have to answer.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And a correction: the a₀ prediction was
+        over-retracted.</b> It was written off along with the 2D transport, but
+      it used only <V>g</V> ∝ <V>n</V> with the constant 4π<V>G</V>/<K>SHEET</K>{' '}
+      — the geometry of emission — and{' '}
+      <V>n</V><Sub>c</Sub> = 1/<V>t</V><Sub>0</Sub>, one meeting per carrier
+      lifetime. <i>Neither mentions the sheet.</i> The transport failed and the
+      prediction does not depend on it.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So how do you derive it without data?</b>{' '}
+      Enumerate the inputs that exist at all — this is the whole list, and a
+      derivation can use nothing else: four counted numbers (<K>SHEET</K>,{' '}
+      <K>WAYS</K>, <K>BITE</K>, <K>GRAVITY</K>), two units (the cell and the
+      tick, fixed by the calibration), and one dynamical quantity,{' '}
+      <V>t</V><Sub>0</Sub> = 8.08·10<Sup>60</Sup> ticks. Then see which
+      combinations can reach the size at all.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>the ceiling — one emission a tick</span>,
+        <><V>n</V><Sub>c</Sub> = 1, which is 4.5·10<Sup>60</Sup> too dense</>],
+      [<span style={{ color: FAINT }}>the floor — one emission per age</span>,
+        <>7.6·10<Sup>−186</Sup>, which is 10<Sup>124</Sup> too thin</>],
+      [<span style={{ color: DERIVED }}>one <i>meeting</i> per carrier lifetime</span>,
+        <>1.24·10<Sup>−61</Sup> against the 2.20·10<Sup>−61</Sup> that{' '}
+          <V>a</V><Sub>0</Sub> requires —{' '}
+          <b style={{ color: INK }}>out by 1.78</b></>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Only one route lands</b>, and it is not a fit
+      surviving among many — it is the only candidate the available ingredients
+      can even build at the right size. A carrier crosses one cell a tick and
+      lives <V>t</V><Sub>0</Sub> ticks, sweeping <K>BITE</K> cells of
+      cross-section, so it meets <V>n</V>·<K>BITE</K>·<V>t</V><Sub>0</Sub>{' '}
+      others; the crossover is where that count is <i>one</i> — the boundary
+      between a carrier whose history contains an interaction and one whose does
+      not. So <V>n</V><Sub>c</Sub> = 1/<K>BITE</K><V>t</V><Sub>0</Sub>, and with{' '}
+      <V>g</V> = (4π<V>G</V>/<K>SHEET</K>)<V>n</V>,{' '}
+      <b style={{ color: INK }}><V>a</V><Sub>0</Sub> = 4π<V>G</V>/(<K>SHEET</K>·<V>t</V><Sub>0</Sub>)
+        = 6.74·10<Sup>−11</Sup></b> against 1.20·10<Sup>−10</Sup> measured. No{' '}
+      <V>a</V><Sub>0</Sub> anywhere in the derivation.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And it then predicts the carrier mass</b>, which
+      was the open number. <i>inStep</i> wants{' '}
+      <V>n</V><Sub>c</Sub> = (<V>m</V>/2π)<Sup>3</Sup>; setting the two equal
+      gives <V>m</V> = 2π(1/<V>t</V><Sub>0</Sub>)<Sup>⅓</Sup> ={' '}
+      <b style={{ color: INK }}>23.8 MeV/<V>c</V><Sup>2</Sup></b>, against the
+      28.9 MeV that <V>a</V><Sub>0</Sub> demands — a ratio of 1.212.{' '}
+      <b style={{ color: INK }}>Two independent routes to the same number,
+        agreeing to 21%.</b> One counts meetings over a lifetime, the other asks
+      when carriers fall out of step. They did not have to agree at all, and it
+      is the first time in this line of work that two derivations have met.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The bills, and they are specific.</b> The{' '}
+      <i>1.78 is uncounted</i> — and it is the <i>same</i> 1.78 at every step, so
+      it is one missing factor rather than several; somewhere a 2, a π or a √π is
+      not being counted. <V>t</V><Sub>0</Sub> <i>is not a constant</i>, so{' '}
+      <V>a</V><Sub>0</Sub> ∝ 1/<V>t</V> and the carrier mass goes as{' '}
+      <V>t</V><Sup>−⅓</Sup> — a mass that changes with the age is a strange
+      object, and it is the same prediction already flagged, with high-redshift
+      curves going the wrong way. And <i>24 MeV is not a particle</i>: the muon
+      is 106 and the pion 135. Either something sits there, or the Compton
+      wavelength that matters is not a particle’s at all.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the 1.78 is mostly countable — it was never
+        one number.</b> The count was “a carrier sweeps <K>BITE</K> cells a tick
+      for <V>t</V><Sub>0</Sub> ticks, so it meets{' '}
+      <V>n</V>·<K>BITE</K>·<V>t</V><Sub>0</Sub> others; set that to one”. Two
+      things in it were left at one and should not have been, and both are
+      already derived elsewhere in this file: <i>share</i> = ½, since only
+      opposite polarities annihilate and <i>opposed</i> pairs at random; and{' '}
+      ⟨|<V>v</V><Sub>rel</Sub>|⟩ = 4/3, since both things move at <V>c</V> and
+      the rate carries their <i>relative</i> speed — the same average that
+      corrected the screening geometry.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}>nothing counted</span>,
+        <><V>a</V><Sub>0</Sub> = 6.74·10<Sup>−11</Sup> — 0.562 of measured</>],
+      [<span style={{ color: DERIVED }}><i>share</i> = ½</span>,
+        <>1.348·10<Sup>−10</Sup> — 1.124</>],
+      [<span style={{ color: FAINT }}>⟨|<V>v</V><Sub>rel</Sub>|⟩ = 4/3 alone</span>,
+        <>5.06·10<Sup>−11</Sup> — 0.421</>],
+      [<span style={{ color: DERIVED }}>both</span>,
+        <>1.011·10<Sup>−10</Sup> — 0.843</>],
+    ]} />
+
+    <Note>
+      They pull <i>opposite</i> ways — fewer meetings puts the threshold at a
+      higher density and raises <V>a</V><Sub>0</Sub>; a larger relative speed
+      means more meetings and lowers it.{' '}
+      <b style={{ color: INK }}>And the relative-speed factor is not actually
+        4/3 here</b>, which is the interesting part rather than a nuisance: 4/3
+      is the <i>isotropic</i> average, but a source’s own carriers all stream
+      radially outward — nearly comoving, and two things moving the same way at{' '}
+      <V>c</V> never meet. So the true factor sits between 1 and 4/3, and with{' '}
+      <i>share</i> counted{' '}
+      <b style={{ color: INK }}><V>a</V><Sub>0</Sub> ∈ [1.011, 1.348]·10<Sup>−10</Sup></b>{' '}
+      — the measured 1.200 sitting inside, 56% of the way across.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And it tightens the two routes against each
+        other</b>, which is the better test since neither involves{' '}
+      <V>a</V><Sub>0</Sub>. Each <V>n</V><Sub>c</Sub> predicts a carrier mass
+      through <V>n</V><Sub>c</Sub> = (<V>m</V>/2π)<Sup>3</Sup>: bare gives 23.8
+      MeV, <i>share</i> gives 30.0, both give 27.3, against the 28.9 that{' '}
+      <V>a</V><Sub>0</Sub> demands.{' '}
+      <b style={{ color: INK }}>From 21% apart to 4%.</b> Two derivations that
+      share no steps now meet inside the uncertainty of either.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What is left.</b> <i>What a carrier meets</i> is
+      now the only thing between this and a number — its own source’s outflow,
+      comoving and suppressed, or an ambient sea, isotropic and 4/3? That is a
+      question about <i>field.ts</i> and it is answerable by simulation.{' '}
+      <V>t</V><Sub>0</Sub> not being a constant is unfixable and stays a
+      prediction. And ~28 MeV is still not a particle: the bracket is 27–30 and
+      nothing sits there.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>A discipline note.</b> (4/3)<Sup>2</Sup> = 1.7778
+      against the observed 1.7799 — a match to 0.1%.{' '}
+      <i>Not claimed, and it should not be:</i> <V>a</V><Sub>0</Sub> itself is
+      quoted at ~10%, so 0.1% is far inside the noise, and √π = 1.772 fits just
+      as well. The two factors above are worth having because each was{' '}
+      <i>derived somewhere else in this file</i> — not because their product
+      lands well.
+    </Note>
+
+    <Head>and simulating the last open thing breaks it</Head>
+
+    <Note>
+      <b style={{ color: INK }}>The suppression is real and strong.</b> A source
+      of radius <V>R</V>, a field point at <V>r</V>, two carriers arriving there
+      from random parts of it, each weighted by the flux that part contributes:
+      ⟨|<V>v</V><Sub>rel</Sub>|⟩/<V>c</V> is 0.560 at{' '}
+      <V>r</V>/<V>R</V> = 1.5, 0.162 at 5, 0.027 at 30, 0.008 at 100. It falls
+      as <V>R</V>/<V>r</V> exactly as the geometry says — far out the source
+      subtends a small angle and its carriers all go the same way.{' '}
+      <b style={{ color: INK }}>A point source is the limit: its carriers are
+        perfectly comoving and never meet each other at all.</b>
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>But a carrier does not only meet those.</b> The
+      rest of the universe is emitting too, and that sea arrives isotropically
+      at <V>ρ</V>·<K>SHEET</K>·<V>R</V><Sub>h</Sub> = 1.73·10<Sup>−60</Sup> per
+      cell. Against the galaxy’s own carriers: 6.3·10<Sup>6</Sup> times smaller
+      at 1 AU, comparable by 8 kpc, and{' '}
+      <b style={{ color: INK }}>thirty-five times <i>denser</i> than the
+        galaxy’s own by 20 kpc</b>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>and that breaks it</span>,
+        <>The crossover wants <V>n</V><Sub>c</Sub> = 2.48·10<Sup>−61</Sup> and
+          the sea alone is 1.73·10<Sup>−60</Sup> —{' '}
+          <b style={{ color: INK }}>seven times above it, everywhere</b>. A
+          carrier anywhere meets 7.0 others in its life from the background
+          alone, so the switch is thrown in every direction at every radius. No
+          MOND regime; Newton everywhere.</>],
+      [<span style={{ color: BORROWED }}>the conflation that hid it</span>,
+        <><V>g</V> ∝ <V>n</V> is about the <i>source’s own</i> carriers, while
+          the meeting rate is about <i>all</i> of them.{' '}
+          <b style={{ color: INK }}>Two densities, one symbol.</b> The crossover
+          was meant to depend on the source, so it happens at a radius — but the
+          meeting rate does not depend on the source at all, so it happens
+          nowhere, or everywhere.</>],
+      [<span style={{ color: DERIVED }}>and what saves it, barely</span>,
+        <><i>reach</i> screens the sea with a Yukawa length of 1.6 Gpc, so
+          distant matter does not count. Redone with the cut-off,{' '}
+          <V>ρ</V><K>SHEET</K><V>λ</V> = 6.55·10<Sup>−61</Sup> against{' '}
+          <V>n</V><Sub>c</Sub> = 2.48·10<Sup>−61</Sup> — a ratio of{' '}
+          <b style={{ color: INK }}>2.65</b> instead of 7. Still above, but
+          inside the uncertainty of everything feeding it.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So the verdict is marginal rather than
+        dead</b>, and it turns on <i>reach</i> — a length this file derived for
+      entirely unrelated reasons and called its one genuine prediction. The
+      mechanism does not have a comfortable MOND regime; it has one that
+      switches on <i>barely</i>, and only because gravity’s own range cuts the
+      sea off. That is a much weaker claim than the sections above it make, and
+      it is what the simulation actually supports. (The alternative branch — only
+      the source’s own carriers counting, so the crossover <i>is</i> radial —
+      fails differently: the rate goes as <V>R</V>/<V>r</V><Sup>3</Sup>, giving a
+      crossover radius ∝ <V>M</V><Sup>⅓</Sup> rather than √<V>M</V>, and
+      Tully–Fisher goes wrong again. Neither branch works, for different
+      reasons.)
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>One link is still owed:</b> that the update cost
+      goes as the accumulated phase. Everything above hangs on it, and it is the
+      only part not already in the file — a question about <i>physics.ts</i>,
+      what a tick is spent on, rather than about galaxies.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Where it leaves things.</b> √<V>M</V> in the
+      source: done, from the XOR. 1/<V>r</V><Sup>2</Sup> in the reach: done,
+      from the emitters. A flat curve and <V>v</V><Sup>4</Sup> ∝ <V>M</V>:
+      both follow exactly. The scale <V>a</V><Sub>0</Sub>: sets κ, still not
+      counted, still 4.5 off <K>BIAS</K>/<V>t</V><Sub>0</Sub>. And the
+      crossover: <b style={{ color: INK }}>open, and now the only open
+        thing</b> — and stated exactly, it is not “why does the root appear” but{' '}
+      <i>why does the product switch off</i>, without counting constituents.
+      Three turns ago this was five separate unknowns; it is one. And a bonus
+      that has nothing to do with <V>a</V><Sub>0</Sub>: a layer carrying
+      “pulse = which particle” is where a <b style={{ color: INK }}>particle
+        spectrum</b> could come from, and this model has none.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the sign is the interesting part.</b>{' '}
+      High-redshift discs at <V>z</V> ~ 1–2 are reported with{' '}
+      <i>declining</i> rotation curves — more baryon-dominated, more Keplerian,
+      which is what a <i>smaller</i> <V>a</V><Sub>0</Sub> would give. This model
+      wants a larger one. If that reading holds,{' '}
+      <V>a</V><Sub>0</Sub> ∝ 1/<V>t</V> is excluded, and with it the only native
+      hook the model has at galactic scale. Which is the right kind of trouble:
+      the coincidence <V>a</V><Sub>0</Sub> ≈ <V>cH</V><Sub>0</Sub> is normally
+      an ornament precisely because nothing forces it to hold at other epochs.
+      Here the frontier forces it, so{' '}
+      <b style={{ color: INK }}>the model cannot decline the test</b>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And Newton and general relativity fail this
+        identically</b>, which is worth being plain about. The curve above{' '}
+      <i>is</i> the Newtonian prediction; general relativity’s correction to a
+      circular orbit is <V>u</V> = 1.7·10<Sup>−7</Sup>, shifting 220 km/s by
+      4·10<Sup>−5</Sup>. All three agree to six decimal places and all three
+      miss by a factor of 3 at 20 kpc and 4.5 at 30. This is not a strike
+      against the model — it is the bill every theory of gravity has carried
+      since the 1970s, and this one inherits it exactly{' '}
+      <i>because</i> it reproduces general relativity. What would count against
+      it is failing where general relativity succeeds, and it does not do that
+      here. Dark matter costs the same thing here as there: either a particle
+      the theory permits and does not predict — <i>inStep</i> already wants{' '}
+      <V>m</V> &lt; 2π/<V>R</V>, which at 30 kpc is 1.3·10<Sup>−27</Sup> eV,
+      the ultralight window — or a modified law, which is the floor above.
     </Note>
 
     <Note>

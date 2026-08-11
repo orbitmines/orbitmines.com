@@ -2699,6 +2699,1584 @@ export const REACHES = Math.sqrt(
  */
 
 /**
+ * AND THEN STOP TESTING MECHANISMS ONE AT A TIME. Every idea so far — the void
+ * expansion, the wake, the spatial-density gradient — died on a number rather
+ * than on a story, and it was the SAME number each time. So enumerate instead:
+ * every dimensionless quantity the model can build at galactic scale, from G,
+ * c, the cell, the tick, the age, and the galaxy's own M, r and v. Closing the
+ * gap needs +195%, which needs an O(1) number. At 20 kpc in the Milky Way:
+ *
+ *     quantity        what it is                        value
+ *     GM/rc²          how folded the place is           1.70e−7
+ *     v²/c²           how fast the star goes            5.39e−7
+ *     r/λ_reach       against gravity's Yukawa range    1.25e−5
+ *     r/ct₀           against the horizon               4.73e−6
+ *     ℓ_P/r           the lattice spacing               2.62e−56
+ *     t_P/(r/v)       a tick against an orbit           1.92e−59
+ *     M/M_universe    against everything there is       1.41e−12
+ *     g·t₀/c          the pull against c per age        3.86e−2
+ *
+ * AND THAT IS THE WHOLE LIST. Seven of the eight sit between 10⁻⁵ and 10⁻⁵⁶.
+ * EXACTLY ONE is anywhere near unity, and it is the last. So no mechanism built
+ * out of the others can work, whatever its story, because it has nothing to
+ * make an O(1) correction from — which closes the entire family at once instead
+ * of one idea at a time, and is worth more than any of the individual tests.
+ *
+ * AND THE ENUMERATION POINTS AT ITS OWN ANSWER. The survivor is an ACCELERATION
+ * against c per age. Set it to one:
+ *
+ *     c/t₀ = 6.884·10⁻¹⁰ m/s²      a₀ = 1.200·10⁻¹⁰
+ *     a₀·t₀/c = 0.1743             against 1/2π = 0.1592
+ *
+ * The one number this model has at galactic scale IS the MOND scale, to 2π.
+ * Not a mechanism and not a derivation — but the search space is now ONE
+ * DIMENSIONAL. Anything that works here has to be a statement about the
+ * smallest acceleration the lattice can represent, because there is no other
+ * handle.
+ *
+ * WHERE THAT LEAVES DARK MATTER HERE — two options, exactly as for general
+ * relativity, and it is worth saying that plainly:
+ *
+ *   PARTICLE CONTENT   permitted and not predicted. `inStep` already says a
+ *                      bound object needs m < 2π/R to cohere, which at 30 kpc
+ *                      is 1.3·10⁻²⁷ eV — the ultralight window. GR does exactly
+ *                      this, and pays exactly this price.
+ *
+ *   A FLOOR            the acceleration above. Native, unique, and a factor of
+ *                      4.5 short of being counted.
+ *
+ * AND THE COMPARISON THAT MATTERS: Newton, general relativity and this model
+ * give the SAME rotation curve to six decimal places — GR's correction to a
+ * circular orbit is `u = 1.7·10⁻⁷`, which shifts 220 km/s by 4·10⁻⁵ — and all
+ * three miss by a factor of 3 at 20 kpc and 4.5 at 30. This is not a strike
+ * against the model. It is the bill every theory of gravity has carried since
+ * the 1970s, and this one inherits it exactly BECAUSE it reproduces general
+ * relativity. What would count against it is failing where GR succeeds, and it
+ * does not do that here.
+ */
+
+/**
+ * CAN THE FLOOR BE FOUND BY ENUMERATING? Twice over, and the two enumerations
+ * have opposite worth — which is the point of doing both.
+ *
+ * THE SEARCH OVER NUMBERS IS WORTHLESS, AND THAT IS MEASURABLE. If the
+ * mechanism is one `BIAS` kick per age then `a₀ = BIAS·κ/t₀`, so
+ * `κ = a₀t₀/(c·BIAS) = 4.5323`, and the job is to find 4.5323 from the lattice
+ * constants. Building every expression of the form a·b/c, a/(b·c) and √(ab)/c
+ * out of sixteen constants the file already owns — SHEET, WAYS, HALF, DIMS,
+ * FLOOR, G_LATTICE, π, e, √2, √3, 2π, 4π and friends — gives 12816 expressions,
+ * of which:
+ *
+ *     within 20%    661 expressions, 107 distinct values
+ *     within 10%    341              60
+ *     within  5%    175              31
+ *     within  2%     95              12
+ *     within  1%     20               4
+ *
+ * — the closest being `√(WAYS·π)/2 = 4.51889`, at −0.30%. TWENTY EXPRESSIONS
+ * LAND INSIDE A PERCENT. A search over numbers cannot tell a derivation from an
+ * accident here, so a hit is worth nothing even when it is close, and
+ * `√(WAYS·π)/2` is recorded as a curiosity and nothing else. This is the one
+ * place where the file's habit — count it, do not fit it — has to be enforced
+ * by REFUSING TO LOOK rather than by looking carefully.
+ *
+ * THE SEARCH OVER CONSTRAINTS IS NOT. What must the floor DO?
+ *
+ *   UNIVERSAL. The same a₀ for every galaxy, mass and composition. So it cannot
+ *   depend on m_test, m_source or constituent — which kills the per-particle
+ *   reading outright, since there a heavier body would have a LOWER floor.
+ *
+ *   AN ACCELERATION, not a length and not a velocity. The transition is
+ *   observed at fixed g; low-surface-brightness galaxies deviate at SMALL
+ *   radius, which a length scale forbids outright.
+ *
+ *   A SQUARE ROOT: `g → √(a₀·g_N)` deep down, not `g_N + a₀`. A constant
+ *   addition gives `v ∝ √r` rather than flat, and misses Tully–Fisher entirely.
+ *
+ *   IT MUST SWITCH OFF faster than linearly above a₀ — the solar system bounds
+ *   anomalies at 10⁻¹³ m/s² where g/a₀ is already 5·10⁷.
+ *
+ *   AN EXTERNAL FIELD EFFECT, since a floor on the TOTAL acceleration makes a
+ *   system's internal dynamics depend on the field it sits in. That breaks
+ *   strong equivalence, separates modified inertia from modified gravity, and
+ *   is measurable in wide binaries.
+ *
+ *   AND IT MUST RUN WITH TIME — which is the one that pays.
+ */
+
+/**
+ * BECAUSE a₀ = c/2πt MAKES a₀ A FUNCTION OF THE AGE, AND THAT IS TESTABLE NOW.
+ *
+ * In the coasting model `a ∝ t` exactly, so `1 + z = t₀/t`: the redshift IS the
+ * age ratio, with nothing fitted. Then
+ *
+ *     a₀(z) = a₀(0)·(1 + z)      and      v_flat = (G·M·a₀)^¼ ∝ (1+z)^¼
+ *
+ *     z     age (Gyr)   a₀(z)/a₀   v_flat ratio   BTFR offset
+ *     0.0   13.80       1.00       1.0000         0.000 dex
+ *     0.5    9.20       1.50       1.1067         0.176
+ *     1.0    6.90       2.00       1.1892         0.301
+ *     2.0    4.60       3.00       1.3161         0.477
+ *     3.0    3.45       4.00       1.4142         0.602
+ *
+ * At z = 2 the same baryonic mass should rotate 32% FASTER, and the baryonic
+ * Tully–Fisher relation should sit half a dex off its local place. Locally that
+ * relation is measured to under 0.1 dex, so 0.48 is not subtle — it is the sort
+ * of thing a survey either sees or excludes.
+ *
+ * AND THE SIGN IS THE INTERESTING PART. High-redshift discs at z ~ 1–2 are
+ * reported with DECLINING rotation curves — more baryon-dominated, more
+ * Keplerian, which is what a SMALLER a₀ would give. This model wants a LARGER
+ * one. If that reading holds, `a₀ ∝ 1/t` is excluded, and with it the only
+ * native hook the model has at galactic scale.
+ *
+ * WHICH IS THE RIGHT KIND OF TROUBLE, and the reason to have chased it. The
+ * coincidence `a₀ ≈ cH₀` is normally filed as an ornament precisely because
+ * nothing forces it to hold at any other epoch. Here the frontier construction
+ * forces it — H is 1/t, and t is a count of ticks — so the model cannot decline
+ * the test. It turns a curiosity into something that can be taken away, which
+ * is the only thing that makes it worth having.
+ */
+
+/**
+ * AND WHAT EXACTLY HAS TO BE SQUARE-ROOTED — which turns out to be the sharpest
+ * thing in this whole section, and to explain every failure above as one
+ * failure rather than several.
+ *
+ * FIRST, THE NUMBER, SINCE IT IS ASKED. Is the missing factor 1/SHEET?
+ *
+ *     constant         a₀ = K·c/t₀    against 1.200e−10
+ *     1/SHEET          8.605e−11      −28.3%
+ *     1/WAYS = BIAS    2.648e−11      −77.9%
+ *     1/2π             1.096e−10       −8.7%
+ *     HALF/DIMS        1.147e−10       −4.4%
+ *
+ * 1/SHEET is 28% low. And by the count already made — twenty expressions inside
+ * one percent — even a hit would not be evidence, so the number is not the way
+ * in and it is worth not pretending otherwise.
+ *
+ * SECOND, AND THIS IS THE POINT: IT IS NOT √r THAT IS WANTED. Write the deep
+ * law out and the two halves come apart:
+ *
+ *     g = √(a₀·g_N) = √(a₀·GM/r²) = √(a₀GM)/r
+ *
+ *     g ∝ 1/r    instead of 1/r²    — EASY, lots of things give 1/r
+ *     g ∝ √M     instead of M       — HARD, and this is the whole problem
+ *
+ * THE RADIUS IS NOT SQUARE-ROOTED AT ALL. THE MASS IS.
+ *
+ * AND THAT THE EXPONENT IS FORCED IS PROVABLE RATHER THAN FELT. Take any law
+ * whose deep limit is a power, `g → k·g_N^p`. Then `v² = g·r = k(GM)^p r^{1−2p}`:
+ *
+ *     a flat rotation curve   needs   1 − 2p = 0   ⇒   p = ½
+ *     v⁴ ∝ M                  needs   4p = 1       ⇒   p = ½
+ *
+ * BOTH LAND ON THE SAME EXPONENT, which is why MOND has no freedom in its deep
+ * limit at all. Measured across the candidate forms:
+ *
+ *     form                        deep p    v⁴ ∝ M^   verdict
+ *     g_N + a₀                    0.004     0.009     ✗
+ *     max(g_N, a₀)                0.000     0.000     ✗
+ *     g_N/(1 − e^{−g_N/a₀})       0.002     0.005     ✗
+ *     √(g_N² + a₀·g_N)            0.502     1.005     ✓
+ *     √(a₀·g_N) pure              0.500     1.000     ✓
+ *     g_N/(1 − e^{−√(g_N/a₀)})    0.516     1.032     ✓
+ *
+ * — only the forms containing a GEOMETRIC MEAN of g_N and a₀ survive, and that
+ * is not an accident of the list: p = ½ IS the geometric mean and everything
+ * else is an arithmetic one. (`g_N + √(a₀g_N)` measures 0.530 here only because
+ * 100 kpc is not yet deep enough for g_N to have dropped out; asymptotically it
+ * is fine.)
+ *
+ * WHICH IS EXACTLY WHAT THIS MODEL CANNOT DO, AND NOW THE REASON IS NAMEABLE.
+ * Every force here is a MEETING RATE of two fluxes:
+ *
+ *     shortfall ∝ m_a · m_b        strictly BILINEAR in the two sources
+ *
+ * and a rate is linear in each emitter because each emitter emits
+ * independently. So any change to the GEOMETRY (how flux spreads), the
+ * PROPAGATION (ballistic, diffusive, screened) or the COUNTING (SHEET, WAYS,
+ * dimension) moves the r-dependence and LEAVES THE MASS LINEAR:
+ *
+ *     change                        gives         Tully–Fisher
+ *     flux ∝ 1/r² both              Newton        g ∝ M/r², p = 1
+ *     flux ∝ 1/r both (diffusive)   g ∝ M ln/r    flat curve, v⁴ ∝ M²
+ *     effective dimension 2         g ∝ M/r       flat curve, v⁴ ∝ M²
+ *     stimulated halo, ρ ∝ M/r²     g ∝ M/r       flat curve, v⁴ ∝ M²
+ *
+ * ALL OF THEM LAND ON v⁴ ∝ M², FOR ONE REASON. Bilinearity forces `v² ∝ M`
+ * whatever the geometry does, so `v⁴ ∝ M²` always. WHICH MEANS THE THREE
+ * MECHANISMS THAT FAILED ABOVE DID NOT FAIL SEPARATELY — the halo, the wake and
+ * the spatial gradient are one failure wearing three hats, and it was worth
+ * finding that out.
+ *
+ * SO THE REQUIREMENT IS SHARP. The model needs a response NONLINEAR IN THE
+ * SOURCE: going as √M below a₀ and back to M above it. Nothing built out of how
+ * the flux TRAVELS can do that, because travel does not know how much was
+ * emitted. It has to be something about the EMISSION or the RESPONSE saturating
+ * — and the model has exactly one saturating quantity, the one-emission-a-tick
+ * ceiling, which acts at the other end of the scale entirely.
+ *
+ * WHICH IS A CLEANER PLACE TO BE STUCK THAN "FIND 4.5323". It says what to look
+ * for, it says where not to look, and it explains every failure so far as the
+ * same failure.
+ */
+
+/**
+ * AND IT IS WORSE THAN BILINEARITY — IT IS A THEOREM. Two things this model
+ * already satisfies, and would not want to give up:
+ *
+ *     ACTION AND REACTION   F(a,b) = F(b,a), because the force IS a count of
+ *                           meetings and both parties count the same ones
+ *     EQUIVALENCE           a_a = F/m_a depends on m_b and r, not on m_a
+ *
+ * The second gives `F = m_a·h(m_b, r)`. Feed that into the first:
+ *
+ *     m_a·h(m_b) = m_b·h(m_a)  ⇒  h(m)/m = const  ⇒  F ∝ m_a·m_b, EXACTLY
+ *
+ * SO NO TWO-BODY FORCE LAW CAN GIVE √M. Not a modified one, not a screened one,
+ * not one with a different geometry — none. The mechanisms that failed above
+ * were not unlucky, they were forbidden before they started. And this is why
+ * MOND has never been written as a pairwise law by anybody: it cannot be.
+ *
+ * WHICH LEAVES EXACTLY ONE DOOR. The theorem is about a force between TWO
+ * things. It says nothing about whether the field of a COMPOSITE is the sum of
+ * its parts' fields. In this model it is, for a definite reason — every emitter
+ * emits independently, so the fluxes just add. BREAK SUPERPOSITION AND THE
+ * THEOREM DOES NOT APPLY: a galaxy is then not the sum of its stars.
+ */
+
+/**
+ * A SECOND GRAPH, THEN — a layer over the spatial one, with its own ±
+ * polarities and its own XOR, moving under its own dynamics, deciding WHERE
+ * MASS IS. Can it recover the root?
+ *
+ * IT IS THE RIGHT SHAPE, AND IT IS THE FIRST THING HERE THAT IS. A layer that
+ * decides where mass is makes the emitters NON-INDEPENDENT — whether one
+ * contributes now depends on what the layer is doing, which depends on the
+ * others. That is superposition failing, which is the one door the theorem
+ * leaves open. Every earlier proposal tried to modify the geometry around the
+ * obstruction; this one goes through it.
+ *
+ * AND THE XOR GIVES THE ROOT FOR NOTHING, which is the point. N contributions
+ * with random ± signs do not sum to N — they sum to a walk:
+ *
+ *     N        ⟨|net|⟩ measured   √(2N/π) expected
+ *     1e+2       7.91               7.98
+ *     1e+4      80.01              79.79
+ *     1e+6     800.42             797.88
+ *
+ * If gravity couples to the NET polarity rather than the COUNT, the source
+ * enters as √M with nothing put in by hand — out of the same XOR the whole
+ * model is built on, rather than out of a new postulate.
+ *
+ * BUT √M ALONE IS NOT ENOUGH, and it is worth being exact. An effective mass
+ * `M_eff = √(M·M₀)` gives `G√(MM₀)/r²`, hence `v ∝ r^−½` — not flat. Deep MOND
+ * needs `√(a₀GM)/r`, so the RADIUS has to move too. What the layer must
+ * actually produce is a halo:
+ *
+ *     ρ_halo(r) ∝ √M / r²      ⇒     M_halo(r) = r·√(a₀M/G)
+ *
+ * — the isothermal profile that failed on Tully–Fisher, with √M in place of M.
+ * Checked: that gives v = 182.7 km/s flat from 10 to 30 kpc and `v⁴ = G·M·a₀`
+ * exactly, both conditions from the one exponent. THE XOR SUPPLIES THE FIRST
+ * HALF AND NOTHING HERE SUPPLIES THE SECOND — why the layer's excitation should
+ * fall as 1/r² around a source is not fixed by anything yet.
+ *
+ * AND THERE IS A COST THAT IS MEASURABLE AND NEARLY FATAL. A random walk has a
+ * WIDTH as well as a mean: `|Σ±1|` is Rayleigh, mean `√(2N/π)`, standard
+ * deviation `0.655√N`. So a single realisation scatters by 76% in the net, 19%
+ * in `v = M_eff^¼`, which is 0.244 dex of Tully–Fisher scatter — against a
+ * relation measured to UNDER 0.1 dex across five decades. A STATIC random walk
+ * is excluded outright.
+ *
+ * IT SURVIVES ONLY IF THE LAYER RE-RANDOMISES FAST, averaging K independent
+ * samples over an orbit and cutting the scatter by √K:
+ *
+ *     correlation time   samples per orbit   scatter
+ *     1 tick             1.3e+59             <1e−4 dex
+ *     1 year             2.2e+8              <1e−4 dex
+ *     1 Myr              2.2e+2               0.021 dex
+ *     1 Gyr              0.22                 0.415 dex
+ *
+ * (an orbit at the Sun's radius is 223 Myr). Anything faster than about a
+ * megayear washes it out entirely, and a lattice layer would decorrelate in
+ * ticks — so this is not a close call, but it IS a real constraint, and it says
+ * the layer must be FAST-MOVING. Which is what "moves on its own" already
+ * proposed, so the idea passes its own first test.
+ *
+ * WHAT IT WOULD OWE IF IT WERE BUILT:
+ *
+ *   THE CROSSOVER      why the cancellation turns on below a₀ and off above it.
+ *                      This is still the whole of the unexplained part — the
+ *                      second graph makes the √ POSSIBLE and does not make it
+ *                      HAPPEN at the right scale.
+ *   THE 1/r² REACH     why the layer's excitation falls as 1/r² and not another
+ *                      power.
+ *   THE SOLAR SYSTEM   superposition holds there exquisitely, so the breaking
+ *                      must vanish above a₀ faster than linearly.
+ *   WHAT MASS IS       the layer decides where mass is, so `mass = pulse rate`
+ *                      has to be re-derived on it rather than assumed — which
+ *                      reaches back into `physics.ts` and is not a small edit.
+ *
+ *   AN EXTERNAL FIELD EFFECT is NOT a cost. It is unavoidable once superposition
+ *   fails, it is MOND's own signature, and it is measurable in wide binaries and
+ *   dwarf satellites — so it arrives as a prediction rather than a bill.
+ *
+ * VERDICT: structurally the right shape, and the only proposal so far that can
+ * evade the theorem. The XOR hands over the root for free. It does not hand
+ * over the crossover, which is where all the difficulty actually lives.
+ */
+
+/**
+ * AND IF THE SECOND LAYER HAS EMITTERS TOO, THE OTHER HALF ARRIVES FROM THE
+ * SAME PLACE — which closes the shape completely.
+ *
+ * The spatial graph already gets its inverse square from emitters:
+ * `chance(m,r) = m·SHEET/shell(r)`, a point spreading over a sphere. Give the
+ * second layer emitters as well and the same geometry follows, with the XOR
+ * doing the rest:
+ *
+ *     N emitters, each ∝ 1/r²     each spreads over the sphere
+ *     random ± polarity           XOR, so they do not add — they WALK
+ *     ⇒ net(r) ∝ √N/r² = √M/r²   BOTH HALVES, out of one construction
+ *
+ * Neither piece is put in by hand. The XOR gives the root, the emitters give
+ * the inverse square, and both are rules the model already has.
+ *
+ * AND THAT IS EXACTLY THE PROFILE THAT WORKS. With `ρ = κ√M/r²`:
+ *
+ *     M_halo(r) = ∫4πr²ρ dr = 4πκ√M·r
+ *     g_halo    = G·M_halo/r² = 4πGκ√M/r
+ *     v²        = g·r = 4πGκ√M          ⇒  FLAT
+ *     v⁴        = (4πGκ)²·M             ⇒  v⁴ ∝ M, TULLY–FISHER
+ *
+ * Matching `v⁴ = GMa₀` fixes `κ = √(a₀/G)/4π = 0.10670 kg^½/m`, and the check
+ * closes: 182.7 km/s from the profile against 182.7 from `(GMa₀)^¼`, flat at
+ * every radius. BOTH CONDITIONS, ONE EXPONENT, nothing fitted but κ ↔ a₀. The
+ * SHAPE of the dark matter problem is closed.
+ *
+ * BUT WITHOUT A CROSSOVER IT IS DEAD IN THE SOLAR SYSTEM, and by a lot. The
+ * same halo forms around the Sun:
+ *
+ *     around      within    M_halo (kg)   as a fraction
+ *     the Sun     1 AU      2.83e+26      1.42e−4
+ *     the Sun     30 AU     8.49e+27      4.27e−3
+ *     the Earth   4e8 m     1.31e+21      2.19e−4
+ *
+ * Planetary ephemerides pin GM☉ to a part in 10¹⁰, so 1.4·10⁻⁴ inside the
+ * Earth's orbit is out by SIX ORDERS — and it would show as an anomalous
+ * precession, since the added mass is distributed rather than central, which is
+ * the most tightly measured thing in the solar system. So the crossover is not
+ * an optional extra: it is the difference between a mechanism and a refutation.
+ * It is also now THE ONLY MISSING PIECE.
+ *
+ * AND THE OBVIOUS CROSSOVER IS RULED OUT, which is a real result. The natural
+ * story is that a strong field ALIGNS the layer's polarities so they add (net =
+ * N, Newton) while a weak field leaves them random (net = √N, MOND), with the
+ * alignment accumulating over the age so the measure is `g·t₀/c` — the one O(1)
+ * number the model has. THE PROBLEM: the switch happens where the aligned part
+ * overtakes the random part, `α·N ≈ √N`, so `α ≈ 1/√N`, WHICH COUNTS
+ * CONSTITUENTS:
+ *
+ *     body               N (protons)   1/√N       threshold moves by
+ *     the Sun            1.19e+57      2.90e−29   —
+ *     a dwarf, 1e8 M☉    1.19e+65      2.90e−33   10⁴
+ *     the Milky Way      8.32e+67      1.10e−34   10⁵·⁴
+ *
+ * — so a₀ would be MASS-DEPENDENT, and a₀ is measured universal to well inside
+ * a factor of two across five decades. The alignment story is out.
+ *
+ * WHICH IS A CONSTRAINT RATHER THAN A DEAD END. It says the crossover cannot be
+ * a competition between an aligned part and a random part, because any such
+ * competition counts constituents and a₀ must not. It has to switch the WHOLE
+ * layer between two regimes without reference to how many emitters sit in it —
+ * A PROPERTY OF THE PLACE, NOT OF THE BODY. Which is suggestive rather than
+ * hopeless, since "a property of the place" is exactly what `fold` already is,
+ * and `g·t₀/c` is already a statement about a place.
+ *
+ * WHERE IT LEAVES THINGS:
+ *
+ *     √M in the source     DONE — XOR on the second layer, nothing added
+ *     1/r² in the reach    DONE — emitters on it, same as the spatial graph
+ *     a flat curve         follows, exactly
+ *     v⁴ ∝ M               follows, exactly
+ *     the scale a₀         sets κ; still not counted, still 4.5 off BIAS/t₀
+ *     the crossover        OPEN — and now the only open thing, with one whole
+ *                          class of answers eliminated
+ *
+ * Three turns ago this was five separate unknowns. It is one.
+ */
+
+/**
+ * SO MUST THE TWO LAYERS TOUCH? YES, AND WHICH WAY DECIDES EVERYTHING. Three
+ * couplings, and only the last works.
+ *
+ * A. INDEPENDENT — and this is the property that has to go. If the second layer
+ * evolves entirely on its own and the first on its own, the second is a
+ * RELABELLING and nothing more: layer one still sums over whatever sources it
+ * sees, superposition still holds inside it, and the theorem applies word for
+ * word. Independence is not a detail of the picture; it is the thing standing
+ * between the picture and working.
+ *
+ * B. ONE-WAY — the second layer says WHERE THE MASS IS and layer one does the
+ * rest. This is the reading one falls into by default, and it fails by an
+ * amount that can be computed exactly. Gravity in layer one is annihilation, so
+ * it counts + against −. Write a body's counts as `N± = N/2 ± s/2` with s the
+ * NET polarity; then for two bodies with nets s and u,
+ *
+ *     rate ∝ N₊M₋ + N₋M₊ = (N·M − s·u)/2
+ *
+ * THE ROOT IS THERE — `s·u ~ √(NM)` — but as a CORRECTION to the bilinear term
+ * rather than a replacement for it, and carrying a random sign:
+ *
+ *     pair                     √(N·M)     s·u/(N·M)
+ *     a star and the Galaxy    3.15e+62   3.18e−63
+ *     the Sun and the Earth    2.06e+54   4.85e−55
+ *     two protons              1.00e+0    1.00e+0
+ *
+ * For a star in a galaxy the root term is 3·10⁻⁶³ of the Newtonian one, where
+ * MOND wants it COMPARABLE — at 20 kpc `√(a₀g_N)/g_N = 2.13`. Out by
+ * sixty-three orders, and no crossover rescues that: suppressing the product by
+ * 10⁶³ is not a switch, it is a deletion.
+ *
+ * C. TWO-WAY — the second layer has ITS OWN FIELD, and that field gravitates in
+ * the first. This is the picture as described, and it is the only one that
+ * works. The halo is then not a correction to layer one's counting but layer
+ * TWO's own emitted field, with its own reach, which layer one feels. Its size
+ * is set by an INTER-LAYER COUPLING κ rather than by 1/√(NM), so it is free to
+ * be whatever a₀ says:
+ *
+ *     ρ_halo = κ·√M/r²,   κ = √(a₀/G)/4π = 0.10670 kg^½/m
+ *     v⁴ = (4πGκ)²·M = G·M·a₀     flat, and Tully–Fisher, exactly
+ *
+ * AND THAT IS THE REAL COST, stated plainly: a₀ BECOMES A NEW FUNDAMENTAL
+ * CONSTANT — the strength with which layer two's field gravitates in layer one
+ * — rather than something counted out of SHEET and WAYS. For a model whose
+ * whole method is counting, that is a genuine loss, and it belongs in the
+ * ledger rather than hidden inside a κ.
+ *
+ * D. AND A REQUIREMENT NOBODY ASKED FOR, WHICH IS A POINT IN FAVOUR. The net
+ * polarity has a RANDOM SIGN:
+ *
+ *     coupling to    goes as   sign       verdict
+ *     net            √M        random     ✗ antigravity half the time
+ *     net²           M         positive   ✗ linear again, no root
+ *     |net|          √M        positive   ✓ the only one left
+ *
+ * An absolute value is a strange thing to couple to — AND IT IS EXACTLY WHAT
+ * MOND ALREADY HAS. AQUAL's field equation is `∇·[μ(|∇φ|/a₀)∇φ] = 4πGρ`, whose
+ * nonlinearity is an absolute value of a field, for precisely this reason: it
+ * makes the response sub-linear without making it signed. So the second layer
+ * is not being asked for something exotic. It is being asked for MOND's own
+ * nonlinearity, arrived at from the other side — `|net polarity of a random ±
+ * layer|` in place of `|∇φ|`. Two constructions with nothing in common landing
+ * on the same odd requirement is the one encouraging thing in this whole
+ * section.
+ *
+ * WHAT IS ACTUALLY LEFT:
+ *
+ *     THE COUPLING    two-way. Not independence, not a relabelling — both fail,
+ *                     one of them by sixty-three orders.
+ *     a₀              the inter-layer coupling constant. Fitted, not counted.
+ *     |net|           required, and it is MOND's |∇φ|.
+ *     THE CROSSOVER   still open, and now stated exactly: not "why does the
+ *                     root appear" but WHY DOES THE PRODUCT SWITCH OFF — and it
+ *                     cannot count constituents, or a₀ moves with mass.
+ *     A BONUS         layer two carrying "pulse = which particle" is where a
+ *                     PARTICLE SPECTRUM could come from, and this model has
+ *                     none. Worth having whatever happens to a₀.
+ */
+
+/**
+ * AND IS THE COMPOUNDING THE NONLINEARITY? Layer two moves THROUGH layer one,
+ * so layer one's fold decides where layer two can go, and the effects feed each
+ * other. That is the right SHAPE of argument — it is the one that already paid
+ * once, since `1 + u = e^{u₀}` came from precisely this move: a folded node has
+ * more edges, edges point both ways, so it is easier to arrive at, so the
+ * folding feeds itself. It remains the only nonlinearity this file has DERIVED
+ * rather than assumed.
+ *
+ * BUT THE COMPOUNDING ALREADY IN THE FILE IS THE WRONG FUNCTION, AND THE SHAPE
+ * MATTERS MORE THAN THE SIZE:
+ *
+ *     u at 20 kpc in the Milky Way       1.675e−7
+ *     the compounded part, e^u − 1 − u   1.405e−14
+ *     ratio                              8.4e−8
+ *
+ * Fourteen orders under a linear term that is itself seven orders under what is
+ * wanted. And `e^u = 1 + u + u²/2 + …` is integer powers forever — THERE IS NO
+ * LIMIT OF AN EXPONENTIAL THAT BEHAVES LIKE A SQUARE ROOT. So the compounding
+ * the model already has cannot be it, whatever its size.
+ *
+ * THE VERSION THAT COULD WORK IS A DIFFERENT COMPOUNDING, and it aims at
+ * exactly the obstruction that was left open. Not "the fold compounds itself"
+ * but THE FOLD DECIDES HOW FAST LAYER TWO FORGETS. Layer two moves through
+ * layer one, and `slowing = e^{−2u}` holds motion back where the fold is deep:
+ *
+ *     deep in a well   layer two is held    polarities stay ALIGNED   net ~ N
+ *     far out          layer two runs free  polarities RANDOMISE      net ~ √N
+ *
+ * WHICH IS A PROPERTY OF THE PLACE AND NOT OF THE BODY — precisely what the
+ * constituent-counting argument demanded, and the first candidate crossover
+ * that survives it.
+ *
+ * AND IT HAS A SHARP NUMERICAL TENSION, which is the useful part. The
+ * decorrelation time τ has to do two jobs at once:
+ *
+ *   THE CROSSOVER. Alignment accumulates as `g·t/c`, so it beats randomisation
+ *   when `g·τ/c ≳ 1` and the switch sits at `g = c/τ`. For that to be a₀,
+ *   `τ = c/a₀ = 2.50·10¹⁸ s = 79 Gyr` — 5.7 times the age of the universe, i.e.
+ *   essentially FROZEN.
+ *
+ *   THE SCATTER. `|Σ±1|` has 76% relative width whatever N is, so one frozen
+ *   realisation gives 0.244 dex of Tully–Fisher scatter. Staying under 0.1 dex
+ *   needs more than 8.5 independent draws an orbit, and an orbit at the Sun's
+ *   radius is 223 Myr — so `τ < 8.3·10¹⁴ s = 26 Myr`, i.e. FAST.
+ *
+ *     the crossover     τ = 2.50e+18 s    79 Gyr, frozen
+ *     the scatter       τ < 8.28e+14 s    26 Myr, fast
+ *     apart by          3.0e+3            3.5 orders
+ *
+ * THE CROSSOVER WANTS LAYER TWO FROZEN AND THE SCATTER WANTS IT FAST. That is
+ * the next thing to settle, and it is A NUMBER RATHER THAN A STORY — the first
+ * time in this whole line of argument that has been true.
+ *
+ * AND ONE ESCAPE, WHICH FOLLOWS FROM THE |net| RESULT RATHER THAN BEING ADDED
+ * TO SAVE IT. The scatter argument assumed ONE walk for the whole body. But the
+ * sign argument already forced the coupling to be to `|net|` — and if that is
+ * LOCAL, the halo sums `|net|` over K patches instead of taking `|Σ|` once:
+ *
+ *     one global walk    total ~ √N       relative width 76%, N-independent
+ *     K local |nets|     total ~ √(K·N)   relative width 76%/√K
+ *
+ *     patch ℓ    K = (30 kpc/ℓ)³   scatter (dex)   √K in the magnitude
+ *     10 kpc     2.70e+1           0.0590          5.2
+ *     3 kpc      1.00e+3           0.0103          31.6
+ *     1 kpc      2.70e+4           0.0020          164
+ *
+ * SPATIAL averaging suppresses the scatter without needing fast forgetting, so
+ * τ is freed to be long and the tension dissolves — at the price of a new
+ * length. Any patch under about ten kiloparsecs already kills the scatter. What
+ * it then owes is that the `√K` be absorbed into κ WITHOUT introducing a mass or
+ * radius dependence, or Tully–Fisher moves.
+ *
+ * AND CHECKED, THAT ESCAPE DOES NOT SURVIVE. Three lines: `M_eff = √(K·N)` with
+ * `K = V/ℓ³` and `N = M/m_p` gives `M_eff = √(V·M/(ℓ³m_p))`. Tully–Fisher wants
+ * `M_eff ∝ √M` AND NOTHING ELSE, so `V/ℓ³` must not depend on the system —
+ * meaning `ℓ³ ∝ V`, i.e. THE SAME NUMBER OF PATCHES FOR EVERY SYSTEM, dwarf to
+ * cluster. That is not a length, it is a fixed fraction of whatever it sits in,
+ * which no local rule produces. With a fixed ℓ instead the halo picks up the
+ * galaxy's SIZE as well as its mass and Tully–Fisher moves by whole dex between
+ * a dwarf and a giant. So the spatial escape is out, and the temporal tension
+ * stands: 79 Gyr against 26 Myr.
+ */
+
+/**
+ * SO SAY THE WHOLE THING IN ONE LINE, because the machinery has got ahead of
+ * the question.
+ *
+ * Strip out the layers, the polarities and the patches. What is left is a
+ * statement about WHICH FLUX IS CONSERVED:
+ *
+ *     regime      law               conserved through a sphere
+ *     Newton      g = GM/r²         g·r²  = GM
+ *     deep MOND   g = √(GMa₀)/r     g²·r² = GM·a₀
+ *
+ * Both checked flat at 10, 20 and 40 kpc, both equal to 1.3919e+41 kg, which is
+ * the Milky Way's baryons. So:
+ *
+ *     NEWTON CONSERVES THE FLUX OF g.  DEEP MOND CONSERVES THE FLUX OF g².
+ *
+ * and the interpolation is exactly AQUAL, `μ(g/a₀)·g·r² = GM`. THAT IS THE
+ * ENTIRE PROBLEM. The second layer, the ± polarities, the random walk, the
+ * patches — all of it is machinery for making that one switch happen.
+ *
+ * AND IT COLLAPSES THREE QUESTIONS INTO ONE. "Where does √M come from", "where
+ * does 1/r come from" and "what switches at a₀" are the same question, because
+ * `g²r² = GMa₀` contains all three at once: the square gives the root, the
+ * square gives the 1/r, and a₀ is only the constant that makes two conserved
+ * quantities carry the same units.
+ *
+ * A WRONG TURN WORTH RECORDING, since it looks right for about a minute. "Count
+ * PAIRS instead of charges — pairs among n go as n², so a conserved pair-flux
+ * makes the charge-count its root." It does not survive: pair density goes as
+ * `n² ∝ M²/r⁴`, so pairs in a shell go as `4πr²n² ∝ M²/r²`, which FALLS with
+ * radius instead of being conserved. Counting pairs concentrates at the centre,
+ * which is the opposite of a halo.
+ *
+ * THE RIGHT STATEMENT IS SIMPLER. `g²r² = const` is just `g ∝ 1/r`, and g here
+ * is the density of whatever mediates — so the whole requirement is about how
+ * that density falls:
+ *
+ *     how it travels      density   gives
+ *     ballistic in 3D     1/r²      Newton
+ *     diffusive in 3D     1/r       the MOND radial law
+ *     ballistic in 2D     1/r       the same
+ *
+ * with the amplitude needing to be √M, which random ± signs already give. So
+ * the deep law is exactly RANDOM SIGNS (√M) × A 1/r PROFILE (diffusive, or
+ * effectively two-dimensional) — two ingredients the model already has words
+ * for, since `SPREAD` is diffusion and the XOR is the signs. A much smaller ask
+ * than a second layer with its own gravity.
+ *
+ * AND THE REMAINING TRAP, worth seeing now rather than later: the natural
+ * switch from ballistic to diffusive is the MEAN FREE PATH — one regime inside
+ * λ and the other outside. THAT IS A LENGTH, and a length is already excluded,
+ * because low-surface-brightness galaxies deviate from Newton at SMALL radius
+ * and no r-threshold can do that. The switch has to be driven by the field
+ * STRENGTH, not by distance.
+ *
+ * WHICH LEAVES ONE QUESTION, IN ONE SENTENCE:
+ *
+ *     WHAT MAKES THE MEDIATOR STOP TRAVELLING STRAIGHT WHEN g FALLS BELOW a₀?
+ *
+ * Everything above is scaffolding for that, and anything that answers it makes
+ * most of the scaffolding unnecessary.
+ */
+
+/**
+ * "BELOW WHAT", THOUGH — because "below a₀" is circular, a₀ being the thing to
+ * be derived. Said in the model's own units it stops being circular, and starts
+ * saying something.
+ *
+ * FIRST, WHY "WEAK FIELD" AND "FEW CARRIERS" ARE ONE SENTENCE HERE. The model
+ * has one carrier: charges emitted by mass, at occupancy `chance(m,r) =
+ * m·SHEET/shell(r)`, with the pull `g = GRAVITY·m/r²`. Divide them:
+ *
+ *     g / chance = 4π·GRAVITY/SHEET = 0.097942     — a CONSTANT, m and r gone
+ *
+ * SO g IS THE CARRIER DENSITY, times a fixed number. In general relativity the
+ * field strength is not a density of anything; here it is exactly one, and that
+ * is why this model can state the condition LOCALLY at all. "The field is weak"
+ * and "the carriers are sparse" are not two facts about a place.
+ *
+ * SO THE THRESHOLD HAS AN ANSWER IN CARRIERS PER CELL:
+ *
+ *     the lattice's acceleration unit   ℓ_P/t_P² = 5.561e+51 m/s²
+ *     a₀ in those units                 2.158e−62
+ *     the crossover occupancy           2.203e−61 carriers a cell
+ *     i.e. ONE carrier per              4.539e+60 cells
+ *
+ * AND THE STATEMENT IS ABOUT A PATH, NOT A VOLUME — the first version of this
+ * said "one carrier per horizon", which compared a volume count against a
+ * linear one, and those differ by 10¹²¹ here. The occupancy is right and the
+ * phrase was not. Correctly:
+ *
+ *     mean spacing between carriers     1.656e+20 cells = 2.68 fm
+ *     the horizon                       8.078e+60 cells across
+ *     carriers met over a whole life    n_c × t₀ = 1.78
+ *
+ * A carrier moves one cell a tick, so over the age of the universe it crosses
+ * t₀ cells and meets about TWO others in its entire lifetime:
+ *
+ *     THE CROSSOVER IS WHERE A CARRIER MEETS ABOUT ONE OTHER IN THE WHOLE
+ *     HISTORY OF THE UNIVERSE. Below it, a carrier travels its life alone.
+ *
+ * which is `a₀ ≈ c/t₀` said in the model's own words, but now saying something
+ * physical rather than numerological: A CARRIER THAT NEVER MEETS ANOTHER ONE
+ * HAS NOTHING TO KEEP IT STRAIGHT.
+ *
+ * (The 2.68 fm spacing is close to the classical electron radius, 2.82 fm.
+ * Recorded and NOT claimed — the enumeration above already showed that hundreds
+ * of expressions land within a percent of anything at this game.)
+ * That is a condition ON THE CARRIER, evaluated where the carrier is, with no
+ * reference to the mass that sent it or the distance it has come — the shape
+ * the constraints demanded, a property of the place and not of the body. And it
+ * is not a length, so the low-surface-brightness objection does not touch it.
+ *
+ * CHECKED AGAINST REAL PLACES, which is the whole point:
+ *
+ *     where                      g (m/s²)   carriers a cell   per horizon
+ *     Earth's surface            9.81e+0    1.801e−50         1.46e+11
+ *     the Sun at 1 AU            5.93e−3    1.089e−53         8.80e+7
+ *     the Galaxy at 8 kpc        1.96e−10   3.599e−61         2.91
+ *     the Galaxy at 20 kpc       2.66e−11   4.884e−62         0.395
+ *     the Galaxy at 100 kpc      1.06e−12   1.946e−63         0.016
+ *
+ * The solar system runs at 10⁸ carriers per horizon; the solar circle at 2.9;
+ * 20 kpc at 0.40. THE SWITCH AT ONE SITS BETWEEN THE SOLAR CIRCLE AND 20 kpc,
+ * which is exactly where rotation curves start to depart, and the solar system
+ * is eight orders clear of it. That separation is what every earlier candidate
+ * failed to produce, and here it falls out of the counting rather than being
+ * asked for.
+ *
+ * SO THE QUESTION IN ITS SMALLEST FORM, and it is no longer circular:
+ *
+ *     WHAT DOES A CARRIER DO WHEN THERE IS LESS THAN ONE OTHER CARRIER WITHIN
+ *     REACH OF IT — AND WHY WOULD THAT BE A WANDER RATHER THAN NOTHING AT ALL?
+ *
+ * Which is answerable by SIMULATION rather than by argument, for the first time
+ * in this whole line of work: two carriers, a lattice, and whatever rule makes
+ * one of them notice the other.
+ */
+
+/**
+ * SO THE SEARCH, RUN. Every family of local rule that could bend the radial
+ * law, and how each one dies.
+ *
+ *     family                       gives         fails on
+ *     free streaming               n ∝ 1/r²      nothing — it IS Newton
+ *     scattering, λ = 1/σn         dense → 1/r   SIGN BACKWARDS, and λ = r is
+ *                                                a length
+ *     scattering, λ ∝ n            right sign    still λ = r, still a length
+ *     creation ∝ n^p, p < 2        runs away     exponential, no power law
+ *     creation ∝ n², meetings      knife edge    saturates or runs away
+ *     creation ∝ n^p, p > 2        n ∝ 1/r²      saturates back to Newton
+ *     carriers slowing, v ∝ 1/r    n ∝ 1/r  ✓    everything moves at c
+ *     effective 2D                 n ∝ 1/r  ✓    no rule offered that does it
+ *
+ * THE MODEL'S OWN SCATTERING RULE HAS THE WRONG SIGN, which is worth naming
+ * first. `through` says a carrier arriving at an occupied cell annihilates or
+ * reverses — so meetings DEFLECT, giving dense → diffusive → 1/r and thin →
+ * ballistic → 1/r². Exactly backwards. Whatever the rule is, MEETINGS MUST
+ * STRAIGHTEN rather than deflect: carriers keeping each other in line and
+ * losing it when alone.
+ *
+ * AND THE WHOLE MEAN-FREE-PATH FAMILY IS DEAD WHICHEVER WAY IT POINTS. Such a
+ * rule switches where `λ(n) = r`, but the switch must sit at a FIXED occupancy
+ * n_c, and at fixed n_c the radius `r_c = √(GM/a₀)` moves with mass — 0.3, 3.4
+ * and 34 kpc for 10⁸, 10¹⁰ and 10¹² M☉. λ(n_c) is one number and r_c is three.
+ * A rule that only sees n cannot know which to switch at. That is the sharp
+ * form of "a length is excluded".
+ *
+ * THE CREATION FAMILY LOOKED BETTER AND IS NOT. `dΦ/dr = γn^p` with `Φ ∝ r`
+ * needs p = 2 by dimensions — and p = 2 is a MEETING RATE, which is the only
+ * interaction the model has, so this looked like the answer for about a minute.
+ * But integrating it, `1/Φ = 1/Φ₀ + (γ/4π)(1/r − 1/r₀)`: as r → ∞ either 1/Φ
+ * settles on a positive constant (Φ SATURATES, back to Newton) or reaches zero
+ * at finite r (Φ RUNS AWAY). `Φ ∝ r` sits exactly on the knife edge between
+ * them and nothing puts a real source there — every p ≥ 2 lands on −2 from
+ * generic data. AND THE THRESHOLD IT DOES HAVE IS THE WRONG ONE: the split is
+ * at `Φ₀ ≈ 4πr₀/γ`, a threshold in the SOURCE STRENGTH, which would say heavy
+ * galaxies have halos and light ones do not. Tully–Fisher says all of them do.
+ *
+ * TWO SURVIVORS, AND BOTH ARE STATEMENTS RATHER THAN MECHANISMS. Carriers that
+ * SLOW as 1/r — which contradicts the model outright, since everything moving
+ * at c is what gives the metric and the checkerboard. And carriers that spread
+ * in TWO DIMENSIONS instead of three, which nothing forbids and nothing here
+ * supplies.
+ *
+ * SO THE SEARCH RETURNS ONE LIVE CANDIDATE: something that makes the carrier
+ * field effectively TWO-DIMENSIONAL where carriers are thin. Which is at least
+ * a definite question to ask of a lattice, and `FLOOR` and the fractional-
+ * dimension work at the foot of `regimes.ts` is where the vocabulary for it
+ * already exists.
+ *
+ * AND THE MASS IS STILL A SEPARATE PROBLEM. None of these produce √M — they are
+ * all rates, so they are all bilinear, so the theorem still holds over them.
+ * The radial law and the mass law are two problems and this search only ever
+ * addressed the first.
+ */
+
+/**
+ * AND THE ONE LIVE CANDIDATE HAS A CANDIDATE MECHANISM — LOCK LAYER TWO TO
+ * LAYER ONE'S SHEET.
+ *
+ * SHEET IS ALREADY THE MODEL'S TWO-DIMENSIONAL OBJECT. `WAYS = 3³ − 1 = 26` is
+ * every direction out of a cell; `SHEET = 3² − 1 = 8` is the directions in ONE
+ * PLANE through it. And `chance(m,r) = m·SHEET/shell(r)` already uses SHEET
+ * rather than WAYS — the pull was always counted through a plane. So this is
+ * not adding a structure; it is taking one the file already has and making it
+ * BIND.
+ *
+ * BUT "ALWAYS 2D" IS THE ONE THING IT CANNOT BE. A source spreading into a
+ * plane gives `n ∝ 1/r` at EVERY radius, including the solar system where 1/r²
+ * holds to a part in 10¹⁰. The locking has to be conditional, and the condition
+ * is the whole content of the proposal.
+ *
+ * AND THE NATURAL CONDITION RUNS THE RIGHT WAY ROUND, which nothing else in
+ * this search managed. A plane needs TWO independent directions to be defined:
+ *
+ *     MANY carriers met   many planes, all disagreeing → isotropic → 3D → 1/r²
+ *     ~ONE carrier met    one plane, uncontested       → locked    → 2D → 1/r
+ *
+ * Dense is Newtonian and thin is not. And the threshold is A COUNT OF MEETINGS
+ * — not a length, not a mass — which is exactly what the constraints demanded.
+ *
+ * SO IT PREDICTS a₀ WITH NOTHING FITTED. The rule is "about one meeting in a
+ * carrier's life". A carrier crosses one cell a tick, so over the age it
+ * crosses t₀ cells and meets `n·t₀` others. Set that to one:
+ *
+ *     the age                t₀ = 8.078e+60 ticks
+ *     so n_c = 1/t₀          1.238e−61 carriers a cell
+ *     and g = 4πG/SHEET·n    a₀ = 6.742e−11 m/s²
+ *     measured                    1.200e−10 m/s²
+ *     ratio                       1.780
+ *
+ * A FACTOR OF 1.78, WITH NO FREE PARAMETER. The inputs are GRAVITY and SHEET,
+ * both counted, and the age, which the frontier construction already fixes at
+ * 1/H₀. Against `BIAS/t₀`, which was 4.53 out, that is a real improvement — and
+ * unlike the expression search it comes from a STATED RULE rather than from
+ * trying combinations until one fits. (1.78 is close to √π = 1.772. NOT
+ * claimed; the enumeration that killed the last coincidence kills this one.)
+ *
+ * CHECKED WHERE IT MATTERS, in meetings over a carrier's whole life:
+ *
+ *     Earth's surface          1.46e+11    3D, Newton
+ *     the Sun at 1 AU          8.80e+7     3D, Newton
+ *     the Galaxy at 8 kpc      2.91        crossing
+ *     the Galaxy at 20 kpc     0.395       2D
+ *     the Galaxy at 100 kpc    0.0157      2D
+ *
+ * — eight orders of margin in the solar system, crossing between 8 and 20 kpc.
+ * The separation is not asked for; it falls out of the counting.
+ *
+ * AND THE MASS, WHERE THE SECOND HALF OF THE IDEA POINTS. Two dimensions alone
+ * is not enough and fails the familiar way: a source of strength M over 2πr
+ * gives `n ∝ M/r`, so `v² = const·M` and `v⁴ ∝ M²` — the third appearance of
+ * that exact failure. Two dimensions buys the RADIAL law and not the mass law,
+ * exactly as the search said it would.
+ *
+ * THE SECOND HALF IS WHERE THE MASS WOULD COME FROM: layer one's pulses both
+ * CONSTITUTE the mass and SET the sheet. If the sheet a carrier locks to is
+ * chosen by the pulse it met, and pulses carry ± which XOR, then the sheet
+ * directions inherit the cancellation — N pulses agree on a direction only to
+ * √N, so the coherently-locked fraction is √N/N and the effective source is
+ * `N·(√N/N) = √N`.
+ *
+ * THAT WOULD BE THE √M, and it would tie both halves to ONE mechanism instead
+ * of two. IT IS A SKETCH AND NOT A RESULT — nothing here shows that sheet
+ * directions XOR the way polarities do, and everything turns on that. But it is
+ * the first version in which the radial law and the mass law have the SAME
+ * cause, which is worth more than either of them separately.
+ */
+
+/**
+ * BUT THE SHEET ROTATES — so what stops it being 3D again? The objection is
+ * right, and answering it pins the mechanism down rather than breaking it.
+ *
+ * FIRST, WHAT "2D" HAS TO MEAN. A straight line is one-dimensional and lies in
+ * infinitely many planes, so confining a carrier to a plane does nothing on its
+ * own. The distinction is about SPREADING — how a beam widens as it goes:
+ *
+ *     widens in 2 transverse directions   area ∝ r²   n ∝ 1/r²   Newton
+ *     widens in 1 transverse direction    area ∝ r    n ∝ 1/r    MOND
+ *
+ * The plane in question contains the carrier's OWN outward line, so every
+ * direction on the sky is still covered — the picture stays isotropic in angle
+ * and only the widening is flattened. (Which also disposes of the obvious
+ * worry: a globally fixed plane would make halos discs and rotation curves
+ * depend on sky direction, and they do not.)
+ *
+ * AND THEN THE ROTATION MATTERS EXACTLY AS SAID: if the plane turns about the
+ * RADIAL AXIS during the journey, the widening fills both transverse directions
+ * and 1/r² comes straight back. So the sheet must hold about that axis for the
+ * whole trip.
+ *
+ * AND "RESET ONLY BY A MEETING" IS PRECISELY THAT STABILITY — and it pays a
+ * dividend nobody asked for. Meetings are independent and rare, so they are
+ * POISSON with mean `x = g/a₀` over a carrier's life:
+ *
+ *     never reset            e^{−x}       stays 2D
+ *     reset at least once    1 − e^{−x}   has sampled both directions, 3D
+ *
+ * THE FRACTION THAT HAS GONE 3D IS THE INTERPOLATION FUNCTION:
+ *
+ *     μ(x) = 1 − e^{−x}
+ *
+ *     x      1−e^{−x}   x/(1+x)   x/√(1+x²)
+ *     0.01   0.00995    0.00990   0.01000
+ *     0.5    0.39347    0.33333   0.44721
+ *     2      0.86466    0.66667   0.89443
+ *     5      0.99326    0.83333   0.98058
+ *     20     1.00000    0.95238   0.99875
+ *
+ * `μ → x` as x → 0 (deep MOND) and `μ → 1` as x → ∞ (Newton). BOTH LIMITS
+ * CORRECT AND NEITHER PUT IN — they are what "at least one reset" means when
+ * resets are Poisson. Every MOND paper picks an interpolation function by hand
+ * out of a family; this one picks itself out of the counting statistics of the
+ * mechanism, which is the difference between a fit and a derivation.
+ *
+ * AND IT IS DISTINGUISHABLE, WHICH MAKES IT A TEST. Solving `μ(g/a₀)·g = g_N`
+ * for the Milky Way's baryons:
+ *
+ *     r (kpc)   g_N/a₀   v: Poisson   simple   standard   spread
+ *     5         3.252    249.7        274.0    250.6      24.3 km/s
+ *     10        0.813    208.7        227.3    201.7      25.6 km/s
+ *     20        0.203    194.2        204.3    187.4      16.9 km/s
+ *     80        0.013    185.4        187.9    183.0       4.9 km/s
+ *
+ * The three agree deep down — they must, same limit — and differ by up to
+ * 25 km/s through the transition at 5 to 20 kpc, which is exactly where
+ * rotation curves are best measured. SPARC-quality fits do distinguish
+ * interpolation functions at that level, so this is checkable against work
+ * already published. AND THE SHAPE IS DISTINCTIVE: `1−e^{−x}` reaches Newton
+ * much faster than either standard form, so the model says the transition is
+ * SHARPER than the usual fits assume — a statement about the INNER parts of
+ * galaxies rather than the outskirts, which is the opposite end from where
+ * these arguments usually live.
+ *
+ * WHERE THE MECHANISM STANDS:
+ *
+ *     the radial law         1D transverse widening gives n ∝ 1/r
+ *     isotropy               the plane holds the carrier's own line, so every
+ *                            sky direction is covered; only the widening flattens
+ *     the rotation problem   ANSWERED — the sheet holds about the radial axis,
+ *                            and "resets only on meetings" supplies exactly that
+ *     the crossover          Poisson resets, μ(x) = 1 − e^{−x}, both limits right
+ *     a₀ itself              predicted to a factor of 1.78, nothing fitted
+ *     a new test             a sharper transition than the standard μ, at 5–20 kpc
+ *     the mass, √M           STILL OPEN — the one thing none of this touches
+ *
+ * Six of seven. The seventh is the one the theorem says needs superposition to
+ * fail, and that is a different kind of thing entirely: the sheet story is about
+ * how carriers TRAVEL, and √M is about how many of them there effectively ARE.
+ */
+
+/**
+ * HOW MANY EMITTERS, THEN — PER BODY, OR IN THE UNIVERSE? The question has a
+ * fork in it, and one side of it is already settled by data.
+ *
+ * IT IS PER BODY, AND THAT IS FORCED RATHER THAN PREFERRED:
+ *
+ *     √ over the BODY        M_eff ∝ √M     v⁴ ∝ M     ✓ Tully–Fisher
+ *     √ over the UNIVERSE    M_eff = const  v⁴ ∝ M⁰    ✗ every galaxy alike
+ *
+ * A universal count would make every galaxy rotate at the same speed whatever
+ * its mass. Tully–Fisher holds across five decades with under 0.1 dex of
+ * scatter, so the root runs over the body's own constituents.
+ *
+ * THE UNIVERSE TOTAL IS WORTH HAVING ANYWAY, and the model fixes its own rather
+ * than borrowing one:
+ *
+ *     the ball, radius c·t₀        4.23 Gpc
+ *     volume                       9.322e+78 m³
+ *     baryons at 4.2e−28 kg/m³     3.915e+51 kg
+ *     emitters, if a proton        2.341e+78
+ *     the lattice                  2.208e+183 cells, one emitter per 9.4e+104
+ *
+ * The familiar "10⁸⁰ protons" is quoted for ΛCDM's comoving observable
+ * universe, 14.3 Gpc rather than 4.2 — a volume 39× larger, giving 9.0e+79.
+ * Consistent, and a good check that the frontier cosmology's smaller ball is
+ * not quietly losing matter.
+ *
+ * AND THE NUMBER THAT FALLS OUT, WITH THE WARNING ATTACHED. `√N_universe =
+ * 1.53e+39`, beside the proton-electron electric-to-gravitational ratio of
+ * 2.27e+39 — Dirac's large numbers, in Eddington's version. RECORDED AND NOT
+ * CLAIMED: the enumeration above measured exactly how worthless this is, with
+ * 341 of 12816 expressions landing within 10% of an arbitrary target and 20
+ * within 1%. A large number near another large number is not evidence, and it
+ * is the same discipline that made `a₀ ≈ c/t₀` worth something only once a RULE
+ * produced it rather than a search.
+ *
+ * WHERE THE UNIVERSE DOES LEGITIMATELY ENTER IS NOT THE COUNT. The halo is
+ * `ρ = κ√M/r²`, and κ is fixed by a₀ — 0.10670 from the measured value, 0.07998
+ * from the predicted one, the ratio being √1.78 = 1.334, which is the same 1.78
+ * arriving under a square root. And a₀ is where t₀ lives. So:
+ *
+ *     the ROOT runs over the BODY        → which is what makes Tully–Fisher
+ *     the COEFFICIENT runs over the HORIZON → which is what makes a₀
+ *
+ * A tidier division than it looked: the mass scaling is local, the scale is
+ * cosmological, and nothing has to count the universe's emitters to get either.
+ *
+ * AND IT SAYS SOMETHING CHECKABLE ABOUT WHAT AN EMITTER IS, which is the real
+ * catch. If the root is over constituents, the answer depends on what counts as
+ * one — same galaxy, different bookkeeping:
+ *
+ *     an emitter is…    N for 7e10 M☉   √N          M_eff/M
+ *     a proton          8.322e+67       9.122e+33   1.10e−34
+ *     a Planck mass     6.395e+48       2.529e+24   3.95e−25
+ *     a solar mass      7.000e+10       2.646e+5    3.78e−6
+ *
+ * TWENTY-NINE ORDERS between "proton" and "solar mass". Since κ is fixed by a₀,
+ * CHOOSING THE EMITTER FIXES a₀ — they are the same choice made twice. So the
+ * mechanism cannot be agnostic about what an emitter is, and `mass = pulse
+ * rate` in `physics.ts` has to be turned into a COUNT before any of this is
+ * more than a shape.
+ *
+ * WHICH IS THE NEXT CONCRETE THING, and it is not "how many in the universe"
+ * but WHAT IS ONE. The model already believes there is a smallest emitter — the
+ * ceiling is one emission per cell per tick — so that is where the count has to
+ * come from, and it is a question about `physics.ts` rather than about
+ * galaxies.
+ */
+
+/**
+ * SO POSIT THE RATIO — one layer-two pulse for every x of layer one's — and
+ * check whether it works before asking why. It does not, in the obvious
+ * reading, and the way it fails says what the rule has to be.
+ *
+ * A FIXED RATIO CANNOT GIVE A ROOT, and that is one line. N pulses in, N/x out;
+ * for the output to be √N you need x = √N, so x is not a ratio at all — it
+ * grows with the body. "One in a thousand" gives N/1000, still LINEAR, and just
+ * rescales the mass. Enumerated:
+ *
+ *     rule                            scaling    v⁴ ∝ M^
+ *     1 for 1                         N¹         4.00
+ *     1 for every 1000                N¹         4.00
+ *     1 per dead-time (saturates)     N⁰         0.00
+ *     1 per coincidence of two        N²         8.00
+ *     XOR cancellation                N^½        2.00
+ *
+ * Only cancellation gives ½. Saturation gives 0, coincidence gives 2, every
+ * fixed ratio gives 1. THE ROOT IS SPECIFICALLY CANCELLATION, not a rate ratio
+ * — which is worth having, because it means the rule is forced rather than
+ * chosen.
+ *
+ * BUT THERE IS A VERSION OF THE IDEA THAT WORKS, AND IT IS A RATIO AFTER ALL —
+ * just not of COUNTS. Let the trigger be PHASE rather than tally: one layer-two
+ * pulse per 2π of accumulated layer-one phase. Phase is SIGNED, so it
+ * random-walks where a tally cannot:
+ *
+ *     N pulses, each ±δ of phase   →   accumulated |phase| ≈ δ√N
+ *     pulses out = δ√N/2π          →   √N, FROM A FIXED RULE
+ *
+ * "One per x" is exactly right; x is a phase and not a number, and the root
+ * appears because phases cancel and counts do not. The model already carries
+ * `phase` on a source, and `inStep` already turns on whether phases add — so
+ * this is vocabulary the file has rather than machinery it needs.
+ *
+ * GRANT IT AND SEE WHAT IT COSTS. With `N = M/m₀` constituents,
+ *
+ *     M₂ = √N·m₀ = √(M·m₀)      the GEOMETRIC MEAN of the body and the
+ *                                elementary emitter
+ *
+ * and layer two spreading as 1/r over a length L gives `g₂ = G√(Mm₀)/(Lr)`.
+ * Matching deep MOND, `g = √(GMa₀)/r`:
+ *
+ *     m₀ = a₀·L²/G
+ *
+ * ONE EQUATION, TWO UNKNOWNS — choosing the emitter chooses the length and vice
+ * versa. Which is the same "choosing the emitter fixes a₀" as before, but with
+ * the length now visible, and that makes it checkable:
+ *
+ *     if the emitter is…      L must be        if L is…        m₀ must be
+ *     a proton                3.05e−14 m       a cell          4.70e−70 kg
+ *     an electron             7.12e−16 m       2.68 fm         7.2 MeV
+ *     a Planck mass           1.10e−4 m        0.1 mm          1.07e+19 protons
+ *     a 0.1 eV neutrino       3.15e−19 m
+ *
+ * TWO OF THOSE ARE WORTH A SECOND LOOK AND NEITHER IS A CLAIM. A Planck-mass
+ * emitter wants L = 0.11 mm — the length short-range gravity experiments were
+ * built to probe, and the one the dark-energy density already picks out. And
+ * the 2.68 fm crossover spacing wants an emitter of 7.24 MeV. The enumeration
+ * above settled what such matches are worth, which is nothing until a rule
+ * produces one; they are recorded here so they are not rediscovered later and
+ * mistaken for evidence.
+ *
+ * AND WHAT IT ACTUALLY BUYS IS REAL. Before, κ was one fitted number with no
+ * interpretation. Now it is `m₀ = a₀L²/G`, a RELATION between two things the
+ * model already owes an opinion on:
+ *
+ *     `physics.ts` owes a smallest emitter — the one-a-tick ceiling implies one
+ *     the sheet mechanism owes a length — how far a locked plane holds
+ *
+ * Two separate debts, now ONE equation. Fix either and a₀ follows; fix a₀ and
+ * they are locked to each other. That is worth more than the ratio itself, and
+ * it is exactly what "check it works before asking why" was supposed to produce.
+ *
+ * STILL MISSING: why phases should CANCEL rather than add. Which is the same
+ * question `inStep` asks — already in this file, already measured for two
+ * identical emitters, and never once asked of a whole body.
+ */
+
+/**
+ * AND IF THE UNIVERSE REUSES ITS ABSTRACTIONS, `inStep` ALREADY ANSWERS IT.
+ *
+ * The criterion is in the file, derived and measured for two identical
+ * emitters: phases hold together only closer than a Compton wavelength,
+ * `R < 2π/m`, and beyond it they drift through every phase and cancel:
+ *
+ *     constituent          2π/m         a galaxy is … across
+ *     a proton             1.32e−15 m   7.0e+35 of them
+ *     an electron          2.43e−12 m   3.8e+32
+ *     a 0.1 eV neutrino    1.24e−5 m    7.5e+25
+ *
+ * Ten to the thirty-six Compton wavelengths. Utterly out of step, so the phases
+ * cancel completely and the surviving net is √N. THAT IS THE MODEL'S OWN
+ * CRITERION AND NOT A NEW POSTULATE — which is exactly what "the same
+ * abstraction is reused" would predict, so the reuse assumption pays for itself
+ * immediately rather than costing something.
+ *
+ * BUT THE SAME CRITERION MUST NOT APPLY TO LAYER ONE, OR NEWTON DIES. The Sun
+ * is 1.19e+57 protons; √N is 3.45e+28, so `M_eff/M = 2.9e−29`. Gravity would be
+ * ten to the minus twenty-nine of itself. So the two layers cannot read the
+ * pulse train the same way, and the resolution is economical rather than
+ * awkward:
+ *
+ *     LAYER ONE reads the COUNT    how many pulses. Unsigned. This is mass.
+ *     LAYER TWO reads the PHASE    where in the cycle. Signed. This cancels.
+ *
+ * ONE OBJECT, TWO OBSERVABLES. A pulse train has both, and this file already
+ * carries both — `mass = pulse rate` is the count and `phase` is on the Source
+ * type. So the abstraction IS shared, at the level of the thing, while the two
+ * layers differ only in which aspect of it they couple to. That is a far
+ * weaker assumption than a second set of rules.
+ *
+ * WHICH MAY MEAN THERE IS NO SECOND LAYER AT ALL. If layer two is the PHASE of
+ * layer one's pulses, it is not a new graph over the old one — it is the same
+ * graph read differently. That is the most economical version of the whole
+ * idea, and it removes the part that was hardest to justify: a second set of
+ * emitters with their own gravity. It also explains why the coupling had to be
+ * TWO-WAY, since a phase cannot be independent of the pulses carrying it.
+ *
+ * ---------------------------------------------------------------------------
+ * AND IS IT THE CHARGE OF AN ELECTRON? Probably not, and the reason is not the
+ * obvious one.
+ *
+ * THE COMPOSITION TEST IS TOO WEAK TO SETTLE IT, which is worth knowing before
+ * relying on it. If the count were of CHARGES rather than of mass, what matters
+ * is charges per kilogram — and ordinary matter is nearly uniform in that:
+ *
+ *     composition             charges/kg   against hydrogen
+ *     pure hydrogen           1.196e+27    1.0000
+ *     Y = 0.24, primordial    1.053e+27    0.8808
+ *     Y = 0.28, enriched      1.029e+27    0.8609
+ *     pure helium             6.018e+26    0.5033
+ *
+ * Across the real range of helium fractions the spread is 2.3%, which is 1.15%
+ * in √N and 0.57% in v — twenty times under Tully–Fisher's own scatter. So
+ * composition cannot tell charge from mass, because in ordinary matter they are
+ * proportional to better than a percent.
+ *
+ * WHAT KILLS IT IS THE OPPOSITE END. If layer two is CHARGE, a body of NEUTRAL
+ * constituents gets no halo at all. But the most dark-dominated systems known —
+ * clusters and dwarf spheroidals — show the LARGEST discrepancies, and they are
+ * the ones with the fewest charges per unit mass. The mechanism would predict
+ * exactly the reverse ordering.
+ *
+ * SO LAYER TWO IS PROBABLY NOT ELECTRIC CHARGE, and the phase reading is better
+ * on this point too: A PHASE BELONGS TO EVERY PULSE, so every gram of anything
+ * has one, charged or not. The count-versus-phase split gives the halo to all
+ * matter equally, which is what is observed.
+ */
+
+/**
+ * AND THEN IT WAS TESTED, WHICH RETIRES HALF OF IT.
+ *
+ * TEST A — DO THE MODEL'S OWN PHASES CANCEL TO √N? Not assumed random: `inStep`
+ * says two emitters differ in phase by `ω·Δr/c = m·Δr`. So N emitters at random
+ * places in a ball of radius R, each given the phase its position implies,
+ * summed:
+ *
+ *     m·R      N       |Σ| measured   √N        N          which
+ *     1.0e−2   1e+3    1.000e+3       3.16e+1   1.00e+3    N
+ *     1.0e+0   1e+5    9.814e+4       3.16e+2   1.00e+5    N
+ *     6.3e+0   1e+5    5.012e+4       3.16e+2   1.00e+5    between
+ *     1.0e+4   1e+3    3.278e+1       3.16e+1   1.00e+3    √N
+ *     1.0e+4   1e+5    3.164e+2       3.16e+2   1.00e+5    √N
+ *
+ * COHERENT BELOW A COMPTON WAVELENGTH, CANCELLING TO √N ABOVE IT, with the
+ * crossover at `m·R ≈ 2π` exactly where `inStep` puts it. The √M half is real,
+ * and it is not an assumption about randomness — it is what `m·Δr` does once Δr
+ * covers many wavelengths.
+ *
+ * TEST B — DOES LOCKING TO A PLANE CHANGE THE RADIAL LAW? IT DOES NOT.
+ *
+ * (The first run of this had a bug worth recording: the per-step turn was
+ * 0.25 rad, so after 300 steps every case had diffused through 4.3 rad and all
+ * four came out identical. The regime was set by the turn angle, not by the
+ * locking. Done properly:)
+ *
+ *     turn/step   persistence      LOCKED (1 dof)   FREE (2 dof)   difference
+ *     0.002       250000 steps     −2.000           −2.000         0.000
+ *     0.010       10000            −2.000           −1.998         0.002
+ *     0.050       400              −1.964           −1.929         0.034
+ *
+ * LOCKED AND FREE AGREE TO THREE DECIMAL PLACES. The number of transverse
+ * directions makes no difference to the radial law at all. (A fourth row at
+ * turn = 0.2 gave −3.2 and −5.4; that is a truncation artefact — the walkers do
+ * not reach the outer bins, so the fit runs off the end. The diffusive slope
+ * was not measured cleanly here and is not claimed.)
+ *
+ * AND THE REASON IS FLUX CONSERVATION, WHICH SIDEWAYS WANDERING CANNOT BEAT. N
+ * carriers leave, N cross every sphere, the sphere has area 4πr², so
+ * `n = N/4πr²c` whatever they do transversely. The 1/r appears only when the
+ * walk becomes DIFFUSIVE, because then radial progress slows as `dr/dt = cλ/2r`
+ * and carriers pile up. Slowing was always one of the two ways to get 1/r —
+ * diffusion is what supplies it, and diffusion needs MANY resets, not few.
+ *
+ * SO THE SHEET CLAIM WAS WRONG, AND IT IS WORTH SAYING WHERE. "The plane holds
+ * the carrier's own line, so only the widening flattens" does not give 1/r;
+ * widening does not touch the radial profile. The permutation search two steps
+ * earlier had this right — dense → 1/r, thin → 1/r², SIGN BACKWARDS — and the
+ * sheet story talked its way out of a correct result. The simulation puts it
+ * back.
+ *
+ * WHAT THAT RETIRES: the 2D transport mechanism, and with it the a₀ prediction
+ * that rode on it (6.742e−11, the factor of 1.78) and the derived interpolation
+ * function `μ(x) = 1 − e^{−x}`, both of which assumed the locking worked. They
+ * are kept above as a route that was tried, not as results.
+ *
+ * WHAT SURVIVES: TEST A. Phase cancellation is real, measured, and follows from
+ * the model's own `inStep` rather than from a new assumption — so the √M half
+ * stands on its own. The radial law is unexplained again, and the obstruction
+ * is exactly what it was before any of this: `n ∝ 1/r` needs the carriers to
+ * slow.
+ */
+
+/**
+ * — AND "EVERYTHING MOVES AT c" WAS TOO BLUNT, WHICH REOPENS ALL OF IT.
+ *
+ * The file rejects IDLING for massive particles: moving on a fraction β of
+ * ticks gives `(1−β)` where relativity wants `√((1−β)(1+β))`, and picks a
+ * frame. But the ZIGZAG says a thing steps EVERY tick and its NET speed is the
+ * imbalance, and that "the updates ARE the reversals". So a net drift below c
+ * is not forbidden — it is this model's own account of what speed IS. Saying
+ * carriers cannot slow was quoting half the file at the other half.
+ *
+ * AND IT MATTERS BECAUSE FLUX CONSERVATION READS `Φ = 4πr²·n·v`. With v
+ * constant, `n ∝ 1/r²` and no amount of wandering changes it — which is what
+ * Test B showed. WITH v VARYING, the whole question reopens, and what is needed
+ * is `v ∝ 1/r`.
+ *
+ * AND THE MODEL HAS A REASON FOR THE DRIFT TO DEPEND ON DENSITY. The chain is
+ * all pieces already here:
+ *
+ *     speed is the share of ticks spent moving rather than updating
+ *     a carrier accumulates internal state (phase) while travelling free
+ *     `through` says a MEETING resets it
+ *     so the accumulated state ∝ distance since the last meeting = λ = 1/σn
+ *     update cost ∝ accumulated state, so the moving share ∝ 1/λ = σn
+ *
+ *     ⇒   v = c·min(1, n/n_c)
+ *
+ * Dense, and the budget is capped at c. Thin, and the carrier spends most of
+ * its ticks on itself and crawls. "CARRIERS KEEP EACH OTHER MOVING" — the same
+ * intuition as the sheet story, finally in the right variable.
+ *
+ * SOLVE IT AND BOTH BRANCHES COME OUT RIGHT:
+ *
+ *     DENSE, n > n_c:   v = c        ⇒ n = Φ/(4πr²c)       ∝ 1/r²   NEWTON
+ *     THIN,  n < n_c:   v = cn/n_c   ⇒ n = √(Φn_c/4πc)/r   ∝ 1/r    MOND
+ *
+ * AND LOOK AT THE MASS. In the thin branch `n ∝ √Φ`, and `Φ ∝ M`:
+ *
+ *     n ∝ √M/r    ⇒   g ∝ √M/r   ⇒   v_rot⁴ ∝ M    TULLY–FISHER
+ *
+ * BOTH HALVES FROM ONE MECHANISM, and the √M is not the phase cancellation at
+ * all — it falls out because FLUX CONSERVATION BECOMES QUADRATIC IN n once the
+ * speed is proportional to n. That is the non-linearity the theorem demanded,
+ * and it lives in the TRANSPORT rather than in the source, which is why every
+ * earlier attempt to put it in the source failed.
+ *
+ * AND THE SWITCH IS AT `n = n_c`, A FIXED OCCUPANCY — hence at fixed g, since
+ * `g ∝ n`. Not a length, not a mass, not a count of constituents. Every
+ * requirement the search accumulated, at once.
+ *
+ * MEASURED, by integrating the transport rather than trusting the algebra:
+ *
+ *     Φ (∝ mass)   slope inner   slope outer   n at r = 100
+ *     1            −2.0000       −1.0000       8.921e−5
+ *     10           −2.0000       −1.0000       2.821e−4
+ *     100          −2.0000        —            8.921e−4
+ *
+ * −2.0000 inside and −1.0000 outside, and the outer density against √Φ comes to
+ * 10.0000 for a hundredfold mass, against √100 = 10. Exact. (The blank cells
+ * are a windowing artefact: at larger Φ the crossover radius runs past the grid
+ * so the outer fit window is empty.)
+ *
+ * WHAT IT COSTS, BECAUSE SOMETHING HAS TO. A carrier that crawls is a carrier
+ * that is LATE. At 20 kpc, `n/n_c ≈ 0.4`, so the drift is 0.4c and a galaxy's
+ * crossing time goes from 98 to 244 kyr — harmless. Further out it is not: at
+ * `n/n_c = 10⁻³` the drift is 10⁻³c and a cluster-scale field takes 10⁷ years
+ * to establish. THAT IS A REAL PREDICTION — gravity should LAG in the deep-field
+ * regime — and merging systems are where it would show.
+ *
+ * AND IT IS NOT RELATIVITY BROKEN. The carriers still step one cell a tick;
+ * what falls is the NET drift, exactly as a massive particle's does in the
+ * zigzag. Nothing exceeds c, and nothing picks a frame, since the density
+ * setting the drift is a scalar.
+ *
+ * WHAT IS STILL OWED IS ONE LINK: that the update cost goes as the accumulated
+ * phase. Everything above hangs on it, and it is the only part not already in
+ * the file. Which is a considerably better position than "no mechanism at all",
+ * and it is a question about `physics.ts` — what a tick is spent on — rather
+ * than about galaxies.
+ */
+
+/**
+ * AND CHASING THAT LINK TURNS UP A SIGN CONFLICT IN THE CHAIN ABOVE, WHICH HAS
+ * TO BE SAID BEFORE ANYTHING ELSE.
+ *
+ * The chain used "a MEETING resets the accumulated state, so meetings free up
+ * ticks and the carrier moves faster". But `through` — the model's own rule,
+ * and a measured one — says a charge arriving at an occupied cell ANNIHILATES
+ * OR REVERSES. A reversal does not clear internal state; it turns the carrier
+ * round, which SLOWS the net drift:
+ *
+ *     `through`    more meetings → more reversals → v FALLS with n
+ *     the chain    more meetings → state cleared  → v RISES with n
+ *
+ * And `v ∝ n` is exactly what the √M depends on. So the mechanism as written
+ * contradicts the file on the DIRECTION of the effect. That is a real problem
+ * rather than a detail, and it is the sort that would have gone unnoticed for a
+ * long time if the link had been left as an IOU.
+ *
+ * BUT THERE IS A CONNECTION WITH THE RIGHT SIGN, AND IT IS ALREADY HERE:
+ * `inStep`. It says emitters closer than a Compton wavelength hold a common
+ * phase, and further apart drift through every phase independently. READ AS A
+ * BUDGET RATHER THAN AS AN INTERFERENCE CONDITION:
+ *
+ *     IN STEP       one phase shared between many carriers — the update is paid
+ *                   ONCE, and each is free to spend its ticks moving. DENSE → FAST.
+ *     OUT OF STEP   each carrier carries its own phase and pays its own update
+ *                   every tick. THIN → SLOW.
+ *
+ * Right sign, no new rule, and it does not fight `through`: reversals still
+ * happen, but what sets the drift here is what a tick is SPENT ON rather than
+ * which way the step points. Those are two different bookkeepings of the same
+ * carrier and they can both hold.
+ *
+ * AND IT MAKES THE CROSSOVER A COMPTON WAVELENGTH — a fixed DENSITY, which is
+ * the shape every earlier candidate failed to have:
+ *
+ *     in step  ⇔  spacing < 2π/m  ⇔  n > (m/2π)³      so n_c = (m/2π)³
+ *
+ * WHICH FIXES THE EMITTER, AND THAT IS THE BILL:
+ *
+ *     required n_c            2.203e−61 per cell
+ *     ⇒ m = 2π·n_c^⅓          5.150e−29 kg = 28.9 MeV/c²
+ *
+ *     particle    mass (MeV)   n_c it gives   against needed
+ *     electron      0.51       1.219e−66      5.5e−6
+ *     muon        105.66       1.078e−59      4.9e+1
+ *     pion        134.98       2.247e−59      1.0e+2
+ *     proton      938.26       7.548e−57      3.4e+4
+ *
+ * THE PROTON IS 3.4·10⁴ TOO DENSE AND THE ELECTRON 5.5·10⁻⁶ TOO THIN, and what
+ * the mechanism wants sits between them at about 29 MeV — WHICH IS NOT A
+ * PARTICLE. The muon and the pion are the nearest things and both are four to
+ * eight times too heavy.
+ *
+ * WHICH IS THE GOOD KIND OF FAILURE:
+ *
+ *     the sign              FIXED — `inStep` gives dense → fast, where the
+ *                           meeting story gave dense → slow and fought `through`
+ *     the crossover shape   FIXED — a Compton wavelength is a fixed density
+ *     no new rule           FIXED — `inStep` was derived and measured already;
+ *                           this only reads it as a budget
+ *     the number            NOT FIXED — it wants a 29 MeV emitter, and there
+ *                           is not one
+ *
+ * Three of the four structural requirements are met by a rule already in the
+ * file, and the fourth is a single number wrong by a stateable amount. That
+ * says exactly what to look for: EITHER an emitter near 29 MeV, OR a reason the
+ * relevant Compton wavelength is not the constituent's own.
+ *
+ * AND THERE IS AN OBVIOUS PLACE TO LOOK FOR THE SECOND. `inStep` takes the mass
+ * of what is EMITTING. If the phase that matters belongs to the CARRIER rather
+ * than to the source, then 29 MeV is a statement about the carrier — and this
+ * model has never assigned the carrier a mass at all. The pull is carried by
+ * charges whose own rate was never fixed, which makes this a GAP rather than a
+ * contradiction, and the first thing `physics.ts` would have to answer.
+ */
+
+/**
+ * SO DERIVE n_c WITHOUT LOOKING AT a₀ — and first, A CORRECTION: THE a₀
+ * PREDICTION WAS OVER-RETRACTED.
+ *
+ * It was written off along with the 2D transport, but look at what it actually
+ * used: `g ∝ n` with the constant `4πG/SHEET`, which is the geometry of
+ * emission and mentions no transport at all; and `n_c = 1/t₀`, one meeting per
+ * carrier lifetime, which mentions none either. THE TRANSPORT FAILED AND THE
+ * PREDICTION DOES NOT DEPEND ON IT. Retracting both together was too broad.
+ *
+ * WHAT INPUTS EXIST AT ALL — this is the whole list, and a derivation can use
+ * nothing else:
+ *
+ *     counted      SHEET = 8, WAYS = 26, BITE = 1, G_LATTICE = 0.0623515
+ *     units        cell = ℓ_P, tick = t_P, fixed by the calibration
+ *     dynamical    t₀ = 8.078e+60 ticks — an AGE, not a constant
+ *
+ * SO ENUMERATE WHAT THEY CAN BUILD:
+ *
+ *     route                                 n_c           against needed
+ *     the ceiling, one emission a tick      1.000e+0      4.5e+60
+ *     the floor, one emission per age       7.649e−186    3.5e−125
+ *     ONE MEETING PER CARRIER LIFETIME      1.238e−61     5.6e−1
+ *     what a₀ requires                      2.203e−61     1
+ *
+ * ONLY ONE ROUTE LANDS. The ceiling is 61 orders too dense, the floor 184
+ * orders too thin, and "one meeting per lifetime" is out by 1.78. That is not a
+ * fit surviving among many — IT IS THE ONLY CANDIDATE THE AVAILABLE INGREDIENTS
+ * CAN EVEN BUILD AT THE RIGHT SIZE, which is the same kind of argument the rest
+ * of this file makes and the opposite of the expression search.
+ *
+ * THE DERIVATION, WITH NO DATA IN IT:
+ *
+ *     a carrier crosses one cell a tick and lives t₀ ticks
+ *     it sweeps BITE cells of cross-section, so it meets n·BITE·t₀ others
+ *     the crossover is where that count is ONE — the boundary between a carrier
+ *       whose history contains an interaction and one whose does not
+ *     ⇒ n_c = 1/(BITE·t₀)
+ *     and g = (4π·G/SHEET)·n from the emission geometry
+ *     ⇒ a₀ = 4π·G/(SHEET·t₀) = 6.742e−11 m/s²,  against 1.200e−10 measured
+ *
+ * AND IT THEN PREDICTS THE CARRIER MASS, which was the open number. `inStep`
+ * wants `n_c = (m/2π)³`; setting the two equal,
+ *
+ *     m = 2π·(1/t₀)^⅓ = 3.131e−20 lattice units = 23.8 MeV/c²
+ *     against the 28.9 MeV that a₀ demands — a ratio of 1.212
+ *
+ * TWO INDEPENDENT ROUTES TO THE SAME NUMBER, AGREEING TO 21%. One counts
+ * meetings over a lifetime; the other asks when carriers fall out of step. They
+ * did not have to agree at all, and this is the first time in this line of work
+ * that two derivations have met.
+ *
+ * THE BILLS, AND THEY ARE SPECIFIC:
+ *
+ *   THE 1.78 IS UNCOUNTED. And it is the SAME 1.78 at every step, so it is one
+ *   missing factor rather than several — somewhere a 2, a π or a √π is not
+ *   being counted.
+ *
+ *   t₀ IS NOT A CONSTANT, so `a₀ ∝ 1/t` and the carrier mass goes as `t^{−⅓}`.
+ *   A mass that changes with the age is a strange object, and it is the same
+ *   prediction already flagged: rotation curves at z ~ 1–2 should differ, and
+ *   the reported ones go the wrong way.
+ *
+ *   24 MeV IS NOT A PARTICLE. The muon is 106 and the pion 135. Either
+ *   something sits there, or the Compton wavelength that matters is not a
+ *   particle's at all.
+ *
+ * WHICH IS THE ANSWER TO "HOW, WITHOUT DATA": enumerate the inputs the model
+ * actually has — four counted numbers, two units, one age — and see which
+ * combinations can reach the size at all. Only one can.
+ */
+
+/**
+ * AND THE 1.78 IS MOSTLY COUNTABLE — it was never one number.
+ *
+ * The count was "a carrier sweeps BITE cells a tick for t₀ ticks, so it meets
+ * n·BITE·t₀ others; set that to one". TWO THINGS IN IT WERE LEFT AT ONE AND
+ * SHOULD NOT HAVE BEEN, and both are already derived elsewhere in this file:
+ *
+ *   `share`      only OPPOSITE polarities annihilate; `opposed` decides, and
+ *                pairing at random gives ½. `reach`, `shows` and `met` all
+ *                carry it already.
+ *   ⟨|v_rel|⟩    both things move at c, so the rate carries their RELATIVE
+ *                speed: `½∫√(2−2cosθ)sinθ dθ = 4/3` for isotropic directions,
+ *                which is the same average that corrected the screening
+ *                geometry at the head of `shows`.
+ *
+ * They pull OPPOSITE WAYS — fewer meetings means the threshold sits at a higher
+ * density and a₀ goes up; a larger relative speed means more meetings and a₀
+ * goes down:
+ *
+ *     counted in            n_c          a₀ (m/s²)   against measured
+ *     nothing               1.238e−61    6.742e−11   0.562
+ *     `share` = ½           2.476e−61    1.348e−10   1.124
+ *     ⟨|v_rel|⟩ = 4/3       9.285e−62    5.057e−11   0.421
+ *     both                  1.857e−61    1.011e−10   0.843
+ *     measured                           1.200e−10   1.000
+ *
+ * AND THE RELATIVE-SPEED FACTOR IS NOT ACTUALLY 4/3 HERE, which is the
+ * interesting part rather than a nuisance. 4/3 is the ISOTROPIC average, but a
+ * source's own carriers all stream radially outward — nearly COMOVING, and two
+ * things moving the same way at c never meet. So the true factor sits between 1
+ * (an isotropic ambient sea) and 4/3 (full average), and below 1 if what a
+ * carrier mostly runs into is its own source's outflow. With `share` counted:
+ *
+ *     a₀ ∈ [1.011e−10, 1.348e−10],  measured 1.200e−10 — INSIDE, 56% across
+ *
+ * SO THE 1.78 WAS A FACTOR OF 2 FROM `share` AND A VELOCITY FACTOR THAT IS
+ * BRACKETED RATHER THAN KNOWN. Counting the first and bracketing the second
+ * puts the measured value inside, which is as far as counting goes until "what
+ * does a carrier meet" is settled.
+ *
+ * AND IT TIGHTENS THE TWO ROUTES AGAINST EACH OTHER, which is the better test
+ * because neither involves a₀. Each n_c predicts a carrier mass through
+ * `n_c = (m/2π)³`:
+ *
+ *     counted in         carrier mass   against the 28.9 MeV a₀ wants
+ *     nothing            23.8 MeV       1.212
+ *     `share` = ½        30.0 MeV       0.962
+ *     both               27.3 MeV       1.059
+ *
+ * BARE, THE TWO ROUTES DISAGREED BY 21%; WITH `share` COUNTED THEY AGREE TO 4%,
+ * and with both they straddle. Two derivations that share no steps now meet
+ * inside the uncertainty of either.
+ *
+ * WHAT IS FIXED AND WHAT IS NOT:
+ *
+ *     the 1.78                 mostly counted — a 2 from `share`, the rest
+ *                              bracketed, with the measurement inside
+ *     the two routes           tightened from 21% apart to 4%
+ *     WHAT A CARRIER MEETS     OPEN, and now the only thing between this and a
+ *                              number. Its own source's outflow (comoving,
+ *                              suppressed) or an ambient sea (isotropic, 4/3)?
+ *                              A question about `field.ts`, answerable by
+ *                              simulation
+ *     t₀ is not a constant     unfixable — `a₀ ∝ 1/t` is a prediction and the
+ *                              high-redshift curves are the test
+ *     ~28 MeV                  unfixed. The bracket is 27–30 MeV and nothing
+ *                              sits there
+ *
+ * AND A DISCIPLINE NOTE. `(4/3)² = 1.7778` against the observed 1.7799, a match
+ * to 0.1%. IT IS NOT CLAIMED AND SHOULD NOT BE: a₀ itself is quoted at ~10%, so
+ * 0.1% is far inside the noise, and √π = 1.772 fits just as well. The two
+ * factors above are worth having because each was DERIVED SOMEWHERE ELSE in
+ * this file — not because their product lands well.
+ */
+
+/**
+ * SO SIMULATE THE LAST OPEN THING — WHAT DOES A CARRIER MEET? — AND IT BREAKS
+ * THE MECHANISM. Which is what the simulation was for.
+ *
+ * THE SUPPRESSION IS REAL AND STRONG. A source of radius R, a field point at r,
+ * two carriers arriving there from random parts of it, each moving along
+ * `(P−S)/|P−S|` weighted by the flux that part contributes:
+ *
+ *     r/R      ⟨|v_rel|⟩/c    against isotropic 4/3
+ *     1.5      0.55974        4.2e−1
+ *     5        0.16197        1.2e−1
+ *     30       0.02692        2.0e−2
+ *     100      0.00808        6.1e−3
+ *
+ * It falls as R/r exactly as the geometry says: far out, the source subtends a
+ * small angle and its own carriers all go the same way. A POINT SOURCE IS THE
+ * LIMIT — its carriers are perfectly comoving and never meet each other at all.
+ *
+ * BUT A CARRIER DOES NOT ONLY MEET THOSE. The rest of the universe is emitting
+ * too, and that sea arrives isotropically:
+ *
+ *     the ambient sea, ρ·SHEET·R_h        1.732e−60 per cell
+ *
+ *     where                    the galaxy's own n    against the sea
+ *     the Sun at 1 AU          1.089e−53             6.3e+6
+ *     the Galaxy at 8 kpc      3.599e−61             2.1e−1
+ *     the Galaxy at 20 kpc     4.884e−62             2.8e−2
+ *     the Galaxy at 100 kpc    1.946e−63             1.1e−3
+ *
+ * Inside the solar system the local field is a million times the sea; by 8 kpc
+ * they are comparable; by 20 kpc THE SEA IS THIRTY-FIVE TIMES DENSER than the
+ * galaxy's own carriers.
+ *
+ * AND THAT BREAKS IT. The crossover wants `n_c = 2.476e−61` and the sea alone
+ * is `1.732e−60` — SEVEN TIMES ABOVE IT, EVERYWHERE. A carrier anywhere in the
+ * universe meets 7.0 others in its life from the background alone, so the "has
+ * it met anything" switch is thrown in every direction at every radius. No MOND
+ * regime; Newton everywhere.
+ *
+ * AND HERE IS THE CONFLATION THAT HID IT, which is the real lesson: `g ∝ n` is
+ * about the SOURCE'S OWN carriers, while the meeting rate is about ALL of them.
+ * Two different densities, one symbol. The crossover was supposed to depend on
+ * the source, so that it happens at a radius — but the meeting rate does not
+ * depend on the source at all, so it happens nowhere, or everywhere.
+ *
+ * WHAT WOULD HAVE TO BE TRUE. Either the horizon is 7× smaller than it is, or
+ * distant matter's carriers do not count — and `reach` is exactly such a
+ * reason, screening the sea with a Yukawa length of 1.6 Gpc. Redone with the
+ * cut-off, `∫ρ·SHEET·e^{−r/λ}dr = ρ·SHEET·λ = 6.549e−61`, against `n_c =
+ * 2.476e−61` — a ratio of 2.65. STILL ABOVE, but only by a factor of two-ish,
+ * which is inside the uncertainty of everything feeding it.
+ *
+ * SO THE VERDICT IS MARGINAL RATHER THAN DEAD, and it turns on `reach` — a
+ * length this file derived for entirely unrelated reasons, and called its one
+ * genuine prediction. The mechanism does not have a comfortable MOND regime; it
+ * has one that switches on barely, and only because gravity's own range cuts
+ * the sea off. That is a much weaker claim than the section above it makes, and
+ * it is what the simulation actually supports.
+ *
+ * (And the alternative branch — that only the source's own carriers count, so
+ * the crossover IS radial — fails differently: the rate then goes as
+ * `n·(R/r) ∝ R/r³`, giving a crossover radius ∝ M^⅓ rather than √M, so
+ * Tully–Fisher goes wrong again. Neither branch works, for different reasons.)
+ */
+
+/**
  * WHAT A BLACK HOLE IS, IF THERE ARE NO HORIZONS.
  *
  * `slowing` has no zero, so nothing is ever cut off. That leaves the question
@@ -2815,9 +4393,12 @@ export const REACHES = Math.sqrt(
  * R = 1.384 cells:
  *
  *     R (cells)   screened R/R_s   unscreened R/R_s   u = GM/R
- *     1.38        2.5525           1.005e+0           4.974e−1
- *     10          2.5525           1.914e−2           2.612e+1
- *     1e+6        2.5525           1.914e−12          2.612e+11
+ *     1.38        0.7219           1.005e+0           4.974e−1
+ *     10          0.7219           1.914e−2           2.612e+1
+ *     1e+6        0.7219           1.914e−12          2.612e+11
+ *
+ * (the screened column was 2.5525 before the geometry of `shows` was
+ * corrected; it is now inside one, which is the reversal recorded above)
  *
  * and u grows without bound, so `e^−u` becomes arbitrarily extreme:
  *
