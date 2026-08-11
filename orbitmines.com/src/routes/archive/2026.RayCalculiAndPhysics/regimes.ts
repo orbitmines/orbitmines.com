@@ -190,6 +190,22 @@ export type Recovered = keyof typeof RECOVERS;
 export const setting = (of: Recovered): Regime => ({ ...RECOVERS[of] });
 
 /**
+ * WHICH KNOBS ARE OPTIONAL CONSEQUENCES rather than parts of the model.
+ *
+ * `hold` and `boost` are both ways to get a dark compact object, and neither is
+ * required by anything else here. More than that: THEY CANNOT BE TOLD APART.
+ * Both share the exterior metric down to the photon sphere, so the shadow is
+ * the same; and `hold`'s surface sits so deep that the echo delay carries
+ * e^(9·10³⁷), so the ringdown is the same too. The difference is sealed inside
+ * the photon sphere, which is not a limit of instruments but of the geometry.
+ *
+ * The one candidate that escapes is Hawking radiation, since it is a property
+ * of a horizon EXISTING rather than of anything crossing it — see the foot of
+ * `gravity.ts`. Until that is settled, both stay optional and neither is on.
+ */
+export const OPTIONAL: (keyof Regime)[] = ["hold", "boost"];
+
+/**
  * Whether a regime is coherent — which is not the same as being in range.
  *
  * Returns the reasons it is not, empty if it is. The only rule so far is the

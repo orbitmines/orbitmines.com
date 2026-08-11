@@ -2516,14 +2516,65 @@ export const sharing = (mass: number, R: number) =>
  *
  *     both               a photon sphere and a shadow — the metric a few R_s
  *                        out is the same, so images do not distinguish them
- *     route one          a surface. Ringdown echoes, no information loss,
- *                        arbitrarily red but finite escape
- *     route two          a true horizon. Standard black-hole phenomenology,
- *                        clean ringdown, causal severance
+ *     both               AND NEITHER DOES A RINGDOWN, which is the correction
+ *                        below and was got wrong here first
  *     route one          needs collapse below λ_C — a definite radius with no
  *                        free parameter (5·10⁻¹⁹ m for protons)
  *     route two          needs a threshold whose position is not fixed by
  *                        anything counted yet
+ *
+ * THE ECHO CLAIM WAS WRONG. This said a surface returns late echoes where a
+ * horizon does not, and offered that as what separates the two. The delay is
+ * the round trip at the coordinate speed of light,
+ * `Δt = 2∫ e^{2GM/r} dr/c`, which for a surface at 0.3 GM/c² is 116 GM/c —
+ * 0.6 ms at a solar mass, easily heard. But `R_c` is 1.9567 CELLS, so for a
+ * solar mass `r_s = 2.1·10⁻³⁸ GM` and the delay carries `e^(9.3·10³⁷)`. The
+ * echoes never come back. A horizon and a Planck-scale surface are the same
+ * thing to anybody outside, because "no echo ever" and "no echo possible" are
+ * not distinguishable measurements. See `echoes.tsx`.
+ *
+ * AND HOW ONE MIGHT STILL TELL THEM APART. The obstacle is that `boost` only
+ * changes the metric where its gate is open, u₀ > u*, and the gate must sit
+ * below the photon sphere or β and the shadow both go wrong. So the two are
+ * IDENTICAL outside r = 2GM/c² and differ only INSIDE the photon sphere —
+ * from which nothing returns carrying information. That is a fact about the
+ * geometry, not about instruments improving.
+ *
+ * The one thing that escapes a horizon without crossing it is HAWKING
+ * RADIATION, which is a property of the horizon existing rather than of
+ * anything falling in. A surface, however deep, has no horizon and no
+ * temperature — and unlike every other test, that difference does not shrink
+ * as the surface gets deeper:
+ *
+ *     mass       Hawking lifetime    under boost   under hold
+ *     10¹¹ g     2.7e+0 yr           gone          still here
+ *     10¹⁴ g     2.7e+9 yr           gone          still here
+ *     10¹⁷ g     2.7e+18 yr          still here    still here
+ *
+ * The lifetime reaches the age of the universe at 1.7·10¹⁴ g, so BELOW ABOUT
+ * 10¹⁵ g THE TWO DISAGREE ABOUT WHETHER THE OBJECT EXISTS TODAY. That is a
+ * live observational programme already: the missing gamma-ray background from
+ * such evaporation is what currently excludes light primordial black holes as
+ * dark matter. Under `boost` that exclusion stands; under `hold` it vanishes
+ * and the whole window below 10¹⁵ g reopens.
+ *
+ * AND THE OBJECTION TO IT, which is not small: a surface at extreme redshift
+ * can MIMIC a horizon thermodynamically — a collapsing object radiates a burst
+ * approaching a thermal spectrum as it settles, and an observer with finite
+ * patience cannot tell that from the real thing. Whether the mimicry is exact
+ * or merely good for a while is not settled here, and the answer decides
+ * whether this discriminator is real at all.
+ *
+ * SO: ONE CANDIDATE, resting on a question about horizon thermodynamics nobody
+ * here has answered, and everything else provably out of reach. Both routes
+ * are therefore OPTIONAL CONSEQUENCES (see `OPTIONAL` in `regimes.ts`) —
+ * reachable through spatial density or through the emission boost, and not
+ * distinguishable by anything this model can currently point at.
+ *
+ * SO THE TWO ROUTES ARE OBSERVATIONALLY IDENTICAL AS THINGS STAND — image and
+ * ringdown alike. The model does not predict echoes and it would be wrong to
+ * advertise horizonlessness as though it did. What remains observable is the
+ * shadow, and nothing whatever about the interior.
  *
  * WHAT NEITHER FIXES: the neutron star still shows about half its mass. Route
  * two makes it marginally worse, since a boost at u ~ 0.2 raises emission and

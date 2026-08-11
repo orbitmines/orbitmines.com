@@ -1,6 +1,8 @@
 import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 
 import { GRAIN } from "./gravity";
+import { Echoes } from "./echoes";
+import { Overlay, Routes, Seam, Shadows } from "./shadow";
 
 /**
  * The law, on the page — and behind each equation, where it came from.
@@ -2528,6 +2530,45 @@ export const Law = () => {
       1.0463
     </Eq>
 
+    <Shadows />
+
+    <Note>
+      Same mass, same camera, same disc — the only difference between the two is{' '}
+      <V>A</V> and <V>B</V>. Rays are traced backwards from the eye until they
+      escape or run into the matter, which is the only thing that stops one
+      here, there being no horizon to fall through. The disc is thin and seen
+      nearly edge on, so its far side is bent up over the top and down under the
+      bottom; that arch is what makes the shadow’s edge legible at all. The
+      solid ring is general relativity’s critical impact parameter and the
+      dashed one is this model’s, both drawn on both panels.
+    </Note>
+
+    <Seam />
+
+    <Note>
+      Two panels ask the eye to remember a radius while it travels between them,
+      which it is bad at. Cut down the middle instead — general relativity left
+      of the seam, the counted metric right of it, everything else identical —
+      and{' '}
+      <b style={{ color: INK }}>the shadow’s edge and the photon ring both step
+        as they cross it</b>. A step is something the eye is very good at. Each
+      side keeps its own colour, and each critical radius is drawn as a half-arc
+      on its own side.
+    </Note>
+
+    <Overlay />
+
+    <Note>
+      And laid on top of each other rather than beside:{' '}
+      <b style={{ color: INK }}>amber and blue cancel to pale wherever the two
+        agree, and whatever is left over is the difference</b>. So the image is
+      white except for a coloured rim around the shadow and along every lensed
+      edge — blue outside, because this model’s shadow is the larger. Nothing is
+      exaggerated; it is the same 4.6% at its true size. Traced rather than
+      derived, the two edges come out at 5.196153 and 5.436619 against closed
+      forms of 5.196152 and 5.436564.
+    </Note>
+
     <Note>
       The photon sphere is where d/d<V>r</V>(<V>r</V><Sup>2</Sup><V>B</V>/<V>A</V>) = 0;
       with <V>B</V>/<V>A</V> = <V>e</V><Sup>4<V>u</V></Sup> that is{' '}
@@ -2541,6 +2582,98 @@ export const Law = () => {
       aiming for, which makes it a near-term test rather than a philosophical
       one, and the only claim here an existing instrument can settle.
     </Note>
+
+    <Head>and do the two dark objects look different</Head>
+
+    <Note>
+      <b style={{ color: INK }}>No — they are the same picture.</b> A shadow is
+      set by the photon sphere, and both routes share the whole exterior{' '}
+      <V>A</V> = <V>e</V><Sup>−2<V>u</V><Sub>0</Sub></Sup> down to it. What
+      separates them lies <i>below</i> the ring, where no image can reach: route
+      one has a surface at <V>R</V><Sub>c</Sub>, route two a horizon at{' '}
+      <V>u</V><Sub>0</Sub> = 1.
+    </Note>
+
+    <Routes />
+
+    <Note>
+      Which makes the gate an observable. The boost has to wake up below some
+      depth <V>u</V>* or β goes wrong — and the unboosted photon sphere sits at{' '}
+      <V>u</V><Sub>0</Sub> = ½:{' '}
+      <b style={{ color: INK }}>gate it deeper and route two is pixel for pixel
+        route one; gate it shallower and the shadow balloons</b> — 7.1% over
+      general relativity at <V>u</V>* = 0.4, 49% with no gate at all. The third
+      panel is that last case, drawn not because the model says it but to show
+      what being wrong would look like. It is far outside what the Event Horizon
+      Telescope allows, so imaging already constrains where the gate can sit.
+    </Note>
+
+    <Note>
+      The usual fallback is a <i>ringdown</i>: a horizon absorbs what falls
+      through it and the signal stops, while a surface reflects and the wave
+      trapped under the photon sphere leaks back out as late echoes — which is
+      what LIGO and Virgo searches look for.{' '}
+      <b style={{ color: INK }}>This page said that separates the two routes.
+        It does not.</b>
+    </Note>
+
+    <Echoes />
+
+    <Note>
+      The delay is the round trip at the coordinate speed of light,{' '}
+      Δ<V>t</V> = 2∫<V>e</V><Sup>2<V>GM</V>/<V>r</V></Sup>d<V>r</V>/<V>c</V>.
+      For a surface at 0.3 <V>GM</V>/<V>c</V><Sup>2</Sup> that is 116{' '}
+      <V>GM</V>/<V>c</V> — 0.6 ms at a solar mass, easily heard. But{' '}
+      <V>R</V><Sub>c</Sub> is 1.96 <i>cells</i>, so a solar mass puts the
+      surface at 2·10<Sup>−38</Sup> <V>GM</V> and the delay carries a factor{' '}
+      <V>e</V><Sup>(9·10³⁷)</Sup>.{' '}
+      <b style={{ color: INK }}>The echoes never come back — not late,
+        never.</b>
+    </Note>
+
+    <Note>
+      So the two routes are observationally identical, full stop: image and
+      ringdown alike. A horizon and a Planck-scale surface are the same thing to
+      anybody outside, because <i>no echo ever</i> and <i>no echo possible</i>{' '}
+      are not distinguishable measurements.{' '}
+      <b style={{ color: INK }}>The model does not predict echoes</b>, and it
+      would be wrong to advertise horizonlessness as though it did. What remains
+      observable is the shadow, and nothing at all about the interior.
+    </Note>
+
+    <Head>so both are optional, and how one might still tell</Head>
+
+    <Note>
+      Neither route is required by anything else here — a dark object is
+      reachable through <i>spatial density</i> or through the emission boost,
+      and <b style={{ color: INK }}>the two cannot be told apart</b>. The
+      obstacle is structural: the boost only changes the metric where its gate
+      is open, the gate must sit below the photon sphere, so the two are
+      identical outside 2<V>GM</V>/<V>c</V><Sup>2</Sup> and differ only inside
+      it — and nothing returns from inside a photon sphere carrying
+      information. That is the geometry, not the instruments.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>the one thing that escapes</span>,
+        <>Hawking radiation is a property of a horizon <i>existing</i>, not of
+          anything crossing it — so a surface has none, however deep, and{' '}
+          <b style={{ color: INK }}>that difference does not shrink with
+            depth</b>, which is what killed every other test.</>],
+      [<span style={{ color: DERIVED }}>and where it shows</span>,
+        <>The Hawking lifetime reaches the age of the universe at
+          1.7·10<Sup>14</Sup> g, so below about 10<Sup>15</Sup> g the two
+          disagree about whether the object <i>exists today</i>. Under the boost
+          the missing evaporation gamma-rays exclude light primordial black
+          holes as dark matter; under spatial density that exclusion vanishes
+          and the window reopens.</>],
+      [<span style={{ color: BORROWED }}>and the objection</span>,
+        <>A surface at extreme redshift can <i>mimic</i> a horizon
+          thermodynamically — a collapsing object radiates a burst approaching
+          a thermal spectrum as it settles. Whether the mimicry is exact or
+          only good for a while is not settled here, and the answer decides
+          whether this discriminator is real.</>],
+    ]} />
 
     <Note>
       Neither route fixes the neutron star, and route two makes it slightly
