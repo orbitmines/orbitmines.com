@@ -75,10 +75,76 @@ export type Regime = {
    * full sense. Turning it off is how you ask what it costs.
    */
   screen: number;
+
+  /**
+   * HOW THE COUNT AT A PLACE COMPOSES — and this one decides whether the metric
+   * is derived or borrowed.
+   *
+   *   0  ADDITIVE. `weight of the way it went = 1 + n`, which is what `BIAS`
+   *      says. Gives √A = WAYS/(WAYS+n), hence β = 3/2, hence a perihelion
+   *      advance 17% low at every depth. Wrong, and measured to be wrong.
+   *   1  MULTIPLICATIVE. Each annihilation multiplies by 1 + 1/WAYS, so
+   *      √A = (1+1/WAYS)^−n → exp(−u), and A = e^−2u, B = e^+2u. Gives
+   *      β = γ = 1 and general relativity's perihelion advance.
+   *
+   * At 1 the metric is DERIVED — no A and B taken from outside — at the price
+   * of predicting NO HORIZONS, since exp(−2u) never vanishes. See `slowingMul`
+   * in `gravity.ts`. The file's panels still run at 0, because every number in
+   * them was measured against the borrowed forms.
+   */
+  compose: number;
+
+  /**
+   * WHETHER MATTER IN A FOLDED PLACE CAN EMIT MORE — which decides whether the
+   * model has horizons, and so which of its two dark-object stories is true.
+   *
+   *   0  no. `SHEET` is fixed by the dimension, emission is what it always was,
+   *      and `A = e^−2u` never reaches nought. Dark objects are DARK BY
+   *      REDSHIFT: collapse past λ_C, the matter self-coheres, the screening cap
+   *      lifts, u grows unbounded. No horizon, a surface, no free parameter.
+   *
+   *   1  yes. A node with WAYS + n edges gives a source there more ways to pulse
+   *      into, so `M_eff = M(1 + κu)` and `u = u₀/(1 − κu₀)` DIVERGES at u₀ = 1.
+   *      Dark objects are DARK BY HORIZON, the ordinary kind.
+   *
+   * The model's own setting is 0, and not because route two is wrong — because
+   * route two costs a threshold. `β = 1 − κ` and β is measured to 3·10⁻⁴, so a
+   * boost linear in u puts the perihelion advance 33% high; it survives only if
+   * it begins above u², at a depth nothing has yet fixed. Route one costs
+   * nothing and follows from rules already here.
+   *
+   * BOTH ARE KEPT because they differ observationally: route one leaves a
+   * SURFACE (ringdown echoes, no information loss), route two does not. Neither
+   * fixes the neutron star. See the foot of `gravity.ts`.
+   */
+  boost: number;
+
+  /**
+   * WHETHER A FOLDED CELL HOLDS MORE MATTER — the density ceiling, tied to the
+   * edge count rather than fixed at one emitter a cell.
+   *
+   *   0  ρ_max = 1. One emitter to a cell, everywhere.
+   *   1  ρ_max = 1 + u. A node with WAYS + n edges fits more distinct emitters,
+   *      each still the same m ≤ 1 thing.
+   *
+   * DISTINCT FROM `boost`, and the distinction is the whole point. `boost` makes
+   * ONE emitter emit more, which changes what a fixed mass does and so moves β
+   * — excluded by seven thousand. This changes only how much mass fits in a
+   * place, so a fixed mass emits exactly what it always did and β is untouched.
+   *
+   * What it buys: `M = (4/3)πR³/(1 − (4/3)πGR²)` diverges at
+   * `R_c = √(3π·WAYS)/SHEET = 1.9567 cells`, so every collapsed object is the
+   * same size — a hair under two Planck lengths — with u ∝ M. Darkness becomes
+   * automatic, needing neither the coherence argument nor a horizon.
+   *
+   * Not on by default: it rests on "one emitter per edge", which is a reading of
+   * what a cell can hold and not something counted yet.
+   */
+  hold: number;
 };
 
 /** Every knob on: the model saying everything it has to say. */
-export const FULL: Regime = { sync: 0, turn: 1, fold: 1, screen: 1 };
+export const FULL: Regime = { sync: 0, turn: 1, fold: 1, screen: 1, compose: 1, boost: 0, hold: 0 };
 
 /**
  * The theories this model contains, and what each one is a switching-off of.
@@ -88,17 +154,23 @@ export const FULL: Regime = { sync: 0, turn: 1, fold: 1, screen: 1 };
  * two of them by drawing all three laws on one orbit.
  */
 export const RECOVERS = {
+  /** Dark by redshift, with a size: every collapsed object at R_c = 1.96 cells. */
+  'black holes with a surface': { sync: 0, turn: 1, fold: 1, screen: 1, compose: 1, boost: 0, hold: 1 },
+
+  /** Dark by horizon: the emission boost on, so u diverges at u₀ = 1. */
+  'black holes with horizons': { sync: 0, turn: 1, fold: 1, screen: 1, compose: 1, boost: 1, hold: 0 },
+
   /** Flat space, infinite range, no matter wave. One sixth of the advance. */
-  'newton': { sync: 0, turn: 0, fold: 0, screen: 0 },
+  'newton': { sync: 0, turn: 0, fold: 0, screen: 0, compose: 0, boost: 0, hold: 0 },
 
   /** Add the metric. Six sixths, and 4GM/bc² for light. Borrowed, not derived. */
-  'general relativity': { sync: 0, turn: 0, fold: 1, screen: 0 },
+  'general relativity': { sync: 0, turn: 0, fold: 1, screen: 0, compose: 0, boost: 0, hold: 0 },
 
   /** A photon: never turns, so no clock, so no mass. */
-  'light': { sync: 0, turn: 0, fold: 1, screen: 1 },
+  'light': { sync: 0, turn: 0, fold: 1, screen: 1, compose: 0, boost: 0, hold: 0 },
 
   /** The zigzag. Ω² = k² + m², λ_dB, time dilation, and a derived modulus. */
-  'dirac': { sync: 0, turn: 1, fold: 0, screen: 0 },
+  'dirac': { sync: 0, turn: 1, fold: 0, screen: 0, compose: 0, boost: 0, hold: 0 },
 
   /**
    * The superseded route to the same wavelength — rest-frame simultaneity and
@@ -106,7 +178,7 @@ export const RECOVERS = {
    * only account here that says anything about what a COMPOSITE has to do, and
    * `turn` says nothing about that.
    */
-  'de broglie by simultaneity': { sync: 1, turn: 0, fold: 0, screen: 0 },
+  'de broglie by simultaneity': { sync: 1, turn: 0, fold: 0, screen: 0, compose: 0, boost: 0, hold: 0 },
 
   /** What this model says when nothing is switched off. */
   'orbitmines': FULL,
@@ -130,6 +202,16 @@ export const check = (r: Regime): string[] => {
   for (const [k, v] of Object.entries(r))
     if (!(v >= 0 && v <= 1)) wrong.push(`${k} = ${v} is outside 0…1`);
 
+  if (r.boost > 0 && r.hold > 0)
+    wrong.push('boost and hold are two readings of "a folded cell has more '
+      + 'capacity" — one per emitter, one per cell. Having both counts the '
+      + 'extra edges twice');
+
+  if (r.boost > 0 && r.compose === 0)
+    wrong.push('boost without compose is a source feedback on top of a metric '
+      + 'that has no transport feedback — the two were derived together, and '
+      + 'having one without the other is not a position anything argues for');
+
   if (r.sync > 0 && r.turn > 0)
     wrong.push('sync and turn are two accounts of λ = h/p, not two effects — '
       + 'having both counts the same physics twice');
@@ -145,10 +227,38 @@ export const check = (r: Regime): string[] => {
 export const borrows = (r: Regime): string[] => {
   const owed: string[] = [];
 
-  if (r.fold > 0) owed.push(
+  if (r.fold > 0 && r.compose === 0) owed.push(
     '`slowing` and `thickness` are general relativity\'s isotropic functions, '
     + 'and `carry` is its geodesic equation. The pull is derived; the metric '
-    + 'that turns one sixth of the perihelion advance into six is not.');
+    + 'that turns one sixth of the perihelion advance into six is not. '
+    + 'compose = 1 pays this off, at the price of having no horizons.');
+
+  return owed;
+};
+
+/**
+ * What a regime has DERIVED BUT NOT MEASURED — which is a third question again.
+ *
+ * `check` asks whether a setting is coherent, `borrows` what it takes from
+ * somebody else, and this asks what it has argued for without running. A chain
+ * that closes analytically is not the same as one that has been watched to
+ * close, and the file's whole habit is to keep those apart.
+ */
+export const untested = (r: Regime): string[] => {
+  const owed: string[] = [];
+
+  if (r.fold > 0 && r.compose > 0) owed.push(
+    '`carry` is the stationary-phase limit of the path sum — shown to match to '
+    + '1e-7 — but the checkerboard behind it was measured in FLAT space. A '
+    + 'position-dependent reversal amplitude has not been run.');
+
+  if (r.hold > 0) owed.push(
+    '`hold` rests on one emitter per edge, which is a reading of what a cell '
+    + 'can contain rather than something counted.');
+
+  if (r.boost > 0) owed.push(
+    '`boost` needs a threshold above u² that nothing has fixed; linear in u it '
+    + 'puts the perihelion advance 33% high.');
 
   return owed;
 };

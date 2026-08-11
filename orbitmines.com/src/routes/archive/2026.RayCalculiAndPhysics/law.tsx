@@ -1599,42 +1599,111 @@ export const Law = () => {
       [<span style={{ color: DERIVED }}>screen</span>,
         <>Three bodies in a row do not simply add. Newton has no such term and
           neither does relativity at this order.</>],
+      [<span style={{ color: DERIVED }}>
+        <V>A</V> = <V>e</V><Sup>−2<V>u</V></Sup>,{' '}
+        <V>B</V> = <V>e</V><Sup>+2<V>u</V></Sup></span>,
+      <><b style={{ color: INK }}>The metric.</b> A folded node has more edges,
+        edges point both ways, so it is easier to arrive at —{' '}
+        d<V>u</V> = d<V>u</V><Sub>0</Sub>(1+<V>u</V>), which integrates to an
+        exponential with nothing chosen. β = γ = 1 both fall out.</>],
+      [<span style={{ color: DERIVED }}><i>carry</i></span>,
+        <><b style={{ color: INK }}>The geodesic equation.</b> The reversal rate
+          thins as 1/(<K>WAYS</K>+<V>n</V>), which is √<V>A</V> exactly — so the
+          clock is the edge count — and stationary phase on ω<V>τ</V> then gives
+          this function to 10<Sup>−7</Sup>.</>],
+      [<span style={{ color: DERIVED }}>
+        six sixths, and 4<V>GM</V>/<V>bc</V><Sup>2</Sup></span>,
+      <><b style={{ color: INK }}>All of it.</b> 6.05, 6.08, 6.07, 6.11, 6.22
+        sixths across the five orbits, measured through the model’s own
+        dynamics rather than off the metric — and the ellipse comes back at
+        −0.00% on every one.</>],
     ]} />
 
     <Head>what is borrowed</Head>
 
     <Note>
-      Kept separate from what is derived, because the difference is the whole
-      state of the thing and it is easy to lose.{' '}
-      <b style={{ color: INK }}>The pull is counted. The metric is not.</b>
+      <b style={{ color: INK }}>Nothing, now.</b> Kept as a section because the
+      distinction is the whole state of the thing and because the last item to
+      leave it did so recently enough to be worth showing.
     </Note>
 
     <Rows of={[
-      [<span style={{ color: BORROWED }}>
-        <V>A</V> = 1 − 2<V>u</V> + 2<V>u</V><Sup>2</Sup>,{' '}
-        <V>B</V> = 1 + 2<V>u</V></span>,
-      <>General relativity’s isotropic functions, written closed rather than as
-        the series. There is a counting <i>story</i> for them — the lean is a
-        ratio and a ratio throws away the total, so <K>WAYS</K> + <V>n</V> ways
-        out means more space — but a story is not a derivation, and the
-        coefficient has never come out. See below.</>],
-      [<span style={{ color: BORROWED }}><i>carry</i></span>,
-        <>The geodesic equation. What a count is worth once the place is
-          folded, which at leading order is 1 + 2<V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup>{' '}
-          — and that alone does not do it, so it is taken whole.</>],
-      [<span style={{ color: BORROWED }}>
+      [<span style={{ color: DERIVED }}><i>carry</i></span>,
+        <><b style={{ color: INK }}>No longer borrowed.</b> The checkerboard’s
+          clock is the <i>reversal</i> rate, 1 in <K>WAYS</K> unfolded and 1 in{' '}
+          <K>WAYS</K>+<V>n</V> folded — so{' '}
+          <V>m</V><Sub>eff</Sub> = <V>m</V>/(1+<V>u</V>) = <V>m e</V><Sup>−<V>u</V><Sub>0</Sub></Sup>{' '}
+          = <V>m</V>√<V>A</V>, identical to machine precision.{' '}
+          <b style={{ color: INK }}>Gravitational time dilation is the edge
+            count thinning out the reversals.</b> The phase is ω<V>τ</V>, so
+          stationary phase extremises proper time — and that is this function,
+          matching Euler–Lagrange to 10<Sup>−7</Sup> at every <V>u</V> and{' '}
+          <V>p</V> tried.</>],
+      [<span style={{ color: DERIVED }}>
+        <V>A</V> = <V>e</V><Sup>−2<V>u</V></Sup>,{' '}
+        <V>B</V> = <V>e</V><Sup>+2<V>u</V></Sup></span>,
+      <><b style={{ color: INK }}>No longer borrowed.</b> A folded node has
+        more edges, and edges point both ways, so it is easier to arrive at —
+        d<V>u</V> = d<V>u</V><Sub>0</Sub>(1+<V>u</V>), which integrates to an
+        exponential with nothing chosen. The lean gives <V>A</V>, the total
+        gives <V>B</V>, <V>A·B</V> = 1, and β = γ = 1.</>],
+      [<span style={{ color: DERIVED }}>
         the other five sixths, and 4<V>GM</V>/<V>bc</V><Sup>2</Sup></span>,
-        <>Everything the metric buys: 6.05 to 6.20 sixths measured, and the
-          whole of light’s deflection, which the lean could not touch at all.
-          Correct to four figures, and <i>correct because A and B were put
-          in</i>.</>],
-      [<span style={{ color: DERIVED }}>how close it came</span>,
-        <><V>u</V> = <V>Gm</V>/<V>rc</V><Sup>2</Sup> as a fact about a place
-          does come out — from a point source of space and a surplus that hops
-          — static, 1/<V>r</V>, and{' '}
-          <b style={{ color: INK }}>wrong in <V>G</V> by 9.83</b>. That factor
-          is the entire remaining distance to a derived metric.</>],
+        <>Re-measured against the compounded metric:{' '}
+          <b style={{ color: INK }}>6.05, 6.08, 6.07, 6.11, 6.22 sixths</b>{' '}
+          across the five orbits, against 6.05…6.20 with the borrowed forms.
+          The shift is +0.005 to +0.020, ordered by depth — the 2PN difference
+          between <V>e</V><Sup>2<V>u</V></Sup> and (1+<V>u</V>/2)<Sup>4</Sup>,
+          and nothing else. Light’s deflection is untouched, since it depends
+          on γ alone.</>],
+      [<span style={{ color: BORROWED }}>what is owed instead</span>,
+        <>A different kind of debt, and a smaller one. The checkerboard was
+          measured in <i>flat</i> space, with a reversal amplitude constant
+          everywhere; letting it vary as <V>m e</V><Sup>−<V>u</V><Sub>0</Sub></Sup>{' '}
+          is standard for a slowly varying mass term and{' '}
+          <b style={{ color: INK }}>has not been run</b>. So the chain closes
+          analytically and its last link is unmeasured —{' '}
+          <i>regimes.ts</i> tracks that under <i>untested</i> rather than{' '}
+          <i>borrows</i>.</>],
     ]} />
+
+    <Head>so is that general relativity</Head>
+
+    <Note>
+      <b style={{ color: INK }}>No, and the difference is the interesting
+        part.</b> Nothing is borrowed any more — <i>borrows</i> returns empty
+      for this model’s own setting — but what came out is not Einstein’s metric.
+      It is the exponential one, and the two agree exactly where general
+      relativity has been tested and part company where it has not.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>where they agree</span>,
+        <>β = γ = 1, so every first-post-Newtonian test is identical: the
+          perihelion advance, light’s deflection, Shapiro delay, the Cassini
+          bound on γ. <V>A</V> agrees to <V>O</V>(<V>u</V><Sup>3</Sup>) — the
+          isotropic <V>A</V> <i>is</i> <V>e</V><Sup>−2<V>u</V>−<V>u</V>³/6</Sup>.</>],
+      [<span style={{ color: BORROWED }}>where they differ</span>,
+        <><V>B</V> parts company at <V>O</V>(<V>u</V><Sup>2</Sup>), which shows
+          in the perihelion at <V>O</V>(<V>u</V>) — 10<Sup>−6</Sup> arcseconds
+          a century at Mercury, and 0.13% to 0.56% in these panels, which run at
+          exaggerated depth so the effect is visible at all.</>],
+      [<span style={{ color: BORROWED }}>and where they part outright</span>,
+        <><V>e</V><Sup>−2<V>u</V></Sup> never reaches nought, so{' '}
+          <b style={{ color: INK }}>no horizons</b>; the shadow is{' '}
+          <b style={{ color: INK }}>4.6% larger</b> at the same mass; and a
+          neutron star shows about half its mass, which is outside any equation
+          of state and is the one place the model is probably just wrong.</>],
+    ]} />
+
+    <Note>
+      So the claim is not “general relativity, rederived”. It is:{' '}
+      <b style={{ color: INK }}>a metric theory built from counting, agreeing
+        with general relativity on everything general relativity has passed,
+        and disagreeing where nobody has looked closely yet.</b> That is a
+      better position than agreement would be, because it can be shot at — and
+      the shadow is the shot to take.
+    </Note>
 
     <Head>what is a choice</Head>
 
@@ -1775,10 +1844,10 @@ export const Law = () => {
       pull’s 0.0624 — gravity nine times too strong, because a fresh direction
       every tick spreads the surplus too slowly and it piles up. The fix is{' '}
       <i>persistence</i>: with mean cosine <V>a</V> between steps, <V>D</V>{' '}
-      scales by (1+<V>a</V>)/(1−<V>a</V>), so <V>a</V> = 0.815 — keep your
-      heading about 85% of the time, which is 10.21 cells, which is{' '}
-      π<K>WAYS</K>/<K>SHEET</K>. The two extremes bracket it and neither is
-      right, and{' '}
+      scales by (1+<V>p</V>)/(1−<V>p</V>), so <V>p</V> = 0.815 — keep your
+      heading about 85% of the time, a run of 5.42 steps or 7.67 cells, checked
+      against a measured walk to a per cent. The two extremes bracket it and
+      neither is right, and{' '}
       <b style={{ color: INK }}>the debt is now a rule the lattice may simply
         have, rather than a contradiction it cannot resolve.</b>
     </Note>
@@ -2042,17 +2111,45 @@ export const Law = () => {
     <Head>and what is still owed</Head>
 
     <Note>
-      <b style={{ color: INK }}>One number.</b> The pull is counted, <V>G</V>{' '}
-      is counted, the reach is counted, <V>E</V> = ħω and λ = <V>h</V>/<V>p</V>{' '}
-      and the amplitude rule all fall out of mass being a rate.{' '}
-      <b style={{ color: INK }}><V>A</V> and <V>B</V> are general relativity’s,
-        and <i>carry</i> is its geodesic equation</b> — which is five sixths of
-      the perihelion advance and all of the deflection, borrowed. Everything
-      else on this page is downstream of closing that.
+      <b style={{ color: INK }}>Nothing is borrowed.</b> The pull, <V>G</V>, the
+      reach, <V>E</V> = ħω, λ = <V>h</V>/<V>p</V>, the amplitude rule,{' '}
+      <V>A</V> and <V>B</V>, and <i>carry</i> — all counted. What is owed is of
+      two other kinds, and they are worth keeping apart from each other as
+      carefully as either was kept from <i>borrowed</i>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>argued, not measured</span>,
+        <><i>carry</i> matches stationary phase to 10<Sup>−7</Sup>, but the
+          checkerboard behind it was run in <i>flat</i> space. A
+          position-dependent reversal amplitude has not been tried. Likewise{' '}
+          <i>hold</i> rests on one emitter per edge, and <i>boost</i> on a
+          threshold nothing fixes. <i>regimes.ts</i> lists these under{' '}
+          <i>untested</i>.</>],
+      [<span style={{ color: BORROWED }}>probably just wrong</span>,
+        <>A neutron star shows about half its mass — outside any equation of
+          state, and pulsar timing measures those directly. And cosmology comes
+          out empty five separate ways, every one of them short rather than
+          long.</>],
+      [<span style={{ color: DERIVED }}>and one thing to shoot at</span>,
+        <>The shadow, 4.6% larger than general relativity’s at the same mass.
+          Parameter-free, and inside the reach of an instrument that already
+          exists.</>],
+    ]} />
+
+    <Head>and the record of a road not taken</Head>
+
+    <Note>
+      What follows is kept because the two no-gos in it stay true whatever
+      replaces them, and because the target moved out from under the whole
+      programme once <V>A</V> and <V>B</V> turned out not to need a source at
+      all. It was an attempt to build <V>B</V> from space being <i>made</i>{' '}
+      somewhere and carried; the compounding above builds it from counting
+      edges, and needs none of this.
     </Note>
 
     <Note>
-      And it has narrowed to a single question. The source is settled: creation{' '}
+      It had narrowed to a single question. The source was settled: creation{' '}
       <i>at</i> the body, which is the only mechanism that does not{' '}
       <i>consume</i> the field — and consuming it is fatal, because the event
       that sources a fold is the event that screens, so strength and range are
@@ -2060,9 +2157,410 @@ export const Law = () => {
       a factor: a surplus that hops is static and gives 1/<V>r</V> and misses{' '}
       <V>G</V> by 9.83. So:{' '}
       <b style={{ color: INK }}>does the lattice have a reason for a hopping
-        point to keep its heading about 85% of the time?</b> That is the whole
-      of the remaining gap, and 10.21 = π<K>WAYS</K>/<K>SHEET</K> being a pure
-      count is either the answer in plain sight or a coincidence.
+        point to keep its heading about 85% of the time?</b> That was, at the
+      time, the whole of the remaining gap. A pure count did briefly seem to be
+      sitting in
+      plain sight — 10.21 = π<K>WAYS</K>/<K>SHEET</K> — but that is{' '}
+      3<V>D</V>/<V>c</V>, which is <V>D</V> rewritten rather than a second fact,
+      and the physical run is 7.67 cells. No coincidence to chase.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And both ways out of that are closed, by
+        argument rather than by a measurement failing.</b> Whatever turns the
+      hopping point must be <i>uniform</i> — with a turner of density{' '}
+      ∝ <V>r</V><Sup>−n</Sup> the profile is 1/<V>r</V><Sup>1+n</Sup>, measured
+      on a radial solve at 0.61, 1.03, 1.51, 2.00, 3.00 for{' '}
+      <V>n</V> = −0.5 … 2, so only <V>n</V> = 0 gives 1/<V>r</V>. The model has
+      exactly two uniform things: the lattice, and <V>Φ</V> — and <V>Φ</V> is
+      forty-five orders short. So the turner is the lattice. But the lattice is
+      neutral points at one to a cell, so a hopping surplus meets one{' '}
+      <i>every hop</i> and turns every tick:{' '}
+      <b style={{ color: INK }}><V>p</V> = 0, which is exactly the case that is
+        nine times too strong.</b> The admissible turner gives the wrong{' '}
+      <V>p</V>, and the right one has no mechanism.
+    </Note>
+
+    <Note>
+      And a surplus that never moves cannot work either. Created from the flux
+      and removed in place as <V>δ</V><Sup>q</Sup><V>r</V><Sup>−b</Sup>, the
+      steady state is <V>δ</V> ∝ <V>m</V><Sup>1/q</Sup>/<V>r</V><Sup>(2−b)/q</Sup>,
+      and shape and mass fight. Self-annihilation (<V>q</V> = 2) gives
+      1/<V>r</V> exactly, static, with no transport and no <V>Φ</V> — and{' '}
+      <b style={{ color: INK }}><V>δ</V> ∝ √<V>m</V></b>, so the pull would go
+      as the square root of the mass. The only row satisfying both wants a
+      removal partner with a 1/<V>r</V> density, and the model has none but the
+      surplus itself, which makes it <V>q</V> = 2 again.
+    </Note>
+
+    <Note>
+      So the source-and-carry route is worse than <i>one posited constant</i>:{' '}
+      <b style={{ color: INK }}><V>B</V> is not one constant away from being{' '}
+        <i>derived</i> — it is one constant away from being <i>consistent</i></b>,
+      in either account, and that constant has no mechanism behind it in either.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And then the target moved.</b> All of that
+      assumed <V>B</V> needs its own source. But a place has{' '}
+      <K>WAYS</K> + <V>n</V> ways out, the <i>lean</i> is a ratio and the{' '}
+      <i>total</i> is what a ratio throws away — <V>A</V> and <V>B</V> from the
+      same count, with no surplus, no transport and no <V>D</V>. That is a claim
+      with numbers, because <V>A</V> and <V>B</V> carry exactly two things the
+      pull does not fix: <V>γ</V> and <V>β</V>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>γ = 1, for free</span>,
+        <>Reading one count two ways forces the space part and the time part to
+          agree. That is the real content of “the same count read twice”, and{' '}
+          <b style={{ color: INK }}>γ = 1 is what Cassini measures to
+            2·10<Sup>−5</Sup></b>. Light’s deflection comes out at 1.0000 of
+          its value, since that depends on γ alone.</>],
+      [<span style={{ color: BORROWED }}>β = 3/2, against 1</span>,
+        <>And β is not free: it puts the perihelion advance at{' '}
+          <b style={{ color: INK }}>0.8334</b> — five sixths, where the panels
+          measure 6.05 to 6.20. Wrong in a diagnostic place rather than
+          uniformly, which is what makes it useful.</>],
+      [<span style={{ color: FAINT }}>why β is hard</span>,
+        <>Only exp(−2<V>u</V>) gives β = 1. A ratio 1/(1+<V>u</V>)<Sup>2</Sup>{' '}
+          gives 3/2, and 1/(1+2<V>u</V>) gives 2. The count would have to
+          compose <i>multiplicatively</i> — and <K>BIAS</K> is explicitly
+          linear, “weight of the way it went, 1 + <V>n</V>”.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Which is where matter finally bears on it.</b>{' '}
+      β is gravity gravitating: what a <i>second</i> annihilation at an{' '}
+      <i>already-folded</i> place is worth. A lone tally cannot say — that is a
+      statement about something in a field. If folding a place changes what the
+      next annihilation there buys, the composition is multiplicative and β = 1
+      follows. So the gap is not a transport rule and not a diffusivity:{' '}
+      <b style={{ color: INK }}>it is whether 1 + <V>n</V> should be
+        (1 + 1/<K>WAYS</K>)<Sup><V>n</V></Sup></b> — one line of the counting
+      argument, in the one rule that has never been asked whether it stays
+      linear all the way up.
+    </Note>
+
+    <Head>and it compounds, because edges point both ways</Head>
+
+    <Note>
+      A node that has taken <V>n</V> annihilations has{' '}
+      <K>WAYS</K> + <V>n</V> edges. Edges are shared with neighbours, so{' '}
+      <b style={{ color: INK }}>the same <V>n</V> extra edges point <i>into</i>{' '}
+        it</b> — a charge nearby is (<K>WAYS</K>+<V>n</V>)/<K>WAYS</K> times
+      more likely to arrive there. More arrivals, more annihilations, more
+      folding, more arrivals. The increment is proportional to what is already
+      there, which is what <i>multiplicative</i> means, and it is the counting
+      argument’s own geometry rather than a new rule.
+    </Note>
+
+    <Eq derive={METRIC} open={show}
+      note="the bare count, compounded by the fact that a folded node is easier to arrive at">
+      d<V>u</V> = d<V>u</V><Sub>0</Sub>·(1 + <V>u</V>)
+      <span style={{ padding: '0 1.4em', color: FAINT }}>⇒</span>
+      1 + <V>u</V> = <V>e</V><Sup><V>u</V><Sub>0</Sub></Sup>
+      <span style={{ padding: '0 1.4em', color: FAINT }}>⇒</span>
+      <V>A</V> = <V>e</V><Sup>−2<V>u</V><Sub>0</Sub></Sup>,&nbsp;
+      <V>B</V> = <V>e</V><Sup>+2<V>u</V><Sub>0</Sub></Sup>
+    </Eq>
+
+    <Note>
+      Integrated from infinity inward, that lands on{' '}
+      <V>e</V><Sup><V>u</V><Sub>0</Sub></Sup> − 1 to nine figures, with{' '}
+      <V>u</V><Sub>0</Sub> the <i>bare</i> count — the pull’s own potential,
+      already derived. The lean gives <V>A</V>, the total gives <V>B</V>, and{' '}
+      <V>A·B</V> = 1 exactly, so γ = 1. Integrating the orbit between its
+      turning points gives general relativity’s perihelion advance where the
+      additive form gives 0.833 of it.{' '}
+      <b style={{ color: INK }}>So <V>A</V> and <V>B</V> are not borrowed.</b>{' '}
+      And nothing measured moves: the feedback’s correction beyond first order
+      is 3.5·10<Sup>−16</Sup> at Mercury, 6.3·10<Sup>−5</Sup> in these panels.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And there are no horizons.</b> √<V>A</V> = 0
+      needs 1 + <V>u</V> = ∞, so <V>n</V> = ∞ — a node would have to have{' '}
+      <i>infinitely many ways out</i>, and each annihilation adds one, and a
+      finite mass sends finitely many charges. At what general relativity calls
+      the horizon (<V>u</V><Sub>0</Sub> = 2) the node has 6.4 extra ways out
+      per <K>WAYS</K>: a lot, and not infinity. Light leaves, redshifted by{' '}
+      <V>e</V><Sup>2</Sup> = 7.4. Nothing is ever cut off — things get
+      arbitrarily red and arbitrarily slow and never quite vanish.
+    </Note>
+
+    <Head>so what is a black hole</Head>
+
+    <Note>
+      Not a question the metric answers — that only says nothing is cut off.
+      What answers it is <i>screening</i>, which this model already has: a
+      body’s charges annihilate against its <i>own</i> field on the way out, so
+      only a skin of thickness <V>λ</V> ever reaches the outside, and{' '}
+      <b style={{ color: INK }}>a body looks lighter than it is</b>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>ordinary matter is transparent</span>,
+        <><V>R</V>/<V>λ</V> is 10<Sup>−8</Sup> for the Earth and
+          3·10<Sup>−5</Sup> for the Sun, so <V>M</V><Sub>eff</Sub>/<V>M</V> = 1
+          to six figures. Nothing changes anywhere the model was tested.</>],
+      [<span style={{ color: BORROWED }}>a neutron star is not</span>,
+        <><V>R</V>/<V>λ</V> = 3.4, so it shows{' '}
+          <b style={{ color: INK }}>about half its mass</b>. Pulsar timing
+          measures those masses directly and a factor of two in baryon content
+          is outside any equation of state. The second falsifiable claim, and
+          it looks worse for the model than the first.</>],
+      [<span style={{ color: DERIVED }}>and it is holographic</span>,
+        <>For <V>R</V> ≫ <V>λ</V>, <V>M</V><Sub>eff</Sub> → 4π<V>R</V><Sup>2</Sup><V>λρ</V>{' '}
+          — the <i>area</i>, not the volume (0.029406 against 3<V>λ</V>/<V>R</V>{' '}
+          = 0.030000). The interior is sealed off by its own opacity rather
+          than by a horizon, and what the universe knows about a big clump is a
+          surface.</>],
+    ]} />
+
+    <Eq derive={REACH} open={show}
+      note="the densest thing the lattice permits, and where it sits">
+      <V>M</V><Sub>eff</Sub> = <V>πR</V>
+      <span style={{ padding: '0 1.4em', color: FAINT }}>⇒</span>
+      <Frac over={<V>R</V>} under={<><V>R</V><Sub>s</Sub></>} /> =
+      <Frac over={<>1</>} under={<>2π<V>G</V></>} /> =
+      <Frac over={<>2π<K>WAYS</K></>} under={<><K>SHEET</K><Sup>2</Sup></>} /> = 2.5525
+    </Eq>
+
+    <Note>
+      Once a tick is the ceiling, so the densest matter is one emitter a cell.
+      Then <V>M</V><Sub>eff</Sub> ∝ <V>R</V> — Schwarzschild’s own scaling — so
+      the ratio is the same at every size, measured at 2.5525 from{' '}
+      10<Sup>10</Sup> to 10<Sup>40</Sup> cells, and it is a pure count.{' '}
+      <b style={{ color: INK }}>The densest thing the lattice permits sits at
+        two and a half of its own Schwarzschild radii and can never be
+        inside.</b> So black holes do not fail to form because the metric lacks
+      a horizon — they fail because matter runs out of room first, and those are
+      two independent facts that happen to agree.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the leakage is not Hawking radiation.</b> At
+      the surface <V>u</V> = <V>πG</V> = 0.1959, so light leaves redshifted by
+      0.822 — an 18% shift, and <i>M-independent</i>, the same for a
+      stellar-mass object and a galactic one. Hawking needs <V>T</V> ∝ 1/<V>M</V>{' '}
+      and a lifetime ∝ <V>M</V><Sup>3</Sup>; this gives <V>T</V> ∝ <V>M</V><Sup>0</Sup>{' '}
+      and no evaporation at all, because nothing is trapped to begin with. The
+      “never quite vanishing” path is ordinary light out of a shallow well, and
+      it is not even slow.
+    </Note>
+
+    <Note>
+      Which reads as a bill until you ask what is actually blocking it — and it
+      is not the metric.{' '}
+      <b style={{ color: INK }}>It is the self-screening.</b> With it,{' '}
+      <V>R</V>/<V>R</V><Sub>s</Sub> = 2.55 at every size, a floor. Without it,{' '}
+      <V>M</V> = (4/3)π<V>R</V><Sup>3</Sup> and the ratio falls as{' '}
+      <V>R</V><Sup>2</Sup>, crossing one at 1.384 cells — after which{' '}
+      <V>u</V> grows without bound and <V>e</V><Sup>−<V>u</V></Sup> does the
+      rest.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>no horizon is needed</span>,
+        <>A ball 5 cells across at maximum density has <V>u</V> = 6.5 and a
+          redshift of 1.5·10<Sup>−3</Sup>; at 10 cells,
+          4.5·10<Sup>−12</Sup>; at 50 cells,{' '}
+          <b style={{ color: INK }}>2.7·10<Sup>−284</Sup></b>. Dark to any
+          precision anyone will ever have, with <V>A</V> never once reaching
+          nought.</>],
+      [<span style={{ color: DERIVED }}>and coherence lifts the cap</span>,
+        <>Self-screening needs <i>opposite</i> charges, and two of the same
+          thing in step do not cancel — the panel above. Two emitters{' '}
+          <V>Δr</V> apart meet with a phase difference <V>ωΔr</V>/<V>c</V>, so
+          in step means{' '}
+          <b style={{ color: INK }}><V>R</V> ≪ 2π/<V>m</V>, the Compton
+            wavelength</b>. Then share → 0, <V>λ</V> → ∞,{' '}
+          <V>M</V><Sub>eff</Sub> = <V>M</V>, and nothing caps <V>u</V>.</>],
+      [<span style={{ color: BORROWED }}>and it is an upper bound on <V>m</V></span>,
+        <>Not, as this page first had it, a requirement to sit <i>at</i> the
+          heaviest elementary mass — that argument confused pulsing on the same
+          tick with being in step where the charges meet, and{' '}
+          <b style={{ color: INK }}>the ceiling is the shortest coherence range
+            there is</b>, 10<Sup>−34</Sup> m. The condition is{' '}
+          <V>m</V> &lt; 2π/<V>R</V>: below 6·10<Sup>−12</Sup> eV for something
+          twelve kilometres across. An upper bound, so no fine-tuning — and it
+          is the condition for the whole object to be one quantum state.</>],
+      [<span style={{ color: DERIVED }}>and R is the other way in</span>,
+        <><V>R</V> &lt; 2π/<V>m</V> constrains <V>R</V> as much as <V>m</V>.
+          Squeeze <i>ordinary</i> matter below its own Compton wavelength and it
+          self-coheres — so the cap{' '}
+          <b style={{ color: INK }}>rises as the body shrinks</b>,{' '}
+          <V>u</V><Sub>cap</Sub> = 16π<Sup>2</Sup><V>G</V>/(<V>mR</V>·<K>SHEET</K>).
+          Dark once <V>R</V> &lt; 5·10<Sup>−19</Sup> m for protons — a
+          thousandth of a fermi. No exotic matter needed.</>],
+      [<span style={{ color: BORROWED }}>what it does not fix</span>,
+        <>A neutron star is twenty orders too big to cohere, so it still shows
+          about half its mass, and that is still outside any equation of
+          state.</>],
+    ]} />
+
+    <Note>
+      Four other permutations were tried and none works.{' '}
+      <i>A hollow shell</i>: a point inside sees a tangential chord of
+      √(2<V>Rt</V>), not <V>t</V> — 77 m for a kilometre shell a metre thick,
+      so geometry cannot beat a fermi. <i>A phase ramp</i>: a phased array
+      aligns one direction and misaligns the rest, and screening samples every
+      pair inside, so it redistributes share over angle rather than lowering
+      it. <i>Net charge</i>: not available, since neutral → + − makes them in
+      pairs. <i>Lower density</i>: it cancels out of the cap entirely.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the collapse has nothing to stop it.</b> In
+      general relativity a star reaches its horizon and is done; here no radius
+      is marked, so it continues. On the way it passes through the screened
+      regime as a compact object with <V>u</V> pinned at 0.196 — which is{' '}
+      <i>not</i> a support, since screening attenuates only what <i>leaves</i>{' '}
+      while the field between neighbours is short-range and unscreened. So it
+      runs to the lattice ceiling, and a solar mass ends as a ball
+      10<Sup>−22</Sup> m across: dark by redshift, with nothing ever causally
+      severed.
+    </Note>
+
+    <Note>
+      What an observer sees is unchanged, because that is fixed by the metric a
+      few Schwarzschild radii out, where <V>u</V> ~ ½ and the exponential and
+      isotropic forms agree closely.{' '}
+      <b style={{ color: INK }}>There is still a photon sphere and still a
+        shadow.</b> What differs is what sits at the middle — ceiling-density
+      matter rather than a singularity — and how it got there.
+    </Note>
+
+    <Head>and a second way, kept alongside</Head>
+
+    <Note>
+      A node with <K>WAYS</K> + <V>n</V> edges gives a source <i>sitting there</i>{' '}
+      more ways to pulse into, so <K>SHEET</K> → <K>SHEET</K>(1+<V>u</V>) and
+      emission — which <i>is</i> mass — is boosted. A feedback on the{' '}
+      <b style={{ color: INK }}>source</b>, where the compounding was a feedback
+      on the <b style={{ color: INK }}>transport</b>. The once-a-tick ceiling
+      stops binding, because the ceiling was on how <i>often</i>, not how{' '}
+      <i>many</i>.
+    </Note>
+
+    <Eq derive={METRIC} open={show}
+      note="unlike e^u₀ this diverges at finite depth — which is a horizon">
+      <V>M</V><Sub>eff</Sub> = <V>M</V>(1 + <V>κu</V>)
+      <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+      <V>u</V> = <Frac over={<><V>u</V><Sub>0</Sub></>}
+        under={<>1 − <V>κu</V><Sub>0</Sub></>} />
+      <span style={{ padding: '0 1.2em', color: FAINT }}>→ ∞ at <V>u</V><Sub>0</Sub> = 1</span>
+    </Eq>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>it restores horizons</span>,
+        <><V>A</V> = <V>e</V><Sup>−2<V>u</V></Sup> is 4.2·10<Sup>−1</Sup> at{' '}
+          <V>u</V><Sub>0</Sub> = 0.3, 1.5·10<Sup>−8</Sup> at 0.9, and{' '}
+          <b style={{ color: INK }}>exactly nought at 1</b> — a genuine horizon
+          at <V>r</V> = <V>GM</V>/<V>c</V><Sup>2</Sup>, which the transport
+          feedback alone could never produce.</>],
+      [<span style={{ color: BORROWED }}>but it costs a threshold</span>,
+        <>β = 1 − <V>κ</V>, and β is known to 3·10<Sup>−4</Sup>. At{' '}
+          <V>κ</V> = 1 the perihelion advance is{' '}
+          <b style={{ color: INK }}>eight sixths where the panels measure
+            six</b> — 33% high, excluded by three thousand. It survives only if
+          the boost begins above <V>u</V><Sup>2</Sup>, at a depth nothing has
+          fixed. <K>BIAS</K> saturating as <V>n</V>/(<K>WAYS</K>+<V>n</V>) turns
+          over at <V>u</V> ~ 1, which is at least where such a threshold would
+          sit.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Both are kept, because they differ where it
+        matters.</b> Both give a photon sphere and a shadow, so images do not
+      separate them. Route one leaves a <i>surface</i> — ringdown echoes, no
+      information loss, arbitrarily red but finite escape — and needs no free
+      parameter, since collapse below λ<Sub>C</Sub> is a definite radius. Route
+      two gives a true horizon and ordinary black-hole phenomenology, and needs
+      a threshold nobody has derived. <i>regimes.ts</i> carries it as{' '}
+      <i>boost</i>, off by default.
+    </Note>
+
+    <Head>and how big is it, really</Head>
+
+    <Note>
+      <V>R</V><Sub>c</Sub> = 1.96 is a <i>coordinate</i> radius, and nothing
+      measures those. What anything measures is the areal one — the sphere at{' '}
+      <V>r</V> has proper area 4π<V>r</V><Sup>2</Sup><V>B</V>, so{' '}
+      <V>r</V><Sub>areal</Sub> = <V>r</V>·<V>e</V><Sup><V>u</V></Sup>. Which is
+      the same statement as{' '}
+      <b style={{ color: INK }}>“a node with <K>WAYS</K> + <V>n</V> edges
+        touches far more than a cell’s worth of neighbours”</b>, measured rather
+      than counted.
+    </Note>
+
+    <Eq derive={METRIC} open={show}
+      note="the area does not shrink to nothing — it has a narrowest point, and inside that it grows again">
+      <Frac over={<>d</>} under={<>d<V>r</V></>} />
+      <Paren><V>r e</V><Sup><V>GM</V>/<V>r</V></Sup></Paren> = 0
+      <span style={{ padding: '0 1.2em', color: FAINT }}>at</span>
+      <V>r</V> = <V>GM</V>/<V>c</V><Sup>2</Sup>
+      <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+      <V>r</V><Sub>areal</Sub> = <V>e</V>·<V>GM</V>/<V>c</V><Sup>2</Sup> =
+      1.3591 <V>R</V><Sub>s</Sub>
+    </Eq>
+
+    <Note>
+      <b style={{ color: INK }}>The area has a throat</b>, and inside it the
+      area grows again without bound — so the geometry is not a point but a
+      narrow neck opening into something vast, at a ratio that is scale-free.
+      A solar mass at <V>R</V><Sub>c</Sub> has <V>u</V> = 4.7·10<Sup>37</Sup>,
+      hence an areal radius of 10<Sup>(2·10³⁷)</Sup> cells and a node carrying
+      1.2·10<Sup>39</Sup> edges.{' '}
+      <b style={{ color: INK }}>Two cells across and enormous at once</b>, and
+      those are one fact. (That figure uses the <i>exterior</i> <V>u</V> where
+      the interior solution applies, so it is right in kind and not in detail.
+      The throat is exact.)
+    </Note>
+
+    <Eq derive={METRIC} open={show}
+      note="and this is the one number in the whole model that an instrument can settle now">
+      <V>b</V> = 2<V>e</V>·<V>GM</V>/<V>c</V><Sup>2</Sup>
+      <span style={{ padding: '0 1.2em', color: FAINT }}>against</span>
+      3√3·<V>GM</V>/<V>c</V><Sup>2</Sup>
+      <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+      1.0463
+    </Eq>
+
+    <Note>
+      The photon sphere is where d/d<V>r</V>(<V>r</V><Sup>2</Sup><V>B</V>/<V>A</V>) = 0;
+      with <V>B</V>/<V>A</V> = <V>e</V><Sup>4<V>u</V></Sup> that is{' '}
+      <V>r</V><Sub>ph</Sub> = 2<V>GM</V>, and the shadow’s impact parameter is{' '}
+      <V>b</V> = <V>r</V>·<V>e</V><Sup>2<V>u</V></Sup>. So{' '}
+      <b style={{ color: INK }}>the shadow is 4.6% larger than general
+        relativity’s at the same mass</b> — a fixed, parameter-free ratio.
+      Measure the mass from orbits and the shadow from imaging, and this
+      predicts a constant mismatch between them. It sits inside the Event
+      Horizon Telescope’s present ~10% systematic error and outside what it is
+      aiming for, which makes it a near-term test rather than a philosophical
+      one, and the only claim here an existing instrument can settle.
+    </Note>
+
+    <Note>
+      Neither route fixes the neutron star, and route two makes it slightly
+      worse — a boost at <V>u</V> ~ 0.2 raises emission, which raises{' '}
+      <V>Φ</V>, which screens harder. And what would settle route two from inside the model is
+      whether <K>SHEET</K> scales with a node’s edge count or is fixed by the
+      dimension: <i>field.ts</i> says the latter, 3<Sup><V>d</V>−1</Sup> − 1, a
+      property of the lattice rather than of the place.{' '}
+      <b style={{ color: INK }}>Route two needs that reading changed; route one
+        does not.</b>
+    </Note>
+
+    <Note>
+      And <i>carry</i> cannot help with any of it, which is worth saying because
+      it is the last borrowed thing and the temptation is to hang the leftovers
+      on it. <i>carry</i> is d<V>p</V>/d<V>t</V> — the equation of motion, and
+      nowhere else. Redshift is 1/√<V>A</V>, light’s speed is <V>c</V>√(<V>A</V>/<V>B</V>),
+      a horizon is <V>A</V> = 0.{' '}
+      <b style={{ color: INK }}>Change <i>carry</i> and orbits change; not one
+        of those three moves.</b>
     </Note>
 
     <Note>

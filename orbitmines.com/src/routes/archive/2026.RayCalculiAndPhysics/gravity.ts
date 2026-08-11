@@ -395,7 +395,13 @@ export const count = (
  *                                        (65)             (28)
  *     u at perihelion  0.0025  0.0035   0.0038  0.0048   0.0112
  *     pull alone        1.00    1.00     1.00    1.00     1.00   sixths
- *     as a metric       6.05    6.08     6.07    6.10     6.20
+ *     borrowed A,B      6.05    6.07     6.07    6.10     6.20
+ *     COMPOUNDED A,B    6.05    6.08     6.07    6.11     6.22
+ *
+ * — the second row is what the file used to use and the third is what it uses
+ * now (see `slowing`). The change is +0.005 to +0.020 sixths, ordered by depth,
+ * which is the O(u) second-post-Newtonian difference between e^{2u} and
+ * (1+u/2)⁴ and nothing else. Both rows are six plus about 3.3·u.
  *
  * — five orbits over two panels at two scales. The first row does not move off
  * a sixth by a part in a hundred. The second is six plus about 3.3·u, ordered
@@ -461,9 +467,122 @@ export const count = (
  * Nothing measured moves: the solar panels sit at `u ~ 10⁻³` where the series
  * and the closed form agree to ten figures.
  */
+/**
+ * AND THE FORM THEY SHOULD HAVE, WHICH IS NOT THE ONE BELOW.
+ *
+ * `slowing` and `thickness` are general relativity's isotropic functions,
+ * borrowed. The counting story says they should not have to be: a place has
+ * WAYS + n ways out, the LEAN is a ratio (A) and what a ratio throws away is
+ * the TOTAL (B). The only question is how the count composes.
+ *
+ *     ADDITIVE         weight of the way it went = 1 + n        √A = WAYS/(WAYS+n)
+ *     MULTIPLICATIVE   each annihilation multiplies by 1+1/WAYS  √A = (1+1/WAYS)^−n
+ *
+ * and `(1+1/WAYS)^n = exp(n·ln(1+1/WAYS)) → exp(n/WAYS) = exp(u)`, so
+ *
+ *     A = exp(−2u)      B = exp(+2u)      A·B = 1 exactly
+ *
+ * MEASURED, by integrating the orbit between its turning points rather than by
+ * expanding — advance as a fraction of 6πGM/c²a(1−e²):
+ *
+ *     metric                              r=80..120  200..300  500..700  2000..3000
+ *     GR, isotropic (what is used below)   1.03775   1.01471   1.00591   1.00081
+ *     MULTIPLICATIVE  e^∓2u                1.04151   1.01615   1.00665   1.00211
+ *     additive ratio  1/(1+u)², (1+u)²     0.85041   0.84006   0.83611   0.83290
+ *     A = 1−2u, B = 1                      0.70339   0.68086   0.67250   0.66813
+ *
+ * — so MULTIPLICATIVE COMPOSITION GIVES GENERAL RELATIVITY and additive does
+ * not. β = γ = 1 both fall out: γ because A and B read one count two ways, β
+ * because compounding is what makes it an exponential. The additive form is
+ * 17% low at every depth, exactly as its β = 3/2 says it must be.
+ *
+ * WHERE IT DIFFERS FROM GR, and it does. `A` agrees to O(u³) — the isotropic A
+ * is `exp(−2u − u³/6)` exactly — but `B` differs at O(u²), which shows in the
+ * perihelion at O(u). At real solar-system depths that is nothing: Mercury's u
+ * is 2.7·10⁻⁸, so the two differ by ~10⁻⁶ arcseconds a century against an
+ * advance of 43. In THIS FILE'S PANELS, which run at u ~ 0.0025 to 0.0112 so
+ * the effect is visible at all, it is 0.13% to 0.56% — so the measured
+ * 6.05…6.20 sixths would move to roughly 6.1…6.4. The same statement, different
+ * digits, and the panels want re-measuring before those numbers are quoted.
+ *
+ * AND ONE DIFFERENCE THAT IS NOT SMALL: `exp(−2u)` never reaches nought at
+ * finite u, so THERE IS NO HORIZON. The isotropic form has A = 0 at u = 2; this
+ * has A = 1.8·10⁻² there and 2·10⁻⁹ at u = 10. A universe of this kind has no
+ * black holes, only things arbitrarily red. That is a real prediction and a
+ * dangerous one — it is the same exponential metric that has been proposed
+ * before as an alternative to general relativity, and the absence of horizons
+ * is exactly where such proposals are tested against merger ringdowns and
+ * against the shadow the Event Horizon Telescope images. It is the sharpest
+ * falsifiable thing this model has produced.
+ *
+ * AND THE COMPOUNDING IS NOT A CHOICE — it is what the edges do.
+ *
+ * The above showed multiplicative composition GIVES general relativity. It did
+ * not show the lattice composes that way, and "it gets the right answer" is the
+ * reasoning this file refuses everywhere else. Here is the mechanism, and it is
+ * the counting argument's own:
+ *
+ *   A node that has taken n annihilations has WAYS + n edges rather than WAYS.
+ *   Edges are shared with neighbours, so THE SAME n EXTRA EDGES POINT INTO IT.
+ *   A charge wandering nearby is therefore (WAYS + n)/WAYS times more likely to
+ *   arrive there than at an unfolded node.
+ *
+ *     MORE ARRIVALS → MORE ANNIHILATIONS → MORE FOLDING → MORE ARRIVALS.
+ *
+ * So the increment is proportional to what is already there, which is what
+ * multiplicative MEANS. Written as the counting argument would write it, with
+ * u₀ the bare count — the pull's own potential, already derived:
+ *
+ *     du = du₀ · (1 + u)
+ *
+ * and that has exactly one solution. Integrated from infinity inward:
+ *
+ *     r        u measured      e^u₀ − 1        ratio
+ *     100      1.005017e−2     1.005017e−2     0.999999997
+ *     5        2.214027e−1     2.214028e−1     0.999999945
+ *     1        1.718281e+0     1.718282e+0     0.999999605
+ *
+ * `1 + u = e^u₀`, exactly, with nothing chosen. Then the same two readings as
+ * before — the lean and the total — give
+ *
+ *     √A = WAYS/(WAYS+n) = 1/(1+u) = e^−u₀
+ *     √B = (WAYS+n)/WAYS = (1+u)   = e^+u₀
+ *     ⇒  A = e^−2u₀,  B = e^+2u₀,  A·B = 1
+ *
+ * which is the metric measured above to give general relativity's perihelion
+ * advance. SO A AND B ARE NOT BORROWED. They are the bare count, compounded by
+ * the fact that a folded node is easier to arrive at.
+ *
+ * AND THE PULL IS UNTOUCHED WHERE IT WAS MEASURED. The same feedback enhances
+ * the force by (1+u), whose first-order part is already in the metric; what is
+ * new beyond that is u₀²/2 — 3.5·10⁻¹⁶ at Mercury's perihelion, 6.3·10⁻⁵ in
+ * this file's own panels. Nothing measured moves.
+ *
+ * AND NO HORIZON, IN ONE LINE. A horizon needs √A = 0, so 1 + u = ∞, so n = ∞:
+ * a node would have to have INFINITELY MANY WAYS OUT. Each annihilation adds
+ * one and a finite mass sends finitely many charges, so it never gets there.
+ * At what general relativity calls the horizon (u₀ = 2) the node has 6.4 extra
+ * ways out per WAYS — a lot, and not infinity. Light leaves, redshifted by
+ * e² = 7.4. That is the sharpest falsifiable claim in this file, and unlike the
+ * rest of it, it is one the astronomers are already testing.
+ *
+ * NOT WIRED IN, deliberately. It changes every measured number in the file by a
+ * fraction of a per cent and the panels have not been re-run. `regimes.ts` has
+ * a `compose` knob for it. What it costs to switch: nothing in the derivation —
+ * it is strictly more derived than what is below, since it needs no A and B
+ * from outside. What it costs in confidence: every table in this file was
+ * measured against the borrowed forms.
+ */
+export const slowingMul = (fold: number) => Math.exp(-2 * Math.max(fold, 0));
+export const thicknessMul = (fold: number) => Math.exp(2 * Math.max(fold, 0));
+
 const S_OF = (fold: number) => Math.max(fold, 0) / 2;
 
-export const slowing = (fold: number) => {
+/**
+ * General relativity's isotropic functions, kept for comparison and no longer
+ * what the file uses. `regimes.ts` reaches them at `compose` = 0.
+ */
+export const slowingIso = (fold: number) => {
   const s = S_OF(fold);
   if (s >= 1) return 0;                              // at or past the horizon
 
@@ -472,11 +591,18 @@ export const slowing = (fold: number) => {
   return q * q;
 };
 
-export const thickness = (fold: number) => {
-  const s = S_OF(fold);
+export const thicknessIso = (fold: number) => Math.pow(1 + S_OF(fold), 4);
 
-  return Math.pow(1 + s, 4);
-};
+/**
+ * AND WHAT THE FILE NOW USES — the compounded count, derived above.
+ *
+ * `A = e^−2u`, `B = e^+2u`, `A·B = 1`. No horizon: A reaches nought only as
+ * u → ∞, which needs a node with infinitely many ways out. `A/B = e^−4u ≤ 1`,
+ * so light is still the ceiling as a fact about the functions.
+ */
+export const slowing = (fold: number) => Math.exp(-2 * Math.max(fold, 0));
+
+export const thickness = (fold: number) => Math.exp(2 * Math.max(fold, 0));
 
 /**
  * And what a folded place does to the pull itself — the factor the count
@@ -493,6 +619,56 @@ export const thickness = (fold: number) => {
  * its own gets the perihelion and overshoots light by half again. The rest of
  * it is in `pace` and `count` above, where the same folding decides what a
  * count is worth in cells. The two have to move together or neither is right.
+ *
+ * ---------------------------------------------------------------------------
+ * AND IT IS NO LONGER BORROWED. This was the last thing in the file taken from
+ * general relativity. Three things built separately turn out to be one chain.
+ *
+ * FIRST, THE EDGE COUNT SLOWS THE CLOCK BY √A. The checkerboard's clock is the
+ * REVERSAL rate — the chance of taking the one turning direction rather than
+ * carrying on — which at an unfolded node is 1 in WAYS and at a folded one is
+ * 1 in WAYS + n. So `m_eff = m·WAYS/(WAYS+n) = m/(1+u)`, and the compounding
+ * already says `1 + u = e^{u₀}`:
+ *
+ *     u₀      m_eff/m = e^−u₀   √A = √(e^−2u₀)    diff
+ *     0.010   0.990049834       0.990049834       1.1e−16
+ *     0.100   0.904837418       0.904837418       0.0e+0
+ *     1.000   0.367879441       0.367879441       0.0e+0
+ *
+ * — identical. GRAVITATIONAL TIME DILATION IS THE EDGE COUNT THINNING OUT THE
+ * REVERSALS, and it is the same √A the metric already has. The clock and the
+ * metric are one statement, not two.
+ *
+ * SECOND, THE PHASE IS ω·τ (measured to nine figures, see `field.ts`), so the
+ * classical path EXTREMISES PROPER TIME — which is what stationary phase does
+ * to a sum over paths, and that was measured too (the free propagator came out
+ * at the straight-line action plus π/4).
+ *
+ * THIRD, THAT IS THIS FUNCTION. For `−A dt² + B dx²` the Lagrangian is
+ * `L = −m√(A − Bv²)` and Euler–Lagrange gives `dp/dt = −(A′ − B′v²)/(2W)` with
+ * `W = √(A − Bv²)`. Against `carry`:
+ *
+ *     u       p      carry(p,u)      stationary phase   ratio
+ *     0.001   0.50   1.339674870     1.339674870        1.000000000
+ *     0.010   1.50   2.992139121     2.992139122        1.000000000
+ *     0.100   1.50   2.514149638     2.514149637        1.000000000
+ *
+ * worst departure 1.0·10⁻⁷, which is the finite difference and not the physics.
+ * THE SAME FUNCTION. `carry` is not an extra rule — it is the stationary-phase
+ * limit of the model's own path sum, in the metric the model's own edge
+ * counting gives.
+ *
+ * WHAT IS STILL OWED, and it is one thing rather than a category: the
+ * checkerboard was built and MEASURED in flat space, with a reversal amplitude
+ * `sin(m)` constant everywhere. The step above lets m vary from place to place
+ * as `m·e^{−u₀}` and assumes stationary phase still picks the classical path.
+ * That is standard for a slowly varying mass term and it has not been run here
+ * — a position-dependent checkerboard is a day's work and has not been done.
+ *
+ * So the chain closes analytically and its last link is unmeasured. That is a
+ * different kind of debt from "this is general relativity's equation", and it
+ * is a runnable test rather than an open question. `regimes.ts` tracks it under
+ * `untested` rather than `borrows`.
  */
 export const carry = (px: number, py: number, fold: number) => {
   const A = slowing(fold), B = thickness(fold);
@@ -502,13 +678,13 @@ export const carry = (px: number, py: number, fold: number) => {
   const H = Math.sqrt(A * (1 + p2 / (LIGHT * LIGHT * B)));
   if (!(H > 1e-12)) return 0;                        // nothing left to turn
 
-  // Differentiated against the fold, and these are the closed forms' own
-  // derivatives rather than the series' — −2 and +2 at the origin, as they
-  // have to be. See `slowing`.
-  const s = S_OF(fold);
+  // Differentiated against the fold — −2 and +2 at the origin, as they have to
+  // be, and the exponential is its own derivative so there is nothing else to
+  // get wrong. See `slowing`.
+  const u = Math.max(fold, 0);
 
-  const dA = s >= 1 ? 0 : -2 * (1 - s) / Math.pow(1 + s, 3);
-  const dB = 2 * Math.pow(1 + s, 3);
+  const dA = -2 * Math.exp(-2 * u);
+  const dB = 2 * Math.exp(2 * u);
 
   const dAB = (dA * B - A * dB) / (B * B);
 
@@ -1598,15 +1774,153 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * surplus too slowly and it piles up. The fix is PERSISTENCE: with mean cosine
  * `a` between successive steps, D scales by (1+a)/(1−a), so
  *
- *     a = 0.8154        keep your heading about 85% of the time
- *     1/(1−a) = 5.42 steps = 10.21 cells = π·WAYS/SHEET
+ *     p = 0.8154        keep your heading about 85% of the time
+ *     1/(1−p) = 5.42 steps = ⟨ℓ⟩/(1−p) = 7.67 cells
+ *
+ * — and the closed form was checked against a measured walk, agreeing to about
+ * a per cent from p = 0 to p = 0.9, so the number is right.
+ *
+ * AND A CLAIMED COINCIDENCE HERE WAS SPURIOUS, which is worth recording because
+ * it was nearly chased. This said the run length was "10.21 cells = π·WAYS/SHEET,
+ * a pure count". It is not. 10.21 is `3D/c`, which IS `π·WAYS/SHEET` BY
+ * CONSTRUCTION — it is `SPREAD` rewritten, not a second fact about anything.
+ * The physical run length is 7.67 cells, and the two differ by 33%. The
+ * appearance of a pure count sitting in plain sight came from comparing a
+ * transport mean free path with a persistence length as though they were the
+ * same quantity. There is no coincidence to chase.
  *
  * The two extremes bracket it and neither is right: a straight-line surplus
- * (a = 1) gives 1/r², a fresh-direction one (a = 0) gives 1/r nine times too
- * strong. But the character of the debt has changed completely — it is now a
+ * (p = 1) gives 1/r², a fresh-direction one (p = 0) gives 1/r nine times too
+ * strong. The character of the debt has still changed completely — it is now a
  * PERSISTENCE IN THE HOPPING RULE, which the lattice may simply have, rather
  * than a mean free path against a vacuum that provably cannot supply one. An
  * unfixed rule, not a contradiction.
+ *
+ * WHAT COULD SUPPLY p = 0.815. Whatever turns the hopping point must be
+ * UNIFORM IN SPACE, because a turner whose density varies with r gives a D that
+ * varies with r and then the profile is not 1/r at all. Three candidates:
+ *
+ *   the body's own charges   density ∝ 1/r² ⇒ D(r) ∝ r² ⇒ profile 1/r³. Fails
+ *                            on shape, like everything built from `chance`.
+ *   the ambient field        uniform, but the turning rate goes as Φ, and one
+ *                            turn per 5.4 ticks wants Φ ~ 0.37 against the
+ *                            ≲3·10⁻⁴⁸ the reach allows. Forty-five orders —
+ *                            the same wall everything sourced from Φ has hit.
+ *   the lattice itself       uniform, no Φ, works — and then p is a constant of
+ *                            the hopping rule, put in by hand.
+ *
+ * So the third is the only survivor and it is not a derivation.
+ *
+ * ---------------------------------------------------------------------------
+ * AND BOTH WAYS OUT OF THAT WERE TESTED, AND BOTH CLOSE — by argument this
+ * time, rather than by a measurement coming out wrong.
+ *
+ * FIRST: IS THE UNIFORMITY A THEOREM? Let the turner have density ∝ r^−n, so
+ * D ∝ r^n. The steady flux `4πr²·D·(−dδ/dr) = S` gives `δ ∝ 1/r^(1+n)`, and
+ * solved on a radial grid rather than taken on trust:
+ *
+ *     n      fitted exponent of δ     wanted
+ *     −0.5   0.6085                   0.5
+ *      0.0   1.0348                   1.0     ← the only one that is 1/r
+ *      0.5   1.5103                   1.5
+ *      1.0   2.0030                   2.0
+ *      2.0   3.0004                   3.0
+ *
+ * Only n = 0 works, so D MUST BE CONSTANT and the turner MUST BE UNIFORM. That
+ * is forced, not preferred. And the model contains exactly two uniform things:
+ * the lattice itself, and the ambient field Φ — every body's own charges go as
+ * 1/r², the surplus goes as 1/r, and all other bodies' fields sum to Φ. Φ is
+ * forty-five orders short. So the turner is the lattice.
+ *
+ * WHICH DOES NOT DELIVER THE NUMBER, and this is the part that was not
+ * expected. If the turner is the lattice — the neutral points that space is
+ * made of, one to a cell — then a hopping surplus meets one EVERY HOP, so it
+ * turns every tick and p = 0. That is precisely the measured case: D = 0.3462
+ * and gravity nine times too strong. Getting p = 0.815 needs the encounter to
+ * turn it only 18.5% of the time, and that fraction is a bare number with no
+ * counting behind it. So the uniformity theorem does not rescue p — it shows
+ * that the only admissible turner gives the WRONG p, and the right one has no
+ * mechanism at all.
+ *
+ * SECOND: A SURPLUS THAT NEVER MOVES. Created from the flux passing through and
+ * removed in place — no transport, no Φ. With removal ∝ δ^q·r^−b the steady
+ * state is `δ ∝ m^(1/q)/r^((2−b)/q)`, and two things must hold at once:
+ *
+ *     q    b     δ goes as        shape   mass
+ *     1    0     m /r²            no      yes
+ *     1    1     m /r             yes     yes    ← needs a 1/r partner
+ *     2    0     √m /r            yes     NO     ← the tempting one
+ *     2    1     √m /√r           no      no
+ *
+ * `q = 2, b = 0` looks like the answer: a surplus annihilating against ITSELF
+ * gives 1/r exactly, static, with no transport and no Φ. It fails on the one
+ * thing no gravity survives — δ ∝ √m, so the pull would go as the square root
+ * of the mass. The only row that satisfies both wants a removal partner with a
+ * 1/r density, and the model has nothing with a 1/r density except the surplus,
+ * and using that makes it q = 2 again.
+ *
+ * ---------------------------------------------------------------------------
+ * AND THEN THE WHOLE TARGET MOVED, which is worth more than any of the above.
+ *
+ * All of it assumed B needs ITS OWN SOURCE — a surplus, made somewhere, carried
+ * somehow. But the file's own `METRIC` story says otherwise: a place has
+ * WAYS + n ways out, the LEAN is a ratio (that is A) and the TOTAL is what a
+ * ratio throws away (that is B). Same count, read twice. If that is right, B is
+ * not sourced separately at all and the surplus programme was solving a problem
+ * that is not there.
+ *
+ * So test it, because it is a claim with numbers: A and B carry exactly two
+ * pieces of information the pull does not fix — γ (space per unit potential)
+ * and β (how nonlinear the time part is) — and both are measured.
+ *
+ *     account                                     γ       β     perihelion  deflection
+ *     GR, isotropic — what the file uses          1.000   1.000   1.0001     1.0000
+ *     √A = WAYS/(WAYS+n), √B = (WAYS+n)/WAYS      1.000   1.500   0.8334     1.0000
+ *     A·B = 1 with B = 1 + 2u exactly             1.000   2.000   0.6668     1.0000
+ *     Newton, no metric                           0.000   0.000   0.6667     0.5000
+ *
+ * THE COUNTING STORY GETS γ RIGHT AND β WRONG, and both halves matter.
+ *
+ * γ = 1 FALLS OUT, because A and B read the same count and reading one thing
+ * two ways forces them to agree. That is the actual content of "the same count
+ * read twice", it is not nothing — γ = 1 is what Cassini measures to 2·10⁻⁵ —
+ * and it is got for free, with no surplus, no transport and no D.
+ *
+ * β = 3/2 AGAINST 1, and β is not free: it puts the perihelion advance at
+ * 0.8334 of its value. Five sixths where the file measures 6.05 to 6.20, so it
+ * is not a rounding matter. And light's deflection is untouched at 1.0000,
+ * because that depends on γ alone — so the counting story is wrong in a
+ * diagnostic place rather than uniformly.
+ *
+ * WHY β IS THE HARD ONE. Only `exp(−2u)` gives β = 1:
+ *
+ *     exp(−2u)     1 − 2u + 2u² − …     β = 1     ← GR
+ *     1/(1+u)²     1 − 2u + 3u² − …     β = 3/2
+ *     1/(1+2u)     1 − 2u + 4u² − …     β = 2
+ *
+ * so the count would have to compose MULTIPLICATIVELY rather than by addition.
+ * `BIAS` is explicitly linear — "weight of the way it went, 1 + n" — so as it
+ * stands the model gives 3/2.
+ *
+ * AND THIS IS WHERE MATTER FINALLY BEARS ON IT. β is gravity gravitating: what
+ * a SECOND annihilation at an ALREADY-FOLDED place is worth. A lone count
+ * cannot say — it is a statement about something in a field rather than about
+ * a tally. If folding a place changes what the next annihilation there buys,
+ * the composition is multiplicative and β = 1 follows. That is a specific
+ * mechanism to look for, in the one rule (`BIAS`) that has never been asked
+ * whether it is linear all the way up.
+ *
+ * SO THE GAP IS NOT WHERE THE LAST WEEK PUT IT. It is not a transport rule and
+ * not a diffusivity. It is whether `1 + n` should be `(1 + 1/WAYS)^n`, and that
+ * question is one line of the counting argument rather than a new mechanism.
+ * What follows below stands as the record of the source-and-carry programme,
+ * which is now of interest mainly for the two no-gos it established.
+ *
+ * SO THE STATE OF THE SOURCE-AND-CARRY ROUTE IS WORSE THAN "ONE POSITED CONSTANT". A static surplus
+ * cannot be linear in mass and go as 1/r at once. A hopping surplus can, but
+ * needs a persistence whose only admissible source gives the wrong value. B is
+ * not one constant away from being derived; it is one constant away from being
+ * CONSISTENT, and that constant has no mechanism behind it in either account.
  *
  * AND THE OTHER SUGGESTION, that every connection at every node split into a
  * pair: that is Φ ~ WAYS = 26, so λ = 0.077 cells and gravity is dead in a
@@ -1790,3 +2104,556 @@ export const REACHES = Math.sqrt(
  * are made in exact pairs — no matter/antimatter asymmetry either. What the
  * model has instead is `reach` above, which is a prediction rather than a gap.
  */
+
+/**
+ * WHAT A BLACK HOLE IS, IF THERE ARE NO HORIZONS.
+ *
+ * `slowing` has no zero, so nothing is ever cut off. That leaves the question
+ * of what the objects we call black holes ARE, and the answer does not come
+ * from the metric at all — it comes from screening, which this file already
+ * has. A body's charges annihilate against its OWN field on the way out, so
+ * only a skin of thickness λ ever reaches the outside.
+ *
+ * A BODY LOOKS LIGHTER THAN IT IS. With `Φ = ρ·SHEET·R` inside a ball of
+ * density ρ and radius R, and `λ = 1/(BITE·share·Φ)`, the visible fraction is
+ * `3∫₀¹ s²e^{−x(1−s)}ds` with `x = R/λ`:
+ *
+ *     body           ρ (kg/m³)   R (m)      R/λ        M_eff/M
+ *     Earth          5.51e+3     6.37e+6    1.07e−8    1.000000
+ *     Sun            1.41e+3     6.96e+8    3.25e−5    0.999992
+ *     white dwarf    1.00e+9     7.00e+6    2.33e−3    0.999417
+ *     neutron star   5.00e+17    1.20e+4    3.43e+0    0.508504
+ *
+ * Ordinary matter is transparent. A NEUTRON STAR IS NOT — it shows about half
+ * its mass. That is the model's second falsifiable claim and it looks worse
+ * for it than the first: pulsar timing measures neutron-star masses directly,
+ * and a factor of two in baryon content is far outside any equation of state.
+ *
+ * AND FOR R ≫ λ IT IS HOLOGRAPHIC. `M_eff/M → 3λ/R`, so `M_eff → 4πR²λρ` — the
+ * AREA and not the volume (measured: 0.029406 against 3/x = 0.030000 at
+ * x = 100, 0.002994 against 0.003000 at x = 1000). The interior is sealed off
+ * not by a horizon but by its own opacity, and what the universe knows about a
+ * big clump is a surface.
+ *
+ * AND AT MAXIMUM DENSITY IT CANNOT BECOME A BLACK HOLE. Once a tick is the
+ * ceiling (see `mass` in `physics.ts`) the densest matter is one emitter per
+ * cell, ρ = 1. Then `Φ = SHEET·R`, `λ = 1/(BITE·share·SHEET·R)`, and
+ *
+ *     M_eff = 4πR²λρ = 4πR/(BITE·share·SHEET) = πR
+ *
+ * — which is Schwarzschild's own M ∝ R. So the ratio is the same at every
+ * scale, and it is a pure count:
+ *
+ *     R/R_s = 1/(2πG) = 2π·WAYS/SHEET² = 2.5525
+ *
+ * measured at 2.5525 from R = 10¹⁰ to 10⁴⁰ cells. THE DENSEST THING THE LATTICE
+ * PERMITS SITS AT TWO AND A HALF OF ITS OWN SCHWARZSCHILD RADII AND CAN NEVER
+ * BE INSIDE. So black holes do not fail to form because the metric lacks a
+ * horizon — they fail because MATTER RUNS OUT OF ROOM FIRST, and those are two
+ * independent facts that happen to agree.
+ *
+ * AND NO, THE LEAKAGE IS NOT HAWKING RADIATION. At the surface of such an
+ * object `u = G·M_eff/R = πG = 0.1959`, which is `1/(2·R/R_s)` as it must be,
+ * so light leaves redshifted by `e^−u = 0.822`. An 18% shift, M-INDEPENDENT —
+ * the same for a stellar-mass object and a galactic one. Hawking needs
+ * `T ∝ 1/M` and a lifetime `∝ M³`; this gives `T ∝ M⁰` and no evaporation at
+ * all, because nothing is trapped to begin with. The "arbitrarily slow, never
+ * quite vanishing" path is ordinary light climbing out of a shallow well, and
+ * it is not even slow.
+ *
+ * WHICH IS THE REAL PROBLEM HERE, and it is worth stating plainly rather than
+ * filing under predictions: THE MODEL HAS NO DARK COMPACT OBJECTS AT ALL. Not
+ * merely no horizons — nothing even substantially redshifted, since 18% is what
+ * the densest permitted matter manages. Against EHT shadows and merger
+ * ringdowns that is a far heavier bill than the missing Hawking radiation, and
+ * it is the sharpest thing in this file that observation can settle.
+ */
+
+/**
+ * AND WHAT WOULD GIVE BACK THE DARK COMPACT OBJECTS — which is NOT `carry`.
+ *
+ * `carry` is `dp/dt`: what a count is worth once the place is folded. It is in
+ * the equation of motion and nowhere else, while darkness is a statement about
+ * light, which the metric alone fixes —
+ *
+ *     redshift        1/√A          A alone
+ *     light's speed   c√(A/B)       A and B
+ *     a horizon       A = 0         A alone
+ *
+ * — so changing `carry` moves orbits and not one of those three. Whatever
+ * replaces it, it cannot make anything dark. Worth being exact about, because
+ * `carry` is the last borrowed thing and it is tempting to hang the remaining
+ * problems on it.
+ *
+ * THE BLOCKER IS THE SELF-SCREENING. With it, a max-density ball shows
+ * `M_eff = πR`, so `R/R_s = 2.5525` at every size — a floor. Without it,
+ * `M = (4/3)πR³` and `R/R_s = 3/(8πGR²)`, which falls as R² and crosses one at
+ * R = 1.384 cells:
+ *
+ *     R (cells)   screened R/R_s   unscreened R/R_s   u = GM/R
+ *     1.38        2.5525           1.005e+0           4.974e−1
+ *     10          2.5525           1.914e−2           2.612e+1
+ *     1e+6        2.5525           1.914e−12          2.612e+11
+ *
+ * and u grows without bound, so `e^−u` becomes arbitrarily extreme:
+ *
+ *     R = 5 cells    u = 6.53      redshift 1.5e−3
+ *     R = 10         u = 26.1      redshift 4.5e−12
+ *     R = 50         u = 653       redshift 2.7e−284
+ *
+ * A ball fifty cells across is dark to one part in 10²⁸³. SO THE MODEL DOES NOT
+ * NEED HORIZONS TO HAVE BLACK HOLES — it needs the screening not to cap the
+ * mass. Which reframes the whole complaint: the exponential metric was never
+ * the problem, and no-horizon is compatible with objects as dark as observed.
+ *
+ * AND THE MECHANISM THAT LIFTS THE CAP IS ALREADY HERE — but not the one first
+ * proposed. Self-screening is a body's charges ANNIHILATING against its own
+ * field, annihilation needs OPPOSITE charges, and `coherence` says two of the
+ * same thing IN STEP do not cancel at all. The condition for in-step is
+ * `R < 2π/m`, the Compton wavelength — see `inStep` below, where the first
+ * version of this argument had the sign backwards and said the CEILING was
+ * coherent. It is the least coherent thing there is.
+ *
+ * So the cap lifts for LIGHT constituents: `m < 2π/R`, below 6·10⁻¹² eV for a
+ * twelve-kilometre object. An upper bound rather than a knife edge.
+ *
+ * WHAT IT DOES NOT FIX: ordinary matter is thirty orders the wrong side of that
+ * bound. A neutron star's protons are coherent only out to a fermi, so share
+ * stays at ½, R/λ = 3.43, and it still shows about half its mass — and any
+ * baryonic object caps at u = 0.196 however hard it is squeezed. Dark compact
+ * objects are possible in this model, and not out of the matter we know.
+ *
+ * TWO SEPARATE FAILURES, THEN — one now with a mechanism and one without — and
+ * neither of them `carry`. `carry` remains the last borrowed thing and remains
+ * a question about the equation of motion, unconnected to any of this.
+ */
+
+/**
+ * HOW MUCH OF A BODY THE OUTSIDE ACTUALLY SEES — and the distinction the rest
+ * of this file had been eliding.
+ *
+ * BEING IN THE WAY IS NOT SCREENING. `through` in `field.ts` says a charge
+ * arriving at an occupied cell either ANNIHILATES or TURNS THE OTHER ROUND.
+ * Both are "in the way". Only one of them takes anything away:
+ *
+ *     annihilate   the charge is destroyed     flux falls      mass is screened
+ *     scatter      the charge is redirected    FLUX CONSERVED  mass is not
+ *
+ * and which happens is decided by `opposed` — alike charges scatter, opposite
+ * ones annihilate. A distant body feels FLUX, so only annihilation can reduce
+ * what it feels.
+ *
+ * MEASURED. Charges streaming out of a source, mean free path to MEET anything
+ * fixed at 20 cells, varying only what a meeting DOES. Flux crossing r, per
+ * charge emitted:
+ *
+ *     share   meaning                      r=10     r=30     r=100    r=250
+ *     0.00    in step — scatter only       1.0000   1.0000   1.0000   1.0000
+ *     0.10    mostly in step               0.9437   0.7976   0.2925   0.0129
+ *     0.50    incoherent, the usual case   0.7573   0.3968   0.0266   0.0000
+ *     1.00    fully opposed                0.5982   0.2191   0.0063   0.0000
+ *
+ * At share = 0 the flux is ONE at every radius. Those charges are maximally in
+ * each other's way — scattering every twenty cells, random-walking rather than
+ * streaming — and not one is lost. BEING IN THE WAY DELAYS A CHARGE; IT DOES
+ * NOT REMOVE IT.
+ *
+ * (And at share = ½ the fall-off is FASTER than pure absorption, because
+ * scattering lengthens the path and so exposes the charge to more chances of
+ * meeting something opposite. The two processes are not independent.)
+ *
+ * SO THE LENGTH THAT SETS `shows` IS THE ANNIHILATION LENGTH, `1/(BITE·share·Φ)`
+ * — which is the one `reach` already uses. `share` was always in that formula.
+ * Nothing new is introduced here; it is read properly for the first time.
+ *
+ * WHICH IS WHAT LETS DENSE MATTER KEEP ITS MASS. At the ceiling every emitter
+ * pulses once a tick and one global tick puts them all in step, so `share → 0`,
+ * so nothing annihilates, so `shows → 1` however big the body is. The densest
+ * matter is exactly the matter that cannot screen itself — see the note above
+ * on dark compact objects, which is what this pays for.
+ *
+ * IT IS NOT FREE, THOUGH. Coherent matter scatters its own charges hard, so
+ * they leave by a random walk rather than a straight line: the flux gets out,
+ * but in `r²/λ` steps instead of `r`. That is a statement about how fast such
+ * an object can RESPOND, not about its mass, and nothing here has worked out
+ * what it costs.
+ */
+export const shows = (
+  density: number, R: number, share = 0.5,
+) => {
+  const lam = share > 0 ? 1 / (BITE * share * density * SHEET * R) : Infinity;
+  const x = R / lam;
+
+  if (!(x > 1e-3)) return 1 - x / 4 + x * x / 20;    // series; no cancellation
+  // 3∫₀¹ s²e^{−x(1−s)}ds, written without any e^{+x} so it cannot overflow
+  return 3 * (1 / x - 2 / (x * x) + 2 / (x ** 3)) - 6 * Math.exp(-x) / (x ** 3);
+};
+
+/**
+ * HOW FAR A BODY IS IN STEP WITH ITSELF — and this had the sign backwards.
+ *
+ * It said: at the CEILING every emitter pulses once a tick, one global tick
+ * puts them all on the same tick, so they are in step. That conflates two
+ * different things, and the difference is the whole answer.
+ *
+ * Pulsing on the same tick is not being in step WHERE THE CHARGES MEET. Two
+ * emitters a distance Δr apart, both at ω = m, arrive at a meeting point with
+ * a phase difference `ω·Δr/c`. In step there needs
+ *
+ *     m · R  ≪  2π       i.e.   R  ≪  2π/m  =  THE COMPTON WAVELENGTH
+ *
+ * which is exactly what `coherence` already says — two of the same thing hold
+ * a phase only closer than a Compton wavelength. And `2π/m` is LARGE for a
+ * LIGHT emitter, so coherence wants light constituents and the ceiling is the
+ * WORST case, not the best:
+ *
+ *     at the ceiling      m = 1          coherent out to 1.0·10⁻³⁴ m
+ *     proton              9.4·10⁸ eV     8.2·10⁻¹⁶ m
+ *     neutrino, 0.1 eV                   7.8·10⁻⁷ m
+ *     fuzzy dark matter, 10⁻²² eV        7.8·10¹⁴ m — a thousand AU
+ *
+ * SO A DARK COMPACT OBJECT NEEDS `m < 2π/R`: below 6.4·10⁻¹² eV for something
+ * twelve kilometres across, below 2.6·10⁻¹¹ eV for a solar mass at its own
+ * Schwarzschild radius. AN UPPER BOUND, NOT A KNIFE EDGE — a constituent ten
+ * times under it is as coherent as one a million times under — so there is no
+ * fine-tuning, which is what the ceiling story wrongly implied.
+ *
+ * And the bound has a name: it is the condition for the whole object to be one
+ * quantum state, which is what a condensate or a boson star is.
+ *
+ * WHAT IT COSTS INSTEAD, and this is now the honest bill: dark compact objects
+ * exist in this model only if there is ULTRALIGHT MATTER to make them of. That
+ * is a claim about particle content rather than about gravity, and it says the
+ * things we call black holes are not collapsed baryons. Ordinary matter is out
+ * by some thirty orders and caps at u = 0.196 however hard it is squeezed.
+ *
+ * STILL A PROPOSAL in one respect: it extends `coherence`, argued for two
+ * identical elementary things, to a bulk of many. And it has a corollary
+ * nobody has chased — perfectly coherent matter would have no INTERNAL gravity
+ * either, since the same condition sends G_eff to nought between its own parts.
+ */
+export const inStep = (mass: number, R: number) =>
+  Math.min(1, (2 * Math.PI / Math.max(mass, 1e-300)) / Math.max(R, 1e-300));
+
+/** …and so what `share` a body of that size and constituent has. */
+export const sharing = (mass: number, R: number) =>
+  0.5 * Math.min(1, mass * R / (2 * Math.PI));
+
+/**
+ * SO HOW WOULD A DARK OBJECT FORM — and it does not need exotic matter after
+ * all, which reverses the conclusion two comments up.
+ *
+ * `R < 2π/m` is a condition on R every bit as much as on m, and the previous
+ * note only read it one way. Five permutations were tried:
+ *
+ *   lighter constituents   works, and is what was found first — but it is not
+ *                          the only way, and it was wrongly reported as if it
+ *                          were, which put black holes out of reach of ordinary
+ *                          matter for no good reason.
+ *   a hollow shell         no. A point inside a thin shell sees a TANGENTIAL
+ *                          chord of √(2Rt), not t — 77 m for a kilometre shell
+ *                          a metre thick. Geometry cannot beat a fermi.
+ *   a phase ramp           no. A phased array aligns one direction and
+ *                          misaligns the rest; screening samples all pairs
+ *                          inside, so it redistributes share over angle rather
+ *                          than lowering it.
+ *   net charge             not available. `neutral → + −` makes them in pairs,
+ *                          so a body emits both by construction.
+ *   COLLAPSE FURTHER       yes, and it is the answer.
+ *
+ * SQUEEZE ORDINARY MATTER BELOW ITS OWN COMPTON WAVELENGTH and it self-coheres.
+ * The screening does not switch off — it weakens smoothly, so the observed
+ * potential is `min(u_cap, u_free)` with `u_cap = 16π²G/(m·R·SHEET)`, and the
+ * cap itself RISES as R falls:
+ *
+ *     R (m)      R/λ_C      share      u_cap     u_free     u        redshift
+ *     2.95e+3    3.58e+19   5.00e−1    1.96e−1   5.01e−1    1.96e−1  0.822
+ *     1.00e−15   1.21e+1    5.00e−1    1.96e−1   1.48e+18   1.96e−1  0.822
+ *     1.00e−17   1.21e−1    6.07e−2    1.61e+0   1.48e+20   1.61e+0  0.199
+ *     1.00e−19   1.21e−3    6.07e−4    1.61e+2   1.48e+22   1.61e+2  8e−71
+ *     1.14e−22   1.38e−6    6.92e−7    1.42e+5   1.30e+25   1.42e+5  < 1e−300
+ *
+ * Dark (u > 30) once `R < 16π²G/(m·SHEET·30)` — 5.4·10⁻¹⁹ m for protons, about
+ * a thousandth of a fermi, and further out for anything lighter (10⁻¹⁵ m for
+ * electrons, 5·10⁻⁹ m for a 0.1 eV neutrino). NO ULTRALIGHT MATTER NEEDED.
+ *
+ * AND THE COLLAPSE HAS NOTHING TO STOP IT. In general relativity a star reaches
+ * its horizon and is done. Here no radius is marked, so it simply continues —
+ * and on the way it passes through the screened regime as a compact object with
+ * u pinned at 0.196, which is NOT a support: screening attenuates only what
+ * LEAVES, while the internal field between neighbours is short-range and
+ * unscreened. Nothing holds it up, so it keeps going until the lattice ceiling
+ * at ρ = 1. A solar mass ends as a ball 1.1·10⁻²² m across.
+ *
+ * WHAT AN OBSERVER SEES IS UNCHANGED, because that is fixed by the metric a few
+ * Schwarzschild radii out, where u ~ ½ and the exponential and isotropic forms
+ * agree closely. There is still a photon sphere and still a shadow. What
+ * differs is what sits at the middle — a ball of ceiling-density matter rather
+ * than a singularity — and that nothing was ever causally severed.
+ *
+ * WHICH LEAVES THE BILL SHORTER THAN IT WAS. Dark compact objects form from
+ * ordinary collapse. The neutron star keeps its problem — at 1.2·10⁴ m it is
+ * twenty orders too big to cohere, so it still shows about half its mass, and
+ * that is still outside any equation of state.
+ */
+
+/**
+ * AND WHAT IF MATTER IN A FOLDED PLACE CAN EMIT MORE — a second feedback, and
+ * the one that would restore horizons.
+ *
+ * A node that has taken n annihilations has WAYS + n edges. `SHEET` is how many
+ * of them a pulse goes into, so a source SITTING THERE lets go of
+ * `SHEET·(WAYS+n)/WAYS = SHEET·(1+u)` charges a pulse. Emission is mass, so
+ *
+ *     M_eff = M·(1 + κu)          κ = 1 if the sheet scales with the edges
+ *
+ * — a feedback on the SOURCE, where the earlier one (`du = du₀(1+u)`) was a
+ * feedback on the TRANSPORT. The once-a-tick ceiling stops being the ceiling,
+ * because the ceiling was on how OFTEN, not on how MANY.
+ *
+ * IT MAKES THE FOLD SELF-CONSISTENT, AND THAT DIVERGES:
+ *
+ *     u = u₀(1 + κu)   ⇒   u = u₀/(1 − κu₀)
+ *
+ *     u₀     u at κ=1    A = e^−2u
+ *     0.30   4.286e−1    4.244e−1
+ *     0.90   9.000e+0    1.523e−8
+ *     0.99   9.900e+1    1.023e−86
+ *     1.00   ∞           0            ← A HORIZON, at r = GM/c²
+ *
+ * So this restores horizons, which the arrival feedback alone could not: e^{u₀}
+ * never diverges at finite u₀, and this does.
+ *
+ * BUT IT MOVES β, AND β IS MEASURED. `A = exp(−2u₀/(1−κu₀)) = 1 − 2u₀ +
+ * (2−2κ)u₀² + …`, so `β = 1 − κ`:
+ *
+ *     κ        β        perihelion (2+2γ−β)/3
+ *     0.0001   0.9999   1.00003    allowed
+ *     0.01     0.99     1.00333    EXCLUDED, 0.3% high
+ *     1.0      0        1.33333    EXCLUDED, 33% high
+ *
+ * β is known to about 3·10⁻⁴ from lunar laser ranging and Mercury. At κ = 1 the
+ * advance is EIGHT SIXTHS where the panels measure six. SO A BOOST LINEAR IN u
+ * IS EXCLUDED OUTRIGHT, by three thousand.
+ *
+ * IT SURVIVES ONLY AS A DEEP-FIELD EFFECT. β is a statement about the u² term,
+ * so a boost beginning at u³, or above a threshold, leaves the weak field alone
+ * and still diverges eventually. And the threshold is not invented: `BIAS`
+ * saturates as `n/(WAYS+n)`, which turns over when n ~ WAYS, i.e. u ~ 1 — which
+ * is where the counting argument already changes character, and is exactly
+ * where the divergence would sit.
+ *
+ * WHAT IT KEEPS AND WHAT IT COSTS:
+ *
+ *   the pull, G, met(R)          KEPT. u ~ 10⁻⁸, so the boost is nothing.
+ *   REACHES = 0.361              KEPT. A vacuum property, no fold in it.
+ *   E = ħω, λ = h/p, Dirac       KEPT. Nothing to do with gravity.
+ *   A, B and β = γ = 1           KEPT ONLY IF the boost starts above u².
+ *   no horizons                  LOST — and that is the point.
+ *   the R/R_s = 2.55 floor       LOST. The fold runs away before it applies.
+ *   dark objects need R < λ_C    LOST. A horizon does it directly, so the
+ *                                coherence-and-collapse story is no longer
+ *                                needed — though nothing shown about it is
+ *                                wrong, it just stops being load-bearing.
+ *   neutron star at half mass    UNTOUCHED, and slightly WORSE: at u ~ 0.2 a
+ *                                boost raises emission ~20%, which raises Φ,
+ *                                which screens harder.
+ *
+ * So it cannot be the fix for both problems, and it buys horizons at the price
+ * of a threshold nobody has derived. What would settle it is whether `SHEET`
+ * really scales with a node's edge count or is fixed by the dimension — which
+ * is a question about what a pulse IS, and `field.ts` currently says the latter
+ * (`3^(d−1) − 1`, a property of the lattice and not of the place).
+ */
+
+/**
+ * TWO WAYS TO MAKE A DARK OBJECT, AND THE MODEL KEEPS BOTH.
+ *
+ * They are not rivals to be settled by argument — they predict different
+ * things, so they are settled by looking. `regimes.ts` carries `boost` for the
+ * second; at 0 the model says the first.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ROUTE ONE — DARK BY REDSHIFT. No horizon anywhere.
+ *
+ * Collapse past λ_C, the matter self-coheres, `share → 0`, the screening cap
+ * lifts and `u = GM/rc²` grows without bound. `A = e^−2u` never reaches nought,
+ * so nothing is ever cut off; the object is dark because e^−u is small, and a
+ * solar mass ends as a ball 1.1·10⁻²² m across at the lattice ceiling.
+ *
+ *   costs nothing        no new parameter, no threshold — it follows from
+ *                        `coherence` and the once-a-tick ceiling, both already
+ *                        in the model
+ *   there is a surface   light leaves, arbitrarily redshifted, never severed
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ROUTE TWO — DARK BY HORIZON. A genuine one.
+ *
+ * A node with WAYS + n edges has more ways for a source SITTING THERE to pulse
+ * into, so `SHEET → SHEET(1+u)` and emission — which is mass — is boosted:
+ *
+ *     M_eff = M(1 + κu)   ⇒   u = u₀/(1 − κu₀)
+ *
+ *     u₀     u at κ=1    A = e^−2u
+ *     0.30   4.286e−1    4.244e−1
+ *     0.90   9.000e+0    1.523e−8
+ *     1.00   ∞           0            ← a horizon, at r = GM/c²
+ *
+ * This is a feedback on the SOURCE where the compounding was a feedback on the
+ * TRANSPORT, and unlike `e^{u₀}` it diverges at finite u₀. The once-a-tick
+ * ceiling stops binding because the ceiling was on how OFTEN, not how MANY.
+ *
+ *   costs a threshold    `β = 1 − κ`, and β is known to 3·10⁻⁴. At κ = 1 the
+ *                        perihelion advance is EIGHT sixths where the panels
+ *                        measure six — 33% high, excluded by three thousand.
+ *                        So the boost must begin above u², at a threshold
+ *                        nobody has derived. `BIAS` saturating as n/(WAYS+n)
+ *                        turns over at n ~ WAYS, i.e. u ~ 1, which is at least
+ *                        where such a threshold would naturally sit.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * WHAT SEPARATES THEM, which is the useful part:
+ *
+ *     both               a photon sphere and a shadow — the metric a few R_s
+ *                        out is the same, so images do not distinguish them
+ *     route one          a surface. Ringdown echoes, no information loss,
+ *                        arbitrarily red but finite escape
+ *     route two          a true horizon. Standard black-hole phenomenology,
+ *                        clean ringdown, causal severance
+ *     route one          needs collapse below λ_C — a definite radius with no
+ *                        free parameter (5·10⁻¹⁹ m for protons)
+ *     route two          needs a threshold whose position is not fixed by
+ *                        anything counted yet
+ *
+ * WHAT NEITHER FIXES: the neutron star still shows about half its mass. Route
+ * two makes it marginally worse, since a boost at u ~ 0.2 raises emission and
+ * so raises Φ and so screens harder. That bill is outstanding under both.
+ *
+ * AND WHAT WOULD SETTLE ROUTE TWO from inside the model: whether `SHEET` scales
+ * with a node's edge count or is fixed by the dimension. `field.ts` currently
+ * says the latter — `3^(d−1) − 1`, a property of the lattice rather than of the
+ * place — so route two needs that reading changed, and route one does not.
+ */
+
+/**
+ * SCALING `SHEET` WITH THE EDGE COUNT, AND TYING THE MASS CEILING TO IT —
+ * which turns out to be TWO proposals, and only one of them survives.
+ *
+ *   (A) EACH EMITTER EMITS MORE.  SHEET → SHEET(1+u), so a given mass placed
+ *       deep radiates harder: M_eff = M(1+u).
+ *   (B) A CELL HOLDS MORE EMITTERS. The ceiling on DENSITY scales, ρ_max → 1+u,
+ *       while each emitter emits exactly what it always did.
+ *
+ * (A) changes what a FIXED mass does, so it moves β. (B) changes only how much
+ * mass fits somewhere, so it cannot. That is the whole of the difference and it
+ * decides both.
+ *
+ * (A) AND BEING CONSISTENT MAKES IT WORSE. If SHEET scales with the edges then
+ * so does WAYS — both are edge counts — and `G = BITE·SHEET²·LIGHT/(8π²·CORE·WAYS)`
+ * then scales as (1+u) too. With M_eff also boosted, `u = u₀(1+u)²`:
+ *
+ *     what scales                        k     β      perihelion
+ *     nothing (the model as it stands)   0     1.0    1.0000    allowed
+ *     SHEET only                         1     0.0    1.3333    EXCLUDED
+ *     SHEET and WAYS together            2    −1.0    1.6667    EXCLUDED
+ *
+ * TEN SIXTHS where the panels measure six. Keeping the counts consistent
+ * doubles the damage rather than cancelling it, and β is known to 3·10⁻⁴, so
+ * this is out by about seven thousand. (A) survives only above a threshold, as
+ * before; consistency does not rescue it.
+ *
+ * (B) IS SAFE, AND IT GIVES SOMETHING. A fixed mass emits what it always did,
+ * so u = u₀ and β = γ = 1 are untouched. What changes is capacity:
+ *
+ *     ρ_max = 1 + u,   u = GM/R   ⇒   M = (4/3)πR³ / (1 − (4/3)πG R²)
+ *
+ * which DIVERGES at
+ *
+ *     R_c = √(3/4πG) = √(3π·WAYS)/SHEET = 1.9567 cells
+ *
+ * — a pure count. So R_c is approached from below and never passed:
+ *
+ *     R (cells)   M it holds    as M☉        u = GM/R
+ *     1.50000     3.428e+1      2.34e−38     1.425e+0
+ *     1.90000     5.027e+2      3.43e−37     1.650e+1
+ *     1.95669     6.664e+5      4.55e−34     2.124e+4
+ *
+ *     1 M☉        R = 1.956736 cells    u = 4.669e+37
+ *     10⁶ M☉      R = 1.956736 cells    u = 4.669e+43
+ *
+ * EVERY COLLAPSED OBJECT IN THE UNIVERSE IS THE SAME PHYSICAL SIZE — a hair
+ * under two Planck lengths — and differs only in how deep its potential is,
+ * with u ∝ M. Darkness is then automatic: no coherence argument needed, no
+ * horizon needed. Route one gets stronger AND gets a size.
+ *
+ * BUT (A) AND (B) MAY NOT BE SEPARABLE, and that is the thing to settle next.
+ * `m = 1/X` ticks between pulses, and `m ≤ 1` IS "once a tick". If the ceiling
+ * on m rises above one, that is pulsing more often than once a tick, which is
+ * emitting more per tick — which is (A), which is excluded. So the ceiling that
+ * may scale is the one on HOW MANY EMITTERS A CELL HOLDS, not on how heavy a
+ * single emitter may be.
+ *
+ * Which is a real distinction and a checkable one: (B) says a folded cell fits
+ * more distinct emitters — plausibly one per edge — each of them the same old
+ * `m ≤ 1` thing, with nothing about any single emitter changed anywhere. That
+ * is exactly why β survives, and it is the version to take.
+ */
+
+/**
+ * TWO CELLS ACROSS IN WHICH SENSE — and the one prediction an instrument can
+ * settle now.
+ *
+ * `R_c = 1.9567` is a COORDINATE radius, and nothing measures those. What
+ * anything measures is the AREAL one: the sphere at coordinate r has proper
+ * area `4πr²B`, so
+ *
+ *     r_areal = r·√B = r·e^{u}          B = e^{2u},  u = GM/rc²
+ *
+ * — which is the same statement as "a node with WAYS + n edges touches far more
+ * than a cell's worth of neighbours", measured rather than counted.
+ *
+ * AND IT DOES NOT SHRINK TO NOTHING. `d/dr (r e^{GM/r}) = e^{GM/r}(1 − GM/r)`,
+ * so there is a stationary point at `r = GM/c²`:
+ *
+ *     r (coord)    r_areal      r_areal/R_s
+ *     2 GM         4.869e+3 m   1.6487
+ *     1 GM         4.014e+3 m   1.3591     ← minimum
+ *     0.5 GM       5.456e+3 m   1.8473
+ *     0.25 GM      2.016e+4 m   6.8248
+ *
+ * THE AREA HAS A THROAT, of areal radius `e·GM/c² = (e/2)·R_s = 1.3591 R_s`,
+ * and inside it the area GROWS again without bound. The geometry is not a point
+ * — it is a narrow neck opening into something vast, and the ratio is
+ * scale-free (identical at 1 M☉ and 10 M☉).
+ *
+ * SO THE OBJECT IS TWO CELLS ACROSS AND ENORMOUS AT ONCE. A solar mass at R_c
+ * has u = 4.7·10³⁷, so an areal radius of 10^(2.0·10³⁷) cells — a number with
+ * ten-to-the-thirty-seven digits — and its node carries WAYS(1+u) = 1.2·10³⁹
+ * edges. Those two are the same fact. (That figure uses the EXTERIOR u = GM/r
+ * where the interior solution actually applies; for a uniform ball u_centre is
+ * 1.5× the surface value, so the conclusion is unchanged in kind and the exact
+ * exponent is not to be trusted. The throat below is.)
+ *
+ * AND THE THROAT IS WHAT AN OBSERVER SEES. The photon sphere is where
+ * `d/dr(r²B/A) = 0`; with `B/A = e^{4u}` that is `2r − 4GM = 0`, so `r_ph = 2GM`
+ * — and the shadow's impact parameter is `b = r√(B/A) = r·e^{2u}`:
+ *
+ *     this model   b = 2e·GM/c²    = 5.4366 GM/c² = 2.7183 R_s
+ *     GR           b = 3√3·GM/c²   = 5.1962 GM/c² = 2.5981 R_s
+ *     ratio                          1.0463
+ *
+ * THE SHADOW IS 4.6% LARGER THAN GENERAL RELATIVITY'S AT THE SAME MASS. A
+ * fixed, parameter-free ratio: measure the mass from orbits and the shadow from
+ * imaging and this predicts a constant mismatch between them. It sits inside
+ * the Event Horizon Telescope's present ~10% systematic error and outside what
+ * it is aiming for, so it is a near-term test rather than a philosophical one —
+ * and it is the only thing in this file an existing instrument can settle.
+ */
+export const areal = (r: number, mass: number) =>
+  r * Math.exp(GRAVITY * mass / (r * LIGHT * LIGHT));
+
+/** The narrowest the area gets, in Schwarzschild radii. */
+export const THROAT = Math.E / 2;
+
+/** How much bigger the shadow is than general relativity's. */
+export const SHADOW = 2 * Math.E / (3 * Math.sqrt(3));
