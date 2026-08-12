@@ -440,20 +440,29 @@ const apart = (s: Surface) => {
 const split = (s: Surface) => {
   const box = frame(s);
   const XMAX = 30;
-  const top = 1.18, bot = -0.35;                          // fractions of `inside`
+  const top = 2.6, bot = -0.35;                          // fractions of `inside`
   const { X, Y } = axes(s, box, XMAX, bot, top,
-    [5, 10, 15, 20, 25, 30], [1, 0.75, 0.5, 0.25, 0, -0.25],
-    v => v === 0 ? "0" : v.toFixed(2));
+    [5, 10, 15, 20, 25, 30], [2.5, 2, 1.5, 1, 0.5, 0],
+    v => v === 0 ? "0" : v.toFixed(1));
 
   s.ctx.strokeStyle = "rgba(255,255,255,0.22)"; s.ctx.lineWidth = 1;
   s.ctx.beginPath(); s.ctx.moveTo(box.x0, Y(0)); s.ctx.lineTo(box.x1, Y(0)); s.ctx.stroke();
 
+  // what the measurement needs, on the same scale — the pull Gaia's curve
+  // implies, as a fraction of what the mass inside the orbit supplies
+  path(s, CURVE, X, Y,
+    p => Math.pow(MEASURED(p.r / KPC) * 1e3, 2) / (p.r * p.inside), SEEN, 2.2);
+  path(s, CURVE, X, Y,
+    p => mond(p.total) / p.inside, MODEL, 2.2);
+
   path(s, CURVE, X, Y, p => 1, PALE, 1.6, [4, 3]);
   path(s, CURVE, X, Y, p => p.outside / p.inside, DATA, 2.2);
-  path(s, CURVE, X, Y, p => p.total / p.inside, MODEL, 2.2);
+  path(s, CURVE, X, Y, p => p.total / p.inside, RELAT, 1.8, [5, 3]);
 
+  tag(s, X(1.2), Y(2.42), "what is measured", SEEN);
+  tag(s, X(1.2), Y(2.20), "this model", MODEL);
   tag(s, X(16.4), Y(1.09), "pull from inside r  (set to 1)", PALE);
-  tag(s, X(15), Y(0.80), "net", MODEL);
+  tag(s, X(13.4), Y(0.72), "NEWTON & GR, net", RELAT);
   tag(s, X(11.5), Y(-0.21), "pull from OUTSIDE r — outward, so it subtracts", DATA);
 
   under(s, box, "radius (kpc)");
@@ -487,8 +496,8 @@ const speeder = (table: { r: number; v: number }[]) => (r: number) => {
 
 const LAWS = [
   {
-    name: "GENERAL RELATIVITY",
-    under: "= Newton on the baryons, to a part in 10⁶",
+    name: "NEWTON & GR",
+    under: "the baryons alone — the two agree to a part in 10⁶",
     css: DATA,
     v: speeder(CURVE.map(p => ({ r: p.r, v: kms(p.total, p.r) * 1e3 }))),
   },
@@ -499,10 +508,10 @@ const LAWS = [
     v: speeder(CURVE.map(p => ({ r: p.r, v: MEASURED(p.r / KPC) * 1e3 }))),
   },
   {
-    name: "THE CAUGHT PAIR",
-    under: "the 1/R law, one scale fitted",
+    name: "THIS MODEL",
+    under: "the transport route — a₀ = cH₀/2π, computed",
     css: MODEL,
-    v: speeder(CAUGHT),
+    v: speeder(CURVE.map(p => ({ r: p.r, v: Math.sqrt(mond(p.total) * p.r) }))),
   },
 ];
 
@@ -660,7 +669,7 @@ export const Discs = ({ height = 300 }: { height?: number }) =>
     <div style={{
       fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
       color: FAINT, marginBottom: 6,
-    }}>four spokes of stars, sheared by three laws — dashed is the measured one, drawn in every panel</div>
+    }}>four spokes of stars, sheared by three laws — Newton &amp; GR, what is measured, and this model</div>
     <div style={{ height, background: "#08090d" }}>
       <CanvasView deps={["discs"]} paint={() => ({ frame: discs })} />
     </div>
@@ -733,6 +742,10 @@ const highz = (s: Surface) => {
   }
   ctx.textAlign = "left";
 
+  // NEWTON & GR sit at exactly 1 — the baryons and nothing else
+  ctx.strokeStyle = RELAT; ctx.lineWidth = 1.8;
+  ctx.beginPath(); ctx.moveTo(box.x0, Y(1.0)); ctx.lineTo(box.x1, Y(1.0)); ctx.stroke();
+
   // what the measurement allows — everything above this line is excluded
   ctx.fillStyle = "rgba(235,90,90,0.10)";
   ctx.fillRect(box.x0, box.y0, box.w, Y(ALLOWED) - box.y0);
@@ -762,6 +775,7 @@ const highz = (s: Surface) => {
   tag(s, X(0.66), Y(1.44), "EXCLUDED — Genzel measures f_DM(<Re) < 0.2, i.e. under 1.12", SEEN);
   tag(s, X(0.66), Y(1.325), "a₀ = cH₀/2π·(1+z) — THIS MODEL", MODEL);
   tag(s, X(0.66), Y(1.265), "a₀ fixed — ordinary MOND", DATA);
+  tag(s, X(0.66), Y(1.028), "NEWTON & GR — the baryons alone", RELAT);
 
   under(s, box, "redshift");
   ctx.fillStyle = FAINT;
@@ -826,11 +840,11 @@ const HZ_LAWS = (() => {
   };
   return [
     {
-      name: "WHAT IS MEASURED", under: "baryons — a declining curve (Genzel 2017)",
-      css: SEEN, v: speeder(0),
+      name: "NEWTON & GR", under: "the baryons alone — a declining curve",
+      css: PALE, v: speeder(0),
     },
     {
-      name: "a₀ CONSTANT", under: "the mean-spacing reading — a₀ = cH₀/2π",
+      name: "THIS MODEL", under: "a₀ = cH₀/2π, constant in z",
       css: MODEL, v: speeder(A0_MODEL),
     },
     {
@@ -914,7 +928,10 @@ const hzDiscs = (() => {
         }
         ctx.setLineDash([]);
       };
-      if (n !== 0) spokes(HZ_LAWS[0].v, GHOST, 1.3, [3, 3]);
+      // Newton is the dashed grey ghost and the ceiling f_DM < 0.2 allows is
+      // the dashed white one, so both references are in every panel.
+      if (n !== 0) spokes(HZ_LAWS[0].v, "rgba(111,123,168,0.45)", 1.2, [3, 3]);
+      spokes((r: number) => HZ_LAWS[0].v(r) * 1.118, GHOST, 1.2, [2, 4]);
       spokes(law.v, law.css, 1.7, []);
     });
 
@@ -922,7 +939,7 @@ const hzDiscs = (() => {
     ctx.font = "400 10px ui-monospace, Menlo, monospace";
     ctx.fillText(`${(t / GYR * 1e3).toFixed(0)} Myr — a compact disc at z = ${HZ_Z}`, 2, height - 6);
     ctx.textAlign = "right";
-    ctx.fillText("dashed is the measured, baryonic curve — drawn in every panel",
+    ctx.fillText("grey dash = Newton, white dash = the f_DM < 0.2 ceiling — both in every panel",
       width - 2, height - 6);
     ctx.textAlign = "left";
   };
@@ -934,8 +951,162 @@ export const HighZDiscs = ({ height = 300 }: { height?: number }) =>
     <div style={{
       fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
       color: FAINT, marginBottom: 6,
-    }}>a compact disc at z ≈ 2 — where a₀ ∝ 1/t predicts a visibly flatter galaxy than is seen</div>
+    }}>a compact disc at z ≈ 2 — Newton &amp; GR against two readings of a₀, with the measured ceiling in every panel</div>
     <div style={{ height, background: "#08090d" }}>
       <CanvasView deps={["hzdiscs"]} paint={() => ({ frame: hzDiscs })} />
     </div>
   </div>;
+
+// ---------------------------------------------------------------------------
+// THE HIGH-z DISCS AS ROTATION CURVES, which is the only way to see whether the
+// model agrees with them. The panels above give a boost factor and a shear —
+// neither lets you look at a curve and judge it, which is what the Milky Way
+// panel allows and what these deserve too.
+//
+// Each galaxy: its baryons summed the same way as everywhere else, the model's
+// prediction on top, and the band Genzel's f_DM(<Re) < 0.2 permits. The point
+// is that a DECLINING curve is what is measured, so the model has to decline
+// too — and at these densities it does, because g_N ≫ a₀ throughout.
+
+const GZ: { name: string; z: number; logMs: number; fgas: number; Re: number }[] = [
+  { name: "COS4_01351", z: 0.854, logMs: 11.07, fgas: 0.35, Re: 8.2 },
+  { name: "D3a_6397", z: 1.500, logMs: 11.07, fgas: 0.45, Re: 7.4 },
+  { name: "GS4_43501", z: 1.613, logMs: 10.71, fgas: 0.50, Re: 4.9 },
+  { name: "zC_406690", z: 2.196, logMs: 10.62, fgas: 0.55, Re: 5.5 },
+  { name: "zC_400569", z: 2.242, logMs: 11.07, fgas: 0.45, Re: 3.3 },
+];
+
+/** an exponential disc's own pull, summed ring by ring — no shell theorem */
+const gzBaryons = (Mbar: number, Rd: number, r: number, NRr = 240, NP = 240) => {
+  const RMAX = 12 * Rd, h = Rd / 8;
+  let acc = 0;
+  for (let i = 0; i < NRr; i++) {
+    const R = RMAX * (i + 0.5) / NRr, dRr = RMAX / NRr;
+    const s = Mbar / (2 * Math.PI * Rd * Rd) * Math.exp(-R / Rd) * R * dRr;
+    let a = 0;
+    for (let j = 0; j < NP; j++) {
+      const p = 2 * Math.PI * (j + 0.5) / NP;
+      const dx = R * Math.cos(p) - r, dy = R * Math.sin(p);
+      a += dx / Math.pow(dx * dx + dy * dy + h * h, 1.5);
+    }
+    acc += -G * s * a * (2 * Math.PI / NP);
+  }
+  return acc;
+};
+
+const GZ_CURVES = GZ.map(d => {
+  const Mbar = Math.pow(10, d.logMs) * MSUN / (1 - d.fgas);
+  const Rd = d.Re * KPC / 1.68;
+  const pts: { r: number; bar: number; mod: number }[] = [];
+  for (let i = 1; i <= 26; i++) {
+    const r = i * 0.15 * d.Re * KPC;
+    const gB = gzBaryons(Mbar, Rd, r);
+    const gM = gB / 2 + Math.sqrt(gB * gB / 4 + gB * A0_MODEL);
+    pts.push({ r, bar: Math.sqrt(Math.max(0, gB * r)), mod: Math.sqrt(Math.max(0, gM * r)) });
+  }
+  return { d, pts, Re: d.Re * KPC };
+});
+
+const gzPanel = (s: Surface) => {
+  const { ctx, width, height } = s;
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#08090d";
+  ctx.fillRect(0, 0, width, height);
+
+  const pad = 30, gap = 8;
+  const w = (width - pad - gap * 4) / 5;
+  const top = 42, bot = 30, hh = height - top - bot;
+  const VMAX = 420;
+
+  GZ_CURVES.forEach((g, n) => {
+    const x0 = pad + n * (w + gap);
+    const RMAXk = 3.0 * g.d.Re;
+    const X = (rk: number) => x0 + w * Math.min(rk, RMAXk) / RMAXk;
+    const Y = (v: number) => top + hh * (1 - Math.min(v, VMAX) / VMAX);
+    const inside = g.pts.filter(p => p.r / KPC <= RMAXk);
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(x0, top - 2, w, hh + 4); ctx.clip();
+
+    ctx.strokeStyle = GRID; ctx.lineWidth = 1;
+    for (const v of [100, 200, 300, 400]) {
+      ctx.beginPath(); ctx.moveTo(x0, Y(v)); ctx.lineTo(x0 + w, Y(v)); ctx.stroke();
+    }
+
+    // the ceiling f_DM < 0.2 sets — drawn ONLY inside Re, which is where it
+    // is quoted. Beyond Re the measurement says nothing and the model is free.
+    const within = inside.filter(p => p.r <= g.Re);
+    ctx.fillStyle = "rgba(238,240,245,0.13)";
+    ctx.beginPath();
+    within.forEach((p, i) => {
+      const x = X(p.r / KPC), y = Y(p.bar / 1e3);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    for (let i = within.length - 1; i >= 0; i--)
+      ctx.lineTo(X(within[i].r / KPC), Y(within[i].bar / 1e3 * 1.118));
+    ctx.closePath(); ctx.fill();
+
+    const line = (pts: typeof inside, of: (p: typeof inside[0]) => number,
+      css: string, wide: number, dash: number[]) => {
+      ctx.strokeStyle = css; ctx.lineWidth = wide; ctx.setLineDash(dash);
+      ctx.beginPath();
+      pts.forEach((p, i) => {
+        const x = X(p.r / KPC), y = Y(of(p) / 1e3);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke(); ctx.setLineDash([]);
+    };
+    line(within, p => p.bar * 1.118, SEEN, 1.3, [4, 3]);
+    line(inside, p => p.bar, PALE, 1.4, []);
+    line(inside, p => p.mod, MODEL, 2.2, []);
+    ctx.restore();
+
+    // Re, and the two values that are actually being compared there
+    ctx.strokeStyle = "rgba(255,255,255,0.20)"; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(X(g.d.Re), top); ctx.lineTo(X(g.d.Re), top + hh);
+    ctx.stroke(); ctx.setLineDash([]);
+
+    const at = g.pts.reduce((a, b) =>
+      Math.abs(b.r - g.Re) < Math.abs(a.r - g.Re) ? b : a);
+    const bx = X(g.d.Re);
+    ctx.fillStyle = SEEN;
+    ctx.beginPath(); ctx.arc(bx, Y(at.bar / 1e3 * 1.118), 2.6, 0, 2 * Math.PI); ctx.fill();
+    ctx.fillStyle = MODEL;
+    ctx.beginPath(); ctx.arc(bx, Y(at.mod / 1e3), 3.0, 0, 2 * Math.PI); ctx.fill();
+
+    ctx.fillStyle = MODEL;
+    ctx.font = "600 9px ui-sans-serif, system-ui, sans-serif";
+    ctx.fillText(g.d.name, x0 + 1, 12);
+    ctx.fillStyle = FAINT;
+    ctx.font = "400 8.5px ui-monospace, Menlo, monospace";
+    ctx.fillText(`z ${g.d.z.toFixed(2)}   Re ${g.d.Re.toFixed(1)}`, x0 + 1, 24);
+    const ratio = at.mod / at.bar;
+    ctx.fillStyle = ratio <= 1.118 ? "#8bd48b" : DATA;
+    ctx.font = "500 8.5px ui-monospace, Menlo, monospace";
+    ctx.fillText(`${ratio.toFixed(3)} ${ratio <= 1.118 ? "≤" : ">"} 1.118`, x0 + 1, 35);
+  });
+
+  ctx.fillStyle = FAINT;
+  ctx.font = "400 9px ui-monospace, Menlo, monospace";
+  ctx.textAlign = "right";
+  for (const v of [100, 200, 300, 400]) {
+    const y = top + hh * (1 - v / VMAX);
+    ctx.fillText(String(v), pad - 4, y + 3);
+  }
+  ctx.fillText("out to 3 Re — dashed vertical is Re, where f_DM is quoted",
+    width - 2, height - 6);
+  ctx.textAlign = "left";
+  ctx.fillText("km/s", 2, top - 8);
+  ctx.fillStyle = MODEL;
+  ctx.font = "500 9.5px ui-sans-serif, system-ui, sans-serif";
+  ctx.fillText("the model", 2, height - 6);
+  ctx.fillStyle = PALE;
+  ctx.fillText("NEWTON & GR — baryons alone", 68, height - 6);
+  ctx.fillStyle = SEEN;
+  ctx.fillText("measured — the f_DM < 0.2 ceiling, inside Re", 236, height - 6);
+};
+
+/** the high-z discs as curves, which is the only way to judge the agreement */
+export const HighZCurves = ({ height = 260 }: { height?: number }) =>
+  <Panel paint={gzPanel} height={height}
+    note="Genzel's five discs as rotation curves — the model against what is allowed" />;

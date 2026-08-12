@@ -1417,6 +1417,37 @@ export const G_LATTICE =
 export const GRAVITY = G_LATTICE * GRAIN;
 
 /**
+ * AND THE ACCUMULATION SETTLES, WHICH RETIRES THE DEFECT BELOW.
+ *
+ * `MADE` is stated as a rate, and the comment below records as its blocking
+ * problem that a rate accumulates: `m·SHEET·t/r` passes `G·m/r` after 0.008
+ * ticks and keeps going, giving 10⁶³ over the age. THAT COUNT INTEGRATES THE
+ * MAKING WITH NOTHING DRAINING IT.
+ *
+ * Annihilation gives the point back. Points made at the body ride out with the
+ * carriers and are unmade where a carrier annihilates, so in steady state
+ *
+ *     (1/r²)·d/dr[r²·c·ρ] = −ρ·c/λ + S·δ(r)   ⇒   ρ = S·e^{−r/λ}/(4πr²c)
+ *
+ * — A STATIC PROFILE WITH NO t IN IT. The total held is λ, set by the mean free
+ * path rather than by the age, and it is reached in λ/c:
+ *
+ *     a galaxy, 30 kpc        settles in 1e−4 Gyr   — instantly
+ *     reach at Ω = 1, 1.5 Gpc 5.0 Gyr
+ *     reach at Ω_b, 6.9 Gpc   22.4 Gyr              — longer than the age
+ *
+ * SO AT SOLAR-SYSTEM AND GALACTIC SCALES u IS THE NEWTONIAN u, every GR test in
+ * this file is computed from the right metric, and `MADE` was never in conflict
+ * with `slowing`. The one place it survives is r ≳ λ, where the excess is still
+ * filling and is suppressed by about ct₀/λ = 0.615 — an order-unity effect at
+ * scales nothing here measures. See `tests/accumulate.ts`.
+ *
+ * (It also removes the last support for the source-feedback route, which needed
+ * the accumulated u to be enormous. That route was retired on other grounds;
+ * this kills it a second time and independently.)
+ */
+
+/**
  * WHAT B WOULD COST, IF SPACE WERE MADE — the surviving account, stated in
  * code because it is a claim about a number, and not wired in because it does
  * not yet produce a static one.
@@ -5043,6 +5074,54 @@ export const caught = {
  */
 
 /**
+ * AND THE STEP, WHICH IS THE ONE PREDICTION LEFT THAT NOTHING ELSE MAKES.
+ *
+ * The projection is a STEP function of the occupancy, because the 26 exits from
+ * a cell carry only three distinct direction cosines — 1 for the six faces,
+ * 1/√2 for the twelve edges, 1/√3 for the eight corners. A galaxy spans
+ * g/a₀ = 0.34 to 4.84 and never crosses one, which is what saves the shape of
+ * the rotation curve. BUT FAR ENOUGH OUT IT DOES CROSS.
+ *
+ *     the cone reaches cos = 1/√2   at   g/a₀ = 0.172
+ *     the cone reaches cos = 1/√3   at   g/a₀ = 0.268
+ *
+ * and in the deep regime g = √(g_N·a₀), so those are RADII:
+ *
+ *     galaxy               M_bar        g/a₀ = 0.268   0.172
+ *     the Milky Way        6.2e10 M☉    33 kpc         52 kpc
+ *     a big spiral, 3×     1.9e11       58             90
+ *     a dwarf, 1/30        2.1e9        6              9
+ *
+ * The Milky Way's two steps land where the Sagittarius stream is and where the
+ * satellites are measured. A dwarf's land INSIDE ITS STELLAR BODY.
+ *
+ * AND THE SIZE. v ∝ a₀^¼ in the deep regime, so the plateau ratios 0.9553,
+ * 0.8919 and 0.8976 give jumps of 1.14%, 2.82% and 2.67% — two to six km/s on a
+ * 200 km/s curve. Small, and SHARP: not a bend but a step, at a radius fixed by
+ * the baryons with nothing to tune.
+ *
+ * WHICH IS THE ONLY GENUINELY NEW THING THIS ACCOUNT OFFERS. MOND has no reason
+ * for a curve to be anything but smooth, and a ΛCDM halo is smooth by
+ * construction. A discrete lattice with 26 exits has exactly three places where
+ * the geometry changes and they are not adjustable.
+ *
+ * AND WHAT IT DOES TO GENZEL, WHICH IS THE OTHER HALF OF THE QUESTION. Those
+ * discs are dense, so they sit on the most-shut plateau where a₀ is smallest:
+ *
+ *     reading                          MW shape   Genzel worst   margin to 1.12
+ *     isotropic, a₀ predicted          1.1%       1.112          0.008
+ *     anisotropic, a₀ predicted        5.2%       1.090          0.030
+ *     anisotropic, a₀ fitted at 1.38×  0.7%       1.117          0.003
+ *
+ * THE ANISOTROPY RELIEVES GENZEL BY 3.7× AND COSTS THE MILKY WAY, and there is
+ * no setting where both are comfortable. Refitting a₀ upward recovers the curve
+ * and gives the margin straight back. So Genzel is not fixed by a knob — it is
+ * fixed by settling HOW FAR THE CONE IS SHUT, which is the same kind of question
+ * as the 13/8 above, and is arithmetic on the emission rule rather than
+ * anything astronomical.
+ */
+
+/**
  * TEST M — THE CARRIERS ALREADY THERE BLOCK THE SPLITTING, WHICH DERIVES THE
  * INTERPOLATION FUNCTION INSTEAD OF ASSUMING IT.
  *
@@ -5073,18 +5152,58 @@ export const caught = {
  * blocking is a function of the field at the point, and nothing else. So it
  * does not move with redshift because there is nothing in it that could.
  *
- * WHICH SETTLES GENZEL WITHOUT THE CANCELLATION:
+ * WHICH REMOVES THE REFUTATION — BUT NOT THE DISAGREEMENT.
  *
- *     a₀ reading                value       MW shape   worst boost   all pass?
- *     cH₀/2π, isotropic         1.10e−10    1.1%       1.112         YES
- *     cone shut at cos θ > 0.9  1.05e−10    1.8%       1.108         YES
- *     cone shut at cos θ > 0.5  8.38e−11    5.2%       1.090         YES
- *     the measured a₀           1.20e−10    1.0%       1.120         no
+ * a₀ no longer moves with redshift, so Test K's refutation of `a₀ ∝ 1/t` no
+ * longer applies. AN EARLIER VERSION OF THIS COMMENT WENT FURTHER AND SAID THE
+ * DISCS THEN PASS. They do not, and the error is worth recording because it was
+ * caught by DRAWING the curves rather than by tabulating them.
  *
- * ALL FIVE DISCS PASS AND THE MILKY WAY STAYS AT 1.1%. And the last row is
- * worth staring at: the MEASURED a₀ is the one that fails Genzel, by a hair, at
- * 1.120 against 1.12 — while the model's own smaller prediction passes. The 9%
- * the model is "wrong" by is in the direction the high-z data prefer.
+ * The check took `g_N = GM/R_e²` — a POINT MASS. These are discs, and at one
+ * effective radius a disc has enclosed about half its mass, so its real g_N is
+ * roughly half that. A smaller g_N sits deeper in the boosted regime and gives a
+ * LARGER boost, so the shortcut was generous in exactly the direction that made
+ * the model pass. With the same ring sum used everywhere else in this file:
+ *
+ *     galaxy        point-mass g_N   disc g_N   boost (pt)  boost (disc)
+ *     COS4_01351    9.37e−11         4.52e−11   1.112       1.177  OVER
+ *     D3a_6397      1.36e−10         6.55e−11   1.083       1.134  OVER
+ *     GS4_43501     1.49e−10         7.18e−11   1.077       1.125  OVER
+ *     zC_406690     1.07e−10         5.17e−11   1.101       1.161  OVER
+ *     zC_400569     6.84e−10         3.30e−10   1.019       1.034
+ *
+ * against a ceiling of 1/√0.8 = 1.118. FOUR OF THE FIVE OVERSHOOT.
+ *
+ * WHAT IT WOULD TAKE. The binding disc allows a₀ < 6.59e−11, which is 0.601× the
+ * prediction. The anisotropy supplies 0.765× and is still 1.27× over. Nothing
+ * here offers the rest.
+ *
+ * AND IT IS NOT THIS MODEL ALONE: the measured a₀ = 1.20e−10 is 1.8× the
+ * ceiling, so ordinary MOND overshoots these discs too, and by more. That is a
+ * known tension in that literature rather than something peculiar here — but it
+ * is not a defence, since the model was claiming to do better and does not.
+ *
+ * AND THEN THE UNIT WAS WRONG TOO. "Four of five overshoot" counts how many
+ * crossed a line and says nothing about by how far, or about what Newton does on
+ * the same data. Both matter. And f_DM < 0.2 is an UPPER LIMIT, so the true boost
+ * is somewhere in 1.000…1.118 — Newton sits at the bottom of that band by
+ * construction and this model just above the top:
+ *
+ *     if the truth is    Newton off by   this model off by
+ *     f_DM = 0.00        0.0%            13.3%      Newton wins
+ *     f_DM = 0.10        5.1%             8.1%      about even
+ *     f_DM = 0.20        10.6%            4.4%      THE MODEL WINS
+ *
+ * AND ON THE MILKY WAY THE MODEL IS THIRTY TIMES CLOSER: 1.1% rms against
+ * Newton's 32.5%, worst case 2.6% against 43.1%.
+ *
+ * SO THE HIGH-z DISCS ARE A REAL TENSION AND NOT A REFUTATION. A few percent
+ * high in a regime where the measurement is a bound, in an account that is
+ * thirty times better than the alternative where the measurement is a value.
+ * Worth chasing — the direction is consistent across four galaxies, and the
+ * surviving derivation of a₀ happens to want it smaller — but the model's WORST
+ * error anywhere is a few percent against Newton's factor of two, and that is
+ * the comparison that matters. See `tests/genzel2.ts` and `tests/fair.ts`.
  *
  * AND THEN THE DIRECTION, WHICH IS THE PART NOBODY HAD ASKED. A carrier
  * streaming along ĝ occupies the cell in that direction; the point has `WAYS`
