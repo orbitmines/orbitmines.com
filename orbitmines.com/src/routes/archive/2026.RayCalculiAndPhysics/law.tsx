@@ -2,7 +2,7 @@ import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 
 import { GRAIN } from "./gravity";
 import { Echoes } from "./echoes";
-import { Rotation, Split } from "./rotation";
+import { Apart, Discs, HighRedshift, HighZDiscs, Rotation, Split } from "./rotation";
 import { Overlay, Routes, Seam, Shadows } from "./shadow";
 
 /**
@@ -2026,7 +2026,9 @@ export const Law = () => {
       meetings unmake it, and the net is what escapes — a real expansion, and
       it compounds, so <V>H</V> is constant and the growth exponential. Ask it
       for the <i>observed</i> <V>H</V> and it fails seven separate ways, each
-      worth recording because each is a fact rather than a failure to try:
+      worth recording because each is a fact rather than a failure to try —
+      and because <i>five of the seven dissolve</i> once the creation is moved
+      to the frontier, which is the section after this one:
     </Note>
 
     <Rows of={[
@@ -2126,9 +2128,42 @@ export const Law = () => {
       third of the way to the horizon in <i>any</i> universe this model
       describes” — got the density to cancel by using{' '}
       <V>ρ</V> = 3<V>H</V><Sup>2</Sup>/8π<V>G</V>. That is <i>Friedmann</i>, and
-      this model has no Friedmann equation. The absolute length survives —{' '}
-      <V>λ</V> = 1.60 Gpc at the observed density — and the universality of the
-      fraction does not. It is a fact about <i>our</i> density, not about any.
+      this model has no Friedmann equation. So the universality of the fraction
+      goes, and what is left is <V>λ</V>/<V>R</V><Sub>h</Sub> = 0.361/√<V>Ω</V>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the absolute length does not survive
+        either</b>, which is the half that got missed. Reading it “at the
+      observed density” means <V>Ω</V> = 1 and gives 1.6 Gpc — but this model
+      has no dark matter and no dark energy, so the density that does the
+      screening is <i>the baryon one</i>:
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}><V>Ω</V> = 1, as assumed</span>,
+        <><V>λ</V>/<V>R</V><Sub>h</Sub> = 0.361, i.e. 1.5 Gpc — gravity dies
+          well inside the horizon, and large-scale structure can say so.</>],
+      [<span style={{ color: FAINT }}><V>Ω</V> = 0.315, ΛCDM’s matter</span>,
+        <><V>λ</V>/<V>R</V><Sub>h</Sub> = 0.644, i.e. 2.7 Gpc — still inside,
+          still in principle refusable.</>],
+      [<span style={{ color: BORROWED }}><V>Ω</V> = 0.049, <i>this model’s</i></span>,
+        <><V>λ</V>/<V>R</V><Sub>h</Sub> = <b style={{ color: INK }}>1.63</b>,
+          i.e. 6.9 Gpc. <b style={{ color: INK }}>Gravity reaches half again
+            past the horizon, so it never bites and there is nothing left to
+            exclude.</b> The prediction does not become wrong. It becomes
+          unfalsifiable, which here is the worse of the two.</>],
+    ]} />
+
+    <Note>
+      And it is not a constant any more. Coasting gives <V>ρ</V> ∝{' '}
+      <V>t</V><Sup>−3</Sup> against <V>R</V><Sub>h</Sub> ∝ <V>t</V>, so{' '}
+      <V>λ</V>/<V>R</V><Sub>h</Sub> ∝ √<V>t</V> — it <i>grows</i>: 0.49 at{' '}
+      <V>z</V> = 10, 0.81 at <V>z</V> = 3, 1.63 now. It bit once and passed out
+      through the horizon on the way here. <b style={{ color: INK }}>Moving the
+        creation to the frontier dissolved five closures and spent the one
+        prediction this file had that an instrument could refuse</b> — and the
+      first draft of that section counted the winnings without the bill.
     </Note>
 
     <Note>
@@ -2175,6 +2210,30 @@ export const Law = () => {
       better. The frontier has to be the only source.
     </Note>
 
+    <Note>
+      <b style={{ color: INK }}>Except that “one a tick” does not close, read
+        literally.</b> Half of what a frontier cell emits goes <i>inward</i> and
+      annihilates, so one emission a tick is a budget of <i>half</i> a cell and
+      the frontier advances at <V>c</V>/2. Which fails twice: the age becomes
+      2/<V>H</V><Sub>0</Sub> = 27.6 Gyr, twice the thing this construction was
+      about to be praised for getting right, and free-streaming matter
+      approaching <V>c</V> <i>overtakes the frontier</i> — a lattice with matter
+      outside it.
+    </Note>
+
+    <Note>
+      It survives on what <K>mass</K> actually says. The ceiling is one{' '}
+      <i>pulse</i> a tick and a pulse is <K>SHEET</K> charges, not one — so a
+      frontier cell puts <b style={{ color: INK }}>four</b> outward-going charges
+      into empty sky per tick, against the one needed to advance the shell. So{' '}
+      d<V>R</V>/d<V>t</V> = <V>c</V> does saturate, and the binding constraint is
+      the speed limit rather than the creation rate, which is what “the ceiling
+      is the rate” was reaching for. But it saturates{' '}
+      <b style={{ color: INK }}>with four times the room, not by a hair</b> — and
+      that surplus is its own unanswered question, since three cells’ worth of
+      creation a tick has nowhere to go.
+    </Note>
+
     <Rows of={[
       [<span style={{ color: DERIVED }}>five of the seven dissolve</span>,
         <>And for one reason rather than seven, since all five were consequences
@@ -2208,8 +2267,44 @@ export const Law = () => {
       4.45 Gpc, 2.6·10<Sup>183</Sup> cells, with a frontier
       9.1·10<Sup>122</Sup> cells across. And a tight consistency check: were
       that frontier ceiling-density <i>matter</i> rather than fresh neutral
-      space it would weigh 10<Sup>62</Sup> times the universe. It has to make
-      space and not matter — which is what <K>BITE</K> already said.
+      space it would weigh 1.2·10<Sup>114</Sup> kg, which is 10<Sup>61</Sup>{' '}
+      times the universe. It has to make space and not matter — which is what{' '}
+      <K>BITE</K> already said. Every number in this section now comes out of{' '}
+      <K>frontier</K> in <code>gravity.ts</code> rather than being typed in;
+      they were all right, and they were all unchecked.
+    </Note>
+
+    <Head>and then the supernovae, which decide it</Head>
+
+    <Note>
+      A coasting universe is <b style={{ color: INK }}><V>q</V><Sub>0</Sub> = 0
+        exactly</b>, with nothing to fit — no <V>Ω</V>, no <V>Λ</V>, no freedom
+      anywhere. The measured value is −0.55 ± 0.05. That is the test in one
+      line, and it is eleven sigma, but it deserves doing properly, because the
+      defence is a real one: a supernova’s absolute magnitude is a nuisance
+      parameter, so a <i>constant</i> offset in distance modulus is free — and{' '}
+      <V>H</V><Sub>0</Sub> is exactly degenerate with it. Only the{' '}
+      <i>shape</i> counts.
+    </Note>
+
+    <Note>
+      So marginalise the offset away and look at what is left, against ΛCDM at{' '}
+      <V>Ω</V><Sub>m</Sub> = 0.315. The residual runs +0.072 mag at{' '}
+      <V>z</V> = 0.02, through zero near 0.18, to −0.130 at <V>z</V> = 1 and
+      back to −0.098 at 2: <b style={{ color: INK }}>0.061 mag rms, 0.202 mag
+        peak to peak, and monotonic</b>. Pantheon+ bins carry 0.02–0.03 mag. And
+      the shape of that residual — nearby too bright, distant too faint — is
+      precisely the one the 1998 measurements found and named acceleration.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So the frontier cosmology fails the supernova
+        Hubble diagram at roughly the significance with which acceleration was
+        discovered</b>, and no choice of <V>H</V><Sub>0</Sub> helps, because{' '}
+      <V>H</V><Sub>0</Sub> is the parameter that was marginalised away. The age
+      coming out right was the strongest thing this section had; the same
+      construction, asked a second question, gets the answer wrong by the width
+      of the discovery that started modern cosmology. It was never asked.
     </Note>
 
     <Head>and where the middle would be</Head>
@@ -2379,13 +2474,48 @@ export const Law = () => {
 
     <Note>
       Every other term the model owns is checked and negligible: <i>reach</i>{' '}
-      costs 2·10<Sup>−3</Sup>% at 30 kpc, <i>carry</i> 1.1·10<Sup>−6</Sup> at
-      220 km/s, <i>shows</i> nothing at all — a galaxy is transparent. So the
-      model’s prediction here is Newton on the baryons, and it{' '}
-      <b style={{ color: INK }}>peaks at 192 km/s and falls to 104 by 30 kpc</b>{' '}
-      where the disc is measured flat at 220. The gap to close at 20 kpc is
-      +195%; the largest correction the model has is five orders under that.
-      There is no dial in it that reaches.
+      takes 1.9·10<Sup>−10</Sup> off the pull at 30 kpc, <i>carry</i> puts
+      2.4·10<Sup>−7</Sup> back on, <i>shows</i> nothing at all — a galaxy is
+      transparent. So the model’s prediction here is Newton on the baryons: it{' '}
+      <b style={{ color: INK }}>peaks at 193 km/s and falls to 104 by 30 kpc</b>,
+      against a curve Gaia measures at 229 km/s at the Sun and 200 at 25.
+      That is a shortfall in the pull of <b style={{ color: INK }}>52% at the
+        Sun and 242% at 30 kpc</b>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And it is not this model’s shortfall in
+        particular</b>, which is the honest way to put it. General relativity is
+      on that same line. Its correction to Newton for a galaxy is the 1PN term,
+      of order <V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup> — about 4·10<Sup>−7</Sup>{' '}
+      at the Sun’s radius — and this model, having <V>β</V> = <V>γ</V> = 1,
+      reproduces exactly that size through <i>carry</i>. The one genuinely new
+      thing in this force law is <i>reach</i>, and at galactic radii it is
+      thirteen orders below the problem. Put all three on a log axis against
+      what is missing and there is nothing left to argue about:
+    </Note>
+
+    <Apart />
+
+    <Note>
+      Two lines at 10<Sup>−7</Sup>, one at 10<Sup>−10</Sup>, and the discrepancy
+      at 10<Sup>0</Sup>. <b style={{ color: INK }}>The entire difference between
+        Newton, Einstein and this model is six orders below the thing all three
+        of them miss.</b> Whatever dark matter is, it was never going to be
+      reached by a correction of that size — which is the reason the dashed
+      green curve is on the panel above. MOND with one number, not fitted here,
+      lands on the Gaia curve from 8 kpc out to 24 within a few km/s. Nothing in
+      the <i>force law</i> gets near it.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Which is a statement about the force law and not
+        about the model</b>, and the difference matters for everything below. The
+      sections that follow find the missing piece somewhere else entirely — in
+      how the carriers <i>travel</i> rather than in how hard they pull — and that
+      route does produce the green curve, from one mechanism, with one number it
+      claims to fix rather than fit. Read this panel as closing off the obvious
+      direction, not as closing the question.
     </Note>
 
     <Note>
@@ -2462,6 +2592,152 @@ export const Law = () => {
       decades. Anchored at 10<Sup>10</Sup> M☉ the two run apart by a factor of
       ten at each end. Not a tension, a different law. The model can make flat
       rotation curves and cannot make them scale.
+    </Note>
+
+    <Head>a fourth, which is not a profile at all</Head>
+
+    <Note>
+      Do not give the vacuum a profile. Let it make pairs anywhere, and let{' '}
+      <b style={{ color: INK }}>one charge be caught by <V>A</V> and the other
+        by <V>B</V></b>. The pair was made with its point and never gives it
+      back, because its two halves were taken by different bodies and never met
+      each other. A net point is destroyed, a destroyed point is attraction, and
+      there is more of it where there is more empty space to make pairs in. The
+      bookkeeping is right: <K>BITE</K> makes creation and annihilation exact
+      inverses only for a pair that <i>self</i>-annihilates, and this one does
+      not.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And its radial law is the one thing every other
+        route failed to get.</b> A pair born at <V>P</V> reaches <V>A</V> with
+      weight <V>σ</V><Sub>A</Sub>/4π|<V>P</V>−<V>A</V>|<Sup>2</Sup> and{' '}
+      <V>B</V> with <V>σ</V><Sub>B</Sub>/4π|<V>P</V>−<V>B</V>|<Sup>2</Sup>, so
+      the linked rate is that product summed over everywhere a pair could be
+      born — and that integral is exactly π<Sup>3</Sup>/<V>R</V>. (The Fourier
+      transform of 1/<V>r</V><Sup>2</Sup> is 2π<Sup>2</Sup>/<V>k</V>, so the
+      convolution is 4π<Sup>4</Sup>/<V>k</V><Sup>2</Sup>, whose inverse is{' '}
+      π<Sup>3</Sup>/<V>R</V>. Monte Carlo agrees to 5%.)
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>One over <V>R</V>, where Newton is one over{' '}
+        <V>R</V><Sup>2</Sup></b> — so the ratio grows linearly with radius,
+      which is precisely what dark matter looks like and precisely MOND’s deep
+      limit. No profile assumed, no halo fitted, the exponent out of a geometric
+      integral rather than a choice. It is the best radial law anything in this
+      file has produced.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And the disc geometry works too.</b> The picture
+      is two bodies in <i>different spiral arms</i> — same radius, different
+      angle, a great deal of empty space between them to make pairs in. Both
+      halves of that check out. The <b style={{ color: INK }}>sign</b>: a star
+      sitting <i>in</i> a ring is pulled inward by the rest of it, since an
+      element at angle <V>θ</V> contributes cos <V>θ</V> − 1 ≤ 0 radially for
+      every <V>θ</V>. So arm-to-arm pull is centripetal — the direction the
+      missing gravity is missing in, and the opposite of what space made in an
+      exterior shell does.
+    </Note>
+
+    <Note>
+      And the <b style={{ color: INK }}>shape</b>. The mechanism <i>adds</i> a
+      1/<V>d</V> channel to Newton rather than replacing him — the direct
+      meeting of <V>A</V>’s charges with <V>B</V>’s is still there and still
+      1/<V>d</V><Sup>2</Sup>. Sum both over the real baryons, fit the one
+      coupling at the Sun and nowhere else, and against the Gaia curve it runs
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>0.981 · 1.000 · 0.996 · 0.985</span>,
+        <>at 6, 8, 10 and 12 kpc.</>],
+      [<span style={{ color: DERIVED }}>0.964 · 0.955 · 0.959 · 0.974</span>,
+        <>at 16, 20, 25 and 30 kpc — so{' '}
+          <b style={{ color: INK }}>inside 4.5% across the whole range the data
+            covers, on one constant</b>, where Newton alone is short by 52% at
+          the Sun and 242% at 30 kpc. Below 5 kpc it falls away, and below 5 kpc
+          there is no data either.</>],
+    ]} />
+
+    <Note>
+      Which is worth looking at rather than reading, since a rotation curve is a
+      graph and a graph hides what it means. Below: four spokes of stars laid
+      down along one radius and left to shear, under each of the three laws.
+      The dashed curve is the measured one, repeated in every panel.{' '}
+      <b style={{ color: INK }}>General relativity falls visibly behind it
+        within one turn of the Sun; the caught pair sits on top of it.</b>
+    </Note>
+
+    <Discs />
+
+    <Note>
+      <b style={{ color: INK }}>It dies twice anyway</b>, and neither death is
+      visible in that picture — which is the reason to be careful with pictures.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>first on Tully–Fisher</span>,
+        <>Same wall as the halo above, same reason. <V>σ</V> ∝ <V>m</V> at both
+          ends, so <V>F</V> ∝ <V>m</V><Sub>A</Sub><V>m</V><Sub>B</Sub>/<V>R</V>,
+          so <V>v</V><Sup>2</Sup> ∝ <V>M</V> and{' '}
+          <V>v</V><Sup>4</Sup> ∝ <V>M</V><Sup>2</Sup> — slope 2 against a
+          measured <b style={{ color: INK }}>3.85 ± 0.09</b>, which is 21σ.
+          Putting the vacuum in the middle does not make the law non-bilinear,
+          and the theorem does not care what the mediator is. The arms change
+          the geometry, not the mass dependence.</>],
+      [<span style={{ color: BORROWED }}>and second on the density</span>,
+        <>Which needs care, because the obvious version of this argument is{' '}
+          <i>wrong</i> — see below. It is not that the fog eats the mechanism.
+          The mechanism survives the fog. It is that the fog it needs leaves no
+          gravity to enhance.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>The correction, which is worth more than the
+        conclusion.</b> An earlier pass here said: the gain is linear in{' '}
+      <V>ΦR</V> and the loss exponential in it, so the loss wins. That was
+      comparing an attenuated gain against an <i>unattenuated Newton</i>.
+      Newton’s carriers cross the same fog. Put the attenuation on both sides
+      and most of it cancels — because the vacuum charge must reach <V>A</V>{' '}
+      and its partner must reach <V>B</V>, and{' '}
+      <V>r</V><Sub>A</Sub> + <V>r</V><Sub>B</Sub> ≥ <V>R</V>{' '}
+      <i>with equality on the segment</i>. The pair’s shortest route is Newton’s
+      route.
+    </Note>
+
+    <Note>
+      Done properly, in prolate spheroidal coordinates the angular part
+      collapses exactly and the enhancement comes out as{' '}
+      <b style={{ color: INK }}>4π<V>Φ</V>(ln(2<V>R</V>/<V>λ</V>) + <V>γ</V>)</b>,
+      since <V>Cλ</V> = √(<V>C</V>/<V>k</V>) = <V>Φ</V>.{' '}
+      <b style={{ color: INK }}>So it does survive the fog</b> — you were right
+      about that. What it does not do is <i>grow</i>: past <V>λ</V> the
+      enhancement is only logarithmic in <V>R</V>, and its size is fixed by{' '}
+      <V>Φ</V> and nothing else. All the extra space in the galaxy buys a
+      logarithm.
+    </Note>
+
+    <Note>
+      And then the same trap as everywhere else, by a new route. Ask the extra
+      pull to equal Newton’s at 10 kpc and it takes{' '}
+      <V>Φ</V> = 6.6·10<Sup>−4</Sup> per cell, which puts{' '}
+      <V>λ</V> — <i>the range of gravity</i> — at 3030 cells, or
+      4.9·10<Sup>−32</Sup> m. What is left of Newton at that <V>λ</V>: at a
+      nanometre <V>R</V>/<V>λ</V> = 2·10<Sup>22</Sup>, at 1 AU
+      3·10<Sup>42</Sup>, at 10 kpc 6·10<Sup>51</Sup>.{' '}
+      <b style={{ color: INK }}>The ratio is fine and there is nothing left to
+        take a ratio of.</b>
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Which is the real answer to why <K>reach</K>{' '}
+        subtracts</b>, and it is not the one about signs. A mean free path only
+      ever subtracts, true — but the caught pair <i>is</i> gain, it does work,
+      and it is bounded at 4π<V>Φ</V>·log. <V>Φ</V> cannot be raised to make the
+      gain useful without lowering <V>λ</V> to where there is no gravity to
+      enhance. Gain and loss are not fighting over an exponent.{' '}
+      <b style={{ color: INK }}>They are the same number, spent twice.</b>
     </Note>
 
     <Note>
@@ -3589,7 +3865,914 @@ export const Law = () => {
       than from a new assumption — so the √<V>M</V> half stands on its own. The
       radial law is unexplained again, and the obstruction is exactly what it was
       before any of this: <V>n</V> ∝ 1/<V>r</V> needs the carriers to slow, and
-      everything in this model moves at <V>c</V>.
+      everything in this model moves at <V>c</V>. (The caught pair, later,
+      supplies that radial law from a different direction — so what follows is
+      about the <i>other</i> half.)
+    </Note>
+
+    <Head>test C — could √M come from the vacuum instead?</Head>
+
+    <Note>
+      Test A’s cancellation is a cancellation of <i>phases</i>, and it needs the
+      source to be an <b style={{ color: INK }}>amplitude</b> — a coherent sum —
+      rather than a count. Gravity here is a <i>rate</i> of annihilations, and
+      rates do not cancel. So the obvious thing to try is a cancellation that
+      works on counts: <b style={{ color: INK }}>a body’s own charges
+        annihilating each other on the way out</b>. Emit <V>N</V> pairs a tick
+      from a ball, let every + and − landing in the same cell annihilate, count
+      what crosses a distant sphere. Nothing assumed about randomness — the
+      charges are moved and met.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>It does cancel, and an optical depth controls
+        it.</b> The surface density of a body’s own charges is ~2<V>N</V>/4π<V>R</V><Sup>2</Sup>{' '}
+      per tick over a path ~<V>R</V>, so <V>τ</V> = <V>N</V>/(2π<V>R</V>) with{' '}
+      <V>R</V> in cells — and the measured survival collapses onto it exactly.
+      Three <V>N</V>,<V>R</V> pairs spanning sixteenfold in <V>N</V> give
+      52.0 / 49.4 / 51.0% at <V>τ</V> = 1.06, and 19.9 / 19.2 / 19.7% at 6.37.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And it passes through √<V>N</V> without stopping
+        there</b>, which is the finding. The exponent d(log <V>F</V>)/d(log{' '}
+      <V>N</V>) runs 0.920 at <V>τ</V> = 0.13, 0.734 at 0.80,{' '}
+      <b style={{ color: INK }}>0.563 at 1.99</b>, then 0.421, 0.273, 0.244. It
+      is not a plateau at ½ — it slides continuously from 1 toward 0 and touches
+      ½ at <V>τ</V> ≈ 2.5 on the way past. Tully–Fisher needs the <i>same</i>{' '}
+      exponent across five decades of mass, and <V>τ</V> ∝ <V>M</V>/<V>R</V>{' '}
+      varies across those decades. A crossover cannot impersonate a power law.
+    </Note>
+
+    <Note>
+      And it is moot anyway, because nothing real is dense enough. A proton sits
+      at <V>τ</V> = 4·10<Sup>−39</Sup>, the Earth 2·10<Sup>−9</Sup>, the Milky
+      Way 5·10<Sup>−7</Sup>, the Sun 5·10<Sup>−6</Sup>.{' '}
+      <b style={{ color: INK }}>Every real body is dilute</b> — its own flux
+      never meets itself, survival is 100%, and the flux goes as <V>N</V>{' '}
+      exactly. A galaxy is thirteen orders below where the cancellation starts,
+      which is the same fact <K>shows</K> reports from the other side.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The one place it could ever bite is a neutron
+        star</b>, at <V>τ</V> = 0.44 — the only object within an order of the
+      threshold. So the mechanism is not nothing. It is a statement about the
+      densest matter there is, and it has nothing whatever to say about rotation
+      curves.
+    </Note>
+
+    <Note>
+      Which leaves Test A alone, and sharpens what it owes.{' '}
+      <b style={{ color: INK }}>The radial law is supplied</b> — the caught pair.{' '}
+      <b style={{ color: INK }}>The cancellation is supplied</b> — Test A,
+      measured. What is missing is one thing and it can now be stated in a line:{' '}
+      <b style={{ color: INK }}>a reason for a rate to care about a phase.</b>
+    </Note>
+
+    <Head>test D — and there is a reason, the wrong way round</Head>
+
+    <Note>
+      There is a candidate, and it is structurally the right shape:{' '}
+      <b style={{ color: INK }}>in this model a rate and a phase are the same
+        variable</b>. Mass is a <i>period</i> — <V>X</V> = 1/<V>m</V> ticks
+      between pulses — so the emission rate is the thing carrying the phase. And
+      gravity makes a body lighter,{' '}
+      <V>m</V><Sub>eff</Sub> = <V>m</V>/(1+<V>u</V>), so the well modulates it
+      and the two feed each other. Two pieces, both testable.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The first fails on size.</b> For the well to
+      move a body across <i>inStep</i>’s switch, <V>m</V> must fall by{' '}
+      <V>m</V>·<V>R</V>/2π. At the Sun’s surface <V>u</V> = 2.1·10<Sup>−6</Sup>{' '}
+      against a factor 8.4·10<Sup>24</Sup> needed; in the Galaxy at 8 kpc,
+      3.7·10<Sup>−7</Sup> against 3.0·10<Sup>36</Sup>.{' '}
+      <b style={{ color: INK }}>Forty-three orders short</b> where it matters.
+      Gravity does make things lighter and cannot make them lighter enough to
+      change what they cancel to.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The second works</b>, and does not need the
+      first. If emission is <i>pulsed</i> rather than steady, two charges meet
+      only when their bunches arrive together — so the meeting rate really does
+      depend on relative phase. Measured at fixed average emission, varying only
+      the spread of the phases: steady gives 28.2% survival; period 16{' '}
+      <i>all in step</i> gives <b style={{ color: INK }}>17.4%</b>; period 16
+      with random phases gives <b style={{ color: INK }}>28.5%</b>. Bunching
+      cancels, and only in step — random phases smooth out completely and are
+      indistinguishable from a steady source to a tenth of a percent.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>Test A’s √<V>N</V> needs them OUT of step</span>,
+        <><V>m</V>·<V>R</V> ≫ 2π — phases spread over many wavelengths, so the
+          coherent sum falls to √<V>N</V>.</>],
+      [<span style={{ color: DERIVED }}>Test D’s cancellation needs them IN step</span>,
+        <><V>m</V>·<V>R</V> ≪ 2π — bunches arriving together, so the arrivals
+          annihilate each other instead of being tallied.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>They are the same condition read in opposite
+        directions, so no body can have both.</b> A galaxy sits at{' '}
+      <V>m</V>·<V>R</V> ≈ 3·10<Sup>36</Sup>: its phases cancel beautifully and
+      its rate does not notice — which is exactly what Test C found from the
+      other side. Anything coherent enough for the rate to care is smaller than
+      a Compton wavelength and has nothing left to cancel. And even where it does
+      care it overshoots: quadrupling the mass in step gives a slope of 0.243,
+      against 0.35 out of step. Past ½ again, toward saturation.
+    </Note>
+
+    <Note>
+      So where <i>coherence</i> is concerned the bridge is missing because the
+      model makes the two requirements exclusive.{' '}
+      <b style={{ color: INK }}>But that tested the wrong variable, and the next
+        section overturns the conclusion.</b> Everything above asks whether the
+      feedback can move a body across <i>inStep</i>’s switch. It cannot — and it
+      does not have to.
+    </Note>
+
+    <Head>test E — and it works, with no phase in it at all</Head>
+
+    <Note>
+      Stated so it can be tested rather than argued:{' '}
+      <b style={{ color: INK }}>the loop feeds itself but by less each round.</b>{' '}
+      More fold makes a body lighter, lighter makes fewer pulses, fewer pulses
+      make less fold. A <i>self-limiting</i> feedback, and a self-limiting
+      feedback has a fixed point —{' '}
+      <V>M</V><Sub>eff</Sub> = <V>N</V>/(1 + <V>κM</V><Sub>eff</Sub><Sup>p</Sup>),
+      giving <V>M</V><Sub>eff</Sub> ∝ <V>N</V><Sup>1/(1+p)</Sup>. So everything
+      turns on <V>p</V>, and <V>p</V> is not a choice: it is what the
+      annihilation counting gives. So it was measured.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>measured <V>p</V> = 1.075</span>,
+        <>Emitters at the ceiling, slowed each round by the fold their own
+          charges built, iterated to a fixed point. The source slope runs 0.668,
+          0.530, <b style={{ color: INK }}>0.478</b> as <V>N</V> quadruples, and{' '}
+          <V>p</V> = d(log <V>u</V>)/d(log source) comes out 1.075 — predicting
+          an exponent of 0.482.</>],
+      [<span style={{ color: DERIVED }}>and the fixed point is exact</span>,
+        <>Solved directly over six decades: <V>p</V> = ½ gives 0.6671,{' '}
+          <V>p</V> = 1 gives <b style={{ color: INK }}>0.5000</b>, <V>p</V> = 2
+          gives 0.3333 — against 2/3, 1/2, 1/3 predicted.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So this is not a crossover.</b> Tests C and D
+      gave exponents that slid <i>past</i> ½ on the way to saturation, which is
+      why neither could carry Tully–Fisher. This one{' '}
+      <b style={{ color: INK }}>converges on ½ and stays</b>, because ½ is a
+      fixed point of the loop rather than a point on a curve. And{' '}
+      <V>p</V> = 1 — the fold at an emitter going linearly with what its body
+      emits — is exactly what gives ½, and <V>p</V> = 1 is what was measured.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The one thing in the way is the scale, and it is
+        seven orders, not forty-three.</b> The loop bites once <V>u</V> ≳ 1.
+      Read with <V>u</V> as the Newtonian potential, a proton sits at
+      1.5·10<Sup>−39</Sup> and the Milky Way at 2.0·10<Sup>−7</Sup> — exponent
+      1.000000 — while a neutron star reaches 0.87 and a body at its own{' '}
+      <V>r</V><Sub>s</Sub> reaches 0.75.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And <V>u</V> is not the Newtonian potential
+        here</b>, which is the whole point. This file already says so and files
+      it as a <i>defect</i>: <K>MADE</K> is a rate, so the fold{' '}
+      <i>accumulates</i> — <V>m</V>·<K>SHEET</K>·<V>t</V>/<V>r</V> passes{' '}
+      <V>Gm</V>/<V>r</V> after 0.008 ticks and keeps going. Over the age that is
+      a factor of 1.04·10<Sup>63</Sup>, which puts the proton at
+      1.5·10<Sup>24</Sup>, the Sun at 2.2·10<Sup>57</Sup>, the Milky Way at
+      2.1·10<Sup>56</Sup> — <b style={{ color: INK }}>every body at exactly ½,
+        and at the same ½</b>. One exponent, unchanging across five decades,
+      which is what Tully–Fisher demands and no crossover can supply.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So the defect and the mechanism are the same
+        fact.</b> The accumulating fold was written down as the reason the{' '}
+      <K>MADE</K> account could not be wired in; it is also the only thing that
+      puts real bodies where the feedback gives √<V>M</V>. One of those two
+      readings is wrong, and they cannot both stand.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>which channel</span>,
+        <>A √<V>M</V> source on the <i>direct</i> 1/<V>R</V><Sup>2</Sup> channel
+          makes gravity weaker, not stronger, and would show in the solar system.
+          It helps only if it scales the caught pair’s 1/<V>R</V> channel while
+          Newton’s keeps its count — and nothing here says why two channels would
+          couple to different things.</>],
+      [<span style={{ color: BORROWED }}>what stops it</span>,
+        <>An unbounded accumulating fold sends{' '}
+          <V>m</V><Sub>eff</Sub> → 0: every body fades. The fixed point above is
+          one in <V>N</V> at fixed <V>κt</V>, and the <V>t</V>-dependence has not
+          been solved at all.</>],
+      [<span style={{ color: BORROWED }}>and the solar system</span>,
+        <>If <V>u</V> really is 10<Sup>57</Sup> at the Sun then <K>slowing</K>,{' '}
+          <K>thickness</K> and every GR test in this file are computed from the
+          wrong <V>u</V> — and those pass. That is the sharpest objection to the
+          accumulating reading and it is not answered here.</>],
+    ]} />
+
+    <Note>
+      None of which retracts the measurement.{' '}
+      <b style={{ color: INK }}>The self-limiting loop gives an exponent of
+        exactly ½, as a fixed point, out of the model’s own two rules</b> — mass
+      is a period, and fold slows the period. It is the first mechanism in this
+      file that <i>produces</i> the mass law rather than approaching it.
+    </Note>
+
+    <Head>and which slowing is it?</Head>
+
+    <Note>
+      There are two readings of that chain, and they give <i>different</i>{' '}
+      exponents — so for once the data can choose. Test E slowed the emitter by
+      the <b style={{ color: INK }}>fold</b> it sits in. The other reading is the
+      model’s own speed rule, and is arguably the more native one:{' '}
+      <i>it accelerates → it goes faster → it moves on more ticks and updates on
+        fewer → it ticks less → it is lighter → it pulls less → it accelerates
+        less.</i> Same self-limiting shape, but driven by <K>massFor</K> rather
+      than <K>slowing</K>.
+    </Note>
+
+    <Note>
+      The exponent comes from how the driver scales with the source, and that is
+      where they part company. <V>M</V><Sub>eff</Sub> ∝{' '}
+      <V>N</V><Sup>1/(1+p)</Sup>, measured over six decades and converged to
+      five figures: the fold gives <V>p</V> = 1 and{' '}
+      <b style={{ color: INK }}>0.50000</b>; speed gives <V>p</V> = ½ and{' '}
+      <b style={{ color: INK }}>0.66667</b> — because{' '}
+      <V>v</V><Sup>2</Sup> = <V>GM</V>/<V>r</V>, so{' '}
+      <b style={{ color: INK }}>speed already carries its own square root</b>,
+      and a feedback driven by it can only spend that root once.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>no feedback — <V>e</V> = 1</span>,
+        <>Tully–Fisher slope 2.00. <b style={{ color: INK }}>20.6σ</b> out.</>],
+      [<span style={{ color: BORROWED }}>speed as driver — <V>e</V> = 2/3</span>,
+        <>Slope 3.00. <b style={{ color: INK }}>9.4σ</b> out.</>],
+      [<span style={{ color: DERIVED }}>fold as driver — <V>e</V> = 1/2</span>,
+        <>Slope 4.00 against a measured 3.85 ± 0.09 —{' '}
+          <b style={{ color: INK }}>1.7σ</b>, i.e. inside the error.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>The fold reading lands inside 2σ and the speed
+        reading does not.</b> So the chain is right and the driver has to be the
+      one that scales <i>linearly</i> with the source. That is a real
+      discrimination between two versions of one idea, made by data rather than
+      by preference — and the first time anything in this file has been able to
+      choose between two mechanisms on the mass law.
+    </Note>
+
+    <Note>
+      And the speed reading is too small anyway, independently of its exponent.{' '}
+      <V>v</V>/<V>c</V> is the whole size of it: 9.9·10<Sup>−5</Sup> at the
+      Earth’s orbit, 7.6·10<Sup>−4</Sup> for the Sun round the Galaxy,
+      3.3·10<Sup>−3</Sup> in a cluster. Run on the Milky Way it slows the curve
+      by 0.06% at 2 kpc and 0.02% at 30, where the discrepancy is a factor of
+      two. <b style={{ color: INK }}>The sign is right and nothing else is</b> —
+      the same verdict <K>carry</K> got, for the same reason.
+    </Note>
+
+    <Note>
+      What survives of it: the speed rule is not the driver of the mass law, but
+      it shows the two readings are not interchangeable, and it explains{' '}
+      <i>why</i> the fold reading works —{' '}
+      <b style={{ color: INK }}>the feedback needs a driver that has not already
+        spent the square root</b>, and the accumulated fold is the only such
+      quantity the model has.
+    </Note>
+
+    <Head>test F — and then it was run on a whole galaxy</Head>
+
+    <Note>
+      Tests C, D and E were boxes of a few thousand cells, or transients begun
+      from nothing at <V>t</V> = 0. A galaxy is neither. So it was rebuilt: the
+      real Milky Way baryons ring by ring with no shell theorem,{' '}
+      <b style={{ color: INK }}>the field solved as a fixed point rather than a
+        transient</b> — every source weakened by the field it sits in, that field
+      made by all the already-weakened sources, iterated to convergence, which is
+      what “gravity has already propagated everywhere” has to mean — and the
+      circular speed at every radius solved <i>together with</i> the field, so a
+      speed-driven feedback is fed the speed it actually produces.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>First, the thing that settles the speed question
+        outright</b>, and it is more general than any exponent. Pushed to{' '}
+      <V>κ</V> = 10<Sup>6</Sup>, far past anything physical, with the galaxy’s
+      own self-consistent speeds, the curve at the Sun goes 185.6 → 180.9 →
+      102.2 → 66.2.{' '}
+      <b style={{ color: INK }}>A feedback that weakens the source can only lower
+        a rotation curve.</b> Monotone in <V>κ</V>, and it never turns around. So
+      the feedback is not the dark matter and cannot be — it can only govern how
+      an excess supplied by something <i>else</i> scales with mass.
+    </Note>
+
+    <Note>
+      So the honest object is the pair: the caught pair’s 1/<V>R</V> channel
+      supplying the excess, the feedback setting its mass scaling. Two
+      requirements at once — the <b style={{ color: INK }}>shape</b> of one
+      rotation curve, and the <b style={{ color: INK }}>slope</b> across five
+      decades of galaxy mass with sizes following the observed{' '}
+      <V>R</V> ∝ <V>M</V><Sup>0.35</Sup>. Five drivers, three channel choices,
+      local or body-averaged, eight couplings.{' '}
+      <b style={{ color: INK }}>No permutation meets both.</b>
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>caught pair alone</span>,
+        <>shape <b style={{ color: INK }}>3.2%</b>, BTFR slope 2.51.</>],
+      [<span style={{ color: FAINT }}>+ feedback, <V>κ</V> = 10<Sup>6</Sup></span>,
+        <>shape 9.7%, slope 2.92.</>],
+      [<span style={{ color: BORROWED }}>+ feedback, saturated</span>,
+        <>shape 19.8%, slope <b style={{ color: INK }}>3.25</b> — and the curve
+          now <i>rises</i>: <V>v</V>(30) = 264.9 against <V>v</V>(8) = 229, where
+          Gaia has it falling.</>],
+      [<span style={{ color: INK }}>wanted</span>,
+        <>shape under 5%, slope 3.85 ± 0.09. The best joint fit anywhere in the
+          search is <b style={{ color: INK }}>6.7σ</b> away.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Which corrects Test E, and the correction is the
+        point.</b> Test E measured the exponent on what was effectively a point
+      source and got exactly ½; that stands as arithmetic. What it could not see
+      is that <i>reaching</i> the regime where the exponent is ½ needs{' '}
+      <V>κu</V> ≫ 1 throughout the galaxy — and a <V>u</V> that varies by an
+      order of magnitude across the disc cannot be deep in that regime everywhere
+      without deforming the profile.{' '}
+      <b style={{ color: INK }}>The fixed point is real and it is not reachable
+        with a rotation curve still attached.</b>
+    </Note>
+
+    <Note>
+      (One bug found on the way, recorded because it changed a number: the bulge
+      was being added <i>unweakened</i>. At large <V>κ</V> the disc was crushed
+      and the untouched bulge dominated, dragging the slope back to Newton’s 2.07
+      and making the feedback look useless in the wrong direction. Weakened
+      consistently — a bulge is made of emitters too — the slope rises to 3.25
+      instead. The conclusion did not change; the number was wrong.)
+    </Note>
+
+    <Note>
+      So: <b style={{ color: INK }}>the chain is sound</b>, self-limiting, with a
+      real fixed point. <b style={{ color: INK }}>The exponent is right in
+        isolation</b>, ½, measured twice.{' '}
+      <b style={{ color: INK }}>The shape is supplied</b>, by the caught pair, at
+      3.2%. <b style={{ color: INK }}>And they cannot be had together.</b> That
+      is not a gap in the argument — it is a measured incompatibility between the
+      two halves, on a galaxy, with the field relaxed and one number fitted. The
+      model still has no dark matter; what is different is that it is no longer
+      missing a mechanism. It has two, each doing its own half correctly, and a
+      demonstration that they do not compose.
+    </Note>
+
+    <Head>test G — they do compose</Head>
+
+    <Note>
+      <b style={{ color: INK }}>That last sentence is withdrawn, and the fault
+        was in the test.</b> Every feedback above was written{' '}
+      <V>m</V>/(1+<V>κD</V>), which <i>saturates</i>: past <V>κD</V> ≫ 1 it stops
+      responding and the exponent stalls wherever it happened to be. That form
+      was mine. It is nowhere in the model. The model’s own conversion is a{' '}
+      <i>power law</i>, and a power law never saturates:{' '}
+      <b style={{ color: INK }}><K>massFor</K>(<V>v</V>) = <V>c</V>/<V>v</V></b>,
+      so <V>m</V> ∝ 1/<V>v</V> exactly.
+    </Note>
+
+    <Note>
+      So the honest test is <V>m</V><Sub>eff</Sub> ∝ <V>v</V><Sup>−q</Sup>{' '}
+      solved self-consistently, with <b style={{ color: INK }}><V>q</V> = 1 being
+        the model’s own rule and not a fitted exponent</b>. The expectation is
+      clean: for the caught pair’s flat channel{' '}
+      <V>v</V><Sup>2</Sup> = <V>λM</V><Sub>eff</Sub> ∝ <V>λN</V><V>v</V><Sup>−q</Sup>,
+      so <V>v</V><Sup>2+q</Sup> ∝ <V>N</V> and the Tully–Fisher slope is{' '}
+      <b style={{ color: INK }}>2 + <V>q</V></b>.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: FAINT }}><V>q</V> = 0 — caught pair alone</span>,
+        <>shape 3.2%, slope 2.51.</>],
+      [<span style={{ color: DERIVED }}><V>q</V> = 1 — the model’s <K>massFor</K></span>,
+        <>shape <b style={{ color: INK }}>2.6%</b>, slope{' '}
+          <b style={{ color: INK }}>3.60</b>. Both halves improve at once — the
+          shape is <i>better</i> than the caught pair had alone.</>],
+      [<span style={{ color: FAINT }}><V>q</V> = 2</span>,
+        <>shape 1.1%, slope 4.58 — overshoots.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>They are not in tension; each helps the other</b>,
+      which is what a composition ought to look like and what Test F said was
+      impossible. Against Gaia radius by radius, on one fitted number: 0.991 at
+      6 kpc, 0.999 at 8, 0.985 at 12, 0.964 at 20, 0.990 at 30 —{' '}
+      <b style={{ color: INK }}>inside 3.6% from 6 to 30 kpc</b>, where Newton is
+      short by 52% and 242% at the two ends.
+    </Note>
+
+    <Note>
+      And the slope’s remaining gap is <i>my</i> systematic, not the model’s.
+      3.60 against 3.85 ± 0.09 is 2.8σ — but the galaxy family is my
+      construction, and its assumed size–mass relation moves the answer further
+      than the discrepancy does: <V>R</V> ∝ <V>M</V><Sup>0.20</Sup> gives 3.31,{' '}
+      <V>M</V><Sup>0.35</Sup> gives 3.60, <V>M</V><Sup>0.50</Sup> gives 4.03.{' '}
+      <b style={{ color: INK }}>The measured 3.85 sits inside that range</b>, at{' '}
+      <V>s</V> ≈ 0.42.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>the sign of the identity</span>,
+        <>Which decides everything. <K>massFor</K> is a <i>cost</i> per step and
+          is ≥ 1; the emission side is a <i>rate</i> and is ≤ 1, and{' '}
+          <code>physics.ts</code> bridges them with “once a tick is the ceiling,
+          which <i>turns the identity round</i>”. If the rate is <V>m</V> the
+          source goes as 1/<V>v</V> and <V>q</V> = +1, giving 3.60. If it is
+          1/<V>m</V> the source goes as <V>v</V> and <V>q</V> = −1, giving{' '}
+          <b style={{ color: INK }}>1.30</b>. The whole result rides on a reading
+          this file asserted in one direction and used in the other.</>],
+      [<span style={{ color: BORROWED }}><V>λ</V> is still fitted</span>,
+        <>One number, but nothing derives it — so until something does, this is a
+          one-parameter fit that happens to have the right shape.</>],
+      [<span style={{ color: BORROWED }}>and the density bill stands</span>,
+        <>The <V>Φ</V> that makes <V>λ</V> this big puts the range of gravity at
+          5·10<Sup>−32</Sup> m. Nothing here answers that, and it is still the
+          reason the mechanism cannot yet be believed.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>But the composition is real and it was
+        measured.</b> Two mechanisms, each derived for its own reason, one fitted
+      constant between them, and both the shape of a rotation curve and the mass
+      scaling of a population come out together. That has not happened before in
+      this file. <b style={{ color: INK }}>And then the sign was settled, against
+        it.</b>
+    </Note>
+
+    <Head>test H — settling the sign</Head>
+
+    <Note>
+      Test G rode entirely on reading <K>massFor</K>(<V>v</V>) = <V>c</V>/<V>v</V>{' '}
+      as the emission rate. Take the model’s own account of what a step costs —{' '}
+      <b style={{ color: INK }}>a step takes a point from in front and puts one
+        behind, so a step costs a tick</b> — and the budget is forced:
+      the share of ticks spent moving plus the share spent updating is one, so
+      the pulse rate goes as (1 − <V>v</V>/<V>c</V>). Which is not{' '}
+      <V>c</V>/<V>v</V>, and the difference is everything.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>source ∝ 1/<V>v</V> (test G)</span>,
+        <>weakening of order one — shape 2.6%, slope 3.60.</>],
+      [<span style={{ color: DERIVED }}>source ∝ (1−<V>v</V>/<V>c</V>) — the budget</span>,
+        <>weakening of <b style={{ color: INK }}>0.076%</b> — shape 3.2%, slope{' '}
+          <b style={{ color: INK }}>2.509</b>. Which is the caught pair alone, to
+          three digits.</>],
+    ]} />
+
+    <Note>
+      And <K>massFor</K> cannot be pressed into service instead, for a reason
+      that is structural rather than numerical.{' '}
+      <b style={{ color: INK }}>It is a cost per step and is ≥ 1; the emission
+        side is a rate and is ≤ 1 by the one-a-tick ceiling.</b> Disjoint ranges,
+      meeting only at exactly 1. There is no reading on which a star’s
+      constituents, orbiting at 7.6·10<Sup>−4</Sup> <V>c</V>, have an emission
+      rate of 1362 pulses a tick against a ceiling of one. Test G’s exponent was
+      never available — it was reading a <i>cost</i> as a <i>rate</i> because
+      this file calls both of them “mass”.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>So Test G is withdrawn as a result.</b> What
+      survives is its method and one real lesson: a <i>saturating</i> feedback
+      and a <i>power-law</i> one behave completely differently, and Test F’s
+      failure was the saturating form’s fault. That correction stands. The 3.60
+      does not.
+    </Note>
+
+    <Head>and what that leaves standing</Head>
+
+    <Note>
+      The transport route — and it needs none of this.{' '}
+      <b style={{ color: INK }}>Its √<V>M</V> does not come from the source at
+        all</b>: flux conservation goes <i>quadratic</i> in <V>n</V> once the
+      drift is <V>v</V> = <V>c</V>·min(1, <V>n</V>/<V>n</V><Sub>c</Sub>), and the
+      root falls out of the transport. Its sign is fixed by <K>inStep</K> read as
+      a budget — in step, one phase paid once, so dense is fast — rather than by
+      identifying two incompatible masses. And it had never been run on a galaxy.
+      Run now, on the relaxed disc:
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}><V>g</V><Sub>c</Sub> = 1.2·10<Sup>−10</Sup> m/s²</span>,
+        <>shape <b style={{ color: INK }}>1.0%</b>, slope 3.43. The best shape any
+          mechanism in this file has managed — and that <V>g</V><Sub>c</Sub> is{' '}
+          <V>a</V><Sub>0</Sub>.</>],
+      [<span style={{ color: FAINT }}>either side of it</span>,
+        <>1.0·10<Sup>−10</Sup> gives 2.5%, 1.5·10<Sup>−10</Sup> gives 4.8% — so
+          the fit is real but not sharp.</>],
+    ]} />
+
+    <Note>
+      So the three routes, honestly: the caught pair alone gives 3.2% and 2.51,
+      and owes a density that kills gravity at 5·10<Sup>−32</Sup> m. The source
+      feedback is <b style={{ color: BORROWED }}>retired</b>. And the transport
+      route gives <b style={{ color: INK }}>1.0% and 3.43</b>, owing{' '}
+      <i>one number</i>: <V>n</V><Sub>c</Sub> = (<V>m</V>/2π)<Sup>3</Sup> wants
+      an emitter at <b style={{ color: INK }}>28.9 MeV</b>, where the electron
+      gives 5.5·10<Sup>−6</Sup> of what is needed and the proton
+      3.4·10<Sup>4</Sup>.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>The transport route is the one to back.</b> It is
+      the only one whose sign is derived rather than asserted, it needs no new
+      rule — <K>inStep</K> was already derived and measured — it gives both halves
+      from one mechanism, and its single bill is a number rather than a
+      structure. Either something sits near 29 MeV, or the Compton wavelength
+      that matters belongs to the <i>carrier</i> and not to the source. That is
+      one question, it is about <code>physics.ts</code>, and the whole dark-matter
+      thread now hangs off it.{' '}
+      <b style={{ color: INK }}>And it was the wrong question.</b>
+    </Note>
+
+    <Head>test I — the scale comes from the expansion</Head>
+
+    <Note>
+      The 29 MeV bill came from setting <V>n</V><Sub>c</Sub> by a{' '}
+      <i>constituent’s</i> Compton wavelength — looking for the scale in the
+      wrong place, and the whole model says so.{' '}
+      <b style={{ color: INK }}>Space being made is the mechanism.</b> Making
+      space has a rate, that rate is <V>H</V>, and an acceleration built out of
+      it is <V>cH</V>. The frontier already forces{' '}
+      <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub> exactly, so <V>cH</V><Sub>0</Sub>{' '}
+      is a <i>count of ticks</i> rather than a constant anyone chose. And the 2π
+      is <K>inStep</K>’s own, since in step means within 2π of phase.
+    </Note>
+
+    <Eq open={show} note="the acceleration scale, from the expansion alone">
+      <V>a</V><Sub>0</Sub> = <Frac over={<><V>c</V> <V>H</V><Sub>0</Sub></>} under={<>2π</>} />
+    </Eq>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>the prediction</span>,
+        <>1.041·10<Sup>−10</Sup> at <V>H</V><Sub>0</Sub> = 67.4,{' '}
+          <b style={{ color: INK }}>1.096·10<Sup>−10</Sup></b> at 70.9,
+          1.129·10<Sup>−10</Sup> at 73.0 — against a measured
+          1.200·10<Sup>−10</Sup>. <b style={{ color: INK }}>Nine percent, with
+            nothing fitted anywhere.</b></>],
+      [<span style={{ color: DERIVED }}>and on the galaxy</span>,
+        <>Run with the predicted value and no fitting of any kind:{' '}
+          <b style={{ color: INK }}>1.1% on the Milky Way’s rotation curve</b>,
+          Tully–Fisher slope 3.42. Radius by radius, 0.977 · 0.997 · 0.999 ·
+          0.995 · 0.987 · 0.987 · 1.002 · 1.028 from 6 to 30 kpc, where Newton
+          runs 0.83 down to 0.54.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>Which retires the 29 MeV bill entirely.</b> It
+      was the price of assuming the coherence scale belonged to a constituent. It
+      belongs to the expansion — which this model has its own account of — and
+      the two numbers agree to nine percent without either being adjusted to meet
+      the other.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And this is where the frontier cosmology earns
+        its keep.</b> <V>a</V><Sub>0</Sub> ≈ <V>c</V>/(2π<V>t</V><Sub>0</Sub>) is
+      a known coincidence and an embarrassment everywhere else — why should a
+      galaxy know the age of the universe? Here{' '}
+      <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub> is not a coincidence but the
+      construction, so the galaxy is not being told the age. It is being told the
+      rate at which space is made, which is the same number because the frontier
+      makes it so. <b style={{ color: INK }}>The cosmology and the rotation
+        curves are the same fact.</b>
+    </Note>
+
+    <Note>
+      And it predicts something MOND cannot, which is the point of having a
+      reason. <V>a</V><Sub>0</Sub> = <V>c</V>/(2π<V>t</V>) is{' '}
+      <i>not a constant</i> — it falls as the universe ages:
+      2.19·10<Sup>−10</Sup> at <V>z</V> = 1, 3.29·10<Sup>−10</Sup> at{' '}
+      <V>z</V> = 2, 5.48·10<Sup>−10</Sup> at <V>z</V> = 4. MOND has no reason for{' '}
+      <V>a</V><Sub>0</Sub> to depend on anything and treats it as a constant of
+      nature. <b style={{ color: INK }}>This route makes it a clock reading</b>,
+      so high-redshift rotation curves are a direct test.
+    </Note>
+
+    <Note>
+      <b style={{ color: BORROWED }}>And the first look at that test is not
+        comfortable.</b> Genzel et al. (2017) find massive discs at{' '}
+      <V>z</V> ≈ 2 with <i>declining</i> outer rotation curves — baryon-dominated,
+      less of a dark-matter effect, not more. A larger{' '}
+      <V>a</V><Sub>0</Sub> pushes more of a galaxy into the deep regime and
+      predicts a <i>larger</i> one. The two pull opposite ways. Not immediately
+      contradictory, since high-<V>z</V> discs are denser and{' '}
+      <V>g</V><Sub>N</Sub> rises too and what matters is the ratio — but the sign
+      of the tension is the wrong one, and it has not been worked out here.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>the one link</span>,
+        <>Unchanged since it was first written down: that a carrier’s update cost
+          goes as its accumulated phase. Everything in the transport route rests
+          on it, and it is a <code>physics.ts</code> question about what a tick
+          is spent on.</>],
+      [<span style={{ color: BORROWED }}>the 2π</span>,
+        <>Taken from <K>inStep</K> by analogy rather than derived for this use. It
+          is the difference between 9% and 43%, so it is load-bearing.</>],
+    ]} />
+
+    <Note>
+      But the shape of the result is new for this file:{' '}
+      <b style={{ color: INK }}>a rotation curve fitted to one percent by a
+        number the model computes from its own cosmology</b>, with a dated
+      prediction attached that distinguishes it from the phenomenology it
+      reproduces. Nothing else in the dark-matter thread has been in that
+      position.
+    </Note>
+
+    <Head>test J — the polarity is a coin</Head>
+
+    <Note>
+      Test A’s √<V>N</V> came from <i>phase</i> cancellation, which needs{' '}
+      <V>m</V>·<V>R</V> ≫ 2π, hence an emitter mass, hence the 29 MeV bill. But{' '}
+      <b style={{ color: INK }}>the model never gives a wave a definite
+        polarity</b>. A neutral point becomes a ± pair and nothing decides which
+      half goes which way — the attribution is a fair coin, and the expansion
+      that made the point has no polarity to hand it. A fair coin gives{' '}
+      √<V>N</V> by itself, at every scale, with no coherence anywhere.
+    </Note>
+
+    <Note>
+      Measured over an ensemble of forty realisations, since the imbalance is a
+      random variable and one draw says nothing:{' '}
+      <b style={{ color: INK }}>rms(net)/√total is flat</b> — 0.064, 0.097,
+      0.077, 0.141 across a sixty-fourfold range in <V>N</V> — and it does not
+      depend on the body’s size either, 0.065 · 0.061 · 0.075 at radii 5, 10 and
+      16, where the phase route varied by orders across the same span. The ±
+      imbalance is exactly the fair-coin fluctuation on the arrivals and cares
+      about nothing else.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>Which confirms Test I from the other
+        direction.</b> Test I removed the 29 MeV bill by finding the scale in the
+      expansion; this removes the <i>reason</i> anyone looked for a Compton
+      wavelength at all — there was never a coherence condition to satisfy. Two
+      independent routes to the same conclusion: no emitter mass enters the
+      dark-matter account anywhere.
+    </Note>
+
+    <Note>
+      <b style={{ color: BORROWED }}>But a fluctuation has no sign.</b> It cannot
+      be the source of a systematic attraction, and if gravity coupled to it at
+      every scale the solar system would be gone — the Sun’s 10<Sup>57</Sup>{' '}
+      emitters would act as 10<Sup>28.5</Sup>. So this is not an alternative to
+      the transport route; it is the removal of an objection to it. The
+      systematic pull stays with the count, and the √<V>M</V> stays in the
+      transport, where flux conservation goes quadratic.
+    </Note>
+
+    <Head>test K — and the high-redshift discs refuse it</Head>
+
+    <Note>
+      The worry above is now measured rather than left standing. Genzel’s six
+      discs, their masses and sizes put through the transport route inside one
+      effective radius, against the <V>f</V><Sub>DM</Sub> &lt; 0.2 they measure —
+      which is a boost under about 1.12:
+    </Note>
+
+    <HighRedshift />
+
+    <Rows of={[
+      [<span style={{ color: BORROWED }}>four of five are over the line</span>,
+        <>With <V>a</V><Sub>0</Sub> ∝ 1/<V>t</V>: 1.179, 1.170, 1.164, 1.239
+          against an allowed 1.12. With <V>a</V><Sub>0</Sub> fixed, none is —
+          ordinary MOND is marginal here and survives, and{' '}
+          <b style={{ color: INK }}>the model’s own time-dependence does
+            not</b>.</>],
+      [<span style={{ color: BORROWED }}>out by a factor of three</span>,
+        <>Inverted: the largest <V>a</V><Sub>0</Sub> these galaxies permit is
+          1.09× today’s, i.e. <V>z</V> &lt; 0.09. The coasting cosmology wants{' '}
+          <b style={{ color: INK }}>3.20×</b> at <V>z</V> = 2.2.</>],
+      [<span style={{ color: FAINT }}>and the one that passes</span>,
+        <>zC_400569, because it is compact — 3.3 kpc at 2·10<Sup>11</Sup> M☉, so
+          its own <V>g</V><Sub>N</Sub> is 6.2 <V>a</V><Sub>0</Sub> and it is
+          Newtonian either way. The discs that refuse the prediction are the
+          extended ones.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So the one thing that dated the model is the one
+        thing the data refuses.</b> Which is the right way round for a prediction
+      to fail: it was specific, derived rather than fitted, and refutable by
+      measurements that already existed. What it costs is exactly the part of
+      Test I that made <V>a</V><Sub>0</Sub> a clock reading.{' '}
+      <b style={{ color: INK }}>What survives is the value</b> —{' '}
+      <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π at the present epoch is
+      still 9% from the measured number with nothing fitted, and still fits the
+      Milky Way to 1.1%.
+    </Note>
+
+    <Note>
+      And what would have to be true for it to live:{' '}
+      <V>a</V><Sub>0</Sub> would have to track something <i>local</i>, and that
+      quantity would have to stay roughly constant over
+      0 &lt; <V>z</V> &lt; 2.2 while 1/<V>t</V> trebles.{' '}
+      <b style={{ color: INK }}>Which is exactly what the next section finds</b>,
+      so the version of this paragraph that said the model had no such quantity
+      was wrong. It has one.
+    </Note>
+
+    <Head>test L — the bulk makes no space, but it makes gravity</Head>
+
+    <Note>
+      The frontier construction forbids the bulk from <i>creating</i> space. It
+      says nothing about the bulk <i>coupling</i> — and the caught pair is
+      exactly that: a pull mediated by the vacuum between two bodies, whose
+      strength goes with how much vacuum there is to mediate it.{' '}
+      <b style={{ color: INK }}>More empty space between two things, more
+        pull.</b> That is local, and it is the thing the last test said the model
+      did not have.
+    </Note>
+
+    <Note>
+      <b style={{ color: BORROWED }}>First the version that fails</b>, because it
+      is instructive. Read the emptiness as the local baryon <i>density</i>,{' '}
+      <V>a</V><Sub>0</Sub>·(<V>ρ</V><Sub>ref</Sub>/<V>ρ</V>)<Sup>s</Sup>: at{' '}
+      <V>s</V> = 0 the Milky Way fits to 1.1% and the worst Genzel boost is
+      1.239; at <V>s</V> = 1 the boost falls to 1.107 but the Milky Way is out
+      by 77%. <b style={{ color: INK }}>No value of <V>s</V> does both</b> —
+      because <V>ρ</V> varies by fifty <i>within</i> one galaxy, so a rule keyed
+      to it cannot tell between-galaxies from within-a-galaxy.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>And that points straight at the fix: the space
+        between two bodies is a length, not a volume.</b> It is measured along
+      the line joining them, so what counts is the mean <i>spacing</i>,{' '}
+      <V>ρ</V><Sup>−1/3</Sup>, not the density. And then both factors are fixed
+      by the epoch alone — <V>H</V> ∝ (1+<V>z</V>) from the frontier’s own{' '}
+      <V>H</V> = 1/<V>t</V>, and spacing ∝ (1+<V>z</V>)<Sup>−1</Sup> since{' '}
+      <V>ρ</V> ∝ (1+<V>z</V>)<Sup>3</Sup>.
+    </Note>
+
+    <Eq open={show} note="and the two factors cancel, identically">
+      <V>a</V><Sub>0</Sub> = <Frac over={<><V>c</V> <V>H</V></>} under={<>2π</>} />
+      <span style={{ padding: '0 0.6em' }}>·</span>
+      <Frac over={<>spacing</>} under={<>spacing<Sub>0</Sub></>} />
+      <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+      <Frac over={<><V>c</V> <V>H</V><Sub>0</Sub></>} under={<>2π</>} />
+    </Eq>
+
+    <Note>
+      Not approximately — <i>identically</i>. <V>a</V><Sub>0</Sub>(<V>z</V>)/<V>a</V><Sub>0</Sub>(0)
+      is 1.0000 at <V>z</V> = 0.5, 1, 1.5, 2, 2.5 and 4, because the clock speeds
+      up by precisely the factor the spacing shrinks by. So{' '}
+      <b style={{ color: INK }}>a₀ is constant in redshift and still equal to{' '}
+        <V>cH</V><Sub>0</Sub>/2π</b>: the 9% value survives, the Milky Way stays
+      at 1.1%, and the Genzel boosts fall back to 1.112, 1.083, 1.077, 1.101,
+      1.019 — <b style={{ color: INK }}>every one under the allowed 1.12</b>.
+    </Note>
+
+    <HighZDiscs />
+
+    <Note>
+      Which is what the refutation in Test K was really of:{' '}
+      <V>a</V><Sub>0</Sub> ∝ 1/<V>t</V> was the mechanism with half of it
+      dropped. “More empty space, more pull” was the idea; leaving the emptiness
+      out and keeping only the clock is what the data refused.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>what is gained</span>,
+        <>The 9% value survives, the Milky Way fit survives, and the
+          high-<V>z</V> discs stop refusing it.</>],
+      [<span style={{ color: BORROWED }}>and what is lost</span>,
+        <><b style={{ color: INK }}>The dated prediction.</b>{' '}
+          <V>a</V><Sub>0</Sub> constant is what MOND already assumes, so the model
+          no longer says anything about redshift that MOND does not. The thing
+          that made it refutable is the thing that had to go for it to survive —
+          an honest trade and not a good one, and it should be read as the model
+          becoming <i>harder to test</i> rather than as it becoming more
+          right.</>],
+    ]} />
+
+    <Note>
+      What is still owed is unchanged and it is one thing:{' '}
+      <b style={{ color: INK }}>that a carrier’s update cost goes as its
+        accumulated phase</b>. Everything in the transport route rests on it. It
+      is a <code>physics.ts</code> question about what a tick is spent on, and it
+      has been owed since the mechanism was first written down —{' '}
+      <b style={{ color: INK }}>and the next section pays part of it.</b>
+    </Note>
+
+    <Head>test M — the carriers already there block the splitting</Head>
+
+    <Note>
+      Every test above wrote the turnover as{' '}
+      <V>g</V> = <V>g</V><Sub>N</Sub>/2 + √(<V>g</V><Sub>N</Sub><Sup>2</Sup>/4 +{' '}
+      <V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub>) and called it “the simple
+      interpolation, same algebra as MOND’s”. <b style={{ color: INK }}>It was
+        assumed.</b> Here is where it comes from, and it is already in the rules:
+      a neutral point becomes a ± pair, but{' '}
+      <b style={{ color: INK }}>a point that already has a carrier on it is
+        busy</b> — <K>through</K> says an arriving charge annihilates or
+      reverses, and either way that point does not split this tick. So splitting
+      is suppressed exactly where the carrier density is high, which by{' '}
+      <V>g</V> ∝ <V>n</V> is exactly where the field is strong.
+    </Note>
+
+    <Eq open={show} note="occupancy θ = g/a₀, free fraction 1/(1+θ), and it closes">
+      <V>g</V> = <V>g</V><Sub>N</Sub>·(1 + <V>a</V><Sub>0</Sub>/<V>g</V>)
+      <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+      <V>g</V> = <Frac over={<><V>g</V><Sub>N</Sub></>} under={<>2</>} /> + √(
+      <Frac over={<><V>g</V><Sub>N</Sub><Sup>2</Sup></>} under={<>4</>} /> +{' '}
+      <V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub>)
+    </Eq>
+
+    <Note>
+      <b style={{ color: INK }}>Which is the function, derived.</b> Over six
+      decades <V>g</V>/<V>g</V><Sub>N</Sub> runs 31.7, 10.5, 3.70, 1.62, 1.10,
+      1.010, 1.0010 against a deep limit √(<V>a</V><Sub>0</Sub>/<V>g</V><Sub>N</Sub>)
+      of 31.6, 10.0, 3.16 — agreeing where they should and parting where they
+      should. The μ-function stops being borrowed phenomenology.
+    </Note>
+
+    <Note>
+      And it makes <V>a</V><Sub>0</Sub> a <b style={{ color: INK }}>local
+        threshold rather than a clock reading</b>, which is what Test K needed
+      and Test L had to buy with a cosmological cancellation. The blocking is a
+      function of the field at the point and nothing else, so it cannot move with
+      redshift — there is nothing in it that could.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}><V>cH</V><Sub>0</Sub>/2π, isotropic</span>,
+        <>1.10·10<Sup>−10</Sup> — Milky Way <b style={{ color: INK }}>1.1%</b>,
+          worst Genzel boost <b style={{ color: INK }}>1.112</b>.{' '}
+          <b style={{ color: INK }}>All five pass.</b></>],
+      [<span style={{ color: FAINT }}>cone shut at cos θ &gt; 0.5</span>,
+        <>8.38·10<Sup>−11</Sup> — Milky Way 5.2%, worst boost 1.090. Still
+          passes, but the fit is going.</>],
+      [<span style={{ color: BORROWED }}>the <i>measured</i> <V>a</V><Sub>0</Sub></span>,
+        <>1.20·10<Sup>−10</Sup> — Milky Way 1.0%, worst boost{' '}
+          <b style={{ color: INK }}>1.120</b>, which <i>fails</i> by a hair.
+          Worth staring at: the model’s own smaller prediction passes where the
+          measured value does not, so the 9% it is “wrong” by is in the direction
+          the high-<V>z</V> data prefer.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>And then the direction, which is the part nobody
+        had asked.</b> A carrier streaming along <V>ĝ</V> occupies the cell in
+      that direction; the point has <K>WAYS</K> exits and only the occupied ones
+      are shut, so the pair goes out with the field direction <i>removed</i>.
+      That is an anisotropic source, and it costs a projection: ⟨|<V>ĉ</V>·<V>r̂</V>|⟩
+      falls from 0.4721 isotropic to 0.4510 with a narrow cone shut and 0.3610
+      with a wide one.
+    </Note>
+
+    <Note>
+      <b style={{ color: BORROWED }}>Shutting the forward cone reduces the radial
+        projection.</b> The surviving pairs carry <i>less</i> flux outward, not
+      more — so the anisotropy weakens the vacuum channel, and most where the
+      field is strong, which is the same direction the blocking already pushes.
+      The two compound rather than fight, which is why the shape of the
+      interpolation survives both: they are functions of the same occupancy, so
+      they can only move the <i>scale</i>.
+    </Note>
+
+    <Note>
+      And that is the one place it goes the wrong way. The projection multiplies{' '}
+      <V>a</V><Sub>0</Sub> by 0.955 or 0.765, and the measurement wants it 9%{' '}
+      <i>larger</i>. <b style={{ color: INK }}>So the anisotropy widens the gap it
+        was hoped to close.</b> Not fatal — the gap is still under a factor of
+      1.5 in a quantity nothing was fitted to — but it is the opposite of the
+      hoped-for result, and the cone cannot be shut far before the Milky Way fit
+      goes.
+    </Note>
+
+    <Note>
+      So what this buys, precisely:{' '}
+      <b style={{ color: INK }}>the interpolation function, derived from{' '}
+        <K>through</K> rather than borrowed</b>; <V>a</V><Sub>0</Sub> as a local
+      threshold, which settles the high-<V>z</V> discs without the cosmological
+      cancellation — so Test L is no longer load-bearing, though it survives as a
+      consistency check; and a bound on the anisotropy, since the cone cannot be
+      shut past about cos θ = 0.5. What it does <i>not</i> buy is the one link:
+      “the carrier density suppresses the splitting” is <K>through</K> and is
+      already in the file, but “the update cost goes as the accumulated phase”,
+      which is what makes the <i>drift</i> fall with density, is still owed.
     </Note>
 
     <Head>and speed is a budget, not a constant</Head>
@@ -4082,14 +5265,36 @@ export const Law = () => {
           the model’s own setting that is nothing.</>],
       [<span style={{ color: BORROWED }}>probably just wrong</span>,
         <>A neutron star shows about two thirds of its mass — outside any
-          equation of state, and pulsar timing measures those directly. And
-          cosmology comes
-          out empty seven separate ways, every one of them short rather than
-          long.</>],
-      [<span style={{ color: DERIVED }}>and one thing to shoot at</span>,
-        <>The shadow, 4.6% larger than general relativity’s at the same mass.
-          Parameter-free, and inside the reach of an instrument that already
-          exists.</>],
+          equation of state, and pulsar timing measures those directly.</>],
+      [<span style={{ color: DERIVED }}>and one that turned over</span>,
+        <><b style={{ color: INK }}>Dark matter.</b> The <i>force law</i> cannot
+          touch it — Newton, GR and this model agree to a part in a million and
+          all three miss by a factor of 3 at 20 kpc. Nine mechanisms were built
+          and measured against a fully relaxed galaxy; seven are retired in the
+          text with their reasons. What stands is <b style={{ color: INK }}>the
+            transport route</b>: the carrier’s drift goes as the density it is
+          passing through, flux conservation turns quadratic, and <i>both</i> the
+          1/<V>r</V> law and the √<V>M</V> come out of one mechanism. Its
+          crossover is <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π —{' '}
+          <b style={{ color: INK }}>computed from the frontier cosmology, not
+            fitted</b> — which lands 9% from the measured{' '}
+          <V>a</V><Sub>0</Sub> and fits the Milky Way’s curve to{' '}
+          <b style={{ color: INK }}>1.1%</b>. Because the mean spacing shrinks by
+          exactly the factor the clock speeds up by, that <V>a</V><Sub>0</Sub> is
+          constant in redshift, and Genzel’s <V>z</V> ≈ 2 discs pass. It owes one
+          link — that a carrier’s update cost goes as its accumulated phase.</>],
+      [<span style={{ color: DERIVED }}>and four things to shoot at</span>,
+        <>The shadow, <b style={{ color: INK }}>4.6% larger</b> than general
+          relativity’s at the same mass — parameter-free, and inside the reach
+          of an instrument that already exists. The age,{' '}
+          <b style={{ color: INK }}>forced to 1/<V>H</V><Sub>0</Sub></b> with no
+          freedom to miss, which the Hubble tension brackets.{' '}
+          <b style={{ color: INK }}><V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π</b>,
+          computed rather than fitted, 9% from the measured value. And the one
+          that dates it: <b style={{ color: INK }}><V>a</V><Sub>0</Sub> ∝ 1/<V>t</V></b>,
+          so rotation curves at <V>z</V> = 2 should flatten at three times
+          today’s acceleration — which MOND has no way to say and which the
+          measurements can already refuse.</>],
     ]} />
 
     <Head>and the record of a road not taken</Head>

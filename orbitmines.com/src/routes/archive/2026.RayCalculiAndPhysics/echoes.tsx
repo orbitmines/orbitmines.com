@@ -65,7 +65,11 @@ const SPAN = 420;                     // how much of the signal is shown
 const strain = (t: number, gap: number) => {
   let h = 0;
   for (let n = 0; n < 40; n++) {
-    const at = t - n * gap;
+    // `n * gap` at n = 0 with gap = Infinity is 0·∞, which is NaN — and a NaN
+    // strain is a NaN y, which is a path the canvas silently declines to draw.
+    // Both no-echo lanes rendered as nothing at all, which read as a broken
+    // panel rather than as the measurement. The first arrival is always at t.
+    const at = n === 0 ? t : t - n * gap;
     if (at < 0) break;
     // each bounce loses most of the wave through the ring
     h += Math.pow(0.45, n) * Math.exp(-at / TAU) * Math.sin(OMEGA * at);
