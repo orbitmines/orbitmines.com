@@ -90,6 +90,30 @@ than as silent agreement.
 | `accum`, `accumulate` | whether the fold really accumulates — it reaches a **steady state** in λ/c, which retires the defect |
 | `asym` | the fixed-point exponents, converged to five figures |
 
+### electromagnetism
+
+The same emission counted a second way — with the signs kept. See `magnet.ts`.
+
+**Scope**: this is *magnetism*, and magnetostatics now comes out of it whole. There is no account of matter in the model, so
+nothing here says what an electron or a positron is. What the signs give is a
+**bias**, and `coulomb` §4 shows outright that a bias is not electric charge —
+a proton would carry 1836× an electron's. Where µ_B or an electron count
+appears it is a measured input, not a result.
+
+| | |
+|---|---|
+| `pulses` | the pulse clock in seconds, and that the tick **is** the Planck time — an identity, not a coincidence |
+| `magnets` | real magnets: N52, ferrite, saturated iron. Iron comes out at 2.17 µ_B an atom against a measured 2.22 — a consistency check on the counting — and a saturated magnet is **99.9985% cancelled** |
+| `coulomb` | the ½ in `G_LATTICE` is the unbiased case of `(1 − P_a·P_b)/2`, so **like repels and opposite attracts is derived**; then §4, where the electric reading dies; and why a fit to α would mean nothing |
+| `moment` | the magneton (12.6× short), the **g-factor (exactly 1, and it is 2)**, and the ⟨111⟩ anisotropy prediction — right decade, right for nickel, wrong for iron |
+| `dipole` | the reading that **fails**: bias on a *direction*, out of one emitter. Pole-to-pole gives nothing and the fall-off is 1/R². Superseded in its conclusion by `poles` — it rules out an object, not the machinery |
+| `poles` | **and the one that works** — bias on a *place*, so a bar is + at one end and − at the other. Same `chance`, same co-location, same XOR: **3cos²θ − 1 to three decimals, slope −2.00 (so 1/R⁴), all five orientations**. Magnetostatics, with nothing added |
+| `ordering` | **where the poles come from** — the bulk really does cancel and the faces really do not, and it *still* is not a magnet: every sided ordering gives 1/r² because the sign is decided at the destination. Turns the gap into one line of `physics.ts` |
+| `budget` | **how many pulses a magnet needs.** The mass layer caps the XOR at 2×, so magnetism is its own layer; √(µ0/4πG) = 38.7 kg per A·m converts it; a 1 cm N52 cube must emit as if it weighed 4.5 tonnes. One material constant, 4.5·10⁷ kg/m² of pole face, six geometries, no residual |
+| `scale` | the ceiling: µ/M ∝ 1/m², so **the lightest constituent wins by the square**; what real magnets use of it; and the area law for planets and stars — 4.5 mm of aligned skin is the Earth's whole field |
+| `tradeoff` | one ceiling, so the budget is shared: **magnetising a thing makes it lighter**. The cheap version is already dead — a kg bar would lose 10 mg — which puts a floor of 10¹⁴ under the magnetic coupling |
+| `maxwell` | **the audit** — 13 derived, 2 built in, 11 missing, 3 refuted, and why what is left missing is all on the electric side |
+
 ## what is still open
 
 Three things, all arithmetic rather than astronomy:
@@ -112,3 +136,32 @@ untouched or failed.
 And one that is not: **look for the step**. A dwarf's fall at 6 and 9 kpc,
 inside the stellar body, and nothing else in physics predicts a discontinuity
 in a rotation curve.
+
+And on the electromagnetic side, the bills, all of them structural:
+
+4. **a first-order channel** — nothing here happens to a charge that does not
+   meet another charge, so every force is second order in the emission. That
+   caps the electric force at the size of gravity. It is a missing law, not a
+   missing constant.
+5. **α** — with that channel, the 10⁴² is just `(m_e/m_P)²` and the whole bill
+   is one number. `coulomb` measures why finding it in the lattice counts
+   would not be evidence.
+6. **the two in g** — `µ/L = q/2m` with the radius cancelling, so g = 1
+   whatever else is chosen. The lattice has a place a two could live (an axis
+   comes round in CYCLE/2 where a north takes CYCLE) but `emission` tracks
+   north, so taking it means changing the emission rule.
+7. **the magnetic coupling** — 4.5·10⁷ kg/m² of pole face, measured and not
+   counted. The mechanism is derived and only the scale is owed, which is
+   exactly where `a₀` stood before `cH₀/2π`. See `budget`, and `tradeoff` for
+   the floor a weighing already puts under it.
+10. **is a pulse's sign fixed when it leaves, or when it arrives?** The sharpest
+   one, and the cheapest to answer. `emission` resolves the sign against the
+   axis *at the destination*, which is why no ordering of sided emitters makes
+   poles (`ordering`). Fix it at the source and the faces become poles with
+   nothing else changed.
+8. **P itself** — measured everywhere, derived nowhere. Predicting it needs a
+   model of matter: the mass pulsing and the biased pulsing are the same
+   stream, so the relation is between `beat` and `dwell`.
+9. **electric charge** — the largest of them. The model has emitters and a
+   bias, and no account of matter to say which emitter anything is. Until it
+   does, the electric half of the audit stays empty.

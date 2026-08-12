@@ -17,7 +17,8 @@ OPTS='{"module":"commonjs","target":"es2020"}'
 
 [ -x "$TS" ] || { echo "ts-node not found at $TS"; exit 1; }
 
-# rough order: the force law, then the cosmology, then dark matter, then closure
+# rough order: the force law, the cosmology, dark matter, closure, then
+# electromagnetism
 ORDER=(
   three combined
   frontcheck sne
@@ -28,6 +29,7 @@ ORDER=(
   genzel empty spacing
   blocking redo shape quant steps joint
   recon which138 accum accumulate asym
+  pulses magnets coulomb moment dipole poles ordering budget tradeoff scale maxwell
 )
 
 if [ "${1:-}" = "--list" ]; then printf '%s\n' "${ORDER[@]}"; exit 0; fi

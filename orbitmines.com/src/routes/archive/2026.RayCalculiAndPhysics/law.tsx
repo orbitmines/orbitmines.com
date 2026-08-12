@@ -6,6 +6,7 @@ import {
   Apart, Discs, HighRedshift, HighZCurves, HighZDiscs, Rotation, Split,
 } from "./rotation";
 import { Overlay, Routes, Seam, Shadows } from "./shadow";
+import { BarField, Ceiling, Fields, Kinds, Lopsided, Pairs } from "./magnetism";
 
 /**
  * The law, on the page — and behind each equation, where it came from.
@@ -5363,6 +5364,356 @@ export const Law = () => {
       <b style={{ color: INK }}>cannot take back</b> what it emits: measured on
       a running lattice, at most two parts in a thousand return, because a
       source emits into 4<V>π</V> and subtends nothing.
+    </Note>
+
+    <Head>and then magnetism</Head>
+
+    <Note>
+      Everything above counts one thing about an emitter: <b style={{ color: INK }}>how
+        often it lets go of a charge</b>. That is <i>mass</i>, and gravity is
+      what you get by counting it. But <code>physics.ts</code> gives a source a
+      second, independent property — <b style={{ color: INK }}>which way round it
+        is when it does</b> — and nothing in the gravitational half has ever
+      looked at it. Keep the signs instead of throwing them away and the same
+      emission answers a different question.
+    </Note>
+
+    <Note>
+      <b style={{ color: INK }}>What it answers is magnetism.</b> That is worth
+      putting first: there is no account of matter in this model, so nothing
+      here says what an electron or a positron would be, and the electric half —
+      how charge works and how matter interacts with it — is not attempted. What
+      the signs give is a <i>bias</i>, and a bias is magnetism.
+    </Note>
+
+    <Eq note="one emission, two moments of it — the count is mass, the signed first moment is charge">
+      <V>m</V> = ⟨1⟩<span style={{ padding: '0 1.6em' }} />
+      <V>q</V> = ⟨<V>s</V>⟩<span style={{ padding: '0 1.6em' }} />
+      <V>µ</V> = ⟨<V>s</V> <V>d̂</V>⟩
+    </Eq>
+
+    <Note>
+      Which is why they behave so differently and it is not a coincidence. A
+      count always adds, so gravity has one sign and cannot be screened. A
+      signed sum cancels, so a bias comes in two kinds and ordinary matter has
+      none of it while still having all of its mass.
+    </Note>
+
+    <Kinds />
+
+    <Note>
+      An emitter has two switches with nothing to do with each other — whether
+      it has <i>sides</i> (an <K>axis</K>) and whether it <i>comes round</i>{' '}
+      (<K>turning</K> or <K>flips</K>). Crossing them gives{' '}
+      <b style={{ color: INK }}>four distinguishable emissions</b>: nothing
+      signed at all, one sign in every direction, nothing signed again, and +
+      out of one side with − out of the other. That much is structure and it was
+      not arranged for.
+    </Note>
+
+    <Note>
+      What those four <i>are</i> is a different question and this article does
+      not answer it. Calling the second an electric charge and the fourth a
+      magnet is a guess — reasonable, and not earned — so the panel labels what
+      each one emits and stops there. Everything derived below concerns the
+      fourth, which is a bias.
+    </Note>
+
+    <Note>
+      And whatever the four turn out to be,{' '}
+      <b style={{ color: INK }}>none of them can be a sided source with a
+        net</b> — there is no way to be sided without having two sides, which is
+      ∇·<V>B</V> = 0 and the absence of monopoles. Checked over twenty thousand axes, the net emission is
+      exactly nought every time, because the lattice’s exits come in ± pairs. A
+      symmetry that electromagnetism observes, this model cannot avoid.
+    </Note>
+
+    <Head>what a magnet is</Head>
+
+    <Note>
+      A magnet <i>still has to pulse its weight</i>, and that constraint decides
+      the whole section. The two clocks are independent — <K>beat</K> = 1/<V>m</V>{' '}
+      is how often it lets go, <K>rate</K> is how fast its axis comes round — so{' '}
+      <b style={{ color: INK }}>magnetising a thing cannot change what it
+        weighs</b>, and an emitter never has to stop. Both go on at once, and the
+      magnet is the amount by which the alternation fails to come out even.
+    </Note>
+
+    <Eq note="a lopsided default, not a stopped one — and dwell is a count of ticks, so P is quantised">
+      <V>P</V> = 2·<K>dwell</K> − 1,<span style={{ padding: '0 1.2em' }} />
+      <K>dwell</K> = <V>k</V>/<K>CYCLE</K><span style={{ padding: '0 1.2em' }} />
+      ⇒ <V>P</V> ∈ {'{'}0, ¼, ½, ¾, 1{'}'}
+    </Eq>
+
+    <Lopsided />
+
+    <Note>
+      So the smallest magnetisation a single emitter can carry is 2/<K>CYCLE</K>{' '}
+      = <b style={{ color: INK }}>a quarter</b> — magnetisation comes in units,
+      with nothing free in it. Against that, a saturated neodymium magnet
+      measures <V>P</V> = 1.51·10<Sup>−5</Sup> in bulk:{' '}
+      <b style={{ color: INK }}>99.9985% of what it emits cancels</b>, and what a
+      magnet <i>is</i> is the fifteen parts per million that failed to.
+    </Note>
+
+    <Note>
+      The count behind that is a check rather than a fit, since it is a measured
+      remanence divided by a measured <V>µ</V><Sub>B</Sub>, read against the
+      moment per atom measured a different way — iron{' '}
+      <b style={{ color: INK }}>2.17</b> against 2.22, cobalt 1.69 against 1.72,
+      nickel 0.57 against 0.61, Nd<Sub>2</Sub>Fe<Sub>14</Sub>B 29.8 against ~32.
+      So whatever carries magnetisation has an electron’s moment and an
+      electron’s abundance, in four materials at once. That is a consistency
+      check on the counting — <b style={{ color: INK }}>µ<Sub>B</Sub> and the
+        electron are inputs here, not results</b>.
+    </Note>
+
+    <Head>the sign law was already inside G</Head>
+
+    <Note>
+      <K>G_LATTICE</K>’s derivation carries a factor it has never had to justify:{' '}
+      <i>half of them opposite</i>. That half is the chance two charges landing
+      in the same cell have opposite sign — and it is not a constant, it is a
+      fact about the matter involved. Half is what you get when both bodies are
+      unbiased, ordinary matter is unbiased, and{' '}
+      <b style={{ color: INK }}>that is the whole reason it looked like a
+        number</b>. Put the bias back and the sign law falls out with no new rule.
+    </Note>
+
+    <Eq note="like biases attract less, opposite attract more — and at P = 0 it is Newton exactly">
+      <V>F</V> = <Frac
+        over={<><K>G</K> <V>m</V><Sub>a</Sub> <V>m</V><Sub>b</Sub></>}
+        under={<><V>R</V><Sup>2</Sup></>} />
+      <span style={{ padding: '0 0.5em' }} />
+      (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>)
+    </Eq>
+
+    <Note>
+      Which says something worth stopping on:{' '}
+      <b style={{ color: INK }}>the gravitational constant carries a factor of
+        one half because ordinary matter is unbiased.</b> If it had a net bias, G
+      would be a different number. The half was already there and unexplained;
+      this is what it was — and that needs no reading of what the bias{' '}
+      <i>is</i>.
+    </Note>
+
+    <Head>and where the bias lives decides everything</Head>
+
+    <Note>
+      There are two places the bias could sit and only one of them is a magnet.
+      Put it on a <i>direction</i> — one emitter, + out of its north half and −
+      out of its south, from a single place — and it fails: pole to pole gives{' '}
+      <b style={{ color: INK }}>exactly nothing</b>, by an exact cancellation,
+      and the fall-off is 1/<V>R</V><Sup>2</Sup> where two magnets are
+      1/<V>R</V><Sup>4</Sup>. Giving the emitter a ring does not rescue it
+      either, at any phase.
+    </Note>
+
+    <Note>
+      Put it on a <i>place</i> and everything works. A bar magnet is then a lump
+      biased + at one end and − at the other — net zero because the two ends
+      cancel, <b style={{ color: INK }}>separated in space rather than in
+        direction</b> — and that is what magnetostatics has always called the
+      pole model. Nothing else changes: the same <K>chance</K>, the same
+      co-location rule, the same (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>)/2
+      XOR whose unbiased case is the half inside <K>G_LATTICE</K>.
+    </Note>
+
+    <Fields />
+
+    <Pairs />
+
+    <Note>
+      Measured over the whole of space: <b style={{ color: INK }}>3cos²<V>θ</V> −
+        1 to three decimals</b> at every angle including both sign changes,{' '}
+      <b style={{ color: INK }}>slope −2.00</b> on gravity’s 1/<V>R</V><Sup>2</Sup>{' '}
+      so the force is 1/<V>R</V><Sup>4</Sup>, and all five orientations right.
+      That is magnetostatics, out of the same machinery that gave the rotation
+      curve, with nothing added to it.
+    </Note>
+
+    <BarField />
+
+    <Note>
+      It also says why <b style={{ color: INK }}>cutting a magnet gives two
+        magnets</b> rather than two monopoles: the sign belongs to a region’s
+      boundary, so a new cut makes a new pair of faces. And ∇·<V>B</V> = 0
+      survives for the same reason — a body’s two poles are the same emitters
+      counted at both ends, so they are equal and opposite by construction.
+    </Note>
+
+    <Head>scale is not the problem</Head>
+
+    <Ceiling />
+
+    <Note>
+      One emitter’s ring has radius (<K>CYCLE</K>·<K>G</K>/2<V>π</V>)·<V>λ̄</V><Sub>C</Sub>,
+      and <V>λ̄</V><Sub>C</Sub> goes as 1/<V>m</V>, so a heavier emitter is a{' '}
+      <i>smaller</i> loop. Per kilogram the moment therefore goes as
+      1/<V>m</V><Sup>2</Sup> in what the body is made of, so{' '}
+      <b style={{ color: INK }}>the lightest constituent wins by the square</b>.
+      That is a scaling law and not a claim about what emitters are — what it
+      buys is that if a body has light and heavy ones, the light ones carry the
+      magnetism, which is the fact <V>µ</V><Sub>B</Sub>/<V>µ</V><Sub>N</Sub> =
+      1836 records.
+    </Note>
+
+    <Note>
+      And a big body screens itself — <i>shows</i> — so only a skin gets out and
+      the aggregate is an <i>area</i> law rather than a volume one. Run backwards
+      against what is measured, a fully aligned skin of{' '}
+      <b style={{ color: INK }}>4.5 mm carries the whole of the Earth’s field</b>,
+      3.9 m the Sun’s, and 0.16 µm a neutron star’s. Nothing anywhere reaches
+      10<Sup>−4</Sup> of the ceiling. <b style={{ color: INK }}>Scale is not what
+        stops this</b>, at any size from an electron to a magnetar.
+    </Note>
+
+    <Head>and how many pulses that takes</Head>
+
+    <Note>
+      The mechanism is settled and the <i>size</i> is not, so it is worth asking
+      the question the gravitational half answers: how much emission does a
+      magnet need? First, it cannot come from the mass stream. If the biased
+      pulses were a subset of the mass pulses the whole effect would be the
+      (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>) factor, which runs 0 to 2 —{' '}
+      <b style={{ color: INK }}>so the most magnetism could ever be is one times
+        gravity</b>, the pull switched off or doubled and nothing further. Two
+      N52 cubes pull 2.2·10<Sup>12</Sup> times their own gravity.
+    </Note>
+
+    <Note>
+      So it is its own layer with its own budget, and the budget is a number.
+      Equating the two channels gives one conversion with no material in it —{' '}
+      <V>m</V><Sub>eff</Sub> = <V>q</V>·√(<V>µ</V><Sub>0</Sub>/4<V>π</V><K>G</K>) =
+      38.7 kg per A·m — so a 1 cm N52 cube must emit as if it weighed{' '}
+      <b style={{ color: INK }}>four and a half tonnes</b>, which is 6·10<Sup>5</Sup>{' '}
+      times its own mass.
+    </Note>
+
+    <Note>
+      And the ratio is not a constant — it runs 6·10<Sup>3</Sup> to
+      6·10<Sup>5</Sup> across six magnets, going as <V>M</V>/<V>ρL</V>, because{' '}
+      <b style={{ color: INK }}>a pole is a surface and mass is a volume</b>.
+      Divide the geometry out and what is left <i>is</i> constant:
+      4.5·10<Sup>7</Sup> kg/m² of pole face for saturated N52, one number
+      reproducing all six with no residual. What sets that number is the open
+      question, and it is the same shape as <V>a</V><Sub>0</Sub> was before it
+      was answered — a coupling waiting for a count.
+    </Note>
+
+    <Note>
+      And because there is one ceiling, the budget is <i>shared</i>: pulses
+      spent being a magnet are not being mass, so{' '}
+      <b style={{ color: INK }}>magnetising a thing makes it lighter</b>, by
+      exactly the fraction diverted. Which is a prediction that can be shot at,
+      and the cheap version of the model is already dead by it — if the diverted
+      fraction were the bulk bias itself, 1.5·10<Sup>−5</Sup>, a kilogram bar
+      would lose 10 mg on being saturated, five orders above what a comparator
+      would miss. So the magnetic layer’s pulses are worth at least
+      10<Sup>14</Sup> gravitational ones, and that floor comes from a weighing
+      rather than from a choice.
+    </Note>
+
+    <Note>
+      What is worth saying is that{' '}
+      <b style={{ color: INK }}>the hierarchy itself is not the mystery</b>.
+      <i>If</i> the coupling were a count of order one where gravity is a
+      product of two rates — which is the reading the proton leaves open and
+      nothing here establishes — the gap would be the mass in Planck units,
+      squared:{' '}
+      <V>α</V>/(<V>m</V><Sub>e</Sub>/<V>m</V><Sub>P</Sub>)<Sup>2</Sup> =
+      4.166·10<Sup>42</Sup>, which is the measured ratio to five figures. The
+      bill is exactly one number, <V>α</V>, and nothing here derives it. Of
+      117,649 lattice monomials searched, 51 land within half a percent of
+      137.036 — so a hit would not be evidence, and none is claimed.
+    </Note>
+
+    <Head>the audit</Head>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>what comes out</span>,
+        <>The 1/<V>r</V><Sup>2</Sup>, as flux over a growing shell. The sign law,
+          for a bias. Two signs that cancel. A ± ledger that balances, which is
+          what <K>BITE</K> = 1 exists for. That magnetisation is quantised in
+          quarters. ∇·<V>B</V> = 0 and the absence of monopoles. That the
+          lightest constituent wins by the square. Superposition.{' '}
+          That the dipole angular law is 3cos²<V>θ</V> − 1, that the force is
+          1/<V>R</V><Sup>4</Sup>, all five orientations, and that cutting a
+          magnet halves it. <b style={{ color: INK }}>Thirteen of thirty.</b></>],
+      [<span style={{ color: BORROWED }}>what is assumed</span>,
+        <><K>LIGHT</K> = 1 is an axiom, not a result, so <V>c</V> being finite
+          and universal is built in rather than derived — and with it the fact
+          that radiation exists at all.</>],
+      [<span style={{ color: BORROWED }}>what is owed</span>,
+        <>One number: <b style={{ color: INK }}>the magnetic coupling</b>, the
+          4.5·10<Sup>7</Sup> kg/m² of pole face — measured, and not yet counted.
+          Everything else on this page follows once it is fixed.</>],
+      [<span style={{ color: BORROWED }}>and what is not started</span>,
+        <>The electric half, entirely: charge, <V>ε</V><Sub>0</Sub>, <V>α</V>,
+          Faraday, Ampère–Maxwell, the Lorentz force. Those need a model of
+          matter and a first-order channel, and neither exists yet — a force
+          here is a <i>meeting</i>, which is second order.</>],
+      [<span style={{ color: BORROWED }}>and what is refuted</span>,
+        <><V>g</V> = 1, where the electron’s is 2.0023 — and that one survives
+          every choice, since <V>µ</V>/<V>L</V> = <V>q</V>/2<V>m</V> with the
+          radius cancelling. The anisotropy predicts ⟨111⟩ by 11.1% in every
+          cubic crystal, which is right for nickel, wrong for iron, and flat
+          where measurement runs from 2.6% to 32%. And a magnet cannot be made
+          of <i>sided</i> emitters, however they are ordered — see below.</>],
+    ]} />
+
+    <Head>where the poles come from, which is not settled</Head>
+
+    <Note>
+      A magnet needs its bias on a <i>place</i>, and something has to put it
+      there. The natural answer is ordering: emitters pointed the same way,
+      held there by rotation, so that inside the body every + has a − sitting on
+      it and at a face it does not.{' '}
+      <b style={{ color: INK }}>Measured, that happens</b> — the signed emission
+      is nought in the middle of a cylinder and largest at its ends.
+    </Note>
+
+    <Note>
+      And it still does not make a magnet. Axial, radial and cylindrical
+      orderings all give a far field falling as 1/<V>r</V><Sup>2</Sup> where a
+      magnet is 1/<V>r</V><Sup>3</Sup>, because{' '}
+      <b style={{ color: INK }}>the cancellation is a near-field fact</b>: a
+      distant body does not see neighbours cancelling, it sees every emitter’s
+      chosen side at once. The sign of a sided emitter’s pulse is decided by
+      where the observer is, so the sides <i>add</i> instead of cancelling.
+    </Note>
+
+    <Note>
+      Which turns the open question into one line of <code>physics.ts</code>.{' '}
+      <K>emission</K> is <code>sided ? along() : cos(2πβ)</code>, and{' '}
+      <K>along</K> resolves the direction against the axis <i>at the
+        destination</i>. A pulse whose polarity were fixed <i>when it left</i>{' '}
+      would carry it, the near-field cancellation would survive to infinity, and
+      the faces would be poles.{' '}
+      <b style={{ color: INK }}>Is a pulse’s sign fixed when it leaves, or when
+        it arrives?</b> Nothing else about the mechanism changes either way.
+    </Note>
+
+    <Note>
+      So the honest sentence is the opposite shape to the gravitational one.
+      There, the scale came out unfitted — <V>a</V><Sub>0</Sub> = <V>c</V><V>H</V><Sub>0</Sub>/2<V>π</V>{' '}
+      — and the structure was the fight. Here it is the other way round:{' '}
+      <b style={{ color: INK }}>the whole structure of magnetostatics comes out
+        of the same XOR that gave gravity</b>, and the one thing it owes is the
+      scale — 4.5·10<Sup>7</Sup> kg/m², measured rather than counted.{' '}
+      <b style={{ color: INK }}>So: magnetostatics derived, its coupling owed,
+        and electric charge not started.</b>
+    </Note>
+
+    <Note>
+      And one thing is noted rather than done, because it is the shape of what
+      would come next. <V>P</V> is measured everywhere above and derived nowhere:
+      predicting it needs the model to say how a configuration of matter decides
+      how lopsided its emitters are. The mass pulsing and the biased pulsing are{' '}
+      <i>the same stream</i>, counted in ticks of the same <K>CYCLE</K>, so the
+      relation between them is a relation between <K>beat</K> and <K>dwell</K> —
+      which is a question about matter, and the same missing piece{' '}
+      <code>physics.ts</code> already owes.
     </Note>
 
     {open ? <Panel of={open} onClose={hide} /> : null}
