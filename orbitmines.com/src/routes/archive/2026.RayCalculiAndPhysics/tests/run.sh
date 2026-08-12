@@ -30,6 +30,7 @@ ORDER=(
   blocking redo shape quant steps joint
   recon which138 accum accumulate asym
   pulses magnets coulomb moment dipole poles ordering budget tradeoff scale maxwell
+  nopolarity
 )
 
 if [ "${1:-}" = "--list" ]; then printf '%s\n' "${ORDER[@]}"; exit 0; fi

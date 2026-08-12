@@ -114,6 +114,12 @@ appears it is a measured input, not a result.
 | `tradeoff` | one ceiling, so the budget is shared: **magnetising a thing makes it lighter**. The cheap version is already dead — a kg bar would lose 10 mg — which puts a floor of 10¹⁴ under the magnetic coupling |
 | `maxwell` | **the audit** — 13 derived, 2 built in, 11 missing, 3 refuted, and why what is left missing is all on the electric side |
 
+### and the same theory without the XOR
+
+| | |
+|---|---|
+| `nopolarity` | **turn polarity off and gravity does not notice.** No signs, no opposites, meetings decided head-on instead. `G` doubles and cancels; the force law's shape, the metric, the perihelion, the deflection, `a₀`, the rotation curve and the cosmology are identical to every digit quoted. What is lost is magnetism entirely, and the *explanation* of the ½ in `G`. So the XOR is a tunable parameter, free on the gravitational side |
+
 ## what is still open
 
 Three things, all arithmetic rather than astronomy:

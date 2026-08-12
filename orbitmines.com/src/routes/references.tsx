@@ -208,6 +208,36 @@ export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
 
 }
 
+/**
+ * The physics booklet, which is a book rather than a paper for the same reason
+ * the Almanac is one: it is several notes that are read together and updated
+ * separately, and a paper has no way to say that.
+ *
+ * `NOTES` are the numbered pieces inside it. They are references in their own
+ * right — each one is a thing that can be cited, linked and dated on its own —
+ * and the booklet is what they are collected in. The arcs in `Physics.tsx`
+ * carry the same three names in the same order, so a note and its arc are the
+ * same thing said in two places.
+ */
+export const PHYSICS: Content = { reference: {
+  title: "OrbitMines: Physics Project",
+  subtitle: "An initial look at a discrete Ray Calculus for physics: specifically for gravity and magnetism, and a continuous model based on ideas of that discrete setup.",
+  draft: true,
+  date: "Last update: 2026-12-31",
+  year: "2026",
+  external: {
+    discord: {serverId: '1055502602365845534', channelId: '1463219913044005018', link: () => "https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018"}
+  },
+  organizations: [ORGANIZATIONS.orbitmines_research],
+  authors: [{
+    ...PROFILES.fadi_shawki,
+    external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
+  }],
+  published: [ORGANIZATIONS.orbitmines_research],
+  link: "https://orbitmines.com/physics"
+}, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026",
+}
+
 export const RAY_CALCULI_AND_PHYSICS: Content = { reference: {
   title: "2026 Physics: Notes on an XOR Universe",
   subtitle: "An initial look at a discrete Ray Calculus for physics: specifically for gravity and electromagnetism, and a continuous model based on ideas of that discrete setup.",

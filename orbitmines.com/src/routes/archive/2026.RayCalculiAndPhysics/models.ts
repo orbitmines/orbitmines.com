@@ -59,7 +59,7 @@ const ARM = 32;
  * Enough after they arrive to see that they have arrived, and then round
  * again.
  */
-const ALONE_FOR = 260;
+export const ALONE_FOR = 260;
 const PAIR_FOR = 200;
 
 // And how long a lattice run gets, which is set by how much ball there is to
@@ -134,7 +134,7 @@ const ORBIT = 0.35 * LIGHT;
 const PAIR = 2 * (2 * 24) * ORBIT * ORBIT / GRAVITY;
 
 /** The same, on a list of sources that did not say. */
-const weighed = (sources: Source[]): Source[] =>
+export const weighed = (sources: Source[]): Source[] =>
   sources.map(s => ({ ...s, mass: s.mass ?? PAIR }));
 
 // The fly-by's own scale: `FLY` is far enough that light takes a good while

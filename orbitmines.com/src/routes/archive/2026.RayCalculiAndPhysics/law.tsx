@@ -5366,6 +5366,25 @@ export const Law = () => {
       source emits into 4<V>π</V> and subtends nothing.
     </Note>
 
+
+    {open ? <Panel of={open} onClose={hide} /> : null}
+
+  </div>;
+};
+
+/**
+ * THE MAGNETIC HALF, WHICH IS ITS OWN NOTE.
+ *
+ * Split out of `Law` when the article became a booklet: the gravitational
+ * account and the magnetic one are separate readings of the same emission and
+ * they are now separate arcs, so they are separate components. Nothing here
+ * changed in the splitting — this is the same prose, lifted whole.
+ *
+ * No derivation panels in this half, which is why it needs no state where
+ * `Law` does: every equation on it is stated rather than opened.
+ */
+export const MagnetismLaw = () => (
+  <div style={{ marginBottom: '3rem' }}>
     <Head>and then magnetism</Head>
 
     <Note>
@@ -5716,7 +5735,106 @@ export const Law = () => {
       <code>physics.ts</code> already owes.
     </Note>
 
-    {open ? <Panel of={open} onClose={hide} /> : null}
+  </div>
+);
 
-  </div>;
-};
+/**
+ * AND THE ONE PLACE THE TWO ARE WEIGHED AGAINST EACH OTHER.
+ *
+ * Which belongs to neither on its own: it is the measurement that says the
+ * gravitational account does not depend on the magnetic one, and therefore
+ * that the two can be read apart at all. See `tests/nopolarity`.
+ */
+export const WithoutPolarity = () => (
+  <div style={{ marginBottom: '3rem' }}>
+    <Head>and the same theory with the XOR turned off</Head>
+
+    <Note>
+      Which is worth asking because it makes this a <i>family</i> rather than a
+      single thing. Take the polarity away — no signs, no opposites, just
+      discrete directions, and a meeting counted when two charges come at each
+      other head on. Does gravity notice?
+    </Note>
+
+    <Note>
+      Two things change in the rules and they pull opposite ways. The{' '}
+      <b style={{ color: INK }}>share</b> goes from ½ to 1, because every
+      meeting now annihilates where before only the opposite ones did. And the{' '}
+      <b style={{ color: INK }}>angular gate comes back</b> — with no sign to
+      decide the outcome there is nothing left but the angle, so{' '}
+      <K>closing</K> returns and the folding is bounded to a lens again.
+    </Note>
+
+    <Eq note="G doubles — and that is the whole of it">
+      <K>G</K> = <Frac
+        over={<><K>BITE</K>·<i>share</i>·<K>SHEET</K><Sup>2</Sup></>}
+        under={<>4<V>π</V><Sup>2</Sup>·<K>CORE</K>·<K>WAYS</K></>} />
+      <span style={{ padding: '0 1.4em' }} />
+      0.062351 → 0.124703
+    </Eq>
+
+    <Note>
+      And the factor of two is not observable. Every mass in the model is
+      carried in units of <K>GRAVITY</K>, so a body of physical mass <V>M</V>{' '}
+      holds <V>M</V>/<K>G</K> and the dynamics compute <K>G</K>·(<V>M</V>/<K>G</K>).
+      The constant is gone before it is used —{' '}
+      <b style={{ color: INK }}>a change of the mass unit, not of a
+        prediction</b>, which is the same statement <K>BITE</K> already carries.
+      Measured on the line integral: exactly two at every separation, with{' '}
+      <V>S</V>·<V>R</V><Sup>2</Sup> flat in both.
+    </Note>
+
+    <Rows of={[
+      [<span style={{ color: DERIVED }}>what does not move</span>,
+        <><K>SHEET</K>, <K>WAYS</K>, <K>BITE</K>, <K>BIAS</K>, <K>MADE</K>,{' '}
+          <K>SPREAD</K>, <K>REACHES</K>, and the tick — which is still exactly
+          the Planck time. <K>REACHES</K> is the pretty one: it carries <K>G</K>{' '}
+          on top and the share underneath, and the two cancel to the digit.</>],
+      [<span style={{ color: DERIVED }}>and what it predicts</span>,
+        <>Mercury’s sixth, the other five sixths, light’s deflection,{' '}
+          <V>a</V><Sub>0</Sub> = <V>c</V><V>H</V><Sub>0</Sub>/2<V>π</V>, the
+          Milky Way to 1.1%, the transport turnover, the interpolation function,
+          the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>.{' '}
+          <b style={{ color: INK }}>All identical, to every digit quoted</b> —
+          because every one of them is computed from something that never
+          mentions a sign.</>],
+      [<span style={{ color: BORROWED }}>where it really differs</span>,
+        <>Off the line. With the gate back the folding sits inside the sphere
+          having the two bodies as a diameter and comes to about a quarter as
+          much folding in space altogether — 0.230 of it, measured. Nothing in
+          the article reads that number: the dynamics read the line integral and
+          the metric reads <K>foldAt</K>, which is a fact about one body at one
+          place with no angle to gate.</>],
+      [<span style={{ color: BORROWED }}>and the rest</span>,
+        <><i>reach</i>’s λ is shorter by √2, worth 1.9·10<Sup>−10</Sup> →
+          3.8·10<Sup>−10</Sup> on the pull at 30 kpc. <K>MU</K> doubles to
+          2.71 µg. The Compton ratio becomes 0.124703 and stays exact. All three
+          are statements about units or about nothing anyone will weigh.</>],
+    ]} />
+
+    <Note>
+      <b style={{ color: INK }}>So gravity is the same theory.</b> Not
+      approximately — the shape of the force law, the metric, and every measured
+      prediction are untouched, and the one constant that moves cancels before
+      it is used.
+    </Note>
+
+    <Note>
+      What is lost is magnetism entirely — the sign law, 3cos²<V>θ</V> − 1,
+      1/<V>R</V><Sup>4</Sup>, ∇·<V>B</V> = 0, the quantised magnetisation — and
+      one explanation: with polarity{' '}
+      <b style={{ color: INK }}>the ½ in G is derived</b>, being the chance two
+      charges disagree, and it is why G would differ if matter were charged.
+      Without, the share is 1 by fiat and there is nothing to explain.
+    </Note>
+
+    <Note>
+      Which leaves the XOR as a <b style={{ color: INK }}>tunable parameter, and
+        a free one on the gravitational side</b>. Turning it on costs nothing and
+      buys magnetism; turning it off costs magnetism and buys nothing. That is a
+      better position than this page was in before the question was asked,
+      because it means the magnetic half cannot break the gravitational one —
+      there is no shared number for it to get wrong.
+    </Note>
+  </div>
+);

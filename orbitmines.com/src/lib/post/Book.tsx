@@ -66,8 +66,12 @@ export class BookUtil {
   nextSection = (reverse: boolean = false) => this.sectionName(this.next(reverse))
 
   sectionName = (element: any) => {
-    if (typeof element.props.head === "string") return element.props.head
-    if (element.props.head.props != undefined) return element.props.head.props.children
+    // Defensive at both levels: `firstSection()` reads `allSections()[0]`,
+    // which is undefined for a book with no arcs, and a Section may carry no
+    // head at all. Neither is worth a blank page.
+    const head = element?.props?.head
+    if (typeof head === "string") return head
+    if (head?.props !== undefined) return head.props.children
     return ""
   }
   disabled = (element: any) => typeof element.props.head !== "string"
@@ -173,12 +177,16 @@ export const Navigation = (props: PaperProps & { hideBorder?: boolean, onNavigat
       <a className="bp5-text-muted" data-selected={util.isSelected(arc) || undefined} style={{color: util.isSelected(arc) ? 'orange' : '#abb3bf'}} onClick={() => !util.disabled(arc) ? navigate(util.sectionName(arc)) : undefined}>{arc.props.head}</a>
 
       {React.Children.toArray((arc as any).props.children).filter(child =>
-        React.isValidElement(child) && child.type === Section
+        // `props.head` is what makes a Section navigable — see `getSections`.
+        // Without it there is nothing to name the link after, and `sectionName`
+        // reads `props.head.props` and throws. A Section used purely to group
+        // prose is content, not a destination.
+        React.isValidElement(child) && child.type === Section && (child.props as any).head
       ).map((section: any) => <Col key={util.sectionName(section)} xs={12} style={{textAlign: 'start'}} className="pt-3">
         <a className="bp5-text-muted ml-5" data-selected={util.isSelected(section) || undefined} style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? navigate(util.sectionName(section)) : undefined}>{section.props.head}</a>
 
         {React.Children.toArray((section as any).props.children).filter(child =>
-          React.isValidElement(child) && child.type === Section
+          React.isValidElement(child) && child.type === Section && (child.props as any).head
         ).map((section: any) => <Col key={util.sectionName(section)} xs={12} style={{textAlign: 'start'}}>
           <a className="bp5-text-muted ml-10" data-selected={util.isSelected(section) || undefined} style={util.isSelected(section) ? {color: 'orange'} : {}} onClick={() => !util.disabled(section) ? navigate(util.sectionName(section)) : undefined}>{section.props.head}</a>
 

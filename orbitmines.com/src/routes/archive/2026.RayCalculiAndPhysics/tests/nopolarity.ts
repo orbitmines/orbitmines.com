@@ -173,7 +173,7 @@ const PRED: [string, string][] = [
   ["the Milky Way to 1.1% rms", "a₀ and the transport route"],
   ["the transport turnover", "n/n_c and flux — no sign"],
   ["blocking → the interpolation", "`through` = 1 − chance — no sign"],
-  ["the ⟨111⟩ / step anisotropy", "26 exits and three cosines — no sign"],
+  ["the step prediction, 33 & 52 kpc", "26 exits and three cosines — no sign"],
   ["the frontier cosmology, H₀ = 1/t₀", "counting the frontier — no sign"],
 ];
 for (const [p, why] of PRED) console.log(`      ${p.padEnd(36)} ${why}`);
