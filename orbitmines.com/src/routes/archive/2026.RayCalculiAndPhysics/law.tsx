@@ -1734,13 +1734,6 @@ export const Law = () => {
       </Paren>
     </Eq>
 
-    <Eq derive={CONSTANTS} open={show}>
-      <K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>DEG</K>} /> =
-      <Frac over={<>1</>} under={<>26</>} />
-      <span style={{ padding: '0 1.6em' }} />
-      <V>c</V> = <Frac over={<K>HALF</K>} under={<K>GRAIN</K>} />
-    </Eq>
-
     <Head>what is put in</Head>
     <Note>Six countable facts about the lattice, and nothing else is assumed.</Note>
 

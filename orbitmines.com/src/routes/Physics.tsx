@@ -9,7 +9,7 @@ import { bySide, Graph } from "./archive/2026.RayCalculiAndPhysics/discrete";
 import { Echoes } from "./archive/2026.RayCalculiAndPhysics/echoes";
 import { Beam, Sheet } from "./archive/2026.RayCalculiAndPhysics/figures";
 import {
-  B, Bar, Because, CLOCK, CONSTANTS, Eq, F, Frac, FULL, Hat, Head, K, LAW,
+  B, Bar, Because, CLOCK, Eq, F, Frac, FULL, Hat, Head, K, Law, LAW,
   MADE_FROM, MEETINGS, MET, METRIC, Paren, REACH, Rows, SPACE, Step, Sub, Sup, V,
 } from "./archive/2026.RayCalculiAndPhysics/law";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
@@ -209,145 +209,13 @@ const Physics = () => {
 
         <Sheet />
 
-        <Eq derive={{
-          label: 'l.SHEET',
-          title: <>the sheet — what the inverse square asks for</>,
-          body: <>
-            <Because>(1) the thing we are trying to end up with</Because>
-            <Step eq={<>
-              intensity ∝
-              <Frac over={<>1</>}
-                under={<><V><Bar>r</Bar></V><Sup><K>l.<Bar>D</Bar></K> - 1</Sup></>} />
-              <span style={{ padding: '0 1.2em', color: '#6c7080' }}>
-                = 1/<V><Bar>r</Bar></V><Sup>2</Sup> where <K>l.<Bar>D</Bar></K> = 3
-              </span>
-            </>}>
-              This one is not derived — it is the target, the inverse-square law
-              we would like to come out of the lattice, written for however many
-              dimensions the place has. Everything below is what having it costs,
-              and the point of the exercise is that it costs exactly one thing
-              and leaves nothing over to tune.
-            </Step>
-
-            <Because>(2) what a falloff can even be here, since nothing pushes</Because>
-            <Step eq={<>
-              chance(<V><Bar>r</Bar></V>) =
-              <Frac over={<>what was let go of</>} under={<>shell(<V><Bar>r</Bar></V>)</>} />
-            </>}>
-              There is no force in the rules — only rays that step and meet. So
-              the only way something can weaken with distance is by being{' '}
-              <i>spread thinner</i>: a source lets go of some charges, they step
-              outward a cell a tick (that is <K><Bar>c</Bar></K>), and after <V><Bar>r</Bar></V>{' '}
-              ticks they are somewhere on the shell at <V><Bar>r</Bar></V>. None is made
-              and none is destroyed on the way, so what is on that shell is what
-              left, however far it has got. The chance a given cell out there is
-              holding one is that count over the size of the shell.
-            </Step>
-
-            <Because>(3) so the target is really a statement about what it spreads over</Because>
-            <Step eq={<>
-              shell(<V><Bar>r</Bar></V>) = 4<V>π</V> <V><Bar>r</Bar></V><Sup><K>l.<Bar>D</Bar></K> - 1</Sup>
-              <span style={{ padding: '0 1.2em', color: '#6c7080' }}>
-                a surface: <K>l.<Bar>D</Bar></K> - 1 dimensional
-              </span>
-            </>}>
-              Put (1) and (2) together and the demand is that a fixed count be
-              diluted by <V><Bar>r</Bar></V><Sup><K>l.<Bar>D</Bar></K> - 1</Sup> — and a thing whose
-              size goes up by <V><Bar>r</Bar></V><Sup><V>n</V></Sup> when you scale it
-              by <V><Bar>r</Bar></V> is an <V>n</V> dimensional thing, because that is what
-              having a dimension <i>means</i>. So what the emission is spread
-              over has to be <K>l.<Bar>D</Bar></K> - 1 dimensional: a surface, and the one
-              surrounding the source, or there are directions the pull never
-              reaches. In three dimensions that is 4π<V><Bar>r</Bar></V><Sup>2</Sup>.
-            </Step>
-
-            <Because>(4) and it has to get onto that surface by turning</Because>
-            <Step eq={<>
-              emitted + 1 <F>(the turn)</F> = <K>l.<Bar>D</Bar></K>
-              <span style={{ padding: '0 1.2em' }} />
-              emitted = <K>l.<Bar>D</Bar></K> - 1 = 2
-            </>}>
-              A source cannot pulse into a whole sphere at once — a pulse leaves
-              along lattice directions, and the sphere is not a set of them. It
-              can pulse into a <i>sheet</i> and turn, and one rotation carries
-              whatever it emits through exactly one more dimension than that
-              emission already has. Its sweep has to be the whole space, so what
-              is emitted is one dimension short of it: a sheet, two dimensional
-              in three dimensional space.
-            </Step>
-
-            <Because>(5) not more, not less — both alternatives fail, differently</Because>
-            <Step eq={<>
-              <K>l.<Bar>D</Bar></K>: nothing left to turn
-              <span style={{ padding: '0 1.2em' }} />
-              <K>l.<Bar>D</Bar></K> - 2: the sweep is a surface, not a space
-            </>}>
-              Emit into all of space — every way out of the point, which is the
-              full 3<Sup><K>l.<Bar>D</Bar></K></Sup> - 1 = 26 — and there is no dimension
-              left for the turn to happen in; the sphere is covered by the pulse
-              itself and never gets thinner in the right way. Emit into a line
-              instead, two directions, and one turn sweeps a surface — a disc
-              through the source, with the rest of the space untouched. Only{' '}
-              <K>l.<Bar>D</Bar></K> - 1 both covers the space and needs the turn.
-            </Step>
-
-            <Because>(6) so count the directions that lie in the sheet</Because>
-            <Step eq={<>
-              <K>l.<Bar>SHEET</Bar></K> = 3<Sup><K>l.<Bar>D</Bar></K> - 1</Sup> - 1 = 8
-            </>}>
-              Along any one axis a ray can go down it, up it, or not along it —
-              three, and no more, because two steps in a tick is faster
-              than <K><Bar>c</Bar></K>. The axes do not constrain each other, so the
-              choices multiply: three of them over the <K>l.<Bar>D</Bar></K> - 1 axes
-              lying in the sheet, less the one that is zero on all of them,
-              which is standing still and is not a direction to leave in. In
-              three dimensions that is the 3×3 around the point with its middle
-              taken out. <b>Eight. Not the 26, not the 2</b> — and every part of
-              it was forced: the 3 is a tick's worth of one axis, the exponent is
-              what the turn in (4) needs, the −1 is standing still.
-            </Step>
-
-            <Because>(7) and reading it back the way a pulse actually runs</Because>
-            <Step eq={<>
-              chance(<V>m</V>, <V><Bar>r</Bar></V>) =
-              <Frac over={<><V>m</V> · <K>l.<Bar>SHEET</Bar></K></>}
-                under={<>4<V>π</V> <V><Bar>r</Bar></V><Sup><K>l.<Bar>D</Bar></K> - 1</Sup></>} />
-              &nbsp;=&nbsp;
-              <Frac over={<>8<V>m</V></>} under={<>4<V>π</V> <V><Bar>r</Bar></V><Sup>2</Sup></>} />
-            </>}>
-              Eight charges leave, the sheet they left in comes round as the
-              source turns so that over a revolution the space around it has all
-              been pulsed into, and those same eight are on the shell at{' '}
-              <V><Bar>r</Bar></V> a moment later. Eight over 4π<V><Bar>r</Bar></V><Sup>2</Sup>:{' '}
-              <b>the inverse square, back out</b>, which it had better be — this
-              step is the check, not the derivation.
-            </Step>
-
-            <Because>(8) what it cost, which is the reason for doing it this way</Because>
-            <Step>
-              <b>Nothing was fitted and nothing is left free.</b> The strength of
-              a source is not a constant anybody chose — it is eight, because
-              eight is what a sheet in three dimensions has in it, and a sheet is
-              what an inverse square asks for: <b>not the 26 and not the 2</b>.
-              The argument never mentioned three, so it runs the same in any{' '}
-              <K>l.<Bar>D</Bar></K> — sheet one dimension short of the space, count{' '}
-              3<Sup><K>l.<Bar>D</Bar></K> - 1</Sup> - 1, diluted over the surface
-              surrounding the source — and three is only where that comes out as
-              eight and an inverse <i>square</i>. And <K>l.<Bar>D</Bar></K> is{' '}
-              <i>local</i>, which is what the l. is for: it is the dimension
-              where the pulsing is happening, not a number set once for the
-              universe.
-            </Step>
-          </>,
-        }}>
+        <Eq>
           <K>l.<Bar>SHEET</Bar></K> = <>3<Sup><K>l.<Bar>D</Bar></K> - 1</Sup> - 1</>
         </Eq>
 
-        Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
-
         <BR/>
 
-        Then the related number, all possible paths out of point (the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "degree", link: "https://en.wikipedia.org/wiki/Degree_(graph_theory)"}}/> assuming diagonals are included). 
+        Then the related number, all possible paths out of a point (the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "degree", link: "https://en.wikipedia.org/wiki/Degree_(graph_theory)"}}/> assuming diagonals are included). 
 
         <Eq>
           <K>l.<Bar>DEG</Bar></K> = <>3<Sup><K>l.<Bar>D</Bar></K></Sup> - 1</>
@@ -360,7 +228,7 @@ const Physics = () => {
         Let's dive into the continuous model to show you how.
 
         <Section head="The Continuous Model">
-
+          Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
         </Section>
         <Section head="The Discrete Model">
         </Section>
@@ -453,13 +321,6 @@ const Physics = () => {
           <Para>
             Which leaves the constants, and this is the part I actually care about. <K>BIAS</K> is one way out of <K><Bar>DEG</Bar></K>. <V>c</V> is a step over a tick. And <V>G</V> is not measured, chosen or fitted — it is written entirely in counts we already have.
           </Para>
-
-          <Eq derive={CONSTANTS}>
-            <K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>DEG</K>} /> =
-            <Frac over={<>1</>} under={<>26</>} />
-            <span style={{ padding: '0 1.6em' }} />
-            <V>c</V> = <Frac over={<K>HALF</K>} under={<K>GRAIN</K>} />
-          </Eq>
 
           <Eq derive={FULL}
             note={<>the bracket is 1.08 at a core of half a lattice step and Mercury's
@@ -572,10 +433,6 @@ const Physics = () => {
 
           <Head>so is that general relativity</Head>
 
-          <Para>
-            No, and I think the difference is the interesting part. Nothing is borrowed any more, but what came out is not Einstein's metric — it is the <i>exponential</i> one, and the two agree exactly where general relativity has been tested and part company where it has not.
-          </Para>
-
           <Rows of={[
             [<>where they agree</>,
               <>β = γ = 1, so every first-post-Newtonian test is identical: the
@@ -593,10 +450,6 @@ const Physics = () => {
                 equation of state and is the one place the model is probably just
                 wrong.</>],
           ]} />
-
-          <Para>
-            So the claim is not "general relativity, rederived". It is: <b>a metric theory built from counting, agreeing with general relativity on everything general relativity has passed, and disagreeing where nobody has looked closely yet.</b> That is a better position than agreement would be, because it can be shot at.
-          </Para>
 
           <Head>what a black hole is here</Head>
 
@@ -948,10 +801,13 @@ const Physics = () => {
 
           <Models models={MODELS} />
         </Section>
+        <Section head="TODO3">
+          <Law/>
+        </Section>
       </Section>
 
       <Section head="XOR: Gravity + Magnetism">
-        Instead of having our rays me neutral, we can introduce a polarity to them: positive/negative. When we do that gravity + magnetism comes down to three rules:
+        Instead of having our rays be neutral, we can introduce a polarity to them: positive/negative. When we do that gravity + magnetism comes down to three rules:
         <BR/>
         (G+M/1) Annihilation: When two opposite polarities meet, they annihilate, leaving a single neutral spatial point behind.
 
