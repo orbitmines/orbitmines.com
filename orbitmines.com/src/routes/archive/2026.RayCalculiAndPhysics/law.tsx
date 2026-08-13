@@ -70,6 +70,10 @@ export const F = ({ children }: { children: ReactNode }) => (
   <span style={{ color: FAINT, fontStyle: 'normal' }}>{children}</span>
 );
 
+export const D = ({ children }: { children: ReactNode }) => (
+  <span style={{ color: DERIVED, fontStyle: 'normal' }}>{children}</span>
+);
+
 /** A vector. Upright and bold, the way a vector is set. */
 export const B = ({ children }: { children: ReactNode }) => (
   <span style={{ fontWeight: 700, fontStyle: 'normal' }}>{children}</span>
@@ -1600,6 +1604,118 @@ export const CONSTANTS: Derivation = {
       pixel. If it is anything like a fundamental one, Sun and Mercury are an
       astronomical number of them apart and the bracket is{' '}
       1 + 10<Sup>−38</Sup>.
+    </Step>
+  </>,
+};
+
+export const TURNS: Derivation = {
+  label: 'CYCLE',
+  title: <>how long a turn takes, at any dimension</>,
+  body: <>
+    <Because>DEG and SHEET grow with the dimension, so why does this one not</Because>
+    <Step eq={<>
+      <K>DEG</K> = 3<Sup><V>d</V></Sup> − 1
+      <span style={{ padding: '0 1em' }} />
+      <K>SHEET</K> = 3<Sup><V>d</V>−1</Sup> − 1
+      <span style={{ padding: '0 1em' }} />
+      <K>CYCLE</K> = ?
+    </>}>
+      All three are the same formula — how many ways out of a point lie in a
+      slice, which is 3<Sup><V>k</V></Sup> − 1 when the slice has <V>k</V>{' '}
+      dimensions, because a direction lying in it is nought in every coordinate
+      outside and free in the <V>k</V> inside. So the whole question is{' '}
+      <b style={{ color: INK }}>how many dimensions the slice a turn sweeps
+        has</b>, and nothing else.
+    </Step>
+
+    <Because>what actually turns is one vector</Because>
+    <Step eq={<>sheet ⟷ <B>n̂</B></>}>
+      A sheet is a hyperplane and a hyperplane is fixed by its normal, so the
+      only thing a turn moves is the axis <B>n̂</B>. This is worth stating
+      because from <V>d</V> = 4 up{' '}
+      <b style={{ color: INK }}>a rotation need not act in a single plane</b> —
+      but the extra components act on directions perpendicular to the one the
+      axis travels in and leave the sheet exactly where it was, so they are not
+      part of the turn. Nothing observable distinguishes them.
+    </Step>
+
+    <Because>and one vector coming round sweeps a plane</Because>
+    <Step eq={<>
+      <V>P</V> = span{'{'}<B>n̂</B>, <B>R n̂</B>{'}'}
+      <span style={{ padding: '0 1.2em', color: FAINT }}>dim</span>
+      <V>P</V> = 2
+    </>}>
+      The orbit of the axis is a great circle, and a great circle lies in a
+      two-plane whether that plane sits in three dimensions or in three hundred.{' '}
+      <b style={{ color: INK }}>That is where the dimension leaves</b>, and it
+      leaves for a reason rather than by arithmetic accident: the thing being
+      counted is two-dimensional.
+    </Step>
+
+    <Because>unless the space has no plane in it</Because>
+    <Step eq={<>dim slice = min(<V>d</V>, 2)</>}>
+      A line has no two-plane to turn in, so there is no rotation to count and
+      what is left is the two states a line has — which is a{' '}
+      <i>flip</i> rather than a turn, and is the other kind of source{' '}
+      <i>physics.ts</i> already carries. So the slice is as close to a plane as
+      the space allows, and that is the min.
+    </Step>
+
+    <Because>and eight is the most any plane holds, not just the axis-aligned ones</Because>
+    <Step eq={<>
+      <V>Λ</V> = <V>P</V> ∩ ℤ<Sup><V>d</V></Sup>
+      <span style={{ padding: '0 1em' }} />
+      <V>C</V> = <V>P</V> ∩ [−1,1]<Sup><V>d</V></Sup>
+      <span style={{ padding: '0 1em' }} />
+      <V>S</V> ∩ <V>P</V> = (<V>Λ</V> ∩ <V>C</V>) ∖ {'{'}0{'}'}
+    </>}>
+      Cut both the lattice and the cube with the plane: a rank-two lattice, and
+      a symmetric convex polygon.{' '}
+      <b style={{ color: INK }}>Every non-zero point of <V>Λ</V> ∩ <V>C</V> is
+        on the boundary of <V>C</V></b> — its coordinates are integers in
+      [−1,1], so they are −1, 0 or 1, and being non-zero one of them is ±1,
+      which is the cube's own face. So the origin is the only lattice point
+      strictly inside.
+    </Step>
+
+    <Step eq={<>
+      square 8
+      <span style={{ padding: '0 1em', color: FAINT }}>hexagon 6</span>
+      <span style={{ padding: '0 0em', color: FAINT }}>diamond 4</span>
+    </>}>
+      A centrally symmetric convex lattice polygon with exactly one interior
+      lattice point is one of <b style={{ color: INK }}>three</b>, up to a change
+      of basis — and they carry 8, 6 and 4 points on the boundary. So there is{' '}
+      <b style={{ color: INK }}>no fourth answer available at any dimension</b>:
+      a larger <V>d</V> buys more planes, not bigger ones. The coordinate planes
+      are the square everywhere, and the square is the only one of the three
+      whose points are evenly spaced, which is what makes <K>SPIN</K> a constant
+      angle rather than an average of unequal ones.
+    </Step>
+
+    <Because>measured, since a classification is easy to misremember</Because>
+    <Step eq={<span style={{ fontFamily: 'ui-monospace, Menlo, monospace', fontSize: '0.8em' }}>
+      d=2..6&nbsp;&nbsp;max 8&nbsp;&nbsp;sizes {'{'}4,6,8{'}'}&nbsp;&nbsp;45,051 planes at d=6
+    </span>}>
+      Every two-plane spanned by a pair of directions, enumerated and
+      deduplicated by its Plücker coordinates. The maximum is 8 at every
+      dimension, the sizes that occur are 4, 6 and 8 and nothing else at every
+      dimension, and the coordinate plane holds 8 at every dimension. See{' '}
+      <i>tests/turns.ts</i>.
+    </Step>
+
+    <Because>so</Because>
+    <Step eq={<>
+      <K>CYCLE</K> = 3<Sup>min(<V>d</V>, 2)</Sup> − 1
+      <span style={{ padding: '0 1.2em', color: FAINT }}>= 2, 8, 8, 8, …</span>
+    </>}>
+      Two on a line and{' '}
+      <b style={{ color: INK }}>eight at every dimension of two or more</b>,
+      with <K>SPIN</K> = 2π/<K>CYCLE</K> = 45°. There is nothing between two
+      neighbouring directions for the axis to move through, so an eighth of a
+      turn is the finest re-pointing the lattice has — anything quicker is not a
+      faster rotation but a coarser one — and eight of those steps is back where
+      it started.
     </Step>
   </>,
 };
