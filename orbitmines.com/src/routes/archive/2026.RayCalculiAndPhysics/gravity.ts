@@ -1402,8 +1402,24 @@ export const annihilation = (
  * FRACTION of your paths that got biased, and a heavier thing brought
  * proportionally more paths to the meeting.
  */
-export const G_LATTICE =
-  BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
+/**
+ * WITH `share` LEFT IN THE OPEN, because it is the one symbol in here that is
+ * not a count of the lattice — it is a fact about the matter involved.
+ *
+ * Half is the chance two charges landing in the same cell have OPPOSITE sign,
+ * which is what unbiased matter gives (see `annihilating` in `magnet.ts`), and
+ * it is why the constant used to be written with an `8π²` — the half folded
+ * into it and stopped being visible. Taking the polarity away entirely makes
+ * every meeting annihilate rather than half of them, so `share` goes to one and
+ * the constant DOUBLES. That is a change of the mass unit rather than of a
+ * trajectory (`MU = G·m_Planck` scales with it, so every mass carried as
+ * `M/G` is untouched), and the article prints both values off this function
+ * rather than transcribing them.
+ */
+export const gravitational = (share = 0.5) =>
+  BITE * share * SHEET * SHEET * LIGHT / (4 * Math.PI * Math.PI * CORE * DEG);
+
+export const G_LATTICE = gravitational();
 
 /**
  * And the same constant in the units a panel is drawn in, which is the only
@@ -2442,6 +2458,17 @@ export const REACHES = Math.sqrt(
 const L_PLANCK = 1.616255e-35, T_PLANCK = 5.391247e-44, M_PLANCK = 2.176434e-8;
 const MPC = 3.0856775814913673e22, GYR = 3.1557e16, C_SI = 2.99792458e8;
 const MU_SI = G_LATTICE * M_PLANCK;
+
+/**
+ * The lattice's mass unit in kilograms — the heaviest thing that can pulse on
+ * its own, since `m ≤ 1` is one pulse a tick.
+ *
+ * Exported so the article can print it rather than transcribe it, and taking
+ * `share` for the same reason `gravitational` does: it is the ONE quantity the
+ * no-polarity variant actually moves. The step and the tick do not go with it —
+ * `G` cancels out of both — so this is the whole of what that choice costs.
+ */
+export const massUnit = (share = 0.5) => gravitational(share) * M_PLANCK;
 
 /**
  * THE FRONTIER COSMOLOGY, AS ARITHMETIC — because it had none, and that was

@@ -11,11 +11,14 @@ import { bySide, Graph } from "./archive/2026.RayCalculiAndPhysics/discrete";
 import { Echoes } from "./archive/2026.RayCalculiAndPhysics/echoes";
 import { Beam, Sheet } from "./archive/2026.RayCalculiAndPhysics/figures";
 import {
-  B, Bar, Because, CLOCK, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head, IDENTICAL,
-  IGNORANCE, K, Law, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, REACH, Rows,
+  B, Bar, Because, CEILING, CLOCK, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
+  IDENTICAL,
+  IGNORANCE, K, Law, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, Rows,
   SPACE, Step, Sub, Sup, TURNS, V,
 } from "./archive/2026.RayCalculiAndPhysics/law";
+import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
+import { Wander, WanderBlind, WanderForward, WanderPaths, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
 import { Model } from "./archive/2026.RayCalculiAndPhysics/model";
 import { asGroup, MODELS, weighed } from "./archive/2026.RayCalculiAndPhysics/models";
 import { PACE, Polarity } from "./archive/2026.RayCalculiAndPhysics/physics";
@@ -42,6 +45,23 @@ const FAINT = '#6c7080';
  */
 const Para = ({ children }: { children: React.ReactNode }) =>
   <span style={{ textAlign: 'left', width: '100%' }}>{children}</span>;
+
+/**
+ * A node's own radius, which is the one length in the model that is not a
+ * distance between two things.
+ *
+ * A node is a CELL, not a point — the cube x,y,z in [0,1] — which is a nuisance
+ * the moment the model goes continuous, because then every coordinate names an
+ * interval and nothing sits AT a place. Displacing the lattice by half a step
+ * and naming a node by its CENTRE fixes that: coordinates become points again.
+ * What it costs is that a node then has a radius, and the radius is a half.
+ *
+ * Drawn in the DERIVED colour rather than the counted one because it is not put
+ * in. Given one step a tick, a cell is one step across, so its radius is a half
+ * and there was never a choice about it. `gravity.ts` calls it `CORE`, which is
+ * `HALF` in `field.ts`, and both are this.
+ */
+const HALF = <D><Bar>½</Bar></D>;
 
 /** Pick arrangements out of `models.ts` by name, in the order asked for. */
 const named = (...names: string[]): Model[] =>
@@ -99,6 +119,9 @@ const Physics = () => {
    */
   const Ref = ({ of, year, at }: { of: string, year?: string, at: string }) =>
     <Reference is="reference" simple inline index={referenceCounter()}
+      reference={{ title: of, year, link: at }} />;
+  const Footnote = ({ of, year, at }: { of: string, year?: string, at: string }) =>
+    <Reference is="footnote" simple inline index={referenceCounter()}
       reference={{ title: of, year, link: at }} />;
 
   const book: Omit<PaperProps, 'children'> = {
@@ -241,7 +264,15 @@ const Physics = () => {
 
         <BR/>
 
-        Speaking of rotation, 
+        <Head>Movement</Head>
+
+        There's a real assumption to made here at the beginning. Which is how does one from a perspective of discreteness, recover rays propagating in a circle. That's making the assumption you'd want it to propegate in a circle in the first place - whether that's the actual accurate model. Also to consider would be that a large surface of stuff sending out rays could more accurately describe a circle, than say a single point with a local neighbourhood. This is essentially a statement of discrete movement, how should that happen? Where on the aggregate we might see a sphere, a cube, a (curved) diamond-shape. All are these are technically possibilities. We could imagine a world where discretized effects matter here for the spread of those rays.
+
+        <BR/>
+
+        <Para>Let's for a moment assume we wouldn't be able to completely reproduce a circle from a single point with a discrete <K><Bar>SHEET</Bar></K>. What would that look like? One view would be: There's a propegation direction, but the ray sometimes wanders from diagonal to non-diagonal and back to a diagonal: attempting some forward-preference. This 'wandering' would result in cones in each direction, with relative deadzones on the boundaries of them.</Para> 
+
+        <WanderVeins />
 
         <BR/>
 
@@ -274,67 +305,71 @@ const Physics = () => {
             <D><Bar>½</Bar></D>
           </Eq>
 
-          Alrighty, let's get started then.
+          Alrighty,
 
+          <Head>The inverse square law</Head>
+
+          <Head>Mass</Head>
+
+          If 'gravity-rays' are what cause attraction in this model. How would we intuitively encode what it means to have mass. The answer is: The heavier you are, the more gravity you expect around that thing. So the heavier something is the more of these rays it shoots out.
+
+          <Eq>
+            <i><Bar>m</Bar></i> = <F>% <Bar>t</Bar>
+            <span style={{ padding: '0 1.4em' }} />
+            0 ≤ <V><Bar>m</Bar></V> ≤ <K><Bar>c</Bar></K></F>
+            <span style={{ padding: '0 1.4em' }} />
+            <i><Bar>m</Bar></i>.period = <Frac over={<>1</>} under={<i><Bar>m</Bar></i>} /> <F><Bar>t</Bar></F>
+          </Eq>
+
+          We define a number between 0 and 1 of what percentage of time is spent pulsing. This is its 'discrete mass'. There's of course no need for this to be a perfect period, as long as the average corresponds to a particular number, the mass will be on aggregate a particular value.
+
+          <BR/>
+
+          <Para>
+            The obvious first thing to note being that this predicts a heaviest elementary object, if one would assume a static <F>l.</F><K><Bar>DEG</Bar></K>. Essentially saying, if the local spatial density (<F>l.</F><K><Bar>DEG</Bar></K>) is given, there's a heaviest elementary object which can occupy that space. Namely <i><Bar>m</Bar></i> = 1 (pulse every tick).
+          </Para>
+
+          <BR/>
+
+          <Para>At <i><Bar>m</Bar></i> = 1 we get a gravitational constant</Para>
+
+          <Eq derive={CEILING}>
+            <i><K><Bar>G</Bar></K></i> = <Frac
+              over={<><K><Bar>SHEET</Bar></K><Sup>2</Sup> · <K><Bar>c</Bar></K></>}
+              under={<>4<V>π</V><Sup>2</Sup> · {HALF} · <K><Bar>DEG</Bar></K></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            {gravitational(1).toFixed(6)}..
+          </Eq>
+
+          Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
+
+          <Para>
+            The second thing, not used for the rest of this model: Turn the period into a length of how far light travels within that timeframe, and you get something proportional to the <Ref of={'reduced Compton wavelength'} at="https://en.wikipedia.org/wiki/Compton_wavelength#Reduced_Compton_wavelength" /> <Footnote of={'Compton, "A Quantum Theory of the Scattering of X-rays by Light Elements", Phys. Rev. 21:483'} year="1923" at="https://doi.org/10.1103/PhysRev.21.483" />. (<i><K><Bar>G</Bar></K></i> here being the gravitational constant of the model)
+          </Para>
+
+          <Eq derive={CLOCK}>
+            <i><Bar>m</Bar></i>.period · <K>c</K> = <i><K><Bar>G</Bar></K></i> · <D><i>λ</i><Sub>Compton</Sub></D>
+            <span style={{ padding: '0 1.4em' }} />
+            <D><i>λ</i><Sub>Compton</Sub></D> = <Frac over={<>ħ</>} under={<><i>Mc</i></>} />
+          </Eq>
+          {/* <V>E</V> = ħω */}
+         
           <span style={{paddingBottom: '200px'}}></span>
 
           <BR/>
 
           TODO Rewrite everything past this point:
 
+    
+
           <BR/>
 
-          Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
 
           <BR/>
 
           How we would get a model which knows where to move from local interactions I don't yet know (that'll be something for the future). But for now we can just calculate a trajectory based on the space.
 
           <BR/>
-
-
-          <Head>what mass is: how often, not how much</Head>
-
-          <Para>
-            Here is the first place the model says something that isn't obvious. In this model <b>mass is not a property a thing has</b>. A body does not have a quantity of stuff in it that space somehow senses. A body <i>pulses</i> — it lets go of a sheet of charges — and mass is <i>how often it does that</i>.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            A heavier thing does not write more charge onto space in one go. It writes exactly as much, more often. So the natural variable is the period: <V>X</V> ticks between one pulse and the next, and <V>m</V> = 1/<V>X</V>.
-          </Para>
-
-          <Eq derive={CLOCK}
-            note="a heavier thing pulses more often, and nothing pulses more than once a tick">
-            <V>X</V> = 1/<V>m</V>
-            <span style={{ padding: '0 1.4em', color: FAINT }}>ticks between pulses</span>
-            <V>m</V> ≤ <K><Bar>c</Bar></K>
-            <span style={{ padding: '0 1.4em' }} />
-            <V>X</V>·<V>c</V> = <V>G</V> · <V>λ</V><Sub>Compton</Sub>
-          </Eq>
-
-          <Para>
-            Two things fall straight out of that, and I aimed at neither.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            The first is that <b>there is a heaviest elementary thing</b>. Nothing in this universe does anything more than once a tick, so nothing pulses more than once a tick, so <V>m</V> ≤ 1 and there is a ceiling. In our units it is about 1.36 µg. Anything heavier is not <i>one</i> emitter — it is <i>many</i>, which is as close as this model gets to saying what matter is.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            The second is stranger. Turn the period into a length by asking how far light goes in it, and you get <V>X</V>·<V>c</V> = <V>G</V>·ħ/<V>mc</V> exactly, at every mass — which is the <Ref of={'Compton, "A Quantum Theory of the Scattering of X-rays by Light Elements", Phys. Rev. 21:483'} year="1923" at="https://doi.org/10.1103/PhysRev.21.483" /> wavelength. Checked across twenty orders of magnitude — electron, proton, uranium atom, virus, grain of sand — the ratio comes out 0.062329 every time against a <V>G</V> of 0.062351. It is not a coincidence: <V>m</V><Sub>P</Sub><V>l</V><Sub>P</Sub> = ħ/<V>c</V>, so "period = 1/mass" in lattice units simply <i>is</i> the Compton relation, and <V>E</V> = ħω with it.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And at the ceiling, where the beat is one tick, that tick comes out at 5.391246·10<Sup>−44</Sup> s against a Planck time of 5.391246·10<Sup>−44</Sup> s. Ratio 1.000000000, with <V>G</V> cancelling out of it. <b>The lattice's tick is the Planck time</b>, by identity rather than by fit.
-          </Para>
 
           <Head>one pulse, spread — which is where the inverse square is</Head>
 
@@ -343,7 +378,7 @@ const Physics = () => {
           </Para>
 
           <Eq derive={MEETINGS}>
-            shell(<V>r</V>) = 4<V>π</V>·max(<V>r</V>, <K><Bar>CORE</Bar></K>)<Sup><K><Bar>D</Bar></K> − 1</Sup> + <K><Bar>FLOOR</Bar></K>
+            shell(<V>r</V>) = 4<V>π</V>·max(<V>r</V>, {HALF})<Sup><K><Bar>D</Bar></K> − 1</Sup> + <K><Bar>FLOOR</Bar></K>
             <span style={{ padding: '0 1.4em' }} />
             chance(<V>m</V>,<V>r</V>) =
             <Frac over={<><V>m</V> · <K><Bar>SHEET</Bar></K></>} under={<>shell(<V>r</V>)</>} />
@@ -356,7 +391,7 @@ const Physics = () => {
           <BR/>
 
           <Para>
-            The two guards on it are both the same kind of honesty. The max says a shell is never smaller than the cell its source sits in, which is <K><Bar>CORE</Bar></K> from above. The <K><Bar>FLOOR</Bar></K> = 2 says that the innermost shell is not the continuum's 4π(½)<Sup>2</Sup> = 3.14 cells but the lattice's own: the surface of a cube at <V>d</V> steps is 24<V>d</V><Sup>2</Sup> + 2 cells, which at one step is exactly 26, exactly <K><Bar>DEG</Bar></K>. Without those two caps, chance at the core comes out at 8/4<V>π</V>(½)<Sup>2</Sup> = 2.546 — a probability, over one — and nobody had evaluated the floor to notice. With them it is 1.556, and read entirely off the cube rather than half off the continuum it would be 8/8 = 1 exactly, saturated and never exceeded, which is what a probability is allowed to do. <b>That last step is not taken here</b>, because 24<V>d</V><Sup>2</Sup> counts cells at Chebyshev distance where <K>chance</K> is asked with a Euclidean separation, and on a 26-connected lattice those differ by up to √3 depending on direction.
+            The two guards on it are both the same kind of honesty. The max says a shell is never smaller than the cell its source sits in, which is {HALF} from above. The <K><Bar>FLOOR</Bar></K> = 2 says that the innermost shell is not the continuum's 4<V>π</V>{HALF}<Sup>2</Sup> = 3.14 cells but the lattice's own: the surface of a cube at <V>d</V> steps is 24<V>d</V><Sup>2</Sup> + 2 cells, which at one step is exactly 26, exactly <K><Bar>DEG</Bar></K>. Without those two caps, chance at the core comes out at 8/4<V>π</V>{HALF}<Sup>2</Sup> = 2.546 — a probability, over one — and nobody had evaluated the floor to notice. With them it is 1.556, and read entirely off the cube rather than half off the continuum it would be 8/8 = 1 exactly, saturated and never exceeded, which is what a probability is allowed to do. <b>That last step is not taken here</b>, because 24<V>d</V><Sup>2</Sup> counts cells at Chebyshev distance where <K>chance</K> is asked with a Euclidean separation, and on a 26-connected lattice those differ by up to √3 depending on direction.
           </Para>
 
           <Head>and what does not get through</Head>
@@ -435,32 +470,32 @@ const Physics = () => {
           <Eq derive={MET}>
             met(<V>R</V>) = ∫<Sub>0</Sub><Sup><V>R</V></Sup>
             <Frac over={<>d<V>x</V></>}
-              under={<>max(<V>x</V>,<K><Bar>CORE</Bar></K>)<Sup>2</Sup> ·
-                max(<V>R</V>−<V>x</V>,<K><Bar>CORE</Bar></K>)<Sup>2</Sup></>} />
+              under={<>max(<V>x</V>,{HALF})<Sup>2</Sup> ·
+                max(<V>R</V>−<V>x</V>,{HALF})<Sup>2</Sup></>} />
           </Eq>
 
           <Para>
-            And it has a closed form, which is the nicest surprise in the gravity arc. Cut the line in three — a core's worth at each end where a source's own field is capped and flat, and the open middle where nothing is capped — do the middle by partial fractions, and the two leftover pieces collapse against each other because they differ by a factor of (<V>R</V> − <K><Bar>CORE</Bar></K>) that cancels.
+            And it has a closed form, which is the nicest surprise in the gravity arc. Cut the line in three — a core's worth at each end where a source's own field is capped and flat, and the open middle where nothing is capped — do the middle by partial fractions, and the two leftover pieces collapse against each other because they differ by a factor of (<V>R</V> − {HALF}) that cancels.
           </Para>
 
           <Eq derive={MET} note="one inverse square, times one bracket that goes to one">
             met(<V>R</V>) &nbsp;=&nbsp;
-            <Frac over={<>4</>} under={<><K><Bar>CORE</Bar></K> <V>R</V><Sup>2</Sup></>} />
+            <Frac over={<>4</>} under={<>{HALF} <V>R</V><Sup>2</Sup></>} />
             <Paren>
               1 &nbsp;+&nbsp;
-              <Frac over={<K><Bar>CORE</Bar></K>} under={<V>R</V>} /> ln
-              <Frac over={<><V>R</V> − <K><Bar>CORE</Bar></K></>} under={<K><Bar>CORE</Bar></K>} />
+              <Frac over={HALF} under={<V>R</V>} /> ln
+              <Frac over={<><V>R</V> − {HALF}</>} under={HALF} />
             </Paren>
           </Eq>
 
           <Para>
-            One inverse square, times one bracket that goes to one. The 1/<K><Bar>CORE</Bar></K> out front is the two ends — dense, because that is where each field is at its highest anywhere, but only half a step long. The logarithm is the middle — thin, but <V>R</V> long, and it accumulates equally per octave of distance because that term came from the <i>gradient</i> of each body's field across the other's near zone. Checked against brute-force numerical integration at every separation and core size tried, to eight significant figures.
+            One inverse square, times one bracket that goes to one. The 1/{HALF} out front is the two ends — dense, because that is where each field is at its highest anywhere, but only half a step long. The logarithm is the middle — thin, but <V>R</V> long, and it accumulates equally per octave of distance because that term came from the <i>gradient</i> of each body's field across the other's near zone. Checked against brute-force numerical integration at every separation and core size tried, to eight significant figures.
           </Para>
 
           <BR/>
 
           <Para>
-            The whole of this model's departure from Newton at a distance is that bracket, and its size is nothing but the ratio of a source's core to the separation. At <K><Bar>CORE</Bar></K> = half a lattice step and Mercury's separation the bracket is 1.08. At the grain a real lattice would have — where the Sun and Mercury are an astronomical number of steps apart — it is 1 + 10<Sup>−38</Sup>. <b>There is nothing there to tune.</b>
+            The whole of this model's departure from Newton at a distance is that bracket, and its size is nothing but the ratio of a source's core to the separation. At {HALF} = half a lattice step and Mercury's separation the bracket is 1.08. At the grain a real lattice would have — where the Sun and Mercury are an astronomical number of steps apart — it is 1 + 10<Sup>−38</Sup>. <b>There is nothing there to tune.</b>
           </Para>
 
           <Head>what one meeting buys a path</Head>
@@ -522,32 +557,24 @@ const Physics = () => {
             note={<>the bracket is 1.08 at a core of half a lattice step and Mercury's
               separation — and 1 + 10⁻³⁸ at the grain a real lattice would have</>}>
             <Frac over={<>d<V>p</V></>} under={<>d<V>t</V></>} /> &nbsp;=&nbsp;
-            <V>G</V> ·
+            <i><K><Bar>G</Bar></K></i> ·
             <Frac over={<><V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub></>}
               under={<><V>R</V><Sup>2</Sup></>} />
             <Paren>
-              1 &nbsp;+&nbsp; <Frac over={<K><Bar>CORE</Bar></K>} under={<V>R</V>} /> ln
-              <Frac over={<><V>R</V> − <K><Bar>CORE</Bar></K></>} under={<K><Bar>CORE</Bar></K>} />
+              1 &nbsp;+&nbsp; <Frac over={HALF} under={<V>R</V>} /> ln
+              <Frac over={<><V>R</V> − {HALF}</>} under={HALF} />
             </Paren>
             <Hat>r</Hat>
           </Eq>
 
-          <Eq derive={FULL} note="every symbol of it a count — 0.062351, in the lattice's own units">
-            <V>G</V> = <Frac
-              over={<><K><Bar>BITE</Bar></K> · share · <K><Bar>SHEET</Bar></K><Sup>2</Sup> · <K><Bar>c</Bar></K></>}
-              under={<>4<V>π</V><Sup>2</Sup> · <K><Bar>CORE</Bar></K> · <K><Bar>DEG</Bar></K></>} />
-            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
-            0.062351
-          </Eq>
-
           <Para>
-            <b>Newton, times a bracket that goes to one, with a constant that is not measured, chosen or fitted.</b> Every symbol in <V>G</V> is a count: how many charges a pulse carries, how many ways there are out of a point, how big a source's own cell is, and how much of what meets is opposite. Nothing in it came from an experiment, and there is nothing in it left to turn.
+            <b>Newton, times a bracket that goes to one</b> — and the constant in front is the <i><K><Bar>G</Bar></K></i> from the top of this section, which is where it came from. Every symbol in it is a count: how many charges a pulse carries, how many ways there are out of a point, how big a source's own cell is, and how much of what meets is opposite. Nothing in it came from an experiment, and there is nothing in it left to turn.
           </Para>
 
           <BR/>
 
           <Para>
-            One warning about notation, because the code and the prose have collided here before. The <K><Bar>CORE</Bar></K> in met(<V>R</V>) is <i>half a lattice step</i> — a length — and not the speed of light, which is <K><Bar>c</Bar></K> = one step a tick. They are written as the same letter in some places in the source and they are not the same quantity. Reading them as one is worth exactly a factor of two in <V>G</V>.
+            One warning about notation, because the code and the prose have collided here before. The {HALF} in met(<V>R</V>) is <i>half a lattice step</i> — a length — and not the speed of light, which is <K><Bar>c</Bar></K> = one step a tick. They are written as the same letter in some places in the source and they are not the same quantity. Reading them as one is worth exactly a factor of two in <V>G</V>.
           </Para>
 
           <Head>and what a count is as a speed</Head>
@@ -1017,9 +1044,9 @@ const Physics = () => {
                 <V>m</V><Sub>b</Sub>·EMIT<Sup>2</Sup>·met(<V>R</V>) — the meeting rate, and
                 a screening term Newton has no name for</>],
             [<>along the line</>,
-              <>met(<V>R</V>) = 4/(<K><Bar>CORE</Bar></K><V>R</V><Sup>2</Sup>)·(1 +
-                (<K><Bar>CORE</Bar></K>/<V>R</V>)ln((<V>R</V>−<K><Bar>CORE</Bar></K>)/
-                <K><Bar>CORE</Bar></K>)) — <b>Newton, times a bracket that goes to one</b></>],
+              <>met(<V>R</V>) = 4/({HALF}<V>R</V><Sup>2</Sup>)·(1 +
+                ({HALF}/<V>R</V>)ln((<V>R</V>−{HALF})/
+                {HALF})) — <b>Newton, times a bracket that goes to one</b></>],
             [<>read as a direction</>,
               <><K><Bar>BIAS</Bar></K> = <K><Bar>c</Bar></K>/<K><Bar>DEG</Bar></K> ⇒ the law,
                 <b> the equivalence principle</b>, 1/<V>γ</V><Sup>3</Sup> and 1/<V>γ</V>, and
@@ -1030,8 +1057,8 @@ const Physics = () => {
                 sixths, and the whole of light's deflection</>],
             [<>and the constant</>,
               <><V>G</V> = <K><Bar>BITE</Bar></K>·share·<K><Bar>SHEET</Bar></K><Sup>2</Sup>
-                <K><Bar>c</Bar></K>/(4π<Sup>2</Sup><K><Bar>CORE</Bar></K><K><Bar>DEG</Bar></K>)
-                = 0.062351 — <b>every symbol a count</b></>],
+                <K><Bar>c</Bar></K>/(4π<Sup>2</Sup>{HALF}<K><Bar>DEG</Bar></K>)
+                = {gravitational().toFixed(6)} — <b>every symbol a count</b></>],
             [<>the vacuum</>,
               <><V>λ</V> = 1/√(<K><Bar>BITE</Bar></K>·share·<K><Bar>SHEET</Bar></K>·<V>ρ</V>)
                 ⇒ <b>Yukawa</b>, with <V>λ</V>/<V>R</V><Sub>h</Sub> = 0.361/√<V>Ω</V></>],
@@ -1632,11 +1659,127 @@ const Physics = () => {
           <Models models={MODELS} />
         </Section>
         <Section head="TODO3">
+
+          <Para>
+            <b>Does a square pulse ever become a round one?</b> A charge moves one cell a tick and a cell has 26 ways out, so after <V>t</V> ticks a pulse is at <i>Chebyshev</i> distance <V>t</V> — a cube shell. The faces have covered <V>t</V>, the edges √2<V>t</V>, the corners √3<V>t</V>. The closed form meanwhile divides by 4π<V>r</V><Sup>2</Sup>. Those are different shapes, and <b>scaling a cube gives a cube</b>: corner over face is 1.7321 at <V>t</V> = 10 and at <V>t</V> = 10<Sup>38</Sup> alike.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <K>wander</K> is the rule the model already has for it — a ray takes one of the ways its direction is <i>made of</i> instead of the direction itself, so a diagonal sometimes steps along an axis and is slowed in Euclidean terms. With one <V>w</V> for every class that takes the spread from 73% to 3.5%. <b>And the 3.5% is not irreducible.</b> A direction with <V>n</V> non-zero components has mean speed (1 − <V>w</V>(<V>n</V>−1)/<V>n</V>)·√<V>n</V>, and setting that to one solves in closed form:
+          </Para>
+
+          <Eq note="at which the mean speed is 1.000000000 in all 26 directions">
+            <V>w</V>(<V>n</V>) = <Frac over={<>√<V>n</V></>} under={<>√<V>n</V> + 1</>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            0.5858 <F>(edge)</F>
+            <span style={{ padding: '0 0.8em' }} />
+            0.6340 <F>(corner)</F>
+          </Eq>
+
+          <Wander />
+
+          <Para>
+            Three things were measured and they do not all agree. The front's <b>radius</b> is fixed — every ray lands on the sphere of radius <V>t</V> exactly. The shell's <b>density</b> is fixed, and this is the one the physics needs: plain propagation puts 0.853553 of the closed form's <K><Bar>SHEET</Bar></K>/4π<V>r</V><Sup>2</Sup> through a shell, so <i><K><Bar>G</Bar></K></i> would be out by <b>0.7286</b>; wandered — or with steps costing their own length — it is 1.000000 exactly. The falloff <i>exponent</i> is −2 in all three, so the inverse square was never at risk.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The front's <b>directions</b> are not fixed, and get worse with distance. A wandering beam's angular width goes as 1/√<V>t</V>, so the beams <i>collimate</i>: 11.1° at <V>t</V> = 10 and 0.70° at 2560, and 26 cones of that width cover 2.4·10<Sup>−6</Sup> of the sky by <V>t</V> = 10<Sup>6</Sup>. <b>And no averaging saves it</b>, because the lattice is translation-invariant: every emitter at every site has the same 26 exits, so averaging over positions, orientations, phases or 10<Sup>39</Sup> constituents never makes a twenty-seventh direction.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which leaves a split worth being exact about. What the closed form needs from the lattice is a <i>number</i> — how much of a source is at a place — and wandering delivers that number exactly. What it does not deliver is the <i>picture</i>: the flux sits on 26 needles rather than smeared over the shell, so <K>chance</K> is right on average and wrong at any particular point. <b>Every prediction in this booklet is computed from the average, and none from a particular point</b> — which is why nothing above moves, and also why this should be read as an open problem rather than a repair.
+          </Para>
+
+          <Head>and whether a circle was ever the right thing to want</Head>
+
+          <Para>
+            Everything above quietly assumes the answer is a circle and then asks how a lattice could manage one. <b>That assumption is doing real work and it has not been argued for.</b> What discreteness actually offers is a choice of aggregate shape — a sphere, a cube, a curved diamond — and each of them is a different answer to one question: <i>what is a heading?</i> The rule picks the shape, and the shape is not handed down from anywhere.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So here is every path a ray could take, as a field, under four answers to that question. Alpha is the probability that a path ends in a cell, gamma-corrected so the thin parts show rather than clipping to black — and nothing is sampled: with free headings the two coordinates are <i>independent binomials</i>, so the field is exact.
+          </Para>
+
+          <WanderPaths />
+
+          <Para>
+            <b>Read the veins.</b> One held heading gives eight rays and an aggregate square — there is no envelope, only spokes. The current <K>wander</K> broadens the diagonals and <i>cannot</i> broaden the axes, since a face step has no constituents to wander into, so the spokes fatten unevenly and there are still eight. Free headings close the ring — and it comes out <b>sharp on the axes and blurred on the diagonals</b>, because the radial spread is √((1 − Σ<V>u</V><Sub>i</Sub><Sup>4</Sup>)<V>t</V>) and Σ<V>u</V><Sub>i</Sub><Sup>4</Sup> is exactly 1 along an axis. Measured on the field at <V>t</V> = 24: radial sd 1.16 on the axis, 2.21 at 22.5°, 3.02 on the diagonal.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the fourth panel is the other route, which is worth taking seriously on its own: <b>a large surface of emitters fills a shell better than a point with a neighbourhood does</b>, because the veins widen by the body's own size rather than by any rule about stepping. Measured, that works — and it works out to about <b>2.5 body radii and no further</b>, with the curves for bodies of radius 1, 4 and 16 lying on top of each other. So extendedness buys a proportionally bigger circle, never a longer-lasting one.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            We could imagine a world where the discreteness genuinely mattered for the spread of those rays — where the blur is the physics rather than a repair. But then it has to be a wander that <i>does not discriminate</i>, since the one above is picky: it mixes a heading with its <i>own</i> constituents, so a face step never wanders and a corner step wanders most, and that pickiness is doing all the work. Take it away — with probability <V>w</V> take a uniformly random lattice step, caring neither what your heading is nor which way you go — and the means come out at (1 − <V>w</V>)·<B>d</B>, because the 26 come in ± pairs and average to nothing.
+          </Para>
+
+          <WanderBlind />
+
+          <Para>
+            <b>So every speed is scaled by the same (1 − <V>w</V>) and the ratio never moves</b>: face (1−<V>w</V>), diagonal (1−<V>w</V>)√2, corner (1−<V>w</V>)√3, at every <V>w</V>. The square stays a square. What <V>w</V> buys is blur, and blur only <i>hides</i> it, and only near in — the corner excess grows as 0.414(1−<V>w</V>)<V>t</V> while the blur grows as √(var·<V>t</V>), so the square comes back at <V>t</V> ≈ 29 ticks for <V>w</V> = 0.5, 222 for 0.8, and 3547 for 0.95. At <V>w</V> = 1 it is gone, and so is propagation: the mean speed is nought and nothing goes anywhere at all.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which suggests the rule that neither of the two above is: <b>you may deviate, but only into a direction you are already going in.</b> Take the candidates to be every lattice direction with a <i>positive projection</i> on the heading — and note first that the cone's size is <b>9 for a face or an edge and 10 for a corner</b>, which are exactly the counts <K>biased</K> uses for the ⟨111⟩ easy axis, reached here from a completely different question.
+          </Para>
+
+          <WanderForward />
+
+          <Para>
+            The cone's mean step has a closed form and it is the whole mechanism: <b>1 for a face, 2√2/3 for an edge, √3/2 for a corner</b>. So a face's mean is <i>exactly its own heading</i> and its speed is 1 at every <V>w</V>, while the diagonals get pulled in — √2(1 − <V>w</V>/3) and √3(1 − <V>w</V>/2). <b>Wandering forward shortens the diagonals and leaves the axes alone</b>, which is precisely the correction wanted, and nothing had to be singled out by hand to get it: the asymmetry falls out of the cone counts.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            One <V>w</V> takes the spread to <b>1.57%</b>, against 3.5% for the constituent rule and 73% for none — and two zero it exactly, at <V>w</V> = 3(1 − 1/√2) = 0.8787 for an edge and 2(1 − 1/√3) = 0.8453 for a corner. Which is the first version of this that reads as a rule rather than a repair, and the first place <V>w</V> has had any reason to be one number rather than another.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the distribution itself, swept through <V>w</V> — not one pulse at one age, which is only a shell, but <b>steady state</b>: a source pulses every tick, so charges of every age are in flight at once and the picture fills. Each cell is drawn against the mean at <i>its own radius</i>, so the 1/<V>r</V> falloff divides out and what is left is purely angular — where the field is thick and where it is thin. In the plane a forward cone always has <i>three</i> members, so the walk is a <b>trinomial</b> and every path is enumerated with its exact weight rather than sampled.
+          </Para>
+
+          <WanderVeins />
+
+          <Para>
+            <b>The veins have a reason.</b> A face heading's cone is {'{'}(1,0), (1,1), (1,−1){'}'} and every one of those has <V>x</V> = 1 — so <V>x</V> advances by exactly one a tick <i>whatever path is taken</i>, and the density piles up along the axis as a ridge that cannot spread radially at all. A diagonal's cone is {'{'}(1,0), (1,1), (0,1){'}'}, which fixes nothing, so it opens into a wedge. <b>Ridges along the eight headings, thin wedges between them</b> — a fact about which directions share a component, not about any parameter.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Turning <V>w</V> up fills the wedges and cannot flatten the ridges. The contrast printed under each panel is the thickest place at a radius over the mean at that radius: <b>7.7× at <V>w</V> = 0.3, and still 3.3× at the <V>w</V> that puts the ring on the circle</b>. So even where the front is a perfect circle, the field inside it is nowhere near smooth — which is the honest picture of what <K>chance</K>'s 1/<V>r</V><Sup>2</Sup> is an average over.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which is the honest state of it. <b>A circle is not recovered; it is chosen, by choosing what a heading is.</b> The lattice will as happily give a square, and a world where the discreteness of the spread genuinely mattered is not obviously ours to rule out — the residual here is a rank-four fingerprint worth 37 µm over a Hubble time, which is small but is not nothing, and is the one thing this whole route predicts that assuming a sphere never could.
+          </Para>
+
           <Law/>
         </Section>
       </Section>
 
       <Section head="XOR: Gravity + Magnetism">
+
         Instead of having our rays be neutral, we can introduce a polarity to them: positive/negative. When we do that gravity + magnetism comes down to three rules:
         <BR/>
         (G+M/1) Annihilation: When two opposite polarities meet, they annihilate, leaving a single neutral spatial point behind.
@@ -1695,6 +1838,15 @@ const Physics = () => {
             ticks: 22, height: 140,
           },
         }))}/>
+
+        <Section head="Gravity vs XOR">
+          - the heaviest elementary thing goes from ≈1.36 µg to ≈2.71 µg
+          - a body of given physical mass pulses half as often
+
+          <Eq>
+            <K><Bar>G</Bar></K><Sup><R>XOR</R></Sup> = <Frac over={1} under={2} /><K><Bar>G</Bar></K>
+          </Eq>
+        </Section>
         
         <Section head="XOR Continuous Model">
 
@@ -1800,21 +1952,33 @@ const Physics = () => {
           ]} />
 
           <Eq note="G doubles — and that is the whole of it">
-            <V>G</V> = <Frac
+            <i><K><Bar>G</Bar></K></i> = <Frac
               over={<><K><Bar>BITE</Bar></K>·<i>share</i>·<K><Bar>SHEET</Bar></K><Sup>2</Sup>·<K><Bar>c</Bar></K></>}
-              under={<>4<V>π</V><Sup>2</Sup>·<K><Bar>CORE</Bar></K>·<K><Bar>DEG</Bar></K></>} />
+              under={<>4<V>π</V><Sup>2</Sup>·{HALF}·<K><Bar>DEG</Bar></K></>} />
             <span style={{ padding: '0 1.4em' }} />
-            0.062351 → 0.124703
+            {gravitational(0.5).toFixed(6)} → {gravitational(1).toFixed(6)}
           </Eq>
 
           <Para>
-            <b>And the factor of two is not observable.</b> Every mass in the model is carried in units of <V>G</V>, so a body of physical mass <V>M</V> holds <V>M</V>/<V>G</V> and the dynamics compute <V>G</V>·(<V>M</V>/<V>G</V>). The constant is gone before it is used — <b>a change of the mass unit, not of a prediction</b>. Measured on the line integral: exactly two at every separation, with <V>S</V>·<V>R</V><Sup>2</Sup> flat in both.
+            <b>And the factor of two is not observable in an orbit.</b> Every mass in the model is carried in units of <i><K><Bar>G</Bar></K></i>, so a body of physical mass <V>M</V> holds <V>M</V>/<i><K><Bar>G</Bar></K></i> and the dynamics compute <i><K><Bar>G</Bar></K></i>·(<V>M</V>/<i><K><Bar>G</Bar></K></i>). The constant is gone before it is used — <b>a change of the mass unit, not of a trajectory</b>. Measured on the line integral: exactly two at every separation, with <V>S</V>·<V>R</V><Sup>2</Sup> flat in both.
           </Para>
 
           <BR/>
 
           <Para>
-            <K><Bar>SHEET</Bar></K>, <K><Bar>DEG</Bar></K>, <K><Bar>BITE</Bar></K>, <K><Bar>BIAS</Bar></K>, <K><Bar>CORE</Bar></K>, <V>ε</V>, <V>D</V>, the reach and the tick do not move at all. And neither does anything predicted: Mercury's sixth, the other five sixths, light's deflection, <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π, the Milky Way to 1.1%, the transport turnover, the interpolation function, the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>. <b>All identical, to every digit quoted</b> — because every one of them is computed from something that never mentions a sign.
+            <b>But "not of a prediction" would be too strong, and the exception is the mass unit itself.</b> It is not free to stay put — <V>µ</V> = <i><K><Bar>G</Bar></K></i>·<V>m</V><Sub>P</Sub>, so doubling one doubles the other. The heaviest elementary thing goes from <b>{(massUnit(0.5) * 1e9).toFixed(3)} µg to {(massUnit(1) * 1e9).toFixed(3)} µg</b>, and a body of given physical mass pulses <b>half as often</b>: an electron every 1.61·10<Sup>−22</Sup> s against 8.03·10<Sup>−23</Sup>. Which is the right direction rather than a fault — with no polarity every meeting annihilates instead of half of them, so each emission is twice as effective and half as much of it is needed for the same pull. Nothing measures that ceiling, so it refutes neither version; but it is a statement about the world, and it moves.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The tick and the step do <i>not</i> go with it, which is worth checking rather than assuming. At the ceiling the period is <i><K><Bar>G</Bar></K></i>ħ/(<V>µc</V><Sup>2</Sup>) = ħ/(<V>m</V><Sub>P</Sub><V>c</V><Sup>2</Sup>) — the <i><K><Bar>G</Bar></K></i> cancels — so both stay exactly Planck at either share. And so does the Compton line, whose constant tracks <i><K><Bar>G</Bar></K></i> because <V>µ</V> does: measured, <V>k</V>/<i><K><Bar>G</Bar></K></i> = 1.000000000 at both.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <K><Bar>SHEET</Bar></K>, <K><Bar>DEG</Bar></K>, <K><Bar>BITE</Bar></K>, <K><Bar>BIAS</Bar></K>, {HALF}, <V>ε</V>, <V>D</V>, the reach, the step and the tick do not move at all. And neither does anything <i>measured</i>: Mercury's sixth, the other five sixths, light's deflection, <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π, the Milky Way to 1.1%, the transport turnover, the interpolation function, the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>. <b>All identical, to every digit quoted</b> — because every one of them is computed from something that never mentions a sign.
           </Para>
 
           <BR/>
@@ -2320,17 +2484,17 @@ const Physics = () => {
               over={<><K>BITE</K>·<i>share</i>·<K>SHEET</K><Sup>2</Sup></>}
               under={<>4<V>π</V><Sup>2</Sup>·<K>CORE</K>·<K>DEG</K></>} />
             <span style={{ padding: '0 1.4em' }} />
-            0.062351 → 0.124703
+            {gravitational(0.5).toFixed(6)} → {gravitational(1).toFixed(6)}
           </Eq>
 
           <Para>
-            And the factor of two is not observable. Every mass in the model is carried in units of <K>GRAVITY</K>, so a body of physical mass <V>M</V> holds <V>M</V>/<K>G</K> and the dynamics compute <K>G</K>·(<V>M</V>/<K>G</K>). The constant is gone before it is used — <b>a change of the mass unit, not of a prediction</b>. Measured on the line integral: exactly two at every separation, with <V>S</V>·<V>R</V><Sup>2</Sup> flat in both.
+            And the factor of two is not observable in an orbit. Every mass in the model is carried in units of <K>GRAVITY</K>, so a body of physical mass <V>M</V> holds <V>M</V>/<K>G</K> and the dynamics compute <K>G</K>·(<V>M</V>/<K>G</K>). The constant is gone before it is used — <b>a change of the mass unit, not of a trajectory</b>. Measured on the line integral: exactly two at every separation, with <V>S</V>·<V>R</V><Sup>2</Sup> flat in both. The one thing it does carry with it is the mass unit itself: <V>µ</V> = <K>G</K>·<V>m</V><Sub>P</Sub>, so the heaviest elementary thing goes from {(massUnit(0.5) * 1e9).toFixed(3)} µg to {(massUnit(1) * 1e9).toFixed(3)} µg and every emitter pulses half as often. The step and the tick do not go with it — the <K>G</K> cancels out of both.
           </Para>
 
           <BR/>
 
           <Para>
-            <K>SHEET</K>, <K>DEG</K>, <K>BITE</K>, <K>BIAS</K>, <K>MADE</K>, <K>SPREAD</K>, <K>REACHES</K> and the tick do not move at all. And neither does anything predicted: Mercury's sixth, the other five sixths, light's deflection, <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π, the Milky Way to 1.1%, the transport turnover, the interpolation function, the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>. <b>All identical, to every digit quoted</b> — because every one of them is computed from something that never mentions a sign.
+            <K>SHEET</K>, <K>DEG</K>, <K>BITE</K>, <K>BIAS</K>, <K>MADE</K>, <K>SPREAD</K>, <K>REACHES</K>, the step and the tick do not move at all. And neither does anything <i>measured</i>: Mercury's sixth, the other five sixths, light's deflection, <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π, the Milky Way to 1.1%, the transport turnover, the interpolation function, the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>. <b>All identical, to every digit quoted</b> — because every one of them is computed from something that never mentions a sign.
           </Para>
 
           <BR/>

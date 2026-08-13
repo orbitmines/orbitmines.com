@@ -1,6 +1,6 @@
 import { Children, Fragment, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
 
-import { GRAIN } from "./gravity";
+import { GRAIN, gravitational, massUnit } from "./gravity";
 import { Echoes } from "./echoes";
 import {
   Apart, Discs, HighRedshift, HighZCurves, HighZDiscs, Rotation, Split,
@@ -64,6 +64,10 @@ export const V = ({ children }: { children: ReactNode }) => (
 /** One of the lattice's own counts. Upright, and coloured. */
 export const K = ({ children }: { children: ReactNode }) => (
   <span style={{ color: NAMED, fontStyle: 'normal' }}>{children}</span>
+);
+
+export const R = ({ children }: { children: ReactNode }) => (
+  <span style={{ color: 'indianred', fontStyle: 'normal' }}>{children}</span>
 );
 
 export const F = ({ children }: { children: ReactNode }) => (
@@ -1076,38 +1080,355 @@ half out   1.98   1.88   1.76   1.41   1.00   1.00`}
   </>,
 };
 
+export const CEILING: Derivation = {
+  label: 'G as a mass',
+  title: <>the constant, read as a mass in Planck masses</>,
+  body: <>
+    <Because>where each symbol comes from — one body first</Because>
+    <Step eq={<>
+      chance(<V>m</V>,<V>r</V>) =
+      <Frac over={<><V>m</V> · <K>SHEET</K></>} under={<>shell(<V>r</V>)</>} />
+    </>}>
+      A source lets go of <K>SHEET</K> charges a pulse and they spread over the
+      shell they have grown to, so the chance a given cell is holding one is that
+      count over how much shell there is. <b style={{ color: INK }}>One factor of{' '}
+        <K>SHEET</K>, per body.</b> The inverse square is already here and
+      nobody wrote it down: a shell in three dimensions goes as <V>r</V><Sup>2</Sup>.
+    </Step>
+
+    <Because>and a meeting needs BOTH of them in the same cell — which is where the square is</Because>
+    <Step eq={<>
+      chance(<V>m</V><Sub>a</Sub>, <V>x</V>) ·
+      chance(<V>m</V><Sub>b</Sub>, <V>R</V>−<V>x</V>)
+    </>}>
+      <b style={{ color: INK }}><K>SHEET</K><Sup>2</Sup> is one factor from each
+        body, not a sheet squared.</b> The two carry different masses and sit at
+      different radii, which is the whole tell — a square coming from the sheet’s
+      own shape would carry one mass at one place. It is also where{' '}
+      <V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub> comes from: drop either factor and
+      the law stops being about two bodies.
+    </Step>
+
+    <Because>summed along the line between them, which is the line an annihilation shortens</Because>
+    <Step eq={<>
+      met(<V>R</V>) =
+      <Frac over={<>4</>} under={<><K>CORE</K> <V>R</V><Sup>2</Sup></>} />
+      <Paren>1 + <Frac over={<K>CORE</K>} under={<V>R</V>} /> ln
+        <Frac over={<><V>R</V>−<K>CORE</K></>} under={<K>CORE</K>} /></Paren>
+    </>}>
+      Two inverse squares multiplied and added up along the line collapse back to{' '}
+      <i>one</i> inverse square, times a bracket that goes to one. The 1/<K>CORE</K>{' '}
+      is the two dense ends. Worked out under <i>met(R)</i>.
+    </Step>
+
+    <Because>and what one meeting is worth to a path</Because>
+    <Step eq={<><K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>DEG</K>} /></>}>
+      One annihilation leaves one extra way out of that point, against the{' '}
+      <K>DEG</K> ways that were already there. Multiply the meeting rate by it
+      and collect: the (4<V>π</V>)<Sup>2</Sup> from the two shells, with met’s 4
+      divided back out, is the 4<V>π</V><Sup>2</Sup>.
+    </Step>
+
+    <Because>so the formula is counted — and now the second question</Because>
+    <Step eq={<>
+      <K>G</K> =
+      <Frac over={<><K>BITE</K> · <i>share</i> · <K>SHEET</K><Sup>2</Sup> · <K>c</K></>}
+        under={<>4<V>π</V><Sup>2</Sup> · <K>CORE</K> · <K>DEG</K></>} />
+    </>}>
+      Every symbol a count, and none of it fitted. The rest of this panel is the
+      other question:{' '}
+      <b style={{ color: INK }}>why the ceiling <V><Bar>m</Bar></V> = 1 hands you
+        that same number.</b>
+    </Step>
+
+    <Because>what the ceiling is, in kilograms</Because>
+    <Step eq={<>
+      <V><Bar>m</Bar></V> = 1
+      <span style={{ padding: '0 0.8em', color: FAINT }}>⇒</span>
+      <V>µ</V> = {(massUnit(1) * 1e9).toFixed(3)} µg
+    </>}>
+      One pulse a tick is the most anything can do, so there is a heaviest thing
+      that can pulse on its own, and it has a definite weight. Call it <V>µ</V>.
+      That is the lattice’s own mass unit — arrived at from the tick rule, with
+      no object anywhere in it.
+    </Step>
+
+    <Because>to say what µ IS you need a yardstick with no object in it either</Because>
+    <Step eq={<>
+      <V>m</V><Sub>P</Sub> = √(ħ<V>c</V>/<V>G</V>) =
+      {(2.176434e-8 * 1e9).toFixed(2)} µg
+    </>}>
+      Comparing <V>µ</V> to an electron would give a number that says nothing —
+      it would be a fact about which particles happen to exist. The Planck mass
+      is the only mass that can be built out of <V>c</V>, ħ and <V>G</V> alone,
+      so it is the one yardstick with nothing contingent in it. It is also{' '}
+      <b style={{ color: INK }}>where a mass’s two lengths cross</b>: its
+      quantum length ħ/<V>Mc</V> shrinks as <V>M</V> grows and its gravitational
+      length <V>GM</V>/<V>c</V><Sup>2</Sup> grows, and they meet there.
+    </Step>
+
+    <Because>and in Planck’s units the gravitational constant is one</Because>
+    <Step eq={<><K>G</K> = 1
+      <span style={{ padding: '0 0.8em', color: FAINT }}>in</span>
+      (<V>l</V><Sub>P</Sub>, <V>t</V><Sub>P</Sub>, <V>m</V><Sub>P</Sub>)</>}>
+      That is what Planck units <i>are</i> — the system built so that{' '}
+      <V>c</V> = ħ = <V>G</V> = 1. So any number other than one that <V>G</V>{' '}
+      takes is a statement about how the units being used differ from those.
+    </Step>
+
+    <Because>and the lattice already shares two of the three</Because>
+    <Step eq={<>
+      step = <V>l</V><Sub>P</Sub>
+      <span style={{ padding: '0 1em' }} />
+      tick = <V>t</V><Sub>P</Sub>
+      <span style={{ padding: '0 1em' }} />
+      [<V>G</V>] = length³/(time²·mass)
+    </>}>
+      With the length and the time already Planck’s,{' '}
+      <b style={{ color: INK }}>the only thing left that can move <V>G</V>’s
+        number is the mass unit</b> — and since mass sits alone in the
+      denominator of <V>G</V>’s units, it moves it in direct proportion. There is
+      nothing else in the expression for it to be about.
+    </Step>
+
+    <Because>so</Because>
+    <Step eq={<>
+      <K>G</K> = <V>µ</V>/<V>m</V><Sub>P</Sub> =
+      {gravitational(1).toFixed(6)}
+    </>}>
+      <b style={{ color: INK }}>The gravitational constant here is not a
+        strength. It is the heaviest elementary thing, weighed in Planck
+        masses.</b> Exactly, with nothing to compute:{' '}
+      {(massUnit(1) * 1e9).toFixed(3)} µg against{' '}
+      {(2.176434e-8 * 1e9).toFixed(2)} µg. And read the other way,{' '}
+      1/<K>G</K> = {(1 / gravitational(1)).toFixed(3)} is how many times lighter
+      than nature’s own mass the lattice’s own mass is.
+    </Step>
+
+    <Because>which is why it is not one, and that is the whole of what it says</Because>
+    <Step>
+      Two definitions of a mass, neither of which mentions any object. Nature’s
+      is where a mass’s quantum length and its gravitational length cross. The
+      lattice’s is the heaviest thing that can pulse once a tick.{' '}
+      <b style={{ color: INK }}><K>G</K> ≠ 1 is the statement that those two do
+        not agree</b>, and its value is the amount by which they miss.
+    </Step>
+
+    <Because>with the polarity put back, both halve together</Because>
+    <Step eq={<>
+      <K>G</K>: {gravitational(1).toFixed(6)} → {gravitational(0.5).toFixed(6)}
+      <span style={{ padding: '0 1em' }} />
+      <V>µ</V>: {(massUnit(1) * 1e9).toFixed(3)} → {(massUnit(0.5) * 1e9).toFixed(3)} µg
+    </>}>
+      This arc has no signs in it, so every meeting annihilates and{' '}
+      <i>share</i> = 1. Once polarity arrives only half of them do, ordinary
+      matter being unbiased, and the constant halves. <V>µ</V> halves with it,
+      because <V>µ</V> = <K>G</K>·<V>m</V><Sub>P</Sub> — so the ratio above is
+      untouched and so is every orbit, since masses are carried in units of{' '}
+      <K>G</K>. <b style={{ color: INK }}>What changes is the mass unit and
+        nothing else.</b>
+    </Step>
+
+    <Because>and one number here is a trap</Because>
+    <Step eq={<>
+      1/<K>G</K> = {(1 / gravitational(1)).toFixed(4)}
+      <span style={{ padding: '0 1em', color: FAINT }}>against</span>
+      <K>SHEET</K> = 8
+    </>}>
+      <b style={{ color: BORROWED }}>Those are not the same number and should
+        not be read as one.</b> They agree to{' '}
+      {(100 * Math.abs(1 / gravitational(1) - 8) / 8).toFixed(2)}%, which is
+      close enough to invite a story and far enough to be nothing —{' '}
+      1/<K>G</K> carries a 4<V>π</V><Sup>2</Sup> and a <K>DEG</K> that no count
+      of <K>SHEET</K> cancels. This file warns against exactly this kind of near
+      miss elsewhere, and the warning applies to itself.
+    </Step>
+  </>,
+};
+
 export const CLOCK: Derivation = {
   label: 'mass as a period',
   title: <>once a tick is the ceiling</>,
   body: <>
-    <Because>mass is how often, so turn it round</Because>
-    <Step eq={<><V>X</V> = 1/<V>m</V> ticks between pulses,&nbsp;&nbsp;<V>m</V> ≤ 1</>}>
-      A heavier thing pulses more often, and nothing pulses more than once a
-      tick. So mass is a <i>period</i>, and there is a largest elementary
-      mass: the lattice mass unit is <V>G</V>·<V>m</V><Sub>Planck</Sub> ≈
-      1.36 µg. Anything heavier has to be many emitters — which is what matter
-      is.
-    </Step>
-
-    <Because>turn the period into a length</Because>
+    <Because>what the lattice says, which so far is only a rewriting</Because>
     <Step eq={<>
-      <V>X</V>·<V>c</V> = <V>G</V> ·
-      <Frac over={<>ħ</>} under={<><V>mc</V></>} /> = <V>G</V> · <V>λ</V><Sub>Compton</Sub>
+      0 ≤ <V><Bar>m</Bar></V> ≤ <K><Bar>c</Bar></K>
+      <span style={{ padding: '0 1em' }} />
+      <V><Bar>m</Bar></V>.period = 1/<V><Bar>m</Bar></V>
+      <span style={{ padding: '0 0.8em', color: FAINT }}>ticks</span>
     </>}>
-      Exactly, at every mass. Measured across twenty orders — electron, proton,
-      uranium atom, virus, grain of sand — the ratio is 0.062329 every time,
-      against <V>G</V> = 0.062351.
+      Mass here is what <i>fraction of the ticks</i> a thing spends pulsing, so
+      the ceiling needs no argument beyond what a fraction is: you cannot spend
+      more than all of them. Turned round it is a period — something of mass{' '}
+      <V><Bar>m</Bar></V> pulses once every 1/<V><Bar>m</Bar></V> ticks — and the
+      ceiling is one pulse a tick, the same one-thing-a-tick that makes{' '}
+      <K><Bar>c</Bar></K> one step a tick. So{' '}
+      <b style={{ color: INK }}>there is a heaviest elementary thing</b>:
+      anything above it is not one emitter but many.
     </Step>
 
-    <Because>and it is not a coincidence</Because>
+    <Because>turn that period into a length, which is the only move made here</Because>
+    <Step eq={<>
+      <V><Bar>m</Bar></V>.period · <K><Bar>c</Bar></K> = 1/<V><Bar>m</Bar></V>
+      <span style={{ padding: '0 0.8em', color: FAINT }}>steps</span>
+    </>}>
+      How far does light get between one pulse and the next? A step a tick, so{' '}
+      1/<V><Bar>m</Bar></V> steps — the spacing between the shells a source has
+      in flight. <b style={{ color: INK }}>Nothing has been claimed yet</b>: this
+      is the definition of mass with a <K><Bar>c</Bar></K> beside it, true by
+      arithmetic. But it does say that{' '}
+      <b style={{ color: INK }}>every mass has a length attached to it</b>, and
+      that doubling the mass halves the length — exactly, not roughly. That is
+      the kind of claim that can be wrong.
+    </Step>
+
+    <Because>and one thing in physics already has that shape</Because>
+    <Step eq={<>
+      <D><V>λ</V><Sub>Compton</Sub></D> =
+      <Frac over={<>ħ</>} under={<><V>Mc</V></>} />
+    </>}>
+      The <i>reduced</i> Compton wavelength, and where it comes from has nothing
+      to do with lattices. Put <V>E</V> = <V>Mc</V><Sup>2</Sup> — a mass is an
+      amount of energy — together with <V>E</V> = ħ<V>ω</V> — an amount of
+      energy is a rate of turning. Every mass therefore has a frequency, and
+      light travelling for one of its periods covers ħ/<V>Mc</V>. Heavier is
+      shorter, in exact inverse proportion, same as the pulse spacing.{' '}
+      <b style={{ color: BORROWED }}>Mind which one:</b> the unreduced{' '}
+      <V>h</V>/<V>Mc</V> is 2π bigger, and the constant below is for the reduced.
+    </Step>
+
+    <Because>two lengths that both go as 1/M are proportional, so the whole question is the constant</Because>
+    <Step eq={<>
+      <V><Bar>m</Bar></V>.period · <K><Bar>c</Bar></K> = <V>k</V> ·
+      <D><V>λ</V><Sub>Compton</Sub></D>
+      <span style={{ padding: '0 1em', color: FAINT }}><V>k</V> dimensionless</span>
+    </>}>
+      Not approximately and not over some range —{' '}
+      <i>exactly, at every mass</i>, because both sides are a something over the
+      mass and the mass divides out between them. One pure number left to find.
+    </Step>
+
+    <Because>and the way to find it is to ask it at the ceiling, where both sides are easy</Because>
+    <Step eq={<>
+      <V><Bar>m</Bar></V> = 1
+      <span style={{ padding: '0 0.8em', color: FAINT }}>⇒ pulse spacing =</span>
+      1 step
+    </>}>
+      The ratio is the same at every mass, so it may as well be read off the one
+      mass where nothing has to be computed. At the ceiling a thing pulses every
+      tick and light goes a step a tick, so{' '}
+      <b style={{ color: INK }}>its pulse spacing is exactly one step</b>. All
+      that is left is: how long is <i>its</i> Compton wavelength, in steps?
+    </Step>
+
+    <Because>which needs one fact about the Planck mass, and it is a definition rather than a coincidence</Because>
+    <Step eq={<>
+      ħ/(<V>m</V><Sub>P</Sub><V>c</V>) = <V>l</V><Sub>P</Sub>
+      <span style={{ padding: '0 1em', color: FAINT }}>= 1 step</span>
+    </>}>
+      <b style={{ color: INK }}>The Planck mass is defined as the mass whose
+        reduced Compton wavelength is the Planck length.</b> And the lattice’s
+      step <i>is</i> the Planck length. So the Planck mass is the mass whose
+      Compton wavelength is exactly one step — which turns the question into a
+      comparison of two masses rather than of two lengths.
+    </Step>
+
+    <Because>so the constant is just how much lighter the ceiling is than that</Because>
+    <Step eq={<>
+      <V>µ</V> = <V>k</V>·<V>m</V><Sub>P</Sub>
+      <span style={{ padding: '0 1em', color: FAINT }}>⇒ its wavelength is</span>
+      1/<V>k</V> steps
+    </>}>
+      A Compton wavelength goes as 1/<V>M</V>, so something <i>k</i> times
+      lighter than the Planck mass has a wavelength 1/<i>k</i> times longer. Set
+      that against the one step of pulse spacing and the ratio is <i>k</i> —
+      which was what we were solving for, so it closes on itself and says the
+      constant is <b style={{ color: INK }}>the ceiling mass in Planck
+        masses</b>.
+    </Step>
+
+    <Because>and that ratio is the gravitational constant, for a reason about units</Because>
+    <Step eq={<>
+      <K>G</K> = 1
+      <span style={{ padding: '0 0.6em', color: FAINT }}>in Planck units, so</span>
+      <K>G</K><Sub>lattice</Sub> = <V>µ</V>/<V>m</V><Sub>P</Sub>
+    </>}>
+      Planck’s units are the ones built out of <V>c</V>, ħ and <V>G</V>
+      themselves, with no object anywhere in them, and in them <V>G</V> is
+      exactly one. The lattice already shares two of the three — its step is{' '}
+      <V>l</V><Sub>P</Sub> and its tick is <V>t</V><Sub>P</Sub> — and <V>G</V>{' '}
+      has units of length³/(time²·mass), so with the length and the time already
+      Planck’s,{' '}
+      <b style={{ color: INK }}>the only thing left that can move <V>G</V>’s
+        number is the mass unit</b>, and it moves it in direct proportion.
+      Hence <V>k</V> = <K>G</K> exactly, with nothing to compute.
+    </Step>
+
+    <Because>so</Because>
+    <Step eq={<>
+      <V><Bar>m</Bar></V>.period · <K><Bar>c</Bar></K> = <K>G</K> ·
+      <D><V>λ</V><Sub>Compton</Sub></D>
+      <span style={{ padding: '0 1em', color: FAINT }}>
+        <K>G</K> = {gravitational().toFixed(6)}
+      </span>
+    </>}>
+      Read as a picture: <b style={{ color: INK }}>1/<K>G</K> ≈ 16 is how many
+        pulses the heaviest emitter fits inside its own Compton
+        wavelength</b> — one step between pulses, sixteen steps of wavelength.
+      And it holds at every mass for free, because halving the mass doubles the
+      spacing and doubles the wavelength together. Checked at four masses over
+      twenty-five orders — electron, proton, iron atom, a milligram grain — the
+      ratio is {gravitational().toFixed(9)} at every one, to nine figures.
+    </Step>
+
+    <Because>which says what G is here, and it is not a strength</Because>
+    <Step eq={<>
+      <V>µ</V> = <K>G</K>·<V>m</V><Sub>P</Sub> ≈ <V>m</V><Sub>P</Sub>/16
+    </>}>
+      <b style={{ color: INK }}><K>G</K> ≠ 1 is the statement that the lattice’s
+        natural mass is not nature’s natural mass.</b> Two definitions of a mass
+      with no object in either: nature’s is where a mass’s quantum length ħ/<V>Mc</V>{' '}
+      and its gravitational length <V>GM</V>/<V>c</V><Sup>2</Sup> cross; the
+      lattice’s is the heaviest thing that can pulse once a tick. They disagree
+      by sixteen, and <K>G</K> is the disagreement.
+    </Step>
+
+    <Because>what is derived here and what is one calibration — said plainly</Because>
+    <Step eq={<>
+      tick = <V>k</V>·<V>t</V><Sub>P</Sub>
+      <span style={{ padding: '0 0.8em', color: FAINT }}>⇒ the constant is</span>
+      <V>k</V><Sup>2</Sup>·<K>G</K>
+    </>}>
+      The lattice has three units — a step, a tick and a mass — and two things
+      already relate them: <K><Bar>c</Bar></K> = one step a tick, and the counted{' '}
+      <K>G</K>. That leaves exactly <i>one</i> scale free. Leave it free and
+      watch: with the tick at <V>k</V> Planck times the step is <V>k</V>{' '}
+      <V>l</V><Sub>P</Sub> and the mass unit is <V>k</V><K>G</K><V>m</V><Sub>P</Sub>,
+      so the constant above comes out at <V>k</V><Sup>2</Sup><K>G</K> — and
+      demanding it be <K>G</K> is exactly <V>k</V> = 1.{' '}
+      <b style={{ color: INK }}>So “the tick is the Planck time” and “the pulse
+        spacing is <K>G</K> Compton wavelengths” are one statement, not two
+        agreeing ones.</b> One condition, one free scale, spent.
+    </Step>
+
     <Step>
-      <V>m</V><Sub>P</Sub>·<V>l</V><Sub>P</Sub> = ħ/<V>c</V>, so “period = 1/mass”
-      in the lattice’s own units <i>is</i> the Compton relation.{' '}
+      <b style={{ color: INK }}>The shape is derived and the value is one
+        calibration</b>, and they should not be quoted as two results. What the
+      twenty-five orders check is the shape — that the ratio does not drift with
+      mass — and nothing was free to arrange that. What would turn the value into
+      a prediction is anything that weighs the ceiling on its own terms.{' '}
+      <b style={{ color: BORROWED }}>Nothing does.</b>
+    </Step>
+
+    <Because>and which way round it goes, which is the surprise</Because>
+    <Step>
       <b style={{ color: INK }}>The identity was put here to make the
-        equivalence principle fall out of counting, and it turns out to have
-        been a quantum statement the whole time.</b> The lattice is not a
-      classical model waiting to have quantum mechanics added — <V>E</V> = ħω
-      is a consequence of what it already means by mass.
+        equivalence principle fall out of counting</b> — a heavier thing brings
+      proportionally more paths to a meeting, so the mass divides back out and
+      everything falls the same way — <b style={{ color: INK }}>and it turns out
+        to have been a quantum statement the whole time.</b> The lattice is not a
+      classical model waiting to have quantum mechanics added: mass being a rate{' '}
+      <i>is</i> <V>E</V> = ħ<V>ω</V>, and it was there from the first line.
     </Step>
   </>,
 };
@@ -1731,7 +2052,11 @@ export const FULL: Derivation = {
       EMIT<Sup>2</Sup> · met(<V>R</V>)
     </>}>
       Momentum gained is <K>BIAS</K> times the meetings, and the meetings are
-      the two densities integrated along the line.
+      the two densities integrated along the line.{' '}
+      <b style={{ color: INK }}>EMIT is squared because a meeting needs one
+        charge from each body</b> — <K>SHEET</K> once for <V>a</V> and once for{' '}
+      <V>b</V>, which is the same pairing that puts{' '}
+      <V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub> there. It is not a sheet squared.
     </Step>
 
     <Because>substitute met, with share = ½ and BITE = 1</Because>
@@ -6073,7 +6398,7 @@ export const WithoutPolarity = () => (
         over={<><K>BITE</K>·<i>share</i>·<K>SHEET</K><Sup>2</Sup></>}
         under={<>4<V>π</V><Sup>2</Sup>·<K>CORE</K>·<K>DEG</K></>} />
       <span style={{ padding: '0 1.4em' }} />
-      0.062351 → 0.124703
+      {gravitational(0.5).toFixed(6)} → {gravitational(1).toFixed(6)}
     </Eq>
 
     <Note>
@@ -6110,8 +6435,9 @@ export const WithoutPolarity = () => (
           place with no angle to gate.</>],
       [<span style={{ color: BORROWED }}>and the rest</span>,
         <><i>reach</i>’s λ is shorter by √2, worth 1.9·10<Sup>−10</Sup> →
-          3.8·10<Sup>−10</Sup> on the pull at 30 kpc. <K>MU</K> doubles to
-          2.71 µg. The Compton ratio becomes 0.124703 and stays exact. All three
+          3.8·10<Sup>−10</Sup> on the pull at 30 kpc. <K>MU</K> doubles to{' '}
+          {(massUnit(1) * 1e9).toFixed(2)} µg. The Compton ratio becomes{' '}
+          {gravitational(1).toFixed(6)} and stays exact. All three
           are statements about units or about nothing anyone will weigh.</>],
     ]} />
 
