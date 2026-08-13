@@ -57,30 +57,34 @@ const SERIF = 'Georgia, "Times New Roman", serif';
 // —— notation ————————————————————————————————————————————————————————————
 
 /** A quantity. Leans, as a variable should. */
-const V = ({ children }: { children: ReactNode }) => (
+export const V = ({ children }: { children: ReactNode }) => (
   <span style={{ fontStyle: 'italic' }}>{children}</span>
 );
 
 /** One of the lattice's own counts. Upright, and coloured. */
-const K = ({ children }: { children: ReactNode }) => (
+export const K = ({ children }: { children: ReactNode }) => (
   <span style={{ color: NAMED, fontStyle: 'normal' }}>{children}</span>
 );
 
+export const F = ({ children }: { children: ReactNode }) => (
+  <span style={{ color: FAINT, fontStyle: 'normal' }}>{children}</span>
+);
+
 /** A vector. Upright and bold, the way a vector is set. */
-const B = ({ children }: { children: ReactNode }) => (
+export const B = ({ children }: { children: ReactNode }) => (
   <span style={{ fontWeight: 700, fontStyle: 'normal' }}>{children}</span>
 );
 
-const Sub = ({ children }: { children: ReactNode }) => (
+export const Sub = ({ children }: { children: ReactNode }) => (
   <sub style={{ fontSize: '0.72em', fontStyle: 'italic' }}>{children}</sub>
 );
 
-const Sup = ({ children }: { children: ReactNode }) => (
+export const Sup = ({ children }: { children: ReactNode }) => (
   <sup style={{ fontSize: '0.72em' }}>{children}</sup>
 );
 
 /** A fraction, which is the only thing here that needs building. */
-const Frac = ({ over, under }: { over: ReactNode, under: ReactNode }) => (
+export const Frac = ({ over, under }: { over: ReactNode, under: ReactNode }) => (
   <span style={{
     display: 'inline-flex', flexDirection: 'column', alignItems: 'center',
     verticalAlign: 'middle', margin: '0 0.35em', lineHeight: 1.25,
@@ -102,7 +106,7 @@ const Frac = ({ over, under }: { over: ReactNode, under: ReactNode }) => (
  * along with its height, which is what a bigger bracket IS. Centred by flex so
  * it sits on the middle of whatever it contains, however tall that is.
  */
-const Paren = ({ children }: { children: ReactNode }) => (
+export const Paren = ({ children }: { children: ReactNode }) => (
   <span style={{ display: 'inline-flex', alignItems: 'center', verticalAlign: 'middle' }}>
     <span style={{ fontSize: '2.2em', lineHeight: 0.72, fontStyle: 'normal', fontWeight: 300 }}>(</span>
     <span style={{ padding: '0 0.12em' }}>{children}</span>
@@ -111,7 +115,7 @@ const Paren = ({ children }: { children: ReactNode }) => (
 );
 
 /** A hat, for a direction. */
-const Hat = ({ children }: { children: ReactNode }) => (
+export const Hat = ({ children }: { children: ReactNode }) => (
   <span style={{ position: 'relative', display: 'inline-block', fontStyle: 'italic' }}>
     <span style={{
       position: 'absolute', left: 0, right: 0, top: '-0.62em',
@@ -121,7 +125,7 @@ const Hat = ({ children }: { children: ReactNode }) => (
   </span>
 );
 
-const Note = ({ children }: { children: ReactNode }) => (
+export const Note = ({ children }: { children: ReactNode }) => (
   <div style={{ color: DIM, fontSize: '0.88em', lineHeight: 1.6, paddingTop: '0.5em' }}>
     {children}
   </div>
@@ -129,10 +133,10 @@ const Note = ({ children }: { children: ReactNode }) => (
 
 // —— the derivations, and the panel they open in —————————————————————————
 
-type Derivation = { title: ReactNode; label: string; body: ReactNode };
+export type Derivation = { title: ReactNode; label: string; body: ReactNode };
 
 /** A step of working: the line, then why. */
-const Step = ({ eq, children }: { eq?: ReactNode, children: ReactNode }) => (
+export const Step = ({ eq, children }: { eq?: ReactNode, children: ReactNode }) => (
   <div style={{ padding: '0 0 1.4em' }}>
     {eq ? <div style={{
       fontFamily: SERIF, fontSize: '1.05em', color: INK,
@@ -142,7 +146,7 @@ const Step = ({ eq, children }: { eq?: ReactNode, children: ReactNode }) => (
   </div>
 );
 
-const Because = ({ children }: { children: ReactNode }) => (
+export const Because = ({ children }: { children: ReactNode }) => (
   <div style={{
     color: FAINT, fontSize: '0.68em', letterSpacing: '0.09em',
     textTransform: 'uppercase', padding: '0.6em 0 0.5em',
@@ -157,7 +161,7 @@ const Because = ({ children }: { children: ReactNode }) => (
  * moves into it on open and back to whatever opened it on close, so a reader
  * who arrived by keyboard is not stranded at the top of the document.
  */
-const Panel = ({ of, onClose }: { of: Derivation, onClose: () => void }) => {
+export const Panel = ({ of, onClose }: { of: Derivation, onClose: () => void }) => {
   const panel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -234,11 +238,26 @@ const Panel = ({ of, onClose }: { of: Derivation, onClose: () => void }) => {
 /**
  * A displayed equation. Clickable when there is working behind it, and looking
  * clickable — a derived line and a stated one must not be the same object.
+ *
+ * IT CARRIES ITS OWN PANEL unless whoever placed it keeps one. `Law` is a page
+ * where everything opens, so it holds a single piece of state and passes
+ * `open`; a line standing in the prose of a book has nothing above it doing
+ * that, and cannot be given one from the top of the article either — a book
+ * renders the children of the SELECTED SECTION and nothing else, so a panel
+ * hung anywhere but beside its own equation is never rendered at all. Hence the
+ * state living here, which is the one place that is always in the tree when the
+ * equation a reader just clicked is.
+ *
+ * Only one is ever open: the panel's backdrop covers the viewport, so a click
+ * meant for a second equation closes the first instead.
  */
-const Eq = (
+export const Eq = (
   { children, note, derive, open }:
     { children: ReactNode, note?: ReactNode, derive?: Derivation, open?: (d: Derivation) => void },
 ) => {
+  const [shown, setShown] = useState(false);
+  const from = useRef<HTMLElement | null>(null);
+
   const inner = <>
     <div style={{
       overflowX: 'auto', textAlign: 'center', color: INK,
@@ -252,11 +271,16 @@ const Eq = (
     }}>{note}</div> : null}
   </>;
 
-  if (!derive || !open) return <div style={{ margin: '1.5em 0' }}>{inner}</div>;
+  if (!derive) return <div style={{ margin: '1.5em 0' }}>{inner}</div>;
 
-  return (
+  return (<>
     <button
-      onClick={() => open(derive)}
+      onClick={() => {
+        if (open) return open(derive);
+
+        from.current = document.activeElement as HTMLElement;
+        setShown(true);
+      }}
       style={{
         display: 'block', width: '100%', margin: '1.5em 0',
         background: 'none', border: '1px solid transparent', borderRadius: 3,
@@ -282,7 +306,12 @@ const Eq = (
         textTransform: 'uppercase', opacity: 0.75,
       }}>derived ›</span>
     </button>
-  );
+
+    {shown ? <Panel of={derive} onClose={() => {
+      setShown(false);
+      from.current?.focus();
+    }} /> : null}
+  </>);
 };
 
 const Head = ({ children }: { children: ReactNode }) => (
