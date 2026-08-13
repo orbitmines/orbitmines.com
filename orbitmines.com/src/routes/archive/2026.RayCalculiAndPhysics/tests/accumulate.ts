@@ -18,8 +18,8 @@
  * soon as those balance. Solve it and see whether the profile settles or runs.
  */
 
-const SHEET = 8, BITE = 1, WAYS = 26, CORE = 0.5, LIGHT = 1;
-const G_LAT = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const SHEET = 8, BITE = 1, DEG = 26, CORE = 0.5, LIGHT = 1;
+const G_LAT = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 
 console.log("=".repeat(76));
 console.log("1. THE NAIVE COUNT, WHICH IS WHAT THE DEFECT SAYS");

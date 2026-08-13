@@ -1142,7 +1142,7 @@ const known: Model[] = KNOWN.map(({ name, note, sources }) => ({
  * was actually missing was the other five sixths, and they were never a
  * velocity effect or a short-range one. They are the same count read as a size
  * rather than as a direction — a point that has taken n annihilations has
- * WAYS + n ways out of it and not WAYS, so it holds more space — which is the
+ * DEG + n ways out of it and not DEG, so it holds more space — which is the
  * spatial part of a metric. See `slowing` and `thickness` in `gravity.ts` and
  * `settle` in `metric.tsx`.
  *

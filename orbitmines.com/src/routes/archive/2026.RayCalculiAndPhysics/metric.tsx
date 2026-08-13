@@ -28,18 +28,18 @@
  *   An annihilation leaves the space where it happened denser: the next path
  *   out of that point is twice as likely to go the way it went, a second one
  *   makes it three to one, a third four. So a direction carrying n of them
- *   weighs 1 + n against the WAYS out that weigh one each, and what that leans
- *   a path by is LIGHT·n/WAYS — linear, with no ceiling in it.
+ *   weighs 1 + n against the DEG out that weigh one each, and what that leans
+ *   a path by is LIGHT·n/DEG — linear, with no ceiling in it.
  *
  *   THAT IS A RATIO, and a ratio is not all a count says. The ways out of that
- *   point no longer number WAYS; they number WAYS + n. The lean is the first
+ *   point no longer number DEG; they number DEG + n. The lean is the first
  *   moment of the count and is the whole of the pull; the total is the zeroth,
  *   and is how much space the point holds. One scalar, read twice — the pull
  *   for A and the thickness for B. See `slowing` and `thickness`.
  *
  *   Everything else here falls out of that, and none of it is stated:
  *
- *     BIAS        one annihilation buys LIGHT/WAYS, whatever else is going on
+ *     BIAS        one annihilation buys LIGHT/DEG, whatever else is going on
  *                 — so at rest, NEWTON, with no free constant
  *     u̇ ∝ ṅ      a shortage of space is an ACCELERATION and not a speed,
  *                 because what accumulates is the count and what drifts is a
@@ -56,7 +56,7 @@
  *                 heavier things have proportionally more paths to bias, so
  *                 the same fraction of them bends. Inertia IS path count.
  *
- *   G           = BITE·SHEET²·c/(8π²·HALF·WAYS)  closed form, nothing fitted,
+ *   G           = BITE·SHEET²·c/(8π²·HALF·DEG)  closed form, nothing fitted,
  *                                                 and in the lattice's own units
  *                                                 `S·R²` runs above it by
  *                                                 CORE·ln(R/CORE)/R — which
@@ -191,7 +191,7 @@ export type Space = {
    * annihilation has more ways of going the way it went "while every other way
    * out of the point still weighs exactly what it always did" — and that is
    * true, and it is a RATIO, and a ratio throws away the total. There are now
-   * WAYS + n ways out of that point rather than WAYS, and a point with more
+   * DEG + n ways out of that point rather than DEG, and a point with more
    * ways out of it holds more space. The lean is A. The total is B. See
    * `slowing` and `thickness` in `gravity.ts`, and `settle` below, which is
    * the whole of the fix and is four lines.

@@ -46,7 +46,7 @@ const boosted = (gN: number, a0: number) => gN / 2 + Math.sqrt(gN * gN / 4 + gN 
 const CEIL = 1 / Math.sqrt(0.8);                 // f_DM < 0.2  ⇒  v/v_bar < 1.118
 
 console.log("=".repeat(78));
-console.log("THE TWO WAYS OF GETTING g_N AT Re, AND THEY DISAGREE");
+console.log("THE TWO DEG OF GETTING g_N AT Re, AND THEY DISAGREE");
 console.log("=".repeat(78));
 console.log(`   ceiling from f_DM < 0.2 : ${CEIL.toFixed(4)}\n`);
 console.log("   galaxy         g_N point   g_N disc    ratio   boost pt   boost disc");

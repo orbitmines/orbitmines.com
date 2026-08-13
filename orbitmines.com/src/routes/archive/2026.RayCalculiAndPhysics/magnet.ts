@@ -13,12 +13,12 @@
  *
  *   MAGNETON       = CYCLE·G_LATTICE/2π              in units of µ_B — 0.0794
  *   G_FACTOR       = 1                               and measurement says 2
- *   biased(axis)   = |{exits with d·axis > 0}| / WAYS   9/26 or 10/26
+ *   biased(axis)   = |{exits with d·axis > 0}| / DEG   9/26 or 10/26
  *
  */
 
 import { CYCLE } from "./lattice";
-import { SHEET, WAYS } from "./field";
+import { SHEET, DEG } from "./field";
 import { BITE, LIGHT, Spin, rate, sided } from "./physics";
 import { G_LATTICE } from "./gravity";
 
@@ -327,7 +327,7 @@ export const G_FACTOR = 1;
  * AND ONE THING THE LATTICE PREDICTS THAT NOTHING ELSE DOES.
  *
  * A held emitter puts + into every exit whose projection on its axis is
- * positive and − into every negative one. There are only `WAYS` = 26 exits, so
+ * positive and − into every negative one. There are only `DEG` = 26 exits, so
  * that split is a COUNT, and the count depends on which way the axis points:
  *
  *     ⟨100⟩ face      9 +    8 equator    9 −     0.3462 biased
@@ -360,7 +360,7 @@ export const biased = (axis: number[]): number => {
         if (x * axis[0] + y * (axis[1] ?? 0) + z * (axis[2] ?? 0) > 1e-9) positive++;
       }
 
-  return positive / WAYS;
+  return positive / DEG;
 };
 
 /**
@@ -435,4 +435,4 @@ export const biased = (axis: number[]): number => {
 
 // Kept so a reader can check the two constants this file leans on are the ones
 // the rest of the article means by those names, rather than a copy that drifted.
-export const CHECK = { SHEET, WAYS, BITE, LIGHT, CYCLE, G_LATTICE };
+export const CHECK = { SHEET, DEG, BITE, LIGHT, CYCLE, G_LATTICE };

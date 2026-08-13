@@ -27,7 +27,7 @@
  */
 
 const DIMS = 3;
-const SHEET = Math.pow(3, DIMS - 1) - 1, WAYS = Math.pow(3, DIMS) - 1;
+const SHEET = Math.pow(3, DIMS - 1) - 1, DEG = Math.pow(3, DIMS) - 1;
 const CORE = 0.5;
 
 type V = [number, number, number];

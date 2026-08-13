@@ -166,6 +166,17 @@ export class Graph {
   ringRadius = 0;
 
   /**
+   * Whether the cell at the origin is where this universe started.
+   *
+   * It is marked on the picture when it is — a soft glow saying `here is what
+   * all of this grew out of`, which is worth having in a universe that grew.
+   * A patch drawn to show what a lattice IS did not grow out of anything, and
+   * a glow in the middle of it is a claim about a cell that is exactly like
+   * every other cell.
+   */
+  seeded = true;
+
+  /**
    * What the camera is for, if it isn't for everything: a radius in grid
    * coordinates, and everything inside it is the subject.
    *
@@ -1816,6 +1827,72 @@ export class Graph {
    * roughly one point per moving ray per tick, so what you seed is what you
    * pay for on every tick thereafter.
    */
+  /**
+   * A patch of space, with nothing in it and at most one thing crossing it.
+   *
+   * The pictures that are about the LATTICE rather than about what happens on
+   * it — a strip of cells with a single ray going through, the twenty-seven
+   * cells around a point — want a lattice that stays a lattice. So every point
+   * is neutral and nothing is moving except the one thing named: what is drawn
+   * is the space, and anything in the picture besides the space is there
+   * because it was asked for.
+   *
+   * `shape` is how many cells along each axis, centred on the origin, and it
+   * is also what says how many dimensions there are: [10, 3] is a strip ten by
+   * three, [3, 3, 3] is the neighbourhood of a point. `moving` names the one
+   * ray that is going anywhere, by the cell it is in and the way it faces.
+   */
+  static patch(
+    { shape, moving }: {
+      shape: number[],
+      moving?: { at: number[], towards: number[] },
+    },
+  ): Graph {
+    const graph = new Graph();
+
+    graph.dims = shape.length;
+    // Drawn where the coordinates say it is. `sphereLayout` morphs a cube
+    // towards a ball as the seed gets bigger, and this is a picture OF a cube.
+    graph.ringRadius = 1;
+    // And nothing grew out of the middle of it: every cell here is a cell.
+    graph.seeded = false;
+
+    const coords: number[][] = [];
+
+    (function build(prefix: number[]) {
+      const axis = prefix.length;
+
+      if (axis === shape.length) { coords.push(prefix); return; }
+
+      for (let i = 0; i < shape[axis]; i++)
+        build([...prefix, i - Math.floor(shape[axis] / 2)]);
+    })([]);
+
+    const { at, facing } = Graph.lay(graph, coords);
+
+    if (moving) {
+      const from = at(moving.at);
+      const to = at(moving.at.map((v, i) => v + (moving.towards[i] || 0)));
+
+      if (from && to) from[0].moving = facing.get(from)!.get(to);
+      else if (from) {
+        // At the rim, facing out. There is nothing on the far side to point
+        // at, and a way out is still a way out — an open world is exactly one
+        // that has them. Drawn as the bare stub it is, which is what says the
+        // thing is about to leave rather than that it has stopped.
+        const out = new Boundary(from[0]);
+
+        out.polarity = Polarity.Neutral;
+        out.outward = moving.towards.slice();
+
+        from[0].boundaries.push(out);
+        from[0].moving = out;
+      }
+    }
+
+    return graph;
+  }
+
   static grid({ dims = 3, size = 5 }: { dims?: number, size?: number } = {}): Graph {
     const graph = new Graph();
     graph.dims = dims;
@@ -2836,6 +2913,7 @@ export class Graph {
     const graph = new Graph();
     graph.dims = this.dims;
     graph.ringRadius = this.ringRadius;
+    graph.seeded = this.seeded;
     graph._tickId = this._tickId;
     graph.onTick = this.onTick;
     graph.relax = this.relax;

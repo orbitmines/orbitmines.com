@@ -16,13 +16,13 @@
  *   share      half of them are opposite, so ½    all of them, so 1
  *
  * Those two changes pull opposite ways and the file measures which wins where.
- * Everything else — `chance`, `SHEET`, `WAYS`, `BITE`, `MADE`, `SPREAD`,
+ * Everything else — `chance`, `SHEET`, `DEG`, `BITE`, `MADE`, `SPREAD`,
  * `BIAS`, the accumulation, the ceiling — never mentions a sign and is
  * untouched by construction.
  */
 
 const DIMS = 3;
-const SHEET = Math.pow(3, DIMS - 1) - 1, WAYS = Math.pow(3, DIMS) - 1;
+const SHEET = Math.pow(3, DIMS - 1) - 1, DEG = Math.pow(3, DIMS) - 1;
 const BITE = 1, CORE = 0.5, LIGHT = 1;
 const HBAR = 1.054571817e-34, C = 2.99792458e8, G_N = 6.67430e-11;
 const M_PLANCK = Math.sqrt(HBAR * C / G_N);
@@ -32,7 +32,7 @@ const MPC = 3.0856775814913673e22, KPC = 3.0857e19, MSUN = 1.98847e30;
 const SHARE = { xor: 0.5, plain: 1.0 };
 
 const G_OF = (share: number) =>
-  BITE * SHEET * SHEET * LIGHT * share / (4 * Math.PI * Math.PI * CORE * WAYS);
+  BITE * SHEET * SHEET * LIGHT * share / (4 * Math.PI * Math.PI * CORE * DEG);
 
 console.log("=".repeat(78));
 console.log("1. THE CONSTANTS — which move and which do not");
@@ -41,11 +41,11 @@ const Gx = G_OF(SHARE.xor), Gp = G_OF(SHARE.plain);
 console.log("      quantity                  with polarity     without         moves?");
 const rows: [string, number, number][] = [
   ["SHEET", SHEET, SHEET],
-  ["WAYS", WAYS, WAYS],
+  ["DEG", DEG, DEG],
   ["BITE", BITE, BITE],
-  ["BIAS = LIGHT/WAYS", LIGHT / WAYS, LIGHT / WAYS],
-  ["MADE = 3·BITE·SHEET/πWAYS", 3 * BITE * SHEET / (Math.PI * WAYS), 3 * BITE * SHEET / (Math.PI * WAYS)],
-  ["SPREAD", Math.PI * WAYS * LIGHT / (3 * BITE * SHEET), Math.PI * WAYS * LIGHT / (3 * BITE * SHEET)],
+  ["BIAS = LIGHT/DEG", LIGHT / DEG, LIGHT / DEG],
+  ["MADE = 3·BITE·SHEET/πWAYS", 3 * BITE * SHEET / (Math.PI * DEG), 3 * BITE * SHEET / (Math.PI * DEG)],
+  ["SPREAD", Math.PI * DEG * LIGHT / (3 * BITE * SHEET), Math.PI * DEG * LIGHT / (3 * BITE * SHEET)],
   ["G_LATTICE", Gx, Gp],
   ["MU = G·m_Planck (kg)", Gx * M_PLANCK, Gp * M_PLANCK],
   ["REACHES", Math.sqrt(8 * Math.PI * Gx / (3 * BITE * SHARE.xor * SHEET)),

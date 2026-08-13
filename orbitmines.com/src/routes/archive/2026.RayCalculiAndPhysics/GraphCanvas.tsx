@@ -27,7 +27,7 @@ import { Boundary, Graph, node } from "./discrete";
 import { BOUNDARY_STUB, CYCLE, LATTICE_STEP, Vec } from "./lattice";
 import { outcome, Polarity } from "./physics";
 import {
-  AMBER, channels, CYAN, ground, HALO, rgba, SOURCE, source, tintOf,
+  AMBER, channels, CYAN, ground, HALO, NEUTRAL, rgba, SOURCE, source, tintOf,
 } from "./paint";
 
 /**
@@ -57,6 +57,44 @@ import {
 export type RenderMode = 'lattice' | 'shells' | 'field';
 
 /**
+ * The sheet, for the pictures that are about it.
+ *
+ * `SHEET` is the count of ways out of a point that lie in one — 3^(d−1) − 1,
+ * which is eight in three dimensions — and the whole of the gravity argument is
+ * that a source emits into a sheet and TURNS, one rotation carrying the
+ * emission through exactly one more dimension than it already has. Drawn: the
+ * plane, and the eight directions in it.
+ */
+export type SheetView = { turning?: boolean };
+
+const AXIS = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+
+/**
+ * How far out the sheet is drawn, in its own two directions.
+ *
+ * One, exactly — which is what keeps it inside the picture. Its four corners
+ * are then the four cells at ±u±v and nothing is drawn past a point of the
+ * lattice, so a sheet cannot stick out of the box the camera framed. Anything
+ * over one is a promise that the frame does not know about.
+ */
+const SHEET_EDGE = 1;
+
+/**
+ * Seconds a snap of the turn holds for.
+ *
+ * SNAPPED, NOT SWEPT, and snapped onto the lattice rather than through it. A
+ * plane turned by an eighth is a real plane of this space — it is the one
+ * spanned by an axis and a DIAGONAL, whose eight are the same eight cells read
+ * out of the neighbourhood at a different angle. A plane turned by an eighth
+ * while its two directions are held rigid is not: the directions leave the
+ * lattice, land between cells, reach √2 out where every cell is at 1, and hang
+ * over the edge of the box. Which is the same error the argument itself is
+ * careful not to make — there are nine sheets in a 3×3×3 and the picture is
+ * only allowed to be in one of them.
+ */
+const SHEET_SNAP = 0.5;
+
+/**
  * One canvas showing one universe.
  *
  * `animate` is what separates a player from a still: with it the view runs a
@@ -71,6 +109,8 @@ export const GraphCanvas = ({
   animate = false,
   density = true,
   mode = 'lattice',
+  polarities = true,
+  sheet,
   onFrame,
   onVisible,
 }: {
@@ -82,6 +122,23 @@ export const GraphCanvas = ({
   animate?: boolean;
   density?: boolean;
   mode?: RenderMode;
+
+  /**
+   * Whether a charge is drawn as a charge.
+   *
+   * There is no polarity in the gravity half of the argument — it is
+   * introduced later, and the whole claim of the magnetism arc is that adding
+   * it changes what these same runs mean. Drawn amber and cyan from the start,
+   * the pictures answer a question the reader has not been asked yet. Off,
+   * every boundary is the plain grey of space that has not been charged by
+   * anything, and what is left to see is the one thing gravity is about: what
+   * meets what, and what is left afterwards.
+   */
+  polarities?: boolean;
+
+  /** The sheet drawn over the lattice, where the picture is of one. */
+  sheet?: SheetView;
+
   onFrame?: (dt: number) => void;
 
   // Called as the view comes on and off screen, so that whoever owns the
@@ -97,7 +154,10 @@ export const GraphCanvas = ({
   const latest = useRef({ current, onFrame, onVisible });
   latest.current = { current, onFrame, onVisible };
 
-  return <CanvasView animate={animate} deps={[animate, density, mode]} paint={() => {
+  return <CanvasView
+    animate={animate}
+    deps={[animate, density, mode, polarities, !!sheet, !!sheet?.turning]}
+    paint={() => {
     const cam = {
       scale: 44, rot: Math.PI / 4, tilt: 0.6155,
       dist: null as number | null, distMult: 1.5, scaleMult: 1,
@@ -107,6 +167,62 @@ export const GraphCanvas = ({
     // fraction every frame. Kept across frames because that lag is the whole
     // of what makes the animation flow rather than step.
     let eased: Float32Array | null = null;
+
+    // How far the sheet has turned, counted in snaps rather than in radians —
+    // the one thing in this file that moves without the universe moving, since
+    // nothing is ticking in those pictures and the turning IS the picture. The
+    // seconds since the last one are kept beside it, because a frame is not a
+    // snap and the two have nothing to do with each other.
+    let turned = 0;
+    let held = 0;
+
+    // What colour a charge is drawn, which is a question about which half of
+    // the argument the picture belongs to — see `polarities`.
+    const hue = (p: Polarity) => polarities ? tintOf(p) : NEUTRAL;
+
+    /**
+     * The sheet at a given snap: the two lattice directions it is spanned by.
+     *
+     * THE NINE SHEETS OF A 3×3×3, visited four at a time. A plane through the
+     * middle cell holds eight of the twenty-six exactly when it is spanned by
+     * an axis and one of {b−c, c, c+b, b} — the two flat ones and the two
+     * diagonal ones that contain that axis — and turning through those four in
+     * order is a half turn about it, an eighth at a time, without ever leaving
+     * the lattice. Which is what a source does. The other half turn is the same
+     * four planes again, since a plane turned over is the plane it was.
+     *
+     * Then the next axis takes over, so it goes round in x, then y, then z: one
+     * axis is enough to sweep the space and it is not enough to SAY so, because
+     * a picture that only ever turns about x leaves open whether x was special.
+     *
+     * IT STARTS ON A DIAGONAL, and on the one of the two that can be SEEN. The
+     * camera here is the isometric three-quarter view, so it looks along (1,1,1)
+     * — and the plane of x and (0,1,1) has that direction lying in it, which
+     * means it is drawn exactly edge-on, as a line. Its opposite number, x and
+     * (0,−1,1), is the most face-on plane of all nine (twice the projected area
+     * of a flat one, and the other diagonal's is nought).
+     */
+    const sheetAt = (step: number) => {
+      const axis = Math.floor(step / 4) % 3;
+      const k = step % 4;
+
+      const u = AXIS[axis];
+      const b = AXIS[(axis + 1) % 3];
+      const c = AXIS[(axis + 2) % 3];
+
+      const v = k === 0 ? c.map((z, i) => z - b[i])
+        : k === 1 ? c
+          : k === 2 ? c.map((z, i) => z + b[i])
+            : b;
+
+      return { u, v };
+    };
+
+    // A place in the sheet, said in the sheet's own two directions.
+    const inSheet = ({ u, v }: { u: Vec, v: Vec }, p: number, q: number): Vec =>
+      [0, 1, 2].map(i => (p * u[i] + q * v[i]) * LATTICE_STEP);
+
+    const CORNERS = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
 
     function project(pos: Vec, rot: number, tilt: number, camDist: number) {
       const x = pos[0] || 0, y = pos[1] || 0, z = pos[2] || 0;
@@ -275,6 +391,14 @@ export const GraphCanvas = ({
           }
         }
       }
+      // The sheet needs nothing here, and that is worth saying rather than
+      // leaving to be noticed: every orientation it turns through is spanned by
+      // lattice steps and drawn to ±u±v, so its four corners ARE four of the
+      // points measured above. It cannot reach anywhere the lattice does not,
+      // in any orientation, so the frame that holds the one holds the other —
+      // and holds it identically in both pictures, which is what lets them be
+      // read side by side.
+
       if (loX > hiX) { loX = hiX = loY = hiY = 0; } // nothing survived clipping
 
       // The camera frames what is actually there, rather than the world
@@ -601,7 +725,7 @@ export const GraphCanvas = ({
         ctx.globalCompositeOperation = "lighter";
 
         for (const shell of shells) {
-          const tint = channels(tintOf(shell.polarity));
+          const tint = channels(hue(shell.polarity));
           const h = shell.hull;
           const at = (i: number) => h[(i % h.length + h.length) % h.length];
 
@@ -1891,7 +2015,7 @@ export const GraphCanvas = ({
           const hull = outline(wave.at);
           if (hull.length < 3) continue;
 
-          const tint = channels(tintOf(wave.polarity));
+          const tint = channels(hue(wave.polarity));
           const at = (i: number) => hull[(i % hull.length + hull.length) % hull.length];
 
           ctx.beginPath();
@@ -2088,7 +2212,7 @@ export const GraphCanvas = ({
         // Center seed: a soft glow marking where the universe started. In
         // field mode the origin is only the point halfway between the two
         // sources, and glowing there would read as a third one.
-        if (!field && isCenterNode(n)) {
+        if (!field && graph.seeded && isCenterNode(n)) {
           const r = Math.min(Math.max(cam.scale * 0.16 * depth, 0.8), 26);
           const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3);
           g.addColorStop(0, "rgba(255,217,168,0.9)");
@@ -2132,7 +2256,7 @@ export const GraphCanvas = ({
           // by anything a plain grey — the same three the closed form leans
           // its pixels towards. The one it is moving along at full strength,
           // the rest faded down.
-          const tint = tintOf(bd.polarity);
+          const tint = hue(bd.polarity);
 
           ctx.strokeStyle = moving
             ? rgba(tint, 1)
@@ -2207,6 +2331,74 @@ export const GraphCanvas = ({
 
         for (const { bd, moving } of slots.values())
           if (moving) stub(bd, true);
+
+        ctx.lineCap = "butt";
+      }
+
+      /**
+       * The sheet, laid in the lattice it is a sheet OF.
+       *
+       * Drawn over the points rather than out of them, because it is not a
+       * thing the universe contains: it is the set of directions a pulse
+       * leaves along, which is a fact about the point in the middle. So it is
+       * a surface through that point, and the eight ways out of it that lie in
+       * that surface — 3^(d−1) − 1 of them, and in three dimensions the 3×3
+       * around the point with its middle taken out.
+       *
+       * TURNED IN EVERY AXIS, a revolution at a time. One axis is enough to
+       * sweep the space and it is not enough to SAY so: turned only about x,
+       * the picture leaves open whether that axis was special, and the whole
+       * claim is that no direction here is. So it goes round in x, then in y,
+       * then in z, and every one of them sweeps the same space.
+       */
+      if (sheet) {
+        const plane = sheetAt(turned);
+        const put = (p: number, q: number) => inSheet(plane, p, q);
+
+        const corners = CORNERS
+          .map(([p, q]) => screenOf(put(p * SHEET_EDGE, q * SHEET_EDGE)));
+
+        if (!corners.some(c => c.clipped)) {
+          ctx.beginPath();
+          corners.forEach((c, i) => i ? ctx.lineTo(c.x, c.y) : ctx.moveTo(c.x, c.y));
+          ctx.closePath();
+
+          // Transparent, because everything it is a sheet through has to stay
+          // readable through it — it is where the lattice is being pulsed
+          // into, not a lid on top of it.
+          ctx.fillStyle = rgba(NEUTRAL, 0.13);
+          ctx.fill();
+
+          ctx.strokeStyle = rgba(NEUTRAL, 0.32);
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        const middle = screenOf([0, 0, 0]);
+
+        ctx.lineCap = "round";
+
+        for (let p = -1; p <= 1; p++)
+          for (let q = -1; q <= 1; q++) {
+            // Standing still, which is not a direction to leave in — and is
+            // the −1 of the count.
+            if (!p && !q) continue;
+
+            const end = screenOf(put(p, q));
+            if (end.clipped) continue;
+
+            ctx.strokeStyle = rgba(NEUTRAL, 0.8);
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.moveTo(middle.x, middle.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.stroke();
+
+            ctx.fillStyle = rgba(NEUTRAL, 0.95);
+            ctx.beginPath();
+            ctx.arc(end.x, end.y, 2.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
 
         ctx.lineCap = "butt";
       }
@@ -2396,6 +2588,16 @@ export const GraphCanvas = ({
         // Ticking lives with the caller: this only ever renders, and never
         // advances the dynamics itself.
         latest.current.onFrame?.(dt);
+
+        // Except the sheet, which is nobody's dynamics — there is no universe
+        // ticking under those pictures, and the turning is the picture. It
+        // holds an orientation and then is in the next one, the way the thing
+        // it is a picture of does.
+        if (sheet?.turning) {
+          held += dt;
+
+          while (held >= SHEET_SNAP) { held -= SHEET_SNAP; turned++; }
+        }
 
         draw(surface);
       },

@@ -21,7 +21,7 @@
  *   R(d̂)         = (gap/2) / (d̂·û)   for d̂·û > HEAD_ON, else ∞
  *                                                 where a wave MAY stop
  *   SHEET  = 3^(d−1) − 1 = 8      how many charges one pulse is
- *   WAYS   = 3^d − 1     = 26      how many ways out of a point there are —
+ *   DEG   = 3^d − 1     = 26      how many ways out of a point there are —
  *                                  a DIFFERENT number, and the one the
  *                                  counting argument in `gravity.ts` needs
  *   FLOOR                          the innermost shell is not nought cells
@@ -176,7 +176,7 @@ export const SHEET = Math.pow(3, DIMS - 1) - 1;
  * along. `gravity.ts` used `SHEET` for both, which understated the denominator
  * by a factor of 3.25 in three dimensions.
  */
-export const WAYS = Math.pow(3, DIMS) - 1;
+export const DEG = Math.pow(3, DIMS) - 1;
 
 /**
  * The chance that a given cell at radius r is holding one of this source's
@@ -1378,18 +1378,18 @@ export const wave = (v: number, omega: number, sync = 1) =>
  * propagator is, and the pattern is one of its consequences.
  *
  * WHAT IS STILL ASSUMED, and it is now ONE thing rather than a gap: every path
- * gets the SAME MODULUS. Feynman postulates it. `WAYS` looked like the obvious
+ * gets the SAME MODULUS. Feynman postulates it. `DEG` looked like the obvious
  * candidate — every way out of a point equally available — and the argument is
  * three lines:
  *
- *   1. every way out of a point is equally available; that is what WAYS is
+ *   1. every way out of a point is equally available; that is what DEG is
  *   2. a charge takes exactly one step per tick, so path length ∝ time
  *   3. so all paths from A to B in time T have N = T/τ steps and probability
- *      (1/WAYS)^N — the same for every one of them
+ *      (1/DEG)^N — the same for every one of them
  *
  * IT DOES NOT WORK, and the reason is worth more than the argument was. Summed
  * over every 8-neighbour lattice path of 130 steps in two dimensions, with each
- * step weighted 1/WAYS and phased by k·|δ|:
+ * step weighted 1/DEG and phased by k·|δ|:
  *
  *     x       |A|          arg(A)     k·x     fitted k_eff = 0.01616
  *     40      3.17e−7      −3.036     12.0    against k = 0.30
@@ -1406,12 +1406,12 @@ export const wave = (v: number, omega: number, sync = 1) =>
  * exactly c, so every step is LIGHTLIKE and every path has the same proper
  * time: nought. A massive particle's phase is `−mc²∫dτ/ħ`, which along a
  * lightlike path is also nought. A CHARGE'S PATH IS NOT A PARTICLE'S PATH, and
- * `WAYS` counts a charge's options. The path integral needs the worldlines of
+ * `DEG` counts a charge's options. The path integral needs the worldlines of
  * the EMITTER, which moves at v < c and whose available directions are not
- * WAYS at all.
+ * DEG at all.
  *
  * So the flat modulus is not derived, and it failed by exactly the error the
- * `SHEET`/`WAYS` audit in `gravity.ts` was looking for elsewhere: a count used
+ * `SHEET`/`DEG` audit in `gravity.ts` was looking for elsewhere: a count used
  * for a job it is not the count for. Two independent things now point at the
  * same structural gap — the lattice has one kind of mover, and both quantum
  * mechanics and the metric want statements about the other kind.

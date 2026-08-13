@@ -162,6 +162,17 @@ export type Lattice = {
   mode?: RenderMode;
 
   /**
+   * Whether the charges are drawn as charges — see `GraphCanvas`.
+   *
+   * The gravity arc has no polarity in it. The same runs are shown twice in
+   * this article, once as gravity and once as gravity-and-magnetism, and it is
+   * the SECOND showing that adds the two kinds. Drawn amber and cyan in the
+   * first, the picture has already answered a question the argument has not
+   * asked yet.
+   */
+  polarities?: boolean;
+
+  /**
    * The gravity-flow glow. Worth it for a large universe; for a two-point one
    * it washes out the handful of boundaries the picture is about.
    */

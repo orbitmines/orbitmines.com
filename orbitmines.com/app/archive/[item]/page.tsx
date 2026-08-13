@@ -13,7 +13,6 @@ export const ITEM_SOURCES: Record<string, string> = {
   'on-orbits-equivalence-and-inconsistencies': 'src/routes/archive/2023.OnOrbits.tsx',
   'towards-a-universal-language': 'src/routes/archive/2025.TowardsAUniversalLanguage.tsx',
   'the-orbitmines-minecraft-server': 'src/routes/archive/2026.MinecraftArchive.tsx',
-  'ray-calculi-and-physics': 'src/routes/archive/2026.RayCalculiAndPhysics/index.tsx',
 };
 
 // Reads the reference object's `title` literal so the static <title> is owned

@@ -37,6 +37,7 @@ const LatticePlayer = ({
   height = 150,
   density = true,
   mode = 'lattice',
+  polarities = true,
   interval = 0.45,
 }: Lattice) => {
   const [running, setRunning] = useState(autoplay);
@@ -126,6 +127,7 @@ const LatticePlayer = ({
         animate
         density={density}
         mode={mode}
+        polarities={polarities}
         onFrame={onFrame}
         onVisible={onVisible}
       />
@@ -188,6 +190,7 @@ const LatticeFilmstrip = ({
   height = 150,
   density = true,
   mode = 'lattice',
+  polarities = true,
   backwards = false,
 }: Lattice) => {
   const frames = useMemo(() => {
@@ -219,7 +222,9 @@ const LatticeFilmstrip = ({
           </div>
           : null}
         <div style={{ flex: '1 1 120px', height }}>
-          <GraphCanvas graph={() => graph} density={density} mode={mode} />
+          <GraphCanvas
+            graph={() => graph} density={density} mode={mode} polarities={polarities}
+          />
         </div>
       </Fragment>
     ))}

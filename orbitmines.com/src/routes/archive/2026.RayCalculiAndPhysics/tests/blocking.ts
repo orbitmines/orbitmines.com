@@ -15,7 +15,7 @@
  */
 
 const G = 6.67430e-11, MSUN = 1.98847e30, KPC = 3.0857e19, C = 2.99792458e8;
-const WAYS = 26;                                   // directions out of a cell
+const DEG = 26;                                   // directions out of a cell
 const H0 = 70.9e3 / 3.0856775814913673e22;
 const A0 = C * H0 / (2 * Math.PI);
 
@@ -52,7 +52,7 @@ console.log("=".repeat(78));
 console.log("2. WHICH WAY THE PAIR GOES — the part that has not been asked");
 console.log("=".repeat(78));
 console.log("  A carrier streaming along ĝ occupies the cell in THAT direction.");
-console.log("  The split cannot go that way, but the point has WAYS = 26 exits");
+console.log("  The split cannot go that way, but the point has DEG = 26 exits");
 console.log("  and only the occupied ones are shut. So the pair is emitted with");
 console.log("  the field direction removed — an ANISOTROPIC source.");
 console.log();

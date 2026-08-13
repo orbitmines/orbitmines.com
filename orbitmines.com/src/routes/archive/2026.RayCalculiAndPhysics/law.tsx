@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
+import { Children, Fragment, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
 
 import { GRAIN } from "./gravity";
 import { Echoes } from "./echoes";
@@ -125,11 +125,176 @@ export const Hat = ({ children }: { children: ReactNode }) => (
   </span>
 );
 
+/**
+ * A bar over the whole of what it covers — the mark that means DISCRETE.
+ *
+ * Not U+0305. A combining overline is one mark per letter, so a five letter
+ * word comes out as five short strokes with the gaps between the letters
+ * showing through, each landing wherever that glyph's own metrics put it, and
+ * a font without the combining mark drops them on the floor or draws them as
+ * dotted boxes. This is one rule, the width of what it covers, at one height —
+ * drawn the way the fraction's rule is drawn, since that is all a bar is.
+ *
+ * IT TAKES NO SPACE. A barred letter in the middle of a paragraph must not
+ * push that line of prose any taller than the lines around it, so the rule is
+ * positioned out of flow. Which means it needs a height to be positioned AT,
+ * and that is measured from the bottom of a box exactly one em tall — the
+ * `lineHeight: 1` — rather than from the paragraph's line box, which is
+ * whatever the surrounding text asked for and would slide the bar around from
+ * one context to the next. A box that tall has its baseline a fixed sliver
+ * above its bottom edge in every font here, so `bottom` is effectively a
+ * distance above the baseline — and it is set to sit clear of the letters
+ * rather than on top of them. A capital reaches about 0.7em and an ascender a
+ * little past that, so 1.06em leaves an unmistakable gap under the rule at
+ * every size, which is what makes it read as a bar OVER the letters and not as
+ * part of them. Any lower and it crowds the caps of `STEP` and `SHEET`.
+ */
+export const Bar = ({ children }: { children: ReactNode }) => (
+  <span style={{ position: 'relative', display: 'inline-block', lineHeight: 1 }}>
+    <span aria-hidden style={{
+      position: 'absolute', left: 0, right: 0, bottom: '1.06em',
+      borderTop: '1px solid currentColor',
+    }} />
+    {children}
+  </span>
+);
+
 export const Note = ({ children }: { children: ReactNode }) => (
   <div style={{ color: DIM, fontSize: '0.88em', lineHeight: 1.6, paddingTop: '0.5em' }}>
     {children}
   </div>
 );
+
+/**
+ * Where a set line is allowed to break, since a phone is narrower than most of
+ * the equations here and a sideways scrollbar is not reading.
+ *
+ * A line of maths cannot simply be handed to the normal wrapping rules. The
+ * spaces in it are wherever the JSX happened to be indented, so `4π r̅²` would
+ * come apart between the 4π and the r̅², and a fraction would be left stranded
+ * from the thing it divides. So the line stays unbreakable as before, EXCEPT
+ * at the two places where a break means something:
+ *
+ * AFTER A RELATION. `A = B` becomes `A =` over `B`, the sign staying on the
+ * line it closes, which is how a two line equation has always been set — never
+ * `A` over `= B`.
+ *
+ * AT A GAP. The empty padded span is what stands two independent statements
+ * side by side, so it is exactly the seam between them, and it goes at the end
+ * of the line it finishes where its padding costs nothing. A padded span with
+ * something IN it — a `⇒`, a `vs`, an aside in FAINT — becomes a piece of its
+ * own, free to fall either way.
+ *
+ * Joined by zero width spaces, so a line that fits is set exactly as it was
+ * before; and a single piece too wide for the screen still has the horizontal
+ * scroll underneath it as the last resort.
+ */
+const RELATION = /([=≈][ \u00a0]*)/;
+
+/** A padded top-level span: 'after' for a bare gap, 'both' for one with a mark in it. */
+const gap = (child: ReactNode): 'after' | 'both' | null => {
+  if (!isValidElement(child) || child.type !== 'span') return null;
+
+  const props = child.props as { style?: { padding?: string }, children?: ReactNode };
+  const pad = props.style?.padding;
+
+  if (typeof pad !== 'string' || !pad.startsWith('0 ')) return null;
+
+  return props.children == null ? 'after' : 'both';
+};
+
+/**
+ * The line's own parts, through any fragment wrapped around them.
+ *
+ * `<Eq>` is handed its children as a list, but `Step`'s line arrives as
+ * `eq={<>…</>}` — ONE fragment, whose contents are the equation. Walked into,
+ * or a step's line has exactly one piece, cannot break, and scrolls sideways in
+ * a panel that is 94vw on a phone. Which is what it did.
+ */
+const parts = (children: ReactNode): ReactNode[] => {
+  const kids = Children.toArray(children);
+
+  return kids.length === 1 && isValidElement(kids[0]) && kids[0].type === Fragment
+    ? parts((kids[0].props as { children?: ReactNode }).children)
+    : kids;
+};
+
+const breakable = (children: ReactNode, hanging = false) => {
+  const pieces: ReactNode[][] = [[]];
+  const put = (n: ReactNode) => pieces[pieces.length - 1].push(n);
+  const cut = () => { if (pieces[pieces.length - 1].length) pieces.push([]); };
+
+  /**
+   * Whether we are at the head of a statement that a gap has just started —
+   * and if we are, its own relation is not a place to break.
+   *
+   * THE GAP WINS, which is the whole of this. A line reading `A = 1 [gap]
+   * B = 2` has three places it could come apart, and filling greedily takes
+   * the last one that fits: `A = 1 [gap] B =` on the first line and a lonely
+   * `2` on the second, which splits a statement down the middle while the seam
+   * between the two statements sits unused a few characters to its left. Taking
+   * the second statement's own relation out of the running leaves the gap as
+   * the last opportunity, so a new equation goes to a new line and stays whole
+   * — and a statement long enough to need it can still break at its NEXT
+   * relation, which is the one place a break was going to be necessary anyway.
+   */
+  let heading = false;
+
+  parts(children).forEach((child) => {
+    if (typeof child === 'string') {
+      // Odd indices are the relations themselves, with whatever space followed
+      // them — which travels with the sign, so a wrapped line never starts
+      // indented by it.
+      child.split(RELATION).forEach((bit, i) => {
+        if (!bit) return;
+
+        put(bit);
+        if (!(i % 2)) return;
+
+        if (heading) heading = false;
+        else cut();
+      });
+      return;
+    }
+
+    const at = gap(child);
+
+    if (!at) return put(child);
+    if (at === 'both') cut();
+
+    put(child);
+    cut();
+
+    heading = true;
+  });
+
+  return (
+    <div style={{
+      display: 'inline-block',
+      // Room between the halves of a line that has come apart — set wide,
+      // because what sits above and below in an equation is fractions and
+      // superscripts rather than words, and at reading leading the two lines
+      // touch. `Frac` and `Bar` both fix their own leading, so this reaches
+      // the gap between the lines and nothing inside them. A line that fits
+      // pays for it as a slightly taller box, which is a thing with 1.5em of
+      // margin either side of it and nowhere to collide.
+      lineHeight: 1.95,
+      // What is carried onto the next line is set in from the line it continues
+      // by about the width of a space, which is enough to say `still the same
+      // line` and not enough to look like an indent. Hung, so only the carried
+      // lines take it and the first still starts where it always did. Left off
+      // where the line is centred, since centring already says it.
+      ...(hanging ? { textIndent: '-0.3em', paddingLeft: '0.3em' } : null),
+    }}>
+      {pieces.filter(piece => piece.length).map((piece, i) => (
+        <Fragment key={i}>
+          {i ? '\u200b' : null}
+          <span style={{ whiteSpace: 'nowrap' }}>{piece}</span>
+        </Fragment>
+      ))}
+    </div>
+  );
+};
 
 // —— the derivations, and the panel they open in —————————————————————————
 
@@ -141,7 +306,7 @@ export const Step = ({ eq, children }: { eq?: ReactNode, children: ReactNode }) 
     {eq ? <div style={{
       fontFamily: SERIF, fontSize: '1.05em', color: INK,
       overflowX: 'auto', padding: '0.3em 0 0.6em',
-    }}><div style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>{eq}</div></div> : null}
+    }}>{breakable(eq, true)}</div> : null}
     <div style={{ color: DIM, fontSize: '0.87em', lineHeight: 1.62 }}>{children}</div>
   </div>
 );
@@ -263,7 +428,7 @@ export const Eq = (
       overflowX: 'auto', textAlign: 'center', color: INK,
       fontFamily: SERIF, fontSize: '1.18em', padding: '0.2em 0',
     }}>
-      <div style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>{children}</div>
+      {breakable(children)}
     </div>
     {note ? <div style={{
       textAlign: 'center', color: FAINT, fontSize: '0.72em',
@@ -314,7 +479,7 @@ export const Eq = (
   </>);
 };
 
-const Head = ({ children }: { children: ReactNode }) => (
+export const Head = ({ children }: { children: ReactNode }) => (
   <div style={{
     color: FAINT, fontSize: '0.7em', letterSpacing: '0.09em',
     textTransform: 'uppercase', padding: '2.2em 0 0.1em',
@@ -323,7 +488,7 @@ const Head = ({ children }: { children: ReactNode }) => (
 );
 
 /** symbol → what it is, laid out so the symbols line up down the page. */
-const Rows = ({ of }: { of: [ReactNode, ReactNode][] }) => (
+export const Rows = ({ of }: { of: [ReactNode, ReactNode][] }) => (
   <div style={{
     display: 'grid', gridTemplateColumns: 'minmax(6.5em, max-content) 1fr',
     gap: '0.75em 1.4em', alignItems: 'baseline', padding: '1em 0 0.2em',
@@ -339,7 +504,7 @@ const Rows = ({ of }: { of: [ReactNode, ReactNode][] }) => (
 
 // —— what is behind each line ————————————————————————————————————————————
 
-const LAW: Derivation = {
+export const LAW: Derivation = {
   label: 'the law',
   title: 'the law',
   body: <>
@@ -352,17 +517,17 @@ const LAW: Derivation = {
 
     <Because>what that does to a path through it</Because>
     <Step eq={<>
-      <Frac over={<>1 + <V>n</V></>} under={<>1, and there are <K>WAYS</K> of them</>} />
+      <Frac over={<>1 + <V>n</V></>} under={<>1, and there are <K>DEG</K> of them</>} />
     </>}>
       A path arriving there has more ways of going the way the annihilation
       went than of going any other. One makes it two to one, a second three to
       one, a third four — the direction accumulates weight one annihilation at
       a time, while every other way out of the point still weighs exactly what
-      it always did. There are <K>WAYS</K> = 26 of those.
+      it always did. There are <K>DEG</K> = 26 of those.
     </Step>
 
-    <Step eq={<><K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>WAYS</K>} /></>}>
-      So the net lean is <K>LIGHT</K>·<V>n</V>/<K>WAYS</K> — linear in the
+    <Step eq={<><K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>DEG</K>} /></>}>
+      So the net lean is <K>LIGHT</K>·<V>n</V>/<K>DEG</K> — linear in the
       count, with no ceiling in it — and one annihilation is worth <K>BIAS</K>.
       This is the only constant in the dynamics, and it is a ratio of two
       counts.
@@ -370,13 +535,13 @@ const LAW: Derivation = {
 
     <Because>that is a ratio, and a ratio is not all of it</Because>
     <Step eq={<>
-      <Frac over={<>1 + <V>n</V></>} under={<K>WAYS</K>} />
+      <Frac over={<>1 + <V>n</V></>} under={<K>DEG</K>} />
       &nbsp;the lean&nbsp;&nbsp;·&nbsp;&nbsp;
-      <K>WAYS</K> + <V>n</V>&nbsp; the total
+      <K>DEG</K> + <V>n</V>&nbsp; the total
     </>}>
       The line above compares one direction against the others and throws away
       how many there are. But the ways out of that point no longer{' '}
-      number <K>WAYS</K> — they number <K>WAYS</K> + <V>n</V>, and{' '}
+      number <K>DEG</K> — they number <K>DEG</K> + <V>n</V>, and{' '}
       <b style={{ color: INK }}>a point with more ways out of it holds more
         space</b>. The lean is the first moment of the count; the total is the
       zeroth. Both are the same annihilations, read twice.
@@ -406,7 +571,7 @@ const LAW: Derivation = {
         under={<><V>B</V> √(<V>A</V>(1 + |<B>u</B>|<Sup>2</Sup>/<V>B</V><K>LIGHT</K><Sup>2</Sup>))</>} />
     </>}>
       The counting happens on the body’s own worldline, so{' '}
-      <K>LIGHT</K>·<V>n</V>/<K>WAYS</K> is cells per tick of <i>its</i> clock —
+      <K>LIGHT</K>·<V>n</V>/<K>DEG</K> is cells per tick of <i>its</i> clock —
       a proper velocity, not a coordinate one. Turning that into what the
       picture shows is one line of arithmetic the model does not get to choose,
       and how many cells it is worth depends on how thick the place is. Flat, it
@@ -442,13 +607,13 @@ const LAW: Derivation = {
   </>,
 };
 
-const METRIC: Derivation = {
+export const METRIC: Derivation = {
   label: 'A and B',
   title: <>the count, read a second time</>,
   body: <>
     <Because>what the lean threw away</Because>
     <Step eq={<>
-      <Frac over={<>1 + <V>n</V></>} under={<>1 each, <K>WAYS</K> of them</>} />
+      <Frac over={<>1 + <V>n</V></>} under={<>1 each, <K>DEG</K> of them</>} />
     </>}>
       <K>BIAS</K> compares the direction that took an annihilation against the
       others. Every other way out still weighs one — which is true, and is a{' '}
@@ -459,7 +624,7 @@ const METRIC: Derivation = {
     </Step>
 
     <Because>the total, which is the other reading</Because>
-    <Step eq={<><K>WAYS</K> + <V>n</V>&nbsp;&nbsp;ways out, not <K>WAYS</K></>}>
+    <Step eq={<><K>DEG</K> + <V>n</V>&nbsp;&nbsp;ways out, not <K>DEG</K></>}>
       A point that has taken <V>n</V> annihilations has more ways out of it
       than its neighbours do, so it{' '}
       <b style={{ color: INK }}>holds more space</b> — and a neighbourhood of
@@ -520,7 +685,7 @@ const METRIC: Derivation = {
   </>,
 };
 
-const SPACE: Derivation = {
+export const SPACE: Derivation = {
   label: 'where space comes from',
   title: <>the three rewrites, and what they buy</>,
   body: <>
@@ -574,7 +739,7 @@ const SPACE: Derivation = {
     <Step eq={<>
       <V>D</V> = <Frac over={<><K>SHEET</K> <V>c</V><Sup>2</Sup></>}
         under={<>12<V>π</V> <V>G</V></>} /> =
-      <Frac over={<><V>π</V> <K>WAYS</K> <V>c</V></>}
+      <Frac over={<><V>π</V> <K>DEG</K> <V>c</V></>}
         under={<>3 <K>BITE</K> <K>SHEET</K></>} /> = 3.403
     </>}>
       From <V>δ</V> = 3<V>u</V> and <V>u</V> = <V>GM</V>/<V>rc</V><Sup>2</Sup>.
@@ -598,7 +763,7 @@ const SPACE: Derivation = {
   </>,
 };
 
-const MADE_FROM: Derivation = {
+export const MADE_FROM: Derivation = {
   label: 'ε',
   title: <>what a charge would have to make</>,
   body: <>
@@ -633,7 +798,7 @@ const MADE_FROM: Derivation = {
     <Step eq={<>
       <V>ε</V> =
       <Frac over={<>3 <K>BITE</K> <K>SHEET</K></>}
-        under={<><V>π</V> <K>WAYS</K></>} /> = 0.2938
+        under={<><V>π</V> <K>DEG</K></>} /> = 0.2938
     </>}>
       About a third of a point per charge per lattice tick. Every symbol a
       count, no <K>GRAIN</K> in it, and order one — which is what a fundamental
@@ -712,8 +877,8 @@ const MADE_FROM: Derivation = {
     <Because>so it predicts G rather than absorbing it — and gets it wrong, precisely</Because>
     <Step eq={<>
       <Frac over={<><K>SHEET</K>·<V>c</V>/12π</>}
-        under={<><K>SHEET</K><Sup>2</Sup>/4π<Sup>2</Sup><K>WAYS</K></>} /> =
-      <Frac over={<>π<K>WAYS</K></>} under={<>3<K>SHEET</K></>} /> = 3.4034
+        under={<><K>SHEET</K><Sup>2</Sup>/4π<Sup>2</Sup><K>DEG</K></>} /> =
+      <Frac over={<>π<K>DEG</K></>} under={<>3<K>SHEET</K></>} /> = 3.4034
     </>}>
       Predicted <V>G</V> = 0.21221, the pull’s <V>G</V> = 0.06235, ratio
       3.403392 — and <b style={{ color: INK }}>that is <V>ε</V>’s own number,
@@ -729,10 +894,10 @@ const MADE_FROM: Derivation = {
       <span style={{ padding: '0 1.2em', color: FAINT }}>pinned</span>
     </>}>
       The pull works because it is a <i>product</i> of two fields along a line —
-      which is where <K>WAYS</K> enters. A lone body has no second field, and
+      which is where <K>DEG</K> enters. A lone body has no second field, and
       that is the shape of the 3.4034. But a lone body is not alone: its charges
       annihilate against the ambient <V>Φ</V>, restoring product, bias and{' '}
-      <K>WAYS</K> at once. It gives 1/<V>r</V>, and matching{' '}
+      <K>DEG</K> at once. It gives 1/<V>r</V>, and matching{' '}
       <V>u</V> = <V>Gm</V>/<V>rc</V><Sup>2</Sup> fixes{' '}
       <V>Φ</V> = <K>SHEET</K>/π = 2.546 —{' '}
       <b style={{ color: INK }}>against the cosmology attractor’s independent{' '}
@@ -773,19 +938,19 @@ const MADE_FROM: Derivation = {
       Two routes, both counted, neither with a free parameter, disagreeing by a{' '}
       <i>pure count</i> — so it is a statement about the lattice’s geometry and
       nothing else, and the search is finite. The fix is not a coefficient and
-      not a dimension: they agree iff <K>WAYS</K>/<K>SHEET</K> = 3/π, which is
-      irrational, while <K>WAYS</K>/<K>SHEET</K> is a ratio of integers tending
+      not a dimension: they agree iff <K>DEG</K>/<K>SHEET</K> = 3/π, which is
+      irrational, while <K>DEG</K>/<K>SHEET</K> is a ratio of integers tending
       to 3 from above.{' '}
       <b style={{ color: INK }}>So one of the two counts is being used for a job
         it is not the count for</b> — and they are not even the same kind of
-      thing, <K>SHEET</K> being what a source emits and <K>WAYS</K> what a path
+      thing, <K>SHEET</K> being what a source emits and <K>DEG</K> what a path
       could have done instead. That is the same mistake this file already made
       once, and recorded.
     </Step>
   </>,
 };
 
-const REACH: Derivation = {
+export const REACH: Derivation = {
   label: 'how far gravity reaches',
   title: <>the ambient field, and the end of the pull</>,
   body: <>
@@ -849,7 +1014,7 @@ const REACH: Derivation = {
   </>,
 };
 
-const IDENTICAL: Derivation = {
+export const IDENTICAL: Derivation = {
   label: 'gravity between identical things',
   title: <>two of the same, closer than a wavelength</>,
   body: <>
@@ -907,7 +1072,7 @@ half out   1.98   1.88   1.76   1.41   1.00   1.00`}
   </>,
 };
 
-const CLOCK: Derivation = {
+export const CLOCK: Derivation = {
   label: 'mass as a period',
   title: <>once a tick is the ceiling</>,
   body: <>
@@ -943,7 +1108,7 @@ const CLOCK: Derivation = {
   </>,
 };
 
-const IGNORANCE: Derivation = {
+export const IGNORANCE: Derivation = {
   label: 'the matter wave',
   title: <>λ = <V>h</V>/<V>p</V>, twice — by ignorance, and then by zigzag</>,
   body: <>
@@ -1131,7 +1296,7 @@ const IGNORANCE: Derivation = {
       k_eff = 0.016&nbsp;&nbsp;against&nbsp;&nbsp;k = 0.30
     </span>}>
       <b style={{ color: INK }}>Every path gets the same modulus.</b> Feynman
-      postulates it, and <K>WAYS</K> looked like the answer: every way out of a
+      postulates it, and <K>DEG</K> looked like the answer: every way out of a
       point equally available, one step a tick so path length ∝ time, hence all
       equal-time paths equally likely. Summed over every 8-neighbour path of 130
       steps, the phase does <i>not</i> track <V>k·x</V> — fitted
@@ -1146,7 +1311,7 @@ const IGNORANCE: Derivation = {
       massive particle’s phase is −<V>mc</V><Sup>2</Sup>∫d<V>τ</V>/ħ, which
       along a lightlike path is nought too.{' '}
       <b style={{ color: INK }}>A charge’s path is not a particle’s path</b>,
-      and <K>WAYS</K> counts a charge’s options; the path integral needs the
+      and <K>DEG</K> counts a charge’s options; the path integral needs the
       worldlines of the <i>emitter</i>, which moves at <V>v</V> &lt; <V>c</V>.
       Two independent things now point at one structural gap — the lattice has
       one kind of mover, and both quantum mechanics and the metric want
@@ -1225,7 +1390,7 @@ const IGNORANCE: Derivation = {
 
     <Because>and fractional dimensions do not survive it</Because>
     <Step eq={<>2<Sup>⌊(<V>d</V>+1)/2⌋</Sup> components</>}>
-      <K>SHEET</K> and <K>WAYS</K> are 3<Sup><V>d</V>−1</Sup> − 1 and
+      <K>SHEET</K> and <K>DEG</K> are 3<Sup><V>d</V>−1</Sup> − 1 and
       3<Sup><V>d</V></Sup> − 1, perfectly happy at <V>d</V> = 2.5 (4.196 and
       14.588), and every counting argument would still run. But a Clifford
       algebra has no fractional representation — you cannot have 2.83
@@ -1235,13 +1400,13 @@ const IGNORANCE: Derivation = {
       fermions. Either the spinor is fundamental and <V>d</V> is an integer, or
       the counts are and four components at <V>d</V> = 3 has to be derived.
       Nothing here decides it. It does settle one thing negatively:{' '}
-      <K>WAYS</K>/<K>SHEET</K> is bounded below by 3 at <i>every</i> <V>d</V>,
+      <K>DEG</K>/<K>SHEET</K> is bounded below by 3 at <i>every</i> <V>d</V>,
       so no dimension — fractional or not — closes the 3.4034.
     </Step>
   </>,
 };
 
-const MEETINGS: Derivation = {
+export const MEETINGS: Derivation = {
   label: 'the meeting rate',
   title: <>the meeting rate <V>S</V><Sub>ab</Sub></>,
   body: <>
@@ -1297,7 +1462,7 @@ const MEETINGS: Derivation = {
   </>,
 };
 
-const MET: Derivation = {
+export const MET: Derivation = {
   label: 'met(R)',
   title: <>met(<V>R</V>)</>,
   body: <>
@@ -1400,16 +1565,16 @@ const MET: Derivation = {
   </>,
 };
 
-const CONSTANTS: Derivation = {
+export const CONSTANTS: Derivation = {
   label: 'BIAS and c',
   title: <><K>BIAS</K> and <V>c</V></>,
   body: <>
     <Because>BIAS</Because>
     <Step eq={<>
-      <K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>WAYS</K>} /> =
+      <K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>DEG</K>} /> =
       <Frac over={<>1</>} under={<>26</>} />
     </>}>
-      What one annihilation buys a path. <K>WAYS</K> = 3<Sup>3</Sup> − 1 is how
+      What one annihilation buys a path. <K>DEG</K> = 3<Sup>3</Sup> − 1 is how
       many ways out of a point there are — the alternatives the biased path did
       not take. Note this is <i>not</i> <K>SHEET</K>, which is how many charges
       a source emits in one pulse: a different question, and the same constant
@@ -1439,7 +1604,7 @@ const CONSTANTS: Derivation = {
   </>,
 };
 
-const FULL: Derivation = {
+export const FULL: Derivation = {
   label: 'the law in full',
   title: 'the law in full',
   body: <>
@@ -1457,7 +1622,7 @@ const FULL: Derivation = {
     <Step eq={<>
       <Frac over={<>d<V>p</V></>} under={<>d<V>t</V></>} /> =
       <Frac over={<><K>SHEET</K><Sup>2</Sup></>}
-        under={<>4<V>π</V><Sup>2</Sup><V>c</V> <K>WAYS</K></>} /> ·
+        under={<>4<V>π</V><Sup>2</Sup><V>c</V> <K>DEG</K></>} /> ·
       <Frac over={<><V>m</V><Sub>a</Sub><V>m</V><Sub>b</Sub></>}
         under={<><V>R</V><Sup>2</Sup></>} />
       <Paren>1 + <Frac over={<V>c</V>} under={<V>R</V>} /> ln
@@ -1471,7 +1636,7 @@ const FULL: Derivation = {
     <Because>which is a gravitational constant</Because>
     <Step eq={<>
       <V>G</V> = <Frac over={<><K>SHEET</K><Sup>2</Sup></>}
-        under={<>4<V>π</V><Sup>2</Sup><V>c</V> <K>WAYS</K></>} />
+        under={<>4<V>π</V><Sup>2</Sup><V>c</V> <K>DEG</K></>} />
     </>}>
       Not measured off a run and not fitted — the far limit of met, in closed
       form, out of charges per pulse, ways out of a point, and the size of a
@@ -1492,8 +1657,8 @@ const FULL: Derivation = {
       Not from that bracket, and not from anything short-range. It comes from
       the two places the count is read. Read as a <i>direction</i>, on the
       body’s own worldline, it gives special relativity’s response and one
-      sixth of Mercury. Read as a <i>size</i> — <K>WAYS</K> + <V>n</V> ways out
-      of a point rather than <K>WAYS</K> — it gives the spatial part of a
+      sixth of Mercury. Read as a <i>size</i> — <K>DEG</K> + <V>n</V> ways out
+      of a point rather than <K>DEG</K> — it gives the spatial part of a
       metric, and with it the other five sixths and the whole of light’s
       deflection. Same annihilations, same constant, counted twice.
     </Step>
@@ -1570,7 +1735,7 @@ export const Law = () => {
     </Eq>
 
     <Eq derive={CONSTANTS} open={show}>
-      <K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>WAYS</K>} /> =
+      <K>BIAS</K> = <Frac over={<K>LIGHT</K>} under={<K>DEG</K>} /> =
       <Frac over={<>1</>} under={<>26</>} />
       <span style={{ padding: '0 1.6em' }} />
       <V>c</V> = <Frac over={<K>HALF</K>} under={<K>GRAIN</K>} />
@@ -1580,7 +1745,7 @@ export const Law = () => {
     <Note>Six countable facts about the lattice, and nothing else is assumed.</Note>
 
     <Rows of={[
-      [<><K>WAYS</K> = 3<Sup>3</Sup> − 1 = 26</>,
+      [<><K>DEG</K> = 3<Sup>3</Sup> − 1 = 26</>,
         <>ways out of a point — the 3×3×3 block around it, minus itself</>],
       [<><K>SHEET</K> = 3<Sup>2</Sup> − 1 = 8</>,
         <>charges in one pulse: the plane a source emits into, which turns with it</>],
@@ -1643,7 +1808,7 @@ export const Law = () => {
         exponential with nothing chosen. β = γ = 1 both fall out.</>],
       [<span style={{ color: DERIVED }}><i>carry</i></span>,
         <><b style={{ color: INK }}>The geodesic equation.</b> The reversal rate
-          thins as 1/(<K>WAYS</K>+<V>n</V>), which is √<V>A</V> exactly — so the
+          thins as 1/(<K>DEG</K>+<V>n</V>), which is √<V>A</V> exactly — so the
           clock is the edge count — and stationary phase on ω<V>τ</V> then gives
           this function to 10<Sup>−7</Sup>.</>],
       [<span style={{ color: DERIVED }}>
@@ -1665,8 +1830,8 @@ export const Law = () => {
     <Rows of={[
       [<span style={{ color: DERIVED }}><i>carry</i></span>,
         <><b style={{ color: INK }}>No longer borrowed.</b> The checkerboard’s
-          clock is the <i>reversal</i> rate, 1 in <K>WAYS</K> unfolded and 1 in{' '}
-          <K>WAYS</K>+<V>n</V> folded — so{' '}
+          clock is the <i>reversal</i> rate, 1 in <K>DEG</K> unfolded and 1 in{' '}
+          <K>DEG</K>+<V>n</V> folded — so{' '}
           <V>m</V><Sub>eff</Sub> = <V>m</V>/(1+<V>u</V>) = <V>m e</V><Sup>−<V>u</V><Sub>0</Sub></Sup>{' '}
           = <V>m</V>√<V>A</V>, identical to machine precision.{' '}
           <b style={{ color: INK }}>Gravitational time dilation is the edge
@@ -1774,7 +1939,7 @@ export const Law = () => {
       <span style={{ padding: '0 1.4em' }} />
       <V>G</V> =
       <Frac over={<><K>SHEET</K><Sup>2</Sup></>}
-        under={<>4<V>π</V><Sup>2</Sup> <V>c</V> <K>WAYS</K></>} />
+        under={<>4<V>π</V><Sup>2</Sup> <V>c</V> <K>DEG</K></>} />
     </Eq>
 
     <Note>
@@ -1869,7 +2034,7 @@ export const Law = () => {
           either.</>],
       [<span style={{ color: DERIVED }}>by hopping</span>,
         <><b style={{ color: INK }}>Alive.</b> A created point that sits a tick
-          and then takes one of the <K>WAYS</K> at random is a random walk with{' '}
+          and then takes one of the <K>DEG</K> at random is a random walk with{' '}
           <i>no scatterer in it</i>, so <V>D</V> = ⟨ℓ<Sup>2</Sup>⟩/6 = 0.3462 is
           a fact about the lattice and <V>Φ</V> never enters. Measured on the
           lattice: the Green’s function to 0.1%, and <i>static</i> — an
@@ -1937,12 +2102,12 @@ export const Law = () => {
     </Note>
 
     <Note>
-      The audit that followed found <K>WAYS</K> enters the dynamics in exactly
+      The audit that followed found <K>DEG</K> enters the dynamics in exactly
       one place — <K>BIAS</K>. Putting <K>SHEET</K> there instead closes the gap
       from three and a half <i>times</i> to{' '}
       <b style={{ color: INK }}>π/3, four and a half per cent</b> — a striking
-      near miss, and not a fix, since the argument for <K>WAYS</K> is good and
-      4.7% is not nought. Keeping <K>WAYS</K>, the metric route’s 3 would have
+      near miss, and not a fix, since the argument for <K>DEG</K> is good and
+      4.7% is not nought. Keeping <K>DEG</K>, the metric route’s 3 would have
       to be 10.21, and the 3 was there because a volume excess is three times a
       linear one. So the likeliest error is neither count but{' '}
       <b style={{ color: INK }}>the identification ∫<V>δ</V> = 3<V>u</V>{' '}
@@ -2098,7 +2263,7 @@ export const Law = () => {
           energy on the way. <i>through</i> gives a charge arriving at an
           occupied cell exactly two outcomes and no third —{' '}
           <i>annihilate</i>, or <i>reverse</i> — and both are extinction. A
-          step is one cell and a heading is one of <K>WAYS</K>, so there is no
+          step is one cell and a heading is one of <K>DEG</K>, so there is no
           soft forward channel anywhere in the rules:{' '}
           <b style={{ color: INK }}>the lattice can dim light and cannot redden
             it</b>. A structural no-go rather than a number coming out
@@ -2933,13 +3098,13 @@ export const Law = () => {
       [<span style={{ color: FAINT }}>within 2%</span>, <>95, 12</>],
       [<span style={{ color: BORROWED }}>within 1%</span>,
         <><b style={{ color: INK }}>20 expressions, 4 distinct values</b> — the
-          closest √(<K>WAYS</K>·π)/2 = 4.51889, at −0.30%</>],
+          closest √(<K>DEG</K>·π)/2 = 4.51889, at −0.30%</>],
     ]} />
 
     <Note>
       <b style={{ color: INK }}>Twenty expressions land inside a percent.</b> A
       search over numbers cannot tell a derivation from an accident here, so a
-      hit is worth nothing even when it is close, and √(<K>WAYS</K>·π)/2 goes
+      hit is worth nothing even when it is close, and √(<K>DEG</K>·π)/2 goes
       down as a curiosity and nothing else. This is the one place where{' '}
       <i>count it, do not fit it</i> has to be enforced by refusing to look
       rather than by looking carefully.
@@ -3221,7 +3386,7 @@ export const Law = () => {
       <b style={{ color: INK }}>And that is the real cost, stated plainly:</b>{' '}
       <V>a</V><Sub>0</Sub> becomes a new fundamental constant — the strength
       with which layer two’s field gravitates in layer one — rather than
-      something counted out of <K>SHEET</K> and <K>WAYS</K>. For a model whose
+      something counted out of <K>SHEET</K> and <K>DEG</K>. For a model whose
       whole method is counting, that is a genuine loss, and it belongs in the
       ledger rather than hidden inside a κ.
     </Note>
@@ -3510,10 +3675,10 @@ export const Law = () => {
     <Note>
       <b style={{ color: INK }}>And the live candidate has a candidate
         mechanism: lock layer two to layer one’s <K>SHEET</K>.</b>{' '}
-      <K>WAYS</K> = 3<Sup>3</Sup>−1 = 26 is every direction out of a cell;{' '}
+      <K>DEG</K> = 3<Sup>3</Sup>−1 = 26 is every direction out of a cell;{' '}
       <K>SHEET</K> = 3<Sup>2</Sup>−1 = 8 is the directions in <i>one plane</i>{' '}
       through it. And <i>chance</i> = <V>m</V><K>SHEET</K>/<i>shell</i> already
-      uses <K>SHEET</K> rather than <K>WAYS</K> — the pull was always counted
+      uses <K>SHEET</K> rather than <K>DEG</K> — the pull was always counted
       through a plane. This is not adding a structure; it is taking one the file
       already has and making it <i>bind</i>.
     </Note>
@@ -4209,7 +4374,7 @@ export const Law = () => {
       <Frac over={<><V>c</V><V>H</V><Sub>0</Sub>/2π</>}
         under={<>4π<V>G</V>/(<K>SHEET</K><V>t</V><Sub>0</Sub>)</>} />
       <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
-      <Frac over={<><K>WAYS</K></>} under={<>2 <K>SHEET</K></>} />
+      <Frac over={<><K>DEG</K></>} under={<>2 <K>SHEET</K></>} />
       <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
       <Frac over={<>13</>} under={<>8</>} />
       <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
@@ -4218,7 +4383,7 @@ export const Law = () => {
 
     <Note>
       Because <K>CORE</K> = ½ makes 8π²<V>G</V>/<K>SHEET</K> come to exactly
-      2·<K>SHEET</K>/<K>WAYS</K>, to eight digits. So one of the two is
+      2·<K>SHEET</K>/<K>DEG</K>, to eight digits. So one of the two is
       miscounting by 13/8 — a factor built from the number of exits from a cell
       and the size of a sheet, and nothing else.{' '}
       <b style={{ color: INK }}>That is a much better position than two rival
@@ -4613,7 +4778,7 @@ export const Law = () => {
           bulk one it was derived under.</>],
       [<span style={{ color: BORROWED }}>the factor of 13/8</span>,
         <>Two derivations of <V>a</V><Sub>0</Sub> differing by exactly{' '}
-          <K>WAYS</K>/2<K>SHEET</K>. One of them miscounts, and finding which
+          <K>DEG</K>/2<K>SHEET</K>. One of them miscounts, and finding which
           would turn a 9% agreement into a derivation or kill it outright. This
           is arithmetic, not physics.</>],
       [<span style={{ color: DERIVED }}>and then a real prediction</span>,
@@ -4835,7 +5000,7 @@ export const Law = () => {
         point to keep its heading about 85% of the time?</b> That was, at the
       time, the whole of the remaining gap. A pure count did briefly seem to be
       sitting in
-      plain sight — 10.21 = π<K>WAYS</K>/<K>SHEET</K> — but that is{' '}
+      plain sight — 10.21 = π<K>DEG</K>/<K>SHEET</K> — but that is{' '}
       3<V>D</V>/<V>c</V>, which is <V>D</V> rewritten rather than a second fact,
       and the physical run is 7.67 cells. No coincidence to chase.
     </Note>
@@ -4878,7 +5043,7 @@ export const Law = () => {
     <Note>
       <b style={{ color: INK }}>And then the target moved.</b> All of that
       assumed <V>B</V> needs its own source. But a place has{' '}
-      <K>WAYS</K> + <V>n</V> ways out, the <i>lean</i> is a ratio and the{' '}
+      <K>DEG</K> + <V>n</V> ways out, the <i>lean</i> is a ratio and the{' '}
       <i>total</i> is what a ratio throws away — <V>A</V> and <V>B</V> from the
       same count, with no surplus, no transport and no <V>D</V>. That is a claim
       with numbers, because <V>A</V> and <V>B</V> carry exactly two things the
@@ -4912,7 +5077,7 @@ export const Law = () => {
       next annihilation there buys, the composition is multiplicative and β = 1
       follows. So the gap is not a transport rule and not a diffusivity:{' '}
       <b style={{ color: INK }}>it is whether 1 + <V>n</V> should be
-        (1 + 1/<K>WAYS</K>)<Sup><V>n</V></Sup></b> — one line of the counting
+        (1 + 1/<K>DEG</K>)<Sup><V>n</V></Sup></b> — one line of the counting
       argument, in the one rule that has never been asked whether it stays
       linear all the way up.
     </Note>
@@ -4921,9 +5086,9 @@ export const Law = () => {
 
     <Note>
       A node that has taken <V>n</V> annihilations has{' '}
-      <K>WAYS</K> + <V>n</V> edges. Edges are shared with neighbours, so{' '}
+      <K>DEG</K> + <V>n</V> edges. Edges are shared with neighbours, so{' '}
       <b style={{ color: INK }}>the same <V>n</V> extra edges point <i>into</i>{' '}
-        it</b> — a charge nearby is (<K>WAYS</K>+<V>n</V>)/<K>WAYS</K> times
+        it</b> — a charge nearby is (<K>DEG</K>+<V>n</V>)/<K>DEG</K> times
       more likely to arrive there. More arrivals, more annihilations, more
       folding, more arrivals. The increment is proportional to what is already
       there, which is what <i>multiplicative</i> means, and it is the counting
@@ -4959,7 +5124,7 @@ export const Law = () => {
       <i>infinitely many ways out</i>, and each annihilation adds one, and a
       finite mass sends finitely many charges. At what general relativity calls
       the horizon (<V>u</V><Sub>0</Sub> = 2) the node has 6.4 extra ways out
-      per <K>WAYS</K>: a lot, and not infinity. Light leaves, redshifted by{' '}
+      per <K>DEG</K>: a lot, and not infinity. Light leaves, redshifted by{' '}
       <V>e</V><Sup>2</Sup> = 7.4. Nothing is ever cut off — things get
       arbitrarily red and arbitrarily slow and never quite vanish.
     </Note>
@@ -5126,7 +5291,7 @@ export const Law = () => {
     <Head>and a second way, kept alongside</Head>
 
     <Note>
-      A node with <K>WAYS</K> + <V>n</V> edges gives a source <i>sitting there</i>{' '}
+      A node with <K>DEG</K> + <V>n</V> edges gives a source <i>sitting there</i>{' '}
       more ways to pulse into, so <K>SHEET</K> → <K>SHEET</K>(1+<V>u</V>) and
       emission — which <i>is</i> mass — is boosted. A feedback on the{' '}
       <b style={{ color: INK }}>source</b>, where the compounding was a feedback
@@ -5157,7 +5322,7 @@ export const Law = () => {
           <b style={{ color: INK }}>eight sixths where the panels measure
             six</b> — 33% high, excluded by three thousand. It survives only if
           the boost begins above <V>u</V><Sup>2</Sup>, at a depth nothing has
-          fixed. <K>BIAS</K> saturating as <V>n</V>/(<K>WAYS</K>+<V>n</V>) turns
+          fixed. <K>BIAS</K> saturating as <V>n</V>/(<K>DEG</K>+<V>n</V>) turns
           over at <V>u</V> ~ 1, which is at least where such a threshold would
           sit.</>],
     ]} />
@@ -5181,7 +5346,7 @@ export const Law = () => {
       <V>r</V> has proper area 4π<V>r</V><Sup>2</Sup><V>B</V>, so{' '}
       <V>r</V><Sub>areal</Sub> = <V>r</V>·<V>e</V><Sup><V>u</V></Sup>. Which is
       the same statement as{' '}
-      <b style={{ color: INK }}>“a node with <K>WAYS</K> + <V>n</V> edges
+      <b style={{ color: INK }}>“a node with <K>DEG</K> + <V>n</V> edges
         touches far more than a cell’s worth of neighbours”</b>, measured rather
       than counted.
     </Note>
@@ -5797,7 +5962,7 @@ export const WithoutPolarity = () => (
     <Eq note="G doubles — and that is the whole of it">
       <K>G</K> = <Frac
         over={<><K>BITE</K>·<i>share</i>·<K>SHEET</K><Sup>2</Sup></>}
-        under={<>4<V>π</V><Sup>2</Sup>·<K>CORE</K>·<K>WAYS</K></>} />
+        under={<>4<V>π</V><Sup>2</Sup>·<K>CORE</K>·<K>DEG</K></>} />
       <span style={{ padding: '0 1.4em' }} />
       0.062351 → 0.124703
     </Eq>
@@ -5815,7 +5980,7 @@ export const WithoutPolarity = () => (
 
     <Rows of={[
       [<span style={{ color: DERIVED }}>what does not move</span>,
-        <><K>SHEET</K>, <K>WAYS</K>, <K>BITE</K>, <K>BIAS</K>, <K>MADE</K>,{' '}
+        <><K>SHEET</K>, <K>DEG</K>, <K>BITE</K>, <K>BIAS</K>, <K>MADE</K>,{' '}
           <K>SPREAD</K>, <K>REACHES</K>, and the tick — which is still exactly
           the Planck time. <K>REACHES</K> is the pretty one: it carries <K>G</K>{' '}
           on top and the share underneath, and the two cancel to the digit.</>],

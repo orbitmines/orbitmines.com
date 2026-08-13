@@ -14,7 +14,7 @@ Each file is standalone TypeScript with **no imports** — it carries its own
 constants and its own copy of whatever geometry it needs. That duplication is
 deliberate: a test should be readable and runnable on its own, and should not
 break because the article was edited. Where a test needs the lattice constants
-it recomputes them from `SHEET`, `WAYS`, `BITE`, `CORE` rather than importing
+it recomputes them from `SHEET`, `DEG`, `BITE`, `CORE` rather than importing
 `G_LATTICE`, so a change to the definitions shows up as a test failure rather
 than as silent agreement.
 
@@ -86,7 +86,7 @@ than as silent agreement.
 
 | | |
 |---|---|
-| `recon`, `which138` | the two a₀ derivations differ by exactly `WAYS/2·SHEET` = 13/8, and which one the surviving mechanism selects |
+| `recon`, `which138` | the two a₀ derivations differ by exactly `DEG/2·SHEET` = 13/8, and which one the surviving mechanism selects |
 | `accum`, `accumulate` | whether the fold really accumulates — it reaches a **steady state** in λ/c, which retires the defect |
 | `asym` | the fixed-point exponents, converged to five figures |
 

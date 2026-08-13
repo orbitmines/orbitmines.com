@@ -26,7 +26,7 @@
  *   two things are is the only thing that has ever moved it. See `GRAIN`.
  *
  *   what a count of annihilations does to a body:
- *     BIAS        = LIGHT / WAYS                   what one of them buys, and
+ *     BIAS        = LIGHT / DEG                   what one of them buys, and
  *                                                  the only constant here
  *     u̇_a         = BIAS · S(a,b) / m_a · carry    ÷ its OWN mass, which is
  *                                                  the equivalence principle
@@ -43,7 +43,7 @@
  *   a carried point source has a steady state, which is a Green's function:
  *
  *     S           = m·SHEET                        what a body makes a tick
- *     D           = π·WAYS·c/(3·BITE·SHEET) = 3.4  how fast a move spreads it
+ *     D           = π·DEG·c/(3·BITE·SHEET) = 3.4  how fast a move spreads it
  *     δ(r)        = S/(4π·D·r) = 3u                STATIC, and 1/r
  *     ⇒  u        = G·m/(r c²)                     the metric's own potential,
  *                                                  out of a rate and a spread
@@ -63,7 +63,7 @@
  *   across it, which is special relativity's own response; and ÷ m_a leaves
  *   a_a ∝ m_b/R², so a feather and a hammer fall together.
  *
- *   G           = BITE·SHEET²·c / (8π²·HALF·WAYS)  the far limit of `met`, in
+ *   G           = BITE·SHEET²·c / (8π²·HALF·DEG)  the far limit of `met`, in
  *                                                  closed form, and IN THE
  *                                                  LATTICE'S OWN UNITS — a
  *                                                  step, a tick, half a step
@@ -85,7 +85,7 @@
  */
 
 
-import { chance, HALF, Live, SHEET, through, WAYS } from "./field";
+import { chance, HALF, Live, SHEET, through, DEG } from "./field";
 import { BITE, LIGHT } from "./physics";
 
 /**
@@ -206,8 +206,8 @@ const EMIT = SHEET / (4 * Math.PI);
  * Which is a counting argument and it fixes everything, with no constant:
  *
  *     weight of the way it went      1 + n
- *     weight of each other way       1,  and there are WAYS of them
- *     net bias                       LIGHT · n / WAYS
+ *     weight of each other way       1,  and there are DEG of them
+ *     net bias                       LIGHT · n / DEG
  *
  * LINEAR in the count, with nothing in it about how fast the thing is already
  * going. So the bias is proportional to the number of annihilations
@@ -216,7 +216,7 @@ const EMIT = SHEET / (4 * Math.PI);
  * speed, and it is the whole of the one-over-time this file could not
  * previously account for. Gravity is an acceleration because space remembers.
  *
- * WAYS AND NOT SHEET, which this had wrong. `SHEET` is how many charges a
+ * DEG AND NOT SHEET, which this had wrong. `SHEET` is how many charges a
  * source lets go of in one pulse — the plane it pulses into, eight in three
  * dimensions. What belongs in the denominator here is how many OTHER
  * directions the biased path could have taken instead, which is every way out
@@ -226,13 +226,13 @@ const EMIT = SHEET / (4 * Math.PI);
  *
  * It moves `GRAVITY` by the same 3.25 and cancels straight back out of every
  * orbit, because `models.ts` divides the masses by `GRAVITY` — exactly as
- * `BITE` does. What it does change is the saturation `n/(WAYS + n)`, which is
+ * `BITE` does. What it does change is the saturation `n/(DEG + n)`, which is
  * a real threshold rather than a scale, and is what any accumulated folding
  * gets read against.
  *
  * This is the only constant in the dynamics, and it is a ratio of two counts.
  */
-export const BIAS = LIGHT / WAYS;
+export const BIAS = LIGHT / DEG;
 
 /**
  * And what a bias comes to as a speed IN THE PICTURE — which is not the same
@@ -353,13 +353,13 @@ export const count = (
  * THE SECOND THING THE COUNT SAYS, which was being computed and thrown away.
  *
  * `BIAS` above reads the count as a RATIO: the way that took an annihilation
- * weighs `1 + n` against the `WAYS` out that weigh one each, so a path leans by
- * `LIGHT·n/WAYS`. That is the first moment of the count — WHICH WAY the extra
+ * weighs `1 + n` against the `DEG` out that weigh one each, so a path leans by
+ * `LIGHT·n/DEG`. That is the first moment of the count — WHICH WAY the extra
  * weight points — and it is the whole of the pull, and it is worth exactly one
  * sixth of Mercury's perihelion advance and nothing at all of light.
  *
  * What is thrown away is the TOTAL. The ways out of that point no longer number
- * `WAYS`; they number `WAYS + n`. The line above this one used to say "while
+ * `DEG`; they number `DEG + n`. The line above this one used to say "while
  * every other way out of the point still weighs exactly what it always did",
  * and that is true and is not the point: every other way weighs one, and there
  * are now more of them. A point with more ways out of it holds more space, so a
@@ -472,13 +472,13 @@ export const count = (
  *
  * `slowing` and `thickness` are general relativity's isotropic functions,
  * borrowed. The counting story says they should not have to be: a place has
- * WAYS + n ways out, the LEAN is a ratio (A) and what a ratio throws away is
+ * DEG + n ways out, the LEAN is a ratio (A) and what a ratio throws away is
  * the TOTAL (B). The only question is how the count composes.
  *
- *     ADDITIVE         weight of the way it went = 1 + n        √A = WAYS/(WAYS+n)
- *     MULTIPLICATIVE   each annihilation multiplies by 1+1/WAYS  √A = (1+1/WAYS)^−n
+ *     ADDITIVE         weight of the way it went = 1 + n        √A = DEG/(DEG+n)
+ *     MULTIPLICATIVE   each annihilation multiplies by 1+1/DEG  √A = (1+1/DEG)^−n
  *
- * and `(1+1/WAYS)^n = exp(n·ln(1+1/WAYS)) → exp(n/WAYS) = exp(u)`, so
+ * and `(1+1/DEG)^n = exp(n·ln(1+1/DEG)) → exp(n/DEG) = exp(u)`, so
  *
  *     A = exp(−2u)      B = exp(+2u)      A·B = 1 exactly
  *
@@ -522,9 +522,9 @@ export const count = (
  * reasoning this file refuses everywhere else. Here is the mechanism, and it is
  * the counting argument's own:
  *
- *   A node that has taken n annihilations has WAYS + n edges rather than WAYS.
+ *   A node that has taken n annihilations has DEG + n edges rather than DEG.
  *   Edges are shared with neighbours, so THE SAME n EXTRA EDGES POINT INTO IT.
- *   A charge wandering nearby is therefore (WAYS + n)/WAYS times more likely to
+ *   A charge wandering nearby is therefore (DEG + n)/DEG times more likely to
  *   arrive there than at an unfolded node.
  *
  *     MORE ARRIVALS → MORE ANNIHILATIONS → MORE FOLDING → MORE ARRIVALS.
@@ -545,8 +545,8 @@ export const count = (
  * `1 + u = e^u₀`, exactly, with nothing chosen. Then the same two readings as
  * before — the lean and the total — give
  *
- *     √A = WAYS/(WAYS+n) = 1/(1+u) = e^−u₀
- *     √B = (WAYS+n)/WAYS = (1+u)   = e^+u₀
+ *     √A = DEG/(DEG+n) = 1/(1+u) = e^−u₀
+ *     √B = (DEG+n)/DEG = (1+u)   = e^+u₀
  *     ⇒  A = e^−2u₀,  B = e^+2u₀,  A·B = 1
  *
  * which is the metric measured above to give general relativity's perihelion
@@ -559,10 +559,10 @@ export const count = (
  * this file's own panels. Nothing measured moves.
  *
  * AND NO HORIZON, IN ONE LINE. A horizon needs √A = 0, so 1 + u = ∞, so n = ∞:
- * a node would have to have INFINITELY MANY WAYS OUT. Each annihilation adds
+ * a node would have to have INFINITELY MANY DEG OUT. Each annihilation adds
  * one and a finite mass sends finitely many charges, so it never gets there.
  * At what general relativity calls the horizon (u₀ = 2) the node has 6.4 extra
- * ways out per WAYS — a lot, and not infinity. Light leaves, redshifted by
+ * ways out per DEG — a lot, and not infinity. Light leaves, redshifted by
  * e² = 7.4. That is the sharpest falsifiable claim in this file, and unlike the
  * rest of it, it is one the astronomers are already testing.
  *
@@ -626,8 +626,8 @@ export const thickness = (fold: number) => Math.exp(2 * Math.max(fold, 0));
  *
  * FIRST, THE EDGE COUNT SLOWS THE CLOCK BY √A. The checkerboard's clock is the
  * REVERSAL rate — the chance of taking the one turning direction rather than
- * carrying on — which at an unfolded node is 1 in WAYS and at a folded one is
- * 1 in WAYS + n. So `m_eff = m·WAYS/(WAYS+n) = m/(1+u)`, and the compounding
+ * carrying on — which at an unfolded node is 1 in DEG and at a folded one is
+ * 1 in DEG + n. So `m_eff = m·DEG/(DEG+n) = m/(1+u)`, and the compounding
  * already says `1 + u = e^{u₀}`:
  *
  *     u₀      m_eff/m = e^−u₀   √A = √(e^−2u₀)    diff
@@ -664,7 +664,7 @@ export const thickness = (fold: number) => Math.exp(2 * Math.max(fold, 0));
  * POSITION-DEPENDENT CHECKERBOARD was built and run.
  *
  * The fold hands the walk ONE number and not two. A node folded by u₀ has
- * WAYS + n edges, and every edge is diluted by the same `e^{−u₀}` — there is
+ * DEG + n edges, and every edge is diluted by the same `e^{−u₀}` — there is
  * no way to thin the turning edge and not the carrying one, since it is the
  * same count in the same denominator. Which is worth pausing on, because it
  * says the whole of gravity is a POSITION-DEPENDENT TICK RATE and nothing
@@ -772,7 +772,7 @@ export const carry = (px: number, py: number, fold: number) => {
  * at all: a 1/r² density integrated radially outward IS 1/r, one integration
  * and nothing free. It gets the shape, it is a fact about a place rather than
  * about a pair, and it PREDICTS G instead of absorbing it — wrongly, by
- * `π·WAYS/(3·SHEET)` exactly. A pure count, so a finite thing to hunt. See the
+ * `π·DEG/(3·SHEET)` exactly. A pure count, so a finite thing to hunt. See the
  * bottom of `SPREAD`.
  *
  * THE ELEVENTH IS THE OTHER INFORMATIVE ONE. It has a
@@ -1363,7 +1363,7 @@ export const annihilation = (
  *     ∫₀^∞ chance(m_a, x) dx = m_a·SHEET/(4π) · 2/HALF     ... the core, twice
  *     two ends, BITE a meeting, half of them opposite
  *
- *     G = BITE·½·4 · (SHEET/4π)² / CORE · BIAS = SHEET²/(4π²·CORE·WAYS)
+ *     G = BITE·½·4 · (SHEET/4π)² / CORE · BIAS = SHEET²/(4π²·CORE·DEG)
  *
  * — 0.124726, and checked against the integral itself at a converged sample
  * count out to a million cells, where it agrees to two parts in a thousand.
@@ -1403,7 +1403,7 @@ export const annihilation = (
  * proportionally more paths to the meeting.
  */
 export const G_LATTICE =
-  BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+  BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 
 /**
  * And the same constant in the units a panel is drawn in, which is the only
@@ -1466,7 +1466,7 @@ export const GRAVITY = G_LATTICE * GRAIN;
  *
  *     δ(r)  = ε·m·SHEET / (4π r c)          what the flux leaves at r
  *     δ     = B^(3/2) − 1 = 3u,  u = GM/rc²
- *     ⇒ ε   = 12π·G/(SHEET·c) = 3·BITE·SHEET/(π·WAYS)
+ *     ⇒ ε   = 12π·G/(SHEET·c) = 3·BITE·SHEET/(π·DEG)
  *
  * — a pure count, no `GRAIN` in it, and about a third of a point per charge
  * per tick. That is the whole of the prediction, and it is the number a lattice
@@ -1501,7 +1501,7 @@ export const GRAVITY = G_LATTICE * GRAIN;
  * vacuum worth the name. A vacuum dense enough to carry anything is dense
  * enough to switch gravity off within about seven steps.
  */
-export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
+export const MADE = 3 * BITE * SHEET / (Math.PI * DEG);
 
 /**
  * HOW FAST THE SURPLUS SPREADS — and the one account still standing.
@@ -1560,7 +1560,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * WHAT D HAS TO BE. Setting `δ = 3u` (a volume excess is three times the u in
  * B = 1 + 2u) and `u = GM/rc²`:
  *
- *     D = SHEET·c² / (12π·G) = π·WAYS·c / (3·BITE·SHEET) = 3.403
+ *     D = SHEET·c² / (12π·G) = π·DEG·c / (3·BITE·SHEET) = 3.403
  *
  * — a pure count, no GRAIN, and order one. For a lattice whose things move a
  * step a tick that is a mean free path of about three steps, which is an
@@ -1582,7 +1582,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * with λ the distance between scatters. So the account is only as good as the
  * λ the lattice can supply, and that is a question with an answer.
  *
- * WHAT D DEMANDS.  λ = 3D/c = π·WAYS/SHEET = 10.21 cells.
+ * WHAT D DEMANDS.  λ = 3D/c = π·DEG/SHEET = 10.21 cells.
  *
  * WHAT THE LATTICE HAS. Diffusion needs a CONSTANT-density scatterer, because
  * a constant D is the only thing that gives 1/r — source it from the body's own
@@ -1657,9 +1657,9 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * it. Setting `∫δ = 3u` and `u = G·m/(rc²)`:
  *
  *     predicted    G = SHEET·c/(12π)      = 0.21220659
- *     the pull's   G = SHEET²/(4π²·WAYS)  = 0.06235150
+ *     the pull's   G = SHEET²/(4π²·DEG)  = 0.06235150
  *     ratio                                 3.403392
- *     π·WAYS/(3·SHEET)                      3.403392
+ *     π·DEG/(3·SHEET)                      3.403392
  *     SPREAD                                3.403392
  *
  * THE THREE ARE ONE NUMBER, and that says what `SPREAD` actually is. It is NOT
@@ -1670,45 +1670,45 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *
  * WHICH IS A FAR BETTER PLACE TO BE STUCK. Before: an unfound coefficient and a
  * mechanism needing a length the lattice has not got. Now: two routes, both
- * counted, neither with a free parameter, disagreeing by `π·WAYS/(3·SHEET)`
+ * counted, neither with a free parameter, disagreeing by `π·DEG/(3·SHEET)`
  * exactly — a pure count, so a statement about the lattice's geometry and
  * nothing else. Something in one of the two counts is wrong and it is a
  * COUNTABLE thing. That is a finite search, which "unfound" never was.
  *
- * AND THE FIX IS NOT A COEFFICIENT. The two agree iff `WAYS/SHEET = 3/π`:
+ * AND THE FIX IS NOT A COEFFICIENT. The two agree iff `DEG/SHEET = 3/π`:
  *
- *     d = 2   WAYS 8     SHEET 2    ratio 4.0000
- *     d = 3   WAYS 26    SHEET 8    ratio 3.2500      want 0.9549
- *     d = 4   WAYS 80    SHEET 26   ratio 3.0769
- *     d = 5   WAYS 242   SHEET 80   ratio 3.0250
+ *     d = 2   DEG 8     SHEET 2    ratio 4.0000
+ *     d = 3   DEG 26    SHEET 8    ratio 3.2500      want 0.9549
+ *     d = 4   DEG 80    SHEET 26   ratio 3.0769
+ *     d = 5   DEG 242   SHEET 80   ratio 3.0250
  *
- * `3/π` is irrational and `WAYS/SHEET` is a ratio of integers that tends to 3
+ * `3/π` is irrational and `DEG/SHEET` is a ratio of integers that tends to 3
  * from above, so no dimension closes it and no lattice of this shape can. The
  * two counts cannot both be right AS THEY STAND. Since they are not even the
- * same kind of count — SHEET is what a source EMITS, WAYS is what a path could
+ * same kind of count — SHEET is what a source EMITS, DEG is what a path could
  * have DONE INSTEAD — the honest reading is that one of them is being used for
  * a job it is not the count for, which is the same mistake `gravity.ts` already
- * made once and recorded under `WAYS`.
+ * made once and recorded under `DEG`.
  *
- * THE AUDIT, done. `WAYS` enters the DYNAMICS in exactly one place — `BIAS` —
+ * THE AUDIT, done. `DEG` enters the DYNAMICS in exactly one place — `BIAS` —
  * and `SHEET` in `chance` and `reach`. Everything else (G, MADE, SPREAD) is
  * built from those. So there are three places the error can be, and they can be
  * ranked:
  *
  *   substituting into BIAS      G_pull       ratio to G_metric
- *     WAYS   (current)          0.06235150   3.403392
+ *     DEG   (current)          0.06235150   3.403392
  *     SHEET                     0.20264237   1.047198   ← π/3
- *     WAYS−1                    0.06484556   3.272492
- *     WAYS+1                    0.06004218   3.534292
+ *     DEG−1                    0.06484556   3.272492
+ *     DEG+1                    0.06004218   3.534292
  *
  * `SHEET` in `BIAS` closes it from three and a half TIMES to four and a half
  * PER CENT — and the residual is exactly π/3. That is a striking near miss and
- * it is NOT a fix: the argument for WAYS is good (alternatives a path could
+ * it is NOT a fix: the argument for DEG is good (alternatives a path could
  * have taken, not charges emitted) and 4.7% is not nought. It is recorded
  * because a residual of exactly π/3 is either meaningless or the whole answer,
  * and those can be told apart by finding where a π/3 would live.
  *
- * Keeping WAYS, the metric route's `k` would have to be `π·WAYS/SHEET = 10.21`
+ * Keeping DEG, the metric route's `k` would have to be `π·DEG/SHEET = 10.21`
  * instead of 3 — and 3 was there because a VOLUME excess is three times a
  * linear one, which is DIMS. 10.21 is not a metric factor at all, so the
  * discrepancy cannot be hidden in `k` without throwing away the only reason `k`
@@ -1727,7 +1727,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *
  * Ranked, most likely wrong first:
  *   1. the identification ∫δ = 3u   a choice, unargued
- *   2. BIAS's WAYS                  argued, but sits π/3 from closing it
+ *   2. BIAS's DEG                  argued, but sits π/3 from closing it
  *   3. the pull's own geometry      checked hardest, least likely
  *
  * AND THE AUDIT POINTS AT A ROUTE NOBODY HAS RUN — worked out here, not yet
@@ -1735,26 +1735,26 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *
  * The pull works because it is a PRODUCT of two fields integrated along a line,
  * `chance_a · chance_b`, and that product is where the extra 1/r comes from and
- * where WAYS enters, one `BIAS` per annihilation. The metric route has one body,
- * so it has no second field, no line integral and no WAYS — which is the exact
+ * where DEG enters, one `BIAS` per annihilation. The metric route has one body,
+ * so it has no second field, no line integral and no DEG — which is the exact
  * shape of the 3.4034.
  *
  * BUT A LONE BODY IS NOT ALONE. Its charges annihilate against the AMBIENT
  * FIELD Φ, the same Φ `reach` is built on, and that restores all three:
  *
  *     annihilation rate at r   ∝  BITE · chance(m,r) · Φ · share
- *     acceleration             =  BIAS · that                    (so a 1/WAYS)
- *     u = ∫a dr                ∝  m·SHEET·Φ / (4π·r·WAYS)        ← 1/r
+ *     acceleration             =  BIAS · that                    (so a 1/DEG)
+ *     u = ∫a dr                ∝  m·SHEET·Φ / (4π·r·DEG)        ← 1/r
  *
  * — the same structure as `shortfall`, with the vacuum standing in for the
  * second body. Matching `u = Gm/rc²` then fixes Φ outright:
  *
- *     Φ = 4π·WAYS·G/SHEET = 2.546479  =  SHEET/π, exactly
+ *     Φ = 4π·DEG·G/SHEET = 2.546479  =  SHEET/π, exactly
  *
  * AND THE COSMOLOGY ATTRACTOR ALREADY SAYS Φ = 2 EXACTLY (closure 2 under
  * `REACHES`), from a completely unrelated argument — the cascade's fixed point.
  * The two agree to 27%, and the residual is a bare 4/π. Pinning Φ at 2 gives
- * `G = SHEET·Φ/(4π·WAYS) = 0.04897` against the pull's 0.06235, ratio 4/π.
+ * `G = SHEET·Φ/(4π·DEG) = 0.04897` against the pull's 0.06235, ratio 4/π.
  *
  * WHICH IS THE FIRST TIME A CHANGE OF MECHANISM HAS MOVED THAT NUMBER AT ALL —
  * from 3.4034, a mixture of counts, to a bare π. And there is an obvious place
@@ -1817,7 +1817,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *
  * Every failure so far took `D` from SCATTERING — how far a charge gets before
  * meeting something — and the vacuum cannot make that short. But a created
- * point that simply sits for a tick and then takes one of the `WAYS` at random
+ * point that simply sits for a tick and then takes one of the `DEG` at random
  * is a random walk with NO SCATTERER IN IT. `D` is then a fact about the
  * lattice, and Φ is not in the problem at all:
  *
@@ -1849,8 +1849,8 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * a per cent from p = 0 to p = 0.9, so the number is right.
  *
  * AND A CLAIMED COINCIDENCE HERE WAS SPURIOUS, which is worth recording because
- * it was nearly chased. This said the run length was "10.21 cells = π·WAYS/SHEET,
- * a pure count". It is not. 10.21 is `3D/c`, which IS `π·WAYS/SHEET` BY
+ * it was nearly chased. This said the run length was "10.21 cells = π·DEG/SHEET,
+ * a pure count". It is not. 10.21 is `3D/c`, which IS `π·DEG/SHEET` BY
  * CONSTRUCTION — it is `SPREAD` rewritten, not a second fact about anything.
  * The physical run length is 7.67 cells, and the two differ by 33%. The
  * appearance of a pure count sitting in plain sight came from comparing a
@@ -1880,7 +1880,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * So the third is the only survivor and it is not a derivation.
  *
  * ---------------------------------------------------------------------------
- * AND BOTH WAYS OUT OF THAT WERE TESTED, AND BOTH CLOSE — by argument this
+ * AND BOTH DEG OUT OF THAT WERE TESTED, AND BOTH CLOSE — by argument this
  * time, rather than by a measurement coming out wrong.
  *
  * FIRST: IS THE UNIFORMITY A THEOREM? Let the turner have density ∝ r^−n, so
@@ -1932,7 +1932,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *
  * All of it assumed B needs ITS OWN SOURCE — a surplus, made somewhere, carried
  * somehow. But the file's own `METRIC` story says otherwise: a place has
- * WAYS + n ways out, the LEAN is a ratio (that is A) and the TOTAL is what a
+ * DEG + n ways out, the LEAN is a ratio (that is A) and the TOTAL is what a
  * ratio throws away (that is B). Same count, read twice. If that is right, B is
  * not sourced separately at all and the surplus programme was solving a problem
  * that is not there.
@@ -1943,7 +1943,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  *
  *     account                                     γ       β     perihelion  deflection
  *     GR, isotropic — what the file uses          1.000   1.000   1.0001     1.0000
- *     √A = WAYS/(WAYS+n), √B = (WAYS+n)/WAYS      1.000   1.500   0.8334     1.0000
+ *     √A = DEG/(DEG+n), √B = (DEG+n)/DEG      1.000   1.500   0.8334     1.0000
  *     A·B = 1 with B = 1 + 2u exactly             1.000   2.000   0.6668     1.0000
  *     Newton, no metric                           0.000   0.000   0.6667     0.5000
  *
@@ -1979,7 +1979,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * whether it is linear all the way up.
  *
  * SO THE GAP IS NOT WHERE THE LAST WEEK PUT IT. It is not a transport rule and
- * not a diffusivity. It is whether `1 + n` should be `(1 + 1/WAYS)^n`, and that
+ * not a diffusivity. It is whether `1 + n` should be `(1 + 1/DEG)^n`, and that
  * question is one line of the counting argument rather than a new mechanism.
  * What follows below stands as the record of the source-and-carry programme,
  * which is now of interest mainly for the two no-gos it established.
@@ -1991,7 +1991,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * CONSISTENT, and that constant has no mechanism behind it in either account.
  *
  * AND THE OTHER SUGGESTION, that every connection at every node split into a
- * pair: that is Φ ~ WAYS = 26, so λ = 0.077 cells and gravity is dead in a
+ * pair: that is Φ ~ DEG = 26, so λ = 0.077 cells and gravity is dead in a
  * tenth of a step — thirteen times worse than the Φ = 2 attractor, which was
  * already fatal. Nor does the aggregate bouncing back rescue it: pairs that
  * recombine are net nothing (`BITE` = 1) and pairs that do not ARE the fog.
@@ -2003,7 +2003,7 @@ export const MADE = 3 * BITE * SHEET / (Math.PI * WAYS);
  * under `carry` are now twelve, and the twelfth is the first that fails by a
  * stated finite amount instead of by a shape or by sixty orders.
  */
-export const SPREAD = Math.PI * WAYS * LIGHT / (3 * BITE * SHEET);
+export const SPREAD = Math.PI * DEG * LIGHT / (3 * BITE * SHEET);
 
 /**
  * And so what a body puts at a distance, as a fold — which is `settle`'s whole
@@ -2179,7 +2179,7 @@ export const REACHES = Math.sqrt(
  *         REVERSE      it goes back the way it came   extinction
  *
  *     Neither is a soft, forward, small-energy scatter — a step is one cell and
- *     a heading is one of WAYS, so a photon either continues EXACTLY or leaves
+ *     a heading is one of DEG, so a photon either continues EXACTLY or leaves
  *     the line of sight entirely. The beam goes as `e^{−D/λ}` and the survivors
  *     arrive at the frequency they left with. THE MODEL CAN DIM LIGHT AND
  *     CANNOT REDDEN IT, and that is a fact about what a lattice step is rather
@@ -2997,7 +2997,7 @@ export const caught = {
  * second is the smallest acceleration a discrete lattice can represent at all.
  *
  * WHAT WOULD HAVE TO BE SHOWN. `spend` gives `accel = BIAS × (annihilation
- * rate)` with `BIAS = c/WAYS`. A rate below one meeting per t₀ is not a small
+ * rate)` with `BIAS = c/DEG`. A rate below one meeting per t₀ is not a small
  * acceleration — it is NO acceleration, because there is no such event. So a
  * floor is expected near
  *
@@ -3135,7 +3135,7 @@ export const caught = {
  * mechanism is one `BIAS` kick per age then `a₀ = BIAS·κ/t₀`, so
  * `κ = a₀t₀/(c·BIAS) = 4.5323`, and the job is to find 4.5323 from the lattice
  * constants. Building every expression of the form a·b/c, a/(b·c) and √(ab)/c
- * out of sixteen constants the file already owns — SHEET, WAYS, HALF, DIMS,
+ * out of sixteen constants the file already owns — SHEET, DEG, HALF, DIMS,
  * FLOOR, G_LATTICE, π, e, √2, √3, 2π, 4π and friends — gives 12816 expressions,
  * of which:
  *
@@ -3145,10 +3145,10 @@ export const caught = {
  *     within  2%     95              12
  *     within  1%     20               4
  *
- * — the closest being `√(WAYS·π)/2 = 4.51889`, at −0.30%. TWENTY EXPRESSIONS
+ * — the closest being `√(DEG·π)/2 = 4.51889`, at −0.30%. TWENTY EXPRESSIONS
  * LAND INSIDE A PERCENT. A search over numbers cannot tell a derivation from an
  * accident here, so a hit is worth nothing even when it is close, and
- * `√(WAYS·π)/2` is recorded as a curiosity and nothing else. This is the one
+ * `√(DEG·π)/2` is recorded as a curiosity and nothing else. This is the one
  * place where the file's habit — count it, do not fit it — has to be enforced
  * by REFUSING TO LOOK rather than by looking carefully.
  *
@@ -3219,7 +3219,7 @@ export const caught = {
  *
  *     constant         a₀ = K·c/t₀    against 1.200e−10
  *     1/SHEET          8.605e−11      −28.3%
- *     1/WAYS = BIAS    2.648e−11      −77.9%
+ *     1/DEG = BIAS    2.648e−11      −77.9%
  *     1/2π             1.096e−10       −8.7%
  *     HALF/DIMS        1.147e−10       −4.4%
  *
@@ -3267,7 +3267,7 @@ export const caught = {
  *
  * and a rate is linear in each emitter because each emitter emits
  * independently. So any change to the GEOMETRY (how flux spreads), the
- * PROPAGATION (ballistic, diffusive, screened) or the COUNTING (SHEET, WAYS,
+ * PROPAGATION (ballistic, diffusive, screened) or the COUNTING (SHEET, DEG,
  * dimension) moves the r-dependence and LEAVES THE MASS LINEAR:
  *
  *     change                        gives         Tully–Fisher
@@ -3524,7 +3524,7 @@ export const caught = {
  *
  * AND THAT IS THE REAL COST, stated plainly: a₀ BECOMES A NEW FUNDAMENTAL
  * CONSTANT — the strength with which layer two's field gravitates in layer one
- * — rather than something counted out of SHEET and WAYS. For a model whose
+ * — rather than something counted out of SHEET and DEG. For a model whose
  * whole method is counting, that is a genuine loss, and it belongs in the
  * ledger rather than hidden inside a κ.
  *
@@ -3845,10 +3845,10 @@ export const caught = {
  * AND THE ONE LIVE CANDIDATE HAS A CANDIDATE MECHANISM — LOCK LAYER TWO TO
  * LAYER ONE'S SHEET.
  *
- * SHEET IS ALREADY THE MODEL'S TWO-DIMENSIONAL OBJECT. `WAYS = 3³ − 1 = 26` is
+ * SHEET IS ALREADY THE MODEL'S TWO-DIMENSIONAL OBJECT. `DEG = 3³ − 1 = 26` is
  * every direction out of a cell; `SHEET = 3² − 1 = 8` is the directions in ONE
  * PLANE through it. And `chance(m,r) = m·SHEET/shell(r)` already uses SHEET
- * rather than WAYS — the pull was always counted through a plane. So this is
+ * rather than DEG — the pull was always counted through a plane. So this is
  * not adding a structure; it is taking one the file already has and making it
  * BIND.
  *
@@ -4619,7 +4619,7 @@ export const caught = {
  *     + feedback, saturated (κ ≥ 10⁹)          19.8%    3.25
  *     wanted                                   < 5%     3.85 ± 0.09
  *
- * THE TWO REQUIREMENTS PULL OPPOSITE WAYS. Weak feedback keeps the shape and
+ * THE TWO REQUIREMENTS PULL OPPOSITE DEG. Weak feedback keeps the shape and
  * leaves the slope at the caught pair's own 2.51; strong enough feedback to
  * move the slope crushes the inner disc, and the curve starts RISING outward —
  * v(30) = 264.9 against v(8) = 229, where Gaia has it falling. The best joint
@@ -5206,7 +5206,7 @@ export const caught = {
  * the comparison that matters. See `tests/genzel2.ts` and `tests/fair.ts`.
  *
  * AND THEN THE DIRECTION, WHICH IS THE PART NOBODY HAD ASKED. A carrier
- * streaming along ĝ occupies the cell in that direction; the point has `WAYS`
+ * streaming along ĝ occupies the cell in that direction; the point has `DEG`
  * exits and only the occupied ones are shut, so the pair goes out with the
  * field direction REMOVED. That is an anisotropic source, and it costs a
  * projection:
@@ -5413,7 +5413,7 @@ export const caught = {
  * WHAT INPUTS EXIST AT ALL — this is the whole list, and a derivation can use
  * nothing else:
  *
- *     counted      SHEET = 8, WAYS = 26, BITE = 1, G_LATTICE = 0.0623515
+ *     counted      SHEET = 8, DEG = 26, BITE = 1, G_LATTICE = 0.0623515
  *     units        cell = ℓ_P, tick = t_P, fixed by the calibration
  *     dynamical    t₀ = 8.078e+60 ticks — an AGE, not a constant
  *
@@ -5487,7 +5487,7 @@ export const caught = {
  *                which is the same average that corrected the screening
  *                geometry at the head of `shows`.
  *
- * They pull OPPOSITE WAYS — fewer meetings means the threshold sits at a higher
+ * They pull OPPOSITE DEG — fewer meetings means the threshold sits at a higher
  * density and a₀ goes up; a larger relative speed means more meetings and a₀
  * goes down:
  *
@@ -6055,9 +6055,9 @@ export const sharing = (mass: number, R: number) =>
  * AND WHAT IF MATTER IN A FOLDED PLACE CAN EMIT MORE — a second feedback, and
  * the one that would restore horizons.
  *
- * A node that has taken n annihilations has WAYS + n edges. `SHEET` is how many
+ * A node that has taken n annihilations has DEG + n edges. `SHEET` is how many
  * of them a pulse goes into, so a source SITTING THERE lets go of
- * `SHEET·(WAYS+n)/WAYS = SHEET·(1+u)` charges a pulse. Emission is mass, so
+ * `SHEET·(DEG+n)/DEG = SHEET·(1+u)` charges a pulse. Emission is mass, so
  *
  *     M_eff = M·(1 + κu)          κ = 1 if the sheet scales with the edges
  *
@@ -6093,7 +6093,7 @@ export const sharing = (mass: number, R: number) =>
  * IT SURVIVES ONLY AS A DEEP-FIELD EFFECT. β is a statement about the u² term,
  * so a boost beginning at u³, or above a threshold, leaves the weak field alone
  * and still diverges eventually. And the threshold is not invented: `BIAS`
- * saturates as `n/(WAYS+n)`, which turns over when n ~ WAYS, i.e. u ~ 1 — which
+ * saturates as `n/(DEG+n)`, which turns over when n ~ DEG, i.e. u ~ 1 — which
  * is where the counting argument already changes character, and is exactly
  * where the divergence would sit.
  *
@@ -6121,7 +6121,7 @@ export const sharing = (mass: number, R: number) =>
  */
 
 /**
- * TWO WAYS TO MAKE A DARK OBJECT, AND THE MODEL KEEPS BOTH.
+ * TWO DEG TO MAKE A DARK OBJECT, AND THE MODEL KEEPS BOTH.
  *
  * They are not rivals to be settled by argument — they predict different
  * things, so they are settled by looking. `regimes.ts` carries `boost` for the
@@ -6143,7 +6143,7 @@ export const sharing = (mass: number, R: number) =>
  * ─────────────────────────────────────────────────────────────────────────────
  * ROUTE TWO — DARK BY HORIZON. A genuine one.
  *
- * A node with WAYS + n edges has more ways for a source SITTING THERE to pulse
+ * A node with DEG + n edges has more ways for a source SITTING THERE to pulse
  * into, so `SHEET → SHEET(1+u)` and emission — which is mass — is boosted:
  *
  *     M_eff = M(1 + κu)   ⇒   u = u₀/(1 − κu₀)
@@ -6161,8 +6161,8 @@ export const sharing = (mass: number, R: number) =>
  *                        perihelion advance is EIGHT sixths where the panels
  *                        measure six — 33% high, excluded by three thousand.
  *                        So the boost must begin above u², at a threshold
- *                        nobody has derived. `BIAS` saturating as n/(WAYS+n)
- *                        turns over at n ~ WAYS, i.e. u ~ 1, which is at least
+ *                        nobody has derived. `BIAS` saturating as n/(DEG+n)
+ *                        turns over at n ~ DEG, i.e. u ~ 1, which is at least
  *                        where such a threshold would naturally sit.
  *
  * ─────────────────────────────────────────────────────────────────────────────
@@ -6254,13 +6254,13 @@ export const sharing = (mass: number, R: number) =>
  * decides both.
  *
  * (A) AND BEING CONSISTENT MAKES IT WORSE. If SHEET scales with the edges then
- * so does WAYS — both are edge counts — and `G = BITE·SHEET²·LIGHT/(8π²·CORE·WAYS)`
+ * so does DEG — both are edge counts — and `G = BITE·SHEET²·LIGHT/(8π²·CORE·DEG)`
  * then scales as (1+u) too. With M_eff also boosted, `u = u₀(1+u)²`:
  *
  *     what scales                        k     β      perihelion
  *     nothing (the model as it stands)   0     1.0    1.0000    allowed
  *     SHEET only                         1     0.0    1.3333    EXCLUDED
- *     SHEET and WAYS together            2    −1.0    1.6667    EXCLUDED
+ *     SHEET and DEG together            2    −1.0    1.6667    EXCLUDED
  *
  * TEN SIXTHS where the panels measure six. Keeping the counts consistent
  * doubles the damage rather than cancelling it, and β is known to 3·10⁻⁴, so
@@ -6274,7 +6274,7 @@ export const sharing = (mass: number, R: number) =>
  *
  * which DIVERGES at
  *
- *     R_c = √(3/4πG) = √(3π·WAYS)/SHEET = 1.9567 cells
+ *     R_c = √(3/4πG) = √(3π·DEG)/SHEET = 1.9567 cells
  *
  * — a pure count. So R_c is approached from below and never passed:
  *
@@ -6314,7 +6314,7 @@ export const sharing = (mass: number, R: number) =>
  *
  *     r_areal = r·√B = r·e^{u}          B = e^{2u},  u = GM/rc²
  *
- * — which is the same statement as "a node with WAYS + n edges touches far more
+ * — which is the same statement as "a node with DEG + n edges touches far more
  * than a cell's worth of neighbours", measured rather than counted.
  *
  * AND IT DOES NOT SHRINK TO NOTHING. `d/dr (r e^{GM/r}) = e^{GM/r}(1 − GM/r)`,
@@ -6333,7 +6333,7 @@ export const sharing = (mass: number, R: number) =>
  *
  * SO THE OBJECT IS TWO CELLS ACROSS AND ENORMOUS AT ONCE. A solar mass at R_c
  * has u = 4.7·10³⁷, so an areal radius of 10^(2.0·10³⁷) cells — a number with
- * ten-to-the-thirty-seven digits — and its node carries WAYS(1+u) = 1.2·10³⁹
+ * ten-to-the-thirty-seven digits — and its node carries DEG(1+u) = 1.2·10³⁹
  * edges. Those two are the same fact. (That figure uses the EXTERIOR u = GM/r
  * where the interior solution actually applies; for a uniform ball u_centre is
  * 1.5× the surface value, so the conclusion is unchanged in kind and the exact

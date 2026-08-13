@@ -32,9 +32,9 @@ const MU0 = 4e-7 * Math.PI, MU_B = 9.2740100783e-24, MU_N = 5.0507837461e-27;
 const M_PLANCK = Math.sqrt(HBAR * C / G_N);
 
 const DIMS = 3;
-const SHEET = Math.pow(3, DIMS - 1) - 1, WAYS = Math.pow(3, DIMS) - 1;
+const SHEET = Math.pow(3, DIMS - 1) - 1, DEG = Math.pow(3, DIMS) - 1;
 const BITE = 1, CORE = 0.5, LIGHT = 1, CYCLE = 8;
-const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 const MU = G_LATTICE * M_PLANCK;
 
 /** the model's own magneton, from `moment`: CYCLE·G/2π, in units of µ_B */

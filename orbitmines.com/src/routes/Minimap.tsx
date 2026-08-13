@@ -6,7 +6,7 @@ import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib
 import {PROFILES} from "./profiles/profiles";
 import {Button} from "@blueprintjs/core";
 import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
-import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ETHERS_ALMANAC, ORBITMINES_MINECRAFT_ARCHIVE, RAY_CALCULI_AND_PHYSICS, PHYSICS} from "./references";
+import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ETHERS_ALMANAC, ORBITMINES_MINECRAFT_ARCHIVE, PHYSICS} from "./references";
 
 
 const Minimap = () => {

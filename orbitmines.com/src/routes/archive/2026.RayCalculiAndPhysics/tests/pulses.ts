@@ -23,9 +23,9 @@ const T_PLANCK = Math.sqrt(HBAR * G_N / (C * C * C * C * C));
 // the lattice's own constants, recomputed rather than imported
 const DIMS = 3;
 const SHEET = Math.pow(3, DIMS - 1) - 1;      // 8  — charges in one pulse
-const WAYS = Math.pow(3, DIMS) - 1;           // 26 — ways out of a point
+const DEG = Math.pow(3, DIMS) - 1;           // 26 — ways out of a point
 const BITE = 1, CORE = 0.5, LIGHT = 1;
-const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 
 // the largest thing that can pulse on its own: once a tick is the ceiling
 const MU = G_LATTICE * M_PLANCK;
@@ -40,8 +40,8 @@ const pulses = (m: number) => 1 / period(m);
 console.log("=".repeat(78));
 console.log("1. THE CONSTANTS");
 console.log("=".repeat(78));
-console.log(`   SHEET ${SHEET}   WAYS ${WAYS}   BITE ${BITE}   CORE ${CORE}`);
-console.log(`   G_LATTICE = SHEET²/(8π²·CORE·WAYS) = ${G_LATTICE.toFixed(8)}`);
+console.log(`   SHEET ${SHEET}   DEG ${DEG}   BITE ${BITE}   CORE ${CORE}`);
+console.log(`   G_LATTICE = SHEET²/(8π²·CORE·DEG) = ${G_LATTICE.toFixed(8)}`);
 console.log(`   1/G_LATTICE = ${(1 / G_LATTICE).toFixed(4)}   (2·SHEET = ${2 * SHEET}, off by ` +
   `${(100 * (1 / G_LATTICE / (2 * SHEET) - 1)).toFixed(2)}% — noted, not derived)`);
 console.log(`   MU = G·m_Planck = ${(MU * 1e9).toFixed(3)} µg   — the largest elementary mass`);

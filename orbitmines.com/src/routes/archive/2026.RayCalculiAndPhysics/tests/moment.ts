@@ -28,9 +28,9 @@ const ALPHA = 7.2973525693e-3;
 const G_MEASURED = 2.00231930436256;
 
 const DIMS = 3;
-const SHEET = Math.pow(3, DIMS - 1) - 1, WAYS = Math.pow(3, DIMS) - 1;
+const SHEET = Math.pow(3, DIMS - 1) - 1, DEG = Math.pow(3, DIMS) - 1;
 const BITE = 1, CORE = 0.5, LIGHT = 1, CYCLE = 8;
-const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 
 console.log("=".repeat(78));
 console.log("1. THE MAGNETON THE MODEL ACTUALLY GIVES");
@@ -53,7 +53,7 @@ console.log("=".repeat(78));
   console.log("   and having a place is not having a derivation. If it were the");
   console.log("   right factor the count would read:\n");
   const alt = 2 * SHEET * G_LATTICE;
-  console.log(`      2·SHEET·G = 2·SHEET³/(8π²·CORE·WAYS) = 1024/(104π²) = ${alt.toFixed(6)} µ_B`);
+  console.log(`      2·SHEET·G = 2·SHEET³/(8π²·CORE·DEG) = 1024/(104π²) = ${alt.toFixed(6)} µ_B`);
   console.log(`      measured µ_e/µ_B                                    = ${(G_MEASURED / 2).toFixed(6)} µ_B`);
   console.log(`      off by                                              ${(100 * (alt / (G_MEASURED / 2) - 1)).toFixed(3)}%`);
   console.log("\n   A near miss, in the wrong direction: the measured anomaly is");
@@ -102,7 +102,7 @@ console.log("3. AND THE LATTICE QUANTISES WHICH WAY A MAGNET CAN POINT");
 console.log("=".repeat(78));
 console.log("   A held emitter puts + into every exit whose projection on its axis");
 console.log("   is positive, − into every negative one, and nothing into the ones");
-console.log("   exactly across. There are only WAYS = 26 exits, so the split is a");
+console.log("   exactly across. There are only DEG = 26 exits, so the split is a");
 console.log("   COUNT and it depends on which way the axis points:\n");
 
 const EXITS: number[][] = [];
@@ -129,9 +129,9 @@ const AXES: [string, number[]][] = [
 const frac: Record<string, number> = {};
 for (const [n, a] of AXES) {
   const s = split(a);
-  frac[n] = s.p / WAYS;
+  frac[n] = s.p / DEG;
   console.log(`   ${n.padEnd(14)} ${String(s.p).padStart(6)}     ${String(s.e).padStart(6)}     ` +
-    `${String(s.n).padStart(6)}     ${(s.p / WAYS).toFixed(4)}`);
+    `${String(s.n).padStart(6)}     ${(s.p / DEG).toFixed(4)}`);
 }
 console.log(`\n   Note the equator of a face axis is exactly SHEET = ${SHEET}, which is`);
 console.log("   what one pulse is. So a face-aligned magnet wastes a whole pulse's");

@@ -51,9 +51,9 @@ const ALPHA = 7.2973525693e-3;
 const M_PLANCK = Math.sqrt(HBAR * C / G_N);
 
 const DIMS = 3;
-const SHEET = Math.pow(3, DIMS - 1) - 1, WAYS = Math.pow(3, DIMS) - 1;
+const SHEET = Math.pow(3, DIMS - 1) - 1, DEG = Math.pow(3, DIMS) - 1;
 const BITE = 1, CORE = 0.5, LIGHT = 1, CYCLE = 8;
-const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 
 /** the fraction of meetings that annihilate, given the two biases */
 const annihilating = (Pa: number, Pb: number) => (1 - Pa * Pb) / 2;
@@ -188,11 +188,11 @@ console.log("6. AND A FIT TO α WOULD MEAN NOTHING — measured, so it stays mea
 console.log("=".repeat(78));
 console.log("   It is tempting to look for 137.036 in the lattice counts. Here is");
 console.log("   why that is not evidence: search every monomial");
-console.log("      2^a · 3^b · π^c · SHEET^d · WAYS^e · CORE^f,  exponents in −3..3");
+console.log("      2^a · 3^b · π^c · SHEET^d · DEG^e · CORE^f,  exponents in −3..3");
 console.log("   and count how many land within half a percent of it.\n");
 {
-  const base = [2, 3, Math.PI, SHEET, WAYS, CORE];
-  const names = ["2", "3", "π", "SHEET", "WAYS", "CORE"];
+  const base = [2, 3, Math.PI, SHEET, DEG, CORE];
+  const names = ["2", "3", "π", "SHEET", "DEG", "CORE"];
   const target = 1 / ALPHA;
   let hits = 0, total = 0;
   const found: string[] = [];
@@ -219,12 +219,12 @@ console.log("=".repeat(78));
 console.log("7. WHAT THE MISSING CHANNEL WOULD HAVE TO BE");
 console.log("=".repeat(78));
 console.log("   The fold is the only force channel this model has: an annihilation");
-console.log("   removes a cell and leans a path by BIAS = LIGHT/WAYS = 1/26. The");
+console.log("   removes a cell and leans a path by BIAS = LIGHT/DEG = 1/26. The");
 console.log("   OTHER outcome — alike charges turning around — transfers momentum");
 console.log("   too, and `gravity.ts` does not count it as a force at all.");
 console.log("   That is the gap, and it has a size:\n");
 {
-  const BIAS = LIGHT / WAYS;
+  const BIAS = LIGHT / DEG;
   const need = (E_Q * E_Q / (4 * Math.PI * EPS0)) / (G_N * ME * ME);
   console.log(`      BIAS, per annihilation                ${BIAS.toFixed(6)} cells/tick`);
   console.log(`      momentum a returned charge carries    2 (out at c, back at c)`);

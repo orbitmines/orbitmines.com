@@ -6,7 +6,6 @@ import OnIntelligibility from "./archive/2022.OnIntelligibility";
 import OnOrbits from "./archive/2023.OnOrbits";
 import TowardsAUniversalLanguage from "./archive/2025.TowardsAUniversalLanguage";
 import MinecraftArchive from "./archive/2026.MinecraftArchive";
-import RayCalculiAndPhysics from './archive/2026.RayCalculiAndPhysics';
 
 const ITEMS: { [key: string]: any } = {
     '2024-02-orbitmines-as-a-game-project': _2024_02_OrbitMines_as_a_Game_Project,
@@ -14,7 +13,6 @@ const ITEMS: { [key: string]: any } = {
     'on-orbits-equivalence-and-inconsistencies': OnOrbits,
     'towards-a-universal-language': TowardsAUniversalLanguage,
     'the-orbitmines-minecraft-server': MinecraftArchive,
-    'ray-calculi-and-physics': RayCalculiAndPhysics,
 }
 
 const Archive = () => {

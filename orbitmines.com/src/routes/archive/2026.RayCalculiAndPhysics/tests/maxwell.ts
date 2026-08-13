@@ -23,9 +23,9 @@ const ALPHA = 7.2973525693e-3;
 const M_PLANCK = Math.sqrt(HBAR * C / G_N);
 
 const DIMS = 3;
-const SHEET = Math.pow(3, DIMS - 1) - 1, WAYS = Math.pow(3, DIMS) - 1;
+const SHEET = Math.pow(3, DIMS - 1) - 1, DEG = Math.pow(3, DIMS) - 1;
 const BITE = 1, CORE = 0.5, LIGHT = 1, CYCLE = 8;
-const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 
 console.log("=".repeat(78));
 console.log("1. GAUSS'S LAW IS THE EMISSION RULE — checked");
@@ -48,7 +48,7 @@ console.log("=".repeat(78));
 console.log("2. AND ∇·B = 0 IS FORCED BY WHAT AN AXIS IS — checked");
 console.log("=".repeat(78));
 console.log("   A sided source puts + into every exit on one side of its axis and");
-console.log("   − into every exit on the other. There are only WAYS = 26 of them,");
+console.log("   − into every exit on the other. There are only DEG = 26 of them,");
 console.log("   so the net is a COUNT, and it is nought for every axis there is:\n");
 const EXITS: number[][] = [];
 for (let x = -1; x <= 1; x++) for (let y = -1; y <= 1; y++) for (let z = -1; z <= 1; z++)

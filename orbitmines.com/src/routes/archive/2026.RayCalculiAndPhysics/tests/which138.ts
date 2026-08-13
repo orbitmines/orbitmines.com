@@ -7,12 +7,12 @@
  *   A   a₀ = 4πG/(SHEET·t₀)      "a carrier meets about one other in a lifetime"
  *   B   a₀ = c·H₀/2π             "the field falls to the expansion's own scale"
  *
- *   A/B = 8π²G_LATTICE/SHEET = 2·SHEET/WAYS = 8/13, exactly.
+ *   A/B = 8π²G_LATTICE/SHEET = 2·SHEET/DEG = 8/13, exactly.
  */
 
 const C = 2.99792458e8, MPC = 3.0856775814913673e22, TP = 5.391247e-44;
-const SHEET = 8, WAYS = 26, BITE = 1, CORE = 0.5, LIGHT = 1;
-const G_LAT = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const SHEET = 8, DEG = 26, BITE = 1, CORE = 0.5, LIGHT = 1;
+const G_LAT = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 const H0 = 70.9e3 / MPC, T0 = 1 / H0, T0_TICKS = T0 / TP;
 const LP = 1.616255e-35;
 const toSI = LP / (TP * TP);
@@ -29,8 +29,8 @@ console.log(`   B  expansion  c·H₀/2π         = ${B.toExponential(4)}   shor
 console.log(`   measured                      = ${MEASURED.toExponential(4)}`);
 console.log();
 console.log(`   B/A = ${(B / A).toFixed(6)}`);
-console.log(`   WAYS/(2·SHEET) = ${(WAYS / (2 * SHEET)).toFixed(6)}   ( = 13/8 )`);
-console.log(`   difference = ${Math.abs(B / A - WAYS / (2 * SHEET)).toExponential(2)}`);
+console.log(`   DEG/(2·SHEET) = ${(DEG / (2 * SHEET)).toFixed(6)}   ( = 13/8 )`);
+console.log(`   difference = ${Math.abs(B / A - DEG / (2 * SHEET)).toExponential(2)}`);
 console.log();
 console.log("   So the gap is a pure count and NOT a numerical accident. But that");
 console.log("   does not say which is right, because they are not the same count.");
@@ -83,12 +83,12 @@ console.log(`   needed: ${need.toFixed(4)}`);
 const cands: [string, number][] = [
   ["√π", Math.sqrt(Math.PI)],
   ["π/2 ", Math.PI / 2],
-  ["WAYS/(2·SHEET)", WAYS / (2 * SHEET)],
-  ["√(WAYS/SHEET)", Math.sqrt(WAYS / SHEET)],
-  ["2·SHEET/WAYS·π/2", 2 * SHEET / WAYS * Math.PI / 2],
+  ["DEG/(2·SHEET)", DEG / (2 * SHEET)],
+  ["√(DEG/SHEET)", Math.sqrt(DEG / SHEET)],
+  ["2·SHEET/DEG·π/2", 2 * SHEET / DEG * Math.PI / 2],
   ["16/9", 16 / 9],
   ["e/√e·…  (√e)", Math.sqrt(Math.E)],
-  ["WAYS/SHEET/√π", WAYS / SHEET / Math.sqrt(Math.PI)],
+  ["DEG/SHEET/√π", DEG / SHEET / Math.sqrt(Math.PI)],
 ];
 console.log("      candidate            value     off by");
 for (const [n, v] of cands)

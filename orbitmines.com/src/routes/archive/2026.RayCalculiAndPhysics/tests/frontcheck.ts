@@ -6,7 +6,7 @@
 const C = 2.99792458e8, G = 6.67430e-11;
 const MPC = 3.0856775814913673e22, GYR = 3.1557e16;
 const LP = 1.616255e-35, TP = 5.391247e-44, MP = 2.176434e-8;
-const SHEET = 8, WAYS = 26, BITE = 1, SHARE = 0.5;
+const SHEET = 8, DEG = 26, BITE = 1, SHARE = 0.5;
 const G_LATTICE = 0.06235150;
 const MU = G_LATTICE * MP;
 

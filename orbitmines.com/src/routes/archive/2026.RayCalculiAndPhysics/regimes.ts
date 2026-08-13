@@ -81,10 +81,10 @@ export type Regime = {
    * is derived or borrowed.
    *
    *   0  ADDITIVE. `weight of the way it went = 1 + n`, which is what `BIAS`
-   *      says. Gives √A = WAYS/(WAYS+n), hence β = 3/2, hence a perihelion
+   *      says. Gives √A = DEG/(DEG+n), hence β = 3/2, hence a perihelion
    *      advance 17% low at every depth. Wrong, and measured to be wrong.
-   *   1  MULTIPLICATIVE. Each annihilation multiplies by 1 + 1/WAYS, so
-   *      √A = (1+1/WAYS)^−n → exp(−u), and A = e^−2u, B = e^+2u. Gives
+   *   1  MULTIPLICATIVE. Each annihilation multiplies by 1 + 1/DEG, so
+   *      √A = (1+1/DEG)^−n → exp(−u), and A = e^−2u, B = e^+2u. Gives
    *      β = γ = 1 and general relativity's perihelion advance.
    *
    * At 1 the metric is DERIVED — no A and B taken from outside — at the price
@@ -103,7 +103,7 @@ export type Regime = {
    *      REDSHIFT: collapse past λ_C, the matter self-coheres, the screening cap
    *      lifts, u grows unbounded. No horizon, a surface, no free parameter.
    *
-   *   1  yes. A node with WAYS + n edges gives a source there more ways to pulse
+   *   1  yes. A node with DEG + n edges gives a source there more ways to pulse
    *      into, so `M_eff = M(1 + κu)` and `u = u₀/(1 − κu₀)` DIVERGES at u₀ = 1.
    *      Dark objects are DARK BY HORIZON, the ordinary kind.
    *
@@ -135,7 +135,7 @@ export type Regime = {
    * edge count rather than fixed at one emitter a cell.
    *
    *   0  ρ_max = 1. One emitter to a cell, everywhere.
-   *   1  ρ_max = 1 + u. A node with WAYS + n edges fits more distinct emitters,
+   *   1  ρ_max = 1 + u. A node with DEG + n edges fits more distinct emitters,
    *      each still the same m ≤ 1 thing.
    *
    * DISTINCT FROM `boost`, and the distinction is the whole point. `boost` makes
@@ -144,7 +144,7 @@ export type Regime = {
    * place, so a fixed mass emits exactly what it always did and β is untouched.
    *
    * What it buys: `M = (4/3)πR³/(1 − (4/3)πGR²)` diverges at
-   * `R_c = √(3π·WAYS)/SHEET = 1.9567 cells`, so every collapsed object is the
+   * `R_c = √(3π·DEG)/SHEET = 1.9567 cells`, so every collapsed object is the
    * same size — a hair under two Planck lengths — with u ∝ M. Darkness becomes
    * automatic, needing neither the coherence argument nor a horizon.
    *
@@ -346,7 +346,7 @@ export const stepping = (m: number, k: number, r: Regime = FULL) => {
  * is worth more than either.
  *
  * AND FRACTIONAL DIMENSIONS DO NOT WORK HERE, which is worth knowing before
- * building on them. `SHEET` and `WAYS` are `3^(d−1) − 1` and `3^d − 1` and are
+ * building on them. `SHEET` and `DEG` are `3^(d−1) − 1` and `3^d − 1` and are
  * perfectly happy off the integers — d = 2.5 gives 4.196 and 14.588, and every
  * counting argument in `gravity.ts` would still run. But a Clifford algebra has
  * no fractional representation: you cannot have 2.83 anticommuting matrices.
@@ -365,7 +365,7 @@ export const stepping = (m: number, k: number, r: Regime = FULL) => {
  * Nothing here decides it, and recording that it is a decision is the point.
  *
  * ONE THING FRACTIONAL d DOES SETTLE, though, and it settles it negatively:
- * `WAYS/SHEET` is bounded BELOW by 3 at every d — 5.73 at 1.5, 4.00 at 2, 3.25
+ * `DEG/SHEET` is bounded BELOW by 3 at every d — 5.73 at 1.5, 4.00 at 2, 3.25
  * at 3, tending to 3 from above — and closing `SPREAD` needs it to be 3/π =
  * 0.955. So no dimension rescues that factor of 3.4034, fractional or not. It
  * was already known that no integer d does; this closes the continuous case too.

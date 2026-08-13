@@ -23,7 +23,7 @@ const RELAT = "#9aa0b4";                 // the reading that was tried and faile
 const GOOD = "#8bd48b", BAD = "#e0685f";
 const BACK = "#08090d";
 
-const CYCLE = 8, WAYS = 26, SHEET = 8;
+const CYCLE = 8, DEG = 26, SHEET = 8;
 
 // ---------------------------------------------------------------------------
 // the same drawing helpers the rotation panels use, kept local so this file

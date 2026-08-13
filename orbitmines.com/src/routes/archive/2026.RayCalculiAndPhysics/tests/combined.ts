@@ -25,8 +25,8 @@ const LP = 1.616255e-35, TP = 5.391247e-44, MP = 2.176434e-8;
 const H0 = 70.9e3 / MPC, T0 = 1 / H0;
 
 // the lattice's own constants
-const SHEET = 8, WAYS = 26, BITE = 1, CORE = 0.5, LIGHT = 1;
-const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * WAYS);
+const SHEET = 8, DEG = 26, BITE = 1, CORE = 0.5, LIGHT = 1;
+const G_LATTICE = BITE * SHEET * SHEET * LIGHT / (8 * Math.PI * Math.PI * CORE * DEG);
 const MU = G_LATTICE * MP;
 
 const A0 = C * H0 / (2 * Math.PI);              // the prediction, cH₀/2π
