@@ -344,11 +344,12 @@ const Physics = () => {
 
           Alrighty,
 
-          <Head>The inverse square law</Head>
+          Let's start out building a vocabulary for the continuous model. We'll start by describing aggregate behavior of our discrete pressures.
+
 
           <Head>Mass</Head>
 
-          If 'gravity-rays' are what cause attraction in this model. How would we intuitively encode what it means to have mass. The answer is: The heavier you are, the more gravity you expect around that thing. So the heavier something is the more of these rays it shoots out.
+          If 'gravity-rays' are what cause attraction in this model. How would we intuitively encode what it means to have mass. The answer is: The heavier you are, the more gravity you expect around that thing. So the heavier something is the more often it shoots out these rays.
 
           <Eq>
             <i><Bar>m</Bar></i> = <F>% <Bar>t</Bar>
@@ -362,36 +363,43 @@ const Physics = () => {
 
           <BR/>
 
+          (We'll later discuss what kind of things this implies)
+          
+          <Head>The inverse square law</Head>
+
+          The discrete model will tell us that there will be constant fluctuations of the shape of the pressure gravity is exerting, but that those fluctuations will average out to a sphere. And we can measure both halves of that rather than assert them — <code>tests/sphere.ts</code> puts one absorber in an 81<Sup>3</Sup> box, lets it settle for 600 ticks, and reads the shortfall it digs.
+
+          <BR/>
+
           <Para>
-            The obvious first thing to note being that this predicts a heaviest elementary object, if one would assume a static <F>l.</F><K><Bar>DEG</Bar></K>. Essentially saying, if the local spatial density (<F>l.</F><K><Bar>DEG</Bar></K>) is given, there's a heaviest elementary object which can occupy that space. Namely <i><Bar>m</Bar></i> = 1 (pulse every tick).
+            <b>The instantaneous shape is not a sphere and is nowhere near one.</b> Cells sitting on the same shell, with that shell's own radial gradient divided out first, differ from each other by <b>28% at <V>r</V> = 6 and 106% at <V>r</V> = 20</b> — and the growth is arithmetic rather than physical. The scatter is about <i>one charge per cell</i> at every radius (1.68, 1.46, 1.40, 1.01 at <V>r</V> = 6, 10, 14, 20) while the deficit it sits on falls as 1/<V>r</V>, so the fluctuation <i>relative</i> to the thing being measured grows in proportion to <V>r</V> and crosses 100% at the radius where the deficit drops under one whole charge. A cell holds an integer; far out, the field it is asked to carry is a fraction of one.
+          </Para>
+
+          <Eq note={<>one charge of grain on a shortfall going as 1/<V>r</V>, thinned by the ticks averaged over</>}>
+            wobble(<V>r</V>,<V>n</V>) ≈
+            <Frac
+              over={<>1 charge</>}
+              under={<>deficit(<V>r</V>) · √<V>n</V></>}
+            />
+            <span style={{ padding: '0 1.4em' }} />
+            ∝
+            <Frac over={<><V>r</V></>} under={<>√<V>n</V></>} />
+          </Eq>
+
+          <Para>
+            <b>And the average of it is round.</b> Over 300 ticks the same angular scatter falls to <b>0.8–1.3%</b> at every radius — at or below the 1/√<V>n</V> that independent noise would give, because a relay that conserves what it carries averages slightly better than a free one. What does <i>not</i> average away is the lattice, and it is only near in: the ⟨100⟩, ⟨110⟩ and ⟨111⟩ cones agree to within <b>3.7% at <V>r</V> = 6, 5.4% at <V>r</V> = 8, and under 1.3% everywhere beyond <V>r</V> = 10</b>. That residual is a near-field term rather than a shape, which is what <K><Bar>FLOOR</Bar></K> below is for.
           </Para>
 
           <BR/>
 
-          <Para>At <i><Bar>m</Bar></i> = 1 we get a gravitational constant</Para>
-
-          <Eq derive={CEILING}>
-            <i><K><Bar>G</Bar></K></i> = <Frac
-              over={<><K><Bar>SHEET</Bar></K><Sup>2</Sup> · <K><Bar>c</Bar></K></>}
-              under={<>4<V>π</V><Sup>2</Sup> · {HALF} · <K><Bar>DEG</Bar></K></>} />
-            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
-            {gravitational(1).toFixed(6)}..
-          </Eq>
-
-          Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
-
           <Para>
-            <span className="bp5-text-muted">
-              The second thing, not used for the rest of this model: Turn the period into a length of how far light travels within that timeframe, and you get something proportional to the <Ref of={'reduced Compton wavelength'} at="https://en.wikipedia.org/wiki/Compton_wavelength#Reduced_Compton_wavelength" /> <Footnote of={'Compton, "A Quantum Theory of the Scattering of X-rays by Light Elements", Phys. Rev. 21:483'} year="1923" at="https://doi.org/10.1103/PhysRev.21.483" />. (<i><K><Bar>G</Bar></K></i> here being the gravitational constant of the model)
-            </span>
+            Two things that fall out of the same run and are worth having early. The empty box is <i>exactly</i> static — with every point full there is never a shortfall, so no edge is ever skipped and the vacuum has no choice to make — meaning <b>every fluctuation above belongs to the body's well and none of it to the medium</b>. And the roundness is a real sphere rather than the cube the front actually is: a field that were secretly a function of Chebyshev distance would read the <V>r</V>/√3 shell's value along ⟨111⟩, which at <V>r</V> = 20 is 3.63. Measured, it is 1.088, against a shell mean of 1.084.
           </Para>
 
-          <Eq derive={CLOCK}>
-            <i><Bar>m</Bar></i>.period · <K>c</K> = <i><K><Bar>G</Bar></K></i> · <D><i>λ</i><Sub>Compton</Sub></D>
-            <span style={{ padding: '0 1.4em' }} />
-            <D><i>λ</i><Sub>Compton</Sub></D> = <Frac over={<>ħ</>} under={<><i>Mc</i></>} />
-          </Eq>
-          {/* <V>E</V> = ħω */}
+
+
+
+          <BR/>
          
           <span style={{paddingBottom: '200px'}}></span>
 
@@ -412,9 +420,6 @@ const Physics = () => {
 
           <Head>one pulse, spread — which is where the inverse square is</Head>
 
-          <Para>
-            Now the piece the previous section promised. A source lets go of <K><Bar>SHEET</Bar></K> charges per pulse. That number does not change with distance — the charges just get further apart, because the shell they are riding on has grown. So the chance that any one cell out at radius <V>r</V> is holding one of them is a fixed count divided by a growing shell.
-          </Para>
 
           <Eq derive={MEETINGS}>
             shell(<V>r</V>) = 4<V>π</V>·max(<V>r</V>, {HALF})<Sup><K><Bar>D</Bar></K> − 1</Sup> + <K><Bar>FLOOR</Bar></K>
@@ -426,6 +431,21 @@ const Physics = () => {
           <Para>
             <b>That is the whole of the inverse-square law and there is no distance law in it anywhere.</b> Nobody wrote down 1/<V>r</V><Sup>2</Sup>. What was written down is "a fixed number of charges" and "a shell in three dimensions has 4π<V>r</V><Sup>2</Sup> cells on it", and 1/<V>r</V><Sup>2</Sup> is what those two come to when you divide one by the other. Send the pulse out over a different shape and the exponent changes with nothing else touched — which is why the general form is 1/<V>r</V><Sup><K><Bar>D</Bar></K>−1</Sup> and why it is a statement about <i>dimension</i> rather than about gravity.
           </Para>
+
+          <Eq note={<>the exponent is the shell's — put <K><Bar>D</Bar></K> = 3 in and 1/<V>r</V><Sup>2</Sup> falls out</>}>
+            chance(<V>m</V>,<V>r</V>) =
+            <Frac
+              over={<><V>m</V> · <K><Bar>SHEET</Bar></K></>}
+              under={<>4<V>π</V> <V>r</V><Sup><K><Bar>D</Bar></K> − 1</Sup></>}
+            />
+            ∝
+            <Frac over={<>1</>} under={<><V>r</V><Sup><K><Bar>D</Bar></K> − 1</Sup></>} />
+            <span style={{ padding: '0 0.5em', color: FAINT, fontSize: '0.72em' }}>
+              <K><Bar>D</Bar></K> = 3
+            </span>
+            ⟶
+            <Frac over={<>1</>} under={<><V>r</V><Sup>2</Sup></>} />
+          </Eq>
 
           <BR/>
 
@@ -1628,8 +1648,42 @@ const Physics = () => {
 
       </Section>
       
-      <Section head="Electromagnetism">
+      <Section head="Layer 2: Matter">
+
+          <Para>
+            The obvious first thing to note being that this predicts a heaviest elementary object, if one would assume a static <F>l.</F><K><Bar>DEG</Bar></K>. Essentially saying, if the local spatial density (<F>l.</F><K><Bar>DEG</Bar></K>) is given, there's a heaviest elementary object which can occupy that space. Namely <i><Bar>m</Bar></i> = 1 (pulse every tick).
+          </Para>
+
+          <BR/>
+
+          <Para>At <i><Bar>m</Bar></i> = 1 we get a gravitational constant</Para>
+
+          <Eq derive={CEILING}>
+            <i><K><Bar>G</Bar></K></i> = <Frac
+              over={<><K><Bar>SHEET</Bar></K><Sup>2</Sup> · <K><Bar>c</Bar></K></>}
+              under={<>4<V>π</V><Sup>2</Sup> · {HALF} · <K><Bar>DEG</Bar></K></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            {gravitational(1).toFixed(6)}..
+          </Eq>
+
+          Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
+
+          <Para>
+            <span className="bp5-text-muted">
+              The second thing, not used for the rest of this model: Turn the period into a length of how far light travels within that timeframe, and you get something proportional to the <Ref of={'reduced Compton wavelength'} at="https://en.wikipedia.org/wiki/Compton_wavelength#Reduced_Compton_wavelength" /> <Footnote of={'Compton, "A Quantum Theory of the Scattering of X-rays by Light Elements", Phys. Rev. 21:483'} year="1923" at="https://doi.org/10.1103/PhysRev.21.483" />. (<i><K><Bar>G</Bar></K></i> here being the gravitational constant of the model)
+            </span>
+          </Para>
+
+          <Eq derive={CLOCK}>
+            <i><Bar>m</Bar></i>.period · <K>c</K> = <i><K><Bar>G</Bar></K></i> · <D><i>λ</i><Sub>Compton</Sub></D>
+            <span style={{ padding: '0 1.4em' }} />
+            <D><i>λ</i><Sub>Compton</Sub></D> = <Frac over={<>ħ</>} under={<><i>Mc</i></>} />
+          </Eq>
+          {/* <V>E</V> = ħω */}
+
+        <Section head="Electromagnetism">
      
+        </Section>
       </Section>
 
       <Section head="AI Generated">
@@ -3240,6 +3294,78 @@ an undirected axis returns after CYCLE/2 = 4 steps (π)`}
 
           <Para>
             <b>With two layers it is no longer a change to the emission rule, because the axis and the north are no longer the same object.</b> North belongs to Layer 1 and is what emits; the axis is what a Layer-2 strand winds around, and it is undirected because a ring has no preferred sense until a traversal picks one. The observable turns twice per turn of the state because the two things doing the turning live on different layers. So <V>g</V> = 2 is available here for the reason the arc identified and could not use, and <b>it is the sharpest test this proposal has</b> — the 0.0023 is not claimed and would want the coupling that is still owed.
+          </Para>
+
+          <Head>and the magnet, which was never an ordering problem</Head>
+
+          <Para>
+            The magnetism arc's other refutation is that every ordering it tried — axial, radial, cylindrical — gives a far field falling as 1/<V>r</V><Sup>2</Sup> where a magnet falls as 1/<V>r</V><Sup>3</Sup>. That arc read it as a question about arrangement and looked for a better one. <b>It is not a question about arrangement, and one measurement settles that before anything else is tried.</b>
+          </Para>
+
+          <Eq note="a single emitter, with nothing to be ordered against">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`one sided emitter, alone      far-field exponent = 2.000`}
+            </span>
+          </Eq>
+
+          <Para>
+            One emitter, on its own, already falls as 1/<V>r</V><Sup>2</Sup>. <b>No arrangement of things that are each wrong can come out right</b>, so the whole search was along the wrong axis. And the reason is exactly the mechanism that arc named: with the sign resolved against the axis <i>at the destination</i>, a distant observer is on the + side of every emitter at once, so nothing cancels and what is left is a monopole. It is not that the poles fail to form — it is that the model is emitting a net charge.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which also means the arc's <V>∇</V>·<B>B</B> = 0 was in tension with its own far field the whole time. A 1/<V>r</V><Sup>2</Sup> field <i>is</i> a monopole field; you cannot have both.
+          </Para>
+
+          <Head>two routes to the cube, and only one of them survives being real</Head>
+
+          <Para>
+            There are exactly two ways to kill a monopole moment, and the model has to pick. Either the ± charges are <i>intrinsic</i> and exactly balanced, or the source is a <i>closed loop</i>, which has no monopole moment at all no matter what it does. Measured, both give the right exponent — and they are not remotely equally good.
+          </Para>
+
+          <Eq note="784 emitters, far-field exponent along the axis, fitted over r = 200 to 3200 cells">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`INTRINSIC CHARGES        exponent      LAYER-2 LOOPS          exponent
+perfectly balanced         3.000      all aligned              3.001
+1 emitter in 784 flipped   2.791      RANDOM orientations      3.013
+2 in 784                   2.668      one loop broken open     2.187
+8 in 784                   2.367`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The charge route is fine-tuned and the loop route is not.</b> One defect in 784 already drags the exponent to 2.79, and the crossover — the radius past which the leftover monopole beats the dipole — comes in at 1756 cells for a single flipped emitter and 216 cells for eight. A real magnet is 10<Sup>23</Sup> atoms with thermal disorder in it, so the imbalance would go as √<V>N</V> and the dipole would never be visible at any distance at all.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The loops do not care. <b>Randomising every loop's orientation still gives 3.013</b>, because each closed loop has zero monopole moment <i>individually</i> — by topology, not by cancellation — and no arrangement of things with no monopole moment can produce one. There is nothing to tune and nothing to keep aligned.
+          </Para>
+
+          <Head>and the model has already committed to the loops</Head>
+
+          <Para>
+            That is the part that makes this a consequence rather than a choice. The charge argument earlier in this arc says a strand cannot have a free end — you cannot make a lone traversal sense, which is why charge is conserved. <b>A strand with no free end is a closed loop.</b> So the model does not get to pick the fine-tuned route; the same statement that gives it charge conservation gives it loops, and loops give the cube.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Three things collapse into one. <V>∇</V>·<B>B</B> = 0, the absence of monopoles, and charge conservation are <b>the same fact stated three ways</b> — a strand has no end. And the one case that breaks the exponent says what a monopole would have to be here: the broken loop gives 2.187, so <b>a magnetic monopole in this model is an open strand</b>, and it does not exist for the same reason a free charge end does not.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            One thing worth saying rather than leaving implied. The two routes are the old Gilbert and Ampère pictures, they agree everywhere outside the magnet, and experiment has long since separated them <i>inside</i> — the hyperfine splitting measures the field in the body and picks the current loop. <b>So the route the model is forced into is also the one that is right</b>, which is not something this book gets to say very often.
+          </Para>
+
+          <Head>what this does not yet do</Head>
+
+          <Para>
+            It gives the exponent, the isotropy and the absence of monopoles, and it does not give the <i>size</i>. The magnetism arc's owed number — the coupling on the pole face — is owed exactly as before, and it is the same coupling this book has been owing since the electric half. What has changed is that a magnet now has the right shape without anything being held in place, where before it had the wrong shape however it was held.
           </Para>
 
           <Head>matter, and the debt it pays</Head>
