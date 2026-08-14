@@ -18,7 +18,7 @@ import {
 } from "./archive/2026.RayCalculiAndPhysics/law";
 import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
-import { Wander, WanderBlind, WanderExpand, WanderForward, WanderGravity, WanderPaths, WanderPure, WanderRelay, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
+import { Wander, WanderBlind, WanderExpand, WanderExpand1D, WanderForward, WanderGravity, WanderPaths, WanderPure, WanderRelay, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
 import { Model } from "./archive/2026.RayCalculiAndPhysics/model";
 import { asGroup, MODELS, weighed } from "./archive/2026.RayCalculiAndPhysics/models";
 import { PACE, Polarity } from "./archive/2026.RayCalculiAndPhysics/physics";
@@ -244,9 +244,26 @@ const Physics = () => {
 
         <span style={{textAlign: 'left', width: '100%'}}>You're allowed to change the <K><Bar>D</Bar></K> ofc. But unless otherwise specified variables have these default values.</span>
 
-        <Head>Movement</Head>
 
-        <WanderExpand/>
+        Then a related number to dimension, all possible paths out of a point (the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "degree", link: "https://en.wikipedia.org/wiki/Degree_(graph_theory)"}}/> assuming diagonals are included). 
+
+        <Eq>
+          <F>l.</F><K><Bar>DEG</Bar></K> = <>3<Sup><F>l.</F><K><Bar>D</Bar></K></Sup> - 1</>
+        </Eq>
+
+        <span style={{textAlign: 'left', width: '100%'}}>There's one important piece of gravity that we'll discover and that is in order to reach the desired 1/R<Sup><K><Bar>D</Bar></K> - 1</Sup> of the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "inverse-square law", link: "https://en.wikipedia.org/wiki/Inverse-square_law"}}/> (for 3D). It happens that as we'll discover in a moment, if we'd send out discrete pulses of our 'gravity-rays' (so the ones causing annihilation). That we can recover the intensity of gravity in a neat way based on the dimensionality of our space. This is our sheet. The sheet we pulse a beam towards. In order to cover our whole space, we'll be rotating this sheet in 1 more dimension than it's defined.</span>
+
+        <Sheet />
+
+        <Eq>
+          <F>l.</F><K><Bar>SHEET</Bar></K> = <K><Bar>DEG</Bar></K>(<D>max</D>(<F>l.</F><K><Bar>D</Bar></K> - 1, 1))
+        </Eq>
+
+        <Para>You'll see that we call the <K><Bar>DEG</Bar></K> variable with an argument. Whenever a variable just depends on a single parameter, we'll allow it to be called, since there's no ambiguity of what that would mean.</Para>
+
+        (It doesn't actually need to be a sheet, but that's the most convenient model, as long as the number of points keep rotating properly, you'll recover the continuous model)
+
+        <Head>Movement</Head>
 
         There's a real assumption to made here at the beginning. Which is how does one from a perspective of discreteness, recover rays propagating in a circle. That's making the assumption you'd want it to propegate in a circle in the first place - whether that's the actual accurate model. Also to consider would be that a large surface of stuff sending out rays could more accurately describe a circle, than say a single point with a local neighbourhood. This is essentially a statement of discrete movement, how should that happen? Where as the aggregate we might see a sphere, a cube, a (curved) diamond-shape. All are these are technically possibilities. We could imagine a world where discretized effects matter here for the spread of those rays.
 
@@ -274,33 +291,27 @@ const Physics = () => {
 
         Namely if we consider vacuum dynamics. In the pure gravity setting (so discounting the magnetism part which we haven't gotten to yet: XOR), we don't have vacuum dynamics other than just expansion of a space. See for instance the following example of how space would expand because of the creation rule if nothing is nearby:
 
+        <WanderExpand1D/>
+
+        In 2D this would be a little more complicated, but the same principle:
+
         <WanderExpand/>
+
+        <Para>
+          It is precisely this expansion the vacuum is trying to do, which allows for the creation of the circular setup: Vacuum tries to expand, but there's matter in the way. Matter sends out its own rays, thus disturbing the perfect grid expansion. This deficit then expands at <K><Bar>c</Bar></K>, resulting in our gravitational pull.
+        </Para>
+
+        <BR/>
+
+        <Para>
+          Here for instance is the resulting of sending our <K><Bar>SHEET</Bar></K> in a 2D space. With only the gravity rules:
+        </Para>
 
         <WanderPure/>
 
+        If we instead skip ahead the story a little and include XOR, so magnetism, which we'll get to later. There's actual vacuum dynamics rather than just a grid trying to expand. Then random-looking dynamics still has an aggregate pressure our matter is creating by sending out 'gravity-rays'.
+
         <WanderGravity/>
-
-        <BR/>
-
-        Then a related number to dimension, all possible paths out of a point (the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "degree", link: "https://en.wikipedia.org/wiki/Degree_(graph_theory)"}}/> assuming diagonals are included). 
-
-        <Eq>
-          <F>l.</F><K><Bar>DEG</Bar></K> = <>3<Sup><F>l.</F><K><Bar>D</Bar></K></Sup> - 1</>
-        </Eq>
-
-        <span style={{textAlign: 'left', width: '100%'}}>There's one important piece of gravity that we'll discover and that is in order to reach the desired 1/R<Sup><K><Bar>D</Bar></K> - 1</Sup> of the <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "inverse-square law", link: "https://en.wikipedia.org/wiki/Inverse-square_law"}}/> (for 3D). It happens that as we'll discover in a moment, if we'd send out discrete pulses of our 'gravity-rays' (so the ones causing annihilation). That we can recover the intensity of gravity in a neat way based on the dimensionality of our space. This is our sheet. The sheet we pulse a beam towards. In order to cover our whole space, we'll be rotating this sheet in 1 more dimension than it's defined.</span>
-
-        <Sheet />
-
-        <Eq>
-          <F>l.</F><K><Bar>SHEET</Bar></K> = <K><Bar>DEG</Bar></K>(<D>max</D>(<F>l.</F><K><Bar>D</Bar></K> - 1, 1))
-        </Eq>
-
-        <Para>You'll see that we call the <K><Bar>DEG</Bar></K> variable with an argument. Whenever a variable just depends on a single parameter, we'll allow it to be called, since there's no ambiguity of what that would mean.</Para>
-
-        (It doesn't actually need to be a sheet, but that's the most convenient model, as long as the number of points keep rotating properly, you'll recover the continuous model)
-
-        <BR/>
 
         It turns out that this is all the machinary we need to derive gravitational laws that approximate <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Newtonian gravity", link: "https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation"}}/> and <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "General relativity", link: "https://en.wikipedia.org/wiki/General_relativity"}}/> and go beyond them.
 

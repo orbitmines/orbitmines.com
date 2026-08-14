@@ -1604,24 +1604,15 @@ const gravity = (): Painter => {
         }
 
         ctx.fillStyle = INK; ctx.textAlign = "center";
-        ctx.font = "11px ui-sans-serif, system-ui, sans-serif";
-        ctx.fillText(col === 0 ? "one tick" : "averaged over " + n + " ticks", cx, 13);
       }
 
       ctx.fillStyle = FAINT; ctx.textAlign = "center";
-      ctx.font = "10px ui-sans-serif, system-ui, sans-serif";
-      ctx.fillText("left: the charges themselves.  right: how many are MISSING, "
-        + "and the push that measures", width / 2, height - 4);
     },
   };
 };
 
 export const WanderGravity = ({ height = 300 }: { height?: number }) =>
   <div style={{ marginBottom: "1.1rem" }}>
-    <div style={{
-      fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
-      color: FAINT, marginBottom: 6,
-    }}>two bodies in the vacuum — the shortfall each leaves, and the push it makes</div>
     <div style={{ height, background: BACK }}>
       <CanvasView paint={gravity} />
     </div>
@@ -1632,6 +1623,13 @@ export const WanderGravity = ({ height = 300 }: { height?: number }) =>
 // PURE GRAVITY — the same lattice with the polarity taken out, which makes the
 // rule SHORTER rather than longer.
 //
+// NOTHING WANDERS HERE, in spite of the file it is in. The name is the
+// section's, not the mechanism's: no ray walks, nothing carries a heading, and
+// there is no randomness anywhere in `step`. What is drawn is the expansion
+// rule of `expand` above, run until it has nothing left to do, with holes in
+// it. Say it in one line: the vacuum fills, absorbers stop it filling, and the
+// shortfall where it fails to fill is the force.
+//
 //     Every edge expands, every tick: a point sends one charge along each of
 //     its edges. Every charge is destroyed at the point it lands on, and that
 //     destruction is what makes the next one — a point that received k sends k
@@ -1639,6 +1637,11 @@ export const WanderGravity = ({ height = 300 }: { height?: number }) =>
 //
 // There is no heading to remember, because a charge does not survive a step. No
 // turn rate, no cone, no collision table, no distribution to pick.
+//
+// AND IT DOES NOT GROW EITHER, which is the difference from the panel above.
+// `expand` makes sites that did not exist; here the grid is a fixed `PL`², full
+// from the first tick, and no site is ever added. The two share the rule, not
+// the growth — what propagates in this one is the ABSENCE.
 //
 // AND THE FREE VACUUM IS STATIC. With every point full, eight go out and eight
 // come in, every tick, for ever. What moves is only WHICH edges carry when a
@@ -1654,6 +1657,11 @@ export const WanderGravity = ({ height = 300 }: { height?: number }) =>
 // d = 8, 12, 18 — F ∝ 1/d, which is what a shortfall spreading through a PLANE
 // has to give, the gradient of the two-dimensional log. Three dimensions would
 // give 1/r², and that is not checked.
+//
+// WITH A RESERVOIR AT THE EDGE. `rim` refills the border to eight every tick,
+// so the well is dug against a fixed boundary at radius ~55 rather than against
+// nothing. The 1/d above is the log gradient UNDER THAT CONDITION; what a
+// boundary-free lattice gives is a separate question and is not measured here.
 
 const PL = 111, PO = (PL - 1) / 2, PC = PL * PL;
 const PSEP = 26, PR = 2;
@@ -1769,26 +1777,16 @@ const pure = (): Painter => {
         }
 
         ctx.fillStyle = INK; ctx.textAlign = "center";
-        ctx.font = "11px ui-sans-serif, system-ui, sans-serif";
-        ctx.fillText(col === 0 ? "the charges — eight out, eight in" : "what is missing",
-          cx, 13);
+        
       }
 
       ctx.fillStyle = FAINT; ctx.textAlign = "center";
-      ctx.font = "10px ui-sans-serif, system-ui, sans-serif";
-      ctx.fillText("tick " + t + "   ·   push on each body  "
-        + F[0][0].toFixed(3) + "  and  " + F[1][0].toFixed(3)
-        + "   — no averaging, they are equal and opposite", width / 2, height - 4);
     },
   };
 };
 
 export const WanderPure = ({ height = 300 }: { height?: number }) =>
   <div style={{ marginBottom: "1.1rem" }}>
-    <div style={{
-      fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
-      color: FAINT, marginBottom: 6,
-    }}>pure gravity — no polarity, and nothing random in it</div>
     <div style={{ height, background: BACK }}>
       <CanvasView paint={pure} />
     </div>
@@ -1807,35 +1805,39 @@ export const WanderPure = ({ height = 300 }: { height?: number }) =>
 // is drawn here, in the same neutral grey and with charges in flight drawn the
 // same way, rather than pretending the engine produced it.
 //
-// THE CYCLE. Everything alive emits along all four of its axes at once and IS
-// SPENT DOING SO — there is nothing left where it was. The charges from
-// opposite sides arrive at the site between them head-on, annihilate, and what
-// is left there is the next point. Then that happens again, the other way.
+// THE CYCLE. Everything alive emits along all eight of its edges at once — the
+// four axes AND the four diagonals, since the degree we are counting includes
+// them — and IS SPENT DOING SO: there is nothing left where it was. The charges
+// from opposite sides arrive at the site between them head-on, annihilate, and
+// what is left there is the next point.
 //
-// So the lattice does not sit still and get finer. It alternates: the points
-// are on the even sites, then on the odd ones, then on the even ones again,
-// and the picture breathes. Neither half is the lattice — the alternation is.
+// So the lattice does not sit still and get finer, and it does not sit where it
+// was either: every point is spent every pulse and remade somewhere by the
+// charges that met there. Nothing here persists — the pattern does.
 //
-// WHERE THE DIAGONALS ARE, which is the reason for drawing it at all. A site
-// and the four it emits to are on opposite halves, so the axes are what carries
-// the pulse and can never join two points that exist at the same time. The
-// points that DO exist together are a diagonal step apart. Every generation the
-// lattice you can see is the diagonal one, turned forty-five degrees from the
-// one that made it and spaced by √2 — so `lattice, plus diagonals` is not two
-// things. It is one thing seen on two beats.
+// WHERE THE DIAGONALS ARE, which is the reason for drawing it at all. The axes
+// carry the pulse onto the sites between, half a step out of phase with what
+// sent them; the diagonals carry it onto sites of the same parity, a diagonal
+// step away. Both arrive at once, so the two halves are alive together and the
+// lattice you can see is the full one — `lattice, plus diagonals` is not two
+// things, it is what one pulse over all eight edges leaves behind.
 //
 // AND IT GROWS. A point on the rim emits outward too, and there is nobody
 // coming the other way, so that charge arrives alone at a site that did not
-// exist and makes it anyway. One ring per pulse, for ever, which is the whole
-// of what the expansion is.
+// exist and makes it anyway. Because the diagonals go out too, the rim that
+// grows is a square rather than a diamond: one ring per pulse, for ever, which
+// is the whole of what the expansion is.
 
-const XAX: [number, number][] = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+const XAX: [number, number][] = [
+  [1, 0], [-1, 0], [0, 1], [0, -1],
+  [1, 1], [1, -1], [-1, 1], [-1, -1],
+];
 
 const GREY = "140,147,168";                        // NEUTRAL, as the lattice is drawn
 
 const OUT = 0.62, HIT = 0.14, SETTLE = 0.24;       // one pulse, in seconds
 const PULSE = OUT + HIT + SETTLE;
-const PULSES = 6;                                  // before it starts again
+const PULSES = 5;                                  // before it starts again
 
 /** the nine it starts from: a three by three, on the even sites */
 const seed = () => {
@@ -1855,6 +1857,105 @@ const next = (alive: Set<string>) => {
     }
   }
   return hits;
+};
+
+// ── THE SAME THING ON A LINE ───────────────────────────────────────────────
+//
+// The two-dimensional picture is the one that matters, but it is hard to watch:
+// every site is alive and eight charges leave each of them at once. So the same
+// rule is drawn first in one dimension, where there is nothing to follow but
+// the rule itself.
+//
+// A point emits both ways and is spent doing it. The two charges that meet
+// between a neighbouring pair annihilate and leave a point there — so the
+// points end up on the sites BETWEEN where they were, which in 1D is the whole
+// of the alternation. At each end a charge goes out with nobody coming the
+// other way and makes a point anyway: one site per pulse, per end, for ever.
+//
+// There are no diagonals here, which is part of why it is worth showing.
+// Degree two, two charges, one rule; then the same rule with degree eight.
+
+const seed1 = () => new Set([-2, 0, 2]);           // three, on the even sites
+
+const next1 = (alive: Set<number>) => {
+  const hits = new Map<number, number>();
+  for (const i of alive) for (const dx of [1, -1])
+    hits.set(i + dx, (hits.get(i + dx) ?? 0) + 1);
+  return hits;
+};
+
+const expand1 = (): Painter => {
+  let t = 0, n = 0;
+  let alive = seed1();
+  let hits = next1(alive);
+
+  return {
+    frame: (s: Surface, dt: number) => {
+      const { ctx, width, height } = s;
+
+      t += dt;
+      while (t >= PULSE) {
+        t -= PULSE;
+        n++;
+        if (n >= PULSES) { alive = seed1(); n = 0; }
+        else alive = new Set(hits.keys());
+        hits = next1(alive);
+      }
+
+      const travel = Math.min(1, t / OUT);
+      const flash = t >= OUT && t < OUT + HIT ? 1 - (t - OUT) / HIT : 0;
+      const born = t < OUT + HIT ? 0 : Math.min(1, (t - OUT - HIT) / SETTLE);
+      const spent = travel;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = BACK; ctx.fillRect(0, 0, width, height);
+
+      const cx = width / 2, cy = height / 2;
+      const reach = 2 + PULSES;                      // as far out as it ever gets
+      const k = width / (2 * reach + 1);             // so the last pulse fills the width
+      const X = (i: number) => cx + i * k;
+
+      // the line the whole of it lives on, edge to edge
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = `rgba(${GREY},0.16)`;
+      ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(width, cy); ctx.stroke();
+
+      // ── the charges, on their way ────────────────────────────────────────
+      if (born === 0 && travel > 0) {
+        ctx.lineWidth = 2;
+        for (const i of alive) for (const dx of [1, -1]) {
+          const px = X(i + dx * travel);
+          ctx.strokeStyle = `rgba(${GREY},0.85)`;
+          ctx.beginPath();
+          ctx.moveTo(X(i + dx * travel * 0.55), cy); ctx.lineTo(px, cy); ctx.stroke();
+          const h = Math.min(9, k * 0.22);
+          ctx.fillStyle = `rgba(${GREY},0.85)`;
+          ctx.beginPath();
+          ctx.moveTo(px + dx * h, cy);
+          ctx.lineTo(px - dx * h * 0.5, cy - h * 0.6);
+          ctx.lineTo(px - dx * h * 0.5, cy + h * 0.6);
+          ctx.closePath(); ctx.fill();
+        }
+      }
+
+      // ── where they met — two head-on inside, one alone at each end ───────
+      if (flash > 0) for (const [i, count] of hits) {
+        ctx.globalAlpha = flash * (count > 1 ? 1 : 0.5);
+        ctx.fillStyle = SEEN;
+        ctx.beginPath(); ctx.arc(X(i), cy, 2 + 6 * flash, 0, 2 * Math.PI); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      // ── the points ───────────────────────────────────────────────────────
+      const dot = (i: number, alpha: number) => {
+        if (alpha <= 0.02) return;
+        ctx.fillStyle = `rgba(${GREY},${0.95 * alpha})`;
+        ctx.beginPath(); ctx.arc(X(i), cy, 5 * (0.4 + 0.6 * alpha), 0, 2 * Math.PI); ctx.fill();
+      };
+      if (born === 0) for (const i of alive) dot(i, 1 - spent);
+      else for (const i of hits.keys()) dot(i, born);
+    },
+  };
 };
 
 const expand = (): Painter => {
@@ -1893,10 +1994,10 @@ const expand = (): Painter => {
 
       ctx.lineCap = "round";
       ctx.lineWidth = 1.4;
-      ctx.strokeStyle = `rgba(${GREY},${0.30 * a})`;
+      ctx.strokeStyle = `rgba(${GREY},${0.22 * a})`;
       for (const key of show) {
         const [i, j] = key.split(",").map(Number);
-        for (const [dx, dy] of [[1, 1], [1, -1]]) {
+        for (const [dx, dy] of [[1, 0], [0, 1], [1, 1], [1, -1]]) {   // axes and diagonals both
           if (!show.has((i + dx) + "," + (j + dy))) continue;
           ctx.beginPath();
           ctx.moveTo(X(i), Y(j)); ctx.lineTo(X(i + dx), Y(j + dy)); ctx.stroke();
@@ -1905,18 +2006,20 @@ const expand = (): Painter => {
 
       // ── the charges, on their way, and the point spent sending them ──────
       if (born === 0 && travel > 0) {
-        ctx.lineWidth = 2;
+        // Eight per point, and every site is alive, so these are drawn faint —
+        // at full strength the interior is a solid mat and nothing reads.
+        ctx.lineWidth = 1.6;
         for (const key of alive) {
           const [i, j] = key.split(",").map(Number);
           for (const [dx, dy] of XAX) {
             const px = X(i + dx * travel), py = Y(j + dy * travel);
-            ctx.strokeStyle = `rgba(${GREY},0.9)`;
+            ctx.strokeStyle = `rgba(${GREY},0.42)`;
             ctx.beginPath();
-            ctx.moveTo(X(i + dx * travel * 0.65), Y(j + dy * travel * 0.65));
+            ctx.moveTo(X(i + dx * travel * 0.7), Y(j + dy * travel * 0.7));
             ctx.lineTo(px, py);
             ctx.stroke();
-            const ang = Math.atan2(-dy, dx), h = Math.min(6.5, k * 0.34);
-            ctx.fillStyle = `rgba(${GREY},0.9)`;
+            const ang = Math.atan2(-dy, dx), h = Math.min(4.5, k * 0.24);
+            ctx.fillStyle = `rgba(${GREY},0.42)`;
             ctx.beginPath();
             ctx.moveTo(px + h * Math.cos(ang), py + h * Math.sin(ang));
             ctx.lineTo(px + h * Math.cos(ang + 2.5), py + h * Math.sin(ang + 2.5));
@@ -1948,14 +2051,20 @@ const expand = (): Painter => {
   };
 };
 
+// `Paragraph` drops a non-string child into a centred flex Row, so a wrapper
+// without a width shrinks to the canvas' intrinsic 300px and sits in the middle
+// of the column. These say 100% so they take the width the text takes.
+
+export const WanderExpand1D = ({ height = 110 }: { height?: number }) =>
+  <div style={{ width: "100%", marginBottom: "1.1rem" }}>
+    <div style={{ width: "100%", height, background: BACK }}>
+      <CanvasView paint={expand1} />
+    </div>
+  </div>;
+
 export const WanderExpand = ({ height = 260 }: { height?: number }) =>
-  <div style={{ marginBottom: "1.1rem" }}>
-    <div style={{
-      fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
-      color: FAINT, marginBottom: 6,
-    }}>a point is spent making the next ones — so the lattice alternates rather
-      than sits still</div>
-    <div style={{ height, background: BACK }}>
+  <div style={{ width: "100%", marginBottom: "1.1rem" }}>
+    <div style={{ width: "100%", height, background: BACK }}>
       <CanvasView paint={expand} />
     </div>
   </div>;
