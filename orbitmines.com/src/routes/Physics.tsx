@@ -304,12 +304,12 @@ const Physics = () => {
         <BR/>
 
         <Para>
-          Here for instance is the resulting of sending our <K><Bar>SHEET</Bar></K> in a 2D space. With only the gravity rules:
+          Here for instance is the resulting circle by sending our <K><Bar>SHEET</Bar></K> in a 2D space. With only the gravity rules:
         </Para>
 
         <WanderPure/>
 
-        If we instead skip ahead the story a little and include XOR, so magnetism, which we'll get to later. There's actual vacuum dynamics rather than just a grid trying to expand. Then random-looking dynamics still has an aggregate pressure our matter is creating by sending out 'gravity-rays'.
+        If we instead skip ahead the story a little and include XOR, so magnetism, which we'll get to later. There's actual vacuum dynamics by the grid trying to expand. The random-looking dynamics still has an aggregate pressure our matter is creating by sending out 'gravity-rays'.
 
         <WanderGravity/>
 
