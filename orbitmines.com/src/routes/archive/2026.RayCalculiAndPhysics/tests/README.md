@@ -20,6 +20,19 @@ than as silent agreement.
 
 ## what each one settles
 
+### the shape of propagation
+
+| | |
+|---|---|
+| `turns` | why a turn is eight ticks in every dimension |
+| `ways` | **the shipped wander against the one `wander.tsx` models** — they are not the same rule, and in 3D no `w` puts the emission sheet on a circle |
+| `veins` | what the ridges do with distance, cone shape and an extended emitter, and what all of it does to light |
+| `gas` | **the fully discrete version** — bits per direction, streaming, and a momentum-conserving swap on head-on pairs; the front is beams with no medium and closed and round with one |
+| `wave` | **the same lattice propagating as a wave instead of a ray** — the front is a circle at the sound speed and the grain vanishes as the pulse widens |
+| `lattices` | **which space gives a sphere** — a sweep of spatial constructions against the spherical-design condition, and the shell search that finds 26 directions exact through rank 6 |
+| `veined` | **what every law becomes if the field is veined rather than shell-averaged** — the radial law survives exactly, the Solar System kills it, galaxies cannot see it |
+| `cones` | **is there a rule with nothing tuned that gives a sphere** — no, and in 3D no `w` can, plus what each candidate rule does to every published number |
+
 ### the force law
 
 | | |

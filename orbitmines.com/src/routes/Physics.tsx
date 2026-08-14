@@ -18,7 +18,7 @@ import {
 } from "./archive/2026.RayCalculiAndPhysics/law";
 import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
-import { Wander, WanderBlind, WanderForward, WanderPaths, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
+import { Wander, WanderBlind, WanderForward, WanderMedium, WanderPaths, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
 import { Model } from "./archive/2026.RayCalculiAndPhysics/model";
 import { asGroup, MODELS, weighed } from "./archive/2026.RayCalculiAndPhysics/models";
 import { PACE, Polarity } from "./archive/2026.RayCalculiAndPhysics/physics";
@@ -181,7 +181,7 @@ const Physics = () => {
       Let's get started with gravity.
 
       <Section head="Gravity">
-        Gravity comes down to two essential rules:
+        Gravity in this model comes down to two essential rules:
         <BR/>
         (G/1) Annihilation: When two rays meet, they annihilate, leaving a single neutral spatial point behind.
 
@@ -221,14 +221,16 @@ const Physics = () => {
 
         <BR/>
 
-        So since speed of light is 'c' in physics, we'll need some way to reference any kind of physics concept in its discrete form. Let's mark them by just putting a line on top of any variable when we want to reference its discrete form. (This will likely create some ambiguities - but at least in the context of this project that will be the case.)
+        <Para>
+          So since speed of light is '<K>c</K>' in physics, we'll need some way to reference any kind of physics concept in its discrete form. Let's mark them by just putting a line on top of any variable when we want to reference its discrete form. (This will likely create some ambiguities - but at least in the context of this project that will be the case.)
+        </Para>
 
         <Eq>
           <K><Bar>c</Bar></K> = <Frac over={<><K><Bar>STEP</Bar></K> = 1</>} under={<><K><Bar>TICK</Bar></K> = 1</>} /> =
           1 <F>(<Bar>x</Bar>/<Bar>t</Bar>)</F>
         </Eq>
 
-        <span style={{textAlign: 'left', width: '100%'}}>These variables couldn't really be anything other than this, but this elementary thing is pretty important. Speed of light is just phrased as a single lattice step per tick. These don't need any units since we're not comparing them to anything else, but if one really wanted, you could use the <Bar>x</Bar>/<Bar>t</Bar>. <Bar>x</Bar> meaning distance. <Bar>t</Bar> meaning a light tick.</span>
+        <span style={{textAlign: 'left', width: '100%'}}>These variables couldn't really be anything other than this, but this elementary thing is pretty important. Speed of light is just phrased as a single lattice step per tick. These don't need any units since we're not comparing them to anything else, but if one really wanted, you could use the <Bar>x</Bar>/<Bar>t</Bar>. <Bar>x</Bar> meaning distance. <Bar>t</Bar> meaning a light tick. <span className="bp5-text-muted">(Notice there's something close to analogous here to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Planck units", link: "https://en.wikipedia.org/wiki/Planck_units"}}/>, but here we make no assumption from the size of lattice to the metric system. Just discrete units which we would be able to use outside of a physics model.)</span></span>
 
         <BR/>
 
@@ -241,6 +243,30 @@ const Physics = () => {
         </Eq>
 
         <span style={{textAlign: 'left', width: '100%'}}>You're allowed to change the <K><Bar>D</Bar></K> ofc. But unless otherwise specified variables have these default values.</span>
+
+        <Head>Movement</Head>
+
+        There's a real assumption to made here at the beginning. Which is how does one from a perspective of discreteness, recover rays propagating in a circle. That's making the assumption you'd want it to propegate in a circle in the first place - whether that's the actual accurate model. Also to consider would be that a large surface of stuff sending out rays could more accurately describe a circle, than say a single point with a local neighbourhood. This is essentially a statement of discrete movement, how should that happen? Where as the aggregate we might see a sphere, a cube, a (curved) diamond-shape. All are these are technically possibilities. We could imagine a world where discretized effects matter here for the spread of those rays.
+
+        <BR/>
+
+        <Para>Let's for a moment assume we wouldn't be able to completely reproduce a circle from a single point with a discrete number of points around it. What would that look like? </Para> 
+
+        <BR/>
+
+        One thing is very clear, we at least need some concept of something analogous to a diagonal. If we just had a perfect lattice as our space. No diagonal would actually cost less movement than just crossing the sides of the triangle.
+
+        <BR/>  
+          
+        One view would be: There's a propegation direction, but the ray sometimes wanders from diagonal to non-diagonal and back to a diagonal: attempting some forward-preference. This 'wandering' would result in cones in each direction, with relative deadzones on the boundaries of them.
+
+        <WanderVeins aspect={3}/>
+
+        But this would have to be some measurable effect, and at least for our solar system, where we can test with a much higher degree of accuracy, this perspective wouldn't sit well unless we choose a particular method for this wandering which would recreate a circle, and we'd have to explain why that number.
+
+        <BR/>
+
+        This was the original idea on which I built the continuous model (Kind of assuming I'd be able to create a circle), but I've since realized a better second option:
 
         <BR/>
 
@@ -261,18 +287,6 @@ const Physics = () => {
         <Para>You'll see that we call the <K><Bar>DEG</Bar></K> variable with an argument. Whenever a variable just depends on a single parameter, we'll allow it to be called, since there's no ambiguity of what that would mean.</Para>
 
         (It doesn't actually need to be a sheet, but that's the most convenient model, as long as the number of points keep rotating properly, you'll recover the continuous model)
-
-        <BR/>
-
-        <Head>Movement</Head>
-
-        There's a real assumption to made here at the beginning. Which is how does one from a perspective of discreteness, recover rays propagating in a circle. That's making the assumption you'd want it to propegate in a circle in the first place - whether that's the actual accurate model. Also to consider would be that a large surface of stuff sending out rays could more accurately describe a circle, than say a single point with a local neighbourhood. This is essentially a statement of discrete movement, how should that happen? Where on the aggregate we might see a sphere, a cube, a (curved) diamond-shape. All are these are technically possibilities. We could imagine a world where discretized effects matter here for the spread of those rays.
-
-        <BR/>
-
-        <Para>Let's for a moment assume we wouldn't be able to completely reproduce a circle from a single point with a discrete <K><Bar>SHEET</Bar></K>. What would that look like? One view would be: There's a propegation direction, but the ray sometimes wanders from diagonal to non-diagonal and back to a diagonal: attempting some forward-preference. This 'wandering' would result in cones in each direction, with relative deadzones on the boundaries of them.</Para> 
-
-        <WanderVeins />
 
         <BR/>
 

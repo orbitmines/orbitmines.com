@@ -331,15 +331,29 @@ const coefficient = (s: Surface) => {
 
 // ---------------------------------------------------------------------------
 
-const Panel = ({ paint, height, note }: {
-  paint: (s: Surface) => void; height: number; note: string;
+/**
+ * A picture and, if it has one, the line above it.
+ *
+ * Two things that are not decoration. A panel with nothing to say gets no
+ * caption strip at all — an empty one still takes its line, and on a picture
+ * that has just had its text removed that is exactly the space that is missed.
+ * And `aspect` is for the panels whose contents are a ROW OF ROUND THINGS: a
+ * disk cannot be wider than it is tall, so a row of five across a wide column
+ * is height-bound by the column and no fixed height will ever be filled — the
+ * box has to take its height from its own width instead. Give one or the
+ * other; `aspect` wins where both are given.
+ */
+const Panel = ({ paint, height, aspect, note }: {
+  paint: (s: Surface) => void; height?: number; aspect?: number; note?: string;
 }) =>
   <div style={{ marginBottom: "1.1rem" }}>
-    <div style={{
+    {note && <div style={{
       fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
       color: FAINT, marginBottom: 6,
-    }}>{note}</div>
-    <div style={{ height, background: BACK }}>
+    }}>{note}</div>}
+    <div style={aspect
+      ? { width: "100%", aspectRatio: String(aspect), background: BACK }
+      : { height, background: BACK }}>
       <CanvasView deps={[note]} paint={() => ({ frame: paint })} />
     </div>
   </div>;
@@ -865,65 +879,111 @@ export const WanderForward = ({ height = 235 }: { height?: number }) =>
     note="forward-only: you may deviate, but only into a direction you are already going" />;
 
 // ---------------------------------------------------------------------------
-// THE PATH DISTRIBUTION ITSELF, SWEPT THROUGH w — the veins, exactly.
+// THE PATH DISTRIBUTION ITSELF, SWEPT THROUGH w — where a charge IS after t
+// steps, and nothing else.
 //
-// Under forward-only wander a heading's candidates are the lattice directions
-// with a positive projection on it, which in the plane is always THREE. So a
-// walk of t ticks is a TRINOMIAL over (how many of each), and the field can be
-// enumerated rather than sampled — every path, with its exact weight.
+// No normalisation and no circle drawn over it. An earlier version of this
+// panel divided every cell by the mean at its own radius, which takes the
+// answer to "what shape is this" and replaces it with "how does it vary at
+// fixed radius" — the falloff is gone and so is the shape, and a dashed circle
+// was drawn on top to say where the front should have been. That is a picture
+// of a circle whatever the model does. What is drawn now is the raw
+// probability after `ticks` steps, so the shape in the picture is the model's.
 //
-// What the veins are: a face heading's cone is {(1,0), (1,1), (1,−1)}, and
-// every one of those has x = 1. So after t ticks x = t EXACTLY, whatever the
-// path — the face front is a flat bar at x = t that spreads only sideways.
-// A diagonal's cone is {(1,0), (1,1), (0,1)}, which does not fix anything, so
-// it spreads into a wedge. Bars where the axes are, wedges between them: that
-// is the vein structure, and it is a fact about which directions share a
-// component rather than about any parameter.
+// THE RULE IS THE ONE THAT SHIPS. `discrete.ts` (~1366) builds the alternatives
+// one per axis: an axis the heading uses is TAKEN APART and contributes that
+// axis on its own, an axis it does not use contributes the heading with ±1
+// ADDED on it. In the plane that gives
+//
+//     (1,0)  →  (1,0) (1,1) (1,−1)     three, and the heading is among them
+//     (1,1)  →  (1,0) (0,1)            two, and the heading is NOT
+//
+// which is a trinomial either way, so the field is enumerated exactly rather
+// than sampled — every path with its exact weight.
+//
+// WHAT THE VEINS ARE. Every alternative of a face heading has x = 1, so after t
+// steps x = t exactly whatever path was taken: the face front is a flat bar
+// that spreads only sideways. A diagonal's alternatives share nothing, so it
+// opens into a wedge. Bars where the axes are and wedges between them — a fact
+// about which directions share a component, not about any parameter, which is
+// why sweeping w moves the front without ever filling the wedges.
 
-const CONE2 = (h: [number, number]) =>
-  SHEET_2D.filter(d => d[0] * h[0] + d[1] * h[1] > 1e-9);
+/** the shipped alternatives for a heading, in the plane */
+const WAYS_2D = (h: [number, number]): [number, number][] => {
+  const out: [number, number][] = [];
+  for (let a = 0; a < 2; a++) {
+    if (h[a]) out.push(a === 0 ? [h[0], 0] : [0, h[1]]);
+    else for (const s of [1, -1] as const) out.push(a === 0 ? [s, h[1]] : [h[0], s]);
+  }
+  return out;
+};
 
 /**
- * STEADY-STATE OCCUPANCY — where the charges ARE, not where one pulse got to.
- *
- * The panel above this one draws a single pulse at age `t`, which is a shell
- * and therefore a ring with nothing inside it. That is not what a source looks
- * like. A source pulses every tick, so at any moment there are charges of every
- * age in flight at once, and what fills the picture is the SUM over ages —
- * which is the quantity `chance(m,r)` is about.
- *
- * Each cell is then drawn against the MEAN AT ITS OWN RADIUS, so the 1/r
- * falloff divides out and what is left is purely angular: where, at a given
- * distance, the field is thick and where it is thin. That is the vein.
+ * The three outcomes of one step off `h`, with their probabilities: carry
+ * straight on with 1 − w, otherwise one of the alternatives uniformly. The
+ * heading reappearing among a face's alternatives is why a face keeps some
+ * weight on going straight even at w = 1, and why its speed is 1 for every w.
  */
-const veinField = (t: number, w: number) => {
+const STEP_2D = (h: [number, number], w: number) => {
+  const alt = WAYS_2D(h);
+  const acc = new Map<string, { d: [number, number], p: number }>();
+  const put = (d: [number, number], p: number) => {
+    const k = d[0] + "," + d[1];
+    const e = acc.get(k);
+    if (e) e.p += p; else acc.set(k, { d, p });
+  };
+  put(h, 1 - w);
+  for (const d of alt) put(d, w / alt.length);
+  return [...acc.values()].filter(e => e.p > 1e-15);
+};
+
+/**
+ * WHERE THE TRAVELLED PATHS HAVE GOT TO after `t` steps — every path with its
+ * exact weight, summed over the eight headings and over every age up to `t`,
+ * because a source pulses every tick and what fills the picture is charges of
+ * every age in flight at once.
+ *
+ * Each cell is then divided by the mean at its own RADIUS. That takes the 1/r
+ * falloff out and leaves the angular structure, which is the whole point of the
+ * picture: at a given distance, where is the field thick and where is it thin.
+ * Without it the outer three quarters of every disk is below one part in a
+ * thousand of the middle and the veins are invisible under any alpha ramp.
+ *
+ * What is NOT done to it: nothing is clipped and no circle is drawn. The
+ * diagonal spikes run out past `t` to √2·t and are left there, so the outline
+ * in the picture is the shape the rule actually makes rather than a ring
+ * imposed on top of it.
+ */
+const pulseField = (t: number, w: number) => {
   const raw = new Map<string, number>();
 
   for (const h of SHEET_2D) {
-    const C = CONE2(h), m = C.length;
-    const rest = C.filter(c => c !== h);
-    const ps = [(1 - w) + w / m, w / m, w / m];
-    const st = [h, ...rest];
-
+    const st = STEP_2D(h, w);
+    if (st.length === 1) {                       // nothing to choose: one ray
+      for (let age = 1; age <= t; age++) {
+        const k = st[0].d[0] * age + "," + st[0].d[1] * age;
+        raw.set(k, (raw.get(k) ?? 0) + 1 / 8);
+      }
+      continue;
+    }
+    const [A, B, C] = [st[0], st[1], st[2] ?? { d: [0, 0] as [number, number], p: 0 }];
     for (let age = 1; age <= t; age++)
       for (let a = 0; a <= age; a++)
         for (let b = 0; b <= age - a; b++) {
           const c = age - a - b;
+          if (c > 0 && C.p === 0) continue;
           const lp = lfac(age) - lfac(a) - lfac(b) - lfac(c)
-            + a * Math.log(Math.max(ps[0], 1e-300))
-            + b * Math.log(Math.max(ps[1], 1e-300))
-            + c * Math.log(Math.max(ps[2], 1e-300));
+            + a * Math.log(A.p) + b * Math.log(B.p)
+            + (c ? c * Math.log(C.p) : 0);
           const p = Math.exp(lp);
-          if (p < 1e-10) continue;
-
-          const x = a * st[0][0] + b * st[1][0] + c * st[2][0];
-          const y = a * st[0][1] + b * st[1][1] + c * st[2][1];
+          if (p < 1e-11) continue;
+          const x = a * A.d[0] + b * B.d[0] + c * C.d[0];
+          const y = a * A.d[1] + b * B.d[1] + c * C.d[1];
           const k = x + "," + y;
           raw.set(k, (raw.get(k) ?? 0) + p / 8);
         }
   }
 
-  // divide out the radial falloff: each cell against the mean at its radius
   const sum = new Map<number, number>(), count = new Map<number, number>();
   for (const [k, v] of raw) {
     const [x, y] = k.split(",").map(Number);
@@ -941,48 +1001,258 @@ const veinField = (t: number, w: number) => {
   return out;
 };
 
-const EXACT_W = 3 * (1 - Math.SQRT1_2);
+/**
+ * The enumeration does not depend on the size of the box and the box is
+ * repainted every frame, so it is worked out once per (t, w) and kept.
+ */
+const VEINS = new Map<string, Map<string, number>>();
+
+const vein = (t: number, w: number) => {
+  const key = t + ":" + w;
+  let f = VEINS.get(key);
+  if (!f) VEINS.set(key, f = pulseField(t, w));
+  return f;
+};
+
+/**
+ * 2(1 − 1/√2). The w at which the shipped rule's diagonal crest and face crest
+ * sit at the same radius — √2(1 − w/2) = 1 — and so the only w at which its
+ * front is a circle in the plane. It is NOT the 3(1 − 1/√2) used elsewhere in
+ * this file, which belongs to a three-member cone that includes the heading for
+ * a diagonal as well; see `tests/ways.ts`.
+ */
+const SHIP_W = 2 * (1 - Math.SQRT1_2);
 
 const veins = (t: number) => (s: Surface) => {
-  const { ctx, width, height } = s;
+  let { ctx, width, height } = s;
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = BACK; ctx.fillRect(0, 0, width, height);
 
-  const ws = [0, 0.3, 0.6, EXACT_W, 1];
-  const cw = width / ws.length, R = Math.min(cw / 2 - 8, (height - 56) / 2);
-  const scale = R / t;
+  const TOP = 18, BOT = 2, GAP = 6;
+
+  const ws = [0, 0.3, SHIP_W, 0.8, 1];
+  const cw = width / ws.length;
+  const R = Math.min(cw / 2 - GAP / 2, (height - TOP - BOT) / 2);
+  const scale = R / (t * Math.SQRT2);            // room for the √2·t corners
+  const top = TOP + Math.max(0, (height - TOP - BOT - 2 * R) / 2);
 
   ws.forEach((w, col) => {
-    const F = veinField(t, w), cx = cw * (col + 0.5), cy = 26 + R;
+    const F = vein(t, w), cx = cw * (col + 0.5), cy = top + R;
     let peak = 0;
     for (const v of F.values()) peak = Math.max(peak, v);
 
     const px = Math.max(1.4, scale * 1.15);
     for (const [k, v] of F) {
       const [x, y] = k.split(",").map(Number);
-      if (Math.hypot(x, y) > t) continue;
       ctx.globalAlpha = Math.min(1, Math.pow(Math.min(v / peak, 1), 0.55));
       ctx.fillStyle = MODEL;
       ctx.fillRect(cx + x * scale - px / 2, cy - y * scale - px / 2, px, px);
     }
+    ctx.globalAlpha = 1;
 
-    ctx.globalAlpha = 0.35;
-    ctx.strokeStyle = DATA; ctx.setLineDash([3, 3]);
-    ctx.beginPath(); ctx.arc(cx, cy, t * scale, 0, Math.PI * 2); ctx.stroke();
-    ctx.setLineDash([]); ctx.globalAlpha = 1;
-
-    const diag = (1 - w) * Math.SQRT2 + w * 2 * Math.SQRT2 / 3;
     ctx.fillStyle = INK; ctx.textAlign = "center";
     ctx.font = "11px ui-sans-serif, system-ui, sans-serif";
-    ctx.fillText("w = " + (w === EXACT_W ? w.toFixed(4) : w.toFixed(2)), cx, 14);
+    ctx.fillText("w = " + (w === SHIP_W ? w.toFixed(4) : w.toFixed(2)), cx, 12);
   });
-
-  ctx.fillStyle = FAINT;
 };
 
-export const WanderVeins = ({ ticks = 22, height = 150 }: { ticks?: number, height?: number }) =>
-  <Panel paint={veins(ticks)} height={height}
-    note="" />;
+export const WanderVeins = ({ ticks = 22, height, aspect = 5.6 }: {
+  ticks?: number, height?: number, aspect?: number,
+}) =>
+  <Panel paint={veins(ticks)} height={height} aspect={height ? undefined : aspect} />;
+
+// ---------------------------------------------------------------------------
+// WHAT ACTUALLY CLOSES THE CIRCLE — the same eight directions, four ways.
+//
+// The panel above shows a charge that keeps the heading it left with. That is
+// the collisionless case and it is beams: the field is thick along the eight
+// lattice headings and thin between them, at every radius, for ever.
+//
+// This one puts something in the way. The lattice, the eight directions and the
+// pulse are identical; the only thing that changes across the row is how much
+// else is already in flight for it to run into. The rule for what happens when
+// it does is as small as a rule can be:
+//
+//     two charges meet head-on  →  they come out sideways, still head-on
+//     anything else             →  nothing happens
+//
+// No turn rate, no cone, no weights, nothing that looks at a neighbourhood, and
+// a lone charge in empty space still goes perfectly straight for ever. The
+// outcome keeps the count and keeps the total momentum, and that is the whole
+// of it.
+//
+// WHAT TO LOOK AT. Column one is eight spots, and the diagonal ones are further
+// out than the face ones by √2 — the front is not a circle, it is not even a
+// closed curve. By column three the gaps are gone. Nothing was tuned to make
+// that happen; the only difference is that there is now something to hit.
+//
+// AND WHY IT IS NOT ENOUGH ON ITS OWN. Scattering fills the angles and loses
+// the light cone — a charge knocked about at random spreads as √t rather than
+// travelling. What brings the cone back is the last column, where the collisions
+// are frequent enough that the disturbance stops being carried by any particular
+// charge. Momentum cannot be destroyed, so an excess of it at a cell has to be
+// handed to the next one, and the hand-off travels at a fixed speed because the
+// push is the same in every direction. NOTHING GOES ROUND THE CIRCLE. No charge
+// crosses more than a few cells before it is turned; what reaches the far side
+// never started at the middle. The front is a relay, and it is round because
+// the pressure behind it is.
+
+const SQ8: [number, number][] = [
+  [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1],
+];
+
+/** head-on pairs rotate; every other cell state is left alone */
+const SWAP = (() => {
+  const main = new Uint8Array(256), alt = new Uint8Array(256);
+  for (let s = 0; s < 256; s++) { main[s] = s; alt[s] = s; }
+  for (let i = 0; i < 4; i++) {
+    const h = (1 << i) | (1 << (i + 4));
+    main[h] = (1 << ((i + 1) % 8)) | (1 << ((i + 5) % 8));
+    alt[h] = (1 << ((i + 7) % 8)) | (1 << ((i + 3) % 8));
+  }
+  return { main, alt };
+})();
+
+let GSEED = 20260814;
+const grnd = () => (GSEED = (GSEED * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+
+/** the gas: bits per direction, streaming, and the swap above */
+const gasField = (T: number, d: number, runs: number) => {
+  const L = 2 * Math.ceil(Math.SQRT2 * T) + 5, o = (L - 1) / 2, C = L * L;
+  const acc = new Float64Array(C);
+
+  for (let k = 0; k < runs; k++) {
+    let cur = new Uint8Array(C), nxt = new Uint8Array(C);
+    if (d > 0) for (let c = 0; c < C; c++) {
+      let s = 0;
+      for (let i = 0; i < 8; i++) if (grnd() < d) s |= 1 << i;
+      cur[c] = s;
+    }
+    for (let y = -2; y <= 2; y++) for (let x = -2; x <= 2; x++)
+      if (x * x + y * y <= 4) cur[(y + o) * L + (x + o)] = 255;
+
+    for (let t = 0; t < T; t++) {
+      nxt.fill(0);
+      for (let y = 0; y < L; y++) for (let x = 0; x < L; x++) {
+        const s = cur[y * L + x];
+        if (!s) continue;
+        const out = ((x + y) & 1) ? SWAP.alt[s] : SWAP.main[s];
+        for (let i = 0; i < 8; i++) {
+          if (!(out & (1 << i))) continue;
+          nxt[((y + SQ8[i][1] + L) % L) * L + ((x + SQ8[i][0] + L) % L)] |= 1 << i;
+        }
+      }
+      const tmp = cur; cur = nxt; nxt = tmp;
+    }
+    for (let c = 0; c < C; c++) {
+      let n = 0;
+      for (let i = 0; i < 8; i++) if (cur[c] & (1 << i)) n++;
+      acc[c] += n;
+    }
+  }
+  for (let c = 0; c < C; c++) acc[c] = acc[c] / runs - 8 * d;
+  return { L, o, v: acc };
+};
+
+/**
+ * The same thing where collisions are frequent enough that the disturbance is
+ * no longer carried by any particular charge — the limit the gas is heading
+ * towards, run directly so the row ends somewhere rather than trailing off.
+ */
+const CW = [4 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 36, 1 / 36, 1 / 36, 1 / 36];
+const LX = [0, 1, 0, -1, 0, 1, -1, -1, 1], LY = [0, 0, 1, 0, -1, 1, 1, -1, -1];
+
+const relayField = (T: number, tau = 0.8) => {
+  const L = 2 * Math.ceil(Math.SQRT2 * T) + 9, o = (L - 1) / 2, C = L * L;
+  let f = new Float64Array(C * 9), g = new Float64Array(C * 9);
+  for (let c = 0; c < C; c++) for (let i = 0; i < 9; i++) f[c * 9 + i] = CW[i];
+  for (let i = 0; i < 9; i++) f[(o * L + o) * 9 + i] += 0.02 * CW[i];
+
+  for (let t = 0; t < T; t++) {
+    for (let y = 0; y < L; y++) for (let x = 0; x < L; x++) {
+      const c = y * L + x;
+      let r = 0, mx = 0, my = 0;
+      for (let i = 0; i < 9; i++) { const v = f[c * 9 + i]; r += v; mx += v * LX[i]; my += v * LY[i]; }
+      const vx = mx / r, vy = my / r, u2 = vx * vx + vy * vy;
+      for (let i = 0; i < 9; i++) {
+        const cu = LX[i] * vx + LY[i] * vy;
+        const eq = CW[i] * r * (1 + 3 * cu + 4.5 * cu * cu - 1.5 * u2);
+        g[(((y + LY[i] + L) % L) * L + ((x + LX[i] + L) % L)) * 9 + i]
+          = f[c * 9 + i] - (f[c * 9 + i] - eq) / tau;
+      }
+    }
+    const tmp = f; f = g; g = tmp;
+  }
+  const v = new Float64Array(C);
+  for (let c = 0; c < C; c++) {
+    let r = 0;
+    for (let i = 0; i < 9; i++) r += f[c * 9 + i];
+    v[c] = r - 1;
+  }
+  return { L, o, v };
+};
+
+/** each column is worked out once and kept — the box repaints, the physics does not */
+const MEDIA = new Map<string, { L: number, o: number, v: Float64Array }>();
+const medium = (key: string, make: () => { L: number, o: number, v: Float64Array }) => {
+  let f = MEDIA.get(key);
+  if (!f) MEDIA.set(key, f = make());
+  return f;
+};
+
+const media = (t: number) => (s: Surface) => {
+  const { ctx, width, height } = s;
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = BACK; ctx.fillRect(0, 0, width, height);
+
+  const cols: [string, string, () => { L: number, o: number, v: Float64Array }][] = [
+    ["nothing in the way", "eight beams", () => gasField(t, 0, 1)],
+    ["a little", "the gaps start to fill", () => gasField(t, 0.10, 14)],
+    ["more", "the gaps are gone", () => gasField(t, 0.30, 14)],
+    ["enough to relay", "a front, at one speed", () => relayField(t)],
+  ];
+
+  const TOP = 30, BOT = 16, GAP = 6;
+  const cw = width / cols.length;
+  const R = Math.min(cw / 2 - GAP / 2, (height - TOP - BOT) / 2);
+  const scale = R / (t * Math.SQRT2);
+  const top = TOP + Math.max(0, (height - TOP - BOT - 2 * R) / 2);
+
+  cols.forEach(([head, foot, make], col) => {
+    const F = medium(head + ":" + t, make);
+    const cx = cw * (col + 0.5), cy = top + R;
+
+    let peak = 0;
+    for (const v of F.v) peak = Math.max(peak, v);
+
+    const px = Math.max(1.3, scale * 1.2);
+    for (let y = -F.o; y <= F.o; y++) for (let x = -F.o; x <= F.o; x++) {
+      const v = F.v[(y + F.o) * F.L + (x + F.o)];
+      if (v <= 0) continue;
+      ctx.globalAlpha = Math.min(1, Math.pow(v / peak, 0.45));
+      ctx.fillStyle = MODEL;
+      ctx.fillRect(cx + x * scale - px / 2, cy - y * scale - px / 2, px, px);
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = INK;
+    ctx.font = "11px ui-sans-serif, system-ui, sans-serif";
+    ctx.fillText(head, cx, 13);
+    ctx.fillStyle = FAINT;
+    ctx.font = "10px ui-sans-serif, system-ui, sans-serif";
+    ctx.fillText(foot, cx, 25);
+  });
+
+  ctx.fillStyle = FAINT; ctx.textAlign = "center";
+  ctx.font = "10px ui-sans-serif, system-ui, sans-serif";
+  ctx.fillText("same eight directions, same pulse — only how much else is in flight changes",
+    width / 2, height - 4);
+};
+
+export const WanderMedium = ({ ticks = 26, height = 210 }: { ticks?: number, height?: number }) =>
+  <Panel paint={media(ticks)} height={height} />;
+
 
 export const WanderPattern = ({ ticks = 28, height = 260 }: { ticks?: number, height?: number }) =>
   <Panel paint={pattern(ticks)} height={height}

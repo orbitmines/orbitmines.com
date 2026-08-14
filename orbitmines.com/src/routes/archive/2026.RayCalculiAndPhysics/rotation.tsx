@@ -713,14 +713,37 @@ const A0_FIXED = C * H0_SI / (2 * Math.PI);
 const a0At = (z: number) => A0_FIXED * (1 + z);        // coasting: 1+z = t₀/t
 
 /** the boost over the purely baryonic speed, inside one effective radius */
-const boostAt = (d: HighZ, a0: number) => {
+const boostAt = (d: HighZ, a0: number, F = 1) => {
   const M = Math.pow(10, d.logMs) * MSUN / (1 - d.fgas);
-  const gN = G * M / Math.pow(d.Re * KPC, 2);
+  const gN = F * G * M / Math.pow(d.Re * KPC, 2);
   return Math.sqrt((gN / 2 + Math.sqrt(gN * gN / 4 + gN * a0)) / gN);
 };
 
 /** what Genzel's f_DM < 0.2 allows, as a boost factor */
 const ALLOWED = 1.12;
+
+/**
+ * AND WHAT THE SAME DISCS LOOK LIKE IF THE FIELD IS VEINED.
+ *
+ * `chance` divides by 4πr², a shell average, and every dot above is read off
+ * that. `tests/veins.ts` measured what that average is an average OVER — ridges
+ * along the lattice headings, wedges between them, and for a POINT source a
+ * peak over mean of 4.3 with the fifth percentile at zero. The shell average
+ * survives exactly (⟨F⟩ = 1 by construction), so the radial law and every
+ * number on this plot are untouched; what is new is that the answer depends on
+ * WHICH WAY you are looking, with the pattern fixed to the lattice.
+ *
+ * These discs are the most forgiving case there is. A ridge points along the
+ * lattice rather than away from the source, so ridges from different parts of a
+ * body are parallel and stack — but a body of radius Rs seen from r does smooth
+ * anything finer than Rs/r, and the baryons of these galaxies sit inside about
+ * one effective radius, so Rs/r ≈ 1 and almost all of the structure is gone.
+ *
+ * From `tests/veined.ts`, at Rs/r = 1: p95 = 1.0321, p05 = 0.9660. Those are the
+ * numbers below, and they are quantiles rather than extremes so the bar is what
+ * ninety per cent of directions fall inside.
+ */
+const F_RIDGE = 1.0321, F_WEDGE = 0.9660;
 
 const highz = (s: Surface) => {
   const box = frame(s, 58);
@@ -759,6 +782,21 @@ const highz = (s: Surface) => {
     ctx.strokeStyle = "rgba(255,255,255,0.16)"; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(X(d.z), Y(bf)); ctx.lineTo(X(d.z), Y(bm)); ctx.stroke();
 
+    // the veined reading: the same disc seen along a ridge and down a wedge.
+    // Drawn as a capped bar offset a little to the right so it does not sit
+    // under the model dot — the point of it is the WIDTH, and a marker hidden
+    // behind another marker has no width to read.
+    const hi = boostAt(d, a0At(d.z), F_RIDGE), lo = boostAt(d, a0At(d.z), F_WEDGE);
+    const vx = X(d.z) + 7;
+    ctx.strokeStyle = FLOOR; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(vx, Y(hi)); ctx.lineTo(vx, Y(lo)); ctx.stroke();
+    for (const b of [hi, lo]) {
+      ctx.beginPath(); ctx.moveTo(vx - 3, Y(b)); ctx.lineTo(vx + 3, Y(b)); ctx.stroke();
+    }
+    ctx.fillStyle = FLOOR;
+    ctx.beginPath(); ctx.arc(vx, Y(hi), 2.2, 0, 2 * Math.PI); ctx.fill();
+    ctx.beginPath(); ctx.arc(vx, Y(lo), 2.2, 0, 2 * Math.PI); ctx.fill();
+
     ctx.fillStyle = DATA;
     ctx.beginPath(); ctx.arc(X(d.z), Y(bf), 3.1, 0, 2 * Math.PI); ctx.fill();
     ctx.fillStyle = MODEL;
@@ -775,6 +813,7 @@ const highz = (s: Surface) => {
   tag(s, X(0.66), Y(1.44), "EXCLUDED — Genzel measures f_DM(<Re) < 0.2, i.e. under 1.12", SEEN);
   tag(s, X(0.66), Y(1.325), "a₀ = cH₀/2π·(1+z) — THIS MODEL", MODEL);
   tag(s, X(0.66), Y(1.265), "a₀ fixed — ordinary MOND", DATA);
+  tag(s, X(0.66), Y(1.205), "veined field — ridge to wedge, 90% of directions", FLOOR);
   tag(s, X(0.66), Y(1.028), "NEWTON & GR — the baryons alone", RELAT);
 
   under(s, box, "redshift");
@@ -786,7 +825,7 @@ const highz = (s: Surface) => {
 /** the prediction that dates the model, against the measurement that refuses it */
 export const HighRedshift = ({ height = 320 }: { height?: number }) =>
   <Panel paint={highz} height={height}
-    note="six massive discs at z ≈ 1–2 — where a₀ ∝ 1/t is refused" />;
+    note="six massive discs at z ≈ 1–2 — where a₀ ∝ 1/t is refused, veined or not" />;
 
 // ---------------------------------------------------------------------------
 // AND THE SAME PICTURE AT z ≈ 2, WHICH IS WHERE THE READINGS COME APART.
