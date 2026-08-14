@@ -1080,6 +1080,138 @@ half out   1.98   1.88   1.76   1.41   1.00   1.00`}
   </>,
 };
 
+export const COHERENT: Derivation = {
+  label: 'share as a coherence',
+  title: <>the one factor that knows about phase</>,
+  body: <>
+    <Because>what share actually is, in the source</Because>
+    <Step eq={<>share = ⟨opposed(<V>ψ</V>)⟩,&nbsp;&nbsp; opposed(<V>ψ</V>) = |<V>ψ</V>|/π</>}>
+      Wrapped to [−π, π] and averaged over the path difference. Every other
+      factor in <V>S</V><Sub>ab</Sub> is a count of arrivals; this one is the
+      only place a <i>phase</i> enters the pull at all. So the gravity above is
+      not a classical law waiting to be quantised —{' '}
+      <b style={{ color: INK }}>it is already an expectation value</b>, taken
+      over a phase the derivation decided not to track.
+    </Step>
+
+    <Because>and what a Born rule would want there instead</Because>
+    <Step eq={<>
+      ¼|<V>e</V><Sup>i<V>φ</V><Sub>a</Sub></Sup> −{' '}
+      <V>e</V><Sup>i<V>φ</V><Sub>b</Sub></Sup>|<Sup>2</Sup> =
+      (1 − cos <V>ψ</V>)/2
+    </>}>
+      A modulus-square of a difference of two phases — the shape every
+      interference term in quantum mechanics has. It agrees with |<V>ψ</V>|/π
+      at nought, at a half cycle and at π, which is why nothing measured so far
+      could tell them apart. In between it does not.
+    </Step>
+
+    <Because>the two kernels, through the same walk</Because>
+    <Step eq={<>
+      <span style={{ fontFamily: 'monospace', fontSize: '0.82em', whiteSpace: 'pre' }}>
+        {`R/λ        0.02   0.10   0.20   0.27   0.50   1.00
+triangle   0.024  0.119  0.238  0.318  0.595  1.000
+cosine     0.001  0.026  0.099  0.171  0.500  1.000`}
+      </span>
+    </>}>
+      <V>G</V><Sub>eff</Sub>/<V>G</V> for two of the same thing in step, run
+      through the same raised-cosine window. <b style={{ color: INK }}>The
+      triangle vanishes linearly in the separation and the cosine
+      quadratically</b>, and the gap between them peaks at 0.147 at{' '}
+      <V>R</V>/<V>λ</V> = 0.268.
+    </Step>
+
+    <Because>and what it would take to look</Because>
+    <Step eq={<>0.268 <V>λ</V> = 40.5 fm&nbsp;&nbsp; for two electrons</>}>
+      One model wavelength is 2π<V>G</V><V>λ</V><Sub>C</Sub> = 0.151 pm for an
+      electron, so the place the two kernels disagree most is forty femtometres
+      apart — where the electric force between them is 4.166·10<Sup>42</Sup>{' '}
+      times the gravitational one, which is the same ratio the magnetism arc
+      owes <V>α</V> for. <b style={{ color: INK }}>So the discriminator is
+      real, sharp, and unreachable</b>, and it is stated here rather than
+      advertised as a test.
+    </Step>
+  </>,
+};
+
+export const RECORD: Derivation = {
+  label: 'the which-path rate',
+  title: <>what a superposition leaves behind</>,
+  body: <>
+    <Because>the rule does not know whose charge it is</Because>
+    <Step>
+      (G/1) says two rays meeting annihilate. It says nothing about whether
+      they came from the same emitter, and there is no bookkeeping anywhere in
+      the model that could mark two rays <i>same particle, skip</i>. So a
+      source in two places has its two branches annihilating against each
+      other exactly as two bodies would — which the model already computes for
+      a single body, as the <K>SKIN</K> self-screening.
+    </Step>
+
+    <Because>but that is two different rates, and only one of them decoheres</Because>
+    <Step eq={<>
+      <V>Γ</V><Sub>cross</Sub> — branch against branch
+      <span style={{ padding: '0 1.2em', color: FAINT }}>vs</span>
+      <V>Γ</V><Sub>env</Sub> — branch against everything else
+    </>}>
+      Branch-against-branch needs <i>both</i> branches present, so it is the
+      interference term itself — it is what makes the pair's own gravity
+      differ from <V>G</V>, and it carries no information about which branch
+      the thing was in. Only an annihilation against the <i>outside</i> leaves
+      folded space at a place that differs between the branches, and folded
+      space is permanent. <b style={{ color: INK }}>That is the record.</b>
+    </Step>
+
+    <Because>so integrate the records over the field</Because>
+    <Step eq={<>
+      <V>Γ</V><Sub>env</Sub> = ∫<Sub>d</Sub><Sup>∞</Sup> share·<V>ρ</V>·
+      chance(<V>m</V>,<V>r</V>)·<V>c</V> ·
+      (<V>d</V>/<V>r</V>)<Sup>2</Sup> · 4π<V>r</V><Sup>2</Sup> d<V>r</V>
+    </>}>
+      The bracket is the distinguishability: two branches <V>d</V> apart look
+      identical at <V>r</V> ≫ <V>d</V> up to a dipole term going as{' '}
+      <V>d</V>/<V>r</V>, and fully distinct inside <V>d</V>. Everything else is
+      the ambient annihilation rate the vacuum section already carries.
+    </Step>
+
+    <Because>and the r's cancel, twice</Because>
+    <Step eq={<>
+      <V>Γ</V><Sub>env</Sub> = ½ <V>ρ</V> <K>SHEET</K> <V>m</V> <V>d</V> =
+      <span style={{ padding: '0 0.5em' }} />
+      <V>m</V><V>d</V>/<V>λ</V><Sup>2</Sup>
+    </>}>
+      chance carries 1/<V>r</V><Sup>2</Sup>, the shell carries{' '}
+      <V>r</V><Sup>2</Sup>, the dipole carries 1/<V>r</V><Sup>2</Sup> again, so
+      what is left is ∫d<V>r</V>/<V>r</V><Sup>2</Sup> = 1/<V>d</V> and the{' '}
+      <V>d</V><Sup>2</Sup> above it leaves one power of <V>d</V>. Then{' '}
+      <V>λ</V> = 1/√(<K>BITE</K>·share·<K>SHEET</K>·<V>ρ</V>) from the vacuum
+      section eats <V>ρ</V> and <K>SHEET</K> whole.{' '}
+      <b style={{ color: INK }}>Linear in the mass, linear in the separation,
+      and the constant is the screening length gravity already had.</b>{' '}
+      Nothing was fitted and nothing new was introduced.
+    </Step>
+
+    <Because>and then the number, which kills it</Because>
+    <Step eq={<>
+      <span style={{ fontFamily: 'monospace', fontSize: '0.82em', whiteSpace: 'pre' }}>
+        {`                          m (kg)    d (m)    t_decoh (s)
+electron                  9.1e−31   1e−6     2.5e+71
+C60                       1.2e−24   1e−7     1.9e+66
+1e−14 kg nanoparticle     1e−14     1e−4     2.3e+53
+1 kg, a metre apart       1         1        2.3e+35`}
+      </span>
+    </>}>
+      Against an age of the universe of 4.35·10<Sup>17</Sup> s. In SI the whole
+      law is <V>Γ</V> = 4.41·10<Sup>−36</Sup>·<V>M</V>·<V>d</V> per second,
+      because <V>λ</V> is 1.63 horizon radii and 1/<V>λ</V><Sup>2</Sup> is
+      10<Sup>−122</Sup>. <b style={{ color: INK }}>The vacuum is far too thin
+      to be an environment</b>, by thirty-five orders at best. The rate is
+      derived rather than assumed, which is what was wanted, and it is not the
+      mechanism of anything.
+    </Step>
+  </>,
+};
+
 export const CEILING: Derivation = {
   label: 'G as a mass',
   title: <>the constant, read as a mass in Planck masses</>,

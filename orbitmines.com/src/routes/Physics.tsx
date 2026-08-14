@@ -11,9 +11,9 @@ import { bySide, Graph } from "./archive/2026.RayCalculiAndPhysics/discrete";
 import { Echoes } from "./archive/2026.RayCalculiAndPhysics/echoes";
 import { Beam, Sheet } from "./archive/2026.RayCalculiAndPhysics/figures";
 import {
-  B, Bar, Because, CEILING, CLOCK, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
+  B, Bar, Because, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
   IDENTICAL,
-  IGNORANCE, K, Law, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, Rows,
+  IGNORANCE, K, Law, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, RECORD, Rows,
   SPACE, Step, Sub, Sup, TURNS, V,
 } from "./archive/2026.RayCalculiAndPhysics/law";
 import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
@@ -1160,11 +1160,481 @@ const Physics = () => {
             And it has no polarity in it anywhere. Every equation above would be word for word the same with the signs stripped out, which is worth knowing before the next arc puts them back: <b>the gravity here does not depend on the XOR</b>. What the XOR buys is magnetism, and what it costs is one factor that turns out not to be measurable. That is the next section.
           </Para>
         </Section>
+
         <Section head="Galaxy rotation curves">a</Section>
         <Section head="Black Holes">a</Section>
         <Section head="Expansion">a</Section>
         <Section head="The Discrete Model">
         </Section>
+
+
+      </Section>
+
+      <Section head="XOR: Gravity + Magnetism">
+
+        Instead of having our rays be neutral, we can introduce a polarity to them: positive/negative. When we do that gravity + magnetism comes down to three rules:
+        <BR/>
+        (G+M/1) Annihilation: When two opposite polarities meet, they annihilate, leaving a single neutral spatial point behind.
+
+        <Models models={[DISCRETE[5]]}/>
+
+        (G+M/2) Creation: On all axis, a neutral point expands into two points with opposite polarity in all directions.
+
+        <Models models={[BACKWARD[5]]}/>
+
+        (G+M/3) Repulsion: When two identical polarities meet, they turn around.
+
+        <Models models={[DISCRETE[4]]}/>
+
+        Then the other permutations of the rules are just movement rules (like these two).
+
+        <Models models={[DISCRETE[1]]}/>
+
+        With this setup, we get aggregate behavior of groups of the same polarities, turning away from each other.
+
+        <Models models={([
+            [Polarity.Positive, Polarity.Positive],
+            [Polarity.Negative, Polarity.Negative],
+        ] as [Polarity, Polarity][]).map(([left, right]): Model => ({
+          name: '',
+          note: '',
+          lattice: {
+            seed: () => Graph.blocks({ charge: bySide(left, right) }),
+            ticks: 15, height: 140, density: false,
+          },
+        }))}/>
+
+        And ones with opposite polarities annihilating each-other.
+
+        <Models models={([
+            [Polarity.Positive, Polarity.Negative],
+        ] as [Polarity, Polarity][]).map(([left, right]): Model => ({
+          name: '',
+          note: '',
+          lattice: {
+            seed: () => Graph.blocks({ charge: bySide(left, right) }),
+            ticks: 5, height: 140, density: false,
+          },
+        }))}/>
+
+        Then an interesting thing happens when you alternate polarities (the phase not mattering for this result). You get attraction. And we recover our two rules of gravity (G/1 + G/2) from these three rules.
+
+        <Models models={([
+          [Polarity.Positive, Polarity.Negative],
+          [Polarity.Positive, Polarity.Positive],
+        ] as [Polarity, Polarity][]).map(([left, right]): Model => ({
+          name: '',
+          note: '',
+          lattice: {
+            seed: () => Graph.emitters({ left, right, gap: 20, every: 1, spin: true }),
+            ticks: 22, height: 140,
+          },
+        }))}/>
+
+        <Section head="Gravity vs XOR">
+          - the heaviest elementary thing goes from ≈1.36 µg to ≈2.71 µg
+          - a body of given physical mass pulses half as often
+
+          <Eq>
+            <K><Bar>G</Bar></K><Sup><R>XOR</R></Sup> = <Frac over={1} under={2} /><K><Bar>G</Bar></K>
+          </Eq>
+        </Section>
+        
+        <Section head="XOR Continuous Model">
+
+          <Eq derive={TURNS} note="two on a line, and eight at every dimension of two or more">
+            <K>l.<Bar>CYCLE</Bar></K> = ways(min(<K>l.<Bar>D</Bar></K>, 2)) =
+            3<Sup>min(<K>l.<Bar>D</Bar></K>, 2)</Sup> − 1
+            <span style={{ padding: '0 1.4em' }} />
+            <K><Bar>SPIN</Bar></K> =
+            <Frac over={<>2<V>π</V></>} under={<K><Bar>CYCLE</Bar></K>} /> = 45°
+          </Eq>
+
+          <Para>
+            The gravity arc counts <i>one</i> thing about an emitter: how often it lets go. That is mass. This arc keeps the second thing, which is <b>which way round it is when it does</b> — and the whole of the difference between the two models is what you do with a sign.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the plan for this section is: first what changes in the rules, then <i>where</i> the two models diverge — which is local and is the interesting part — then why the global answer is nevertheless the same, and then magnetism, which is what the signs buy.
+          </Para>
+
+          <Head>a charge as a number</Head>
+
+          <Para>
+            Give each ray a polarity and write it as a number, because that is the form both readings share: +1, −1, or 0 for neutral space. Then the entire interaction law is one expression.
+          </Para>
+
+          <Eq note="the whole interaction law, and it has exactly two outcomes">
+            agreement(<V>a</V>,<V>b</V>) =
+            <Frac over={<><V>ab</V></>} under={<>|<V>a</V>||<V>b</V>| + <V>ε</V></>} />
+            <span style={{ padding: '0 1.2em' }} />
+            alike = max(agreement, 0)
+            <span style={{ padding: '0 1.2em' }} />
+            cancelling = max(−agreement, 0)
+          </Eq>
+
+          <Para>
+            Alike is +1 and neither can cancel the other and neither can pass through it, so each turns around — that is (G+M/3). Opposite is −1 and they annihilate, taking the space they were on with them — that is (G+M/1), and it is the only event in the model that changes how much space there is. <b>Nothing in between ever happens to a pair on the lattice</b>, because a lattice charge is ±1 and the product of two of those is ±1.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            In between is what a <i>field</i> does, and it is not a third outcome — it is what you get when the same rule is applied to a great many pairs at once and the answer is how many of them went each way. Which is exactly why the continuous model can hand this same expression a fractional value and mean something true by it: <b>a polarity is a field value rounded off to its sign</b>, and every law is written against the number so neither reading has to restate it.
+          </Para>
+
+          <Head>where the two models actually diverge — and it is local</Head>
+
+          <Para>
+            Here is the thing worth being careful about, because it is easy to read the two models as the same theory with a different label on the rays, and they are not.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Take two rays coming head on. <b>Without polarity there is only one thing that can happen:</b> they meet, they annihilate, and the space goes <i>there</i>, at that cell, on that tick. <b>With polarity there are two.</b> If they disagree, the same thing happens in the same place. If they agree, they <i>turn around</i> — nothing is destroyed at that cell at all — and each travels back the way it came until it runs into the next wave its own source put out behind it. That wave is the opposite sign, because the source alternates. So they annihilate <i>there</i>: half a wavelength back, several ticks later, on the source's side of where the meeting was.
+          </Para>
+
+          <Eq note="the same two rays, the same eventual annihilation — a different cell and a different tick">
+            <F>no polarity</F>&nbsp;&nbsp;
+            meet at <V>x</V> &nbsp;→&nbsp; annihilate at <V>x</V>, on tick <V>t</V>
+            <span style={{ padding: '0 1.4em' }} />
+            <F>XOR</F>&nbsp;&nbsp;
+            meet at <V>x</V> &nbsp;→&nbsp; turn &nbsp;→&nbsp;
+            annihilate at <V>x</V> ∓ <V>λ</V>/2, on tick <V>t</V> + <V>λ</V>/2<V>c</V>
+          </Eq>
+
+          <Para>
+            <b>That is a real difference and it is entirely local.</b> The map of where space is being destroyed is different between the two models — the XOR one puts its annihilations on the near side of the midline in bands, one per half-cycle, rather than all of them on the surface between the sources. It is the same difference that makes the aggregate panels in the previous section behave as they do: alternating polarities attract because the meetings land where they land, and matched polarities turn away because the meetings keep getting pushed back.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And then a second thing changes with it, in the opposite direction. Without a sign, there is nothing left to decide an outcome <i>but</i> the angle — so the angular gate comes back and a meeting only counts when the two are closing on each other, which bounds the folding to a lens between the bodies. With a sign, the sign decides it and being in the same cell is the whole of the condition, at any angle; what the angle sets is not <i>whether</i> but <i>how much</i>.
+          </Para>
+
+          <Eq note="what the angle is for, once polarity decides the outcome">
+            closing(<B>u</B>,<B>v</B>) = max(−<B>u</B>·<B>v</B>, 0)
+            <span style={{ padding: '0 1.2em' }} />
+            <K><Bar>HEAD_ON</Bar></K> = 1/√2
+            <span style={{ padding: '0 1.2em' }} />
+            splice(<B>u</B>,<B>v</B>) = |<B>û</B> − <B>v̂</B>| = 2 sin(<V>θ</V>/2)
+          </Eq>
+
+          <Para>
+            splice is how much a meeting <i>shortens</i>: two cells for two rays head on, nothing at all for two going the same way. Which is the honest reading of what an annihilation does to a distance, and it needs the angle whether or not there are signs.
+          </Para>
+
+          <Head>and why the global answer is the same anyway</Head>
+
+          <Para>
+            Two rules changed and they pull opposite ways, and when you write them into <V>S</V><Sub>ab</Sub> they land on the same factor.
+          </Para>
+
+          <Rows of={[
+            [<><i>share</i>: ½ → 1</>,
+              <>Without polarity <b>every</b> meeting annihilates, where before only the
+                opposite half did. So the share doubles.</>],
+            [<>the angular gate</>,
+              <>Comes back, since there is nothing else left to decide an outcome. So the
+                folding is bounded to a lens again.</>],
+          ]} />
+
+          <Eq note="G doubles — and that is the whole of it">
+            <i><K><Bar>G</Bar></K></i> = <Frac
+              over={<><K><Bar>BITE</Bar></K>·<i>share</i>·<K><Bar>SHEET</Bar></K><Sup>2</Sup>·<K><Bar>c</Bar></K></>}
+              under={<>4<V>π</V><Sup>2</Sup>·{HALF}·<K><Bar>DEG</Bar></K></>} />
+            <span style={{ padding: '0 1.4em' }} />
+            {gravitational(0.5).toFixed(6)} → {gravitational(1).toFixed(6)}
+          </Eq>
+
+          <Para>
+            <b>And the factor of two is not observable in an orbit.</b> Every mass in the model is carried in units of <i><K><Bar>G</Bar></K></i>, so a body of physical mass <V>M</V> holds <V>M</V>/<i><K><Bar>G</Bar></K></i> and the dynamics compute <i><K><Bar>G</Bar></K></i>·(<V>M</V>/<i><K><Bar>G</Bar></K></i>). The constant is gone before it is used — <b>a change of the mass unit, not of a trajectory</b>. Measured on the line integral: exactly two at every separation, with <V>S</V>·<V>R</V><Sup>2</Sup> flat in both.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>But "not of a prediction" would be too strong, and the exception is the mass unit itself.</b> It is not free to stay put — <V>µ</V> = <i><K><Bar>G</Bar></K></i>·<V>m</V><Sub>P</Sub>, so doubling one doubles the other. The heaviest elementary thing goes from <b>{(massUnit(0.5) * 1e9).toFixed(3)} µg to {(massUnit(1) * 1e9).toFixed(3)} µg</b>, and a body of given physical mass pulses <b>half as often</b>: an electron every 1.61·10<Sup>−22</Sup> s against 8.03·10<Sup>−23</Sup>. Which is the right direction rather than a fault — with no polarity every meeting annihilates instead of half of them, so each emission is twice as effective and half as much of it is needed for the same pull. Nothing measures that ceiling, so it refutes neither version; but it is a statement about the world, and it moves.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The tick and the step do <i>not</i> go with it, which is worth checking rather than assuming. At the ceiling the period is <i><K><Bar>G</Bar></K></i>ħ/(<V>µc</V><Sup>2</Sup>) = ħ/(<V>m</V><Sub>P</Sub><V>c</V><Sup>2</Sup>) — the <i><K><Bar>G</Bar></K></i> cancels — so both stay exactly Planck at either share. And so does the Compton line, whose constant tracks <i><K><Bar>G</Bar></K></i> because <V>µ</V> does: measured, <V>k</V>/<i><K><Bar>G</Bar></K></i> = 1.000000000 at both.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <K><Bar>SHEET</Bar></K>, <K><Bar>DEG</Bar></K>, <K><Bar>BITE</Bar></K>, <K><Bar>BIAS</Bar></K>, {HALF}, <V>ε</V>, <V>D</V>, the reach, the step and the tick do not move at all. And neither does anything <i>measured</i>: Mercury's sixth, the other five sixths, light's deflection, <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π, the Milky Way to 1.1%, the transport turnover, the interpolation function, the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>. <b>All identical, to every digit quoted</b> — because every one of them is computed from something that never mentions a sign.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the honest statement of the divergence is: <b>the two models put their annihilations in different places and get the same pull out of them.</b> Locally different, globally identical. Which makes the XOR a free parameter on the gravitational side — turning it on costs nothing and buys magnetism, turning it off costs magnetism and buys nothing — and that is a better position than the page was in before the question was asked, because it means the magnetic half cannot break the gravitational one. There is no shared number for it to get wrong.
+          </Para>
+
+          <Head>the sign law was already inside G</Head>
+
+          <Para>
+            Except for one, and this is the part I did not expect. <V>G</V>'s derivation carries a factor it has never had to justify: <i>half of them opposite</i>. That half is the chance that two charges landing in the same cell have opposite sign — and it is not a constant. It is a fact about the matter involved. Half is what you get when both bodies are unbiased. Ordinary matter is unbiased. <b>That is the whole reason it ever looked like a number.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Put the bias back. If a fraction (1+<V>P</V>)/2 of a body's charges are positive at a place, then of the meetings between <V>a</V>'s and <V>b</V>'s:
+          </Para>
+
+          <Eq note="opposite annihilates, alike turns — and there is nothing else two charges can do">
+            annihilating(<V>P</V><Sub>a</Sub>,<V>P</V><Sub>b</Sub>) =
+            <Frac over={<>1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub></>} under={<>2</>} />
+            <span style={{ padding: '0 1.4em' }} />
+            turning(<V>P</V><Sub>a</Sub>,<V>P</V><Sub>b</Sub>) =
+            <Frac over={<>1 + <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub></>} under={<>2</>} />
+          </Eq>
+
+          <Eq note="like biases attract less, opposite attract more — and at P = 0 it is Newton exactly">
+            <V>F</V> = <Frac
+              over={<><V>G</V> <V>m</V><Sub>a</Sub> <V>m</V><Sub>b</Sub></>}
+              under={<><V>R</V><Sup>2</Sup></>} />
+            <span style={{ padding: '0 0.5em' }} />
+            (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>)
+          </Eq>
+
+          <Para>
+            Read off the split. Unbiased against unbiased is one half and one half, which <i>is</i> the ½ in <V>G</V>, so Newton is the <V>P</V> = 0 case and not a separate claim. Biased against unbiased is also one half — a bias does nothing to something with no bias of its own, which comes out of the arithmetic rather than being put in by hand. Same bias gives nought; opposite bias gives twice. <b>Opposites attract and sameness repels, derived</b> — which is where this whole idea started, and which is the sign law <Ref of={'Coulomb, "Premier mémoire sur l\'électricité et le magnétisme", Histoire de l\'Académie Royale des Sciences 569'} year="1785" at="https://gallica.bnf.fr/ark:/12148/bpt6k3570k/f662" /> wrote down as an observation.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which is worth stopping on: <b>the gravitational constant carries a factor of one half because ordinary matter is unbiased.</b> If matter had a net bias, <V>G</V> would be a different number. The half was already there and unexplained; this is what it was — and it needs no reading whatever of what the bias <i>is</i>.
+          </Para>
+
+          <Head>one emission, three moments of it</Head>
+
+          <Para>
+            Gravity used the zeroth moment of the emission and threw the rest away. Keep them and the same emission answers three different questions.
+          </Para>
+
+          <Eq note="the count is mass, the signed sum is a net, the signed first moment is a bias">
+            <V>m</V> = ⟨1⟩<span style={{ padding: '0 1.6em' }} />
+            <V>q</V> = ⟨<V>s</V>⟩<span style={{ padding: '0 1.6em' }} />
+            <V>µ</V> = ⟨<V>s</V> <B>d̂</B>⟩
+          </Eq>
+
+          <Para>
+            And that is why the two behave so differently, which is not a coincidence. <b>A count always adds</b>, so gravity has one sign and cannot be screened by cancellation. <b>A signed sum cancels</b>, so a bias comes in two kinds and ordinary matter has none of it while still having all of its mass.
+          </Para>
+
+          <Head>what a source is doing at a given moment</Head>
+
+          <Para>
+            A source has exactly two switches and they are independent: whether it has <i>sides</i> (an axis) and whether it <i>comes round</i> (turns, or flips). Crossing them gives four distinguishable emissions, and the whole of what a source is doing at a tick is three lines.
+          </Para>
+
+          <Eq note="where its north points, and what it emits that way">
+            rate(<V>s</V>) ∈ [0, 1]
+            <span style={{ padding: '0 1.2em', color: FAINT }}>turns per <K><Bar>CYCLE</Bar></K> ticks</span>
+            <V>β</V>(<V>s</V>,<V>t</V>) = phase +
+            <Frac over={<><V>t</V>·rate</>} under={<K><Bar>CYCLE</Bar></K>} />
+          </Eq>
+
+          <Eq note="a spiral and a ring are the same function with and without an angle in it">
+            <V>F</V>(<B>d</B>) = sided ? <B>d</B>·<B>n̂</B>(<V>β</V>) : cos(2<V>π</V><V>β</V>)
+          </Eq>
+
+          <Para>
+            <i>Sided</i> is the only thing separating the two kinds of source, and it is not a parameter so much as a question about the source. With sides, what it emits depends on the direction — the field carries a θ in it, its zero set is θ = 2π<V>β</V> + const, and that is an Archimedean spiral. Without, direction drops out altogether, the zero set is a set of <i>instants</i> rather than places, and what travels out is rings.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And whatever the four turn out to be, <b>none of them can be a sided source with a net</b>: there is no way to be sided without having two sides. Checked over twenty thousand axes the net emission is exactly nought every time, because the lattice's exits come in ± pairs so a direction and its opposite always get opposite signs. That is ∇·<B>B</B> = 0 and the absence of monopoles — the symmetry <Ref of={'Maxwell, "A Dynamical Theory of the Electromagnetic Field", Phil. Trans. R. Soc. Lond. 155:459'} year="1865" at="https://doi.org/10.1098/rstl.1865.0008" /> had to write in as an observation, and which this model cannot avoid.
+          </Para>
+
+          <Head>a magnet is a lopsided default, not a stopped one</Head>
+
+          <Para>
+            The constraint that decides this whole section is that <b>a magnet still has to pulse its weight</b>. The two clocks are independent — <K><Bar>beat</Bar></K> = 1/<V>m</V> is how often it lets go, rate is how fast its axis comes round — so magnetising a thing cannot change what it weighs, and an emitter never has to stop. Both go on at once, and the magnet is the amount by which the alternation fails to come out even.
+          </Para>
+
+          <Eq note="a lopsided default, not a stopped one — and dwell is a count of ticks, so P is quantised">
+            <K><Bar>dwell</Bar></K> = <V>k</V>/<K><Bar>CYCLE</Bar></K>
+            <span style={{ padding: '0 1.2em' }} />
+            <V>P</V> = 2·<K><Bar>dwell</Bar></K> − 1
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>P</V> ∈ {'{'}0, ¼, ½, ¾, 1{'}'}
+          </Eq>
+
+          <Para>
+            A source turning at full rate is at <K><Bar>dwell</Bar></K> = ½ and has no magnet in it: its axis passes through all <K><Bar>CYCLE</Bar></K> directions, a fixed direction sees + + + 0 − − − 0, and the mean is nought. Turning it slower does not help — the same states in the same order, held longer each — which is worth being explicit about, because slowing <i>looks</i> like it should magnetise and does not. It changes the wavelength of what comes out and not the mean.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And <K><Bar>dwell</Bar></K> is a count of ticks, so the smallest magnetisation a single emitter can carry is 2/<K><Bar>CYCLE</Bar></K> = <b>a quarter</b>. Magnetisation comes in units, with nothing free in it. Against that, a saturated neodymium magnet measures <V>P</V> = 1.51·10<Sup>−5</Sup> in bulk: <b>99.9985% of what it emits cancels</b>, and what a magnet <i>is</i> is the fifteen parts per million that failed to.
+          </Para>
+
+          <Head>and where the bias lives decides everything</Head>
+
+          <Para>
+            There are two places the bias could sit and only one of them is a magnet. Put it on a <i>direction</i> — one emitter, + out of its north half and − out of its south, from a single place — and it fails: pole to pole gives <b>exactly nothing</b>, by an exact cancellation, and the fall-off is 1/<V>R</V><Sup>2</Sup> where two magnets are 1/<V>R</V><Sup>4</Sup>. Giving the emitter a ring does not rescue it, at any phase.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Put it on a <i>place</i> and everything works. A bar magnet is then a lump biased + at one end and − at the other — net zero because the two ends cancel, <b>separated in space rather than in direction</b> — which is what magnetostatics has always called the pole model. Nothing else changes: the same <K>chance</K>, the same co-location rule, the same (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>)/2 XOR whose unbiased case is the half inside <V>G</V>. And the field is integrated from the model's own signed emission rather than from a textbook formula.
+          </Para>
+
+          <Eq note="the field of a bar, summed over its two pole faces — and that sum IS a dipole">
+            <B>B</B>(<V>r</V>) = <span style={{ fontSize: '1.3em' }}>Σ</span><Sub>faces</Sub>
+            <Frac over={<>sign · <K><Bar>SHEET</Bar></K></>}
+              under={<>4<V>π r</V><Sup>2</Sup></>} />
+            <span style={{ padding: '0 1.4em' }} />
+            ⟨annihilation excess⟩ ∝ 3cos<Sup>2</Sup><V>θ</V> − 1
+            <span style={{ padding: '0 1.2em' }} />
+            <V>F</V> ∝ 1/<V>R</V><Sup>4</Sup>
+          </Eq>
+
+          <Para>
+            Measured over the whole of space by integrating the annihilation excess: <b>3cos²<V>θ</V> − 1 to three decimals</b> at every angle including both sign changes, <b>slope −2.00</b> on gravity's own 1/<V>R</V><Sup>2</Sup> so the force between two of them is 1/<V>R</V><Sup>4</Sup>, and all five orientations right — N–S facing, N–N facing, side by side either way, and one across the other giving nought to 10<Sup>−19</Sup>. That is magnetostatics, out of the same machinery that gave the rotation curve, with <b>nothing added to it</b>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It also says why <b>cutting a magnet gives two magnets</b> rather than two monopoles: the sign belongs to a region's boundary, so a new cut makes a new pair of faces. And ∇·<B>B</B> = 0 survives for the same reason — a body's two poles are the same emitters counted at both ends, so they are equal and opposite by construction.
+          </Para>
+
+          <Head>the size, which is the one thing owed</Head>
+
+          <Para>
+            The mechanism is settled and the <i>size</i> is not. First, it cannot come from the mass stream: if the biased pulses were a subset of the mass pulses the whole effect would be the (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>) factor, which runs 0 to 2, <b>so the most magnetism could ever be is one times gravity</b> — and two touching N52 cubes pull 2.2·10<Sup>12</Sup> times their own gravity. Settled, and cleanly: magnetism is its own layer with its own budget.
+          </Para>
+
+          <Eq note="one emitter's moment, the scaling in the constituent, and the conversion the layer costs">
+            <K><Bar>MAGNETON</Bar></K> =
+            <Frac over={<><K><Bar>CYCLE</Bar></K>·<V>G</V></>} under={<>2<V>π</V></>} /> = 0.0794 <V>µ</V><Sub>B</Sub>
+            <span style={{ padding: '0 1.2em' }} />
+            <V>µ</V><Sub>max</Sub>/<V>M</V> ∝ 1/<V>m</V><Sup>2</Sup>
+            <span style={{ padding: '0 1.2em' }} />
+            <V>m</V><Sub>eff</Sub> = <V>q</V>√(<V>µ</V><Sub>0</Sub>/4<V>πG</V>) = 38.7 kg per A·m
+          </Eq>
+
+          <Para>
+            One emitter's ring has radius (<K><Bar>CYCLE</Bar></K>·<V>G</V>/2<V>π</V>)·<V>λ̄</V><Sub>C</Sub>, and <V>λ̄</V><Sub>C</Sub> goes as 1/<V>m</V>, so a <i>heavier</i> emitter is a <i>smaller</i> loop and per kilogram the moment goes as 1/<V>m</V><Sup>2</Sup> in whatever the body is made of. <b>The lightest constituent wins by the square</b> — which is the fact <V>µ</V><Sub>B</Sub>/<V>µ</V><Sub>N</Sub> = 1836 records, so the model derives that magnetism is electronic rather than assuming it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the conversion has no material in it, which is what makes it a bill rather than a fit: a 1 cm N52 cube must emit as if it weighed <b>four and a half tonnes</b>, six hundred thousand times its own mass. The ratio is not constant across magnets — it runs 6·10<Sup>3</Sup> to 6·10<Sup>5</Sup>, going as <V>M</V>/<V>ρL</V>, because <b>a pole is a surface and mass is a volume</b>. Divide the geometry out and what is left <i>is</i> constant: 4.5·10<Sup>7</Sup> kg/m² of pole face for saturated N52, one number reproducing all six geometries with no residual. <b>That number is the whole of what this arc owes</b>, and it is the same shape <V>a</V><Sub>0</Sub> was before <V>cH</V><Sub>0</Sub>/2π — a coupling waiting for a count.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Because there is one ceiling, the budget is <i>shared</i>: pulses spent being a magnet are not being mass, so <b>magnetising a thing makes it lighter</b>, by exactly the fraction diverted. The cheap version of that is already dead — if the diverted fraction were the bulk bias itself, 1.5·10<Sup>−5</Sup>, a kilogram bar would lose 10 mg on being saturated, five orders above what a comparator would miss. So the magnetic layer's pulses are worth at least 10<Sup>14</Sup> gravitational ones, and that floor comes from a weighing rather than from a choice.
+          </Para>
+
+          <Head>and the three things this arc gets wrong</Head>
+
+          <Rows of={[
+            [<><V>g</V> = 1</>,
+              <>An emitter going round a loop at <K><Bar>c</Bar></K> has <V>µ</V> =
+                <V>qcr</V>/2 and <V>L</V> = <V>mcr</V>, so <V>µ</V>/<V>L</V> = <V>q</V>/2
+                <V>m</V> with the radius cancelling — the classical ratio. The electron's is
+                2.0023 to fourteen figures{' '}
+                <Ref of={'Hanneke, Fogwell & Gabrielse, "New Measurement of the Electron Magnetic Moment and the Fine Structure Constant", Phys. Rev. Lett. 100:120801'} year="2008" at="https://doi.org/10.1103/PhysRevLett.100.120801" />.
+                This one survives every choice, which makes it the sharpest.</>],
+            [<>the easy axis</>,
+              <>A held emitter puts + into every exit whose projection on its axis is
+                positive, and there are only <K><Bar>DEG</Bar></K> = 26 exits, so that split
+                is a <i>count</i>: 9 + / 8 equator / 9 − on a face or edge axis, 10 / 6 / 10
+                on a corner. So the model predicts ⟨111⟩ is the easy axis <b>by 11.1% in
+                every cubic material</b>. Right for nickel, wrong for iron, and flat where
+                measurement runs from 2.6% to 32%. A real prediction, in the right decade,
+                refuted in detail.</>],
+            [<><V>P</V> is not charge</>,
+              <>Emission rate goes as mass, so if the bias were electric charge a proton
+                would carry <b>1836 times</b> an electron's. Measurement has the two equal to
+                one part in 10<Sup>21</Sup>{' '}
+                <Ref of={'Baumann, Gähler, Kalus & Mampe, "Experimental limit for the charge of the free neutron", Phys. Rev. D 37:3107'} year="1988" at="https://doi.org/10.1103/PhysRevD.37.3107" />.
+                Whatever <V>P</V> is, it is not <V>q</V>, and everything here is read as
+                magnetism.</>],
+          ]} />
+
+          <Head>and the one number the whole thing owes</Head>
+
+          <Para>
+            Every force in this model is second order in the emission — nothing happens to a charge that does not <i>meet</i> another charge — so the electric force is capped at the size of gravity, and measurement puts it 4.166·10<Sup>42</Sup> above. What is worth saying is that <b>the hierarchy itself is not the mystery</b>.
+          </Para>
+
+          <Eq note="if the coupling were a count of order one where gravity is a product of two rates">
+            <Frac over={<V>α</V>} under={<>(<V>m</V><Sub>e</Sub>/<V>m</V><Sub>P</Sub>)<Sup>2</Sup></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            4.166·10<Sup>42</Sup>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            <V>F</V><Sub>e</Sub>/<V>F</V><Sub>g</Sub>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>measured</span>
+          </Eq>
+
+          <Para>
+            The gap is the mass in Planck units squared, which is the measured ratio to five figures because that is what those symbols mean. <b>The bill is exactly one number, <V>α</V></b>, and nothing here derives it. Of 117,649 lattice monomials searched, 51 land within half a percent of 137.036 — so a hit would not be evidence, and none is claimed.
+          </Para>
+
+          <Head>the divergence, in one place</Head>
+
+          <Rows of={[
+            [<>what changes locally</>,
+              <>Alike charges <i>turn</i> instead of annihilating, so their annihilation
+                happens half a wavelength back and several ticks later, against the
+                following wave rather than against each other. <b>The map of where space is
+                destroyed is different.</b></>],
+            [<>what changes globally</>,
+              <><i>share</i> ½ → 1 and the angular gate returns, so <V>G</V> doubles — and
+                masses are carried in units of <V>G</V>, so <b>nothing measurable moves at
+                all</b>.</>],
+            [<>what the signs buy</>,
+              <>The sign law (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>), which explains
+                the ½ that was already sitting unexplained inside <V>G</V>. Magnetisation
+                quantised in quarters. ∇·<B>B</B> = 0 and no monopoles. The dipole
+                3cos²<V>θ</V> − 1 and the 1/<V>R</V><Sup>4</Sup> force. That cutting a magnet
+                halves it. That the lightest constituent wins by the square.</>],
+            [<>what they cost</>,
+              <>One coupling — 4.5·10<Sup>7</Sup> kg/m² of pole face — measured rather than
+                counted. And three refutations: <V>g</V> = 1, the flat 11.1% anisotropy, and
+                that the bias cannot be electric charge.</>],
+            [<>what is not started</>,
+              <>The electric half, entirely: charge, <V>ε</V><Sub>0</Sub>, <V>α</V>, Faraday,
+                Ampère–Maxwell, the Lorentz force. Those need a model of matter <i>and</i> a
+                first-order channel, and neither exists — a force here is a <i>meeting</i>,
+                which is second order. That one fact is the whole of the missing column.</>],
+          ]} />
+
+        </Section>
+        <Section head="XOR Discrete Model">
+        </Section>
+
+      </Section>
+      
+      <Section head="Electromagnetism">
+     
+      </Section>
+
+      <Section head="AI Generated">
+
+        
         <Section head="TODO">
 
           <Head>the rule, and there is only one</Head>
@@ -1740,600 +2210,6 @@ const Physics = () => {
 
           <Models models={MODELS} />
         </Section>
-        <Section head="TODO3">
-
-          <Para>
-            <b>Does a square pulse ever become a round one?</b> A charge moves one cell a tick and a cell has 26 ways out, so after <V>t</V> ticks a pulse is at <i>Chebyshev</i> distance <V>t</V> — a cube shell. The faces have covered <V>t</V>, the edges √2<V>t</V>, the corners √3<V>t</V>. The closed form meanwhile divides by 4π<V>r</V><Sup>2</Sup>. Those are different shapes, and <b>scaling a cube gives a cube</b>: corner over face is 1.7321 at <V>t</V> = 10 and at <V>t</V> = 10<Sup>38</Sup> alike.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            <K>wander</K> is the rule the model already has for it — a ray takes one of the ways its direction is <i>made of</i> instead of the direction itself, so a diagonal sometimes steps along an axis and is slowed in Euclidean terms. With one <V>w</V> for every class that takes the spread from 73% to 3.5%. <b>And the 3.5% is not irreducible.</b> A direction with <V>n</V> non-zero components has mean speed (1 − <V>w</V>(<V>n</V>−1)/<V>n</V>)·√<V>n</V>, and setting that to one solves in closed form:
-          </Para>
-
-          <Eq note="at which the mean speed is 1.000000000 in all 26 directions">
-            <V>w</V>(<V>n</V>) = <Frac over={<>√<V>n</V></>} under={<>√<V>n</V> + 1</>} />
-            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
-            0.5858 <F>(edge)</F>
-            <span style={{ padding: '0 0.8em' }} />
-            0.6340 <F>(corner)</F>
-          </Eq>
-
-          <Wander />
-
-          <Para>
-            Three things were measured and they do not all agree. The front's <b>radius</b> is fixed — every ray lands on the sphere of radius <V>t</V> exactly. The shell's <b>density</b> is fixed, and this is the one the physics needs: plain propagation puts 0.853553 of the closed form's <K><Bar>SHEET</Bar></K>/4π<V>r</V><Sup>2</Sup> through a shell, so <i><K><Bar>G</Bar></K></i> would be out by <b>0.7286</b>; wandered — or with steps costing their own length — it is 1.000000 exactly. The falloff <i>exponent</i> is −2 in all three, so the inverse square was never at risk.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            The front's <b>directions</b> are not fixed, and get worse with distance. A wandering beam's angular width goes as 1/√<V>t</V>, so the beams <i>collimate</i>: 11.1° at <V>t</V> = 10 and 0.70° at 2560, and 26 cones of that width cover 2.4·10<Sup>−6</Sup> of the sky by <V>t</V> = 10<Sup>6</Sup>. <b>And no averaging saves it</b>, because the lattice is translation-invariant: every emitter at every site has the same 26 exits, so averaging over positions, orientations, phases or 10<Sup>39</Sup> constituents never makes a twenty-seventh direction.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Which leaves a split worth being exact about. What the closed form needs from the lattice is a <i>number</i> — how much of a source is at a place — and wandering delivers that number exactly. What it does not deliver is the <i>picture</i>: the flux sits on 26 needles rather than smeared over the shell, so <K>chance</K> is right on average and wrong at any particular point. <b>Every prediction in this booklet is computed from the average, and none from a particular point</b> — which is why nothing above moves, and also why this should be read as an open problem rather than a repair.
-          </Para>
-
-          <Head>and whether a circle was ever the right thing to want</Head>
-
-          <Para>
-            Everything above quietly assumes the answer is a circle and then asks how a lattice could manage one. <b>That assumption is doing real work and it has not been argued for.</b> What discreteness actually offers is a choice of aggregate shape — a sphere, a cube, a curved diamond — and each of them is a different answer to one question: <i>what is a heading?</i> The rule picks the shape, and the shape is not handed down from anywhere.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            So here is every path a ray could take, as a field, under four answers to that question. Alpha is the probability that a path ends in a cell, gamma-corrected so the thin parts show rather than clipping to black — and nothing is sampled: with free headings the two coordinates are <i>independent binomials</i>, so the field is exact.
-          </Para>
-
-          <WanderPaths />
-
-          <Para>
-            <b>Read the veins.</b> One held heading gives eight rays and an aggregate square — there is no envelope, only spokes. The current <K>wander</K> broadens the diagonals and <i>cannot</i> broaden the axes, since a face step has no constituents to wander into, so the spokes fatten unevenly and there are still eight. Free headings close the ring — and it comes out <b>sharp on the axes and blurred on the diagonals</b>, because the radial spread is √((1 − Σ<V>u</V><Sub>i</Sub><Sup>4</Sup>)<V>t</V>) and Σ<V>u</V><Sub>i</Sub><Sup>4</Sup> is exactly 1 along an axis. Measured on the field at <V>t</V> = 24: radial sd 1.16 on the axis, 2.21 at 22.5°, 3.02 on the diagonal.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And the fourth panel is the other route, which is worth taking seriously on its own: <b>a large surface of emitters fills a shell better than a point with a neighbourhood does</b>, because the veins widen by the body's own size rather than by any rule about stepping. Measured, that works — and it works out to about <b>2.5 body radii and no further</b>, with the curves for bodies of radius 1, 4 and 16 lying on top of each other. So extendedness buys a proportionally bigger circle, never a longer-lasting one.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            We could imagine a world where the discreteness genuinely mattered for the spread of those rays — where the blur is the physics rather than a repair. But then it has to be a wander that <i>does not discriminate</i>, since the one above is picky: it mixes a heading with its <i>own</i> constituents, so a face step never wanders and a corner step wanders most, and that pickiness is doing all the work. Take it away — with probability <V>w</V> take a uniformly random lattice step, caring neither what your heading is nor which way you go — and the means come out at (1 − <V>w</V>)·<B>d</B>, because the 26 come in ± pairs and average to nothing.
-          </Para>
-
-          <WanderBlind />
-
-          <Para>
-            <b>So every speed is scaled by the same (1 − <V>w</V>) and the ratio never moves</b>: face (1−<V>w</V>), diagonal (1−<V>w</V>)√2, corner (1−<V>w</V>)√3, at every <V>w</V>. The square stays a square. What <V>w</V> buys is blur, and blur only <i>hides</i> it, and only near in — the corner excess grows as 0.414(1−<V>w</V>)<V>t</V> while the blur grows as √(var·<V>t</V>), so the square comes back at <V>t</V> ≈ 29 ticks for <V>w</V> = 0.5, 222 for 0.8, and 3547 for 0.95. At <V>w</V> = 1 it is gone, and so is propagation: the mean speed is nought and nothing goes anywhere at all.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Which suggests the rule that neither of the two above is: <b>you may deviate, but only into a direction you are already going in.</b> Take the candidates to be every lattice direction with a <i>positive projection</i> on the heading — and note first that the cone's size is <b>9 for a face or an edge and 10 for a corner</b>, which are exactly the counts <K>biased</K> uses for the ⟨111⟩ easy axis, reached here from a completely different question.
-          </Para>
-
-          <WanderForward />
-
-          <Para>
-            The cone's mean step has a closed form and it is the whole mechanism: <b>1 for a face, 2√2/3 for an edge, √3/2 for a corner</b>. So a face's mean is <i>exactly its own heading</i> and its speed is 1 at every <V>w</V>, while the diagonals get pulled in — √2(1 − <V>w</V>/3) and √3(1 − <V>w</V>/2). <b>Wandering forward shortens the diagonals and leaves the axes alone</b>, which is precisely the correction wanted, and nothing had to be singled out by hand to get it: the asymmetry falls out of the cone counts.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            One <V>w</V> takes the spread to <b>1.57%</b>, against 3.5% for the constituent rule and 73% for none — and two zero it exactly, at <V>w</V> = 3(1 − 1/√2) = 0.8787 for an edge and 2(1 − 1/√3) = 0.8453 for a corner. Which is the first version of this that reads as a rule rather than a repair, and the first place <V>w</V> has had any reason to be one number rather than another.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And the distribution itself, swept through <V>w</V> — not one pulse at one age, which is only a shell, but <b>steady state</b>: a source pulses every tick, so charges of every age are in flight at once and the picture fills. Each cell is drawn against the mean at <i>its own radius</i>, so the 1/<V>r</V> falloff divides out and what is left is purely angular — where the field is thick and where it is thin. In the plane a forward cone always has <i>three</i> members, so the walk is a <b>trinomial</b> and every path is enumerated with its exact weight rather than sampled.
-          </Para>
-
-          <WanderVeins />
-
-          <Para>
-            <b>The veins have a reason.</b> A face heading's cone is {'{'}(1,0), (1,1), (1,−1){'}'} and every one of those has <V>x</V> = 1 — so <V>x</V> advances by exactly one a tick <i>whatever path is taken</i>, and the density piles up along the axis as a ridge that cannot spread radially at all. A diagonal's cone is {'{'}(1,0), (1,1), (0,1){'}'}, which fixes nothing, so it opens into a wedge. <b>Ridges along the eight headings, thin wedges between them</b> — a fact about which directions share a component, not about any parameter.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Turning <V>w</V> up fills the wedges and cannot flatten the ridges. The contrast printed under each panel is the thickest place at a radius over the mean at that radius: <b>7.7× at <V>w</V> = 0.3, and still 3.3× at the <V>w</V> that puts the ring on the circle</b>. So even where the front is a perfect circle, the field inside it is nowhere near smooth — which is the honest picture of what <K>chance</K>'s 1/<V>r</V><Sup>2</Sup> is an average over.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Which is the honest state of it. <b>A circle is not recovered; it is chosen, by choosing what a heading is.</b> The lattice will as happily give a square, and a world where the discreteness of the spread genuinely mattered is not obviously ours to rule out — the residual here is a rank-four fingerprint worth 37 µm over a Hubble time, which is small but is not nothing, and is the one thing this whole route predicts that assuming a sphere never could.
-          </Para>
-
-          <Head>except where it is recovered, which is where the law reads it</Head>
-
-          <Para>
-            Everything on this page is about <i>one pulse in flight</i>, and for one pulse the verdict above holds without qualification: the front is a cube, scaling a cube gives a cube, and no amount of blur or averaging or 10<Sup>39</Sup> constituents makes a twenty-seventh direction. But the force law never asks a front anything. It asks what is <i>at</i> a place, of a source that has been emitting every tick since it existed — and that is a settled field, which is a different object with a different shape.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            <b>And the settled field is round, without choosing anything.</b> One absorber in a 101<Sup>3</Sup> vacuum on the 26-neighbour rule, run to steady state: the deficit fits <V>A</V>(1/<V>r</V> − 1/<V>R</V>) to 2% past <V>r</V> = 8, and ⟨100⟩, ⟨110⟩ and ⟨111⟩ agree to 0.90–1.10 at matched radius with no axis preferred. A Chebyshev field would read 2.16 where ⟨111⟩ at <V>r</V> = 20 reads 0.775. The reason is not a rule and not a repair: relaxation kills the anisotropy because the 26-neighbour Laplacian is isotropic to fourth order, and a cube is what only <i>ballistic</i> propagation preserves.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            So the two halves of this section are about two different questions and only one of them is open. <b>What is the shape of a pulse?</b> — a cube, chosen, and the choice is real physics with a 37 µm fingerprint on it. <b>What is the shape of a field?</b> — a sphere, derived, past about four cells, and that is the one <K>chance</K> divides by. The lattice survives in the near field, where ⟨111⟩ runs 21% high at <V>r</V> = 6 and is inside 5% by <V>r</V> = 10, which is exactly the range <K><Bar>FLOOR</Bar></K> was already guarding by hand.
-          </Para>
-
-          <Law/>
-        </Section>
-      </Section>
-
-      <Section head="XOR: Gravity + Magnetism">
-
-        Instead of having our rays be neutral, we can introduce a polarity to them: positive/negative. When we do that gravity + magnetism comes down to three rules:
-        <BR/>
-        (G+M/1) Annihilation: When two opposite polarities meet, they annihilate, leaving a single neutral spatial point behind.
-
-        <Models models={[DISCRETE[5]]}/>
-
-        (G+M/2) Creation: On all axis, a neutral point expands into two points with opposite polarity in all directions.
-
-        <Models models={[BACKWARD[5]]}/>
-
-        (G+M/3) Repulsion: When two identical polarities meet, they turn around.
-
-        <Models models={[DISCRETE[4]]}/>
-
-        Then the other permutations of the rules are just movement rules (like these two).
-
-        <Models models={[DISCRETE[1]]}/>
-
-        With this setup, we get aggregate behavior of groups of the same polarities, turning away from each other.
-
-        <Models models={([
-            [Polarity.Positive, Polarity.Positive],
-            [Polarity.Negative, Polarity.Negative],
-        ] as [Polarity, Polarity][]).map(([left, right]): Model => ({
-          name: '',
-          note: '',
-          lattice: {
-            seed: () => Graph.blocks({ charge: bySide(left, right) }),
-            ticks: 15, height: 140, density: false,
-          },
-        }))}/>
-
-        And ones with opposite polarities annihilating each-other.
-
-        <Models models={([
-            [Polarity.Positive, Polarity.Negative],
-        ] as [Polarity, Polarity][]).map(([left, right]): Model => ({
-          name: '',
-          note: '',
-          lattice: {
-            seed: () => Graph.blocks({ charge: bySide(left, right) }),
-            ticks: 5, height: 140, density: false,
-          },
-        }))}/>
-
-        Then an interesting thing happens when you alternate polarities (the phase not mattering for this result). You get attraction. And we recover our two rules of gravity (G/1 + G/2) from these three rules.
-
-        <Models models={([
-          [Polarity.Positive, Polarity.Negative],
-          [Polarity.Positive, Polarity.Positive],
-        ] as [Polarity, Polarity][]).map(([left, right]): Model => ({
-          name: '',
-          note: '',
-          lattice: {
-            seed: () => Graph.emitters({ left, right, gap: 20, every: 1, spin: true }),
-            ticks: 22, height: 140,
-          },
-        }))}/>
-
-        <Section head="Gravity vs XOR">
-          - the heaviest elementary thing goes from ≈1.36 µg to ≈2.71 µg
-          - a body of given physical mass pulses half as often
-
-          <Eq>
-            <K><Bar>G</Bar></K><Sup><R>XOR</R></Sup> = <Frac over={1} under={2} /><K><Bar>G</Bar></K>
-          </Eq>
-        </Section>
-        
-        <Section head="XOR Continuous Model">
-
-          <Eq derive={TURNS} note="two on a line, and eight at every dimension of two or more">
-            <K>l.<Bar>CYCLE</Bar></K> = ways(min(<K>l.<Bar>D</Bar></K>, 2)) =
-            3<Sup>min(<K>l.<Bar>D</Bar></K>, 2)</Sup> − 1
-            <span style={{ padding: '0 1.4em' }} />
-            <K><Bar>SPIN</Bar></K> =
-            <Frac over={<>2<V>π</V></>} under={<K><Bar>CYCLE</Bar></K>} /> = 45°
-          </Eq>
-
-          <Para>
-            The gravity arc counts <i>one</i> thing about an emitter: how often it lets go. That is mass. This arc keeps the second thing, which is <b>which way round it is when it does</b> — and the whole of the difference between the two models is what you do with a sign.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            So the plan for this section is: first what changes in the rules, then <i>where</i> the two models diverge — which is local and is the interesting part — then why the global answer is nevertheless the same, and then magnetism, which is what the signs buy.
-          </Para>
-
-          <Head>a charge as a number</Head>
-
-          <Para>
-            Give each ray a polarity and write it as a number, because that is the form both readings share: +1, −1, or 0 for neutral space. Then the entire interaction law is one expression.
-          </Para>
-
-          <Eq note="the whole interaction law, and it has exactly two outcomes">
-            agreement(<V>a</V>,<V>b</V>) =
-            <Frac over={<><V>ab</V></>} under={<>|<V>a</V>||<V>b</V>| + <V>ε</V></>} />
-            <span style={{ padding: '0 1.2em' }} />
-            alike = max(agreement, 0)
-            <span style={{ padding: '0 1.2em' }} />
-            cancelling = max(−agreement, 0)
-          </Eq>
-
-          <Para>
-            Alike is +1 and neither can cancel the other and neither can pass through it, so each turns around — that is (G+M/3). Opposite is −1 and they annihilate, taking the space they were on with them — that is (G+M/1), and it is the only event in the model that changes how much space there is. <b>Nothing in between ever happens to a pair on the lattice</b>, because a lattice charge is ±1 and the product of two of those is ±1.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            In between is what a <i>field</i> does, and it is not a third outcome — it is what you get when the same rule is applied to a great many pairs at once and the answer is how many of them went each way. Which is exactly why the continuous model can hand this same expression a fractional value and mean something true by it: <b>a polarity is a field value rounded off to its sign</b>, and every law is written against the number so neither reading has to restate it.
-          </Para>
-
-          <Head>where the two models actually diverge — and it is local</Head>
-
-          <Para>
-            Here is the thing worth being careful about, because it is easy to read the two models as the same theory with a different label on the rays, and they are not.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Take two rays coming head on. <b>Without polarity there is only one thing that can happen:</b> they meet, they annihilate, and the space goes <i>there</i>, at that cell, on that tick. <b>With polarity there are two.</b> If they disagree, the same thing happens in the same place. If they agree, they <i>turn around</i> — nothing is destroyed at that cell at all — and each travels back the way it came until it runs into the next wave its own source put out behind it. That wave is the opposite sign, because the source alternates. So they annihilate <i>there</i>: half a wavelength back, several ticks later, on the source's side of where the meeting was.
-          </Para>
-
-          <Eq note="the same two rays, the same eventual annihilation — a different cell and a different tick">
-            <F>no polarity</F>&nbsp;&nbsp;
-            meet at <V>x</V> &nbsp;→&nbsp; annihilate at <V>x</V>, on tick <V>t</V>
-            <span style={{ padding: '0 1.4em' }} />
-            <F>XOR</F>&nbsp;&nbsp;
-            meet at <V>x</V> &nbsp;→&nbsp; turn &nbsp;→&nbsp;
-            annihilate at <V>x</V> ∓ <V>λ</V>/2, on tick <V>t</V> + <V>λ</V>/2<V>c</V>
-          </Eq>
-
-          <Para>
-            <b>That is a real difference and it is entirely local.</b> The map of where space is being destroyed is different between the two models — the XOR one puts its annihilations on the near side of the midline in bands, one per half-cycle, rather than all of them on the surface between the sources. It is the same difference that makes the aggregate panels in the previous section behave as they do: alternating polarities attract because the meetings land where they land, and matched polarities turn away because the meetings keep getting pushed back.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And then a second thing changes with it, in the opposite direction. Without a sign, there is nothing left to decide an outcome <i>but</i> the angle — so the angular gate comes back and a meeting only counts when the two are closing on each other, which bounds the folding to a lens between the bodies. With a sign, the sign decides it and being in the same cell is the whole of the condition, at any angle; what the angle sets is not <i>whether</i> but <i>how much</i>.
-          </Para>
-
-          <Eq note="what the angle is for, once polarity decides the outcome">
-            closing(<B>u</B>,<B>v</B>) = max(−<B>u</B>·<B>v</B>, 0)
-            <span style={{ padding: '0 1.2em' }} />
-            <K><Bar>HEAD_ON</Bar></K> = 1/√2
-            <span style={{ padding: '0 1.2em' }} />
-            splice(<B>u</B>,<B>v</B>) = |<B>û</B> − <B>v̂</B>| = 2 sin(<V>θ</V>/2)
-          </Eq>
-
-          <Para>
-            splice is how much a meeting <i>shortens</i>: two cells for two rays head on, nothing at all for two going the same way. Which is the honest reading of what an annihilation does to a distance, and it needs the angle whether or not there are signs.
-          </Para>
-
-          <Head>and why the global answer is the same anyway</Head>
-
-          <Para>
-            Two rules changed and they pull opposite ways, and when you write them into <V>S</V><Sub>ab</Sub> they land on the same factor.
-          </Para>
-
-          <Rows of={[
-            [<><i>share</i>: ½ → 1</>,
-              <>Without polarity <b>every</b> meeting annihilates, where before only the
-                opposite half did. So the share doubles.</>],
-            [<>the angular gate</>,
-              <>Comes back, since there is nothing else left to decide an outcome. So the
-                folding is bounded to a lens again.</>],
-          ]} />
-
-          <Eq note="G doubles — and that is the whole of it">
-            <i><K><Bar>G</Bar></K></i> = <Frac
-              over={<><K><Bar>BITE</Bar></K>·<i>share</i>·<K><Bar>SHEET</Bar></K><Sup>2</Sup>·<K><Bar>c</Bar></K></>}
-              under={<>4<V>π</V><Sup>2</Sup>·{HALF}·<K><Bar>DEG</Bar></K></>} />
-            <span style={{ padding: '0 1.4em' }} />
-            {gravitational(0.5).toFixed(6)} → {gravitational(1).toFixed(6)}
-          </Eq>
-
-          <Para>
-            <b>And the factor of two is not observable in an orbit.</b> Every mass in the model is carried in units of <i><K><Bar>G</Bar></K></i>, so a body of physical mass <V>M</V> holds <V>M</V>/<i><K><Bar>G</Bar></K></i> and the dynamics compute <i><K><Bar>G</Bar></K></i>·(<V>M</V>/<i><K><Bar>G</Bar></K></i>). The constant is gone before it is used — <b>a change of the mass unit, not of a trajectory</b>. Measured on the line integral: exactly two at every separation, with <V>S</V>·<V>R</V><Sup>2</Sup> flat in both.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            <b>But "not of a prediction" would be too strong, and the exception is the mass unit itself.</b> It is not free to stay put — <V>µ</V> = <i><K><Bar>G</Bar></K></i>·<V>m</V><Sub>P</Sub>, so doubling one doubles the other. The heaviest elementary thing goes from <b>{(massUnit(0.5) * 1e9).toFixed(3)} µg to {(massUnit(1) * 1e9).toFixed(3)} µg</b>, and a body of given physical mass pulses <b>half as often</b>: an electron every 1.61·10<Sup>−22</Sup> s against 8.03·10<Sup>−23</Sup>. Which is the right direction rather than a fault — with no polarity every meeting annihilates instead of half of them, so each emission is twice as effective and half as much of it is needed for the same pull. Nothing measures that ceiling, so it refutes neither version; but it is a statement about the world, and it moves.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            The tick and the step do <i>not</i> go with it, which is worth checking rather than assuming. At the ceiling the period is <i><K><Bar>G</Bar></K></i>ħ/(<V>µc</V><Sup>2</Sup>) = ħ/(<V>m</V><Sub>P</Sub><V>c</V><Sup>2</Sup>) — the <i><K><Bar>G</Bar></K></i> cancels — so both stay exactly Planck at either share. And so does the Compton line, whose constant tracks <i><K><Bar>G</Bar></K></i> because <V>µ</V> does: measured, <V>k</V>/<i><K><Bar>G</Bar></K></i> = 1.000000000 at both.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            <K><Bar>SHEET</Bar></K>, <K><Bar>DEG</Bar></K>, <K><Bar>BITE</Bar></K>, <K><Bar>BIAS</Bar></K>, {HALF}, <V>ε</V>, <V>D</V>, the reach, the step and the tick do not move at all. And neither does anything <i>measured</i>: Mercury's sixth, the other five sixths, light's deflection, <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π, the Milky Way to 1.1%, the transport turnover, the interpolation function, the step at 33 and 52 kpc, and <V>H</V><Sub>0</Sub> = 1/<V>t</V><Sub>0</Sub>. <b>All identical, to every digit quoted</b> — because every one of them is computed from something that never mentions a sign.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            So the honest statement of the divergence is: <b>the two models put their annihilations in different places and get the same pull out of them.</b> Locally different, globally identical. Which makes the XOR a free parameter on the gravitational side — turning it on costs nothing and buys magnetism, turning it off costs magnetism and buys nothing — and that is a better position than the page was in before the question was asked, because it means the magnetic half cannot break the gravitational one. There is no shared number for it to get wrong.
-          </Para>
-
-          <Head>the sign law was already inside G</Head>
-
-          <Para>
-            Except for one, and this is the part I did not expect. <V>G</V>'s derivation carries a factor it has never had to justify: <i>half of them opposite</i>. That half is the chance that two charges landing in the same cell have opposite sign — and it is not a constant. It is a fact about the matter involved. Half is what you get when both bodies are unbiased. Ordinary matter is unbiased. <b>That is the whole reason it ever looked like a number.</b>
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Put the bias back. If a fraction (1+<V>P</V>)/2 of a body's charges are positive at a place, then of the meetings between <V>a</V>'s and <V>b</V>'s:
-          </Para>
-
-          <Eq note="opposite annihilates, alike turns — and there is nothing else two charges can do">
-            annihilating(<V>P</V><Sub>a</Sub>,<V>P</V><Sub>b</Sub>) =
-            <Frac over={<>1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub></>} under={<>2</>} />
-            <span style={{ padding: '0 1.4em' }} />
-            turning(<V>P</V><Sub>a</Sub>,<V>P</V><Sub>b</Sub>) =
-            <Frac over={<>1 + <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub></>} under={<>2</>} />
-          </Eq>
-
-          <Eq note="like biases attract less, opposite attract more — and at P = 0 it is Newton exactly">
-            <V>F</V> = <Frac
-              over={<><V>G</V> <V>m</V><Sub>a</Sub> <V>m</V><Sub>b</Sub></>}
-              under={<><V>R</V><Sup>2</Sup></>} />
-            <span style={{ padding: '0 0.5em' }} />
-            (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>)
-          </Eq>
-
-          <Para>
-            Read off the split. Unbiased against unbiased is one half and one half, which <i>is</i> the ½ in <V>G</V>, so Newton is the <V>P</V> = 0 case and not a separate claim. Biased against unbiased is also one half — a bias does nothing to something with no bias of its own, which comes out of the arithmetic rather than being put in by hand. Same bias gives nought; opposite bias gives twice. <b>Opposites attract and sameness repels, derived</b> — which is where this whole idea started, and which is the sign law <Ref of={'Coulomb, "Premier mémoire sur l\'électricité et le magnétisme", Histoire de l\'Académie Royale des Sciences 569'} year="1785" at="https://gallica.bnf.fr/ark:/12148/bpt6k3570k/f662" /> wrote down as an observation.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Which is worth stopping on: <b>the gravitational constant carries a factor of one half because ordinary matter is unbiased.</b> If matter had a net bias, <V>G</V> would be a different number. The half was already there and unexplained; this is what it was — and it needs no reading whatever of what the bias <i>is</i>.
-          </Para>
-
-          <Head>one emission, three moments of it</Head>
-
-          <Para>
-            Gravity used the zeroth moment of the emission and threw the rest away. Keep them and the same emission answers three different questions.
-          </Para>
-
-          <Eq note="the count is mass, the signed sum is a net, the signed first moment is a bias">
-            <V>m</V> = ⟨1⟩<span style={{ padding: '0 1.6em' }} />
-            <V>q</V> = ⟨<V>s</V>⟩<span style={{ padding: '0 1.6em' }} />
-            <V>µ</V> = ⟨<V>s</V> <B>d̂</B>⟩
-          </Eq>
-
-          <Para>
-            And that is why the two behave so differently, which is not a coincidence. <b>A count always adds</b>, so gravity has one sign and cannot be screened by cancellation. <b>A signed sum cancels</b>, so a bias comes in two kinds and ordinary matter has none of it while still having all of its mass.
-          </Para>
-
-          <Head>what a source is doing at a given moment</Head>
-
-          <Para>
-            A source has exactly two switches and they are independent: whether it has <i>sides</i> (an axis) and whether it <i>comes round</i> (turns, or flips). Crossing them gives four distinguishable emissions, and the whole of what a source is doing at a tick is three lines.
-          </Para>
-
-          <Eq note="where its north points, and what it emits that way">
-            rate(<V>s</V>) ∈ [0, 1]
-            <span style={{ padding: '0 1.2em', color: FAINT }}>turns per <K><Bar>CYCLE</Bar></K> ticks</span>
-            <V>β</V>(<V>s</V>,<V>t</V>) = phase +
-            <Frac over={<><V>t</V>·rate</>} under={<K><Bar>CYCLE</Bar></K>} />
-          </Eq>
-
-          <Eq note="a spiral and a ring are the same function with and without an angle in it">
-            <V>F</V>(<B>d</B>) = sided ? <B>d</B>·<B>n̂</B>(<V>β</V>) : cos(2<V>π</V><V>β</V>)
-          </Eq>
-
-          <Para>
-            <i>Sided</i> is the only thing separating the two kinds of source, and it is not a parameter so much as a question about the source. With sides, what it emits depends on the direction — the field carries a θ in it, its zero set is θ = 2π<V>β</V> + const, and that is an Archimedean spiral. Without, direction drops out altogether, the zero set is a set of <i>instants</i> rather than places, and what travels out is rings.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And whatever the four turn out to be, <b>none of them can be a sided source with a net</b>: there is no way to be sided without having two sides. Checked over twenty thousand axes the net emission is exactly nought every time, because the lattice's exits come in ± pairs so a direction and its opposite always get opposite signs. That is ∇·<B>B</B> = 0 and the absence of monopoles — the symmetry <Ref of={'Maxwell, "A Dynamical Theory of the Electromagnetic Field", Phil. Trans. R. Soc. Lond. 155:459'} year="1865" at="https://doi.org/10.1098/rstl.1865.0008" /> had to write in as an observation, and which this model cannot avoid.
-          </Para>
-
-          <Head>a magnet is a lopsided default, not a stopped one</Head>
-
-          <Para>
-            The constraint that decides this whole section is that <b>a magnet still has to pulse its weight</b>. The two clocks are independent — <K><Bar>beat</Bar></K> = 1/<V>m</V> is how often it lets go, rate is how fast its axis comes round — so magnetising a thing cannot change what it weighs, and an emitter never has to stop. Both go on at once, and the magnet is the amount by which the alternation fails to come out even.
-          </Para>
-
-          <Eq note="a lopsided default, not a stopped one — and dwell is a count of ticks, so P is quantised">
-            <K><Bar>dwell</Bar></K> = <V>k</V>/<K><Bar>CYCLE</Bar></K>
-            <span style={{ padding: '0 1.2em' }} />
-            <V>P</V> = 2·<K><Bar>dwell</Bar></K> − 1
-            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
-            <V>P</V> ∈ {'{'}0, ¼, ½, ¾, 1{'}'}
-          </Eq>
-
-          <Para>
-            A source turning at full rate is at <K><Bar>dwell</Bar></K> = ½ and has no magnet in it: its axis passes through all <K><Bar>CYCLE</Bar></K> directions, a fixed direction sees + + + 0 − − − 0, and the mean is nought. Turning it slower does not help — the same states in the same order, held longer each — which is worth being explicit about, because slowing <i>looks</i> like it should magnetise and does not. It changes the wavelength of what comes out and not the mean.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And <K><Bar>dwell</Bar></K> is a count of ticks, so the smallest magnetisation a single emitter can carry is 2/<K><Bar>CYCLE</Bar></K> = <b>a quarter</b>. Magnetisation comes in units, with nothing free in it. Against that, a saturated neodymium magnet measures <V>P</V> = 1.51·10<Sup>−5</Sup> in bulk: <b>99.9985% of what it emits cancels</b>, and what a magnet <i>is</i> is the fifteen parts per million that failed to.
-          </Para>
-
-          <Head>and where the bias lives decides everything</Head>
-
-          <Para>
-            There are two places the bias could sit and only one of them is a magnet. Put it on a <i>direction</i> — one emitter, + out of its north half and − out of its south, from a single place — and it fails: pole to pole gives <b>exactly nothing</b>, by an exact cancellation, and the fall-off is 1/<V>R</V><Sup>2</Sup> where two magnets are 1/<V>R</V><Sup>4</Sup>. Giving the emitter a ring does not rescue it, at any phase.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Put it on a <i>place</i> and everything works. A bar magnet is then a lump biased + at one end and − at the other — net zero because the two ends cancel, <b>separated in space rather than in direction</b> — which is what magnetostatics has always called the pole model. Nothing else changes: the same <K>chance</K>, the same co-location rule, the same (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>)/2 XOR whose unbiased case is the half inside <V>G</V>. And the field is integrated from the model's own signed emission rather than from a textbook formula.
-          </Para>
-
-          <Eq note="the field of a bar, summed over its two pole faces — and that sum IS a dipole">
-            <B>B</B>(<V>r</V>) = <span style={{ fontSize: '1.3em' }}>Σ</span><Sub>faces</Sub>
-            <Frac over={<>sign · <K><Bar>SHEET</Bar></K></>}
-              under={<>4<V>π r</V><Sup>2</Sup></>} />
-            <span style={{ padding: '0 1.4em' }} />
-            ⟨annihilation excess⟩ ∝ 3cos<Sup>2</Sup><V>θ</V> − 1
-            <span style={{ padding: '0 1.2em' }} />
-            <V>F</V> ∝ 1/<V>R</V><Sup>4</Sup>
-          </Eq>
-
-          <Para>
-            Measured over the whole of space by integrating the annihilation excess: <b>3cos²<V>θ</V> − 1 to three decimals</b> at every angle including both sign changes, <b>slope −2.00</b> on gravity's own 1/<V>R</V><Sup>2</Sup> so the force between two of them is 1/<V>R</V><Sup>4</Sup>, and all five orientations right — N–S facing, N–N facing, side by side either way, and one across the other giving nought to 10<Sup>−19</Sup>. That is magnetostatics, out of the same machinery that gave the rotation curve, with <b>nothing added to it</b>.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            It also says why <b>cutting a magnet gives two magnets</b> rather than two monopoles: the sign belongs to a region's boundary, so a new cut makes a new pair of faces. And ∇·<B>B</B> = 0 survives for the same reason — a body's two poles are the same emitters counted at both ends, so they are equal and opposite by construction.
-          </Para>
-
-          <Head>the size, which is the one thing owed</Head>
-
-          <Para>
-            The mechanism is settled and the <i>size</i> is not. First, it cannot come from the mass stream: if the biased pulses were a subset of the mass pulses the whole effect would be the (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>) factor, which runs 0 to 2, <b>so the most magnetism could ever be is one times gravity</b> — and two touching N52 cubes pull 2.2·10<Sup>12</Sup> times their own gravity. Settled, and cleanly: magnetism is its own layer with its own budget.
-          </Para>
-
-          <Eq note="one emitter's moment, the scaling in the constituent, and the conversion the layer costs">
-            <K><Bar>MAGNETON</Bar></K> =
-            <Frac over={<><K><Bar>CYCLE</Bar></K>·<V>G</V></>} under={<>2<V>π</V></>} /> = 0.0794 <V>µ</V><Sub>B</Sub>
-            <span style={{ padding: '0 1.2em' }} />
-            <V>µ</V><Sub>max</Sub>/<V>M</V> ∝ 1/<V>m</V><Sup>2</Sup>
-            <span style={{ padding: '0 1.2em' }} />
-            <V>m</V><Sub>eff</Sub> = <V>q</V>√(<V>µ</V><Sub>0</Sub>/4<V>πG</V>) = 38.7 kg per A·m
-          </Eq>
-
-          <Para>
-            One emitter's ring has radius (<K><Bar>CYCLE</Bar></K>·<V>G</V>/2<V>π</V>)·<V>λ̄</V><Sub>C</Sub>, and <V>λ̄</V><Sub>C</Sub> goes as 1/<V>m</V>, so a <i>heavier</i> emitter is a <i>smaller</i> loop and per kilogram the moment goes as 1/<V>m</V><Sup>2</Sup> in whatever the body is made of. <b>The lightest constituent wins by the square</b> — which is the fact <V>µ</V><Sub>B</Sub>/<V>µ</V><Sub>N</Sub> = 1836 records, so the model derives that magnetism is electronic rather than assuming it.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            And the conversion has no material in it, which is what makes it a bill rather than a fit: a 1 cm N52 cube must emit as if it weighed <b>four and a half tonnes</b>, six hundred thousand times its own mass. The ratio is not constant across magnets — it runs 6·10<Sup>3</Sup> to 6·10<Sup>5</Sup>, going as <V>M</V>/<V>ρL</V>, because <b>a pole is a surface and mass is a volume</b>. Divide the geometry out and what is left <i>is</i> constant: 4.5·10<Sup>7</Sup> kg/m² of pole face for saturated N52, one number reproducing all six geometries with no residual. <b>That number is the whole of what this arc owes</b>, and it is the same shape <V>a</V><Sub>0</Sub> was before <V>cH</V><Sub>0</Sub>/2π — a coupling waiting for a count.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Because there is one ceiling, the budget is <i>shared</i>: pulses spent being a magnet are not being mass, so <b>magnetising a thing makes it lighter</b>, by exactly the fraction diverted. The cheap version of that is already dead — if the diverted fraction were the bulk bias itself, 1.5·10<Sup>−5</Sup>, a kilogram bar would lose 10 mg on being saturated, five orders above what a comparator would miss. So the magnetic layer's pulses are worth at least 10<Sup>14</Sup> gravitational ones, and that floor comes from a weighing rather than from a choice.
-          </Para>
-
-          <Head>and the three things this arc gets wrong</Head>
-
-          <Rows of={[
-            [<><V>g</V> = 1</>,
-              <>An emitter going round a loop at <K><Bar>c</Bar></K> has <V>µ</V> =
-                <V>qcr</V>/2 and <V>L</V> = <V>mcr</V>, so <V>µ</V>/<V>L</V> = <V>q</V>/2
-                <V>m</V> with the radius cancelling — the classical ratio. The electron's is
-                2.0023 to fourteen figures{' '}
-                <Ref of={'Hanneke, Fogwell & Gabrielse, "New Measurement of the Electron Magnetic Moment and the Fine Structure Constant", Phys. Rev. Lett. 100:120801'} year="2008" at="https://doi.org/10.1103/PhysRevLett.100.120801" />.
-                This one survives every choice, which makes it the sharpest.</>],
-            [<>the easy axis</>,
-              <>A held emitter puts + into every exit whose projection on its axis is
-                positive, and there are only <K><Bar>DEG</Bar></K> = 26 exits, so that split
-                is a <i>count</i>: 9 + / 8 equator / 9 − on a face or edge axis, 10 / 6 / 10
-                on a corner. So the model predicts ⟨111⟩ is the easy axis <b>by 11.1% in
-                every cubic material</b>. Right for nickel, wrong for iron, and flat where
-                measurement runs from 2.6% to 32%. A real prediction, in the right decade,
-                refuted in detail.</>],
-            [<><V>P</V> is not charge</>,
-              <>Emission rate goes as mass, so if the bias were electric charge a proton
-                would carry <b>1836 times</b> an electron's. Measurement has the two equal to
-                one part in 10<Sup>21</Sup>{' '}
-                <Ref of={'Baumann, Gähler, Kalus & Mampe, "Experimental limit for the charge of the free neutron", Phys. Rev. D 37:3107'} year="1988" at="https://doi.org/10.1103/PhysRevD.37.3107" />.
-                Whatever <V>P</V> is, it is not <V>q</V>, and everything here is read as
-                magnetism.</>],
-          ]} />
-
-          <Head>and the one number the whole thing owes</Head>
-
-          <Para>
-            Every force in this model is second order in the emission — nothing happens to a charge that does not <i>meet</i> another charge — so the electric force is capped at the size of gravity, and measurement puts it 4.166·10<Sup>42</Sup> above. What is worth saying is that <b>the hierarchy itself is not the mystery</b>.
-          </Para>
-
-          <Eq note="if the coupling were a count of order one where gravity is a product of two rates">
-            <Frac over={<V>α</V>} under={<>(<V>m</V><Sub>e</Sub>/<V>m</V><Sub>P</Sub>)<Sup>2</Sup></>} />
-            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
-            4.166·10<Sup>42</Sup>
-            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
-            <V>F</V><Sub>e</Sub>/<V>F</V><Sub>g</Sub>
-            <span style={{ padding: '0 1.2em', color: FAINT }}>measured</span>
-          </Eq>
-
-          <Para>
-            The gap is the mass in Planck units squared, which is the measured ratio to five figures because that is what those symbols mean. <b>The bill is exactly one number, <V>α</V></b>, and nothing here derives it. Of 117,649 lattice monomials searched, 51 land within half a percent of 137.036 — so a hit would not be evidence, and none is claimed.
-          </Para>
-
-          <Head>the divergence, in one place</Head>
-
-          <Rows of={[
-            [<>what changes locally</>,
-              <>Alike charges <i>turn</i> instead of annihilating, so their annihilation
-                happens half a wavelength back and several ticks later, against the
-                following wave rather than against each other. <b>The map of where space is
-                destroyed is different.</b></>],
-            [<>what changes globally</>,
-              <><i>share</i> ½ → 1 and the angular gate returns, so <V>G</V> doubles — and
-                masses are carried in units of <V>G</V>, so <b>nothing measurable moves at
-                all</b>.</>],
-            [<>what the signs buy</>,
-              <>The sign law (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>), which explains
-                the ½ that was already sitting unexplained inside <V>G</V>. Magnetisation
-                quantised in quarters. ∇·<B>B</B> = 0 and no monopoles. The dipole
-                3cos²<V>θ</V> − 1 and the 1/<V>R</V><Sup>4</Sup> force. That cutting a magnet
-                halves it. That the lightest constituent wins by the square.</>],
-            [<>what they cost</>,
-              <>One coupling — 4.5·10<Sup>7</Sup> kg/m² of pole face — measured rather than
-                counted. And three refutations: <V>g</V> = 1, the flat 11.1% anisotropy, and
-                that the bias cannot be electric charge.</>],
-            [<>what is not started</>,
-              <>The electric half, entirely: charge, <V>ε</V><Sub>0</Sub>, <V>α</V>, Faraday,
-                Ampère–Maxwell, the Lorentz force. Those need a model of matter <i>and</i> a
-                first-order channel, and neither exists — a force here is a <i>meeting</i>,
-                which is second order. That one fact is the whole of the missing column.</>],
-          ]} />
-
-        </Section>
-        <Section head="XOR Discrete Model">
-        </Section>
-
         <Section head="TODO2">
 
           <Head>the same emission, with the signs kept</Head>
@@ -2610,10 +2486,996 @@ const Physics = () => {
           </Para>
 
         </Section>
-      </Section>
-      
-      <Section head="Electromagnetism">
-     
+        <Section head="TODO3">
+
+          <Para>
+            <b>Does a square pulse ever become a round one?</b> A charge moves one cell a tick and a cell has 26 ways out, so after <V>t</V> ticks a pulse is at <i>Chebyshev</i> distance <V>t</V> — a cube shell. The faces have covered <V>t</V>, the edges √2<V>t</V>, the corners √3<V>t</V>. The closed form meanwhile divides by 4π<V>r</V><Sup>2</Sup>. Those are different shapes, and <b>scaling a cube gives a cube</b>: corner over face is 1.7321 at <V>t</V> = 10 and at <V>t</V> = 10<Sup>38</Sup> alike.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <K>wander</K> is the rule the model already has for it — a ray takes one of the ways its direction is <i>made of</i> instead of the direction itself, so a diagonal sometimes steps along an axis and is slowed in Euclidean terms. With one <V>w</V> for every class that takes the spread from 73% to 3.5%. <b>And the 3.5% is not irreducible.</b> A direction with <V>n</V> non-zero components has mean speed (1 − <V>w</V>(<V>n</V>−1)/<V>n</V>)·√<V>n</V>, and setting that to one solves in closed form:
+          </Para>
+
+          <Eq note="at which the mean speed is 1.000000000 in all 26 directions">
+            <V>w</V>(<V>n</V>) = <Frac over={<>√<V>n</V></>} under={<>√<V>n</V> + 1</>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            0.5858 <F>(edge)</F>
+            <span style={{ padding: '0 0.8em' }} />
+            0.6340 <F>(corner)</F>
+          </Eq>
+
+          <Wander />
+
+          <Para>
+            Three things were measured and they do not all agree. The front's <b>radius</b> is fixed — every ray lands on the sphere of radius <V>t</V> exactly. The shell's <b>density</b> is fixed, and this is the one the physics needs: plain propagation puts 0.853553 of the closed form's <K><Bar>SHEET</Bar></K>/4π<V>r</V><Sup>2</Sup> through a shell, so <i><K><Bar>G</Bar></K></i> would be out by <b>0.7286</b>; wandered — or with steps costing their own length — it is 1.000000 exactly. The falloff <i>exponent</i> is −2 in all three, so the inverse square was never at risk.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The front's <b>directions</b> are not fixed, and get worse with distance. A wandering beam's angular width goes as 1/√<V>t</V>, so the beams <i>collimate</i>: 11.1° at <V>t</V> = 10 and 0.70° at 2560, and 26 cones of that width cover 2.4·10<Sup>−6</Sup> of the sky by <V>t</V> = 10<Sup>6</Sup>. <b>And no averaging saves it</b>, because the lattice is translation-invariant: every emitter at every site has the same 26 exits, so averaging over positions, orientations, phases or 10<Sup>39</Sup> constituents never makes a twenty-seventh direction.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which leaves a split worth being exact about. What the closed form needs from the lattice is a <i>number</i> — how much of a source is at a place — and wandering delivers that number exactly. What it does not deliver is the <i>picture</i>: the flux sits on 26 needles rather than smeared over the shell, so <K>chance</K> is right on average and wrong at any particular point. <b>Every prediction in this booklet is computed from the average, and none from a particular point</b> — which is why nothing above moves, and also why this should be read as an open problem rather than a repair.
+          </Para>
+
+          <Head>and whether a circle was ever the right thing to want</Head>
+
+          <Para>
+            Everything above quietly assumes the answer is a circle and then asks how a lattice could manage one. <b>That assumption is doing real work and it has not been argued for.</b> What discreteness actually offers is a choice of aggregate shape — a sphere, a cube, a curved diamond — and each of them is a different answer to one question: <i>what is a heading?</i> The rule picks the shape, and the shape is not handed down from anywhere.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So here is every path a ray could take, as a field, under four answers to that question. Alpha is the probability that a path ends in a cell, gamma-corrected so the thin parts show rather than clipping to black — and nothing is sampled: with free headings the two coordinates are <i>independent binomials</i>, so the field is exact.
+          </Para>
+
+          <WanderPaths />
+
+          <Para>
+            <b>Read the veins.</b> One held heading gives eight rays and an aggregate square — there is no envelope, only spokes. The current <K>wander</K> broadens the diagonals and <i>cannot</i> broaden the axes, since a face step has no constituents to wander into, so the spokes fatten unevenly and there are still eight. Free headings close the ring — and it comes out <b>sharp on the axes and blurred on the diagonals</b>, because the radial spread is √((1 − Σ<V>u</V><Sub>i</Sub><Sup>4</Sup>)<V>t</V>) and Σ<V>u</V><Sub>i</Sub><Sup>4</Sup> is exactly 1 along an axis. Measured on the field at <V>t</V> = 24: radial sd 1.16 on the axis, 2.21 at 22.5°, 3.02 on the diagonal.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the fourth panel is the other route, which is worth taking seriously on its own: <b>a large surface of emitters fills a shell better than a point with a neighbourhood does</b>, because the veins widen by the body's own size rather than by any rule about stepping. Measured, that works — and it works out to about <b>2.5 body radii and no further</b>, with the curves for bodies of radius 1, 4 and 16 lying on top of each other. So extendedness buys a proportionally bigger circle, never a longer-lasting one.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            We could imagine a world where the discreteness genuinely mattered for the spread of those rays — where the blur is the physics rather than a repair. But then it has to be a wander that <i>does not discriminate</i>, since the one above is picky: it mixes a heading with its <i>own</i> constituents, so a face step never wanders and a corner step wanders most, and that pickiness is doing all the work. Take it away — with probability <V>w</V> take a uniformly random lattice step, caring neither what your heading is nor which way you go — and the means come out at (1 − <V>w</V>)·<B>d</B>, because the 26 come in ± pairs and average to nothing.
+          </Para>
+
+          <WanderBlind />
+
+          <Para>
+            <b>So every speed is scaled by the same (1 − <V>w</V>) and the ratio never moves</b>: face (1−<V>w</V>), diagonal (1−<V>w</V>)√2, corner (1−<V>w</V>)√3, at every <V>w</V>. The square stays a square. What <V>w</V> buys is blur, and blur only <i>hides</i> it, and only near in — the corner excess grows as 0.414(1−<V>w</V>)<V>t</V> while the blur grows as √(var·<V>t</V>), so the square comes back at <V>t</V> ≈ 29 ticks for <V>w</V> = 0.5, 222 for 0.8, and 3547 for 0.95. At <V>w</V> = 1 it is gone, and so is propagation: the mean speed is nought and nothing goes anywhere at all.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which suggests the rule that neither of the two above is: <b>you may deviate, but only into a direction you are already going in.</b> Take the candidates to be every lattice direction with a <i>positive projection</i> on the heading — and note first that the cone's size is <b>9 for a face or an edge and 10 for a corner</b>, which are exactly the counts <K>biased</K> uses for the ⟨111⟩ easy axis, reached here from a completely different question.
+          </Para>
+
+          <WanderForward />
+
+          <Para>
+            The cone's mean step has a closed form and it is the whole mechanism: <b>1 for a face, 2√2/3 for an edge, √3/2 for a corner</b>. So a face's mean is <i>exactly its own heading</i> and its speed is 1 at every <V>w</V>, while the diagonals get pulled in — √2(1 − <V>w</V>/3) and √3(1 − <V>w</V>/2). <b>Wandering forward shortens the diagonals and leaves the axes alone</b>, which is precisely the correction wanted, and nothing had to be singled out by hand to get it: the asymmetry falls out of the cone counts.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            One <V>w</V> takes the spread to <b>1.57%</b>, against 3.5% for the constituent rule and 73% for none — and two zero it exactly, at <V>w</V> = 3(1 − 1/√2) = 0.8787 for an edge and 2(1 − 1/√3) = 0.8453 for a corner. Which is the first version of this that reads as a rule rather than a repair, and the first place <V>w</V> has had any reason to be one number rather than another.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the distribution itself, swept through <V>w</V> — not one pulse at one age, which is only a shell, but <b>steady state</b>: a source pulses every tick, so charges of every age are in flight at once and the picture fills. Each cell is drawn against the mean at <i>its own radius</i>, so the 1/<V>r</V> falloff divides out and what is left is purely angular — where the field is thick and where it is thin. In the plane a forward cone always has <i>three</i> members, so the walk is a <b>trinomial</b> and every path is enumerated with its exact weight rather than sampled.
+          </Para>
+
+          <WanderVeins />
+
+          <Para>
+            <b>The veins have a reason.</b> A face heading's cone is {'{'}(1,0), (1,1), (1,−1){'}'} and every one of those has <V>x</V> = 1 — so <V>x</V> advances by exactly one a tick <i>whatever path is taken</i>, and the density piles up along the axis as a ridge that cannot spread radially at all. A diagonal's cone is {'{'}(1,0), (1,1), (0,1){'}'}, which fixes nothing, so it opens into a wedge. <b>Ridges along the eight headings, thin wedges between them</b> — a fact about which directions share a component, not about any parameter.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Turning <V>w</V> up fills the wedges and cannot flatten the ridges. The contrast printed under each panel is the thickest place at a radius over the mean at that radius: <b>7.7× at <V>w</V> = 0.3, and still 3.3× at the <V>w</V> that puts the ring on the circle</b>. So even where the front is a perfect circle, the field inside it is nowhere near smooth — which is the honest picture of what <K>chance</K>'s 1/<V>r</V><Sup>2</Sup> is an average over.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which is the honest state of it. <b>A circle is not recovered; it is chosen, by choosing what a heading is.</b> The lattice will as happily give a square, and a world where the discreteness of the spread genuinely mattered is not obviously ours to rule out — the residual here is a rank-four fingerprint worth 37 µm over a Hubble time, which is small but is not nothing, and is the one thing this whole route predicts that assuming a sphere never could.
+          </Para>
+
+          <Head>except where it is recovered, which is where the law reads it</Head>
+
+          <Para>
+            Everything on this page is about <i>one pulse in flight</i>, and for one pulse the verdict above holds without qualification: the front is a cube, scaling a cube gives a cube, and no amount of blur or averaging or 10<Sup>39</Sup> constituents makes a twenty-seventh direction. But the force law never asks a front anything. It asks what is <i>at</i> a place, of a source that has been emitting every tick since it existed — and that is a settled field, which is a different object with a different shape.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the settled field is round, without choosing anything.</b> One absorber in a 101<Sup>3</Sup> vacuum on the 26-neighbour rule, run to steady state: the deficit fits <V>A</V>(1/<V>r</V> − 1/<V>R</V>) to 2% past <V>r</V> = 8, and ⟨100⟩, ⟨110⟩ and ⟨111⟩ agree to 0.90–1.10 at matched radius with no axis preferred. A Chebyshev field would read 2.16 where ⟨111⟩ at <V>r</V> = 20 reads 0.775. The reason is not a rule and not a repair: relaxation kills the anisotropy because the 26-neighbour Laplacian is isotropic to fourth order, and a cube is what only <i>ballistic</i> propagation preserves.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the two halves of this section are about two different questions and only one of them is open. <b>What is the shape of a pulse?</b> — a cube, chosen, and the choice is real physics with a 37 µm fingerprint on it. <b>What is the shape of a field?</b> — a sphere, derived, past about four cells, and that is the one <K>chance</K> divides by. The lattice survives in the near field, where ⟨111⟩ runs 21% high at <V>r</V> = 6 and is inside 5% by <V>r</V> = 10, which is exactly the range <K><Bar>FLOOR</Bar></K> was already guarding by hand.
+          </Para>
+
+          <Law/>
+        </Section>
+        <Section head="Quantum Mechanics">
+          <Para>
+            The arc above never mentions quantum mechanics and keeps arriving at it anyway — <V>E</V> = ħω, de Broglie to nine figures, Feynman's amplitude rule, the Planck time as an identity. That is either a good sign or an accident, and the only way to tell is to ask the question directly: <b>where in this model would the two theories actually have to meet, and does anything break there?</b> What follows is that audit, and then the construction it turns into: Dirac out of the movement rules, Schrödinger under it, the Born rule as bookkeeping, and interference as rule (G/1) unchanged. It ends at a wall that is a theorem rather than a debt, which is the one place in this book where the honest answer is that the model cannot get there from here.
+          </Para>
+
+          <Head>there is no second scale to reconcile with</Head>
+
+          <Para>
+            Start with what is <i>not</i> a problem, because it is usually the whole problem. A quantum theory of gravity is normally hard because two constants sit at different scales and nothing relates them. Here they are the same count: the tick comes out at the Planck time to ten figures with <i><K><Bar>G</Bar></K></i> cancelling out of the identity, and ħ enters only through period = 1/mass. <b>ħ, <V>c</V> and <V>G</V> are one grain, not three.</b> There is no gap between the regimes because there is only one regime.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            What there <i>is</i>, and it took me a while to see it as the same question, is a seam of a different kind. The gravity chain is written in probabilities — <K>chance</K>, <K>through</K> and <K>met</K> are real occupancies multiplied together, and the meeting rate is explicitly "the chance both are there, a product of two probabilities". The quantum results are written in amplitudes. <b>One model, two arithmetics, and the pull is built on the collapsed one.</b> Everything below is that seam, looked at from four sides.
+          </Para>
+
+          <Head>share was a coherence all along</Head>
+
+          <Para>
+            There is exactly one place in the entire derivation of the pull where a <i>phase</i> enters, and it is <K>share</K>. Every other factor counts arrivals. And <K>share</K> was already shown not to be a stipulation — it is a half because a body made of 10<Sup>57</Sup> emitters with no reason to agree has a uniform phase, and the average of <i>opposed</i> over a uniform phase is exactly a half.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Read that forwards rather than backwards and it says something sharper than it was used for. <b>The gravitational law above is already an expectation value</b>, taken over a phase the derivation chose not to track. It is not a classical law waiting to be quantised. It is a quantum law that has already had its average taken, and <i>G</i><Sub>eff</Sub>/<i>G</i> = 2·share is the statement of what it would be if you put the phase back.
+          </Para>
+
+          <Eq derive={COHERENT} note="the model's kernel, and the one a Born rule would want">
+            share = ⟨opposed(<V>ψ</V>)⟩,&nbsp;&nbsp; opposed(<V>ψ</V>) = |<V>ψ</V>|/π
+            <span style={{ padding: '0 1.2em', color: FAINT }}>vs</span>
+            ¼|<V>e</V><Sup>i<V>φ</V><Sub>a</Sub></Sup> − <V>e</V><Sup>i<V>φ</V><Sub>b</Sub></Sup>|<Sup>2</Sup>
+            = (1 − cos <V>ψ</V>)/2
+          </Eq>
+
+          <Para>
+            The left is what <i>gravity.ts</i> computes — a triangle wave, chosen for smoothness after testing signs directly produced every failure this account has had. The right is a modulus-square of a difference of two phases, which is the shape every interference term in quantum mechanics has. <b>They agree at nought, at a half cycle and at π</b>, which is why nothing measured could have told them apart, and they disagree everywhere in between.
+          </Para>
+
+          <Eq note="G_eff/G for two of the same thing in step, through the same raised-cosine window">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.8em', whiteSpace: 'pre' }}>
+              {`R/λ        0.02   0.10   0.20   0.27   0.50   1.00
+triangle   0.024  0.119  0.238  0.318  0.595  1.000
+cosine     0.001  0.026  0.099  0.171  0.500  1.000`}
+            </span>
+          </Eq>
+
+          <Para>
+            The difference is not a coefficient, it is a <i>power</i>: <b>the triangle vanishes linearly in the separation and the cosine quadratically.</b> So this is a commitment rather than a reinterpretation — adopting the Born-shaped kernel changes what the model says about two identical particles at close range, and the gap peaks at 0.147 in <i>G</i><Sub>eff</Sub>/<i>G</i> at <V>R</V>/<V>λ</V> = 0.268.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And then the honest half. One model wavelength is 2π<i>G</i><V>λ</V><Sub>C</Sub> = 0.151 pm for an electron, so the place the two kernels disagree most is <b>forty femtometres</b> apart — where the electric force between them is 4.166·10<Sup>42</Sup> times the gravitational one, which is the identical ratio the magnetism arc owes <V>α</V> for. The discriminator is real, it is sharp, and it is unreachable. It is written down here as a statement about the model rather than advertised as a test.
+          </Para>
+
+          <Head>and what the rewrite would cost</Head>
+
+          <Para>
+            If the kernel is the cosine, then <K>share</K> should not be a separate factor at all. Promote <K>chance</K> to an amplitude <V>ψ</V> = √chance·<V>e</V><Sup>i<V>φ</V></Sup>, with <V>φ</V> the retarded source phase the model already carries, and the meeting rate's cross-term <i>is</i> <K>share</K> — two factors collapsing into one.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That is the move this page rewards elsewhere: the falloff and the transparency were one fact counted once, and <K><Bar>DEG</Bar></K> was one constant doing two jobs. <b>It is not made here</b>, because it would alter published numbers in the near field and the measurement that would justify it does not exist.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And it turns out to be far too large a change anyway. Written like this it reads as a rewrite of the whole chain; by the time the walk below is built it is clear that <b>the chain is right everywhere it multiplies probabilities, and there is exactly one function that is in the wrong regime.</b> The narrow version of this proposal is at the foot of the arc, and it is the one I would defend.
+          </Para>
+
+          <Head>a thing in two places, and whether it interferes with itself</Head>
+
+          <Para>
+            Now the question the whole arc was really about. Put one elementary source in a superposition of two positions. Do the branches interfere?
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>They must, and the model has no way to stop them.</b> (G/1) says two rays meeting annihilate; it says nothing about whether they came from the same emitter, and there is no bookkeeping anywhere that could mark two rays <i>same particle, skip</i>. The model already computes this for a single body — the <K><Bar>SKIN</Bar></K> self-screening is a body's charges annihilating against its own field. A superposition is that same computation with the emission split across two places.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the coherence is not fragile here, it is <i>rigid</i>. Two branches of one particle have the same mass, so the same ω, so a fixed phase relation for as long as they exist — by construction, with no dial that could randomise it. Which fixes the self-gravitation outright from the table above: <b>a superposition narrower than a Compton wavelength does not gravitate against itself at all</b>, and past one wavelength it settles to the ordinary law.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Numerically that is again a statement with nothing to measure in it. For an electron the wavelength is 0.151 pm and interferometric separations are microns — seven orders into the ordinary regime. The model is not in trouble here, and it is not saying anything either.
+          </Para>
+
+          <Head>the record it leaves, which is derived and is nothing</Head>
+
+          <Para>
+            The interesting version of the question is not gravitational, it is about <i>what is left behind</i>. An annihilation folds space, and folded space is permanent. So a superposition whose branches annihilate against the outside world writes a which-path record into the geometry, and the visibility of any interference should decay at the rate those records are written. That is decoherence, mechanically, from a rule that was already there.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            One distinction has to be made first or the answer comes out wrong, and I had it wrong. Branch-against-<i>branch</i> annihilation needs both branches present, so it is the interference term itself and carries no information about which branch anything was in. Only branch-against-<i>environment</i> leaves a fold whose position differs between the branches. <b>Two rates, and only the second one decoheres.</b>
+          </Para>
+
+          <Eq derive={RECORD} note="linear in the mass, linear in the separation, and the constant is the screening length gravity already had">
+            <V>Γ</V><Sub>env</Sub> = ∫<Sub><V>d</V></Sub><Sup>∞</Sup>
+            share·<V>ρ</V>·chance(<V>m</V>,<V>r</V>)·<V>c</V> ·
+            <Paren><Frac over={<V>d</V>} under={<V>r</V>} /></Paren><Sup>2</Sup>
+            · 4<V>π</V><V>r</V><Sup>2</Sup> d<V>r</V>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            <Frac over={<><V>m</V> <V>d</V></>} under={<><V>λ</V><Sup>2</Sup></>} />
+          </Eq>
+
+          <Para>
+            The bracket is the distinguishability — two branches <V>d</V> apart look identical from far away up to a dipole term going as <V>d</V>/<V>r</V> — and the rest is the ambient annihilation rate the vacuum section already carries. Three powers of <V>r</V> cancel against each other, and then <V>λ</V> = 1/√(<K><Bar>BITE</Bar></K>·share·<K><Bar>SHEET</Bar></K>·<V>ρ</V>) eats the density and the <K><Bar>SHEET</Bar></K> whole. <b>Nothing was fitted and nothing new was introduced</b>, which is the whole reason for doing it this way.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And then the number kills it.</b> <V>λ</V> is 1.63 horizon radii, so 1/<V>λ</V><Sup>2</Sup> is 10<Sup>−122</Sup>, and in SI the entire law reads <V>Γ</V> = 4.41·10<Sup>−36</Sup>·<V>M</V>·<V>d</V> per second.
+          </Para>
+
+          <Eq note="against an age of the universe of 4.35·10¹⁷ s">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.8em', whiteSpace: 'pre' }}>
+              {`                          m (kg)    d (m)    t_decoh (s)
+electron                  9.1e−31   1e−6     2.5e+71
+C60                       1.2e−24   1e−7     1.9e+66
+1e−14 kg nanoparticle     1e−14     1e−4     2.3e+53
+1 kg, a metre apart       1         1        2.3e+35`}
+            </span>
+          </Eq>
+
+          <Para>
+            I wanted this to be the measurement mechanism and it is not one, by thirty-five orders at the most generous. <b>The vacuum this model has is far too thin to be an environment.</b> So the model offers no gravitationally-induced collapse in the sense <Ref of={'Diósi, "Models for universal reduction of macroscopic quantum fluctuations", Phys. Rev. A 40:1165'} year="1989" at="https://doi.org/10.1103/PhysRevA.40.1165" /> and <Ref of={'Penrose, "On Gravity\'s Role in Quantum State Reduction", Gen. Rel. Grav. 28:581'} year="1996" at="https://doi.org/10.1007/BF02105068" /> propose, and it should not be advertised as though it did. What it does offer is a derived rate rather than a postulated one, which is worth having even when the rate is nought.
+          </Para>
+
+          <Head>what does the dividing work instead</Head>
+
+          <Para>
+            Which leaves the question of why big things do not interfere, and the model's answer is not a rate at all — it is structural, and it was written down long before this section. <b>An elementary thing has a phase and a composite does not.</b> Small things interfere, large things cannot, and the line between them is compositeness rather than a decoherence time. That is roughly the right qualitative answer, arrived at without a postulate.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It is also, read carelessly, in direct contradiction with the rest of the model — which is what falls out of this arc, and it is the sharpest thing in it.
+          </Para>
+
+          <Head>the trouble that falls out: a composite needs a phase it is not allowed to have</Head>
+
+          <Para>
+            Molecular interferometry works. C60 gives fringes at <V>h</V>/<V>Mv</V> with <V>M</V> the <i>whole molecule</i> — 2.77 pm at 200 m/s against a measured 2.5 — and it has been pushed to 25 kDa since. So whatever the model says a matter wave is, it has to give the total mass.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            But a composite here is <i>many emitters</i> — that is what the mass ceiling means, and matter is nothing else. Each constituent pulses at its own rate with its own <V>λ</V><Sub>C</Sub>, and the de Broglie construction builds its phase out of a single ω. Run it per constituent and the answer is <V>h</V>/<V>m</V><Sub>nucleon</Sub><V>v</V> = 1.98 nm.
+          </Para>
+
+          <Eq note="the nucleon count, and it is not a small discrepancy">
+            <Frac over={<><V>h</V>/<V>m</V><Sub>nucleon</Sub><V>v</V></>}
+              under={<><V>h</V>/<V>Mv</V></>} /> = 714
+          </Eq>
+
+          <Para>
+            <b>Seven hundred times too wide, and measured.</b> This is the same shape as the open question the magnetism arc ends on — a near-field cancellation that does not survive to the far field — and it is the more dangerous of the two, because here the experiment has already been done.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The rescue is available and it is the identity the whole book leans on. <i>Mass is a rate.</i> A composite's emission is <V>N</V> interleaved pulse trains, and the aggregate train's repetition rate is Σ<V>m</V><Sub>i</Sub> = <V>M</V> whatever the constituents are doing individually. If what carries the de Broglie phase is the <b>repetition rate of the aggregate emission</b> rather than the phase of any one emitter, ω = <V>M</V> falls out and the fringes are right.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And that rescue resolves the contradiction rather than dodging it, which is why I believe it. <b>A rate is coherent and an offset is not.</b> A composite has a perfectly definite ω — it is the sum — and a phase offset that is a sum of <V>N</V> unrelated ones, hence uniform. So <V>λ</V> = <V>h</V>/<V>p</V> reads the rate and works for a molecule, and <K>share</K> reads the relative offset and stays at a half for everything made of parts. The two requirements that looked incompatible are requirements on different halves of the same quantity.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It is not free, though. It says a bound state's emission is <i>one train</i> and not <V>N</V>, and nothing in the rules makes that happen — a bound state is not yet a thing this model has. <b>That is the one genuinely load-bearing debt in this arc</b>, and it is owed to gravity too, since a composite's pull already assumes the rates add.
+          </Para>
+
+          <Head>and the fork that is cheap to state and not settled</Head>
+
+          <Para>
+            There are two carriers of phase in this book and they are not obviously the same object. A source's emission field carries a retarded phase at ω = <V>m</V>, whose interference scale is the Compton wavelength. The matter wave carries <V>φ</V> = ωγ(<V>t</V> − <V>vx</V>/<V>c</V><Sup>2</Sup>), whose scale is <V>λ</V><Sub>C</Sub>/γβ — coarser by 1/β, which for anything slow is an enormous factor.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A two-slit apparatus measures the second. Nothing in this book says which of the two it is reading, or how they are the same field. Note that the de Broglie construction is <i>itself</i> an ignorance-over-position argument — two retarded branches weighted at a half — so it may already <b>be</b> the two-slit calculation, with the weight being the split between the slits. If it is, interference comes free. If it is not, there are two unrelated position superpositions here and one of them is spurious. <b>Is the two-slit weight the same one-half as the ignorance weight?</b> Like the magnetism arc's question about when a pulse's sign is fixed, nothing else changes either way, which makes it cheap.
+          </Para>
+
+          <Head>and one thing that has no representation at all</Head>
+
+          <Para>
+            Worth saying plainly rather than leaving to be noticed. Mass here is a pulse rate, and a body either pulses on a given tick or does not. A superposition of <i>positions</i> has an obvious representation — emission from two places. A superposition of <b>energy eigenstates</b> does not: there is no state of the model that is two rates at once, and rates do not superpose the way positions do. Every quantum result in this book is about position, momentum or phase, and that is not a stylistic choice — it is the boundary of what the model can currently say.
+          </Para>
+
+          <Head>the walk the rules already are</Head>
+
+          <Para>
+            Now the constructive half, and it starts by noticing that the discrete rules at the top of the gravity arc <i>are</i> a quantum walk and nobody said so. In one dimension a ray moves one cell a tick and its only other option is to turn around. Mass is how often it turns. That is two numbers per cell — how much is going right, how much is going left — and one operation a tick.
+          </Para>
+
+          <Eq note="a coin that mixes the two headings, then a shift that moves each the way it points">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`ψ_R(x+1, t+1)  =  cos m · ψ_R(x, t)  −  sin m · ψ_L(x, t)
+ψ_L(x−1, t+1)  =  sin m · ψ_R(x, t)  +  cos m · ψ_L(x, t)`}
+            </span>
+          </Eq>
+
+          <Para>
+            Nothing there is a postulate. <K>cos m</K> is the chance of carrying straight on, <K>sin m</K> the chance of turning, and mass being the turning rate is the same identity — period = 1/mass — that the Compton relation and the Planck tick both came out of. <b>The rotation is the only thing that was chosen</b>, and it was chosen because a turn has to preserve how much ray there is.
+          </Para>
+
+          <Head>Dirac, and then Schrödinger in two lines</Head>
+
+          <Para>
+            Take that to momentum. The transfer matrix has determinant one and trace 2·cos <V>m</V>·cos <V>k</V>, so its eigenvalues are <V>e</V><Sup>±i<V>Ω</V></Sup> with the dispersion below — which is the relation the gravity arc already reported measuring, arrived at here from the rules rather than from a fit.
+          </Para>
+
+          <Eq note="and for small arguments this is Ω² = k² + m², which is the relativistic one">
+            cos <V>Ω</V> = cos <V>m</V> · cos <V>k</V>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>Ω</V><Sup>2</Sup> = <V>k</V><Sup>2</Sup> + <V>m</V><Sup>2</Sup>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>to</span>
+            0.99997 at <V>m</V> = 0.01
+          </Eq>
+
+          <Para>
+            That is the Dirac equation in 1+1 dimensions, as a continuum limit of a rule about rays turning round. And the non-relativistic limit is two lines of arithmetic on top of it: put <V>Ω</V> = <V>m</V> + <V>δ</V>, expand both sides for <V>k</V> ≪ <V>m</V> ≪ 1, and the <V>δ</V><Sup>2</Sup> term drops out.
+          </Para>
+
+          <Eq note="the free Schrödinger equation, with a rest energy sitting in front of it">
+            <V>Ω</V> = <V>m</V> +
+            <Frac over={<><V>k</V><Sup>2</Sup></>} under={<>2 tan <V>m</V></>} />
+            <span style={{ padding: '0 1.4em', color: FAINT }}>measured to</span>
+            1 part in 10<Sup>4</Sup>
+          </Eq>
+
+          <Para>
+            <b>Schrödinger, and it is not quite Schrödinger.</b> The inertial mass that comes out is tan <V>m</V> rather than <V>m</V> — a lattice correction of order <V>m</V><Sup>2</Sup>/3, which for an electron at 10<Sup>−22</Sup> in lattice units is invisible and is nonetheless the model's own answer rather than the textbook's. Using <V>m</V> instead is 8.5% wrong by <V>m</V> = 0.5, so the distinction is real and simply far away.
+          </Para>
+
+          <Head>and the Born rule is the conserved ray count</Head>
+
+          <Para>
+            The rule that usually has to be assumed is here a bookkeeping identity. The walk conserves Σ|<V>ψ</V>|<Sup>2</Sup> exactly — measured at 1.000000000000 after a hundred and twenty ticks — and it does so for one reason: <b>a turn is a rotation, and a rotation preserves a length squared.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which says what the Born rule <i>is</i> in this model, and it is not deep. The model conserves rays; the dynamics is linear in <V>ψ</V>; and rays go as <V>ψ</V><Sup>2</Sup>. So the squaring is not an interpretive act performed at a measurement — it is the relation between the thing the dynamics is linear in and the thing that is conserved, and there was never a choice about which one gets counted. <b>The Born rule is the statement that what is conserved is quadratic in what evolves.</b>
+          </Para>
+
+          <Head>interference is (G/1), verbatim</Head>
+
+          <Para>
+            And the minus sign — the thing that makes two paths cancel rather than pile up — is not imported either. Look at what the coin does: contributions arrive at a cell and are <i>added</i>, with a sign, before anything is counted. A + and a − arriving together give nought.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That is rule (G/1). <b>Annihilation is destructive interference</b>, written out in the first three lines of the gravity arc and not recognised as such for the whole length of it. Which also says what the XOR arc has been about all along: <b>polarity is the sign of the amplitude.</b> The magnetism arc kept the signs and got magnetism; keep the same signs and ask what a sum over paths does with them, and you get interference. One structure, read twice, which is the move the whole book is built on.
+          </Para>
+
+          <Head>so: amplitude or probability, and the answer is both, by regime</Head>
+
+          <Para>
+            Now the question that started this. The gravity chain multiplies real occupancies; the walk adds signed amplitudes and squares afterwards. <b>Those are not in conflict, and I had been reading the seam wrong.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Multiplying probabilities is <i>correct</i> whenever the phases have already averaged out, and the gravity chain is never anywhere else: every source in every panel is 10<Sup>57</Sup> emitters, and <K>share</K> = ½ is precisely the statement that the average has been taken. So <K>chance</K>, <K>through</K> and <K>met</K> are aggregates of |<V>ψ</V>|<Sup>2</Sup>, computed in the regime where that is exactly right. <b>The seam is a regime boundary, not an inconsistency</b> — and the model already knows where the boundary is, because it drew it itself.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            There is exactly one place where the model crosses its own line. <K>coherence</K> in <i>gravity.ts</i> returns a half immediately unless <i>both</i> sources are elementary — so the only code that ever runs past that guard is code in the coherent regime, and it is the code using |<V>ψ</V>|/π, a real triangle. <b>That is the one function that should be adding amplitudes and is multiplying probabilities instead</b>, and it is nine lines long.
+          </Para>
+
+          <Eq note="the whole of the proposed change, and it does not touch a single published number outside λ_C">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`opposed(ψ)  =  |ψ|/π   →   (1 − cos ψ)/2
+                       inside "lone" only`}
+            </span>
+          </Eq>
+
+          <Para>
+            So the resolution is not the global rewrite I first thought it was. <b>Probabilities are right everywhere the book uses them except in one function, whose own guard already marks it as the exception.</b> Everything outside <V>λ</V><Sub>C</Sub> is untouched, which is everything the model has ever been tested against.
+          </Para>
+
+          <Head>and the i is a change of basis, which I did not expect</Head>
+
+          <Para>
+            That leaves the part I was most confident about and was wrong about. The Dirac walk is normally written with a complex coin — <K>cos m</K> on the diagonal and <K>−i·sin m</K> off it — and I assumed the model would have to earn that <V>i</V> from somewhere. It does not have to, because in one dimension there is nothing to earn.
+          </Para>
+
+          <Eq note="identical dispersion, identical distributions, and the same walk in different coordinates">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`max | P_real(x) − P_complex(x) |  over every site, 120 ticks  =  0`}
+            </span>
+          </Eq>
+
+          <Para>
+            Exactly nought, not nought to a tolerance. And the reason is one line: <V>D</V> = diag(1, <V>i</V>) turns one coin into the other, and <V>D</V> is diagonal in the left/right basis, so it commutes with the shift. <b>The two walks are the same walk in different coordinates</b>, and the <V>i</V> is a gauge choice with no observable attached to it. The real rotation above is the honest form, and it is the one written here.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which also retires something the previous section leaned on. cos <V>Ω</V> = cos <V>m</V>·cos <V>k</V> was quoted as evidence that the lattice is doing quantum mechanics; it is satisfied identically by the real coin and by the complex one, so <b>the dispersion relation is not evidence of anything complex</b>. It is evidence of a rotation and a shift, which is all that was put in.
+          </Para>
+
+          <Head>where the i would have to come from, then</Head>
+
+          <Para>
+            A real field carrying Dirac dynamics is a Majorana field, and a Majorana field is <i>neutral</i>. That is not a coincidence of the one-dimensional case: real gamma matrices exist in 3+1 dimensions too, so a neutral spinor never needs a complex number anywhere. What needs one is a <b>charged</b> field — which is two real fields, with a U(1) rotating one into the other, and that U(1) <i>is</i> the electric charge.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the two things this book has been unable to produce turn out to be one thing. The magnetism arc ends owing electric charge outright — "the electric half, entirely" — and this arc would owe the complex phase. <b>They are the same debt.</b> A second binary label, independent of polarity and rotating against it, delivers the complex structure and the charge in one object; with only polarity, the model is real, neutral, and correspondingly has no <V>q</V> in it — which is exactly what was measured when the bias turned out not to be charge, since emission rate goes as mass and would have made a proton's charge 1836 times an electron's.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That is the strongest thing in this arc and it is worth being clear that it is a <i>direction</i> rather than a result. Nothing here builds the second label, and the model as it stands has one sign per ray and no room for another.
+          </Para>
+
+          <Head>and the wall, which is a theorem rather than a debt</Head>
+
+          <Para>
+            Everything above is one particle. The moment there are two, this model and quantum mechanics part company in a way that no amount of construction repairs, and it should be said flatly rather than left for a reader to find.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A wavefunction of <V>N</V> particles lives on 3<V>N</V> coordinates. Everything in this book lives on <b>three</b> — occupancies on a lattice, one number per cell per tick, updated from its neighbours. That is a classical local field, and <Ref of={'Bell, "On the Einstein Podolsky Rosen paradox", Physics 1:195'} year="1964" at="https://doi.org/10.1103/PhysicsPhysiqueFizika.1.195" /> is a proof that no such thing reproduces the correlations that have since been measured. <b>This is not a gap in the derivation. It is a theorem against it</b>, and the model as written is on the wrong side of it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Three honest responses exist and none of them is cheap. Carry configuration space, which means the lattice is not space and the whole geometric reading of gravity goes with it. Deny measurement independence, which is available and which most people including me regard as too high a price. Or accept that the model is a single-particle theory that recovers Dirac, Schrödinger, Born and interference, and stops before entanglement. <b>The third is what this arc actually is</b>, and saying so is worth more than a fourth option invented to avoid it.
+          </Para>
+
+          <Head>the ledger</Head>
+
+          <Rows of={[
+            [<>what comes out</>,
+              <>The <b>Dirac equation</b> in 1+1D, as a coin and a shift with mass as the
+                turning rate. <b>Schrödinger</b> below it, with an inertial mass of
+                tan <V>m</V> rather than <V>m</V>. The <b>Born rule</b>, as the conserved
+                quantity being quadratic in the evolving one. <b>Interference</b>, which is
+                rule (G/1) unchanged — so polarity is the sign of the amplitude. That the
+                pull is already an expectation over a phase, so there is nothing to
+                quantise. That ħ, <V>c</V> and <V>G</V> are one grain, so there is no second
+                scale. And a which-path rate, <V>Γ</V> = <V>md</V>/<V>λ</V><Sup>2</Sup>,
+                derived rather than postulated.</>],
+            [<>what is assumed</>,
+              <>That a turn preserves how much ray there is — the rotation, which is the one
+                choice in the walk and the whole source of unitarity. And that the retarded
+                phase a place carries is the same object the matter wave is built from,
+                which is the two-slit fork above.</>],
+            [<>what is owed</>,
+              <>Two, and the second is larger than it looks. <b>A bound state whose emission
+                is a single train at the total rate</b> — molecular interferometry needs it
+                and composite gravity already assumes it. And <b>a second binary label</b>,
+                independent of polarity, which is simultaneously the complex phase and the
+                electric charge. The magnetism arc was already owing the second half of
+                that one.</>],
+            [<>what is refuted</>,
+              <>Lattice decoherence as the measurement mechanism — the rate is real and
+                10<Sup>35</Sup> times too slow. And the reading of cos <V>Ω</V> = cos{' '}
+                <V>m</V>·cos <V>k</V> as evidence of anything quantum: <b>the real coin
+                satisfies it identically</b>, and the two walks agree to exactly nought.</>],
+            [<>and what is walled off</>,
+              <>Entanglement, and with it measurement. Not owed — <b>excluded</b>. Everything
+                here is a field on three dimensions and a wavefunction of <V>N</V> particles
+                needs 3<V>N</V>, which is a theorem rather than a gap.</>],
+          ]} />
+
+          <Para>
+            So the arc ends better and worse than it started. Better, because the single-particle equations are genuinely there and were not put in: Dirac out of turning, Born out of counting, interference out of annihilation, and the amplitude-versus-probability worry dissolving into a regime boundary the model had already drawn — nine lines of one function, and nothing outside <V>λ</V><Sub>C</Sub> moves.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Worse, because the two things I was most confident of did not survive contact. The <V>i</V> is a change of basis and buys nothing, and the wall at two particles is a proof rather than an absence. <b>What is left is a single-particle theory that recovers rather more than it had any right to and stops exactly where Bell says it must</b>, plus one debt — the second label — that the magnetism arc turns out to have been carrying under a different name the whole time.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That debt is what the next arc pays, and it also overturns one thing settled here. <b>The <V>i</V> being a change of basis is true in one dimension and false in three</b>, for a reason this arc could not have seen: one dimension has no closed loops, and a phase on a hop is only physical when there is a loop for it to fail to cancel around. The negative result above stands exactly as far as it was measured, and no further.
+          </Para>
+        </Section>
+        <Section head="Layer 2: Charge, Phase and Matter">
+          <Para>
+            The last arc ended owing one thing — a second binary label, independent of polarity, which would be the complex phase and the electric charge at once — and the magnetism arc ended owing the same object under a different name. This arc builds it. <b>The proposal is that there is a second structure riding on the first: matter, as distinct from the emitters the first two arcs are made of, moving <i>through</i> Layer 1 rather than being part of it.</b> Charge is then not a property a thing carries. It is which way that thing runs relative to the grain of the field it is moving through.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            What makes it worth writing down rather than merely saying is that the lattice turns out to have left exactly the right amount of room for it, and that three things the earlier arcs marked as refuted or owed come back as consequences.
+          </Para>
+
+          <Head>what layer 1 throws away</Head>
+
+          <Para>
+            Start with a count that was already in the magnetism arc and was read as a curiosity. Take a cell with a local axis — the <i>north</i> a held emitter points along — and sort the <K><Bar>DEG</Bar></K> = 26 ways out of that cell by which side of the axis they fall on.
+          </Para>
+
+          <Eq note="and the equator of a face axis is exactly SHEET — a whole pulse's worth of directions the source cannot emit into">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`axis          +    equator    −
+⟨100⟩ face    9       8       9
+⟨110⟩ edge    9       8       9
+⟨111⟩ corner 10       6      10`}
+            </span>
+          </Eq>
+
+          <Para>
+            The magnetism arc noticed the eight and called it "thrown away". <b>It is not thrown away. It is vacant</b>, and it is vacant in precisely the sense a second structure needs: eight directions, at every cell, that Layer 1's emission rule never touches. Anything built on them costs the gravity arc nothing — not a digit of <i><K><Bar>G</Bar></K></i>, not a term in met(<V>R</V>), not one of the numbers this book has already published — because the emission was never using them.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the eight are not a bag. Ordered by angle they close into a single ring at forty-five degrees a step, which is <K><Bar>CYCLE</Bar></K> = 8 and <K><Bar>SPIN</Bar></K> = 2π/<K><Bar>CYCLE</Bar></K>, both of which have been sitting in <i>lattice.ts</i> since the magnetism arc needed a source to come back round.
+          </Para>
+
+          <Eq note="the equator of a face axis, in cyclic order — a discrete U(1), already in the model under another name">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`(1,0) → (1,1) → (0,1) → (−1,1) → (−1,0) → (−1,−1) → (0,−1) → (1,−1) → back`}
+            </span>
+          </Eq>
+
+          <Head>an axis, a ring, and what each of them is</Head>
+
+          <Para>
+            So a cell offers a Layer-2 strand two independent things, and this is the whole construction:
+          </Para>
+
+          <Rows of={[
+            [<>along the axis</>,
+              <>Which way the strand advances — <i>with</i> the local north or{' '}
+                <i>against</i> it. Two states, no in-between, because a step is one cell a
+                tick and there is no such thing as running three-tenths against the grain.
+                <b> This is the charge.</b></>],
+            [<>around the ring</>,
+              <>Where on the eight-step equator the strand sits as it advances. A helix, not
+                a line. <b>This is the phase</b>, and it is a genuine U(1) with a quantum of
+                45°.</>],
+          ]} />
+
+          <Para>
+            The two do not interfere with each other — a direction relative to an axis splits into a sign along it and an azimuth around it, and those are independent for any axis. So the model gets a <i>quantised</i> charge and a <i>continuous</i> phase out of one geometric object, which is the combination it has been unable to produce anywhere else.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it settles the oldest objection in the magnetism arc immediately.</b> That arc had to conclude the bias was not electric charge, because emission goes as mass, so a bias read off the emission would give a proton 1836 times an electron's charge where measurement has them equal to one part in 10<Sup>21</Sup>. It also wrote down the escape and could not take it: <i>a count would escape that, since a count is not a rate — but the model has no matter in it to say how many.</i>
+          </Para>
+
+          <Eq note="two different kinds of number, which is why they were never going to track each other">
+            <i><Bar>m</Bar></i> = pulses per tick ∈ [0, 1]
+            <span style={{ padding: '0 1.2em', color: FAINT }}>a rate</span>
+            <V>q</V> = net traversal sense ∈ {'{'}…, −1, 0, +1, …{'}'}
+            <span style={{ padding: '0 1.2em', color: FAINT }}>a count</span>
+          </Eq>
+
+          <Para>
+            Layer 2 <i>is</i> the matter that arc said it did not have. A proton is heavy because its Layer-1 emission rate is high and singly charged because its net Layer-2 traversal is one, and <b>there is no mechanism by which those two could have been proportional</b>. The 1836 stops being a refutation and becomes a statement that mass and charge live on different layers.
+          </Para>
+
+          <Head>a positron is an electron against the grain</Head>
+
+          <Para>
+            Which gives the reading this arc is named for. There is one kind of strand. An electron is one running with the grain and a positron is the same strand running against it, and <i>charge conjugation is a reversal of traversal</i> — a local, geometric operation on the lattice rather than an internal label being negated by hand.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Two things follow that were not aimed at. The first is that <b>charge conservation stops being a law</b>. You cannot make a lone traversal sense any more than you can make a lone end of a piece of string: a strand created in the vacuum has a with-the-grain piece and an against-the-grain piece by construction, which is pair production, and the conservation is a statement about orientation rather than a bookkeeping rule imposed on top.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The second is finer and is the reason I believe the picture. Reverse the direction of advance and keep the winding fixed in space, and the winding is now the other way round <i>relative to the direction of travel</i>. <b>So C flips helicity, automatically</b> — a left-handed strand with the grain is a right-handed strand against it, which is what charge conjugation does to a real particle and which nothing here was arranged to produce.
+          </Para>
+
+          <Head>and the phase is not removable this time</Head>
+
+          <Para>
+            Now the objection the previous arc raised against itself, because it has to be answered and the answer is what makes Layer 2 more than a relabelling. That arc found the <V>i</V> in the Dirac walk to be a change of basis — <V>D</V> = diag(1, <V>i</V>) turns the complex coin into a real one and commutes with the shift, and the two walks agree to exactly nought. So why is this phase different?
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Because that result was a fact about one dimension, and I checked it the wrong way round.</b> Run the walk with a uniform azimuthal advance θ on a line and the effect is precisely zero — measured, at every θ tried — and that is not a failure of the idea, it is the statement that on a chain with no closed loops a phase on the hop is pure gauge and can be undone by ψ(<V>x</V>) → <V>e</V><Sup>iθ<V>x</V></Sup>ψ(<V>x</V>). One dimension has no plaquettes. There was nothing there for the <V>i</V> to be.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Three dimensions do have plaquettes, and the local axis is not uniform — a magnetic texture is exactly a north that turns as you move. Carry a strand around a closed loop and the azimuthal advances do not cancel; what is left is the solid angle the axis swept, and a site-by-site phase redefinition cancels around any closed loop and so cannot touch it.
+          </Para>
+
+          <Eq note="a twisting Layer-1 axis, four plaquettes — the holonomy is the swept solid angle, and it is gauge-invariant">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`plaquette      solid angle    flux Φ = Ω/2
+(0,0) 1×1       −6.997e−2      −3.498e−2
+(1.5,0.7)        7.816e−3       3.908e−3
+(0,0) 2×2       −1.043e−1      −5.214e−2
+(3,3)           −9.061e−2      −4.530e−2`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>So the complex structure is forced by the existence of closed loops, and not before.</b> The previous arc's negative result stands exactly as far as it was measured — one dimension — and stops being general the moment the lattice is allowed to be three-dimensional and the axis is allowed to turn. That is also the Aharonov–Bohm statement, arrived at as a lattice-counting fact: the phase around a loop is a thing about the loop, and the choice of where azimuth zero sits is unobservable because <b>the equator has no marked point on it</b>. Gauge invariance is that absence.
+          </Para>
+
+          <Head>minimal coupling, which nobody put in</Head>
+
+          <Para>
+            Feed the azimuthal advance into the walk of the previous arc and the dispersion does one thing, cleanly. The advance per axial step enters as a shift of the momentum, and nothing else changes.
+          </Para>
+
+          <Eq note="p → p − θ, with θ the azimuthal advance — and the two real sectors are exactly j = 0 and j = CYCLE/2">
+            cos <V>Ω</V> = cos <V>m</V> · cos(<V>k</V> − θ)
+            <span style={{ padding: '0 1.2em', color: FAINT }}>with</span>
+            θ = 2π<V>j</V>/<K><Bar>CYCLE</Bar></K>
+          </Eq>
+
+          <Para>
+            <b>That is minimal coupling</b>, which in every other treatment is a rule about how to put a field into a wave equation and here is what a helix does. Six of the eight sectors carry a group velocity at <V>k</V> = 0; the two that do not are <V>j</V> = 0 and <V>j</V> = 4, the two whose phases are +1 and −1 — <i>the real ones</i>. So the lattice says which sectors could have been done without complex numbers, and it is two out of eight.
+          </Para>
+
+          <Head>and the force, measured</Head>
+
+          <Para>
+            Then the claim that started this arc, put to the walk directly. Let the azimuthal advance ramp — θ(<V>t</V>) = <V>gt</V>, which is a vector potential growing in time and therefore a constant field — and run the same strand with the grain and against it.
+          </Para>
+
+          <Eq note="one object, two traversal senses, the same Layer-1 texture — and the norm is conserved exactly throughout">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  g       ⟨x⟩ with grain   ⟨x⟩ against    separation
+0.000         −47.94         −47.94         0.00
+0.001         −45.70         −49.27         3.58
+0.002         −41.43         −50.15         8.72
+0.004         −20.99         −51.22        30.23
+0.008          11.59         −52.07        63.66`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>They go opposite ways, and the separation grows as the square of the time</b>, which is what a force does rather than what a drift does. At <V>g</V> = 0.008 the with-the-grain strand has been turned all the way round and is moving the other way while the against-the-grain one carries on. Nothing was added to the walk to arrange this — the ramp is the field, the traversal sense is the charge, and the acceleration is the two of them multiplied, which is the Lorentz force with its sign.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            One honest note on how that number was got, because two earlier versions of the measurement said the effect was zero. A strand with no momentum, or with a real amplitude, is mapped to itself by the conjugation that swaps the two traversal senses, so the two are forced equal by symmetry and no value of <V>g</V> separates them. <b>The charge needs something to be asymmetric about before it shows.</b> That is not an artefact of the test; it is the reason a charge at rest in no field is not observably a charge.
+          </Para>
+
+          <Head>the g-factor the arc had given up on</Head>
+
+          <Para>
+            The magnetism arc lists <V>g</V> = 1 as its sharpest refutation, against a measured 2.0023, and says the ratio survives every choice because µ/<V>L</V> = <V>q</V>/2<V>m</V> with the radius cancelling. It also found where a two could live and then declined to take it:
+          </Para>
+
+          <Eq note="the lattice's own double cover — the observable turning twice as fast as the state, which is what a spinor is">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`a directed north returns after    CYCLE = 8 steps   (2π)
+an undirected axis returns after CYCLE/2 = 4 steps (π)`}
+            </span>
+          </Eq>
+
+          <Para>
+            The reason it declined is stated exactly: <i>emission tracks north and not the axis, so as written the model gives one, and taking the two would be changing the emission rule — a change and not a consequence.</i>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>With two layers it is no longer a change to the emission rule, because the axis and the north are no longer the same object.</b> North belongs to Layer 1 and is what emits; the axis is what a Layer-2 strand winds around, and it is undirected because a ring has no preferred sense until a traversal picks one. The observable turns twice per turn of the state because the two things doing the turning live on different layers. So <V>g</V> = 2 is available here for the reason the arc identified and could not use, and <b>it is the sharpest test this proposal has</b> — the 0.0023 is not claimed and would want the coupling that is still owed.
+          </Para>
+
+          <Head>matter, and the debt it pays</Head>
+
+          <Para>
+            The quantum arc ended owing one load-bearing thing: a bound state whose emission is a <i>single train at the total rate</i>, because molecular interferometry needs the de Broglie phase to run on the whole molecule's mass and composite gravity already assumes the rates add. No rule in the first two arcs produces it, for the good reason that those arcs have no matter in them — only emitters.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Layer 2 pays it in the natural way. If a cell's Layer-1 emission rate is set by <b>how much Layer 2 is in that region</b> rather than by each strand separately, then a region containing <V>N</V> strands emits one train at the summed rate whatever the strands are individually doing. The de Broglie phase reads the aggregate rate and comes out at <V>h</V>/<V>Mv</V>; <K>share</K> reads the relative offset, which is a sum of <V>N</V> unrelated ones and stays at a half. <b>The rate is collective and the offset is not</b>, which is exactly the split that arc needed and could not motivate.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And it says what matter <i>is</i> in a way the book has not been able to before: not a heavy emitter, but a strand threading a region and setting how hard that region emits. Mass is what Layer 2 does to Layer 1. Charge is what Layer 2 does relative to Layer 1. <b>The two arcs were describing the same object from opposite sides.</b>
+          </Para>
+
+          <Head>and the amplitude fix, which now has something to be</Head>
+
+          <Para>
+            The quantum arc proposed one narrow change — <K>opposed</K>(<V>ψ</V>) = |<V>ψ</V>|/π should be (1 − cos <V>ψ</V>)/2 inside the coherent regime — and could only justify it by analogy with a Born rule. Here <V>ψ</V> stops being an abstract phase difference: it is the difference of two azimuths on the eight-step ring, so it takes the values 45°·<V>k</V> and the kernel is evaluated on a lattice quantity like everything else in the book.
+          </Para>
+
+          <Eq note="the same nine-line change as before, with the phase now identified as an equatorial index">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`opposed(ψ) = (1 − cos ψ)/2,    ψ = 2π(k_a − k_b)/CYCLE`}
+            </span>
+          </Eq>
+
+          <Head>what this does not reach</Head>
+
+          <Para>
+            Two things, said plainly so the arc is not read as claiming more than it has. <b>Entanglement is untouched.</b> A second layer gives more field components at each cell, and Bell's theorem is about the number of <i>coordinates</i>, not components — two layers on a three-dimensional lattice is still three dimensions, and a wavefunction of <V>N</V> particles still needs 3<V>N</V>. Layering does not get near that wall and nothing here pretends to.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And <b>the coupling is still one number</b>. Layer 2 says what charge <i>is</i> and gives it the right structure — quantised, integral, independent of mass, conserved by orientation, coupling minimally, accelerating the two senses oppositely — and it does not say how strongly. <V>α</V> is owed exactly as it was, and the magnetism arc's 4.5·10<Sup>7</Sup> kg/m² of pole face is owed with it. What has changed is that they are now one debt rather than two.
+          </Para>
+
+          <Head>the ledger</Head>
+
+          <Rows of={[
+            [<>what comes out</>,
+              <><b>Charge as a count</b> rather than a rate, which retires the 1836 the
+                magnetism arc could not answer. <b>Charge conservation</b>, as orientation
+                rather than as a rule. <b>C flipping helicity</b>, for free. <b>Minimal
+                coupling</b>, as what a helix does to a dispersion. <b>The force</b>, measured
+                — two traversal senses accelerating oppositely through one texture, going as
+                <V> t</V><Sup>2</Sup>. And a route to <b><V>g</V> = 2</b> that the magnetism
+                arc had located and could not take.</>],
+            [<>what is fixed that was broken</>,
+              <>The previous arc's finding that the <V>i</V> is a change of basis — true in
+                one dimension, where there are no plaquettes, and <b>false as soon as the
+                axis is allowed to turn</b>. The holonomy is a swept solid angle and no
+                site-local phase touches it.</>],
+            [<>what is assumed</>,
+              <>That Layer 1's emission is sourced by a region's total Layer-2 content rather
+                than strand by strand. It is what pays the bound-state debt, and it is a
+                choice.</>],
+            [<>what is owed</>,
+              <>The coupling — <V>α</V>, and the pole-face number with it. One debt now
+                instead of two, and nothing here derives it.</>],
+            [<>and what is walled off</>,
+              <>Entanglement, exactly as before. Layers add components, not coordinates.</>],
+          ]} />
+
+          <Para>
+            So the shape of the thing is: the lattice had eight directions per cell that its own emission rule could not use, and they form a ring; putting matter on that ring gives a charge that is a count, a phase that is a genuine U(1), a force with the right sign, and a spinor's double cover — and it costs the first two arcs nothing, because they were never using those directions. <b>Three of the four things this book had written off come back as consequences of one structure.</b> The fourth is entanglement, and that one is a theorem.
+          </Para>
+        </Section>
+        <Section head="Entanglement, and the Coupling">
+          <Para>
+            The last arc ended owing two things and called one of them a theorem. They are different kinds of problem and they want different kinds of work: one is a question about what sort of object the lattice is, and the other is a question about a number. This arc takes both as far as they go, which in one case is further than expected and in the other is mostly a matter of establishing what is actually owed.
+          </Para>
+
+          <Head>what Bell actually forbids, and the five ways out</Head>
+
+          <Para>
+            The theorem is not "no hidden variables". It is that <i>local</i> hidden variables, with settings chosen independently of them, cannot reproduce the measured correlations. So there are exactly five doors, and it is worth naming all of them before picking one, because the model rules three out on its own.
+          </Para>
+
+          <Rows of={[
+            [<>nonlocal dynamics</>,
+              <>Bohm's route. It wants a preferred foliation, which is normally the objection
+                to it — and <b>this model has already paid that price</b>, since a lattice
+                with a global tick and a frontier at <V>R</V> = <V>ct</V> has a preferred
+                frame for reasons that have nothing to do with Bell. It still fails, because
+                the guiding field lives on 3<V>N</V> coordinates and the lattice has three.</>],
+            [<>retrocausality</>,
+              <>The setting influences the past <i>along the particle's own worldline</i>.
+                Local in spacetime, no superluminal signal, no preferred frame required.
+                <b> This is the one the model is already built for</b>, and the next head
+                says why.</>],
+            [<>superdeterminism</>,
+              <>Available and declined, on the same grounds as before: it buys the
+                correlations by making the settings conspire, which explains everything and
+                so predicts nothing.</>],
+            [<>many outcomes</>,
+              <>Costs the wavefunction on configuration space anyway, so it does not help a
+                lattice that has not got one.</>],
+            [<>be quantum mechanics</>,
+              <>Carry amplitudes on 3<V>N</V>. Then the lattice is not space and the whole
+                geometric reading of gravity goes with it, which is most of this book.</>],
+          ]} />
+
+          <Head>the lattice has no arrow, and that is not a small thing</Head>
+
+          <Para>
+            Here is the fact that makes the second door the natural one rather than a convenient one. <b>(G/1) and (G/2) are exact inverses.</b> Annihilation takes two rays to a neutral point; creation takes a neutral point to two rays; they are drawn at the head of the gravity arc as the same picture run each way. Nothing in the rules distinguishes a direction of time.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A dynamics whose rules are time-symmetric is not naturally an <i>initial-value</i> problem. It is naturally a <b>boundary-value</b> problem — fix what is true at both ends and the history is whatever is consistent with both — and reading it that way is not a modification of this model, it is reading the rules the way they were written. Every arc so far has quietly assumed the initial-value reading because that is how one runs a simulation, and nothing in the rules asked for it.
+          </Para>
+
+          <Head>which turns the question into one the book already has open</Head>
+
+          <Para>
+            Now put Layer 2 into that reading. A strand is a helix threading from where it was made to where it is absorbed, and its azimuth is discrete — eight steps, <K><Bar>CYCLE</Bar></K>. So the helix must close over its length by a <i>whole number</i> of steps. That is a global condition on an integer, and a setting at the absorbing end participates in fixing it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And that is the question the magnetism arc ended on, asked about a different layer.</b> That arc closed with: <i>is a pulse's sign fixed when it leaves, or when it arrives?</i> — and needed the answer <i>when it leaves</i>, because a pulse whose polarity is fixed at emission carries the near-field cancellation to infinity and gives a magnet its poles. Bell needs the opposite answer: a winding fixed at <i>both</i> ends.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which would be a flat contradiction in a one-layer model and is not one here. <b>Layer 1's polarity is fixed when it leaves; Layer 2's winding is fixed by both of its ends.</b> They are different quantities on different layers, and the only reason the question looked like it had to have one answer is that until this arc there was only one thing it could be asked about. That the two open questions want opposite answers is, on this reading, an argument for the two layers rather than a problem with them.
+          </Para>
+
+          <Head>and then the measurement, which says how far the ring gets alone</Head>
+
+          <Para>
+            It would be easy to stop there and claim it works. It is worth instead asking what the ring gives <i>without</i> the retrocausal reading — as an ordinary common cause, with the winding fixed at the source and each end reading out sign(cos(azimuth − setting)). That is a local hidden variable model, so it is capped at 2, and the question is where it lands.
+          </Para>
+
+          <Eq note="a genuine common cause on the ring, searched over all four settings independently">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`CYCLE =  8    max CHSH = 2.000000
+CYCLE = 16    max CHSH = 2.000000
+CYCLE = 64    max CHSH = 2.000000
+
+local bound   2.000000      Tsirelson   2.828427`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The ring saturates the local bound exactly and cannot pass it.</b> That is worth more than a smaller number would be: it says the eight-step readout is an <i>optimal</i> local model rather than a poor one, so nothing is being lost to a bad choice of observable, and the entire remaining gap is structural. The shortfall is 0.828 of CHSH — about 41% — and no refinement of the readout, no larger <K><Bar>CYCLE</Bar></K>, and no cleverer common cause will supply any of it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the arc's contribution here is to make the debt exact rather than to pay it. <b>The 41% is precisely the difference between a winding fixed when the strand is made and a winding fixed by both of its ends</b>, and that is now a definite question about a definite object rather than a gesture at a research programme. What it would take to settle it is a two-boundary calculation on the strand — fix the ends, count the consistent windings, and see whether the correlation comes out at −cos of the angle. That has not been done here and I will not pretend the door being the right shape is the same as walking through it.
+          </Para>
+
+          <Head>the coupling, and what is actually owed</Head>
+
+          <Para>
+            The other debt is one number, and the first thing to say is that Layer 2 has already changed its status even though it does not supply it. The magnetism arc's reason for having no electric force at all was structural: <i>a force here is a meeting, which is second order</i>. Layer 2 has a first-order channel — a strand's azimuth responds to the ambient axis with no second strand required, which is what the minimal-coupling result is. <b>So the electric force exists in this model now, at some strength.</b> Before, it did not exist at any.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The second thing is that <b>137.036 is the wrong target</b>, and aiming at it is most of why this has looked hopeless. α runs: it is already 1/127.95 at the Z mass, seven per cent moved by 91 GeV, and the distance from there to a Planck cutoff is another seventeen orders. A lattice whose grain is the Planck length owes α <i>at its own cutoff</i>, and the value at zero energy is that number plus the entire running, which depends on every charged thing that exists in between. <b>137.036 is an infrared accident of the particle content, not a lattice number</b>, and a lattice formula that hits it would be suspicious rather than convincing.
+          </Para>
+
+          <Head>and one whole class of answer is excluded</Head>
+
+          <Para>
+            There is an obvious and tempting route, and it is dead, which is worth knowing before anyone spends a month on it. The model has exactly one environmental scale that could set a coupling — the vacuum screening length <V>λ</V>, which is fixed by the ambient density <V>ρ</V>. If α were set by it, α would go as 1/<V>λ</V><Sup>2</Sup>, hence as <V>ρ</V>, hence as <V>a</V><Sup>−3</Sup>.
+          </Para>
+
+          <Eq note="the drift that would follow, against what is measured">
+            <Frac over={<>α̇</>} under={<>α</>} /> = −3<V>H</V> = −2.07·10<Sup>−10</Sup> / yr
+            <span style={{ padding: '0 1.2em', color: FAINT }}>vs</span>
+            |α̇/α| &lt; 10<Sup>−17</Sup> / yr
+          </Eq>
+
+          <Para>
+            <b>Excluded by a factor of 2·10<Sup>7</Sup></b>, from quasar absorption lines and the Oklo reactor. So α is not environmental in this model, which means it is not allowed to depend on the one thing in the model that varies. It has to be a fixed count off the lattice — and the book's own standard applies to that with full force: of 117,649 lattice monomials searched, 51 land within half a percent of 137.036, so a hit is not evidence and none is offered here either.
+          </Para>
+
+          <Head>what would count as evidence instead</Head>
+
+          <Para>
+            Which leaves one honest way to test the electric half without deriving its constant, and Layer 2 is what makes it available. <b>The running of α does not depend on α.</b> Its slope depends only on what charged matter exists — and Layer 2 is the first thing in this book that says what charged matter <i>is</i>: a strand, with a traversal sense, and a count rather than a rate.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the model can be put against dα/d(log µ) with the coupling itself left unknown, and it either gets the slope or it does not. <b>That is a real test of the electric half that costs nothing that is owed</b>, and it is the thing I would do next on this side — ahead of any search for a formula, because a formula that hits 137.036 would tell us nothing and a slope that comes out right would tell us a great deal.
+          </Para>
+
+          <Head>the ledger</Head>
+
+          <Rows of={[
+            [<>what is settled</>,
+              <>That the electric force <b>exists</b> in this model, which it did not before —
+                Layer 2 supplies the first-order channel whose absence was the whole of the
+                missing column. And that the lattice's rules are time-symmetric, so the
+                boundary-value reading is the natural one rather than an amendment.</>],
+            [<>what is made exact</>,
+              <>The entanglement debt. The ring is an <b>optimal</b> local model — CHSH
+                2.000000 at every <K><Bar>CYCLE</Bar></K>, saturating the bound — so the
+                missing 0.828 is entirely structural, and it is exactly the gap between a
+                winding fixed at emission and one fixed by both ends.</>],
+            [<>what is excluded</>,
+              <>α as an environmental quantity. Set by the vacuum it would drift at 3<V>H</V>,
+                which is 2·10<Sup>7</Sup> times the measured bound. The one scale the model
+                had available cannot be the one that does it.</>],
+            [<>what is reframed</>,
+              <>The number owed is α <i>at the cutoff</i>, not 137.036 — which is an infrared
+                value after seventeen orders of running, and not a lattice quantity at
+                all.</>],
+            [<>and what is still owed</>,
+              <>The two-boundary calculation on a strand, which would settle the 41%. And the
+                coupling, still, though now with a test available that does not need it.</>],
+          ]} />
+
+          <Para>
+            So neither is paid, and both have changed shape. The entanglement problem stops being "a theorem stands in the way" and becomes a specific arithmetic on a specific object, whose answer the magnetism arc has been asking for under another name — with the two layers being exactly what lets that question have opposite answers on the two of them. And the coupling stops being a hunt for a number and becomes a slope that can be checked. <b>Neither is a result. Both are now the kind of problem that can be worked on rather than the kind that can only be admitted to.</b>
+          </Para>
+        </Section>
       </Section>
     </Arc>
     <Arc head={<span className="bp5-text-disabled">2027.</span>}>
