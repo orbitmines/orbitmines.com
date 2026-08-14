@@ -18,7 +18,7 @@ import {
 } from "./archive/2026.RayCalculiAndPhysics/law";
 import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
-import { Wander, WanderBlind, WanderForward, WanderMedium, WanderPaths, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
+import { Wander, WanderBlind, WanderExpand, WanderForward, WanderGravity, WanderPaths, WanderPure, WanderRelay, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
 import { Model } from "./archive/2026.RayCalculiAndPhysics/model";
 import { asGroup, MODELS, weighed } from "./archive/2026.RayCalculiAndPhysics/models";
 import { PACE, Polarity } from "./archive/2026.RayCalculiAndPhysics/physics";
@@ -246,6 +246,8 @@ const Physics = () => {
 
         <Head>Movement</Head>
 
+        <WanderExpand/>
+
         There's a real assumption to made here at the beginning. Which is how does one from a perspective of discreteness, recover rays propagating in a circle. That's making the assumption you'd want it to propegate in a circle in the first place - whether that's the actual accurate model. Also to consider would be that a large surface of stuff sending out rays could more accurately describe a circle, than say a single point with a local neighbourhood. This is essentially a statement of discrete movement, how should that happen? Where as the aggregate we might see a sphere, a cube, a (curved) diamond-shape. All are these are technically possibilities. We could imagine a world where discretized effects matter here for the spread of those rays.
 
         <BR/>
@@ -267,6 +269,16 @@ const Physics = () => {
         <BR/>
 
         This was the original idea on which I built the continuous model (Kind of assuming I'd be able to create a circle), but I've since realized a better second option:
+
+        <BR/>
+
+        Namely if we consider vacuum dynamics. In the pure gravity setting (so discounting the magnetism part which we haven't gotten to yet: XOR), we don't have vacuum dynamics other than just expansion of a space. See for instance the following example of how space would expand because of the creation rule if nothing is nearby:
+
+        <WanderExpand/>
+
+        <WanderPure/>
+
+        <WanderGravity/>
 
         <BR/>
 
@@ -358,7 +370,9 @@ const Physics = () => {
           Whenever there's a derived equation, you can click on it to see how it was derived! Try it!
 
           <Para>
-            The second thing, not used for the rest of this model: Turn the period into a length of how far light travels within that timeframe, and you get something proportional to the <Ref of={'reduced Compton wavelength'} at="https://en.wikipedia.org/wiki/Compton_wavelength#Reduced_Compton_wavelength" /> <Footnote of={'Compton, "A Quantum Theory of the Scattering of X-rays by Light Elements", Phys. Rev. 21:483'} year="1923" at="https://doi.org/10.1103/PhysRev.21.483" />. (<i><K><Bar>G</Bar></K></i> here being the gravitational constant of the model)
+            <span className="bp5-text-muted">
+              The second thing, not used for the rest of this model: Turn the period into a length of how far light travels within that timeframe, and you get something proportional to the <Ref of={'reduced Compton wavelength'} at="https://en.wikipedia.org/wiki/Compton_wavelength#Reduced_Compton_wavelength" /> <Footnote of={'Compton, "A Quantum Theory of the Scattering of X-rays by Light Elements", Phys. Rev. 21:483'} year="1923" at="https://doi.org/10.1103/PhysRev.21.483" />. (<i><K><Bar>G</Bar></K></i> here being the gravitational constant of the model)
+            </span>
           </Para>
 
           <Eq derive={CLOCK}>

@@ -27,6 +27,8 @@ than as silent agreement.
 | `turns` | why a turn is eight ticks in every dimension |
 | `ways` | **the shipped wander against the one `wander.tsx` models** — they are not the same rule, and in 3D no `w` puts the emission sheet on a circle |
 | `veins` | what the ridges do with distance, cone shape and an extended emitter, and what all of it does to light |
+| `vacuum` | **the medium is the expansion** — new room is edged on every axis and thins what is already there, so the density is (1−p)/(2−p) → ½ with no parameter, and the front closes |
+| `vacuum` | **the medium is the expansion** — new room is edged on every axis and thins what is already there, so the density is (1−p)/(2−p) → ½ with no parameter, and the front closes |
 | `gas` | **the fully discrete version** — bits per direction, streaming, and a momentum-conserving swap on head-on pairs; the front is beams with no medium and closed and round with one |
 | `wave` | **the same lattice propagating as a wave instead of a ray** — the front is a circle at the sound speed and the grain vanishes as the pulse widens |
 | `lattices` | **which space gives a sphere** — a sweep of spatial constructions against the spherical-design condition, and the shell search that finds 26 directions exact through rank 6 |
