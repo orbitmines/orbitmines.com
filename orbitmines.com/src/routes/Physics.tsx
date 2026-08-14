@@ -433,6 +433,43 @@ const Physics = () => {
             The two guards on it are both the same kind of honesty. The max says a shell is never smaller than the cell its source sits in, which is {HALF} from above. The <K><Bar>FLOOR</Bar></K> = 2 says that the innermost shell is not the continuum's 4<V>π</V>{HALF}<Sup>2</Sup> = 3.14 cells but the lattice's own: the surface of a cube at <V>d</V> steps is 24<V>d</V><Sup>2</Sup> + 2 cells, which at one step is exactly 26, exactly <K><Bar>DEG</Bar></K>. Without those two caps, chance at the core comes out at 8/4<V>π</V>{HALF}<Sup>2</Sup> = 2.546 — a probability, over one — and nobody had evaluated the floor to notice. With them it is 1.556, and read entirely off the cube rather than half off the continuum it would be 8/8 = 1 exactly, saturated and never exceeded, which is what a probability is allowed to do. <b>That last step is not taken here</b>, because 24<V>d</V><Sup>2</Sup> counts cells at Chebyshev distance where <K>chance</K> is asked with a Euclidean separation, and on a 26-connected lattice those differ by up to √3 depending on direction.
           </Para>
 
+          <Head>and the sphere in it is measured, not assumed</Head>
+
+          <Para>
+            One thing in that formula is doing more work than it looks, and the discrete panels above should make it uncomfortable. 4<V>π</V><V>r</V><Sup>2</Sup> is the surface of a <i>sphere</i>, and nothing here is a sphere: a charge moves one cell a tick, so one pulse is at <i>Chebyshev</i> distance <V>t</V> after <V>t</V> ticks — a cube, whose corners stand √3 further out than its faces. Scaling a cube gives a cube, so that never washes out with distance. If the warrant for 4π were "a pulse spreads over a shell", the warrant would be wrong.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>It is not what the shell is doing here.</b> Nothing in this model emits once. Every cell emits every tick, and what a force is read off is not a front but the <i>settled occupancy</i> — and settling is what forgets the lattice, because the 26-neighbour Laplacian's anisotropy enters only at fourth order. Put one absorber in a 101<Sup>3</Sup> vacuum, let it settle and average out the integer noise, and the deficit around it fits <V>A</V>(1/<V>r</V> − 1/<V>R</V>) to within 2% at every <V>r</V> ≥ 8: the 1/<V>r</V> potential whose gradient is the inverse square, arrived at without anybody writing either down.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And it is round. Along ⟨100⟩, ⟨110⟩ and ⟨111⟩ at matched Euclidean radius the deficit agrees to within 0.90–1.10 with no preferred axis — scatter, not shape. The test that separates the two candidates is sharp: a field that was really a function of Chebyshev distance would put ⟨111⟩ at <V>r</V> = 20 at the <V>r</V>/√3 = 12 value, which is 2.16. Measured, it is 0.775. <b>The cube is the shape of the front; the sphere is the shape of the field</b>, and every law in this section reads the second.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which also says what <K><Bar>FLOOR</Bar></K> is really for. The lattice does survive in the field, but only close in: ⟨111⟩ runs 21% high at <V>r</V> = 6 and is inside 5% by <V>r</V> = 10. So the cube-shell guard is a <i>near-field</i> correction sitting exactly where the anisotropy is real, rather than a claim about shells at every radius — and the refusal above to read the whole thing off the cube is not caution, it is the measurement. If the residual is ever wanted as a term rather than a guard, it has the form below, with <V>f</V><Sub>4</Sub> the cubic harmonic and <V>ε</V>, <V>n</V> read off the lattice rather than fitted to anything:
+          </Para>
+
+          <Eq note="a near-field angular term — dead by a few cells, and nothing astronomical is within 10³⁰ of it">
+            chance(<V>m</V>,<V>r</V>,<B>d̂</B>) =
+            <Frac over={<><V>m</V> · <K><Bar>SHEET</Bar></K></>} under={<>shell(<V>r</V>)</>} />
+            <span style={{ padding: '0 0.6em' }} />
+            ·
+            <span style={{ padding: '0 0.6em' }} />
+            <Paren>1 + <V>ε</V> · <V>f</V><Sub>4</Sub>(<B>d̂</B>) · <Paren><Frac over={<><V>r</V><Sub>0</Sub></>} under={<><V>r</V></>} /></Paren><Sup><V>n</V></Sup></Paren>
+          </Eq>
+
+          <Para>
+            One caveat on those numbers, since it is the kind of thing that goes unsaid. The run settles for 700 ticks against a relaxation time of about <V>R</V><Sup>2</Sup>/<V>D</V> ≈ 680, so the outermost shells are not fully relaxed and the fitted <V>R</V> comes out smaller than the box. That softens <V>R</V>. It does not touch the 1/<V>r</V> shape or the isotropy, which are read well inside it.
+          </Para>
+
           <Head>and what does not get through</Head>
 
           <Para>
@@ -1194,6 +1231,12 @@ const Physics = () => {
             Now put two of them in a world. Body <V>a</V> is spraying <V>m</V><Sub>a</Sub><K>l.<Bar>SHEET</Bar></K> charges a tick over shells that grow as <V>r</V><Sup>2</Sup>; so is body <V>b</V>; and the pull is the rate at which one of each finds the same cell.
           </Para>
 
+          <BR/>
+
+          <Para>
+            <b>A tick, not a pulse</b> — which is the whole reason the <V>r</V><Sup>2</Sup> is allowed to be a sphere's. Both bodies are emitting continuously, so what meets is two <i>settled</i> fields and not two fronts, and a settled field on this lattice is round to within a few percent past about four cells (measured above). The cube never enters the two-body law. It would, if either side were a single pulse caught in flight — and that case is the open one, not this one.
+          </Para>
+
           <Eq derive={MEETINGS}>
             <V>S</V><Sub>ab</Sub> &nbsp;=&nbsp; <K>BITE</K> ·
             <Paren><Frac over={<K>SHEET</K>} under={<>4<V>π</V></>} /></Paren><Sup>2</Sup>
@@ -1811,6 +1854,24 @@ const Physics = () => {
 
           <Para>
             Which is the honest state of it. <b>A circle is not recovered; it is chosen, by choosing what a heading is.</b> The lattice will as happily give a square, and a world where the discreteness of the spread genuinely mattered is not obviously ours to rule out — the residual here is a rank-four fingerprint worth 37 µm over a Hubble time, which is small but is not nothing, and is the one thing this whole route predicts that assuming a sphere never could.
+          </Para>
+
+          <Head>except where it is recovered, which is where the law reads it</Head>
+
+          <Para>
+            Everything on this page is about <i>one pulse in flight</i>, and for one pulse the verdict above holds without qualification: the front is a cube, scaling a cube gives a cube, and no amount of blur or averaging or 10<Sup>39</Sup> constituents makes a twenty-seventh direction. But the force law never asks a front anything. It asks what is <i>at</i> a place, of a source that has been emitting every tick since it existed — and that is a settled field, which is a different object with a different shape.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the settled field is round, without choosing anything.</b> One absorber in a 101<Sup>3</Sup> vacuum on the 26-neighbour rule, run to steady state: the deficit fits <V>A</V>(1/<V>r</V> − 1/<V>R</V>) to 2% past <V>r</V> = 8, and ⟨100⟩, ⟨110⟩ and ⟨111⟩ agree to 0.90–1.10 at matched radius with no axis preferred. A Chebyshev field would read 2.16 where ⟨111⟩ at <V>r</V> = 20 reads 0.775. The reason is not a rule and not a repair: relaxation kills the anisotropy because the 26-neighbour Laplacian is isotropic to fourth order, and a cube is what only <i>ballistic</i> propagation preserves.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the two halves of this section are about two different questions and only one of them is open. <b>What is the shape of a pulse?</b> — a cube, chosen, and the choice is real physics with a 37 µm fingerprint on it. <b>What is the shape of a field?</b> — a sphere, derived, past about four cells, and that is the one <K>chance</K> divides by. The lattice survives in the near field, where ⟨111⟩ runs 21% high at <V>r</V> = 6 and is inside 5% by <V>r</V> = 10, which is exactly the range <K><Bar>FLOOR</Bar></K> was already guarding by hand.
           </Para>
 
           <Law/>
