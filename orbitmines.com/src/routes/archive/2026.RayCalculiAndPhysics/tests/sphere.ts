@@ -30,6 +30,11 @@
  *       the front actually is
  *   §4  THE WOBBLE: the same shells watched tick by tick, so "fluctuates" gets
  *       a number — per cell and per shell, in time and in angle
+ *   §5  AND WHAT THAT WOBBLE IS: grain or shape. A single cell holding an
+ *       integer cannot carry 1.08 of a charge, so its scatter is arithmetic
+ *       before it is anything else. §5 separates the two by asking the same
+ *       instant at coarser angular resolution, and against the shot-noise
+ *       floor a counting relay is owed.
  *
  * Run: ./run.sh sphere
  */
@@ -144,7 +149,7 @@ const sim = (L: number, T: number, R: number, mode: Mode, watch: number[] = []) 
   }
 
   for (let c = 0; c < C; c++) acc[c] /= acn;
-  return { q, acc, o, L, at, churn: churn / cn, trace, ptrace, ticks: acn };
+  return { q, acc, o, L, at, body, OFF, rim, churn: churn / cn, trace, ptrace, ticks: acn };
 };
 
 // —— reading it ——————————————————————————————————————————————————————————————
@@ -362,20 +367,102 @@ console.log("   its own distance first, so the shell's own gradient is not count
 console.log();
 
 console.log("─".repeat(76));
+console.log("5. AND THAT RAGGEDNESS IS GRAIN, NOT SHAPE\n");
+console.log("   §4's angular column is a per-CELL number, and a cell is the worst");
+console.log("   instrument in the box: it holds an integer, and at r = 20 it is being");
+console.log("   asked to carry 1.084 of a charge. Two readings decide whether the");
+console.log("   raggedness is a fluctuating SHAPE or the arithmetic of counting.\n");
+console.log("   FIRST — against the floor. A cell's neighbour holding k sends one charge");
+console.log("   down each of k edges out of 26, so the count arriving is a sum of 26");
+console.log("   draws with p = k/26, and even a perfectly round field must scatter by");
+console.log("   √Σp(1−p). That floor is not fitted: it is read off the neighbours'");
+console.log("   own occupancies in the final state. In charges, not percent:\n");
+{
+  console.log("        r    shell mean   scatter/cell   shot-noise floor   measured/floor");
+  for (const mode of ["round", "random"] as Mode[]) {
+    const s = runs[mode], { q, o, at, body, OFF } = s, p = profile(s);
+    console.log(`     ${mode === "round" ? "walks round the point" : "picked at random"}`);
+    for (const r of WATCH) {
+      const dev: number[] = [], floor: number[] = [];
+      for (let z = -o; z <= o; z++) for (let y = -o; y <= o; y++) for (let x = -o; x <= o; x++) {
+        const d = Math.sqrt(x * x + y * y + z * z);
+        if (d < r - 0.5 || d > r + 0.5) continue;
+        const c = at(x, y, z);
+        dev.push((DEG - q[c]) - p(d));           // departure from the round field
+        let v = 0;                               // and what counting alone owes it
+        for (let i = 0; i < DEG; i++) {
+          const n = c + OFF[i];
+          const k = body[n] ? 0 : s.rim(x + DIR[i][0], y + DIR[i][1], z + DIR[i][2]) ? DEG : q[n];
+          v += (k / DEG) * (1 - k / DEG);
+        }
+        floor.push(Math.sqrt(v));
+      }
+      const m = Math.sqrt(mean(floor.map(v => v * v))), got = sd(dev);
+      console.log("      " + String(r).padStart(3) + shell(s, r).toFixed(4).padStart(13)
+        + got.toFixed(3).padStart(15) + m.toFixed(3).padStart(19)
+        + (got / m).toFixed(2).padStart(17));
+    }
+  }
+}
+console.log();
+console.log("   SECOND — the same instant, asked at an angular resolution a cell cannot");
+console.log("   give. Each shell is cut into 26 patches (nearest lattice direction) and");
+console.log("   the patch is averaged before the spread is taken. Grain falls as 1/√m");
+console.log("   with the patch size m; a shape does not fall at all. The averaged");
+console.log("   column is the SAME patches over all " + runs.round.ticks + " ticks — the residual shape.\n");
+{
+  const s = runs.round, { q, acc, o, at } = s, p = profile(s);
+  const HAT = DIR.map(([x, y, z]) => { const n = Math.hypot(x, y, z); return [x / n, y / n, z / n]; });
+  console.log("        r    m    per cell    per patch    if grain    averaged");
+  for (const r of WATCH) {
+    const now = DIR.map((): number[] => []), av = DIR.map((): number[] => []);
+    const cell: number[] = [];
+    for (let z = -o; z <= o; z++) for (let y = -o; y <= o; y++) for (let x = -o; x <= o; x++) {
+      const d = Math.sqrt(x * x + y * y + z * z);
+      if (d < r - 0.5 || d > r + 0.5) continue;
+      let best = 0, bd = -2;
+      for (let i = 0; i < DEG; i++) {
+        const t = (x * HAT[i][0] + y * HAT[i][1] + z * HAT[i][2]) / d;
+        if (t > bd) { bd = t; best = i; }
+      }
+      const e = p(d), c = at(x, y, z);
+      now[best].push((DEG - q[c]) / e); av[best].push(acc[c] / e);
+      cell.push((DEG - q[c]) / e);
+    }
+    const m = cell.length / DEG;
+    const pn = now.filter(v => v.length).map(mean), pa = av.filter(v => v.length).map(mean);
+    console.log("      " + String(r).padStart(3) + Math.round(m).toString().padStart(5)
+      + (100 * sd(cell)).toFixed(1).padStart(11) + "%"
+      + (100 * sd(pn)).toFixed(1).padStart(12) + "%"
+      + (100 * sd(cell) / Math.sqrt(m)).toFixed(1).padStart(11) + "%"
+      + (100 * sd(pa)).toFixed(1).padStart(11) + "%");
+  }
+}
+console.log();
+
+console.log("─".repeat(76));
 console.log("WHAT THIS SETTLES");
-console.log("  · the sentence is right, and BOTH halves of it are large. The");
-console.log("    instantaneous shape is not a sphere and is not near one: cells on one");
-console.log("    shell differ from each other by 28% at r = 6 and by 106% at r = 20,");
-console.log("    with the shell's own radial gradient already divided out.");
-console.log("  · and the wobble grows with distance for an arithmetic reason, not a");
-console.log("    physical one. The scatter is about ONE CHARGE per cell at every");
-console.log("    radius (1.68, 1.46, 1.40, 1.01 at r = 6, 10, 14, 20) while the deficit");
-console.log("    it sits on falls as 1/r — so the RELATIVE wobble goes as r, and passes");
-console.log("    100% at the radius where the deficit drops below one whole charge.");
-console.log("  · what is spherical is the AVERAGE. Over 300 ticks the same angular");
-console.log("    scatter falls to 0.8–1.3%, at or under the 1/√n a pure noise would");
-console.log("    give — so it is noise, and it averages away slightly FASTER than");
-console.log("    independent noise would, the relay being conserving rather than free.");
+console.log("  · the sentence is right, and the first half of it is a statement about");
+console.log("    the INSTRUMENT rather than about the shape. Cells on one shell differ");
+console.log("    from each other at one tick by 28% at r = 6 and 106% at r = 20, with");
+console.log("    the radial gradient already divided out — but a cell holds an INTEGER,");
+console.log("    and at r = 20 it is being asked to carry 1.084 of a charge.");
+console.log("  · that scatter is the counting floor and not a shape. In charges it is");
+console.log("    2.62, 2.14, 1.63, 1.15 at r = 6, 10, 14, 20, against a shot-noise floor");
+console.log("    √Σp(1−p) — what a PERFECTLY round field would still scatter by — of");
+console.log("    2.41, 1.94, 1.56, 1.11. Measured over floor: 1.03–1.11, on both rules.");
+console.log("    The 28% and the 106% are one charge of grain divided by a deficit");
+console.log("    falling as 1/r, which is why the RELATIVE wobble goes as r and passes");
+console.log("    100% where the deficit drops below one whole charge.");
+console.log("  · and asked at an angular resolution a cell can actually give — 26");
+console.log("    patches of m = 17…194 cells — a SINGLE TICK is already round to");
+console.log("    10–15%. The raggedness is grain; the shape under it never leaves.");
+console.log("  · what is spherical is the AVERAGE, and it is spherical to well under a");
+console.log("    percent: over 300 ticks the angular scatter falls to 0.8–1.3% per cell");
+console.log("    and 0.1–0.5% per patch, at or under the 1/√n a pure noise would give");
+console.log("    — it averages away slightly FASTER than independent noise would, the");
+console.log("    relay being conserving rather than free. A shape would not average");
+console.log("    away at all; this does.");
 console.log("  · the shape is round to about 1% by r = 10 and the lattice survives only");
 console.log("    near in: the ⟨100⟩/⟨110⟩/⟨111⟩ spread is 3.7% at r = 6 and 5.4% at");
 console.log("    r = 8, under 1.3% at every radius beyond. A near-field term, not a");

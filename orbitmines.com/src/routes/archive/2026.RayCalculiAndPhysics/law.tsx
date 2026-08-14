@@ -106,6 +106,23 @@ export const Frac = ({ over, under }: { over: ReactNode, under: ReactNode }) => 
 );
 
 /**
+ * A term with its type set quietly underneath it, the way a signature reads.
+ *
+ * Not a fraction and so no rule line: `of` is the thing, `is` is what it
+ * ranges over. Used where a name would otherwise need a sentence after it to
+ * say what kind of number comes back.
+ */
+export const Type = ({ of, is }: { of: ReactNode, is: ReactNode }) => (
+  <span style={{
+    display: 'inline-flex', flexDirection: 'column', alignItems: 'center',
+    verticalAlign: 'middle', lineHeight: 1.15, margin: '0 0.15em',
+  }}>
+    <span>{of}</span>
+    <span style={{ fontSize: '0.66em', color: FAINT, fontStyle: 'normal', marginTop: '0.15em' }}>{is}</span>
+  </span>
+);
+
+/**
  * Brackets big enough for what is inside them.
  *
  * By making the GLYPH bigger, not by stretching one. `scaleY` on a parenthesis

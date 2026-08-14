@@ -33,7 +33,7 @@ than as silent agreement.
 | `wave` | **the same lattice propagating as a wave instead of a ray** — the front is a circle at the sound speed and the grain vanishes as the pulse widens |
 | `lattices` | **which space gives a sphere** — a sweep of spatial constructions against the spherical-design condition, and the shell search that finds 26 directions exact through rank 6 |
 | `veined` | **what every law becomes if the field is veined rather than shell-averaged** — the radial law survives exactly, the Solar System kills it, galaxies cannot see it |
-| `sphere` | **how round the pressure is, and by how much it wobbles** — the instantaneous shape is 28–106% ragged, the average of it is a sphere to 1%, and the lattice survives only inside r ≈ 8 |
+| `sphere` | **how round the pressure is, and by how much it wobbles** — the per-cell instantaneous scatter is 28–106% but that is the *counting floor* (1.03–1.11× √Σp(1−p), both rules), one tick read at 26-patch resolution is already round to 10–15%, the average is a sphere to 0.1–0.5%, and the lattice survives only inside r ≈ 8 |
 | `cones` | **is there a rule with nothing tuned that gives a sphere** — no, and in 3D no `w` can, plus what each candidate rule does to every published number |
 
 ### the force law

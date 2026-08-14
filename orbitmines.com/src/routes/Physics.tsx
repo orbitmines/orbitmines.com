@@ -14,7 +14,7 @@ import {
   B, Bar, Because, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
   IDENTICAL,
   IGNORANCE, K, Law, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, RECORD, Rows,
-  SPACE, Step, Sub, Sup, TURNS, V,
+  SPACE, Step, Sub, Sup, TURNS, Type, V,
 } from "./archive/2026.RayCalculiAndPhysics/law";
 import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
@@ -234,7 +234,9 @@ const Physics = () => {
 
         <BR/>
 
-        Next up we have dimensions, now the trouble with this, is that generally we could have a fraction in this number. So one would only be able to make a judgement on this number locally, or regionally. Instead these following variables will only be judged locally always (the current position). We denote that with a 'l.' in front of the variable. Unless otherwise mentioned the local variable has a default, which is the same variable name without the 'l.'.
+        <Para>
+           Next up we have dimensions, now the trouble with this, is that generally we could have a fraction in this number. So one would only be able to make a judgement on this number locally, or regionally. Instead these following variables will only be judged locally always (the current position). We denote that with a 'l.' in front of the variable. Unless otherwise mentioned the local variable has a default, which is the same variable name without the 'l.'. <span className="bp5-text-muted">(Local variables are also time-aware - as if it's the node's state at some point in time.)</span>
+        </Para>
 
         <Eq>
           <F>l.</F><K><Bar>D</Bar></K> = number of dimensions
@@ -367,34 +369,58 @@ const Physics = () => {
           
           <Head>The inverse square law</Head>
 
-          The discrete model will tell us that there will be constant fluctuations of the shape of the pressure gravity is exerting, but that those fluctuations will average out to a sphere. And we can measure both halves of that rather than assert them — <code>tests/sphere.ts</code> puts one absorber in an 81<Sup>3</Sup> box, lets it settle for 600 ticks, and reads the shortfall it digs.
+          The discrete model will tell us that there will be constant fluctuations of the shape of the pressure gravity is exerting, but that those fluctuations will average out to a sphere. And we can measure both halves of that rather than assert them.
 
           <BR/>
 
-          <Para>
-            <b>The instantaneous shape is not a sphere and is nowhere near one.</b> Cells sitting on the same shell, with that shell's own radial gradient divided out first, differ from each other by <b>28% at <V>r</V> = 6 and 106% at <V>r</V> = 20</b> — and the growth is arithmetic rather than physical. The scatter is about <i>one charge per cell</i> at every radius (1.68, 1.46, 1.40, 1.01 at <V>r</V> = 6, 10, 14, 20) while the deficit it sits on falls as 1/<V>r</V>, so the fluctuation <i>relative</i> to the thing being measured grows in proportion to <V>r</V> and crosses 100% at the radius where the deficit drops under one whole charge. A cell holds an integer; far out, the field it is asked to carry is a fraction of one.
-          </Para>
+          <Eq note={<><F>l.</F> is a time aware node</>}>
+            <Type of={<><F>l.</F><D>#active?</D></>} is={<>0..<F>l.</F><K><Bar>DEG</Bar></K></>} /> = <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <F>l.</F><D>rays</D></Sub> <Type of={<><V>ray</V>.<D>active?</D></>} is={<>0 | 1</>} />
+          </Eq>
 
-          <Eq note={<>one charge of grain on a shortfall going as 1/<V>r</V>, thinned by the ticks averaged over</>}>
-            wobble(<V>r</V>,<V>n</V>) ≈
+          <Eq note={<><V>ray</V>.<D>terminal</D> is the neighbour the ray points at, and its <D>#active?</D> is what it had to send. A node makes <D>#active?</D> of its rays active and skips the rest, so any one of them carries with chance <D>terminal</D>.<D>#active?</D>/<F>l.</F><K><Bar>DEG</Bar></K> — and ⟨ ⟩, which is the only place in this section anything is averaged over ticks, a node is the mean of its neighbours. This is the only line that follows a ray past its own end; it is what makes the field harmonic, and everything below rests on it. The gap between the count and its mean is the grain <D>wobble</D> measures</>}>
+            ⟨<F>l.</F><D>#active?</D>⟩ =
+            <Frac over={<>1</>} under={<><F>l.</F><K><Bar>DEG</Bar></K></>} />
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <F>l.</F><D>rays</D></Sub>
+            <V>ray</V>.<D>terminal</D>.<D>#active?</D>
+          </Eq>
+
+          <Eq note={<>nothing is chosen here, it is the lattice. A node's next <F>l.</F><D>#active?</D> is the <i>mean</i> of its neighbours', which is a walk taking one step a tick uniformly over the 26 rays; 18 of the rays step <D>dx</D> = ±1 along a given axis and 8 step <D>dx</D> = 0, so a step has variance 18/26 an axis, and a diffusivity is half a step variance. The sum is a mean over the node's own rays and nothing is averaged over time here, which is why it carries no ⟨ ⟩. Lowercase, and not <F>l.</F><K><Bar>D</Bar></K>, which is already the number of dimensions</>}>
+            <F>l.</F><D>spread</D> =
+            <Frac over={<>1</>} under={<>2<F>l.</F><K><Bar>DEG</Bar></K></>} />
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <F>l.</F><D>rays</D></Sub>
+            <V>ray</V>.<D>dx</D><Sup>2</Sup>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            <Frac over={<>9</>} under={<>26</>} />
+          </Eq>
+
+          <Eq note={<>the body takes and sends nothing, so every charge that lands on it is destroyed. Two ways of counting the same number: on the left, read at the destination — every node <V>p</V> the body occupies, and what landed on it. On the right, read at the source — every ray out of every body node, each pulling <D>terminal</D>.<D>#active?</D>/<F>l.</F><K><Bar>DEG</Bar></K> back in and sending nothing the other way. A <D>terminal</D> that is itself body has no active rays and so contributes nothing, which is what makes the two sums the same number. Measured at 354.5 a tick for a radius-3 body of 123 nodes — and it is a <i>surface</i> quantity rather than a volume one, since 925 nodes eat only 865: an interior node is shadowed and eats nothing, so <F>l.</F><D>sink</D> grows about like the body's radius rather than like its count</>}>
+            <F>l.</F><D>sink</D> =
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>p</V> ∈ body</Sub> <V>p</V>.<D>#active?</D>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            <Frac over={<>1</>} under={<><F>l.</F><K><Bar>DEG</Bar></K></>} />
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>p</V> ∈ body</Sub>
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <V>p</V>.<D>rays</D></Sub>
+            <V>ray</V>.<D>terminal</D>.<D>#active?</D>
+          </Eq>
+
+          <Eq note={<>and the amplitude of the well is the body's <i>appetite</i>, its rate of destruction over the medium's willingness to carry. Measured, <F>l.</F><D>well</D>/<F>l.</F><D>sink</D> = 0.206 over bodies from 33 to 925 nodes — a 4.5× range of <F>l.</F><D>sink</D> — against 1/4π<F>l.</F><D>spread</D> = 0.230, the 11% being the fit band and the lattice's own Green's function rather than the continuum's. <V>p</V>.<D>r</D> is how far the node sits from the body</>}>
+            <F>l.</F><D>well</D> =
+            <Frac over={<><F>l.</F><D>sink</D></>} under={<>4π<F>l.</F><D>spread</D></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>so</span>
+            <F>l.</F><K><Bar>DEG</Bar></K> − <V>p</V>.<D>#active?</D> =
+            <F>l.</F><D>well</D>(1/<V>p</V>.<D>r</D> − 1/<V>R</V>)
+          </Eq>
+
+          <Eq note={<>one charge of grain on the shortfall itself — <F>l.</F><K><Bar>DEG</Bar></K> − <F>l.</F><D>#active?</D> is how many of a node's rays stayed idle, so how many charges short of full a node at <V>r</V> is, measured in §2 at <F>l.</F><D>well</D> = 70.3 and <V>R</V> = 29.5 cells — thinned by the <V>n</V> ticks averaged over. The <V>r</V> on the right is that 1/<V>r</V> inverted, and holds while <V>r</V> ≪ <V>R</V></>}>
+            <D>wobble</D>(<V>r</V>,<V>n</V>) ≈
             <Frac
               over={<>1 charge</>}
-              under={<>deficit(<V>r</V>) · √<V>n</V></>}
+              under={<><F>l.</F><D>well</D>(1/<V>r</V> − 1/<V>R</V>) · √<V>n</V></>}
             />
             <span style={{ padding: '0 1.4em' }} />
             ∝
             <Frac over={<><V>r</V></>} under={<>√<V>n</V></>} />
           </Eq>
-
-          <Para>
-            <b>And the average of it is round.</b> Over 300 ticks the same angular scatter falls to <b>0.8–1.3%</b> at every radius — at or below the 1/√<V>n</V> that independent noise would give, because a relay that conserves what it carries averages slightly better than a free one. What does <i>not</i> average away is the lattice, and it is only near in: the ⟨100⟩, ⟨110⟩ and ⟨111⟩ cones agree to within <b>3.7% at <V>r</V> = 6, 5.4% at <V>r</V> = 8, and under 1.3% everywhere beyond <V>r</V> = 10</b>. That residual is a near-field term rather than a shape, which is what <K><Bar>FLOOR</Bar></K> below is for.
-          </Para>
-
-          <BR/>
-
-          <Para>
-            Two things that fall out of the same run and are worth having early. The empty box is <i>exactly</i> static — with every point full there is never a shortfall, so no edge is ever skipped and the vacuum has no choice to make — meaning <b>every fluctuation above belongs to the body's well and none of it to the medium</b>. And the roundness is a real sphere rather than the cube the front actually is: a field that were secretly a function of Chebyshev distance would read the <V>r</V>/√3 shell's value along ⟨111⟩, which at <V>r</V> = 20 is 3.63. Measured, it is 1.088, against a shell mean of 1.084.
-          </Para>
 
 
 
