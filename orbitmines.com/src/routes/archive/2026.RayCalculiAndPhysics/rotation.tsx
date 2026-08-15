@@ -72,22 +72,90 @@ type Disc = typeof DISK;
 const sigma = (d: Disc, R: number) => d.M / (2 * Math.PI * d.Rd * d.Rd) * Math.exp(-R / d.Rd);
 
 /**
+ * Worked out the first time it is asked for, and never if it is not.
+ *
+ * Every curve on this page is a ring sum over a whole galaxy, and a ring sum is
+ * the one thing here expensive enough that WHEN it happens is visible: done at
+ * import, it is time the page spends before it has drawn anything at all, for
+ * panels that are thousands of pixels below the fold and may never be looked
+ * at. Done at the first frame of the panel that wants it, it is time spent by a
+ * canvas that is already on screen — and `CanvasView` only starts a canvas that
+ * is on screen, so the reader pays for the pictures they actually reach.
+ *
+ * The value is the same value either way. Only the moment moves.
+ */
+const lazily = <T,>(make: () => T): (() => T) => {
+  let made: T, ready = false;
+
+  return () => {
+    if (!ready) { made = make(); ready = true; }
+    return made;
+  };
+};
+
+/**
+ * The cosine and sine of the ring angles, at one resolution.
+ *
+ * `2π(j+½)/NP` does not depend on the ring, on the radius being asked about, or
+ * on which disc it is — it is the same NP angles every time — and yet it sat in
+ * the innermost loop of four different sums, which between them go round some
+ * fifty million times. So they are worked out once per NP and read after that.
+ *
+ * The numbers are the identical doubles the loop used to compute, so nothing
+ * downstream shifts by a bit.
+ */
+const RINGS = new Map<number, { cos: Float64Array, sin: Float64Array }>();
+
+const ringAngles = (NP: number) => {
+  let made = RINGS.get(NP);
+  if (made) return made;
+
+  const cos = new Float64Array(NP), sin = new Float64Array(NP);
+  for (let j = 0; j < NP; j++) {
+    const p = 2 * Math.PI * (j + 0.5) / NP;
+    cos[j] = Math.cos(p);
+    sin[j] = Math.sin(p);
+  }
+
+  RINGS.set(NP, made = { cos, sin });
+  return made;
+};
+
+/**
+ * `s²` raised to the power an inverse-`d^p` force wants, which is the whole of
+ * why these sums used to cost seconds.
+ *
+ * `Math.pow` with a fractional exponent is a general-purpose thing — a log, a
+ * multiply and an exp — and at 1½ it is thirty times the cost of the square
+ * root it actually is. `x^1.5` is `x·√x` and `x^1` is `x`, and both of those
+ * are single instructions. Every call site here asks for one of the two.
+ *
+ * BIT-IDENTICAL, not merely close: √ is correctly rounded and so is the
+ * multiply, and on the values these sums use the answer agrees with `Math.pow`
+ * to the last bit — checked against the quoted curves before it was changed.
+ * The general case is left as it was, for an exponent nothing asks for yet.
+ */
+const raised = (s2: number, e: number) =>
+  e === 1.5 ? s2 * Math.sqrt(s2) : e === 1 ? s2 : Math.pow(s2, e);
+
+/**
  * The radial pull at r in the plane from one exponential disc, summed over the
  * disc — kept split into the part inside r and the part outside it, since that
  * split is the thing being asked about. Positive is inward.
  */
 const discPull = (d: Disc, r: number, NR = 420, NP = 480) => {
   const RMAX = 12 * d.Rd;
+  const { cos, sin } = ringAngles(NP);
+  const hh = d.h * d.h;
   let inside = 0, outside = 0;
   for (let i = 0; i < NR; i++) {
     const R = RMAX * (i + 0.5) / NR, dR = RMAX / NR;
     const s = sigma(d, R) * R * dR;
     let acc = 0;
     for (let j = 0; j < NP; j++) {
-      const p = 2 * Math.PI * (j + 0.5) / NP;
-      const dx = R * Math.cos(p) - r, dy = R * Math.sin(p);
-      const s2 = dx * dx + dy * dy + d.h * d.h;
-      acc += dx / Math.pow(s2, 1.5);
+      const dx = R * cos[j] - r, dy = R * sin[j];
+      const s2 = dx * dx + dy * dy + hh;
+      acc += dx / raised(s2, 1.5);
     }
     const bit = -G * s * acc * (2 * Math.PI / NP);
     if (R < r) inside += bit; else outside += bit;
@@ -167,12 +235,12 @@ export const pullAt = (r: number): Point => {
 
 const kms = (g: number, r: number) => Math.sqrt(Math.max(0, g * r)) / 1e3;
 
-/** computed once and shared by both panels */
-const CURVE: Point[] = (() => {
+/** computed once, on the first panel that asks, and shared by all of them */
+const CURVE = lazily((): Point[] => {
   const out: Point[] = [];
   for (let i = 1; i <= 60; i++) out.push(pullAt(i * 0.5 * KPC));
   return out;
-})();
+});
 
 // ---------------------------------------------------------------------------
 // AND THE CAUGHT-PAIR LAW, which is the same sum with the force falling as 1/d.
@@ -185,16 +253,17 @@ const CURVE: Point[] = (() => {
 /** the same ring sum, with the force falling as 1/d^p instead of 1/d² */
 const discPullP = (d: Disc, r: number, p: number, NR = 420, NP = 480) => {
   const RMAX = 12 * d.Rd;
+  const { cos, sin } = ringAngles(NP);
+  const hh = d.h * d.h, e = (p + 1) / 2;
   let acc = 0;
   for (let i = 0; i < NR; i++) {
     const R = RMAX * (i + 0.5) / NR, dR = RMAX / NR;
     const s = sigma(d, R) * R * dR;
     let a = 0;
     for (let j = 0; j < NP; j++) {
-      const ph = 2 * Math.PI * (j + 0.5) / NP;
-      const dx = R * Math.cos(ph) - r, dy = R * Math.sin(ph);
-      const d2 = dx * dx + dy * dy + d.h * d.h;
-      a += dx / Math.pow(d2, (p + 1) / 2);            // the unit vector, times 1/d^p
+      const dx = R * cos[j] - r, dy = R * sin[j];
+      const d2 = dx * dx + dy * dy + hh;
+      a += dx / raised(d2, e);                        // the unit vector, times 1/d^p
     }
     acc += -s * a * (2 * Math.PI / NP);
   }
@@ -227,17 +296,22 @@ const caughtRaw = (r: number) =>
  * 0.959, 0.974 at 6, 8, 10, 12, 16, 20, 25, 30 kpc — inside 4.5% across the
  * whole range the data covers, on one constant. Below 5 kpc it falls away, and
  * below 5 kpc there is no data either: the fit is not defined there.
+ *
+ * NOT DRAWN ON ANY PANEL YET — no `path` asks for it, so being `lazily` is the
+ * difference between a second of work at import for a curve nobody sees and no
+ * work at all. It is kept because the number above is a result and the code is
+ * how it was got; put it on a panel and it costs what it costs, once.
  */
-const CAUGHT: { r: number; v: number }[] = (() => {
+const CAUGHT = lazily((): { r: number; v: number }[] => {
   const R0 = 8.122 * KPC, at0 = pullAt(R0);
   const kappa =
     (Math.pow(MEASURED(8.122) * 1e3, 2) - at0.total * R0) / (caughtRaw(R0) * R0);
 
-  return CURVE.map(p => ({
+  return CURVE().map(p => ({
     r: p.r,
     v: Math.sqrt(Math.max(0, (p.total + kappa * caughtRaw(p.r)) * p.r)),
   }));
-})();
+});
 
 // ---------------------------------------------------------------------------
 
@@ -337,7 +411,7 @@ const curve = (s: Surface) => {
 
   // what was measured, over the radii it was measured at — and dotted where it
   // is being read outside them, since that is extrapolation and not data
-  const inside = CURVE.filter(p => p.r / KPC >= MEASURED_FROM && p.r / KPC <= MEASURED_TO);
+  const inside = CURVE().filter(p => p.r / KPC >= MEASURED_FROM && p.r / KPC <= MEASURED_TO);
   s.ctx.fillStyle = "rgba(238,240,245,0.09)";
   s.ctx.beginPath();
   inside.forEach((p, i) => {
@@ -351,18 +425,18 @@ const curve = (s: Surface) => {
   }
   s.ctx.closePath(); s.ctx.fill();
 
-  path(s, CURVE.filter(p => p.r / KPC <= MEASURED_FROM), X, Y,
+  path(s, CURVE().filter(p => p.r / KPC <= MEASURED_FROM), X, Y,
     p => MEASURED(p.r / KPC), SEEN, 1.4, [3, 3]);
-  path(s, CURVE.filter(p => p.r / KPC >= MEASURED_TO), X, Y,
+  path(s, CURVE().filter(p => p.r / KPC >= MEASURED_TO), X, Y,
     p => MEASURED(p.r / KPC), SEEN, 1.4, [3, 3]);
   path(s, inside, X, Y, p => MEASURED(p.r / KPC), SEEN, 2.2);
 
-  path(s, CURVE, X, Y, p => kms(mond(p.total), p.r), FLOOR, 1.3, [5, 4]);
+  path(s, CURVE(), X, Y, p => kms(mond(p.total), p.r), FLOOR, 1.3, [5, 4]);
 
-  path(s, CURVE, X, Y, p => kms(p.disc, p.r), PALE, 1.1);
-  path(s, CURVE, X, Y, p => kms(p.gas, p.r), GASC, 1.1);
-  path(s, CURVE, X, Y, p => kms(p.bulge, p.r), BULGEC, 1.1);
-  path(s, CURVE, X, Y, p => kms(p.total, p.r), MODEL, 2.4);
+  path(s, CURVE(), X, Y, p => kms(p.disc, p.r), PALE, 1.1);
+  path(s, CURVE(), X, Y, p => kms(p.gas, p.r), GASC, 1.1);
+  path(s, CURVE(), X, Y, p => kms(p.bulge, p.r), BULGEC, 1.1);
+  path(s, CURVE(), X, Y, p => kms(p.total, p.r), MODEL, 2.4);
 
   // Placed against the computed values, so nothing sits on a line it does not
   // belong to. Newton peaks 192.8 at 5.5 and is 103.7 at 30; MOND peaks 231.6
@@ -417,11 +491,11 @@ const apart = (s: Surface) => {
   }
   ctx.textAlign = "left";
 
-  path(s, CURVE, X, Y, p => Math.pow(MEASURED(p.r / KPC) * 1e3, 2) / (p.total * p.r) - 1,
+  path(s, CURVE(), X, Y, p => Math.pow(MEASURED(p.r / KPC) * 1e3, 2) / (p.total * p.r) - 1,
     SEEN, 2.4);
-  path(s, CURVE, X, Y, p => p.gr, DATA, 2.2);
-  path(s, CURVE, X, Y, p => p.carry, MODEL, 2.2, [5, 3]);
-  path(s, CURVE, X, Y, p => p.reach, MODEL, 1.4, [2, 3]);
+  path(s, CURVE(), X, Y, p => p.gr, DATA, 2.2);
+  path(s, CURVE(), X, Y, p => p.carry, MODEL, 2.2, [5, 3]);
+  path(s, CURVE(), X, Y, p => p.reach, MODEL, 1.4, [2, 3]);
 
   // observed runs 0.48…2.42, GR 4.1e−7 down to 1.2e−7, `carry` twice that,
   // `reach` 5e−12 at 5 kpc to 1.9e−10 at 30 — so these do not collide
@@ -450,14 +524,14 @@ const split = (s: Surface) => {
 
   // what the measurement needs, on the same scale — the pull Gaia's curve
   // implies, as a fraction of what the mass inside the orbit supplies
-  path(s, CURVE, X, Y,
+  path(s, CURVE(), X, Y,
     p => Math.pow(MEASURED(p.r / KPC) * 1e3, 2) / (p.r * p.inside), SEEN, 2.2);
-  path(s, CURVE, X, Y,
+  path(s, CURVE(), X, Y,
     p => mond(p.total) / p.inside, MODEL, 2.2);
 
-  path(s, CURVE, X, Y, p => 1, PALE, 1.6, [4, 3]);
-  path(s, CURVE, X, Y, p => p.outside / p.inside, DATA, 2.2);
-  path(s, CURVE, X, Y, p => p.total / p.inside, RELAT, 1.8, [5, 3]);
+  path(s, CURVE(), X, Y, p => 1, PALE, 1.6, [4, 3]);
+  path(s, CURVE(), X, Y, p => p.outside / p.inside, DATA, 2.2);
+  path(s, CURVE(), X, Y, p => p.total / p.inside, RELAT, 1.8, [5, 3]);
 
   tag(s, X(1.2), Y(2.42), "what is measured", SEEN);
   tag(s, X(1.2), Y(2.20), "this model", MODEL);
@@ -494,26 +568,26 @@ const speeder = (table: { r: number; v: number }[]) => (r: number) => {
   return table[i].v * (1 - f) + table[i + 1].v * f;
 };
 
-const LAWS = [
+const LAWS = lazily(() => [
   {
     name: "NEWTON & GR",
     under: "the baryons alone — the two agree to a part in 10⁶",
     css: DATA,
-    v: speeder(CURVE.map(p => ({ r: p.r, v: kms(p.total, p.r) * 1e3 }))),
+    v: speeder(CURVE().map(p => ({ r: p.r, v: kms(p.total, p.r) * 1e3 }))),
   },
   {
     name: "MEASURED",
     under: "Gaia DR2 × APOGEE",
     css: SEEN,
-    v: speeder(CURVE.map(p => ({ r: p.r, v: MEASURED(p.r / KPC) * 1e3 }))),
+    v: speeder(CURVE().map(p => ({ r: p.r, v: MEASURED(p.r / KPC) * 1e3 }))),
   },
   {
     name: "THIS MODEL",
     under: "the transport route — a₀ = cH₀/2π, computed",
     css: MODEL,
-    v: speeder(CURVE.map(p => ({ r: p.r, v: Math.sqrt(mond(p.total) * p.r) }))),
+    v: speeder(CURVE().map(p => ({ r: p.r, v: Math.sqrt(mond(p.total) * p.r) }))),
   },
-];
+]);
 
 const R_VIEW = 15 * KPC;                                  // as far as the data goes
 
@@ -577,7 +651,7 @@ const discs = (() => {
     const gap = 10, w = (width - gap * 2) / 3;
     const top = 32, side = Math.min(w, height - top - 22);
 
-    LAWS.forEach((law, n) => {
+    LAWS().forEach((law, n) => {
       const x0 = n * (w + gap);
       const cx = x0 + w / 2, cy = top + side / 2;
       const k = side * 0.48 / R_VIEW;
@@ -623,7 +697,7 @@ const discs = (() => {
         ctx.setLineDash([]);
       };
 
-      if (n !== 1) spokes(LAWS[1].v, GHOST, 1.3, [3, 3]);
+      if (n !== 1) spokes(LAWS()[1].v, GHOST, 1.3, [3, 3]);
       spokes(law.v, law.css, 1.7, []);
 
       ctx.fillStyle = law.css;
@@ -842,15 +916,16 @@ const HZ_Z = 1.613;
 /** the same ring sum, for a single exponential disc of the high-z kind */
 const hzNewton = (r: number, NRr = 300, NP = 300) => {
   const RMAX = 12 * HZ_RD, h = HZ_RD / 8;
+  const { cos, sin } = ringAngles(NP);
+  const hh = h * h;
   let acc = 0;
   for (let i = 0; i < NRr; i++) {
     const R = RMAX * (i + 0.5) / NRr, dRr = RMAX / NRr;
     const s = HZ_M / (2 * Math.PI * HZ_RD * HZ_RD) * Math.exp(-R / HZ_RD) * R * dRr;
     let a = 0;
     for (let j = 0; j < NP; j++) {
-      const p = 2 * Math.PI * (j + 0.5) / NP;
-      const dx = R * Math.cos(p) - r, dy = R * Math.sin(p);
-      a += dx / Math.pow(dx * dx + dy * dy + h * h, 1.5);
+      const dx = R * cos[j] - r, dy = R * sin[j];
+      a += dx / raised(dx * dx + dy * dy + hh, 1.5);
     }
     acc += -G * s * a * (2 * Math.PI / NP);
   }
@@ -859,7 +934,7 @@ const hzNewton = (r: number, NRr = 300, NP = 300) => {
 
 const HZ_VIEW = 16 * KPC;
 
-const HZ_LAWS = (() => {
+const HZ_LAWS = lazily(() => {
   const grid: { r: number; gN: number }[] = [];
   for (let i = 1; i <= 40; i++) {
     const r = i * 0.5 * KPC;
@@ -891,7 +966,7 @@ const HZ_LAWS = (() => {
       css: DATA, v: speeder(A0_MODEL * (1 + HZ_Z)),
     },
   ];
-})();
+});
 
 const HZ_STARS = (() => {
   const out: { r: number; th: number }[] = [];
@@ -932,7 +1007,7 @@ const hzDiscs = (() => {
     const gap = 10, w = (width - gap * 2) / 3;
     const top = 32, side = Math.min(w, height - top - 22);
 
-    HZ_LAWS.forEach((law, n) => {
+    HZ_LAWS().forEach((law, n) => {
       const x0 = n * (w + gap), cx = x0 + w / 2, cy = top + side / 2;
       const k = side * 0.48 / HZ_VIEW;
 
@@ -969,8 +1044,8 @@ const hzDiscs = (() => {
       };
       // Newton is the dashed grey ghost and the ceiling f_DM < 0.2 allows is
       // the dashed white one, so both references are in every panel.
-      if (n !== 0) spokes(HZ_LAWS[0].v, "rgba(111,123,168,0.45)", 1.2, [3, 3]);
-      spokes((r: number) => HZ_LAWS[0].v(r) * 1.118, GHOST, 1.2, [2, 4]);
+      if (n !== 0) spokes(HZ_LAWS()[0].v, "rgba(111,123,168,0.45)", 1.2, [3, 3]);
+      spokes((r: number) => HZ_LAWS()[0].v(r) * 1.118, GHOST, 1.2, [2, 4]);
       spokes(law.v, law.css, 1.7, []);
     });
 
@@ -1018,22 +1093,23 @@ const GZ: { name: string; z: number; logMs: number; fgas: number; Re: number }[]
 /** an exponential disc's own pull, summed ring by ring — no shell theorem */
 const gzBaryons = (Mbar: number, Rd: number, r: number, NRr = 240, NP = 240) => {
   const RMAX = 12 * Rd, h = Rd / 8;
+  const { cos, sin } = ringAngles(NP);
+  const hh = h * h;
   let acc = 0;
   for (let i = 0; i < NRr; i++) {
     const R = RMAX * (i + 0.5) / NRr, dRr = RMAX / NRr;
     const s = Mbar / (2 * Math.PI * Rd * Rd) * Math.exp(-R / Rd) * R * dRr;
     let a = 0;
     for (let j = 0; j < NP; j++) {
-      const p = 2 * Math.PI * (j + 0.5) / NP;
-      const dx = R * Math.cos(p) - r, dy = R * Math.sin(p);
-      a += dx / Math.pow(dx * dx + dy * dy + h * h, 1.5);
+      const dx = R * cos[j] - r, dy = R * sin[j];
+      a += dx / raised(dx * dx + dy * dy + hh, 1.5);
     }
     acc += -G * s * a * (2 * Math.PI / NP);
   }
   return acc;
 };
 
-const GZ_CURVES = GZ.map(d => {
+const GZ_CURVES = lazily(() => GZ.map(d => {
   const Mbar = Math.pow(10, d.logMs) * MSUN / (1 - d.fgas);
   const Rd = d.Re * KPC / 1.68;
   const pts: { r: number; bar: number; mod: number }[] = [];
@@ -1044,7 +1120,7 @@ const GZ_CURVES = GZ.map(d => {
     pts.push({ r, bar: Math.sqrt(Math.max(0, gB * r)), mod: Math.sqrt(Math.max(0, gM * r)) });
   }
   return { d, pts, Re: d.Re * KPC };
-});
+}));
 
 const gzPanel = (s: Surface) => {
   const { ctx, width, height } = s;
@@ -1057,7 +1133,7 @@ const gzPanel = (s: Surface) => {
   const top = 42, bot = 30, hh = height - top - bot;
   const VMAX = 420;
 
-  GZ_CURVES.forEach((g, n) => {
+  GZ_CURVES().forEach((g, n) => {
     const x0 = pad + n * (w + gap);
     const RMAXk = 3.0 * g.d.Re;
     const X = (rk: number) => x0 + w * Math.min(rk, RMAXk) / RMAXk;

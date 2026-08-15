@@ -29,8 +29,10 @@ ORDER=(
   genzel empty spacing
   blocking redo shape quant steps joint
   recon which138 accum accumulate asym
-  pulses magnets coulomb moment dipole poles ordering budget tradeoff scale maxwell
+  pulses magnets coulomb moment dipole poles ordering departure divp escape aggregate domains domainsize response align exchange feedback permute texture
+  budget tradeoff scale maxwell
   nopolarity
+  ring holonomy bloch
   turns ways veins cones veined lattices wave gas vacuum pure sphere
 )
 

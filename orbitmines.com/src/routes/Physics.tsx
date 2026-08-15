@@ -31,6 +31,12 @@ import {
   BarField, Ceiling, Fields, Kinds, Ladder, Lopsided, Pairs,
 } from "./archive/2026.RayCalculiAndPhysics/magnetism";
 
+// The lattice actually running — `vacuum.tsx` steps the rule of `tests/sphere.ts`
+// and measures what the vacuum does to gravity; `counts.tsx` is the arithmetic
+// those runs are read against. Both draw through `sketch.tsx` onto `canvas.tsx`.
+import { Shelter } from "./archive/2026.RayCalculiAndPhysics/shelter";
+import { Exits, Shells } from "./archive/2026.RayCalculiAndPhysics/counts";
+
 /** The colour the rest of the article uses for an aside inside a set line. */
 const FAINT = '#6c7080';
 
@@ -1654,9 +1660,13 @@ const Physics = () => {
             [<>what the signs buy</>,
               <>The sign law (1 − <V>P</V><Sub>a</Sub><V>P</V><Sub>b</Sub>), which explains
                 the ½ that was already sitting unexplained inside <V>G</V>. Magnetisation
-                quantised in quarters. ∇·<B>B</B> = 0 and no monopoles. The dipole
+                quantised in quarters — <i>on a face axis</i>; the equator of a corner axis
+                has six members and quantises in thirds, and an edge axis has no uniform
+                dwell at all. ∇·<B>B</B> = 0 and no monopoles. The dipole
                 3cos²<V>θ</V> − 1 and the 1/<V>R</V><Sup>4</Sup> force. That cutting a magnet
-                halves it. That the lightest constituent wins by the square.</>],
+                halves it — which holds for the emitted sign read as −<V>∇</V>·<b>p</b> and
+                fails for a sign assigned by which half of the body a node sits in. That the
+                lightest constituent wins by the square.</>],
             [<>what they cost</>,
               <>One coupling — 4.5·10<Sup>7</Sup> kg/m² of pole face — measured rather than
                 counted. And three refutations: <V>g</V> = 1, the flat 11.1% anisotropy, and
@@ -1714,7 +1724,88 @@ const Physics = () => {
 
       <Section head="AI Generated">
 
-        
+        <Section head="Why two things fall together">
+
+          <Para>
+            Everything else in this arc is a measurement. This is the mechanism,
+            at the scale you can watch it happen — and it is worth seeing before
+            any of the arithmetic, because the arithmetic is only a way of
+            counting what is going on in this picture.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Space is full of charges going in every direction, all the
+            time.</b> A body eats the ones that reach it. So a body is a{' '}
+            <i>shadow</i>, and two of them stand in each other's — each is hit
+            less on the side facing the other, and being hit less on one side is
+            being pushed toward it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            There is no attraction anywhere in that, and <b>nothing crosses the
+            gap</b>. Each body is pushed inward from outside, by rain that is{' '}
+            <i>missing</i> rather than by anything that arrives.
+          </Para>
+
+          <Shelter />
+
+          <Para>
+            The rule is unchanged — <i>tests/sphere.ts</i>'s exactly, run one
+            tick every few frames so the charges can be drawn sliding from the
+            cell they left to the cell they land on. Every dot is one of the
+            actual charges, sampled down to a number the eye can follow; the
+            orange ones are being eaten. The blue outline on each body is where
+            its hits came from, against the dashed circle of an even share.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the dent is drawn at its true size.</b> Measured on this
+            arrangement, the sheltered side takes 73% of an even share at a gap
+            of 18 cells and 41% at a gap of 4 — an 18% dent widening to 93% as
+            they close, which is why they visibly accelerate. The one number
+            that is scaled is a <i>mobility</i>, so that the drift happens
+            inside half a minute rather than inside a simulation nobody watches
+            to the end; the push itself is counted, not chosen.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">
+              In two dimensions, so it can be seen at all — the lattice has 8
+              ways out of a point rather than 26, and the force consequently
+              falls as 1/<V>r</V> rather than 1/<V>r</V><Sup>2</Sup>. That is a
+              fact about the plane and not about the mechanism.
+            </span>
+          </Para>
+
+          <Head>and the two counts it is read against</Head>
+
+          <Para>
+            A fixed count of charges over a shell that grows, which is the whole
+            of the inverse square, and the same number read the other way, which
+            is what gets through.
+          </Para>
+
+          <Shells />
+
+          <Para>
+            And the twenty-six ways out of a point sorted by a north — where the
+            equator turns out to be a <i>different</i> ring for each of the
+            three axis classes.
+          </Para>
+
+          <Exits />
+
+        </Section>
+
+
         <Section head="TODO">
 
           <Head>the rule, and there is only one</Head>
@@ -2473,8 +2564,9 @@ const Physics = () => {
               <>The 1/<V>r</V><Sup>2</Sup>, as flux over a growing shell — exactly{' '}
                 <K>SHEET</K> = 8 through any sphere, to the last digit. The sign law, for a
                 bias. Two signs that cancel. A ± ledger that balances, which is what{' '}
-                <K>BITE</K> = 1 exists for. Magnetisation quantised in quarters. ∇·<V>B</V> = 0
-                and the absence of monopoles. That the lightest constituent wins by the
+                <K>BITE</K> = 1 exists for. Magnetisation quantised in quarters, on a face
+                axis (a corner axis quantises in thirds — see the ring count in the Layer-2
+                arc). ∇·<V>B</V> = 0 and the absence of monopoles. That the lightest constituent wins by the
                 square. Superposition. The dipole angular law 3cos²<V>θ</V> − 1, the
                 1/<V>R</V><Sup>4</Sup> force, all five orientations, and that cutting a magnet
                 halves it. <b>Thirteen of twenty-nine.</b></>],
@@ -2514,7 +2606,19 @@ const Physics = () => {
           <BR/>
 
           <Para>
-            Which turns the open question into one line of the source. <K>emission</K> is <code>sided ? along() : cos(2πβ)</code>, and <K>along</K> resolves the direction against the axis <i>at the destination</i>. A pulse whose polarity were fixed <b>when it left</b> would carry it, the near-field cancellation would survive to infinity, and the faces would be poles. So: <b>is a pulse's sign fixed when it leaves, or when it arrives?</b> Nothing else about the mechanism changes either way, which makes it the cheapest open question on the page.
+            Which turns the open question into one line of the source. <K>emission</K> is <code>sided ? along() : cos(2πβ)</code>, and <K>along</K> resolves the direction against the axis <i>at the destination</i>. A pulse whose polarity were fixed <b>when it left</b> would carry it, the near-field cancellation would survive to infinity, and the faces would be poles. So: <b>is a pulse's sign fixed when it leaves, or when it arrives?</b> Nothing else about the mechanism changes either way, which is why this looked like the cheapest open question on the page.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>It is not a question, and it is worth saying so here rather than only where it gets settled.</b> A pulse that reaches an observer was emitted <i>into the direction of the observer</i>, so the direction the source resolves its sign against is the direction the destination resolves it against — one number computed in two places. Measured over two hundred observers at random directions and distances the difference is exactly nought, and both give the same 2.000. The two can only come apart where the ray bends or where north turns along the path, and in the far field of a uniformly ordered lump there is neither. <b>Fixing the sign at the source changes nothing whatever.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            What was right in this passage is the sentence just above it, and it was right about the wrong object. <i>The signed emission is nought in the middle of a cylinder and largest at its ends</i> — <b>that is −<V>∇</V>·<B>p</B></b>, the divergence of a polarisation, and it is a quantity that nets to nought identically, falls as 1/<V>r</V><Sup>3</Sup>, gives every orientation and 1/<V>R</V><Sup>4</Sup>, and yields two magnets when the body is cut in half. The arc had it in hand and then resolved it against an axis at the destination, which throws the polarisation away and replaces it with sgn(<B>n</B>·<B>d̂</B>) — a quantity with zero flux through every sphere and a step discontinuity at the equator, which is <b>not a monopole and not a field at all</b>, but a tally of received pulses. That is the whole of what went wrong, it is one line, and the Layer-2 arc below carries the measurements.
           </Para>
 
           <BR/>
@@ -3152,7 +3256,13 @@ C60                       1.2e−24   1e−7     1.9e+66
           </Eq>
 
           <Para>
-            The magnetism arc noticed the eight and called it "thrown away". <b>It is not thrown away. It is vacant</b>, and it is vacant in precisely the sense a second structure needs: eight directions, at every cell, that Layer 1's emission rule never touches. Anything built on them costs the gravity arc nothing — not a digit of <i><K><Bar>G</Bar></K></i>, not a term in met(<V>R</V>), not one of the numbers this book has already published — because the emission was never using them.
+            The magnetism arc noticed the eight and called it "thrown away". <b>It is not thrown away. It is vacant</b>, and it is vacant in precisely the sense a second structure needs: eight directions, at every cell, that Layer 1's emission rule never <i>puts anything into</i>. One wording correction, because it matters for what follows: the rule does not fail to touch them. It touches them and assigns nought, deliberately — <i>physics.ts</i> says so in as many words, that a source with sides <i>has</i> an equator and a direction on it gets nothing, and that this is a real answer rather than an omission. Vacant is the right word and untouched is not. Anything built on them still costs the gravity arc nothing — not a digit of <i><K><Bar>G</Bar></K></i>, not a term in met(<V>R</V>), not one of the numbers this book has already published — because the emission was never <i>using</i> them.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And while the count is here: the magnetism arc's "why the equator and not the far hemisphere" is already answered a section earlier in that same arc, though neither says so out loud. A sided emitter gives + to the forward nine, − to the rearward nine, and the equatorial eight resolve to no sign. <b>The rear hemisphere is carrying the minus.</b> The eight are left over because they are the ones with nothing to be, not because a hemisphere went missing.
           </Para>
 
           <BR/>
@@ -3166,6 +3276,37 @@ C60                       1.2e−24   1e−7     1.9e+66
               {`(1,0) → (1,1) → (0,1) → (−1,1) → (−1,0) → (−1,−1) → (0,−1) → (1,−1) → back`}
             </span>
           </Eq>
+
+          <Head>and the ring is the face ring, which is six norths out of twenty-six</Head>
+
+          <Para>
+            That paragraph is true and it is true of one axis class, and the arc as first written did not say so. The <K><Bar>CYCLE</Bar></K> = 8 sitting in <i>lattice.ts</i> is <K>turnRing</K>'s — eight in-plane directions of a <i>plane</i> — and a plane is an equator only when the axis is a face axis. Cut the equator of every north the lattice has and sort each one by angle, and there are three answers rather than one.
+          </Para>
+
+          <Eq note="ring.ts — every north, its equator, and the spacing round it">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`axis class   count   CYCLE   spacing
+face            6       8    uniform 45°
+corner          8       6    uniform 60°
+edge           12       8    NOT uniform — 35.26° / 54.74° alternating`}
+            </span>
+          </Eq>
+
+          <Para>
+            So fourteen of the twenty-six norths carry a uniform ring and they carry <i>two different quanta</i>; the twelve edge axes — the largest class — carry eight directions that are not at equal angles at all, and 35.26° and 54.74° are the lattice's own two angles rather than an eighth of anything. <b>In a texture whose north turns, nearly half the sites have no U(1) on them.</b> That does not sink the construction, but every sentence in this arc with <K><Bar>CYCLE</Bar></K> in it is a sentence about face axes, and the arc had better say which.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It reaches back into the magnetism arc too, which does not mention it. That arc has <V>P</V> = 2·dwell − 1 with dwell = <V>k</V>/<K><Bar>CYCLE</Bar></K> and reports magnetisation "quantised in quarters" — but quarters is 2/<K><Bar>CYCLE</Bar></K>, so a corner-axis emitter is quantised in <i>thirds</i> and an edge-axis emitter has no uniform dwell to count with. Since the anisotropy result is stated for ⟨111⟩, which is a corner axis, <b>the 11.1% may be computed with a <K><Bar>CYCLE</Bar></K> that does not hold there</b>, and it is worth recomputing before it is left standing in either column.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            One thing does fall out cleanly, and it is the second half of a result the quantum arc already had. The equator of a face axis is every direction with no component along it, which is every way out of a point in one dimension fewer: <K><Bar>SHEET</Bar></K>(<V>D</V>) = 3<Sup><V>D</V>−1</Sup> − 1. <b>The ring size and the sheet size are one constant.</b> <V>D</V> = 1 gives nothing at all and <V>D</V> = 2 gives two, and two directions are a sign rather than a circle — so <b>the first dimension with a phase in it is the third</b>. The 1D walk found the <V>i</V> removable and this says there was never one there to remove, which is a second, independent reason for the same negative result and is a counting fact rather than a measurement.
+          </Para>
 
           <Head>an axis, a ring, and what each of them is</Head>
 
@@ -3253,7 +3394,51 @@ C60                       1.2e−24   1e−7     1.9e+66
           </Eq>
 
           <Para>
-            <b>So the complex structure is forced by the existence of closed loops, and not before.</b> The previous arc's negative result stands exactly as far as it was measured — one dimension — and stops being general the moment the lattice is allowed to be three-dimensional and the axis is allowed to turn. That is also the Aharonov–Bohm statement, arrived at as a lattice-counting fact: the phase around a loop is a thing about the loop, and the choice of where azimuth zero sits is unobservable because <b>the equator has no marked point on it</b>. Gauge invariance is that absence.
+            <b>So the complex structure is forced by the existence of closed loops, and not before.</b> The previous arc's negative result stands exactly as far as it was measured — one dimension — and stops being general the moment the lattice is allowed to be three-dimensional and the axis is allowed to turn. That is also the Aharonov–Bohm statement, arrived at as a lattice-counting fact: the phase around a loop is a thing about the loop, and the choice of where azimuth zero sits is unobservable because <b>the equator has no marked point on it</b>. Gauge invariance is that absence — and it is measured rather than asserted in <i>holonomy.ts</i>, where two hundred random per-site choices of where azimuth zero sits move the loop by 2.5·10<Sup>−15</Sup> while a single open link moves by the whole circle.
+          </Para>
+
+          <Head>and then the ring and the flux cannot both be true</Head>
+
+          <Para>
+            Which is the fork this arc has to take and does not notice it is standing at. Everything above is a <i>continuum</i> transport: the azimuth is a real number, the advance per step is whatever the texture asks for, and the holonomy is a smooth ~10<Sup>−2</Sup> radians. But the opening of this same arc says the phase lives <i>on</i> the eight-member ring, with a quantum of 45°. Put those two sentences next to each other and measure what a smooth texture actually asks the ring for.
+          </Para>
+
+          <Eq note="holonomy.ts — a smooth texture, against the smallest move the ring can make">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`plaquette        advance/step   as a fraction of SPIN   quantised   continuum
+(0,0) 1×1           2.739e−2                3.49e−2   0.000e+0    2.739e−2
+(1.5,0.7) 1×1       4.268e−2                5.43e−2   0.000e+0    1.128e−2
+(0,0) 2×2           4.677e−2                5.95e−2   0.000e+0    7.990e−2
+(3,3) 1×1           8.732e−3                1.11e−2   0.000e+0    7.047e−4`}
+            </span>
+          </Eq>
+
+          <Para>
+            One to two orders of magnitude under a single quantum, at every step, so every step snaps to no move at all and <b>the holonomy is identically zero on every plaquette</b>. And it is not a matter of finding a texture that twists harder: a texture advancing a whole 45° per lattice step turns its north right over in eight cells, which is not a texture, it is noise.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So the arc asserts two things that cannot both hold.</b> Take the ring and there is no Aharonov–Bohm, no flux out of any smooth texture, and nothing for minimal coupling to couple to. Take the flux and the phase is continuous, which is perfectly fine — but then it is not the eight vacant directions, and the whole "the lattice left exactly the right amount of room for it" argument goes with it, because eight directions is not a continuum. <b>This is the single most load-bearing open question in the arc</b>, and it is one decision rather than two: the ring table above and this one are the same fork seen from two sides.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            There is a third option, and the arc does not consider it. Keep the ring and let the strand be a <i>superposition</i> over its members rather than sitting on one, so the advance is an expectation rather than a snap — measured, the realised advance tracks the asked-for one down to 10<Sup>−4</Sup> radians while the ring stays firmly discrete, which is the ordinary relationship between a finite basis and a continuous parameter. It is not free: it makes the phase an amplitude over the eight rather than a position among them, which is a bigger object than the one this arc costed, and whether Layer 1 has room for <i>that</i> is a different count and is not done.
+          </Para>
+
+          <Head>and one half, used twice</Head>
+
+          <Para>
+            While the flux table is here. Parallel transport of a frame vector round a loop gives Ω, not Ω/2 — measured, agreeing with the spherical excess to 10<Sup>−18</Sup>. So the /2 in the column above is not a normalisation being carried along; <b>the half is the double cover</b>, which is the very thing <V>g</V> = 2 is presented as a consequence of four sections below. Writing Ω/2 here already inserts it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That refutes neither. It says the book is entitled to <i>one</i> of them as an assumption and must get the other as a result, and at the moment it helps itself to both. Pick which one is primitive.
           </Para>
 
           <Head>minimal coupling, which nobody put in</Head>
@@ -3290,13 +3475,59 @@ C60                       1.2e−24   1e−7     1.9e+66
           </Eq>
 
           <Para>
-            <b>They go opposite ways, and the separation grows as the square of the time</b>, which is what a force does rather than what a drift does. At <V>g</V> = 0.008 the with-the-grain strand has been turned all the way round and is moving the other way while the against-the-grain one carries on. Nothing was added to the walk to arrange this — the ramp is the field, the traversal sense is the charge, and the acceleration is the two of them multiplied, which is the Lorentz force with its sign.
+            <b>They go opposite ways</b>, and nothing was added to the walk to arrange it — the ramp is the field, the traversal sense is the charge, and what the two of them multiply to is the Lorentz force with its sign. The norm is conserved to 4·10<Sup>−14</Sup> throughout, so none of it is a leak.
           </Para>
 
           <BR/>
 
           <Para>
-            One honest note on how that number was got, because two earlier versions of the measurement said the effect was zero. A strand with no momentum, or with a real amplitude, is mapped to itself by the conjugation that swaps the two traversal senses, so the two are forced equal by symmetry and no value of <V>g</V> separates them. <b>The charge needs something to be asymmetric about before it shows.</b> That is not an artefact of the test; it is the reason a charge at rest in no field is not observably a charge.
+            Two things in that paragraph as first written are wrong, and both are worth fixing in place rather than quietly, because one of them is the arc's own control.
+          </Para>
+
+          <Head>the control is right and it is on the wrong variable</Head>
+
+          <Para>
+            The arc explains a pair of earlier null results by saying that a strand with no <i>momentum</i> is mapped to itself by the conjugation that swaps the two traversal senses, so no <V>g</V> separates them — "the charge needs something to be asymmetric about before it shows". Measured, that is not what happens.
+          </Para>
+
+          <Eq note="bloch.ts — the same field on the same strand, against the starting momentum">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  k₀     ⟨x⟩ with grain   ⟨x⟩ against    separation at g = 0.004
+0.00           316.83       −316.83                    633.65
+0.20           215.32       −293.71                    509.03
+0.60            37.09       −150.55                    187.65
+1.20           −20.12        −42.46                     22.34`}
+            </span>
+          </Eq>
+
+          <Para>
+            <V>k</V><Sub>0</Sub> = 0 is where the two senses separate <i>most</i>, not least, and they do it symmetrically about a stationary start — <b>which is exactly what two opposite charges released from rest into a field do</b>, and is a cleaner demonstration of the result than the one the arc reports. The physics in the sentence is right and the variable in it is wrong. What cannot show a charge is no <i>field</i>, and the table above already has that row: at <V>g</V> = 0 the separation is 0.00 to every digit. <b>A charge at rest in no field is not observably a charge — and a charge at rest in a field is the easiest one to see.</b>
+          </Para>
+
+          <Head>and the t² is the first quarter of an oscillation</Head>
+
+          <Para>
+            The second is the exponent. Fit the separation in windows rather than reading its endpoint and it does not sit on 2 and does not sit anywhere: 1.90, 2.46, 2.34, 1.30, then −4.24. That is not a power law measured badly, it is not a power law. A ramping θ enters the dispersion as <V>k</V> → <V>k</V> − θ, so a constant field walks the momentum through the band at a rate <V>g</V> and brings it back round again. <b>The turnaround the arc reads as "the with-the-grain strand has been turned all the way round" is exactly the right description and is the band wrapping, not the force winning.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which is <i>Bloch oscillation</i>, and it is the correct behaviour of a charge in a constant field on a lattice rather than a defect — a real result in its own right, and one the arc could have claimed instead of the <V>t</V><Sup>2</Sup>. The distinguishing test is cheap and decisive: if the clock is θ = <V>gt</V> and nothing else, every feature of the trajectory has to land at a fixed value of <V>gt</V>.
+          </Para>
+
+          <Eq note="bloch.ts — the turning point at the band centre, and the spacing between turning points">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`   g       t*     g·t*  (k₀ = 0.6)       Δt     g·Δt        π
+0.003      197    0.591                1048    3.144    3.142
+0.004      148    0.592                 785    3.140    3.142
+0.006       98    0.588                 524    3.144    3.142
+0.008       74    0.592                 392    3.136    3.142`}
+            </span>
+          </Eq>
+
+          <Para>
+            Both hold across a factor of nearly three in <V>g</V>: the strand turns round when the momentum reaches the band centre, at <V>g</V>·<V>t</V>* = <V>k</V><Sub>0</Sub>, and turns again every time it crosses another zero of the group velocity, which are π apart. <b>So the coupling survives and the acceleration law does not.</b> The charge couples to the field with the right sign, which is the result this arc wanted and keeps. The correction matters beyond tidiness for one reason: <b>a coupling read off a Bloch oscillation inherits the error</b>, and the coupling is the one number the arc still owes.
           </Para>
 
           <Head>the g-factor the arc had given up on</Head>
@@ -3344,6 +3575,47 @@ an undirected axis returns after CYCLE/2 = 4 steps (π)`}
             Which also means the arc's <V>∇</V>·<B>B</B> = 0 was in tension with its own far field the whole time. A 1/<V>r</V><Sup>2</Sup> field <i>is</i> a monopole field; you cannot have both.
           </Para>
 
+          <Head>except that "monopole" was too kind, and it is not a field at all</Head>
+
+          <Para>
+            The paragraph above is the diagnosis this arc was written on, and it is not quite right, in a direction that makes the case stronger rather than weaker. Take the sided tally seriously as a vector field, <B>B</B> = Σ sgn(<B>n</B>·<B>r̂</B>)·<B>r̂</B>/<V>r</V><Sup>2</Sup>, and measure its flux through spheres around the lump. A monopole would give the enclosed charge, the same at every radius. It gives nothing at every radius — 10<Sup>−14</Sup> at <V>r</V> = 200 and 10<Sup>−13</Sup> at 1600, which is the quadrature error and not a number. <b>There is no monopole. <V>∇</V>·<B>B</B> = 0 holds observationally.</b> So what is the 1/<V>r</V><Sup>2</Sup>?
+          </Para>
+
+          <Eq note="departure.ts — the angular profile of the sided tally, at fixed radius, times r²">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  θ      0°      30°     60°     89°     90°     91°     120°    180°
+r²·F   +64.0   +64.0   +64.0   +64.0     0.0   −64.0   −64.0   −64.0`}
+            </span>
+          </Eq>
+
+          <Para>
+            Constant magnitude from the pole to one degree off the equator, a step discontinuity at 90°, and its own mirror below. That is sgn(cos <V>θ</V>)/<V>r</V><Sup>2</Sup>, and <b>it is impossible for any real field</b>: zero enclosed charge forbids a 1/<V>r</V><Sup>2</Sup> term in a multipole expansion outright, so the exterior is not source-free, and the step at the equator is a source sheet running to infinity. The lump is not emitting a net charge. It is not emitting a field.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Σ sgn(<B>n</B>·<B>d̂</B>)/<V>r</V><Sup>2</Sup> is not a field, it is a tally of received pulses</b> — a count of how many arrived on the + side of their own emitter, which is a perfectly good quantity and is not a thing that satisfies Maxwell's equations. Σ <V>s</V><Sub>e</Sub>/<V>r</V><Sup>2</Sup>, with the sign fixed per emitter, <i>is</i> a field. That is the real reason the phase route works, and it is a better reason than the one about where in the calculation the sign gets resolved — which, as the next section says, turns out not to be a reason at all.
+          </Para>
+
+          <Head>and the cheapest open question was not a question</Head>
+
+          <Para>
+            The magnetism arc closes on one, calls it the sharpest and the cheapest to answer, and expects it to rescue the pole model: <i>is a pulse's sign fixed when it leaves, or when it arrives?</i> <K>emission</K> resolves it against the axis at the destination; fix it at the source instead and the faces become poles with nothing else changed.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The two are the same function.</b> Not nearly the same — the same, and it cannot be otherwise: a pulse that reaches an observer was emitted <i>into the direction of the observer</i>, so the <B>d̂</B> the source resolves its sign against is the <B>d̂</B> the destination resolves it against. One number, computed in two places. Measured over two hundred observers at random directions and distances, the largest difference is exactly nought, and both give the same far-field 2.000. Quantising the emission direction onto one of the twenty-six first — the only real content in the distinction — changes the sign only for observers within half a lattice angle of the equator, and does not move the exponent either.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The distinction the arc wanted does exist, but not there. Departure and arrival come apart exactly where the ray bends, or where north turns along the path — which is a magnetic texture, and is what the holonomy above is about. In the far field of a uniformly ordered lump there is neither. <b>What gives 3.000 is the arc's <i>second</i> emitter, not its fourth</b>: the non-sided one, cos(2π<V>β</V>), whose sign the emitter fixes for itself before it knows who is listening.
+          </Para>
+
           <Head>two routes to the cube, and only one of them survives being real</Head>
 
           <Para>
@@ -3370,6 +3642,104 @@ perfectly balanced         3.000      all aligned              3.001
             The loops do not care. <b>Randomising every loop's orientation still gives 3.013</b>, because each closed loop has zero monopole moment <i>individually</i> — by topology, not by cancellation — and no arrangement of things with no monopole moment can produce one. There is nothing to tune and nothing to keep aligned.
           </Para>
 
+          <Head>but there is a third route, and the fine-tuning objection does not reach it</Head>
+
+          <Para>
+            The objection above is aimed at charges that were <i>assigned</i> — a + put on this emitter and a − on that one — and it is correct against those. It is not correct against the route the magnetism arc had already half-built and then walked away from, which is neither of the two this section names.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Do not ask where the sign is resolved. Ask what the primitive is. Give each node a polarisation <b>p</b> — which is just "which way this bit of the body is pointed", and is a thing an ordering can plausibly hold — and let the emitted sign be
+          </Para>
+
+          <Eq note="divp.ts — nought wherever p is uniform, and appearing only where the body ends">
+            <V>s</V> = −<V>∇</V>·<b>p</b>
+          </Eq>
+
+          <Para>
+            Nobody assigns a pole to a face. <b>The faces are where the divergence is.</b> And the net is not balanced, it is zero <i>identically</i>, because a divergence summed over everything telescopes — which is the same kind of statement as "a loop has no monopole moment by topology", arrived at without needing a loop.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It gives the whole of magnetostatics: net sign exactly 0, far field 3.000, the potential agreeing with cos <V>θ</V> to 1.5·10<Sup>−6</Sup> at every angle, N–S attracting and N–N repelling at equal size, side by side repelling aligned and attracting anti-aligned, one across the other giving 2·10<Sup>−17</Sup>, and a force exponent of 4.003. And it survives the test that separates it from the hand-placed version — <b>cut the magnet in half</b>. Assign the signs by which half of the body a node sits in and the upper half is all-plus, net 32, exponent 2.003: two monopoles. Let the sign be −<V>∇</V>·<b>p</b> and the new bottom face has a divergence it did not have when there was body below it, so a south pole appears at the cut, the net is nought again and the exponent is 3.005. <b>Two magnets out of one, which is the whole content of "there are no magnetic monopoles" stated as an experiment rather than as a law.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Now put the fine-tuning objection to it. You cannot flip a charge, because there are no charges to flip; you can only disturb <b>p</b>.
+          </Para>
+
+          <Eq note="divp.ts — the net, under every disturbance worth trying">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`disturbance to p                 net sign    exponent
+none — uniform ẑ                   0.0e+0       3.000
+one node reversed                  0.0e+0       3.000
+eight nodes reversed               0.0e+0       3.002
+every node ±10% wobble            −2.3e−16      3.000
+every node ±50% wobble            −1.7e−15      3.000
+p entirely random                 −2.8e−16      2.963`}
+            </span>
+          </Eq>
+
+          <Para>
+            Nought to machine precision in every row, <i>including the fully random one</i> where there is no magnet left at all — the exponent wanders there because the remaining moment is small and noisy, not because a monopole has appeared. Nothing is held in place and nothing needs to be. <b>So the choice between "fine-tuned" and "topological" was not the choice</b>; both surviving routes are topological, and what the objection actually rules out is assigning signs to places, which is the one thing neither of them does.
+          </Para>
+
+          <BR/>
+
+          <Head>and it is not a third rule — the lattice already emits it</Head>
+
+          <Para>
+            Which leaves the question that decides whether any of this is a consequence or a convenience: <i>does this model emit −<V>∇</V>·<b>p</b>?</i> The argument for it is Gauss's theorem applied to the annihilation ledger — every + in the bulk has a neighbour's − sitting on it, so only the boundary survives — and an argument is not a measurement. So run it: every node puts sgn(<b>p</b>·<B>d</B>) into each of the <K><Bar>DEG</Bar></K> ways out, and where two pulses come at each other with opposite signs they annihilate, which is rule (G/1) and nothing else.
+          </Para>
+
+          <Eq note="escape.ts — 64 nodes, 1664 pulses, 600 annihilated head-on and 552 escaping">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`z-layer     Σ escaped        Σ −div p over the layer
+   1.5        100.0                    8.0000
+   0.5          0.0                    0.0000
+  −0.5          0.0                    0.0000
+  −1.5       −100.0                   −8.0000`}
+            </span>
+          </Eq>
+
+          <Para>
+            Nought in every interior layer, equal and opposite on the two ends, and both totals exactly nought. <b>The surface density is derived.</b> It is not a rule that had to be added — it is what the annihilation ledger leaves behind, and the arc is entitled to it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And then the far field is still wrong, for the reason two sections above already gave.</b> An escaped pulse is still going somewhere. It got away <i>along a direction</i>, and a distant observer receives only what was emitted towards it — which on a polarised block means only the face pointing at it. Keep the escaped charge directional and the exponent is 2.005 with the same flat step at the equator; let the escaped charge radiate equally in all directions and it is 3.000. <b>The surface charge is right and the propagation is not, and the far field only knows about the propagation.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the debt is one line and it is not the line this arc thought it was. What is owed is not <i>where the sign is resolved</i> but <i>that the unpaired emission leaves isotropically</i> — and neither existing branch supplies it. <K>sided</K> is directional by construction. The non-sided branch, cos(2π<V>β</V>), <i>is</i> isotropic per emitter, which is exactly why it gives 3.000 — but it has no <b>p</b> in it, so a uniformly phased block never annihilates and never develops a surface at all. <b>One branch has the geometry and no field; the other has the field and no geometry.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            What would close it is one rule: an emitter whose emitted sign is <i>isotropic</i>, so that what leaves is a field, and whose <i>strength</i> is set by the local −<V>∇</V>·<b>p</b> rather than node by node. And that rule is already written down in this book. <b>The Layer-2 arc's one stated assumption — that Layer 1's emission is sourced by a <i>region's</i> total content rather than strand by strand — is exactly it</b>, and it was introduced several sections from here to pay a bound-state debt in the quantum arc.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So the two open assumptions in this book are one assumption</b>, and it buys more than either place claimed for it: regional sourcing gives a bound state its single train at the summed rate, and gives a magnet its poles. That is worth more than a tidier ledger — it means the assumption is load-bearing in two independent arcs, which is the difference between a convenience and a hypothesis.
+          </Para>
+
+          <Para>
+            And it reconciles with a measurement the magnetism arc already had and read as encouragement without recognising it. That arc reports the signed emission of an ordered cylinder as <i>nought in the middle and largest at the ends</i>. <b>That is −<V>∇</V>·<B>p</B>.</b> The arc had the right quantity in hand and then resolved it against the axis at the destination, which throws the polarisation away and replaces it with sgn(<B>n</B>·<B>d̂</B>) — and that, as above, is not a field. <b>One line, and it was the line.</b>
+          </Para>
+
           <Head>and the model has already committed to the loops</Head>
 
           <Para>
@@ -3386,6 +3756,210 @@ perfectly balanced         3.000      all aligned              3.001
 
           <Para>
             One thing worth saying rather than leaving implied. The two routes are the old Gilbert and Ampère pictures, they agree everywhere outside the magnet, and experiment has long since separated them <i>inside</i> — the hyperfine splitting measures the field in the body and picks the current loop. <b>So the route the model is forced into is also the one that is right</b>, which is not something this book gets to say very often.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which places the third route exactly. −<V>∇</V>·<b>p</b> is Gilbert, so it is the <i>outside</i> description and the hyperfine measurement rules it out as the inside one. That is not a competition it loses; it is what the two pictures have always been. What the −<V>∇</V>·<b>p</b> measurement settles is a different question — <b>what Layer 1 has to emit for the outside to come out right</b> — and the answer is the divergence of a polarisation rather than a sign resolved against an axis. A closed Layer-2 loop is then what <i>carries</i> the polarisation, and the two are the same body described at the two ends of the same argument. Which of them is primitive is not settled here and does not need to be for either result.
+          </Para>
+
+          <Head>what holds the polarisation uniform, and what does not</Head>
+
+          <Para>
+            Everything above says what a magnet has to <i>be</i> and nothing says what holds it that way. The obvious candidate is already in the model and does not work: the dipolar energy of a cubic block is exactly nought for the uniform state — the lattice sum vanishes by symmetry — and every arrangement that beats it has no net polarisation at all, with columnar coming in at −2.02 per moment and in-plane closure at −1.82. <b>Dipolar coupling favours closure</b>, which is the standard result and is the reason real ferromagnetism needs exchange. So the ordering cannot come from the pole energy; it has to come from the emission.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And there <i>is</i> a coupling in the emission, which is more than this arc expected to be able to say. It is not put in and it is not an analogy — it comes out of rule (G/1), the one rule the whole book is built on, and getting it took noticing that the arc had been throwing away the only thing that rule produces.
+          </Para>
+
+          <Head>the coupling, out of annihilation having a place</Head>
+
+          <Para>
+            Start with what the model actually has when a pulse arrives, which is <i>annihilation</i> and nothing else. <K>rate</K> in <i>physics.ts</i> reads the source's own <K>turning</K> and <K>flips</K> and reads nothing about what has landed on it, so as written no emitter can hear another at all. The natural repair is that annihilation near a source changes its beat. Measured, that repair fails — and it fails structurally rather than numerically.
+          </Para>
+
+          <Eq note="response.ts — two sided emitters, the annihilation count near the first">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`Δβ        0.000   0.125   0.250   0.375   0.500   0.625   0.750   0.875
+count     2.505   2.505   1.394   1.038   1.038   1.038   1.394   2.505
+
+sin component  −1.3e−16          cos component  8.95e−1`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The count is even.</b> Identical at +Δβ and −Δβ to every digit, no sine component at all — and an even coupling cannot lock anything, because it has no way to tell ahead from behind and so cannot pull a laggard forward and a leader back. Run it and it drifts: 0.57, 0.56, 0.61 over four, sixteen and sixty-four thousand ticks, against 0.9996 flat for an odd one.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            But a count is not what rule (G/1) produces. <b>It produces a <i>location</i></b> — space is destroyed at particular cells — and a source with an axis has a front and a back. Take the first moment of the annihilation density about the source's own axis instead of the total, and the evenness goes.
+          </Para>
+
+          <Eq note="response.ts — the first moment about n's axis, and the same at −Δβ">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`Δβ        0.050    0.125    0.188    0.250    0.313    0.375
+moment   −1.7e−17 −1.7e−17 −1.26e−1 −2.78e−1 −1.26e−1 −1.2e−17
+at −Δβ   −1.7e−17 −1.7e−17  1.26e−1  2.78e−1  1.26e−1 −1.2e−17
+
+mean −2.1e−18     sin −1.278e−1     cos −2.1e−17`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Odd, exactly, at every phase difference</b>, with no cosine component and no mean. It is a coarse staircase rather than a smooth sine — the signs are sgn(axis·<B>d</B>) over twenty-six exits, so it only moves when the axis crosses onto a new set of them — but the symmetry is the part that matters and the lowest harmonic is sin(2πΔβ). <b>So the coupling the previous version of this section assumed is instead derived</b>, out of (G/1) and the 1/<V>r</V><Sup>2</Sup> with which the pulses arrive. No harmonic expansion and no product-to-sum are needed; the lattice hands over the odd first harmonic directly, because annihilation has a place and an axis has a side.
+          </Para>
+
+          <Head>and it settles the fork, because a moment is a torque</Head>
+
+          <Para>
+            Which closes the question this arc had been settling by preference. A first moment about an axis <i>is a torque on that axis</i> — nothing in it touches the emitted sign, and the sign is sgn(axis·<B>d</B>) and follows the axis rather than the other way round. <b>So what the coupling acts on is the polarisation vector.</b> The sign stays −<V>∇</V>·<b>p</b>, and the monopole branch — the one where every emitter ends up the same sign — is not a branch the model has. That was the right answer and this is the reason for it.
+          </Para>
+
+          <Head>and whether it aligns, which is not yet answered either way</Head>
+
+          <Para>
+            One more question decides whether any of this is a ferromagnet, and it is the question that looked like it had killed the dipolar route: does the torque depend on the bond direction? Dipolar does — the 3(<b>m</b>·<B>r̂</B>)(<b>m</b>·<B>r̂</B>) term — and a coupling with <i>no</i> bond direction in it is an exchange, and exchange aligns.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            An earlier version of this section answered that and reported a magnet's worth of angular structure, concluding the model has no ferromagnet in it. <b>That measurement was not a convergent quantity and the conclusion is withdrawn.</b> The torque as defined summed annihilations over a ball of radius <V>R</V> around the source weighted 1/<V>r</V><Sup>2</Sup> from the <i>other</i> source; for <V>R</V> much larger than the separation the weight falls as 1/<V>R</V><Sup>2</Sup> while the cells in a shell grow as <V>R</V><Sup>2</Sup>, so every shell contributes equally and the sum grows linearly with the cutoff for ever.
+          </Para>
+
+          <Eq note="texture.ts §3 — the transverse-bond torque against the cutoff radius, which has no limit">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`cutoff R      2         4         6         8        12        16
+torque    −3.4e−3   −1.5e−1   −1.5e+0   −7.5e+0   −2.8e+1   −3.9e+1
+                       ↑ the value the earlier draft quoted`}
+            </span>
+          </Eq>
+
+          <Para>
+            A region far from a source should not torque it, and any correct definition has to be local to it. So <b>what the annihilation torque does to an ordering is reopened, not settled in the negative.</b> What survives from that work is everything upstream of it: that a coupling exists, that it is odd, and that it acts on the polarisation.
+          </Para>
+
+          <Head>and the closure result was about one lattice</Head>
+
+          <Para>
+            The other half of the negative case needs the same treatment. The dipolar measurement above is on a <i>simple cubic</i> block, and reproduces the published ground-state energy for that lattice to five figures — −2.6768 here against −2.67679 in <Ref of={'Schönke, Tkachenko, Kadau et al., "Minimum and maximum energy for crystals of magnetic dipoles", Scientific Reports 10:19154'} year="2020" at="https://doi.org/10.1038/s41598-020-76029-x" />, with the same striped state. So that number is right and it is the answer for simple cubic.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>It is not the general answer.</b> <Ref of={'Luttinger and Tisza, "Theory of Dipole Interaction in Crystals", Physical Review 70, 954'} year="1946" at="https://doi.org/10.1103/PhysRev.70.954" /> solve exactly these three lattices: simple cubic orders antiferromagnetically as chains of aligned dipoles, and <b>body-centred and face-centred cubic order ferromagnetically on the dipolar interaction alone</b>. Which are the lattices real ferromagnets are made of — iron is bcc, nickel and fcc-cobalt are fcc.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the ordering was ruled out on the one arrangement of matter that cannot do it, and the arrangements that can were never tried. That is a live computation rather than a closed door, and it is the next thing to run — properly, which means the Luttinger–Tisza diagonalisation with an Ewald sum, since a dipolar lattice sum is conditionally convergent and its value depends on the order of summation.
+          </Para>
+
+          <Head>and −div p never needed a uniform p</Head>
+
+          <Para>
+            All of which was made to matter by a claim that should have been checked first. The magnetostatics above was read as needing a <i>uniformly</i> polarised body, and it does not. <b>The far field is an integral functional of the polarisation</b> — integrate −<V>∇</V>·<b>p</b> against a test function by parts and what is left is ∫<b>p</b> d<V>V</V> — so every arrangement with the same net gives the same magnet.
+          </Para>
+
+          <Eq note="texture.ts §1 — the same 8³ block, the polarisation arranged every way worth arranging it">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`texture                        |⟨p⟩|   exponent   Φ vs cosθ    moment
+uniform                        1.000     3.000     2.4e−7    5.12e+2
+four stripe domains            0.750     3.000     8.6e−4    3.84e+2
+random ±, small net            0.172     2.998     1.9e−3    8.79e+1
+random directions + bias       0.778     3.000     2.0e−2    3.98e+2
+closure swirl + small net      0.243     3.000     2.4e−7    1.24e+2
+pure closure, no net           0.000        —          —     5.4e−13`}
+            </span>
+          </Eq>
+
+          <Para>
+            Every texture with a net is a magnet — 1/<V>r</V><Sup>3</Sup>, cos <V>θ</V> to four figures, and a moment tracking the net. <b>The internal arrangement is invisible from outside.</b> Only the pure closure state has no field, and it should not have one, because that is a demagnetised body.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which changes what the ordering has to deliver, and lowers the bar a great deal. <b>It has to deliver a net, not a uniform state</b> — and that reframes the relaxation result completely, because <i>a virgin piece of iron has no net moment either</i>. It picks up a paperclip only after it has been magnetised, and it keeps the moment afterwards because the state is pinned rather than because it is lowest. A permanent magnet is a metastable state maintained by hysteresis, and the ground state of a uniformly magnetised body in zero field <i>is</i> a multi-domain configuration with net zero — that is what the stray-field energy is for. <b>So a relaxation ending in closure is a confirmation that the model has the right physics, not a refutation of it.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The right questions, then, and none of them is "is the ground state uniform":
+          </Para>
+
+          <Rows of={[
+            [<>local order</>,
+              <>Do neighbours align, so that the body has <i>domains</i> rather than being a
+                paramagnet? This is what an exchange-like coupling is for, and it is what
+                the annihilation torque has to be measured for — with a definition that
+                converges.</>],
+            [<>remanence</>,
+              <>Does an applied field leave a net moment behind when it is removed? A theory
+                of permanent magnetism is a theory of a <b>metastable</b> state, so this and
+                not a ground-state calculation is the test.</>],
+            [<>and the far field</>,
+              <>Follows from the net, whatever produced it. <b>Already done</b>, and it does
+                not depend on either of the above being settled.</>],
+          ]} />
+
+          <Head>and the domain size, which does not survive being converted</Head>
+
+          <Para>
+            One more thing has to be withdrawn, and it is the result this arc was briefly proudest of. The retardation argument is sound: a signal takes <V>r</V> ticks to cross <V>r</V> cells, so the coupling is really sin(2π(<V>β</V><Sub>m</Sub> − <V>β</V><Sub>n</Sub>) − ω<V>r</V>), distant shells couple with the wrong sign, and coherence collapses at ω·<V>L</V> ≈ π. Measured, that holds. <b>What does not hold is calling the result a magnetic domain.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Put units in it. The ceiling is <V>L</V> = π/ω = λ/2 — half a wavelength of the emitters' own clock — and the model fixes that clock two ways, neither of which is survivable. On the turn clock a source comes round in at least <K><Bar>CYCLE</Bar></K> = 8 ticks, so the coherent region is four cells: 6.5·10<Sup>−35</Sup> m, which is not small domains but <i>no long-range order of any kind</i>. On the beat clock, with beat = 1/mass, the emitter's wavelength is 0.0624 of its reduced Compton wavelength:
+          </Para>
+
+          <Eq note="domainsize.ts — the coherent ceiling, converted, against 0.1–100 µm measured">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`carrier                    beat (ticks)      λ/2        short by
+electron                      1.490e+21    1.20e−14 m     10⁹
+iron atom                     1.463e+16    1.18e−19 m     10¹⁴
+neodymium atom                5.666e+15    4.58e−20 m     10¹⁴
+Nd₂Fe₁₄B formula unit         7.559e+14    6.11e−21 m     10¹⁵`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Fourteen orders of magnitude.</b> Run it backwards and the model says the carrier would have to weigh about 10<Sup>−3</Sup> eV — nine orders lighter than a neutrino bound — for the coherent size to be a domain. That is not a prediction to go looking for; it is a refutation of the identification.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And there is a resolution, which is why the section above matters. <b>The ceiling needs a <V>β</V> that is running.</b> A source whose axis is <i>held</i> has no <V>β</V> at all — <i>physics.ts</i> separates the two outright, <K>sided</K> with an axis and no <K>turning</K> — so ω = 0, the lag term is nought at every distance, and there is no ceiling. A magnet, if this model has one, is made of held sources, and the domain result simply does not apply to it. What survives is a real constraint on the <i>other</i> kind: <b>anything in this model whose emission is phase-coherent cannot stay coherent past half its own wavelength</b>, which is new, is a genuine ceiling, and is not about magnets.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Worth saying plainly, since the previous draft of this section said the opposite. <b>The lag does not give the model something extra. It takes something away</b>, and what it takes is any prospect of ordering a magnet out of sources that keep time with each other.
+          </Para>
+
+          <Head>and the scale, which moves a little and not much</Head>
+
+          <Para>
+            The one number the magnetism arc owes is its coupling: 4.5·10<Sup>7</Sup> kg/m² of pole face, measured and not counted. Nothing here derives it and nothing was going to. But <b>the shape of that debt is no longer a puzzle</b>, and it is worth saying because it was odd before. That arc found the coupling had to be quoted <i>per square metre of pole face</i> — one material constant covering six geometries with no residual — and treated the surface form as an empirical convenience.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>A divergence lives on a surface.</b> If the emitted sign is −<V>∇</V>·<b>p</b> then the source of a magnet's field <i>is</i> an area and could not have been a volume, so the budget's area law is a consequence rather than a fit, and the six geometries agreeing is what that consequence looks like. What is owed is now cleanly one number and not a number plus an unexplained dimension. <b>The magnitude is untouched</b>, it is the same debt as <V>α</V>, and it is behind the ordering in the queue: a coupling constant for a magnet the model cannot yet assemble is the wrong thing to be worrying about first.
           </Para>
 
           <Head>what this does not yet do</Head>
@@ -3444,27 +4018,85 @@ perfectly balanced         3.000      all aligned              3.001
                 magnetism arc could not answer. <b>Charge conservation</b>, as orientation
                 rather than as a rule. <b>C flipping helicity</b>, for free. <b>Minimal
                 coupling</b>, as what a helix does to a dispersion. <b>The force</b>, measured
-                — two traversal senses accelerating oppositely through one texture, going as
-                <V> t</V><Sup>2</Sup>. And a route to <b><V>g</V> = 2</b> that the magnetism
-                arc had located and could not take.</>],
+                — two traversal senses accelerating oppositely through one texture, and best
+                seen from rest. <b>Magnetostatics whole</b>, off a source the model can
+                actually produce: the sign as −<V>∇</V>·<b>p</b>, which nets to nought
+                identically, gives 3.000 and 1/<V>R</V><Sup>4</Sup> and all five
+                orientations, and <b>gives two magnets when you cut it in half</b>. And a
+                route to <b><V>g</V> = 2</b> that the magnetism arc had located and could
+                not take.</>],
+            [<>what comes out that was not aimed at</>,
+              <><b>A coupling, out of rule (G/1).</b> An annihilation <i>count</i> is even in
+                the phase difference and cannot lock anything; its first <i>moment</i> about
+                a source's own axis is exactly odd, and that is a torque with the
+                1/<V>r</V><Sup>2</Sup> the emission already carried. It also closes this
+                arc's own fork from the mechanism rather than by preference: a moment about
+                an axis acts on the <b>polarisation</b>, not on the emitted sign. And a
+                <b> coherence ceiling</b> at half a wavelength for anything phase-coherent,
+                which is real and is not about magnets.</>],
+            [<>and what had to be withdrawn</>,
+              <>That the ceiling is a <b>magnetic domain</b>. Converted it is
+                10<Sup>−19</Sup> m on the beat clock and 10<Sup>−34</Sup> m on the turn
+                clock against 10<Sup>−5</Sup> m measured, and it does not apply to a held
+                axis at all. And, in the other direction, the <i>negative</i> ordering
+                result: the torque it rested on grows without bound with the cutoff, and
+                the closure it compared against is the simple-cubic answer where bcc and fcc
+                give the opposite. <b>Both the claim and its refutation were overstated.</b></>],
             [<>what is fixed that was broken</>,
               <>The previous arc's finding that the <V>i</V> is a change of basis — true in
                 one dimension, where there are no plaquettes, and <b>false as soon as the
                 axis is allowed to turn</b>. The holonomy is a swept solid angle and no
-                site-local phase touches it.</>],
-            [<>what is assumed</>,
+                site-local phase touches it. And, more simply: the ring size is
+                3<Sup><V>D</V>−1</Sup> − 1, so there is <b>no phase in one dimension to
+                remove</b>.</>],
+            [<>what this arc got wrong and now says so</>,
+              <>The <V>t</V><Sup>2</Sup> is <b>a Bloch oscillation</b>, confirmed by
+                <V> g</V>·Δ<V>t</V> = π across a factor of three in <V>g</V>; the coupling
+                survives and the acceleration law does not. The symmetry control belongs to
+                <V> g</V> = 0 and not to <V>k</V><Sub>0</Sub> = 0, which is where the two
+                senses separate <i>most</i>. "Monopole" was too kind — the sided tally has
+                zero flux at every radius and is <b>not a field at all</b>. And the
+                fine-tuning objection that selected loops does not reach a divergence,
+                because there are no charges in one to flip.</>],
+            [<>what is assumed — and it is one thing, not two</>,
               <>That Layer 1's emission is sourced by a region's total Layer-2 content rather
-                than strand by strand. It is what pays the bound-state debt, and it is a
-                choice.</>],
+                than strand by strand. It pays the bound-state debt in the quantum arc, and
+                it turns out to pay the magnetic one too: it is exactly the isotropic,
+                regionally-sourced emission that <V>escape</V> shows is the only thing
+                standing between the derived surface density −<V>∇</V>·<b>p</b> and a
+                magnet's far field. <b>Two arcs, one assumption</b>, which makes it a
+                hypothesis rather than a convenience — and a testable one: build a region
+                with <V>N</V> strands and check the emission is one train at the summed rate
+                while the relative offset does not collectivise.</>],
             [<>what is owed</>,
-              <>The coupling — <V>α</V>, and the pole-face number with it. One debt now
-                instead of two, and nothing here derives it.</>],
+              <><b>Local order and remanence</b>, which is a much smaller bill than "a
+                uniform state" — the far field only needs a net, and a net is what
+                hysteresis leaves behind. Neither is measured yet and neither is refuted.
+                Then the <i>sign</i> of the derived coupling, one bit, belonging to the
+                gravity arc: does a source run fast or slow in shortened space. And then
+                <V> α</V> with the pole-face number, one debt instead of two, owed more
+                carefully than before since a coupling read off a Bloch oscillation inherits
+                that error.</>],
+            [<>the fork</>,
+              <><b>Continuous phase or quantised ring, and it cannot be both.</b> Continuous
+                gets the Aharonov–Bohm result and loses the 45° quantum and the "the lattice
+                left room for it" argument; quantised keeps the quantum and gets no flux out
+                of any smooth texture. A superposition over ring members keeps both and
+                costs more room than this arc costed. Plus: Ω/2 in the flux table and
+                <V> g</V> = 2 are one assumption used twice, and the book may have one of
+                them.</>],
             [<>and what is walled off</>,
               <>Entanglement, exactly as before. Layers add components, not coordinates.</>],
           ]} />
 
           <Para>
-            So the shape of the thing is: the lattice had eight directions per cell that its own emission rule could not use, and they form a ring; putting matter on that ring gives a charge that is a count, a phase that is a genuine U(1), a force with the right sign, and a spinor's double cover — and it costs the first two arcs nothing, because they were never using those directions. <b>Three of the four things this book had written off come back as consequences of one structure.</b> The fourth is entanglement, and that one is a theorem.
+            So the shape of the thing is: the lattice had eight directions per cell that its own emission rule assigns nought to, and around a face axis they form a ring; putting matter on that ring gives a charge that is a count, a phase, a force with the right sign, and a spinor's double cover — and it costs the first two arcs nothing, because the emission was never using those directions. <b>Three of the four things this book had written off come back as consequences of one structure</b>, and a fourth thing it never asked for — a domain with a size — comes back as a consequence of the fact that light is slow. The one that does not come back is entanglement, and that one is a theorem.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the honest shape of what is left. The arc as first written had one open question it called cheap and one it called load-bearing, and both have moved. <b>The cheap one is closed and was not a question</b> — departure and arrival are the same function. <b>The load-bearing one is now the ring fork</b>, which is a single decision that two independent measurements both run into, and which the arc cannot go on deferring, because the charge, the phase, the minimal coupling and the flux are all on one side of it or all on the other.
           </Para>
         </Section>
         <Section head="Entanglement, and the Coupling">
@@ -3523,13 +4155,13 @@ perfectly balanced         3.000      all aligned              3.001
           <BR/>
 
           <Para>
-            <b>And that is the question the magnetism arc ended on, asked about a different layer.</b> That arc closed with: <i>is a pulse's sign fixed when it leaves, or when it arrives?</i> — and needed the answer <i>when it leaves</i>, because a pulse whose polarity is fixed at emission carries the near-field cancellation to infinity and gives a magnet its poles. Bell needs the opposite answer: a winding fixed at <i>both</i> ends.
+            <b>And that is the question the magnetism arc ended on, asked about a different layer.</b> That arc closed with: <i>is a pulse's sign fixed when it leaves, or when it arrives?</i> — and needed the answer <i>when it leaves</i>, because a pulse whose polarity is fixed at emission would carry the near-field cancellation to infinity and give a magnet its poles. Bell needs the opposite answer: a winding fixed at <i>both</i> ends.
           </Para>
 
           <BR/>
 
           <Para>
-            Which would be a flat contradiction in a one-layer model and is not one here. <b>Layer 1's polarity is fixed when it leaves; Layer 2's winding is fixed by both of its ends.</b> They are different quantities on different layers, and the only reason the question looked like it had to have one answer is that until this arc there was only one thing it could be asked about. That the two open questions want opposite answers is, on this reading, an argument for the two layers rather than a problem with them.
+            That reading was written before the Layer-1 half of it was measured, and the measurement takes the tension away without helping. <b>On Layer 1 the question is void</b>: departure and arrival are the same function for a straight ray, so there was never a fixing-at-emission to be in conflict with anything, and the poles come from −<V>∇</V>·<b>p</b> rather than from where the arithmetic is done. What survives is the weaker and still useful half — that a Layer-2 winding fixed by both of its ends is a different kind of quantity from a Layer-1 sign, so nothing on the gravitational or magnetic side constrains it either way. <b>The two layers are still independent here. They are just no longer independent <i>about something</i></b>, which is one argument for the split that this arc does not get to make.
           </Para>
 
           <Head>and then the measurement, which says how far the ring gets alone</Head>

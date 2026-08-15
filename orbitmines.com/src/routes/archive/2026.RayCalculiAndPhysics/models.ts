@@ -1737,10 +1737,10 @@ const systems: Model[] = ([
 
 /** Everything, in the order it is read in. */
 export const MODELS: Model[] = [
-  ...blocks,
+  // ...blocks,
   ...worlds,
   ...closedOnly,
   ...systems,
   ...known,
-  ...lines,
+  // ...lines,
 ];

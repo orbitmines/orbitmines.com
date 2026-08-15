@@ -79,17 +79,37 @@ console.log();
 console.log("=".repeat(78));
 console.log("3. THE FULL AUDIT");
 console.log("=".repeat(78));
-type Row = [string, "derived" | "built in" | "not derived" | "REFUTED", string];
+type Row = [string, "derived" | "conditional" | "built in" | "not derived" | "REFUTED", string];
 const AUDIT: Row[] = [
   ["the 1/r²", "derived", "flux over a growing shell — see 1 above"],
   ["the sign law, for a bias", "derived", "(1 − P_a·P_b)/2 — `coulomb`"],
   ["two signs, and they cancel", "derived", "polarity is ±1 and sums"],
   ["the ± ledger balances", "derived", "BITE = 1 exists exactly for this"],
-  ["magnetisation is quantised", "derived", "dwell is a count of ticks — `scale`"],
-  ["∇·B = 0", "derived", "no way to be sided without two sides"],
+  ["the source rule, −div p", "derived", "what the annihilation ledger leaves — `escape` §1"],
+  ["magnetisation is quantised", "derived", "dwell is a count — but on a FACE axis; `ring`"],
+  ["∇·B = 0", "derived", "Σ(−div p) telescopes, for ANY p — `divp` §4"],
   ["no magnetic monopoles", "derived", "the same statement"],
   ["the lightest constituent wins", "derived", "µ/M ∝ 1/m² — `scale`"],
   ["densities superpose", "derived", "they simply add"],
+  ["a coupling between emitters", "derived", "1st moment of annihilation is odd — `response`"],
+  ["it acts on p, not on the sign", "derived", "a moment about an axis is a torque — `align`"],
+  ["a direction-independent sign", "derived", "the non-sided branch already — `aggregate` §3"],
+  ["REGIONAL SOURCING", "not derived", "strength = local −div p — `aggregate` §5"],
+  ["the dipole angular law", "conditional", "3cos²θ − 1 — given regional sourcing"],
+  ["dipole–dipole force, 1/R⁴", "conditional", "4.003 — given regional sourcing"],
+  ["all five orientations", "conditional", "incl. pole-to-pole — given regional sourcing"],
+  ["cutting a magnet halves it", "conditional", "net 0, exp 3.005 — given regional sourcing"],
+  ["far field needs only a NET p", "derived", "an integral functional — `texture` §1"],
+  ["the coupling is exchange-like", "derived", "no bond direction in it — `exchange` §3"],
+  ["orientation-dependent PULL", "derived", "aligned pairs annihilate, anti do not"],
+  ["order by MIGRATION", "derived", "like orientations cluster, ⟨cosΔ⟩ 0→0.89 — `feedback` §4"],
+  ["local order / ferromagnetism", "conditional", "uniform IF axes relaxed — they cannot; `feedback`"],
+  ["remanence / hysteresis", "conditional", "open loop, same condition — `exchange` §4"],
+  ["FEEDBACK ONTO A SOURCE", "not derived", "nothing writes to a source — `feedback` §1"],
+  ["it must act on the AXIS", "derived", "rate-feedback makes mass local — `permute` §2"],
+  ["ordering robust to which rule", "derived", "3 unrelated reads, same ferro — `permute` §3"],
+  ["the sign of the coupling", "not derived", "one bit, owed to gravity — `response` §3"],
+  ["a domain SIZE", "REFUTED", "λ/2 is 10⁻¹⁹ m vs 10⁻⁵ m — `domainsize`"],
   ["Gauss, ∇·E = ρ/ε₀", "not derived", "the SHAPE is; there is no charge here"],
   ["electric charge at all", "not derived", "P is not charge — `coulomb` §4"],
   ["charge quantisation", "not derived", "needs matter to say what is held"],
@@ -102,30 +122,66 @@ const AUDIT: Row[] = [
   ["Lorentz force qv×B", "not derived", "nothing deflects a moving charge"],
   ["transverse polarisation", "not derived", "emission is a scalar sign"],
   ["gauge invariance", "not derived", "there are no potentials to be free of"],
-  ["the dipole angular law", "derived", "3cos²θ − 1 to 3 dp — `poles`"],
-  ["dipole–dipole force, 1/R⁴", "derived", "slope −2.00 on gravity's 1/R² — `poles`"],
-  ["all five orientations", "derived", "including pole-to-pole — `poles`"],
-  ["cutting a magnet halves it", "derived", "the sign is a region's boundary"],
   ["the magnetic coupling", "not derived", "√(µ0/4πG)·M kg/m² — measured — `budget`"],
   ["force linear in the field", "REFUTED", "it is bilinear — meetings, not fields"],
-  ["g = 2", "REFUTED", "µ/L = q/2m with r cancelling, so g = 1"],
-  ["magnetocrystalline anisotropy", "REFUTED", "predicts ⟨111⟩ by 11.1% everywhere"],
+  ["g = 2", "REFUTED", "g = 1; Layer 2 offers a route, tangled with Ω/2"],
+  ["magnetocrystalline anisotropy", "REFUTED", "11.1% — but computed on ⟨111⟩ with CYCLE=8"],
 ];
+
 const tally: Record<string, number> = {};
 for (const [what, how, why] of AUDIT) {
   tally[how] = (tally[how] ?? 0) + 1;
-  console.log(`   ${how === "REFUTED" ? "✗" : how === "derived" ? "✓" : "·"} ` +
+  console.log(`   ${how === "REFUTED" ? "✗" : how === "derived" ? "✓" : how === "conditional" ? "~" : "·"} ` +
     `${what.padEnd(32)} ${how.padEnd(12)} ${why}`);
 }
 console.log();
-for (const k of ["derived", "built in", "not derived", "REFUTED"])
+for (const k of ["derived", "conditional", "built in", "not derived", "REFUTED"])
   console.log(`      ${k.padEnd(14)} ${String(tally[k] ?? 0).padStart(3)}`);
 console.log(`      ${"TOTAL".padEnd(14)} ${String(AUDIT.length).padStart(3)}`);
 
 console.log();
 console.log("=".repeat(78));
-console.log("4. AND WHAT IS LEFT MISSING IS ONE THING, ON THE ELECTRIC SIDE");
+console.log("4. TWO THINGS ARE MISSING, AND ONLY ONE IS ON THE ELECTRIC SIDE");
 console.log("=".repeat(78));
+console.log("   FIRST, ON THE MAGNETIC SIDE, and it is one row: REGIONAL");
+console.log("   SOURCING. `escape` derives the source density −div p from the");
+console.log("   annihilation ledger exactly. What is not shown is that a region");
+console.log("   then RE-EMITS its unpaired excess as its own source, rather than");
+console.log("   the excess simply being what escaped along the bonds it escaped");
+console.log("   on. The four CONDITIONAL rows above rest on that one sentence.");
+console.log();
+console.log("   Two things this is NOT, both of which earlier drafts got wrong.");
+console.log("   It is not 'isotropic emission' — a pulse goes one way, and a");
+console.log("   direction-independent SIGN is the non-sided branch the model has");
+console.log("   had all along. And it cannot be supplied by scattering: the");
+console.log("   inverse-square law IS ballistic shell dilution, so a diffusing");
+console.log("   emission would give 1/r and take gravity with it (`aggregate`).");
+console.log();
+console.log("   What it IS: the Layer-2 arc's regional-sourcing assumption,");
+console.log("   already written down to pay a bound-state debt in the quantum");
+console.log("   arc. Two arcs, one sentence — which is what makes it a");
+console.log("   hypothesis worth testing rather than a patch.");
+console.log();
+console.log("   AND SEPARATELY, THE DEEPER ONE: THE MODEL IS ONE-WAY. A source's");
+console.log("   state is a pure function of its own parameters and the tick —");
+console.log("   `bearing(s,tick) = phase + tick·rate(s)/CYCLE` — and nothing in");
+console.log("   `physics.ts` or `gravity.ts` ever writes to a source. Sources");
+console.log("   write to space; space never writes back.");
+console.log();
+console.log("   Gravity never needed it: a pull is a fact about the space between");
+console.log("   two things, not about either of them changing. EVERY ORDERING");
+console.log("   RESULT NEEDS IT, and this is the first question the book has been");
+console.log("   asked that requires the arrow to point the other way. `response`");
+console.log("   and `exchange` stop at the same wall from two sides — one asking");
+console.log("   what an arriving pulse does to a beat, the other what it does to");
+console.log("   an axis.");
+console.log();
+console.log("   What the model DOES own without feedback is an orientation-");
+console.log("   dependent PULL, and `feedback` §4 shows that alone segregates a");
+console.log("   mobile population by orientation — order by migration rather than");
+console.log("   by rotation. Real, and the wrong kind of order for a magnet.");
+console.log();
+console.log("   SECOND, ON THE ELECTRIC SIDE, which is the older gap.");
 console.log("   Read the REFUTED and the not-derived rows together and they say");
 console.log("   the same sentence. Every one of them needs a FIELD — something");
 console.log("   that exists between the sources, carries its own state, obeys its");
