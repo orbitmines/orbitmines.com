@@ -1719,6 +1719,429 @@ const Physics = () => {
           </Eq>
           {/* <V>E</V> = ħω */}
 
+          <Head>and what this layer is actually missing</Head>
+
+          <Para>
+            The magnetic arc ends by handing its last debt here — exchange needs a source with <i>size</i>, an orbital rather than a ring — and "we need a model of matter" is not a specification either. It can be made into one, and doing so shrinks the bill rather than lengthening it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>First, the missing length is 1/<V>α</V>, exactly.</b> The magnetic section quotes the shortfall as ten thousand by comparing the ring against a lattice <i>spacing</i>; the right comparison is against an <i>orbital</i>, because that is the thing whose overlap makes exchange. And an orbital is the Bohr radius, which is <V>λ̄</V><Sub>C</Sub>/<V>α</V>.
+          </Para>
+
+          <Eq note="matter.ts §1 — and the ratio of the two is 1.000000001">
+            <Frac over={<><V>a</V><Sub>0</Sub></>} under={<>ring</>} /> = 1726.15
+            <span style={{ padding: '0 1.4em' }} />
+            <Frac over={1} under={<><V>α</V>·<K><Bar>CYCLE</Bar></K><V>G</V>/2<V>π</V></>} /> = 1726.15
+          </Eq>
+
+          <Para>
+            It agrees to nine digits and it has to — <V>a</V><Sub>0</Sub>/<V>λ̄</V><Sub>C</Sub> is 1/<V>α</V> by definition and the ring is a fixed multiple of <V>λ̄</V><Sub>C</Sub>. <b>The content is not that the arithmetic works, it is which number appears.</b> The magnetic arc's final debt is not a new unexplained length; it is the same <V>α</V> the electric half has owed from the start. <b>One debt, listed twice.</b>
+          </Para>
+
+          <Head>and second, the model cannot bind anything</Head>
+
+          <Para>
+            This is the structural one. An atom is not two things that attract — it is two things that attract <i>and stop</i>, at a distance neither chose. <b>A monotone interaction cannot do that</b>, and the model's kernel is 1/<V>R</V>: the pair either falls together or flies apart, and there is no separation at which it sits.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The kernel does have structure near the origin, and the question is whether any of it is real. Three standard ways of handling the singular cell:
+          </Para>
+
+          <Eq note="matter.ts §2 — where each puts its maximum, which would BE the bound state's size">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`treatment   core 0.3    core 0.5    core 0.8
+clamp       R = 0.30    R = 0.50    R = 0.20
+soften      R = 0.00    R = 0.00    R = 0.00
+exclude     R = 1.30    R = 0.50    R = 0.20`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The maximum tracks the core radius and nothing else</b> — three treatments of the same sum giving three different answers is the signature of a number that is not there. Beyond about one cell all three agree and all three are monotone. <b>So the model has no length of its own at which two sources sit. It can attract and it can repel, and it cannot bind</b>, which is the thing a model of matter has to do first.
+          </Para>
+
+          <Head>what binding takes, and then the size is forced</Head>
+
+          <Para>
+            A minimum needs two terms falling off differently, one winning near and the other far. In hydrogen they are a confinement cost +ħ<Sup>2</Sup>/2<V>mr</V><Sup>2</Sup> that resists being squeezed, and an attraction −<V>k</V>/<V>r</V> that pulls in. The balance sits at <V>r</V> = ħ<Sup>2</Sup>/<V>mk</V>, which written with the coupling in units of ħ<V>c</V> is simply:
+          </Para>
+
+          <Eq note="matter.ts §3 — the size of any bound state is its Compton wavelength over how strongly it is bound">
+            <V>r</V> = <Frac over={<><V>λ̄</V><Sub>C</Sub></>} under={<V>g</V>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>g</V> = <V>α</V> gives 5.29·10<Sup>−11</Sup> m
+            <span style={{ padding: '0 1.2em' }} />
+            the ring reads as <V>g</V> = 12.6
+          </Eq>
+
+          <Para>
+            <b>Read that the right way round.</b> The ring is not too small because the model lacks a big number — it is too small because it corresponds to a coupling of 12.6 ħ<V>c</V>, which is enormously <i>strong</i>. <b>Nature makes atoms big by binding them weakly, at 1/137. The model is not short of glue; it has far too much of it.</b> So what Layer 2 has to produce is not a bigger ring but a coupling weak enough that the balance lands an ångström out.
+          </Para>
+
+          <Head>and the confinement cost turns out to be the budget</Head>
+
+          <Para>
+            ħ<Sup>2</Sup>/2<V>mr</V><Sup>2</Sup> is not a force between two things — it is the cost of localising <i>one</i> thing, and it is the whole reason atoms do not collapse. It looks like the part the model does not have. <b>It is not, and the reason it looked missing is that the paragraphs above read the model as if everything moved at <V>c</V>.</b>
+          </Para>
+
+          <Rows of={[
+            [<>rays</>,
+              <>One cell every tick, <b>always</b>. The charges gravity and magnetism are
+                made of are the currency, and they never idle.</>],
+            [<>emitters</>,
+              <>Matter, and <b>not</b> on that rule. An emitter has a per-tick <i>budget</i>
+                and decides each tick what to spend it on — letting go of a charge, or
+                moving. So its speed is not a property it carries: it is <b>how often it
+                decides to move</b>, <V>v</V> = <V>f</V>·<V>c</V> with <V>f</V> ≤ 1.</>],
+          ]} />
+
+          <Para>
+            That one sentence supplies everything this section just called absent. <b>First a floor.</b> Confining an emitter to a region of size <V>r</V> forces <V>f</V> = <V>λ̄</V><Sub>C</Sub>/<V>r</V>, so <V>r</V> &lt; <V>λ̄</V><Sub>C</Sub> would need it to move more than one cell in a tick — and the lattice has no such move. <b>The Compton wavelength is the model's own hard floor on the size of anything, out of a budget rather than out of quantum mechanics, and no coupling however strong can collapse anything through it.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And then the cost.</b> An emitter spending ticks on movement is an emitter whose clock runs slow — the gravity arc's own <V>γ</V>, not an import. So the cost of duty <V>f</V> is <V>mc</V><Sup>2</Sup>(<V>γ</V>−1) ≈ <V>mc</V><Sup>2</Sup><V>f</V><Sup>2</Sup>/2, and with <V>f</V> = <V>λ̄</V><Sub>C</Sub>/<V>r</V> that is <b>exactly ħ<Sup>2</Sup>/2<V>mr</V><Sup>2</Sup></b>, reproduced to ten digits. <b>What resists confinement is that moving costs ticks, and ticks are what mass is made of.</b>
+          </Para>
+
+          <Head>and it has to be the relativistic reading, which is a real check</Head>
+
+          <Para>
+            There are two ways to read "an emitter spends a fraction <V>f</V> of its ticks moving", and they are not the same theory. The <i>linear</i> one — it pulses on the remaining (1−<V>f</V>), so it loses <V>mc</V><Sup>2</Sup><V>f</V> — is the obvious guess and it fails, because <V>mc</V><Sup>2</Sup><V>f</V> goes as 1/<V>r</V>, <b>the same power as the attraction</b>. A 1/<V>r</V> cost against a 1/<V>r</V> pull is scale-free: the sum is a multiple of 1/<V>r</V> whatever the constants, so it never has a minimum and never binds.
+          </Para>
+
+          <Eq note="bound.ts §3 — minimising both over twelve decades of r, at g = α">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`linear         runs to the top of the range — unbound everywhere
+relativistic   5.291e−11 m — a genuine interior minimum
+measured a₀    5.292e−11 m`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>So matter turns on the model having <V>γ</V> rather than a naive ledger</b> — and it does, because the gravity arc derives 1/<V>γ</V> and 1/<V>γ</V><Sup>3</Sup> out of the same emission counting. A term the arc already owns is what makes an atom possible, and the obvious reading of its own budget would not have.
+          </Para>
+
+          <Head>and at g = α it is the atom, to four figures</Head>
+
+          <Eq note="bound.ts §4 — minimising (γ−1) − g·f, with the budget bound f ≤ 1 enforced">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`   g          duty f     size r          binding energy
+   α        0.007297   5.292e−11 m     13.605 eV
+   ½        0.390247   9.895e−13 m     5.57e+4 eV
+   10       0.894427   4.317e−13 m     3.94e+6 eV
+
+measured               5.292e−11 m     13.606 eV`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The Bohr radius and the Rydberg, both to four figures, out of a duty cycle and one coupling.</b> And note what does <i>not</i> happen as the coupling grows: the duty fraction <b>saturates</b> rather than running away — 0.89 at <V>g</V> = 10 — so the size flattens onto <V>λ̄</V><Sub>C</Sub> instead of collapsing. A budget cannot be overspent, and that is the whole of the stability argument.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(An earlier draft of this section said the ring was 12.6× inside that floor and therefore unpayable. That compared the model's ring against <i>nature's</i> Compton wavelength — two different clocks. On the model's own, the ring is exactly <K><Bar>CYCLE</Bar></K> steps around at duty 1/<K><Bar>CYCLE</Bar></K>, and is perfectly payable. What is wrong with the ring is not its size; see below.)</span>
+          </Para>
+
+          <Head>the list, and most of it is downstream of one item</Head>
+
+          <Rows of={[
+            [<>1. a confinement cost</>,
+              <><b>Not missing — it is the budget.</b> Moving costs ticks and ticks are what
+                mass is made of, so the cost of duty <V>f</V> is <V>mc</V><Sup>2</Sup>(<V>γ</V>−1)
+                = ħ<Sup>2</Sup>/2<V>mr</V><Sup>2</Sup>, with a hard floor at
+                <V> λ̄</V><Sub>C</Sub>. Kept on the list because the rest of it was reasoned
+                from the belief that this was absent.</>],
+            [<>2. a weak coupling — <V>α</V></>,
+              <>Given a confinement cost the size is <V>λ̄</V><Sub>C</Sub>/<V>g</V>, so an
+                ångström needs <V>g</V> = 1/137. <b>The same <V>α</V> the electric half
+                owes</b>, and the magnetic arc's length is this number in disguise.</>],
+            [<>3. electric charge</>,
+              <>Not derived, and the bias <V>P</V> cannot be it — emission rate goes as mass,
+                so a proton would carry 1836 times an electron's charge where measurement has
+                them equal to a part in 10<Sup>21</Sup>.</>],
+            [<>4. the ring fork</>,
+              <><K><Bar>CYCLE</Bar></K> = 8 holds for only 6 of the 26 possible norths; 8
+                corner axes give a ring of six and the 12 edge axes give no uniform ring at
+                all. So the ring is a property of a <i>choice of axis</i>, not of the model.
+                <b> The magnetic results do not depend on it</b>, so it is Layer 2's alone.</>],
+            [<>5. what an emitter is</>,
+              <>The two readings are incompatible by ten thousand — the magnetisation ceiling
+                wants it electron-mass and point-like, exchange wants it spread over an
+                ångström. <b>Item 1 resolves this rather than choosing between them</b>: a
+                confinement cost gives a source extent <i>without</i> changing its mass, which
+                is exactly what an orbital is.</>],
+          ]} />
+
+          <Para>
+            So the honest shape of Layer 2 is <b>one missing number</b>, and the term that was listed beside it turns out to have been in the model all along.
+          </Para>
+
+          <Head>and the scale that is left owed is not a missing number</Head>
+
+          <Para>
+            The de Broglie derivation is exact in <V>λ̄</V> and the scale comes from the Compton relation, which gives <i><K><Bar>G</Bar></K></i>·<V>λ</V><Sub>Compton</Sub> rather than <V>λ</V><Sub>Compton</Sub>. <b>The first thing to establish is whether that constant is even allowed to move</b>, and it is: masses are carried in units of <i><K><Bar>G</Bar></K></i>, so a body of physical mass <V>M</V> holds <V>M</V>/<V>µ</V> and the dynamics compute <V>µ</V>·(<V>M</V>/<V>µ</V>). Checked to twelve digits across two decades of <i><K><Bar>G</Bar></K></i> — <b>no orbit, no perihelion and no deflection can see its value.</b> What it sets is the mass unit, which nothing measures, and the magneton.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So the scale is adjustable — and then it will not adjust.</b> Two requirements each fix it on their own, and they disagree by exactly <K><Bar>CYCLE</Bar></K>:
+          </Para>
+
+          <Eq note="spin.ts §3 — and no single G meets both">
+            magneton = <V>µ</V><Sub>B</Sub> wants <i><K><Bar>G</Bar></K></i> =
+            <Frac over={<>2<V>π</V></>} under={<K><Bar>CYCLE</Bar></K>} /> = 0.785
+            <span style={{ padding: '0 1.2em' }} />
+            <V>λ̄</V><Sub>dB</Sub> wants <i><K><Bar>G</Bar></K></i> = 2<V>π</V> = 6.283
+          </Eq>
+
+          <Para>
+            <b>And the reason is one sentence: nature puts the spin radius and the Compton wavelength at the same length.</b> <V>µ</V><Sub>B</Sub> = <V>qħ</V>/2<V>m</V> is the moment of a loop of radius <V>λ̄</V><Sub>C</Sub>, and <V>λ̄</V><Sub>C</Sub> is also the de Broglie carrier. The model's ring is <K><Bar>CYCLE</Bar></K> steps around and each step is one wavelength — so ring and step differ by <K><Bar>CYCLE</Bar></K> <i>by construction</i>, and both cannot be <V>λ̄</V><Sub>C</Sub>. That is structural, not numerical: no choice of <i><K><Bar>G</Bar></K></i> moves a ratio that a count fixes.
+          </Para>
+
+          <Head>and it is the same fact as g = 1, which makes it one defect</Head>
+
+          <Eq note="spin.ts §5 — a classical loop of radius r at speed c, and the radius cancels">
+            <Frac over={<V>µ</V>} under={<V>L</V>} /> =
+            <Frac over={<><V>qcr</V>/2</>} under={<><V>mcr</V></>} /> =
+            <Frac over={<V>q</V>} under={<>2<V>m</V></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>g</V> = 1 at every radius
+          </Eq>
+
+          <Para>
+            Now look at what an electron actually has: <b>the moment of a <V>λ̄</V><Sub>C</Sub> loop and <i>half</i> the angular momentum such a loop would carry</b> — <V>µ</V><Sub>B</Sub> against ħ/2 rather than ħ. <b>No rotation in space can do that.</b> A rotation ties <V>µ</V> to <V>L</V> and gives <V>g</V> = 1 whatever its size. <b>The factor of two <i>is</i> the statement that spin is not a circulation.</b>
+          </Para>
+
+          <Rows of={[
+            [<><V>g</V> = 1 instead of 2</>, <>A real rotation ties <V>µ</V> to <V>L</V>.</>],
+            [<>the magneton off by <K><Bar>CYCLE</Bar></K></>, <>The ring is <K><Bar>CYCLE</Bar></K> steps, not one.</>],
+            [<>the de Broglie scale, ditto</>, <>The same <K><Bar>CYCLE</Bar></K>, the other way round.</>],
+            [<><V>L</V> = 0.0794 ħ, under ħ/2</>, <>A ring can carry any <V>L</V> at all.</>],
+          ]} />
+
+          <Para>
+            <b>All four are the model insisting that a source's magnetic axis is a thing going round.</b> Drop that and they go together; keep it and no normalisation rescues any of them. <b>So what is owed here was never a number.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            What a fix would need is a <i>two-valued orientation that is not a position on a ring</i> — something returning to itself after two turns rather than one, which is exactly what the factor of two records. The lattice has a candidate this book has not used: <b>the emitted sign is already ±1, already attached to a direction, and the magnetic arc's own <i>signed</i> found that the per-<i>node</i> convention is the one three separate requirements independently want.</b> A sign per node is an orientation with two values and no ring. <span className="bp5-text-muted">That is a conjecture and not a result — what is measured is only that the four failures are one failure, and that the ring rather than the normalisation is what is wrong.</span>
+          </Para>
+
+          <Head>and where this actually meets quantum mechanics</Head>
+
+          <Para>
+            It is worth doing that accounting exactly, because "we would have to add quantum mechanics" is the kind of statement that hides how much is being added. Having got the confinement cost out of the budget, what is left borrowed is smaller and much more specific than a framework.
+          </Para>
+
+          <Para>
+            Everything above rests on one relation — <V>f</V> = <V>λ̄</V><Sub>C</Sub>/<V>r</V>, equivalently <V>p</V> = ħ/<V>r</V>, which is de Broglie or the uncertainty principle depending on taste. <b>It does not have to be borrowed, and every ingredient it needs is already in the model.</b>
+          </Para>
+
+          <Rows of={[
+            [<>rays carry phase</>,
+              <>A ray leaves an emitter carrying whatever phase its clock had at that
+                moment, and then travels one cell a tick for ever. The emission rule.</>],
+            [<>the emitter moves at <V>f</V>·<V>c</V></>,
+              <>By spending a fraction of its ticks moving rather than pulsing.</>],
+            [<>and its clock runs slow by <V>γ</V></>,
+              <>Which the gravity arc derives from the same emission counting.</>],
+          ]} />
+
+          <Para>
+            Put those together and <b>a lab point is reached by <i>two</i> rays from the same emitter</b> — one that went forward and one that went backward. They left at different times, so they arrive with different phases, and that is an interference pattern nobody put in.
+          </Para>
+
+          <Eq note="harmony.ts §1 — the two retarded emission times, from lattice kinematics alone">
+            <V>t</V><Sub>e</Sub><Sup>→</Sup> = <Frac over={<><V>t</V> − <V>x</V></>} under={<>1 − <V>f</V></>} />
+            <span style={{ padding: '0 1.2em' }} />
+            <V>t</V><Sub>e</Sub><Sup>←</Sup> = <Frac over={<><V>x</V> + <V>t</V></>} under={<>1 + <V>f</V></>} />
+            <span style={{ padding: '0 1.2em' }} />
+            each carrying <V>φ</V> = <V>t</V><Sub>e</Sub>/<V>γ</V>
+          </Eq>
+
+          <Para>
+            At rest the two coincide and there is no pattern. <b>Motion is what makes one</b> — already the right shape for a wavelength that depends on momentum. And two counter-propagating waves superpose into a carrier times an envelope, with the <i>sum</i> of the phases carrying the envelope, whose nodes are what has to fit in a box.
+          </Para>
+
+          <Eq note="harmony.ts §2 — measured against π·λ̄/(γf), nothing fitted">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  f       measured period    λ_dB/2 predicted    ratio
+0.001      3.141591e+3       3.141591e+3    1.0000000000
+0.050      6.275326e+1       6.275326e+1    1.0000000000
+0.500      5.441398e+0       5.441398e+0    1.0000000000
+0.950      1.032592e+0       1.032592e+0    1.0000000000`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Exact to ten digits at every speed</b>, from 0.001 to 0.95 — so <V>λ</V> ∝ 1/(<V>γf</V>) = 1/<V>p</V>, which is the whole content of de Broglie's relation, and it arrives already as a <i>half</i> wavelength, which is the form a standing wave needs. And the same construction gives the other length too, which is the check that neither is an accident of the algebra:
+          </Para>
+
+          <Eq note="harmony.ts §3 — one construction, two lengths, going opposite ways">
+            sum → <Frac over={<><V>π</V><V>λ̄</V></>} under={<><V>γf</V></>} /> = <V>λ</V><Sub>dB</Sub>/2
+            <span style={{ padding: '0 1.4em' }} />
+            difference → <Frac over={<><V>π</V><V>λ̄</V></>} under={<V>γ</V>} /> = the Compton carrier
+          </Eq>
+
+          <Para>
+            The carrier <i>shrinks</i> with speed where the envelope <i>grows</i> — a fast Compton carrier under a slow de Broglie envelope, which is exactly the textbook structure, out of one moving source and two rays.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Closing the chain: nodes spaced <V>λ</V><Sub>dB</Sub>/2 means a region of size <V>r</V> holds <V>n</V> of them, so <V>r</V> = <V>n</V><V>λ</V><Sub>dB</Sub>/2 and <b><V>p</V> = <V>n</V><V>π</V>ħ/<V>r</V></b>. Against the ħ/<V>r</V> assumed above that is a factor of <V>π</V> — the familiar gap between a hard-walled box mode and the variational estimate that happens to make the Coulomb problem exact. <b>So the form is derived and an O(1) boundary factor is not</b>, which is the same O(1) that separates a box from an atom in ordinary quantum mechanics.
+          </Para>
+
+          <Head>so quantum mechanics stops being a postulate here</Head>
+
+          <Para>
+            <b>What is left owed is a normalisation and a number, not a framework.</b> The derivation is exact in <V>λ̄</V>, the emitter's own rest wavelength, and says nothing about what <V>λ̄</V> is — that comes from the Compton relation above, which gives <i><K><Bar>G</Bar></K></i>·<V>λ</V><Sub>Compton</Sub> rather than <V>λ</V><Sub>Compton</Sub>. So the model's de Broglie wavelength is short by 2<V>π</V>/<i><K><Bar>G</Bar></K></i> = 100.8 — <b>which is exactly <K><Bar>CYCLE</Bar></K>/<K><Bar>MAGNETON</Bar></K></b>, one normalisation appearing twice rather than two separate failures.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the thing worth saying plainly: <b>a wave whose length goes as 1/<V>p</V> is what a source moving slower than its own emission <i>looks like</i> on a lattice.</b> The model was always going to have one. It is not a postulate about measurement or superposition, and it did not have to be added — what the model does not have is the <i>scale</i>, and the scale is one constant it already knows it owes.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And what remains owed after all of it is still <b>one number</b>. Given the budget and given de Broglie, a bound state's size is <V>λ̄</V><Sub>C</Sub>/<V>g</V> and everything about the atom follows from <V>g</V>. Nothing here derives <V>α</V> — and that same <V>α</V> is the length the magnetic arc is short by. <b>One missing number, in two places, and it was two debts only because nobody had noticed it was one.</b>
+          </Para>
+
+          <Head>every equation of quantum mechanics, and what this model does to it</Head>
+
+          <Para>
+            Same treatment as the magnetic section: the relations of quantum mechanics written out, each with what this model does to it. <b>The short version is that the kinematic half comes out and the dynamical half is absent</b> — and the absence is structural rather than a matter of arithmetic not yet done.
+          </Para>
+
+          <Head>what comes out</Head>
+
+          <Eq note="harmony.ts §2 — exact to ten digits from f = 0.001 to 0.95, nothing fitted">
+            <V>λ</V><Sub>dB</Sub> = <Frac over={<>h</>} under={<V>p</V>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>from</span>
+            <V>φ</V><Sub>→</Sub> + <V>φ</V><Sub>←</Sub>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>on a lattice</span>
+          </Eq>
+
+          <Para>
+            <b>Derived in form, and the scale is a known normalisation.</b> A moving emitter's forward and backward rays reach a point having left at different times; the sum of their phases has spatial period <V>λ</V><Sub>dB</Sub>/2. So <V>λ</V> ∝ 1/<V>p</V> is what a source moving slower than its own emission <i>looks like</i>. The constant inherits the Compton relation's <i><K><Bar>G</Bar></K></i>, leaving it short by 100.8 = <K><Bar>CYCLE</Bar></K>/<K><Bar>MAGNETON</Bar></K>.
+          </Para>
+
+          <Eq derive={CLOCK} note="clock — the model's own, and the G is the same one above">
+            <V>E</V> = ħ<V>ω</V>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>as</span>
+            <i><Bar>m</Bar></i>.period · <K>c</K> = <i><K><Bar>G</Bar></K></i> · <D><i>λ</i><Sub>Compton</Sub></D>
+          </Eq>
+
+          <Para>
+            <b>Derived up to that constant.</b> An emitter's beat is ħ over its rest energy — a mass against a frequency, which is <V>E</V> = ħ<V>ω</V> for something standing still.
+          </Para>
+
+          <Eq note="bound.ts §1 — and it is a budget, not a postulate">
+            <V>r</V> ≥ <V>λ̄</V><Sub>C</Sub>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>because</span>
+            <V>f</V> = <V>λ̄</V><Sub>C</Sub>/<V>r</V> ≤ 1
+          </Eq>
+
+          <Para>
+            <b>Derived, and it is stronger than the usual statement.</b> Nothing can be squeezed below its Compton wavelength because that would need an emitter to move more than one cell in a tick, and the lattice has no such move. <b>No coupling however strong collapses anything</b> — normally an argument that has to be made, here just the budget.
+          </Para>
+
+          <Eq note="bound.ts §2 — reproduced to ten digits at three radii">
+            <V>Δx</V>·<V>Δp</V> ≳ ħ
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>E</V><Sub>conf</Sub> = <V>mc</V><Sup>2</Sup>(<V>γ</V>−1) =
+            <Frac over={<>ħ<Sup>2</Sup></>} under={<>2<V>mr</V><Sup>2</Sup></>} />
+          </Eq>
+
+          <Para>
+            <b>Derived, out of the emitter's per-tick budget.</b> Moving costs ticks and ticks are what mass is made of, so localisation is expensive — and it has to be the relativistic reading, since the naive linear one goes as 1/<V>r</V> and never binds at all.
+          </Para>
+
+          <Eq note="bound.ts §4 — both to four figures, out of a duty cycle and one coupling">
+            <V>a</V><Sub>0</Sub> = <Frac over={<><V>λ̄</V><Sub>C</Sub></>} under={<V>α</V>} />
+            <span style={{ padding: '0 1em' }} />
+            5.292·10<Sup>−11</Sup> m
+            <span style={{ padding: '0 1.2em' }} />
+            <V>E</V><Sub>1</Sub> = ½<V>α</V><Sup>2</Sup><V>mc</V><Sup>2</Sup>
+            <span style={{ padding: '0 1em' }} />
+            13.605 eV
+          </Eq>
+
+          <Para>
+            <b>Derived given <V>α</V>.</b> Minimising the budget cost against a 1/<V>r</V> attraction gives the Bohr radius and the Rydberg. And as the coupling grows the duty fraction <i>saturates</i> rather than running away, so the size flattens onto <V>λ̄</V><Sub>C</Sub> — <b>the stability of matter is a budget that cannot be overspent.</b>
+          </Para>
+
+          <Eq note="bound.ts §4, and the quantisation of the box mode from harmony.ts §4">
+            <V>p</V> = <Frac over={<><V>n</V><V>π</V>ħ</>} under={<V>r</V>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>from</span>
+            <V>r</V> = <V>n</V><V>λ</V><Sub>dB</Sub>/2
+          </Eq>
+
+          <Para>
+            <b>Derived.</b> Nodes half a wavelength apart give integer modes in a region — quantisation as a counting condition, not a postulate. The O(1) between this and the variational ħ/<V>r</V> is the same one that separates a box from an atom in ordinary quantum mechanics.
+          </Para>
+
+          <Head>and what does not</Head>
+
+          <Eq note="the dynamical half, and none of it is here">
+            <V>i</V>ħ ∂<V>ψ</V>/∂<V>t</V> = <V>Ĥψ</V>
+            <span style={{ padding: '0 1.4em' }} />
+            [<V>x̂</V>, <V>p̂</V>] = <V>i</V>ħ
+            <span style={{ padding: '0 1.4em' }} />
+            <V>ψ</V> = Σ <V>c</V><Sub>n</Sub><V>ψ</V><Sub>n</Sub>
+          </Eq>
+
+          <Para>
+            <b>Not derived, and not nearly.</b> The model has a <i>wave</i> — a real interference pattern in a real lattice — and that is not a <i>wavefunction</i>. There is no complex amplitude, no superposition of alternatives, no operator algebra and no Born rule. What §2 above produces is a phase pattern with the right wavelength, which is the kinematics; the dynamics that makes it an amplitude is absent.
+          </Para>
+
+          <Eq note="ring.ts, moment.ts — and both are refuted for the same reason">
+            <V>L</V> = <V>n</V>ħ, spin ½
+            <span style={{ padding: '0 1.2em', color: FAINT }}>model gives</span>
+            <V>L</V> = 0.0794 ħ
+          </Eq>
+
+          <Para>
+            <b>Refuted.</b> The emitter's ring carries less than a tenth of ħ where quantum mechanics allows no less than ħ/2, and a ring can carry <i>any</i> <V>L</V> at all — which is the point. <K><Bar>CYCLE</Bar></K> = 8 also holds for only 6 of the 26 possible axes, so the ring is a property of a <i>choice</i> rather than of the model. Together with <V>g</V> = 1 and the <K><Bar>CYCLE</Bar></K> fork above, <b>these are one defect and not four: spin is not a circulation.</b>
+          </Para>
+
+          <Eq note="and this is what exchange needed — see the magnetism section">
+            <V>ψ</V>(1,2) = ±<V>ψ</V>(2,1)
+          </Eq>
+
+          <Para>
+            <b>Not derived, and it is the one with consequences elsewhere.</b> Exchange symmetry is what makes electrons in an atom fill shells rather than pile into the ground state, and it is what real magnetic exchange <i>is</i>. The model reaches the same place from the other side — the magnetic section shows the mechanism and both signs come out of ∇²<V>K</V> — but with no identical particles and no antisymmetry, there is nothing to make the overlap of two orbitals into an energy.
+          </Para>
+
+          <Head>which leaves one number</Head>
+
+          <Para>
+            The two arcs converge on the same entry. <b>Magnetism is short of exchange by a length; that length is 1726, which is exactly 1/(<V>α</V>·<K><Bar>CYCLE</Bar></K><V>G</V>/2<V>π</V>). Layer 2 is short of an atom by a coupling; that coupling is <V>α</V>. They are one debt, and it was two only because nobody had noticed.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Beside it sits what looked like a normalisation and is not one. The <i><K><Bar>G</Bar></K></i> in the Compton relation is free — nothing measured depends on it — but no value of it satisfies both the magneton and the de Broglie scale, because those differ by <K><Bar>CYCLE</Bar></K> and <K><Bar>CYCLE</Bar></K> is a count. <b>That, <V>g</V> = 1, and <V>L</V> &lt; ħ/2 are one defect: the ring.</b> And then one genuinely absent structure, the dynamical half of quantum mechanics. <b>So the bill is one number, one wrong picture, and one missing half — and honest bookkeeping keeps those three apart, because they are not the same kind of thing at all.</b>
+          </Para>
+
         <Section head="Electromagnetism">
      
         </Section>
@@ -1884,7 +2307,7 @@ R > λ    aligned +1, anti +1     NO PREFERENCE AT ALL`}
           </Eq>
 
           <Para>
-            Past <V>λ</V> the two orientations score the same, so the far shells stop <i>caring</i> rather than preferring the opposite. <b>The step switches the coupling off at long range; it does not reverse it.</b> An interaction that goes to zero cannot make an antiferromagnet however the length is tuned, and the frustration measured at <V>λ</V> ≈ 1.2–1.8 is the near shells disagreeing across the step rather than an ordered antiparallel state.
+            Past <V>λ</V> the two orientations score the same, so the far shells stop <i>caring</i> rather than preferring the opposite. <b>The step switches the coupling off at long range; it does not reverse it.</b> An interaction that goes to zero cannot make an antiferromagnet however the length is tuned, and the frustration measured at <V>λ</V> ≈ 1.2–1.8 is the near shells disagreeing across the step rather than an ordered antiparallel state. <span className="bp5-text-muted">(This is a statement about <i>this</i> mechanism only, and it survives. The antiferromagnet is derived much further down, out of the bare dipolar sum on a simple cubic lattice, and needs none of the machinery in this section.)</span>
           </Para>
 
           <Head>and what the vacuum does and does not supply</Head>
@@ -2154,6 +2577,771 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
             <b>With one tension, and it is real.</b> The quantum arc needs <K>share</K> to stay at a half — the relative <i>offset</i> must not collectivise while the rate adds — and locking every phase to the same value is the opposite of that. So this buys the summed rate and puts the other half of the requirement in doubt.
           </Para>
 
+          <Head>and then the front was put in the medium and watched</Head>
+
+          <Para>
+            Two sections above end on the same thing being owed, and it is the sharpest question the magnetic half has: <i>what is a magnetic front's mean free path in the vacuum?</i> <i>signed</i> §3 reports two candidates and picks one by a sentence — the medium's own collision length, or 1/fill — and says outright that which is right "is decidable and is not decided here". <b>It is decidable by putting fronts in the medium and watching them</b>, which is one simulation and had not been run.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The fork does not need a number.</b> A front travelling +<V>x</V> sits in slot 0, and the collision rule acts on head-on pairs only, so the only thing it can ever be paired against is slot 4 of the cell it is standing in. Its encounter rate <i>is</i> a per-slot occupancy by construction, and the medium's own collision length — how its charges scatter off <i>each other</i> — never had a route to a crossing front at all.
+          </Para>
+
+          <Eq note="front.ts §1 — tracer fronts crossing the medium, occupancy read before the collision that depletes it">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`convention   slot 4   1/slot4   medium mfp   MEASURED   ann
+unsigned      0.504     1.99         6.27       1.67     0%
+per ray       0.283     3.54         2.29       2.64    64%
+per node      0.349     2.86         4.87       2.09    70%
+per axis      0.128     7.80         0.54       6.76    76%`}
+            </span>
+          </Eq>
+
+          <Para>
+            The measured length tracks 1/fill everywhere and misses the medium's collision length by a factor of twelve at per axis, where the two candidates were furthest apart. <b>So (b) wins, and on a structural reason rather than a preference.</b>
+          </Para>
+
+          <Head>but an encounter is not a consumption</Head>
+
+          <Para>
+            Read the last column, because it is the thing a fill cannot show. The mechanism counts <i>removals</i> of the leading front — that is the whole of why it oscillates, the next front along being the opposite sign — and not every meeting removes one. There are three fates and they do not agree about the sign.
+          </Para>
+
+          <Rows of={[
+            [<>annihilation</>,
+              <>The front is destroyed where it stands, the next one arrives, and it
+                is the opposite sign. <b>One removal, and a flip.</b></>],
+            [<>a turn, <i>reversed</i></>,
+              <>(G+M/3) as the arc states it: the front goes back and meets the
+                opposite-sign wave its own source put out behind it, and annihilates
+                there. That is <b>two</b> removals — itself and the next one — so the
+                front after that is the <b>same</b> sign. <b>No flip at all.</b></>],
+            [<>a turn, <i>scattered</i></>,
+              <><i>vacuum.ts</i> rotates the pair 45° instead, which conserves momentum
+                and is not a reversal. The carrier is deflected out of the front and
+                becomes medium. <b>One removal, and a flip.</b></>],
+          ]} />
+
+          <Para>
+            Which opens a small fork where it closed a large one, and it is a question about this book's own text rather than about the world: <b>(G+M/3) is written as "turn around" in the arc and shipped as a 45° rotation in <i>vacuum.ts</i></b>. Every displacement result in the magnetic half — the <V>λ</V>/2 offset, the <V>R</V> = <V>λ</V> step, regional sourcing in two ticks — is built on <i>reversal</i>. It is worth a factor of two in the flip length and, as it turns out, nothing in the conclusion.
+          </Para>
+
+          <Head>and the signed vacuum does not sit at a half</Head>
+
+          <Para>
+            All of that is at <V>p</V> = 0.1, and here is where the section turns over. <i>mfp</i> is emphatic that the unsigned fill is not a parameter: (1−<V>p</V>)/(2−<V>p</V>) is a fixed point of creation against dilution, <b>the <V>p</V> cancels</b>, and the medium sits at a half whatever the expansion rate is. That is what makes it a derivation, and it is why nobody had to ask what <V>p</V> was.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The <i>signed</i> medium balances creation against <b>annihilation</b> instead — which is precisely the calculation named above as the one door left. Annihilation removes charges in <i>pairs</i>, so it is second order in the density where dilution is first order, and there is no reason its fixed point should be the same one. Run it:
+          </Para>
+
+          <Eq note="front.ts §3 — same rule, same expansion, swept down in p; the unsigned column is the control">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`   p     unsigned   per ray   per node   per axis
+ 0.200    0.4447    0.3067     0.3884     0.2144
+ 0.100    0.4736    0.2453     0.3361     0.1256
+ 0.020    0.4954    0.1269     0.1863     0.0310
+ 0.005    0.5011    0.0602     0.0943     0.0134
+
+ f/√p   0.87  1.06  1.20  1.32  1.34  1.33
+ log-log slope, p ≤ 0.02      0.491      ← a half`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The control passes and the answer is the opposite one.</b> Unsigned holds at a half all the way down, which is <i>vacuum</i>'s derivation reproduced and is the check that says the rest of the row means something. <b>Every signed convention empties out instead</b>, and at exactly the rate the balance predicts: creation supplies at a rate proportional to <V>p</V>, annihilation removes at one proportional to <V>f</V><Sup>2</Sup>, so <V>f</V> ∝ √<V>p</V> where dilution gives a constant. Measured, <V>f</V> → 1.33√<V>p</V> with the exponent going to a half.
+          </Para>
+
+          <Head>and the sum that made a spiral look possible</Head>
+
+          <Para>
+            One more correction before the verdict, and it reaches back further than this section. <b>The unscreened Luttinger–Tisza sum that <i>vacrate</i> and <i>signed</i> both use does not converge.</b> A shell at <V>r</V> holds of order <V>r</V><Sup>2</Sup> sites and the coupling falls as 1/<V>r</V><Sup>2</Sup>, so <b>every shell contributes the same amount with an alternating sign</b> and the verdict is set by where the ball happens to be cut: a flip length of 8 gives a spiral at <V>r</V> ≤ 20 and a ferromagnet at <V>r</V> ≤ 40.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The model already owns the fix and this section already stated it — a vacuum of ± pairs gives exp(−<V>r</V>/<V>λ</V>), with <V>λ</V> the gravity arc's own <K>reach</K>. With screening in, the sum converges absolutely and the winning wavevector is flat in the cutoff from <V>r</V> ≤ 12 upward. <b>And the threshold stops being a bare four cells and becomes a ratio</b>: a spiral needs the sign to turn over inside the range the coupling still reaches, so what matters is the flip length against the screening length, and the crossing sits at roughly twice it.
+          </Para>
+
+          <Head>so the spiral was the expansion rate, and it is a ferromagnet</Head>
+
+          <Eq note="front.ts §4 — the flip length is 1/f and f is 1.33√p, so it is a function of the expansion rate">
+            <V>f</V> ≈ 1.33√<V>p</V>
+            <span style={{ padding: '0 1.2em' }} />
+            <V>λ</V><Sub>flip</Sub> ≥ 1/<V>f</V> = 0.75/√<V>p</V>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>p</V> = 10<Sup>−61</Sup> gives 2·10<Sup>30</Sup> cells
+          </Eq>
+
+          <Para>
+            <b>The flip length is not a lattice constant.</b> It is a function of the expansion rate, and this book has a value for that rate. At <V>p</V> = 10<Sup>−61</Sup> the signed vacuum is thirty orders emptier than the unsigned one, a magnetic front crosses 10<Sup>30</Sup> cells without meeting anything, and there is nothing left to flip a sign against any screening length the model could plausibly carry. <b>The spiral in <i>signed</i> §3 is an artefact of running the lattice fast</b> — <V>p</V> = 0.1 is a universe doubling every few ticks — and it turns over already at <V>p</V> = 0.01, fifty-nine orders short of the real one.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which is the conclusion this section withdrew two headings ago.</b> "A signed vacuum would be thirty orders emptier than an unsigned one" was withdrawn because it had been computed from a <i>guessed</i> creation rule — and the number was right while the reasoning was wrong. With the shipped rule it comes back, out of a fixed point rather than a guess, and 10<Sup>−30.5</Sup> is what √10<Sup>−61</Sup> is. That is an uncomfortable way to be right and it is worth recording as exactly that.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>What survives is most of it.</b> Per node is still the convention on all three of the reasons that chose it, none of which was a claim about a spiral. The consumption mechanism still oscillates where five earlier attempts only attenuated — <b>it is the density that fails and not the mechanism</b>. <b>What is closed is the <i>consumption route</i> to a distance-dependent sign</b>, by a measurement rather than by a failure to find one: the last door had a fixed point behind it, the fixed point is <V>f</V> ∝ √<V>p</V>, and it makes the medium <i>thinner</i> as the expansion slows rather than denser. <b>What is not closed is antiferromagnetism</b>, which turns out never to have needed this mechanism at all — see the magic-angle section below, where it comes out of the bare dipolar sum on a simple cubic lattice.
+          </Para>
+
+          <Head>and the feedback rule, which turns out to be already written</Head>
+
+          <Para>
+            The largest structural debt in this section is that <b>nothing anywhere writes to a source</b>. <K>bearing(s, tick)</K> is a pure function of the source's own parameters and the tick; sources write to space and space never writes back. Every ordering result is conditional on a line that does not exist, and the specification of that line — it acts on the <i>axis</i>, and its sign is fixed by where the annihilation lands — has been carried as owed.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>It is not a new mechanism, and the reason is that gravity already accepts it.</b> Gravity here is not a force: annihilation destroys the space two charges were standing on, so when more meetings happen between two bodies than around them the space between them is shorter and they are nearer. Nothing pulls. That ledger has moments, and gravity uses only the zeroth.
+          </Para>
+
+          <Eq note="torque.ts — one ledger, and the model already acts on half of it">
+            <V>Φ</V> = ⟨annihilation excess⟩
+            <span style={{ padding: '0 1.2em' }} />
+            −∂<V>Φ</V>/∂<V>R</V> = the force
+            <span style={{ padding: '0 1.2em' }} />
+            −∂<V>Φ</V>/∂axis = the torque
+          </Eq>
+
+          <Para>
+            So the question is whether the two are moments of one quantity, because if they are then "follow the gradient" is not a postulate but a restatement of where space went. Measured, on the lattice, in three steps.
+          </Para>
+
+          <Rows of={[
+            [<>the kernel is 1/<V>R</V></>,
+              <>Two point sources, each spreading its emission over the shell it has
+                reached, and the ledger of where they annihilate summed over cells.
+                <b> Two inverse-square co-location densities convolve into an inverse
+                first power</b> — a Coulomb potential between poles, out of a bond
+                count rather than a field equation. And the sign carries: opposite
+                poles destroy more space between them, so they attract.</>],
+            [<>two magnets are the dipole scalar</>,
+              <>A magnet is two poles, per <i>escape</i>. Twenty-four random orientation
+                pairs against 3(<b>p</b><Sub>a</Sub>·<B>R̂</B>)(<b>p</b><Sub>b</Sub>·<B>R̂</B>)
+                − <b>p</b><Sub>a</Sub>·<b>p</b><Sub>b</Sub> over <V>R</V><Sup>3</Sup>, with
+                <b> one</b> fitted constant: <b>R² = 0.997</b>, the residual shrinking with
+                d/<V>R</V> rather than sitting at a floor.</>],
+            [<>and both derivatives land</>,
+              <>Differentiate that one scalar in the separation and the exponent climbs
+                to −4 — the 1/<V>R</V><Sup>4</Sup> force, recovered as a <i>derivative</i>
+                rather than measured directly. Differentiate the <i>same</i> scalar in the
+                axis and it has the angular form of <b>τ = p × B</b> at every angle, to a
+                constant ratio of 4.8%.</>],
+          ]} />
+
+          <Para>
+            <b>So the feedback costs no new quantity, no new constant and no choice of sign</b> — all three are already fixed by where the annihilation lands. What it costs is that the model stops being one-way, which is structural and real. A body with more space taken from one side than the other ends up facing that way, for the same reason a body with more space taken between it and another ends up nearer.
+          </Para>
+
+          <Head>and then the ferromagnet does not come out, which is exact</Head>
+
+          <Para>
+            The summary below carries ferromagnetism as conditional on exactly that rule. The rule is now supplied, so the condition should discharge. <b>It does not, and the reason is a symmetry rather than a number.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A ferromagnet is the <V>q</V> = 0 mode, and its energy is <V>Λ</V>(0), the dipolar tensor summed over the lattice. On a <i>cubic</i> lattice that sum vanishes identically, because <V>δ</V><Sub>αβ</Sub> − 3<B>r̂</B><Sub>α</Sub><B>r̂</B><Sub>β</Sub> averaged over any cubic-symmetric set of directions is nought.
+          </Para>
+
+          <Eq note="torque.ts §4 — with the model's own screening making the sum absolutely convergent">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`lattice        λ      Λxx(0)      Λyy(0)      Λzz(0)
+simple cubic   2    4.5e-16    -3.7e-17    -3.5e-16
+bcc            4   -1.0e-14    -4.0e-15    -4.6e-15
+fcc            8    7.4e-14     1.7e-16    -3.3e-15
+
+tetragonal     4    6.7e+00     6.7e+00    -1.3e+01   ← not cubic`}
+            </span>
+          </Eq>
+
+          <Para>
+            Zero to fourteen figures on a sum of ten thousand terms, at every lattice and every screening length, and manifestly nonzero the moment cubic symmetry is broken. <b>So the uniform state costs exactly nothing and gains exactly nothing</b>, and any wavevector with a negative eigenvalue beats it. The far-field channel cannot order, with or without the feedback rule. Relaxation agrees — a block started at random lands at |⟨<b>p</b>⟩| &lt; 0.003 at every size — but the relaxation is not the evidence; the identity is.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it is the right answer</b>, which is the part worth sitting with. Dipolar coupling does not cause ferromagnetism in nature either: iron orders at 1043 K and its dipolar scale is about 1 K, three orders too small. Real ferromagnetism is <i>exchange</i> — short-ranged, isotropic, nothing to do with the far field. A model that reproduced magnetostatics <i>and</i> produced a ferromagnet out of the same coupling would be wrong about something measured.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the conditional result is not discharged, it is <b>refuted for this channel</b> — and <i>exchange</i> and <i>permute</i> got a uniform ground state because they cut the sum at <V>r</V> ≤ 4, inside the cancellation rather than across it, which is this section's own trap for the third time. It also says exactly where to look instead: <i>pernode</i> §3 already found that two sources <i>one cell</i> apart close at two cells a tick, making co-located sources "as strong and as fast as this model can make anything". <b>Whatever this model's exchange is, it is there, and the far-field ledger is not it.</b>
+          </Para>
+
+          <Head>the coupling, which factorises and mostly was not owed</Head>
+
+          <Para>
+            The other structural debt is <i>budget</i>'s one number — 4.5·10<Sup>7</Sup> kg/m² of pole face, one material constant reproducing six geometries with no residual, named as the whole of what this arc costs. <b>It factorises, and once it does, most of it is not owed.</b>
+          </Para>
+
+          <Eq note="ceiling.ts §1 — a unit conversion is not a coupling">
+            <V>σ</V> = <V>κ</V>·<V>M</V>
+            <span style={{ padding: '0 1.2em' }} />
+            <V>κ</V> = √(<V>µ</V><Sub>0</Sub>/4<V>πG</V>) = 38.7 kg per A·m
+          </Eq>
+
+          <Para>
+            <V>κ</V> has no material in it and no model in it — it is what it costs to state a magnetic quantity in gravitational units, built out of <V>µ</V><Sub>0</Sub> and <V>G</V> alone, and identical for every magnet that has ever existed. That leaves <V>M</V>, the saturation magnetisation, which is a <i>material</i> property. <b>No theory derives the remanence of N52 from first principles</b> — quantum electrodynamics does not either, and nobody files that as a debt against QED. Asking this model for it was the wrong question.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The right one is what a fundamental theory can be asked: is there a <i>ceiling</i>, does the model set it, and does anything measured sit under it. It does set one, out of counts: <i>moment</i> gives one emitter <V>µ</V> = (<K><Bar>CYCLE</Bar></K>·<V>G</V>/2<V>π</V>)·<V>qħ</V>/2<V>m</V> = 0.0794 <V>µ</V><Sub>B</Sub>, so a body of <V>n</V> emitters per cubic metre cannot pass <V>n</V><V>µ</V>.
+          </Para>
+
+          <Eq note="ceiling.ts §2 — n counted as every electron in the material, nothing fitted">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`material     electrons/m³   ceiling n·µ   measured M_s   ratio
+nickel        2.559e+30      1.884e+6      4.850e+5     0.257
+cobalt        2.456e+30      1.808e+6      1.424e+6     0.788
+Nd₂Fe₁₄B      2.043e+30      1.504e+6      1.280e+6     0.851
+iron          2.208e+30      1.625e+6      1.711e+6     1.053   ← over`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Three of the four sit under it and iron does not — it is over by five per cent.</b> So as a strict bound the ceiling is refuted, by the one material most likely to test it, and that has to be said first. What is not nothing is where it lands: two lattice counts and an electron count, with nothing fitted anywhere, put the ceiling within five per cent of the strongest ferromagnet there is. <b>The same shape as the ⟨111⟩ anisotropy — the right decade, arrived at from counts, refuted in detail.</b> And counting only valence electrons lowers <V>n</V> and makes it <i>worse</i>, so the honest reading is that either <V>µ</V> per emitter exceeds <K><Bar>CYCLE</Bar></K>·<V>G</V>/2<V>π</V> or the emitters are not electrons.
+          </Para>
+
+          <Head>and the magnetostatic laws, as a set</Head>
+
+          <Para>
+            The pieces have been scattered and none of the files states the result as a set. <i>laws</i> does, from <b>one</b> construction so that no law is checked against machinery built for it: a magnetised bar as −<V>∇</V>·<b>M</b>, interacting through the 1/<V>R</V> kernel above, and nothing else put in.
+          </Para>
+
+          <Eq note="laws.ts — every magnetic law of Maxwell with no free current, on one bar">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`∇·B = 0            total pole charge 2.1e-15, and for ANY M
+∮H·dA = q_m        36.001 against 36.000 at four radii;
+                   1e-15 for a surface round both poles
+∇×H = 0            1e-15 inside, outside, straddling a face
+                   — and H = −∇φ explicitly, so a magnetic
+                   scalar potential EXISTS rather than being
+                   introduced for convenience
+B = µ₀(H + M)      ∇·H and ∇·M nonzero at the face and
+                   cancelling; ∮B·dA = 0 at every radius
+B⊥, H∥ continuous  jumps → 0 as the offset halves
+H⊥, B∥ jump by σ   → 0.974 and 0.997 against M = 1`}
+            </span>
+          </Eq>
+
+          <Para>
+            With the force and the torque from the section above, <b>that is magnetostatics complete</b>: every law in the magnetic sector of Maxwell's equations with no free current, plus the constitutive relation, plus the four boundary conditions, plus <V>F</V> = −<V>∇U</V> and <V>τ</V> = <b>p</b> × <B>B</B> — out of one rule about two charges landing in a cell.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it is worth being precise about the scope of that.</b> What is derived is the static magnetic field of magnetised matter, <i>given</i> the matter. What is not is why matter is magnetised — the ordering, which §4 above has just refuted for the only channel this arc had — and anything with a current or a time derivative in it, which is the electric half and needs a first-order channel that does not exist. <V>∇</V>×<B>H</B> = <B>J</B> is not owed so much as unaskable: there is no current in this model, because there is no electric charge to move.
+          </Para>
+
+          <Head>and then the antiferromagnet, which was there the whole time</Head>
+
+          <Para>
+            Two sections above close the antiferromagnet twice — once on the flip length and once on <V>Λ</V>(0) — and <b>both closures were too strong, for the same reason stated two different ways</b>. <V>Λ</V>(0) is the energy of the <i>uniform</i> state. Its vanishing says the <b>ferromagnet</b> is worth exactly nothing. It says nothing whatever about <V>q</V> ≠ 0 — and once the uniform state costs nothing, <b>any</b> wavevector with a negative eigenvalue beats it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the model does not fail to order. It orders at <V>q</V> ≠ 0, <b>and a non-uniform ordered state is what an antiferromagnet is</b>. The question was never whether, only which — and it needed no flip length, no consumption mechanism and no signed vacuum, which is why the <i>front</i> result closed a door that was not the one in the way.
+          </Para>
+
+          <Eq note="afm.ts §2 — the winning wavevector, swept over the zone and refined, with the moment read off as the eigenvector">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`lattice  λ   q*/π              energy    moment ê      state
+sc       2  [0.00,1.00,1.00]  −3.5108  [1,0,0]   COLLINEAR AF
+sc       3  [0.00,1.00,1.00]  −4.0458  [1,0,0]   COLLINEAR AF
+sc       4  [0.00,1.00,1.00]  −4.3386  [1,0,0]   COLLINEAR AF
+bcc      3  [0.00,0.87,0.87]  −3.8483  [0,-.71,.71]  spiral
+fcc      3  [0.84,0.84,1.54]  −3.8365  [.71,-.71,0]  spiral`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The configuration is the simple cubic lattice</b>, at <V>q</V> = (0, <V>π</V>, <V>π</V>), commensurate to machine precision at every screening length. Read the structure off the wavevector: <V>q</V>·<B>x̂</B> = 0, so the moments are <i>parallel</i> along <V>x</V>; <V>q</V>·<B>ŷ</B> = <V>q</V>·<B>ẑ</B> = <V>π</V>, so they <i>alternate</i> across <V>y</V> and <V>z</V>. <b>Ferromagnetic chains running along the moment, stacked antiparallel to their neighbours.</b>
+          </Para>
+
+          <Head>and the law, which is one angle</Head>
+
+          <Para>
+            Every bond in the sum carries the same factor and the whole of the behaviour is in its sign: a bond contributes cos(<V>q</V>·<B>R</B>)·(1 − 3cos²<V>θ</V>), with <V>θ</V> the angle between the bond and the moment.
+          </Para>
+
+          <Eq note="afm.ts §4 — two moments end to end pull into line; two side by side push out of it">
+            cos²<V>θ</V> &gt; ⅓ → <b>parallel</b>
+            <span style={{ padding: '0 1em' }} />
+            cos²<V>θ</V> = ⅓ → <b>nothing at all</b>
+            <span style={{ padding: '0 1em' }} />
+            cos²<V>θ</V> &lt; ⅓ → <b>antiparallel</b>
+          </Eq>
+
+          <Para>
+            <V>θ</V> = 54.74° is the magic angle, where a bond contributes <i>exactly nothing</i>. And a collinear antiferromagnet needs every one of those demands satisfied at once, by one axis and one wavevector. What each lattice is asking for, with <B>ê</B> along <B>x̂</B>:
+          </Para>
+
+          <Eq note="afm.ts §4 — the nearest-neighbour shell, and what it wants">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`sc    2 × cos²θ = 1.000   wants PARALLEL
+      4 × cos²θ = 0.000   wants ANTIPARALLEL
+
+bcc   8 × cos²θ = 0.333   contributes NOTHING
+
+fcc   8 × cos²θ = 0.500   wants PARALLEL
+      4 × cos²θ = 0.000   wants ANTIPARALLEL`}
+            </span>
+          </Eq>
+
+          <Rows of={[
+            [<>simple cubic</>,
+              <>Every bond sits at cos²<V>θ</V> = 1 or 0 — along the axis or square to
+                it, nothing in between — and <V>q</V> = (0, <V>π</V>, <V>π</V>) grants all
+                six. <b>No conflict, so the state is collinear.</b></>],
+            [<>body-centred</>,
+              <>All eight nearest neighbours sit at cos²<V>θ</V> = ⅓ <b>exactly</b>: ⟨111⟩
+                makes the magic angle with a cube axis, so the entire nearest-neighbour
+                shell contributes <i>nothing</i> and the ordering is left to the shells
+                behind it. Hence weak and incommensurate rather than either.</>],
+            [<>face-centred</>,
+              <>Eight bonds want parallel and four want antiparallel, and no wavevector
+                grants both — fixing the eight forces <V>q</V>·<B>x̂</B> = <V>q</V>·<B>ŷ</B>
+                = 0, which then makes two of the remaining four parallel when they wanted
+                the opposite. <b>Frustrated</b>, and the lattice relieves it by turning the
+                moments, which is the spiral.</>],
+          ]} />
+
+          <Para>
+            <b>So the law is a statement about angles and nothing else.</b> A collinear antiferromagnet exists precisely when some moment axis makes every dominant bond either <i>along</i> it or <i>square</i> to it — because only then are the demands consistent. Bonds strictly between the two extremes issue demands no single wavevector can satisfy together, and the lattice answers by turning the moments instead of flipping them. <b>Which is why it is the simple cubic lattice: it is the one whose bonds are mutually perpendicular.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Applied <i>forwards</i> — from the nearest-neighbour angles alone, with no sweep — the law predicts collinear-AF for sc and frustration for bcc and fcc, <b>three for three, with sc's wavevector predicted correctly</b> rather than merely the character of the state. And a tetragonal sweep <i>sharpens</i> it: axis-aligned bonds exist at every <V>c</V>/<V>a</V>, so collinearity additionally needs <b>one shell to dominate</b>. It holds at <V>c</V>/<V>a</V> = 0.5, 1 and ≥ 1.5, and is lost between, where the diagonal shells — neither along nor square — get a vote.
+          </Para>
+
+          <Head>and it is the answer Luttinger and Tisza already had</Head>
+
+          <Para>
+            This arc cites them further down for exactly this: simple cubic ordering antiferromagnetically <i>as chains of aligned dipoles</i>. That is <V>q</V> = (0, <V>π</V>, <V>π</V>) with the moment along the chain — <b>the same structure and the same moment direction</b>, arrived at here independently.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            They also give bcc and fcc as <i>ferromagnetic</i>, and the section above recorded that as an open disagreement. <b>It is not open. The resolution is that <V>Λ</V>(0) is not the energy of the ferromagnet at all.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <V>Λ</V>(0) under a spherical cutoff is the <i>Lorentz</i> part of the sum, and on a cubic lattice it vanishes — that identity is correct and everything above rests on it. But the full <V>q</V> = 0 sum is only <i>conditionally</i> convergent, so it has a second piece a spherical cutoff throws away: the <b>demagnetising term</b>, which depends on the shape of the sample and not on the lattice at all. For a long needle magnetised along its axis that term is −4<V>π</V>/3<V>v</V> per site, with <V>v</V> the volume per site. <b>So the ferromagnet's energy is a shape, and a denser lattice gets more of it.</b>
+          </Para>
+
+          <Eq note="afm.ts §6 — unscreened, same spherical cutoff, so the two columns are commensurable">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`lattice   best finite q   needle FM = −4π/3v    v      winner
+sc            −5.350          −4.189       1.000   ANTIFERRO
+bcc           −5.162          −5.441       0.770   FERROMAGNET
+fcc           −5.547          −5.924       0.707   FERROMAGNET`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Three for three with Luttinger and Tisza.</b> Simple cubic keeps its antiferromagnet because its <i>unfrustrated</i> <V>q</V> = (0, <V>π</V>, <V>π</V>) is worth more than the shape bonus; bcc and fcc lose theirs because their <i>frustrated</i> best is worth less than the bonus — and they are more densely packed, so the bonus is bigger. Which makes the law of the section above a competition between two things running opposite ways:
+          </Para>
+
+          <Rows of={[
+            [<>frustration</>,
+              <>How much of its bond structure a lattice can satisfy at finite <V>q</V>.
+                Large for sc, whose bonds are mutually square; small for bcc and fcc,
+                which cannot.</>],
+            [<>packing</>,
+              <>The volume per site, which sets the demagnetising bonus available to the
+                uniform state — 1 for sc against 0.77 and 0.71, so bcc and fcc get
+                <b> more</b>.</>],
+          ]} />
+
+          <Para>
+            <b>And then the part that is this model's rather than theirs.</b> The shape term is built by the long-range tail — it is the field of the sample <i>boundary</i>, and a magnet has to be correlated across its whole length to have one. This model screens, and <b>a screened interaction cannot reach the boundary</b>: the furthest a site sees is <V>λ</V>, so its effective sample is a sphere of radius <V>λ</V>, a sphere has demagnetising factor ⅓, and the shape term is exactly nought. Which is precisely why <V>Λ</V>(0) = 0 above, and why it means it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the disagreement is <b>located and it is a prediction</b>: if the vacuum screens as this model says, dipolar ferromagnetism on bcc and fcc is an artefact of taking the tail to infinity, and a dipolar magnet whose interaction is cut well below its own size should not be a ferromagnet on any lattice. <b>The simple cubic antiferromagnet is untouched either way</b> — a near-neighbour effect, surviving every screening length tried.
+          </Para>
+
+          <Head>and then the temperature, which is where it ends</Head>
+
+          <Para>
+            An ordered ground state is worth very little if it melts a millikelvin above absolute zero, so this is the question that decides whether any of it is a statement about matter. <b>Checked in three steps, each against something outside the model.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>First the energy unit</b>, because every <V>Λ</V> above is dimensionless and multiplies (<V>µ</V><Sub>0</Sub>/4<V>π</V>)·<V>µ</V><Sup>2</Sup>/<V>a</V><Sup>3</Sup>. Two Bohr magnetons three ångström apart comes to <b>0.023 K</b> — which is the number magnetism texts quote as the whole reason nobody believes dipolar coupling makes a magnet — and Ho<Sup>3+</Sup> at LiHoF<Sub>4</Sub>'s spacing gives 0.6 K against its measured 1.53 K. <b>So the unit is right.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Then the ordering temperature by Monte Carlo</b>, not by mean field, which overestimates it by 1.7 here and would flatter the result. Classical spins on the simple cubic lattice, annealed downward, with adaptive cone proposals and the order parameter taken as the <i>star</i> of <V>q</V>* rather than one member of it.
+          </Para>
+
+          <Eq note="neel.ts §2 — L = 8, and the susceptibility peak is where the order parameter takes off">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`   T      order    susceptibility   net moment
+ 0.55     0.138        2.284        0.032
+ 0.50     0.177        4.327        0.032
+ 0.46     0.249        8.355  ←     0.030
+ 0.42     0.410        6.010        0.029
+ 0.38     0.558        2.773        0.026
+ 0.30     0.711        0.842        0.022
+
+ T_N = 0.201·|Λ(q*)|      mean field says ⅓, so MC/MF = 0.60`}
+            </span>
+          </Eq>
+
+          <Para>
+            The net moment stays under 0.05 throughout, so what orders is antiferromagnetic and not a ferromagnet — which is the check that the right thing is being measured. <b>Two things in that run are not decoration</b>: a uniform-direction proposal has 2% acceptance at these temperatures and never equilibrates (an earlier draft produced an order parameter jumping between 0.03 and 0.93 on neighbouring temperatures, which looks like a transition and is a stuck chain), and the maximum over the three domains is not smooth, so the susceptibility built from it rises without limit into the ordered phase instead of peaking.
+          </Para>
+
+          <Head>and it melts six orders too cold</Head>
+
+          <Eq note="neel.ts §3 — the model's own magneton, and nothing adjustable in it">
+            <V>T</V><Sub>N</Sub> = 1.6·10<Sup>−4</Sup> K
+            <span style={{ padding: '0 1.2em', color: FAINT }}>against</span>
+            MnO 118 K, Cr 311 K, NiO 525 K
+          </Eq>
+
+          <Para>
+            <b>Short by six orders, and there is no room to argue with it.</b> The temperature goes as <V>µ</V><Sup>2</Sup>, and <V>µ</V> is fixed at 0.0794 <V>µ</V><Sub>B</Sub> by two lattice counts with nothing adjustable in it. Even handing the emitter a <i>full</i> Bohr magneton — which the model does not permit — buys 2.5·10<Sup>−2</Sup> K and leaves four orders.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which is the right answer and not a failure</b>, and the distinction is the whole point. Dipolar coupling does not order at room temperature in <i>nature</i> either — that is the standard argument for why exchange has to exist, and the 0.023 K above is the number that argument is made of. <b>A model whose far field ordered at 500 K would be wrong.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the magnetic arc ends where it should. <b>Derived</b>: magnetostatics entire, the dipole scalar and the torque, and a real antiferromagnetic <i>ground state</i> with the law that selects it. <b>Measured</b>: that this ground state melts at 10<Sup>−4</Sup> K, so it is not what orders a real antiferromagnet. <b>Owed</b>: exchange — and both routes now point at the same place, the co-location channel where <i>pernode</i> finds sources one cell apart coupling as strongly and as fast as anything in this model can. That is where hundreds of kelvin would have to come from, and it is untouched.
+          </Para>
+
+          <Head>and what exchange would have to be</Head>
+
+          <Para>
+            "We need exchange" is not a specification, and the arc has been carrying it as one. It can be made exact, and the route is to notice what <V>Λ</V>(0) = 0 <i>actually</i> is. <b>The dipolar tensor <V>δ</V><Sub>αβ</Sub> − 3<B>r̂</B><Sub>α</Sub><B>r̂</B><Sub>β</Sub> is traceless term by term</b>, before any lattice is chosen — 3 − 3 = 0 at every direction. On a cubic-symmetric set the off-diagonals cancel and the three diagonals are equal, and a traceless matrix with three equal diagonals is the zero matrix. <b>So every result in this arc that turns on <V>Λ</V>(0) = 0 is that one algebraic fact, and none of it is really about cubic lattices.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which makes the requirement exact. <b>Exchange is not a bigger number — it is a coupling with a <i>trace</i></b>, equivalently an isotropic <V>J</V>(<V>r</V>)·<B>S</B><Sub>i</Sub>·<B>S</B><Sub>j</Sub>, which is what a Heisenberg term is. And since the tensor is ∂<Sub>α</Sub>∂<Sub>β</Sub><V>K</V>, a trace means <V>∇</V><Sup>2</Sup><V>K</V> ≠ 0 — which for a kernel means <b><V>K</V> is not <V>c</V>/<V>r</V></b>. So the question becomes concrete and answerable: where does this model's kernel depart from 1/<V>r</V>?
+          </Para>
+
+          <Head>it departs in two places, and they carry opposite signs</Head>
+
+          <Eq note="contact.ts §2, §3 — both are ∇² of a kernel the model already has">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`co-location, unscreened   ∇²(c/r) = −4πc·δ³(r)     FERROMAGNETIC
+screened at λ             ∇²(e^−r/λ/r) = e^−r/λ/λ²r  ANTIFERRO`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The first is at co-location.</b> <i>torque</i> §1 measures the kernel as <V>c</V>/<V>R</V>, but that is the <i>large</i>-<V>R</V> answer and the sum it comes from is finite at <V>R</V> = 0 where <V>c</V>/<V>R</V> diverges. Measured: <b>65% out at half a cell, 1.3% by four</b>, with the integrated trace landing on −4<V>πc</V> to three per cent and concentrated exactly where it should be. <b>The sign is negative, which favours the uniform state — this is direct exchange, and it has the sign iron needs.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The second is wherever it is screened.</b> A bare 1/<V>r</V> has its whole trace at the origin; a screened one has a trace at <i>every</i> separation, matching e<Sup>−<V>r</V>/<V>λ</V></Sup>/(<V>λ</V><Sup>2</Sup><V>r</V>) to three figures at every <V>r</V> tried. <b>The sign is positive, which penalises the uniform state — this is superexchange</b>, a moment coupling through something that gets in the way.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Two mechanisms, two signs, and they are the two kinds of exchange nature has</b> — direct and super, ferromagnetic and antiferromagnetic. That is the strongest thing here and <b>it cost no new rule</b>: both are <V>∇</V><Sup>2</Sup> of a kernel already in the model, and which sign you get is decided by whether anything is in the way.
+          </Para>
+
+          <Head>which corrects the Λ(0) = 0 above, and it survives</Head>
+
+          <Para>
+            One correction falls out, and it reaches back. <b>Screening the <i>tensor</i> and screening the <i>potential</i> are different operations</b>, and the sections above do the first — multiplying a ready-made dipolar tensor by exp(−<V>r</V>/<V>λ</V>) to make a sum converge. That is a convergence device. What a medium removing pulses actually does is screen the <i>potential</i> and then differentiate, and <b>the two differ by exactly the trace</b>.
+          </Para>
+
+          <Eq note="contact.ts §4 — done the consistent way, on simple cubic">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`λ    Λ(0)     ferro q=0   columnar (0,π,π)   winner
+2   +3.917     3.9171       −2.6943      columnar AF
+3   +4.023     4.0227       −2.6888      columnar AF
+4   +3.965     3.9646       −2.6855      columnar AF
+6   +3.515     3.5147       −2.6814      columnar AF`}
+            </span>
+          </Eq>
+
+          <Para>
+            So <V>Λ</V>(0) is <i>not</i> nought — it is +4<V>π</V>/3<V>v</V>, and <b>positive</b>, meaning the uniform state is not merely worth nothing but actively penalised. <b>The conclusion holds and gets firmer; what was wrong was the reason</b>, and a result that survives its reason being corrected is worth more than one that does not. The columnar antiferromagnet still wins at every screening length.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it confirms the Luttinger–Tisza reconciliation from the other end.</b> That section <i>argued</i> that a screened interaction sees a sphere rather than a needle, so the −4<V>π</V>/3<V>v</V> needle bonus is replaced by a sphere's. <b>+4<V>π</V>/3<V>v</V> is exactly the sphere's self-energy</b> — here it is the measured number, arrived at independently and agreeing to a few per cent.
+          </Para>
+
+          <Head>and the size, where the whole bill turns out to be one length</Head>
+
+          <Para>
+            The mechanisms exist and carry the right signs. Whether either reaches 100 K is a separate question, and the target is set: the far-field channel gives 1.6·10<Sup>−4</Sup> K, so exchange must be about <b>10<Sup>6</Sup> times larger</b>.
+          </Para>
+
+          <Rows of={[
+            [<>the screening route</>,
+              <><b>Fails on magnitude, by forty orders.</b> Its strength relative to the
+                dipolar term is (<V>r</V>/<V>λ</V>)<Sup>2</Sup>, so it is large only when the
+                screening length is <i>short</i> against the spacing — 100 K needs
+                <V> λ</V> ≈ 4·10<Sup>−13</Sup> m, where both of this model's screening
+                lengths are cosmological. <b>It supplies a sign and cannot supply a
+                size.</b></>],
+            [<>the contact route</>,
+              <><b>Overshoots, which is the better failure.</b> A contact term beats the
+                dipolar coupling by (<V>a</V>/<V>r</V><Sub>s</Sub>)<Sup>3</Sup> = 9·10<Sup>11</Sup>,
+                so overlapping sources would give 10<Sup>8</Sup> K against the 100 K wanted.
+                <b> The strength is more than there.</b></>],
+          ]} />
+
+          <Para>
+            <b>What is not there is the reach.</b> A contact term is felt only where the sources overlap, and the emitter's ring is 3·10<Sup>−14</Sup> m against a 3 Å spacing — so two of them at neighbouring sites overlap <i>not at all</i>, and the contribution is not small but <b>zero</b>. <b>Short by ten thousand, and that is the whole bill.</b> <span className="bp5-text-muted">(Measured against an <i>orbital</i> rather than a spacing, which is the comparison that matters, the shortfall is 1726 — and that is exactly 1/(<V>α</V>·<K><Bar>CYCLE</Bar></K><V>G</V>/2<V>π</V>). See the Layer 2 section: this length is <V>α</V> in disguise.)</span>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it cannot be bought by making the emitter lighter.</b> The ring goes as 1/<V>m</V>, so a ten-thousand-fold larger ring wants an emitter ten thousand times lighter — but <b>the moment goes as 1/<V>m</V> too</b>. The near-saturation above, iron at 1.05 of the <V>n</V><V>µ</V> ceiling, is the only evidence this model has that its emitters are electron-sized, and a lighter emitter would put iron at 10<Sup>−4</Sup> of it. <b>So the two readings of what an emitter is are incompatible by ten thousand</b> — one wants it electron-mass and point-like, the other wants it light and spread over an ångström.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which is the answer, and it is not a magnetic problem.</b> What exchange needs is a source with <i>size</i> — an orbital rather than a ring — and that is exactly the model of matter this book has said all along it does not have. What Layer 2 makes of that is that the missing length <i>is</i> <V>α</V>, and that the deeper gap underneath it is a <b>confinement cost</b>: the model has nothing that resists being localised, so it cannot bind at any coupling. It is also why real exchange works: electron orbitals are an ångström across and neighbouring atoms a few, so the overlap is order one, and that is why exchange is an electronvolt. <b>So the magnetic arc can stop asking for exchange.</b> The mechanism is derived and so are both its signs; what is missing is one length, and only Layer 2 can supply it.
+          </Para>
+
+          <Head>every equation of magnetism, and what this model does to it</Head>
+
+          <Para>
+            The results above are scattered across a dozen files and a dozen headings. This is the whole of magnetism written as equations, each with what the model does to it — <b>derived</b>, <b>derived with a deviation</b>, or <b>not derived</b>. Nothing new is claimed here; it is the same results in one place, in the form a physicist would want to check them.
+          </Para>
+
+          <Head>the source, and Maxwell's magnetic sector</Head>
+
+          <Eq note="laws.ts §1 — total pole charge 2.1·10⁻¹⁵ on a real bar, and for ANY M whatever">
+            <V>∇</V>·<B>B</B> = 0
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇐</span>
+            <V>σ</V> = −<V>∇</V>·<b>M</b>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>telescopes over a closed body</span>
+          </Eq>
+
+          <Para>
+            <b>Derived, and topologically rather than by a symmetry.</b> Running (G/1) over a magnetised body leaves nothing in the interior and equal and opposite excesses on the two ends; summing a divergence over a closed body is nought identically. It holds for a uniform <b>M</b>, a wobbled one, or an entirely random one — which is a better derivation than a count of the 26 exits would give, and it is also why <b>cutting a magnet gives two magnets</b> rather than two monopoles.
+          </Para>
+
+          <Eq note="laws.ts §1 — 36.001 against 36.000 at four radii enclosing one pole, 10⁻¹⁵ enclosing both">
+            <span style={{ fontSize: '1.2em' }}>∮</span><B>H</B>·d<B>A</B> = <V>q</V><Sub>m</Sub>
+            <span style={{ padding: '0 1.4em' }} />
+            <V>σ</V> = <b>M</b>·<B>n̂</B> on a face
+          </Eq>
+
+          <Para>
+            <b>Derived.</b> The magnetic charge is what the annihilation ledger leaves, and it is the same σ = <b>M</b>·<B>n̂</B> that the magnetic-charge model puts on the faces by hand. Total pole charge converges to 1.000000 in units of <V>M</V>·<V>A</V> — Gauss's theorem arrived at from a bond count.
+          </Para>
+
+          <Eq note="laws.ts §2 — 10⁻¹⁵ inside, outside and straddling a face, with an explicit potential">
+            <V>∇</V>×<B>H</B> = 0
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <B>H</B> = −<V>∇</V><V>φ</V>
+            <span style={{ padding: '0 1.4em' }} />
+            <V>φ</V>(<b>r</b>) = <span style={{ fontSize: '1.1em' }}>∫</span>
+            <Frac over={<><V>σ</V></>} under={<>4<V>π</V>|<b>r</b>−<b>r</b>′|</>} /> d<V>A</V>′
+          </Eq>
+
+          <Para>
+            <b>Derived, and the scalar potential exists rather than being introduced for convenience</b> — <B>H</B> is built from a 1/<V>R</V> kernel summed over sources, and the curl of a gradient is nought.
+          </Para>
+
+          <Eq note="laws.ts §3 — ∇·H and ∇·M each nonzero at the face and cancelling; ∮B·dA = 0 at every radius">
+            <B>B</B> = <V>µ</V><Sub>0</Sub>(<B>H</B> + <b>M</b>)
+          </Eq>
+
+          <Para>
+            <b>Derived, and not as an extra assumption.</b> <B>H</B> is what the poles produce and <b>M</b> is what the body carries; they are the same emission counted once as its divergence and once as itself, so the sum is divergence-free where neither part is.
+          </Para>
+
+          <Eq note="laws.ts §4 — all four, with the jumps taken to zero sampling offset">
+            <B>B</B><Sub>⊥</Sub>, <B>H</B><Sub>∥</Sub> continuous
+            <span style={{ padding: '0 1.4em' }} />
+            <B>H</B><Sub>⊥</Sub> jumps by <V>σ</V>
+            <span style={{ padding: '0 1.2em' }} />
+            <B>B</B><Sub>∥</Sub> jumps by <V>µ</V><Sub>0</Sub><V>M</V>
+          </Eq>
+
+          <Head>the interaction — force, torque, and the kernel under them</Head>
+
+          <Eq note="torque.ts §1 — R×K flat to three figures from R = 4 to 20">
+            <V>K</V>(<V>R</V>) = <span style={{ fontSize: '1.1em' }}>Σ</span><Sub>cells</Sub>
+            <Frac over={1} under={<><V>r</V><Sub>a</Sub><Sup>2</Sup><V>r</V><Sub>b</Sub><Sup>2</Sup></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            <Frac over={<V>c</V>} under={<V>R</V>} />
+          </Eq>
+
+          <Para>
+            <b>Derived, and it is a Coulomb law out of a bond count.</b> Two co-location densities each falling as an inverse square convolve into an inverse <i>first</i> power — no field equation anywhere. And the sign carries: opposite poles destroy more space between them, so <b>opposites attract</b> is the sign of a product.
+          </Para>
+
+          <Eq note="torque.ts §2 — R² = 0.997 across 24 random orientation pairs, one fitted constant">
+            <V>Φ</V> =
+            <Frac over={<>3(<b>p</b><Sub>a</Sub>·<B>R̂</B>)(<b>p</b><Sub>b</Sub>·<B>R̂</B>) − <b>p</b><Sub>a</Sub>·<b>p</b><Sub>b</Sub></>}
+              under={<><V>R</V><Sup>3</Sup></>} />
+          </Eq>
+
+          <Eq note="torque.ts §3 — the exponent climbs to −4, and the torque ratio is constant to 4.8%">
+            <B>F</B> = −<V>∇</V><Sub><V>R</V></Sub><V>Φ</V> ∝ <Frac over={1} under={<><V>R</V><Sup>4</Sup></>} />
+            <span style={{ padding: '0 1.4em' }} />
+            <V>τ</V> = −∂<V>Φ</V>/∂axis = <b>p</b> × <B>B</B>
+          </Eq>
+
+          <Para>
+            <b>Derived, and both from the same scalar</b> — which is the point. The force is the position-gradient of the annihilation ledger and the torque is its axis-gradient, so the feedback rule the arc owed for years costs no new mechanism, no new constant and no choice of sign.
+          </Para>
+
+          <Eq note="benchmark.ts — average relative error against a measured force on a real N38H cuboid">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`magnetic charge model    5.22 %    ← what this model derives
+magnetising current      6.34 %
+dipole–dipole           75.94 %`}
+            </span>
+          </Eq>
+
+          <Head>the ordering — and this is where the deviations start</Head>
+
+          <Eq note="afm.ts §4 — the magic angle, θ = 54.74°">
+            <V>J</V>(<b>R</b>) ∝ cos(<b>q</b>·<b>R</b>)·(1 − 3cos<Sup>2</Sup><V>θ</V>)
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            cos<Sup>2</Sup><V>θ</V> ≷ ⅓ → parallel / antiparallel
+          </Eq>
+
+          <Para>
+            <b>Derived.</b> A collinear antiferromagnet exists precisely when some moment axis makes every dominant bond either along it or square to it — which picks out simple cubic, at <b><V>q</V> = (0, <V>π</V>, <V>π</V>)</b>, and predicts sc, bcc and fcc correctly from nearest-neighbour angles alone.
+          </Para>
+
+          <Eq note="afm.ts §6, contact.ts §4 — and the sphere value is measured, not argued">
+            <V>Λ</V><Sub>αβ</Sub>(0) = 0
+            <span style={{ padding: '0 0.8em', color: FAINT }}>(spherical cut)</span>
+            <span style={{ padding: '0 1em' }} />
+            needle: −<Frac over={<>4<V>π</V></>} under={<>3<V>v</V></>} />
+            <span style={{ padding: '0 1em' }} />
+            screened: +<Frac over={<>4<V>π</V></>} under={<>3<V>v</V></>} />
+          </Eq>
+
+          <Para>
+            <b>Derived, and it reconciles with <Ref of={'Luttinger and Tisza, "Theory of Dipole Interaction in Crystals", Physical Review 70, 954'} year="1946" at="https://doi.org/10.1103/PhysRev.70.954" /> three for three.</b> Their bcc and fcc ferromagnetism is the demagnetising term a spherical cutoff discards — and since a screened interaction cannot reach the sample boundary, this model predicts it is an artefact of the infinite tail.
+          </Para>
+
+          <Eq note="neel.ts §2–§3 — Monte Carlo, not mean field, which overestimates by 1.7">
+            <V>T</V><Sub>N</Sub> = 0.201·|<V>Λ</V>(<b>q</b>*)|·
+            <Frac over={<><V>µ</V><Sub>0</Sub><V>µ</V><Sup>2</Sup></>} under={<>4<V>π</V><V>a</V><Sup>3</Sup><V>k</V><Sub>B</Sub></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
+            1.6·10<Sup>−4</Sup> K
+          </Eq>
+
+          <Para>
+            <b>Derived, and six orders below every real antiferromagnet</b> — MnO at 118 K, NiO at 525 K. <b>Which is the right answer</b>: dipolar coupling does not order at room temperature in nature either, and the 0.023 K for two Bohr magnetons at 3 Å is the number that argument is made of. What orders real matter is exchange.
+          </Para>
+
+          <Eq note="contact.ts §2–§3 — measured to three figures at every r, and the trace integral to 3%">
+            <V>∇</V><Sup>2</Sup>(<V>c</V>/<V>r</V>) = −4<V>πc</V>·<V>δ</V><Sup>3</Sup>(<b>r</b>)
+            <span style={{ padding: '0 0.8em', color: FAINT }}>ferro</span>
+            <span style={{ padding: '0 1em' }} />
+            <V>∇</V><Sup>2</Sup><Paren>
+              <Frac over={<>e<Sup>−<V>r</V>/<V>λ</V></Sup></>} under={<V>r</V>} />
+            </Paren> = <Frac over={<>e<Sup>−<V>r</V>/<V>λ</V></Sup></>} under={<><V>λ</V><Sup>2</Sup><V>r</V></>} />
+            <span style={{ padding: '0 0.8em', color: FAINT }}>antiferro</span>
+          </Eq>
+
+          <Para>
+            <b>The mechanism of exchange is derived and so are both its signs</b> — direct and super, ferromagnetic and antiferromagnetic, the two kinds nature has, at no new rule. What is <i>not</i> derived is the size: the contact route overshoots by 10<Sup>6</Sup> but has no reach, and the whole shortfall is one length, which the Layer 2 section shows is <V>α</V>.
+          </Para>
+
+          <Head>and the four that deviate or are missing</Head>
+
+          <Eq note="moment.ts — survives every choice, which makes it the sharpest refutation here">
+            <Frac over={<V>µ</V>} under={<V>L</V>} /> =
+            <Frac over={<V>q</V>} under={<>2<V>m</V></>} />
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>g</V> = 1
+            <span style={{ padding: '0 1.2em', color: FAINT }}>measured</span>
+            2.00231930436
+          </Eq>
+
+          <Para>
+            <b>Refuted, and by a factor of two exactly.</b> An emitter going round a loop at <K><Bar>c</Bar></K> has the classical ratio with the radius cancelling. The electron's is 2.0023 to fourteen figures <Ref of={'Hanneke, Fogwell & Gabrielse, "New Measurement of the Electron Magnetic Moment and the Fine Structure Constant", Phys. Rev. Lett. 100:120801'} year="2008" at="https://doi.org/10.1103/PhysRevLett.100.120801" />. The Layer 2 section adds a second reason to doubt the ring: it sits 12.6× inside the model's own floor on size.
+          </Para>
+
+          <Eq note="extrapolate.ts — a count of exits, so it cannot vary between materials">
+            ⟨111⟩ easy by 11.1%
+            <span style={{ padding: '0 1.2em', color: FAINT }}>measured</span>
+            2.6% to 32%
+          </Eq>
+
+          <Para>
+            <b>Derived and refuted in detail.</b> A held emitter puts + into every exit whose projection on its axis is positive, and there are only <K><Bar>DEG</Bar></K> = 26 — so the split is a count, and the model predicts the same anisotropy in <i>every</i> cubic material where measurement runs over a factor of twelve. The right decade, from counts, wrong in detail.
+          </Para>
+
+          <Eq note="ceiling.ts §2 — three of four materials under it, iron five per cent over">
+            <V>M</V><Sub>s</Sub> ≤ <V>n</V><V>µ</V>
+            <span style={{ padding: '0 1.2em' }} />
+            <V>µ</V> = <Frac over={<><K><Bar>CYCLE</Bar></K><V>G</V></>} under={<>2<V>π</V></>} />·
+            <Frac over={<><V>q</V>ħ</>} under={<>2<V>m</V></>} /> = 0.0794 <V>µ</V><Sub>B</Sub>
+          </Eq>
+
+          <Para>
+            <b>A bound with two lattice counts in it and nothing fitted, and iron breaks it by five per cent.</b> Refuted as a strict bound; still the right decade from counts, and the coupling it replaces — <V>σ</V> = <V>κM</V> with <V>κ</V> = √(<V>µ</V><Sub>0</Sub>/4<V>πG</V>) = 38.7 kg per A·m — has no material in it and is a unit conversion rather than a debt.
+          </Para>
+
+          <Eq note="the electric half, and it is a missing law rather than a missing number">
+            <V>∇</V>×<B>H</B> = <B>J</B>
+            <span style={{ padding: '0 1em' }} />
+            <V>∇</V>×<B>E</B> = −∂<B>B</B>/∂<V>t</V>
+            <span style={{ padding: '0 1em' }} />
+            <B>F</B> = <V>q</V>(<B>E</B> + <b>v</b>×<B>B</B>)
+          </Eq>
+
+          <Para>
+            <b>Not derived, and not really askable.</b> There is no current in this model because there is no electric charge to move — the bias <V>P</V> cannot be it, since emission rate goes as mass and a proton would carry 1836 times an electron's where measurement has them equal to a part in 10<Sup>21</Sup>. Every force here is second order, a <i>meeting</i>, which caps the electric force at the size of gravity where measurement puts it 4.166·10<Sup>42</Sup> above. <b>That one fact is the whole of the missing column.</b>
+          </Para>
+
           <Head>the chain, and where each link stands</Head>
 
           <div style={{ width: '100%', overflowX: 'auto', margin: '1.5em 0' }}>
@@ -2172,9 +3360,9 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
                 ['isotropic re-emission', 'regional sourcing —\nthe one assumption', 270, 110, 'owed'],
                 ['the far field', '1/r³, cos θ, five\norientations, 1/R⁴', 520, 110, 'derived'],
                 ['a coupling', 'odd 1st moment of\nannihilation — response', 270, 30, 'derived'],
-                ['ordering', 'ferro, easy axis,\nhysteresis', 520, 30, 'conditional'],
-                ['feedback on the axis', 'nothing writes to\na source — feedback', 270, 190, 'owed'],
-                ['antiferromagnetism', 'needs a 79 eV\ncarrier — confirm', 520, 190, 'owed'],
+                ['ordering', 'AF derived; exchange\nneeds a size — afm', 520, 30, 'conditional'],
+                ['feedback on the axis', 'the ledger\u2019s own axis\ngradient — torque', 270, 190, 'derived'],
+                ['antiferromagnetism', 'sc at q=(0,π,π) —\nthe magic angle, afm', 520, 190, 'derived'],
               ] as [string, string, number, number, string][]).map(([t, sub, x, y, st], i) => {
                 const fill = st === 'derived' ? 'currentColor' : 'none';
                 const op = st === 'derived' ? 0.09 : 0;
@@ -2264,6 +3452,74 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
             [<>no new particle for a ferromagnet</>,
               <>A held axis has ω = 0, so cos(ω<V>r</V>) ≡ 1 and the coherence ceiling is
                 absent rather than small. <i>confirm</i>.</>],
+            [<>the feedback rule</>,
+              <><b>No longer owed, and it was never a new mechanism.</b> The annihilation
+                ledger is one scalar: its position-gradient is the force gravity already
+                applies, and its axis-gradient is <V>τ</V> = <b>p</b> × <B>B</B> to a constant
+                ratio of 4.8%. So the rule, its sign and its target are all fixed by where
+                the annihilation lands, and what it costs is only that the model stops being
+                one-way. <i>torque</i>.</>],
+            [<>the magnetostatic set</>,
+              <><b>Complete, from one construction.</b> ∇·<B>B</B> = 0, ∮<B>H</B>·d<B>A</B> =
+                <V> q</V><Sub>m</Sub>, ∇×<B>H</B> = 0 with an explicit scalar potential,
+                <B> B</B> = <V>µ</V><Sub>0</Sub>(<B>H</B>+<b>M</b>), and all four boundary
+                conditions — plus <V>F</V> = −<V>∇U</V> and the torque. Every magnetic law of
+                Maxwell with no free current. <i>laws</i>, <i>torque</i>.</>],
+            [<>a Coulomb law between poles</>,
+              <>Two inverse-square co-location densities convolve into an inverse
+                <i> first</i> power, so the pole–pole potential is 1/<V>R</V> — out of a bond
+                count rather than a field equation, and with opposites attracting by the sign
+                of a product. <i>torque</i>.</>],
+            [<>antiferromagnetism</>,
+              <><b>Derived, on the simple cubic lattice, at <V>q</V> = (0, <V>π</V>,
+                <V>π</V>).</b> Commensurate to machine precision at every screening length,
+                moment along the chain — ferromagnetic chains stacked antiparallel, which is
+                the structure Luttinger and Tisza give for sc. It needs no flip length and no
+                signed vacuum: <V>Λ</V>(0) = 0 forbids the <i>ferromagnet</i> and thereby
+                makes every <V>q</V> ≠ 0 with a negative eigenvalue a winner. <i>afm</i>.</>],
+            [<>what exchange has to be</>,
+              <><b>A coupling with a <i>trace</i></b> — that is what <V>Λ</V>(0) = 0 means,
+                the dipolar tensor being traceless term by term. So it is an isotropic
+                Heisenberg <V>J</V>·<B>S</B><Sub>i</Sub>·<B>S</B><Sub>j</Sub>, and since the
+                tensor is ∂∂<V>K</V>, a trace is <V>∇</V><Sup>2</Sup><V>K</V> ≠ 0. The kernel
+                departs from <V>c</V>/<V>r</V> in exactly two places with <b>opposite
+                signs</b>: at co-location (−4<V>πc</V>δ³, <b>ferromagnetic</b> — direct
+                exchange) and wherever it is screened (+e<Sup>−<V>r</V>/<V>λ</V></Sup>/<V>λ</V><Sup>2</Sup><V>r</V>,
+                <b> antiferromagnetic</b> — superexchange). The two kinds nature has, at no
+                new rule. <i>contact</i>.</>],
+            [<>the Néel temperature</>,
+              <>Measured by Monte Carlo rather than mean field: <V>T</V><Sub>N</Sub> =
+                0.201·|<V>Λ</V>(<V>q</V>*)|, which in kelvin is <b>1.6·10<Sup>−4</Sup> K</b>
+                against MnO's 118 and NiO's 525. <b>Six orders too cold, and that is the
+                right answer</b> — dipolar coupling does not order at room temperature in
+                nature either. The energy unit is validated against the textbook 0.023 K for
+                two Bohr magnetons at 3 Å. <i>neel</i>.</>],
+            [<>Luttinger and Tisza, reconciled</>,
+              <>Their bcc and fcc ferromagnetism is the <b>demagnetising term</b>, −4<V>π</V>
+                /3<V>v</V>, which a spherical cutoff throws away — not a disagreement. Scored
+                against it the model gets all three right. And since a <i>screened</i>
+                interaction cannot reach the sample boundary, the model predicts that
+                ferromagnetism is an artefact of the infinite tail. <i>afm</i>.</>],
+            [<>the ordering law</>,
+              <>A bond at <V>θ</V> to the moment contributes (1 − 3cos²<V>θ</V>), so it wants
+                parallel below the <b>magic angle 54.74°</b> and antiparallel above it, and
+                contributes exactly nothing at it. <b>A collinear antiferromagnet exists
+                precisely when some axis makes every dominant bond either along it or square
+                to it.</b> Predicts sc, bcc and fcc correctly from nearest-neighbour angles
+                alone. <i>afm</i>.</>],
+            [<>that the flip mechanism is not the route</>,
+              <>The signed vacuum balances creation against <i>annihilation</i>, so its fixed
+                point is <V>f</V> ∝ √<V>p</V> and the expansion rate does not cancel out of
+                it — at <V>p</V> = 10<Sup>−61</Sup> a front crosses 10<Sup>30</Sup> cells
+                without meeting anything. That closes the <i>consumption</i> route to a
+                distance-dependent sign. It does not close antiferromagnetism, which never
+                needed it. <i>front</i>.</>],
+            [<>a front's mean free path</>,
+              <>The distance to an encounter is the <i>opposing slot's</i> occupancy and not
+                the medium's own collision length — a front in slot 0 can only ever be paired
+                against slot 4, so the medium's internal scattering was never a candidate.
+                And an encounter is not a consumption: annihilation removes one front and
+                flips, a reversed turn removes <i>two</i> and flips nothing. <i>front</i>.</>],
             [<>the per-NODE sign convention</>,
               <>One draw per cell rather than per ray, wanted by <b>three requirements
                 arrived at separately</b>: the far field is only a field under it
@@ -2282,10 +3538,14 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
                 orientations, 1/<V>R</V><Sup>4</Sup> — <b>given that a region re-emits its
                 unpaired excess</b>. Derived otherwise. <i>divp</i>, <i>aggregate</i>.</>],
             [<>ferromagnetism</>,
-              <>A uniform ground state from random, and an open hysteresis loop pinned by the
-                ring's 45° quantum — <b>given a feedback rule on the axis</b> with the
-                aligning sign. Three unrelated reads all give it, so it is not a fit to a
-                rule chosen for it. <i>exchange</i>, <i>permute</i>.</>],
+              <><b>Refuted for this channel, and exactly.</b> The feedback rule it was
+                conditional on is now supplied — and <V>Λ</V>(0), the energy of the uniform
+                state, vanishes identically on sc, bcc and fcc by cubic symmetry, so the
+                far-field coupling cannot order at any screening length. <i>exchange</i> and
+                <i> permute</i> got a uniform state by cutting the sum at <V>r</V> ≤ 4,
+                inside the cancellation. Which is the right answer — dipolar coupling does
+                not cause ferromagnetism in nature either, being three orders under the
+                exchange that does. <i>torque</i>.</>],
             [<>regional sourcing</>,
               <>A region emitting <b>one train at the summed rate</b>, out of (G+M/3) and the
                 feedback already owed rather than out of anything new — co-located sources
@@ -2294,21 +3554,11 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
                 <b>Tension</b>: the quantum arc needs the relative <i>offset</i> not to
                 collectivise, and this locks it. <i>pernode</i>.</>],
             [<>non-collinear order</>,
-              <>A <b>spiral</b>, if the vacuum is signed and per-node: flip length 3.2 cells
-                against the 4 the threshold wants, best <V>q</V> = 0.167·π. Not an
-                antiferromagnet — a different magnetic phase, and a real one.
-                <i> signed</i>.</>],
-            [<>antiferromagnetism</>,
-              <><b>Not derived, and now a rate rather than a structure.</b> The mechanism
-                exists — consuming fronts from an alternating train flips the sign once per
-                front, which oscillates where five earlier attempts only attenuated. At the
-                vacuum's own rate (flip length 8 cells) the ferromagnet still wins 90.7 to
-                18.3; a flip length of 4 would give a spiral. And the mean free path is
-                <b>computed</b>: it floors at 6.66 cells over every occupancy, never reaching
-                4, and the fill is a fixed point with the expansion rate cancelled out of it.
-                <b>What is left is one calculation</b> — the signed medium balances creation
-                against <i>annihilation</i> rather than dilution, so its fixed point is a
-                different one. <i>consume</i>, <i>vacrate</i>, <i>mfp</i>.</>],
+              <><b>Derived, on bcc and fcc.</b> Neither can satisfy its bonds collinearly, so
+                both settle into incommensurate spirals — fcc because 8 bonds want parallel
+                against 4 wanting antiparallel, bcc because its whole nearest-neighbour shell
+                sits at the magic angle and contributes nothing. Not the <i>consumption</i>
+                spiral, which was an artefact of running the lattice fast. <i>afm</i>.</>],
           ]} />
 
           <Head>what is owed</Head>
@@ -2319,19 +3569,24 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
                 the reconciliation: the quantum arc needs <K>share</K> at a half while the
                 rate adds, and a region that locks every phase together has no relative
                 offset left to average. One of the two readings has to give.</>],
-            [<>feedback onto a source</>,
-              <><K>bearing(s, tick)</K> is a pure function of the source's own parameters and
-                the tick, and nothing anywhere writes to a source. <b>Sources write to space;
-                space never writes back.</b> Gravity never needed otherwise — a pull is a fact
-                about the space between two things. Every ordering result needs the arrow to
-                point back. <b>The specification is now exact</b>: it acts on the <i>axis</i>
-                (rate feedback would make mass a function of the neighbourhood and break
-                gravity), and its <i>sign</i> is fixed by where the annihilation lands — so
-                what is owed is one line, <i>axis(s, tick) ← the direction maximising the
-                shortening of the space between s and its neighbours</i>. What it costs is
-                that the model stops being one-way, which is structural rather than a
-                parameter. <i>feedback</i>, <i>permute</i>, <i>vacsign</i>.</>],
-
+            [<>exchange — and it is one length</>,
+              <>Not a missing mechanism: both signs are derived. The <i>screening</i> route
+                needs <V>λ</V> ≈ 4·10<Sup>−13</Sup> m against this model's cosmological ones,
+                so it gives a sign and no size. The <i>contact</i> route <b>overshoots</b> —
+                (<V>a</V>/<V>r</V><Sub>s</Sub>)<Sup>3</Sup> = 9·10<Sup>11</Sup> would give
+                10<Sup>8</Sup> K — but the emitter's ring is 3·10<Sup>−14</Sup> m against a
+                3 Å spacing, so the sources never overlap and the term is <b>zero rather than
+                small</b>. Short by 10<Sup>4</Sup>, and unbuyable by lightening the emitter
+                since <V>µ</V> goes as 1/<V>m</V> too and would break the <i>ceiling</i>
+                bound. <b>Exchange needs a source with size — an orbital, not a ring — which
+                is Layer 2's bill.</b> <i>contact</i>.</>],
+            [<>and it is one <V>α</V>, not two debts</>,
+              <>The length exchange is short by is 1726, which is exactly
+                1/(<V>α</V>·<K><Bar>CYCLE</Bar></K><V>G</V>/2<V>π</V>) — so magnetism's last
+                debt and the electric half's only debt are <b>the same entry counted
+                twice</b>. And the confinement term that looked missing underneath it is the
+                emitter's own <b>budget</b>: at <V>g</V> = <V>α</V> that gives the Bohr
+                radius and the Rydberg to four figures. <i>matter</i>, <i>bound</i>.</>],
             [<>the coupling — <V>α</V></>,
               <>What it <i>needs</i> is a <b>first-order channel</b>. Every force here is
                 second order — nothing happens to a charge that does not <i>meet</i> another
@@ -2388,16 +3643,21 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
           </Para>
 
           <Rows of={[
-            [<>the four next things</>,
-              <><b>1. Does a magnetic front lose a wavefront at the medium's own rate?</b>
-                Everything about the spiral rests on that, and what is measured is the
-                medium's internal collision length rather than what a crossing front sees.
-                One simulation. <b>2. Which flip length feeds the mechanism</b> — the two
-                candidates in <i>signed</i> §3 disagree and the argument for 1/fill is a
-                sentence rather than a measurement. <b>3. The <K>share</K> tension</b> in
-                regional sourcing. <b>4. Recompute the ⟨111⟩ anisotropy</b>, which is in the
-                refuted column with a <K><Bar>CYCLE</Bar></K> that does not hold on a corner
-                axis.</>],
+            [<>the next things</>,
+              <>The first two are done. <i>front</i> put tracer fronts in the medium and
+                measured what one sees: the length is the opposing slot's occupancy, the
+                medium's own collision length was never a candidate, and the flip length is
+                a function of the expansion rate rather than a lattice constant — which
+                closes the <i>consumption</i> route to a distance-dependent sign — though
+                not antiferromagnetism, which never needed it. What is left:
+                <b> 1. Where this model's exchange lives.</b> <i>torque</i> §4 refutes the
+                far-field channel exactly, and <i>pernode</i> §3 says co-located sources
+                couple as strongly as anything in the model can. That is now the whole of the
+                ordering question. <b>2. Does an alike pair reverse or scatter?</b> The arc
+                says one and <i>vacuum.ts</i> does the other, and every displacement result
+                here rests on reversal. <b>3. The <K>share</K> tension</b> in regional
+                sourcing. <b>4. Recompute the ⟨111⟩ anisotropy</b>, with a
+                <K><Bar>CYCLE</Bar></K> that does not hold on a corner axis.</>],
             [<>what not to redo</>,
               <>Magnetostatics is finished — the chain from (G/1) to a measured force is
                 complete and lands on the best of the three standard models. The dipole tail
@@ -2415,8 +3675,11 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
             [<>and the standing bill</>,
               <><V>α</V> and a first-order channel, which is a missing law and not a missing
                 line; the ring fork, which the magnetic results turn out not to depend on;
-                and the feedback line itself, whose specification is now exact — it acts on
-                the axis, and its sign is fixed by where the annihilation lands.</>],
+                and the alignment fraction, which is a materials question rather than a
+                question about this model. <b>The feedback line is no longer on the bill</b>
+                — it is the axis-gradient of the ledger gravity already reads — and the
+                coupling has dropped from a bare constant to a fraction under a ceiling
+                that misses by five per cent.</>],
           ]} />
 
           <Head>the shape of it</Head>
@@ -2428,7 +3691,7 @@ per axis      0.56 → SPIRAL          20.41 → FERRO`}
           <BR/>
 
           <Para>
-            <b>The ordering is where the physics is, and it has moved from a hole to a chain.</b> The model has an exchange-like coupling out of its own annihilation rule, a sign for it out of where the annihilation lands, an easy axis out of its own lattice, hysteresis out of its own ring, screening out of its own vacuum, and a route to a spiral out of fronts being eaten from an alternating train. What it still has no rule for is a source <i>hearing</i> any of it — nothing anywhere writes to a source — and that one line is now specified rather than merely missing. The rest is arithmetic that has not been done.
+            <b>The ordering is where the physics is, and it has moved from a hole to a chain.</b> The model has an exchange-like coupling out of its own annihilation rule, a sign for it out of where the annihilation lands, an easy axis out of its own lattice, hysteresis out of its own ring, screening out of its own vacuum, and a measured answer — a negative one — on whether fronts eaten from an alternating train can turn that order non-collinear. What it still has no rule for is a source <i>hearing</i> any of it — nothing anywhere writes to a source — and that one line is now specified rather than merely missing. The rest is arithmetic that has not been done.
           </Para>
         </Section>
 

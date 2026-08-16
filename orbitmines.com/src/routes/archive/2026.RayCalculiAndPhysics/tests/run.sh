@@ -31,13 +31,13 @@ ORDER=(
   recon which138 accum accumulate asym
   pulses magnets coulomb moment dipole poles ordering
   departure divp escape aggregate
-  domains domainsize response align exchange feedback permute extrapolate
+  domains domainsize response align exchange feedback torque afm neel contact permute extrapolate
   screen signs scales confirm texture
-  benchmark
-  creation vacsign pernode consume vacrate mfp signed
-  budget tradeoff scale maxwell
+  benchmark laws
+  creation vacsign pernode consume vacrate mfp signed front
+  budget tradeoff scale ceiling maxwell
   nopolarity
-  ring holonomy bloch
+  ring holonomy bloch matter bound harmony spin
   turns ways veins cones veined lattices wave gas vacuum pure sphere
 )
 
