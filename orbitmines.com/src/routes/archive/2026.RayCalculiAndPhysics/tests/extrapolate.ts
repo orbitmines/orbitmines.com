@@ -164,6 +164,12 @@ export function extrapolateReport(): string {
   line("  not local laws, and a source's behaviour would depend on the shape and");
   line("  size of the body it sits in.");
   line();
+  line("  Note rules 2 and 3 give identical numbers here. They are different");
+  line("  functions — one counts annihilations (0 or 1 a bond), the other sums");
+  line("  a signed agreement (+1, −1 or 0) — but on a UNIFORMLY ordered state");
+  line("  every nonzero bond agrees, so the two coincide exactly. They come");
+  line("  apart on any disordered state, and §4 is where that would show.");
+  line();
   line("  It is the same divergence `exchange` §3 found in the pair interaction,");
   line("  and it has the same fix available: the gravity arc's `reach`, the");
   line("  screening length λ past which rays are stopped. Nothing establishes");
@@ -196,8 +202,22 @@ export function extrapolateReport(): string {
   line();
   line("  k = 0 and k = 2 are face directions, k = 1 and k = 3 are edge");
   line("  diagonals, so a difference between them is a real lattice anisotropy");
-  line("  and not a labelling artefact. Where the spread is nought the ring is");
-  line("  degenerate and nothing pins the direction.");
+  line("  and not a labelling artefact.");
+  line();
+  line("     ALL THREE HAVE AN EASY AXIS, and it is the FACE directions, by");
+  line("     about 2%. This is the one test in this file the family passes.");
+  line();
+  line("  It matters more than its size suggests. `exchange` §4's hysteresis was");
+  line("  pinned by the ring's discreteness alone, which is a barrier without a");
+  line("  preferred direction; a 2% easy-axis anisotropy is a preferred");
+  line("  direction, which is what a permanent magnet actually needs. And it is");
+  line("  not put in — it comes from the lattice having faces and diagonals.");
+  line();
+  line("  Worth comparing against the arc's own refuted anisotropy: `moment`");
+  line("  predicts ⟨111⟩ favoured by 11.1%, measured here as face-favoured by");
+  line("  2%. Different axis, different size, and both are lattice counts — so");
+  line("  the REFUTED row deserves a recomputation rather than a restatement,");
+  line("  which `ring` already flagged for a different reason.");
 
   line();
   line("=".repeat(78));
@@ -207,10 +227,14 @@ export function extrapolateReport(): string {
   line("  Order parameter against a noise amplitude added to each score, which");
   line("  is the crudest possible temperature.");
   line();
-  line("     rule                     T=0    T=0.5     T=1     T=2     T=5");
+  line("  Scores here are of order 20 (see §1), so a noise amplitude has to be");
+  line("  of that size to mean anything — a first pass at this swept T up to 5");
+  line("  and measured nothing but the coupling.");
+  line();
+  line("     rule                     T=0     T=10    T=30   T=100   T=300");
   for (const [name, score] of RULES) {
     const vals: string[] = [];
-    for (const T of [0, 0.5, 1, 2, 5]) {
+    for (const T of [0, 10, 30, 100, 300]) {
       reseed();
       const k = settle(score, at5, { noise: T, steps: 120 });
       vals.push(order(at5, k).ferro.toFixed(3).padStart(8));
@@ -218,10 +242,16 @@ export function extrapolateReport(): string {
     line(`     ${name.padEnd(23)}${vals.join("")}`);
   }
   line();
-  line("  All three degrade smoothly rather than collapsing at a threshold,");
-  line("  which is what a mean-field-like coupling with an unbounded range");
-  line("  does — and follows from §1, since every source is coupled to every");
-  line("  other with no screening.");
+  line("  All three hold order well past the coupling scale and then decay to");
+  line("  the disordered floor, which is a Curie-like transition and is the");
+  line("  right qualitative shape. The order in which they give way — 3 the");
+  line("  most robust, then 1, then 2 — is a real difference but a small one,");
+  line("  and it is the only place in this file the three separate at all.");
+  line();
+  line("  That they survive to T ≈ 15× the pair coupling is a consequence of");
+  line("  §1 rather than a virtue: with no screening every source is coupled to");
+  line("  every other, so the effective field on each is the whole body, which");
+  line("  is mean-field behaviour and overstates a real Curie point.");
 
   line();
   line("=".repeat(78));
@@ -267,17 +297,23 @@ export function extrapolateReport(): string {
   line("            a local law without a screening length the magnetic layer");
   line("            has not been shown to have.");
   line();
-  line("     ON §2  see the table — where the spread is nought the rule cannot");
-  line("            pin a direction, and a magnet that cannot be pinned is not");
-  line("            permanent.");
+  line("     ON §2  ALL THREE PASS. There is a face-direction easy axis of");
+  line("            about 2%, out of the lattice rather than out of a");
+  line("            parameter, and that is what pins a permanent magnet.");
   line();
-  line("     ON §3  no discrimination. All three degrade smoothly, which is a");
-  line("            consequence of §1 rather than a property of the rules.");
+  line("     ON §3  all three pass qualitatively — order falls to a floor as");
+  line("            noise rises, which is what a Curie point looks like. Rule 3");
+  line("            is the most robust and rule 2 the least, which is the only");
+  line("            separation between them anywhere in this file and is small.");
   line();
   line("     ON §4  none, and this is the one that matters. Not one of them can");
   line("            hold an antiferromagnet, and antiferromagnets are ordinary.");
   line();
-  line("  SO THE ANSWER TO 'WHICH HOLDS UP' IS NONE OF THEM, and the reason is");
+  line("  SO: TWO OF THE FOUR TESTS PASS AND THEY PASS TOGETHER, and the two");
+  line("  that fail are failed by all three in the same way. There is no");
+  line("  surviving rule and no rule that survives better than the others.");
+  line();
+  line("  The answer to 'which holds up' is NONE OF THEM, and the reason is");
   line("  the one they share rather than anything that separates them: all");
   line("  three encode AGREEMENT, and a law that only rewards agreement can");
   line("  only produce agreement.");

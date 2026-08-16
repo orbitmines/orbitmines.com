@@ -364,7 +364,7 @@ const Physics = () => {
             <span style={{ padding: '0 1.4em' }} />
             0 ≤ <V><Bar>m</Bar></V> ≤ <K><Bar>c</Bar></K></F>
             <span style={{ padding: '0 1.4em' }} />
-            <i><Bar>m</Bar></i>.period = <Frac over={<>1</>} under={<i><Bar>m</Bar></i>} /> <F><Bar>t</Bar></F>
+            <i><Bar>m</Bar></i>.<D>period</D> = <Frac over={<>1</>} under={<i><Bar>m</Bar></i>} /> <F><Bar>t</Bar></F>
           </Eq>
 
           We define a number between 0 and 1 of what percentage of time is spent pulsing. This is its 'discrete mass'. There's of course no need for this to be a perfect period, as long as the average corresponds to a particular number, the mass will be on aggregate a particular value.
@@ -375,19 +375,12 @@ const Physics = () => {
           
           <Head>The inverse square law</Head>
 
-          The discrete model will tell us that there will be constant fluctuations of the shape of the pressure gravity is exerting, but that those fluctuations will average out to a sphere. And we can measure both halves of that rather than assert them.
+          The discrete model will tell us that there will be constant fluctuations of the shape of the pressure gravity is exerting, but that those fluctuations will average out to a sphere. Quite like <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "inverse-square law", link: "https://en.wikipedia.org/wiki/Inverse-square_law"}}/> will expect.
 
           <BR/>
 
-          <Eq note={<><F>l.</F> is a time aware node</>}>
+          <Eq note={<>The number of active rays at any local node - together they would form some interaction after the next <Bar>t</Bar>. Imagine the rays just following their direction, then an interaction happens when they happen to be at the same node afterwards.</>}>
             <Type of={<><F>l.</F><D>#active?</D></>} is={<>0..<F>l.</F><K><Bar>DEG</Bar></K></>} /> = <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <F>l.</F><D>rays</D></Sub> <Type of={<><V>ray</V>.<D>active?</D></>} is={<>0 | 1</>} />
-          </Eq>
-
-          <Eq note={<><V>ray</V>.<D>terminal</D> is the neighbour the ray points at, and its <D>#active?</D> is what it had to send. A node makes <D>#active?</D> of its rays active and skips the rest, so any one of them carries with chance <D>terminal</D>.<D>#active?</D>/<F>l.</F><K><Bar>DEG</Bar></K> — and ⟨ ⟩, which is the only place in this section anything is averaged over ticks, a node is the mean of its neighbours. This is the only line that follows a ray past its own end; it is what makes the field harmonic, and everything below rests on it. The gap between the count and its mean is the grain <D>wobble</D> measures</>}>
-            ⟨<F>l.</F><D>#active?</D>⟩ =
-            <Frac over={<>1</>} under={<><F>l.</F><K><Bar>DEG</Bar></K></>} />
-            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <F>l.</F><D>rays</D></Sub>
-            <V>ray</V>.<D>terminal</D>.<D>#active?</D>
           </Eq>
 
           <Eq note={<>nothing is chosen here, it is the lattice. A node's next <F>l.</F><D>#active?</D> is the <i>mean</i> of its neighbours', which is a walk taking one step a tick uniformly over the 26 rays; 18 of the rays step <D>dx</D> = ±1 along a given axis and 8 step <D>dx</D> = 0, so a step has variance 18/26 an axis, and a diffusivity is half a step variance. The sum is a mean over the node's own rays and nothing is averaged over time here, which is why it carries no ⟨ ⟩. Lowercase, and not <F>l.</F><K><Bar>D</Bar></K>, which is already the number of dimensions</>}>
@@ -399,33 +392,42 @@ const Physics = () => {
             <Frac over={<>9</>} under={<>26</>} />
           </Eq>
 
-          <Eq note={<>the body takes and sends nothing, so every charge that lands on it is destroyed. Two ways of counting the same number: on the left, read at the destination — every node <V>p</V> the body occupies, and what landed on it. On the right, read at the source — every ray out of every body node, each pulling <D>terminal</D>.<D>#active?</D>/<F>l.</F><K><Bar>DEG</Bar></K> back in and sending nothing the other way. A <D>terminal</D> that is itself body has no active rays and so contributes nothing, which is what makes the two sums the same number. Measured at 354.5 a tick for a radius-3 body of 123 nodes — and it is a <i>surface</i> quantity rather than a volume one, since 925 nodes eat only 865: an interior node is shadowed and eats nothing, so <F>l.</F><D>sink</D> grows about like the body's radius rather than like its count</>}>
-            <F>l.</F><D>sink</D> =
-            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>p</V> ∈ body</Sub> <V>p</V>.<D>#active?</D>
+          <Eq note={<>the shortfall, which is the one thing every force below reads: how many of a node's <F>l.</F><K><Bar>DEG</Bar></K> rays stayed idle because something ate them. It is the definition at the top of the section subtracted from full, so it is read at the node and needs no body, no distance and no scan. It takes <i>no argument</i>, and that is not an omission — a node holds one number, so it cannot say which body ate which ray, and what it holds is the total</>}>
+            <Type of={<><F>l.</F><D>deficit</D></>} is={<>0..<F>l.</F><K><Bar>DEG</Bar></K></>} /> =
+            <F>l.</F><K><Bar>DEG</Bar></K> − <F>l.</F><D>#active?</D>
+          </Eq>
+
+          <Eq note={<>that number is read, never computed — so the rest of the section is what it should come to, and only that half needs anything beyond the node. A <V>body</V> is a set of nodes that destroy what lands on them and send nothing, and nothing else here separates matter from vacuum; it is a thing we are pointing at rather than a region of the world, so this sum runs over <i>it</i> and never over the lattice. <F>l.</F><D>sink</D>(<V>body</V>) is the rate it destroys at, counted two ways. On the left, read at the destination — every node <V>p</V> it occupies, and what landed there. On the right, read at the source — every ray out of every one of those nodes, each pulling <D>terminal</D>.<D>#active?</D>/<F>l.</F><K><Bar>DEG</Bar></K> back in and sending nothing the other way. A <D>terminal</D> that is itself body has no active rays and contributes nothing, which is what makes the two the same number. Measured at 354.5 a tick for a radius-3 body of 123 nodes — and it is a <i>surface</i> quantity rather than a volume one, since 925 nodes eat only 865: an interior node is shadowed and eats nothing, so <F>l.</F><D>sink</D> grows about like the body radius rather than like its count</>}>
+            <F>l.</F><D>sink</D>(<V>body</V>) =
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>p</V> ∈ <V>body</V></Sub> <V>p</V>.<D>#active?</D>
             <span style={{ padding: '0 1.2em', color: FAINT }}>=</span>
             <Frac over={<>1</>} under={<><F>l.</F><K><Bar>DEG</Bar></K></>} />
-            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>p</V> ∈ body</Sub>
+            <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>p</V> ∈ <V>body</V></Sub>
             <span style={{ fontSize: '1.3em' }}>Σ</span><Sub><V>ray</V> ∈ <V>p</V>.<D>rays</D></Sub>
             <V>ray</V>.<D>terminal</D>.<D>#active?</D>
           </Eq>
 
-          <Eq note={<>and the amplitude of the well is the body's <i>appetite</i>, its rate of destruction over the medium's willingness to carry. Measured, <F>l.</F><D>well</D>/<F>l.</F><D>sink</D> = 0.206 over bodies from 33 to 925 nodes — a 4.5× range of <F>l.</F><D>sink</D> — against 1/4π<F>l.</F><D>spread</D> = 0.230, the 11% being the fit band and the lattice's own Green's function rather than the continuum's. <V>p</V>.<D>r</D> is how far the node sits from the body</>}>
-            <F>l.</F><D>well</D> =
-            <Frac over={<><F>l.</F><D>sink</D></>} under={<>4π<F>l.</F><D>spread</D></>} />
-            <span style={{ padding: '0 1.2em', color: FAINT }}>so</span>
-            <F>l.</F><K><Bar>DEG</Bar></K> − <V>p</V>.<D>#active?</D> =
-            <F>l.</F><D>well</D>(1/<V>p</V>.<D>r</D> − 1/<V>R</V>)
+          <Eq note={<>and the amplitude of that body's well is its <i>appetite</i>, its rate of destruction over the medium's willingness to carry. No distance in it anywhere — it is what the well would be worth at unit range. Measured, <F>l.</F><D>well</D>/<F>l.</F><D>sink</D> = 0.206 over bodies from 33 to 925 nodes — a 4.5× range of <F>l.</F><D>sink</D> — against 1/4π<F>l.</F><D>spread</D> = 0.230, the 11% being the fit band and the lattice's own Green's function rather than the continuum's</>}>
+            <F>l.</F><D>well</D>(<V>body</V>) =
+            <Frac over={<><F>l.</F><D>sink</D>(<V>body</V>)</>} under={<>4π<F>l.</F><D>spread</D></>} />
           </Eq>
 
-          <Eq note={<>one charge of grain on the shortfall itself — <F>l.</F><K><Bar>DEG</Bar></K> − <F>l.</F><D>#active?</D> is how many of a node's rays stayed idle, so how many charges short of full a node at <V>r</V> is, measured in §2 at <F>l.</F><D>well</D> = 70.3 and <V>R</V> = 29.5 cells — thinned by the <V>n</V> ticks averaged over. The <V>r</V> on the right is that 1/<V>r</V> inverted, and holds while <V>r</V> ≪ <V>R</V></>}>
-            <D>wobble</D>(<V>r</V>,<V>n</V>) ≈
+          <Eq note={<>and what the shortfall comes to, which is the only place a distance is needed at all. <F>l.</F><D>r</D>(<V>body</V>) is how far we stand from it: a node is a place, so the two subtract, and the body sits at its centre. Written for one body because that is what §2 runs; shortfalls add, so a second one is a second term. Fitted on <F>l.</F><D>r</D> ≥ 8 to within 2% at <F>l.</F><D>well</D> = 70.3 — the 1/<V>r</V> potential whose gradient is the inverse square, with nobody writing either down. The ≈ is doing one job beyond the fit band and it is worth being plain about it: a shortfall is measured <i>against full</i>, so it only closes where something holds the vacuum full again, and §2 holds the outer two layers of its box full by hand. That adds a constant — the fit reads 1/<V>r</V> − 1/29.5 cells, a boundary term and not the body, and one that does not come out of the box geometry either, since the half-edge is 39. It is worth under a tenth of the 1/<V>r</V> inside <F>l.</F><D>r</D> ≈ 3, which is why the line below holds near a body and not out at the rim. <b>What sets it when there is no rim to hold is not derived here</b></>}>
+            <F>l.</F><D>r</D>(<V>body</V>) = |<F>l</F> − <V>body</V>|
+            <span style={{ padding: '0 1.4em', color: FAINT }}>so</span>
+            <F>l.</F><D>deficit</D> ≈
+            <Frac over={<><F>l.</F><D>well</D>(<V>body</V>)</>} under={<><F>l.</F><D>r</D>(<V>body</V>)</>} />
+          </Eq>
+
+          <Eq note={<>and the grain, which is one charge on that shortfall — a node holds an integer, so it cannot carry a fraction of a charge, and one charge against <F>l.</F><D>deficit</D> of them is the fraction that grain is of what is being read, thinned by the <V>n</V> ticks averaged over. Note what it takes to compute: the node's own count and how long we watched, both read where we are standing, and <i>nothing above this line</i> — a wobble never needed a body, a distance or a scan of anything. What the lines above buy is the ∝ on the right, which is the whole point of having them: put the deficit's 1/<D>r</D> in and the shortfall thins as 1/<D>r</D>, so the grain riding on it grows as <D>r</D>. Far from a body the reading is mostly noise, and it is the model saying so rather than an apology for it</>}>
+            <F>l.</F><D>wobble</D>(<V>n</V>) ≈
             <Frac
               over={<>1 charge</>}
-              under={<><F>l.</F><D>well</D>(1/<V>r</V> − 1/<V>R</V>) · √<V>n</V></>}
+              under={<><F>l.</F><D>deficit</D> · √<V>n</V></>}
             />
             <span style={{ padding: '0 1.4em' }} />
             ∝
-            <Frac over={<><V>r</V></>} under={<>√<V>n</V></>} />
+            <Frac over={<><F>l.</F><D>r</D></>} under={<>√<V>n</V></>} />
           </Eq>
 
 
@@ -1723,6 +1725,712 @@ const Physics = () => {
       </Section>
 
       <Section head="AI Generated">
+
+        <Section head="Magnetism">
+
+          <Para>
+            This section is the working state of the magnetic half, kept in one place because it has moved a great deal and in both directions. Everything below is measured by a file in <i>tests/</i> and every claim names the one that produces it, so a number here can be re-run rather than believed. <b>It is a working note and not a finished arc</b> — several things in it contradict what the older magnetism and Layer-2 sections still say, and where they do, this is the later reading.
+          </Para>
+
+          <Head>the benchmark, and why it took so long to have one</Head>
+
+          <Para>
+            The gravity arc has <i>three</i>: Newton, general relativity and this model put to Gaia on the inner Solar System, agreeing to a part in 10<Sup>6</Sup> and all three missing by the same factor. The magnetic half had nothing of the kind. Everything in it was measured against <i>itself</i> — exponents, orientations, order parameters — and none of it against a number somebody wrote down after touching a magnet.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The configuration that supplies one is <Ref of={'Zhang, Leng, Zhang et al., "Comparative study on equivalent models calculating magnetic force between permanent magnets", Journal of Intelligent Manufacturing and Special Equipment 1(1):43–65'} year="2020" at="https://doi.org/10.1108/JIMSE-09-2020-0009" />, who measure the force between real magnets and score the three standard models against the measurement. For a cuboid — 10 × 10 × 2 mm, N38H Nd<Sub>2</Sub>Fe<Sub>14</Sub>B:
+          </Para>
+
+          <Eq note="benchmark.ts — average relative error against measured force, on a real cuboid magnet">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`magnetizing current model      6.34 %
+MAGNETIC CHARGE model          5.22 %     ← what −div p is
+dipole–dipole model           75.94 %     ← what 1/R⁴ is`}
+            </span>
+          </Eq>
+
+          <Para>
+            The middle row is this model's, and it is the middle row for a derived reason rather than a chosen one: <i>escape</i> gets the source density −<V>∇</V>·<b>p</b> out of the annihilation ledger, and −<V>∇</V>·<b>p</b> <i>is</i> the magnetic charge — the same σ = <V>M</V>·<B>n̂</B> on the faces the charge model puts there by hand. Measured, the lattice construction converges onto it: total pole charge 1.000000 in units of <V>M</V>·<V>A</V>, which is Gauss's theorem arrived at from a bond count.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the bottom row is a warning this book has earned.</b> The magnetism arc's headline results — 3cos²<V>θ</V> − 1 to three decimals, slope −2.00, the 1/<V>R</V><Sup>4</Sup> force — are all statements about the <i>dipole</i> approximation. On a real cuboid magnet that is 76% wrong, and the arc has been quoting the one model of the three that does not describe the magnets people actually have.
+          </Para>
+
+          <Eq note="benchmark.ts §3 — the dipole law against the charge model, resolved by gap">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  gap      charge model     dipole 1/R⁴     dipole error
+ 1.0 mm      8.4300 N       288.5027 N        3322 %
+ 2.0 mm      5.2471 N        91.2841 N        1640 %
+ 5.0 mm      1.8634 N         9.7329 N         422 %
+10.0 mm      0.5027 N         1.1270 N         124 %
+20.0 mm      0.0743 N         0.0998 N          34 %
+50.0 mm      0.0030 N         0.0032 N           5.9 %`}
+            </span>
+          </Eq>
+
+          <Para>
+            The dipole tail is right, and it describes the regime nobody uses a magnet in.
+          </Para>
+
+          <Head>and what the benchmark cannot do</Head>
+
+          <Para>
+            <b>It cannot discriminate.</b> The model reproduces the charge model because it <i>derives</i> the charge model, and a thing cannot then disagree with itself. <i>three</i> has teeth because Newton, GR and this model differ at a level Gaia can see; magnetostatics has no such gap. Once the source is −<V>∇</V>·<b>p</b> and the emission is non-sided, the model <i>is</i> Maxwell's magnetostatics and predicts no departure at any reachable scale.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That is a null and it is the right kind of null — a model that reproduced Maxwell and <i>also</i> predicted a visible departure would be wrong, because Maxwell is not measurably wrong. What the benchmark confirms is the derivation chain, end to end, against a measurement. <b>What the magnetic half still does not have is a test that could fail</b>, and the places to look are where the model has structure Maxwell does not: the quantised magnetisation, the lattice easy axis, and the coupling.
+          </Para>
+
+          <Head>and then the two rules the magnetic files never used</Head>
+
+          <Para>
+            The largest correction in this section is not to a number, it is to which rules were being applied. <b>Every magnetic file before <i>creation</i> used exactly one of the three</b> — (G+M/1), annihilation on meeting — and scored the other outcome as nothing happening. The arc has three:
+          </Para>
+
+          <Rows of={[
+            [<>(G+M/1) annihilation</>,
+              <>Opposite polarities meeting destroy each other and take the space they were
+                on with them. <b>The only event that changes how much space there is.</b></>],
+            [<>(G+M/2) creation</>,
+              <>"On all axis, a neutral point expands into two points with opposite polarity
+                in all directions." The vacuum is not empty and not static.</>],
+            [<>(G+M/3) turning</>,
+              <>Alike polarities cannot cancel and cannot pass, so each turns around and
+                travels back until it meets the opposite-sign wave its own source put out
+                behind it. It annihilates <i>there</i> — at <V>x</V> ∓ <V>λ</V>/2, half a
+                wavelength back, <b>on the source's side of where the meeting was</b>.</>],
+          ]} />
+
+          <Para>
+            (G+M/3) is a sign rather than a detail, and the geometry is the whole of it. <b>Annihilating <i>between</i> two sources shortens the line between them, which is attraction. Annihilating <i>outside</i> them shortens the space behind each, which pushes them apart.</b> So an outcome the earlier files scored as nought is a repulsion, and the coupling runs +1 or −1 where it ran 1 or nought.
+          </Para>
+
+          <Eq note="creation.ts §1 — two sided sources, axes swept, bond along +x">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`Δ (turns)   0.000  0.125  0.250  0.375  0.500  0.625  0.750  0.875
+annihilation only  1      1      0      0      0      0      0      1
+all three rules    1      1      0     −1     −1     −1      0      1`}
+            </span>
+          </Eq>
+
+          <Para>
+            The arc says this outright in the XOR section and no magnetic file used it: <i>alternating polarities attract because the meetings land where they land, and matched polarities turn away because the meetings keep getting pushed back.</i>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>It strengthens the ferromagnet rather than overturning it</b>, which is the outcome to want from a rule that was left out — the conclusion survives and its basis widens. Relaxed on blocks, the three-rule coupling gives 1.0000 at every size where the one-rule version drops to 0.71 at <V>L</V> = 7. It does <i>not</i> buy an antiferromagnet: the extra branch is a repulsion for <i>misalignment</i>, so it pushes harder towards alignment, and a sign that depends on the <i>angle</i> is not a sign that depends on the <i>distance</i>.
+          </Para>
+
+          <Head>and two debts that turn out to be already paid</Head>
+
+          <Para>
+            <b>The one bit.</b> The sign of the coupling was booked as owed — aligning gives a ferromagnet, opposing gives disorder, and the model was said to supply neither. It does. (G+M/1) and (G+M/3) between them fix which outcome shortens the line and which shortens the space behind, so <b>the sign is a consequence of where the annihilation lands</b> rather than a free choice.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The screening.</b> <i>screen</i> needed one and invented a geometric shadow with a width and an absorption, both chosen. (G+M/2) supplies a real one: the vacuum is full of ± pairs made everywhere, a pulse crossing them meets opposite signs and is annihilated, and a constant chance of being stopped per cell is exp(−<V>r</V>/<V>λ</V>) — the right shape, where the invented shadow gave a power law. The gravity arc already names that length <K>reach</K>. And the magnetic result does not depend on its value: the ordering survives every screening length down to <V>λ</V> = 2 cells and only breaks at 1, where a source can barely hear its nearest neighbour.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Worth recording as what it is. <b>Two of the five owed items were paid by rules already written down, and they were owed because the magnetic files used one rule out of three.</b> That is a bookkeeping failure on my side rather than a gap in the model — and a debt that turns out to be already paid is a different kind of thing from one that is not.
+          </Para>
+
+          <Head>and a distance-dependent sign, which is the wrong kind</Head>
+
+          <Para>
+            One more correction to the above, and it is mine rather than the arc's. <i>creation</i> scores the alike branch at a flat −1 — turn, annihilate behind, repel. <b>That is half of its own rule taken for the whole of it.</b> The displacement is ∓<V>λ</V>/2 from where the meeting was, so for two sources a distance <V>R</V> apart the two annihilations land at <V>R</V>/2 − <V>λ</V>/2 and <V>R</V>/2 + <V>λ</V>/2, and whether those are inside the pair or outside it is a question about <V>λ</V> against <V>R</V>.
+          </Para>
+
+          <Eq note="vacsign.ts §1 — where the displaced annihilations land, at λ = 4">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  R      lands at          inside the pair?   sign
+  2     −1.0 and 3.0     both outside         −1
+  4      0.0 and 4.0     both outside         −1
+  5      0.5 and 4.5     both inside          +1
+ 12      4.0 and 8.0     both inside          +1`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>So the alike branch turns over at <V>R</V> = <V>λ</V>.</b> That is a genuine distance-dependent sign — the thing three separate files went looking for and could not find — out of a displacement the rule already specifies, needing no carrier, no new mechanism and no vacuum structure.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it still does not make an antiferromagnet</b>, for a reason that is structural rather than a matter of searching harder. The step is in the alike branch <i>only</i>; the opposite branch annihilates at the midpoint and is +1 at every separation. So:
+          </Para>
+
+          <Eq note="vacsign.ts §2 — and no λ gives an antiferromagnet, on any block size">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`R < λ    aligned +1, anti −1     a preference for ALIGNMENT
+R > λ    aligned +1, anti +1     NO PREFERENCE AT ALL`}
+            </span>
+          </Eq>
+
+          <Para>
+            Past <V>λ</V> the two orientations score the same, so the far shells stop <i>caring</i> rather than preferring the opposite. <b>The step switches the coupling off at long range; it does not reverse it.</b> An interaction that goes to zero cannot make an antiferromagnet however the length is tuned, and the frustration measured at <V>λ</V> ≈ 1.2–1.8 is the near shells disagreeing across the step rather than an ordered antiparallel state.
+          </Para>
+
+          <Head>and what the vacuum does and does not supply</Head>
+
+          <Para>
+            The natural proposal is that the sign comes from the aggregate behaviour of the vacuum, and it is half right. <b>What the vacuum cannot do</b> is change a sign: a pulse crossing (G+M/2)'s ± pairs meets opposite signs and is annihilated, or alike ones and <i>turns</i> — one removes it, the other reverses its direction, and neither flips its polarity. So transmission is attenuation and reflection, and a product of survival factors cannot go negative.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>What it does do is set <V>λ</V>.</b> The turn is the same event as (G+M/3), so how far a turned pulse gets before it meets something is a mean free path in the vacuum, and a denser vacuum means a shorter <V>λ</V> — which is exactly the length the step above sits at. The vacuum supplies not the sign but the <i>scale at which the sign turns over</i>, which is a better division and a sharper prediction, because that length is then fixed by the expansion rate rather than free.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it is a lattice length, which is the whole point.</b> The <V>λ</V> that killed the phase route was the emitter's Compton wavelength — 10<Sup>−19</Sup> m, needing a carrier nobody has seen. This one is a mean free path measured in cells and has no reason to be Planck-scale. They are different quantities that were both called <V>λ</V>, and conflating them is what made the earlier problem look unfixable.
+          </Para>
+
+          <Head>and the one mechanism that oscillates</Head>
+
+          <Para>
+            Five separate attempts at a coupling whose sign depends on distance all came back with attenuation, and the reason was the same every time: they multiplied by something bounded in [0, 1], and a positive factor cannot invert anything. <b>There is one mechanism in the model that does not multiply.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A source's train alternates — it flips, and lays bands of one sign then the other. So if something <i>removes</i> a front from the train, the next one along takes its place, and the next one is the opposite sign. <b>Consuming <V>n</V> fronts flips the effective sign <V>n</V> times</b>, and <V>J</V>(<V>R</V>) ∝ (−1)<Sup><V>n</V>(<V>R</V>)</Sup> is an oscillation rather than a decay.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It turns entirely on whether the consumption is a <i>rate</i> or a <i>coin</i>. Random consumption decays as (1−2ρ)<Sup><V>R</V></Sup> and never goes negative — averaging a random number of flips is an attenuation, which is the earlier failure again. In this model it is a rate: mass is pulses per tick, the streams are steady, and the randomness is in <i>which</i> front rather than <i>how many</i>.
+          </Para>
+
+          <Head>and the rate, which the model already owns</Head>
+
+          <Para>
+            Gravity is the obvious consumer and it fails on the number. Fronts would be eaten at the <i>gravitational</i> rate, and <i>budget</i> put that 10<Sup>12</Sup> below the magnetic one — the same ratio that bought magnetism its own layer is the ratio that stops the mass layer reaching back to modulate it. Twelve orders short, flip length 10<Sup>12</Sup> cells.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The consumer does not have to be gravity.</b> The (G+M/2) vacuum is made of ± pairs, they are charges, and a magnetic front crossing them is eaten like anything else — and <i>vacuum</i> has already derived that density and its consequence, with no parameter in either:
+          </Para>
+
+          <Eq note="vacuum.ts — expansion makes room and thins at the same rate, and that is the whole derivation">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`vacuum density        ½          no parameter
+mean free path        8 cells
+ρ = fronts per cell   1/8
+flip length           8 cells`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Ten orders better than gravity could supply</b>, and in the range where a sign matters at all. And one thing worth noticing about the earlier files: <i>consume</i>, <i>creation</i>, <i>exchange</i> and <i>permute</i> all cut the interaction at <V>r</V> ≤ 4 for speed. <b>The first sign flip is at <V>r</V> = 8.</b> Every one of them cut the coupling off just before the interesting thing happens.
+          </Para>
+
+          <Head>and it is still a ferromagnet, by a factor of two</Head>
+
+          <Para>
+            Done properly — the Luttinger–Tisza way, summing the coupling against a plane wave and finding the wavevector that wins, rather than hoping a relaxation escapes its local minimum:
+          </Para>
+
+          <Eq note="vacrate.ts §2 — S(q) = Σ J(r)·cos(q·r), summed to r ≤ 24 so three flips are inside the range">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`ferro    q = 0        90.66      ← wins
+spiral   (π/8)³       18.33
+spiral   (π/4)³        5.35
+layers   (0,0,π)      −0.82
+checker  (π,π,π)      −3.11
+
+flip length     best q      state
+   2 cells     0.283·π     SPIRAL
+   4 cells     0.133·π     SPIRAL
+   8 cells     0.000·π     FERROMAGNET   ← what the model has
+  16 cells     0.000·π     FERROMAGNET`}
+            </span>
+          </Eq>
+
+          <Para>
+            The near shells decide it: everything inside <V>r</V> = 8 is unflipped and positive, and 1/<V>r</V><Sup>2</Sup> makes those the whole of the sum, so the flipped shells beyond are too weak to turn it over.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>But look at the margin.</b> A flip length of four cells gives a spiral and two gives a tighter one. The model has eight. <b>That is a factor of two, where <i>consume</i> was short by twelve orders</b> — and a factor of two in a mean free path is the kind of thing a more careful measurement moves.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the caveat is large and specific. The eight cells is <i>vacuum</i>'s figure for a charge moving through the expanding medium — same rule, same lattice, but measured for the <i>gravitational</i> stream, and <i>budget</i> says the magnetic layer is separate. <b>It is the right number for the wrong stream</b> until somebody measures it for the right one, and that is now the sharpest open question in the magnetic half: not whether an antiferromagnet is possible, but what a magnetic front's mean free path in the vacuum actually is.
+          </Para>
+
+          <Head>and the mean free path, computed</Head>
+
+          <Para>
+            That left the whole magnetic half resting on one number — the flip length is a front's mean free path in the vacuum, eight cells gives a ferromagnet, four would give a spiral. It is computable, because the collision rule is a lattice gas and its mean free path is a function of occupancy. Run <i>vacuum</i>'s own rule at every fill rather than only at a half:
+          </Para>
+
+          <Eq note="mfp.ts §1 — vacuum.ts's collision rule and its own calculation, swept over occupancy">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`fill    0.10   0.20   0.28   0.30   0.50   0.70   0.90   1.00
+mfp    12.22   7.89   6.66   6.80   8.16  16.08 111.07     ∞
+                             ↑ floor        ↑ vacuum's figure`}
+            </span>
+          </Eq>
+
+          <Para>
+            The half-fill row reproduces the eight cells, which is the check that this is the same calculation rather than a similar one. <b>And it is not monotone.</b> The path shortens as the gas fills and then lengthens again, because the rule needs somewhere to turn <i>into</i>: at high fill a head-on pair finds the perpendicular slots occupied and nothing happens. A full lattice is collisionless.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So there is a floor, and it is above the threshold.</b> The shortest path at any occupancy is 6.66 cells, at fill 0.28, against the 4 a spiral needs. <b>No density of vacuum turns this ferromagnet into a spiral</b> — and the floor is structural rather than numerical, because a collision wants both a head-on pair and room to turn into, and those want opposite densities.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The fill is not free either. <i>vacuum</i>'s (1−<V>p</V>)/(2−<V>p</V>) is a fixed point of creation against dilution and <b>the <V>p</V> cancels</b> — which is the point of that derivation and is why the half is not adjustable. A <i>larger</i> expansion rate gives a <i>sparser</i> medium, since thinning wins: 0.500 at the real 10<Sup>−61</Sup>, 0.333 at <V>p</V> = 0.5, 0.091 at 0.9. The half is the densest it gets.
+          </Para>
+
+          <Head>which leaves one door, and it is a specific calculation</Head>
+
+          <Para>
+            All of the above is the <i>gravitational</i> vacuum — unsigned charges, streaming and turning, count conserved. A magnetic front meets ± charges and can <b>annihilate</b> with them, which that rule has no version of, and annihilation removes charges where turning does not. <b>So the signed medium balances creation against annihilation rather than creation against dilution, and its fixed point is not (1−<V>p</V>)/(2−<V>p</V>).</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That is the whole of what is left of the antiferromagnet, and it is worth seeing how narrow it has become. It started as "the model cannot make one and nothing in it can". It is now: <i>does a medium whose charges annihilate rather than merely scatter sit at a fill whose collision length is under four cells?</i> One fixed point, one number, and a threshold to clear. <b>Everything else in the chain is measured.</b>
+          </Para>
+
+          <Head>and then the door was the wrong shape, because the rule was misread</Head>
+
+          <Para>
+            The section above ends by naming one calculation — the <i>signed</i> medium balances creation against annihilation rather than against dilution, so its fixed point is not (1−<V>p</V>)/(2−<V>p</V>). Doing it turned up an error two files deep, and the error was mine rather than the model's.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            I had been guessing the creation rule as <i>one pair in an empty cell</i>. It is not. <i>vacuum.ts</i> does this:
+          </Para>
+
+          <Eq note="vacuum.ts — and these two lines ARE (1−p)/(2−p); nothing else is needed for it">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`if (rnd() < p) s = 255;          new room, edged on every axis
+each slot dropped with prob p    and the same expansion thins it`}
+            </span>
+          </Eq>
+
+          <Para>
+            A cell is <b>edged on every axis — all eight slots at once</b>. Guessing it as a pair gave a fill of 0.18 against 0.49 and a mean free path of a third of a cell; with the real rule the control reproduces. <b>Everything computed from the guessed rule is withdrawn</b>, including the conclusion that a signed vacuum would be thirty orders emptier than an unsigned one.
+          </Para>
+
+          <Head>three sign conventions, and they are not close</Head>
+
+          <Para>
+            Which raises the question the rule leaves open. When a cell is edged on every axis, what sign do the eight new charges carry? There are three readings and the model does not say:
+          </Para>
+
+          <Rows of={[
+            [<>per ray</>, <>each of the eight drawn independently.</>],
+            [<>per node</>, <>one draw for the cell, all eight alike — the node is a
+              <b> monopole</b>.</>],
+            [<>per axis</>, <>the two ends of every axis always disagree and only which end is
+              which is drawn — the node is a <b>dipole</b>, and this is arguably the most
+              literal reading of "expands into two points with opposite polarity".</>],
+          ]} />
+
+          <Eq note="signed.ts §2 — same medium, same expansion, only the sign convention differs">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  p     per ray            per node           per axis
+      fill   mfp  ann%   fill   mfp  ann%   fill   mfp  ann%
+0.02  0.114  3.64  54%  0.149  6.04  40%  0.017  0.80 100%
+0.10  0.189  2.25  65%  0.309  4.95  49%  0.049  0.56  98%
+0.20  0.232  2.09  70%  0.350  5.30  47%  0.076  0.62  99%`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The dipole reading unmakes itself.</b> 98 to 100 per cent of its collisions destroy, and the reason is almost a theorem: the arc states that (G/1) and (G/2) are <i>exact inverses</i>, so a rule that creates two opposite charges facing each other is immediately undone by the rule that annihilates two opposite charges facing each other. Its fill is 0.02 against 0.31.
+          </Para>
+
+          <Head>and one trap in reading that table</Head>
+
+          <Para>
+            Per axis has the <i>shortest</i> mean free path, which would make it the tightest spiral of the three. It does not, and the reason is worth keeping: <b>at 98% annihilation its charges are born and die</b>. Half a cell is a <i>lifetime</i>, not a transport length, and a medium whose constituents never move cannot be characterised by how far they get.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So there are two candidate flip lengths and they disagree, and both are reported rather than one chosen:
+          </Para>
+
+          <Eq note="signed.ts §3 — (a) the medium's own collision length, (b) 1/fill for a crossing front">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`convention    (a) mfp → state        (b) 1/fill → state
+unsigned      6.66 → FERRO            2.13 → SPIRAL
+per ray       2.25 → FERRO            5.29 → SPIRAL
+per node      4.95 → SPIRAL           3.24 → SPIRAL
+per axis      0.56 → SPIRAL          20.41 → FERRO`}
+            </span>
+          </Eq>
+
+          <Para>
+            The mechanism is about a front being <i>eaten</i> — a density times a cross-section — so it wants (b), and (a) is internal dynamics the crossing front never sees. On that reading <b>per node gives a spiral at 3.2 cells</b>, per ray is marginal at 5.3, and per axis is a ferromagnet at 20 because the medium is twenty times too thin to intercept anything.
+          </Para>
+
+          <Head>and three independent reasons for one convention</Head>
+
+          <Para>
+            Which is the strongest thing in this section and it is not a number. <b>Per node is wanted by three requirements that were arrived at separately and none of which knew about the others:</b>
+          </Para>
+
+          <Rows of={[
+            [<>the far field</>,
+              <>A sign that does not depend on the direction of emission is what makes what
+                leaves a <i>field</i> rather than a tally of received pulses — otherwise the
+                far field is a step at the equator and no exponent is right.
+                <i> aggregate</i>.</>],
+            [<>a coupling through the vacuum</>,
+              <>Per ray, what a node hands left is drawn independently of what it hands right,
+                so it correlates two sources through nothing and mediates nothing at any
+                order. Per node it mediates at second order, 0.50 falling to 0.063 over
+                <V> R</V> = 2…24. <i>pernode</i>.</>],
+            [<>and the flip length</>,
+              <>The only convention that reaches under 4 cells on the reading the consumption
+                mechanism actually wants. <i>signed</i>.</>],
+          ]} />
+
+          <Head>and regional sourcing, which (G+M/3) pays</Head>
+
+          <Para>
+            One more debt closed on the way. Two sources one cell apart have their pulses close at <b>two cells a tick</b> — one each — so an alike meeting turns at half a cell and the pulse is home within two ticks. Against a beat of 10<Sup>16</Sup> ticks for an atom that is instantaneous, which makes the coupling between co-located sources <b>as strong and as fast as this model can make anything</b> — and that is exactly the regime a bound state is in.
+          </Para>
+
+          <Eq note="pernode.ts §3 — a region locking to one train, under (G+M/3) plus the feedback already owed">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`N sources   rate spread   gain    phase order   one train?
+    2          0.10       5.0       1.0000       YES
+   16          0.50       5.0       0.9984       YES
+   16          0.10       0.2       0.9557       YES
+   64          0.10       5.0       0.9999       YES`}
+            </span>
+          </Eq>
+
+          <Para>
+            It survives a 50% spread in natural rates and a gain twenty-five times smaller. Where the order is one, every source in the region is at the same point of its cycle, so the region emits <b>one train at the summed strength</b> — which is regional sourcing, out of (G+M/3) and the feedback the model is now allowed. Neither is new, so <b>the same two ingredients pay a third debt</b>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>With one tension, and it is real.</b> The quantum arc needs <K>share</K> to stay at a half — the relative <i>offset</i> must not collectivise while the rate adds — and locking every phase to the same value is the opposite of that. So this buys the summed rate and puts the other half of the requirement in doubt.
+          </Para>
+
+          <Head>the chain, and where each link stands</Head>
+
+          <div style={{ width: '100%', overflowX: 'auto', margin: '1.5em 0' }}>
+            <svg viewBox="0 0 760 300" style={{ width: '100%', minWidth: '560px', height: 'auto' }}
+                 role="img" aria-label="The magnetic derivation chain and the status of each link">
+              <defs>
+                <marker id="mg-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" opacity="0.55"/>
+                </marker>
+              </defs>
+              {([
+                ['rule (G/1)', 'annihilation on\nco-location', 20, 30, 'derived'],
+                ['−div p', 'what the ledger\nleaves — escape', 20, 110, 'derived'],
+                ['magnetic charge', 'σ = M·n̂, and the\n5.22% row', 20, 190, 'derived'],
+                ['isotropic re-emission', 'regional sourcing —\nthe one assumption', 270, 110, 'owed'],
+                ['the far field', '1/r³, cos θ, five\norientations, 1/R⁴', 520, 110, 'derived'],
+                ['a coupling', 'odd 1st moment of\nannihilation — response', 270, 30, 'derived'],
+                ['ordering', 'ferro, easy axis,\nhysteresis', 520, 30, 'conditional'],
+                ['feedback on the axis', 'nothing writes to\na source — feedback', 270, 190, 'owed'],
+                ['antiferromagnetism', 'needs a 79 eV\ncarrier — confirm', 520, 190, 'owed'],
+              ] as [string, string, number, number, string][]).map(([t, sub, x, y, st], i) => {
+                const fill = st === 'derived' ? 'currentColor' : 'none';
+                const op = st === 'derived' ? 0.09 : 0;
+                const dash = st === 'owed' ? '5 4' : undefined;
+                return (
+                  <g key={i} transform={`translate(${x},${y})`}>
+                    <rect width="210" height="62" rx="6" fill={fill} fillOpacity={op}
+                          stroke="currentColor" strokeOpacity={st === 'owed' ? 0.45 : 0.75}
+                          strokeDasharray={dash} strokeWidth="1.2"/>
+                    <text x="12" y="24" fontSize="14" fill="currentColor" fontWeight="600">{t}</text>
+                    {sub.split('\n').map((l, j) => (
+                      <text key={j} x="12" y={40 + j * 13} fontSize="10.5"
+                            fill="currentColor" fillOpacity="0.6">{l}</text>
+                    ))}
+                  </g>
+                );
+              })}
+              <path d="M125 92 L125 110" stroke="currentColor" strokeOpacity="0.5"
+                    fill="none" markerEnd="url(#mg-arrow)"/>
+              <path d="M125 172 L125 190" stroke="currentColor" strokeOpacity="0.5"
+                    fill="none" markerEnd="url(#mg-arrow)"/>
+              <path d="M230 141 L270 141" stroke="currentColor" strokeOpacity="0.5"
+                    fill="none" markerEnd="url(#mg-arrow)"/>
+              <path d="M480 141 L520 141" stroke="currentColor" strokeOpacity="0.5"
+                    fill="none" markerEnd="url(#mg-arrow)"/>
+              <path d="M480 61 L520 61" stroke="currentColor" strokeOpacity="0.5"
+                    fill="none" markerEnd="url(#mg-arrow)"/>
+              <path d="M480 221 L520 221" stroke="currentColor" strokeOpacity="0.5"
+                    fill="none" markerEnd="url(#mg-arrow)"/>
+              <path d="M230 61 L250 61 L250 221 L270 221" stroke="currentColor"
+                    strokeOpacity="0.3" fill="none" strokeDasharray="3 3"/>
+              <g transform="translate(20,272)">
+                <rect width="14" height="10" rx="2" fill="currentColor" fillOpacity="0.09"
+                      stroke="currentColor" strokeOpacity="0.75"/>
+                <text x="22" y="9" fontSize="11" fill="currentColor" fillOpacity="0.75">derived</text>
+                <rect x="90" width="14" height="10" rx="2" fill="none"
+                      stroke="currentColor" strokeOpacity="0.75"/>
+                <text x="112" y="9" fontSize="11" fill="currentColor" fillOpacity="0.75">conditional</text>
+                <rect x="205" width="14" height="10" rx="2" fill="none"
+                      stroke="currentColor" strokeOpacity="0.45" strokeDasharray="5 4"/>
+                <text x="227" y="9" fontSize="11" fill="currentColor" fillOpacity="0.75">owed</text>
+              </g>
+            </svg>
+          </div>
+
+          <Head>what is derived</Head>
+
+          <Rows of={[
+            [<>the source</>,
+              <><b>−<V>∇</V>·<b>p</b>, out of the annihilation ledger.</b> Run the rule: every
+                node emits sgn(<b>p</b>·<B>d</B>) into the 26 exits, opposite signs meeting
+                head-on annihilate. What is left is nought in every interior layer and equal
+                and opposite on the two ends. Not a rule that had to be added — Gauss's
+                theorem on a bond count. <i>escape</i>.</>],
+            [<>∇·<B>B</B> = 0</>,
+              <>Σ(−<V>∇</V>·<b>p</b>) telescopes to nought for <i>any</i> <b>p</b> whatever —
+                uniform, wobbled, or entirely random. Topological rather than a symmetry of
+                the 26 exits, which is a better derivation than the arc had. <i>divp</i>.</>],
+            [<>cutting a magnet</>,
+              <>Gives two magnets. A sign assigned by which half of the body a node sits in
+                gives two <i>monopoles</i> — net 32, exponent 2.003 — where the divergence
+                regenerates a south pole at the cut. <i>divp</i>.</>],
+            [<>a coupling between emitters</>,
+              <>The annihilation <i>count</i> is even in the phase difference and cannot
+                lock; its first <i>moment</i> about a source's own axis is exactly odd, with
+                no cosine and no mean. So the ordering coupling is a consequence of (G/1)
+                rather than an assumption. <i>response</i>.</>],
+            [<>and it acts on the polarisation</>,
+              <>A moment about an axis is a torque on it. That closes the arc's own
+                sign-versus-polarisation fork from the mechanism instead of by preference.
+                <i> align</i>.</>],
+            [<>an easy axis</>,
+              <>Face directions favoured by about 2%, out of the lattice having faces and
+                diagonals rather than out of any parameter. It is what pins a permanent
+                magnet. <i>extrapolate</i>.</>],
+            [<>the sign of the coupling</>,
+              <>Not a free bit. (G+M/1) annihilates between two sources and shortens the line
+                — attraction; (G+M/3) sends an alike pair back to annihilate outside them and
+                shortens the space behind — repulsion. <b>The sign is where the meeting
+                lands.</b> <i>creation</i>.</>],
+            [<>screening, and locality</>,
+              <>The read at the centre of a magnet converges once screening is in it — 2.65 →
+                2.69 across a factor of three in block size, where the unscreened sum runs
+                8.7 → 40.8. And (G+M/2) supplies it for real: a vacuum full of ± pairs gives
+                exp(−<V>r</V>/<V>λ</V>), with <V>λ</V> the gravity arc's own <K>reach</K>.
+                <i> screen</i>, <i>creation</i>.</>],
+            [<>no new particle for a ferromagnet</>,
+              <>A held axis has ω = 0, so cos(ω<V>r</V>) ≡ 1 and the coherence ceiling is
+                absent rather than small. <i>confirm</i>.</>],
+            [<>the per-NODE sign convention</>,
+              <>One draw per cell rather than per ray, wanted by <b>three requirements
+                arrived at separately</b>: the far field is only a field under it
+                (<i>aggregate</i>), it is the only one that mediates a coupling through the
+                vacuum at all (<i>pernode</i>), and it is the only one whose flip length
+                reaches under 4 cells (<i>signed</i>). The dipole reading is excluded
+                outright — (G/1) and (G/2) being exact inverses, it annihilates 98–100% of
+                its own collisions and unmakes itself.</>],
+          ]} />
+
+          <Head>what is conditional</Head>
+
+          <Rows of={[
+            [<>the far field</>,
+              <>1/<V>r</V><Sup>3</Sup>, cos <V>θ</V> to 10<Sup>−6</Sup>, all five
+                orientations, 1/<V>R</V><Sup>4</Sup> — <b>given that a region re-emits its
+                unpaired excess</b>. Derived otherwise. <i>divp</i>, <i>aggregate</i>.</>],
+            [<>ferromagnetism</>,
+              <>A uniform ground state from random, and an open hysteresis loop pinned by the
+                ring's 45° quantum — <b>given a feedback rule on the axis</b> with the
+                aligning sign. Three unrelated reads all give it, so it is not a fit to a
+                rule chosen for it. <i>exchange</i>, <i>permute</i>.</>],
+            [<>regional sourcing</>,
+              <>A region emitting <b>one train at the summed rate</b>, out of (G+M/3) and the
+                feedback already owed rather than out of anything new — co-located sources
+                turn each other's pulses back in two ticks against a beat of 10<Sup>16</Sup>,
+                and a block locks to 0.9999 at <V>N</V> = 64 through a 50% spread in rates.
+                <b>Tension</b>: the quantum arc needs the relative <i>offset</i> not to
+                collectivise, and this locks it. <i>pernode</i>.</>],
+            [<>non-collinear order</>,
+              <>A <b>spiral</b>, if the vacuum is signed and per-node: flip length 3.2 cells
+                against the 4 the threshold wants, best <V>q</V> = 0.167·π. Not an
+                antiferromagnet — a different magnetic phase, and a real one.
+                <i> signed</i>.</>],
+            [<>antiferromagnetism</>,
+              <><b>Not derived, and now a rate rather than a structure.</b> The mechanism
+                exists — consuming fronts from an alternating train flips the sign once per
+                front, which oscillates where five earlier attempts only attenuated. At the
+                vacuum's own rate (flip length 8 cells) the ferromagnet still wins 90.7 to
+                18.3; a flip length of 4 would give a spiral. And the mean free path is
+                <b>computed</b>: it floors at 6.66 cells over every occupancy, never reaching
+                4, and the fill is a fixed point with the expansion rate cancelled out of it.
+                <b>What is left is one calculation</b> — the signed medium balances creation
+                against <i>annihilation</i> rather than dilution, so its fixed point is a
+                different one. <i>consume</i>, <i>vacrate</i>, <i>mfp</i>.</>],
+          ]} />
+
+          <Head>what is owed</Head>
+
+          <Rows of={[
+            [<>regional sourcing, the other half</>,
+              <>The <i>mechanism</i> is no longer owed — (G+M/3) supplies it. What is owed is
+                the reconciliation: the quantum arc needs <K>share</K> at a half while the
+                rate adds, and a region that locks every phase together has no relative
+                offset left to average. One of the two readings has to give.</>],
+            [<>feedback onto a source</>,
+              <><K>bearing(s, tick)</K> is a pure function of the source's own parameters and
+                the tick, and nothing anywhere writes to a source. <b>Sources write to space;
+                space never writes back.</b> Gravity never needed otherwise — a pull is a fact
+                about the space between two things. Every ordering result needs the arrow to
+                point back. <b>The specification is now exact</b>: it acts on the <i>axis</i>
+                (rate feedback would make mass a function of the neighbourhood and break
+                gravity), and its <i>sign</i> is fixed by where the annihilation lands — so
+                what is owed is one line, <i>axis(s, tick) ← the direction maximising the
+                shortening of the space between s and its neighbours</i>. What it costs is
+                that the model stops being one-way, which is structural rather than a
+                parameter. <i>feedback</i>, <i>permute</i>, <i>vacsign</i>.</>],
+
+            [<>the coupling — <V>α</V></>,
+              <>What it <i>needs</i> is a <b>first-order channel</b>. Every force here is
+                second order — nothing happens to a charge that does not <i>meet</i> another
+                — which caps the electric force at the size of gravity where measurement puts
+                it 4.166·10<Sup>42</Sup> above. <b>The only one of the four that is a missing
+                law rather than a missing line</b>, and it is not a magnetic problem:
+                magnetism's own 4.5·10<Sup>7</Sup> kg/m² is a scale on a mechanism that
+                works, where the electric side has no mechanism at all.</>],
+            [<>the ring fork</>,
+              <>Continuous phase or quantised ring, and the magnetisation quantum depends on
+                it: quarters on a face axis, thirds on a corner one, and no uniform dwell at
+                all on an edge axis. <b>But the magnetic results do not depend on it</b> — the
+                step at <V>R</V> = <V>λ</V> is a length and not a phase, and the ordering, the
+                easy axis and the hysteresis survive either branch. <b>A Layer-2 problem the
+                magnetic half can stop waiting on.</b> <i>ring</i>, <i>holonomy</i>,
+                <i> vacsign</i>.</>],
+          ]} />
+
+          <Head>and what had to be withdrawn</Head>
+
+          <Para>
+            Recorded because the reasoning that produced them is in the older sections and the corrections are not.
+          </Para>
+
+          <Rows of={[
+            [<>the domain size</>,
+              <>Claimed as π/ω, half the emitter's wavelength, and presented as the sharpest
+                falsifiable thing in the magnetic half. Converted it is 10<Sup>−19</Sup> m
+                against 10<Sup>−5</Sup> m measured. <b>And it does not apply at all</b>: the
+                ceiling needs a running phase, and a magnetic domain is a static
+                configuration with no phase in it to be coherent. <i>domainsize</i>,
+                <i> confirm</i>.</>],
+            [<>a spin glass</>,
+              <>Predicted from ω·<V>a</V> = 6.6·10<Sup>9</Sup>. That came from pairing a
+                Planck-scale wavelength with an <i>atomic</i> spacing, and the book's own
+                account puts the emitters on lattice cells. <i>scales</i>.</>],
+            [<>the ordering refuted</>,
+              <>Twice, and wrongly both times. The torque it rested on grows without bound
+                with the cutoff — 10<Sup>−3</Sup> to 39 as the radius runs 2 to 16 — and the
+                closure it compared against is the <i>simple cubic</i> answer, where
+                <Ref of={'Luttinger and Tisza, "Theory of Dipole Interaction in Crystals", Physical Review 70, 954'} year="1946" at="https://doi.org/10.1103/PhysRev.70.954" /> give
+                bcc and fcc ferromagnetic. <i>texture</i>.</>],
+            [<>that −<V>∇</V>·<b>p</b> needs a uniform <b>p</b></>,
+              <>It needs a <i>net</i> <b>p</b>. The far field is an integral functional, so
+                four stripe domains, a biased random texture and a closure swirl with a small
+                net all give 3.000 and cos <V>θ</V>, with only the moment scaling.
+                <b> The arrangement is invisible from outside.</b> <i>texture</i>.</>],
+          ]} />
+
+          <Head>where to pick this up</Head>
+
+          <Para>
+            The magnetic half has moved a long way in a short time and several of its results contradict what the older arcs still say, so this is the state of it in the form a fresh start would want. Every claim below names the file in <i>tests/</i> that produces it.
+          </Para>
+
+          <Rows of={[
+            [<>the four next things</>,
+              <><b>1. Does a magnetic front lose a wavefront at the medium's own rate?</b>
+                Everything about the spiral rests on that, and what is measured is the
+                medium's internal collision length rather than what a crossing front sees.
+                One simulation. <b>2. Which flip length feeds the mechanism</b> — the two
+                candidates in <i>signed</i> §3 disagree and the argument for 1/fill is a
+                sentence rather than a measurement. <b>3. The <K>share</K> tension</b> in
+                regional sourcing. <b>4. Recompute the ⟨111⟩ anisotropy</b>, which is in the
+                refuted column with a <K><Bar>CYCLE</Bar></K> that does not hold on a corner
+                axis.</>],
+            [<>what not to redo</>,
+              <>Magnetostatics is finished — the chain from (G/1) to a measured force is
+                complete and lands on the best of the three standard models. The dipole tail
+                results are right and describe a regime nobody uses a magnet in. The domain
+                size, the spin glass, the ordering refutations and the uniform-<b>p</b>
+                requirement are all withdrawn, and the reasoning that produced them is still
+                in the older arcs.</>],
+            [<>the trap to avoid</>,
+              <><b>Read the shipped rule before modelling it.</b> Three separate results in
+                this session were wrong because a rule was guessed: the creation rule (a
+                pair, not a whole cell edged), the alike branch (a flat −1 rather than a
+                displacement that turns over), and the interaction cutoff at <V>r</V> ≤ 4,
+                which sits just inside the first sign flip at 8. Each looked like a
+                conclusion and each was an artefact.</>],
+            [<>and the standing bill</>,
+              <><V>α</V> and a first-order channel, which is a missing law and not a missing
+                line; the ring fork, which the magnetic results turn out not to depend on;
+                and the feedback line itself, whose specification is now exact — it acts on
+                the axis, and its sign is fixed by where the annihilation lands.</>],
+          ]} />
+
+          <Head>the shape of it</Head>
+
+          <Para>
+            <b>Magnetostatics is finished and cannot be tested.</b> The chain from rule (G/1) to a measured force on a real magnet is complete, every link derived or published, and it lands on the best of the three standard models — and precisely because it reproduces Maxwell, no measurement distinguishes it from Maxwell.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The ordering is where the physics is, and it has moved from a hole to a chain.</b> The model has an exchange-like coupling out of its own annihilation rule, a sign for it out of where the annihilation lands, an easy axis out of its own lattice, hysteresis out of its own ring, screening out of its own vacuum, and a route to a spiral out of fronts being eaten from an alternating train. What it still has no rule for is a source <i>hearing</i> any of it — nothing anywhere writes to a source — and that one line is now specified rather than merely missing. The rest is arithmetic that has not been done.
+          </Para>
+        </Section>
 
         <Section head="Why two things fall together">
 
