@@ -37,7 +37,7 @@ ORDER=(
   creation vacsign pernode consume vacrate mfp signed front
   budget tradeoff scale ceiling maxwell
   nopolarity
-  ring holonomy bloch matter bound harmony spin
+  ring holonomy bloch matter bound harmony spin spinor cover degree handle sufficient lock contain
   turns ways veins cones veined lattices wave gas vacuum pure sphere
 )
 

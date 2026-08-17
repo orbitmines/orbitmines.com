@@ -1906,7 +1906,13 @@ measured               5.292e−11 m     13.606 eV`}
           </Eq>
 
           <Para>
-            <b>And the reason is one sentence: nature puts the spin radius and the Compton wavelength at the same length.</b> <V>µ</V><Sub>B</Sub> = <V>qħ</V>/2<V>m</V> is the moment of a loop of radius <V>λ̄</V><Sub>C</Sub>, and <V>λ̄</V><Sub>C</Sub> is also the de Broglie carrier. The model's ring is <K><Bar>CYCLE</Bar></K> steps around and each step is one wavelength — so ring and step differ by <K><Bar>CYCLE</Bar></K> <i>by construction</i>, and both cannot be <V>λ̄</V><Sub>C</Sub>. That is structural, not numerical: no choice of <i><K><Bar>G</Bar></K></i> moves a ratio that a count fixes.
+            <b>And the reason is one sentence: nature puts the spin radius and the Compton wavelength at the same length.</b> <V>µ</V><Sub>B</Sub> = <V>qħ</V>/2<V>m</V> is the moment of a loop of radius <V>λ̄</V><Sub>C</Sub>, and <V>λ̄</V><Sub>C</Sub> is also the de Broglie carrier. The model's ring is <K><Bar>CYCLE</Bar></K> steps around and each step is one wavelength — so ring and step differ by <K><Bar>CYCLE</Bar></K>, and both cannot be <V>λ̄</V><Sub>C</Sub>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(An earlier draft called that structural, on the grounds that no constant moves a ratio a <i>count</i> fixes. That misreads <K><Bar>CYCLE</Bar></K>: how many steps an emitter's axis takes to come round is a property of the <i>emitter</i>, not of the lattice, so it is free. What a free <K><Bar>CYCLE</Bar></K> buys is worked out two headings down — it moves the conflict rather than closing it.)</span>
           </Para>
 
           <Head>and it is the same fact as g = 1, which makes it one defect</Head>
@@ -1938,6 +1944,686 @@ measured               5.292e−11 m     13.606 eV`}
 
           <Para>
             What a fix would need is a <i>two-valued orientation that is not a position on a ring</i> — something returning to itself after two turns rather than one, which is exactly what the factor of two records. The lattice has a candidate this book has not used: <b>the emitted sign is already ±1, already attached to a direction, and the magnetic arc's own <i>signed</i> found that the per-<i>node</i> convention is the one three separate requirements independently want.</b> A sign per node is an orientation with two values and no ring. <span className="bp5-text-muted">That is a conjecture and not a result — what is measured is only that the four failures are one failure, and that the ring rather than the normalisation is what is wrong.</span>
+          </Para>
+
+          <Head>so what would relaxing the ring actually look like</Head>
+
+          <Para>
+            Two changes and no more. <b>The moment comes from the emission rather than from a loop</b> — a source emits its sign into the directions around its axis, and the only length in that is the step it emits at, <V>λ̄</V><Sub>m</Sub>, where the ring made it <K><Bar>CYCLE</Bar></K>·<V>λ̄</V><Sub>m</Sub> because the axis had to come round. And <b>the angular momentum becomes intrinsic</b> — two-valued, ±ħ/2, not <V>mcr</V>. <b>The second is put in rather than derived, and that is the honest price of the whole exercise.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Why that changes anything: in the ring picture <V>µ</V> and <V>L</V> are both fixed by the same radius, so their ratio is an <i>identity</i> and <V>g</V> = 1 at every size — which is exactly why no choice of any constant could ever have rescued it. <b>Cut the two apart and <V>g</V> stops being an identity and becomes a ratio, which can be asked to be 2.</b>
+          </Para>
+
+          <Eq note="spinor.ts §1 — with the ring gone, the only length is the step">
+            <V>µ</V> = <Frac over={<><V>qc</V><V>λ̄</V><Sub>m</Sub></>} under={2} />
+            <span style={{ padding: '0 1.2em' }} />
+            <V>L</V> = ħ/2
+            <span style={{ padding: '0 1.2em', color: FAINT }}>⇒</span>
+            <V>g</V> = 2·<Frac over={<><V>λ̄</V><Sub>m</Sub></>} under={<><V>λ̄</V><Sub>C</Sub></>} />
+          </Eq>
+
+          <Para>
+            <b>And here is the part to be careful about, because it is easy to overstate.</b> Three things now each fix <i><K><Bar>G</Bar></K></i> at 2<V>π</V> — the magneton being <V>µ</V><Sub>B</Sub>, the de Broglie scale being right, and <V>g</V> = 2. <b>They are not three independent constraints.</b> All three reduce to the same condition, <V>λ̄</V><Sub>m</Sub> = <V>λ̄</V><Sub>C</Sub>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The content is that in the ring picture they <i>could not</i> agree.</b> The magneton wanted <V>λ̄</V><Sub>m</Sub> = <V>λ̄</V><Sub>C</Sub>/<K><Bar>CYCLE</Bar></K> and de Broglie wanted <V>λ̄</V><Sub>m</Sub> = <V>λ̄</V><Sub>C</Sub>, and no constant reconciles a ratio a count fixes. So relaxing the ring does not satisfy <i>more</i> constraints — <b>it removes a conflict</b>, by making two statements about the same length stop being statements about two different lengths. And <V>g</V> = 2 is then one assumption traded for one measured number, which is a fair trade and not a derivation.
+          </Para>
+
+          <Eq note="spinor.ts §1 — and the residual 0.0023 is the anomalous moment, a loop correction">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`quantity          ring picture     relaxed, at G = 2π
+g                    1.000000         2.000000
+magneton (µ_B)       0.079388         1.000000
+λ̄_m/λ̄_C              9.924e−3         1.000000
+L (ħ)                0.079388         0.500000
+
+measured g                            2.00231930436`}
+            </span>
+          </Eq>
+
+          <Head>and four things move downstream without being asked</Head>
+
+          <Rows of={[
+            [<>the magnetisation ceiling</>,
+              <><b>From refuted to satisfied.</b> Iron goes from 1.05 of <V>n</V><V>µ</V> —
+                impossible, needing more than every electron — to <b>0.084</b>, which is
+                the moment per atom over the electron count. That is the ordinary
+                materials-science statement that a few 3d electrons out of 26 carry the
+                magnetism, so it is satisfied at a <i>sensible</i> number rather than by
+                being made vacuous.</>],
+            [<>the exchange length</>,
+              <>The shortfall becomes <b>exactly 1/<V>α</V> = 137.036</b>, with no lattice
+                constant beside it. The finding that magnetism's debt and the electric
+                half's debt are one debt gets cleaner.</>],
+            [<>the Néel temperature</>,
+              <>Goes as <V>µ</V><Sup>2</Sup>, so it improves 158× — six orders short becomes
+                under four. <b>Still short, which is still the right answer</b>: dipolar
+                coupling is not what orders matter.</>],
+            [<>and <V>g</V> itself</>,
+              <>1 → 2.000000 against a measured 2.0023.</>],
+          ]} />
+
+          <Head>and CYCLE is the emitter's, not the lattice's</Head>
+
+          <Para>
+            One correction that reaches back. The sections above treat <K><Bar>CYCLE</Bar></K> as a lattice constant — a fixed count of 8 that nothing can move, which is what made the magneton and de Broglie requirements look irreconcilable. <b>It is not a lattice constant. How many steps an emitter's axis takes to come round is a property of the <i>emitter</i></b>, which the particle sets and the lattice does not. So it is free, and the argument that nothing can move it fails.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            What that buys is less than it sounds, and it is worth being precise. The two requirements constrain <i>different</i> things:
+          </Para>
+
+          <Eq note="cover.ts §1 — CYCLE multiplies the step, so it cannot reach what de Broglie constrains">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`requirement          constrains       wants
+magneton = µ_B       r = CYCLE·λ̄_m    CYCLE = 100.8
+de Broglie exact     λ̄_m             (says nothing about CYCLE)`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>A free <K><Bar>CYCLE</Bar></K> fixes the magneton on its own and cannot touch de Broglie at all</b>, because de Broglie constrains the <i>step</i> and <K><Bar>CYCLE</Bar></K> only multiplies it. So the conflict does not close — <b>it moves out of a lattice constant and into a per-emitter count</b>, which is a better place for it but not a resolution.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And requiring both gives <K><Bar>CYCLE</Bar></K> = 1.</b> An axis that returns after one step is an axis that does not go round — so a free <K><Bar>CYCLE</Bar></K> and the relaxation above are <i>the same answer reached from opposite ends</i>: one by removing the ring, the other by letting the particle choose and finding it chooses not to have one.
+          </Para>
+
+          <Head>and why two-valuedness is needed, which is not "because QM says so"</Head>
+
+          <Para>
+            Worth stating plainly, because the chain is short and each link forces the next. A charge <V>q</V> and a mass <V>m</V> going round a loop of radius <V>r</V> at speed <V>v</V> give <V>µ</V> = <V>qvr</V>/2 and <V>L</V> = <V>mvr</V> — and <b>both <V>r</V> and <V>v</V> cancel out of the ratio</b>.
+          </Para>
+
+          <Eq note="cover.ts §2 — four loops, every size and speed, and the answer does not move">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  r          v         µ (µ_B)   L (ħ)      g
+1.00 λ̄_C   1.000 c    1.0000   1.0000   1.000000
+0.50 λ̄_C   1.000 c    0.5000   0.5000   1.000000
+1.00 λ̄_C   0.500 c    0.5000   0.5000   1.000000
+3.00 λ̄_C   0.143 c    0.4286   0.4286   1.000000`}
+            </span>
+          </Eq>
+
+          <Para>
+            So <b>no circulation of any size or speed gives <V>g</V> = 2</b>. To get it, <V>L</V> must stop being <V>mvr</V> — it must not be a circulation at all. <b>And it must still have a definite magnitude</b>, because <V>g</V> = 2 is a number and not a range. Something with a fixed magnitude along every axis you could measure it on, which is not a vector rotating in space, is a quantity with exactly <i>two</i> values.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>That is the whole argument, and nothing in it is imported.</b> Two-valuedness is what is left once a circulation is ruled out by the <V>g</V>-factor and a definite magnitude is required by there <i>being</i> a <V>g</V>-factor. Quantum mechanics is where the machinery for handling it lives, not where the requirement comes from.
+          </Para>
+
+          <Head>what it costs, and what it leaves alone</Head>
+
+          <Para>
+            <b><V>L</V> = ħ/2 is now an input.</b> The ring at least purported to derive an angular momentum and got 0.0794 ħ — under the ħ/2 quantum mechanics allows, so it was wrong, but it was derived. <b>A wrong derivation traded for an honest assumption</b>, which is probably a good trade and should still be booked as a cost. The magnetisation quantum <V>P</V> ∈ {'{'}0, ¼, ½, ¾, 1{'}'} goes with the ring — already shaky, since <K><Bar>CYCLE</Bar></K> = 8 holds for only 6 of the 26 possible axes — and so does the 45° hysteresis pin, which was moot once the far-field ordering was refuted. The mass unit moves to 137 µg, which nothing measures.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And most of the arc does not notice.</b> The test is mechanical — which results mention a ring at all — and the answer is none of these: magnetostatics entire, the 1/<V>R</V> pole kernel, the dipole scalar, the force and the torque, −<V>∇</V>·<b>M</b> and cutting a magnet in two, the far field, the antiferromagnet and its magic-angle law, both exchange signs, and the 5.22% benchmark against a real magnet. <b>The ring was load-bearing for the magneton, the <V>g</V>-factor and one quantisation, and for nothing else.</b> The ⟨111⟩ anisotropy survives too — as a refutation, since it comes from counting exits rather than from the ring.
+          </Para>
+
+          <Head>and what the two-valued thing would have to be</Head>
+
+          <Para>
+            A state returning to itself after <i>two</i> turns rather than one, so a full rotation flips a sign nothing can directly see. <b>Two things in the model already have that shape.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The observables are already bilinear in the sign.</b> The whole interaction is the annihilation ledger, and that is a <i>product</i> of two arrivals — flip both sources and nothing changes. So the absolute sign is already unobservable, which is exactly the gauge structure a spinor sign needs. <b>That is the half of the requirement the model already meets, and it is why the candidate looked good.</b>
+          </Para>
+
+          <Head>and then the candidate fails, on the other half</Head>
+
+          <Para>
+            A spinor sign has to do <i>two</i> things: be invisible on its own, and flip under a 2<V>π</V> rotation of <b>one</b> source. <b>A rotation of one source is not a global flip</b>, and the model's ledger notices:
+          </Para>
+
+          <Eq note="cover.ts §3 — and this is the most directly measurable thing the model has">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`before a 2π turn of a:   s_a = +1, s_b = +1  →  ledger −1   repel
+after  a 2π turn of a:   s_a = −1, s_b = +1  →  ledger +1   ATTRACT`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Turning one magnet through a full circle would turn repulsion into attraction.</b> That is not subtle — it is the quantity the 5.22% benchmark checks against a real magnet. So the emitted sign has <b>the right gauge structure and the wrong rotation structure</b>, and the conjecture is refuted. What is needed is a <i>second</i> two-valued quantity; the model has exactly one and it is spoken for by the interaction.
+          </Para>
+
+          <Head>which leaves two branches, and neither derives it</Head>
+
+          <Rows of={[
+            [<>keep the ring</>,
+              <>Then there is a circle to work with — the axis walks round
+                <K><Bar>CYCLE</Bar></K> positions, and a circle <i>has</i> a double cover, so
+                "returns after two turns rather than one" is a structure the model can
+                literally carry. <b>But keeping the ring keeps <V>µ</V> tied to <V>L</V>
+                through the same radius</b>, so <V>g</V> = 1 survives and the cover buys
+                nothing unless that tie is cut anyway.</>],
+            [<>drop the ring</>,
+              <>Then <V>g</V> = 2 becomes available, and <K><Bar>CYCLE</Bar></K> = 1 is what
+                the two requirements jointly ask for — <b>but a ring of one step is a point,
+                a point has no double cover, and there is no structure left for the
+                two-valuedness to live on.</b> <V>L</V> = ħ/2 is then an assertion with
+                nothing underneath it.</>],
+          ]} />
+
+          <Para>
+            <b>The branch that makes room for the two-valuedness cannot use it, and the branch that needs it has nowhere to put it.</b> The per-node sign would have bridged them and it does not.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And what that means is worth carrying away. <b>This model's emitters are objects in space with an orientation, and everything they do is done by things that also live in space</b> — charges that go somewhere and meet. That is precisely what makes gravity and magnetostatics work here, because a force really is a fact about where things went. <b>Spin is the first thing in this book that is not a fact about where anything went.</b> A two-valued orientation with no circulation behind it cannot be built out of a lattice, a direction and a rate, however those are arranged — and that is not a gap in the arithmetic but a statement about what kind of thing the model is made of.
+          </Para>
+
+          <Head>and if the particle chooses what it emits</Head>
+
+          <Para>
+            The next relaxation is to stop deriving the emission from the axis at all: let the particle choose, per direction, not only <i>where</i> it emits but <b>what charge</b> it puts there. <b>The first half buys nothing and the second half buys the thing the electric side has been stuck on since the beginning.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Choosing <i>where</i> cannot give a spinor, and the reason is one line.</b> A 2<V>π</V> rotation is the identity on directions — checked on all 26 exits, largest displacement 10<Sup>−16</Sup> — so it is the identity on any <i>function</i> of them, however freely chosen. Free choice over a domain the rotation fixes cannot produce something the rotation flips.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>But choosing <i>what</i> makes the emission a map</b> — from directions into wherever charge lives — <b>and a map between spheres has a degree</b>, which is how many times it wraps.
+          </Para>
+
+          <Eq note="degree.ts §2 — computed by the integral, not asserted; and the rate does not appear in it">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`pattern                 degree      deformation      degree
+identity   s = d         1.0000      t = 0.0          1.0000
+antipodal  s = −d       −1.0000      t = 0.5          1.0000
+constant   s = ẑ         0.0000      t = 0.9          1.0005
+rotated 0.7 rad          1.0000      t = 1.0          0.5000
+double azimuth           2.0000      t = 1.5         −0.0000`}
+            </span>
+          </Eq>
+
+          <Para>
+            Integers, flat under continuous deformation, and jumping only at <V>t</V> = 1 — which is exactly where the map degenerates and stops being a map at all. <b>A degree is a count, so it is quantised, and it changes only when the thing it counts is torn.</b>
+          </Para>
+
+          <Head>which is the escape the magnetism arc wrote down and could not take</Head>
+
+          <Para>
+            The refutation this book has carried from the start: emission rate goes as <i>mass</i>, so if charge were the signed emission rate a proton would carry 1836 times an electron's, where measurement has them equal to one part in 10<Sup>21</Sup>. And that arc also wrote down the way out and could not use it — <i>a count would escape that, since a count is not a rate</i>. <b>A degree is a count.</b>
+          </Para>
+
+          <Eq note="degree.ts §3 — and 'exactly' is meant literally">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`reading         electron      proton       ratio
+rate-based      rate 1        rate 1836    1836      ✗
+degree-based    degree −1     degree +1    1  EXACTLY`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>A degree does not know the rate.</b> The rate-based reading could at best be <i>tuned</i> to agree to some number of decimals; two patterns of degree ±1 have charges of equal magnitude with no error term at all — the measurement is a bound of 10<Sup>−21</Sup> and the model would say nought. Charge comes out <b>quantised</b>, <b>mass-independent</b> and <b>conserved</b>, from one change.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And this is not the only route to it, which is the more interesting fact.</b> The Layer 2 arc later in this book reaches the same place by a different structure — charge as a <i>net traversal sense</i> around the ring, also an integer, also blind to the rate. <b>Both are winding numbers</b>, one of a strand around a ring and one of an emission map over directions, and they agree that charge is a count rather than a rate. Two independent constructions landing on the same kind of object is worth more than either.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Where they differ is locality, and the traversal reading wins.</b> A degree is an integral over <i>all</i> directions, so charge stops being carried by any individual ray and becomes a property of the whole emission pattern — where a strand's traversal sense is something one strand does in one place. Everything else in this book is local, a force being a fact about where two charges met, so <b>the later arc's version costs less</b>. What the degree reading adds is not a better charge but the two negative results below.
+          </Para>
+
+          <Head>and the XOR survives it, as the one-dimensional case</Head>
+
+          <Para>
+            Worth checking, since the XOR is what everything else is built on and a richer charge could easily break it. It does not. "Opposite annihilates, alike turns" becomes <b>the sign of a dot product</b>, with ±1 the one-dimensional case:
+          </Para>
+
+          <Eq note="degree.ts §4 — the two ends reproduce the XOR exactly, and the middle was already wanted">
+            <B>u</B><Sub>a</Sub>·<B>u</B><Sub>b</Sub> = +1 → turns
+            <span style={{ padding: '0 1.2em' }} />
+            = −1 → annihilates
+            <span style={{ padding: '0 1.2em' }} />
+            in between → partial
+          </Eq>
+
+          <Para>
+            And the middle is not new either — this arc already says <i>a polarity is a field value rounded off to its sign</i>, so the generalisation was half-written. <b>The ledger stays bilinear</b>, −<B>u</B><Sub>a</Sub>·<B>u</B><Sub>b</Sub> where −<V>s</V><Sub>a</Sub><V>s</V><Sub>b</Sub> used to be, so the 1/<V>R</V> kernel, the dipole scalar, the force, the torque and magnetostatics entire go through unchanged.
+          </Para>
+
+          <Head>but spin still does not come free, and there is a bill</Head>
+
+          <Para>
+            The tempting next step is that a topological charge might carry a topological <i>spin</i> with it — which is a real mechanism in physics and is not available here. Rotate a whole configuration by <V>t</V>: that traces a loop in the space of patterns as <V>t</V> runs to 2<V>π</V>, and a fermion needs that loop to be non-contractible. <b>Every pattern tried is rotation-invariant, so the loop is the <i>constant</i> loop</b> — contractible without argument, hence a boson.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The known way to get a fermion this way is to make the target bigger — maps into SU(2) rather than into a direction, which is the Skyrme construction, and there the 2<V>π</V> loop is famously not contractible. <b>That is a far larger relaxation than letting a particle choose a charge</b>, and nothing here takes it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So what this relaxation actually contributes is two negatives and a confirmation.</b> It confirms, by a second route, that charge has to be a count rather than a rate. And it establishes that <i>choosing what you emit cannot buy you spin</i> — not because the right pattern has not been found, but because a 2<V>π</V> rotation fixes the directions such a pattern is a function of. <b>That closes a door rather than opening one, which is worth as much.</b>
+          </Para>
+
+          <Head>and what if the lattice itself is not perfect</Head>
+
+          <Para>
+            Every relaxation so far has died on the same line: a 2<V>π</V> rotation is the identity on directions, so nothing built on directions can flip. <b>That line has a premise</b> — that the thing carrying the state is a function of direction — <b>and it is a premise only because the lattice is perfect</b>, every cell like every other. So give the lattice some topology. Three candidates, and they are not equivalent.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The instrument is <V>H</V><Sub>1</Sub>, the first homology, computed over GF(2) on an honest cubical complex — vertices, edges <i>and</i> faces of the actual cells, not the graph alone, because a lattice graph has enormous numbers of cycles and nearly all of them are filled in by faces.
+          </Para>
+
+          <Eq note="handle.ts §1–§3 — b₁ counts holes, not connections">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`configuration                cells    b₁
+solid block 2³ … 6³          8…216     0    ← density buys nothing
+one handle — a ring            180     1
+two handles                    280     2
+trefoil knot, scale 4+       730+      1    ← same as an unknot`}
+            </span>
+          </Eq>
+
+          <Rows of={[
+            [<>more of it</>,
+              <><b>Buys nothing.</b> <V>b</V><Sub>1</Sub> = 0 at every size — a solid block is
+                contractible however large. And the 2<V>π</V> argument never depended on the
+                count anyway: it holds for 26 exits, for 124, and for a continuum. <b>Density
+                is not the axis the problem lives on.</b></>],
+            [<>a hole</>,
+              <>Not a missing cell — removing a ball leaves a solid simply connected. A
+                <i> handle</i>: a region the lattice goes round rather than through.
+                <b> One bit each</b>, and that is all homology has to offer.</>],
+            [<>a knot</>,
+              <><b>Invisible to homology.</b> A trefoil gives <V>b</V><Sub>1</Sub> = 1, the
+                same as an unknotted ring. Below scale 4 the strands weld and it reads 6 then
+                9 — <i>non-monotone</i>, which is the giveaway that it is the
+                discretisation's topology and not the knot's. Knotting lives in
+                <V> π</V><Sub>1</Sub> of the <i>complement</i>, which is non-abelian —
+                strictly richer, and where anyons live.</>],
+          ]} />
+
+          <Head>and a handle carries exactly the thing that was missing</Head>
+
+          <Para>
+            The requirement above was a <i>second</i> two-valued quantity — not the XOR sign, which is spoken for by the interaction. <b>A handle supplies one.</b> Put ±1 on every edge of the cycle; the label is the product round it, and it is physical only if gauge cannot move it.
+          </Para>
+
+          <Eq note="handle.ts §4 — a gauge move flips every edge at one vertex">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`start                        holonomy = +1
+gauge move at any vertex     holonomy = +1   (five tried)
+flip ONE edge — not a gauge  holonomy = −1`}
+            </span>
+          </Eq>
+
+          <Para>
+            Gauge-invariant and two-valued. And the two properties that decide it: <b>it is not a function of direction</b> — it is a property of a <i>cycle</i>, so the impossibility that closed the last three relaxations has nothing to act on — and <b>it is not the XOR sign</b>, which lives on a ray and decides whether two charges annihilate, where this lives on a loop and decides nothing about any single meeting. <span className="bp5-text-muted">(Two sections down this label turns out to be the <i>wrong</i> one — a 2<V>π</V> rotation does not move it. The measurement here stands; what it buys does not.)</span>
+          </Para>
+
+          <Head>which is the first relaxation that is not immediately refuted</Head>
+
+          <Para>
+            <b>And it is a known mechanism rather than a hope.</b> <Ref of={'Friedman and Sorkin, "Spin 1/2 from Gravity", Physical Review Letters 44, 1100'} year="1980" at="https://doi.org/10.1103/PhysRevLett.44.1100" /> showed that topological geons in general relativity can be fermions — a handle in space makes the 2<V>π</V> rotation non-contractible in configuration space, so the object obeys Fermi statistics <i>with no spinor field anywhere</i>. That is the same proposal: <b>spin from the topology of space rather than from a property carried through it.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>But what is measured here is necessary and not sufficient.</b> Having a two-valued label is not the same as that label being the one a 2<V>π</V> rotation flips, and <V>b</V><Sub>1</Sub> = 1 does not on its own imply it. What can be said is that the one-line refutation which killed the previous three relaxations does not reach this one, and that the literature says handles can do exactly what is wanted.
+          </Para>
+
+          <Head>what it would cost, and one objection that turns out not to bite</Head>
+
+          <Rows of={[
+            [<>the lattice stops being uniform</>,
+              <>Every result in this book is computed where one cell is like another —
+                <i><K><Bar>G</Bar></K></i>, <K><Bar>DEG</Bar></K>, <K><Bar>SHEET</Bar></K>, the
+                26 exits, the whole gravity arc. A lattice with handles has places where
+                those counts differ.</>],
+            [<>particles become <i>places</i></>,
+              <>A handle is not something moving through space; it <b>is</b> space. That is a
+                larger claim than matter riding on Layer 1, and it is closer to Wheeler's
+                geons than to anything else here.</>],
+            [<>and handles must not heal</>,
+              <>(G/1) destroys space and (G/2) makes it, so cells come and go every tick. A
+                particle that is a hole needs a reason to survive a rule whose whole business
+                is healing.</>],
+          ]} />
+
+          <Para>
+            The third is the sharpest and it is computable, so it was computed. <b>The handle does not heal, and it is not even fragile</b>: <V>b</V><Sub>1</Sub> = 1 survives a tenth of the cells being taken away and put back. What happens past that is the <i>opposite</i> failure — <V>b</V><Sub>1</Sub> climbs to 2, 6, 31, because a heavily churned medium grows spurious handles of its own, and if a handle is a particle then a noisy vacuum is a vacuum full of them.
+          </Para>
+
+          <Eq note="handle.ts §6 — and the model's own rate is nowhere near the noisy regime">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`removed   10%  →  b₁ = 1      the model's own rate   p = 10⁻⁶¹
+removed   20%  →  b₁ = 6      noise begins at        p ≈ 10⁻¹
+removed   35%  →  b₁ = 7      margin                 60 orders`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>So at the rate this model actually runs, handles are stable and the vacuum makes none by accident</b> — which is both halves of what a particle number needs. That is a positive result and it should be kept in proportion: it says the objection does not bite, not that the construction works. What is still unmeasured is the 2<V>π</V> rotation itself, and no amount of stability supplies it.
+          </Para>
+
+          <Head>and what would actually be sufficient</Head>
+
+          <Para>
+            The section above is careful to say that a handle's label is <i>necessary</i> and not sufficient. <b>It is worse than that: it is the wrong label</b>, and the invariant that separates the right case from the wrong one is not the one computed.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>A handle's Z<Sub>2</Sub> label is rotation-inert.</b> A 2<V>π</V> rotation permutes the ring's edges among themselves, and a product does not care about the order of its factors — so the holonomy is unchanged at π/2, π, 2<V>π</V> and 4<V>π</V> alike. <b>b<Sub>1</Sub> = 1 gives a label the rotation never touches</b>, and a fermion needs one the rotation <i>acts on</i>.
+          </Para>
+
+          <Eq note="sufficient.ts §2 — two properties at once, and a bare ±1 has only the first">
+            <V>q</V>(2<V>π</V>) = −1
+            <span style={{ padding: '0 1.2em', color: FAINT }}>and</span>
+            <V>q</V>(4<V>π</V>) = +1
+            <span style={{ padding: '0 1.2em', color: FAINT }}>— order exactly two</span>
+          </Eq>
+
+          <Para>
+            That is the belt trick, and it lives on the <b>orientation</b> of a region rather than on any cycle inside it — which is exactly why the handle came out inert. Neither the XOR sign nor a handle's holonomy has the second property, because both are bare ±1 with nothing composing.
+          </Para>
+
+          <Head>and the invariant is torsion, not rank</Head>
+
+          <Para>
+            An element of order exactly two is, in homology, <b>torsion</b>: a class that is not zero and whose double is. A free class has no such element — doubling it never returns to nothing.
+          </Para>
+
+          <Eq note="sufficient.ts §3 — H₁ over Z, by Smith normal form">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`space                    H₁ over Z
+circle / handle          free 1,  torsion —      ← no order-2 element
+projective plane RP²     free 0,  torsion [2]    ← order exactly two
+disc (degree 1)          free 0,  torsion —`}
+            </span>
+          </Eq>
+
+          <Para>
+            RP²'s Z/2 is generated by a <b>degree-2</b> attachment — a 2-cell glued round the loop <i>twice</i> — and that two is the same two as <V>q</V>(4<V>π</V>) = +1. <b>And over GF(2) the two rows are indistinguishable</b>, both giving dim H<Sub>1</Sub> = 1. The homology above is computed over GF(2), so <b>it could not have told a handle from a fermionic geon</b>: every number in it is right and the invariant is too coarse for the question it was asked.
+          </Para>
+
+          <Head>so: four conditions, checkable one at a time</Head>
+
+          <Rows of={[
+            [<>1. an orientation, not an axis</>,
+              <>The region's states must form SO(3) — a frame — because a 2<V>π</V>
+                rotation of an <i>axis</i> is the identity and has nothing to act on.
+                <b> And this is where the ring tension resurfaces</b>: <V>g</V> = 2 wanted the
+                ring gone, and a frame is what the ring supplied.</>],
+            [<>2. Z/2 torsion in H<Sub>1</Sub></>,
+              <>Not free rank. Strictly stronger than a handle, which satisfies
+                b<Sub>1</Sub> ≥ 1 and fails this.</>],
+            [<>3. the 2<V>π</V> rotation <i>generates</i> it</>,
+              <><b>The one with teeth.</b> Conditions 1 and 2 can both hold with the rotation
+                acting trivially — which is precisely what the handle does. The rotation must
+                <i>be</i> the non-trivial class, not merely coexist with one. This is the
+                whole content of Friedman and Sorkin's result and it does not follow from the
+                other two.</>],
+            [<>4. quantised with the non-trivial phase</>,
+              <>A Z<Sub>2</Sub> in configuration space permits <i>two</i> consistent theories,
+                one where the loop carries +1 and one where it carries −1, and only the second
+                is a fermion. <b>No rewrite rule chooses between them</b> — it is a choice
+                about the state space.</>],
+          ]} />
+
+          <Head>and then the rule, which is one word away and not enough</Head>
+
+          <Para>
+            Torsion comes from a cell attached by a map of <b>degree two</b> — something glued round twice. On a lattice the elementary version is an <i>antipodal identification</i>: a boundary sphere sewn to itself so each point meets the one opposite. <b>And the model already has a two-to-one rule.</b>
+          </Para>
+
+          <Eq note="sufficient.ts §5 — destroying is a quotient that throws the neighbourhoods away; fusing keeps them">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`(G/1)   two opposite charges meet → one point, space DESTROYED
+(G/1′)  two opposite charges meet → one point, the two cells
+                                    IDENTIFIED, both neighbourhoods kept`}
+            </span>
+          </Eq>
+
+          <Para>
+            It is a smaller change than it sounds and it does not touch the charge bookkeeping at all — the same two charges are consumed either way. <b>But one fusion is not enough, and this is the real problem.</b> Identifying two points of a connected region gives a wedge with a circle: free Z, a handle, and a handle is rotation-inert.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The difference is not how <i>many</i> fusions but whether they are coherent.</b> A degree-two attachment is an identification carried out consistently across a whole closed surface — every point with its antipode, all at once. Independent fusions at unrelated places give independent handles and free rank; only a correlated sheet of them gives torsion.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which is exactly what a local rewrite rule cannot do.</b> Every rule in this model fires on what is in one cell, and the whole method is that nothing coordinates anything at a distance. A fusion rule fired independently wherever two charges meet produces handles — bosons — and the fermionic case needs the firings to <i>agree with each other</i> over a surface.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the honest answer to what rules would do it: <b>the 2 → 1 rule is already there and needs one word changed, from destroy to identify — that part is cheap. What is not cheap is the coherence.</b> Torsion is a statement about a whole closed surface at once, and a local rule has no way to know it is part of one. <b>Every previous gap in this book has been a missing <i>quantity</i>; this is a missing <i>correlation</i></b>, which is a different kind of problem.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And it has a shape worth noticing. The model already owns one mechanism that makes distant things agree without coordinating them — (G+M/3) and regional sourcing, where co-located sources lock to one train in two ticks against a beat of 10<Sup>16</Sup>. <b>Whether that can lock a <i>surface</i> rather than a region is the question this ends on</b>, and unlike most of what is owed here, it is well posed.
+          </Para>
+
+          <Head>and the thread it ends on, pulled</Head>
+
+          <Para>
+            The wall above is that a rule firing on one cell cannot know it is part of a surface. <b>It does not have to.</b> Put the shell to work:
+          </Para>
+
+          <Rows of={[
+            [<>a locked shell emits inward</>,
+              <>All at once, because that is what locking is.</>],
+            [<>its charges converge on the centre</>,
+              <>And meet there.</>],
+            [<>and head-on <i>is</i> antipodal</>,
+              <>Two charges meeting head-on at the centre came from <b>opposite sides of
+                the shell</b>. So (G/1′) firing there glues a shell point to its antipode —
+                which is exactly the identification RP³ is made of. <b>The pairing is not
+                imposed by anything.</b></>],
+          ]} />
+
+          <Para>
+            Which moves the question off "how does a local rule know about a surface" and onto two things that can be measured. <b>What the rule has to supply is not the pairing but the simultaneity — and simultaneity is what locking is.</b>
+          </Para>
+
+          <Head>and antipodes are the hard case, which is the point</Head>
+
+          <Para>
+            Locking here is a <i>near-neighbour</i> effect — sources one cell apart closing at two cells a tick. Antipodal points of a shell are 2<V>R</V> apart, the furthest anything on it can be. <b>So this is precisely where the mechanism should fail.</b>
+          </Para>
+
+          <Eq note="lock.ts §2 — Kuramoto with the coupling screened at the gravity arc's own reach, rates spread ±0.3">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  R   sites   order    antipodal |Δφ|  mean / worst
+  2      86   0.9999      0.0181 / 0.0504
+  4     362   0.9998      0.0202 / 0.0568
+  7    1154   0.9998      0.0204 / 0.0622`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>It does not fail and it does not degrade.</b> Order 0.9998, antipodal pairs agreeing to about 0.02 radians — <b>flat from <V>R</V> = 2 to 7</b> while the site count grows thirteenfold. And the reason is worth having, because it is why the objection was wrong: <b>once a connected graph locks at all, it locks <i>globally</i></b> — the phase is uniform, so any two points agree and how far apart they are stops mattering. Distance governs whether locking happens, not how good it is once it has. In ticks, 0.02 radians is <b>0.3% of a beat</b>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">One numerical warning, because it looked like a physical result: with the coupling not normalised by neighbour count, <i>stronger</i> coupling appears to destroy the order — 0.99 at K = 1 falling to 0.07 at K = 30 — and that is the Euler step overshooting rather than the physics. A stiff integrator failing looks exactly like a coupling that does not work.</span>
+          </Para>
+
+          <Head>and the lattice hands over the rest for free</Head>
+
+          <Para>
+            Two more conditions, both geometric. The shell must <i>separate</i> — be a closed surface, or there is no inside to identify — and its charges must <i>arrive together</i>, or the fusions happen in sequence and give independent handles again. Arrival time is ⌈|<b>r</b>|⌉ ticks, so the spread is the spread in radius:
+          </Para>
+
+          <Eq note="lock.ts §3 — and the thin shell is also the one with fewest cells">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`  R     w    cells   closes?   arrives at   spread
+  5   0.5     350     yes        5–5        0
+  5   0.9     590     yes        4–6        2
+  8   0.5     762     yes        8–8        0
+  8   1.4    2218     yes        7–9        2`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>A thin shell does both.</b> At <V>w</V> = 0.5 the surface still closes — a flood fill from the centre cannot escape — and every cell in it is the same rounded distance out, so the arrival spread is <b>exactly zero</b>, at <V>R</V> = 3, 5 and 8 alike. Thicker shells close too and cost two ticks. <b>So the geometry does not merely permit the mechanism; it prefers the thin shell, which is also the cheapest one.</b>
+          </Para>
+
+          <Head>so the objection does not bite — and the job is not done</Head>
+
+          <Para>
+            <b>A local rule does not have to coordinate a surface.</b> The surface coordinates itself by locking, the lattice hands it exact simultaneity for free if it is thin, and head-on at the centre <i>is</i> antipodal. <b>Every ingredient of the coherence is already in the model</b> — so the missing <i>correlation</i>, which looked like a new kind of problem, turns out to be something this model can already produce.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>What that does not settle is most of the job, and it is worth being exact.</b> It shows the identification can be carried out coherently. It does <i>not</i> compute the homology of the result — that needs the identified complex built and its H<Sub>1</Sub> taken over <b>Z</b> rather than GF(2), and the warning above applies to any such check. It does not touch condition 3, that the 2<V>π</V> rotation <i>generates</i> the torsion, which is the one with teeth and which a handle fails. And condition 1's tension is untouched: a region needs an orientation, the ring is what supplies one, and <V>g</V> = 2 wants the ring gone.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So of the four conditions, this removes the objection to the mechanism that would deliver the second. <b>It does not deliver it, and the first and third are where the difficulty actually is.</b>
+          </Para>
+
+          <Head>containment — and spin as which path the interior lets you take</Head>
+
+          <Para>
+            The two conditions left are the ones doing the damage: the region needs an <i>orientation</i>, and the 2<V>π</V> rotation has to <i>generate</i> the label. A handle fails the second because a rotation permutes its cycle among itself and a product ignores order — <b>the rotation has nothing to grip</b>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So make the label a fact about what happens <i>inside</i> a region rather than something attached to one.</b> A container, with an interior running the same rules as everywhere else. A charge enters, takes a path through, and comes out — and the label is <b>which class of path it took</b>. Classes of path <i>compose</i>, so a rotation of the container does not permute the label, it composes with it. <b>That is the first thing in this sequence that addresses the third condition at all</b>, and it asks nothing new of the dynamics: only the connectivity differs.
+          </Para>
+
+          <Head>and which containers give torsion is a one-word answer</Head>
+
+          <Eq note="contain.ts §2 — a polygon with its boundary glued by a word, computed over Z">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`surface        word          gluing        H₁
+torus          a b a⁻¹ b⁻¹   preserving    free 2, torsion —
+Klein bottle   a b a b⁻¹     REVERSING     free 1, torsion [2]
+RP²            a a           REVERSING     free 0, torsion [2]`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Torsion appears exactly where the gluing reverses orientation, and nowhere else.</b> A boundary sewn to itself the same way round gives free rank however it is done — the torus has two generators and no element of finite order at all. Reverse it and a 2 appears in the boundary map, which is the 2 in Z/2. <b>So the container must have its boundary glued to itself <i>with a flip</i>.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            In three dimensions the boundary is a sphere and the natural flip is the <b>antipodal</b> one — and its degree was already measured, above, at <b>−1</b>. A degree of −1 is orientation-reversing, so a ball with its boundary identified antipodally has Z/2 torsion. <b>That space is RP³.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which lines up three things arrived at independently and none of them looking for it: <b>the rewrite rule</b> is (G/1) changed from destroy to identify, and needs an antipodal identification across a closed surface; <b>the locking</b> makes a shell's charges meet at its centre in antipodal pairs, coherently, with zero arrival spread; and <b>reversing is what makes torsion</b>. Three routes, one construction.
+          </Para>
+
+          <Head>and RP³ is SO(3), which settles three conditions at once</Head>
+
+          <Para>
+            The container is not merely a space with the right homology. <b>It is the rotation group.</b> Every point of RP³ is a rotation, and π₁(SO(3)) = Z<Sub>2</Sub> <b>with the 2<V>π</V> rotation as its generator</b> — which is the third condition stated as a fact about the space rather than as something to be arranged.
+          </Para>
+
+          <Rows of={[
+            [<>1. an orientation, not an axis</>,
+              <>The interior's points <b>are</b> orientations. The container <i>is</i> the
+                frame.</>],
+            [<>2. Z/2 torsion in H<Sub>1</Sub></>,
+              <>From the reversing gluing, measured above.</>],
+            [<>3. the 2<V>π</V> rotation generates it</>,
+              <>The defining property of π₁(SO(3)).</>],
+          ]} />
+
+          <Para>
+            <b>And it dissolves the ring tension that has run through this whole arc.</b> The relaxation needed the ring <i>gone</i>, so <V>µ</V> stops being tied to <V>L</V> by a shared radius and <V>g</V> can be 2; the first condition needed a <i>frame</i>, which is what the ring supplied. Those pulled opposite ways and there was no way to have both. <b>With a container the frame comes from the topology rather than from an emitter walking round a ring — so the ring can go and the frame stays.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A charge traversing such a container accumulates a rotation, and the two classes are an <i>even</i> or an <i>odd</i> number of turns. Rotating the container by 2<V>π</V> composes with the generator and moves a path from one class to the other; by 4<V>π</V> it composes twice and returns. <b>Which is the proposal exactly: the rotation changes which paths the interior lets you take, and that is what spin is.</b>
+          </Para>
+
+          <Head>so: would it work, and what is left</Head>
+
+          <Para>
+            <b>Yes, on the first three conditions, and for a reason rather than by construction</b> — RP³ satisfies them because it <i>is</i> the rotation group, not because it was fitted to them. And the containment must be a region whose boundary sphere is identified <b>antipodally</b>: not a hole, not a knot, not a denser lattice, all of which give free rank and rotation-inert labels. <b>The flip is the whole of it.</b>
+          </Para>
+
+          <Rows of={[
+            [<>condition 4, and it is a <i>choice</i></>,
+              <>A Z<Sub>2</Sub> in configuration space permits two consistent theories — the
+                loop carrying +1 or −1 — and only the second is a fermion. Nothing derives
+                which. <b>Every attempt in this sequence would have hit this</b>, and it is
+                the one place where "quantise it" is unavoidable.</>],
+            [<>the construction itself</>,
+              <>The locking shows the model can fire an antipodal identification coherently.
+                It does <i>not</i> build the resulting complex and take its H<Sub>1</Sub> over
+                <b> Z</b> — which is the check that what is made is RP³ rather than something
+                with the same b<Sub>1</Sub>, and the GF(2) warning applies directly.
+                <b> That is the next computation</b>, and it is well posed.</>],
+            [<>and whether it holds together</>,
+              <>A handle survives the churn of (G/1) and (G/2) with sixty orders to spare.
+                <b> Whether <i>torsion</i> survives it is a different question</b>, because a
+                torsion class can be killed by a single wrong identification where a free
+                class cannot.</>],
+          ]} />
+
+          <Para>
+            So the shape of the answer: <b>the containment idea is right, the container is RP³, and it settles the two conditions that were doing the damage.</b> What remains is one thing that must be chosen rather than derived, and one computation that has not been done.
           </Para>
 
           <Head>and where this actually meets quantum mechanics</Head>

@@ -231,6 +231,18 @@ export function spinReport(): string {
   line("  thing GOING ROUND. Drop that and all four go together; keep it and no");
   line("  normalisation rescues any of them.");
   line();
+  line("  >> TWO CORRECTIONS FROM `cover`, AND BOTH ARE MINE.");
+  line("  >> (a) CYCLE is NOT a lattice constant — it is a property of the");
+  line("  >>     EMITTER, so the argument below that 'no constant moves a ratio a");
+  line("  >>     count fixes' fails. A free CYCLE fixes the magneton on its own;");
+  line("  >>     it cannot touch de Broglie, which constrains the step. Requiring");
+  line("  >>     both gives CYCLE = 1 — no ring — which is `spinor`'s answer");
+  line("  >>     reached from the other end.");
+  line("  >> (b) the candidate below is REFUTED. The XOR sign is invisible under a");
+  line("  >>     GLOBAL flip but not under a 2π rotation of one source, and");
+  line("  >>     flipping one sign turns repulsion into attraction. Right gauge");
+  line("  >>     structure, wrong rotation structure.");
+  line();
   line("  WHAT A FIX WOULD LOOK LIKE, AND IT IS NOT A NUMBER. The model needs a");
   line("  two-valued orientation that is not a position on a ring — something");
   line("  that returns to itself after two turns rather than one, which is what");
