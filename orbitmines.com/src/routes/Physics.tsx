@@ -37,6 +37,7 @@ import {
 import { Shelter } from "./archive/2026.RayCalculiAndPhysics/shelter";
 import { MeanOccupancy, MeanPolarity, PerAxis, PerNode, PerRay } from "./archive/2026.RayCalculiAndPhysics/ribbon";
 import { Attract, Lorentz, MovingCharge, Repel, Wire } from "./archive/2026.RayCalculiAndPhysics/em";
+import { LatticeAttract, LatticeInert, LatticeRepel } from "./archive/2026.RayCalculiAndPhysics/grid";
 import { Exits, Shells } from "./archive/2026.RayCalculiAndPhysics/counts";
 
 /** The colour the rest of the article uses for an aside inside a set line. */
@@ -4788,7 +4789,524 @@ counts    field read off ray counts        1.0e+0   PASS   2.9e−3  1.0e+0`}
           <BR/>
 
           <Para>
-            <b>So there is light.</b> Not by adding a field, a rule or a label — by reading the shortfall the gravity arc already derived to one order higher than anybody had read it, and taking the field to be the derivative of a potential rather than a count of rays. <span className="bp5-text-muted">(One correction underneath all of this, recorded because everything above the last two sections was measured through it: the retarded-time solver had its bisection inequality inverted, so it walked to its own bracket endpoint and returned <V>t</V> − 10<Sup>7</Sup> for every field point, silently. It was caught by checking the solver's own residual, which should be nought and was −7·10<Sup>6</Sup>. The count-reading's failures survive the fix; its one apparent success — Gauss — did not.)</span>
+            <b>So there would be light</b> — not by adding a field, a rule or a label, but by reading the shortfall the gravity arc already derived to one order higher than anybody had read it, and taking the field to be the derivative of a potential rather than a count of rays.
+          </Para>
+
+          <Head>except that the lattice refuses the premise, which is measured and not argued</Head>
+
+          <Para>
+            <b>Everything in the last two sections is continuum algebra.</b> It establishes that <i>if</i> the deficit is a retarded 1/<V>R</V> potential <i>then</i> its gradient keeps a 1/<V>R</V> term, its first moment satisfies all four of Maxwell, and the far field is transverse. All of it is done with sin, cos and a retarded-time solver, and <b>none of it runs the model.</b> So run the model.
+          </Para>
+
+          <Eq note="pulse.ts §2–3 — pure's rule on a 61³ lattice, a body of radius 3, shell-averaged">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`r     deficit    × r      first response   t / r    t / r²
+5     11.969     59.84    13               2.60     0.520
+8      6.676     53.41    34               4.25     0.531
+11     4.132     45.45    57               5.18     0.471
+14     2.855     39.97    89               6.36     0.454
+17     1.902     32.33    132              7.76     0.457
+20     1.297     25.94    177              8.85     0.443
+
+fit A(1/r − 1/Rb):  A = 71.1, Rb = 31.5, mean error 0.8%
+first response ∝ r^1.87       a wave gives 1, a diffusion gives 2`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Half the premise holds and half does not, and the half that fails is the half those sections need.</b> The <i>shape</i> is confirmed — the shell-averaged deficit fits <V>A</V>(1/<V>r</V> − 1/<V>R</V><Sub>b</Sub>) to 0.8%, with <V>R</V><Sub>b</Sub> landing on the box half-width rather than a fitted length, which is the gravity arc's own result reproduced. <b>The <i>retardation</i> is refuted.</b> Settle the field, switch the body off, and time each shell's response: <V>t</V>/<V>r</V> rises down the column and <V>t</V>/<V>r</V>² does not. <b>The deficit does not propagate at <K><Bar>c</Bar></K> — it spreads, and more slowly the further it goes.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the reason is the rule rather than a numerical accident.</b> Every arriving charge is destroyed and remade along a <i>different</i> edge, so no charge keeps a heading and nothing travels in a straight line. The book already says this in another place: the model is a lattice gas whose mean free path is a function of fill, transport is ballistic <i>below</i> that length and diffusive above it, and at the vacuum's own density the mean free path is short. <span className="bp5-text-muted">(What this does not rule out is a ballistic <i>precursor</i> — a faint first arrival at exactly <K><Bar>c</Bar></K> ahead of the diffusive bulk. Lowering the detection threshold runs into the shell's own noise floor before it finds one, so the honest statement is that the bulk is diffusive and a small-amplitude precursor is not excluded at this box size.)</span>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So the two sections above would not be wrong about their arithmetic — they would be wrong about the given.</b> Radiation needs transport at a fixed speed over many cells, and that needs something the diffusive reading does not have.
+          </Para>
+
+          <Head>except that the diffusion was the simplification's, not the model's</Head>
+
+          <Para>
+            <b>The rule just run is not the model.</b> It is <i>pure</i>'s simplification — every arriving charge destroyed and remade round-robin — which the gravity arc uses because it gives the right static 1/<V>r</V>, and which turns out to be <b>the only rule in this book that does not conserve momentum.</b> A wave in a gas is carried by momentum; density alone diffuses. So a rule that throws momentum away can only diffuse, whatever the model does.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            A head-on pair carries zero momentum, so every rule can be asked the same question: what does it leave behind?
+          </Para>
+
+          <Eq note="sound.ts §2 — for every direction on the lattice, not on average">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`rule                    what it does               worst |Δp|
+(G+M/3) turning         both members reverse       0.0e+0    CONSERVES
+(G+M/1) annihilation    both members go            0.0e+0    CONSERVES
+pure's remake           k in, k out, round-robin    3.000     DESTROYS`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Turning reverses both, which is still zero. Annihilation removes both, which is still zero.</b> Both of the model's own collision rules conserve momentum <i>exactly</i> — identically, for every direction, not on average. <i>pure</i>'s remake puts its charges back on whatever pair of slots the round-robin has reached, and changes the momentum by up to 3. <b>It is the right simplification for a static field and the wrong one for asking whether anything propagates, because it has thrown away the quantity that does the propagating.</b>
+          </Para>
+
+          <Head>and with momentum kept, it propagates</Head>
+
+          <Eq note="sound.ts §3 — 41³ at fill ½, head-on pairs scattered sideways, phase read between adjacent shells">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`shell pair    lag per cell    amplitude
+4→5           1.214           7.06e−1
+5→6           1.066           4.85e−1
+6→7           1.215           3.49e−1
+7→8           1.083           2.94e−1
+8→9           1.189           2.31e−1
+9→10          1.275           1.81e−1
+10→11         1.050           1.38e−1
+11→12         1.225           1.18e−1
+
+mean 1.165 ticks per cell, spread 0.226, against c̄ = 1`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The lag per cell is constant across every shell pair, with no trend</b> — a disturbance travelling at a fixed speed. Against the same geometry under the remake rule, where it rose from 2.6 to 8.9. <b>So the premise is returned</b>, and with something gained: the reason the field propagates is now <i>known</i>, and it is momentum conservation, which is a property of the model's own two rules rather than an assumption anybody made.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(And the mean free path, which was the other thing worth knowing: a ray meets something when it lands on a cell holding a charge on the opposing direction, so the free path is geometric — about <b>2 cells at the vacuum's derived fill of ½</b>, putting the ballistic-to-hydrodynamic crossover near <V>λ</V> ≈ 12.5 cells. That turned out not to be what decides the question, because a hydrodynamic medium is not a diffusive one: it carries sound.)</span>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Being honest about the quality of it.</b> A value below <K><Bar>c</Bar></K> is not measured well enough to call a sound speed — a lattice gas has one and it is generally below <K><Bar>c</Bar></K>, but separating a real <V>c</V><Sub>s</Sub> from the near field and the shot noise needs a bigger box. And the sweep over other wavelengths was <i>not</i> clean. <b>The claim is the one the data supports — that the lag per cell is constant rather than growing — and not a value for the speed.</b> What is still not done is the thing that would settle the whole arc: <b>the vector moment has never been run on a lattice at all</b>, so <i>lorenz</i>'s four equations remain continuum algebra resting on a premise that is now measured rather than refuted, which is better and is not the same as being measured itself.
+          </Para>
+
+          <Head>so run the vector moment on a lattice, which settles less than hoped</Head>
+
+          <Para>
+            The shortfall's first moment — <B>A</B> = Σ(1−<V>f</V>)·<B>d̂</B>, read straight off the cells — computed on a 41³ lattice with a momentum-conserving collision and an absorber whose <i>position</i> oscillates, so that the source has a direction and its potential has a curl. <b>Nothing analytic anywhere.</b> A single cell holds 26 bits, so what makes it a field is a lock-in at the source's own frequency: the vacuum is uncorrelated with the source and averages away.
+          </Para>
+
+          <Eq note="vector.ts §1–5 — every number read off the grid">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`                        continuum (lorenz)   on this lattice
+a first moment at all   assumed              MEASURED, |Ã| ~ |φ̃|
+∇·B = 0                 identity             5e−17     holds
+Faraday                 identity             3e−16     holds
+E ⊥ r̂, B ⊥ r̂, E ⊥ B     derived              88–92°    HOLDS
+the Lorenz condition    assumed              0.68–0.84 FAILS
+Gauss                   derived              0.86–1.10 FAILS
+Ampère–Maxwell          derived              1.00–1.04 FAILS`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The object is there and the equations are not.</b> The shortfall around a moving absorber really does carry a substantial first moment — |<B>Ã</B>|/|<V>φ̃</V>| runs 0.71 to 0.94, so it is not a small correction to the count, and that was the load-bearing assumption. The lattice operators respect both identities. <b>And the far field really is transverse</b>, at 88–92° on all three angles, which is genuine and was not forced.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>But the Lorenz condition fails, and with it the two equations that carry the content.</b> The shape of that failure is worth reading: |<V>∇</V>·<B>A</B>| = 0.39 against |<V>ω</V><V>φ̃</V>/<V>c</V>²| = 0.58 — <i>the same order as each other, and simply not cancelling.</i> That is a genuine mismatch rather than one term swamping the other.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it is not a refutation either, which has to be said as plainly as the failure.</b> <V>λ</V> = 12 cells in a 41³ box with a held rim leaves usable radii of 7 to 13 — <i>one wavelength of room</i>, with <V>kR</V> from 3.7 to 6.8, so <b>none of these shells is deep far-field and a dipole's near field satisfies none of these equations.</b> The source is a staircase ball jumping between integer cells, radiating harmonics the lock-in does not remove. And the speed is not pinned: 0.737 <K><Bar>c</Bar></K> here against 0.858 from the other run, and both equations carry 1/<V>c</V>².
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So the honest statement is that the Maxwell result does not survive being run at this size, and the arc should say so.</b> What is established, and was not before, is that the vector moment exists, is large, and gives a transverse far field. <b>The four equations remain owed — now as a measurement rather than as an assumption</b>, which is where this should have been all along.
+          </Para>
+
+          <Head>and then the failure turns out to be the lattice's, which is measurable</Head>
+
+          <Para>
+            Run it in a box with room — 161³, several wavelengths across — and one of the equations behaves quite differently from the others. <b>The Lorenz condition is not a hypothesis about this model at all: it is continuity in disguise.</b> Streaming moves a charge from <V>c</V> to <V>c</V> + <B>D</B><Sub>d</Sub> in a tick, so the current is <B>J</B> = Σ<V>f</V>·<B>D</B><Sub>d</Sub> and ∂<V>ρ</V>/∂<V>t</V> + <V>∇</V>·<B>J</B> = 0 exactly. Since Σ<B>D</B><Sub>d</Sub> = 0 the shortfall's first moment is <B>A</B> = −<B>J</B>, so <b>∇·<B>A</B> + ∂<V>φ</V>/∂<V>t</V> = 0 is a property of the streaming rather than a claim about the world.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Unless the lattice's exits have different lengths, which a cubic lattice's do.</b> The twenty-six exits are 1, √2 and √3 long, so <i>which way a charge goes</i> and <i>how far it goes in a tick</i> are different vectors — and a moment over directions is not a current. That is a fact about the grid and not about the model, so it can be tested by changing the grid.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the first thing to try is the cheap fix, which mostly does not work.</b> Weighting the moment by the raw lattice step rather than the unit direction is the <i>correct</i> current, and it should be what continuity needs — but on a cubic lattice it moves the Lorenz residual only from 0.48 to 0.40. <b>Getting the bookkeeping right is not enough</b>, because on a grid whose exits have three different lengths the sum still mixes carriers that cross different distances in the same tick. The weighting was a real error and it was not the main one.
+          </Para>
+
+          <Eq note="regime.ts, hex.ts, fcc.ts — the same measurement on three lattices">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`lattice                  step lengths   D   Lorenz    Gauss
+cubic, 26 exits          1, √2, √3      3   0.40–0.94  0.64–1.07
+triangular, 6 exits      1              2   0.222      ~0.60
+FCC, 12 exits            √2             3   0.105      ~0.43`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Lorenz improves monotonically with the lattice's step-length uniformity</b>, and that trend is the evidence: the failure was geometric. On FCC — twelve exits, all one step, in three dimensions — it falls to 0.105, with ∇·<B>B</B> and Faraday exactly nought and the far field transverse to within two degrees at every radius.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And Gauss does not follow it down. It sits near 0.43 and is flat across every scale</b> — which is the more interesting half, because a residual that does not improve when the geometry improves is not a geometric fault. <b>The model's vacuum is half full of moving charges, so it is a medium and not empty space</b>, and a medium has an induced response that vacuum-Gauss does not include. That is where the remaining failure now points, and it is a much sharper place to be than "the equations do not hold".
+          </Para>
+
+          <Head>except that no three-dimensional lattice can be isotropic enough, and that is a theorem</Head>
+
+          <Para>
+            One thing has to be said before FCC is adopted for anything. <b>Its second-rank tensor is isotropic — Σ<B>V</B>⊗<B>V</B> = 8·<V>I</V> exactly, which is what makes the gradient operator exact rather than a chosen stencil — and its fourth-rank tensor is not:</b> Σ<V>V</V><Sub>x</Sub><Sup>4</Sup> = 8 against 3Σ<V>V</V><Sub>x</Sub><Sup>2</Sup><V>V</V><Sub>y</Sub><Sup>2</Sup> = 12, where isotropy needs them equal.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            That is the tensor carrying <i>momentum flux</i>, so a lattice gas on FCC has direction-dependent hydrodynamics — and it is not a fact about FCC. <b>No three-dimensional single-speed lattice has an isotropic fourth-rank tensor</b>, which is why the lattice-gas literature works on a <i>four</i>-dimensional face-centred lattice and projects down. <span className="bp5-text-muted">(Which is a genuinely awkward result for a book whose whole premise is a three-dimensional discrete space, and it is stated here rather than left for someone else to find.)</span>
+          </Para>
+
+          <Head>and what changing the lattice would cost the rest of the book</Head>
+
+          <Eq note="fcc.ts §4 — the exits sorted by which side of an axis they fall on">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`axis                    + side   equator   − side
+cubic ⟨100⟩ face          9        8         9      ← Layer 2's ring
+FCC, an exit ⟨110⟩        5        2         5
+FCC, a cube axis ⟨100⟩    4        4         4
+FCC, a body diagonal      3        6         3      ← a hexagonal ring`}
+            </span>
+          </Eq>
+
+          <Para>
+            The cubic face axis's <b>equator of eight is the whole of the Layer-2 arc</b> — the ring, the U(1) phase, the 45° quantum, and <K><Bar>SHEET</Bar></K> = 3<Sup><V>D</V>−1</Sup> − 1. On FCC the exit axes have two and the cube axes four, <b>but the body diagonals have six</b> — so the ring does not die, it becomes a hexagon with a 60° quantum and <K><Bar>CYCLE</Bar></K> = 6 rather than 8.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So adopting FCC would buy a clean current and rewrite the ring</b>, and every constant in this book that is built on <K><Bar>DEG</Bar></K> = 26 or <K><Bar>CYCLE</Bar></K> = 8 would move with it. That is a large enough change that it should be decided on the physics rather than on the convenience of one measurement.
+          </Para>
+
+          <Head>except that the current was never the lattice's fault, which is measurable</Head>
+
+          <Para>
+            <b>Continuity on a streaming lattice is exact, on any lattice, with no conditions.</b> The mass that leaves a cell along <B>d</B> arrives at <V>c</V> + <B>D</B><Sub>d</Sub> and nowhere else, so <V>ρ</V>(<V>t</V>+1) − <V>ρ</V>(<V>t</V>) = Σ<Sub>d</Sub>[<V>f</V><Sub>d</Sub>(<V>c</V> − <B>D</B><Sub>d</Sub>) − <V>f</V><Sub>d</Sub>(<V>c</V>)] identically. Measured on 893,268 cells with the streaming's own stencil, in integers, with the momentum-conserving collision on top: <b>worst error exactly nought.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So every Lorenz residual above is the measuring stick and not the model.</b> What those runs checked was a <i>continuum</i> statement built with a smooth gradient and a continuum time derivative, and that agrees with the exact difference only to leading order in <V>k</V>·<V>a</V> — the residual is O((<V>k</V><V>a</V>)²), which at <V>λ</V> = 16 on FCC is 0.31 against 0.105 measured. <b>And it re-explains the trend</b>: cubic → triangular → FCC was not physics improving, it was <V>a</V> shrinking, since a cubic lattice's √3 exits give it a larger effective spacing than FCC's √2.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>A conserved current is not merely possible in three dimensions. It is unavoidable.</b> What is true is the narrower thing the fourth-rank tensor says: no 3D single-speed lattice carries isotropic momentum <i>flux</i>, which is why lattice-gas work uses a four-dimensional lattice and projects down.
+          </Para>
+
+          <Head>and the model is not one geometry — it is parameterised by one</Head>
+
+          <Para>
+            Which is the better way to hold all of this. <b>A geometry is a parameter of this model and not a fact about it</b> — the three rules never mention one. They demand only that every exit have its opposite, so a head-on pair exists for (G+M/1) and (G+M/3) to act on, and every candidate supplies that. Rank-2 isotropy gives the inverse square, and every candidate supplies that too. <b>Which is why 1/<V>r</V>² was never in danger and why the fourth-order problem went uncaught for so long.</b>
+          </Para>
+
+          <Eq note="geometry.ts §1, §5, §7 — anisotropy as (max − min)/mean over directions">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`geometry             DEG  rank 4   equator  CYCLE  SPIN   c aniso  field
+cubic 6, faces         6   99.5%      4       4     90°    1.00×   veined
+cubic 8, BCC           8   79.7%      0       —      —     1.00×   veined
+cubic 12, FCC         12   28.5%      6       6     60°    1.00×   veined
+cubic 18, weighted    18   exact      8       8     45°    1.41×   round
+cubic 26, THE MODEL   26   49.8%      8       8     45°    1.73×   veined
+cubic 26, weighted    26   exact      8       8     45°    1.73×   round
+icosahedral 12        12   exact      4       4     90°    1.00×   round`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Read the rows as separate theories, because that is what they are.</b> The model as written predicts a veined field and a light speed 73% faster along body diagonals — <i>both are predictions</i>, and the second is in trouble. Weighting the same lattice makes the field round with <K><Bar>CYCLE</Bar></K> = 8 intact, and the weights that do it are <b>forced rather than fitted</b>. FCC has one speed and no timing question and moves <K><Bar>CYCLE</Bar></K> to 6. <b>BCC is the one genuine exclusion</b> — its equator is <i>empty</i>, so there is no ring to put a phase on: gravity would work on it and charge as this book writes it could not exist.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(And a second parameter the arc had been assuming silently: a neighbour set does not say how long a step <i>takes</i>. Per exit — the reading used throughout — a body diagonal covers √3 cells in one tick, so <b>light is direction-dependent</b>. Per distance, <K><Bar>c</Bar></K> is isotropic and a diagonal charge is in transit for more than one tick, which is state the model does not carry. <b>Where the steps are all equal the two coincide and the question never arises</b>, which is an argument for the equal-step geometries that has nothing to do with isotropy.)</span>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So what this book owes is not a choice but a label.</b> Every result in it should say which geometry it was computed on, because several of them differ between those rows. <span className="bp5-text-muted">(And the deformation is why the icosahedral row is admissible at all: (G+M/1) leaves one point where there were two, so the point count is dynamical and <b>the model was never running on a crystal</b> — the restriction that forbids five-fold symmetry applies to <i>periodic tilings</i>, which this is not. Measured, the deformation is fast — around 5% of cells a tick — and <b>uniform</b>, with an annihilation density near a body within 4% of the far field, so a fixed grid gets the shape right even where it gets the scale wrong.)</span>
+          </Para>
+
+          <Head>and then the thing that had never been done: polarity, on a lattice</Head>
+
+          <Para>
+            <b>Every electromagnetic lattice run above streams an unpolarised occupancy.</b> Audited: <i>regime</i>, <i>fcc</i> and <i>vector</i> carry <V>f</V> ∈ {'{'}0,1{'}'} per exit with no ±1 anywhere. But the electric force is not a statement about density — <b>it is a statement about which rule fires, and which rule fires is decided by the two signs.</b> So those runs measured a scalar density field and called it <B>E</B>.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Put a sign on the body and read the net polarity of the vacuum around it.
+          </Para>
+
+          <Eq note="charged.ts §2 — the three rules, with polarity, on a lattice">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`body       net r 4–7   r 8–12   r 13–18   far
+neutral       0.014     −0.002    −0.002   0.000
++1            2.366      0.661     0.278   0.136
+−1           −2.374     −0.638    −0.261  −0.122
+
+|net(+) − net(−)| = 4.74      |net(+) + net(−)| = 0.008      ratio ≈ 600×
+
+shell   mean r    net      × r     × r²
+4–7      5.5     2.3661   13.01    71.6
+8–12    10.0     0.6608    6.61    66.1
+13–18   15.5     0.2783    4.31    66.9
+19–24   21.5     0.1458    3.13    67.4      net·r² flat to 1.08×`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>A charge polarises the vacuum around it, and the two signs give equal and opposite fields</b> — 600 to one against the symmetry residual. <b>And it falls as 1/<V>r</V>².</b> A fixed emission spread over a shell of 4π<V>r</V>² thins as 1/<V>r</V>², which is the same counting the gravity arc derives the inverse square from — so <b>the net polarity a charge leaves in the vacuum <i>is</i> the electric field</b>, read directly rather than differentiated out of a potential. <b>That is Coulomb's law on a lattice, from the three rules, with polarity.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(One thing this corrects. A run without polarity had reported the deficit around a body going <i>negative</i> — matter making space rather than eating it — with a mechanism to match: a body's emptied neighbours are neutral, and a neutral point is exactly what (G+M/2) expands. <b>That reading was the wall.</b> The boundary is open, so the box drains its own outer region and any far-shell baseline is too low; the tell was that the profile was non-monotonic, and no field is. Differenced against the same box with no body in it, the deficit is <b>positive and monotone at every creation rate</b> — 0.085, 0.022, 0.008 — which is the sign and the shape gravity needs, measured for the first time with creation and annihilation actually running.)</span>
+          </Para>
+
+          <Head>and magnetism, which gets the geometry and misses the exponent</Head>
+
+          <Para>
+            <b>A current in this model is charges with polarity, moving</b> — which makes <B>A</B> = Σ<V>σ</V>·<B>D</B>, the signed first moment over the exits, a real local quantity. So take a <i>neutral wire</i>: cells that set their +<V>z</V> exits to +1 and their −<V>z</V> exits to −1 every tick, <b>as many + as −, no net charge</b>, and a net polarity current along <V>z</V>. It is the smallest thing in this model that is a current rather than a charge.
+          </Para>
+
+          <Eq note="ampere.ts §1–3 — signed projections onto each cell's own φ̂, r̂, ẑ">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`r     A∥ẑ    B·φ̂       B·r̂       B·ẑ      φ̂ share
+3     88%    0.19835   −8.4e−4   6.4e−3    100%
+7     70%    0.03482   −7.7e−4   4.8e−3     99%
+12    58%    0.01289   −9.1e−4   1.5e−3     99%
+
+reversed current:  B·φ̂ = −0.03294 against 0.03482      ratio −0.946
+∇·B / (|B|/cell):  5.4e−17                              identically zero`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b><B>B</B> is azimuthal</b> — 97 to 100% of it in φ̂, with the radial and axial parts at the noise floor. <b>It reverses with the current</b>, which no density gradient can do and which is why polarity had to be in the run for any of it to appear. <b>And ∇·<B>B</B> = 0 identically</b>, which is the no-monopole statement checked on the lattice rather than argued from a cross product. <span className="bp5-text-muted">(Measured by projecting each cell's <B>B</B> onto <i>its own</i> φ̂ — averaging |<B>B</B>| instead is noise-dominated and reported the angle as 90°, the exact opposite, while averaging the vector cancels a real circulation to nought because φ̂ points differently around the ring.)</span>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the distance law is 1/<V>r</V>², where Ampère gives 1/<V>r</V>.</b> That is a real deviation and its reason is structural rather than numerical. The net polarity around a point charge is 1/<V>r</V>², so <b>the lattice's direct signed moment is <i>field</i>-like</b>, while electromagnetism's vector potential is <i>potential</i>-like — 1/<V>r</V> for a point. <b>Taking the curl of a field-like object gives one power too many.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which turns a puzzle into a question with an answer.</b> The lattice has both objects and they are not interchangeable: <b>the deficit is 1/<V>r</V></b>, measured, because it settles and solves a discrete Laplace equation; <b>the net polarity is 1/<V>r</V>²</b>, measured, because it is a conserved quantity spreading over a shell. One is a potential and one is a field, and which of them plays <B>A</B> is now something to measure rather than to choose. <span className="bp5-text-muted">(The dipole from a current loop is <i>not</i> resolved — the axis-to-equator ratio wanders over −3.9, 1.0, 2.1, 0.6 with no trend and |<B>B</B>|·<V>r</V>³ varies twelvefold, which is a signal below the floor rather than a shape. The magnetism arc's assumed dipoles remain assumed.)</span>
+          </Para>
+
+          <Head>and the force itself, which needs no field at all</Head>
+
+          <Para>
+            <b>The exponent problem is about which derived object is which, and the physics does not need one.</b> What magnetism <i>is</i>, operationally, is that parallel currents attract and antiparallel ones repel — and in this model a force is not a vector added to anything. <b>It is where space shortens</b>, because (G+M/1) takes two spatial points and leaves one. So put two wires side by side and count where the annihilations land.
+          </Para>
+
+          <Eq note="wires.ts — a matched shell 2 to 4 cells from the nearer wire, inside the pair and outside it">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`configuration       between   outside   ratio    between − outside
+inert control        0.0445    0.0440   1.0112        5e−4
+parallel currents    0.0429    0.0385   1.1146        4.4e−3
+antiparallel         0.0390    0.0388   1.0043        2e−4`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The control is what makes the other two rows mean anything.</b> Two absorbing lines shorten the space between them by shadowing each other, which has nothing to do with magnetism — so the question is not whether the ratio exceeds one, but whether the two <i>current</i> rows differ from an inert pair of the same geometry. <b>They do, and the two configurations differ in nothing but the direction of a current carrying no net charge</b>, so whatever separates them is magnetic.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the effect is not symmetric, which is worth more than the headline.</b> Parallel sits 1.0·10<Sup>−1</Sup> above the control and antiparallel only 7·10<Sup>−3</Sup> below it — a factor of fifteen — where electromagnetism gives an attraction and a repulsion of the <i>same</i> size. <b>So the honest claim is half of Ampère's force law: parallel currents attract, clearly; antiparallel ones show no repulsion this run can resolve.</b>
+          </Para>
+
+          <Head>the mechanism, drawn — because it is invisible in the instant</Head>
+
+          <Para>
+            All of the above is a number, and the thing the numbers are about can be looked at. <b>Every panel below runs the three rules</b> — cells holding a charge of ±1 on each of the eight headings of the plane, one cell a tick, (G+M/1) annihilating opposite pairs, (G+M/3) turning alike ones, (G+M/2) expanding neutral points. Nothing is summed and nothing is analytic.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The left of each is one tick, which is <i>mostly vacuum and mostly noise</i>. The right is where space has been destroyed, accumulated — <b>and it is drawn against the rate the vacuum runs at anyway</b>, because a force is an <i>excess</i> over that and not a total. <span className="bp5-text-muted">(Scaling each panel to its own peak instead makes them incomparable and reads backwards: the opposite-charge case puts a narrow intense band between the two, so its peak sends everything else to nothing, while the alike case has no band and its vacuum fills the frame.)</span>
+          </Para>
+
+          <LatticeAttract />
+
+          <LatticeRepel />
+
+          <LatticeInert />
+
+          <Para>
+            <b>The band between the two opposite charges is the whole of it.</b> That is (G+M/1) firing where their rays meet, two spatial points becoming one, and the pair being drawn together because the space separating them is the space that vanished. <b>Put two alike charges there and the band is gone</b> — their rays turn instead, and the region between them is as dark as the vacuum. The inert pair is the control: the same geometry, the same shadowing, no sign, no structure. <span className="bp5-text-muted">(The star of rays radiating from each body is the lattice's own grain — a source emits along its exits, and there are eight of them.)</span>
+          </Para>
+
+          <Head>the laws this arc actually derived, in one place</Head>
+
+          <Para>
+            Every line below is measured on a lattice running the three rules, and each one names what it cost.
+          </Para>
+
+          <Eq note="exact.ts — 893,268 cells, integers, streaming and collision both; worst error exactly nought">
+            <V>ρ</V>(<V>t</V>+1) − <V>ρ</V>(<V>t</V>) + <V>∇</V>·<B>J</B> = 0
+            <span style={{ padding: '0 1.2em', color: FAINT }}>with</span>
+            <B>J</B> = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>f</V><Sub>d</Sub> <B>D</B><Sub>d</Sub>
+          </Eq>
+
+          <Para>
+            <b>Continuity, exactly, on any lattice.</b> What leaves a cell along <B>d</B> arrives at <V>c</V> + <B>D</B><Sub>d</Sub> and nowhere else, so this is not a hypothesis about the model — it is what streaming <i>is</i>. And it is why the Lorenz condition is not a thing to check but a thing to notice.
+          </Para>
+
+          <Eq note="charged.ts §2 — net·r² flat to 1.08× over r = 5.5 to 21.5, with the two signs at 600 : 1 against the symmetry residual">
+            <V>ρ</V>(<V>r</V>) = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>σ</V><Sub>d</Sub>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>∝</span>
+            <Frac over={<><V>q</V></>} under={<><V>r</V><Sup>2</Sup></>} />
+          </Eq>
+
+          <Para>
+            <b>Coulomb's law, and it is Gauss's law that makes it true.</b> Both rules <i>conserve</i> net polarity — (G+M/1) removes a + and a − together and (G+M/3) preserves both — so it is a conserved quantity spreading over a shell of 4π<V>r</V>², and 1/<V>r</V>² is what that comes to. <b>The net polarity a charge leaves in the vacuum <i>is</i> the electric field</b>, read directly rather than differentiated out of a potential.
+          </Para>
+
+          <Eq note="forces.ts §1 — a signed one-sided force, six runs of 700 ticks, against an inert pair of the same geometry">
+            <V>F</V> = ⟨ann⟩<Sub>toward</Sub> − ⟨ann⟩<Sub>away</Sub>
+            <span style={{ padding: '0 1.2em', color: FAINT }}>gives</span>
+            +2.54·10<Sup>−2</Sup> at <b>7.6σ</b> for + −
+            <span style={{ padding: '0 0.8em', color: FAINT }}>and</span>
+            0.8σ for + +
+          </Eq>
+
+          <Para>
+            <b>Opposite charges attract, at seven and a half sigma, and the repulsion is not resolved.</b> That is the honest split and it took getting the measure right to see either: a <i>ratio</i> saturates — it read 8.5 at close separation, which is no longer a response to a perturbation — and the region it averaged over changed shape with the separation, so the samples were not comparable across the one variable that mattered. A force is a signed thing about <i>one</i> object, on a shell that does not depend on the separation, and then it is linear and it cannot saturate. <span className="bp5-text-muted">(And the two alike cases disagree with each other in sign at about one sigma, which is what noise looks like — so the repulsion is unmeasured rather than absent.)</span>
+          </Para>
+
+          <Eq note="ampere.ts — a neutral wire, signed projections onto each cell's own basis">
+            <B>A</B> = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>σ</V><Sub>d</Sub> <B>D</B><Sub>d</Sub>
+            <span style={{ padding: '0 1em', color: FAINT }}>⇒</span>
+            <B>B</B> = <V>∇</V>×<B>A</B> is azimuthal to 97–100%
+            <span style={{ padding: '0 1em', color: FAINT }}>and</span>
+            <V>∇</V>·<B>B</B> = 0
+          </Eq>
+
+          <Para>
+            <b>Ampère's geometry, from a current that carries no net charge at all.</b> The field goes round the wire, it <i>reverses when the current does</i> — at −0.946, which no density gradient can do — and its divergence is nought identically. <b>And the distance law is 1/<V>r</V>² where Ampère gives 1/<V>r</V></b>, which is a real deviation with a structural cause, and the next section is what it points at.
+          </Para>
+
+          <Head>and what the discrete case tells the continuous one</Head>
+
+          <Para>
+            This is the part worth carrying forward, because the lattice settles things the continuum argument had to guess at.
+          </Para>
+
+          <Rows of={[
+            [<>there are TWO objects, and they are not interchangeable</>,
+              <>The <b>deficit</b> falls as 1/<V>r</V> — it settles, and solves a discrete Laplace
+                equation, so it is a <i>potential</i>. The <b>net polarity</b> falls as
+                1/<V>r</V>² — it is conserved and spreads over a shell, so it is a <i>field</i>.
+                <b> Both are measured</b>, and the continuum model has been using one where it
+                needed the other: taking the curl of a field-like object is what gives
+                <B> B</B> ∝ 1/<V>r</V>² instead of 1/<V>r</V>. <b>Which object plays <B>A</B> is
+                now a question with an answer rather than a modelling choice.</b></>],
+            [<>Gauss is conservation, not a law to impose</>,
+              <>The two collision rules conserve net polarity <i>identically</i>, so a shell
+                integral of the field is the enclosed charge by construction. A continuum model
+                built on this does not need Gauss as an axiom — <b>it needs to not break the
+                conservation the rules already have</b>.</>],
+            [<>and so is the Lorenz condition</>,
+              <>∇·<B>A</B> + ∂<V>φ</V>/∂<V>t</V> = 0 is continuity in disguise, and continuity is
+                exact on any lattice. <b>Every residual this arc measured for it was the
+                stencil</b>, O((<V>k a</V>)²), and the trend across lattices was <V>a</V>
+                shrinking rather than physics improving.</>],
+            [<>the vacuum is a medium, and it has a scale</>,
+              <>Half full of moving charges, with a mean free path of about two cells at the
+                derived occupancy. <b>So a continuum model of this is a model of a medium</b> —
+                it should expect a dispersion relation, an attenuation length, and a
+                near-to-far transition, and it should not expect vacuum-Maxwell to hold
+                exactly at every scale.</>],
+            [<>the geometry is a parameter</>,
+              <>The three rules never name one. <b>What the continuum model inherits from the
+                choice is <K><Bar>DEG</Bar></K>, <K><Bar>SHEET</Bar></K>, <K><Bar>CYCLE</Bar></K>,
+                whether the field is round or veined, and whether <K><Bar>c</Bar></K> is
+                isotropic</b> — so every constant it derives should carry the label of the
+                geometry it was derived on.</>],
+            [<>and the deformation is real but uniform</>,
+              <>(G+M/1) makes two points into one, so the lattice is a graph and not a crystal —
+                which is what admits an isotropic neighbourhood at all. Measured, the shortening
+                runs at about 5% of cells a tick and its density near a body is within 4% of
+                the far field. <b>A fixed grid gets the shape right and the scale wrong</b>,
+                which is the licence the continuum model has been using without knowing it had
+                one.</>],
+          ]} />
+
+          <Head>so where the electromagnetic case actually stands, discretely</Head>
+
+          <Rows of={[
+            [<>discrete and measured</>,
+              <><b>Continuity</b>, exact on integers. <b>Momentum conservation</b> by both collision
+                rules, exact. <b>Retarded transport</b> at a fixed speed. <b>The deficit's sign and
+                shape</b> with the vacuum running. <b>Coulomb's law</b> — a charge polarises the
+                vacuum, the two signs give opposite fields, and it falls as 1/<V>r</V>².
+                <b> Ampère's geometry</b> — azimuthal, reversing with the current, ∇·<B>B</B> = 0.
+                <b> And the forces themselves</b>, with no field constructed anywhere: opposite
+                charges attract at <b>7.6σ</b> against an inert pair of the same geometry, and
+                parallel currents attract where antiparallel ones do not.</>],
+            [<>measured and deviating</>,
+              <><b><B>B</B> ∝ 1/<V>r</V>² rather than 1/<V>r</V></b>, because the curl is being taken
+                of a field-like object rather than a potential-like one. That is a statement about
+                which moment plays which role, and it is the first thing to settle. <b>And the
+                force is one-sided</b> — the attraction is measured at 7.6σ while the repulsion
+                sits under one, and the two alike cases disagree with each other in sign, which
+                is what noise looks like. <b>So the repulsion is unmeasured rather than absent</b>,
+                and Coulomb has them exactly equal.</>],
+            [<>still continuum only</>,
+              <><B>E</B> = −∇<V>φ</V> − ∂<B>A</B>/∂<V>t</V>, <B>B</B> = ∇×<B>A</B>, Gauss,
+                Ampère–Maxwell, <b>the Lorentz force</b>, the dipole, and radiation. Every one of
+                them is a sum over an analytic expression, and the two lattice runs that looked
+                like exceptions — the vector moment and the transverse far field — were done
+                <b> unpolarised</b>, which the sections above show is a different object.</>],
+            [<>and what that leaves</>,
+              <><b>The electrostatic half is now discrete end to end</b> — the field, its sign law,
+                its 1/<V>r</V>², and an attraction at 7.6σ — <b>and the magnetic half is discrete in
+                its geometry and not in its magnitude.</b> Which is a better position than the arc
+                has been in and is a long way from finished: this book has a lattice that does
+                electrostatics and the geometry of magnetostatics, and a continuum argument that
+                does everything else. <b>What it now also has is a list of exactly which is which</b>,
+                and that was the thing most worth getting.</>],
+          ]} />
+
+          <Para>
+            <span className="bp5-text-muted">(One correction underneath all of this, recorded because everything above the last two sections was measured through it: the retarded-time solver had its bisection inequality inverted, so it walked to its own bracket endpoint and returned <V>t</V> − 10<Sup>7</Sup> for every field point, silently. It was caught by checking the solver's own residual, which should be nought and was −7·10<Sup>6</Sup>. The count-reading's failures survive the fix; its one apparent success — Gauss — did not.)</span>
           </Para>
 
           <Head>and the debt has moved, which is the last thing this arc settles</Head>
