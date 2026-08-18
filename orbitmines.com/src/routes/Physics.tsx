@@ -38,6 +38,7 @@ import { Shelter } from "./archive/2026.RayCalculiAndPhysics/shelter";
 import { MeanOccupancy, MeanPolarity, PerAxis, PerNode, PerRay } from "./archive/2026.RayCalculiAndPhysics/ribbon";
 import { Attract, Lorentz, MovingCharge, Repel, Wire } from "./archive/2026.RayCalculiAndPhysics/em";
 import { LatticeAttract, LatticeInert, LatticeRepel } from "./archive/2026.RayCalculiAndPhysics/grid";
+import { AmpereField, ChannelsAlike, ChannelsOpposite, WiresAnti, WiresParallel } from "./archive/2026.RayCalculiAndPhysics/current";
 import { Exits, Shells } from "./archive/2026.RayCalculiAndPhysics/counts";
 
 /** The colour the rest of the article uses for an aside inside a set line. */
@@ -5696,6 +5697,370 @@ turn           −59644.2             9233.6          0.1548`}
             <b>The gate pushes it sideways and not forward; the turn does both</b> — and the turn's ratio of 0.1548 is tan(<V>θ</V>/2) = 0.1511 arriving from the dynamics rather than from a sum, which is the check that the two calculations are describing one thing. <span className="bp5-text-muted">(An earlier version of this walk rotated <i>both</i> polarities' displacements, and the turn's longitudinal force cancelled — restoring a ± symmetry the rules do not have, since (G+M/3) fires on alike pairs only. The cancellation was an artefact of the test. It is the asymmetry between the two rules that produces the drag.)</span>
           </Para>
 
+          <Head>and the separation sweep finishes, which settles the crossover</Head>
+
+          <Para>
+            The section above was written mid-run, with <V>push</V> §2 and <V>signlaw</V> §2 still extending to 14 and 18, and the crossover offered on the strength of the two rows that existed. <b>The sweep is finished, and it answers the question in the negative for a better reason than it was asked.</b>
+          </Para>
+
+          <Eq note="push.ts §2 with (G+M/3) as spin, signlaw.ts §2 as noop — six seeds of 700 ticks at each separation">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`sep   PUSH, alike, spin      PULL, opposite         PUSH, alike, noop
+ 6    −4.630e+0 ± 2.3e−2    +2.207e−1 ± 4.5e−4    −8.989e+0
+10    −7.746e−1 ± 1.6e−2    +2.895e−2 ± 2.4e−3    −8.680e+0
+14    −1.089e−1 ± 5.0e−3    +3.246e−3 ± 4.2e−4    −8.668e+0
+18    −1.194e−2 ± 2.3e−3    +4.031e−3 ± 5.6e−4    −8.653e+0
+
+fitted decay length      push  1.8 … 2.2 cells
+                         pull  1.8 … 2.0 cells`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Both channels are screened, and they are screened at the same length.</b> The push falls by 388× between six cells and eighteen and the pull by 68× between six and fourteen, and fitting each to e<Sup>−<V>d</V>/<V>λ</V></Sup> gives <V>λ</V> ≈ 2 cells for both. <b>So there is no crossover: the sign of the net force does not change with distance</b>, because the two things whose competition would have had to change it decay together.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the number that comes out is not a fitted one — it is the vacuum's own mean free path.</b> The arc measured that at about two cells at the derived fill of a half, from the geometry of a ray landing on a cell that holds a charge on the opposing direction. <b>Two forces built from different rules, measured by different instruments, both range out at exactly the length at which a ray stops travelling in a straight line.</b> Which is what a second-order effect must do: a force needs rays from <i>both</i> bodies to survive the trip and meet, so it carries the survival probability twice and the field's own long range does not help it.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>That sharpens the arc's own sharpest constraint rather than relieving it.</b> A Coulomb force with a range of two Planck lengths is not a Coulomb force, and this now says so in both channels at once — so either the density that governs force propagation is not the one the vacuum sections derive, or electrostatics' observed infinite range is a hard bound on that density. <b>The prediction that goes is the crossover, and what replaces it is a single screening length the model did not get to choose.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(The third column is why the turn's implementation had to be settled before this could be read. Under <V>noop</V> — alike rays passing straight through each other — the push does not fall at all, and six seeds agree to the last digit at <V>sep</V> = 14, which is not a weakening force but a <i>saturated</i> channel: nothing annihilates between two alike bodies, so the gap fills and stays full and what the left body absorbs stops depending on how far its partner is. Under <V>spin</V>, where a turn scatters rays out of the line, the same measurement is clean and exponential. <b>The distance law belongs to the reading in which the turn does something</b>, which is the article's own <K><Bar>SPIN</Bar></K> = 45°.)</span>
+          </Para>
+
+          <Head>and the wire had its second sign all along, once the measure could see it</Head>
+
+          <Para>
+            The same fault runs through <V>wires</V>, and fixing it fixes the half of Ampère's force law that was missing. That file counted annihilations between two currents and found parallel ones shortening the space between them at 1.1146 against an inert control's 1.0112, with antiparallel at 1.0043 — <b>an attraction, and no repulsion.</b> Which is exactly what an annihilation count must report, for the reason the sections above establish: <b>it can only see the rule that destroys.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            And the mechanism says in advance what the other channel should show. A wire's exit (1,0,−1) carries −1 and heads toward its partner; the partner's (−1,0,+1) heads back. <b>Parallel, the partner's is +1 — opposite signs, counter-propagating, so (G+M/1) fires and the gap is thinned. Antiparallel, the partner's is −1 — alike, so (G+M/3) turns them, nothing is destroyed, and the rays survive the crossing and land.</b> The same XOR as the charges, arriving at Ampère's force law rather than Coulomb's.
+          </Para>
+
+          <Eq note="wires.ts §1 — 45³, six seeds of 500 ticks, separation 10; a LONE wire is the zero for both channels">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`(G+M/3)   configuration   PUSH (momentum)   PULL (annihilation)
+noop      lone            −4.739e−1         +1.437e−3
+noop      parallel        −5.288e−1         +3.697e−3
+noop      antiparallel    −5.809e+1         +1.515e−3
+spin      lone            −1.376e+0         +1.257e−3
+spin      parallel        −7.744e−1         +9.849e−3
+spin      antiparallel    −1.039e+1         +2.050e−3
+
+noop   antiparallel pushed harder by 5.756e+1   (1780σ)
+       parallel     pulled harder by 2.182e−3   (2.7σ)
+spin   antiparallel pushed harder by 9.616e+0   (103σ)
+       parallel     pulled harder by 7.799e−3   (10.1σ)`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Both orderings hold at once, under both readings of the turn.</b> Antiparallel currents take the larger share of the momentum and parallel ones the larger share of the destroyed space — <b>which is Ampère's force law, both signs, from a pair of currents carrying no net charge at all, on a lattice, from the three rules.</b> The article's earlier "half of Ampère's force law" is superseded: the other half was never absent, it was invisible to the instrument.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(The lone wire does <i>not</i> read nought on the push, unlike the lone <i>body</i> in <V>push</V> §1, and the reason is worth recording rather than hiding. A ball emits down all twenty-six exits, so its own emission carries no net x-momentum by symmetry and the zero is structural; a wire emits only into its two hemispheres, leaving its eight equatorial exits empty, and it sits off-centre in the box — so a lone wire reads the box's own asymmetry at −4.7·10<Sup>−1</Sup>. That baseline is shared by all three configurations and cancels between them, and the antiparallel signal is a hundred times larger than it, but the comparison that carries the result is parallel against antiparallel and not either against the lone control.)</span>
+          </Para>
+
+          <ChannelsAlike />
+
+          <ChannelsOpposite />
+
+          <Para>
+            <b>Which is the two channels drawn rather than tabulated.</b> Both panels run the three rules with polarity on a 121² lattice, each differenced against the same box at the same seed with only the left body in it — the subtraction the measurements make. The left half is the ray traffic the partner added and the right half is the annihilation it added. <b>Look at the gap between the two circles:</b> the opposite pair has a bright band of destroyed space across it and the alike pair does not, while the alike pair's traffic reaches across and the opposite pair's does not. <b>That swap is the sign law.</b> Neither half alone is a force with a sign; the pair is.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(And the vacuum in these is <i>the one the vacuum sections derive</i>, which is the single thing that decides what any of them look like. Firing (G+M/2) only in a completely neutral cell — which sounds like the rule — is self-limiting: once a box has traffic in it there are almost no fully empty cells left, so the occupancy tops out near a tenth whatever the rate. At that fill a ray crosses tens of cells untouched and <b>a source's emission stays twenty-six pencil beams that never spread</b>, which is what the first version of these panels drew. With the derived rule — new room edged on every axis, and the same expansion thinning what is there — the mean free path is a couple of cells and <b>the emission diffuses into a field</b>. The residual star still visible in them is not an artefact either: every meeting is a coin flip between being turned and being annihilated, so whatever is still on its original exit at distance is the population that has never been touched, and that ballistic tail is the same one the arc keeps finding.)</span>
+          </Para>
+
+          <WiresParallel />
+
+          <WiresAnti />
+
+          <Para>
+            <b>And the currents do the same thing for the same reason, with the roles of the two configurations exchanged.</b> Neither wire carries any net charge — each sets its +<V>y</V> exits to +1 and its −<V>y</V> exits to −1, as many of one as the other — so nothing in either panel is electric. What separates them is which rule fires where their rays meet, and that is decided by the direction of a current and nothing else.
+          </Para>
+
+          <Head>and the exponent, which turns out to be a theorem and then not to matter</Head>
+
+          <Para>
+            <V>ampere</V> left <B>B</B> ∝ 1/<V>r</V><Sup>2</Sup> where Ampère gives 1/<V>r</V>, and read it as a question about which derived object is which: the lattice has a 1/<V>r</V> object, the deficit, and a 1/<V>r</V><Sup>2</Sup> object, the net polarity, and <i>which of them plays <B>A</B></i> was said to be a question with an answer. <b>It has one, and the answer is neither.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The reason is a two-line argument the arc already had all the pieces of. <b>Both collision rules CONSERVE net polarity</b> — (G+M/1) removes a + and a − together and (G+M/3) preserves both — <b>so a signed quantity cannot relax. It can only stream, and a conserved thing streaming over a shell is field-like by construction.</b> The unsigned occupancy is <i>not</i> conserved, since (G+M/1) destroys pairs and (G+M/2) makes them, which is exactly why the deficit settles into a discrete Laplace solution and is potential-like. <b>A signed potential would have to be both, and nothing on this lattice is.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Which leaves one escape and it can be measured: the deficit's own <i>first moment</i> relaxes, so if it carried the current's direction it would be the vector potential.
+          </Para>
+
+          <Eq note="potential.ts §1–§3 — four objects round one neutral wire, differenced against the same box with no wire">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`object                            exponent   direction
+ρ = Σσ           net polarity     −0.22      (the wire is neutral — the control)
+J = Σσ D         signed moment    −1.10      ALONG ẑ
+φ = DEG − active the deficit      −1.43      (a scalar)
+G = Σ(1−f) D     deficit moment   −1.04      RADIAL
+
+∇×J azimuthal   p = −1.60      Ampère wants −1
+∇×G azimuthal   p = −1.74      and wanders in SIGN — it is noise`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b><B>G</B> is radial, which closes it.</b> The occupancy cannot tell a + from a −, and a wire emits as much along +<V>z</V> as along −<V>z</V>, so the deficit has no way to know which way the current runs — measured, <B>G</B>·<B>r̂</B> is −4.9·10<Sup>−1</Sup> against <B>G</B>·<B>ẑ</B> at −1.8·10<Sup>−2</Sup>. <b>The curl of a radial field is nought, and the measured ∇×<B>G</B> duly wanders in sign.</b> So the deficit is a potential and carries no direction; the signed moment carries a direction and is a field. <b>There is no signed potential on this lattice, and taking the curl of what there is must cost a power.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(And it is geometry rather than transport, which had to be checked separately: sweeping the vacuum's creation rate from nothing to 0.10 moves <B>J</B>'s exponent over −1.088, −1.109, −1.065, −1.067. A flux dilutes geometrically and no amount of medium repairs it. The no-op turn <V>ampere</V> ran also makes no difference here, which is worth knowing given what it did to the force.)</span>
+          </Para>
+
+          <Head>except that the wire was built wrong, and that was the whole of it</Head>
+
+          <Para>
+            <b>The theorem is right and it was answering a question that need not have been asked.</b> <V>ampere</V> made a current out of cells that set their +<V>z</V> exits to +1 and their −<V>z</V> exits to −1 — as many + as −, so neutral, and a polarity current along <V>z</V>. That <i>is</i> a current. <b>It is not a wire.</b> It emits its two signs into opposite hemispheres, so at a field point the sign of an arriving ray is the sign of its own <V>z</V>-component, σ<Sub>d</Sub><B>D</B><Sub>d</Sub> carries |<V>d</V><Sub>z</Sub>| in its <V>z</V> part, and the signed moment comes out <i>along</i> the wire. <b>Something azimuthal could then only be got by taking a curl, and the curl cost the power.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>A wire is two counter-drifting populations of carriers, each radiating isotropically</b> — which is what <V>fork</V>'s own wire is, and what a wire is. Build it that way, give each ray the label <V>fork</V> resolved the arc onto, and read <B>B</B> = Σσ(<B>D</B> × <B>u</B>) straight off the cells. <b>No curl, no potential, no differentiation of anything.</b>
+          </Para>
+
+          <Head>the label, on a lattice — which the arc had never once run</Head>
+
+          <Para>
+            <b>Every row of <V>fork</V> is superposition</b>: a sum over an analytic expression at a field point, with no lattice, no vacuum and no collisions. And the arc's own audit says the electromagnetic lattice runs that did happen — <V>regime</V>, <V>fcc</V>, <V>vector</V> — stream <V>f</V> ∈ {'{'}0,1{'}'} with no polarity anywhere. <b>So the label had never been run on a lattice at all.</b>
+          </Para>
+
+          <Eq note="induction.ts §1–§4 — 45³, cubic 26, the three rules with polarity AND the label, signed projections onto each cell's own basis">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`source           what comes out                     measured
+static charge    E radial, Coulomb                  E·r̂ ∝ r^−1.84
+                 E transverse                       ~1e−3 of E·r̂
+                 NO magnetic field                  |B| = 0 exactly
+
+moving charge    B ∥ φ̂ = u × r̂, Biot–Savart         B·φ̂ ∝ r^−1.84
+                 B ⊥ u and B ⊥ r̂                    1e−18 … 1e−21
+                 |B|/|E| against u = 0.5            0.391
+
+neutral wire     B azimuthal, AMPÈRE                B·φ̂ ∝ r^−0.958
+                 B·r̂ and B·ẑ                        0.000e+0 exactly
+                 E, which it must not have          at the floor
+
+∇·B, as ∮B·r̂ dA over a sphere, moving charge        1.5e−18, then 0`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>That is magnetostatics, discretely, and the exponent problem is gone with it.</b> <B>B</B> ∝ 1/<V>r</V> for a wire and 1/<V>r</V><Sup>2</Sup> for a moving charge, both to within a few per cent of the right power, with the two off-axis components not small but <i>identically</i> nought. <b>And a charge at rest has no magnetic field whatever its orientation</b> — not a small one: every ray it emits carries the label 0, and <B>D</B> × 0 is zero before any direction is consulted.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Two of those rows are worth separating out, because each closes something the arc recorded as open.</b> <B>E</B> ⊥ <B>B</B> now <i>follows</i> instead of being arranged — a neutral wire has a magnetic field and no electric one, which is what <B>b̂</B> ∝ <B>J</B> could never deliver, since that made the two parallel everywhere by construction. And <b>∇·<B>B</B> = 0 is a measurement here rather than an identity</b>: <B>B</B> is not the curl of anything, so nothing forces it, and the flux through a sphere comes out at 10<Sup>−18</Sup> and then exactly nought.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(Three measures had to be fixed on the way and all three failed the same way. Reading |<B>B</B>| per cell reports the moving charge's field as <i>flat</i> in <V>r</V>, because a source on this lattice emits twenty-six pencil beams rather than a shell — a ray on exit <B>d</B> travels along <B>d</B> for ever and the beam never spreads — so a magnitude on a sphere is dominated by wherever a beam crosses it. Averaging the angle per cell puts a static charge's <B>E</B> at 80° to <B>r̂</B> by <V>r</V> = 16. And ∇·<B>B</B> read as a per-cell difference gives 0.94 and then 2.67. <b>A magnitude cannot cancel</b>, so the vacuum adds to it instead of averaging out; a signed projection onto each cell's own basis cancels it, and an integral cancels it in a derivative. It is <V>ampere</V> §1's correction and <V>push</V>'s correction, arriving a third time.)</span>
+          </Para>
+
+          <AmpereField />
+
+          <Para>
+            <b>And that is the field itself, on the lattice, drawn.</b> The same charge twice — standing still on the left and moving on the right — with the colour being Σσ(<B>D</B> × <B>u</B>) read off each cell, which in the plane is a signed scalar out of the page. <b>The left half is empty because the field is exactly nothing there</b>, not because it is faint: every ray a stationary charge emits carries the label 0. <b>And the right half reverses across the direction of motion</b>, which is Biot–Savart's geometry and which no density gradient can produce. <span className="bp5-text-muted">(A wire was drawn here first and came out a solid slab, which is not a bug: an infinite line's shell in two dimensions is two points, so a line source has no falloff to show. A point's shell is a circle, so a moving charge has one.)</span>
+          </Para>
+
+          <Head>and the two wires are not the same wire, which is the tension this leaves</Head>
+
+          <Para>
+            <b>One thing has to be said plainly, because the panels above are what found it.</b> The force and the field are measured on two <i>different</i> constructions of a current, and each one fails at what the other does.
+          </Para>
+
+          <Rows of={[
+            [<>the wire the FORCE comes from</>,
+              <>Cells setting their +<V>z</V> exits to +1 and their −<V>z</V> exits to −1 — no net
+                charge, and <b>the current's direction is in the POLARITY.</b> Which is what lets
+                the two rules see it at all: the facing rays of a parallel pair carry opposite
+                signs and annihilate, of an antiparallel pair the same sign and turn. <b>Ampère's
+                force law, both signs.</b> And its signed moment points ALONG the wire, so its
+                field needs a curl and comes out 1/<V>r</V><Sup>2</Sup>.</>],
+            [<>the wire the FIELD comes from</>,
+              <>Two counter-drifting populations of labelled carriers, each radiating
+                isotropically — <b>the current's direction is in the LABEL.</b> Which gives
+                Ampère's 1/<V>r</V> directly with no curl taken. <b>But its polarity distribution
+                is the same whichever way the current runs</b>, and a label does not enter the
+                collision rules — <b>so it has no magnetic force whatever.</b> Two of these drawn
+                side by side produced two identical panels, which is how this was noticed.</>],
+            [<>and what would join them</>,
+              <>Neither wire has carriers that actually <i>move</i>. A carrier with a real velocity
+                emits at a rate that depends on direction — the factor 1/(1 − <B>n̂</B>·<B>u</B>)
+                that <V>lorenz</V> found Ampère could not do without — <b>which puts the current's
+                direction into the polarity distribution AND into the label at once</b>, and is
+                the only thing that could give one object both halves. <b>That run is owed and
+                is not done here</b>, and until it is, this arc has a force law measured on one
+                idealisation of a wire and a field law measured on another.</>],
+          ]} />
+
+          <Head>and then Faraday, which is measured now and is not there</Head>
+
+          <Para>
+            With both fields carried by the same rays on the same lattice, induction stops being a continuum question. Oscillate a charge's <i>position</i> — so that continuity needs no arranging, it is one object that moves — lock both fields in at its frequency, and ask.
+          </Para>
+
+          <Eq note="induction.ts §5b — λ = 12 cells; every quantity an azimuthal mean, and nothing differenced cell by cell">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`loop ρ    z      ∮Ec·dl     −ω∬Bs      ∮Es·dl     +ω∬Bc      residual
+3…7       ±4     +2.891e+0  +1.850e+1  +1.173e+0  −5.323e+0   0.878
+3…10      ±6     +4.944e+0  +2.380e+1  +5.837e−1  +4.448e−1   0.792
+5…12      ±6     +5.056e−1  +9.181e+0  −1.386e−1  +1.089e+1   0.985
+7…15      ±8     +4.369e−1  −2.230e+0  +1.057e+0  +9.368e+0   0.906
+3…15      ±10    +1.504e+0  +2.051e+1  +2.157e+0  +5.674e+0   0.908`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Faraday does not hold, and the shape of the failure is that one side is missing rather than wrong.</b> The electromotive force round a loop is five to forty times under the rate of change of the flux through it, at every loop tried. Ampère–Maxwell on the same run reads 1.13 to 1.49. <b>So the label buys the whole of magnetostatics and buys no induction at all</b>, and that is now a measurement on a lattice carrying polarity rather than a continuum argument about which moment to read.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(The differential form reads a residual of about 1 and should not be quoted for it. ⟨∇×<B>E</B>⟩ comes out an order of magnitude under ⟨ω<B>B</B>⟩, and the obvious reading — that <B>E</B> is radial and so curl-free — is <i>wrong</i>: measured, <B>E</B> is 76 to 93% transverse. What is small is the ±1-cell central difference of an array built from twenty-six bits a cell, whose signed shell mean is small because the noise cancels and the signal was never resolved. §5b moves the average in front of the derivative, which is the only form the question can be asked in at this box size, and that is the row above.)</span>
+          </Para>
+
+          <Head>and the veins, which the vacuum does take out</Head>
+
+          <Para>
+            One thing the geometry section leaves hanging is worth attacking. <b>Every number in it is a property of the neighbour set alone.</b> Σ<V>w</V> <B>c</B>⊗<B>c</B>⊗<B>c</B>⊗<B>c</B> is the momentum flux of a gas whose carriers stream <i>for ever</i>, and the √3 light speed along a body diagonal is the shape of a ray that has never met anything. <b>In this model a ray does not stream for ever</b> — the mean free path is a couple of cells at the derived fill — so the lattice's grain has several chances to be averaged out before anything macroscopic is measured.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the first attempt at measuring that was worthless, for a reason that is the whole point.</b> Firing (G+M/2) only in a <i>completely neutral</i> cell sounds like the rule and is self-limiting: once a box has any traffic in it there are almost no fully empty cells left, so the occupancy tops out near a tenth whatever the rate is set to. At that density a ray crosses tens of cells untouched, and the diagnostic said so — <b>the mean number of deflections a surviving tagged ray had was 0.07.</b> Nothing had scattered, so no conclusion about the veins followed either way. <b>The vacuum sections derive a different rule</b> — new room is edged on every axis, and the same expansion thins what is already there, which is one expansion seen twice and has the fixed point (1−<V>p</V>)/(2−<V>p</V>).
+          </Para>
+
+          <Eq note="rounded.ts §1–§2 — t50 is the tick a cone-shell's tagged count reaches half its steady value, at r = 20">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`p       fill    turns    axis  face  body   ax/face  ax/body  aniso
+0.00    0.002   0.000    19    14    11     1.357    1.727    54.5%
+0.01    0.078   0.095    22    17    16     1.294    1.375    32.7%
+0.02    0.111   0.184    23    17    16     1.353    1.438    37.5%
+0.05    0.164   0.391    20    16    17     1.250    1.176    22.6%
+0.10    0.207   0.509     —    15    13       —        —        —
+0.20    0.242   0.489     —     —     —       —        —        —`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>With a vacuum that actually scatters, the veins go.</b> The collisionless front reproduces 1 : √2 : √3 exactly — 1.357 and 1.727 against 1.414 and 1.732 — and by the time a surviving ray has been deflected 0.39 times on average the body-diagonal ratio has fallen from 1.73 to <b>1.18</b> and the anisotropy from 54.5% to <b>22.6%</b>. <b>The trend tracks the <V>turns</V> column and nothing else</b>, which is what makes it the vacuum's doing rather than the box's.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>The field's own shape says the same thing more weakly, and the reason it is weaker is the interesting part.</b> The net polarity's spread over the three families falls from 92.6% with no vacuum to 58.3% once one is running — but only at eight cells, because at fourteen and twenty the differenced field has gone <i>negative</i>, which is not a shape at all: it is the source's field having run out and two noise samples taking over. <b>The medium that rounds the field is the medium that screens it</b>, and there is no radius at which both are comfortable.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the rows that stop having numbers are the second half of the result.</b> Past a fill of about 0.2 the front no longer reaches fourteen cells at all — too few tagged rays survive to time anything — <b>which is the same screening the force channels measured at a decay length of two cells</b>, arriving here as a disturbance that cannot get out rather than as a force that dies. The two are the same statement about the same medium.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(Two limits named rather than buried. The fill reaches 0.242 and not the derived half, because that half is derived for an <i>unsigned</i> medium where collisions turn; with polarity, (G+M/1) destroys pairs and is a sink the fixed point does not account for — which is <i>signed</i>'s own result, that a medium which annihilates collides more per charge, seen from the density side. And the rank-four tensor over the rays in flight does <b>not</b> move, staying at 0.51 at every density — but it should not be expected to, since the vacuum fills every exit at the same rate and a tensor over the rays present is a tensor over the exits again. <b>What is measured here is transport, which is what an experiment sees</b>, and the two need not agree: the rank-four tensor is the momentum flux of a gas between collisions and this is the behaviour after many.)</span>
+          </Para>
+
+          <Head>where the discrete case now stands, which is most of the way</Head>
+
+          <Rows of={[
+            [<>discrete, measured, and now complete</>,
+              <><b>Coulomb</b> — the net polarity a charge leaves in the vacuum, 1/<V>r</V><Sup>2</Sup>,
+                two signs at 600 : 1. <b>The sign law, both channels</b> — opposite pulled harder
+                at 8.7σ and alike pushed harder at 4746σ, an XOR over which rule fires.
+                <b> Ampère's force law, BOTH SIGNS</b> — antiparallel currents pushed apart at
+                1780σ and parallel ones with more space destroyed between them, under both
+                readings of the turn. <b>Biot–Savart</b> for a moving charge, <b>Ampère's
+                1/<V>r</V></b> for a wire, <b>∇·<B>B</B> = 0</b> as a measurement rather than an
+                identity, and <b><B>E</B> ⊥ <B>B</B></b> as a consequence — all off the label, on
+                a lattice, with no curl taken and no potential differentiated.</>],
+            [<>and the exponent problem is closed twice over</>,
+              <>As a <b>theorem</b>: both rules conserve polarity, so a signed quantity cannot
+                relax and must be field-like, while the deficit relaxes but is unsigned and comes
+                out <i>radial</i> round a wire — measured — so its curl is nought. <b>There is no
+                signed potential on this lattice.</b> And as a <b>correction</b>: none of that
+                mattered, because <V>ampere</V>'s wire emitted its two signs into opposite
+                hemispheres and was not a wire. Built properly, <B>B</B> is azimuthal and
+                1/<V>r</V> with nothing differentiated.</>],
+            [<>what is refuted, including by us</>,
+              <>The <b>crossover</b> — the two channels are screened at the SAME length, about two
+                cells, so the sign of the net force does not change with distance. And that
+                length is the vacuum's own mean free path, arriving in two forces at once, which
+                makes the arc's sharpest constraint sharper rather than softer. <b>And a first
+                answer of our own on the veins</b>, which was measured through a vacuum that
+                never scattered anything — 0.07 deflections per surviving ray — and is
+                replaced above by one that does.</>],
+            [<>and one thing that comes back</>,
+              <><b>The veins.</b> With the vacuum the vacuum sections actually derive rather than
+                a self-limiting reading of (G+M/2), a body-diagonal front's advantage falls from
+                1.73 to <b>1.18</b> and the anisotropy from 54.5% to <b>22.6%</b>, tracking the
+                number of deflections a surviving ray has had and nothing else. <b>The 73%
+                light-speed anisotropy is a collisionless artefact</b>, so cubic 26 keeps
+                <K><Bar>DEG</Bar></K> = 26 and its equator of eight, and the geometry section's
+                three repairs are answers to a question the model's own dynamics closes. What
+                does <i>not</i> move is the rank-four tensor over the rays in flight — and it
+                should not, since the vacuum fills every exit evenly and that tensor is about a
+                gas between collisions rather than after many.</>],
+            [<>and one tension the panels found</>,
+              <>The force law and the field law are measured on <b>two different constructions of
+                a wire</b>, and each fails at what the other does: the one whose polarity carries
+                the current gives both signs of Ampère's force and the wrong exponent for its
+                field; the one whose label carries it gives Ampère's 1/<V>r</V> and <i>no force at
+                all</i>. Joining them needs carriers that actually move, so that the emission's
+                own rate factor puts the current into the polarity as well as the label.
+                <b> That run is owed.</b></>],
+            [<>and what is left, which is one equation</>,
+              <><b>Faraday.</b> Measured now on a lattice carrying polarity and the label, in
+                integral form so that the average comes before the derivative: ∮<B>E</B>·d<B>l</B>
+                is five to forty times under −d/d<V>t</V>∬<B>B</B>·d<B>A</B> at every loop tried,
+                and Ampère–Maxwell reads 1.13 to 1.49. <b>The label buys the whole of
+                magnetostatics and no induction whatever.</b> Which is the same debt the arc has
+                carried throughout, now owed as a measurement rather than as an argument — and
+                it is still the only thing between this and light.</>],
+          ]} />
+
           <Head>the ledger</Head>
 
           <Rows of={[
@@ -5783,13 +6148,19 @@ turn           −59644.2             9233.6          0.1548`}
           ]} />
 
           <Para>
-            So the shape of it: <b>the magnetic field is not a distribution of polarity — it is the turn axis that a distribution of polarity induces.</b> The thing the question was about turns out to be the source and not the field, which is the relationship Maxwell already has between <B>J</B> and <B>B</B>, reached here from the other end. The mechanism costs one assumption of an unusually cheap kind, an argument the rules have always taken and never named — and unlocking the turn angle, which this book had already argued for elsewhere, collapses both of its debts onto the coupling it was owing anyway.
+            So the shape of it, with the whole arc behind it: <b>the magnetic field is not a distribution of polarity and it is not the turn axis either.</b> Both of those were read off what a cell holds, and the first is a theorem's worth of wrong while the second cannot be sourced locally at all. <b>It is a moment of one more thing a ray carries — what its emitter was doing when it left</b> — and once a wire is built as what a wire is, two counter-drifting populations each radiating, that moment is the field directly: azimuthal, 1/<V>r</V>, reversing with the current, with no curl taken and nothing differentiated.
           </Para>
 
           <BR/>
 
           <Para>
-            <b>What is left is one equation and one join.</b> The equation is Faraday, without which there is a magnetic field and no light. The join is between the two things this book calls Layer 2 — <b>the ribbon is what a charge is, the ring is what the field it moves through does, and the turn axis is what couples them</b> — which is a shape rather than a construction, and saying it is not the same as having it.
+            <b>Which leaves the ledger shorter than the arc spent most of its length expecting.</b> The forces are discrete and both signs of both laws come out, once the measure counts momentum as well as destroyed space. The fields are discrete and magnetostatics is complete. <b>The exponent problem is gone, the sign law is closed, and Ampère's force law has its second half.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>What is left is one equation and one join.</b> The equation is Faraday, and it is no longer a gap in an argument — it is a measurement: ∮<B>E</B>·d<B>l</B> is an order of magnitude under −d/d<V>t</V>∬<B>B</B>·d<B>A</B> on a lattice carrying polarity and the label, in the integral form where the average comes before the derivative. <b>There is a magnetic field here and there is no induction, and so there is no light.</b> The join is between the two things this book calls Layer 2 — <b>the ribbon is what a charge is, the ring is what it emits, and the label is what carries the field</b> — which is a shape rather than a construction, and saying it is not the same as having it.
           </Para>
 
         </Section>

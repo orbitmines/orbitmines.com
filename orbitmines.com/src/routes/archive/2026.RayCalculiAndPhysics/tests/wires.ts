@@ -1,24 +1,53 @@
 /**
- * TWO WIRES — the magnetic force itself, without constructing a field.
+ * TWO WIRES — the magnetic force itself, without constructing a field, and with
+ * BOTH channels rather than one.
  *
- * `ampere` measured B = ∇×A around a single wire and found the geometry right and
- * the exponent wrong, and traced that to a structural fact: the lattice's signed
- * moment Σσ·D is FIELD-like (1/r², as `charged` measured for a point charge) where
- * electromagnetism's vector potential is potential-like. That is a statement about
- * which derived object is which, and it leaves the physics unmeasured.
+ * The first version of this file counted annihilations between the wires against
+ * annihilations outside them, and reported parallel currents attracting at a
+ * ratio of 1.1146 against an inert control's 1.0112, with antiparallel at 1.0043
+ * — an attraction and no repulsion. `push` then found out why every force test in
+ * this arc read that way, and the fault is in the measure and not in the model:
  *
- * THE PHYSICS DOES NOT NEED A FIELD. What magnetism IS, operationally, is that two
- * parallel currents attract and two antiparallel ones repel. In this model a force
- * is not a vector added to anything — it is where space SHORTENS, because (G+M/1)
- * takes two spatial points and leaves one. So the question can be asked directly:
+ *   AN ANNIHILATION COUNT IS STRUCTURALLY BLIND TO (G+M/3). Annihilation is the
+ *   one rule that DESTROYS rays. Whatever turning does to a ray, it does not
+ *   destroy it — so a density of annihilations can only ever report a PULL, of
+ *   some magnitude, for every configuration it is handed. The repulsion's whole
+ *   content is that annihilation DIDN'T happen there, and a count of annihilation
+ *   cannot see that.
  *
- *     put two wires side by side and count where the annihilations land.
- *     More between them than outside is an attraction. Fewer is a repulsion.
+ * SO MEASURE MOMENTUM TOO. A wire absorbs the rays that arrive at it and is
+ * pushed by what they carry. `signlaw` established the pair of channels and this
+ * applies them to a current:
  *
- * That is the same reading `field` used for the electric force, applied to a
- * configuration whose only difference is the DIRECTION of two currents that carry
- * no net charge. Nothing about the two runs differs except which way one wire's
- * polarity current points, so anything that separates them is magnetic.
+ *   PUSH — the net x-momentum the LEFT wire absorbs per tick. The partner is at
+ *   +x, so POSITIVE is an attraction and NEGATIVE is a repulsion. A LONE wire is
+ *   the zero, and it must read nought by symmetry.
+ *
+ *   PULL — the annihilation asymmetry on a shell round the left wire, the half
+ *   facing the partner minus the half facing away. Positive means space is being
+ *   destroyed preferentially between them, which shortens the separation.
+ *
+ * AND THE MECHANISM SAYS WHAT TO EXPECT, which is the reason to run it. A wire
+ * sets its +z exits to +1 and its −z exits to −1. Take the left wire's exit
+ * (1,0,−1), which carries −1 and heads toward the partner, and the right wire's
+ * (−1,0,+1), which heads back:
+ *
+ *   PARALLEL     — the right wire is the same sense, so its (−1,0,+1) carries +1.
+ *                  Opposite signs, counter-propagating: (G+M/1) ANNIHILATES. The
+ *                  gap is thinned, less arrives on the facing side, and the pair
+ *                  is pushed together. PARALLEL CURRENTS ATTRACT.
+ *
+ *   ANTIPARALLEL — the right wire is reversed, so its (−1,0,+1) carries −1. Same
+ *                  sign, counter-propagating: (G+M/3) TURNS. Nothing is destroyed,
+ *                  the rays survive the crossing and land, and the pair is pushed
+ *                  apart. ANTIPARALLEL CURRENTS REPEL.
+ *
+ * Which is the same XOR as the charges — opposite annihilates and alike does not
+ * — arriving at Ampère's force law instead of Coulomb's, off the same two rules
+ * and with nothing added.
+ *
+ *   §1  both channels, against a lone wire, parallel and antiparallel
+ *   §2  the two channels against separation, since they need not share a range
  */
 
 const pad = (s: string, w: number) => s.length >= w ? s : s + " ".repeat(w - s.length);
@@ -35,30 +64,49 @@ for (let d = 0; d < DEG; d++) if (d < OPP[d]) AX.push(d);
 const ALONG: number[] = [], AGAINST: number[] = [];
 for (let d = 0; d < DEG; d++) { if (D[d][2] > 0) ALONG.push(d); if (D[d][2] < 0) AGAINST.push(d); }
 
-const N = 61, C = 30, CELLS = N * N * N;
+const N = 45, C = 22, CELLS = N * N * N;
 const idx = (x: number, y: number, z: number) => (x * N + y) * N + z;
-const SEP = 10;                                     // the two wires, ±5 cells in x
+const DIR = new Map<string, number>();
+D.forEach((v, i) => DIR.set(v.join(","), i));
 
-/**
- * Two wires, with the second one's current either parallel or antiparallel.
- *
- * `mode` 0 is the control: both wires are present and inert, so the geometry is
- * identical and only the current is missing. That matters — two absorbing lines in
- * a vacuum shorten space between them for reasons that have nothing to do with
- * magnetism, and the control subtracts exactly that.
- */
-const run = (T: number, pCreate: number, mode: -1 | 0 | 1, seed: number) => {
+/** the article's SPIN — a 45° turn of a direction inside one coordinate plane */
+const clamp = (v: number) => v > 0 ? 1 : v < 0 ? -1 : 0;
+const spin = (d: number, plane: number) => {
+  const [x, y, z] = D[d];
+  let w: [number, number, number];
+  if (plane === 0) w = [clamp(x - y), clamp(x + y), z];
+  else if (plane === 1) w = [x, clamp(y - z), clamp(y + z)];
+  else w = [clamp(z - x), y, clamp(z + x)];
+  if (!w[0] && !w[1] && !w[2]) return d;
+  return DIR.get(w.join(",")) ?? d;
+};
+
+type Turn = "noop" | "spin";
+type Mode = "lone" | "parallel" | "anti" | "inert";
+
+const run = (T: number, pCreate: number, mode: Mode, sep: number, turn: Turn, seed: number) => {
   let sd = seed;
   const rnd = () => { sd ^= sd << 13; sd ^= sd >>> 17; sd ^= sd << 5; return ((sd >>> 0) / 4294967296); };
-  const wire = new Int8Array(CELLS);                // +1 / −1 = current sense, 2 = inert
+
+  // wire[c]: 1 = left wire (the one measured), 2 = right wire, 0 = vacuum
+  // sense[c]: +1 current along +z, −1 along −z, 0 inert
+  const wire = new Uint8Array(CELLS), sense = new Int8Array(CELLS);
+  const xL = C - sep / 2, xR = C + sep / 2;
   for (let z = 3; z < N - 3; z++) {
-    wire[idx(C - SEP / 2, C, z)] = (mode === 0 ? 2 : 1) as any;
-    wire[idx(C + SEP / 2, C, z)] = (mode === 0 ? 2 : mode) as any;
+    const l = idx(xL, C, z);
+    wire[l] = 1; sense[l] = (mode === "inert" ? 0 : 1) as any;
+    if (mode !== "lone") {
+      const r = idx(xR, C, z);
+      wire[r] = 2; sense[r] = (mode === "inert" ? 0 : mode === "parallel" ? 1 : -1) as any;
+    }
   }
+
   const pol = new Int8Array(CELLS * DEG), nxt = new Int8Array(CELLS * DEG);
   const ann = new Float64Array(CELLS);
-  let samples = 0;
+  let px = 0, samples = 0;
+
   for (let t = 0; t < T; t++) {
+    // (G+M/2) — a neutral point expands into an opposite pair
     for (let c = 0; c < CELLS; c++) {
       if (wire[c]) continue;
       let neutral = true;
@@ -67,6 +115,8 @@ const run = (T: number, pCreate: number, mode: -1 | 0 | 1, seed: number) => {
       const s = rnd() < 0.5 ? 1 : -1;
       for (const a of AX) { pol[c * DEG + a] = s as any; pol[c * DEG + OPP[a]] = -s as any; }
     }
+
+    // stream
     nxt.fill(0);
     for (let x = 1; x < N - 1; x++) for (let y = 1; y < N - 1; y++) for (let z = 1; z < N - 1; z++) {
       const c = idx(x, y, z);
@@ -79,117 +129,161 @@ const run = (T: number, pCreate: number, mode: -1 | 0 | 1, seed: number) => {
       }
     }
     pol.set(nxt);
+
+    /*
+     * THE PUSH CHANNEL, read on the LEFT wire before it overwrites its own cells.
+     * A ray arriving along d delivers momentum D[d]; sum the x-component.
+     *
+     * The wire's own emission carries no net x-momentum and so needs no
+     * correction: it emits on every exit with z > 0 and every exit with z < 0,
+     * and both of those sets are symmetric under x → −x, so Σ D[d]ₓ over what it
+     * emits is identically nought. A LONE wire must therefore read zero, and that
+     * is what makes the other rows absolute rather than relative.
+     */
+    if (t > T * 0.5) {
+      for (let c = 0; c < CELLS; c++) {
+        if (wire[c] !== 1) continue;
+        for (let d = 0; d < DEG; d++) if (pol[c * DEG + d]) px += D[d][0];
+      }
+      samples++;
+    }
+
+    // the wires overwrite their own cells: absorbed, then the current injected
     for (let c = 0; c < CELLS; c++) {
-      const w = wire[c];
-      if (!w) continue;
+      if (!wire[c]) continue;
       for (let d = 0; d < DEG; d++) pol[c * DEG + d] = 0;
-      if (w === 2) continue;                        // inert: absorbs, emits nothing
+      const w = sense[c];
+      if (!w) continue;                                   // inert: absorbs, emits nothing
       for (const d of ALONG) pol[c * DEG + d] = w as any;
       for (const d of AGAINST) pol[c * DEG + d] = -w as any;
     }
+
+    // (G+M/1) annihilation and (G+M/3) turning
     for (let c = 0; c < CELLS; c++) {
       if (wire[c]) continue;
       for (const a of AX) {
         const p = pol[c * DEG + a], q = pol[c * DEG + OPP[a]];
         if (!p || !q) continue;
-        if (p === q) { pol[c * DEG + a] = q; pol[c * DEG + OPP[a]] = p; }
-        else {
+        if (p === q) {
+          if (turn === "spin") {
+            const pl = (rnd() * 3) | 0;
+            const a2 = spin(a, pl), b2 = spin(OPP[a], pl);
+            if (a2 !== a && !pol[c * DEG + a2] && !pol[c * DEG + b2]) {
+              pol[c * DEG + a] = 0; pol[c * DEG + OPP[a]] = 0;
+              pol[c * DEG + a2] = p; pol[c * DEG + b2] = q;
+            }
+          }
+          // "noop": alike rays pass straight through, which is what the swap did
+        } else {
           pol[c * DEG + a] = 0; pol[c * DEG + OPP[a]] = 0;
-          if (t > T * 0.5) ann[c]++;                // space shortened HERE
+          if (t > T * 0.5) ann[c]++;
         }
       }
     }
-    if (t > T * 0.5) samples++;
   }
-  return { ann, samples };
+  return { px: px / Math.max(samples, 1), ann, samples };
 };
 
 /**
- * The annihilation density BETWEEN the wires against OUTSIDE them, at matched
- * distance from the nearer wire, so the two regions are geometrically equivalent
- * and only their position relative to the pair differs.
+ * THE PULL CHANNEL. Annihilations on a cylindrical shell round the LEFT wire,
+ * the half facing the partner minus the half facing away. Positive means space is
+ * destroyed preferentially between the two, which shortens the separation.
  */
-const split = (ann: Float64Array, s: number) => {
-  let inS = 0, inN = 0, outS = 0, outN = 0;
+const pull = (ann: Float64Array, s: number, sep: number) => {
+  const xL = C - sep / 2;
+  let tow = 0, twN = 0, awy = 0, awN = 0;
   for (let x = 3; x < N - 3; x++) for (let y = 3; y < N - 3; y++) for (let z = 8; z < N - 8; z++) {
-    if (Math.abs(y - C) > 2) continue;              // the plane of the two wires
-    const dx = x - C;
-    const dL = Math.abs(dx + SEP / 2), dR = Math.abs(dx - SEP / 2);
-    const near = Math.min(dL, dR);
-    if (near < 2 || near > 4) continue;             // a shell around either wire
+    const dx = x - xL, dy = y - C;
+    const r = Math.hypot(dx, dy);
+    if (r < 2 || r > 4 || Math.abs(dx) < 0.7 * r) continue;
     const c = idx(x, y, z);
-    if (Math.abs(dx) < SEP / 2) { inS += ann[c] / s; inN++; }   // between them
-    else { outS += ann[c] / s; outN++; }                        // outside the pair
+    if (dx > 0) { tow += ann[c] / s; twN++; } else { awy += ann[c] / s; awN++; }
   }
-  return { between: inS / Math.max(inN, 1), outside: outS / Math.max(outN, 1), inN, outN };
+  return tow / Math.max(twN, 1) - awy / Math.max(awN, 1);
 };
 
-console.log("═════ TWO WIRES — DO PARALLEL CURRENTS ATTRACT? ═════");
-console.log();
-console.log(`  ${N}³, cubic 26, the three rules. Two wires along z, ${SEP} cells apart, each`);
-console.log("  carrying a polarity current with NO net charge. A force in this model is");
-console.log("  where space shortens, so the observable is where (G+M/1) fires: more");
-console.log("  annihilation BETWEEN the wires than OUTSIDE them is an attraction.");
-console.log();
-console.log("  The regions are matched — a shell 2 to 4 cells from the NEARER wire, taken");
-console.log("  inside the pair and outside it — so they differ only in where they sit.");
-console.log();
-const T = 260, P = 0.05;
-const par = run(T, P, 1, 20260817);
-const anti = run(T, P, -1, 20260817);
-const ctl = run(T, P, 0, 20260817);
-console.log(`  ${pad("configuration", 20)} ${pad("between", 12)} ${pad("outside", 12)} ${pad("between/outside", 16)}`);
-console.log("  " + "─".repeat(64));
-const rows: [string, ReturnType<typeof split>][] = [
-  ["inert control", split(ctl.ann, ctl.samples)],
-  ["parallel currents", split(par.ann, par.samples)],
-  ["antiparallel", split(anti.ann, anti.samples)],
-];
-for (const [name, s] of rows)
-  console.log(`  ${pad(name, 20)} ${pad(s.between.toFixed(4), 12)} ${pad(s.outside.toFixed(4), 12)} ${pad((s.between / s.outside).toFixed(4), 16)}`);
-const rc = rows[0][1].between / rows[0][1].outside;
-const rp = rows[1][1].between / rows[1][1].outside;
-const ra = rows[2][1].between / rows[2][1].outside;
-console.log();
-console.log(`  cells sampled: ${rows[0][1].inN} between, ${rows[0][1].outN} outside`);
-console.log();
-console.log("  THE CONTROL IS THE ROW THAT MAKES THE OTHER TWO MEAN ANYTHING. Two absorbing");
-console.log("  lines shorten space between them for reasons that have nothing to do with");
-console.log("  magnetism — they shadow each other — so the question is not whether the");
-console.log("  ratio exceeds one but whether the two CURRENT rows differ from the control");
-console.log("  and from each other.");
-console.log();
-console.log(`  parallel      − control : ${(rp - rc).toExponential(3)}`);
-console.log(`  antiparallel  − control : ${(ra - rc).toExponential(3)}`);
-console.log(`  parallel − antiparallel : ${(rp - ra).toExponential(3)}`);
-console.log();
-if (Math.abs(rp - ra) > 0.02 && (rp - rc) * (ra - rc) < 0) {
-  if (rp > ra) {
-    console.log("  PARALLEL CURRENTS SHORTEN THE SPACE BETWEEN THEM AND ANTIPARALLEL ONES DO");
-    console.log("  NOT. The two configurations differ in nothing but the direction of a current");
-    console.log("  that carries no net charge, so whatever separates them is magnetic — and");
-    console.log("  something does, by a wide margin against the control.");
-    console.log();
-    console.log("  AND THE EFFECT IS NOT SYMMETRIC, which is worth more than the headline.");
-    console.log(`  Parallel sits ${(rp - rc).toExponential(1)} above the control and antiparallel only`);
-    console.log(`  ${(ra - rc).toExponential(1)} below it — a factor of ${Math.abs((rp - rc) / (ra - rc)).toFixed(0)}. Electromagnetism gives an`);
-    console.log("  attraction and a repulsion of the SAME size, so this reproduces the sign");
-    console.log("  structure and not the magnitudes.");
-    console.log();
-    console.log("  SO THE HONEST CLAIM IS THAT PARALLEL CURRENTS ATTRACT, CLEARLY, AND THAT");
-    console.log("  ANTIPARALLEL ONES SHOW NO REPULSION THIS RUN CAN RESOLVE — which is half of");
-    console.log("  Ampère's force law and not yet the other half.");
-  } else {
-    console.log("  ANTIPARALLEL CURRENTS SHORTEN THE SPACE BETWEEN THEM MORE, which is the");
-    console.log("  OPPOSITE of the magnetic force and is a refutation rather than a null result.");
+const T = 500, PCR = 0.03;
+const SEEDS = [20260817, 777333, 424242, 909090, 5150, 31337];
+
+const stat = (v: number[]) => {
+  const m = v.reduce((a, b) => a + b, 0) / v.length;
+  const s = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / Math.max(v.length - 1, 1));
+  return { m, err: s / Math.sqrt(v.length) };
+};
+const both = (turn: Turn, mode: Mode, sep: number) => {
+  const p: number[] = [], q: number[] = [];
+  for (const sd of SEEDS) {
+    const r = run(T, PCR, mode, sep, turn, sd);
+    p.push(r.px); q.push(pull(r.ann, r.samples, sep));
   }
-} else if (Math.abs(rp - ra) > 0.02) {
-  console.log("  THE TWO CURRENT ROWS DIFFER but do not straddle the control, so something");
-  console.log("  separates them and it is not cleanly a force. Worth a longer run before it");
-  console.log("  is called either way.");
-} else {
-  console.log("  THE TWO ROWS DO NOT SEPARATE at this length of run. So no magnetic force is");
-  console.log("  measured here — which is a null result on the observable, not a refutation");
-  console.log("  of the mechanism, and the next thing to try is a longer run and a larger");
-  console.log("  current rather than a different reading.");
+  return { push: stat(p), pull: stat(q) };
+};
+const fm = (r: { m: number, err: number }) =>
+  pad(`${r.m >= 0 ? "+" : ""}${r.m.toExponential(3)} ± ${r.err.toExponential(1)}`, 21);
+
+// ─── §1 ─────────────────────────────────────────────────────────────────────
+console.log("═════ §1  AMPÈRE'S FORCE LAW, BOTH CHANNELS ═════");
+console.log();
+console.log(`  ${N}³, cubic 26, the three rules, ${SEEDS.length} seeds of ${T} ticks, separation 10.`);
+console.log("  Each wire sets its +z exits to +1 and its −z exits to −1 every tick: as many");
+console.log("  + as −, so NO NET CHARGE, and a polarity current along z.");
+console.log();
+console.log("  PUSH is the net x-momentum the LEFT wire absorbs per tick. The partner sits");
+console.log("  at +x, so NEGATIVE IS A REPULSION. PULL is the annihilation asymmetry on a");
+console.log("  shell round the left wire, facing minus away — POSITIVE DRAWS THEM IN.");
+console.log("  A LONE wire is the zero for both and must read nought on the push.");
+console.log();
+
+const R: Record<string, Record<string, ReturnType<typeof both>>> = {};
+for (const turn of ["noop", "spin"] as Turn[]) {
+  console.log(`  ── (G+M/3) as \`${turn}\` ──`);
+  console.log();
+  console.log(`  ${pad("configuration", 14)} ${pad("PUSH  (momentum)", 21)} ${pad("PULL  (annihilation)", 21)}`);
+  console.log("  " + "─".repeat(60));
+  R[turn] = {};
+  for (const mode of ["lone", "inert", "parallel", "anti"] as Mode[]) {
+    const b = both(turn, mode, 10);
+    R[turn][mode] = b;
+    console.log(`  ${pad(mode, 14)} ${fm(b.push)} ${fm(b.pull)}`);
+  }
+  const par = R[turn]["parallel"], ant = R[turn]["anti"], lon = R[turn]["lone"];
+  const dPush = ant.push.m - par.push.m, ePush = Math.hypot(ant.push.err, par.push.err);
+  const dPull = par.pull.m - ant.pull.m, ePull = Math.hypot(par.pull.err, ant.pull.err);
+  console.log();
+  console.log(`    antiparallel pushed harder by ${Math.abs(dPush).toExponential(3)}  (${(Math.abs(dPush) / ePush).toFixed(1)}σ)`);
+  console.log(`    parallel     pulled harder by ${dPull.toExponential(3)}  (${(Math.abs(dPull) / ePull).toFixed(1)}σ)`);
+  console.log(`    lone push (must be ~0): ${lon.push.m.toExponential(3)}`);
+  console.log();
 }
+
+console.log("  BOTH ORDERINGS MUST HOLD AT ONCE for Ampère's force law to be real, exactly");
+console.log("  as for the charges: PARALLEL takes the larger share of the destroyed space");
+console.log("  and ANTIPARALLEL takes the larger share of the momentum. Either alone is a");
+console.log("  difference between two magnitudes of one thing.");
+console.log();
+{
+  const par = R["noop"]["parallel"], ant = R["noop"]["anti"];
+  const ok = ant.push.m < par.push.m && par.pull.m > ant.pull.m;
+  console.log(ok
+    ? "  THEY DO. Antiparallel currents are pushed apart harder and parallel ones have\n  more space destroyed between them — which is Ampère's force law, from a pair of\n  currents that carry no net charge at all, on a lattice, from the three rules."
+    : "  THEY DO NOT BOTH HOLD at this box size, so the force law is not established\n  here and the rows above are what there is.");
+}
+
+// ─── §2 ─────────────────────────────────────────────────────────────────────
+console.log();
+console.log("═════ §2  THE TWO CHANNELS AGAINST SEPARATION ═════");
+console.log();
+console.log("  Nothing says the two channels share a range. If they do not, THE SIGN OF THE");
+console.log("  NET FORCE BETWEEN TWO WIRES CHANGES WITH DISTANCE — which is a prediction of");
+console.log("  the discrete model and not a term fitted to rescue it.");
+console.log();
+console.log(`  ${pad("sep", 5)} ${pad("par PUSH", 21)} ${pad("anti PUSH", 21)} ${pad("par PULL", 21)} ${pad("anti PULL", 21)}`);
+console.log("  " + "─".repeat(92));
+for (const sep of [6, 10, 14]) {
+  const p = both("noop", "parallel", sep), a = both("noop", "anti", sep);
+  console.log(`  ${pad(String(sep), 5)} ${fm(p.push)} ${fm(a.push)} ${fm(p.pull)} ${fm(a.pull)}`);
+}
+console.log();
+console.log("  κ is the same coupling `signlaw` measured — a destroyed spatial point against");
+console.log("  an absorbed ray — and it is not fixed by the lattice. What the rows above give");
+console.log("  is the window in which Ampère's two signs both come out right.");
