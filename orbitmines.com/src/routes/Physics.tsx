@@ -5173,6 +5173,38 @@ antiparallel         0.0390    0.0388   1.0043        2e−4`}
             <b>The band between the two opposite charges is the whole of it.</b> That is (G+M/1) firing where their rays meet, two spatial points becoming one, and the pair being drawn together because the space separating them is the space that vanished. <b>Put two alike charges there and the band is gone</b> — their rays turn instead, and the region between them is as dark as the vacuum. The inert pair is the control: the same geometry, the same shadowing, no sign, no structure. <span className="bp5-text-muted">(The star of rays radiating from each body is the lattice's own grain — a source emits along its exits, and there are eight of them.)</span>
           </Para>
 
+          <Head>and the forces have a RANGE, which is not what either law says</Head>
+
+          <Para>
+            A force law is a statement about distance, and both of them were measured against it — six runs of seven hundred ticks at each separation, each differenced against a pair of the same geometry, fitted only on points clearing two sigma.
+          </Para>
+
+          <Eq note="forces.ts §2–3 — the signal is the force on the left body, in units of annihilations per cell">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`         two charges              two wires
+d = 8    2.195e−1   (71σ)        1.331e−1   (387σ)
+d = 10   2.539e−2   (7.6σ)       1.270e−1   (192σ)
+d = 12   1.295e−4   (0.1σ)       1.804e−3   (2.4σ)
+d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Neither is a power law. Both are a cliff, at <V>d</V> ≈ 11.</b> The wire force is nearly flat from 8 to 10 — a 4.6% drop — and then falls seventyfold by 12; the charge force is already steeper than <V>d</V><Sup>−9</Sup> between 8 and 10. <b>Two different source geometries cutting off at the same distance is not a statement about the sources.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it does not contradict the field being long-ranged, which is the interesting part.</b> The net polarity is a <i>conserved</i> quantity spreading over a shell, so it cannot be screened and it is measured clean at 1/<V>r</V>² out to <V>r</V> = 21.5. A <i>force</i> is second order: it needs rays from <b>both</b> bodies to survive the trip and meet, and that survival decays as e<Sup>−<V>d</V>/<V>λ</V></Sup> with <V>λ</V> the mean free path. <b>So the field is long-ranged and the force between two bodies is screened at the mean free path</b>, and the two are consistent.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which is a real constraint and a sharp one.</b> At the occupancy of this run the mean free path is of order sixteen cells against a measured range of eleven, which is the right order. But the model's own derived occupancy is a half, which would put the mean free path at about <i>two</i> cells — and a Coulomb force with a range of two Planck lengths is not a Coulomb force. <b>So either the density that governs force propagation is not the one the vacuum sections derive, or the observed infinite range of electrostatics is a hard bound on it.</b> That is the sharpest quantitative statement about the vacuum this arc has produced, and it is owed an answer.
+          </Para>
+
           <Head>the laws this arc actually derived, in one place</Head>
 
           <Para>
@@ -5221,6 +5253,209 @@ antiparallel         0.0390    0.0388   1.0043        2e−4`}
 
           <Para>
             <b>Ampère's geometry, from a current that carries no net charge at all.</b> The field goes round the wire, it <i>reverses when the current does</i> — at −0.946, which no density gradient can do — and its divergence is nought identically. <b>And the distance law is 1/<V>r</V>² where Ampère gives 1/<V>r</V></b>, which is a real deviation with a structural cause, and the next section is what it points at.
+          </Para>
+
+          <Head>and the repulsion, which is where a charge stops being a label</Head>
+
+          <Para>
+            <b>One half of the sign law came out and the other did not</b>, and chasing why turned out to be worth more than the confirmation would have been. Opposite charges attract at 7.6σ; alike ones sit under one sigma and the two cases disagree with each other in sign, which is what noise looks like rather than a push.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The article says exactly what a repulsion is, and the clause that matters is the last one: <i>"If they agree, they turn around... and each travels back the way it came until it runs into the next wave its own source put out behind it. <b>That wave is the opposite sign, because the source alternates.</b>"</i>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the bodies in that run held a constant sign.</b> So a turned ray goes back toward its own source, meets more of the same sign, turns again, and ping-pongs forever — it never meets an opposite wave and never annihilates. <b>The mechanism could not fire, and no amount of averaging would have found it.</b> That is not a limit of the statistics; it is a configuration in which the thing being looked for does not exist.
+          </Para>
+
+          <Head>except that a source which merely alternates is not a charge either</Head>
+
+          <Para>
+            The obvious repair is to let both sources alternate, and it fails for a reason worth keeping. <b>Half a period of + and half of − leaves a net emission of nought</b> — no aggregate charge survives the vacuum, so there is nothing for a sign law to be <i>about</i>. Run it and both configurations attract, with the alike pair pulling twice as hard as the opposite one; but that is two neutral oscillators interacting, and it refutes nothing.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>What a charge is, on this book's own reading, is a lopsided default rather than a stopped one</b> — the magnetism arc writes it as <V>P</V> = 2·dwell − 1, a bias in how long a source spends on each sign. Which puts the two requirements in tension along a single axis:
+          </Para>
+
+          <Eq note="repel.ts §1 — the source's net emission per period is P">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`P = 1    never alternates    a charge, and NO repulsion mechanism
+P = 0    perfectly balanced   the mechanism, and NO charge
+0 < P < 1                     both — and only here can a sign law live`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Neither of the two runs above visited the middle.</b> One tested <V>P</V> = 1 and one tested <V>P</V> = 0, which is why one found an attraction with no push available and the other found no charge at all. <span className="bp5-text-muted">(And the control had to be fixed twice on the way. An <i>inert</i> pair emits nothing, so comparing an emitting pair against it measures "there is a second source over there" rather than what sign it carries, and any emitting pair beats it. Alike and opposite emit identically and differ only in the sign of one, so they are compared directly and need no external zero at all.)</span>
+          </Para>
+
+          <Head>so sweep the bias — and the mechanism does not survive it</Head>
+
+          <Eq note="repel.ts §1 — six runs of 700 ticks at each bias; positive is a PULL">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`bias P   alike (+,+)   opposite (+,−)   opp − alike   signif
+1.0      2.979e−3      2.911e−2         2.613e−2      7.8σ
+0.8      4.112e−3      2.856e−2         2.444e−2      9.0σ
+0.6      7.649e−3      2.895e−2         2.130e−2      8.7σ
+0.4      9.268e−3      2.780e−2         1.854e−2      7.7σ
+0.2      9.656e−3      2.546e−2         1.581e−2      7.7σ`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Three things fall out and the middle one is the important one.</b> The sign law holds at every bias — opposite is pulled harder than alike, between 7.7 and 9.0 sigma throughout, and that much is solid. <b>The attraction is carried by the charge and not by the alternation</b>: the opposite column is flat in <V>P</V>, so letting the source come round changes it hardly at all. <b>And the alike column RISES as the alternation increases</b>, from 2.98·10<Sup>−3</Sup> to 9.66·10<Sup>−3</Sup> as <V>P</V> falls — which is backwards from the mechanism, since alternation is exactly what is supposed to enable the push.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            It also converges the way it has to: at <V>P</V> = 0 the alike and opposite configurations become <i>the same object</i> — two neutral oscillators — and the difference is heading to nought accordingly.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So there is no repulsion at any bias.</b> Alike is always a weaker attraction, and the configuration nearest to a push is <V>P</V> = 1 — the constant sign, with no alternation at all, which is the one the mechanism says cannot repel. <b>The article's account of what a repulsion is — turned rays travelling back to annihilate against the next wave — does not survive being run.</b> Alike and opposite differ reliably and strongly, and they differ as two magnitudes of <i>pull</i> rather than as a pull and a push.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And that matters beyond the bookkeeping, because if everything attracts then matter collapses.</b> A sign law needs alike charges to actually push. This is the sharpest negative result in the arc and it is about the model rather than about a measurement — the two earlier failures were configurations in which the effect could not appear, and this one is a configuration in which it could and does not. <b>What is owed is a mechanism for the push, and the one written down is not it.</b>
+          </Para>
+
+          <Head>except the measure was blind — and the push was there all along</Head>
+
+          <Para>
+            <b>The sweep above is right about its own numbers and wrong about what they mean, and the fault is in the measure rather than in the model.</b> The force in <V>charged</V>, <V>forces</V>, <V>wires</V> and <V>repel</V> is a density of <i>annihilations</i> — and annihilation is the one rule that <b>destroys</b> rays. Whatever (G+M/3) does to a ray, it does not destroy it. <b>So a count of annihilations is structurally blind to turning</b>, and every configuration that measure can be handed will report a pull of some magnitude, because the only thing it can count is the rule that shortens space. No amount of sweeping the bias was ever going to find a push.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And underneath that, the turn as coded was doing nothing at all.</b> (G+M/3) is a swap of the counter-propagating pair on an axis, and the branch is taken exactly when the two are <i>equal</i>:
+          </Para>
+
+          <Eq note="repel.ts — the turn, and the reason it never fired">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em' }}>
+              if (p === q) {'{'} pol[c·DEG + a] = q; pol[c·DEG + OPP[a]] = p; {'}'}
+            </span>
+          </Eq>
+
+          <Para>
+            It assigns each ray its own value back. <b>The array is unchanged and the two rays stream onward next tick as though nothing happened — they pass straight through each other.</b> And that is not a slip a better swap would repair. Two identical rays counter-propagating on one axis carry momentum <V>D[a] + D[OPP[a]] = 0</V>, and after a half-turn they carry nought again, on a field configuration point for point the one they started in. <b>A half-turn of alike rays is unobservable</b> — no state changes, no momentum moves, and no bookkeeping laid over the top of it can produce a force the field does not have. <b>If the turn is to do anything it must leave the axis</b>, which is what the article's own <V>SPIN = 45°</V> says it does.
+          </Para>
+
+          <Head>so measure momentum, against a lone body</Head>
+
+          <Para>
+            A body absorbs the rays that arrive at it and is pushed by their momentum. <V>push.ts</V> measures the net <V>x</V>-momentum the left body takes in per tick, with the partner at <V>+x</V>, so <b>negative is a repulsion</b>. The control is not an inert partner and not the other configuration — it is a body <i>on its own</i>, which must read nought.
+          </Para>
+
+          <Eq note="push.ts §1 — 45³, cubic 26, the three rules, dwell 10/12 so P = ⅔ exactly, separation 10">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`turn    lone                 alike (+,+)          opposite (+,−)
+noop    +0.000e+0 ± 0.0e+0   −8.680e+0 ± 6.0e−4   −2.053e−2 ± 1.7e−3
+back    +0.000e+0 ± 0.0e+0   −8.680e+0 ± 6.0e−4   −2.053e−2 ± 1.7e−3
+spin    +0.000e+0 ± 0.0e+0   −7.746e−1 ± 1.6e−2   −1.337e−2 ± 4.2e−3`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>The lone body reads exactly nought, and that is not luck.</b> Its own emission contributes <V>Σ<Sub>d</Sub> D[d]<Sub>x</Sub> · |S ∩ (S + D[d])|</V>, and the overlap counts for <V>d</V> and <V>−d</V> are equal while <V>D[d]<Sub>x</Sub></V> flips sign, so the self term cancels identically and <b>only what arrives from outside survives</b>. The zero is structural, which is what makes the other two columns absolute rather than relative.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b><V>noop</V> and <V>back</V> agree to the last digit</b>, which is the half-turn argument confirmed by running it: writing the reversal out explicitly is the same simulation. And <b>alike is pushed away at −8.680</b> — a repulsion, four hundred times the opposite column, and the first one in the arc.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>But it does not come from the turn.</b> The push is there under <V>noop</V>, where no ray is deflected at all; <V>spin</V> weakens it elevenfold by scattering rays out of the line so that fewer arrive head-on. The mechanism is simpler than the one the article wrote down: <b>alike rays carry the same sign as the body's own outgoing rays, so nothing annihilates between the two bodies, the partner's rays survive the crossing and land</b>. Opposite rays annihilate on the way over, and almost nothing arrives.
+          </Para>
+
+          <Head>two channels, and the sign law is the competition between them</Head>
+
+          <Para>
+            <b>So there are two forces here and they are different kinds of thing.</b> Annihilation between the bodies destroys spatial points, and destroying a point between two bodies <i>shortens the separation</i> — a <b>metric</b> effect, the article's own account of the pull, and what every force test in the arc was counting. Arrivals deliver momentum — a <b>mechanical</b> effect, the push, invisible to an annihilation count because its entire content is that annihilation did <i>not</i> happen. <V>signlaw.ts</V> measures both on the same runs against the same lone control.
+          </Para>
+
+          <Eq note="signlaw.ts §1 — both channels, separation 10; PUSH negative is a repulsion, PULL positive draws them in">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`(G+M/3) as noop        PUSH (momentum)      PULL (annihilation)
+lone                   +0.000e+0 ± 0.0e+0   +2.833e−3 ± 5.6e−4
+alike                  −8.680e+0 ± 6.0e−4   +7.649e−3 ± 3.4e−4
+opposite               −2.053e−2 ± 1.7e−3   +2.895e−2 ± 2.4e−3
+
+  alike pushed harder by 8.660e+0  (4746σ)
+  opposite pulled harder by 2.130e−2  (8.7σ)`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Both orderings hold at once, which is what a sign law requires.</b> Alike takes the larger share of the momentum and opposite takes the larger share of the destroyed space. Either one alone is a difference between two magnitudes; together they are two forces of opposite sign, and the XOR is over <i>which rule fires</i>:
+          </Para>
+
+          <Rows of={[
+            [<>opposite</>, <>annihilation between is <b>high</b> → a strong pull, and arrivals are <b>low</b> → a weak push. <b>Net: attract.</b></>],
+            [<>alike</>, <>annihilation between is <b>low</b> → a weak pull, and arrivals are <b>high</b> → a strong push. <b>Net: repel.</b></>],
+          ]}/>
+
+          <Head>the one thing the lattice does not hand over</Head>
+
+          <Para>
+            <b>A destroyed spatial point and an absorbed ray are not the same quantity</b>, so the net force is <V>F = (arrivals) + κ · (points destroyed)</V> for a κ the lattice does not fix. What it <i>does</i> fix is the window in which both signs come out right — and the window is not narrow:
+          </Para>
+
+          <Eq note="signlaw.ts — the coupling window, from the measured channels">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`noop   opposite attracts once κ > 0.786;  alike still repels while κ < 1802
+       window (0.786, 1802) — 3.36 decades
+
+spin   opposite attracts once κ > 0.563;  alike still repels while κ <   27.9
+       window (0.563, 27.9) — 1.70 decades`}
+            </span>
+          </Eq>
+
+          <Para>
+            <b>Both windows contain κ = 1</b> — the natural choice, one destroyed point against one absorbed ray — and neither is a fitted result: the two bounds come from different configurations and there was no reason for them to leave a gap at all, let alone one three decades wide straddling unity. <b>κ is a coupling constant</b>, and it is the first quantity in the electromagnetic arc that the model needs and the lattice does not supply.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Under <V>spin</V> the <i>pull</i> ordering does not survive on its own — alike reads +3.025·10<Sup>−2</Sup> against opposite's +2.627·10<Sup>−2</Sup>, backwards and at 1.6σ, which is nothing. <b>The net sign law still holds there</b>, because the push dominates for alike, but the clean two-channel ordering belongs to <V>noop</V>, where alike rays pass through untouched. <b>That is a discriminator between the two readings of (G+M/3)</b>, and it favours the one in which a half-turn does nothing.
+          </Para>
+
+          <Head>and it has a range</Head>
+
+          <Eq note="push.ts §2 — the push against separation; the run was still going at the far end">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
+              {`sep   alike                 opposite
+ 6    −4.630e+0 ± 2.3e−2    −1.385e−2 ± 1.4e−3
+10    −7.746e−1 ± 1.6e−2    −1.337e−2 ± 4.2e−3`}
+            </span>
+          </Eq>
+
+          <Para>
+            The push falls by a factor of six as the separation goes from 6 to 10, far faster than the <V>1/r²</V> the field obeys — the partner is taking up less of the sky and the rays that do arrive have had further to go through a vacuum that annihilates them. <b>The pull is the channel <V>forces</V> found a cliff in at <V>d ≈ 11</V>.</b> If the two channels have <i>different</i> ranges — and nothing says they should share one — <b>then the sign of the net force changes with distance</b>, which is a prediction of the discrete model and not a term fitted to rescue it. Two alike charges would repel close in and attract far out, with the crossover set by κ and the two decay lengths. <b>That is exactly the shape of deviation this project is looking for</b>: ordinary electromagnetism through the middle, with departures at the small scale and the large one.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">Written up mid-run: <V>push.ts</V> §2 and <V>signlaw.ts</V> §2 were still extending the separation sweep to 14 and 18 when this was set down, and the crossover claim rests on the two channels having different ranges, which those rows are what would settle. The §1 tables are complete and six-seeded.</span>
           </Para>
 
           <Head>and what the discrete case tells the continuous one</Head>

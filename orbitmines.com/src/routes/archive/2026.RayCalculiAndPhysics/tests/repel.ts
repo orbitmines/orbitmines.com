@@ -25,13 +25,27 @@
  * decided by their RELATIVE PHASE. In phase is alike and should repel; antiphase is
  * opposite and should attract. That is the XOR, and it is testable.
  *
- *   §1  the same force measure, with sources that alternate — in phase against
- *       antiphase, against an inert pair of the same geometry.
+ * AND A SOURCE THAT SIMPLY ALTERNATES IS NOT A CHARGE. Half a period of + and half
+ * of − leaves nothing behind: its net emission is zero, so no aggregate charge
+ * survives the vacuum and there is nothing for a sign law to be about. A first
+ * version of this file tested exactly that and found both configurations attracting,
+ * which is not a refutation of anything — it is two neutral oscillators.
  *
- *   §2  and against the PERIOD, because the mechanism has a length in it: a turned
- *       ray has to travel back far enough to meet the next wave, so the effect
- *       should depend on the half-wavelength against the separation, and vanish
- *       when the period is long enough that no next wave has been emitted.
+ * What a charge is, on the article's own reading, is a LOPSIDED default rather than
+ * a stopped one: the magnetism arc writes it as P = 2·dwell − 1, a bias in how long
+ * a source spends on each sign. P = 1 is a source that never alternates, which is
+ * `forces`' constant body and has no repulsion mechanism because a turned ray never
+ * meets an opposite wave. P = 0 is the neutral oscillator above, which has the
+ * mechanism and no charge. IN BETWEEN IT HAS BOTH, and that is where a sign law
+ * can live.
+ *
+ *   §1  the force against the BIAS, from a constant source through to a neutral
+ *       one, with alike and opposite compared directly — both emit the same, and
+ *       differ only in the sign of one, so no external control is needed.
+ *
+ *   §2  and against the period at the bias that works, because the mechanism has a
+ *       length in it: a turned ray has to travel back far enough to meet the next
+ *       wave.
  */
 
 const pad = (s: string, w: number) => s.length >= w ? s : s + " ".repeat(w - s.length);
@@ -55,8 +69,31 @@ const idx = (x: number, y: number, z: number) => (x * N + y) * N + z;
  * their rays meet OPPOSITE. `inert` makes both absorb and emit nothing, which is
  * the control that removes the shadowing two bodies cause whatever they are doing.
  */
+/**
+ * A source's sign at tick t: it spends a fraction (1+bias)/2 of each period on +1
+ * and the rest on −1, so its NET emission per period is `bias`. That is the
+ * article's P = 2·dwell − 1, and it is what makes an aggregate charge survive the
+ * vacuum while still letting the source come round.
+ */
+/*
+ * THE DWELL IS A WHOLE NUMBER OF TICKS, so the bias a run actually carries is
+ * k/period and never the real number that was asked for. Comparing a fraction
+ * against a phase rounds it SILENTLY, and the rounding is worst exactly where
+ * this test wants to look: at period 4 a bias of 0.6 wants a threshold of 0.8,
+ * every one of the four available phases is below it, and the source never
+ * alternates at all — that run IS the constant-sign run wearing a different
+ * label. So the tick count is the parameter and the bias is REPORTED from it,
+ * P = 2k/period − 1. `up` is signed: its magnitude is the number of ticks on
+ * the majority sign and its sign says which polarity that is.
+ */
+const signAt = (t: number, period: number, offset: number, up: number) => {
+  const ph = (((t + offset) % period) + period) % period;
+  return ph < Math.abs(up) ? Math.sign(up) : -Math.sign(up);
+};
+const biasOf = (up: number, period: number) => 2 * Math.abs(up) / period - 1;
+
 const run = (T: number, pCreate: number, sep: number, period: number,
-  phase: number, inert: boolean, seed: number) => {
+  biasL: number, biasR: number /* signed tick counts */, offset: number, inert: boolean, seed: number) => {
   let sd = seed;
   const rnd = () => { sd ^= sd << 13; sd ^= sd >>> 17; sd ^= sd << 5; return ((sd >>> 0) / 4294967296); };
   const tag = new Uint8Array(CELLS);
@@ -88,9 +125,9 @@ const run = (T: number, pCreate: number, sep: number, period: number,
       }
     }
     pol.set(nxt);
-    // THE SOURCES ALTERNATE. That is the whole of what `forces` was missing.
-    const sL = Math.sin(2 * Math.PI * t / period) >= 0 ? 1 : -1;
-    const sR = Math.sin(2 * Math.PI * (t + phase) / period) >= 0 ? 1 : -1;
+    // both sources alternate AND carry a net bias, so a charge survives the average
+    const sL = signAt(t, period, 0, biasL);
+    const sR = signAt(t, period, offset, biasR);
     for (let c = 0; c < CELLS; c++) {
       const g = tag[c];
       if (!g) continue;
@@ -130,10 +167,10 @@ const force = (ann: Float64Array, s: number, sep: number) => {
 
 const T = 700, P = 0.03, SEP = 10;
 const SEEDS = [20260817, 777333, 424242, 909090, 5150, 31337];
-const meanForce = (period: number, phase: number, inert: boolean) => {
+const meanForce = (period: number, bL: number, bR: number, offset: number, inert = false) => {
   const v: number[] = [];
   for (const sd of SEEDS) {
-    const r = run(T, P, SEP, period, phase, inert, sd);
+    const r = run(T, P, SEP, period, bL, bR, offset, inert, sd);
     v.push(force(r.ann, r.samples, SEP));
   }
   const m = v.reduce((a, b) => a + b, 0) / v.length;
@@ -141,71 +178,60 @@ const meanForce = (period: number, phase: number, inert: boolean) => {
   return { m, err: s / Math.sqrt(v.length) };
 };
 
-console.log("═════ §1  ALTERNATING SOURCES — AND NOW THE REPULSION ═════");
+console.log("═════ §1  THE FORCE AGAINST THE BIAS — A CHARGE THAT ALSO COMES ROUND ═════");
 console.log();
-console.log(`  ${N}³, cubic 26, the three rules. Two emitters ${SEP} cells apart, ALTERNATING`);
-console.log("  their sign, which is what the article says a source does and what `forces`");
-console.log("  left out. In phase, their rays meet ALIKE and (G+M/3) turns them; antiphase,");
-console.log("  they meet OPPOSITE and (G+M/1) annihilates them.");
+console.log(`  ${N}³, cubic 26, the three rules. Two sources ${SEP} cells apart, each spending a`);
+console.log("  fraction (1+P)/2 of its period on +1 and the rest on −1, so its NET emission");
+console.log("  per period is P — the article's own P = 2·dwell − 1.");
 console.log();
-console.log("  A turned ray then travels back and meets the NEXT wave its own source put");
-console.log("  out — which is the opposite sign, because the source alternates — and");
-console.log("  annihilates BEHIND. That is the repulsion, and it needs the alternation to");
-console.log("  exist at all: with a constant sign a turned ray meets its own kind again and");
-console.log("  ping-pongs forever.");
+console.log("  P = 1 is a source that never alternates: `forces`' constant body, which HAS a");
+console.log("  charge and no repulsion mechanism, because a turned ray meets its own kind");
+console.log("  again and ping-pongs. P = 0 is a neutral oscillator: it HAS the mechanism and");
+console.log("  no charge, so there is nothing for a sign law to be about. In between it has");
+console.log("  both.");
 console.log();
-const PER = 12;
-console.log(`  period ${PER} ticks, so half a wavelength is ${PER / 2} cells against a separation of ${SEP}`);
+console.log("  Alike and opposite are compared DIRECTLY. Both emit the same amount and differ");
+console.log("  only in the sign of one source, so no external control is needed — and an");
+console.log("  inert pair would be the wrong one anyway, since it emits nothing at all.");
 console.log();
-const iz = meanForce(PER, 0, true);
-console.log(`  ${pad("configuration", 22)} ${pad("force", 13)} ${pad("err", 11)} ${pad("vs inert", 13)} ${pad("signif", 10)}`);
-console.log("  " + "─".repeat(72));
-console.log(`  ${pad("inert control", 22)} ${pad(iz.m.toExponential(3), 13)} ${pad(iz.err.toExponential(2), 11)} ${pad("—", 13)}`);
-const res: Record<string, { m: number; err: number }> = {};
-for (const [name, ph] of [["in phase — ALIKE", 0], ["antiphase — OPPOSITE", PER / 2]] as [string, number][]) {
-  const f = meanForce(PER, ph, false);
-  res[name] = f;
-  const sg = (f.m - iz.m) / Math.hypot(f.err, iz.err);
-  console.log(`  ${pad(name, 22)} ${pad(f.m.toExponential(3), 13)} ${pad(f.err.toExponential(2), 11)} ${pad((f.m - iz.m).toExponential(3), 13)} ${pad(sg.toFixed(1) + " sigma", 10)}`);
+const PER = 12;   // 12 ticks admits dwells of 12/12 .. 8/12, i.e. P = 1 .. 1/3 exactly
+console.log(`  period ${PER} ticks; positive is a PULL, negative a PUSH`);
+console.log();
+console.log(`  ${pad("bias P", 9)} ${pad("dwell", 7)} ${pad("alike (+,+)", 13)} ${pad("opposite (+,−)", 15)} ${pad("opp − alike", 13)} ${pad("signif", 10)}`);
+console.log("  " + "─".repeat(74));
+for (const up of [12, 11, 10, 9, 8]) {
+  const a = meanForce(PER, up, up, 0);
+  const o = meanForce(PER, up, -up, 0);
+  const d = o.m - a.m, e = Math.hypot(a.err, o.err);
+  console.log(`  ${pad(biasOf(up, PER).toFixed(3), 9)} ${pad(`${up}/${PER}`, 7)} ${pad(a.m.toExponential(3), 13)} ${pad(o.m.toExponential(3), 15)} ${pad(d.toExponential(3), 13)} ${pad((d / e).toFixed(1) + " sigma", 10)}`);
 }
 console.log();
-console.log(`  averaged over ${SEEDS.length} runs of ${T} ticks each; positive is a PULL`);
-console.log();
-const A = res["antiphase — OPPOSITE"], L = res["in phase — ALIKE"];
-const sa = (A.m - iz.m) / Math.hypot(A.err, iz.err), sl = (L.m - iz.m) / Math.hypot(L.err, iz.err);
-if (sa > 2 && sl < -2) {
-  console.log("  OPPOSITE PULLS AND ALIKE PUSHES, both clear of the control — which is the");
-  console.log("  sign law entire, on a lattice, and the repulsion appears exactly when the");
-  console.log("  sources are allowed to alternate. `forces` did not fail to measure it. It");
-  console.log("  measured a configuration in which it cannot happen.");
-} else if (sa > 2) {
-  console.log("  THE ATTRACTION IS THERE AND THE REPULSION STILL IS NOT, so the alternation");
-  console.log("  is not what was missing — which is worth more than a confirmation would");
-  console.log("  have been, because it says the mechanism the article describes does not");
-  console.log("  produce a measurable push even when it is given what it asks for.");
-} else {
-  console.log("  NEITHER IS CLEAR OF THE CONTROL at this period, so this configuration says");
-  console.log("  nothing either way and §2 is the thing to read.");
-}
+console.log("  THE LAST COLUMN IS THE SIGN LAW. Positive means opposite charges are pulled");
+console.log("  together more than alike ones are, which is what the model claims. Whether");
+console.log("  the ALIKE column ever goes negative is the separate and harder question of");
+console.log("  whether there is a genuine push rather than a weaker pull.");
 
 console.log();
-console.log("═════ §2  AND AGAINST THE PERIOD, WHICH THE MECHANISM HAS A LENGTH IN ═════");
+console.log("═════ §2  AND AGAINST THE PERIOD ═════");
 console.log();
-console.log("  A turned ray has to get back far enough to meet the next wave. So the effect");
-console.log("  should depend on the half-wavelength against the separation, and it should");
-console.log("  die when the period is so long that no next wave has been emitted yet.");
+console.log("  A turned ray has to get back far enough to meet the next wave its own source");
+console.log("  put out, so the effect should depend on the half-wavelength against the");
+console.log("  separation. The DWELL IS HELD EXACTLY at 5 ticks in 6 — P = 2/3 at every");
+console.log("  period — so this varies the period ALONE. Asking for a fixed real-valued");
+console.log("  bias instead would have slid the effective bias from 1.000 to 0.600 as the");
+console.log("  period grew, and manufactured a period effect out of the rounding.");
 console.log();
-console.log(`  ${pad("period", 9)} ${pad("λ/2", 7)} ${pad("alike", 12)} ${pad("sig", 9)} ${pad("opposite", 12)} ${pad("sig", 9)}`);
-console.log("  " + "─".repeat(64));
-for (const per of [4, 8, 12, 20, 40]) {
-  const z = meanForce(per, 0, true);
-  const a = meanForce(per, 0, false);
-  const o = meanForce(per, Math.round(per / 2), false);
-  const sA = (a.m - z.m) / Math.hypot(a.err, z.err);
-  const sO = (o.m - z.m) / Math.hypot(o.err, z.err);
-  console.log(`  ${pad(String(per), 9)} ${pad(String(per / 2), 7)} ${pad((a.m - z.m).toExponential(2), 12)} ${pad(sA.toFixed(1), 9)} ${pad((o.m - z.m).toExponential(2), 12)} ${pad(sO.toFixed(1), 9)}`);
+console.log(`  ${pad("period", 9)} ${pad("λ/2", 7)} ${pad("alike", 13)} ${pad("opposite", 13)} ${pad("opp − alike", 13)} ${pad("signif", 10)}`);
+console.log("  " + "─".repeat(70));
+for (const per of [6, 12, 18, 24, 36]) {
+  const up = per * 5 / 6;   // dwell held EXACTLY at 5/6, so P = 2/3 at every period
+  const a = meanForce(per, up, up, 0);
+  const o = meanForce(per, up, -up, 0);
+  const d = o.m - a.m, e = Math.hypot(a.err, o.err);
+  console.log(`  ${pad(String(per), 9)} ${pad(String(per / 2), 7)} ${pad(a.m.toExponential(3), 13)} ${pad(o.m.toExponential(3), 13)} ${pad(d.toExponential(3), 13)} ${pad((d / e).toFixed(1) + " sigma", 10)}`);
 }
 console.log();
-console.log("  IF THE ALIKE COLUMN GOES NEGATIVE ANYWHERE it is a repulsion, and where it");
-console.log("  does so tells us the length the mechanism runs on. If it never does, the");
-console.log("  article's account of the repulsion does not survive being run.");
+console.log("  IF THE DIFFERENCE SURVIVES AT EVERY PERIOD it is the charge doing the work");
+console.log("  and not the alternation. If it grows as the period shortens, the returning");
+console.log("  wave is doing it, which is the article's own mechanism and would be the first");
+console.log("  time it has been seen.");
