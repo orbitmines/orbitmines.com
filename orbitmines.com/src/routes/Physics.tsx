@@ -7,21 +7,20 @@ import Post, {
 } from "../lib/post/Post";
 import { PHYSICS } from "./references";
 
-import { bySide, Graph } from "./archive/2026.RayCalculiAndPhysics/discrete";
+import { bySide } from "./archive/2026.RayCalculiAndPhysics/discrete";
 import { Echoes } from "./archive/2026.RayCalculiAndPhysics/echoes";
-import { Beam, Sheet } from "./archive/2026.RayCalculiAndPhysics/figures";
+import { Beam, Sheet } from "./Physics/LATTICE";
 import {
-  B, Bar, Because, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
+  B, Bar, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
   IDENTICAL,
-  IGNORANCE, K, Law, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, RECORD, Rows,
-  SPACE, Step, Sub, Sup, TURNS, Type, V,
-} from "./archive/2026.RayCalculiAndPhysics/law";
+  IGNORANCE, K, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, RECORD, Rows,
+  SPACE, Sub, Sup, TURNS, Type, V,
+} from "./Physics/LAW";
+import { Law } from "./archive/2026.RayCalculiAndPhysics/law";
 import { gravitational, massUnit } from "./archive/2026.RayCalculiAndPhysics/gravity";
 import { lineGroups } from "./archive/2026.RayCalculiAndPhysics/lines";
-import { Wander, WanderBlind, WanderExpand, WanderExpand1D, WanderForward, WanderGravity, WanderPaths, WanderPure, WanderRelay, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
-import { Model } from "./archive/2026.RayCalculiAndPhysics/model";
+import { Wander, WanderBlind, WanderExpand, WanderExpand1D, WanderForward, WanderGravity, WanderPaths, WanderPure, WanderVeins } from "./archive/2026.RayCalculiAndPhysics/wander";
 import { asGroup, MODELS, weighed } from "./archive/2026.RayCalculiAndPhysics/models";
-import { PACE, Polarity } from "./archive/2026.RayCalculiAndPhysics/physics";
 import {
   Apart, Discs, HighRedshift, HighZCurves, HighZDiscs, Rotation, Split,
 } from "./archive/2026.RayCalculiAndPhysics/rotation";
@@ -38,8 +37,8 @@ import { Shelter } from "./archive/2026.RayCalculiAndPhysics/shelter";
 import { MeanOccupancy, MeanPolarity, PerAxis, PerNode, PerRay } from "./archive/2026.RayCalculiAndPhysics/ribbon";
 import { Attract, Lorentz, MovingCharge, Repel, Wire } from "./archive/2026.RayCalculiAndPhysics/em";
 import { LatticeAttract, LatticeInert, LatticeRepel } from "./archive/2026.RayCalculiAndPhysics/grid";
-import { AmpereField, ChannelsAlike, ChannelsOpposite, WiresAnti, WiresParallel } from "./archive/2026.RayCalculiAndPhysics/current";
-import { Exits, Shells } from "./archive/2026.RayCalculiAndPhysics/counts";
+import { Alike, Deficit, Gravity as GravityPanel, MovingCharge as MovingChargePanel, Opposite, SheetEmission, VacuumAlone, Veins, WiresAnti, WiresParallel } from "./Physics/RENDER";
+import { Claim, M, Matrix, Ran, Recorded, Verdict } from "./Physics/FIGURES";
 
 /** The colour the rest of the article uses for an aside inside a set line. */
 const FAINT = '#6c7080';
@@ -226,6 +225,8 @@ const Physics = () => {
 
         <Beam />
 
+        <span className="bp5-text-muted">(Use the arrows, or wait — the same figure is drawn on every geometry this model can run on, because <b>a geometry is a parameter of this model and not a fact about it</b>. The rules never mention one; they demand only that every exit have its opposite, so that a head-on pair exists for them to act on. Two rays are shown where a lattice's exits are not all the same length, one on the shortest exit and one on the longest, and both moving <i>one exit a tick</i> — which is how a diagram saying "a cell a tick" also says that a body diagonal covers √3 cells in the tick a face step covers one.)</span>
+
         <BR/>
         So whatever the maximum speed is any universe we can imagine, it is limited by this property. Something which travels every tick.
 
@@ -270,10 +271,42 @@ const Physics = () => {
         <Eq>
           <F>l.</F><K><Bar>SHEET</Bar></K> = <K><Bar>DEG</Bar></K>(<D>max</D>(<F>l.</F><K><Bar>D</Bar></K> - 1, 1))
         </Eq>
+        <Para>
+          <b>And that formula is not written down in the code either.</b> <K><Bar>SHEET</Bar></K> is computed as the largest set of exits perpendicular to some axis — the largest sheet a geometry can pulse, and the longest ring it can turn through — which reproduces every row below without a special case for any of them, and moves on its own when the lattice does.
+        </Para>
+
+        <Recorded of="geometry/derived-constants · gravity" />
+
+        <span className="bp5-text-muted">(Read the rows as separate theories, because that is what they are. BCC's equator is <i>empty</i> — there is no ring to put a phase on, so gravity would work on it and charge as this book writes it could not exist. And the model's own cubic 26 is <b>veined</b>, with light 73% faster along a body diagonal, which is a prediction and a bad one.)</span>
+
 
         <Para>You'll see that we call the <K><Bar>DEG</Bar></K> variable with an argument. Whenever a variable just depends on a single parameter, we'll allow it to be called, since there's no ambiguity of what that would mean.</Para>
 
         (It doesn't actually need to be a sheet, but that's the most convenient model, as long as the number of points keep rotating properly, you'll recover the continuous model)
+
+        <Head>and whether one rotation really does reach everywhere, which is the step that fixes the count</Head>
+
+        <Para>
+          <b>That last clause is load-bearing and it is checkable.</b> The reason the emission is <K><Bar>SHEET</Bar></K> rays rather than <K><Bar>DEG</Bar></K> of them is that the sheet <i>turns</i> — so if one rotation reached only part of the space, a source would be emitting into a cone and the law that came out would be about that cone rather than about a sphere. So turn it and count what it visits.
+        </Para>
+
+        <Claim of="geometry/sheet-coverage · gravity" />
+
+        <Para>
+          <b>It holds on the model's own lattice and on two others, and it fails on two.</b> Cubic 26 is covered completely — all twenty-six exits in one rotation — as are both weighted readings, cubic 18, cubic 6 and the two flat lattices. <b>FCC reaches six of its twelve and the icosahedral ten of its twelve</b>, so on those a rotating sheet sweeps half a space and the derivation does not close.
+        </Para>
+
+        <BR/>
+
+        <Para>
+          <span className="bp5-text-muted">(Which is worth stating carefully, because it is the reverse of what a first look suggested. Turning the sheet about the axis it is perpendicular to maps it onto itself and covers nothing — the set is invariant under that rotation — and turning it about the first direction that happens to lie in it covers twenty-two of cubic 26's twenty-six. <b>Every axis lying in the sheet is tried and the best is reported</b>, since a geometry should not be failed for a badly chosen one. With the best axis, cubic closes exactly.)</span>
+        </Para>
+
+        <BR/>
+
+        <Para>
+          <b>And it is a real cost of the FCC reading rather than a curiosity.</b> The electromagnetic sections weigh going to FCC for a clean current and count what it would cost — the ring dropping from eight to six, the quantum from 45° to 60°, every constant built on <K><Bar>CYCLE</Bar></K> = 8 moving with it. <b>This is one more item on that bill: on FCC the inverse-square law's own derivation would have to be redone</b>, because the sheet that derivation turns does not reach half the lattice.
+        </Para>
 
         <Head>Movement</Head>
 
@@ -292,6 +325,11 @@ const Physics = () => {
         One view would be: There's a propegation direction, but the ray sometimes wanders from diagonal to non-diagonal and back to a diagonal: attempting some forward-preference. This 'wandering' would result in cones in each direction, with relative deadzones on the boundaries of them.
 
         <WanderVeins aspect={3}/>
+        <BR/>
+        <Para>
+          <b>And here is that question settled by running it rather than by drawing it.</b> On the left a source in an EMPTY box, which is the collisionless limit the geometry table computes in and where a body diagonal really does carry a disturbance √3 times as far in a tick. On the right the same source in the model's own vacuum.
+        </Para>
+        <Veins />
 
         But this would have to be some measurable effect, and at least for our solar system, where we can test with a much higher degree of accuracy, this perspective wouldn't sit well unless we choose a particular method for this wandering which would recreate a circle, and we'd have to explain why that number.
 
@@ -310,6 +348,102 @@ const Physics = () => {
         <WanderExpand/>
 
         <Para>
+          <b>And this is that expansion actually running, with nothing in it.</b> Not an illustration of the rule but the rule, on the lattice every measurement in this project uses, drawn out of the same code. It is what a body will later be in the way of.
+        </Para>
+
+        <VacuumAlone />
+
+        <Head>and the occupancy it settles at is not the one this book has been quoting</Head>
+
+        <Para>
+          The two lines of (G+M/2) have a fixed point, and the derivation is short enough to state: creation fills a cell with probability <V>p</V>, so <V>f</V> → <V>p</V> + (1−<V>p</V>)<V>f</V>; thinning drops each ray with the same probability, so <V>f</V> → <V>f</V>(1−<V>p</V>). Solve the pair and <b>the rate cancels out</b>.
+        </Para>
+
+        <Eq>
+          <V>f</V>* = <Frac over={<>1 − <V>p</V></>} under={<>2 − <V>p</V></>} />
+          <span style={{ padding: '0 1.2em' }}>→</span>
+          <Frac over={<>1</>} under={<>2</>} />
+        </Eq>
+
+        <Para>
+          <b>And it is exactly right, for the medium it is a derivation of.</b> Run a vacuum in which collisions <i>turn</i> and nothing is ever destroyed, and it lands on the formula to three decimals across a twelvefold change in the rate.
+        </Para>
+
+        <Claim of="vacuum/fixed-point · conserving" />
+
+        <Para>
+          <b>But neither of this book's theories is that medium.</b> Gravity annihilates on every head-on meeting; gravity+magnetism annihilates on the opposite half of them. <b>Annihilation is a sink the algebra above has no term for</b> — creation scales with <V>p</V> while destruction scales with how much is already there — so the balance is struck somewhere else, and the rate stops cancelling.
+        </Para>
+
+        <Claim of="vacuum/fixed-point · gravity" />
+
+        <Claim of="vacuum/fixed-point · gravity+magnetism" />
+
+        <Para>
+          <b>So in a box that cannot grow, the vacuum is about a fifth full rather than half full, and its occupancy DEPENDS ON THE EXPANSION RATE</b> — which the fixed point was supposed to have removed. That is a correction to a number this project has been treating as forced, and it is not small in what it touches, because <b>every screening length here is a mean free path, and a mean free path is 1/fill.</b>
+        </Para>
+
+        <BR/>
+
+        <span className="bp5-text-muted">(Where that lands: the electromagnetic sections argue that the derived half puts the mean free path at about two cells, and that <i>a Coulomb force with a range of two Planck lengths is not a Coulomb force</i>. The measured path is three to seven cells depending on the theory and the rate — which does not rescue the argument, since seven Planck lengths is not a Coulomb force either, but it changes what the constraint is a constraint ON. The vacuum's density is a parameter again, and the observed range of electrostatics bounds it rather than the model fixing it.)</span>
+
+        <Head>and then annihilation turns out to FEED the expansion, which is the loop the two rules make</Head>
+
+        <Para>
+          <b>All of that is measured in a box that is not allowed to grow, and the rules do not respect that restriction.</b> (G/2) does not fill a cell — it says a neutral point <i>expands into two points</i> — so space itself is one of the things the two rules are fighting over, and holding the point count fixed decides the fight before it starts. Let it grow, with nothing but a bound on how far, and the balance is not the one the fixed point describes.
+        </Para>
+
+        <BR/>
+
+        <Para>
+          <b>And it is a loop rather than a tug of war, which is the part worth having.</b> Read the two rules for what they leave behind rather than for what they destroy:
+        </Para>
+
+        <Rows of={[
+          [<>(G/1) makes NEUTRAL POINTS</>,
+            <>Two rays meet and annihilate, and what is left where they met is a point with
+              nothing on it. <b>Annihilation does not merely remove rays — it manufactures the
+              exact condition (G/2) acts on.</b></>],
+          [<>(G/2) acts on neutral points</>,
+            <>A neutral point expands into two. So the more thoroughly a region has been cleared
+              of rays, <b>the more places there are for space to be made</b>, and the faster it
+              is made there.</>],
+          [<>so the two rules are a feedback, not a balance</>,
+            <>Destruction feeds creation. A theory that annihilates more clears more points, and
+              a region with more cleared points grows faster — which is a coupling neither rule
+              mentions and which nothing in this project had measured.</>],
+        ]}/>
+
+        <Para>
+          <b>It is measurable, because the theories annihilate at different rates for reasons that have nothing to do with expansion.</b> The conserving medium never annihilates at all; gravity annihilates on every head-on meeting, since its rays are neutral and neutrality has no sign to disagree about; gravity+magnetism annihilates on the opposite half of its meetings and turns the alike half. So the three should clear points in that order, and if the loop is real they should grow in the same order.
+        </Para>
+
+        <Claim of="vacuum/annihilation-feeds-expansion · gravity" />
+
+        <Para>
+          <b>An order of magnitude in the growth, from nothing but how often two rays destroy each other</b> — the bound, the rate and the ticks are identical across the three. And <K>l.DEG</K> stays at the lattice's own twenty-six throughout, which is the check that makes it mean anything: space is being <i>made</i> rather than folded, so this is an expansion and not the bookkeeping of a collapse.
+        </Para>
+
+        <Head>which says where space expands fastest, and it is not where the model has been looking</Head>
+
+        <Para>
+          <b>Matter is what stops this.</b> A body emits, tick after tick, and a point with a ray on it is not neutral — so <b>the neighbourhood of matter is a region where (G/2) has fewer places to fire</b>, and empty space is where it has the most. That is the same sentence as the gravity mechanism read from the other end: this book already says that matter is <i>in the way of</i> the expansion and that gravity is the deficit that leaves. What the loop adds is that matter does not merely obstruct the expansion locally — <b>it suppresses the condition the expansion needs</b>.
+        </Para>
+
+        <BR/>
+
+        <Para>
+          <b>So the prediction is that voids expand faster than clusters, and by a wide margin rather than a subtle one.</b> Not because anything repels, and not because a constant was fitted: because the rule that makes space only fires where there is nothing, and matter is the thing that leaves something. <span className="bp5-text-muted">(Which is a shape and not a number. The measurement above is three collision rules against each other at one bound and one rate — it says the mechanism exists and how strongly it separates them, and it does not say what a void does against a cluster at any scale anyone has observed. That would need matter in the box and a run big enough to have a void in it, and it is owed.)</span>
+        </Para>
+
+        <BR/>
+
+        <Para>
+          <b>And it puts the expansion rate somewhere the model has not had it.</b> Throughout this project <V>p</V> has been a free parameter with the comforting property that it cancels — the fixed point does not depend on it, so nothing rests on its value. That comfort was an artefact of a fixed box. <b>In a space that can grow, how fast it grows depends on how much of it is empty, and how much of it is empty depends on how much has been annihilated</b>, so the expansion rate is coupled to the matter content rather than being a constant the universe was handed. <span className="bp5-text-muted">(Whether that coupling has the sign and size cosmology needs is not a question this section can answer, and it should not be read as claiming so. It is a statement that the parameter is not free, which is one more thing this model does not get to choose than it had before.)</span>
+        </Para>
+
+
+        <Para>
           It is precisely this expansion the vacuum is trying to do, which allows for the creation of the circular setup: Vacuum tries to expand, but there's matter in the way. Matter sends out its own rays, thus disturbing the perfect grid expansion. This deficit then expands at <K><Bar>c</Bar></K>, resulting in our gravitational pull.
         </Para>
 
@@ -320,6 +454,11 @@ const Physics = () => {
         </Para>
 
         <WanderPure/>
+        <BR/>
+        <Para>
+          <b>And the deficit itself, which is what all of this is about</b> — one inert absorber, eating the vacuum's rays and putting nothing back, drawn as the shortfall it leaves in the traffic around it. This is the mechanism rather than the observable: the force is what a <i>second</i> body does to this, and that is measured further down.
+        </Para>
+        <Deficit />
 
         If we instead skip ahead the story a little and include XOR, so magnetism, which we'll get to later. There's actual vacuum dynamics by the grid trying to expand. The random-looking dynamics still has an aggregate pressure our matter is creating by sending out 'gravity-rays'.
 
@@ -1223,6 +1362,27 @@ const Physics = () => {
         <Section head="Black Holes">a</Section>
         <Section head="Expansion">a</Section>
         <Section head="The Discrete Model">
+
+          <Para>
+            <b>And this is the whole of it, measured.</b> Two INERT absorbers — they eat the vacuum's rays and emit nothing, so there is no body-to-body interaction in the run at all — and what draws them together is the vacuum's own pressure with a shadow in it, because each has been eating the rays that would otherwise have arrived at the other from its side.
+          </Para>
+
+          <GravityPanel />
+
+          <Para>
+            The force is the momentum a body absorbs per tick, differenced against a LONE body at the same position — which is the right zero, since a body off-centre in a box with an absorbing boundary reads the box's own asymmetry and that cancels in the difference.
+          </Para>
+
+          <Claim of="gravity/inverse-square · gravity" />
+
+          <Para>
+            <b>And the same measurement under the three rules with polarity</b>, which is the article's own claim that gravity is recovered rather than added:
+          </Para>
+
+          <Claim of="gravity/inverse-square · gravity+magnetism" />
+
+          <Claim of="gravity/recovered-from-magnetism · gravity" />
+
         </Section>
 
 
@@ -3805,6 +3965,23 @@ relativistic dynamics, γm     MISSING    kinematics only`}
         <Section head="Electromagnetism">
 
           <Para>
+            <b>One thing about this arc before it starts, because it changed how the rest of it should be read.</b> Every measurement below used to live in its own file with its own copy of the rules — and of a hundred and forty-eight such files, ten wrote (G+M/2) as <i>"fire only in a completely neutral cell"</i>, which self-limits at about a tenth of the vacuum's derived occupancy, and seven wrote (G+M/3) as a swap of two equal values, which is a no-op. <b>Four files carried both at once</b>, and those four produced Coulomb's 1/<V>r</V><Sup>2</Sup>, the attraction, the force cliff and the bias sweep: measured in a thin vacuum in which alike rays passed straight through each other.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>There is one model now, and the numbers below come out of it rather than out of the prose.</b> A claim is tested <i>against a theory</i> and declares what it expects of each — that it <b>holds</b>, that it is measurably <b>absent</b>, or that it cannot be phrased there at all — and a claim that holds where it should be absent fails as loudly as one that fails where it should hold. Every figure quoted from here on is read out of the report the suite writes, so a number in this text and the run that produced it cannot drift apart.
+          </Para>
+
+          <BR/>
+
+          <Matrix />
+
+          <BR/>
+
+
+          <Para>
             The section above leaves the electric force derived and the magnetic one absent, and calls the absence structural. <b>That verdict was right about the model and wrong about the reason</b>, and getting the reason right is what this section is for — because the corrected reason points at a reading of the rules that has been sitting in the model unused since the magnetism arc.
           </Para>
 
@@ -4992,6 +5169,12 @@ FCC, a body diagonal      3        6         3      ← a hexagonal ring`}
           </Eq>
 
           <Para>
+            <b>And the ring is derived rather than declared</b>, which is what makes the next sentence a measurement instead of an assertion.
+          </Para>
+
+          <Claim of="layer2/ring · gravity" />
+
+          <Para>
             The cubic face axis's <b>equator of eight is the whole of the Layer-2 arc</b> — the ring, the U(1) phase, the 45° quantum, and <K><Bar>SHEET</Bar></K> = 3<Sup><V>D</V>−1</Sup> − 1. On FCC the exit axes have two and the cube axes four, <b>but the body diagonals have six</b> — so the ring does not die, it becomes a hexagon with a 60° quantum and <K><Bar>CYCLE</Bar></K> = 6 rather than 8.
           </Para>
 
@@ -5222,11 +5405,13 @@ d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
             <b>Continuity, exactly, on any lattice.</b> What leaves a cell along <B>d</B> arrives at <V>c</V> + <B>D</B><Sub>d</Sub> and nowhere else, so this is not a hypothesis about the model — it is what streaming <i>is</i>. And it is why the Lorenz condition is not a thing to check but a thing to notice.
           </Para>
 
-          <Eq note="charged.ts §2 — net·r² flat to 1.08× over r = 5.5 to 21.5, with the two signs at 600 : 1 against the symmetry residual">
+          <Eq>
             <V>ρ</V>(<V>r</V>) = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>σ</V><Sub>d</Sub>
             <span style={{ padding: '0 1.2em', color: FAINT }}>∝</span>
             <Frac over={<><V>q</V></>} under={<><V>r</V><Sup>2</Sup></>} />
           </Eq>
+
+          <Claim of="electrostatics/coulomb · gravity+magnetism" />
 
           <Para>
             <b>Coulomb's law, and it is Gauss's law that makes it true.</b> Both rules <i>conserve</i> net polarity — (G+M/1) removes a + and a − together and (G+M/3) preserves both — so it is a conserved quantity spreading over a shell of 4π<V>r</V>², and 1/<V>r</V>² is what that comes to. <b>The net polarity a charge leaves in the vacuum <i>is</i> the electric field</b>, read directly rather than differentiated out of a potential.
@@ -5392,17 +5577,7 @@ spin    +0.000e+0 ± 0.0e+0   −7.746e−1 ± 1.6e−2   −1.337e−2 ± 4.2e�
             <b>So there are two forces here and they are different kinds of thing.</b> Annihilation between the bodies destroys spatial points, and destroying a point between two bodies <i>shortens the separation</i> — a <b>metric</b> effect, the article's own account of the pull, and what every force test in the arc was counting. Arrivals deliver momentum — a <b>mechanical</b> effect, the push, invisible to an annihilation count because its entire content is that annihilation did <i>not</i> happen. <V>signlaw.ts</V> measures both on the same runs against the same lone control.
           </Para>
 
-          <Eq note="signlaw.ts §1 — both channels, separation 10; PUSH negative is a repulsion, PULL positive draws them in">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`(G+M/3) as noop        PUSH (momentum)      PULL (annihilation)
-lone                   +0.000e+0 ± 0.0e+0   +2.833e−3 ± 5.6e−4
-alike                  −8.680e+0 ± 6.0e−4   +7.649e−3 ± 3.4e−4
-opposite               −2.053e−2 ± 1.7e−3   +2.895e−2 ± 2.4e−3
-
-  alike pushed harder by 8.660e+0  (4746σ)
-  opposite pulled harder by 2.130e−2  (8.7σ)`}
-            </span>
-          </Eq>
+          <Claim of="electrostatics/sign-law · gravity+magnetism" />
 
           <Para>
             <b>Both orderings hold at once, which is what a sign law requires.</b> Alike takes the larger share of the momentum and opposite takes the larger share of the destroyed space. Either one alone is a difference between two magnitudes; together they are two forces of opposite sign, and the XOR is over <i>which rule fires</i>:
@@ -5777,9 +5952,9 @@ spin   antiparallel pushed harder by 9.616e+0   (103σ)
             <span className="bp5-text-muted">(The lone wire does <i>not</i> read nought on the push, unlike the lone <i>body</i> in <V>push</V> §1, and the reason is worth recording rather than hiding. A ball emits down all twenty-six exits, so its own emission carries no net x-momentum by symmetry and the zero is structural; a wire emits only into its two hemispheres, leaving its eight equatorial exits empty, and it sits off-centre in the box — so a lone wire reads the box's own asymmetry at −4.7·10<Sup>−1</Sup>. That baseline is shared by all three configurations and cancels between them, and the antiparallel signal is a hundred times larger than it, but the comparison that carries the result is parallel against antiparallel and not either against the lone control.)</span>
           </Para>
 
-          <ChannelsAlike />
+          <Alike />
 
-          <ChannelsOpposite />
+          <Opposite />
 
           <Para>
             <b>Which is the two channels drawn rather than tabulated.</b> Both panels run the three rules with polarity on a 121² lattice, each differenced against the same box at the same seed with only the left body in it — the subtraction the measurements make. The left half is the ray traffic the partner added and the right half is the annihilation it added. <b>Look at the gap between the two circles:</b> the opposite pair has a bright band of destroyed space across it and the alike pair does not, while the alike pair's traffic reaches across and the opposite pair's does not. <b>That swap is the sign law.</b> Neither half alone is a force with a sign; the pair is.
@@ -5893,10 +6068,28 @@ neutral wire     B azimuthal, AMPÈRE                B·φ̂ ∝ r^−0.958
             <span className="bp5-text-muted">(Three measures had to be fixed on the way and all three failed the same way. Reading |<B>B</B>| per cell reports the moving charge's field as <i>flat</i> in <V>r</V>, because a source on this lattice emits twenty-six pencil beams rather than a shell — a ray on exit <B>d</B> travels along <B>d</B> for ever and the beam never spreads — so a magnitude on a sphere is dominated by wherever a beam crosses it. Averaging the angle per cell puts a static charge's <B>E</B> at 80° to <B>r̂</B> by <V>r</V> = 16. And ∇·<B>B</B> read as a per-cell difference gives 0.94 and then 2.67. <b>A magnitude cannot cancel</b>, so the vacuum adds to it instead of averaging out; a signed projection onto each cell's own basis cancels it, and an integral cancels it in a derivative. It is <V>ampere</V> §1's correction and <V>push</V>'s correction, arriving a third time.)</span>
           </Para>
 
-          <AmpereField />
+          <MovingChargePanel />
 
           <Para>
-            <b>And that is the field itself, on the lattice, drawn.</b> The same charge twice — standing still on the left and moving on the right — with the colour being Σσ(<B>D</B> × <B>u</B>) read off each cell, which in the plane is a signed scalar out of the page. <b>The left half is empty because the field is exactly nothing there</b>, not because it is faint: every ray a stationary charge emits carries the label 0. <b>And the right half reverses across the direction of motion</b>, which is Biot–Savart's geometry and which no density gradient can produce. <span className="bp5-text-muted">(A wire was drawn here first and came out a solid slab, which is not a bug: an infinite line's shell in two dimensions is two points, so a line source has no falloff to show. A point's shell is a circle, so a moving charge has one.)</span>
+            <b>And that is the field itself, on the lattice, drawn.</b> A moving charge, with the colour being Σσ(<B>d̂</B> × <B>u</B>) read off each cell — which in the plane is a signed scalar out of the page — against the same charge standing still. <b>It reverses across the direction of motion</b>, which is Biot–Savart's geometry and which no density gradient can produce.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the measurement behind it, quoted from the run rather than typed in:</b>
+          </Para>
+
+          <Claim of="magnetostatics/moving-charge · labelled" />
+
+          <Para>
+            <b>The row that matters most is the one that is not there.</b> Run the same source under <i>gravity+magnetism</i> — the same three rules, the same vacuum, everything but the label — and the field is <M of="magnetostatics/moving-charge · gravity+magnetism" is="|B| anywhere in the box" /> <b>exactly, at every local in the box.</b>
+          </Para>
+
+          <Claim of="magnetostatics/moving-charge · gravity+magnetism" />
+
+          <Para>
+            <b>That is <V>fork</V>'s obstruction, measured rather than argued.</b> A ray carrying only a polarity and a heading offers <V>ρ</V>, <B>J</B> and <B>F</B>, so <B>J</B> × <B>F</B> is the only local pseudovector available — and it vanishes for a one-polarity source because <B>J</B> = <V>σ</V><B>F</B> exactly. <b>The label is what makes a magnetic field exist</b>, and the suite is written so that this failing would be worth as much as the other holding.
           </Para>
 
           <Head>and the two wires are not the same wire, which is the tension this leaves</Head>
@@ -5936,19 +6129,22 @@ neutral wire     B azimuthal, AMPÈRE                B·φ̂ ∝ r^−0.958
             With both fields carried by the same rays on the same lattice, induction stops being a continuum question. Oscillate a charge's <i>position</i> — so that continuity needs no arranging, it is one object that moves — lock both fields in at its frequency, and ask.
           </Para>
 
-          <Eq note="induction.ts §5b — λ = 12 cells; every quantity an azimuthal mean, and nothing differenced cell by cell">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`loop ρ    z      ∮Ec·dl     −ω∬Bs      ∮Es·dl     +ω∬Bc      residual
-3…7       ±4     +2.891e+0  +1.850e+1  +1.173e+0  −5.323e+0   0.878
-3…10      ±6     +4.944e+0  +2.380e+1  +5.837e−1  +4.448e−1   0.792
-5…12      ±6     +5.056e−1  +9.181e+0  −1.386e−1  +1.089e+1   0.985
-7…15      ±8     +4.369e−1  −2.230e+0  +1.057e+0  +9.368e+0   0.906
-3…15      ±10    +1.504e+0  +2.051e+1  +2.157e+0  +5.674e+0   0.908`}
-            </span>
-          </Eq>
+          <Claim of="induction/faraday · labelled" />
 
           <Para>
-            <b>Faraday does not hold, and the shape of the failure is that one side is missing rather than wrong.</b> The electromotive force round a loop is five to forty times under the rate of change of the flux through it, at every loop tried. Ampère–Maxwell on the same run reads 1.13 to 1.49. <b>So the label buys the whole of magnetostatics and buys no induction at all</b>, and that is now a measurement on a lattice carrying polarity rather than a continuum argument about which moment to read.
+            <b>Faraday does not hold, and it was DECLARED not to before it was run.</b> The residual is <M of="induction/faraday · labelled" is="worst relative residual over the loops" plain /> against an expectation of 1 — the equation is not there — and the shape of the failure is that one side is missing rather than the two disagreeing.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Which is a prediction rather than a disappointment, and the prediction has a proof.</b> Faraday and ∇·<B>B</B> = 0 are not physical claims about a field read off rays: they are <i>identities</i> that hold if and only if the fields come from potentials, since ∇×∇<V>φ</V> ≡ 0 and ∇·(∇×<B>A</B>) ≡ 0. And <b>this lattice has no signed potential.</b> Both collision rules CONSERVE net polarity, so a signed quantity cannot relax — it can only stream, and a conserved thing streaming over a shell is field-like by construction; the unsigned occupancy does relax, which is why the deficit settles into a discrete Laplace solution, but it is unsigned and its first moment around a wire comes out <i>radial</i>, so its curl is nought.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So the suite declares this claim ABSENT in advance, and would flag it if induction ever appeared.</b> A residual near nought here would mean the theorem is wrong, which is worth as much as it holding — and that is the difference between a test that failed and a prediction that came out.
           </Para>
 
           <BR/>
@@ -7783,15 +7979,13 @@ dipole–dipole           75.94 %`}
             is what gets through.
           </Para>
 
-          <Shells />
+          <Claim of="geometry/shells · gravity" />
 
           <Para>
-            And the twenty-six ways out of a point sorted by a north — where the
-            equator turns out to be a <i>different</i> ring for each of the
-            three axis classes.
+            And the ways out of a point sorted by a north, which matters because the Layer-2 arc quotes the face-axis reading and calls it <i>the</i> equator. <b>The three classes of axis give two rings and not three:</b> a face axis and an edge axis both leave eight in the plane, and a body diagonal leaves six. So the ring a phase lives on does depend on which way a source is oriented — but it takes only two values, and the arc's eight is the one two of the three classes agree on.
           </Para>
 
-          <Exits />
+          <Claim of="geometry/exits-by-axis · gravity" />
 
         </Section>
 

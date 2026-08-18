@@ -1,0 +1,6111 @@
+{
+  "title": "@orbitmines/physics",
+  "generated": "2026-08-18T22:15:18.393Z",
+  "entries": [
+    {
+      "id": "cosmology/expansion · gravity",
+      "what": "space expands where meetings fail to annihilate, so the rate comes out of the rules rather than being set",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 3,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "space grew",
+          "value": 1,
+          "err": 0,
+          "expect": {
+            "of": "1 — a universe with no polarity is STATIC, because every split's halves are neutral and always annihilate",
+            "want": 1,
+            "tolerance": 0.05,
+            "because": "the inserted point collapses every time, so the lattice is exactly as it was — which is why gravity alone cannot expand anything"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "growth per tick, late in the run",
+          "value": 1,
+          "note": "a fixed FACTOR each tick is exponential; a fixed NUMBER added is linear. This is the one cosmological question the measurement is in a position to answer, and it answers it about a box of nine cells with a bound at twelve — so it says what the mechanism does, not what the universe does."
+        }
+      ],
+      "table": {
+        "columns": [
+          "tick",
+          "size",
+          "× start",
+          "ratio"
+        ],
+        "rows": [
+          [
+            1,
+            9261,
+            "1.00",
+            "—"
+          ],
+          [
+            2,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            3,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            4,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            5,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            6,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            7,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            8,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            9,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            10,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            11,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            12,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            13,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            14,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            15,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            16,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            17,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            18,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            19,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            20,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            21,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            22,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            23,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            24,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            25,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            26,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            27,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            28,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            29,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            30,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            31,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            32,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            33,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            34,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            35,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            36,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            37,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            38,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            39,
+            9261,
+            "1.00",
+            "1.000"
+          ],
+          [
+            40,
+            9261,
+            "1.00",
+            "1.000"
+          ]
+        ]
+      },
+      "at": "2026-08-18T21:04:50.927Z"
+    },
+    {
+      "id": "cosmology/expansion · gravity+magnetism",
+      "what": "space expands where meetings fail to annihilate, so the rate comes out of the rules rather than being set",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 3,
+        "fill": 0.4081881836983878,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "space grew",
+          "value": 118.60047511067918,
+          "err": 0.02321563546053795,
+          "expect": {
+            "of": "well above 1 — alike halves turn rather than annihilate, so the point they were inserted as survives",
+            "want": 1,
+            "tolerance": 1000000000,
+            "because": "expansion here is a meeting that did not happen, so a theory whose third rule preserves rays is one whose space grows"
+          },
+          "note": "2.2e+6 turns over 40 ticks",
+          "by": 117.60047511067918,
+          "verdict": "within"
+        },
+        {
+          "name": "growth per tick, late in the run",
+          "value": 1.0348361510577249,
+          "note": "a fixed FACTOR each tick is exponential; a fixed NUMBER added is linear. This is the one cosmological question the measurement is in a position to answer, and it answers it about a box of nine cells with a bound at twelve — so it says what the mechanism does, not what the universe does."
+        }
+      ],
+      "table": {
+        "columns": [
+          "tick",
+          "size",
+          "× start",
+          "ratio"
+        ],
+        "rows": [
+          [
+            1,
+            36514,
+            "3.94",
+            "—"
+          ],
+          [
+            2,
+            63836.5,
+            "6.89",
+            "1.748"
+          ],
+          [
+            3,
+            91121.5,
+            "9.84",
+            "1.427"
+          ],
+          [
+            4,
+            118279,
+            "12.77",
+            "1.298"
+          ],
+          [
+            5,
+            145436.5,
+            "15.70",
+            "1.230"
+          ],
+          [
+            6,
+            172755.5,
+            "18.65",
+            "1.188"
+          ],
+          [
+            7,
+            200020,
+            "21.60",
+            "1.158"
+          ],
+          [
+            8,
+            227280,
+            "24.54",
+            "1.136"
+          ],
+          [
+            9,
+            254386,
+            "27.47",
+            "1.119"
+          ],
+          [
+            10,
+            281611.5,
+            "30.41",
+            "1.107"
+          ],
+          [
+            11,
+            308780,
+            "33.34",
+            "1.096"
+          ],
+          [
+            12,
+            335998,
+            "36.28",
+            "1.088"
+          ],
+          [
+            13,
+            363365,
+            "39.24",
+            "1.081"
+          ],
+          [
+            14,
+            390628.5,
+            "42.18",
+            "1.075"
+          ],
+          [
+            15,
+            417870,
+            "45.12",
+            "1.070"
+          ],
+          [
+            16,
+            445062,
+            "48.06",
+            "1.065"
+          ],
+          [
+            17,
+            472208.5,
+            "50.99",
+            "1.061"
+          ],
+          [
+            18,
+            499456.5,
+            "53.93",
+            "1.058"
+          ],
+          [
+            19,
+            526820,
+            "56.89",
+            "1.055"
+          ],
+          [
+            20,
+            554112.5,
+            "59.83",
+            "1.052"
+          ],
+          [
+            21,
+            581261,
+            "62.76",
+            "1.049"
+          ],
+          [
+            22,
+            608423.5,
+            "65.70",
+            "1.047"
+          ],
+          [
+            23,
+            635640,
+            "68.64",
+            "1.045"
+          ],
+          [
+            24,
+            662999.5,
+            "71.59",
+            "1.043"
+          ],
+          [
+            25,
+            690284.5,
+            "74.54",
+            "1.041"
+          ],
+          [
+            26,
+            717541,
+            "77.48",
+            "1.039"
+          ],
+          [
+            27,
+            744814.5,
+            "80.42",
+            "1.038"
+          ],
+          [
+            28,
+            771819.5,
+            "83.34",
+            "1.036"
+          ],
+          [
+            29,
+            799059.5,
+            "86.28",
+            "1.035"
+          ],
+          [
+            30,
+            826258.5,
+            "89.22",
+            "1.034"
+          ],
+          [
+            31,
+            853434.5,
+            "92.15",
+            "1.033"
+          ],
+          [
+            32,
+            880520,
+            "95.08",
+            "1.032"
+          ],
+          [
+            33,
+            907805,
+            "98.02",
+            "1.031"
+          ],
+          [
+            34,
+            935114.5,
+            "100.97",
+            "1.030"
+          ],
+          [
+            35,
+            962330,
+            "103.91",
+            "1.029"
+          ],
+          [
+            36,
+            989729.5,
+            "106.87",
+            "1.028"
+          ],
+          [
+            37,
+            1016864.5,
+            "109.80",
+            "1.027"
+          ],
+          [
+            38,
+            1044060.5,
+            "112.74",
+            "1.027"
+          ],
+          [
+            39,
+            1071268.5,
+            "115.68",
+            "1.026"
+          ],
+          [
+            40,
+            1098574,
+            "118.62",
+            "1.025"
+          ]
+        ]
+      },
+      "at": "2026-08-18T21:04:52.849Z"
+    },
+    {
+      "id": "cosmology/hubble-rate · gravity",
+      "what": "the frontier advances one cell a tick, which is R = ct and fixes the age with nothing to fit",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 5,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "ADVANCE = SHEET/2",
+          "value": 4,
+          "expect": {
+            "of": "4 — cells of budget for the 1 the front needs, from the geometry alone",
+            "want": 4,
+            "tolerance": 0,
+            "because": "the front is not budget-limited, which is why it runs at the only speed left rather than at some fraction of it"
+          },
+          "note": "SHEET is 8 on cubic-26, so this moves with the lattice and is not a constant anybody wrote down",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "dR/dt (cells per tick)",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "1 — one cell a tick is the ceiling and therefore the rate, which is R = ct",
+            "want": 1,
+            "tolerance": 0.25,
+            "because": "R = ct is what forces the age instead of fitting it: t₀ = 1/H₀ exactly, 14.51 Gyr at H₀ = 67.4 and 13.39 at 73.0 against a measured 13.80"
+          },
+          "note": "fitted over the first 8 ticks, while the front is still clear of the wall at 10 cells",
+          "by": 1,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "tick",
+          "reach (cells, on axis)"
+        ],
+        "rows": [
+          [
+            "1",
+            "0.0"
+          ],
+          [
+            "2",
+            "0.0"
+          ],
+          [
+            "3",
+            "0.0"
+          ],
+          [
+            "4",
+            "0.0"
+          ],
+          [
+            "5",
+            "0.0"
+          ],
+          [
+            "6",
+            "0.0"
+          ],
+          [
+            "7",
+            "0.0"
+          ],
+          [
+            "8",
+            "0.0"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:13:27.896Z"
+    },
+    {
+      "id": "cosmology/hubble-rate · gravity+magnetism",
+      "what": "the frontier advances one cell a tick, which is R = ct and fixes the age with nothing to fit",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 5,
+        "fill": 0.40725839969410316,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "ADVANCE = SHEET/2",
+          "value": 4,
+          "expect": {
+            "of": "4 — cells of budget for the 1 the front needs, from the geometry alone",
+            "want": 4,
+            "tolerance": 0,
+            "because": "the front is not budget-limited, which is why it runs at the only speed left rather than at some fraction of it"
+          },
+          "note": "SHEET is 8 on cubic-26, so this moves with the lattice and is not a constant anybody wrote down",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "dR/dt (cells per tick)",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "1 — one cell a tick is the ceiling and therefore the rate, which is R = ct",
+            "want": 1,
+            "tolerance": 0.25,
+            "because": "R = ct is what forces the age instead of fitting it: t₀ = 1/H₀ exactly, 14.51 Gyr at H₀ = 67.4 and 13.39 at 73.0 against a measured 13.80"
+          },
+          "note": "fitted over the first 8 ticks, while the front is still clear of the wall at 10 cells",
+          "by": 1,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "tick",
+          "reach (cells, on axis)"
+        ],
+        "rows": [
+          [
+            "1",
+            "10.0"
+          ],
+          [
+            "2",
+            "10.0"
+          ],
+          [
+            "3",
+            "10.0"
+          ],
+          [
+            "4",
+            "10.0"
+          ],
+          [
+            "5",
+            "10.0"
+          ],
+          [
+            "6",
+            "10.0"
+          ],
+          [
+            "7",
+            "10.0"
+          ],
+          [
+            "8",
+            "10.0"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:13:31.958Z"
+    },
+    {
+      "id": "cosmology/where-space-is-made · gravity",
+      "what": "space is made on the frontier and not in the interior — which is the reading that survives, the bulk one having failed seven ways",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 5,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "space made per point, interior",
+          "value": 0,
+          "expect": {
+            "of": "0 — in pure gravity both halves of a split are neutral, so they always annihilate and the inserted point collapses every time",
+            "want": 0,
+            "tolerance": 0.02,
+            "because": "a static bulk is what makes the frontier reading necessary rather than merely available: if the interior made space there would be no reason to look at the edge"
+          },
+          "note": "the bulk is static, as the arc requires",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "space made per point, frontier",
+          "value": 0,
+          "expect": {
+            "of": "above the interior — a ray streaming outward meets nothing ever and never gives its point back",
+            "want": 0,
+            "tolerance": 1000000000,
+            "because": "this is where the arc puts all of the creation, and it is the one place the rule can fire without a partner to undo it"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "tilt of the swept profile",
+          "value": null,
+          "expect": {
+            "of": "small — frontier creation fires once per shell as the front passes, so every swept radius has had exactly one pass and the profile is flat",
+            "want": 0,
+            "tolerance": 0.35,
+            "because": "a profile rising towards the centre is the signature of creation that NEVER STOPS, which is the bulk reading and the one that fails seven ways"
+          },
+          "note": "flat across the swept region is the frontier reading",
+          "by": null,
+          "verdict": "below"
+        },
+        {
+          "name": "frontier over interior",
+          "value": 0,
+          "note": "with a static bulk this is the whole of the effect, and it is the frontier reading measured rather than assumed"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r/R",
+          "space made per point",
+          "±"
+        ],
+        "rows": [
+          [
+            "0.08",
+            "—",
+            "—"
+          ],
+          [
+            "0.25",
+            "0.00e+0",
+            "0.0e+0"
+          ],
+          [
+            "0.42",
+            "0.00e+0",
+            "0.0e+0"
+          ],
+          [
+            "0.58",
+            "0.00e+0",
+            "0.0e+0"
+          ],
+          [
+            "0.75",
+            "0.00e+0",
+            "0.0e+0"
+          ],
+          [
+            "0.92",
+            "0.00e+0",
+            "0.0e+0"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:15:18.235Z"
+    },
+    {
+      "id": "cosmology/where-space-is-made · gravity+magnetism",
+      "what": "space is made on the frontier and not in the interior — which is the reading that survives, the bulk one having failed seven ways",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 5,
+        "fill": 0.40677198840464146,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "space made per point, interior",
+          "value": 65.046875,
+          "note": "NOT EXPECTED TO BE ZERO HERE, and that is the arc's problem rather than a success. With polarity about half of a split's halves are ALIKE, turn instead of annihilating, and the inserted point survives — in the INTERIOR. That is the bulk reading, and the bulk reading is the one that fails seven ways because the pairs which make the space are the fog that stops the gravity."
+        },
+        {
+          "name": "space made per point, frontier",
+          "value": 121.48995440109066,
+          "expect": {
+            "of": "above the interior — a ray streaming outward meets nothing ever and never gives its point back",
+            "want": 121.48995440109066,
+            "tolerance": 1000000000,
+            "because": "this is where the arc puts all of the creation, and it is the one place the rule can fire without a partner to undo it"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "tilt of the swept profile",
+          "value": 0.13090898082185123,
+          "note": "expected to RISE towards the centre here: with polarity the interior keeps making space for as long as it exists, so the shells swept earliest have had the longest to accumulate. That is the bulk reading, measured."
+        },
+        {
+          "name": "frontier over interior",
+          "value": 1.8677293013859722,
+          "note": "a ratio near 1 would say the model makes space everywhere alike, which is the reading the arc rejects on physical grounds rather than on this number"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r/R",
+          "space made per point",
+          "±"
+        ],
+        "rows": [
+          [
+            "0.08",
+            "—",
+            "—"
+          ],
+          [
+            "0.25",
+            "1.30e+2",
+            "2.0e-1"
+          ],
+          [
+            "0.42",
+            "1.30e+2",
+            "3.7e-2"
+          ],
+          [
+            "0.58",
+            "1.30e+2",
+            "5.0e-2"
+          ],
+          [
+            "0.75",
+            "1.30e+2",
+            "1.8e-1"
+          ],
+          [
+            "0.92",
+            "1.13e+2",
+            "7.5e-2"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:15:17.658Z"
+    },
+    {
+      "id": "electrostatics/coulomb · gravity",
+      "what": "a charge polarises the vacuum around it, the two signs give equal and opposite fields, and the net polarity falls as 1/r^(D−1)",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — rays carry no polarity, so there is no sign for a field to be the net of. This is not a gap in the test: it is what makes gravity a theory of this model rather than magnetism with the signs switched off."
+        }
+      ],
+      "at": "2026-08-18T17:51:35.582Z"
+    },
+    {
+      "id": "electrostatics/coulomb · gravity+magnetism",
+      "what": "a charge polarises the vacuum around it, the two signs give equal and opposite fields, and the net polarity falls as 1/r^(D−1)",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 160,
+        "fill": 0.09777632366472222,
+        "scattering": 0.5173652150195472,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090
+        ]
+      },
+      "findings": [
+        {
+          "name": "falloff exponent, resolved radii",
+          "value": -3.0191796849200014,
+          "note": "REPORTED WITHOUT AN EXPECTATION, deliberately. A bare power law is the wrong shape for this medium: what the model predicts is geometry TIMES attenuation, so this number is the sum of the two and is steep by construction. The expectation belongs on λ below, where the geometric exponent is held fixed and the medium is what comes out."
+        },
+        {
+          "name": "screening length λ (cells)",
+          "value": 4.587044769559257,
+          "expect": {
+            "of": "the vacuum's own mean free path, 1/fill",
+            "want": 10.227424825554174,
+            "tolerance": 0.6,
+            "because": "a ray meets something when it lands where one sits on the opposing exit, so a field is attenuated at the same length a ray survives"
+          },
+          "note": "fitting A/r²·e^(−r/λ) with the exponent FIXED by the geometry, so what comes out is the medium rather than a mixture of the medium and the shell counting",
+          "by": 0.551495625947003,
+          "verdict": "within"
+        },
+        {
+          "name": "two signs, |+ − −| / |+ + −|",
+          "value": 6.46521739130435,
+          "expect": {
+            "of": "large — the two signs give equal and opposite fields",
+            "want": 6.46521739130435,
+            "tolerance": 1000000000,
+            "because": "nothing distinguishes a + source from a − one but the sign it writes"
+          },
+          "note": "at r = 4: signal 3.54e+0 against residual 5.48e-1",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "net polarity at r = 4",
+          "value": 2.044047619047619,
+          "err": 0.16284014345511902
+        },
+        {
+          "name": "net polarity at r = 6",
+          "value": 0.7611111111111111,
+          "err": 0.13475324194241775
+        },
+        {
+          "name": "net polarity at r = 8",
+          "value": 0.2450787401574803,
+          "err": 0.06477893543393783
+        },
+        {
+          "name": "net polarity at r = 10",
+          "value": 0.032200000000000006,
+          "err": 0.135625907063019
+        },
+        {
+          "name": "net polarity at r = 13",
+          "value": 0.04499540863177227,
+          "err": 0.04436712710563051
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "net (+)",
+          "net (−)",
+          "× r²"
+        ],
+        "rows": [
+          [
+            4,
+            "2.044e+0",
+            "-1.496e+0",
+            "32.705"
+          ],
+          [
+            6,
+            "7.611e-1",
+            "-5.589e-1",
+            "27.400"
+          ],
+          [
+            8,
+            "2.451e-1",
+            "-2.267e-1",
+            "15.685"
+          ],
+          [
+            10,
+            "3.220e-2",
+            "-2.666e-1",
+            "3.220"
+          ],
+          [
+            13,
+            "4.500e-2",
+            "-2.801e-2",
+            "7.604"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:48:08.780Z"
+    },
+    {
+      "id": "electrostatics/coulomb · labelled",
+      "what": "a charge polarises the vacuum around it, the two signs give equal and opposite fields, and the net polarity falls as 1/r^(D−1)",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 160,
+        "fill": 0.09777632366472222,
+        "scattering": 0.5173652150195472,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090
+        ]
+      },
+      "findings": [
+        {
+          "name": "falloff exponent, resolved radii",
+          "value": -3.0191796849200014,
+          "note": "REPORTED WITHOUT AN EXPECTATION, deliberately. A bare power law is the wrong shape for this medium: what the model predicts is geometry TIMES attenuation, so this number is the sum of the two and is steep by construction. The expectation belongs on λ below, where the geometric exponent is held fixed and the medium is what comes out."
+        },
+        {
+          "name": "screening length λ (cells)",
+          "value": 4.587044769559257,
+          "expect": {
+            "of": "the vacuum's own mean free path, 1/fill",
+            "want": 10.227424825554174,
+            "tolerance": 0.6,
+            "because": "a ray meets something when it lands where one sits on the opposing exit, so a field is attenuated at the same length a ray survives"
+          },
+          "note": "fitting A/r²·e^(−r/λ) with the exponent FIXED by the geometry, so what comes out is the medium rather than a mixture of the medium and the shell counting",
+          "by": 0.551495625947003,
+          "verdict": "within"
+        },
+        {
+          "name": "two signs, |+ − −| / |+ + −|",
+          "value": 6.46521739130435,
+          "expect": {
+            "of": "large — the two signs give equal and opposite fields",
+            "want": 6.46521739130435,
+            "tolerance": 1000000000,
+            "because": "nothing distinguishes a + source from a − one but the sign it writes"
+          },
+          "note": "at r = 4: signal 3.54e+0 against residual 5.48e-1",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "net polarity at r = 4",
+          "value": 2.044047619047619,
+          "err": 0.16284014345511902
+        },
+        {
+          "name": "net polarity at r = 6",
+          "value": 0.7611111111111111,
+          "err": 0.13475324194241775
+        },
+        {
+          "name": "net polarity at r = 8",
+          "value": 0.2450787401574803,
+          "err": 0.06477893543393783
+        },
+        {
+          "name": "net polarity at r = 10",
+          "value": 0.032200000000000006,
+          "err": 0.135625907063019
+        },
+        {
+          "name": "net polarity at r = 13",
+          "value": 0.04499540863177227,
+          "err": 0.04436712710563051
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "net (+)",
+          "net (−)",
+          "× r²"
+        ],
+        "rows": [
+          [
+            4,
+            "2.044e+0",
+            "-1.496e+0",
+            "32.705"
+          ],
+          [
+            6,
+            "7.611e-1",
+            "-5.589e-1",
+            "27.400"
+          ],
+          [
+            8,
+            "2.451e-1",
+            "-2.267e-1",
+            "15.685"
+          ],
+          [
+            10,
+            "3.220e-2",
+            "-2.666e-1",
+            "3.220"
+          ],
+          [
+            13,
+            "4.500e-2",
+            "-2.801e-2",
+            "7.604"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:51:35.580Z"
+    },
+    {
+      "id": "electrostatics/sign-law · gravity",
+      "what": "opposite charges attract and alike ones repel, as two channels — destroyed space and delivered momentum — with the XOR over which rule fires",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — with no polarity there are no alike and opposite cases to have a law between"
+        }
+      ],
+      "at": "2026-08-18T17:56:35.597Z"
+    },
+    {
+      "id": "electrostatics/sign-law · gravity+magnetism",
+      "what": "opposite charges attract and alike ones repel, as two channels — destroyed space and delivered momentum — with the XOR over which rule fires",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 160,
+        "fill": 0.09752675468765354,
+        "scattering": 0.5170476879518279,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090
+        ]
+      },
+      "findings": [
+        {
+          "name": "alike pushed harder than opposite",
+          "value": -0.38593750000000004,
+          "err": 0.17933389119530646,
+          "expect": {
+            "of": "negative — alike rays are not annihilated in the gap, so they arrive and land",
+            "want": -0.38593750000000004,
+            "tolerance": 1000000000,
+            "because": "(G+M/3) turns alike pairs and destroys nothing, so the gap stays full"
+          },
+          "note": "2.2σ",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "opposite pulled harder than alike",
+          "value": 3.6101694915254257,
+          "err": 0.4216758175049495,
+          "expect": {
+            "of": "positive — (G+M/1) fires between opposite charges and shortens the separation",
+            "want": 3.6101694915254257,
+            "tolerance": 1000000000,
+            "because": "a force in this model is where space shortens"
+          },
+          "note": "8.6σ",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "both orderings hold at once",
+          "value": 1,
+          "expect": {
+            "of": "1 — a sign law needs a push AND a pull, or it is two magnitudes of one thing",
+            "want": 1,
+            "tolerance": 0.01,
+            "because": "either channel alone reports a difference and cannot report a sign"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "config",
+          "PUSH",
+          "±",
+          "PULL",
+          "±"
+        ],
+        "rows": [
+          [
+            "lone",
+            "2.031e-2",
+            "2.4e-1",
+            "2.331e-1",
+            "8.2e-1"
+          ],
+          [
+            "alike",
+            "-2.247e+0",
+            "1.0e-1",
+            "-1.589e+0",
+            "2.8e-1"
+          ],
+          [
+            "opposite",
+            "-1.861e+0",
+            "1.5e-1",
+            "2.021e+0",
+            "3.1e-1"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:53:47.067Z"
+    },
+    {
+      "id": "electrostatics/sign-law · labelled",
+      "what": "opposite charges attract and alike ones repel, as two channels — destroyed space and delivered momentum — with the XOR over which rule fires",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 160,
+        "fill": 0.09752675468765354,
+        "scattering": 0.5170476879518279,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090
+        ]
+      },
+      "findings": [
+        {
+          "name": "alike pushed harder than opposite",
+          "value": -0.38593750000000004,
+          "err": 0.17933389119530646,
+          "expect": {
+            "of": "negative — alike rays are not annihilated in the gap, so they arrive and land",
+            "want": -0.38593750000000004,
+            "tolerance": 1000000000,
+            "because": "(G+M/3) turns alike pairs and destroys nothing, so the gap stays full"
+          },
+          "note": "2.2σ",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "opposite pulled harder than alike",
+          "value": 3.6101694915254257,
+          "err": 0.4216758175049495,
+          "expect": {
+            "of": "positive — (G+M/1) fires between opposite charges and shortens the separation",
+            "want": 3.6101694915254257,
+            "tolerance": 1000000000,
+            "because": "a force in this model is where space shortens"
+          },
+          "note": "8.6σ",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "both orderings hold at once",
+          "value": 1,
+          "expect": {
+            "of": "1 — a sign law needs a push AND a pull, or it is two magnitudes of one thing",
+            "want": 1,
+            "tolerance": 0.01,
+            "because": "either channel alone reports a difference and cannot report a sign"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "config",
+          "PUSH",
+          "±",
+          "PULL",
+          "±"
+        ],
+        "rows": [
+          [
+            "lone",
+            "2.031e-2",
+            "2.4e-1",
+            "2.331e-1",
+            "8.2e-1"
+          ],
+          [
+            "alike",
+            "-2.247e+0",
+            "1.0e-1",
+            "-1.589e+0",
+            "2.8e-1"
+          ],
+          [
+            "opposite",
+            "-1.861e+0",
+            "1.5e-1",
+            "2.021e+0",
+            "3.1e-1"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:56:35.595Z"
+    },
+    {
+      "id": "geometry/derived-constants · gravity",
+      "what": "DEG, SHEET, CYCLE, SPIN and the moments come out of the exits rather than being written down, and reproduce the article's table",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 3,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 7,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "cubic-26 DEG",
+          "value": 26,
+          "expect": {
+            "of": "3^D − 1",
+            "want": 26,
+            "tolerance": 0,
+            "because": "every non-zero offset in {−1,0,1}^D"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "cubic-26 SHEET",
+          "value": 8,
+          "expect": {
+            "of": "DEG(D−1) = 3^(D−1) − 1",
+            "want": 8,
+            "tolerance": 0,
+            "because": "the exits perpendicular to a face axis — one dimension fewer"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "cubic-26 Σd̂⊗d̂",
+          "value": 8.666666666666666,
+          "expect": {
+            "of": "DEG/D exactly",
+            "want": 8.666666666666666,
+            "tolerance": 1e-9,
+            "because": "cubic symmetry makes the second moment isotropic identically, which is why the inverse-square law was never in danger on any candidate geometry"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "FCC CYCLE",
+          "value": 6,
+          "expect": {
+            "of": "6 — a hexagonal ring about a body diagonal",
+            "want": 6,
+            "tolerance": 0,
+            "because": "FCC's exit axes have two and its cube axes four, but its body diagonals six"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "BCC equator",
+          "value": 0,
+          "expect": {
+            "of": "0 — no ring to put a phase on",
+            "want": 0,
+            "tolerance": 0,
+            "because": "gravity would work on BCC and charge as this book writes it could not exist"
+          },
+          "note": "admitting face-diagonal axes would give it 4, which is a reading the article does not take and this records rather than hides",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "geometry",
+          "DEG",
+          "SHEET",
+          "CYCLE",
+          "SPIN",
+          "rank 4",
+          "c aniso",
+          "field"
+        ],
+        "rows": [
+          [
+            "square-8",
+            8,
+            2,
+            8,
+            "45°",
+            "40.0%",
+            "1.41×",
+            "veined"
+          ],
+          [
+            "triangular-6",
+            6,
+            2,
+            6,
+            "60°",
+            "0.0%",
+            "1.00×",
+            "round"
+          ],
+          [
+            "cubic-6",
+            6,
+            4,
+            4,
+            "90°",
+            "99.6%",
+            "1.00×",
+            "veined"
+          ],
+          [
+            "bcc-8",
+            8,
+            0,
+            0,
+            "—",
+            "79.5%",
+            "1.00×",
+            "veined"
+          ],
+          [
+            "fcc-12",
+            12,
+            6,
+            6,
+            "60°",
+            "28.4%",
+            "1.00×",
+            "veined"
+          ],
+          [
+            "cubic-18",
+            18,
+            8,
+            8,
+            "45°",
+            "12.4%",
+            "1.41×",
+            "veined"
+          ],
+          [
+            "cubic-26",
+            26,
+            8,
+            8,
+            "45°",
+            "49.7%",
+            "1.73×",
+            "veined"
+          ],
+          [
+            "cubic-26-weighted",
+            26,
+            8,
+            8,
+            "45°",
+            "0.0%",
+            "1.73×",
+            "round"
+          ],
+          [
+            "cubic-18-weighted",
+            18,
+            8,
+            8,
+            "45°",
+            "0.0%",
+            "1.41×",
+            "round"
+          ],
+          [
+            "icosahedral-12",
+            12,
+            4,
+            4,
+            "90°",
+            "0.0%",
+            "1.00×",
+            "round"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:45.880Z"
+    },
+    {
+      "id": "geometry/exits-by-axis · gravity",
+      "what": "the exits of a lattice sort into a +, an equator and a − about any axis, and the equator is a different size for each class of axis",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 3,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 7,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "every exit is accounted for, every axis",
+          "value": 1,
+          "expect": {
+            "of": "1 — a north sorts the exits into exactly three groups",
+            "want": 1,
+            "tolerance": 0,
+            "because": "an exit is above the plane, in it, or below it, and there is no fourth case"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the two hemispheres are equal, every axis",
+          "value": 1,
+          "expect": {
+            "of": "1 — every exit has its opposite",
+            "want": 1,
+            "tolerance": 0,
+            "because": "which is the one thing the three rules demand of a geometry, since a head-on pair has to exist for them to act on"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "face-axis equator",
+          "value": 8,
+          "expect": {
+            "of": "SHEET — the ring the Layer-2 arc is built on",
+            "want": 8,
+            "tolerance": 0,
+            "because": "the equator of a face axis is every way out with no component along it, which is every way out of a point in one dimension fewer"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "distinct equator sizes over the axis classes",
+          "value": 2,
+          "expect": {
+            "of": "2 — a face axis and an edge axis agree, a body diagonal does not",
+            "want": 2,
+            "tolerance": 0,
+            "because": "the arc quotes the face-axis reading and calls it THE equator, which is the one two of the three classes agree on; a source along a body diagonal has a SMALLER ring to put a phase on, so the quantum it carries is not the arc's 45°"
+          },
+          "note": "measured rather than assumed — the first version of this expected three distinct rings, which the lattice does not have",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "axis",
+          "+ side",
+          "equator",
+          "− side",
+          "total"
+        ],
+        "rows": [
+          [
+            "⟨100⟩ face",
+            9,
+            8,
+            9,
+            26
+          ],
+          [
+            "⟨110⟩ edge",
+            9,
+            8,
+            9,
+            26
+          ],
+          [
+            "⟨111⟩ corner",
+            10,
+            6,
+            10,
+            26
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:45.838Z"
+    },
+    {
+      "id": "geometry/sheet-coverage · gravity",
+      "what": "one rotation of the sheet reaches every exit, which is what fixes the emission at SHEET rays rather than at l.DEG",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 3,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 7,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "the sheet keeps its count while turning, every geometry",
+          "value": 1,
+          "expect": {
+            "of": "1 — a source emits SHEET rays and turning moves them",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the count is a property of the source, so it cannot change as it comes round"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "cubic-26 exits reached in one rotation",
+          "value": 26,
+          "expect": {
+            "of": "l.DEG — one rotation covers the whole space",
+            "want": 26,
+            "tolerance": 0,
+            "because": "the derivation fixes the emission at SHEET rather than l.DEG precisely BECAUSE one rotation is said to reach everywhere; a sheet that does not is emitting into a cone, and the law it gives is about that cone"
+          },
+          "note": "best over every axis lying in the sheet; the best was [0,-1,0]",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "geometries where one rotation covers everything",
+          "value": 7,
+          "expect": {
+            "of": "all of them that have a sheet at all",
+            "want": 9,
+            "tolerance": 0,
+            "because": "the derivation is stated for the model rather than for one lattice"
+          },
+          "by": 0.2222222222222222,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "geometry",
+          "SHEET",
+          "CYCLE",
+          "reached",
+          "of l.DEG",
+          "covers?"
+        ],
+        "rows": [
+          [
+            "square-8",
+            2,
+            8,
+            8,
+            8,
+            "yes"
+          ],
+          [
+            "triangular-6",
+            2,
+            6,
+            6,
+            6,
+            "yes"
+          ],
+          [
+            "cubic-6",
+            4,
+            4,
+            6,
+            6,
+            "yes"
+          ],
+          [
+            "bcc-8",
+            0,
+            0,
+            0,
+            8,
+            "no sheet"
+          ],
+          [
+            "fcc-12",
+            6,
+            6,
+            6,
+            12,
+            "NO — 6 missed"
+          ],
+          [
+            "cubic-18",
+            8,
+            8,
+            18,
+            18,
+            "yes"
+          ],
+          [
+            "cubic-26",
+            8,
+            8,
+            26,
+            26,
+            "yes"
+          ],
+          [
+            "cubic-26-weighted",
+            8,
+            8,
+            26,
+            26,
+            "yes"
+          ],
+          [
+            "cubic-18-weighted",
+            8,
+            8,
+            18,
+            18,
+            "yes"
+          ],
+          [
+            "icosahedral-12",
+            4,
+            4,
+            10,
+            12,
+            "NO — 2 missed"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:45.829Z"
+    },
+    {
+      "id": "geometry/shells · gravity",
+      "what": "a fixed emission over a shell that grows as R^(D−1) gives the inverse-square law, and the exponent is the geometry's rather than a constant",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 3,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 7,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "shell exponent",
+          "value": 1.932577599571113,
+          "expect": {
+            "of": "D−1 — the surface of a ball in D dimensions",
+            "want": 2,
+            "tolerance": 0.1,
+            "because": "a shell is a surface, and a surface in D dimensions grows as R^(D−1)"
+          },
+          "by": 0.033711200214443515,
+          "verdict": "within"
+        },
+        {
+          "name": "the intensity exponent that follows",
+          "value": -1.932577599571113,
+          "expect": {
+            "of": "−(D−1) — a fixed emission divided by a growing shell",
+            "want": -2,
+            "tolerance": 0.1,
+            "because": "SHEET rays are sent out however far they go, so what arrives per local is that count over the shell — which IS the inverse-square law in D = 3"
+          },
+          "by": 0.033711200214443515,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "R",
+          "locals on the shell",
+          "per ray",
+          "× R^(D−1)"
+        ],
+        "rows": [
+          [
+            2,
+            62,
+            "1.290e-1",
+            "0.516"
+          ],
+          [
+            4,
+            210,
+            "3.810e-2",
+            "0.610"
+          ],
+          [
+            8,
+            762,
+            "1.050e-2",
+            "0.672"
+          ],
+          [
+            16,
+            3338,
+            "2.397e-3",
+            "0.614"
+          ],
+          [
+            32,
+            12606,
+            "6.346e-4",
+            "0.650"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:45.373Z"
+    },
+    {
+      "id": "geometry/veins · gravity",
+      "what": "the lattice's grain is a collisionless artefact — a field measured through the model's own vacuum is rounder than the neighbour set is",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 60,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "deflections per surviving ray",
+          "value": 0,
+          "expect": {
+            "of": "well above zero, or nothing below means anything",
+            "want": 1,
+            "tolerance": 10,
+            "because": "if rays are not being turned then the front is the collisionless one whatever the density says, and no conclusion about the grain follows either way"
+          },
+          "note": "THE DIAGNOSTIC THAT KEEPS A NULL RESULT FROM BEING VACUOUS. An earlier attempt read 0.07 here and its answer was worthless.",
+          "by": 1,
+          "verdict": "within"
+        },
+        {
+          "name": "anisotropy, no vacuum at all",
+          "value": 0.23076923076923078,
+          "err": 0,
+          "note": "the collisionless limit, which is what the geometry table computes"
+        },
+        {
+          "name": "anisotropy, the model's own vacuum",
+          "value": 0.5320346320346321,
+          "err": 0.06536796536796528,
+          "expect": {
+            "of": "smaller than the collisionless one — the medium rounds the field",
+            "want": 0,
+            "tolerance": 0.23076923076923078,
+            "because": "a ray that has been turned is on a different exit from the one it left on, so the direction a disturbance travels is not the direction any ray travels"
+          },
+          "by": 0.5320346320346321,
+          "verdict": "above"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "⟨100⟩ axis",
+          "⟨110⟩ face",
+          "⟨111⟩ body",
+          "spread"
+        ],
+        "rows": [
+          [
+            6,
+            "-1.333e+0",
+            "-1.500e+0",
+            "-9.167e-1",
+            "46.7%"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:51.269Z"
+    },
+    {
+      "id": "geometry/veins · gravity+magnetism",
+      "what": "the lattice's grain is a collisionless artefact — a field measured through the model's own vacuum is rounder than the neighbour set is",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 60,
+        "fill": 0.40465056183521725,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "deflections per surviving ray",
+          "value": 0,
+          "expect": {
+            "of": "well above zero, or nothing below means anything",
+            "want": 1,
+            "tolerance": 10,
+            "because": "if rays are not being turned then the front is the collisionless one whatever the density says, and no conclusion about the grain follows either way"
+          },
+          "note": "THE DIAGNOSTIC THAT KEEPS A NULL RESULT FROM BEING VACUOUS. An earlier attempt read 0.07 here and its answer was worthless.",
+          "by": 1,
+          "verdict": "within"
+        },
+        {
+          "name": "anisotropy, no vacuum at all",
+          "value": 0.23076923076923078,
+          "err": 0,
+          "note": "the collisionless limit, which is what the geometry table computes"
+        },
+        {
+          "name": "anisotropy, the model's own vacuum",
+          "value": 3.9238875878220143,
+          "err": 1.218969555035129,
+          "expect": {
+            "of": "smaller than the collisionless one — the medium rounds the field",
+            "want": 0,
+            "tolerance": 0.23076923076923078,
+            "because": "a ray that has been turned is on a different exit from the one it left on, so the direction a disturbance travels is not the direction any ray travels"
+          },
+          "by": 3.9238875878220143,
+          "verdict": "above"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "⟨100⟩ axis",
+          "⟨110⟩ face",
+          "⟨111⟩ body",
+          "spread"
+        ],
+        "rows": [
+          [
+            6,
+            "-7.778e-1",
+            "-7.000e-1",
+            "2.917e-1",
+            "270.5%"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:51.709Z"
+    },
+    {
+      "id": "gravity/inverse-square · gravity",
+      "what": "two inert absorbers are pulled together by the vacuum alone, and the force falls as 1/R^(D−1)",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 20,
+        "fill": 0.027157794591890515,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090,
+          5150
+        ]
+      },
+      "findings": [
+        {
+          "name": "attraction at the closest separation",
+          "value": 0.10333333333333332,
+          "err": 0.31131162932912665,
+          "expect": {
+            "of": "positive — the partner shadows the vacuum and the far side wins",
+            "want": 0.10333333333333332,
+            "tolerance": 1000000000,
+            "because": "a body is pushed toward whatever is eating the rays that would have hit it"
+          },
+          "note": "0.3σ against a lone body at the same position",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "force exponent",
+          "value": null,
+          "expect": {
+            "of": "1/R^(D−1) — a shadow cast over a shell",
+            "want": -2,
+            "tolerance": 0.25,
+            "because": "the shadowed solid angle a partner subtends falls as its area over the shell"
+          },
+          "note": "fitted over the 0 separations resolved above 2σ — too few to call, widen the box or run longer",
+          "by": null,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "sep",
+          "pair − lone",
+          "±",
+          "σ",
+          "× sep²"
+        ],
+        "rows": [
+          [
+            6,
+            "1.033e-1",
+            "3.1e-1",
+            "0.3",
+            "3.720e+0"
+          ],
+          [
+            8,
+            "-1.050e-1",
+            "2.0e-1",
+            "0.5",
+            "-6.720e+0"
+          ],
+          [
+            10,
+            "4.500e-2",
+            "2.0e-1",
+            "0.2",
+            "4.500e+0"
+          ],
+          [
+            14,
+            "-4.167e-2",
+            "1.7e-1",
+            "0.2",
+            "-8.167e+0"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:34:53.118Z"
+    },
+    {
+      "id": "gravity/inverse-square · gravity+magnetism",
+      "what": "two inert absorbers are pulled together by the vacuum alone, and the force falls as 1/R^(D−1)",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 20,
+        "fill": 0.09319363426029319,
+        "scattering": 0.533429588181023,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090,
+          5150
+        ]
+      },
+      "findings": [
+        {
+          "name": "attraction at the closest separation",
+          "value": 1.5741666666666665,
+          "err": 0.30112174540467107,
+          "expect": {
+            "of": "positive — the partner shadows the vacuum and the far side wins",
+            "want": 1.5741666666666665,
+            "tolerance": 1000000000,
+            "because": "a body is pushed toward whatever is eating the rays that would have hit it"
+          },
+          "note": "5.2σ against a lone body at the same position",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "force exponent",
+          "value": -2.6632047917925448,
+          "expect": {
+            "of": "1/R^(D−1) — a shadow cast over a shell",
+            "want": -2,
+            "tolerance": 0.25,
+            "because": "the shadowed solid angle a partner subtends falls as its area over the shell"
+          },
+          "note": "fitted over the 2 separations resolved above 2σ — too few to call, widen the box or run longer",
+          "by": 0.3316023958962724,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "sep",
+          "pair − lone",
+          "±",
+          "σ",
+          "× sep²"
+        ],
+        "rows": [
+          [
+            6,
+            "1.574e+0",
+            "3.0e-1",
+            "5.2",
+            "5.667e+1"
+          ],
+          [
+            8,
+            "7.317e-1",
+            "2.5e-1",
+            "3.0",
+            "4.683e+1"
+          ],
+          [
+            10,
+            "1.000e-1",
+            "4.8e-1",
+            "0.2",
+            "1.000e+1"
+          ],
+          [
+            14,
+            "6.750e-2",
+            "2.3e-1",
+            "0.3",
+            "1.323e+1"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:44:52.523Z"
+    },
+    {
+      "id": "gravity/inverse-square · pure",
+      "what": "two inert absorbers are pulled together by the vacuum alone, and the force falls as 1/R^(D−1)",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "pure",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "remake"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": null,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "runs, but the result would mean nothing — `pure`'s remake destroys momentum, and a force carried by arriving momentum cannot be measured through a rule that throws momentum away"
+        }
+      ],
+      "at": "2026-08-18T17:44:52.525Z"
+    },
+    {
+      "id": "gravity/recovered-from-magnetism · gravity",
+      "what": "gravity's two rules are recovered from the three when the polarity alternates",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 10,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "deficit exponent, gravity",
+          "value": -2.503283624415552,
+          "err": 0.05775083227604138
+        },
+        {
+          "name": "deficit exponent, G+M alternating",
+          "value": -4.168674979446048,
+          "err": 0.11155544503826054,
+          "expect": {
+            "of": "the same shape as gravity's, which is what 'recovered' has to mean",
+            "want": -2.503283624415552,
+            "tolerance": 0.2,
+            "because": "the three rules with alternating polarity are supposed to give back (G/1) and (G/2)"
+          },
+          "by": 0.6652827265705137,
+          "verdict": "below"
+        },
+        {
+          "name": "amplitude ratio G+M / gravity",
+          "value": 0.8831168831168831,
+          "note": "NOT expected to be 1. Under alternation about half of head-on meetings are alike and turn rather than annihilate, so the polarised theory destroys less space."
+        },
+        {
+          "name": "attraction, gravity",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "positive — space destroyed between two bodies draws them in",
+            "want": 0,
+            "tolerance": 1000000000,
+            "because": "a force in this model is where space shortens"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "attraction, G+M alternating",
+          "value": 0,
+          "err": 0,
+          "note": "the article's actual claim is that ALTERNATING POLARITY GIVES ATTRACTION. Same sign as gravity's is the result; the same size is not claimed."
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "gravity",
+          "±",
+          "G+M alternating",
+          "±"
+        ],
+        "rows": [
+          [
+            4,
+            "-9.167e-1",
+            "1.2e-1",
+            "-8.095e-1",
+            "9.5e-2"
+          ],
+          [
+            6,
+            "-4.511e-1",
+            "8.0e-2",
+            "-2.022e-1",
+            "3.1e-2"
+          ],
+          [
+            8,
+            "-1.568e-1",
+            "2.6e-2",
+            "-8.530e-3",
+            "4.4e-2"
+          ]
+        ]
+      },
+      "at": "2026-08-18T21:50:56.455Z"
+    },
+    {
+      "id": "induction/faraday · gravity+magnetism",
+      "what": "∮E·dl = −d/dt ∬B·dA on the lattice, in integral form",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — with no label there is no magnetic field for a changing flux to be the flux of"
+        }
+      ],
+      "at": "2026-08-18T18:05:04.926Z"
+    },
+    {
+      "id": "induction/faraday · labelled",
+      "what": "∮E·dl = −d/dt ∬B·dA on the lattice, in integral form",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 17,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 35,
+        "ticks": 180,
+        "fill": 0.09456751641990427,
+        "scattering": 0.5162435496628875,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "worst relative residual over the loops",
+          "value": 1.0155691867689582,
+          "expect": {
+            "of": "near 1 — the equation is not there",
+            "want": 1,
+            "tolerance": 0.5,
+            "because": "Faraday is an identity that holds iff the fields come from potentials, and `potential`'s theorem says this lattice has no signed potential: both rules conserve polarity, so a signed quantity is field-like and cannot relax"
+          },
+          "note": "DECLARED ABSENT IN ADVANCE. A residual near nought here would mean the theorem is wrong, which is worth as much as it holding.",
+          "by": 0.015569186768958243,
+          "verdict": "within"
+        },
+        {
+          "name": "∮E·dl over −d/dt∬B·dA, closest loop",
+          "value": 0.009489790471382318,
+          "note": "the SHAPE of the failure: one side missing rather than the two disagreeing. A ratio well under one is the 1/R term a retarded potential's gradient keeps and a count of arriving rays never has."
+        }
+      ],
+      "table": {
+        "columns": [
+          "loop ρ",
+          "half-z",
+          "∮E·dl",
+          "−d/dt∬B·dA",
+          "residual"
+        ],
+        "rows": [
+          [
+            "2…6",
+            "±4",
+            "2.318e-1",
+            "2.442e+1",
+            "0.994"
+          ],
+          [
+            "3…9",
+            "±6",
+            "1.185e-1",
+            "1.335e+1",
+            "0.993"
+          ],
+          [
+            "4…11",
+            "±6",
+            "2.005e-1",
+            "6.425e+0",
+            "1.016"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:05:04.925Z"
+    },
+    {
+      "id": "induction/lattice-against-retarded · labelled",
+      "what": "the field the lattice produces agrees in direction with the retarded-potential reading of the same source",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 17,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 35,
+        "ticks": 40,
+        "fill": 0.09283305742387951,
+        "scattering": 0.519546535717026,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "worst ∠(B lattice, B retarded)",
+          "value": 0,
+          "units": "degrees",
+          "expect": {
+            "of": "small — the same field, read two ways",
+            "want": 0,
+            "tolerance": 45,
+            "because": "both are Σσ(d̂ × u) over the same emission; one counts rays that arrived, the other sums what was sent"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "worst ∠(E lattice, E retarded)",
+          "value": 0,
+          "units": "degrees",
+          "expect": {
+            "of": "small",
+            "want": 0,
+            "tolerance": 45,
+            "because": "both are the net polarity of the same emission"
+          },
+          "note": "differenced against a source-free box at the same seed. B needs no such control because the vacuum's rays carry no label, so B is self-differencing — which is a property of the model and not of the test.",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "probe",
+          "∠B",
+          "±",
+          "∠E",
+          "±"
+        ],
+        "rows": [
+          [
+            0,
+            "0.0",
+            "0.0",
+            "0.0",
+            "0.0"
+          ],
+          [
+            1,
+            "0.0",
+            "0.0",
+            "0.0",
+            "0.0"
+          ],
+          [
+            2,
+            "0.0",
+            "0.0",
+            "0.0",
+            "0.0"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:05:32.733Z"
+    },
+    {
+      "id": "layer2/ring · gravity",
+      "what": "the equator of an axis is the ring a phase lives on, its size is SHEET, and both come out of the geometry rather than being written down",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 3,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 7,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "ring size",
+          "value": 8,
+          "expect": {
+            "of": "SHEET — the ring and the sheet are one constant",
+            "want": 8,
+            "tolerance": 0,
+            "because": "the equator of an axis IS the set of exits perpendicular to it, so a sheet pulsed perpendicular to an axis and a ring turned about it are one set"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "ring visits every member once",
+          "value": 1,
+          "expect": {
+            "of": "1 — a circle, not a set",
+            "want": 1,
+            "tolerance": 0,
+            "because": "a phase advances one step at a time and must come back where it began"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "ring closes after CYCLE turns",
+          "value": 1,
+          "expect": {
+            "of": "1 — CYCLE steps is the identity",
+            "want": 1,
+            "tolerance": 0,
+            "because": "that is what makes CYCLE the ticks a source takes to come round"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "step-angle spread over SPIN",
+          "value": 0,
+          "expect": {
+            "of": "small — every step of the ring is the same angle",
+            "want": 0,
+            "tolerance": 0.6,
+            "because": "SPIN = 2π/CYCLE is a QUANTUM, which needs the steps to be equal"
+          },
+          "note": "a lattice ring is not a perfect circle — the exits it is made of have different lengths — so this is how far from equal the steps are, in units of the quantum",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "BCC ring size",
+          "value": 0,
+          "expect": {
+            "of": "0 — the one geometry a charge could not exist on",
+            "want": 0,
+            "tolerance": 0,
+            "because": "BCC's exits are the eight corners and no axis has any of them perpendicular to it, so there is no ring to put a phase on. Gravity would work on BCC; charge as this book writes it could not."
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "FCC ring size",
+          "value": 6,
+          "expect": {
+            "of": "6 — a hexagonal ring about a body diagonal, with a 60° quantum",
+            "want": 6,
+            "tolerance": 0,
+            "because": "FCC's exit axes have an equator of two and its cube axes four, but its body diagonals six — so the ring does not die on FCC, it changes size, and every constant built on CYCLE = 8 moves with it"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "geometry",
+          "SHEET",
+          "CYCLE",
+          "SPIN",
+          "charge possible?"
+        ],
+        "rows": [
+          [
+            "square-8",
+            2,
+            8,
+            "45°",
+            "NO — no ring"
+          ],
+          [
+            "triangular-6",
+            2,
+            6,
+            "60°",
+            "NO — no ring"
+          ],
+          [
+            "cubic-6",
+            4,
+            4,
+            "90°",
+            "yes"
+          ],
+          [
+            "bcc-8",
+            0,
+            0,
+            "—",
+            "NO — no ring"
+          ],
+          [
+            "fcc-12",
+            6,
+            6,
+            "60°",
+            "yes"
+          ],
+          [
+            "cubic-18",
+            8,
+            8,
+            "45°",
+            "yes"
+          ],
+          [
+            "cubic-26",
+            8,
+            8,
+            "45°",
+            "yes"
+          ],
+          [
+            "cubic-26-weighted",
+            8,
+            8,
+            "45°",
+            "yes"
+          ],
+          [
+            "cubic-18-weighted",
+            8,
+            8,
+            "45°",
+            "yes"
+          ],
+          [
+            "icosahedral-12",
+            4,
+            4,
+            "90°",
+            "yes"
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:45.140Z"
+    },
+    {
+      "id": "magnetism/dipole-coupling · gravity",
+      "what": "two oriented emitters feel a force that depends on their relative alignment — which is what the ordering arc assumes and had never measured",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — an orientation is a statement about which sign goes which way, and gravity's rays carry no sign"
+        }
+      ],
+      "at": "2026-08-18T21:58:28.077Z"
+    },
+    {
+      "id": "magnetism/dipole-coupling · gravity+magnetism",
+      "what": "two oriented emitters feel a force that depends on their relative alignment — which is what the ordering arc assumes and had never measured",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 11,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 23,
+        "ticks": 20,
+        "fill": 0.41432818825910933,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "orientation dependence, over the force",
+          "value": 0.5239471761186356,
+          "expect": {
+            "of": "well above zero — a coupling that does not depend on alignment is not a coupling and the ordering arc has nothing to minimise",
+            "want": 1,
+            "tolerance": 1000000000,
+            "because": "the whole of that arc is a minimisation over relative orientation, so the model has to supply an orientation-dependent force before any of it applies"
+          },
+          "note": "spread 1.64e+0 against a worst error of 2.08e+0",
+          "by": 0.4760528238813644,
+          "verdict": "within"
+        },
+        {
+          "name": "parallel less antiparallel, side by side",
+          "value": -0.0025252525252312807,
+          "err": 0.0612167603891105,
+          "note": "a dipolar coupling prefers ANTIPARALLEL side by side and PARALLEL end to end. If those two disagree in sign the coupling is dipolar in form; if they agree it is something simpler and the arc's Luttinger–Tisza minimisation is being applied to the wrong kernel."
+        },
+        {
+          "name": "parallel less antiparallel, end to end",
+          "value": -0.06818181818181301,
+          "err": 0.056296709115128046
+        },
+        {
+          "name": "is the coupling DIPOLAR in form?",
+          "value": 0,
+          "expect": {
+            "of": "1 — the two geometries prefer opposite alignments, which is what dipolar means",
+            "want": 1,
+            "tolerance": 0,
+            "because": "an antiferromagnet on a cubic lattice comes out of that anisotropy and not out of the sign alone; without it the ordering arc's q* = (0, π, π) is a result about a kernel this model does not have"
+          },
+          "note": "UNRESOLVED — side by side at 0.0σ and end to end at 1.2σ, so their signs are not yet measurements. The POLARITY dependence is what is missing; the GEOMETRY dependence is already there, and the two are different claims.",
+          "by": 1,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "arrangement",
+          "force",
+          "±",
+          "σ"
+        ],
+        "rows": [
+          [
+            "parallel, side by side",
+            "-3.127e+0",
+            "2.1e+0",
+            "1.5"
+          ],
+          [
+            "antiparallel, side by side",
+            "-3.125e+0",
+            "2.0e+0",
+            "1.5"
+          ],
+          [
+            "parallel, end to end",
+            "-1.557e+0",
+            "2.1e+0",
+            "0.7"
+          ],
+          [
+            "antiparallel, end to end",
+            "-1.489e+0",
+            "2.0e+0",
+            "0.7"
+          ]
+        ]
+      },
+      "at": "2026-08-18T21:54:28.638Z"
+    },
+    {
+      "id": "magnetism/dipole-coupling · labelled",
+      "what": "two oriented emitters feel a force that depends on their relative alignment — which is what the ordering arc assumes and had never measured",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 11,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 23,
+        "ticks": 20,
+        "fill": 0.41432818825910933,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333,
+          424242,
+          909090
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "orientation dependence, over the force",
+          "value": 0.5239471761186356,
+          "expect": {
+            "of": "well above zero — a coupling that does not depend on alignment is not a coupling and the ordering arc has nothing to minimise",
+            "want": 1,
+            "tolerance": 1000000000,
+            "because": "the whole of that arc is a minimisation over relative orientation, so the model has to supply an orientation-dependent force before any of it applies"
+          },
+          "note": "spread 1.64e+0 against a worst error of 2.08e+0",
+          "by": 0.4760528238813644,
+          "verdict": "within"
+        },
+        {
+          "name": "parallel less antiparallel, side by side",
+          "value": -0.0025252525252312807,
+          "err": 0.0612167603891105,
+          "note": "a dipolar coupling prefers ANTIPARALLEL side by side and PARALLEL end to end. If those two disagree in sign the coupling is dipolar in form; if they agree it is something simpler and the arc's Luttinger–Tisza minimisation is being applied to the wrong kernel."
+        },
+        {
+          "name": "parallel less antiparallel, end to end",
+          "value": -0.06818181818181301,
+          "err": 0.056296709115128046
+        },
+        {
+          "name": "is the coupling DIPOLAR in form?",
+          "value": 0,
+          "expect": {
+            "of": "1 — the two geometries prefer opposite alignments, which is what dipolar means",
+            "want": 1,
+            "tolerance": 0,
+            "because": "an antiferromagnet on a cubic lattice comes out of that anisotropy and not out of the sign alone; without it the ordering arc's q* = (0, π, π) is a result about a kernel this model does not have"
+          },
+          "note": "UNRESOLVED — side by side at 0.0σ and end to end at 1.2σ, so their signs are not yet measurements. The POLARITY dependence is what is missing; the GEOMETRY dependence is already there, and the two are different claims.",
+          "by": 1,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "arrangement",
+          "force",
+          "±",
+          "σ"
+        ],
+        "rows": [
+          [
+            "parallel, side by side",
+            "-3.127e+0",
+            "2.1e+0",
+            "1.5"
+          ],
+          [
+            "antiparallel, side by side",
+            "-3.125e+0",
+            "2.0e+0",
+            "1.5"
+          ],
+          [
+            "parallel, end to end",
+            "-1.557e+0",
+            "2.1e+0",
+            "0.7"
+          ],
+          [
+            "antiparallel, end to end",
+            "-1.489e+0",
+            "2.0e+0",
+            "0.7"
+          ]
+        ]
+      },
+      "at": "2026-08-18T21:58:28.073Z"
+    },
+    {
+      "id": "magnetostatics/moving-charge · gravity",
+      "what": "a moving charge has B perpendicular to its motion and to the displacement, falling as 1/r^(D−1) — Biot–Savart, with no coupling constant supplied",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — no polarity to move"
+        }
+      ],
+      "at": "2026-08-18T18:01:45.783Z"
+    },
+    {
+      "id": "magnetostatics/moving-charge · gravity+magnetism",
+      "what": "a moving charge has B perpendicular to its motion and to the displacement, falling as 1/r^(D−1) — Biot–Savart, with no coupling constant supplied",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 140,
+        "fill": 0.0965804025262857,
+        "scattering": 0.5187181463627892,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "|B| anywhere in the box",
+          "value": 0,
+          "expect": {
+            "of": "EXACTLY zero — there is no label to build an axial vector from",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "a ray with only a polarity and a heading offers ρ, J and F, and J × F vanishes for a one-polarity source because J = σF exactly"
+          },
+          "note": "this is `fork`'s obstruction, measured on a lattice rather than argued",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "B·φ̂",
+          "B·r̂",
+          "E·r̂",
+          "× r²"
+        ],
+        "rows": [
+          [
+            4,
+            "0.000e+0",
+            "0.000e+0",
+            "1.172e+0",
+            "0.000"
+          ],
+          [
+            6,
+            "0.000e+0",
+            "0.000e+0",
+            "2.448e-1",
+            "0.000"
+          ],
+          [
+            8,
+            "0.000e+0",
+            "0.000e+0",
+            "1.788e-1",
+            "0.000"
+          ],
+          [
+            11,
+            "0.000e+0",
+            "0.000e+0",
+            "7.101e-2",
+            "0.000"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:01:45.782Z"
+    },
+    {
+      "id": "magnetostatics/moving-charge · labelled",
+      "what": "a moving charge has B perpendicular to its motion and to the displacement, falling as 1/r^(D−1) — Biot–Savart, with no coupling constant supplied",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 140,
+        "fill": 0.0965804025262857,
+        "scattering": 0.5187181463627892,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "B falloff exponent, resolved radii",
+          "value": -4.529780956276519,
+          "note": "no expectation here — see λ below, which is where the model's prediction is."
+        },
+        {
+          "name": "screening length λ (cells)",
+          "value": 2.6747993170113804,
+          "expect": {
+            "of": "the same λ the electric field is screened at",
+            "want": 10.354067428201452,
+            "tolerance": 0.6,
+            "because": "E and B are carried by the same rays through the same vacuum"
+          },
+          "by": 0.7416668052860068,
+          "verdict": "below"
+        },
+        {
+          "name": "B radial / azimuthal",
+          "value": 0.0007810966569433798,
+          "expect": {
+            "of": "at the floor — B ∥ u × r̂ and nothing else",
+            "want": 0,
+            "tolerance": 0.1,
+            "because": "d̂ × u is perpendicular to u by construction"
+          },
+          "by": 0.0007810966569433798,
+          "verdict": "within"
+        },
+        {
+          "name": "|B|/|E| against the speed",
+          "value": 0.30712128207922734,
+          "expect": {
+            "of": "u — the ratio Maxwell gives, with nothing fitted",
+            "want": 0.5,
+            "tolerance": 0.35,
+            "because": "B is the same sum as E with one more factor of the emitter's velocity"
+          },
+          "by": 0.3857574358415453,
+          "verdict": "below"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "B·φ̂",
+          "B·r̂",
+          "E·r̂",
+          "× r²"
+        ],
+        "rows": [
+          [
+            4,
+            "-3.068e-1",
+            "-9.640e-4",
+            "1.172e+0",
+            "-4.909"
+          ],
+          [
+            6,
+            "-7.517e-2",
+            "-5.872e-5",
+            "2.448e-1",
+            "-2.706"
+          ],
+          [
+            8,
+            "-2.084e-2",
+            "-3.619e-4",
+            "1.788e-1",
+            "-1.334"
+          ],
+          [
+            11,
+            "-2.999e-3",
+            "-7.133e-5",
+            "7.101e-2",
+            "-0.363"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:00:34.286Z"
+    },
+    {
+      "id": "magnetostatics/neutral-wire · gravity",
+      "what": "a wire of counter-drifting carriers has NO net charge and an azimuthal magnetic field falling as 1/r — Ampère, with no curl taken",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — a current is charges with polarity, moving"
+        }
+      ],
+      "at": "2026-08-18T18:04:19.984Z"
+    },
+    {
+      "id": "magnetostatics/neutral-wire · gravity+magnetism",
+      "what": "a wire of counter-drifting carriers has NO net charge and an azimuthal magnetic field falling as 1/r — Ampère, with no curl taken",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 140,
+        "fill": 0.0969656432291434,
+        "scattering": 0.5180654550454931,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "|B| anywhere in the box",
+          "value": 0,
+          "expect": {
+            "of": "EXACTLY zero — a current with no label on its rays makes no field",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "the wire's two populations cancel in polarity, and polarity is all a ray carries here — so a cell reading what arrives finds no current at all"
+          },
+          "note": "which is why the label buys the field's EXISTENCE and not merely its size",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "B·φ̂",
+          "B·r̂",
+          "E·r̂",
+          "× r"
+        ],
+        "rows": [
+          [
+            3,
+            "0.000e+0",
+            "0.000e+0",
+            "-6.581e-3",
+            "0.0000"
+          ],
+          [
+            5,
+            "0.000e+0",
+            "0.000e+0",
+            "-1.748e-2",
+            "0.0000"
+          ],
+          [
+            7,
+            "0.000e+0",
+            "0.000e+0",
+            "-2.348e-3",
+            "0.0000"
+          ],
+          [
+            9,
+            "0.000e+0",
+            "0.000e+0",
+            "8.089e-2",
+            "0.0000"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:04:19.982Z"
+    },
+    {
+      "id": "magnetostatics/neutral-wire · labelled",
+      "what": "a wire of counter-drifting carriers has NO net charge and an azimuthal magnetic field falling as 1/r — Ampère, with no curl taken",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 140,
+        "fill": 0.0969656432291434,
+        "scattering": 0.5180654550454931,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "B falloff exponent, resolved radii",
+          "value": -2.9844721775198937,
+          "note": "the old `ampere` got −2 for a STRUCTURAL reason — its wire put its two signs in opposite hemispheres, so the azimuthal part had to be got by a curl, which costs a power. Here the exponent is steep for a different reason: screening."
+        },
+        {
+          "name": "screening length λ (cells)",
+          "value": 1.5382521951122008,
+          "expect": {
+            "of": "the vacuum's mean free path",
+            "want": 10.312931123829705,
+            "tolerance": 0.6,
+            "because": "the same medium attenuates a line's field and a point's"
+          },
+          "by": 0.8508423864523037,
+          "verdict": "below"
+        },
+        {
+          "name": "B azimuthal share",
+          "value": 1,
+          "expect": {
+            "of": "1 — the field goes ROUND the wire",
+            "want": 1,
+            "tolerance": 0.15,
+            "because": "σ(d̂ × u) with u along the wire has no radial part"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "E consistent with zero — the wire must be neutral",
+          "value": 1.07501617425391,
+          "expect": {
+            "of": "under 2 — no radius where the electric field is resolved",
+            "want": 0,
+            "tolerance": 2,
+            "because": "as many + carriers as −, so E ⊥ B FOLLOWS rather than being arranged — which is the thing b̂ ∝ J could never deliver, since that made them parallel"
+          },
+          "note": "worst |E| / σ over the radii measured",
+          "by": 1.07501617425391,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "B·φ̂",
+          "B·r̂",
+          "E·r̂",
+          "× r"
+        ],
+        "rows": [
+          [
+            3,
+            "-2.774e-1",
+            "0.000e+0",
+            "-6.581e-3",
+            "-0.8323"
+          ],
+          [
+            5,
+            "-1.870e-2",
+            "0.000e+0",
+            "-1.748e-2",
+            "-0.0935"
+          ],
+          [
+            7,
+            "-2.630e-2",
+            "0.000e+0",
+            "-2.348e-3",
+            "-0.1841"
+          ],
+          [
+            9,
+            "-2.884e-4",
+            "0.000e+0",
+            "8.089e-2",
+            "-0.0026"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:03:14.521Z"
+    },
+    {
+      "id": "magnetostatics/static-charge · gravity",
+      "what": "a charge at rest has a radial electric field and EXACTLY no magnetic one — not a small one, none, because every ray it emits carries the label 0",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "cannot be asked — no polarity, so no electric field either"
+        }
+      ],
+      "at": "2026-08-18T17:59:10.299Z"
+    },
+    {
+      "id": "magnetostatics/static-charge · gravity+magnetism",
+      "what": "a charge at rest has a radial electric field and EXACTLY no magnetic one — not a small one, none, because every ray it emits carries the label 0",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 140,
+        "fill": 0.0965804025262857,
+        "scattering": 0.5187181463627892,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "E falloff exponent, resolved radii",
+          "value": -2.662130133577212,
+          "note": "no expectation here — see λ below. This one comes out near −2 anyway, which means E is barely screened over this range and the fit below has little to grip on."
+        },
+        {
+          "name": "screening length λ (cells)",
+          "value": 11.366060114583192,
+          "expect": {
+            "of": "the vacuum's mean free path",
+            "want": 10.354067428201452,
+            "tolerance": 0.6,
+            "because": "a field is attenuated at the length a ray survives"
+          },
+          "by": 0.09773866100440566,
+          "verdict": "within"
+        },
+        {
+          "name": "|B| anywhere in the box",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "EXACTLY zero, not small",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "a charge that is not going anywhere labels every ray 0, and d̂ × 0 = 0 before any direction is consulted"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "E transverse / radial at r = 6",
+          "value": 0.0485781984377909,
+          "expect": {
+            "of": "at the floor — the field is RADIAL, not merely large",
+            "want": 0,
+            "tolerance": 0.15,
+            "because": "every ray at a field point came from one place"
+          },
+          "by": 0.0485781984377909,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "E·r̂",
+          "E·θ̂",
+          "× r²"
+        ],
+        "rows": [
+          [
+            4,
+            "1.172e+0",
+            "1.065e-2",
+            "18.755"
+          ],
+          [
+            6,
+            "2.448e-1",
+            "-1.189e-2",
+            "8.811"
+          ],
+          [
+            8,
+            "1.788e-1",
+            "-5.365e-3",
+            "11.441"
+          ],
+          [
+            11,
+            "7.101e-2",
+            "-6.934e-3",
+            "8.593"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:59:10.298Z"
+    },
+    {
+      "id": "magnetostatics/static-charge · labelled",
+      "what": "a charge at rest has a radial electric field and EXACTLY no magnetic one — not a small one, none, because every ray it emits carries the label 0",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "labelled",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 20,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 41,
+        "ticks": 140,
+        "fill": 0.0965804025262857,
+        "scattering": 0.5187181463627892,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "E falloff exponent, resolved radii",
+          "value": -2.662130133577212,
+          "note": "no expectation here — see λ below. This one comes out near −2 anyway, which means E is barely screened over this range and the fit below has little to grip on."
+        },
+        {
+          "name": "screening length λ (cells)",
+          "value": 11.366060114583192,
+          "expect": {
+            "of": "the vacuum's mean free path",
+            "want": 10.354067428201452,
+            "tolerance": 0.6,
+            "because": "a field is attenuated at the length a ray survives"
+          },
+          "by": 0.09773866100440566,
+          "verdict": "within"
+        },
+        {
+          "name": "|B| anywhere in the box",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "EXACTLY zero, not small",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "a charge that is not going anywhere labels every ray 0, and d̂ × 0 = 0 before any direction is consulted"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "E transverse / radial at r = 6",
+          "value": 0.0485781984377909,
+          "expect": {
+            "of": "at the floor — the field is RADIAL, not merely large",
+            "want": 0,
+            "tolerance": 0.15,
+            "because": "every ray at a field point came from one place"
+          },
+          "by": 0.0485781984377909,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "E·r̂",
+          "E·θ̂",
+          "× r²"
+        ],
+        "rows": [
+          [
+            4,
+            "1.172e+0",
+            "1.065e-2",
+            "18.755"
+          ],
+          [
+            6,
+            "2.448e-1",
+            "-1.189e-2",
+            "8.811"
+          ],
+          [
+            8,
+            "1.788e-1",
+            "-5.365e-3",
+            "11.441"
+          ],
+          [
+            11,
+            "7.101e-2",
+            "-6.934e-3",
+            "8.593"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:58:00.575Z"
+    },
+    {
+      "id": "matter/handles · gravity",
+      "what": "a handle is the one two-valued thing a region can carry, density buys nothing, and a cavity is not a handle",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "b₁ of a solid block, at every size",
+          "value": 0,
+          "expect": {
+            "of": "0 — DENSITY BUYS NOTHING",
+            "want": 0,
+            "tolerance": 0,
+            "because": "a solid block is contractible however large, so piling up cells cannot produce the bit a particle needs — which is why the argument had to go to topology rather than to size"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "b₁ of a ring",
+          "value": 1,
+          "expect": {
+            "of": "1 — one handle, one bit",
+            "want": 1,
+            "tolerance": 0,
+            "because": "a region the lattice goes ROUND rather than through, and one bit each is all homology has to offer"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "b₁ of two rings",
+          "value": 2,
+          "expect": {
+            "of": "2 — handles add",
+            "want": 2,
+            "tolerance": 0,
+            "because": "which is what makes the count an invariant rather than a yes or no"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "b₁ of a hollow shell",
+          "value": 0,
+          "expect": {
+            "of": "0 — A CAVITY IS NOT A HANDLE",
+            "want": 0,
+            "tolerance": 0,
+            "because": "removing a ball from a solid leaves it simply connected: the void is b₂ and shows up there instead. This is the control that says the two are being told apart rather than a hole of any kind being counted."
+          },
+          "note": "its b₂ is 1, which is where a sealed void belongs",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "configuration",
+          "cells",
+          "b₀",
+          "b₁",
+          "b₂",
+          "χ"
+        ],
+        "rows": [
+          [
+            "solid block 2³",
+            8,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            "solid block 4³",
+            64,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            "solid block 6³",
+            216,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            "one handle — a ring",
+            168,
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            "two handles",
+            240,
+            2,
+            2,
+            0,
+            0
+          ],
+          [
+            "hollow shell",
+            176,
+            1,
+            0,
+            1,
+            2
+          ]
+        ]
+      },
+      "at": "2026-08-18T22:07:46.065Z"
+    },
+    {
+      "id": "structure/self-propulsion · gravity",
+      "what": "a body that redirects the vacuum's own rays moves, and one that emits evenly does not — with the absorbed and emitted momentum both counted",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 21,
+        "ticks": 20,
+        "fill": 0.02778333500050015,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "control: an even emitter goes nowhere",
+          "value": -1.14,
+          "err": 0.2899999999999999,
+          "expect": {
+            "of": "nought — every exit has its opposite, so what leaves cancels",
+            "want": 0,
+            "tolerance": 0.05,
+            "because": "if this is not zero the measurement has a bias in it and no other row means anything"
+          },
+          "by": 1.14,
+          "verdict": "below"
+        },
+        {
+          "name": "backward: does redirecting the vacuum push it forward?",
+          "value": 108.055,
+          "err": 0.635000000000005,
+          "expect": {
+            "of": "POSITIVE — rays sent behind, so the recoil is forward",
+            "want": 108.055,
+            "tolerance": 1000000000,
+            "because": "this is the reading in which a thing moves by rearranging the space it is already in, rather than by making anything"
+          },
+          "note": "170.2σ against the control",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "forward: rocket or shadow?",
+          "value": -108.46000000000001,
+          "err": 1.1599999999999966,
+          "note": "NEGATIVE means the recoil wins and it behaves like a rocket. POSITIVE means the shadow wins — the vacuum ahead is thinned by its own emission and the pressure behind pushes it INTO the direction it is emitting, which is the gravity mechanism turned around."
+        },
+        {
+          "name": "transmit: absorbed and emitted cancel",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "nought — a ray passed straight through carries the same momentum out as in",
+            "want": 0,
+            "tolerance": 0.1,
+            "because": "which is the control that says this can tell a redirection from a pass-through, rather than calling any rearrangement a push"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "does it need to CREATE rays, or only move them?",
+          "value": 0.30604784600434964,
+          "note": "the conserving row emits only as many rays as it caught, so it makes nothing. Near 1 means the vacuum alone is enough and the push is a redirection; near 0 means the push was coming from rays made out of nothing, which is not propulsion."
+        }
+      ],
+      "table": {
+        "columns": [
+          "how",
+          "absorbed",
+          "recoil",
+          "NET",
+          "±",
+          "vacuum ahead",
+          "behind"
+        ],
+        "rows": [
+          [
+            "none (control)",
+            "-1.14e+0",
+            "0.00e+0",
+            "-1.140e+0",
+            "2.9e-1",
+            "0.745",
+            "0.805"
+          ],
+          [
+            "forward",
+            "9.42e+1",
+            "-2.03e+2",
+            "-1.085e+2",
+            "1.2e+0",
+            "0.853",
+            "0.673"
+          ],
+          [
+            "backward",
+            "-9.49e+1",
+            "2.03e+2",
+            "1.081e+2",
+            "6.4e-1",
+            "0.802",
+            "0.850"
+          ],
+          [
+            "backward, conserving",
+            "-1.45e+1",
+            "4.76e+1",
+            "3.307e+1",
+            "1.6e+0",
+            "0.682",
+            "0.750"
+          ],
+          [
+            "transmit",
+            "-5.50e-2",
+            "5.50e-2",
+            "0.000e+0",
+            "0.0e+0",
+            "0.739",
+            "0.714"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:08:18.007Z"
+    },
+    {
+      "id": "structure/self-propulsion · gravity+magnetism",
+      "what": "a body that redirects the vacuum's own rays moves, and one that emits evenly does not — with the absorbed and emitted momentum both counted",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 21,
+        "ticks": 20,
+        "fill": 0.08200376779700577,
+        "scattering": 0.48064091949544635,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "control: an even emitter goes nowhere",
+          "value": 0.155,
+          "err": 0.295,
+          "expect": {
+            "of": "nought — every exit has its opposite, so what leaves cancels",
+            "want": 0,
+            "tolerance": 0.05,
+            "because": "if this is not zero the measurement has a bias in it and no other row means anything"
+          },
+          "by": 0.155,
+          "verdict": "above"
+        },
+        {
+          "name": "backward: does redirecting the vacuum push it forward?",
+          "value": 108.815,
+          "err": 0.8049999999999996,
+          "expect": {
+            "of": "POSITIVE — rays sent behind, so the recoil is forward",
+            "want": 108.815,
+            "tolerance": 1000000000,
+            "because": "this is the reading in which a thing moves by rearranging the space it is already in, rather than by making anything"
+          },
+          "note": "135.2σ against the control",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "forward: rocket or shadow?",
+          "value": -109.24,
+          "err": 0.8199999999999931,
+          "note": "NEGATIVE means the recoil wins and it behaves like a rocket. POSITIVE means the shadow wins — the vacuum ahead is thinned by its own emission and the pressure behind pushes it INTO the direction it is emitting, which is the gravity mechanism turned around."
+        },
+        {
+          "name": "transmit: absorbed and emitted cancel",
+          "value": 0,
+          "err": 0,
+          "expect": {
+            "of": "nought — a ray passed straight through carries the same momentum out as in",
+            "want": 0,
+            "tolerance": 0.1,
+            "because": "which is the control that says this can tell a redirection from a pass-through, rather than calling any rearrangement a push"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "does it need to CREATE rays, or only move them?",
+          "value": 0.5767587189266187,
+          "note": "the conserving row emits only as many rays as it caught, so it makes nothing. Near 1 means the vacuum alone is enough and the push is a redirection; near 0 means the push was coming from rays made out of nothing, which is not propulsion."
+        }
+      ],
+      "table": {
+        "columns": [
+          "how",
+          "absorbed",
+          "recoil",
+          "NET",
+          "±",
+          "vacuum ahead",
+          "behind"
+        ],
+        "rows": [
+          [
+            "none (control)",
+            "1.55e-1",
+            "0.00e+0",
+            "1.550e-1",
+            "2.9e-1",
+            "3.055",
+            "3.026"
+          ],
+          [
+            "forward",
+            "9.36e+1",
+            "-2.03e+2",
+            "-1.092e+2",
+            "8.2e-1",
+            "2.900",
+            "2.717"
+          ],
+          [
+            "backward",
+            "-9.42e+1",
+            "2.03e+2",
+            "1.088e+2",
+            "8.0e-1",
+            "2.716",
+            "3.187"
+          ],
+          [
+            "backward, conserving",
+            "-3.11e+1",
+            "9.38e+1",
+            "6.276e+1",
+            "1.8e-1",
+            "2.792",
+            "2.778"
+          ],
+          [
+            "transmit",
+            "-3.00e-2",
+            "3.00e-2",
+            "0.000e+0",
+            "0.0e+0",
+            "2.555",
+            "2.716"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:08:26.013Z"
+    },
+    {
+      "id": "vacuum/annihilation-feeds-expansion · gravity",
+      "what": "annihilation leaves neutral points and (G/2) expands neutral points, so a theory that destroys more grows space faster",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "graph",
+        "boundary": "expand",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 7,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 9,
+        "ticks": 5,
+        "fill": 0.021341281074938698,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "growth ordered by how much each theory annihilates",
+          "value": 1,
+          "expect": {
+            "of": "1 — conserving < gravity+magnetism < gravity",
+            "want": 1,
+            "tolerance": 0,
+            "because": "a theory that destroys more rays leaves more neutral points, and a neutral point is exactly what (G/2) expands"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "gravity's growth over the conserving medium's",
+          "value": 10.875962845491618,
+          "expect": {
+            "of": "well above 1 — the loop is a large effect, not a correction",
+            "want": 1,
+            "tolerance": 1000000000,
+            "because": "the only difference between those two runs is how often two rays destroy each other; the bound, the rate and the ticks are identical"
+          },
+          "by": 9.875962845491618,
+          "verdict": "within"
+        },
+        {
+          "name": "mean l.DEG, gravity",
+          "value": 26.49744631236868,
+          "err": 0.0054939993043578985,
+          "expect": {
+            "of": "the lattice's own degree — space is MADE here, not folded",
+            "want": 26,
+            "tolerance": 0.25,
+            "because": "if l.DEG were growing, the point count would be falling and this would be the bookkeeping of a collapse rather than an expansion"
+          },
+          "by": 0.019132550475718473,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "theory",
+          "annihilates",
+          "space grew",
+          "annihilations",
+          "l.DEG"
+        ],
+        "rows": [
+          [
+            "conserving",
+            "never",
+            "6.1×",
+            "0.00e+0",
+            "26.0"
+          ],
+          [
+            "gravity+magnetism",
+            "half its meetings",
+            "42.0×",
+            "4.64e+4",
+            "26.6"
+          ],
+          [
+            "gravity",
+            "every meeting",
+            "65.9×",
+            "7.82e+4",
+            "26.5"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:27:00.947Z"
+    },
+    {
+      "id": "vacuum/fixed-point · conserving",
+      "what": "the vacuum settles at (1−p)/(2−p) with the rate cancelling out, and a polarised one settles below it because (G+M/1) is a sink the derivation has no term for",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "conserving",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "wrap",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 12,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 25,
+        "ticks": 200,
+        "fill": 0.4813956923076923,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "spread over a 12× change in the rate",
+          "value": 0.14207830769790153,
+          "expect": {
+            "of": "small — the rate cancels out of the fixed point",
+            "want": 0,
+            "tolerance": 0.35,
+            "because": "f → p + (1−p)f then f(1−p) has the rate cancelling; adding annihilation breaks that, because creation scales with p and destruction scales with density"
+          },
+          "by": 0.14207830769790153,
+          "verdict": "within"
+        },
+        {
+          "name": "occupancy against (1−p)/(2−p)",
+          "value": 0.4842994871794872,
+          "expect": {
+            "of": "the fixed point of edging and thinning",
+            "want": 0.48717948717948717,
+            "tolerance": 0.2,
+            "because": "with nothing destroying anything, creation and thinning are the whole of what moves the occupancy, and this is their fixed point"
+          },
+          "by": 0.005911578947368408,
+          "verdict": "within"
+        },
+        {
+          "name": "mean free path (cells)",
+          "value": 2.0648380319869886,
+          "note": "1/fill — a ray meets something when it lands where one sits on the opposing exit. EVERY screening length in this book is this number, so it is reported here rather than re-derived wherever it is needed."
+        }
+      ],
+      "table": {
+        "columns": [
+          "p",
+          "measured",
+          "±",
+          "(1−p)/(2−p)",
+          "mfp",
+          "scattering"
+        ],
+        "rows": [
+          [
+            0.02,
+            "0.4940",
+            "0.0009",
+            "0.4949",
+            "2.02",
+            "0.000"
+          ],
+          [
+            0.05,
+            "0.4843",
+            "0.0016",
+            "0.4872",
+            "2.06",
+            "0.000"
+          ],
+          [
+            0.12,
+            "0.4673",
+            "0.0020",
+            "0.4681",
+            "2.14",
+            "0.000"
+          ],
+          [
+            0.25,
+            "0.4274",
+            "0.0012",
+            "0.4286",
+            "2.34",
+            "0.000"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:24:43.526Z"
+    },
+    {
+      "id": "vacuum/fixed-point · gravity",
+      "what": "the vacuum settles at (1−p)/(2−p) with the rate cancelling out, and a polarised one settles below it because (G+M/1) is a sink the derivation has no term for",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "wrap",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 12,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 25,
+        "ticks": 200,
+        "fill": 0.029316923076923077,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "spread over a 12× change in the rate",
+          "value": 2.172372660536192,
+          "expect": {
+            "of": "LARGE — with a sink in it, the balance depends on how fast the rule is run",
+            "want": 0,
+            "tolerance": 1000000000,
+            "because": "f → p + (1−p)f then f(1−p) has the rate cancelling; adding annihilation breaks that, because creation scales with p and destruction scales with density"
+          },
+          "by": 2.172372660536192,
+          "verdict": "within"
+        },
+        {
+          "name": "occupancy over (1−p)/(2−p)",
+          "value": 0.058618947368421055,
+          "expect": {
+            "of": "WELL BELOW 1 — this theory annihilates, and the derivation has no term for it",
+            "want": 0,
+            "tolerance": 0.75,
+            "because": "annihilation is a sink f → p + (1−p)f then f(1−p) does not contain, so a theory that destroys cannot sit at the fixed point of one that does not"
+          },
+          "note": "which means the ½ this book quotes as 'the vacuum's derived occupancy' is the occupancy of a medium NEITHER of its theories is — and since every screening length here is a mean free path, that is worth more than a factor of two.",
+          "by": 0.058618947368421055,
+          "verdict": "within"
+        },
+        {
+          "name": "mean free path (cells)",
+          "value": 35.01652061485419,
+          "note": "1/fill — a ray meets something when it lands where one sits on the opposing exit. EVERY screening length in this book is this number, so it is reported here rather than re-derived wherever it is needed."
+        }
+      ],
+      "table": {
+        "columns": [
+          "p",
+          "measured",
+          "±",
+          "(1−p)/(2−p)",
+          "mfp",
+          "scattering"
+        ],
+        "rows": [
+          [
+            0.02,
+            "0.0176",
+            "0.0001",
+            "0.4949",
+            "56.67",
+            "0.000"
+          ],
+          [
+            0.05,
+            "0.0286",
+            "0.0009",
+            "0.4872",
+            "35.02",
+            "0.000"
+          ],
+          [
+            0.12,
+            "0.1338",
+            "0.0019",
+            "0.4681",
+            "7.47",
+            "0.000"
+          ],
+          [
+            0.25,
+            "0.2526",
+            "0.0008",
+            "0.4286",
+            "3.96",
+            "0.000"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:25:22.218Z"
+    },
+    {
+      "id": "vacuum/fixed-point · gravity+magnetism",
+      "what": "the vacuum settles at (1−p)/(2−p) with the rate cancelling out, and a polarised one settles below it because (G+M/1) is a sink the derivation has no term for",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "wrap",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 12,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 25,
+        "ticks": 200,
+        "fill": 0.12078276923076924,
+        "scattering": 0.5209708975299584,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "spread over a 12× change in the rate",
+          "value": 1.4802798133209043,
+          "expect": {
+            "of": "LARGE — with a sink in it, the balance depends on how fast the rule is run",
+            "want": 0,
+            "tolerance": 1000000000,
+            "because": "f → p + (1−p)f then f(1−p) has the rate cancelling; adding annihilation breaks that, because creation scales with p and destruction scales with density"
+          },
+          "by": 1.4802798133209043,
+          "verdict": "within"
+        },
+        {
+          "name": "occupancy over (1−p)/(2−p)",
+          "value": 0.24902736842105266,
+          "expect": {
+            "of": "WELL BELOW 1 — this theory annihilates, and the derivation has no term for it",
+            "want": 0,
+            "tolerance": 0.75,
+            "because": "annihilation is a sink f → p + (1−p)f then f(1−p) does not contain, so a theory that destroys cannot sit at the fixed point of one that does not"
+          },
+          "note": "which means the ½ this book quotes as 'the vacuum's derived occupancy' is the occupancy of a medium NEITHER of its theories is — and since every screening length here is a mean free path, that is worth more than a factor of two.",
+          "by": 0.24902736842105266,
+          "verdict": "within"
+        },
+        {
+          "name": "mean free path (cells)",
+          "value": 8.242594346002976,
+          "note": "1/fill — a ray meets something when it lands where one sits on the opposing exit. EVERY screening length in this book is this number, so it is reported here rather than re-derived wherever it is needed."
+        }
+      ],
+      "table": {
+        "columns": [
+          "p",
+          "measured",
+          "±",
+          "(1−p)/(2−p)",
+          "mfp",
+          "scattering"
+        ],
+        "rows": [
+          [
+            0.02,
+            "0.0437",
+            "0.0003",
+            "0.4949",
+            "22.87",
+            "0.673"
+          ],
+          [
+            0.05,
+            "0.1213",
+            "0.0003",
+            "0.4872",
+            "8.24",
+            "0.521"
+          ],
+          [
+            0.12,
+            "0.2947",
+            "0.0006",
+            "0.4681",
+            "3.39",
+            "0.241"
+          ],
+          [
+            0.25,
+            "0.3395",
+            "0.0004",
+            "0.4286",
+            "2.95",
+            "0.136"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:26:02.381Z"
+    },
+    {
+      "id": "vacuum/sheet-versus-isotropic · gravity+magnetism",
+      "what": "sheet emission and isotropic emission give the same falloff, so the approximation every measurement in this book uses is a fair one",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 17,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 35,
+        "ticks": 140,
+        "fill": 0.09160223791893649,
+        "scattering": 0.533504726341411,
+        "seeds": [
+          20260817,
+          777333,
+          424242
+        ]
+      },
+      "findings": [
+        {
+          "name": "worst shape difference",
+          "value": 1.0682501132013336,
+          "expect": {
+            "of": "small — the same falloff whichever way the source emits",
+            "want": 0,
+            "tolerance": 0.4,
+            "because": "the inverse-square law comes from a FIXED number of rays over a shell, and how they are distributed over the shell should not change how it thins"
+          },
+          "note": "normalised at the innermost radius, so this compares the falloff and not the amplitude — a sheet puts out l.SHEET rays a tick against isotropic's l.DEG, so they are not expected to be the same size",
+          "by": 1.0682501132013336,
+          "verdict": "above"
+        },
+        {
+          "name": "amplitude ratio, sheet / isotropic",
+          "value": 0.18710691823899372,
+          "note": "l.SHEET / l.DEG = 0.3077 if the two differ only by how many rays go out a tick"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "isotropic",
+          "sheet",
+          "iso shape",
+          "sheet shape"
+        ],
+        "rows": [
+          [
+            4,
+            "2.019e+0",
+            "3.778e-1",
+            "1.000",
+            "1.000"
+          ],
+          [
+            6,
+            "1.059e+0",
+            "4.096e-1",
+            "0.524",
+            "1.084"
+          ],
+          [
+            8,
+            "3.810e-1",
+            "8.661e-2",
+            "0.189",
+            "0.229"
+          ],
+          [
+            10,
+            "1.445e-1",
+            "2.933e-2",
+            "0.072",
+            "0.078"
+          ]
+        ]
+      },
+      "at": "2026-08-18T17:28:07.504Z"
+    },
+    {
+      "id": "vacuum/which-meeting · gravity",
+      "what": "the reading of what counts as a meeting decides the vacuum's occupancy, and therefore whether any force in this model is measurable at all",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "wrap",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 21,
+        "ticks": 20,
+        "fill": 0.029690264384141934,
+        "scattering": 0,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "readings that resolve an attraction at all",
+          "value": 1,
+          "expect": {
+            "of": "more than none — a reading in which no force can be measured is not a reading of this model",
+            "want": 4,
+            "tolerance": 4,
+            "because": "two bodies drawing together is the one thing every version of this model has agreed on, so it is the test a reading of the rules has to pass"
+          },
+          "note": "strongest: head-on/all at 8.5σ",
+          "by": 0.75,
+          "verdict": "within"
+        },
+        {
+          "name": "the default reading's attraction",
+          "value": -0.9533333333333334,
+          "err": 0.6466666666666667,
+          "expect": {
+            "of": "positive and resolved — co-located, one meeting a point a tick",
+            "want": 0.9533333333333334,
+            "tolerance": 1000000000,
+            "because": "this is what the article's sentence says: any two rays that arrive together have met, and what is left is A SINGLE neutral point"
+          },
+          "note": "1.5σ · fill 0.027 · mean free path 36.7 cells",
+          "by": 2,
+          "verdict": "within"
+        },
+        {
+          "name": "what pulsing costs, under the default reading",
+          "value": -0.1466666666666665,
+          "note": "inert -9.53e-1 at 1.5σ against pulsing -1.10e+0 at 1.2σ. A body that pulses spends itself emitting its own rays instead of passing the vacuum's along, which is what being massive costs; a body that does not is carried by what the expansion sends it."
+        },
+        {
+          "name": "spread in occupancy across the four readings",
+          "value": 8.621074745687746,
+          "note": "how far apart four readings of one sentence put the vacuum — and since every screening length here is 1/fill, this is the factor by which the range of every force in this model depends on a choice nobody had written down"
+        }
+      ],
+      "table": {
+        "columns": [
+          "meets",
+          "how many",
+          "body",
+          "fill",
+          "mfp",
+          "attraction",
+          "σ"
+        ],
+        "rows": [
+          [
+            "head-on",
+            "all",
+            "inert",
+            "0.1441",
+            "6.9",
+            "1.75e+0",
+            "8.5"
+          ],
+          [
+            "head-on",
+            "all",
+            "pulsing",
+            "0.1441",
+            "6.9",
+            "1.33e-2",
+            "0.1"
+          ],
+          [
+            "head-on",
+            "one",
+            "inert",
+            "0.1619",
+            "6.2",
+            "7.33e-1",
+            "1.5"
+          ],
+          [
+            "head-on",
+            "one",
+            "pulsing",
+            "0.1619",
+            "6.2",
+            "-5.60e-1",
+            "0.4"
+          ],
+          [
+            "co-located",
+            "all",
+            "inert",
+            "0.0188",
+            "53.2",
+            "5.47e-1",
+            "1.8"
+          ],
+          [
+            "co-located",
+            "all",
+            "pulsing",
+            "0.0188",
+            "53.2",
+            "-1.67e-1",
+            "0.4"
+          ],
+          [
+            "co-located",
+            "one",
+            "inert",
+            "0.0272",
+            "36.7",
+            "-9.53e-1",
+            "1.5"
+          ],
+          [
+            "co-located",
+            "one",
+            "pulsing",
+            "0.0272",
+            "36.7",
+            "-1.10e+0",
+            "1.2"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:25:41.577Z"
+    },
+    {
+      "id": "vacuum/which-meeting · gravity+magnetism",
+      "what": "the reading of what counts as a meeting decides the vacuum's occupancy, and therefore whether any force in this model is measurable at all",
+      "header": {
+        "geometry": "cubic-26",
+        "D": 3,
+        "DEG": 26,
+        "SHEET": 8,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.49704121954774755,
+        "c_anisotropy": 1.7320508075688772,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "wrap",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "co-located",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 0.05,
+        "N": 21,
+        "ticks": 20,
+        "fill": 0.12339587849791932,
+        "scattering": 0.514640549273021,
+        "seeds": [
+          20260817,
+          777333
+        ]
+      },
+      "findings": [
+        {
+          "name": "QUICK RUN",
+          "value": null,
+          "note": "measured at a reduced box and tick count. Good enough to say whether something broke; NOT good enough to quote — a published number is a `full` run."
+        },
+        {
+          "name": "readings that resolve an attraction at all",
+          "value": 1,
+          "expect": {
+            "of": "more than none — a reading in which no force can be measured is not a reading of this model",
+            "want": 4,
+            "tolerance": 4,
+            "because": "two bodies drawing together is the one thing every version of this model has agreed on, so it is the test a reading of the rules has to pass"
+          },
+          "note": "strongest: co-located/one at 18.5σ",
+          "by": 0.75,
+          "verdict": "within"
+        },
+        {
+          "name": "the default reading's attraction",
+          "value": 0.49333333333333335,
+          "err": 0.02666666666666667,
+          "expect": {
+            "of": "positive and resolved — co-located, one meeting a point a tick",
+            "want": 0.49333333333333335,
+            "tolerance": 1000000000,
+            "because": "this is what the article's sentence says: any two rays that arrive together have met, and what is left is A SINGLE neutral point"
+          },
+          "note": "18.5σ · fill 0.122 · mean free path 8.2 cells",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "what pulsing costs, under the default reading",
+          "value": -5.8999999999999995,
+          "note": "inert 4.93e-1 at 18.5σ against pulsing -5.41e+0 at 9.8σ. A body that pulses spends itself emitting its own rays instead of passing the vacuum's along, which is what being massive costs; a body that does not is carried by what the expansion sends it."
+        },
+        {
+          "name": "spread in occupancy across the four readings",
+          "value": 3.870802919708029,
+          "note": "how far apart four readings of one sentence put the vacuum — and since every screening length here is 1/fill, this is the factor by which the range of every force in this model depends on a choice nobody had written down"
+        }
+      ],
+      "table": {
+        "columns": [
+          "meets",
+          "how many",
+          "body",
+          "fill",
+          "mfp",
+          "attraction",
+          "σ"
+        ],
+        "rows": [
+          [
+            "head-on",
+            "all",
+            "inert",
+            "0.2051",
+            "4.9",
+            "4.73e-1",
+            "0.8"
+          ],
+          [
+            "head-on",
+            "all",
+            "pulsing",
+            "0.2051",
+            "4.9",
+            "-2.14e+0",
+            "1.9"
+          ],
+          [
+            "head-on",
+            "one",
+            "inert",
+            "0.2423",
+            "4.1",
+            "4.27e-1",
+            "0.5"
+          ],
+          [
+            "head-on",
+            "one",
+            "pulsing",
+            "0.2423",
+            "4.1",
+            "-3.71e+0",
+            "15.4"
+          ],
+          [
+            "co-located",
+            "all",
+            "inert",
+            "0.0626",
+            "16.0",
+            "-3.07e-1",
+            "1.0"
+          ],
+          [
+            "co-located",
+            "all",
+            "pulsing",
+            "0.0626",
+            "16.0",
+            "-1.95e+0",
+            "3.9"
+          ],
+          [
+            "co-located",
+            "one",
+            "inert",
+            "0.1223",
+            "8.2",
+            "4.93e-1",
+            "18.5"
+          ],
+          [
+            "co-located",
+            "one",
+            "pulsing",
+            "0.1223",
+            "8.2",
+            "-5.41e+0",
+            "9.8"
+          ]
+        ]
+      },
+      "at": "2026-08-18T18:26:07.572Z"
+    }
+  ]
+}
