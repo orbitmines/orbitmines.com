@@ -23,21 +23,43 @@
 
 import { CanvasView, Surface } from "./CANVAS";
 import { Carousel, Slide } from "./CAROUSEL";
+import { findingOf } from "./FIGURES";
 
 const BACK = "#08090d";
 
 /** the two metrics, as the one function the tracer needs: b at a turning point */
+/*
+ * THE TURNING FUNCTION, AND A BUG THAT LIVED HERE FOR A WHILE.
+ *
+ * In isotropic form ds² = −A dt² + B(dr² + r²dΩ²) a null ray turns where
+ *
+ *     b = r·√(B/A)        ← this, and not b = r·B
+ *
+ * The two coincide for the counted metric, where A·B = 1 makes √(B/A) = B, so the
+ * field below was named `B` and was right for the geometry it was written for. It was
+ * then wrong for Schwarzschild, where A·B ≠ 1: `(1 + 1/2r)⁴·r` bottoms out at 4.7407,
+ * so the traced shadow on the relativity half of these panels was 9% too small and
+ * disagreed with the dashed 3√3 circle drawn over it. The panel said one thing and its
+ * own caption said another.
+ *
+ * Both geometries now carry A and B and the turning function is derived from them, so
+ * there is nothing left to get right per-metric.
+ */
 type Metric = {
   name: string;
-  /** B(r) in isotropic coordinates; the turning point is where B·r = b */
+  A: (r: number) => number;
   B: (r: number) => number;
   /** critical impact parameter, in units of M */
   crit: number;
   says: string;
 };
 
+/** where a ray of impact parameter b turns: the quantity whose minimum is the shadow */
+const turn = (m: Metric, r: number) => r * Math.sqrt(m.B(r) / m.A(r));
+
 const COUNTED: Metric = {
   name: "the count",
+  A: r => Math.exp(-2 / r),
   B: r => Math.exp(2 / r),
   crit: 2 * Math.E,
   says: "A = e^(−2u) out of the annihilation count — shadow 2e = 5.437 M",
@@ -67,6 +89,7 @@ const COUNTED: Metric = {
  */
 const SCHWARZSCHILD: Metric = {
   name: "general relativity",
+  A: r => Math.pow((1 - 0.5 / r) / (1 + 0.5 / r), 2),
   B: r => Math.pow(1 + 0.5 / r, 4),
   crit: 3 * Math.sqrt(3),
   says: "Schwarzschild, the same mass — shadow 3√3 = 5.196 M",
@@ -82,7 +105,7 @@ const SCHWARZSCHILD: Metric = {
  */
 const captured = (m: Metric, b: number) => {
   let lo = Infinity;
-  for (let r = 0.02; r < 60; r += 0.002) lo = Math.min(lo, m.B(r) * r);
+  for (let r = 0.502; r < 60; r += 0.002) lo = Math.min(lo, turn(m, r));
   return b < lo;
 };
 
@@ -90,11 +113,12 @@ const captured = (m: Metric, b: number) => {
 const swept = (m: Metric, b: number) => {
   // dφ/dr = 1 / (r·sqrt(B²r²/b² − 1)), integrated from the turning point outwards
   let rt = 0;
-  for (let r = 0.02; r < 60; r += 0.002) if (m.B(r) * r >= b) { rt = r; break; }
+  for (let r = 0.502; r < 60; r += 0.002) if (turn(m, r) >= b) { rt = r; break; }
   if (!rt) return 0;
   let phi = 0;
   for (let r = rt + 1e-3; r < 60; r += 0.01) {
-    const q = (m.B(r) * m.B(r) * r * r) / (b * b) - 1;
+    const t = turn(m, r) / r;
+    const q = (t * t * r * r) / (b * b) - 1;
     if (q <= 0) continue;
     phi += 0.01 / (r * Math.sqrt(q));
   }
@@ -347,7 +371,8 @@ const route = (m: Metric, b: number, steps = 4000) => {
   const pts: [number, number][] = [];
   const dphi = (2 * Math.PI * 3) / steps;
   for (let i = 0; i < steps; i++) {
-    const q = (m.B(r) * m.B(r) * r * r) / (b * b) - 1;
+    const t = turn(m, r);
+    const q = (t * t) / (b * b) - 1;
     if (q <= 0) inward = false;                    // a turning point: back out
     const drdphi = (inward ? -1 : 1) * r * Math.sqrt(Math.max(q, 0));
     r += drdphi * dphi;
@@ -400,5 +425,170 @@ export const Routes = ({ height = 320 }: { height?: number } = {}) =>
           ctx.fillText(`dashed: b = 2e M = ${bc.toFixed(3)} M`, 12, H - 12);
         },
       })} />
+    </div>
+  </div>;
+
+// ─── against the two images there are ───────────────────────────────────────
+
+/**
+ * WHAT THE EVENT HORIZON TELESCOPE HAS ALREADY SAID ABOUT IT.
+ *
+ * The derivation gives one number and no others: a shadow 4.63% larger than general
+ * relativity's at the same mass. The collaboration publishes exactly the quantity that
+ * number is a prediction for —
+ *
+ *     δ = θ_measured / θ_Schwarzschild − 1
+ *
+ * with θ_Schwarzschild built from a mass and a distance measured some other way. That
+ * is "measure the mass from orbits and the shadow from imaging", which is the whole of
+ * the test, so the panel is one axis with δ on it and everything else is annotation.
+ *
+ * THREE ROWS FOR TWO OBJECTS. Sgr A* appears twice because the same image is measured
+ * against two independent mass calibrations, VLTI and Keck; those two cannot be
+ * averaged with each other, though either can be averaged with M87*.
+ *
+ * AND THE AMBER BAND IS THE HONEST PART. General relativity's own δ is not a point:
+ * Kerr runs from −0.08 at high spin down to 0 at none, so the range relativity already
+ * covers is nearly twice the excess being looked for. A shadow measured against an
+ * orbital mass therefore cannot settle this alone — it needs a spin from somewhere
+ * else, or an object known to be spinning slowly. The prediction stays falsifiable and
+ * stops being a one-measurement test, and drawing the band is the only way to say that
+ * without the reader having to take it on trust.
+ */
+type Image = { of: string; delta: number; e: number; note: string };
+const IMAGES: Image[] = [
+  { of: "M87*", delta: -0.01, e: 0.17,
+    note: "EHT 2019 VI · Gebhardt+2011's stellar-dynamical mass" },
+  { of: "Sgr A*", delta: -0.08, e: 0.09, note: "EHT 2022 VI · VLTI orbital mass" },
+  { of: "Sgr A*", delta: -0.04, e: 0.09, note: "EHT 2022 VI · Keck orbital mass" },
+];
+
+const EXCESS = (2 * Math.E) / (3 * Math.sqrt(3)) - 1;
+const KERR_LO = -0.08;
+
+/**
+ * AND THE MODEL GETS A BAND TOO, WHICH IS NOT THE SAME KIND OF BAND.
+ *
+ * The amber one is SPIN: Kerr's δ genuinely runs from −0.08 to 0 as a real black hole
+ * turns, so general relativity does not predict a number, it predicts a range, and the
+ * range is a property of the object.
+ *
+ * The blue one is IGNORANCE. `metric/ring-as-imaged` traces the ring an optically thin
+ * plasma casts around each geometry and finds the observable ratio depends on where
+ * that plasma sits — 1.010 anchored at the same areal radius, 1.038 at each geometry's
+ * own ISCO, 1.062 scaled to each photon sphere. Nothing in this model picks between
+ * them. So the width is not something the black hole is doing, it is something this
+ * page does not know, and drawing the two the same way would be a lie of composition.
+ * They are labelled apart, and the model's own spin range is not in there at all
+ * because nothing here has a rotating solution to take it from.
+ */
+const readRing = (name: string) => {
+  const f = findingOf("metric/ring-as-imaged", name);
+  return typeof f?.value === "number" ? f.value : NaN;
+};
+const OBSERVED = () => readRing(
+  "THE OBSERVABLE RATIO — plasma truncated at each geometry's own ISCO") - 1;
+const BAND_LO = () => readRing(
+  "the observable ratio, plasma at the same areal radius in both") - 1;
+const BAND_HI = () => readRing(
+  "the observable ratio, plasma scaled to each photon sphere") - 1;
+
+const eht = (s: Surface) => {
+  const { ctx } = s;
+  ctx.fillStyle = BACK; ctx.fillRect(0, 0, s.width, s.height);
+  const L = 58, R = 18, T = 46, B = 46;
+  const w = s.width - L - R, h = s.height - T - B;
+  const LO = -0.30, HI = 0.30;
+  const X = (d: number) => L + w * (d - LO) / (HI - LO);
+  const rowY = (i: number) => T + h * (i + 0.65) / (IMAGES.length + 0.6);
+
+  ctx.font = "400 10px ui-monospace, Menlo, monospace";
+  ctx.strokeStyle = "rgba(120,127,148,0.13)"; ctx.lineWidth = 1;
+  for (let d = -0.3; d <= 0.301; d += 0.1) {
+    ctx.beginPath(); ctx.moveTo(X(d), T); ctx.lineTo(X(d), T + h); ctx.stroke();
+    ctx.fillStyle = "#5a5f6e"; ctx.textAlign = "center";
+    ctx.fillText(`${d > 0.001 ? "+" : ""}${d.toFixed(1)}`, X(d), T + h + 16);
+  }
+
+  // the range general relativity itself covers, over spin and viewing angle
+  ctx.fillStyle = "rgba(212,180,139,0.10)";
+  ctx.fillRect(X(KERR_LO), T, X(0) - X(KERR_LO), h);
+  ctx.strokeStyle = "#d4b48b"; ctx.lineWidth = 1.8;
+  ctx.beginPath(); ctx.moveTo(X(0), T); ctx.lineTo(X(0), T + h); ctx.stroke();
+
+  // the geometry alone — a sharp line, and no longer the thing to compare against
+  ctx.strokeStyle = "#4aa8eb"; ctx.globalAlpha = 0.40; ctx.lineWidth = 1.2;
+  ctx.setLineDash([2, 4]);
+  ctx.beginPath(); ctx.moveTo(X(EXCESS), T); ctx.lineTo(X(EXCESS), T + h); ctx.stroke();
+  ctx.setLineDash([]); ctx.globalAlpha = 1;
+
+  // and what an instrument would see: a band, because the plasma is not pinned down
+  const lo = BAND_LO(), hi = BAND_HI(), mid = OBSERVED();
+  if (Number.isFinite(lo) && Number.isFinite(hi)) {
+    ctx.fillStyle = "rgba(74,168,235,0.13)";
+    ctx.fillRect(X(lo), T, X(hi) - X(lo), h);
+  }
+  if (Number.isFinite(mid)) {
+    ctx.strokeStyle = "#4aa8eb"; ctx.lineWidth = 2.2; ctx.setLineDash([6, 3]);
+    ctx.beginPath(); ctx.moveTo(X(mid), T); ctx.lineTo(X(mid), T + h); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  IMAGES.forEach((im, i) => {
+    const y = rowY(i);
+    ctx.strokeStyle = "#eef0f5"; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(X(im.delta - im.e), y); ctx.lineTo(X(im.delta + im.e), y); ctx.stroke();
+    for (const q of [im.delta - im.e, im.delta + im.e]) {
+      ctx.beginPath(); ctx.moveTo(X(q), y - 4); ctx.lineTo(X(q), y + 4); ctx.stroke();
+    }
+    ctx.fillStyle = "#eef0f5";
+    ctx.beginPath(); ctx.arc(X(im.delta), y, 3.2, 0, 2 * Math.PI); ctx.fill();
+
+    ctx.textAlign = "right"; ctx.font = "400 11px ui-monospace, Menlo, monospace";
+    ctx.fillText(im.of, L - 8, y + 4);
+    /*
+     * THE ANNOTATION IS RIGHT-ALIGNED TO THE FRAME, not hung off the end of the bar.
+     * M87*'s error is ±0.17 and its bar reaches most of the way across, so text placed
+     * after it ran off the panel and was cut in half — which is how the first render
+     * of this figure came out.
+     */
+    ctx.textAlign = "right"; ctx.font = "400 8.5px ui-monospace, Menlo, monospace";
+    ctx.fillStyle = "#5a5f6e";
+    ctx.fillText(im.note, s.width - R, y - 4);
+    const at = Number.isFinite(mid) ? mid : EXCESS;
+    ctx.fillText(`${(Math.abs(at - im.delta) / im.e).toFixed(2)}σ from this model,` +
+      ` ${(Math.abs(im.delta) / im.e).toFixed(2)}σ from relativity`, s.width - R, y + 8);
+  });
+
+  ctx.font = "400 9.5px ui-monospace, Menlo, monospace";
+  ctx.textAlign = "left";
+  ctx.fillStyle = "#4aa8eb";
+  ctx.fillText(Number.isFinite(mid)
+    ? `this model, AS IMAGED — δ = +${mid.toFixed(4)}, and the blue band is where the plasma could put it`
+    : "this model — the ray-traced ring is NOT IN THE REPORT", L + 4, T - 32);
+  ctx.fillStyle = "rgba(74,168,235,0.55)";
+  ctx.fillText(`the faint line is the geometry alone, δ = 2e/3√3 − 1 = +${EXCESS.toFixed(4)} — not what a telescope reads`,
+    L + 4, T - 20);
+  ctx.fillStyle = "#d4b48b";
+  ctx.fillText("general relativity — δ = 0 at no spin, and the amber band is Kerr's own range over spin",
+    L + 4, T - 8);
+  ctx.fillStyle = "#5a5f6e"; ctx.textAlign = "center";
+  ctx.fillText("δ = measured shadow / relativity's shadow at the same mass − 1",
+    L + w / 2, s.height - 8);
+};
+
+export const ShadowAgainstEht = ({ height = 300 }: { height?: number } = {}) =>
+  <div style={{ marginBottom: "1.1rem" }}>
+    <div style={{
+      fontSize: "0.72em", letterSpacing: "0.08em", textTransform: "uppercase",
+      color: "#5a5f6e", marginBottom: 6,
+    }}>
+      the excess against both images anyone has — the blue band is what a ray trace
+      says an instrument would see, the amber one is Kerr's own spread over spin, and
+      they are not the same kind of band
+    </div>
+    <div style={{ height, background: BACK }}>
+      <CanvasView animate={false} deps={["eht"]}
+        paint={() => ({ frame: (s: Surface) => eht(s) })} />
     </div>
   </div>;

@@ -106,6 +106,19 @@ export type PanelSpec = {
   /** the world under test, and the control it is drawn against */
   build: (w: World) => void;
   control?: (w: World) => void;
+  /**
+   * DRAW THE FIELD ITSELF, NOT A DIFFERENCE — for the one kind of panel where a
+   * control is a contradiction.
+   *
+   * Every other panel here asks what a body DOES to the vacuum, and the honest way
+   * to ask that is to run the vacuum again without the body and subtract. But a
+   * panel whose subject IS the vacuum has no body to leave out, so its control is
+   * the same world at the same seed: the difference is identically zero at every
+   * point, the far-field spread the colour scale is taken from is zero, and the
+   * panel renders permanently black. It did. Nothing was wrong with the physics —
+   * the picture was of a quantity that had been subtracted from itself.
+   */
+  absolute?: boolean;
   channels: (before: Int32Array) => Channel[];
   N?: number;
   expansion?: number;
@@ -120,31 +133,75 @@ export type PanelSpec = {
  *
  * A panel is a picture of one plane. Running a 41³ world to draw a slice of it costs
  * sixty-eight thousand locals a tick against a plane's fourteen thousand at 121² —
- * for pixels nobody sees. Measured, the 3D version did not finish. `square-8` is the
- * same three rules with DEG = 8, and every constant a panel needs comes out of it
+ * for pixels nobody sees. Measured, the 3D version did not finish. `triangular-6` is
+ * the same three rules with DEG = 6, and every constant a panel needs comes out of it
  * the same way, so it is a row of `geometry/derived-constants` rather than a special
  * case.
  *
- * What is lost is named: a plane's rank-four anisotropy is 40% against cubic 26's
- * 49.7%, and its SHEET is 2 rather than 8. A panel shows the MECHANISM; the numbers
- * belong to the measurements, which run in three.
+ * TRIANGULAR RATHER THAN SQUARE, for the reason the default is FCC rather than cubic
+ * 26. `square-8`'s eight exits are two different lengths, 1 and √2, so rays down the
+ * diagonals outrun the ones going straight and a picture of a rule is also a picture
+ * of the lattice's grain; taking the diagonals out fixes that and leaves four exits,
+ * which is as anisotropic as a plane gets. Triangular 6 has ONE STEP LENGTH — exactly
+ * 1, so c̄ is one cell a tick down every exit — equal weights, and it is EXACT at
+ * ranks two, three and four, which no square arrangement in the plane is. It stands
+ * to the panels as fcc-12 stands to the measurements.
+ *
+ * It could not be run until the lattice was fixed. Its exits carry ±√3/2, the backend
+ * stepped through the array by ROUNDING them, and rounding is not antipodal — two
+ * thirds of its links were one-way, so every head-on meeting looked for its partner
+ * in the wrong cell. In axial coordinates it is plainly an integer lattice; see
+ * `GeometrySpec.L`.
+ *
+ * What is still lost is named: SHEET is 2 rather than 8, and rank six is 0.200. A
+ * panel shows the MECHANISM; the numbers belong to the measurements, which run in
+ * three.
  */
 const make = (s: PanelSpec, build: (w: World) => void) => {
   const w = new World({
-    theory: s.theory, geometry: s.geometry ?? GEOMETRIES["square-8"], N: s.N ?? 121,
-    seed: 20260817, boundary: "absorb", expansion: s.expansion ?? 0.05,
+    theory: s.theory, geometry: s.geometry ?? GEOMETRIES["triangular-6"], N: s.N ?? 121,
+    /*
+     * p = 1, WHICH IS THE RULE. (G/2) says a neutral point expands ON ALL AXIS — it
+     * is not gated on anything, and `World`'s own default is 1. These panels ran at
+     * 0.05 because that is what the archive's automaton used, and the archive's
+     * automaton had a rate because it was written before the rule was settled.
+     *
+     * It is not a small correction. At p = 1 gravity+magnetism settles at fill
+     * 0.5019 — the derived fixed point ½, on the nose, on both lattices — against
+     * 0.2449 at p = 0.06. Half the vacuum was missing from every one of these
+     * pictures.
+     */
+    seed: 20260817, boundary: "absorb", expansion: s.expansion ?? 1,
   });
   build(w);
   return w;
 };
 
 /** the far-field mean, which is the offset a second body adds everywhere */
+/*
+ * WHERE A LOCAL ACTUALLY IS. A lattice's array coordinates are not its coordinates —
+ * triangular 6 is stored in axial (q, r) and sits at q·a₁ + r·a₂ — so every distance
+ * and every pixel here goes through the geometry's own embedding. It is the identity
+ * on every cubic lattice, so nothing else moves.
+ */
+const where = (w: World, k: number) => w.geometry.embed(w.backend.position(k));
+
+/*
+ * AND THE MIDDLE HAS TO BE EMBEDDED TOO. The box's centre is the index (C, C, …); on
+ * a sheared lattice that is NOT the point (C, C, …) in space. Subtracting the raw C
+ * from an embedded position measures from somewhere that is not the middle of
+ * anything, which puts the far-field annulus off centre and slides the whole drawing
+ * out of frame.
+ */
+const middle = (w: World, C: number) =>
+  w.geometry.embed(new Array(w.geometry.D).fill(C));
+
 const offset = (w: World, f: (k: number) => number, C: number, view: number) => {
   let s = 0, n = 0;
   w.backend.forEachLocal(k => {
     if (w.isSource(k)) return;
-    const p = w.backend.position(k);
-    const d = Math.hypot(...p.map(x => x - C));
+    const p = where(w, k), m = middle(w, C);
+    const d = Math.hypot(...p.map((x, i) => x - m[i]));
     if (d < view + 8) return;
     s += f(k); n++;
   });
@@ -188,35 +245,61 @@ export const Panel = (s: PanelSpec) => {
          * one be drawn side by side without either needing to know about the other.
          */
         const step = () => {
-          w.tick(); ctl.tick();
+          w.tick(); if (ctl) ctl.tick();
           samples++;
           for (let ci = 0; ci < chans.length; ci++) {
             const a = chans[ci], b = ctlChans[ci], out = sums[ci];
             if (a.cumulative) continue;               // already a total; read at the end
-            w.backend.forEachLocal(k => { out[k] += a.at(w, k) - b.at(ctl, k); });
+            if (ctl) w.backend.forEachLocal(k => { out[k] += a.at(w, k) - b.at(ctl, k); });
+            else w.backend.forEachLocal(k => { out[k] += a.at(w, k); });
           }
         };
+
+        /*
+         * THE AVERAGE IS THE MEASUREMENT, so it has to exist before the panel means
+         * anything — but building it inside `start()` froze the tab. `start` runs
+         * from an IntersectionObserver callback, on the main thread, and a few
+         * hundred ticks of a 121² world with its control is a second or two of a
+         * page that has stopped responding, once per panel as the reader scrolls
+         * past it. Nothing was slow; it was all being spent at once.
+         *
+         * So the warm-up is spread over frames on a time budget, and the panel
+         * paints from the first frame with however much average it has. It fills in
+         * while it is watched instead of arriving whole after a stall.
+         *
+         * HEADLESS IS THE EXCEPTION and takes it in one go: there is no second
+         * frame there — the renderer draws once and the picture has to be finished.
+         */
+        const WARM = s.warm ?? 200;
+        const HEADLESS = typeof IntersectionObserver === "undefined";
+        const BUDGET_MS = 12;                          // ~⅔ of a 60Hz frame
+        let warmed = 0;
 
         return {
           start: () => {
             w = make(s, s.build);
-            ctl = make(s, s.control ?? (() => {}));
+            ctl = s.absolute ? (undefined as unknown as World) : make(s, s.control ?? (() => {}));
             chans = s.channels(snapshot(w));
-            ctlChans = s.channels(snapshot(ctl));
+            ctlChans = ctl ? s.channels(snapshot(ctl)) : chans;
             sums = chans.map(() => new Float64Array(w.backend.size()));
-            samples = 0;
-            // the average IS the measurement, so it is built before the first frame
-            // rather than accumulated while the reader watches an empty panel
-            for (let i = 0; i < (s.warm ?? 200); i++) step();
+            samples = 0; warmed = 0;
+            if (HEADLESS) { for (; warmed < WARM; warmed++) step(); }
           },
           stop: () => { (w as unknown) = undefined; (ctl as unknown) = undefined; sums = []; },
           frame: (sur: Surface, dt: number) => {
-            acc += dt;
-            while (acc > 1 / 20) { step(); acc -= 1 / 20; }
+            if (warmed < WARM) {
+              const t0 = performance.now();
+              while (warmed < WARM && performance.now() - t0 < BUDGET_MS) { step(); warmed++; }
+            } else {
+              acc += dt;
+              while (acc > 1 / 20) { step(); acc -= 1 / 20; }
+            }
             const read = chans.map((ch, ci) => ch.cumulative
-              ? (k: number) => ch.at(w, k) - ctlChans[ci].at(ctl, k)
+              ? (ctl ? (k: number) => ch.at(w, k) - ctlChans[ci].at(ctl, k)
+                     : (k: number) => ch.at(w, k))
               : (k: number) => sums[ci][k] / Math.max(samples, 1));
-            paint(sur, w, chans, read, C, view, s.note, w.stats.ticks, s.markers !== false);
+            paint(sur, w, chans, read, C, view, w.stats.ticks, s.markers !== false,
+              warmed < WARM ? warmed / WARM : 1);
           },
         };
       }} />
@@ -226,8 +309,9 @@ export const Panel = (s: PanelSpec) => {
 
 const paint = (
   sur: Surface, w: World, chans: Channel[], read: ((k: number) => number)[],
-  C: number, view: number, label: string, ticks: number, markers = true,) => {
+  C: number, view: number, ticks: number, markers = true, ready = 1,) => {
   const { ctx, width, height } = sur;
+  const mid = middle(w, C);
   ctx.fillStyle = BACK; ctx.fillRect(0, 0, width, height);
   const cols = chans.length;
   const cw = width / cols, H = height - 26;
@@ -249,16 +333,16 @@ const paint = (
     let v2 = 0, n = 0;
     w.backend.forEachLocal(k => {
       if (w.isSource(k)) return;
-      const p = w.backend.position(k);
-      if (Math.hypot(...p.map(x => x - C)) < view + 8) return;
+      const p = where(w, k);
+      if (Math.hypot(...p.map((x, i) => x - mid[i])) < view + 8) return;
       const d = dc(k) - off; v2 += d * d; n++;
     });
     const scale = n ? Math.max(Math.sqrt(v2 / n), 1e-12) : 1;
 
     w.backend.forEachLocal(k => {
-      const p = w.backend.position(k);
-      if (p.length > 2 && Math.abs(p[2] - C) > 0.5) return;      // one plane, in 3D
-      const x = p[0] - C + view, y = p[1] - C + view;
+      const p = where(w, k);
+      if (p.length > 2 && Math.abs(p[2] - mid[2]) > 0.5) return;   // one plane, in 3D
+      const x = p[0] - mid[0] + view, y = p[1] - mid[1] + view;
       if (x < 0 || y < 0 || x >= VN || y >= VN) return;
       if (w.isSource(k)) return;
       // in units of the far-field spread: two of those is a signal, and below one is
@@ -280,17 +364,17 @@ const paint = (
      * only what was measured is drawn.
      */
     for (const src of (markers ? w.sources : [])) {
-      const p = w.backend.position(src.locals[0]);
-      if (p.length > 2 && Math.abs(p[2] - C) > 2) continue;
+      const p = where(w, src.locals[0]);
+      if (p.length > 2 && Math.abs(p[2] - mid[2]) > 2) continue;
       let cx = 0, cy = 0, m = 0;
       for (const k of src.locals) {
-        const q = w.backend.position(k);
-        if (q.length > 2 && Math.abs(q[2] - C) > 0.5) continue;
+        const q = where(w, k);
+        if (q.length > 2 && Math.abs(q[2] - mid[2]) > 0.5) continue;
         cx += q[0]; cy += q[1]; m++;
       }
       if (!m) continue;
       ctx.beginPath();
-      ctx.arc(ox + (cx / m - C + view) * s, oy + (cy / m - C + view) * s, 2.2 * s, 0, 7);
+      ctx.arc(ox + (cx / m - mid[0] + view) * s, oy + (cy / m - mid[1] + view) * s, 2.2 * s, 0, 7);
       ctx.fillStyle = src.emits > 0 ? PLUS : src.emits < 0 ? MINUS : "#2a2e38";
       ctx.fill();
       ctx.strokeStyle = SEEN; ctx.lineWidth = 1.2; ctx.stroke();
@@ -301,12 +385,22 @@ const paint = (
     ctx.fillText(ch.name, ci * cw + cw / 2, 14);
   });
 
-  ctx.textAlign = "left";
-  ctx.fillStyle = FAINT;
-  ctx.fillText(label, 10, height - 10);
+  /*
+   * THE CAPTION IS ALREADY ABOVE THE CANVAS, so drawing it again inside it bought
+   * nothing and cost the readout: the two ran into each other in the same line of
+   * pixels and the tick count came out written through the end of the sentence.
+   * Only what cannot be in the caption — what this particular run did — is drawn.
+   */
   ctx.textAlign = "right";
+  ctx.fillStyle = FAINT;
   ctx.fillText(`${ticks} ticks · fill ${fill(w).toFixed(2)}`, width - 10, height - 10);
   ctx.textAlign = "left";
+
+  // how much of the average is in yet — a panel that is still filling in says so
+  if (ready < 1) {
+    ctx.fillStyle = "#1a1d25"; ctx.fillRect(0, height - 2, width, 2);
+    ctx.fillStyle = FAINT; ctx.fillRect(0, height - 2, width * ready, 2);
+  }
 };
 
 // ─── the panels the article uses ────────────────────────────────────────────
@@ -422,12 +516,26 @@ export const WiresAnti = ({ height = 300 }: { height?: number }) => Panel({
  * of anything happening to a body: it is the pressure a body will later be in.
  */
 export const VacuumAlone = ({ height = 260 }: { height?: number }) => Panel({
-  height, note: "the vacuum with nothing in it — new room edged on every axis, and the same " +
-    "expansion thinning what is there. This is the pressure everything else is measured against",
-  theory: GRAVITY_MAGNETISM, N: 121, view: 26, warm: 300,
+  height, note: "the vacuum with nothing in it, drawn as itself rather than as a difference — " +
+    "it is HOMOGENEOUS, so what there is to see is the grain: no place is special, and every " +
+    "place is busy. This is the pressure everything else is measured against",
+  /*
+   * FORTY TICKS, NOT THREE HUNDRED — and the difference is a second and a half of
+   * the page's first paint, because this panel is the book's header.
+   *
+   * Warm-up buys two different things and this panel only needs one of them. It has
+   * to REACH the vacuum's fixed point, and it does: fill is 0.049 after one tick,
+   * 0.208 by ten and 0.221 by twenty, and it does not move again. The other thing —
+   * averaging a signal out of the noise — is what the panels with a body in them
+   * need, and it does nothing here, because the colour scale is normalised to the
+   * field's own far-field spread and this field is HOMOGENEOUS. Averaging shrinks
+   * the signal and the scale together, so the picture at forty samples and at three
+   * hundred are the same picture. The extra 260 ticks were 1.5s of a blank header.
+   */
+  theory: GRAVITY_MAGNETISM, N: 121, view: 26, warm: 40,
+  absolute: true,
   build: () => {},
-  control: () => {},
-  channels: () => [CHANNELS.charge()],
+  channels: before => [CHANNELS.traffic(), CHANNELS.destroyed(before)],
 });
 
 /**

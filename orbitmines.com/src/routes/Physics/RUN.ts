@@ -38,6 +38,13 @@ import magneticLaws from "./tests/magnetic-laws";
 import kernel from "./tests/kernel";
 import metric from "./tests/metric";
 import rotation from "./tests/rotation";
+import transportPremise from "./tests/transport";
+import suppression from "./tests/suppression";
+import rar from "./tests/rar";
+import sparc from "./tests/sparc";
+import eht from "./tests/eht";
+import ring from "./tests/ring";
+import latticeStep from "./tests/step";
 import discs from "./tests/discs";
 import moments from "./tests/moments";
 import wander from "./tests/wander";
@@ -45,7 +52,7 @@ import cosmology from "./tests/cosmology";
 import matter from "./tests/matter";
 import induction from "./tests/induction";
 
-const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter];
+const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter];
 
 /** the theories by the names the tests declare expectations under */
 const BY_NAME = Object.fromEntries(Object.values(THEORIES).map(t => [t.name, t]));

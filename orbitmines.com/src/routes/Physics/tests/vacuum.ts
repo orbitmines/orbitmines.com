@@ -266,7 +266,7 @@ export const annihilationFeedsExpansion = test({
         : which === "gravity" ? GRAVITY : GRAVITY_MAGNETISM;
       const w = new World({
         theory: th, N, seed, backend: "graph", boundary: "expand",
-        bound: { radius, metric: "box" }, expansion: 0.05,
+        bound: { radius, metric: "box" }, expansion: 1,
       });
       const before = w.backend.size();
       w.run(T);
@@ -281,7 +281,7 @@ export const annihilationFeedsExpansion = test({
 
     const w = new World({
       theory, N, seed: seeds[0], backend: "graph", boundary: "expand",
-      bound: { radius, metric: "box" }, expansion: 0.05,
+      bound: { radius, metric: "box" }, expansion: 1,
     });
     w.run(5);
 

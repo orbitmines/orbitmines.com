@@ -164,6 +164,21 @@ export const runSuite = async (
      * what stops it running the same world twice and that cache lives in the process.
      */
     shard?: { index: number; total: number };
+    /**
+     * PULL THE NEXT UNIT INSTEAD OF BEING DEALT A FIXED SLICE.
+     *
+     * Static sharding cannot balance this suite. The costs are wildly skewed — the top
+     * five units are forty per cent of all the CPU, and the longest is 1334s against a
+     * 244s median — so whichever shard happens to draw two long ones decides the wall
+     * clock while the other eleven processes sit idle. Measured: eleven finished and
+     * two were still going with a quarter of the suite left.
+     *
+     * A worker that ASKS for the next unit when it is free cannot straggle for that
+     * reason: the only idle time left is the tail of whatever single unit finishes
+     * last. No cost model is needed, which matters because the costs move whenever a
+     * budget or a rule changes.
+     */
+    take?: () => Promise<number | null>;
     /** called as each unit finishes, so a parent can report progress as it streams */
     onUnit?: (u: { id: string; theory: string; seconds: number; status: string }) => void;
   } = {},
@@ -180,12 +195,28 @@ export const runSuite = async (
    */
   const units = chosen.flatMap(t =>
     Object.entries(t.under).map(([name, declared]) => ({ t, name, declared })));
-  const mine = o.shard
-    ? units.filter((_, i) => i % o.shard!.total === o.shard!.index)
-    : units;
+
+  /*
+   * THE WORK, EITHER PULLED OR DEALT. `take` is the queue; `shard` is the older static
+   * split, kept so a single process can still be pointed at a slice by hand.
+   */
+  async function* work() {
+    if (o.take) {
+      for (;;) {
+        const i = await o.take();
+        if (i === null || i === undefined) return;
+        yield units[i];
+      }
+    } else {
+      const mine = o.shard
+        ? units.filter((_, i) => i % o.shard!.total === o.shard!.index)
+        : units;
+      for (const u of mine) yield u;
+    }
+  }
 
   {
-    for (const { t, name, declared } of mine) {
+    for await (const { t, name, declared } of work()) {
       const theory = theories[name];
       if (!theory) throw new Error(
         `${t.id} declares an expectation under "${name}", which is not a theory this suite knows. ` +

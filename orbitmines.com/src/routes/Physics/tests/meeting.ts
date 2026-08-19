@@ -48,7 +48,7 @@ export const whichMeeting = test({
     /** the vacuum on its own, with nothing in it */
     const vacuum = ctx.once((meeting: Meeting, rate: MeetingRate, seed: number) => {
       const w = new World({
-        theory, N, seed, boundary: "wrap", expansion: 0.05, meeting, meetingRate: rate,
+        theory, N, seed, boundary: "wrap", expansion: 1, meeting, meetingRate: rate,
       });
       w.run(T);
       return { fill: fill(w), scattering: scattering(w) };
@@ -64,7 +64,7 @@ export const whichMeeting = test({
     ) => {
       const sep = 8;
       const w = new World({
-        theory, N, seed, boundary: "absorb", expansion: 0.05, meeting, meetingRate: rate,
+        theory, N, seed, boundary: "absorb", expansion: 1, meeting, meetingRate: rate,
       });
       const body = () => ({
         radius: 2, absorbs: true, duty, emits: 1 as const, propulsion: "none" as const,

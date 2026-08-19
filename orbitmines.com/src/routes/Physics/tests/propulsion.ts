@@ -74,7 +74,7 @@ export const selfPropulsion = test({
      * force worth believing in.
      */
     const force = ctx.once((how: How, conserve: boolean, moves: boolean, seed: number) => {
-      const w = new World({ theory, N, seed, boundary: "wrap", expansion: 0.05 });
+      const w = new World({ theory, N, seed, boundary: "wrap", expansion: 1 });
       const s = w.add({
         at: [C, C, C], radius: 2, emits: 1,
         propulsion: how, toward, bias: 1, conserve, absorbs: true, moves,

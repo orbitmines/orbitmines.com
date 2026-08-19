@@ -8,16 +8,17 @@ import Post, {
 import { PHYSICS } from "./references";
 
 import { Beam, Sheet } from "./Physics/visuals/LATTICE";
-import { Arrangements, EMPTY, Player, blocks, emitters } from "./Physics/visuals/PLAYER";
+import { Arrangements, PLANE, Player, charges, emitters } from "./Physics/visuals/PLAYER";
 import { Expanding, Expanding1D } from "./Physics/visuals/EXPAND";
 import { BarField } from "./Physics/visuals/BAR";
-import { Routes, Shadow, ShadowOverlay } from "./Physics/visuals/SHADOW";
+import { Routes, Shadow, ShadowAgainstEht, ShadowOverlay } from "./Physics/visuals/SHADOW";
+import { RingDilution, RingProfiles } from "./Physics/visuals/RING";
+import { LatticeStep } from "./Physics/visuals/STEP";
 import { RotationCurve } from "./Physics/visuals/CURVE";
 import { Lines } from "./Physics/visuals/LINES";
 import { Orbits } from "./Physics/visuals/ORBITS";
 import { Choreographies } from "./Physics/visuals/NBODY";
 import { Spokes } from "./Physics/visuals/SPOKES";
-import { GEOMETRIES, GRAVITY_MAGNETISM } from "./Physics/DISCRETE";
 import {
   B, Bar, Because, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
   IDENTICAL,
@@ -33,6 +34,9 @@ import {
 // and measures what the vacuum does to gravity; `counts.tsx` is the arithmetic
 // those runs are read against. Both draw through `sketch.tsx` onto `canvas.tsx`.
 import { Lorentz } from "./Physics/todo/LORENTZ";
+import { DeficitRain } from "./Physics/visuals/RAIN";
+import { GenzelDiscs, RadialAcceleration, RotationCurve as MilkyWayCurve, TullyFisher } from "./Physics/visuals/CURVES";
+import { DeficitFront, LatticeAttract, LatticeInert, LatticeRepel, VacuumGravity, WanderGravity } from "./Physics/visuals/SHELTER";
 import { Alike, Deficit, Gravity as GravityPanel, MeanOccupancy, MeanPolarity, MovingCharge as MovingChargePanel, NeutralWire, Opposite, PerAxis, PerNode, PerRay, SheetEmission, VacuumAlone, Veins, WiresAnti, WiresParallel } from "./Physics/visuals/RENDER";
 import { Claim, M, Matrix, Ran, Recorded, Verdict } from "./Physics/visuals/FIGURES";
 
@@ -108,17 +112,6 @@ const HALF = <D><Bar>½</Bar></D>;
  * which of its constants are put in and which come out, reading its numbers from
  * `gravity.ts` rather than restating them, so there is no second copy to drift.
  */
-/*
- * THE PLANE THE LATTICE PANELS ARE DRAWN ON. Two dimensions because that is what the
- * originals used and because a plane shows which way things go, where a 3D block hides
- * it behind its own outer shell; and no vacuum expansion, so the picture is of what
- * these two blocks do to each other rather than of the medium they sit in.
- */
-const PLANE = {
-  theory: GRAVITY_MAGNETISM, geometry: GEOMETRIES["square-8"],
-  N: 25, boundary: "absorb" as const, ...EMPTY,
-};
-
 const Physics = () => {
   const referenceCounter = useCounter();
 
@@ -360,7 +353,7 @@ const Physics = () => {
         <Claim of="vacuum/fixed-point · gravity+magnetism" />
 
         <Para>
-          <b>So in a box that cannot grow, the vacuum is about a fifth full rather than half full, and its occupancy DEPENDS ON THE EXPANSION RATE</b> — which the fixed point was supposed to have removed. That is a correction to a number this project has been treating as forced, and it is not small in what it touches, because <b>every screening length here is a mean free path, and a mean free path is 1/fill.</b>
+          <b>So in a box that cannot grow, the vacuum is about a fifth full rather than half full, and its occupancy DEPENDS ON THE EXPANSION RATE</b> — which the fixed point was supposed to have removed. That is a correction to a number this project has been treating as forced, and it is not small in what it touches, because <b>every screening length here is a mean free path</b> — and the path is not 1/fill either, which the rotation section measures: the exponent is nearer <b>−2</b> than −1, because a meeting needs <i>both</i> ends of an edge occupied rather than one. So a screening length is more sensitive to the vacuum's density than this arc has been assuming, not less.
         </Para>
 
         <BR/>
@@ -443,6 +436,44 @@ const Physics = () => {
         If we instead skip ahead the story a little and include XOR, so magnetism, which we'll get to later. There's actual vacuum dynamics by the grid trying to expand. The random-looking dynamics still has an aggregate pressure our matter is creating by sending out 'gravity-rays'.
 
         <VacuumAlone height={300} />
+
+        <BR/>
+        <Para>
+          <b>And here is the whole of it, twice.</b> Both panels are split down the middle for the same reason, and the split is the argument: on the left is a single tick, which at this occupancy is shot noise with two holes in it, and <b>the shortfall a body leaves is not visible there and never will be</b>. On the right is the same run averaged, where it comes out of the noise as √<V>n</V>. That is not a fact about the drawing — <b>it is what it means for gravity to be the weakest thing there is</b>.
+        </Para>
+        <Para>
+          <b>And the right half is signed</b>, which is the half of it a picture that only inks excess cannot show. A gravitating body <i>eats</i> the rays that would have met behind it, so the vacuum downstream of it annihilates <i>less</i> than it otherwise would — the aggregate pressure is a <b>shortfall</b>, drawn blue, and the electric case is an <b>excess</b>, drawn red. Measured on shells against the far field at 300 ticks: two inert bodies read −7% at <V>r</V>=8, −12% at 12 and −11% at 16, while two opposite charges read +11%, +11% and +7%. Same size, opposite sign.
+        </Para>
+        <Para>
+          First the vacuum itself, with nothing in it — the fixed point everything else is measured against. Every meeting annihilates and creation pushes back, and that the two settle rather than one running away is not assumed anywhere. The far-field rate holds at 57.1 destructions a cell over 300 ticks and the shell profile is flat to about 1% from <V>r</V>=20 out: <b>nowhere in it is special</b>.
+        </Para>
+        <VacuumGravity />
+        <Para>
+          <b>And then one body dropped into it</b>, after it has settled, so that what grows is the body's doing and nothing else's. This is the article's own sentence — <i>the deficit expands at <K><Bar>c</Bar></K></i> — watched, and it turns out to be half right. The shortfall establishes outward over the first few ticks and then <b>stops</b>: measured over eight seeds, −29% at <V>r</V>=3, −15% at 5, −6% at 7, and nothing at all by 12. The reason is not a defect of the panel but a property of the medium — a ray's <b>mean life is 4.1 ticks</b> (22,233 alive against 5,438 destroyed a tick), so it travels about four cells before something annihilates it. <b>The vacuum is opaque to its own news.</b> The deficit does travel at <K><Bar>c</Bar></K>, because nothing here travels at anything else; it simply does not get far, because the vacuum refills it locally faster than it propagates. <b>A shortfall that dies in four cells is not a long-range force</b>, and what actually carries gravity to a distance is a question this panel poses rather than answers.
+        </Para>
+        <DeficitFront />
+        <Para>
+          <b>And the same mechanism with the static taken out</b> — the die, and nothing else. The rays are still whole rays, integer counts on the lattice, and a point still hands on exactly what it received; what is gone is that a point holding <V>k</V> rays now sends them down <V>k</V> <i>consecutive</i> exits and advances its phase by <V>k</V>, which spreads them evenly over a few ticks without anything being drawn at random. Nothing is averaged, and <b>the front is visible as the arc it is</b>, moving out one cell a tick — which is <K><Bar>c</Bar></K>.
+        </Para>
+        <Para>
+          <b>And it is the die that had to go, not the discreteness</b>, which is worth saying because it is the more interesting half. The stochastic vacuum's shortfall dies inside four cells whatever else is changed: at creation rates from 0.20 down to 0.002 the ray lifetime rises from 1.6 ticks to 19.1 and <b>the deficit still vanishes by <V>r</V> ≈ 6–9</b>. It is not lifetime that limits the reach. It is that (G/2) is a local <i>isotropic</i> source — every tick it injects fresh rays carrying no news of the body, so the shadow is diluted as fast as it spreads. Take the creation away and every ray traces back to the initial condition, so every ray carries the shadow. Drawn on a <b>log scale</b>, because the falloff is a power law and a 1/<V>r</V><Sup>2</Sup> field inked linearly is a white dot on a black field.
+        </Para>
+        <DeficitRain />
+        <Para>
+          <b>The two pictures together are the cost of the noise.</b> Measured here: −4.4% at <V>r</V>=8 by <V>t</V>=8, −11.5% by 20, −20.2% by 60 and −40.9% by 200, with the front still moving. The stochastic vacuum's shortfall never leaves the body at all. Nothing about the mechanism differs — what differs is that the real vacuum keeps re-randomising the medium the news has to cross, and <b>that is the open question the gravity arc actually rests on</b>.
+        </Para>
+        <Para>
+          Then with polarity, which separates the two branches. Opposite charges annihilate between them and space is destroyed there; alike ones turn instead and the band is simply absent; and the inert pair is the control, the same shape carrying no sign, which shadows and nothing more.
+        </Para>
+        <LatticeAttract />
+        <LatticeRepel />
+        <LatticeInert />
+        <Para>
+          Then pure gravity, with the polarity taken out — and this one <b>starts over</b>, because the emergence is the thing being claimed rather than the finished picture of it. A body is a place where rays stop: whatever arrives is taken and nothing comes out the far side, so downstream of it the vacuum is short. A body sitting in another body's shortfall is hit harder from the far side than the near one. <b>Nothing pulls; one side pushes less.</b> Left is the charges themselves at one tick — dense, uniform, two holes in it, and no trace of a force; right is <i>how many are missing</i>, the same occupancy averaged and subtracted from the far-field level. The arrows are measured rather than drawn on, and they take the <b>differential</b> part: both bodies read a common offset that a body of this shape feels in a box of this size anyway, and what they do to <i>each other</i> is what is left when it is removed. At 560 ticks that difference is <V>+0.008 ± 0.028</V> and the sign is a coin flip; by 2000 it is <V>+0.023 ± 0.019</V> with seven seeds of eight positive, so the arrow appears only once there is something to draw.
+        </Para>
+        <WanderGravity />
+
+        <BR/>
 
         It turns out that this is all the machinary we need to derive gravitational laws that approximate <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Newtonian gravity", link: "https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation"}}/> and <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "General relativity", link: "https://en.wikipedia.org/wiki/General_relativity"}}/> and go beyond them.
 
@@ -1230,6 +1261,32 @@ const Physics = () => {
             <b>But a galaxy is not the whole of anything.</b> Far enough out the occupancy does cross a step, and when it does <V>a</V><Sub>0</Sub> jumps by a fixed ratio — which is a <b>discontinuity in a rotation curve at a radius the model computes from the baryons alone</b>. For the Milky Way that is 33 and 52 kpc; for a big spiral 58 and 90; for a dwarf 6 and 9 kpc, inside the stellar body where a curve is easiest to measure. Since <V>v</V> ∝ <V>a</V><Sub>0</Sub><Sup>¼</Sup>, the jumps are 1.1%, 2.8% and 2.7% — two to six km/s on a 200 km/s curve, but <i>sharp</i>, and with nothing to tune. MOND has no reason for a curve to be anything but smooth, and a dark-matter halo is smooth by construction.
           </Para>
 
+          <BR/>
+
+          <Para>
+            <b>And that is the only thing on this page MOND does not also predict</b>, so it is worth doing rather than admiring. Everything the rotation-curve arc gets right — the interpolation, the radial acceleration relation, the Tully–Fisher slope — MOND gets right too, which means agreeing with the data there confirms the interpolation and not this model. A discontinuity is different in kind: neither competitor can produce one anywhere.
+          </Para>
+          <Para>
+            <b>Quoted as radii it reads as untestable</b> — a different radius in every galaxy, and mostly past the last measured point. But the radius goes as √<V>M</V><Sub>bar</Sub> and the acceleration does not, so <i>in acceleration the steps are universal</i>. Inverting <V>g</V>² − <V>g g</V><Sub>N</Sub> − <V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub> = 0 gives <V>g</V><Sub>N</Sub>/<V>a</V><Sub>0</Sub> = <V>θ</V>²/(1+<V>θ</V>), and every galaxy in the sky steps at the same two places: <b>log <V>g</V><Sub>bar</Sub> = −11.582 and −11.229</b>, the deeper of them sitting <M of="cosmology/lattice-step" is="how far inside SPARC's measured range the deeper step falls, in dex" /> dex inside SPARC's measured range rather than past its edge. So all 2,696 points stack on two predicted locations with nothing fitted — the positions from the direction cosines, the sizes from the projections either side.
+          </Para>
+          <Para>
+            <span className="bp5-text-muted">(Two of the three jumps above are reachable, not three: the 1.1% one sits at <V>θ</V> = 0 and the cone has shut altogether past the third, so what a galaxy can cross is the 2.8% and the 2.7% — <M of="cosmology/lattice-step" is="the deeper step's amplitude, predicted off the direction cosines" /> and −0.0235 dex in <V>g</V><Sub>obs</Sub>.)</span>
+          </Para>
+          <Para>
+            <b>The obvious analysis is worthless and it is worth saying why.</b> Split the points by plateau and compare mean residuals and you get −0.152, −0.037, +0.031 dex — a swing seven times the predicted step, and the wrong way round. That is not the lattice; it is the smooth mismatch between the transport law and the deep end of the relation, plus the fact that the lowest accelerations are measured almost entirely in dwarfs. <b>So the feature has to be looked for as a <i>discontinuity</i>, locally, and inside galaxies</b>: each galaxy that straddles a boundary carries its own offset — which is where a distance error goes, and distance errors are most of the relation's scatter — plus one local slope to absorb the trend. That takes the residual from 0.133 dex to 0.069, and it is the only version whose error bar means anything.
+          </Para>
+          <LatticeStep height={330} />
+          <Para>
+            <b>Nothing is detected, and nothing is excluded.</b> Measured against the null scatter of the same estimator slid to places the model says nothing about — about twice the formal error, which is the difference between a two-sigma claim and none — the steps come out <M of="cosmology/lattice-step" is="sigmas between the measured step and the prediction, worst of the two" digits={3} /><V>σ</V> from the prediction and <M of="cosmology/lattice-step" is="sigmas between the measured step and zero, worst of the two" digits={3} /><V>σ</V> from zero. <b>Both halves have to be said.</b> The sensitivity is <M of="cosmology/lattice-step" is="the test's sensitivity — null scatter over the predicted step" digits={3} /> times the effect, so SPARC very nearly settles this and does not.
+          </Para>
+          <Para>
+            And the estimator is not stable at the level it needs to be: double the fitting window and the answer moves by <M of="cosmology/lattice-step" is="how far the answer moves when the fitting window doubles, in units of the effect" digits={3} /> of the effect — the deeper step landing almost exactly on the prediction while the shallower one goes the other way. <b>Two steps that are the same phenomenon disagree, so neither number should be believed, and picking the window that flatters would be the error this page keeps having to undo.</b> Both are in the table.
+          </Para>
+          <Claim of="cosmology/lattice-step · gravity" />
+          <Para>
+            <b>What would settle it is more galaxies, not better ones.</b> Only <M of="cosmology/lattice-step" is="galaxies straddling the deeper boundary, which is the whole limit" plain /> galaxies have measured points on both sides of the deeper boundary and 56 on both sides of the shallower — everything else is absorbed into an offset and says nothing. The requirement is gas-rich dwarfs with resolved curves reaching below <V>g</V><Sub>bar</Sub> = 10<Sup>−11.6</Sup>, and there is no precision problem with the data already here.
+          </Para>
+
           <Head>what a black hole is here</Head>
 
           <Para>
@@ -1264,7 +1321,7 @@ const Physics = () => {
           </Eq>
 
           <Para>
-            <b>The shadow is 4.6% larger than general relativity's at the same mass.</b> Measure the mass from orbits and the shadow from imaging, and this predicts a constant mismatch between them — which sits inside the <Ref of={'Event Horizon Telescope Collaboration, "First M87 Event Horizon Telescope Results. I. The Shadow of the Supermassive Black Hole", ApJL 875:L1'} year="2019" at="https://doi.org/10.3847/2041-8213/ab0ec7" /> present ~10% systematic error and outside what it is aiming for. That makes it a near-term test rather than a philosophical one, and it is the only claim on this page an existing instrument can settle.
+            <b>The shadow is 4.6% larger than general relativity's at the same mass.</b> Measure the mass from orbits and the shadow from imaging, and this predicts a constant mismatch between them — which sits inside the <Ref of={'Event Horizon Telescope Collaboration, "First M87 Event Horizon Telescope Results. I. The Shadow of the Supermassive Black Hole", ApJL 875:L1'} year="2019" at="https://doi.org/10.3847/2041-8213/ab0ec7" /> present ~10% systematic error and outside what it is aiming for. That makes it a near-term test rather than a philosophical one — though not a one-measurement one, since Kerr's own shadow moves by more than this across spin, and the arc below draws the model against both published images to say how much is left to do.
           </Para>
 
           <Head>and two things that fell out that nobody asked for</Head>
@@ -1342,7 +1399,74 @@ const Physics = () => {
           </Para>
         </Section>
 
-        <Section head="Galaxy rotation curves">a</Section>
+        <Section head="Galaxy rotation curves">
+          <Para>
+            <b>The baryons alone do not do it, and the transport law does</b> — with nothing fitted. The blue curve is Newton on the Milky Way's own stars, gas and bulge: an exponential disc by Freeman's formula, a Hernquist bulge, and no dark matter anywhere. It peaks around 208 km/s and falls to 108 by 30 kpc. The white curve is what is measured — Eilers et al. 2019, Gaia DR2 crossed with APOGEE — solid over the radii it was taken at and dotted where it is being extrapolated.
+          </Para>
+          <Para>
+            The green dashed curve adds only <b>g = g<Sub>N</Sub>(1 + a<Sub>0</Sub>/g)</b>, the transport law, whose <V>a</V><Sub>0</Sub> is <b>read out of the run rather than tuned</b>: <M of="cosmology/rotation" is="a₀ = cH₀/2π at Planck's H₀ (m/s²)" /> m/s², which is <V>c</V><V>H</V><Sub>0</Sub>/2<V>π</V> and nothing else. It lands on the Gaia curve from 8 kpc out to 30.
+          </Para>
+          <MilkyWayCurve />
+          <Para>
+            <b>And one galaxy is an anecdote.</b> McGaugh, Lelli &amp; Schombert (2016) did the same comparison for every rotationally supported galaxy they had — <b>2,693 points in 153 galaxies</b>, across four decades of acceleration — plotting what is observed against what the baryons alone predict. It is the tightest empirical statement there is about the missing gravity, and this model has <i>no freedom at all</i> against it: the shape is the blocked expansion, the scale is <V>cH</V><Sub>0</Sub>/2<V>π</V>.
+          </Para>
+          <RadialAcceleration />
+          <Para>
+            <b>And those are the measurements, not a summary of them.</b> This panel used to draw a band of ±0.11 dex around McGaugh et al.'s fitted curve and report that the model sat inside it, which compares two <i>formulae</i> and calls the agreement a result — a fit is a summary whose residuals have already been thrown away, and a curve tracking another curve has not met a galaxy. What is drawn now is <b>SPARC's own 2,696 measured points</b>, every one of them, reduced from Lelli et al. (2016)'s catalogue of rotation curves and Spitzer photometry by the published recipe. Neither axis needs <V>G</V>: both are <V>v</V>²/<V>r</V>, so this is accelerations measured against accelerations implied, and the gravitational constant never enters.
+          </Para>
+          <Para>
+            <b>Against the points, the model scores <M of="cosmology/sparc" is="rms from SPARC's own 2,696 points, in dex" /> dex rms — and the curve McGaugh et al. <i>fitted to those same points</i> scores 0.1327.</b> A law with no free parameter in it is five ten-thousandths of a dex behind the best two-parameter summary the data admit, which is not a claim that the model is right so much as a measurement of how much room is left: at this scatter, nothing can do better.
+          </Para>
+          <Para>
+            Their fitting function and this one are <i>different functions from unrelated arguments</i> — theirs an exponential form chosen to fit, this one the root of <V>g</V> = <V>g</V><Sub>N</Sub>(1 + <V>a</V><Sub>0</Sub>/<V>g</V>). Curve against curve they are <b>0.029 dex apart at worst and 0.018 rms</b>, which is why the two lines in the panel are hard to tell apart; the number that matters is the one against the points above it.
+          </Para>
+          <Para>
+            <b>And the scale is the half that cannot be argued into place.</b> Their fitted <V>g</V><Sup>†</Sup> = 1.20 ± 0.02 ± 0.24 ×10<Sup>−10</Sup>; the model says <M of="cosmology/rotation" is="a₀ = cH₀/2π at Planck's H₀ (m/s²)" />, which is 0.66<V>σ</V> of their systematic. <b>The value that would fit the 2,696 points best is 1.132×10<Sup>−10</Sup></b> — so the model sits at <M of="cosmology/sparc" is="how far a₀ = cH₀/2π is from the a₀ these points would choose" /> of the optimum while still inside the scatter. A tuned parameter sits <i>on</i> the optimum; this one does not, which is the difference between a prediction and a fit.
+          </Para>
+          <Claim of="cosmology/radial-acceleration · gravity" />
+          <BR/>
+          <Claim of="cosmology/sparc · gravity" />
+
+          <Head>and the same catalogue, one galaxy at a time</Head>
+
+          <Para>
+            The relation above is measured <i>inside</i> galaxies, point by point along their rotation curves. The baryonic Tully–Fisher relation is measured galaxy by galaxy — everything that shines or is cold hydrogen, against the speed the outermost gas goes round at — and it is a different measurement of a different thing. <b>The model's prediction for it is a single number with nothing adjustable in it:</b> deep in the transport regime <V>g</V> → √(<V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub>), so <V>V</V><Sup>4</Sup> = <V>GM</V><Sub>b</Sub><V>a</V><Sub>0</Sub>, and <b>the slope is exactly 4</b>.
+          </Para>
+          <Para>
+            Measured on the <b>123 SPARC galaxies whose rotation curves reach a flat part</b>: <M of="cosmology/sparc" is="the baryonic Tully–Fisher slope, orthogonal fit to 123 galaxies" />, by an orthogonal fit, against Lelli et al. (2019)'s maximum-likelihood 3.85 ± 0.09 on the same sample. <b>Low by two or three sigma on statistics alone, and inside the 3.5–4.0 range their own mass-to-light systematic covers</b> — which is the honest reading: nearly passed, not passed, and the band is theirs rather than one chosen here.
+          </Para>
+          <TullyFisher />
+          <Para>
+            <b>The normalisation is a ceiling rather than a value, and that is a prediction about the direction.</b> <V>A</V> = 1/(<V>Ga</V><Sub>0</Sub>) is what the relation would be if <V>V</V><Sub>f</Sub> were the asymptotic speed. It is not — it is measured where the telescope ran out of gas — and the transport law sits <i>above</i> its own asymptote everywhere, so every galaxy must fall <i>under</i> that line. All 123 do, by <M of="cosmology/sparc" is="how far the measured normalisation sits under the model's ceiling, in dex" /> dex, where the outermost radii SPARC actually reached predict 0.125 and <V>V</V><Sub>f</Sub> is averaged over the flat part rather than taken at the last point. <span className="bp5-text-muted">(Same size, same direction, and the difference is well inside the ±0.1 dex the stellar mass-to-light ratio carries on its own. So the slope is the test and the normalisation is a one-sided consistency check; the panel says which is which rather than drawing both as though they were the same kind of claim.)</span>
+          </Para>
+          <Para>
+            <b>And the sharpest test the model has, which is where its own prediction is most at risk.</b> Genzel et al. (2017) measure massive discs at <V>z</V> = 0.85–2.24 and find them baryon-dominated: <V>f</V><Sub>DM</Sub>(&lt;R<Sub>e</Sub>) under 0.2. That caps the boost over the baryons at <M of="cosmology/high-redshift-discs" is="the ceiling f_DM < 0.2 puts on the boost" />, which is the dashed line, and everything above it is refused.
+          </Para>
+          <Para>
+            The transport law crosses that ceiling at a <i>derivable depth</i> rather than at a redshift: <M of="cosmology/high-redshift-discs" is="g_N/a₀ at which the law breaches the ceiling" /> in units of <V>a</V><Sub>0</Sub>. <b>That turns "four of five overshoot" into a statement about a measurable property of each disc</b> — its baryonic acceleration at one effective radius — and makes it falsifiable per object rather than by a count. Both the ceiling and the threshold are read live, so the two lines move if a run moves them.
+          </Para>
+          <GenzelDiscs />
+          <Claim of="cosmology/high-redshift-discs · gravity" />
+
+          <Head>and whether the lattice actually transports that way</Head>
+
+          <Para>
+            Everything above rests on two premises, and until now <b>nothing ran a lattice to check either of them</b>: that a carrier slows where the medium is thin, <V>v</V> = <V>c</V>·min(1, <V>n</V>/<V>n</V><Sub>c</Sub>), and that flux is conserved. From those the interpolation and <V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2<V>π</V> both follow by algebra — <Claim of="cosmology/rotation · gravity" /> verifies that step to 3·10<Sup>−16</Sup>, but its <K>World</K> is built at <V>N</V> = 5 to carry a provenance header and is never ticked. <b>The derivation was sound and its premises were assertions.</b>
+          </Para>
+          <Para>
+            <b>The mean free path is steeper than this book has been using.</b> The arc's figure is <V>λ</V> = 1/fill, from the geometric reading — a ray meets something when it lands on a cell holding a charge on the opposing direction, so the rate goes as <V>n</V> and the path as 1/<V>n</V>. Measured, the exponent is nearer <b>−2</b> than −1, and the reason is that a meeting needs <i>both</i> ends of an edge occupied rather than one, so the rate is quadratic:
+          </Para>
+          <Claim of="cosmology/transport-premise · gravity+magnetism" />
+          <Para>
+            1/fill is right in magnitude near fill 0.3 and wrong at both ends — 1.41 cells against 2.01 at fill ½, and 10.6 against 6.6 at fill 0.15. <span className="bp5-text-muted">(The check that pins it is <V>p</V> = 1: there every slot in the lattice collides, so <V>λ</V> must be exactly one step, and it is — 1.0000. An earlier version of this measurement read 0.498 there, half a step, which is not a length a lattice can have; it had divided a pre-expansion population by post-expansion events. Nothing quantitative survived that, and the sanity point is why.)</span>
+          </Para>
+          <Para>
+            <b>And the extra gravity is not an extra assumption — it is the expansion being blocked.</b> Space is trying to expand everywhere; matter is in the way of it; the deficit that leaves is the pull. Read through <K>through</K>: a point already carrying a charge is <i>busy</i> — an arriving charge annihilates or reverses, and either way that point does not split this tick — so <b>splitting is suppressed exactly where the carrier density is high</b>, which by <V>g</V> ∝ <V>n</V> is where the field is strong. With occupancy <V>θ</V> = <V>g</V>/<V>a</V><Sub>0</Sub> and free fraction 1/(1+<V>θ</V>), the busy fraction <V>θ</V>/(1+<V>θ</V>) is <V>g</V><Sub>N</Sub>/<V>g</V>, and that rearranges to <V>g</V>² − <V>g g</V><Sub>N</Sub> − <V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub> = 0 — <b>the interpolation itself</b>. Checked across six decades of <V>g</V><Sub>N</Sub>/<V>a</V><Sub>0</Sub>, <V>θ</V>/(1+<V>θ</V>) and <V>g</V><Sub>N</Sub>/<V>g</V> agree to the last digit at every point. <b>Nothing is borrowed and nothing is fitted: the transport law is what a vacuum that cannot expand where matter already is has to do.</b>
+          </Para>
+          <Para>
+            <span className="bp5-text-muted">(So what this section adds is the mean free path, which was off by a power — and the reminder that the interpolation drawn in both panels above <i>is</i> the derived one. What is still owed is a lattice run of the suppression itself: measuring the free fraction against the field and checking it goes as 1/(1+<V>θ</V>) rather than only checking that it closes algebraically once assumed. The algebra is exact; the mechanism behind it has not been clocked.)</span>
+          </Para>
+        </Section>
         <Section head="Black Holes">a</Section>
         <Section head="Expansion">a</Section>
         <Section head="The Discrete Model">
@@ -1378,33 +1502,33 @@ const Physics = () => {
         <BR/>
         (G+M/1) Annihilation: When two opposite polarities meet, they annihilate, leaving a single neutral spatial point behind.
 
-        <Lines did="annihilate" height={110} />
+        <Lines did="annihilate" height={130} />
 
         (G+M/2) Creation: On all axis, a neutral point expands into two points with opposite polarity in all directions.
 
-        <Lines did="annihilate" backwards height={110} />
+        <Lines did="annihilate" backwards height={130} />
 
         (G+M/3) Repulsion: When two identical polarities meet, they turn around.
 
-        <Lines did="turn" height={110} />
+        <Lines did="turn" height={150} />
 
         Then the other permutations of the rules are just movement rules (like these two).
 
-        <Lines did="move" height={150} />
+        <Lines did="move" height={210} />
 
-        With this setup, we get aggregate behavior of groups of the same polarities, turning away from each other.
+        With this setup, groups of the same polarity turn each other away. The panels below are a demonstration of exactly that and of nothing else: a <i>fixed</i> set of charges, no emitters, no expansion — two rectangles of rays placed on the lattice, one heading right and one heading left, and then the three rules let run. Nothing is added to the board after the first tick, so what you are watching is (G+M/1) and (G+M/3) and no third thing. Two hundred and eight charges, of which <b>alike pairs lose none at all to annihilation and take 170 deflections</b> — every one of them turns and comes back.
 
         <Row>
-          <Player note="alike: + and +" height={170} warm={15}
-            world={PLANE} seed={blocks(1, 1)} />
-          <Player note="alike: − and −" height={170} warm={15}
-            world={PLANE} seed={blocks(-1, -1)} />
+          <Player note="alike: + and +" height={170} rate={10} view={26}
+            world={PLANE} seed={charges(1, 1)} />
+          <Player note="alike: − and −" height={170} rate={10} view={26}
+            world={PLANE} seed={charges(-1, -1)} />
         </Row>
 
-        And ones with opposite polarities annihilating each-other.
+        And ones with opposite polarities annihilating each-other — the same two rectangles thrown together the same way, and <b>all two hundred and eight are gone</b>: 104 annihilations, no deflections, an empty board.
 
-        <Player note="opposite: + and −" height={170} warm={5}
-          world={PLANE} seed={blocks(1, -1)} />
+        <Player note="opposite: + and −" height={170} rate={10} view={26}
+          world={PLANE} seed={charges(1, -1)} />
 
         Then an interesting thing happens when you alternate polarities (the phase not mattering for this result). You get attraction. And we recover our two rules of gravity (G/1 + G/2) from these three rules.
 
@@ -5025,7 +5149,7 @@ mean 1.165 ticks per cell, spread 0.226, against c̄ = 1`}
           <BR/>
 
           <Para>
-            <span className="bp5-text-muted">(And the mean free path, which was the other thing worth knowing: a ray meets something when it lands on a cell holding a charge on the opposing direction, so the free path is geometric — about <b>2 cells at the vacuum's derived fill of ½</b>, putting the ballistic-to-hydrodynamic crossover near <V>λ</V> ≈ 12.5 cells. That turned out not to be what decides the question, because a hydrodynamic medium is not a diffusive one: it carries sound.)</span>
+            <span className="bp5-text-muted">(And the mean free path, which was the other thing worth knowing: a ray meets something when it lands on a cell holding a charge on the opposing direction, so the free path is geometric — about <b>2 cells at the vacuum's derived fill of ½</b>, putting the ballistic-to-hydrodynamic crossover near <V>λ</V> ≈ 12.5 cells. <b>Measured, it is 1.41 cells there rather than 2</b>, and the scaling is <V>n</V><Sup>−2</Sup> rather than 1/<V>n</V> — see the rotation section, where the discrepancy is the counting: this argument asks for ONE end of an edge to be occupied and a meeting needs both. That turned out not to be what decides the question, because a hydrodynamic medium is not a diffusive one: it carries sound.)</span>
           </Para>
 
           <BR/>
@@ -8247,8 +8371,48 @@ dipole–dipole           75.94 %`}
           <BR/>
 
           <Para>
-            <b>Measure the mass from orbits and the shadow from imaging, and this predicts a constant mismatch between them.</b> It sits inside the Event Horizon Telescope's present ~10% systematic error and outside what it is aiming for, which makes it a near-term test rather than a philosophical one, and the only claim on this page an existing instrument can settle.
+            <b>Measure the mass from orbits and the shadow from imaging, and this predicts a constant mismatch between them.</b> That is exactly the quantity the Event Horizon Telescope publishes — <V>δ</V> = <V>θ</V><Sub>measured</Sub>/<V>θ</V><Sub>Schwarzschild</Sub> − 1, with the Schwarzschild figure built from a mass measured some other way — so the prediction is one number on one axis and there is nothing else to say about it: <M of="metric/shadow-against-eht" is="the predicted shadow excess over general relativity, δ = 2e/3√3 − 1" />, at every mass.
           </Para>
+
+          <ShadowAgainstEht height={300} />
+
+          <Para>
+            <b>Not excluded, and not confirmed.</b> Sgr A* is the object the test was written for — its mass comes from resolved stellar orbits and is known to a fraction of a per cent, so the mass and the shadow really are independent measurements — and it gives <V>δ</V> = −0.08 ± 0.09 against the VLTI calibration and −0.04 ± 0.09 against Keck. The geometry's 4.63% sits <M of="metric/shadow-against-eht" is="sigmas between the model and Sgr A*'s measured δ, the tightest there is" /><V>σ</V> from the first of those, the ray-traced ring <M of="metric/ring-as-imaged" is="sigmas from Sgr A*'s δ, using the observable rather than the geometric ratio" digits={3} /><V>σ</V>, and general relativity <M of="metric/shadow-against-eht" is="sigmas between general relativity and that same δ — the control" /><V>σ</V>. <b>The data lean the other way and separate none of them.</b> M87* is looser still, at 0.33<V>σ</V>, because its mass is not: the stellar-dynamical and gas-dynamical values differ by nearly a factor of two.
+          </Para>
+          <Para>
+            <span className="bp5-text-muted">(<b>The two bands in that panel are not the same kind of thing, and it matters.</b> Relativity's amber one is <i>spin</i>: Kerr's <V>δ</V> really does run from −0.08 to 0 as a black hole turns, so general relativity predicts a range and the range is a property of the object. The blue one is <i>ignorance</i> — a ray trace of where an accreting plasma could put the ring, derived two heads below — so its width is not something the black hole is doing but something this page does not know. The faint line inside it is the bare geometry, 4.63%, which is what the heading above says and is not what a telescope reads. And the model has no spin band at all, because nothing here has a rotating solution to take one from.)</span>
+          </Para>
+          <Para>
+            <b>And I had this overstated, which is worth correcting rather than quietly softening.</b> This page has been calling the shadow the one claim an existing instrument can settle. What would settle it at 3<V>σ</V> is a shadow size to <M of="metric/shadow-against-eht" is="the precision on a shadow size that would settle it at 3σ" />, against 0.09 today — a factor of six, and reachable. But <b>general relativity's own <V>δ</V> is not a point</b>: Kerr runs from −0.08 at high spin to 0 at none, so the excess being looked for is only <M of="metric/shadow-against-eht" is="the effect against the range general relativity itself covers over spin" digits={2} /> of the range relativity already covers on its own. A shadow measured against an orbital mass therefore cannot do it alone. It needs a spin from somewhere else, or an object known to be turning slowly — <i>a two-measurement test rather than a one-measurement test</i>, still falsifiable, and harder than the sentence above it used to admit.
+          </Para>
+          <Claim of="metric/shadow-against-eht · gravity" />
+
+          <Head>and what an instrument would actually see, which is less</Head>
+
+          <Para>
+            <b>Everything above compares a critical curve to a measurement of something else.</b> The Event Horizon Telescope does not image a photon ring; it images a bright ring of emission and converts it with a factor <V>α</V> ≡ <V>d̂</V>/<V>θ</V><Sub>g</Sub>, and they are explicit about why: <i>"we do not simply assume that the measured emission diameter is that of the photon ring itself … the structure and extent of the emission preferentially from outside the photon ring leads to a 10% offset."</i> Measured on their image library, <b><V>α</V> = 11.55, against 9.6–10.4 for the photon ring itself</b> — and that calibration is the dominant error in the whole measurement, <i>"larger by a factor of ∼4–5 than either the statistical or observational components"</i>.
+          </Para>
+          <Para>
+            <b>And <V>α</V> is calibrated by ray-tracing plasma in Kerr</b>, which makes it not this model's to borrow. Converting an observed ring into a shadow with a general-relativistic calibration and then asking whether that shadow is general relativity's is circular at precisely the precision a 4.63% prediction lives at. So the ring is traced here in <i>both</i> geometries from one and the same plasma — nobody's published prediction is touched, and the only question asked is what an optically thin flow around each geometry looks like from Earth.
+          </Para>
+          <Para>
+            <span className="bp5-text-muted">(The integrator is worth nothing until it reproduces something already known, so: pointed at Schwarzschild it returns the ISCO at <M of="metric/ring-as-imaged" is="Schwarzschild's ISCO, areal, from the integrator" /> M, the photon sphere at areal 3.0000, and a critical parameter of 5.196152 — none of which it was given. Tracing this also turned up a real bug in the two panels above: their Schwarzschild turning function was <V>r·B</V> rather than <V>r</V>√(<V>B</V>/<V>A</V>), which coincide only where <V>AB</V> = 1, so the traced relativity half was bottoming out at 4.7407 and disagreeing with the 3√3 circle drawn over it. Fixed, and both edges now land on their closed forms.)</span>
+          </Para>
+          <RingProfiles height={320} />
+          <Para>
+            <b>Where the emission reaches the photon sphere the full effect survives</b> — the ring <i>is</i> the critical curve there, and the traced ratio comes back to <M of="metric/ring-as-imaged" is="the ring ratio when emission reaches the photon sphere" />. But EHT's own <V>α</V> says the emission does not reach it: ask this model what inner edge reproduces <V>α</V> = 11.55 in Schwarzschild and it answers <M of="metric/ring-as-imaged" is="the emission inner edge that reproduces EHT's α = 11.55, in M" /> M, comfortably outside the photon sphere at 3. That is their 10% offset, arrived at independently.
+          </Para>
+          <Para>
+            <b>And there the 4.63% is diluted to <M of="metric/ring-as-imaged" is="THE OBSERVABLE RATIO — plasma truncated at each geometry's own ISCO" />,</b> with the flow truncated at each geometry's own innermost stable orbit — the anchoring with a dynamical reason behind it. <b>That is the number this page should be quoting at a telescope, and it is not the one in the heading.</b>
+          </Para>
+          <RingDilution height={330} />
+          <Para>
+            <b>Worse, and this is the actual result: the ambiguity is bigger than the signal.</b> "The same plasma" is not a well-defined phrase across two metrics. Anchor the inner edge at the same areal radius and the effect nearly cancels, to 1.010; anchor it to each geometry's own photon sphere and it is amplified to 1.062. Neither is wrong and <i>nothing in this model picks between them</i>, so the spread is <M of="metric/ring-as-imaged" is="the spread across defensible anchorings, against the effect itself" digits={3} /> times the effect being predicted. Closing it is a plasma question, not a metric one, and this model does not answer plasma questions.
+          </Para>
+          <Para>
+            The consequence runs the wrong way, which is worth saying plainly: diluting the effect moves the prediction <i>toward</i> a measurement that was already leaning against it, so the tension with Sgr A* drops from 1.40<V>σ</V> to <M of="metric/ring-as-imaged" is="sigmas from Sgr A*'s δ, using the observable rather than the geometric ratio" digits={3} /><V>σ</V>. <b>That is not the model doing better. It is the prediction becoming harder to tell apart from general relativity</b> — and a smaller signal inside a wider systematic, against an instrument whose error is 9%, is the honest state of the only near-term test on this page.
+          </Para>
+          <Claim of="metric/ring-as-imaged · gravity" />
 
           <Routes height={320} />
 
@@ -8515,7 +8679,7 @@ dipole–dipole           75.94 %`}
                 which turns a 9% agreement into a derivation or kills it outright.</>],
             [<>and four things to shoot at</>,
               <>The <b>shadow</b>, 4.6% larger than general relativity's at the same mass,
-                parameter-free and inside the reach of an instrument that exists. The{' '}
+                parameter-free — but 4.63% is the geometry and about 3.8% is what a telescope would see, inside a plasma-modelling spread wider than the effect, and needing a spin measured alongside it. The{' '}
                 <b>age</b>, forced to 1/<V>H</V><Sub>0</Sub> with no freedom to miss, which
                 the Hubble tension brackets. <b><V>a</V><Sub>0</Sub> = <V>cH</V><Sub>0</Sub>/2π</b>,
                 computed rather than fitted. And <b>the step</b> — a discontinuity in a

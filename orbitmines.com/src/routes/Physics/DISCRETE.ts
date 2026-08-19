@@ -103,6 +103,33 @@ export type GeometrySpec = {
   w?: number[];
   /** whether the exits tile a periodic grid, which the array backend requires */
   periodic?: boolean;
+  /**
+   * WHERE EACH EXIT LANDS IN THE INDEX, as WHOLE numbers of lattice cells — which is
+   * a different thing from `V` and only looks like it on a cubic lattice.
+   *
+   * `V` is where an exit goes in SPACE. The backend needs where it goes in the ARRAY,
+   * and it used to get there by rounding `V`. That works whenever V is already
+   * integral and is silently catastrophic when it is not. Triangular 6's exits carry
+   * ±√3/2: `[0.5, √3/2]` rounds to `[1, 1]`, and its opposite `[−0.5, −√3/2]` rounds
+   * to `[0, −1]`, because `Math.round(0.5)` is 1 and `Math.round(−0.5)` is −0. So the
+   * step out and the step back disagreed, and **66.4% of that lattice's links were
+   * one-way**. Every head-on meeting then looks for its partner at a cell that is not
+   * the one the ray came from — which is the whole of the rules — and the panels
+   * built on it showed two blocks passing straight through each other.
+   *
+   * A triangular lattice IS an integer lattice; it is just not the one its real-space
+   * vectors are written in. In axial coordinates its six neighbours are (±1,0),
+   * (0,±1), (1,−1), (−1,1) — whole numbers, exactly antipodal — and the skew lives in
+   * `basis`, where it belongs. Given for a geometry whose V is not integral; derived
+   * by rounding otherwise, which is exact for every cubic family.
+   */
+  L?: Vec[];
+  /**
+   * THE REAL-SPACE VECTORS THE INDEX COORDINATES ARE COUNTED IN — `D` of them, so that
+   * a position `c` sits at Σ cᵢ·basisᵢ. Identity unless a geometry says otherwise, so
+   * every cubic lattice's index coordinates ARE its coordinates and nothing changes.
+   */
+  basis?: Vec[];
   note?: string;
 };
 
@@ -146,6 +173,20 @@ export type Geometry = {
   /** |V[d]| — 1, √2, √3 on a cubic 26 */
   steps: number[];
   periodic: boolean;
+  /** whole-cell index offsets, one per exit — what the backend steps by. See GeometrySpec.L */
+  L: Vec[];
+  /** the real-space vectors index coordinates are counted in; identity for cubic lattices */
+  basis: Vec[];
+  /** an index coordinate put back into real space: Σ cᵢ·basisᵢ */
+  embed(c: Vec): Vec;
+  /**
+   * Why this geometry cannot be a world, or undefined if it can.
+   *
+   * Set when the exits do not form an integer lattice that steps back the way it
+   * stepped out. Such a geometry is still fine to take moments of — which is what
+   * icosahedral 12 is in this book for — and `World` refuses it.
+   */
+  unrunnable?: string;
 
   /** the exits with no component along an axis — the article's equator */
   equator(axis: Vec): number[];
@@ -407,8 +448,49 @@ export const geometry = (spec: GeometrySpec): Geometry => {
     return t;
   };
 
+  /*
+   * THE INDEX LATTICE, AND THE ONE INVARIANT THE RULES CANNOT DO WITHOUT.
+   *
+   * Everything in this model is a head-on meeting: a ray at (A, d) meets the ray at
+   * (B, OPP[d]) where B is A's neighbour along d. That sentence is only true if
+   * stepping along `d` and then back along `OPP[d]` returns to where it started —
+   * `L[OPP[d]] = −L[d]` — and the backend has no way to notice when it does not. It
+   * did not notice for triangular 6, which ran as a lattice with two thirds of its
+   * links one-way and produced pictures that contradicted the rules they illustrated.
+   *
+   * So it is checked here, once, when the geometry is built, and a geometry that
+   * fails cannot be registered at all.
+   */
+  const L: Vec[] = spec.L ?? V.map(v => v.map(x => Math.round(x)));
+  const basis: Vec[] = spec.basis ?? Array.from({ length: D }, (_, i) =>
+    Array.from({ length: D }, (_, j) => (i === j ? 1 : 0)));
+  const embed = (c: Vec): Vec => {
+    const out = new Array(D).fill(0);
+    for (let i = 0; i < D; i++)
+      for (let j = 0; j < D; j++) out[j] += (c[i] ?? 0) * (basis[i][j] ?? 0);
+    return out;
+  };
+  /*
+   * IT IS RECORDED RATHER THAN THROWN, because a geometry that cannot be RUN can still
+   * be perfectly good to MEASURE. `moment`, `equator`, SHEET and the whole geometry
+   * table need only the exit vectors, and icosahedral 12 — which has no integer
+   * lattice at all, its exits carrying φ — is a row in that table and is cited in the
+   * article for it. What it must never do is silently become a world. `World` refuses
+   * a geometry whose `unrunnable` is set; nothing else has to care.
+   */
+  let unrunnable: string | undefined;
+  for (let d = 0; d < DEG && !unrunnable; d++) {
+    if (L[d].some(x => !Number.isInteger(x)))
+      unrunnable = `exit ${d} steps by [${L[d]}], which is not a whole number of cells`;
+    else if (L[d].some((x, i) => x + (L[OPP[d]][i] ?? 0) !== 0))
+      unrunnable = `exit ${d} steps by [${L[d]}] and its opposite by [${L[OPP[d]]}], so a ` +
+        `ray cannot come back the way it went — and every rule here is a head-on meeting`;
+    else if (embed(L[d]).some((x, i) => Math.abs(x - (V[d][i] ?? 0)) > 1e-9))
+      unrunnable = `exit ${d} goes to [${V[d]}] in space but [${embed(L[d])}] in the index`;
+  }
+
   const g: Geometry = {
-    spec, name: spec.name, D, V, U, w, DEG, OPP, AXES, steps,
+    spec, name: spec.name, D, V, U, w, DEG, OPP, AXES, steps, L, basis, embed, unrunnable,
     periodic: spec.periodic ?? true,
     equator, SHEET, CYCLE, SPIN, sheetAxis, ringAxis, RING,
     moment, cAnisotropy,
@@ -446,9 +528,44 @@ const reg = (s: GeometrySpec) => (GEOMETRIES[s.name] = geometry(s));
 reg({ name: "line-2", D: 1, V: [[1], [-1]], note: "the line — two ways out" });
 
 reg({ name: "square-8", D: 2, V: cubic(2, () => true), note: "the plane, all eight ways out" });
+/*
+ * THE PLANE WITHOUT ITS DIAGONALS — every exit one cell long, which is the setup the
+ * rules are actually stated for.
+ *
+ * `square-8` and `cubic-26` include the diagonals, and a diagonal is √2 or √3 cells
+ * long. That is a real cost and it is why `geometry/veins` exists: a body diagonal
+ * covers √3 cells in the time a face covers one, so the lattice's grain leaks into
+ * anything read off it, and a picture drawn on it shows rays outrunning each other
+ * for no reason a reader can see. `square-4` and `cubic-6` are the same three rules
+ * with that removed — ONE STEP LENGTH, so c̄ is one cell a tick down every exit and
+ * nothing is faster than anything else.
+ *
+ * What is given up is named: the rank-four moment of four exits is as anisotropic as
+ * a lattice gets, so these are the wrong geometries for a NUMBER. They are the right
+ * ones for a PICTURE of what the rules say.
+ */
+reg({ name: "square-4", D: 2, V: cubic(2, v => len2(v) === 1), note: "the plane, faces only — one step length" });
+/*
+ * THE TRIANGULAR PLANE, IN AXIAL COORDINATES — the plane's fcc-12, and the geometry
+ * that made the whole L/basis distinction necessary.
+ *
+ * Six exits, all of them exactly one cell long, equal weights, and EXACT at ranks
+ * two, three and four — which no square arrangement in the plane is: square-8 is
+ * 0.400 at rank four and square-4 is 0.667. It is what a two-dimensional panel should
+ * be drawn on.
+ *
+ * It could not be run before. Written in real-space coordinates its exits carry
+ * ±√3/2, the backend rounded them to step through the array, and rounding is not
+ * antipodal — see `GeometrySpec.L`. Written in AXIAL coordinates the same lattice is
+ * plainly integral: `a₁ = (1,0)`, `a₂ = (½, √3/2)`, and the six neighbours are
+ * (±1,0), (0,±1), (1,−1), (−1,1). The array stores whole numbers, the skew lives in
+ * the basis, and `V` still says where an exit goes in space.
+ */
 reg({ name: "triangular-6", D: 2, periodic: true, note: "equal steps in the plane",
   V: [[1, 0], [-1, 0], [0.5, Math.sqrt(3) / 2], [-0.5, Math.sqrt(3) / 2],
-      [0.5, -Math.sqrt(3) / 2], [-0.5, -Math.sqrt(3) / 2]] });
+      [0.5, -Math.sqrt(3) / 2], [-0.5, -Math.sqrt(3) / 2]],
+  L: [[1, 0], [-1, 0], [0, 1], [-1, 1], [1, -1], [0, -1]],
+  basis: [[1, 0], [0.5, Math.sqrt(3) / 2]] });
 reg({ name: "cubic-6", D: 3, V: cubic(3, v => len2(v) === 1), note: "faces only" });
 reg({ name: "bcc-8", D: 3, V: cubic(3, v => len2(v) === 3), note: "corners only — NO equator" });
 reg({ name: "fcc-12", D: 3, V: cubic(3, v => len2(v) === 2), note: "edges only, one step length" });
@@ -476,7 +593,35 @@ reg({ name: "cubic-18-weighted", D: 3, V: cubic(3, v => len2(v) <= 2), note: "we
     note: "equal steps, rank-4 exact, NOT periodic — graph backend only" });
 }
 
-export const DEFAULT_GEOMETRY = GEOMETRIES["cubic-26"];
+/**
+ * THE LATTICE EVERYTHING RUNS ON UNLESS IT SAYS OTHERWISE — and it is FCC rather than
+ * cubic 26, which re-bases every number in this book.
+ *
+ * Cubic 26 was "the model as written": all twenty-six ways out of a cube. What it
+ * costs is that those twenty-six are not the same length — 1, √2 and √3 — so c̄ is
+ * not one thing, a body diagonal carries a disturbance √3 times as far in a tick as a
+ * face does, and the lattice's grain is inside every quantity read off it. Measured
+ * on the moments: cubic 26 is exact at rank two and then **98.0 at rank three**,
+ * which is not a small anisotropy, it is a broken tensor.
+ *
+ * FCC 12 is the twelve edge-centres, all of them √2 — ONE STEP LENGTH, equal weights,
+ * and it tiles:
+ *
+ *     geometry            DEG   steps          weights   r2      r3      r4
+ *     fcc-12               12   1.414          equal     exact   exact   0.2841
+ *     cubic-26             26   1 / √2 / √3    equal     exact   98.0    0.4970
+ *     cubic-18-weighted    18   1 / √2         2 kinds   exact   exact   exact
+ *     icosahedral-12       12   1.902          equal     exact   exact   exact
+ *
+ * It is not rank-four exact. Nothing with equal weights that tiles is: the two exact
+ * rows buy it either with weights — a source that does NOT emit equally down all its
+ * exits — or, in the icosahedral case, by not being a lattice at all. That row is
+ * unrunnable and measurably so: **zero of its twelve exits link to anything**, so a
+ * world built on it reports fill 0.000 for ever. What fcc buys instead is the best
+ * rank four any equal-weight tiling has, 0.284 against 0.497, and rank three exact
+ * instead of 98.
+ */
+export const DEFAULT_GEOMETRY = GEOMETRIES["fcc-12"];
 
 // ─── §3  configuration ──────────────────────────────────────────────────────
 
@@ -604,6 +749,23 @@ export type Bound = {
   radius: number;
   /** how the distance is taken; Chebyshev is a box, Euclidean a ball */
   metric?: "box" | "ball";
+  /**
+   * THE MOST LOCALS A RUN WILL CARRY — which is a different bound from `radius` and
+   * the one that was missing.
+   *
+   * `radius` bounds EXTENT: how far a point may sit from the middle. It does not
+   * bound DENSITY, and (G+M/2)'s turn branch does not push outward — it INSERTS a
+   * point between two that are already neighbours, at the midpoint. That point is
+   * always inside the radius, because it is between two points that are, so `within`
+   * never fires and the lattice subdivides in place without limit. Measured: a shard
+   * of the suite reached the 4 GB heap and took the parent process with it.
+   *
+   * Reaching this cap means the run outgrew what it was given, so it is recorded
+   * rather than silently absorbed — a measurement whose lattice stopped growing is
+   * measuring the cap, exactly as one whose signal reaches `radius` is measuring the
+   * radius.
+   */
+  points?: number;
 };
 
 /** what happens to a ray that steps off the edge of the world */
@@ -684,6 +846,12 @@ export interface Backend {
   charge(local: number, exit: number): Charge;
   put(local: number, exit: number, c: Charge): void;
   clear(local: number, exit: number): void;
+
+  /** flat storage, where there is any — see ArrayBackend.raw */
+  raw?(): {
+    act: Uint8Array; chg: Int8Array; nbr: Int32Array; DEG: number;
+    chans: { name: string; a: Float64Array | Int32Array | Int8Array; width: number; init: number }[];
+  };
 
   channel(name: string): Float64Array | Int32Array | Int8Array | undefined;
   channelAt(name: string, local: number, exit: number, k?: number): number;
@@ -842,10 +1010,10 @@ export class ArrayBackend implements Backend {
   neighbour(local: number, exit: number) { return this.nbrTable[local * this.DEG + exit]; }
 
   private computeNeighbour(local: number, exit: number) {
-    const c = this.coords(local), v = this.geometry.V[exit];
+    const c = this.coords(local), v = this.geometry.L[exit];
     const out: number[] = [];
     for (let i = 0; i < this.D; i++) {
-      let x = c[i] + Math.round(v[i] ?? 0);
+      let x = c[i] + (v[i] ?? 0);
       if (x < 0 || x >= this.N) {
         if (this.opts.boundary === "wrap") x = ((x % this.N) + this.N) % this.N;
         else return VOID;                    // `absorb`; `expand` is the graph backend's
@@ -873,6 +1041,28 @@ export class ArrayBackend implements Backend {
     for (let d = 0; d < this.DEG; d++) s += this.stretch[local * this.DEG + d];
     return s / 2;                     // each inserted point is shared by two locals
   }
+  /**
+   * THE RAW ARRAYS, FOR THE ONE LOOP THAT IS WORTH IT.
+   *
+   * `active`, `charge` and `neighbour` are single array reads, but they are reached
+   * through the `Backend` interface and there are two implementations of it — so every
+   * call site is polymorphic and V8 will not inline any of them. `collide` makes about
+   * 1.8 million of those calls per tick on a 41³ box and was measured at 67% of the
+   * whole tick because of it.
+   *
+   * This is opt-in and optional: a backend that cannot expose flat arrays simply does
+   * not have it, and the rule falls back to the interface. Nothing is duplicated —
+   * the fast path runs the same branches in the same order.
+   */
+  raw() {
+    return {
+      act: this.act, chg: this.chg, nbr: this.nbrTable, DEG: this.DEG,
+      /* the per-ray channels, so a fast clear can reset them the way `clear` does */
+      chans: [...this.chans.values()].map(e =>
+        ({ name: e.c.name, a: e.a, width: e.c.width, init: e.c.init })),
+    };
+  }
+
   active(l: number, d: number) { return this.act[l * this.DEG + d] === 1; }
   charge(l: number, d: number) { return this.chg[l * this.DEG + d] as Charge; }
   put(l: number, d: number, c: Charge) { const i = l * this.DEG + d; this.act[i] = 1; this.chg[i] = c; }
@@ -998,6 +1188,9 @@ export class GraphBackend implements Backend {
   private pos: Vec[] = [];
   /** neighbours[local][exit] is a LIST, because a fold can leave more than one */
   private nbr: number[][][] = [];
+  /** the point budget, and whether this run ever reached it */
+  private cap = 0;
+  hitCap = false;
   private dens: number[] = [];
   private alive: boolean[] = [];
   private act: Uint8Array[] = [];
@@ -1025,6 +1218,15 @@ export class GraphBackend implements Backend {
 
   constructor(opts: GraphOptions) {
     this.opts = opts;
+    /*
+     * A DEFAULT BUDGET, because the failure without one is not a bad number — it is
+     * the process dying and taking its siblings with it. Derived from the box the run
+     * asked for rather than typed in: eight times the points a full lattice of that
+     * size holds, which is room for three halvings of every edge and still an order
+     * of magnitude under the heap.
+     */
+    const full = Math.pow(opts.N, opts.geometry.D);
+    this.cap = opts.bound?.points ?? Math.max(200000, Math.min(4_000_000, full * 8));
     this.geometry = opts.geometry;
     this.DEG = this.geometry.DEG;
     const D = this.geometry.D, N = opts.N;
@@ -1066,6 +1268,11 @@ export class GraphBackend implements Backend {
 
   private make(p: Vec) {
     const i = this.pos.length;
+    /*
+     * ONE GATE, AT THE ONLY PLACE A LOCAL IS BORN. `reach`, `subdivide` and `insert`
+     * all come through here, so the budget cannot be routed around by a new caller.
+     */
+    if (this.cap && i >= this.cap) { this.hitCap = true; return VOID; }
     this.pos.push(p); this.nbr.push([]); this.dens.push(1); this.alive.push(true);
     this.into.push(i);
     this.act.push(new Uint8Array(this.DEG)); this.chg.push(new Int8Array(this.DEG));
@@ -1115,9 +1322,10 @@ export class GraphBackend implements Backend {
     const have = this.neighbour(local, d);
     if (have !== VOID) return have;
     if (this.opts.boundary !== "expand") return VOID;
-    const q = add(this.pos[local], this.geometry.V[d]).map(x => Math.round(x));
+    const q = add(this.pos[local], this.geometry.L[d]);
     if (!this.within(q)) return VOID;
     const made = this.make(q);
+    if (made === VOID) return VOID;               // at budget: the ray is simply gone
     this.nbr[made] = [];
     for (let e = 0; e < this.DEG; e++)
       this.nbr[made].push([]);
@@ -1258,6 +1466,7 @@ export class GraphBackend implements Backend {
       const q = add(this.pos[local], this.geometry.V[d]);
       if (this.byPos.has(this.key(q)) || !this.within(q)) continue;
       const made = this.make(q.map(x => Math.round(x)));
+      if (made === VOID) return false;            // at budget: no new room
       this.nbr[made] = [];
       for (let e = 0; e < this.DEG; e++) this.nbr[made].push([]);
       this.nbr[local][d] = [made];
@@ -1277,6 +1486,7 @@ export class GraphBackend implements Backend {
     const mid = add(this.pos[local], scale(this.geometry.V[exit], 0.5));
     if (this.byPos.has(this.key(mid))) return false;      // already stretched here
     const M = this.make(mid);
+    if (M === VOID) return false;                 // the run is at its point budget
     for (let e = 0; e < this.DEG; e++) this.nbr[M].push([]);
     this.dirty = true;
     const o = this.geometry.OPP[exit];
@@ -1437,6 +1647,15 @@ export class World {
 
   constructor(o: WorldOptions) {
     const geometry = o.geometry ?? DEFAULT_GEOMETRY;
+    /*
+     * IN `World` AND NOT IN A BACKEND, which is where this check was first put and
+     * where it did nothing. A geometry with no integer lattice is not periodic, so it
+     * takes the GRAPH backend — and the guard was sitting in the ARRAY one. Icosahedral
+     * 12 sailed past it and went on reporting an empty world rather than saying why.
+     */
+    if (geometry.unrunnable)
+      throw new Error(`${geometry.name} cannot be run as a world: ${geometry.unrunnable}. ` +
+        `It is still valid to take moments of.`);
     const theory = o.theory;
     const D = geometry.D;
     const channels = [...theory.channels(D), ...(o.channels ?? [])];
@@ -1532,14 +1751,33 @@ export class World {
     const g = this.geometry, b = this.backend;
     const r = spec.radius ?? 2;
     const locals: number[] = [];
+    /*
+     * A BODY'S SHAPE IS A FACT ABOUT SPACE, NOT ABOUT THE ARRAY.
+     *
+     * This measured its radius in INDEX coordinates, which on a cubic lattice is the
+     * same thing and on a sheared one is not: a ball of index radius r on triangular 6
+     * comes out as an ellipse leaning 30°, so the blocks in the collision figure were
+     * lopsided blobs that met corner-first. Both ends go through the geometry's own
+     * embedding now, which is the identity everywhere else.
+     */
+    const A = g.embed(spec.at);
+    const half = spec.half;
     b.forEachLocal(k => {
-      const p = b.position(k);
+      const p = g.embed(b.position(k));
+      if (half) {
+        // a SLAB: within `half` on every axis, which is a clean rectangle in space
+        for (let i = 0; i < g.D; i++)
+          if (Math.abs(p[i] - (A[i] ?? 0)) > (half[i] ?? 0) + 1e-9) return;
+        locals.push(k);
+        return;
+      }
       let d2 = 0;
-      for (let i = 0; i < g.D; i++) d2 += Math.pow(p[i] - (spec.at[i] ?? 0), 2);
-      if (Math.sqrt(d2) <= r) locals.push(k);
+      for (let i = 0; i < g.D; i++) d2 += Math.pow(p[i] - (A[i] ?? 0), 2);
+      if (Math.sqrt(d2) <= r + 1e-9) locals.push(k);
     });
     if (!locals.length) throw new Error(
-      `a source at [${spec.at}] with radius ${r} covers no locals — check it is inside the box.`);
+      `a source at [${spec.at}] with ${half ? `half-extents [${half}]` : `radius ${r}`} ` +
+      `covers no locals — check it is inside the box.`);
     const period = spec.period ?? 1;
     const src: Source = {
       id: this.sources.length, locals,
@@ -1553,6 +1791,7 @@ export class World {
       moves: spec.moves ?? false,
       collides: spec.collides ?? true,
       absorbed: new Array(g.D).fill(0),
+      caught: new Float64Array(g.DEG),
       absorbedTicks: 0,
       /*
        * TRANSMIT IS THE DEFAULT, because passing what arrives straight on is what
@@ -1576,9 +1815,23 @@ export class World {
       bias: spec.bias ?? 1,
       conserve: spec.conserve ?? false,
       emitted: new Array(g.D).fill(0),
-      momentum: new Array(g.D).fill(0),
+      /*
+       * A BODY MAY BE HANDED MOMENTUM IT DID NOT EARN, which is what an initial
+       * condition is. Everything else about movement is measured — the force is what
+       * arrived less what was thrown away — but a demonstration of two things
+       * REPELLING has to get them near each other first, and waiting for the vacuum
+       * to do it is waiting for the thing being demonstrated. So the spec may set it,
+       * and the rule spends it the same way it spends anything else: one cell per
+       * `inertia · step`, and once it is gone the body only moves for reasons the
+       * model gave it.
+       *
+       * Copied rather than kept, so two sources built from one spec do not share it.
+       */
+      momentum: (spec.momentum ?? new Array(g.D).fill(0)).slice(0, g.D),
       lastAbsorbed: new Array(g.D).fill(0),
       lastEmitted: new Array(g.D).fill(0),
+      owed: 0,
+      upkeepTicks: 0,
       moved: 0,
       origin: spec.at.slice(0, g.D),
       emission: spec.emission ?? "isotropic",
@@ -1836,6 +2089,7 @@ export const collide = (o: CollideOptions = {}): Rule => {
       // difference between this rule costing microseconds and costing seconds
       const AXES = g.AXES, OPP = g.OPP;
       const tracksTurns = w.hasChannel("turns");
+      const tracksSource = w.hasChannel("source");
 
       /*
        * ON THE EDGE, WHICH IS A MEETING BETWEEN TWO POINTS RATHER THAN INSIDE ONE.
@@ -1847,10 +2101,101 @@ export const collide = (o: CollideOptions = {}): Rule => {
        * split rather than merely the opposite of it.
        */
       if (w.opts.meeting === "on-edge") {
-        const exempt = (k: number) => {
-          const src = w.sourceAt(k);
-          return src !== undefined && !src.collides;
-        };
+        /*
+         * WHICH POINTS SIT OUT, COMPUTED ONCE. `sourceAt` is a map lookup, and asking
+         * it per point per exit made it one of the hot paths in the whole model. The
+         * answer cannot change inside a phase, so it is a mask.
+         */
+        const n = b.size();
+        const sits = new Uint8Array(n);
+        for (const s of w.sources) {
+          if (s.collides) continue;
+          for (const k of s.locals) if (k < n) sits[k] = 1;
+        }
+        const exempt = (k: number) => sits[k] === 1;
+
+        const flat = b.raw?.();
+        if (flat && reflection === "bounce") {
+          /*
+           * THE SAME RULE, READ STRAIGHT OUT OF THE ARRAYS. Only the branches that the
+           * flat backend can take are here — `bounce`, no turn channel — and anything
+           * else falls through to the general path below, so there is one behaviour
+           * with two encodings rather than two behaviours.
+           */
+          const { act: A_, chg: C_, nbr: NB, DEG, chans } = flat;
+          /*
+           * CLEARING HAS TO CLEAR THE CHANNELS TOO. `clear` resets every per-ray
+           * channel on the slot, and a fast path that only zeroed act and chg would
+           * leave a dead ray's label or phase sitting on an empty slot for the next
+           * thing that landed there to read. Found by reading `clear` rather than by
+           * the run failing, which it would not have done visibly.
+           */
+          const wipe = (i: number) => {
+            A_[i] = 0; C_[i] = 0;
+            for (let c = 0; c < chans.length; c++) {
+              const { a, width, init } = chans[c];
+              for (let k = 0; k < width; k++) a[i * width + k] = init;
+            }
+          };
+          const dest = w.destroyed;
+          const src = chans.find(c => c.name === "source");
+          let ann = 0, defl = 0, created = 0;
+          for (let A = 0; A < n; A++) {
+            if (sits[A]) continue;
+            const baseA = A * DEG;
+            for (let d = 0; d < DEG; d++) {
+              if (A_[baseA + d] === 0) continue;
+              const B = NB[baseA + d];
+              if (B === VOID || B === A || sits[B]) continue;
+              if (B < A) continue;
+              const o = OPP[d], iB = B * DEG + o, iA = baseA + d;
+              if (A_[iB] === 0) continue;
+              const p = C_[iA], q = C_[iB];
+              const what = (p === 0 && q === 0) ? neutral : p === q ? "turn" : opposite;
+              if (what === "annihilate") {
+                wipe(iA); wipe(iB);
+                ann++;
+                if (A < dest.length) dest[A] += 0.5;
+                if (B < dest.length) dest[B] += 0.5;
+              /*
+               * AND THE SPACE GOES. This is (G/1) — "they annihilate, leaving a SINGLE
+               * neutral spatial point behind" — and it was not happening.
+               *
+               * `fold` appeared exactly once in this file, inside the IN-NODE branch,
+               * and every world in this book meets ON-EDGE, so the line was never
+               * reached. Annihilation killed the two rays and left both ends standing:
+               * measured on the line, nine points before and nine points after, in all
+               * eighteen combinations of meeting and fold policy. Two consequences,
+               * and the second is the whole book. (G/1) and (G/2) are supposed to be
+               * exact inverses — creation takes one point to two — and they cannot be
+               * if annihilation takes two points to two. And GRAVITY IS SPACE BEING
+               * DESTROYED; if nothing is destroyed there is no mechanism left to be
+               * gravity, only a counter of events that used to stand in for one.
+               */
+              if (what === "annihilate") { b.fold(A, B, d); w.stats.folded++; }
+              } else if (what === "turn") {
+                /*
+                 * AND THE INSERT, which a first version of this fast path dropped. The
+                 * turn is where space GROWS — the point the split put between A and B
+                 * survives — and leaving it out kept the annihilations, the
+                 * deflections and the fill all bit-identical while the recorded size
+                 * came out 15,559 against 1,873,568. Every visible number agreed and
+                 * the one the cosmology rests on did not.
+                 */
+                if (b.insert) { if (b.insert(A, d)) created++; }
+                b.reverse(A, d); b.reverse(B, o);
+                // it has met something, so it is nobody's own ray any more
+                if (src) { src.a[iA * src.width] = -1; src.a[iB * src.width] = -1; }
+                defl++;
+              }
+            }
+          }
+          w.stats.annihilations += ann;
+          w.stats.deflections += defl;
+          w.stats.created += created;
+          return;
+        }
+
         b.forEachLocal(A => {
           if (exempt(A)) return;
           for (let d = 0; d < g.DEG; d++) {
@@ -1891,6 +2236,9 @@ export const collide = (o: CollideOptions = {}): Rule => {
               // vanished sat between them and belonged to neither
               if (A < w.destroyed.length) w.destroyed[A] += 0.5;
               if (B < w.destroyed.length) w.destroyed[B] += 0.5;
+              // the fold: see the note in the flat path above — this is (G/1)'s
+              // "leaving a single neutral spatial point behind", and gravity's mechanism
+              b.fold(A, B, d); w.stats.folded++;
             } else if (act === "turn") {
               /*
                * A REFLECTION, on both sides, preserving angle and momentum — which is
@@ -1908,6 +2256,10 @@ export const collide = (o: CollideOptions = {}): Rule => {
                  */
                 if (b.insert) { if (b.insert(A, d)) w.stats.created++; }
                 b.reverse(A, d); b.reverse(B, o);
+                if (tracksSource) {
+                  b.setChannel("source", A, d, -1);   // met something: no longer its emitter's
+                  b.setChannel("source", B, o, -1);
+                }
                 w.stats.deflections++;
               } else {
                 const ca = b.charge(A, d), cb = b.charge(B, o);
@@ -1963,6 +2315,10 @@ export const collide = (o: CollideOptions = {}): Rule => {
             if (tracksTurns) {
               b.setChannel("turns", local, ta, b.channelAt("turns", local, ta) + 1);
               b.setChannel("turns", local, tb, b.channelAt("turns", local, tb) + 1);
+            }
+            if (tracksSource) {
+              b.setChannel("source", local, ta, -1);
+              b.setChannel("source", local, tb, -1);
             }
           }
         }
@@ -2254,6 +2610,20 @@ export type Source = {
    */
   conserve: boolean;
 
+  /**
+   * WHICH WAY THE RAYS THAT LANDED ON IT WERE GOING — one count per exit.
+   *
+   * `absorbed` is the vector sum of these and is what a force is read off; this is
+   * the same information before it is summed, and it is what makes the shadow
+   * mechanism visible rather than merely true. A body eats what reaches it, so the
+   * side of it facing another body is struck LESS — and the only way to show that
+   * is to count arrivals by direction and compare the two halves.
+   *
+   * Faded rather than summed for ever by whoever reads it, so it follows a body that
+   * moves instead of remembering where it used to be.
+   */
+  caught: Float64Array;
+
   emitted: Vec;
   /**
    * WHAT IT IS CARRYING — net momentum, and where that has taken it.
@@ -2276,6 +2646,9 @@ export type Source = {
    */
   lastAbsorbed: Vec;
   lastEmitted: Vec;
+  /** self-maintenance carried over, and how many ticks went on it rather than on moving */
+  owed: number;
+  upkeepTicks: number;
   /** how many cells it has moved, and from where */
   moved: number;
   origin: Vec;
@@ -2286,6 +2659,16 @@ export type SourceSpec = Partial<Omit<Source, "id" | "locals">> & {
   /** the centre, in embedding coordinates */
   at: Vec;
   radius?: number;
+  /**
+   * HALF-EXTENTS IN REAL SPACE, making the body a slab rather than a ball.
+   *
+   * A ball is the right shape for a body that is standing in for a particle. It is
+   * the wrong one for a demonstration of two things hitting each other: two balls
+   * touch at a point, so most of each one is nowhere near the collision and the
+   * picture is of two blobs grazing. Two slabs meet FACE ON, across their whole
+   * width, which is what the rule being illustrated actually says.
+   */
+  half?: Vec;
 };
 
 /** the actual bias a whole number of dwell ticks comes to */
@@ -2314,6 +2697,36 @@ export const biasOf = (s: Source) => 2 * (s.dwellTicks / s.period) - 1;
  */
 export type MoveOptions = {
   /**
+   * ONE ACTION A TICK, SPENT MOVING OR SPENT ON ITSELF — the budget rule, which the
+   * article states and nothing implemented.
+   *
+   *   "A structure gets one action per tick. It can spend it moving through the
+   *    lattice or walking its own graph, and not both — and walking its own graph is
+   *    its clock."
+   *
+   * That single sentence is where sub-c̄ drift comes from, and it is the whole of the
+   * transport premise the rotation curves rest on. A ray has no schedule and so has
+   * nothing to trade: it streams one step a tick, always. A STRUCTURE has to keep
+   * itself going, and whatever it spends there it is not spending on moving, so its
+   * drift is the leftover fraction of its budget.
+   *
+   * AND THE DENSITY ENTERS THROUGH SHARING. The article's other half: "emitters within
+   * a common phase pay the update once between them, so a dense field is a fast one
+   * and a thin field is a slow one." A structure surrounded by co-phased neighbours
+   * splits the cost of the update with them, so the denser the field it sits in, the
+   * less of its own budget the update takes and the more is left to move with. That is
+   * the claimed mechanism, stated as a rule rather than as prose, so it can be run.
+   *
+   * OFF BY DEFAULT, because turning it on changes every existing movement result. It
+   * is opt-in until something has measured what it does.
+   */
+  budget?: {
+    /** how many ticks of self-maintenance one period of the structure's clock costs */
+    upkeep?: number;
+    /** how far to look for co-phased neighbours to split that cost with */
+    share?: number;
+  };
+  /**
    * How much momentum a cell of movement costs. This IS the mass: a heavy thing needs
    * more of the vacuum pushed through it to go the same distance.
    */
@@ -2335,6 +2748,44 @@ export const moveRule = (o: MoveOptions = {}): Rule => ({
     const inertia = o.inertia ?? 1;
     for (const s of w.sources) {
       if (!s.moves) continue;
+
+      /*
+       * THE BUDGET, SPENT BEFORE ANYTHING ELSE. If this tick's action went on the
+       * structure's own upkeep, there is none left to move with — the force still
+       * accumulates, it simply cannot be acted on, which is what "not both" means.
+       */
+      if (o.budget) {
+        const upkeep = o.budget.upkeep ?? 1;
+        const reach = o.budget.share ?? 0;
+        /*
+         * WHO IT SPLITS THE COST WITH. Co-phased neighbours within `share` cells: the
+         * update is paid once between them, so k of them each owe 1/k of it. In a
+         * dense field k is large and the upkeep is nearly free; in a thin one the
+         * structure carries it alone.
+         */
+        let k = 1;
+        if (reach > 0) {
+          const here = g.embed(b.position(s.locals[0]));
+          b.forEachLocal(l => {
+            if (w.isSource(l)) return;
+            /*
+             * COUNTED IN RAYS, NOT IN CELLS. A first version counted cells holding at
+             * least one live exit, which at any usable occupancy is nearly all of
+             * them: k came out 75 at fill 0.50 and 75 at fill 0.24, so the sharing
+             * had no density dependence at all and the whole mechanism was flat. What
+             * shares the upkeep is the traffic, and traffic is rays.
+             */
+            const q = g.embed(b.position(l));
+            let d2 = 0;
+            for (let i = 0; i < g.D; i++) d2 += (q[i] - here[i]) ** 2;
+            if (d2 > reach * reach) return;
+            for (let d = 0; d < g.DEG; d++) if (b.active(l, d)) k++;
+          });
+        }
+        s.owed += upkeep / k;
+        if (s.owed >= 1) { s.owed -= 1; s.upkeepTicks++; continue; }   // spent on itself
+      }
+
       // the force THIS TICK: what arrived less what was sent away, since last time
       for (let i = 0; i < g.D; i++) {
         s.momentum[i] += (s.absorbed[i] - s.lastAbsorbed[i]) - (s.emitted[i] - s.lastEmitted[i]);
@@ -2370,6 +2821,24 @@ export const moveRule = (o: MoveOptions = {}): Rule => ({
         if (k !== undefined) moved.push(k);
       }
       if (moved.length !== s.locals.length) continue;      // it would leave the world
+
+      /*
+       * AND IT CANNOT MOVE THROUGH ANOTHER BODY. Without this two solid blocks
+       * driven at each other simply interpenetrate and come out the far side — which
+       * is what the alike-polarity figure did, so it showed two things passing
+       * through one another under a caption about repulsion. Matter occupying the
+       * same cell is not something the rules allow anywhere else; a cell belongs to
+       * one source.
+       *
+       * The body keeps its momentum when it is blocked rather than losing it, so what
+       * happens next is decided by the force, which is the whole point of the figure.
+       */
+      let blocked = false;
+      for (const k of moved) {
+        const other = w.sourceAt(k);
+        if (other && other.id !== s.id) { blocked = true; break; }
+      }
+      if (blocked) continue;
 
       for (const k of s.locals) w.release(k);
       s.locals = moved;
@@ -2438,6 +2907,40 @@ export const emitRule = (): Rule => ({
       const arrived = new Int32Array(g.DEG);
       let budget = 0;
 
+      /*
+       * A BODY CANNOT PUSH ITSELF, and without this it does.
+       *
+       * A source of more than one cell emits at EVERY cell it owns, including the
+       * ones in the middle, and absorbs at every cell too. So it is permanently
+       * radiating into itself. AT REST that is invisible: the exits come in ± pairs,
+       * it eats as much one way as the other, and the two sides of the ledger cancel
+       * exactly — momentum stays at 0 forever, which is why nothing caught this.
+       *
+       * ONCE IT MOVES, the cancellation breaks. Stepping one cell to the right, it
+       * takes in the cells ahead — which hold its own rightward rays — and abandons
+       * the cells behind, which hold its own leftward ones. It therefore eats its
+       * forward half and drops its backward half, and that is a net forward push,
+       * which moves it again. Measured on a lone body in an empty box with no vacuum
+       * at all: momentum climbed by a constant amount every tick, +3 for a body of 5
+       * cells, +7 for 13, +11 for 29 — in proportion to its own size — and a single
+       * cell, which has no interior, coasted at constant momentum as it should. A
+       * body accelerating in proportion to how big it is, forever, in a world with
+       * nothing else in it.
+       *
+       * THE RAYS ARE REAL AND STILL HAPPEN. What is wrong is only the accounting:
+       * this is a body's inside pushing its outside, and internal forces do not
+       * accelerate anything. So `absorbed` and `emitted` — which exist ONLY to feed
+       * `momentum` — count what crosses the body's boundary and nothing else. Every
+       * field this world holds is bit-identical; what changes is what the body is
+       * told it felt.
+       */
+      /*
+       * WHOSE RAY IS THIS. A ray carries the id of the body that emitted it, and
+       * loses it the moment anything happens to it — see `collide`, which clears the
+       * tag on every deflection.
+       */
+      const tagged = w.hasChannel("source");
+
       for (const local of s.locals) {
         if (s.absorbs) {
           /*
@@ -2452,7 +2955,34 @@ export const emitRule = (): Rule => ({
            */
           for (let d = 0; d < g.DEG; d++) {
             if (b.active(local, d)) {
-              for (let i = 0; i < g.D; i++) s.absorbed[i] += g.V[d][i] ?? 0;
+              /*
+               * A BODY CANNOT PUSH ITSELF, and without this it does — hard enough to
+               * swamp everything else in the picture.
+               *
+               * A source emits down every exit, so its recoil sums to nothing. But a
+               * body that MOVES overtakes the part of its own radiation that is
+               * drifting sideways, eats it, and keeps the momentum — while the half
+               * it never catches carries the balance away. The books balance and the
+               * body still accelerates, for ever, on its own exhaust. Measured on a
+               * lone body in an empty box with NOTHING else in it: it locked to c̄
+               * after a single nudge and stayed there. The slabs in the collision
+               * figure have far more surface than a ball, so it was worse there:
+               * alike and opposite pairs flew apart identically at every mass and
+               * every throw, which made the figure argue for something that was not
+               * happening.
+               *
+               * So a body is TRANSPARENT TO ITS OWN UNTOUCHED RADIATION. It still
+               * paid the recoil when it emitted; taking it back is what was wrong.
+               * The moment a ray is deflected it stops being the body's own — that
+               * is a real interaction with something else, and it is exactly the
+               * channel repulsion arrives on, so alike bodies still push each other
+               * apart.
+               */
+              const from = tagged ? b.channelAt("source", local, d) : -1;
+              if (from !== s.id) {
+                for (let i = 0; i < g.D; i++) s.absorbed[i] += g.V[d][i] ?? 0;
+                s.caught[d]++;                      // the rose: which way it was going
+              }
               arrived[d]++; budget++;
             }
             b.clear(local, d);
@@ -2486,6 +3016,7 @@ export const emitRule = (): Rule => ({
           b.put(local, d, q);
           budget--;
           if (arrived[d] > 0) arrived[d]--;
+          // every ray it sends costs it the recoil, wherever that ray ends up
           for (let i = 0; i < g.D; i++) s.emitted[i] += g.V[d][i] ?? 0;
           if (w.hasChannel("label"))
             for (let i = 0; i < g.D; i++) b.setChannel("label", local, d, s.u[i] ?? 0, i);
@@ -2512,7 +3043,7 @@ const base = (polarised: boolean, alike: Deflection, sign: ExpandOptions["sign"]
 export const GRAVITY: Theory = {
   name: "gravity",
   polarised: false,
-  channels: () => [CHANNELS.turns()],
+  channels: () => [CHANNELS.turns(), CHANNELS.source()],
   rules: base(false, DEFLECT.pass(), "neutral"),
   note: "(G/1) annihilation and (G/2) creation. Rays are neutral, which is a charge.",
 };
@@ -2525,7 +3056,7 @@ export const GRAVITY: Theory = {
 export const GRAVITY_MAGNETISM: Theory = {
   name: "gravity+magnetism",
   polarised: true,
-  channels: () => [CHANNELS.turns()],
+  channels: () => [CHANNELS.turns(), CHANNELS.source()],
   rules: base(true, DEFLECT.spin(), "perNode"),
   note: "(G+M/1) annihilate, (G+M/2) create, (G+M/3) turn.",
 };
@@ -2537,7 +3068,7 @@ export const GRAVITY_MAGNETISM: Theory = {
 export const LABELLED: Theory = {
   name: "labelled",
   polarised: true,
-  channels: (D) => [CHANNELS.turns(), CHANNELS.label(D)],
+  channels: (D) => [CHANNELS.turns(), CHANNELS.source(), CHANNELS.label(D)],
   rules: base(true, DEFLECT.spin(), "perNode"),
   note: "as gravity+magnetism, with the emitter's velocity carried per ray.",
 };
@@ -2546,7 +3077,7 @@ export const LABELLED: Theory = {
 export const LAYER2: Theory = {
   name: "layer2",
   polarised: true,
-  channels: (D) => [CHANNELS.turns(), CHANNELS.label(D), CHANNELS.phase()],
+  channels: (D) => [CHANNELS.turns(), CHANNELS.source(), CHANNELS.label(D), CHANNELS.phase()],
   rules: base(true, DEFLECT.spin(), "perNode"),
   note: "the labelled reading with a per-ray phase on the equatorial ring.",
 };
@@ -2596,7 +3127,7 @@ export const PURE: Theory = {
 export const CONSERVING: Theory = {
   name: "conserving",
   polarised: false,
-  channels: () => [CHANNELS.turns()],
+  channels: () => [CHANNELS.turns(), CHANNELS.source()],
   rules: () => [expand({ sign: "neutral" }), streamRule(), emitRule(), collide({
     opposite: "pass", alike: DEFLECT.reverse(), neutral: "pass",
   })],
@@ -2627,6 +3158,31 @@ export const withSign = (t: Theory, sign: ExpandOptions["sign"]): Theory => ({
   rules: () => [expand({ sign }), streamRule(), emitRule(), collide({
     opposite: "annihilate", alike: DEFLECT.spin(), neutral: "annihilate",
   }), moveRule()],
+});
+
+/**
+ * THE SAME THEORY WITH HEAVIER MATTER IN IT — `inertia` is the mass, so this is the
+ * one dial that says how much of the vacuum has to be pushed through a body to move
+ * it a cell.
+ *
+ * It exists because the default, 1, is the MASSLESS limit and behaves like one. A
+ * body of inertia 1 that is nudged once moves a cell, and a body that has moved a
+ * cell is one cell further into its own radiation, which hands it enough to move
+ * again: it locks to c̄ and never comes off it. Everything after that is decided by
+ * the lock rather than by the physics — two blocks driven at each other come apart
+ * at the same rate whether they are alike or opposite, which is the one thing such a
+ * figure is for. Give them mass and the picture separates: alike blocks meet and fly
+ * apart, opposite blocks meet and stay.
+ *
+ * (The lock itself is a residual self-force and is not fixed by this — a moving body
+ * still gains a little from catching its own escaped rays. Mass makes it small next
+ * to the interaction rather than making it zero. Removing it needs a ray to know
+ * which body emitted it.)
+ */
+export const withInertia = (t: Theory, inertia: number): Theory => ({
+  ...t,
+  name: `${t.name} (inertia ${inertia})`,
+  rules: (w) => t.rules(w).map(r => r.name === "move" ? moveRule({ inertia }) : r),
 });
 
 export const THEORIES = { GRAVITY, GRAVITY_MAGNETISM, LABELLED, LAYER2, PURE, CONSERVING };
