@@ -38,8 +38,8 @@
  *
  */
 
-import { CYCLE, SPIN, TAU } from "./LATTICE_OLD";
-import { alike, emission, HEAD_ON, LIGHT, rate, sided, Source } from "./PHYSICS";
+import { CYCLE, SPIN, TAU } from "./lattice";
+import { alike, emission, HEAD_ON, LIGHT, rate, sided, Source } from "./physics";
 
 /**
  * The field, which is the half of the closed form that both accounts of

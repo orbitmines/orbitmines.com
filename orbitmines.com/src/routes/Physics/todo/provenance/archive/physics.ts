@@ -48,7 +48,7 @@
  *
  */
 
-import { CYCLE, dot, TAU } from "./LATTICE_OLD";
+import { CYCLE, dot, TAU } from "./lattice";
 
 /**
  * The laws, said once for both readings.

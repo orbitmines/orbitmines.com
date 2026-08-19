@@ -109,8 +109,8 @@
  */
 
 
-import { chance, HALF, Live, SHEET, through, DEG } from "./FIELD";
-import { BITE, LIGHT } from "./PHYSICS";
+import { chance, HALF, Live, SHEET, through, DEG } from "./field";
+import { BITE, LIGHT } from "./physics";
 
 /**
  * How many lattice steps a drawn cell stands for.
