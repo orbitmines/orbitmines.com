@@ -112,12 +112,23 @@ export const dipoleCoupling = test({
      * orientation changes is WHERE SPACE IS DESTROYED, which is also what a force is
      * in this model.
      */
-    const lone = ctx.once((seed: number, axis0: number) => {
+    /*
+     * KEYED ON THE ORIENTATION, NOT ON THE ROW.
+     *
+     * The lone run is body A by itself, so it depends on A's axis and nothing else —
+     * and the four arrangements use only TWO axes between them, side by side and end
+     * to end. Keyed on the row index it ran the same world twice under two names:
+     * sixteen runs of a 41³ box for the eight it needed, which is a tenth of the
+     * whole unit and this is the slowest unit in the suite.
+     */
+    const loneFor = ctx.once((seed: number, axis: string) => {
       const w = new World({ theory, N, seed, boundary: "absorb" });
-      oriented(w, [ax, C, C], ARRANGEMENTS[axis0][1]);
+      oriented(w, [ax, C, C], axis.split(",").map(Number));
       w.run(T);
       return pullChannel(w, [ax, C, C], [1, 0, 0]);
     });
+    const lone = (seed: number, axis0: number) =>
+      loneFor(seed, ARRANGEMENTS[axis0][1].join(","));
 
     const paired = ctx.once((i: number, sep: number, seed: number) => {
       const [, a, b2] = ARRANGEMENTS[i];

@@ -168,6 +168,15 @@ export type Geometry = {
   /** how many ways out of a local there are, BEFORE any folding. l.DEG is the local one. */
   DEG: number;
   OPP: Int32Array;
+  /**
+   * WHETHER TWO EXITS ARE APPROACHING — d̂·ê < 0 — for every pair, precomputed.
+   *
+   * `pairs` asks this of every pair of live rays at every point at every tick under
+   * the co-located reading, and computing the dot product there was more than half
+   * the cost of the whole run. It is a fact about the geometry, so it is answered
+   * once: APPROACHING[a * DEG + e].
+   */
+  APPROACHING: Uint8Array;
   /** one representative per antipodal pair, which is what a head-on rule iterates */
   AXES: number[];
   /** |V[d]| — 1, √2, √3 on a cubic 26 */
@@ -273,6 +282,9 @@ export const geometry = (spec: GeometrySpec): Geometry => {
   const AXES: number[] = [];
   for (let d = 0; d < DEG; d++) if (d < OPP[d]) AXES.push(d);
   const steps = V.map(norm);
+  const APPROACHING = new Uint8Array(DEG * DEG);
+  for (let a = 0; a < DEG; a++)
+    for (let e = 0; e < DEG; e++) APPROACHING[a * DEG + e] = dot(U[a], U[e]) < 0 ? 1 : 0;
 
   const equator = (axis: Vec) => {
     const a = unit(axis);
@@ -490,7 +502,7 @@ export const geometry = (spec: GeometrySpec): Geometry => {
   }
 
   const g: Geometry = {
-    spec, name: spec.name, D, V, U, w, DEG, OPP, AXES, steps, L, basis, embed, unrunnable,
+    spec, name: spec.name, D, V, U, w, DEG, OPP, APPROACHING, AXES, steps, L, basis, embed, unrunnable,
     periodic: spec.periodic ?? true,
     equator, SHEET, CYCLE, SPIN, sheetAxis, ringAxis, RING,
     moment, cAnisotropy,
@@ -1087,25 +1099,56 @@ export class ArrayBackend implements Backend {
     this.nAct.fill(0); this.nChg.fill(0);
     const chans = [...this.chans.values()];
     for (const { c, n } of chans) n.fill(c.init);
+    /*
+     * THE CHANNELS AS PARALLEL ARRAYS, because the ray loop reads them per ray.
+     *
+     * Reading `chans[ci]` and destructuring `{ c, a, n }` inside the innermost loop
+     * is three property loads for every channel of every moving ray — some three
+     * million a tick with the labelled theory's three channels, and it cost more
+     * than the copy it was setting up. The shapes are fixed for the tick, so they
+     * come out once.
+     */
+    const nc = chans.length;
+    const cFrom = new Array<Float64Array | Int32Array | Int8Array>(nc);
+    const cTo = new Array<Float64Array | Int32Array | Int8Array>(nc);
+    const cW = new Int32Array(nc);
+    for (let ci = 0; ci < nc; ci++) {
+      cFrom[ci] = chans[ci].a; cTo[ci] = chans[ci].n; cW[ci] = chans[ci].c.width;
+    }
     const T = this.nbrTable, DEG = this.DEG;
     const act = this.act, chg = this.chg, nAct = this.nAct, nChg = this.nChg;
-    const total = this.count * DEG;
+    const count = this.count;
     const OPP = this.geometry.OPP, rev = this.rev;
-    for (let i = 0; i < total; i++) {
-      if (!act[i]) continue;
-      const from = (i / DEG) | 0;
-      // a bounced ray goes back the way it came, which is what a reflection is
-      const d = rev[i] ? OPP[i % DEG] : i % DEG;
-      const to = rev[i] ? this.nbrTable[from * DEG + d] : T[i];
-      if (to === VOID) continue;             // absorbed at the edge
-      const j = to * DEG + d;
-      nAct[j] = 1; nChg[j] = chg[i];
-      for (let ci = 0; ci < chans.length; ci++) {
-        const { c, a, n } = chans[ci];
-        for (let k = 0; k < c.width; k++) n[j * c.width + k] = a[i * c.width + k];
+    /*
+     * WALKED AS POINT × EXIT rather than as one flat index. The exit was recovered
+     * from the index with a division and two modulos per slot — at a 41³ box that is
+     * two and a half million divisions a tick, for a number the loop already knows.
+     */
+    for (let from = 0, i = 0; from < count; from++) {
+      for (let e = 0; e < DEG; e++, i++) {
+        if (!act[i]) continue;
+        // a bounced ray goes back the way it came, which is what a reflection is
+        const bounced = rev[i] !== 0;
+        const d = bounced ? OPP[e] : e;
+        const to = bounced ? T[from * DEG + d] : T[i];
+        if (to === VOID) continue;             // absorbed at the edge
+        const j = to * DEG + d;
+        nAct[j] = 1; nChg[j] = chg[i];
+        for (let ci = 0; ci < nc; ci++) {
+          const a = cFrom[ci], n = cTo[ci], width = cW[ci];
+          /* the common case is one number a ray, and it is worth not looping over it */
+          if (width === 1) n[j] = a[i];
+          else for (let k = 0; k < width; k++) n[j * width + k] = a[i * width + k];
+        }
       }
     }
-    this.act.set(this.nAct); this.chg.set(this.nChg);
+    /*
+     * SWAPPED, NOT COPIED. `act.set(nAct)` walked eight hundred thousand bytes twice
+     * a tick to end up with what the two buffers already held between them; the next
+     * tick clears whichever one is now the back buffer, which it did anyway.
+     */
+    this.act = nAct; this.nAct = act;
+    this.chg = nChg; this.nChg = chg;
     this.rev.fill(0);
     for (const e of this.chans.values()) { const t = e.a as any; e.a = e.n as any; (e as any).n = t; }
   }
@@ -1195,8 +1238,20 @@ export class GraphBackend implements Backend {
   private alive: boolean[] = [];
   private act: Uint8Array[] = [];
   private chg: Int8Array[] = [];
+  /** where the next tick is written while this one is still being read; see `stream` */
+  private nact: Uint8Array[] = [];
+  private nchg: Int8Array[] = [];
   private chans = new Map<string, { c: Channel; a: Float64Array[] }>();
-  private byPos = new Map<string, number>();
+  /**
+   * WHERE A POSITION IS, keyed by a NUMBER rather than by a formatted string.
+   *
+   * `wire` asks for one key per exit per local every time the topology moves, so
+   * this map is on the hottest path the graph backend has. See `key`.
+   */
+  private byPos = new Map<number, number>();
+  /** how many bits of the key one coordinate gets, and the offset that centres it */
+  private KSPAN = 0;
+  private KOFF = 0;
   /**
    * WHERE A FOLDED LOCAL WENT.
    *
@@ -1215,6 +1270,8 @@ export class GraphBackend implements Backend {
   private origin: Vec = [];
   /** whether the topology has moved since the neighbour lists were last built */
   private dirty = true;
+  /** one coordinate's worth of workspace, so asking where a ray would go costs nothing */
+  private scratch: Vec = [];
 
   constructor(opts: GraphOptions) {
     this.opts = opts;
@@ -1230,12 +1287,20 @@ export class GraphBackend implements Backend {
     this.geometry = opts.geometry;
     this.DEG = this.geometry.DEG;
     const D = this.geometry.D, N = opts.N;
+    /*
+     * The key packs D coordinates into one integer, so each gets an equal share of
+     * the 53 bits a double indexes exactly — 2^16 per coordinate in three dimensions,
+     * which is ±16384 lattice cells from the origin.
+     */
+    this.KSPAN = Math.pow(2, Math.floor(50 / D));
+    this.KOFF = this.KSPAN / 2;
     const walk = (p: number[]) => {
       if (p.length === D) { this.make(p.slice()); return; }
       for (let i = 0; i < N; i++) walk([...p, i]);
     };
     walk([]);
     this.origin = new Array(D).fill((N - 1) / 2);
+    this.scratch = new Array(D).fill(0);
     this.wire();
   }
 
@@ -1247,15 +1312,38 @@ export class GraphBackend implements Backend {
    */
   private key(p: Vec) {
     /*
-     * HALVES, AS INTEGERS. A point inserted between two others sits at a half-integer
-     * coordinate, so the key cannot round — but it must not format either: `wire`
-     * asks for one per exit per local per tick, and `toFixed` there cost more than
-     * the rules did. Doubling and rounding is exact for anything on the half-lattice
-     * and is arithmetic rather than string work.
+     * HALVES, AS INTEGERS, PACKED INTO ONE NUMBER. A point inserted between two others
+     * sits at a half-integer coordinate, so the key cannot round — but it must not
+     * format either: `wire` asks for one per exit per local every time the topology
+     * moves, and building a string there cost more than the rules did, and made
+     * garbage at the same rate. Doubling and rounding is exact for anything on the
+     * half-lattice; the coordinates are then packed into a single integer, which is
+     * the same identity with none of the string work.
      */
-    let k = "";
-    for (let i = 0; i < p.length; i++) k += (i ? "," : "") + Math.round(p[i] * 2);
+    let k = 0;
+    for (let i = 0; i < p.length; i++) k = k * this.KSPAN + this.digit(p[i]);
     return k;
+  }
+
+  /**
+   * The key of `p + v`, without building the sum. Every caller in `wire` and `reach`
+   * wanted the key of a neighbouring position and nothing else, and the intermediate
+   * coordinate array was one allocation per exit per local per rebuild.
+   */
+  private keyAt(p: Vec, v: Vec) {
+    let k = 0;
+    for (let i = 0; i < p.length; i++) k = k * this.KSPAN + this.digit(p[i] + (v[i] ?? 0));
+    return k;
+  }
+
+  /** one coordinate as a non-negative integer, doubled and centred; see `key` */
+  private digit(x: number) {
+    const v = Math.round(x * 2) + this.KOFF;
+    if (v < 0 || v >= this.KSPAN) throw new Error(
+      `${this.geometry.name}: a point at ${x} is outside what one key can hold ` +
+      `(±${this.KOFF / 2} in each coordinate). Nothing in this book runs a box that big; ` +
+      `if something now does, widen the key.`);
+    return v;
   }
 
   /** where this local actually is now, after any folds */
@@ -1292,12 +1380,26 @@ export class GraphBackend implements Backend {
    * Streaming only ever needs somewhere for a ray that is actually moving to go.
    */
   private wire() {
+    /*
+     * REBUILT IN PLACE. The lists are the same lists as before — a rebuild used to
+     * throw away one array per exit per local and make DEG fresh ones, which at a
+     * hundred thousand points is a million allocations a tick and showed up as a
+     * quarter of the run being garbage collection rather than physics.
+     */
+    const DEG = this.DEG, V = this.geometry.V, byPos = this.byPos;
     for (let l = 0; l < this.pos.length; l++) {
       if (!this.alive[l]) continue;
-      this.nbr[l] = [];
-      for (let d = 0; d < this.DEG; d++) {
-        const j = this.byPos.get(this.key(add(this.pos[l], this.geometry.V[d])));
-        this.nbr[l].push(j === undefined ? [] : [j]);
+      let lists = this.nbr[l];
+      if (lists.length !== DEG) {
+        lists = this.nbr[l] = new Array(DEG);
+        for (let d = 0; d < DEG; d++) lists[d] = [];
+      }
+      const p = this.pos[l];
+      for (let d = 0; d < DEG; d++) {
+        const j = byPos.get(this.keyAt(p, V[d]));
+        const list = lists[d];
+        if (j === undefined) list.length = 0;
+        else { list.length = 1; list[0] = j; }
       }
     }
   }
@@ -1307,9 +1409,18 @@ export class GraphBackend implements Backend {
     const b = this.opts.bound;
     if (!b) return true;
     const o = this.origin;
-    return (b.metric === "ball"
-      ? Math.hypot(...q.map((x, i) => x - o[i]))
-      : Math.max(...q.map((x, i) => Math.abs(x - o[i])))) <= b.radius;
+    /* written out rather than mapped: `reach` asks this per moving ray per tick */
+    if (b.metric === "ball") {
+      let s = 0;
+      for (let i = 0; i < q.length; i++) { const d = q[i] - o[i]; s += d * d; }
+      return Math.sqrt(s) <= b.radius;
+    }
+    let m = 0;
+    for (let i = 0; i < q.length; i++) {
+      const d = Math.abs(q[i] - o[i]);
+      if (d > m) m = d;
+    }
+    return m <= b.radius;
   }
 
   /**
@@ -1322,9 +1433,12 @@ export class GraphBackend implements Backend {
     const have = this.neighbour(local, d);
     if (have !== VOID) return have;
     if (this.opts.boundary !== "expand") return VOID;
-    const q = add(this.pos[local], this.geometry.L[d]);
+    /* the candidate position, written into a scratch vector: this is per moving ray
+     * per tick, and only the ray that actually makes a point needs one that lasts */
+    const q = this.scratch, p = this.pos[local], L = this.geometry.L[d];
+    for (let i = 0; i < p.length; i++) q[i] = p[i] + (L[i] ?? 0);
     if (!this.within(q)) return VOID;
-    const made = this.make(q);
+    const made = this.make(q.slice());
     if (made === VOID) return VOID;               // at budget: the ray is simply gone
     this.nbr[made] = [];
     for (let e = 0; e < this.DEG; e++)
@@ -1382,23 +1496,42 @@ export class GraphBackend implements Backend {
      * O(locals × DEG) of map lookups for a structure that usually had not changed.
      */
     if (this.dirty) { this.wire(); this.dirty = false; }
-    const nAct = this.act.map(a => new Uint8Array(a.length));
-    const nChg = this.chg.map(a => new Int8Array(a.length));
+    /*
+     * TWO BUFFERS, KEPT AND SWAPPED, NOT MADE.
+     *
+     * Streaming reads the world as it was and writes the world as it will be, so it
+     * needs somewhere else to write — but it used to ALLOCATE that somewhere, two
+     * typed arrays per local per tick. At the sizes an expanding vacuum reaches that
+     * is millions of short-lived objects a run, and a quarter of the time went to
+     * collecting them rather than to the rules. The back buffer is now kept between
+     * ticks, cleared, written into, and swapped with the front one at the end.
+     */
+    const DEG = this.DEG, nAct = this.nact, nChg = this.nchg;
+    while (nAct.length < this.pos.length) {
+      nAct.push(new Uint8Array(DEG)); nChg.push(new Int8Array(DEG));
+    }
+    for (let l = 0; l < nAct.length; l++) { nAct[l].fill(0); nChg[l].fill(0); }
+    const act = this.act, chg = this.chg, rev = this.rev, OPP = this.geometry.OPP;
+    /* `this.pos.length` is re-read on purpose: a ray at the frontier makes the point
+     * it is moving into, and that point is then part of this same pass */
     for (let l = 0; l < this.pos.length; l++) {
       if (!this.alive[l]) continue;
-      for (let dd = 0; dd < this.DEG; dd++) {
-        if (!this.act[l][dd]) continue;
-        const d = this.rev.get(l)?.has(dd) ? this.geometry.OPP[dd] : dd;
+      const from = act[l];
+      const bounced = rev.get(l);
+      for (let dd = 0; dd < DEG; dd++) {
+        if (!from[dd]) continue;
+        const d = bounced !== undefined && bounced.has(dd) ? OPP[dd] : dd;
         const to = this.reach(l, d);          // makes room only where a ray is going
         if (to === VOID || !this.alive[to]) continue;    // absorbed, or folded away
-        if (to >= nAct.length) { nAct.push(new Uint8Array(this.DEG)); nChg.push(new Int8Array(this.DEG)); }
-        nAct[to][d] = 1; nChg[to][d] = this.chg[l][dd];
+        while (to >= nAct.length) { nAct.push(new Uint8Array(DEG)); nChg.push(new Int8Array(DEG)); }
+        nAct[to][d] = 1; nChg[to][d] = chg[l][dd];
       }
     }
-    for (let l = 0; l < this.pos.length; l++) {
-      this.act[l] = nAct[l] ?? new Uint8Array(this.DEG);
-      this.chg[l] = nChg[l] ?? new Int8Array(this.DEG);
+    while (nAct.length < this.pos.length) {
+      nAct.push(new Uint8Array(DEG)); nChg.push(new Int8Array(DEG));
     }
+    this.act = nAct; this.chg = nChg;
+    this.nact = act; this.nchg = chg;
     this.rev.clear();
   }
 
@@ -1447,9 +1580,10 @@ export class GraphBackend implements Backend {
    */
   unfold(local: number) {
     if (!this.opts.fold.reversible) return false;
+    const DEG = this.DEG, lists = this.nbr[local];
     // give back a neighbour this point had absorbed
-    for (let d = 0; d < this.DEG; d++) {
-      const list = this.nbr[local]?.[d];
+    if (lists) for (let d = 0; d < DEG; d++) {
+      const list = lists[d];
       if (!list || list.length < 2) continue;
       const back = list.pop()!;
       if (this.dens[local] > 1) this.dens[local]--;
@@ -1462,13 +1596,23 @@ export class GraphBackend implements Backend {
     }
     // nothing folded in: make new room, if the world may grow and has room to
     if (this.opts.boundary !== "expand") return false;
-    for (let d = 0; d < this.DEG; d++) {
-      const q = add(this.pos[local], this.geometry.V[d]);
-      if (this.byPos.has(this.key(q)) || !this.within(q)) continue;
+    /*
+     * THE BOUND IS ASKED FIRST, and it is arithmetic where the other question is a
+     * hash. Every point in the bulk asks both of all DEG exits every tick and gets
+     * "no" both times; putting the cheap "no" first is the difference between one
+     * lookup and none for everything outside the bound.
+     */
+    const q = this.scratch, p = this.pos[local], V = this.geometry.V, byPos = this.byPos;
+    const D = p.length;
+    for (let d = 0; d < DEG; d++) {
+      const v = V[d];
+      for (let i = 0; i < D; i++) q[i] = p[i] + (v[i] ?? 0);
+      if (!this.within(q) || byPos.has(this.key(q))) continue;
       const made = this.make(q.map(x => Math.round(x)));
       if (made === VOID) return false;            // at budget: no new room
-      this.nbr[made] = [];
-      for (let e = 0; e < this.DEG; e++) this.nbr[made].push([]);
+      const fresh: number[][] = new Array(DEG);
+      for (let e = 0; e < DEG; e++) fresh[e] = [];
+      this.nbr[made] = fresh;
       this.nbr[local][d] = [made];
       return true;
     }
@@ -1619,6 +1763,20 @@ export class World {
   readonly order: Phase[];
   readonly sources: Source[] = [];
   private sourceOf = new Map<number, number>();
+  /**
+   * WHICH POINTS BELONG TO A SOURCE, as a mask.
+   *
+   * Every rule begins by asking this of every point it walks, so at a 41³ box it is
+   * some seventy thousand map lookups per rule per tick — measured, the single most
+   * called thing in the model after streaming. The map stays the truth (a source is
+   * identified by id, not merely flagged); this is the yes-or-no answer, kept beside
+   * it and updated where it changes rather than rebuilt.
+   *
+   * A point beyond its end is not a source, which is what a point the expansion has
+   * just made is — so a growing world does not invalidate it.
+   */
+  private sourceMask = new Uint8Array(0);
+  private sourceMaskStale = true;
   private channelNames = new Set<string>();
   /**
    * WHERE SPACE WAS DESTROYED, per point — the metric channel, and the only one of
@@ -1731,12 +1889,48 @@ export class World {
   };
 
   /** a local stops belonging to a source */
-  release(local: number) { this.sourceOf.delete(local); }
+  release(local: number) {
+    this.sourceOf.delete(local);
+    if (this.sourceMaskStale || local >= this.sourceMask.length) this.sourceMaskStale = true;
+    else this.sourceMask[local] = 0;
+  }
   /** a local starts belonging to one */
-  claim(local: number, id: number) { this.sourceOf.set(local, id); }
+  claim(local: number, id: number) {
+    this.sourceOf.set(local, id);
+    if (this.sourceMaskStale || local >= this.sourceMask.length) this.sourceMaskStale = true;
+    else this.sourceMask[local] = 1;
+  }
+
+  /**
+   * A CLEARED MASK OVER THE POINTS, borrowed rather than made.
+   *
+   * A rule that needs one point-sized flag array needs it every tick, and allocating
+   * it there is a megabyte a second of garbage at the sizes this book measures at.
+   * One buffer, cleared on the way out, is the same thing without the allocation —
+   * so it must be finished with before the next rule asks.
+   */
+  mask(n: number) {
+    if (this.maskBuf.length < n) this.maskBuf = new Uint8Array(n);
+    else this.maskBuf.fill(0, 0, n);
+    return this.maskBuf;
+  }
+  private maskBuf = new Uint8Array(0);
+
+  /** see `sourceMask` — built on demand, and only when something moved out of range */
+  private buildSourceMask() {
+    let n = this.backend.size();
+    for (const k of this.sourceOf.keys()) if (k >= n) n = k + 1;
+    if (this.sourceMask.length < n) this.sourceMask = new Uint8Array(n);
+    else this.sourceMask.fill(0);
+    for (const k of this.sourceOf.keys()) this.sourceMask[k] = 1;
+    this.sourceMaskStale = false;
+  }
 
   hasChannel(name: string) { return this.channelNames.has(name); }
-  isSource(local: number) { return this.sourceOf.has(local); }
+  isSource(local: number) {
+    if (this.sourceMaskStale) this.buildSourceMask();
+    return local < this.sourceMask.length && this.sourceMask[local] === 1;
+  }
   sourceAt(local: number) {
     const i = this.sourceOf.get(local);
     return i === undefined ? undefined : this.sources[i];
@@ -1837,7 +2031,7 @@ export class World {
       emission: spec.emission ?? "isotropic",
     };
     this.sources.push(src);
-    for (const k of locals) this.sourceOf.set(k, src.id);
+    for (const k of locals) this.claim(k, src.id);
     return src;
   }
 
@@ -1980,13 +2174,25 @@ const swap = (w: World, local: number, from: number, to: number) => {
  * rules do not have one.
  */
 const pairs = (w: World, local: number) => {
-  const out: [number, number][] = [];
   const g = w.geometry, b = w.backend;
+  /*
+   * WRITTEN INTO A BUFFER, AND THE COUNT RETURNED.
+   *
+   * This is called for every point at every tick and it used to return an array of
+   * two-element arrays — three allocations for a typical point, all of them dead
+   * before the next point, which is millions of objects a run and showed up as a
+   * quarter of the time being collection rather than physics. `PAIRS` holds them
+   * flat, a and then e, and the single caller reads that many.
+   */
+  const DEG0 = g.DEG;
+  if (PAIRS.length < DEG0) PAIRS = new Int32Array(DEG0 + 2);
+  let out = 0;
 
   if (w.opts.meeting === "head-on") {
-    for (const a of g.AXES) {
-      const o = g.OPP[a];
-      if (b.active(local, a) && b.active(local, o)) out.push([a, o]);
+    const AXES = g.AXES, OPP = g.OPP;
+    for (let ai = 0; ai < AXES.length; ai++) {
+      const a = AXES[ai], o = OPP[a];
+      if (b.active(local, a) && b.active(local, o)) { PAIRS[out * 2] = a; PAIRS[out * 2 + 1] = o; out++; }
     }
     return out;
   }
@@ -1997,33 +2203,57 @@ const pairs = (w: World, local: number) => {
    * pointing into the same hemisphere is two rays side by side that will stay side by
    * side, and calling that a meeting annihilates a third of every pair at every point.
    */
-  const on: number[] = [];
-  for (let d = 0; d < g.DEG; d++) if (b.active(local, d)) on.push(d);
-  if (on.length < 2) return out;
-  for (let i = on.length - 1; i > 0; i--) {       // an unbiased shuffle, so no exit is favoured
+  const DEG = g.DEG;
+  const on = scratchOn.length >= DEG ? scratchOn : (scratchOn = new Int32Array(DEG));
+  let n = 0;
+  for (let d = 0; d < DEG; d++) if (b.active(local, d)) on[n++] = d;
+  if (n < 2) return out;
+  for (let i = n - 1; i > 0; i--) {               // an unbiased shuffle, so no exit is favoured
     const j = (w.rng() * (i + 1)) | 0;
     const t = on[i]; on[i] = on[j]; on[j] = t;
   }
-  const taken = new Set<number>();
-  for (const a of on) {
-    if (taken.has(a)) continue;
-    for (const e of on) {
-      if (e === a || taken.has(e)) continue;
-      if (dot(g.U[a], g.U[e]) >= 0) continue;     // not approaching: they have not met
-      taken.add(a); taken.add(e);
-      out.push([a, e]);
+  /*
+   * WHO IS ALREADY PAIRED, as a stamp rather than a set. This runs for every point
+   * at every tick, and a Set allocated and filled here was pure garbage; `taken`
+   * holds the number of the pass that claimed the exit, so nothing has to be
+   * cleared between points.
+   */
+  const taken = scratchTaken.length >= DEG ? scratchTaken : (scratchTaken = new Int32Array(DEG));
+  const stamp = ++scratchStamp;
+  const APPROACHING = g.APPROACHING;
+  for (let ai = 0; ai < n; ai++) {
+    const a = on[ai];
+    if (taken[a] === stamp) continue;
+    for (let ei = 0; ei < n; ei++) {
+      const e = on[ei];
+      if (e === a || taken[e] === stamp) continue;
+      if (!APPROACHING[a * DEG + e]) continue;    // not approaching: they have not met
+      taken[a] = stamp; taken[e] = stamp;
+      PAIRS[out * 2] = a; PAIRS[out * 2 + 1] = e; out++;
       break;
     }
   }
   return out;
 };
 
-/** the meetings a point actually resolves this tick */
+/* workspaces for `pairs`, which is the most-called thing in the model */
+let scratchOn = new Int32Array(0);
+let scratchTaken = new Int32Array(0);
+let scratchStamp = 0;
+/** the pairs `pairs` just found, flat: a at 2i and its partner at 2i+1 */
+let PAIRS = new Int32Array(64);
+
+/**
+ * The meetings a point actually resolves this tick, left in `PAIRS` — the count is
+ * what comes back, and the caller reads that many out of the buffer.
+ */
 const meetings = (w: World, local: number) => {
   const all = pairs(w, local);
-  if (w.opts.meetingRate === "all" || all.length < 2) return all;
+  if (w.opts.meetingRate === "all" || all < 2) return all;
   // one a tick, drawn — so which pair resolves is not decided by an exit's index
-  return [all[(w.rng() * all.length) | 0]];
+  const k = (w.rng() * all) | 0;
+  PAIRS[0] = PAIRS[k * 2]; PAIRS[1] = PAIRS[k * 2 + 1];
+  return 1;
 };
 
 /**
@@ -2107,7 +2337,7 @@ export const collide = (o: CollideOptions = {}): Rule => {
          * answer cannot change inside a phase, so it is a mask.
          */
         const n = b.size();
-        const sits = new Uint8Array(n);
+        const sits = w.mask(n);
         for (const s of w.sources) {
           if (s.collides) continue;
           for (const k of s.locals) if (k < n) sits[k] = 1;
@@ -2130,11 +2360,23 @@ export const collide = (o: CollideOptions = {}): Rule => {
            * thing that landed there to read. Found by reading `clear` rather than by
            * the run failing, which it would not have done visibly.
            */
+          /*
+           * The channels as parallel arrays, for the same reason `stream` keeps them
+           * that way: this is called twice per annihilation and destructuring an
+           * object per channel per call is most of what it does.
+           */
+          const nch = chans.length;
+          const wA = new Array<Float64Array | Int32Array | Int8Array>(nch);
+          const wW = new Int32Array(nch), wI = new Float64Array(nch);
+          for (let c = 0; c < nch; c++) {
+            wA[c] = chans[c].a; wW[c] = chans[c].width; wI[c] = chans[c].init;
+          }
           const wipe = (i: number) => {
             A_[i] = 0; C_[i] = 0;
-            for (let c = 0; c < chans.length; c++) {
-              const { a, width, init } = chans[c];
-              for (let k = 0; k < width; k++) a[i * width + k] = init;
+            for (let c = 0; c < nch; c++) {
+              const a = wA[c], width = wW[c], init = wI[c];
+              if (width === 1) a[i] = init;
+              else for (let k = 0; k < width; k++) a[i * width + k] = init;
             }
           };
           const dest = w.destroyed;
@@ -2283,7 +2525,9 @@ export const collide = (o: CollideOptions = {}): Rule => {
 
       w.backend.forEachLocal(local => {
         if (w.isSource(local)) return;
-        for (const [a, o2] of meetings(w, local)) {
+        const met = meetings(w, local);
+        for (let mi = 0; mi < met; mi++) {
+          const a = PAIRS[mi * 2], o2 = PAIRS[mi * 2 + 1];
           if (!b.active(local, a) || !b.active(local, o2)) continue;   // an earlier pair took one
           const p = b.charge(local, a), q = b.charge(local, o2);
           const agree = p === q;

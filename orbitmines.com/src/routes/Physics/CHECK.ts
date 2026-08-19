@@ -86,6 +86,6 @@ for (const mode of ["none", "destroy"] as const) {
 
 console.log("\n═════ 5  change the geometry: which LAWS move ═════\n");
 for (const a of affectedBy(GEOMETRIES["cubic-26"], GEOMETRIES["fcc-12"])) {
-  console.log(`  ${a.law}  —  ${a.form}`);
+  console.log(`  ${a.law}  —  ${a.was}  →  ${a.now}`);
   for (const ch of a.changes) console.log(`      ${ch.constant}: ${ch.from} → ${ch.to}`);
 }

@@ -49,7 +49,7 @@ export const metric = test({
   claims: "the metric out of the annihilation count gives a photon sphere and a shadow, " +
     "and they differ from general relativity by 4.63% — which an instrument can settle",
   cited: ["and this is the one number in the whole model that an instrument can settle now",
-    "the count, read a second time"],
+    "and the same count read a second way"],
   under: { "gravity": "holds" },
   /* the consequences of a closed-form metric: arithmetic, not a measurement */
   exact: true,
@@ -144,7 +144,7 @@ export const uProfile = test({
   claims: "the u the metric is made of is a measured annihilation count that falls with " +
     "distance rather than a formula the model was given — and it needs polarity, " +
     "because pure gravity's vacuum is empty and folds nothing",
-  cited: ["the count, read a second time"],
+  cited: ["and the same count read a second way"],
   under: {
     /*
      * ABSENT IN PURE GRAVITY, AND THAT IS A RESULT RATHER THAN A GAP.
@@ -316,7 +316,7 @@ export const againstGR = test({
   id: "metric/against-relativity",
   claims: "A = e^(−2u) agrees with Schwarzschild through second order in u — which is the " +
     "order the classical tests live at — and departs only where the field is strong",
-  cited: ["the count, read a second time",
+  cited: ["and the same count read a second way",
     "and this is the one number in the whole model that an instrument can settle now"],
   under: { "gravity": "holds" },
   exact: true,

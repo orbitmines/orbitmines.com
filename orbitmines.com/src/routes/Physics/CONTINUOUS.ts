@@ -86,10 +86,108 @@ export type Constants = {
   falloff: number;
   /** the unsigned vacuum's fixed point; the polarised one sits below it */
   vacuumFixedPointUnsigned: (p: number) => number;
+
+  /**
+   * ONE STEP A TICK, which is the definition rather than a measurement — a ray moves
+   * at most once per tick, so nothing outruns the field it emits. It is one in every
+   * geometry; it is carried here so that the closed form below can be READ, since a
+   * formula with the c's divided out is a formula whose units cannot be checked.
+   */
+  LIGHT: number;
+  /**
+   * How much space a meeting destroys, in points.
+   *
+   * ONE, not two. Two opposite charges cancelling takes both their points out of the
+   * world, which is the two this used to say — but a pair is MADE by one point
+   * becoming two, so a creation is worth one and an annihilation must give back one
+   * or a made-and-unmade cycle would shrink a perfectly paired universe for free.
+   * Creation and annihilation are exact inverses only at one, and on the lattice that
+   * is `annihilate` MERGING the two points rather than deleting both.
+   *
+   * It costs nothing measured — the pull carries `BITE·m` and a mass is carried as
+   * `M/G` with `G ∝ BITE`, so the two cancel exactly and every orbit is identical to
+   * the digit. Which is why it can be settled on the argument above.
+   */
+  BITE: number;
+  /**
+   * A SOURCE'S OWN RADIUS — half the shortest way out, read off the exits.
+   *
+   * The one length in the model that is not a distance between two things: a source
+   * is one lattice point across, so the line integral below has to stop somewhere,
+   * and it stops at half a step. Half of `min |V|` rather than the literal 0.5 the
+   * old file wrote, because a geometry whose exits are not unit-length has a
+   * different shortest step and the core goes with it.
+   *
+   * A LATTICE step, not a drawn one. Writing this in the units a panel is drawn at
+   * was what put a picture's zoom inside the force law: the bracket in `gravitational`
+   * depends on the RATIO core/R, so a panel drawing twenty-eight cells to the
+   * astronomical unit made the constant run by 16% between the Sun and Mercury.
+   */
+  CORE: number;
+  /**
+   * THE GRAVITATIONAL CONSTANT, in the lattice's own units, with every symbol in it
+   * a count of the geometry.
+   *
+   *     G(share) = BITE·share·SHEET²·LIGHT / (4π²·CORE·DEG)
+   *
+   * `SHEET²` because the pull is second order in the emission — two sources each
+   * pulsing a sheet — `DEG` because the counting behind the bias needs the ways out
+   * of a point rather than the ones this source emitted along, and `CORE` from the
+   * line integral. On the default cubic 26 that is 8²/(4π²·0.5·26) = 0.062351, and
+   * nothing in it was fitted.
+   *
+   * `share` LEFT IN THE OPEN, because it is the one symbol here that is not a count
+   * of the lattice — it is a fact about the matter involved: the chance that two
+   * charges landing in the same cell have opposite sign. Half is what unbiased matter
+   * gives, and it is why this constant used to be written with an `8π²` that hid it.
+   * Take the polarity away entirely and every meeting annihilates rather than half of
+   * them, so `share` goes to one and the constant DOUBLES — which is a change of the
+   * mass unit and not of a trajectory, since `µ = G·m_P` scales with it and every mass
+   * carried as `M/G` is untouched. The article prints both values off this function
+   * rather than transcribing either.
+   *
+   * WHAT IT OWES: the closed form of the line integral is not an inverse square. It is
+   * `1/R²` from the two cores plus `CORE·ln(R/CORE)/R` from the open middle, so the
+   * constant RUNS with separation, logarithmically — about (0.54·ln R + 0.23)/R above
+   * this at finite R. This is the LIMIT, which is where a constant belongs; the
+   * r-dependence is left in the open as a short-range prediction rather than folded
+   * into the calibration.
+   */
+  gravitational: (share?: number) => number;
+  /**
+   * And the same constant weighed: the lattice's mass unit in KILOGRAMS.
+   *
+   * `µ = G·m_Planck` — the heaviest thing that can pulse on its own, since `m ≤ 1` is
+   * one pulse a tick. Takes `share` for the same reason `gravitational` does: it is
+   * the one quantity the no-polarity variant actually moves. The step and the tick do
+   * not go with it, because `G` cancels out of both, so this is the whole of what that
+   * choice costs.
+   *
+   * The only SI in this block. Everything above is in the lattice's own units and
+   * stays that way; this exists so the article can weigh the model rather than assert
+   * a scale for it.
+   */
+  massUnit: (share?: number) => number;
 };
+
+/**
+ * The one bridge to SI, and it is a measured constant of the world rather than
+ * anything this model has an opinion about. Kept beside its use so that a reader
+ * counting symbols can see exactly where the lattice's units stop.
+ */
+export const M_PLANCK = 2.176434e-8;
 
 export const constants = (g: Geometry = DEFAULT_GEOMETRY): Constants => {
   const m2 = g.moment(2), m4 = g.moment(4);
+
+  // c = one step a tick, and a meeting is worth one point. Both definitional, both
+  // named rather than inlined so the closed form below reads as the counting
+  // statement it is. See the field notes on `LIGHT` and `BITE`.
+  const LIGHT = 1, BITE = 1 * LIGHT;
+  // and the core off the exits, which is where the old file wrote 0.5
+  const CORE = Math.min(...g.steps) / 2;
+  const G = (share = 0.5) =>
+    BITE * share * g.SHEET * g.SHEET * LIGHT / (4 * Math.PI * Math.PI * CORE * g.DEG);
   return {
     geometry: g.name,
     D: g.D,
@@ -111,6 +209,18 @@ export const constants = (g: Geometry = DEFAULT_GEOMETRY): Constants => {
     fourthMomentAnisotropy: m4.anisotropy,
     falloff: g.D - 1,
     vacuumFixedPointUnsigned: (p: number) => (1 - p) / (2 - p),
+
+    LIGHT,
+    BITE,
+    CORE,
+    /*
+     * READ OFF THE GEOMETRY, every count in it. The old file wrote
+     * `Math.pow(3, DIMS - 1) - 1` and `Math.pow(3, DIMS) - 1` and a literal 0.5,
+     * which are these numbers for a cubic 26 and silently the wrong ones for
+     * anything else — exactly the drift this file exists to make impossible.
+     */
+    gravitational: G,
+    massUnit: (share = 0.5) => G(share) * M_PLANCK,
   };
 };
 
@@ -217,8 +327,22 @@ export const LAWS: Law[] = [
 /** which laws move when the geometry changes, and which constants moved under them */
 export const affectedBy = (from: Geometry, to: Geometry) => {
   const a = constants(from), b = constants(to);
+  /*
+   * READ A CONSTANT FOR COMPARISON, whether it is a number or a function of one.
+   *
+   * `gravitational` and `massUnit` are functions because `share` is a fact about the
+   * matter and not about the lattice — but they are functions OF THE GEOMETRY too,
+   * and a plain `typeof !== "function"` filter dropped them, so changing the lattice
+   * moved G and this report said nothing had happened. Evaluating at the default
+   * argument is enough to tell two geometries apart, since the share scales both the
+   * same way.
+   */
+  const at = (k: Constants, key: keyof Constants) => {
+    const val = k[key];
+    return typeof val === "function" ? String((val as (x?: number) => number)()) : String(val);
+  };
   const moved = (Object.keys(a) as (keyof Constants)[])
-    .filter(k => typeof a[k] !== "function" && String(a[k]) !== String(b[k]));
+    .filter(k => at(a, k) !== at(b, k));
   return LAWS
     .map(law => ({ law, via: law.uses.filter(u => moved.includes(u)) }))
     .filter(x => x.via.length)
@@ -227,7 +351,7 @@ export const affectedBy = (from: Geometry, to: Geometry) => {
       /** the law as each geometry states it — which is the point of the comparison */
       was: x.law.form(a), now: x.law.form(b),
       via: x.via,
-      changes: x.via.map(v => ({ constant: v, from: a[v], to: b[v] })),
+      changes: x.via.map(v => ({ constant: v, from: at(a, v), to: at(b, v) })),
     }));
 };
 

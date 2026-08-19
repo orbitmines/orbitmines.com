@@ -51,8 +51,23 @@ import wander from "./tests/wander";
 import cosmology from "./tests/cosmology";
 import matter from "./tests/matter";
 import induction from "./tests/induction";
+import binding from "./tests/binding";
+import spin from "./tests/spin";
+import structures from "./tests/structures";
+import topology from "./tests/topology";
+import emission from "./tests/emission";
+import species from "./tests/species";
+import chirality from "./tests/chirality";
+import coherence from "./tests/coherence";
+import dilation from "./tests/dilation";
+import automatonTests from "./tests/automaton";
+import medium from "./tests/medium";
+import ceiling from "./tests/ceiling";
+import neel from "./tests/neel";
+import benchmark from "./tests/benchmark";
+import anisotropy from "./tests/anisotropy";
 
-const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter];
+const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter, ...binding, ...spin, ...structures, ...topology, ...emission, ...species, ...chirality, ...coherence, ...dilation, ...automatonTests, ...medium, ...ceiling, ...neel, ...benchmark, ...anisotropy];
 
 /** the theories by the names the tests declare expectations under */
 const BY_NAME = Object.fromEntries(Object.values(THEORIES).map(t => [t.name, t]));
@@ -71,14 +86,40 @@ type Partial = { entries: Entry[]; outcomes: Outcome[] };
  * writing a half-line and then finishing it later interleaves into nonsense.
  */
 const runShard = async (
-  args: string[], only: string[], shard: { index: number; total: number },
+  args: string[], only: string[], shard?: { index: number; total: number },
 ) => {
+  /*
+   * ASKING FOR WORK RATHER THAN BEING GIVEN A SLICE.
+   *
+   * With a fixed slice the wall clock is decided by whichever worker happened to draw
+   * the two longest units — measured on this suite: eleven processes idle while two
+   * ground through the last quarter of it. A worker that asks for the next unit when
+   * it is free cannot straggle for that reason, and no cost model has to be kept up
+   * to date. `--shard` is still honoured so a single process can be pointed at a
+   * slice by hand.
+   */
+  let waiting: ((i: number | null) => void) | undefined;
+  if (!shard) process.on("message", (m: any) => {
+    if (m?.kind === "unit") { const f = waiting; waiting = undefined; f?.(m.index ?? null); }
+  });
+  const take = () => new Promise<number | null>(res => {
+    waiting = res;
+    process.send?.({ kind: "take" });
+  });
+
   const { report, outcomes } = await runSuite(ALL, BY_NAME, {
     title: "@orbitmines/physics", only, quiet: true, shard,
+    take: shard ? undefined : take,
     onUnit: u => process.send?.({ kind: "unit", ...u }),
   });
+  /*
+   * HAND IT BACK AND LET GO OF THE CHANNEL. A worker listening for its next unit has
+   * an open IPC channel keeping its event loop alive, so without the disconnect it
+   * sits there having finished — and the parent waits for an exit that never comes.
+   * The callback fires once the results have actually gone out.
+   */
   process.send?.({ kind: "done", entries: report.entries, outcomes } satisfies
-    { kind: string } & Partial);
+    { kind: string } & Partial, undefined, undefined, () => process.disconnect?.());
 };
 
 (async () => {
@@ -89,18 +130,56 @@ const runShard = async (
   const only = args.filter(a => !a.startsWith("--") && !/^\d+$/.test(a) &&
     args[args.indexOf(a) - 1] !== "--jobs" && args[args.indexOf(a) - 1] !== "--shard");
 
-  /* a worker: measure this slice and hand it back, printing nothing */
+  /* a worker: measure what it is handed and hand it back, printing nothing */
   const shardArg = valueOf(args, "--shard");
   if (shardArg) {
     const [index, total] = shardArg.split("/").map(Number);
     await runShard(args, only, { index, total });
     return;
   }
+  if (args.includes("--worker")) { await runShard(args, only); return; }
 
-  const units = ALL.filter(t => !only.length || only.some(k => t.id.includes(k)))
-    .reduce((n, t) => n + Object.keys(t.under).length, 0);
+  /*
+   * THE WORK, IN THE ORDER THE SUITE WILL FLATTEN IT. The queue hands out indices
+   * into this list, so it has to be built the same way `runSuite` builds it.
+   */
+  const chosen = ALL.filter(t => !only.length || only.some(k => t.id.includes(k)));
+  const unitsList = chosen.flatMap(t => Object.keys(t.under).map(name => `${t.id} · ${name}`));
+  const units = unitsList.length;
   const jobs = Math.max(1, Math.min(
     Number(valueOf(args, "--jobs") ?? cpus().length), units));
+
+  /*
+   * LONGEST FIRST, FROM WHAT THE LAST RUN COST.
+   *
+   * A queue only straggles on its tail: the run cannot end before the unit that
+   * started last has finished, so the way to keep that tail short is to start the
+   * long ones first. The costs are wildly skewed here — a handful of units are most
+   * of the CPU — and they are also stable between runs, so the previous run's
+   * seconds are a good enough estimate. TIMINGS.json is a cache and nothing reads it
+   * but this: a missing or stale entry costs a slightly longer tail, never a wrong
+   * number.
+   */
+  const timingsPath = `${__dirname}/TIMINGS.json`;
+  let timings: Record<string, number> = {};
+  try { timings = JSON.parse(readFileSync(timingsPath, "utf8")); } catch { /* first run */ }
+  /*
+   * A COST FROM ANOTHER TIER IS STILL AN ORDER. The tiers scale the same box and the
+   * same tick count, so what is expensive at `quick` is expensive at `full` — and
+   * the first full run after a change would otherwise have no ordering at all and
+   * straggle on whatever it happened to start last. An unmeasured unit sorts first,
+   * since a unit nothing knows the cost of is the one it is least safe to leave for
+   * the end.
+   */
+  const TIERS: Budget[] = ["full", "normal", "quick"];
+  const cost = (u: string) => {
+    for (const t of TIERS) {
+      const v = timings[`${t} · ${u}`];
+      if (v !== undefined) return v;
+    }
+    return Infinity;
+  };
+  const queue = unitsList.map((_, i) => i).sort((a, b) => cost(unitsList[b]) - cost(unitsList[a]));
 
   console.log(`\n═════ ${only.length ? `running ${only.join(", ")}` : "running everything"}` +
     ` · ${currentBudget()} · ${units} unit${units === 1 ? "" : "s"}` +
@@ -115,21 +194,38 @@ const runShard = async (
    * every diff is noise.
    */
   const collected: Partial = { entries: [], outcomes: [] };
+  const measured: Record<string, number> = {};
   if (jobs > 1) {
     let done = 0;
     await Promise.all(Array.from({ length: jobs }, (_, i) => new Promise<void>((res, rej) => {
-      const child = fork(__filename, [...args, "--shard", `${i}/${jobs}`], {
+      const child = fork(__filename, [...args, "--worker"], {
         execArgv: ["-r", "ts-node/register"],
         env: {
           ...process.env,
-          TS_NODE_COMPILER_OPTIONS: JSON.stringify({ module: "commonjs", target: "es2020" }),
+          /*
+           * `moduleResolution` comes from the app's tsconfig, which is set for a
+           * bundler; transpiling a file on its own rejects that combination, and the
+           * suite only ever imports its neighbours by relative path.
+           */
+          TS_NODE_COMPILER_OPTIONS: JSON.stringify({
+            module: "commonjs", target: "es2020", moduleResolution: "node",
+          }),
+          /*
+           * The parent has already type-checked everything a worker imports, because
+           * it imports it too. Doing it again in each of a dozen workers is a quarter
+           * of a minute of every core doing the same work as the one beside it.
+           */
+          TS_NODE_TRANSPILE_ONLY: "true",
         },
         stdio: ["ignore", "inherit", "inherit", "ipc"],
       });
       child.on("message", (m: any) => {
-        if (m.kind === "unit")
+        if (m.kind === "take") child.send({ kind: "unit", index: queue.shift() ?? null });
+        else if (m.kind === "unit") {
+          measured[`${tier} · ${m.id} · ${m.theory}`] = m.seconds;
           console.log(`  [${++done}/${units}] ${m.id} · ${m.theory} … ` +
             `${m.seconds.toFixed(1)}s  ${m.status}`);
+        }
         else if (m.kind === "done") {
           collected.entries.push(...m.entries);
           collected.outcomes.push(...m.outcomes);
@@ -138,6 +234,9 @@ const runShard = async (
       child.on("error", rej);
       child.on("exit", c => c === 0 ? res() : rej(new Error(`worker ${i} exited ${c}`)));
     })));
+    try {
+      writeFileSync(timingsPath, JSON.stringify({ ...timings, ...measured }, null, 2));
+    } catch { /* a cache that cannot be written is a slower next run, nothing more */ }
   } else {
     const r = await runSuite(ALL, BY_NAME, { title: "@orbitmines/physics", only });
     collected.entries.push(...r.report.entries);
@@ -163,15 +262,46 @@ const runShard = async (
       const path = `${__dirname}/REPORT.json`;
       const fresh = JSON.parse(json) as { entries: { id: string }[] };
       let merged = fresh;
+      let prior: typeof fresh | undefined;
       try {
-        const prior = JSON.parse(readFileSync(path, "utf8")) as typeof fresh;
+        prior = JSON.parse(readFileSync(path, "utf8")) as typeof fresh;
         const ids = new Set(fresh.entries.map(e => e.id));
         merged = {
           ...fresh,
           entries: [...prior.entries.filter(e => !ids.has(e.id)), ...fresh.entries]
             .sort((a, b) => a.id.localeCompare(b.id)),
         };
-      } catch { /* no prior report, or it is unreadable: this run is the report */ }
+      } catch (err) {
+        /*
+         * LOUDLY, NOT QUIETLY. This used to swallow whatever it caught, so a report that
+         * failed to read for ANY reason silently became a report containing only this
+         * run — and since the article reads REPORT.json directly, the first symptom was
+         * a page full of NOT IN THE REPORT rather than an error anybody saw. A missing
+         * file on the first ever run is the one legitimate case and it says so; anything
+         * else is a fault and gets named.
+         */
+        const missing = (err as NodeJS.ErrnoException)?.code === "ENOENT";
+        console.log(missing
+          ? "\n  no prior REPORT.json — this run is the whole report"
+          : `\n  !! COULD NOT READ THE PRIOR REPORT — ${err}\n` +
+            "     Everything not re-run in this invocation is about to be dropped.");
+      }
+
+      /*
+       * AND REFUSE TO SHRINK IT. A merge cannot legitimately lose an entry: ids are
+       * keyed, and the only thing that changes is which of them were just re-measured.
+       * So a smaller output than the input means the merge did not happen, and writing
+       * it would destroy measurements that can only be recovered by re-running the whole
+       * suite. Better to leave the file alone and say why.
+       */
+      if (prior && merged.entries.length < prior.entries.length) {
+        console.log(`\n  !! REFUSING TO WRITE: the merge came to ${merged.entries.length} ` +
+          `entries where the file already holds ${prior.entries.length}.\n` +
+          "     REPORT.json is unchanged. Re-run without a filter, or with every id you " +
+          "meant to re-measure\n     in a single invocation.");
+        return;
+      }
+
       writeFileSync(path, JSON.stringify(merged, null, 2));
       const kept = merged.entries.length - fresh.entries.length;
       if (kept > 0) console.log(`\n  ${fresh.entries.length} entries written, ${kept} kept from earlier runs`);

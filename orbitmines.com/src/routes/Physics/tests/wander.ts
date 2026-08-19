@@ -28,8 +28,7 @@ export const wander = test({
   id: "geometry/wander",
   claims: "the fraction of a step that survives averaging is √n/(√n+1) out of the step " +
     "lengths, and the exits summing to nothing is what leaves the vacuum directionless",
-  cited: ["and everything it cannot", "and the same, with a wander that does not discriminate",
-    "forward-only: you may deviate, but only into a direction you are already going"],
+  cited: ["TODO3"],
   under: { "gravity": "holds" },
   exact: true,
   run: (_ctx, theory) => {

@@ -1,7 +1,1058 @@
 {
   "title": "@orbitmines/physics",
-  "generated": "2026-08-19T16:15:41.886Z",
+  "generated": "2026-08-19T21:50:59.172Z",
   "entries": [
+    {
+      "id": "automaton/damage-does-not-concentrate · gravity+magnetism",
+      "what": "the damage does not pile up at the twist — it is uniform, which is worse rather than better, because a uniform weakness cannot be reinforced",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "share of lost ribbon cells in the twist sector",
+          "value": 0.039735099337748346,
+          "expect": {
+            "of": "about 4.2%, which is an even spread",
+            "want": 0.041666666666666664,
+            "tolerance": 0.35,
+            "because": "measured rather than argued from a 1/d² profile. The rate argument put three quarters of the damage in one sector; the run puts it everywhere"
+          },
+          "by": 0.04635761589403964,
+          "verdict": "within"
+        },
+        {
+          "name": "concentration at the twist, over an even spread",
+          "value": 0.9536423841059604,
+          "expect": {
+            "of": "about 1 — THE 12× DOES NOT APPEAR",
+            "want": 1,
+            "tolerance": 0.35,
+            "because": "(G+M/2) makes its pairs UNIFORMLY and the real ribbon is several cells wide everywhere, so both signs sit a few cells apart all the way round rather than only at the crossing. WHICH IS WORSE RATHER THAN BETTER: a localised weakness could be reinforced, and a uniform one is the object's own construction"
+          },
+          "note": "5.0 of 125.8 cells lost, over 24 sectors and 6 seeds",
+          "by": 0.04635761589403964,
+          "verdict": "within"
+        }
+      ],
+      "at": "2026-08-19T21:40:55.552Z"
+    },
+    {
+      "id": "automaton/fermion-cannot-be-coherent · gravity+magnetism",
+      "what": "a Möbius ribbon's two rails are the two polarities, so it necessarily emits both signs and eats itself — the thing that makes it a fermion is the thing that kills it",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "self-annihilations, rail-signed",
+          "value": 217.33333333333334,
+          "expect": {
+            "of": "≫ 0 — IT EATS ITSELF",
+            "want": 217,
+            "tolerance": 0.1,
+            "because": "the two rails carry opposite signs because that is what the twist MEANS, so the structure's own rays meet each other with opposite polarity and (G+M/1) fires. This is not a rate anybody chose — it is counted from the run"
+          },
+          "by": 0.0015360983102919023,
+          "verdict": "within"
+        },
+        {
+          "name": "self-annihilations, one sign only",
+          "value": 0,
+          "expect": {
+            "of": "0 — exactly, and that is the point",
+            "want": 0,
+            "tolerance": 0,
+            "because": "an emitter putting out one sign cannot annihilate its own space at all. BUT A ONE-SIGN EMITTER IS NOT ONE-SIDED, so it is not a fermion — which is why this row is the control and not the fix"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "runs still one-sided at the end, rail-signed",
+          "value": 0.16666666666666666,
+          "expect": {
+            "of": "a small fraction — it mostly does not survive",
+            "want": 0.16666666666666666,
+            "tolerance": 0.01,
+            "because": "the object that IS a fermion survives as one in a minority of runs"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "runs still one-sided at the end, one sign only",
+          "value": 1,
+          "expect": {
+            "of": "1 — always, and it was never a fermion",
+            "want": 1,
+            "tolerance": 0,
+            "because": "SO x IS NOT A FREE PARAMETER. The coherence argument computes an opposite-sign meeting probability over the structure's own rays AS THOUGH ITS EMISSION COULD BE ONE SIGN, and on a one-sided ribbon it cannot. The 10⁻²⁶ purity requirement was a statement about a quantity that does not exist, and the coherence mechanism is WITHDRAWN — which was what made the lifetime survivable, so the 1/p wall is back"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "self-annihilations on square 4, rail-signed",
+          "value": 197.33333333333334,
+          "expect": {
+            "of": "≫ 0 — NOT A FACT ABOUT SQUARE 8",
+            "want": 197.33333333333334,
+            "tolerance": 0,
+            "because": "the same construction on a different exit set still eats itself, so the conclusion is about what a one-sided ribbon IS rather than about the lattice it was drawn on. The old file could not ask this, having written the eight planar headings in as arithmetic"
+          },
+          "note": "against 0.0 for the one-sign control on the same lattice",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "square 4's one-sign control",
+          "value": 0,
+          "expect": {
+            "of": "0 — the control holds there too",
+            "want": 0,
+            "tolerance": 0,
+            "because": "which is what makes the row above a comparison rather than a coincidence"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "emission",
+          "lattice",
+          "own-ray (G+M/1)",
+          "all (G+M/1)",
+          "rib lost",
+          "fermion"
+        ],
+        "rows": [
+          [
+            "rail-signed (Möbius)",
+            "square-8",
+            "217.3",
+            "326.3",
+            "125.8",
+            "17%"
+          ],
+          [
+            "one sign only",
+            "square-8",
+            "0.0",
+            "114.7",
+            "37.3",
+            "100%"
+          ],
+          [
+            "rail-signed (Möbius)",
+            "square-4",
+            "197.3",
+            "306.8",
+            "127.7",
+            "0%"
+          ],
+          [
+            "one sign only",
+            "square-4",
+            "0.0",
+            "115.2",
+            "41.2",
+            "50%"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:57.155Z"
+    },
+    {
+      "id": "automaton/one-process-not-two · gravity+magnetism",
+      "what": "creation and annihilation are one process at one rate, so there is no regime in which repair outruns damage",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "how much the net loss grows across the sweep",
+          "value": 1.4297994269340975,
+          "expect": {
+            "of": "≈ 1 — BARELY, against a thirtyfold change in the rate",
+            "want": 1.4,
+            "tolerance": 0.15,
+            "because": "creation and annihilation are not two processes whose ratio can be tuned — THEY ARE ONE PROCESS. (G+M/2) makes a ± pair and (G+M/1) is what happens when the halves of those pairs meet anything, so turning the creation rate up turns the annihilation rate up with it. THE OLD FILE CALLED THIS FLAT and its rows wandered up and down; here it rises monotonically, which is a weaker statement honestly made — the next finding is the one that carries the argument"
+          },
+          "by": 0.021285304952926815,
+          "verdict": "within"
+        },
+        {
+          "name": "and how much the annihilation count grows over the same sweep",
+          "value": 7.574204946996466,
+          "expect": {
+            "of": "≫ the net's growth — which is the whole result",
+            "want": 7.6,
+            "tolerance": 0.15,
+            "because": "the driving rate goes up thirtyfold, the annihilations go up nearly eightfold, and the net goes up by under a half. So the knob the repair argument wanted to turn moves the thing it was supposed to fix by almost nothing: THERE IS NO REGIME IN WHICH REPAIR OUTRUNS DAMAGE, and there is no need for the net to be exactly flat for that to follow"
+          },
+          "by": 0.0033940859215175756,
+          "verdict": "within"
+        },
+        {
+          "name": "how far the creation rate was swept",
+          "value": 30,
+          "expect": {
+            "of": "30×",
+            "want": 30,
+            "tolerance": 0.01,
+            "because": "so the flatness above is over a real range rather than over a nudge"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "and what that costs the repair argument",
+          "value": 0,
+          "note": "the 10⁵⁹ enhancement claimed there compared the structure's EMISSION rate with the vacuum's CREATION rate, which are not the two quantities that compete. What competes is annihilation against creation, and they are locked together"
+        }
+      ],
+      "table": {
+        "columns": [
+          "p(create)",
+          "(G+M/1)",
+          "rib lost",
+          "rib back",
+          "net"
+        ],
+        "rows": [
+          [
+            "2e-4",
+            "283",
+            "120",
+            "4",
+            "116"
+          ],
+          [
+            "6e-4",
+            "379",
+            "137",
+            "12",
+            "125"
+          ],
+          [
+            "2e-3",
+            "766",
+            "212",
+            "60",
+            "152"
+          ],
+          [
+            "6e-3",
+            "2144",
+            "398",
+            "231",
+            "166"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:59.532Z"
+    },
+    {
+      "id": "chirality/rotation-is-not-gauge · gravity",
+      "what": "w₁ and the dart count are the same in every rotation system and the firing orbit's length is not — so an orbit-based mass is underdetermined, not just asymmetric",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "structures where the firing orbit's length varies",
+          "value": 4,
+          "expect": {
+            "of": "most of them — SO IT IS NOT A PROPERTY OF THE STRUCTURE",
+            "want": 4,
+            "tolerance": 1,
+            "because": "mirroring is ONE element of the group of rotation systems, the one that reverses every node's order at once. Sweeping the whole group turns 'a structure and its mirror disagree' into the sharper complaint that the quantity they disagree about is not determined by the structure at all"
+          },
+          "note": "orbit length varies for: theta, fig-8, K4, ladder-3",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "widest ratio of orbit lengths on one structure",
+          "value": 4.5,
+          "expect": {
+            "of": "> 1 — AND NOT BY A LITTLE",
+            "want": 2,
+            "tolerance": 1.5,
+            "because": "a single graph with a single twist assignment gives a whole RANGE of orbit lengths depending on an ordering nothing in the model fixes. A THEORY WHOSE PARTICLE MASSES DEPEND ON AN UNFIXED ORDERING DOES NOT PREDICT MASSES AT ALL — so this was already broken before the mirror was considered"
+          },
+          "by": 1.25,
+          "verdict": "within"
+        },
+        {
+          "name": "structures where w₁ varies with the rotation system",
+          "value": 0,
+          "expect": {
+            "of": "0 — necessarily, and measured anyway",
+            "want": 0,
+            "tolerance": 0,
+            "because": "w₁ depends only on the graph and the twist bits, and the rotation system appears nowhere in its definition. So spin is rotation-blind BY CONSTRUCTION, which is what makes it a usable observable where the orbit length is not"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "structures where the face count varies",
+          "value": 4,
+          "expect": {
+            "of": "some — so genus is not usable either",
+            "want": 3,
+            "tolerance": 2,
+            "because": "the face count and the genus go the same way as the orbit length, which rules out a second candidate observable rather than leaving it open"
+          },
+          "by": 0.3333333333333333,
+          "verdict": "within"
+        },
+        {
+          "name": "structures where 'some orbit has holonomy −1' varies",
+          "value": 4,
+          "expect": {
+            "of": "> 0 — WHICH IS WHAT §4 COSTS",
+            "want": 2,
+            "tolerance": 2,
+            "because": "the odd-crossing condition — that the firing orbit must cross the twist an odd number of times — is a statement about WHERE THE EXITS SIT, and where the exits sit IS the rotation system. So the best new result of the structure cluster is rotation-dependent and cannot survive taking the blind reading"
+          },
+          "by": 1,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "structure",
+          "rot systems",
+          "orbit len",
+          "F",
+          "w₁",
+          "some orbit −"
+        ],
+        "rows": [
+          [
+            "2-gon",
+            1,
+            "2 — fixed",
+            "2 — fixed",
+            "YES",
+            "YES"
+          ],
+          [
+            "4-cycle",
+            1,
+            "4 — fixed",
+            "2 — fixed",
+            "YES",
+            "YES"
+          ],
+          [
+            "theta",
+            4,
+            "2–6 (2)",
+            "1–3 (2)",
+            "YES",
+            "VARIES"
+          ],
+          [
+            "fig-8",
+            6,
+            "2–8 (3)",
+            "1–3 (2)",
+            "YES",
+            "VARIES"
+          ],
+          [
+            "K4",
+            16,
+            "3–9 (4)",
+            "2–4 (2)",
+            "YES",
+            "VARIES"
+          ],
+          [
+            "ladder-3",
+            64,
+            "4–18 (4)",
+            "1–3 (2)",
+            "YES",
+            "VARIES"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.661Z"
+    },
+    {
+      "id": "chirality/the-lattice-decides · gravity",
+      "what": "the exit set is closed under every reflection, so the dynamics cannot tell a structure from its mirror — which makes the orbit length not the mass",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "reflections that do NOT map the exit set onto itself",
+          "value": 0,
+          "expect": {
+            "of": "0 — full octahedral symmetry, reflections included",
+            "want": 0,
+            "tolerance": 0,
+            "because": "so IF A STRUCTURE CAN BE EMBEDDED, ITS MIRROR CAN BE EMBEDDED TOO, and the three rules act identically on both — because the rules are stated in terms of the exit set and the exit set is reflection-invariant. THAT IS DECISIVE AND IT IS NOT AN AESTHETIC ARGUMENT: the dynamics cannot tell a structure from its mirror, so any quantity that differs between them is not a quantity the dynamics can be reading. The firing orbit's length differs between them, therefore the firing orbit's length IS NOT THE MASS"
+          },
+          "note": "checked on fcc-12's own 12 exits rather than on a hardcoded 26, which is what the cubic-26 file this replaces did",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the dart count's dependence on the rotation system",
+          "value": 0,
+          "expect": {
+            "of": "0 — 2E is a fact about how many edges there are",
+            "want": 0,
+            "tolerance": 0,
+            "because": "which is the replacement observable. THE CORRECTED READING IS SPIN = w₁ AND MASS ∝ 1/(2E), both rotation-blind, both mirror-symmetric, neither depending on a firing order. A WEAKER framework than the structure cluster claimed — the schedule becomes how the structure expresses its topology rather than the seat of the physics — but one that does not contradict itself"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "and the trade, which is not even",
+          "value": 0,
+          "note": "the orbit-based reading fails two ways — the mirror problem AND underdetermined masses — and the structure-based reading fails neither, so the choice is forced even though it costs the more interesting result. Net: one failure repaired, one result withdrawn, and the ceiling on charge untouched, that last being the thing that actually limits this framework"
+        }
+      ],
+      "table": {
+        "columns": [
+          "operation",
+          "permutes the exits?",
+          "fixed exits"
+        ],
+        "rows": [
+          [
+            "mirror in x",
+            "YES — exactly",
+            4
+          ],
+          [
+            "mirror in y",
+            "YES — exactly",
+            4
+          ],
+          [
+            "mirror in z",
+            "YES — exactly",
+            4
+          ],
+          [
+            "inversion",
+            "YES — exactly",
+            0
+          ],
+          [
+            "swap x,y",
+            "YES — exactly",
+            2
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.748Z"
+    },
+    {
+      "id": "coherence/self-damage-rate · gravity",
+      "what": "a structure annihilates its own space at O(1) rather than at the vacuum's rate, so the duty fraction is a ratio of comparable numbers and not p·τ",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "not applicable",
+          "value": null,
+          "note": "rays carry no polarity, so there is no alike/opposite distinction to make"
+        }
+      ],
+      "at": "2026-08-19T21:40:48.054Z"
+    },
+    {
+      "id": "coherence/self-damage-rate · gravity+magnetism",
+      "what": "a structure annihilates its own space at O(1) rather than at the vacuum's rate, so the duty fraction is a ratio of comparable numbers and not p·τ",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 10,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 21,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "annihilations a tick with a source in the box",
+          "value": 685.5972222222222,
+          "err": 2.1104256928255767,
+          "expect": {
+            "of": "≫ 0 — the source's own rays meet",
+            "want": 685.5972222222222,
+            "tolerance": 0,
+            "because": "reported so the difference below can be read as a fraction of something rather than as a bare number"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "annihilations a tick with nothing in the box",
+          "value": 680.2472222222223,
+          "err": 2.388841407796877,
+          "expect": {
+            "of": "the medium's own rate, which is the control",
+            "want": 680.2472222222223,
+            "tolerance": 0,
+            "because": "the vacuum churns on its own, so a source's contribution is only meaningful against a box that has none"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "orders the annihilation rate per cell sits above p",
+          "value": 59.869411165121775,
+          "expect": {
+            "of": "about 60 — AND THAT IS THE WHOLE CORRECTION",
+            "want": 60,
+            "tolerance": 0.05,
+            "because": "the repair calculation divided by p, the vacuum's expansion rate. Measured here the rate at a structure is not within sixty orders of it — it is an O(1) process, because (G+M/1) fires where two rays meet and an emitter is the densest concentration of rays there is. SO THE DUTY FRACTION IS A RATIO OF TWO COMPARABLE NUMBERS, of order one half for anything like equal rates, and the 10⁻⁵⁹ headline is not imprecise but divided by the wrong quantity"
+          },
+          "note": "7.403e-2 per cell per tick against p = 1e−61",
+          "by": 0.002176480581303745,
+          "verdict": "within"
+        },
+        {
+          "name": "how much a source raises the rate over bare vacuum",
+          "value": 0.007864787720150628,
+          "expect": {
+            "of": "> 0 — and SMALL, which is the more interesting reading",
+            "want": 0.008,
+            "tolerance": 0.6,
+            "because": "the source adds only a per cent or so to a box that is already annihilating at O(1), and that is not a weak result — IT IS A STRONGER FORM OF THE CORRECTION. The old argument needed the structure to be special: damage at the vacuum's p everywhere, and repair at 1/τ only where the structure is. Measured, the MEDIUM ITSELF annihilates sixty orders above p, so the structure does not have to be the densest thing anywhere for the p·τ ratio to be wrong. It was wrong before the structure was put in"
+          },
+          "by": 0.016901534981171498,
+          "verdict": "within"
+        }
+      ],
+      "at": "2026-08-19T21:41:01.935Z"
+    },
+    {
+      "id": "coherence/sign-purity · gravity",
+      "what": "a structure whose rays all carry one sign cannot annihilate its own space, so the margin becomes a demand for purity to one part in 10²⁶",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "worst relative error of 2x(1−x) against the Monte Carlo",
+          "value": 0.05730730730730709,
+          "expect": {
+            "of": "0 — the closed form is the measurement",
+            "want": 0,
+            "tolerance": 0.06,
+            "because": "checked only where it is checkable: below a mixing of 10⁻³ an opposite pair is too rare to draw in four hundred thousand trials, so those rows are the formula and are marked as such rather than being quoted as measurements"
+          },
+          "by": 0.05730730730730709,
+          "verdict": "within"
+        },
+        {
+          "name": "minority-sign share the Pauli bound allows",
+          "value": 8.5e-27,
+          "expect": {
+            "of": "about 10⁻²⁶",
+            "want": 8.5e-27,
+            "tolerance": 0,
+            "because": "SO THE MARGIN IS NOW A STATEMENT ABOUT COHERENCE RATHER THAN ABOUT THE VACUUM. The structure's emission must be pure to one part in 10²⁶ — every ray the same sign, to that precision. Very demanding, AND FALSIFIABLE, which the p·τ version was not: it is a statement about the emitter rather than about a number nobody can measure"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "rows of the sweep that clear the bound",
+          "value": 1,
+          "expect": {
+            "of": "1 — only the purest",
+            "want": 1,
+            "tolerance": 0,
+            "because": "everything down to a mixing of 10⁻¹² still fails by fourteen orders, so the requirement is not nearly met by any ordinary notion of 'mostly one sign'"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "mixing x",
+          "P(opposite)",
+          "measured",
+          "vs Pauli bound"
+        ],
+        "rows": [
+          [
+            "5e-1",
+            "5.000e-1",
+            "4.998e-1",
+            "fails by 25 orders"
+          ],
+          [
+            "1e-1",
+            "1.800e-1",
+            "1.792e-1",
+            "fails by 25 orders"
+          ],
+          [
+            "1e-2",
+            "1.980e-2",
+            "2.000e-2",
+            "fails by 24 orders"
+          ],
+          [
+            "1e-3",
+            "1.998e-3",
+            "2.112e-3",
+            "fails by 23 orders"
+          ],
+          [
+            "1e-6",
+            "2.000e-6",
+            "— too rare",
+            "fails by 20 orders"
+          ],
+          [
+            "1e-12",
+            "2.000e-12",
+            "— too rare",
+            "fails by 14 orders"
+          ],
+          [
+            "1e-29",
+            "2.000e-29",
+            "— too rare",
+            "PASSES"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.695Z"
+    },
+    {
+      "id": "coherence/twist-concentration · gravity",
+      "what": "opposite-sign meetings pile up at the twist, so the fermion's defining feature is the one place its coherence cannot protect it — and a wider ribbon is worse",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "share of opposite-sign meetings at the twist",
+          "value": 0.7529411764705882,
+          "expect": {
+            "of": "≫ 6.3%, which is an even spread",
+            "want": 0.753,
+            "tolerance": 0.02,
+            "because": "THE MEETINGS PILE UP AT THE TWIST, as the geometry forces. So the fermion's defining feature is also the one place its coherence cannot protect it, and (G+M/1) preferentially eats the twist"
+          },
+          "by": 0.00007811889696119232,
+          "verdict": "within"
+        },
+        {
+          "name": "concentration over an even spread",
+          "value": 12.047058823529412,
+          "expect": {
+            "of": "(gap/cell)² — set by how wide the ribbon is against one cell",
+            "want": 12,
+            "tolerance": 0.2,
+            "because": "which means A WIDER RIBBON IS WORSE HERE — the opposite of what the lifetime argument wanted from width. The whole effect lives in how the 1/d² is cut off at one cell, so the regularisation is the thing to attack if this is to be doubted"
+          },
+          "by": 0.0039215686274509665,
+          "verdict": "within"
+        },
+        {
+          "name": "and the two failures are one failure",
+          "value": 0,
+          "note": "the twist is the most fragile cell here, AND `structures/lifetime` already measured that with a single twisted edge that edge is always the critical one. So spreading the twists is doing double duty: it is not merely redundancy but the only configuration in which the protection and the topology are compatible — a result that was not visible before the rules were written out"
+        }
+      ],
+      "table": {
+        "columns": [
+          "sector",
+          "separation",
+          "share"
+        ],
+        "rows": [
+          [
+            "0 ←twist",
+            "1.0",
+            "75.3%"
+          ],
+          [
+            "1",
+            "4.0",
+            "4.7%"
+          ],
+          [
+            "2",
+            "8.0",
+            "1.2%"
+          ],
+          [
+            "4",
+            "8.0",
+            "1.2%"
+          ],
+          [
+            "8",
+            "8.0",
+            "1.2%"
+          ],
+          [
+            "15",
+            "4.0",
+            "4.7%"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.679Z"
+    },
     {
       "id": "cosmology/blocked-expansion · gravity+magnetism",
       "what": "splitting is suppressed where the carrier density is high, by the free fraction the interpolation is derived from — measured on a lattice, not assumed",
@@ -145,7 +1196,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T14:15:56.171Z"
+      "at": "2026-08-19T20:52:52.046Z"
     },
     {
       "id": "cosmology/expansion · gravity",
@@ -919,7 +1970,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:12:09.140Z"
+      "at": "2026-08-19T20:49:00.610Z"
     },
     {
       "id": "cosmology/hubble-rate · gravity",
@@ -1040,7 +2091,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:15:09.495Z"
+      "at": "2026-08-19T20:50:22.187Z"
     },
     {
       "id": "cosmology/hubble-rate · gravity+magnetism",
@@ -1137,7 +2188,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:09:21.359Z"
+      "at": "2026-08-19T20:50:31.154Z"
     },
     {
       "id": "cosmology/lattice-step · gravity",
@@ -1329,7 +2380,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T16:15:41.886Z"
+      "at": "2026-08-19T20:49:00.573Z"
     },
     {
       "id": "cosmology/radial-acceleration · gravity",
@@ -1479,7 +2530,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T14:40:24.972Z"
+      "at": "2026-08-19T20:48:39.232Z"
     },
     {
       "id": "cosmology/rotation · gravity",
@@ -1640,7 +2691,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:11:46.322Z"
+      "at": "2026-08-19T20:47:10.309Z"
     },
     {
       "id": "cosmology/sparc · gravity",
@@ -1793,7 +2844,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T15:06:34.650Z"
+      "at": "2026-08-19T20:48:39.596Z"
     },
     {
       "id": "cosmology/transport-premise · gravity",
@@ -2105,7 +3156,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:50:15.915Z"
+      "at": "2026-08-19T20:52:13.581Z"
     },
     {
       "id": "cosmology/where-space-is-made · gravity",
@@ -2246,7 +3297,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:10:49.505Z"
+      "at": "2026-08-19T20:49:57.536Z"
     },
     {
       "id": "cosmology/where-space-is-made · gravity+magnetism",
@@ -2371,7 +3422,157 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:19:17.605Z"
+      "at": "2026-08-19T20:50:11.820Z"
+    },
+    {
+      "id": "dilation/budget-is-a-length · gravity",
+      "what": "a spent budget gives 1 − f and fails at first order; a budget that is a length gives √(1−f²), which IS 1/γ — so the internal walk has to be a separate axis",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "worst error of the linear reading against 1/γ",
+          "value": 0.9291118794991664,
+          "expect": {
+            "of": "≫ 0 — IT FAILS, and at first order",
+            "want": 0.929,
+            "tolerance": 0.01,
+            "because": "a budget that is SPENT gives 1 − f, and 1 − f is not 1/γ at any order beyond the zeroth. Failing at FIRST order is the one place a model cannot afford to fail, because that is the order every terrestrial measurement lives at. The worst row of the sweep is f = 0.99; the cubic-26 file quoted 97.8% from a finer sweep running closer to c, which is a bigger number about the same failure"
+          },
+          "by": 0.00012043003139543197,
+          "verdict": "within"
+        },
+        {
+          "name": "worst error of the quadrature reading against 1/γ",
+          "value": 0,
+          "expect": {
+            "of": "0 — EXACT, and not an approximation",
+            "want": 0,
+            "tolerance": 1e-15,
+            "because": "√(1−f²) IS 1/γ, arrived at from a budget rather than from a Lorentz transformation. Which means the whole question is why the two should add in QUADRATURE — a budget that is a LENGTH, like a step, rather than one that is spent like money"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "clock shift the linear reading predicts at 10 m/s",
+          "value": 3.3356409519815205e-8,
+          "expect": {
+            "of": "f = v/c",
+            "want": 3.3356409519815205e-8,
+            "tolerance": 1e-12,
+            "because": "quoted so the comparison below is between two numbers rather than between a number and an adjective"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "orders between the two readings at a walking pace",
+          "value": 7.777850698591909,
+          "expect": {
+            "of": "about 8 — and an optical clock sees 10⁻¹⁸",
+            "want": 7.78,
+            "tolerance": 0.01,
+            "because": "relativity gives f²/2 where the linear reading gives f, so at 10 m/s they differ by 2c/v. THE LINEAR READING IS NOT INELEGANT, IT IS DEAD: the shift it predicts is enormously larger than anything measured, so the model needs the internal walk to be a GENUINELY SEPARATE AXIS from motion through the lattice. And that is the honest place to attack this, because one emitter firing one ray a tick looks much more like one queue than like two axes — and one queue gives the linear answer"
+          },
+          "note": "linear 3.34e-8 against relativity's 5.56e-16",
+          "by": 0.00027625982109145925,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "f = v/c",
+          "1/γ",
+          "linear 1−f",
+          "error",
+          "quadrature √(1−f²)"
+        ],
+        "rows": [
+          [
+            "0.001",
+            "0.999999500",
+            "0.999000",
+            "0.1%",
+            "0.999999500"
+          ],
+          [
+            "0.010",
+            "0.999949999",
+            "0.990000",
+            "1.0%",
+            "0.999949999"
+          ],
+          [
+            "0.100",
+            "0.994987437",
+            "0.900000",
+            "9.5%",
+            "0.994987437"
+          ],
+          [
+            "0.500",
+            "0.866025404",
+            "0.500000",
+            "42.3%",
+            "0.866025404"
+          ],
+          [
+            "0.900",
+            "0.435889894",
+            "0.100000",
+            "77.1%",
+            "0.435889894"
+          ],
+          [
+            "0.990",
+            "0.141067360",
+            "0.010000",
+            "92.9%",
+            "0.141067360"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.684Z"
     },
     {
       "id": "electrostatics/coulomb · gravity",
@@ -2424,7 +3625,7 @@
           "note": "cannot be asked — rays carry no polarity, so there is no sign for a field to be the net of. This is not a gap in the test: it is what makes gravity a theory of this model rather than magnetism with the signs switched off."
         }
       ],
-      "at": "2026-08-19T13:14:48.040Z"
+      "at": "2026-08-19T20:39:29.782Z"
     },
     {
       "id": "electrostatics/coulomb · gravity+magnetism",
@@ -2571,7 +3772,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:07:05.734Z"
+      "at": "2026-08-19T20:46:53.769Z"
     },
     {
       "id": "electrostatics/coulomb · labelled",
@@ -2718,7 +3919,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:18:06.660Z"
+      "at": "2026-08-19T20:48:53.995Z"
     },
     {
       "id": "electrostatics/sign-law · gravity",
@@ -2771,7 +3972,7 @@
           "note": "cannot be asked — with no polarity there are no alike and opposite cases to have a law between"
         }
       ],
-      "at": "2026-08-19T13:01:10.227Z"
+      "at": "2026-08-19T20:39:55.956Z"
     },
     {
       "id": "electrostatics/sign-law · gravity+magnetism",
@@ -2894,7 +4095,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:06:49.065Z"
+      "at": "2026-08-19T20:45:30.918Z"
     },
     {
       "id": "electrostatics/sign-law · labelled",
@@ -3017,7 +4218,290 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:07:20.598Z"
+      "at": "2026-08-19T20:47:10.282Z"
+    },
+    {
+      "id": "emission/charge-is-a-degree · gravity",
+      "what": "letting the particle choose what it emits makes the emission a map with a degree, so charge comes out quantised, mass-independent and conserved",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "displacement of an exit under a 2π rotation, worst over all of them",
+          "value": 3.1401849173675503e-16,
+          "expect": {
+            "of": "0 — the identity on directions",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "SO IT IS THE IDENTITY ON ANY FUNCTION OF THEM, however freely chosen. Free choice over a domain the rotation fixes cannot produce something the rotation flips, which settles whether this buys spin BEFORE any pattern is written down. A spinor needs the half-angle and nothing that is a function of direction alone has it"
+          },
+          "by": 3.1401849173675503e-16,
+          "verdict": "within"
+        },
+        {
+          "name": "worst departure from an integer, over five patterns",
+          "value": 0.00002056164342700839,
+          "expect": {
+            "of": "0 — INTEGERS, computed by the integral",
+            "want": 0,
+            "tolerance": 0.005,
+            "because": "and the degree is blind to how often the pattern is emitted: it is a property of the pattern, and the rate does not appear in it anywhere. That is what makes charge QUANTISED, which nothing else in this book explains"
+          },
+          "by": 0.00002056164342700839,
+          "verdict": "within"
+        },
+        {
+          "name": "drift of the degree under deformation, up to t = 0.9",
+          "value": 0.0005184096267443206,
+          "expect": {
+            "of": "0 — flat, so it cannot creep",
+            "want": 0,
+            "tolerance": 0.005,
+            "because": "a degree is CONSERVED because it cannot change without the pattern being torn. Deform it continuously and it stays put"
+          },
+          "by": 0.0005184096267443206,
+          "verdict": "within"
+        },
+        {
+          "name": "degree past the jump, at t = 1.5",
+          "value": -0.000019748697179087717,
+          "expect": {
+            "of": "0 — and the jump is at t = 1 exactly",
+            "want": 0,
+            "tolerance": 0.005,
+            "because": "which is precisely where d + ẑ vanishes at the south pole and the map stops being a map at all. A degree is a count, so it is quantised, AND IT CHANGES ONLY WHEN THE THING IT COUNTS IS DESTROYED"
+          },
+          "by": 0.000019748697179087717,
+          "verdict": "within"
+        },
+        {
+          "name": "proton's charge over the electron's, read as a degree",
+          "value": 1,
+          "expect": {
+            "of": "1 — EXACTLY, and 'exactly' is meant literally",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the refutation this book has carried from the start is that emission rate goes as MASS, so a rate-based charge would have a proton carry 1836 times an electron's where measurement has them equal to one part in 10²¹. The rate-based reading could at best be TUNED to agree to some number of decimals; two patterns of degree ±1 have charges of equal magnitude with NO ERROR TERM AT ALL. The measurement is a bound of 10⁻²¹ and the model says nought"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the same ratio read as an emission rate",
+          "value": 1836.1526734400013,
+          "expect": {
+            "of": "1836 — which is the refutation",
+            "want": 1836.1526734400013,
+            "tolerance": 0,
+            "because": "carried beside the row above so the two readings can be compared rather than the good one quoted alone"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "pattern",
+          "degree",
+          "deformation",
+          "degree"
+        ],
+        "rows": [
+          [
+            "identity   s = d",
+            "1.0000",
+            "t = 0.0",
+            "1.0000"
+          ],
+          [
+            "antipodal  s = −d",
+            "-1.0000",
+            "t = 0.5",
+            "1.0000"
+          ],
+          [
+            "constant   s = ẑ",
+            "0.0000",
+            "t = 0.9",
+            "1.0005"
+          ],
+          [
+            "rotated by 0.7 rad",
+            "1.0000",
+            "t = 1.0",
+            "0.5000"
+          ],
+          [
+            "double azimuth",
+            "2.0000",
+            "t = 1.5",
+            "-0.0000"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:41:01.623Z"
+    },
+    {
+      "id": "emission/xor-survives · gravity",
+      "what": "the XOR is the one-dimensional case of a dot product so everything built on it goes through — but the loop a rotation traces is constant, so this gives no spin",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "u_a·u_b for alike charges",
+          "value": 1,
+          "expect": {
+            "of": "+1 — turns",
+            "want": 1,
+            "tolerance": 1e-12,
+            "because": "one end of the XOR, reproduced exactly"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "u_a·u_b for opposite charges",
+          "value": -1,
+          "expect": {
+            "of": "−1 — annihilates",
+            "want": -1,
+            "tolerance": 1e-12,
+            "because": "the other end, and THE TWO ENDS REPRODUCE THE XOR EXACTLY. The middle is new — a partial annihilation — and it is not new either, since this arc already says a polarity is a field value rounded off to its sign. So the generalisation was half-written. AND THE LEDGER STAYS BILINEAR, −u_a·u_b where −s_a·s_b used to be, so the 1/R kernel, the dipole scalar, the force, the torque and magnetostatics entire go through with a dot product where a sign used to be"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "how far any pattern moves round the rotation loop",
+          "value": 2.7194799110210365e-16,
+          "expect": {
+            "of": "0 — ALL OF THEM ARE ROTATION-INVARIANT",
+            "want": 0,
+            "tolerance": 1e-9,
+            "because": "so the loop is the CONSTANT loop, contractible without argument, hence a boson. The degree gives charge and gives NOTHING AT ALL about statistics. Why, in one sentence: the configuration space of maps into a sphere does not have the fundamental group a fermion needs. The known way to get one is to make the target bigger — maps into SU(2), the Skyrme construction — which is a much larger relaxation than letting a particle choose a charge"
+          },
+          "by": 2.7194799110210365e-16,
+          "verdict": "within"
+        },
+        {
+          "name": "and what it costs, which should be booked",
+          "value": 0,
+          "note": "A DEGREE IS AN INTEGRAL OVER ALL DIRECTIONS, so charge stops being carried by any individual ray and becomes a property of the whole emission pattern. Everything else in this book is local — a force is a fact about where two charges met — so the electric half would GAIN QUANTISATION AND LOSE LOCALITY. Whether that trade is payable is exactly the question this opens, and the Layer 2 arc's traversal reading buys the same integer without it"
+        }
+      ],
+      "table": {
+        "columns": [
+          "u_a",
+          "u_b",
+          "u_a·u_b",
+          "outcome"
+        ],
+        "rows": [
+          [
+            "+ẑ",
+            "+ẑ",
+            "1.0000",
+            "alike — turns"
+          ],
+          [
+            "+ẑ",
+            "−ẑ",
+            "-1.0000",
+            "opposite — ANNIHILATES"
+          ],
+          [
+            "+ẑ",
+            "+x̂",
+            "0.0000",
+            "partial"
+          ],
+          [
+            "+ẑ",
+            "60°",
+            "0.5000",
+            "partial"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.751Z"
     },
     {
       "id": "geometry/derived-constants · gravity",
@@ -3260,7 +4744,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:00:20.162Z"
+      "at": "2026-08-19T20:38:40.366Z"
     },
     {
       "id": "geometry/exits-by-axis · gravity",
@@ -3389,7 +4873,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:00:21.394Z"
+      "at": "2026-08-19T20:38:40.404Z"
     },
     {
       "id": "geometry/sheet-coverage · gravity",
@@ -3582,7 +5066,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:00:22.100Z"
+      "at": "2026-08-19T20:38:41.038Z"
     },
     {
       "id": "geometry/shells · gravity",
@@ -3694,7 +5178,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:00:21.443Z"
+      "at": "2026-08-19T20:38:40.479Z"
     },
     {
       "id": "geometry/veins · gravity",
@@ -3808,7 +5292,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:01:27.383Z"
+      "at": "2026-08-19T20:39:55.937Z"
     },
     {
       "id": "geometry/veins · gravity+magnetism",
@@ -3922,7 +5406,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:01:59.494Z"
+      "at": "2026-08-19T20:40:10.693Z"
     },
     {
       "id": "geometry/wander · gravity",
@@ -4051,7 +5535,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:36:11.305Z"
+      "at": "2026-08-19T20:49:00.667Z"
     },
     {
       "id": "gravity/inverse-square · gravity",
@@ -4169,7 +5653,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:08:13.202Z"
+      "at": "2026-08-19T20:48:14.199Z"
     },
     {
       "id": "gravity/inverse-square · gravity+magnetism",
@@ -4287,7 +5771,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:09:33.003Z"
+      "at": "2026-08-19T20:50:16.009Z"
     },
     {
       "id": "gravity/inverse-square · pure",
@@ -4339,7 +5823,7 @@
           "note": "runs, but the result would mean nothing — `pure`'s remake destroys momentum, and a force carried by arriving momentum cannot be measured through a rule that throws momentum away"
         }
       ],
-      "at": "2026-08-19T13:01:59.505Z"
+      "at": "2026-08-19T20:38:43.128Z"
     },
     {
       "id": "gravity/recovered-from-magnetism · gravity",
@@ -4470,7 +5954,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:01:42.232Z"
+      "at": "2026-08-19T20:39:01.412Z"
     },
     {
       "id": "gravity/the-half-in-G · gravity",
@@ -4606,7 +6090,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:04:42.811Z"
+      "at": "2026-08-19T20:49:00.679Z"
     },
     {
       "id": "induction/faraday · gravity+magnetism",
@@ -4659,7 +6143,7 @@
           "note": "cannot be asked — with no label there is no magnetic field for a changing flux to be the flux of"
         }
       ],
-      "at": "2026-08-19T13:07:20.600Z"
+      "at": "2026-08-19T20:44:59.054Z"
     },
     {
       "id": "induction/faraday · labelled",
@@ -4758,7 +6242,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:09:02.054Z"
+      "at": "2026-08-19T20:46:25.136Z"
     },
     {
       "id": "induction/lattice-against-retarded · labelled",
@@ -4866,7 +6350,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:02:31.415Z"
+      "at": "2026-08-19T20:46:19.346Z"
     },
     {
       "id": "layer2/moments · gravity",
@@ -5004,7 +6488,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:29:36.301Z"
+      "at": "2026-08-19T20:49:00.644Z"
     },
     {
       "id": "layer2/ring · gravity",
@@ -5220,7 +6704,162 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:00:20.223Z"
+      "at": "2026-08-19T20:38:40.863Z"
+    },
+    {
+      "id": "magnetism/ceiling · gravity",
+      "what": "the bill factorises into a unit conversion and a material property, and the count-derived ceiling on magnetisation is refuted by iron and by nothing else",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "κ = √(µ₀/4πG)",
+          "value": 38.70767965518458,
+          "units": "kg per A·m",
+          "expect": {
+            "of": "38.7 — and there is no material in it and no model in it",
+            "want": 38.7,
+            "tolerance": 0.001,
+            "because": "the arc quotes this figure, so it is a check on the factorisation rather than a measurement: κ is built out of µ₀ and G alone and is identical for every magnet that has ever existed. What is left is M, which is a material property no theory derives — and asking this model for it was the wrong question"
+          },
+          "by": 0.0001984407024437877,
+          "verdict": "within"
+        },
+        {
+          "name": "is the strict bound refuted",
+          "value": 1,
+          "expect": {
+            "of": "1 — AT LEAST ONE MATERIAL OVER",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the arc's own conclusion, stated before any of this ran: as a strict bound the ceiling fails, and that has to be said first. How MANY are over is the next row and is not something the arc predicts"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "materials over the ceiling",
+          "value": 3,
+          "note": "iron at 1.629, cobalt at 1.219, Nd₂Fe₁₄B at 1.317 — the arc quotes one, iron, at 1.05, which is the cubic-26 reading"
+        },
+        {
+          "name": "is the one over the ceiling iron",
+          "value": 1,
+          "expect": {
+            "of": "1 — 'the one material most likely to test it'",
+            "want": 1,
+            "tolerance": 0,
+            "because": "which material fails is a stronger claim than that one does, and the arc names it. Iron is the strongest elemental ferromagnet, so a bound that is going to break should break there first — and if it broke somewhere else instead, the bound would be wrong in a way that had nothing to do with being slightly too low"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the ceiling's ordering against moment per atom",
+          "value": 1,
+          "expect": {
+            "of": "1 — iron, cobalt, nickel, which is what materials science says",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the spread below the ceiling is the alignment fraction, and it should run in the order of the measured moments per atom. A ranking agreeing is a real check and it costs nothing to fail, since the ratios are computed from electron counts and saturation magnetisations with no reference to the moments at all"
+          },
+          "note": "by fraction used: iron, cobalt, nickel; by moment: iron, cobalt, nickel",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "worst departure from a pure magneton rescaling",
+          "value": 1.717707988987378e-16,
+          "expect": {
+            "of": "0 — the ceiling is a COUNT, so cubic-26 rescales every ratio identically",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "n·µ has the magneton as its only model-side factor, so changing the lattice must multiply every material's ratio by the same number and reorder nothing. THE OLD FILE COULD NOT CHECK THIS, having written CYCLE = 8 and DEG = 26 in as arithmetic — and it matters, because the ratios below are geometry-dependent in a way the arc's prose does not say"
+          },
+          "note": "the magneton is 0.0513 µ_B here against 0.0794 on cubic-26, so every ratio moves by 1.547×",
+          "by": 1.717707988987378e-16,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "material",
+          "electrons/m³",
+          "ceiling n·µ",
+          "measured M_s",
+          "ratio"
+        ],
+        "rows": [
+          [
+            "iron",
+            "2.208e+30",
+            "1.051e+6",
+            "1.711e+6",
+            "1.629  ← over"
+          ],
+          [
+            "cobalt",
+            "2.456e+30",
+            "1.169e+6",
+            "1.424e+6",
+            "1.219  ← over"
+          ],
+          [
+            "nickel",
+            "2.559e+30",
+            "1.218e+6",
+            "4.850e+5",
+            "0.398"
+          ],
+          [
+            "Nd₂Fe₁₄B",
+            "2.043e+30",
+            "9.721e+5",
+            "1.280e+6",
+            "1.317  ← over"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.654Z"
     },
     {
       "id": "magnetism/dipole-coupling · gravity",
@@ -5273,7 +6912,7 @@
           "note": "cannot be asked — an orientation is a statement about which sign goes which way, and gravity's rays carry no sign"
         }
       ],
-      "at": "2026-08-19T13:04:42.810Z"
+      "at": "2026-08-19T20:46:35.712Z"
     },
     {
       "id": "magnetism/dipole-coupling · gravity+magnetism",
@@ -5413,7 +7052,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:29:36.299Z"
+      "at": "2026-08-19T21:13:11.769Z"
     },
     {
       "id": "magnetism/dipole-coupling · labelled",
@@ -5553,7 +7192,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:36:11.304Z"
+      "at": "2026-08-19T21:18:13.133Z"
     },
     {
       "id": "magnetism/kernel · gravity",
@@ -5713,7 +7352,187 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:10:12.938Z"
+      "at": "2026-08-19T20:46:59.351Z"
+    },
+    {
+      "id": "magnetism/neel-temperature · gravity",
+      "what": "the energy unit is right against two independent numbers, and the model's far-field antiferromagnet then melts six orders below every real one",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "two Bohr magnetons three ångström apart",
+          "value": 0.023072150725360695,
+          "units": "K",
+          "expect": {
+            "of": "0.023 — what magnetism texts quote",
+            "want": 0.023,
+            "tolerance": 0.01,
+            "because": "THE ONE STEP HERE THAT DOES NOT INVOLVE THE MODEL. This is the number quoted as the whole reason nobody believes dipolar coupling makes a magnet, so reproducing it says the energy unit every Λ multiplies is the right one. If it were wrong, nothing downstream would mean anything"
+          },
+          "by": 0.003136988059160657,
+          "verdict": "within"
+        },
+        {
+          "name": "Ho³⁺ at LiHoF₄'s spacing",
+          "value": 0.6480262398035553,
+          "units": "K",
+          "expect": {
+            "of": "the right order against a measured 1.53 K",
+            "want": 1.53,
+            "tolerance": 0.7,
+            "because": "the second outside check, and a harder one: a real dipolar magnet whose ordering temperature is known. The band is wide because the coefficient is an input and the spacing is nominal — landing within a factor of three of a measured T_N is what makes the unit trustworthy, not landing on it"
+          },
+          "by": 0.576453438036892,
+          "verdict": "within"
+        },
+        {
+          "name": "T_N's scaling with the magneton across geometries",
+          "value": 2.393746804003215,
+          "expect": {
+            "of": "µ², exactly — nothing else in it is adjustable",
+            "want": 2.3937468040032157,
+            "tolerance": 1e-12,
+            "because": "the temperature goes as µ² and µ is fixed by counts off the exits, so changing the lattice must move T_N by exactly the square of the magneton's ratio. THE OLD FILE COULD NOT CHECK THIS, having written CYCLE = 8 in as arithmetic — and it is what says the six orders below are a property of the model rather than of one lattice"
+          },
+          "by": 3.710410884788515e-16,
+          "verdict": "within"
+        },
+        {
+          "name": "is the model at least five orders below the coldest real one",
+          "value": 1,
+          "expect": {
+            "of": "1 — SHORT, AND THERE IS NO ROOM TO ARGUE WITH IT",
+            "want": 1,
+            "tolerance": 0,
+            "because": "against MnO at 118 K, the coldest of the five. Stated as a verdict because the claim is the hopelessness rather than the digit, and because it has to survive the coefficient being an input: a factor of several in T_N moves this by well under an order and cannot reach the threshold"
+          },
+          "note": "6.3 orders below MnO, 6.9 below NiO",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "orders below the coldest real antiferromagnet",
+          "value": 6.256808283270131,
+          "note": "against MnO at 118 K; the model orders at 6.53e-5 K"
+        },
+        {
+          "name": "orders left if the emitter carried a FULL Bohr magneton",
+          "value": 3.677244087664072,
+          "expect": {
+            "of": "≈ 4 — and the model does not permit it anyway",
+            "want": 3.7,
+            "tolerance": 0.3,
+            "because": "the obvious escape, closed. Handing the emitter twelve times its own moment buys two orders and leaves four, so the gap is not something a better account of the emitter closes. THE FAR-FIELD DIPOLAR COUPLING IS SIMPLY TOO WEAK TO BE MAGNETISM, which is the arc's own conclusion and the reason exchange is where it goes next"
+          },
+          "by": 0.006150246577277896,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "moment (µ_B)",
+          "a (Å)",
+          "T_N (K)",
+          "what it is"
+        ],
+        "rows": [
+          [
+            "0.0513",
+            "3.0",
+            "6.532e-5",
+            "the model's own emitter"
+          ],
+          [
+            "0.0513",
+            "2.5",
+            "1.129e-4",
+            "the model's, packed tighter"
+          ],
+          [
+            "1.0000",
+            "3.0",
+            "2.481e-2",
+            "if it carried a full µ_B"
+          ],
+          [
+            "7.0000",
+            "3.7",
+            "6.480e-1",
+            "Ho³⁺ — LiHoF₄ measures 1.53 K"
+          ],
+          [
+            "—",
+            "—",
+            "525",
+            "NiO, measured"
+          ],
+          [
+            "—",
+            "—",
+            "311",
+            "Cr, measured"
+          ],
+          [
+            "—",
+            "—",
+            "291",
+            "CoO, measured"
+          ],
+          [
+            "—",
+            "—",
+            "198",
+            "FeO, measured"
+          ],
+          [
+            "—",
+            "—",
+            "118",
+            "MnO, measured"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:48.136Z"
     },
     {
       "id": "magnetism/ordering · gravity",
@@ -5859,7 +7678,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:02:00.394Z"
+      "at": "2026-08-19T20:46:50.269Z"
     },
     {
       "id": "magnetism/where-the-bias-lives · gravity",
@@ -5960,7 +7779,155 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:19:10.030Z"
+      "at": "2026-08-19T20:46:54.814Z"
+    },
+    {
+      "id": "magnetostatics/benchmark · gravity",
+      "what": "the lattice's −∇·p becomes the magnetic charge model exactly, so the model inherits its accuracy — and the dipole law the arc quotes is hopeless at real gaps",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "total pole charge, in units of M·A",
+          "value": 1.0000000000000506,
+          "expect": {
+            "of": "1 — GAUSS'S THEOREM, from a bond count",
+            "want": 1,
+            "tolerance": 0.00001,
+            "because": "−∇·p integrated over the body has to come to the surface charge the charge model assigns by hand, and this is that statement checked rather than asserted. IT IS THE WHOLE DERIVATION CHAIN: if it holds, the lattice does not approximate the charge model, it BECOMES it, and the published 5.22% is inherited rather than separately agreed with"
+          },
+          "by": 5.062616992290714e-14,
+          "verdict": "within"
+        },
+        {
+          "name": "how much the force still moves as the cut is refined",
+          "value": 0.019868604581159504,
+          "expect": {
+            "of": "0 — it converges, since the charge model is the n → ∞ limit of this sum",
+            "want": 0,
+            "tolerance": 0.02,
+            "because": "the sum being computed IS the charge model's, taken over finitely many cells, so refining the cut has to stop moving the answer. A force that kept drifting would mean the construction was not the limit it claims to be"
+          },
+          "note": "8.4300 N at a 1 mm gap, cut 40 cells across",
+          "by": 0.019868604581159504,
+          "verdict": "within"
+        },
+        {
+          "name": "is the dipole error monotone in the gap",
+          "value": 1,
+          "expect": {
+            "of": "1 — worst close in, and it has to be",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the dipole approximation is an expansion in the magnet's size over the separation, so it fails where that ratio is largest. Checking the ORDERING rather than any one error is what makes this a statement about why it fails instead of a table of how much"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "dipole error at 50 mm, five magnet-widths out",
+          "value": 0.0591927485192789,
+          "expect": {
+            "of": "small — the approximation is fine when it is allowed to be",
+            "want": 0,
+            "tolerance": 0.1,
+            "because": "the control on the row above. Far away a cuboid IS a dipole, so an error that stayed large out here would mean the comparison was broken rather than that the approximation was"
+          },
+          "by": 0.0591927485192789,
+          "verdict": "within"
+        },
+        {
+          "name": "dipole error at a 1 mm gap",
+          "value": 32.55673097885685,
+          "note": "288.5027 N against the charge model's 8.5975 N. The arc's headline results — 3cos²θ − 1, slope −2.00, the 1/R⁴ force — are all statements about this approximation, and on a real cuboid at a real gap it is the model of the three that does not describe the magnets people actually have"
+        }
+      ],
+      "table": {
+        "columns": [
+          "gap (mm)",
+          "charge model (N)",
+          "dipole 1/R⁴ (N)",
+          "dipole error"
+        ],
+        "rows": [
+          [
+            "1.0",
+            "8.5975",
+            "288.5027",
+            "3255.7 %"
+          ],
+          [
+            "2.0",
+            "5.2930",
+            "91.2841",
+            "1624.6 %"
+          ],
+          [
+            "5.0",
+            "1.8703",
+            "9.7329",
+            "420.4 %"
+          ],
+          [
+            "10.0",
+            "0.5038",
+            "1.1270",
+            "123.7 %"
+          ],
+          [
+            "20.0",
+            "0.0744",
+            "0.0998",
+            "34.1 %"
+          ],
+          [
+            "50.0",
+            "0.0030",
+            "0.0032",
+            "5.9 %"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:50:59.172Z"
     },
     {
       "id": "magnetostatics/laws · gravity",
@@ -6134,7 +8101,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:04:01.823Z"
+      "at": "2026-08-19T20:51:27.446Z"
     },
     {
       "id": "magnetostatics/moving-charge · gravity",
@@ -6187,7 +8154,7 @@
           "note": "cannot be asked — no polarity to move"
         }
       ],
-      "at": "2026-08-19T13:01:42.234Z"
+      "at": "2026-08-19T20:43:07.115Z"
     },
     {
       "id": "magnetostatics/moving-charge · gravity+magnetism",
@@ -6289,7 +8256,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:04:42.809Z"
+      "at": "2026-08-19T20:44:59.049Z"
     },
     {
       "id": "magnetostatics/moving-charge · labelled",
@@ -6419,7 +8386,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:11:47.644Z"
+      "at": "2026-08-19T20:43:49.357Z"
     },
     {
       "id": "magnetostatics/neutral-wire · gravity",
@@ -6472,7 +8439,7 @@
           "note": "cannot be asked — a current is charges with polarity, moving"
         }
       ],
-      "at": "2026-08-19T13:14:48.041Z"
+      "at": "2026-08-19T20:43:49.361Z"
     },
     {
       "id": "magnetostatics/neutral-wire · gravity+magnetism",
@@ -6574,7 +8541,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:19:09.641Z"
+      "at": "2026-08-19T20:46:35.697Z"
     },
     {
       "id": "magnetostatics/neutral-wire · labelled",
@@ -6705,7 +8672,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:10:06.610Z"
+      "at": "2026-08-19T20:46:35.707Z"
     },
     {
       "id": "magnetostatics/static-charge · gravity",
@@ -6758,7 +8725,7 @@
           "note": "cannot be asked — no polarity, so no electric field either"
         }
       ],
-      "at": "2026-08-19T13:08:13.205Z"
+      "at": "2026-08-19T20:40:13.209Z"
     },
     {
       "id": "magnetostatics/static-charge · gravity+magnetism",
@@ -6884,7 +8851,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:05:51.586Z"
+      "at": "2026-08-19T20:43:07.109Z"
     },
     {
       "id": "magnetostatics/static-charge · labelled",
@@ -7010,7 +8977,124 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:07:40.297Z"
+      "at": "2026-08-19T20:43:47.379Z"
+    },
+    {
+      "id": "matter/exchange-length · gravity",
+      "what": "the length the magnetic arc hands to Layer 2 is 1/α, so its last debt and the electric half's only debt are one debt",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "a₀ / ring",
+          "value": 2670.6487263882805,
+          "expect": {
+            "of": "1/(α·CYCLE·G/2π) — the same ratio in closed form",
+            "want": 2670.648724759454,
+            "tolerance": 1e-8,
+            "because": "a₀/λ̄_C is 1/α BY DEFINITION and the ring is a fixed multiple of λ̄_C, so this has to agree and the content is not that the arithmetic works — it is WHICH NUMBER APPEARS. The shortfall is α and nothing else, so the magnetic arc's last debt is not a new unexplained length"
+          },
+          "by": 6.098991321782014e-10,
+          "verdict": "within"
+        },
+        {
+          "name": "the ratio of the two",
+          "value": 1.0000000006098992,
+          "expect": {
+            "of": "1 — identical to ten digits",
+            "want": 1,
+            "tolerance": 1e-9,
+            "because": "an identity, checked rather than asserted"
+          },
+          "by": 6.098992422209903e-10,
+          "verdict": "within"
+        },
+        {
+          "name": "the shortfall in units of 1/α",
+          "value": 19.48866534520729,
+          "expect": {
+            "of": "1/MAGNETON — what is left once α is taken out",
+            "want": 19.488665333321173,
+            "tolerance": 1e-8,
+            "because": "the whole point of §1: what remains after α is a count off the exits rather than a second unexplained scale"
+          },
+          "note": "the magneton is 5.1312e-2 µ_B on fcc-12, where the old cubic-26 file read the same",
+          "by": 6.098990645392197e-10,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "quantity",
+          "value"
+        ],
+        "rows": [
+          [
+            "λ̄_C (m)",
+            "3.861593e-13"
+          ],
+          [
+            "the model's ring (m)",
+            "1.981456e-14"
+          ],
+          [
+            "a₀ (m)",
+            "5.291772e-11"
+          ],
+          [
+            "a₀ / ring",
+            "2670.648726"
+          ],
+          [
+            "1/(α·CYCLE·G/2π)",
+            "2670.648725"
+          ],
+          [
+            "1/α",
+            "137.035999"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.745Z"
     },
     {
       "id": "matter/handles · gravity",
@@ -7167,7 +9251,628 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:11:52.893Z"
+      "at": "2026-08-19T21:40:56.380Z"
+    },
+    {
+      "id": "matter/no-binding-length · gravity",
+      "what": "the model's kernel is monotone beyond a cell, and every apparent short-range feature moves with the regularisation rather than staying put",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "spread of the extremum over three treatments",
+          "value": 1.6500000000000008,
+          "units": "cells",
+          "expect": {
+            "of": "> ½ a cell — THE SIGNATURE OF A NUMBER THAT IS NOT THERE",
+            "want": 1,
+            "tolerance": 1,
+            "because": "three standard treatments of the same sum putting the maximum in three different places is what it looks like when the feature belongs to the regularisation and not to the model. A real equilibrium separation would survive all three, and this is the control that says it does not"
+          },
+          "by": 0.6500000000000008,
+          "verdict": "within"
+        },
+        {
+          "name": "the extremum's dependence on the core",
+          "value": 0.5000000000000002,
+          "units": "cells",
+          "expect": {
+            "of": "it TRACKS the core radius",
+            "want": 0.5,
+            "tolerance": 0.5,
+            "because": "under `cap` the maximum sits at the core, so moving the core moves it one for one — which is the cleanest statement that the length is the regulator's and not the lattice's"
+          },
+          "by": 4.440892098500626e-16,
+          "verdict": "within"
+        },
+        {
+          "name": "shape disagreement at 6 cells, against 2",
+          "value": 1.204985444947966,
+          "expect": {
+            "of": "> 1 — IT DOES NOT SETTLE DOWN, which is a correction to the old file",
+            "want": 1.2,
+            "tolerance": 0.5,
+            "because": "the cubic-26 original said the three treatments agree beyond about one cell, and on fcc 12 they do not: the disagreement in the PROFILE is 15% at two cells and 18% at six, so the three regularisations differ in the falloff itself rather than by a constant. That is a stronger form of the same conclusion, not a weaker one — if the regulator can move the exponent it can certainly invent a length, and the number to trust is the one every treatment agrees on. There is exactly one such number here and it is the next finding"
+          },
+          "note": "the profile ratios at 2, 3, 4 and 6 cells disagree by 15.0%, 11.4%, 16.0%, 18.1%",
+          "by": 0.004154537456638371,
+          "verdict": "within"
+        },
+        {
+          "name": "monotone beyond a cell",
+          "value": 1,
+          "expect": {
+            "of": "1 — no interior seat",
+            "want": 1,
+            "tolerance": 0,
+            "because": "a monotone kernel means the pair either falls together or flies apart. It can attract and it can repel and it CANNOT BIND, which is the thing a model of matter has to do first"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "treatment",
+          "core",
+          "maximum at",
+          "K there"
+        ],
+        "rows": [
+          [
+            "cap",
+            "0.3",
+            "R = 0.30",
+            "129.718"
+          ],
+          [
+            "cap",
+            "0.5",
+            "R = 0.50",
+            "22.342"
+          ],
+          [
+            "cap",
+            "0.8",
+            "R = 0.80",
+            "8.892"
+          ],
+          [
+            "soft",
+            "0.3",
+            "R = 0.00",
+            "129.359"
+          ],
+          [
+            "soft",
+            "0.5",
+            "R = 0.00",
+            "21.435"
+          ],
+          [
+            "soft",
+            "0.8",
+            "R = 0.00",
+            "7.032"
+          ],
+          [
+            "excl",
+            "0.3",
+            "R = 1.65",
+            "7.275"
+          ],
+          [
+            "excl",
+            "0.5",
+            "R = 0.90",
+            "6.459"
+          ],
+          [
+            "excl",
+            "0.8",
+            "R = 0.90",
+            "6.459"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:41:30.378Z"
+    },
+    {
+      "id": "matter/the-atom · gravity",
+      "what": "minimising (γ−1) − g·f at g = α gives the Bohr radius and the Rydberg to four figures, and the duty fraction saturates rather than running away",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "size at g = α",
+          "value": 5.292194757467843e-11,
+          "units": "m",
+          "expect": {
+            "of": "a₀",
+            "want": 5.29177210903e-11,
+            "tolerance": 0.001,
+            "because": "the Bohr radius out of a duty cycle and ONE coupling, with no second constant anywhere in it"
+          },
+          "by": 0.00007986897945240842,
+          "verdict": "within"
+        },
+        {
+          "name": "binding energy at g = α",
+          "value": 13.60514979439092,
+          "units": "eV",
+          "expect": {
+            "of": "the Rydberg",
+            "want": 13.605693122994,
+            "tolerance": 0.001,
+            "because": "and the energy comes out of the same minimisation as the size, so it is the second figure rather than a second fit"
+          },
+          "by": 0.000039933915763624964,
+          "verdict": "within"
+        },
+        {
+          "name": "duty fraction at g = α",
+          "value": 0.00729676977929378,
+          "expect": {
+            "of": "α — the coupling itself, at weak coupling",
+            "want": 0.0072973525693,
+            "tolerance": 0.001,
+            "because": "f/(1−f²)^{3/2} = g linearises to f = g, which is why the size is λ̄_C/g and the whole of §3's r = λ̄_C/g is recovered rather than assumed"
+          },
+          "by": 0.00007986321075835145,
+          "verdict": "within"
+        },
+        {
+          "name": "duty fraction at g = 10",
+          "value": 0.894427190999916,
+          "expect": {
+            "of": "under 1 — IT SATURATES",
+            "want": 0.894,
+            "tolerance": 0.01,
+            "because": "a budget cannot be overspent, so the size flattens onto λ̄_C instead of collapsing. That is the whole of the stability argument and it needs nothing beyond f ≤ 1"
+          },
+          "by": 0.00047784228178517844,
+          "verdict": "within"
+        },
+        {
+          "name": "the model's ring read as a coupling",
+          "value": 19.488665333321173,
+          "expect": {
+            "of": "≫ α — the model is not short of glue, it has far too much",
+            "want": 19.488665333321173,
+            "tolerance": 0,
+            "because": "READ THAT THE RIGHT WAY ROUND. Nature makes atoms big by binding them WEAKLY at 1/137; the ring corresponds to a coupling of this many ħc, which is enormously strong. What Layer 2 has to produce is not a bigger ring but a weaker coupling"
+          },
+          "note": "at that coupling the state sits at 4.144e-13 m and duty 0.9318, which is the saturation above and not a collapse",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "g",
+          "duty f",
+          "size r (m)",
+          "binding energy (eV)"
+        ],
+        "rows": [
+          [
+            "α — the electric one",
+            "0.007297",
+            "5.292e-11",
+            "1.3605e+1"
+          ],
+          [
+            "½",
+            "0.390247",
+            "9.895e-13",
+            "5.5702e+4"
+          ],
+          [
+            "1",
+            "0.563624",
+            "6.851e-13",
+            "1.8039e+5"
+          ],
+          [
+            "10",
+            "0.894427",
+            "4.317e-13",
+            "3.9389e+6"
+          ],
+          [
+            "the model's ring, 1/MAG = 19.5",
+            "0.931808",
+            "4.144e-13",
+            "8.3827e+6"
+          ],
+          [
+            "measured",
+            "—",
+            "5.292e-11",
+            "13.606"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.722Z"
+    },
+    {
+      "id": "matter/the-budget · gravity",
+      "what": "the confinement cost is the emitter's per-tick budget — mc²(γ−1) is ħ²/2mr² identically, and f ≤ 1 is a hard floor at the Compton wavelength",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "mc²(λ̄_C/r)²/2 ÷ ħ²/2mr²",
+          "value": 1.0000000000000002,
+          "expect": {
+            "of": "1 — the same term, to ten digits",
+            "want": 1,
+            "tolerance": 1e-10,
+            "because": "identities are cheap, so this is the worst of three real radii spanning two decades rather than the algebra restated. What resists confinement is that MOVING COSTS TICKS, and ticks are what mass is made of"
+          },
+          "by": 2.220446049250313e-16,
+          "verdict": "within"
+        },
+        {
+          "name": "the floor, in λ̄_C",
+          "value": 1,
+          "expect": {
+            "of": "1 — f = λ̄_C/r and f ≤ 1",
+            "want": 1,
+            "tolerance": 0,
+            "because": "confining an emitter below λ̄_C would need it to move more than one cell in a tick and the lattice has no such move. NO COUPLING HOWEVER STRONG COLLAPSES ANYTHING — normally an argument that has to be made, here just the budget"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "linear reading — best r, in decades above λ̄_C",
+          "value": 11.99999999999871,
+          "expect": {
+            "of": "12 — THE TOP OF THE SCANNED RANGE, which is the search running away",
+            "want": 12,
+            "tolerance": 0.01,
+            "because": "mc²·f goes as 1/r, THE SAME POWER as the attraction, so the sum is a positive multiple of 1/r at g < 1 and the pair is unbound at every separation. It is not a minimum at 10¹² λ̄_C, it is no minimum at all"
+          },
+          "note": "the scan's ceiling is 3.862e-1 m",
+          "by": 1.0746958878371515e-13,
+          "verdict": "within"
+        },
+        {
+          "name": "relativistic reading — best r",
+          "value": 5.2913496718401376e-11,
+          "units": "m",
+          "expect": {
+            "of": "a₀ — a genuine interior minimum",
+            "want": 5.29177210903e-11,
+            "tolerance": 0.01,
+            "because": "so matter turns on the model having γ rather than a naive ledger, and it does: the gravity arc derives 1/γ and 1/γ³ out of the same emission counting. A term the arc ALREADY OWNS is what makes an atom possible"
+          },
+          "by": 0.00007982905936960691,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "f",
+          "γ − 1",
+          "f²/2"
+        ],
+        "rows": [
+          [
+            "0.001",
+            "5.0000e-7",
+            "5.0000e-7"
+          ],
+          [
+            "0.010",
+            "5.0004e-5",
+            "5.0000e-5"
+          ],
+          [
+            "0.100",
+            "5.0378e-3",
+            "5.0000e-3"
+          ],
+          [
+            "0.500",
+            "1.5470e-1",
+            "1.2500e-1"
+          ],
+          [
+            "0.900",
+            "1.2942e+0",
+            "4.0500e-1"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.627Z"
+    },
+    {
+      "id": "medium/flip-length · gravity+magnetism",
+      "what": "the mean free path is a function of fill with an interior floor, a full lattice is collisionless, and no occupancy reaches the four cells a spiral needs",
+      "header": {
+        "geometry": "square-8",
+        "D": 2,
+        "DEG": 8,
+        "SHEET": 2,
+        "CYCLE": 8,
+        "SPIN_deg": 45,
+        "rank4_anisotropy": 0.40000000000000036,
+        "c_anisotropy": 1.4142135623730951,
+        "veined": true,
+        "theory": "gravity+magnetism",
+        "polarised": true,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "mean free path at half fill, square 8",
+          "value": 8.258064516129032,
+          "units": "cells",
+          "expect": {
+            "of": "8 — THE ARC'S OWN CHECK ON THIS CALCULATION",
+            "want": 8,
+            "tolerance": 0.05,
+            "because": "the arc quotes eight cells at half fill and says the half-fill row reproducing it is 'the check that this is the same calculation rather than a similar one'. It is therefore a prediction fixed before this ran, and the port either meets it or is computing something else. Exact here where the original sampled, which is why it lands near 8.26 rather than on the 8.16 a Monte Carlo gave"
+          },
+          "by": 0.032258064516129004,
+          "verdict": "within"
+        },
+        {
+          "name": "collisions available at fill 1",
+          "value": 0,
+          "expect": {
+            "of": "0 — A FULL LATTICE IS COLLISIONLESS",
+            "want": 0,
+            "tolerance": 0,
+            "because": "the rule needs somewhere to turn INTO, and at fill one every destination is already occupied, so no turn is ever available and the path is infinite. This is exact and it is the one row here that could not have been fitted to anything — it follows from the rule having a precondition rather than from any measurement"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "where the path is shortest",
+          "value": 0.34000000000000014,
+          "expect": {
+            "of": "an INTERIOR fill — so it is not monotone",
+            "want": 0.3,
+            "tolerance": 0.2,
+            "because": "a collision needs a head-on pair AND somewhere to turn into, and those two want opposite densities: pairs are common when the gas is full, room is common when it is empty. So the path shortens as the gas fills and LENGTHENS AGAIN, and the best compromise sits near a third. Structural rather than numerical, which is why the band is wide and the claim is the interior-ness"
+          },
+          "note": "7.02 cells there, against 13.48 at fill 0.1 and 121.31 at 0.9",
+          "by": 0.13333333333333383,
+          "verdict": "within"
+        },
+        {
+          "name": "is the floor above the four cells a spiral needs",
+          "value": 1,
+          "expect": {
+            "of": "1 — NOT REACHABLE BY FILL ALONE",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the arc needs four cells or less for a spiral. The rule has a FLOOR and the floor is above the threshold, so no density of vacuum however chosen turns this ferromagnet into a spiral. That is the arc's own §2 conclusion and it is what this test was written to check rather than to discover"
+          },
+          "note": "the floor is 7.02 cells at fill 0.34",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the shortest path any occupancy reaches",
+          "value": 7.01856075398094,
+          "units": "cells",
+          "note": "at fill 0.34, against the four cells a spiral needs"
+        },
+        {
+          "name": "the same rule on the other lattices it is defined on",
+          "value": null,
+          "note": "square-8 8.26 cells, square-4 16.00 cells, triangular-6 8.73 cells — so the eight is square 8's number and not the model's. fcc 12, which is what the book runs on, is NOT here: 'the next axis round' needs the ring to be the whole exit set and fcc's ring is six of its twelve, so extending the rule there is a choice about what a turn means rather than a re-measurement of this one"
+        }
+      ],
+      "table": {
+        "columns": [
+          "fill",
+          "turned per tick",
+          "mean free path (cells)"
+        ],
+        "rows": [
+          [
+            "0.10",
+            "0.0742",
+            "13.48"
+          ],
+          [
+            "0.20",
+            "0.1206",
+            "8.29"
+          ],
+          [
+            "0.30",
+            "0.1408",
+            "7.10"
+          ],
+          [
+            "0.40",
+            "0.1391",
+            "7.19"
+          ],
+          [
+            "0.50",
+            "0.1211",
+            "8.26"
+          ],
+          [
+            "0.60",
+            "0.0928",
+            "10.78"
+          ],
+          [
+            "0.70",
+            "0.0604",
+            "16.57"
+          ],
+          [
+            "0.80",
+            "0.0302",
+            "33.17"
+          ],
+          [
+            "0.90",
+            "0.0082",
+            "121.31"
+          ],
+          [
+            "1.00",
+            "0",
+            "∞ — collisionless"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.597Z"
     },
     {
       "id": "metric/against-relativity · gravity",
@@ -7279,7 +9984,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:09:02.056Z"
+      "at": "2026-08-19T20:46:54.919Z"
     },
     {
       "id": "metric/ring-as-imaged · gravity",
@@ -7528,7 +10233,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T15:58:10.678Z"
+      "at": "2026-08-19T20:49:47.843Z"
     },
     {
       "id": "metric/shadow · gravity",
@@ -7679,7 +10384,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:14:48.088Z"
+      "at": "2026-08-19T20:46:54.917Z"
     },
     {
       "id": "metric/shadow-against-eht · gravity",
@@ -7834,7 +10539,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T15:06:25.295Z"
+      "at": "2026-08-19T20:48:39.599Z"
     },
     {
       "id": "metric/u-profile · gravity",
@@ -7953,7 +10658,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:11:52.196Z"
+      "at": "2026-08-19T20:53:13.665Z"
     },
     {
       "id": "metric/u-profile · gravity+magnetism",
@@ -8072,7 +10777,999 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:10:12.465Z"
+      "at": "2026-08-19T20:54:27.032Z"
+    },
+    {
+      "id": "species/mass-ceiling · gravity",
+      "what": "a smallest ribbon is a heaviest fermion, and the ceiling is 2π·m_P/N with the electron's mass cancelling — a Planck-scale bound the framework was not built to predict",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "darts in the smallest fermionic ribbon",
+          "value": 2,
+          "expect": {
+            "of": "2 — the twisted 2-gon",
+            "want": 2,
+            "tolerance": 0,
+            "because": "m ∝ 1/(2E) is the whole of the mass reading, so a SMALLEST possible ribbon is a HEAVIEST possible fermion. This is the N the ceiling is written in"
+          },
+          "note": "2-gon/10",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the mass ceiling",
+          "value": 38355390639585380000,
+          "units": "GeV",
+          "expect": {
+            "of": "2π·m_P/N",
+            "want": 38355390548412424000,
+            "tolerance": 0.001,
+            "because": "AND THE ELECTRON'S MASS CANCELS: m_max = m_e·(T_e/t_P)/N with T_e = 2πħ/(m_e c²) is 2πħ/(c² t_P N) = 2π·m_P/N. So the framework predicts a heaviest fermion at the Planck scale out of nothing but 'mass is a period' and 'there is a smallest structure', neither of which was chosen with this in view"
+          },
+          "by": 2.377057117875541e-9,
+          "verdict": "within"
+        },
+        {
+          "name": "the ceiling in Planck masses",
+          "value": 3.141592661057538,
+          "expect": {
+            "of": "π — and the residual is the discreteness of the smallest ribbon",
+            "want": 3.141592653589793,
+            "tolerance": 0.001,
+            "because": "N = 2π WOULD GIVE m_P EXACTLY, and 2π is not an available dart count — no structure has a fractional number of them. So the framework CANNOT hit m_P on the nose and lands a factor of π above it, which is as well as it can do BY CONSTRUCTION rather than by accident. Worth saying, because a factor of π is exactly the size of slop that could be argued away and should not be"
+          },
+          "by": 2.377057089320794e-9,
+          "verdict": "within"
+        },
+        {
+          "name": "walk length per period, over the Compton wavelength",
+          "value": 0.9999998825586905,
+          "expect": {
+            "of": "1 — a CONSISTENCY CHECK and not a result",
+            "want": 1,
+            "tolerance": 0.001,
+            "because": "a walk of one cell per tick covers c·T in a period and c·T is the Compton wavelength BY DEFINITION. It confirms the bookkeeping and predicts nothing, and is reported so that it cannot be mistaken later for something that does"
+          },
+          "note": "the electron is then a ribbon of about 7.5e+22 Planck cells, one Compton wavelength around, of radius about 3.86e-13 m",
+          "by": 1.174413094551241e-7,
+          "verdict": "within"
+        },
+        {
+          "name": "exponent the lepton lifetimes want",
+          "value": 5.61206062919128,
+          "expect": {
+            "of": "nothing in the framework selects it",
+            "want": 5.6,
+            "tolerance": 0.05,
+            "because": "THE ORDERING IS RIGHT AND IT WAS NOT PUT IN — heavier is smaller is more fragile is shorter-lived, and nothing about the fragility argument was designed with lepton lifetimes in view. But the SIZE of it is a different matter: the data wants lifetime ∝ E^k at this k and the framework offers no reason for that number. Quoted as the gap it is"
+          },
+          "by": 0.002153683784157209,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "lepton",
+          "mass (MeV)",
+          "edges 2E",
+          "lifetime (s)",
+          "order"
+        ],
+        "rows": [
+          [
+            "electron",
+            "0.5110",
+            "1.50e+23",
+            "stable",
+            "biggest, longest"
+          ],
+          [
+            "muon",
+            "105.6584",
+            "7.26e+20",
+            "2.20e-6",
+            "↓"
+          ],
+          [
+            "tau",
+            "1776.86",
+            "4.32e+19",
+            "2.90e-13",
+            "smallest, shortest"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.199Z"
+    },
+    {
+      "id": "species/the-particle-table · gravity",
+      "what": "the framework describes charged leptons and nothing else — and w₁ is one bit, so photon, Higgs and graviton are a single object to it",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "rows the framework can carry",
+          "value": 4,
+          "expect": {
+            "of": "4 — THREE CHARGED LEPTONS AND ONE ANTIPARTICLE",
+            "want": 4,
+            "tolerance": 0,
+            "because": "the honest summary of the column, and the count is four rather than the three an earlier draft claimed: the positron is a row of its own, being the same graph with the walk reversed. Three distinct masses, one antiparticle, and everything else in the table shape-only or refused"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "particles it refuses outright",
+          "value": 5,
+          "expect": {
+            "of": "5 — quarks, the neutrino, the neutron and the gluon",
+            "want": 5,
+            "tolerance": 0,
+            "because": "refused by the invariants themselves rather than not yet constructed"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "spins w₁ can distinguish",
+          "value": 2,
+          "expect": {
+            "of": "2 — fermion and boson, AND NOTHING FINER",
+            "want": 2,
+            "tolerance": 0,
+            "because": "w₁ IS ONE BIT, so spin 0, 1 and 2 are THE SAME OBJECT to this framework: a photon, a Higgs and a graviton differ in no property it can express. That is not a missing quantity that might turn up later — a Z₂ invariant cannot carry a ladder, in the same way a handle's label cannot carry a rotation. THE BIGGEST SINGLE HOLE IN THE FRAMEWORK"
+          },
+          "note": "5 rows in the table are lost to it",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "particle",
+          "q",
+          "spin",
+          "here",
+          "verdict"
+        ],
+        "rows": [
+          [
+            "electron",
+            "−1",
+            "1/2",
+            "one-sided, |q| = 1",
+            "YES"
+          ],
+          [
+            "positron",
+            "+1",
+            "1/2",
+            "the same graph, walk reversed",
+            "YES"
+          ],
+          [
+            "muon",
+            "−1",
+            "1/2",
+            "the same, 207× fewer edges",
+            "YES"
+          ],
+          [
+            "tau",
+            "−1",
+            "1/2",
+            "the same, 3477× fewer edges",
+            "YES"
+          ],
+          [
+            "proton",
+            "+1",
+            "1/2",
+            "one-sided, |q| = 1 — but composite",
+            "shape only"
+          ],
+          [
+            "neutron",
+            "0",
+            "1/2",
+            "|q| = 0 forces a boson",
+            "NO"
+          ],
+          [
+            "neutrino",
+            "0",
+            "1/2",
+            "|q| = 0 forces a boson",
+            "NO"
+          ],
+          [
+            "photon",
+            "0",
+            "1",
+            "two-sided, |q| = 0",
+            "SPIN LOST"
+          ],
+          [
+            "Higgs",
+            "0",
+            "0",
+            "two-sided, |q| = 0 — identical to above",
+            "SPIN LOST"
+          ],
+          [
+            "graviton",
+            "0",
+            "2",
+            "two-sided, |q| = 0 — identical again",
+            "SPIN LOST"
+          ],
+          [
+            "W boson",
+            "±1",
+            "1",
+            "two-sided, |q| = 1",
+            "SPIN LOST"
+          ],
+          [
+            "Z boson",
+            "0",
+            "1",
+            "two-sided, |q| = 0",
+            "SPIN LOST"
+          ],
+          [
+            "up quark",
+            "+2/3",
+            "1/2",
+            "|q| must be an integer",
+            "NO"
+          ],
+          [
+            "down quark",
+            "−1/3",
+            "1/2",
+            "|q| must be an integer",
+            "NO"
+          ],
+          [
+            "gluon",
+            "0",
+            "1",
+            "colour has no representation at all",
+            "NO"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.758Z"
+    },
+    {
+      "id": "species/which-exist · gravity",
+      "what": "charge is always an integer so there is no quark, |q| ≥ 2 occurs which is an over-prediction, and a neutral fermion is impossible — which refuses the neutrino",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "(structure, twists, marked exit) triples swept",
+          "value": 10352,
+          "expect": {
+            "of": "every one of them",
+            "want": 10352,
+            "tolerance": 0,
+            "because": "exhaustive rather than sampled, which is what makes the zero below a statement and not an absence of evidence"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "worst departure of |q| from an integer",
+          "value": 0,
+          "expect": {
+            "of": "0 — ALWAYS AN INTEGER",
+            "want": 0,
+            "tolerance": 0,
+            "because": "it is a count of net traversals, so thirds are not merely absent, they are UNREPRESENTABLE. NO QUARK — and this is a structural refusal rather than a search that has not found one yet"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "largest |q| the framework permits",
+          "value": 2,
+          "expect": {
+            "of": "> 1 — AN OVER-PREDICTION",
+            "want": 2,
+            "tolerance": 1,
+            "because": "nature has no elementary particle of charge two, and permitting particles that do not exist is a different and LESS FORGIVING failure than missing ones that do. Worth quoting beside the quark result rather than after it"
+          },
+          "note": "charges realised: 0, 1, 2",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "neutral fermions found",
+          "value": 0,
+          "expect": {
+            "of": "0 — AND IT IS A THEOREM RATHER THAN A SEARCH RESULT",
+            "want": 0,
+            "tolerance": 0,
+            "because": "the sign holonomy is a homomorphism H₁(·;Z₂) → ±1, so it depends only on the walk's class MOD 2; |q| = 0 means every NET traversal count is zero over Z, and net = f−b while total = f+b differ by 2b, so all TOTALS are even too; an even class mod 2 is the zero class, on which every homomorphism gives +1. So |q| = 0 ⟹ BOSON, necessarily, ON ANY STRUCTURE WHATSOEVER. WHICH REFUSES THE NEUTRINO OUTRIGHT, and a neutron as anything elementary — not 'not yet found' but forbidden by the same invariant that supplies spin, so it cannot be fixed without giving up the mechanism for spin itself"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "smallest |q| any fermionic orbit reaches",
+          "value": 1,
+          "expect": {
+            "of": "1 — the floor the theorem puts under it",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the contrapositive of the row above, measured from the other side: if |q| = 0 forces a boson then no fermion can get below 1, and this is the sweep being given the chance to contradict that. AND NOTE WHAT IT DOES NOT SAY — an earlier draft of this test expected every fermionic orbit to carry ODD |q|, which the sweep refutes at once: only 24% of them do. The theorem is about the ZERO class and nothing about parity beyond it follows"
+          },
+          "note": "over 544 fermionic orbits",
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "spin & charge",
+          "exists?",
+          "a structure that does it"
+        ],
+        "rows": [
+          [
+            "boson |q| = 0",
+            "YES",
+            "theta/000"
+          ],
+          [
+            "boson |q| = 1",
+            "YES",
+            "2-gon/00"
+          ],
+          [
+            "boson |q| = 2",
+            "YES",
+            "fig-8/0000"
+          ],
+          [
+            "fermion |q| = 1",
+            "YES",
+            "2-gon/10"
+          ],
+          [
+            "fermion |q| = 2",
+            "YES",
+            "fig-8/1000"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.302Z"
+    },
+    {
+      "id": "spin/g-is-one · gravity",
+      "what": "a circulation ties µ to L, so g is an identity at every radius and every speed — the factor of two IS the statement that spin is not a circulation",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "g of a circulation, worst over four loops",
+          "value": 1.0000000000000002,
+          "expect": {
+            "of": "1 — AT EVERY RADIUS AND EVERY SPEED",
+            "want": 1,
+            "tolerance": 1e-12,
+            "because": "µ/L = q/2m with r and v both cancelled, so g = 1 is an IDENTITY and not a value. That is exactly why no choice of any constant could ever have rescued it, and why the factor of two is structural rather than numerical"
+          },
+          "by": 2.220446049250313e-16,
+          "verdict": "within"
+        },
+        {
+          "name": "what the electron has, against a circulation",
+          "value": 2.00231930436,
+          "expect": {
+            "of": "2 — the moment of a λ̄_C loop and HALF the angular momentum one would carry",
+            "want": 2,
+            "tolerance": 0.002,
+            "because": "µ_B against ħ/2 rather than ħ. NO ROTATION IN SPACE CAN DO THAT, which is the whole of the refutation — and the 0.0023 left over is the anomalous moment, a loop correction nothing in this model could be expected to carry"
+          },
+          "by": 0.0011596521799999149,
+          "verdict": "within"
+        },
+        {
+          "name": "the ring's angular momentum",
+          "value": 0.05131187707812028,
+          "units": "ħ",
+          "expect": {
+            "of": "under ½ — A RING CAN CARRY ANY L AT ALL",
+            "want": 0.5,
+            "tolerance": 1,
+            "because": "the fourth failure, and the one that shows the other three are not about normalisation: L here is mcr/ħ = r/λ̄_C, the SAME number as the moment in µ_B, because a circulation fixes both from the one radius. Nothing sets it to ½"
+          },
+          "note": "0.051312 ħ on fcc-12, against ½",
+          "by": 0.8973762458437594,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "r",
+          "v",
+          "µ (µ_B)",
+          "L (ħ)",
+          "g"
+        ],
+        "rows": [
+          [
+            "1.00 λ̄_C",
+            "1.000 c",
+            "1.0000",
+            "1.0000",
+            "1.000000"
+          ],
+          [
+            "0.50 λ̄_C",
+            "1.000 c",
+            "0.5000",
+            "0.5000",
+            "1.000000"
+          ],
+          [
+            "1.00 λ̄_C",
+            "0.500 c",
+            "0.5000",
+            "0.5000",
+            "1.000000"
+          ],
+          [
+            "3.00 λ̄_C",
+            "0.143 c",
+            "0.4286",
+            "0.4286",
+            "1.000000"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.659Z"
+    },
+    {
+      "id": "spin/relaxed-ring · gravity",
+      "what": "with the ring gone g stops being an identity, and the three requirements that could not agree turn out to be one condition rather than three",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "g, relaxed, at Ḡ = 2π",
+          "value": 2,
+          "expect": {
+            "of": "2 — and it is a RATIO now rather than an identity",
+            "want": 2,
+            "tolerance": 1e-12,
+            "because": "cut µ loose from L and g = 2·λ̄_m/λ̄_C, which depends on Ḡ. So g becomes something that can be ASKED for — one assumption (L = ħ/2) traded for one measured number, which is a fair trade and NOT a derivation of g"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "residual against the measured g",
+          "value": 0.0023193043599998298,
+          "expect": {
+            "of": "the anomalous moment",
+            "want": 0.0023193043599998298,
+            "tolerance": 1e-9,
+            "because": "a loop correction, and nothing in this model could be expected to carry it. Quoting it is what stops g = 2 being read as agreement to fourteen digits"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "spread of the three requirements in Ḡ",
+          "value": 0,
+          "expect": {
+            "of": "0 — ONE CONDITION WRITTEN THREE WAYS",
+            "want": 0,
+            "tolerance": 1e-12,
+            "because": "all three reduce to λ̄_m = λ̄_C, so THE CONTENT IS NOT THAT THREE THINGS AGREE. It is that in the ring picture they COULD NOT: the magneton wanted λ̄_m = λ̄_C/CYCLE and de Broglie wanted λ̄_m = λ̄_C, and no constant reconciles a ratio a count fixes. Relaxing the ring does not satisfy MORE constraints — it removes a conflict"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the ring picture's magneton",
+          "value": 0.05131187707812028,
+          "units": "µ_B",
+          "note": "against 1 relaxed — λ̄_m/λ̄_C is 8.552e-3 at the lattice's own Ḡ, so the ring picture satisfies neither requirement and §1's CYCLE is the gap between what the two ask of Ḡ rather than this"
+        }
+      ],
+      "table": {
+        "columns": [
+          "quantity",
+          "ring picture",
+          "relaxed, at Ḡ = 2π"
+        ],
+        "rows": [
+          [
+            "g",
+            "1.000000",
+            "2.000000"
+          ],
+          [
+            "magneton (µ_B)",
+            "0.051312",
+            "1.000000"
+          ],
+          [
+            "λ̄_m/λ̄_C",
+            "8.552e-3",
+            "1.000000"
+          ],
+          [
+            "L (ħ)",
+            "0.051312",
+            "0.500000"
+          ],
+          [
+            "measured g",
+            "—",
+            "2.00231930436"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.699Z"
+    },
+    {
+      "id": "spin/scale-conflict · gravity",
+      "what": "the magneton and the de Broglie scale each fix Ḡ on their own and they disagree by exactly CYCLE, so no single constant meets both",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "Ḡ the magneton wants",
+          "value": 1.0471975511965976,
+          "expect": {
+            "of": "2π/CYCLE",
+            "want": 1.0471975511965976,
+            "tolerance": 1e-12,
+            "because": "µ_B is the moment of a loop of radius λ̄_C, and the model's loop is CYCLE steps around — so the step has to be λ̄_C/CYCLE"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "Ḡ the de Broglie scale wants",
+          "value": 6.283185307179586,
+          "expect": {
+            "of": "2π",
+            "want": 6.283185307179586,
+            "tolerance": 1e-12,
+            "because": "de Broglie constrains the STEP, and λ̄_m = λ̄_C is Ḡ = 2π exactly"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the ratio of the two",
+          "value": 6,
+          "expect": {
+            "of": "CYCLE — and that is the whole conflict",
+            "want": 6,
+            "tolerance": 1e-12,
+            "because": "NATURE PUTS THE SPIN RADIUS AND THE COMPTON WAVELENGTH AT THE SAME LENGTH. The model's ring is CYCLE steps around and each step is one wavelength, so ring and step differ by CYCLE and both cannot be λ̄_C. The conflict is one count wide, and this measures the count"
+          },
+          "note": "on fcc-12 that is 6; the cubic-26 files this replaces read 8",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "CYCLE a free emitter would need for the magneton alone",
+          "value": 116.93199199992702,
+          "expect": {
+            "of": "1/MAGNETON at the lattice's own Ḡ",
+            "want": 116.93199199992702,
+            "tolerance": 1e-9,
+            "because": "A FREE CYCLE FIXES THE MAGNETON ON ITS OWN and cannot touch de Broglie at all. The conflict does not close, it MOVES — out of a lattice constant and into a per-emitter count, which is a better place for it but not a resolution"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "CYCLE that meets both at once",
+          "value": 1,
+          "expect": {
+            "of": "1 — AN AXIS THAT DOES NOT GO ROUND",
+            "want": 1,
+            "tolerance": 0,
+            "because": "de Broglie gives λ̄_m = λ̄_C and the magneton gives CYCLE·λ̄_m = λ̄_C, so together CYCLE = 1. A ring of one step is a point, so a free CYCLE and §3's relaxation are THE SAME ANSWER reached from opposite ends — one by removing the ring, the other by letting the particle choose it and finding it chooses not to have one"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "Ḡ",
+          "value",
+          "magneton (µ_B)",
+          "λ̄_m/λ̄_C"
+        ],
+        "rows": [
+          [
+            "the lattice's own",
+            "0.053734",
+            "0.051312",
+            "8.552e-3"
+          ],
+          [
+            "2π/CYCLE",
+            "1.047198",
+            "1.000000",
+            "1.667e-1"
+          ],
+          [
+            "2π",
+            "6.283185",
+            "6.000000",
+            "1.000e+0"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.730Z"
+    },
+    {
+      "id": "spin/sign-is-not-a-spinor · gravity",
+      "what": "the emitted sign has the right gauge structure and the wrong rotation structure, so it cannot be the two-valued thing — a refutation",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "change in every ledger under a GLOBAL flip",
+          "value": 0,
+          "expect": {
+            "of": "0 — IT PASSES THE FIRST REQUIREMENT",
+            "want": 0,
+            "tolerance": 0,
+            "because": "a spinor sign must be invisible on its own, and this one is: only relative signs are observable because the ledger is a product. THE GAUGE STRUCTURE IS RIGHT, and that is the part of the conjecture worth having"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "change in the ledger under a 2π turn of ONE source",
+          "value": 2,
+          "expect": {
+            "of": "2 — NOT the 0 a spinor sign would give",
+            "want": 2,
+            "tolerance": 0,
+            "because": "a rotation of one source is not a global flip. Turning one magnet through a full circle would turn repulsion into ATTRACTION, which is not a subtle observable — it is the most directly measurable thing the model has. THE CONJECTURE IS REFUTED, and it looked attractive because half the requirement was already satisfied"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "± quantities the model has, against the two it would need",
+          "value": 1,
+          "expect": {
+            "of": "1 — where a spinor needs two",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the XOR sign is spoken for by the interaction, so a spinor needs a SECOND two-valued quantity that flips under a 2π rotation of its own source while leaving every ledger alone. The model has exactly one ± quantity and it is already in use"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "s_a",
+          "s_b",
+          "ledger",
+          "reading"
+        ],
+        "rows": [
+          [
+            "+",
+            "+",
+            -1,
+            "alike — less annihilation — repel"
+          ],
+          [
+            "+",
+            "−",
+            1,
+            "opposite — more — ATTRACT"
+          ],
+          [
+            "−",
+            "+",
+            1,
+            "opposite — more — ATTRACT"
+          ],
+          [
+            "−",
+            "−",
+            -1,
+            "alike — less annihilation — repel"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.731Z"
     },
     {
       "id": "structure/self-propulsion · gravity",
@@ -8227,7 +11924,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:11:46.319Z"
+      "at": "2026-08-19T20:51:33.673Z"
     },
     {
       "id": "structure/self-propulsion · gravity+magnetism",
@@ -8382,7 +12079,1729 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:12:09.139Z"
+      "at": "2026-08-19T20:53:52.947Z"
+    },
+    {
+      "id": "structures/charge-is-one-bit · gravity",
+      "what": "charge is the walk's direction, so cancellation is exact and quantisation unavoidable — and there is no third value, which rules the framework out as the whole story",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "charge values the framework can represent",
+          "value": 2,
+          "expect": {
+            "of": "2 — AND THAT IS THE CEILING",
+            "want": 2,
+            "tolerance": 0,
+            "because": "q = ±1 ONLY. There is no ±⅓, no ±⅔ — NO QUARK. And no q = 0 fermion, so no neutrino, because a walk that goes nowhere has no schedule and no mass. A framework in which charge is a direction bit has exactly two charges and cannot be made to have more. That is a refutation of this framework AS THE WHOLE STORY, and it is structural rather than a matter of not having looked hard enough"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "worst residual charge of a particle and its antiparticle",
+          "value": 0,
+          "expect": {
+            "of": "0 — exactly, on every pair",
+            "want": 0,
+            "tolerance": 0,
+            "because": "a proton and an electron are wildly different structures and their charges cancel to the last digit, because a direction reversed is a direction reversed regardless of what it is walking on. CHARGE QUANTISATION IS NOT SO MUCH DERIVED AS UNAVOIDABLE"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "what a hydrogen atom needs",
+          "verdict",
+          "where"
+        ],
+        "rows": [
+          [
+            "spin ½ from one local twist",
+            "YES",
+            "§1–2, and no fourth rule"
+          ],
+          [
+            "m(e⁻) = m(e⁺) exactly",
+            "YES",
+            "§3, forced"
+          ],
+          [
+            "q(e⁻) = −q(e⁺), quantised",
+            "YES",
+            "§6, unavoidable"
+          ],
+          [
+            "size ∝ 1/mass",
+            "YES",
+            "§4, the Compton relation"
+          ],
+          [
+            "a₀ and 13.6 eV",
+            "YES",
+            "matter/the-atom, unchanged"
+          ],
+          [
+            "the mass spectrum",
+            "no",
+            "1836 is an input"
+          ],
+          [
+            "mirror images degenerate",
+            "NO",
+            "§3, predicts otherwise"
+          ],
+          [
+            "charges beyond ±1",
+            "NO",
+            "§6, structurally impossible"
+          ],
+          [
+            "the lifetime",
+            "NO",
+            "§5, still 18 orders short"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:56.006Z"
+    },
+    {
+      "id": "structures/conjugation · gravity",
+      "what": "C preserves the orbit length and holonomy in every case, so the framework cannot violate m(e⁻) = m(e⁺) — and P does not, which is a real defect",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "C — orbit length kept",
+          "value": 4972,
+          "expect": {
+            "of": "every case",
+            "want": 4972,
+            "tolerance": 0,
+            "because": "charge conjugation cannot touch the repeat period, so m(e⁻) = m(e⁺) EXACTLY. BE HONEST ABOUT WHY THOUGH — this is an identity and not a derivation: an orbit of a permutation is an orbit of its inverse, so C reads the same multiset of edges the other way round and a product over a multiset does not care about order. The claim worth making is that the framework CANNOT VIOLATE the observed relation, not that it predicts it"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "C — holonomy kept",
+          "value": 4972,
+          "expect": {
+            "of": "every case",
+            "want": 4972,
+            "tolerance": 0,
+            "because": "so the lap count survives too: same spin, opposite charge"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "P — orbit length kept",
+          "value": 796,
+          "expect": {
+            "of": "NOT every case — and that is the interesting failure",
+            "want": 796,
+            "tolerance": 0,
+            "because": "mirroring changes the orbit length in most cases, and by §4 the length IS the mass. So A STRUCTURE AND ITS MIRROR ARE PREDICTED TO BE DIFFERENT PARTICLES OF DIFFERENT MASSES, and nature says otherwise — the left- and right-handed electron are one particle of one mass. Taken at face value this is WRONG, in a way the C result cannot excuse"
+          },
+          "note": "e.g. fig-8/0: 4 vs 2; fig-8/1: 4 vs 2; fig-8/2: 4 vs 2",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "P — holonomy kept",
+          "value": 4964,
+          "expect": {
+            "of": "nearly every case, which is the point",
+            "want": 4964,
+            "tolerance": 0,
+            "because": "P leaves the SPIN alone and moves the MASS, so the defect cannot be argued away as the mirror simply being a different particle: it is the same spin at a different mass, which nothing observed does"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "operation",
+          "length kept",
+          "holonomy kept"
+        ],
+        "rows": [
+          [
+            "C — reversed traversal",
+            "4972/4972",
+            "4972/4972"
+          ],
+          [
+            "P — mirrored structure",
+            "796/4972",
+            "4964/4972"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.353Z"
+    },
+    {
+      "id": "structures/lifetime · gravity",
+      "what": "no structure can beat 1/p — redundancy moves the answer by a factor and the requirement is twenty orders away, so restoration is mandatory rather than optional",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "fatal fraction of a bare twisted cycle",
+          "value": 1,
+          "expect": {
+            "of": "1 — EVERY EDGE IS LOAD-BEARING",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the one cycle carrying the twist is the only cycle there is, so cutting it anywhere leaves no loop to be one-sided about. A bare twisted cycle is WORSE than the construction `quotient` refuted"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "structures where some twist removes every critical edge",
+          "value": 4,
+          "expect": {
+            "of": "> 0 — so it IS achievable",
+            "want": 4,
+            "tolerance": 0,
+            "because": "spread the twists and no single removal is fatal; the structure then needs TWO coincident cuts, which changes the rate from p to p². Which sounds like the answer and is not, for a reason that has nothing to do with topology"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "the best life any structure reaches",
+          "value": 9869235370.762835,
+          "units": "years",
+          "expect": {
+            "of": "within an order of 1/p — THE CEILING IS STRUCTURE-INDEPENDENT",
+            "want": 17094017094.017094,
+            "tolerance": 1,
+            "because": "damage here is PERMANENT — (G/1) removes a cell and nothing in the three rules puts THAT cell back — so after a time 1/p every cell has been hit about once and k coincident cuts arrive by (fatal configurations)^(−1/k)/p ≤ 1/p. Redundancy moves the answer by a FACTOR and the requirement is twenty orders away, so no amount of cleverness about the structure closes it"
+          },
+          "by": 0.42264973081037416,
+          "verdict": "within"
+        },
+        {
+          "name": "orders short of what an electron needs",
+          "value": 18.82526042898388,
+          "expect": {
+            "of": "about 18 — and the gap is the result",
+            "want": 18,
+            "tolerance": 0.2,
+            "because": "SO STRUCTURE CANNOT BUY THE LIFETIME. Not width, not extra cycles, not spread twists. RESTORATION IS THEREFORE MANDATORY rather than one option among several, which is the first hard argument in this sequence for why the emission must MAINTAIN the structure rather than merely run on it"
+          },
+          "by": 0.045847801610215635,
+          "verdict": "within"
+        },
+        {
+          "name": "the wall, 1/p",
+          "value": 17094017094.017094,
+          "units": "years",
+          "note": "1/p puts the unrepaired lifetime of matter at almost exactly the age of the universe, 1.24× it. A striking coincidence and NOT A RESULT: p was fixed by the cosmology, so the two numbers are not independent — and an electron needs 10¹⁸ times longer in any case"
+        }
+      ],
+      "table": {
+        "columns": [
+          "structure",
+          "E",
+          "best twist",
+          "critical edges",
+          "fatal pairs",
+          "T (years)"
+        ],
+        "rows": [
+          [
+            "2-gon",
+            2,
+            "10",
+            2,
+            "1/1",
+            "—"
+          ],
+          [
+            "4-cycle",
+            4,
+            "1000",
+            4,
+            "6/6",
+            "—"
+          ],
+          [
+            "8-cycle",
+            8,
+            "10000000",
+            8,
+            "28/28",
+            "—"
+          ],
+          [
+            "theta",
+            3,
+            "100",
+            1,
+            "3/3",
+            "—"
+          ],
+          [
+            "fig-8",
+            4,
+            "1010",
+            0,
+            "4/6",
+            "8.55e+9"
+          ],
+          [
+            "K4",
+            6,
+            "110100",
+            0,
+            "3/15",
+            "9.87e+9"
+          ],
+          [
+            "ladder-3",
+            9,
+            "101000000",
+            0,
+            "3/36",
+            "9.87e+9"
+          ],
+          [
+            "ladder-4",
+            12,
+            "101000000000",
+            0,
+            "3/66",
+            "9.87e+9"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.519Z"
+    },
+    {
+      "id": "structures/mass-as-period · gravity",
+      "what": "mass is the repeat frequency, so a heavier particle is a smaller structure — which reproduces size ∝ λ̄_C without being asked, and does not explain 1836",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "the 2-gon's period",
+          "value": 4,
+          "units": "darts",
+          "expect": {
+            "of": "4 — twice its two darts, because it is a fermion",
+            "want": 4,
+            "tolerance": 0,
+            "because": "the smallest structure that can ACTUALLY be a fermion, which by §1–2 rules out the theta graph however small it is, since its schedule cancels the twist. So this is the proton's period if the proton is the smallest one"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "period an electron would need",
+          "value": 7344.61068,
+          "expect": {
+            "of": "1836× the proton's",
+            "want": 7344.61068,
+            "tolerance": 0,
+            "because": "m ∝ 1/period, so the ratio of periods IS the mass ratio inverted. A HEAVIER PARTICLE IS A SMALLER STRUCTURE — the right way round, and not a choice: it follows from mass being a frequency"
+          },
+          "note": "about 3672 edges, against the proton's 2",
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "λ̄_C(electron)/λ̄_C(proton) against period(e)/period(p)",
+          "value": 1,
+          "expect": {
+            "of": "1 — THE TWO AGREE",
+            "want": 1,
+            "tolerance": 0,
+            "because": "the electron is BIGGER by 1836 and needs 1836× the edges, so a structure whose size tracks its period gives size ∝ 1/m, which is the Compton relation. The framework is at least consistent about what a particle's extent means, and it was not asked to be"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "how far the 4π coincidence survives the geometry",
+          "value": 0.5526571643351094,
+          "expect": {
+            "of": "it does not — and on cubic 26 it was 0.3%",
+            "want": 0.553,
+            "tolerance": 0.01,
+            "because": "a numerical agreement that moves by two orders of magnitude when the lattice changes was never evidence of anything, and this is the measurement that says so rather than an argument that it might be"
+          },
+          "note": "19.511 emissions per period on fcc-12 where the magneton is 0.05131 µ_B, against 4π = 12.566 and CYCLE·π/2 = 9.425; the cubic-26 file this replaces read a magneton of 0.0794 and got 12.609",
+          "by": 0.0006199559943773667,
+          "verdict": "within"
+        },
+        {
+          "name": "1836, explained",
+          "value": 0,
+          "note": "NOTHING HERE SELECTS IT. It is an input that fixes how many edges an electron has, and then the mass spectrum becomes a question about which structures are stable, which is §5's question and is not answered"
+        }
+      ],
+      "table": {
+        "columns": [
+          "structure",
+          "period",
+          "laps",
+          "rel. mass (2-gon = 1)"
+        ],
+        "rows": [
+          [
+            "2-gon",
+            4,
+            2,
+            "1.000"
+          ],
+          [
+            "4-cycle",
+            8,
+            2,
+            "0.500"
+          ],
+          [
+            "8-cycle",
+            16,
+            2,
+            "0.250"
+          ],
+          [
+            "theta",
+            6,
+            1,
+            "0.667"
+          ],
+          [
+            "fig-8",
+            8,
+            2,
+            "0.500"
+          ],
+          [
+            "K4",
+            8,
+            2,
+            "0.500"
+          ],
+          [
+            "ladder-3",
+            18,
+            1,
+            "0.222"
+          ],
+          [
+            "ladder-4",
+            34,
+            2,
+            "0.118"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.718Z"
+    },
+    {
+      "id": "structures/spin-from-a-twist · gravity",
+      "what": "a walk whose holonomy is −1 fires on the second lap, which is spin ½ out of one local twist — and one-sidedness is necessary but not sufficient for it",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "twist assignments swept",
+          "value": 4972,
+          "expect": {
+            "of": "2^E summed over the eight structures",
+            "want": 4972,
+            "tolerance": 0,
+            "because": "exhaustive rather than sampled, which is what makes the zero below a statement and not an absence of evidence"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "holonomy −1 but NOT one-sided",
+          "value": 0,
+          "expect": {
+            "of": "0 — NEVER, and this direction is exact",
+            "want": 0,
+            "tolerance": 0,
+            "because": "a firing orbit with holonomy −1 always means the structure is one-sided. So THE SCHEDULE CAN ONLY EVER UNDERSTATE THE TOPOLOGY, never invent it, which is the guarantee the whole reframing needs before anything is read off a walk"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "one-sided but every orbit positive",
+          "value": 2430,
+          "expect": {
+            "of": "> 0 — THE CONVERSE FAILS, AND BADLY",
+            "want": 2430,
+            "tolerance": 0,
+            "because": "one-sidedness is NECESSARY AND NOT SUFFICIENT. A perfectly Möbius container can fire like a boson, so the extra condition is new: the firing orbit must cross the twist an ODD number of times. That is a statement about WHERE THE EMITTER'S EXITS SIT rather than about the shape of the container — the first place in this sequence where the emission and not the geometry decides the physics"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "of those, the ones where every face is even",
+          "value": 486,
+          "expect": {
+            "of": "the clean sub-case",
+            "want": 486,
+            "tolerance": 0,
+            "because": "a face traversing every edge twice has a holonomy that is a product of squares and cannot be negative however the structure is twisted. The theta graph is the type specimen — one face, length 2E, each edge twice. The rest of the gap is the general version: w₁ is only visible on cycles crossing an odd number of twisted edges, and the faces of a ribbon graph are not free to be any cycle"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "one-sided assignments",
+          "value": 4660,
+          "expect": {
+            "of": "the population the two findings above partition",
+            "want": 4660,
+            "tolerance": 0,
+            "because": "reported so the two rows above can be read as a fraction of something rather than as bare counts"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "assignments with some orbit at holonomy −1",
+          "value": 2230,
+          "expect": {
+            "of": "the fermionic population",
+            "want": 2230,
+            "tolerance": 0,
+            "because": "and every one of them is one-sided, which is the exactness above"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "structure",
+          "E",
+          "twists",
+          "F",
+          "χ",
+          "orbit",
+          "hol",
+          "laps",
+          "one-sided"
+        ],
+        "rows": [
+          [
+            "2-gon",
+            2,
+            0,
+            2,
+            2,
+            2,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "2-gon",
+            2,
+            1,
+            2,
+            2,
+            2,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "2-gon",
+            2,
+            2,
+            2,
+            2,
+            2,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "4-cycle",
+            4,
+            0,
+            2,
+            2,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "4-cycle",
+            4,
+            1,
+            2,
+            2,
+            4,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "4-cycle",
+            4,
+            2,
+            2,
+            2,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "4-cycle",
+            4,
+            4,
+            2,
+            2,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "8-cycle",
+            8,
+            0,
+            2,
+            2,
+            8,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "8-cycle",
+            8,
+            1,
+            2,
+            2,
+            8,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "8-cycle",
+            8,
+            2,
+            2,
+            2,
+            8,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "8-cycle",
+            8,
+            8,
+            2,
+            2,
+            8,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "theta",
+            3,
+            0,
+            1,
+            0,
+            6,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "theta",
+            3,
+            1,
+            1,
+            0,
+            6,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "theta",
+            3,
+            2,
+            1,
+            0,
+            6,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "theta",
+            3,
+            3,
+            1,
+            0,
+            6,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "fig-8",
+            4,
+            0,
+            3,
+            2,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "fig-8",
+            4,
+            1,
+            3,
+            2,
+            4,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "fig-8",
+            4,
+            2,
+            3,
+            2,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "fig-8",
+            4,
+            2,
+            3,
+            2,
+            4,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "fig-8",
+            4,
+            4,
+            3,
+            2,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "K4",
+            6,
+            0,
+            2,
+            0,
+            4,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "K4",
+            6,
+            1,
+            2,
+            0,
+            4,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "K4",
+            6,
+            1,
+            2,
+            0,
+            4,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "K4",
+            6,
+            2,
+            2,
+            0,
+            4,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "K4",
+            6,
+            2,
+            2,
+            0,
+            4,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "K4",
+            6,
+            6,
+            2,
+            0,
+            4,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "ladder-3",
+            9,
+            0,
+            1,
+            -2,
+            18,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "ladder-3",
+            9,
+            1,
+            1,
+            -2,
+            18,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "ladder-3",
+            9,
+            2,
+            1,
+            -2,
+            18,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "ladder-3",
+            9,
+            9,
+            1,
+            -2,
+            18,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "ladder-4",
+            12,
+            0,
+            2,
+            -2,
+            17,
+            "+",
+            1,
+            "no"
+          ],
+          [
+            "ladder-4",
+            12,
+            1,
+            2,
+            -2,
+            17,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "ladder-4",
+            12,
+            1,
+            2,
+            -2,
+            17,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "ladder-4",
+            12,
+            2,
+            2,
+            -2,
+            17,
+            "−",
+            2,
+            "YES"
+          ],
+          [
+            "ladder-4",
+            12,
+            2,
+            2,
+            -2,
+            17,
+            "+",
+            1,
+            "YES"
+          ],
+          [
+            "ladder-4",
+            12,
+            12,
+            2,
+            -2,
+            17,
+            "−",
+            2,
+            "YES"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.455Z"
+    },
+    {
+      "id": "topology/only-a-free-involution · gravity",
+      "what": "built on a lattice, only the antipodal quotient gives torsion — and χ does not distinguish the cases, which is the trap anyone checking this will fall into",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "involutions of the four that give torsion",
+          "value": 1,
+          "expect": {
+            "of": "1 — the antipodal one, and it is the only FREE one",
+            "want": 1,
+            "tolerance": 0,
+            "because": "a reflection fixes a circle and a π rotation fixes two poles, and both give free rank nought and no torsion. Which settles in the concrete what the container argument raised in the abstract: THE GLUING MUST BE FREE, and on a sphere the only free involution is the antipodal one. THERE IS NOTHING ELSE TO TRY"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "torsion coefficient of the antipodal quotient",
+          "value": 2,
+          "expect": {
+            "of": "2 — it is RP²",
+            "want": 2,
+            "tolerance": 0,
+            "because": "the same 2 the surface word gives, now on something the lattice could actually build out of cells"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "χ of the reflection, against RP²'s",
+          "value": 0,
+          "expect": {
+            "of": "0 — AND χ DOES NOT DISTINGUISH THEM, which is the trap",
+            "want": 0,
+            "tolerance": 0,
+            "because": "the reflection has χ = 1 EXACTLY AS RP² DOES, and H₁ = 0. Euler characteristic is not the invariant — a quotient can have the right χ and be a disc. Anyone checking this on a lattice will reach for χ first, and it will lie"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "refinements where the unquotiented sphere gives χ = 2",
+          "value": 3,
+          "expect": {
+            "of": "all three",
+            "want": 3,
+            "tolerance": 0,
+            "because": "so the complex really is a sphere before it is quotiented, which is what makes the answer after quotienting mean anything"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "refinements where the antipodal quotient gives χ = 1 with torsion [2]",
+          "value": 3,
+          "expect": {
+            "of": "all three — NOT AN ARTEFACT OF A COARSE SPHERE",
+            "want": 3,
+            "tolerance": 0,
+            "because": "χ = 2 unquotiented and χ = 1 antipodally at every refinement, with the torsion each time. That is S² and RP², and the numbers are THE RIGHT ONES rather than nearly right"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "involution",
+          "fixed points",
+          "V",
+          "E",
+          "F",
+          "χ",
+          "H₁"
+        ],
+        "rows": [
+          [
+            "identity — no gluing",
+            "all fixed",
+            98,
+            192,
+            96,
+            2,
+            "free 0, torsion —"
+          ],
+          [
+            "antipodal  v → −v",
+            "NONE — free",
+            49,
+            96,
+            48,
+            1,
+            "free 0, torsion [2]"
+          ],
+          [
+            "reflect one axis",
+            "a circle",
+            57,
+            104,
+            48,
+            1,
+            "free 0, torsion —"
+          ],
+          [
+            "rotate π about z",
+            "two poles",
+            50,
+            96,
+            48,
+            2,
+            "free 0, torsion —"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:54.449Z"
+    },
+    {
+      "id": "topology/the-wrong-label · gravity",
+      "what": "a handle's Z₂ label is rotation-inert, and what a fermion needs is an element of order exactly two, which a bare ±1 is not",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "change in a handle's holonomy under rotation, worst over four angles",
+          "value": 0,
+          "expect": {
+            "of": "0 — UNCHANGED AT EVERY ANGLE",
+            "want": 0,
+            "tolerance": 0,
+            "because": "and for a reason rather than by accident: a rotation permutes the ring's edges among themselves, and a product does not care about the order of its factors. So the label a handle carries is REAL and it is NOT THE ONE WANTED — a fermion needs a label the rotation ACTS ON, and a cycle inside a region is not that, because the rotation maps the cycle to itself"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "q(2π) for the SU(2) lift",
+          "value": -1,
+          "expect": {
+            "of": "−1 — non-trivial at one turn",
+            "want": -1,
+            "tolerance": 1e-12,
+            "because": "the first of two properties at once, and a bare ±1 has only this one"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "q(4π) for the SU(2) lift",
+          "value": 1,
+          "expect": {
+            "of": "+1 — trivial at two turns",
+            "want": 1,
+            "tolerance": 1e-12,
+            "because": "THE SECOND PROPERTY, which is what 'order exactly two' means and which neither the XOR sign nor a handle's holonomy has, because both are bare ±1 with nothing composing. And note WHERE it lives: on the ORIENTATION of the region, not on a cycle inside it — which is exactly why the handle came out inert"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "rotation",
+          "handle holonomy",
+          "SU(2) lift q(θ)"
+        ],
+        "rows": [
+          [
+            "none",
+            -1,
+            "1.0000"
+          ],
+          [
+            "π/2",
+            -1,
+            "0.7071"
+          ],
+          [
+            "π",
+            -1,
+            "0.0000"
+          ],
+          [
+            "2π",
+            -1,
+            "-1.0000"
+          ],
+          [
+            "4π",
+            -1,
+            "1.0000"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.713Z"
+    },
+    {
+      "id": "topology/torsion-is-fragile · gravity",
+      "what": "one broken antipodal pair out of 108 destroys the torsion, which turns the fermion into a handle and gives a lifetime twenty orders short of the electron's",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "antipodal pairs the sphere has",
+          "value": 108,
+          "expect": {
+            "of": "108, from 216 faces",
+            "want": 108,
+            "tolerance": 0,
+            "because": "the granularity the churn has to be asked at"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "torsion with everything intact",
+          "value": 2,
+          "expect": {
+            "of": "2 — a fermion",
+            "want": 2,
+            "tolerance": 0,
+            "because": "the starting point, so that what happens next is a change rather than an absence"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "torsion after ONE pair is removed",
+          "value": 0,
+          "expect": {
+            "of": "0 — GONE, on one pair out of 108",
+            "want": 0,
+            "tolerance": 0,
+            "because": "Z/2 becomes free Z and the object stops being a fermion and becomes a HANDLE, which §1 shows is rotation-inert and therefore a boson. AND THE ASYMMETRY IS THE POINT RATHER THAN BAD LUCK: a free class is a loop and a loop can route round damage, where torsion is the statement that a cycle traversed TWICE bounds, and that needs the identification intact EVERYWHERE"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "free rank after one pair is removed",
+          "value": 1,
+          "expect": {
+            "of": "1 — it became a handle",
+            "want": 1,
+            "tolerance": 0,
+            "because": "not merely that the torsion went, but what it went to. Against a handle surviving a tenth of its cells being removed and replaced, this is MAXIMAL FRAGILITY"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "lifetime of a hundred-cell container",
+          "value": 170838290.82889518,
+          "units": "years",
+          "expect": {
+            "of": "about 10⁸ — twenty orders short of the electron bound",
+            "want": 170000000,
+            "tolerance": 0.1,
+            "because": "and IT GETS WORSE WITH SIZE, which is the wrong way round since a bigger particle should not be more fragile. Anything of the size a real particle would need, in cells, is gone immediately. THIS IS THE PREDICTION THAT FAILS"
+          },
+          "by": 0.0049311225229128315,
+          "verdict": "within"
+        },
+        {
+          "name": "orders short of the electron bound",
+          "value": 20.58695871771387,
+          "expect": {
+            "of": "about 20",
+            "want": 20.6,
+            "tolerance": 0.1,
+            "because": "measured against > 6.6·10²⁸ years, and the proton's bound is another six orders beyond that"
+          },
+          "by": 0.0006330719556374593,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "pairs removed",
+          "faces left",
+          "H₁"
+        ],
+        "rows": [
+          [
+            0,
+            108,
+            "free 0, torsion [2]"
+          ],
+          [
+            1,
+            107,
+            "free 1, torsion —"
+          ],
+          [
+            2,
+            106,
+            "free 1, torsion —"
+          ],
+          [
+            5,
+            103,
+            "free 1, torsion —"
+          ],
+          [
+            10,
+            98,
+            "free 1, torsion —"
+          ],
+          [
+            "—",
+            "container cells",
+            "lifetime in years"
+          ],
+          [
+            "",
+            "1e+2",
+            "1.7e+8"
+          ],
+          [
+            "",
+            "1e+6",
+            "1.7e+4"
+          ],
+          [
+            "",
+            "1e+20",
+            "1.7e-10"
+          ],
+          [
+            "",
+            "electron bound",
+            "> 6.6e+28"
+          ],
+          [
+            "",
+            "proton bound",
+            "> 1.6e+34"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:56.000Z"
+    },
+    {
+      "id": "topology/torsion-not-rank · gravity",
+      "what": "torsion is the invariant that separates a handle from a fermion, GF(2) cannot see it, and torsion appears exactly where the gluing reverses orientation",
+      "header": {
+        "geometry": "fcc-12",
+        "D": 3,
+        "DEG": 12,
+        "SHEET": 6,
+        "CYCLE": 6,
+        "SPIN_deg": 60,
+        "rank4_anisotropy": 0.28411207208656175,
+        "c_anisotropy": 1,
+        "veined": true,
+        "theory": "gravity",
+        "polarised": false,
+        "rules": [
+          "expand",
+          "stream",
+          "emit",
+          "collide",
+          "move"
+        ],
+        "backend": "array",
+        "boundary": "absorb",
+        "fold": {
+          "mode": "destroy",
+          "degree": "fixed",
+          "reversible": true
+        },
+        "meeting": "on-edge",
+        "meetingRate": "one",
+        "bound": {
+          "radius": 2,
+          "metric": "box"
+        },
+        "expansion": 1,
+        "N": 5,
+        "ticks": 0,
+        "fill": 0,
+        "scattering": 0,
+        "seeds": [
+          20260817
+        ]
+      },
+      "findings": [
+        {
+          "name": "torsion of a circle — a handle",
+          "value": 0,
+          "expect": {
+            "of": "0 — free Z, no element of finite order at all",
+            "want": 0,
+            "tolerance": 0,
+            "because": "doubling a free class never returns to nothing, so a handle has nothing of order exactly two to offer however many of them there are"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "torsion coefficient of RP²",
+          "value": 2,
+          "expect": {
+            "of": "2 — order exactly two",
+            "want": 2,
+            "tolerance": 0,
+            "because": "generated by a degree-2 attachment, a 2-cell glued round the loop TWICE, AND THAT TWO IS THE SAME TWO as q(4π) = +1. Which is the whole of why the belt trick and this invariant are the same statement"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "GF(2) dimension of both, which is what the matter section computed",
+          "value": 1,
+          "expect": {
+            "of": "1 for BOTH — indistinguishable",
+            "want": 1,
+            "tolerance": 0,
+            "because": "so the matter section's b₁ COULD NOT HAVE TOLD A HANDLE FROM A FERMIONIC CONTAINER. Every number in it is right and the invariant is too coarse for the question it was asked, which is a correction to what it established rather than to what it measured"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "free rank one fusion gives",
+          "value": 1,
+          "expect": {
+            "of": "1 — free Z, a handle, and ONE FUSION IS NOT ENOUGH",
+            "want": 1,
+            "tolerance": 0,
+            "because": "identifying two points of a connected region gives a wedge with a circle: free Z, which §1 shows is rotation-inert and therefore a boson. So the model already having a two-to-one rule does not settle it — what is needed is a whole boundary sphere sewn to itself, not one pair of cells"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "surfaces with a REVERSING gluing that carry torsion",
+          "value": 2,
+          "expect": {
+            "of": "all of them",
+            "want": 2,
+            "tolerance": 0,
+            "because": "reverse the gluing and a 2 appears in the boundary map, which is the 2 in Z/2. SO THE CONTAINER MUST HAVE ITS BOUNDARY GLUED TO ITSELF WITH A FLIP"
+          },
+          "by": 0,
+          "verdict": "within"
+        },
+        {
+          "name": "surfaces with a PRESERVING gluing that carry torsion",
+          "value": 0,
+          "expect": {
+            "of": "none — the control",
+            "want": 0,
+            "tolerance": 0,
+            "because": "a boundary sewn to itself the same way round gives free rank however it is done: the torus has two generators and no element of finite order at all. Torsion appears exactly where the gluing reverses and NOWHERE ELSE, and this is the half of that sentence that makes it a statement rather than an example"
+          },
+          "by": 0,
+          "verdict": "within"
+        }
+      ],
+      "table": {
+        "columns": [
+          "surface",
+          "word",
+          "gluing",
+          "H₁"
+        ],
+        "rows": [
+          [
+            "torus",
+            "abAB",
+            "preserving",
+            "free 2, torsion —"
+          ],
+          [
+            "Klein bottle",
+            "abaB",
+            "REVERSING",
+            "free 1, torsion [2]"
+          ],
+          [
+            "RP²",
+            "aa",
+            "REVERSING",
+            "free 0, torsion [2]"
+          ]
+        ]
+      },
+      "at": "2026-08-19T21:40:55.681Z"
     },
     {
       "id": "vacuum/annihilation-feeds-expansion · gravity",
@@ -8500,7 +13919,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:04:47.380Z"
+      "at": "2026-08-19T20:40:13.169Z"
     },
     {
       "id": "vacuum/fixed-point · conserving",
@@ -8622,7 +14041,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:01:32.389Z"
+      "at": "2026-08-19T20:39:48.217Z"
     },
     {
       "id": "vacuum/fixed-point · gravity",
@@ -8746,7 +14165,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:01:01.211Z"
+      "at": "2026-08-19T20:39:24.953Z"
     },
     {
       "id": "vacuum/fixed-point · gravity+magnetism",
@@ -8870,7 +14289,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:01:10.224Z"
+      "at": "2026-08-19T20:39:29.758Z"
     },
     {
       "id": "vacuum/sheet-versus-isotropic · gravity+magnetism",
@@ -8977,7 +14396,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:03:24.807Z"
+      "at": "2026-08-19T20:42:04.490Z"
     },
     {
       "id": "vacuum/which-meeting · gravity",
@@ -9149,7 +14568,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:14:34.457Z"
+      "at": "2026-08-19T20:48:39.178Z"
     },
     {
       "id": "vacuum/which-meeting · gravity+magnetism",
@@ -9321,7 +14740,7 @@
           ]
         ]
       },
-      "at": "2026-08-19T13:14:48.039Z"
+      "at": "2026-08-19T20:49:34.764Z"
     }
   ]
 }

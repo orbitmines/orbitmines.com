@@ -49,7 +49,7 @@ export const suppression = test({
   id: "cosmology/blocked-expansion",
   claims: "splitting is suppressed where the carrier density is high, by the free " +
     "fraction the interpolation is derived from — measured on a lattice, not assumed",
-  cited: ["Galaxy rotation curves", "and the turnover is derived, not borrowed"],
+  cited: ["Galaxy rotation curves"],
   under: { "gravity+magnetism": "holds" },
   run: (ctx, theory) => {
     const { N, T, seeds } = ctx.budget({ N: 41, T: 300, seeds: 3 });

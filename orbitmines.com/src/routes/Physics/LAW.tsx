@@ -16,16 +16,25 @@
  * dependency has to point while the rest is ported: new core knows nothing about the
  * archive, the archive leans on the new core.
  *
- * THE ONE EDGE LEFT is `gravitational` and `massUnit`, three numeric helpers out of
- * the archive's 6,391-line `gravity.ts` used by the CLOCK and IGNORANCE derivations.
- * That file is the SI-units bridge rather than a panel, so it belongs in
- * `CONTINUOUS.ts` as derived constants — which is a port, not a move, and is not
- * done here.
+ * THE LAST EDGE IS GONE. `gravitational` and `massUnit` used to come out of the
+ * archive's `gravity.ts`, where they were written with a literal 8, a literal 26 and
+ * a literal 0.5 in them. They are now `constants()` in `CONTINUOUS.ts`, read off the
+ * geometry `DISCRETE.ts` is actually running — so the number on this page follows the
+ * lattice instead of standing beside it. Nothing here imports the archive.
  */
 
 import { Children, Fragment, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
 
-import { GRAIN, gravitational, massUnit } from "./todo/UNITS";
+import { constants } from "./CONTINUOUS";
+
+/**
+ * The constants of the lattice this book runs on, taken once.
+ *
+ * `constants()` is a pure function of `DEFAULT_GEOMETRY`, so this is the SAME object
+ * every panel and every test is reading — which is the whole reason the numbers below
+ * are printed off it rather than transcribed.
+ */
+const { gravitational, massUnit } = constants();
 
 /**
  * The law, on the page — and behind each equation, where it came from.
@@ -48,10 +57,13 @@ import { GRAIN, gravitational, massUnit } from "./todo/UNITS";
  * able to ask any line where it came from and get an answer.
  *
  * THE NUMBERS ON THIS PAGE ARE MEASURED and every one of them is reproducible
- * from `models.ts` — the sixths, the deflection, the a and e of each orbit.
+ * from `ORBIT.ts` — the sixths, the deflection, the a and e of each orbit — which
+ * puts Newton, general relativity and this model through ONE integrator so that
+ * what differs between them is the metric and not the arithmetic.
  * They are quoted here rather than computed here, which is a second copy and
- * therefore a thing that can drift; `GRAIN` is imported instead, and the rest
- * would be too if the panels were cheap enough to run at render.
+ * therefore a thing that can drift; the constants are read off `CONTINUOUS.ts`
+ * instead, and the rest would be too if the panels were cheap enough to run at
+ * render.
  *
  * WHAT CHANGED, since a reader who saw this page before will notice. It used
  * to end by owning up: a sixth of Mercury's perihelion, half of light's
@@ -1065,7 +1077,7 @@ export const IDENTICAL: Derivation = {
     <Because>ω is not free any more</Because>
     <Step eq={<><V>ω</V> = <V>m</V>,&nbsp;&nbsp; one wavelength = 2π/<V>m</V> = 2π<V>G</V><V>λ</V><Sub>C</Sub></>}>
       Mass is how often a thing pulses, so the rate at which its charge
-      reverses is the mass. It used to be set by <K>SLOW</K> in{' '}
+      reverses is the mass. It used to be set by <K>SLOW</K> in the archive’s{' '}
       <i>models.ts</i> — a drawing choice — and spread 3.7% a body so that no
       two ever matched. That spread was standing in for a fact.
     </Step>
