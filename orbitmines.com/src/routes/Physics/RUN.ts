@@ -33,11 +33,19 @@ import meeting from "./tests/meeting";
 import layer2 from "./tests/layer2";
 import propulsion from "./tests/propulsion";
 import magnetism from "./tests/magnetism";
+import ordering from "./tests/ordering";
+import magneticLaws from "./tests/magnetic-laws";
+import kernel from "./tests/kernel";
+import metric from "./tests/metric";
+import rotation from "./tests/rotation";
+import discs from "./tests/discs";
+import moments from "./tests/moments";
+import wander from "./tests/wander";
 import cosmology from "./tests/cosmology";
 import matter from "./tests/matter";
 import induction from "./tests/induction";
 
-const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...cosmology, ...matter];
+const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter];
 
 /** the theories by the names the tests declare expectations under */
 const BY_NAME = Object.fromEntries(Object.values(THEORIES).map(t => [t.name, t]));

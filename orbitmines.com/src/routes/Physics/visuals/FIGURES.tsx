@@ -21,7 +21,7 @@
  * in this book owes and none of them carried.
  */
 
-import REPORT from "./REPORT.json";
+import REPORT from "../REPORT.json";
 
 type Finding = {
   /** `value` is null wherever the run recorded a NaN, since JSON cannot carry one */

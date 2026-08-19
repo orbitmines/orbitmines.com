@@ -27,8 +27,50 @@ a published number came from was recoverable only by reading source.
 | `SUITE.ts` | how a claim gets tested: against a theory, with an expectation and a band. |
 | `RUN.ts` | the runner. Writes `REPORT.json`, which the article reads. |
 | `CHECK.ts` | does the model still work — the five checks to make before trusting anything. |
-| `RENDER.tsx` | the panels, driven by the same core the measurements use. |
+| `TRANSPORT.ts` | the transport law — carriers slowing where the medium is thin, which is where the rotation curves come from. Shared by the test and the figure. |
+| `POLES.ts` | the pole model — a magnetised body as −∇·M through a 1/R kernel, shared by the test and the figure so they cannot drift apart. |
+| `STRUCTURE.ts` | shapes, and b₁ over GF(2) on a cubical complex. |
+| `LAW.tsx` | the notation the article is written in, and the derivations behind each equation. Moved out of the archive; not physics. |
+| `visuals/` | every figure. Nothing in here measures anything the tests do not. |
 | `tests/` | the migrated claims. |
+
+### `visuals/`
+
+| | |
+|---|---|
+| `CANVAS.tsx` · `CAROUSEL.tsx` | a canvas that draws only when visible; one figure across every geometry. |
+| `RENDER.tsx` | the field panels — two worlds, differenced, read through named channels. |
+| `LATTICE.tsx` | the pictures about the lattice rather than about what happens on it. |
+| `PLAYER.tsx` | a lattice ticking, with transport controls. |
+| `EXPAND.tsx` | one tick of the split, slowly — and the 1D case, which is the explanation. |
+| `BAR.tsx` · `SHADOW.tsx` | a bar magnet's B and H; the shadow, cut down the seam, and the two overlaid. |
+| `CURVE.tsx` | a rotation curve under both laws — an idealised disc, said so. |
+| `LINES.tsx` | every arrangement of two charges on a line, run one tick through the real rules and sorted by what the tick did. |
+| `FIGURES.tsx` | `<Claim>`, `<Recorded>`, `<M>` — the article reading `REPORT.json`. |
+
+**A figure is a picture of the model, or it says what it is instead.** The panels
+run `DISCRETE.ts`; where a figure draws a closed form rather than a run — the
+shadow does — the caption says so, and the measured version is quoted from the
+report beside it. The archive's lattice panels ran a separate 3,395-line
+simulator, so every one of them was a picture of a *different* model from the one
+the tests measure, and nothing checked that the two agreed.
+
+## What is left of the archive
+
+Three imports, and each is there for a stated reason rather than because nobody got to
+it:
+
+| | |
+|---|---|
+| `gravity.ts` → `gravitational`, `massUnit` | the SI-units bridge, used by the CLOCK and IGNORANCE derivations. Computation, not a panel; belongs in `CONTINUOUS.ts` as derived constants, which is a port rather than a move. |
+| `magnetism.tsx` → `Ceiling`, `Ladder` | scale estimates resting on a dimensionless *G* and a ring radius (CYCLE·G/2π)·λ̄C. Reconstructing that chain means guessing at a constant the article does not state, and a figure built on a guessed constant is worse than one that has not been ported. |
+| `em.tsx` → `Lorentz` | the gate-against-turn trajectories. The claim — |Δx|/|Δy| = 0.1548 against tan(θ/2) = 0.1511 — needs the two mechanisms written out, and θ is not recoverable from the text. |
+
+Everything else the article once imported from there is gone: `discrete.ts` (3,395
+lines of a *second* simulator, which is why every lattice figure used to be a picture
+of a different model from the one the tests measure), `views.tsx`, `models.ts`,
+`shadow.tsx`, `rotation.tsx`, `wander.tsx`, `echoes.tsx`, `shelter.tsx`, `lines.ts`,
+`grid.tsx`, `ribbon.tsx`, `model.ts`, `physics.ts`, and `law.tsx`'s page components.
 
 ## Nothing here contains 26, 8, or 45°
 

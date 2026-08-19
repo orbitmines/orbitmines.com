@@ -28,8 +28,8 @@
 import { CanvasView, Surface } from "./CANVAS";
 import {
   World, Theory, Geometry, GRAVITY, GRAVITY_MAGNETISM, LABELLED, GEOMETRIES,
-  l, fieldB, fill,
-} from "./DISCRETE";
+  l, fieldB, fill, withSign,
+} from "../DISCRETE";
 
 const BACK = "#08090d", FAINT = "#5a5f6e", SEEN = "#eef0f5";
 const PLUS = "#4aa8eb", MINUS = "#eb964a", DESTROYED = "#e0685f", TRAFFIC = "#6fd39b";
@@ -56,12 +56,26 @@ export type Channel = {
 };
 
 export const CHANNELS = {
-  /** where space has been destroyed — the metric channel, and the article's pull */
+  /**
+   * WHERE SPACE HAS BEEN DESTROYED — the metric channel, and the article's pull.
+   *
+   * READ OUT OF `w.destroyed`, NOT `backend.density`. Density counts how much space
+   * has been FOLDED into a point, and on-edge annihilation does not fold: it collapses
+   * the point the split inserted BETWEEN two others and leaves both ends alone. So
+   * density stopped moving when the meeting rule was settled, and this channel — the
+   * one every "pull" panel in the article is drawn from — silently went flat. The
+   * panels kept rendering; the layer they were about was blank.
+   *
+   * `w.destroyed` is the per-point annihilation count, credited half to each end of
+   * the edge the event happened on, and it is the same quantity the force
+   * measurements read. `before` is still taken so the signature does not change and
+   * so a panel can be drawn against a warmed world.
+   */
   destroyed: (before: Int32Array): Channel => ({
     name: "space destroyed — the pull",
-    at: (w, k) => w.backend.density(k) - before[k],
+    at: (w, k) => (k < w.destroyed.length ? w.destroyed[k] : 0) - (before[k] ?? 0),
     positive: DESTROYED,
-    cumulative: true,                      // a fold is permanent, so this already sums
+    cumulative: true,                      // a count only ever grows, so it already sums
   }),
   /** how much is present — the mechanical channel, and the push */
   traffic: (): Channel => ({
@@ -85,6 +99,8 @@ export const CHANNELS = {
 
 export type PanelSpec = {
   note: string;
+  /** draw a dot for each source; off where the claim is that the field hides them */
+  markers?: boolean;
   theory: Theory;
   geometry?: Geometry;
   /** the world under test, and the control it is drawn against */
@@ -152,9 +168,15 @@ export const Panel = (s: PanelSpec) => {
         const N = s.N ?? 121, C = (N - 1) / 2, view = s.view ?? Math.min(30, C - 2);
         let acc = 0;
 
+        /*
+         * THE BASELINE THE CUMULATIVE CHANNELS ARE DIFFERENCED AGAINST. Taken from
+         * `destroyed` for the same reason the channel reads it: density does not move
+         * under on-edge annihilation, so a baseline taken from density is a baseline
+         * of zeroes against a quantity that is also zero.
+         */
         const snapshot = (x: World) => {
           const a = new Int32Array(x.backend.size());
-          x.backend.forEachLocal(k => { a[k] = x.backend.density(k); });
+          x.backend.forEachLocal(k => { a[k] = k < x.destroyed.length ? x.destroyed[k] : 0; });
           return a;
         };
 
@@ -194,7 +216,7 @@ export const Panel = (s: PanelSpec) => {
             const read = chans.map((ch, ci) => ch.cumulative
               ? (k: number) => ch.at(w, k) - ctlChans[ci].at(ctl, k)
               : (k: number) => sums[ci][k] / Math.max(samples, 1));
-            paint(sur, w, chans, read, C, view, s.note, w.stats.ticks);
+            paint(sur, w, chans, read, C, view, s.note, w.stats.ticks, s.markers !== false);
           },
         };
       }} />
@@ -204,8 +226,7 @@ export const Panel = (s: PanelSpec) => {
 
 const paint = (
   sur: Surface, w: World, chans: Channel[], read: ((k: number) => number)[],
-  C: number, view: number, label: string, ticks: number,
-) => {
+  C: number, view: number, label: string, ticks: number, markers = true,) => {
   const { ctx, width, height } = sur;
   ctx.fillStyle = BACK; ctx.fillRect(0, 0, width, height);
   const cols = chans.length;
@@ -250,7 +271,15 @@ const paint = (
     });
     ctx.globalAlpha = 1;
 
-    for (const src of w.sources) {
+    /*
+     * THE MARKERS ARE OPTIONAL, because on some panels drawing them contradicts the
+     * claim. The three sign-convention panels exist to show that a single tick of the
+     * vacuum does NOT show the structure in it — and a ring of source dots painted
+     * over the field shows it whatever the field is doing, which makes the picture
+     * argue the opposite of its caption. Where the point is "you cannot see it here",
+     * only what was measured is drawn.
+     */
+    for (const src of (markers ? w.sources : [])) {
       const p = w.backend.position(src.locals[0]);
       if (p.length > 2 && Math.abs(p[2] - C) > 2) continue;
       let cx = 0, cy = 0, m = 0;
@@ -490,3 +519,95 @@ export const SheetEmission = ({ height = 300 }: { height?: number }) => <div>
     channels: () => [CHANNELS.charge()],
   })}
 </div>;
+
+/*
+ * THE VACUUM'S ONE FREE DRAW, AND WHAT AVERAGING DOES TO IT.
+ *
+ * These replace the archive's `ribbon.tsx` panels. The point they make is the same
+ * one: (G+M/2) fixes where and when a creation fires and leaves only the SIGN open,
+ * so the three conventions are the whole of the model's randomness — and none of the
+ * three shows a structure at a single tick, because a structure is one object in a
+ * field that fills every point. It is AVERAGING that makes it visible.
+ *
+ * WHAT CHANGED IS WHAT IS UNDERNEATH. `ribbon.tsx` ran its own automaton; these run
+ * `DISCRETE.ts` with `withSign`, so the convention is a parameter of the model rather
+ * than a re-implementation of it, and the picture cannot drift from what the tests
+ * measure.
+ */
+
+/** a held ring of charge, which is the structure these panels are looking for */
+const ring = (radius: number) => (w: World) => {
+  const C = (w.opts.N - 1) / 2;
+  for (let i = 0; i < 64; i++) {
+    const a = (2 * Math.PI * i) / 64;
+    w.add({
+      at: [Math.round(C + radius * Math.cos(a)), Math.round(C + radius * Math.sin(a)), C],
+      radius: 0, emits: i % 2 ? 1 : -1, duty: 1, absorbs: true,
+    });
+  }
+};
+
+const convention = (sign: "perNode" | "perAxis" | "perRay", why: string) =>
+  ({ height = 300 }: { height?: number }) => Panel({
+    height, note: `${sign} — ${why}`,
+    theory: withSign(GRAVITY_MAGNETISM, sign), N: 121, view: 26,
+    build: ring(14), control: () => {},
+    /*
+     * ONE TICK, NOT AN AVERAGE. These three are here to show that a single tick of
+     * the vacuum looks like noise whichever convention is chosen, which is the
+     * observation the averaged panels below are the answer to.
+     */
+    warm: 1, markers: false,
+    channels: () => [CHANNELS.charge()],
+  });
+
+export const PerNode = convention("perNode",
+  "one sign for the whole point, into all its axes at once");
+export const PerAxis = convention("perAxis",
+  "each axis signed on its own, so a point hands out independent ± pairs");
+export const PerRay = convention("perRay",
+  "every heading signed independently, which breaks the ± pair the rule states");
+
+/** the same field, averaged over time — and the ring comes out of the noise */
+export const MeanOccupancy = ({ height = 300 }: { height?: number }) => Panel({
+  height, note: "the same vacuum, AVERAGED over ticks — the structure is one object in a " +
+    "field that fills every point, so a single tick cannot show it and an average can",
+  theory: GRAVITY_MAGNETISM, N: 121, view: 26,
+  build: ring(14), control: () => {},
+  warm: 200, markers: false,
+  channels: () => [CHANNELS.traffic()],
+});
+
+/** and with the sign kept, where it vanishes again — which is the honest half */
+export const MeanPolarity = ({ height = 300 }: { height?: number }) => Panel({
+  height, note: "the same average with the SIGN kept — the ring vanishes, because its charge " +
+    "is + on one lap and − on the next, so it is as unbiased in time as the vacuum is",
+  theory: GRAVITY_MAGNETISM, N: 121, view: 26,
+  build: ring(14), control: () => {},
+  warm: 200, markers: false,
+  channels: () => [CHANNELS.charge()],
+});
+
+/**
+ * A NEUTRAL WIRE — no net charge, no ray current, and a magnetic field anyway.
+ *
+ * The construction is the one `magnetostatics/neutral-wire` measures, not a picture
+ * drawn to look like it: alternating carriers along the axis, equal numbers of each,
+ * so there is NO net charge anywhere in it — and σu is +I ẑ for BOTH signs, so the
+ * labels add where the charges cancel. That is the whole point the section makes
+ * twice, and it is why B is the field that survives when E is exactly nothing.
+ */
+export const NeutralWire = ({ height = 300 }: { height?: number }) => Panel({
+  height, note: "a neutral wire — the + carriers drift one way and the − the other, so there " +
+    "is no net charge and no ray current, and there is a magnetic field anyway",
+  theory: LABELLED, N: 121, view: 26,
+  build: w => {
+    const C = (w.opts.N - 1) / 2, I = 0.5;
+    for (let y = 6; y < w.opts.N - 6; y++) {
+      const s = (y % 2 === 0 ? 1 : -1) as 1 | -1;
+      w.add({ at: [C, y, C], radius: 0.9, emits: s, u: [0, s * I, 0] });
+    }
+  },
+  control: () => {},
+  channels: () => [CHANNELS.magnetic(2), CHANNELS.charge()],
+});

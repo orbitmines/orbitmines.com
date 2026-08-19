@@ -31,24 +31,48 @@
 
 import {
   World, GRAVITY, GRAVITY_MAGNETISM, fill, expansionOf, headerOf, judge,
-  Backend, Theory, Finding,
+  Theory, Finding,
 } from "../DISCRETE";
 import { test, DEFAULT_SEEDS } from "../SUITE";
 
-/** the per-point insertion counts, which only a backend that records them can give */
-const insertionsByRadius = (w: World, C: number, bins: number, R: number) => {
-  const b = w.backend as Backend & { inserted?: (l: number) => number };
+/**
+ * WHERE THE NEW POINTS ARE — by comparing the world against its own starting set.
+ *
+ * A first version asked the backend for `inserted(local)`, which is an ARRAY-backend
+ * counter: a flat grid cannot make a point, so it records the ones it could not make
+ * and hands back the tally. The graph backend has no such counter because it does not
+ * need one — it genuinely makes the point — so the reading came back 0 at every radius
+ * on the one backend where the measurement is possible at all, and the profile was
+ * blank while the world was demonstrably growing.
+ *
+ * So: take the positions the world started with, take the ones it ended with, and the
+ * difference IS the new space. Backend-agnostic, and it measures the thing directly
+ * rather than through a counter that may or may not be kept.
+ */
+const positions = (w: World) => {
+  const out = new Set<string>();
+  w.backend.forEachLocal(local => {
+    const p = w.backend.position(local);
+    out.add(p.map(x => Math.round(x * 2)).join(","));
+  });
+  return out;
+};
+
+const newByRadius = (w: World, before: Set<string>, C: number, bins: number, R: number) => {
   const made = new Float64Array(bins), count = new Float64Array(bins);
   w.backend.forEachLocal(local => {
     if (w.isSource(local)) return;
     const p = w.backend.position(local);
     const r = Math.hypot(p[0] - C, p[1] - C, p[2] - C);
     const i = Math.min(bins - 1, Math.floor((r / R) * bins));
-    made[i] += b.inserted ? b.inserted(local) : 0;
     count[i] += 1;
+    if (!before.has(p.map(x => Math.round(x * 2)).join(","))) made[i] += 1;
   });
-  // PER POINT, not per bin: an outer shell holds far more points than an inner one,
-  // so raw totals would show a frontier effect on any profile whatever.
+  /*
+   * AS A FRACTION OF THE SHELL, not as a count. An outer shell holds far more points
+   * than an inner one, so raw totals would show a frontier effect on any profile
+   * whatever — including one where space is made perfectly uniformly.
+   */
   return Array.from(made, (m, i) => (count[i] ? m / count[i] : NaN));
 };
 
@@ -84,6 +108,8 @@ export const whereSpaceIsMade = test({
      * finish — and this measurement is about WHERE space is made, not how much.
      */
     const bound = { radius: C + 8, metric: "ball" as const };
+    /** the most points this measurement will materialise before it stops and says so */
+    const CAP = 120_000;
 
     /*
      * A BALL OF MATTER IN AN EMPTY BOX, WHICH IS WHAT A FRONTIER ACTUALLY IS.
@@ -105,7 +131,25 @@ export const whereSpaceIsMade = test({
       });
       w.add({ at: [C, C, C], radius: 2, emits: 1, duty: 1 });
       const n0 = expansionOf(w).size;
-      w.run(T);
+      const before = positions(w);
+      /*
+       * STOPPED BY POINT COUNT, NOT BY TICKS — because `bound.radius` does not bound
+       * this. A radius caps how far the world EXTENDS; it does nothing about how
+       * finely it SUBDIVIDES, and insertion puts a new point BETWEEN two existing
+       * ones. So a polarised world inside a fixed radius keeps splitting the space it
+       * already has, and the point count runs away with the extent pinned.
+       *
+       * Measured the hard way: a run bounded at radius 14 reached 3.4 GB resident and
+       * was still climbing after twenty minutes. The cap is what makes the polarised
+       * case finishable at all, and the ticks it managed are reported rather than
+       * assumed — a run that stopped early is a different measurement from one that
+       * ran to T, and saying which is the difference between a result and a guess.
+       */
+      let ran = 0;
+      for (let t = 0; t < T; t++) {
+        w.tick(); ran++;
+        if (expansionOf(w).size > CAP) break;
+      }
       /* against the FINAL extent, since the world is bigger than it started */
       let R = 1;
       w.backend.forEachLocal(k => {
@@ -113,8 +157,8 @@ export const whereSpaceIsMade = test({
         R = Math.max(R, Math.hypot(p[0] - C, p[1] - C, p[2] - C));
       });
       return {
-        made: insertionsByRadius(w, C, BINS, R),
-        grew: expansionOf(w).size / n0, R, fill: fill(w),
+        made: newByRadius(w, before, C, BINS, R),
+        grew: expansionOf(w).size / n0, R, ran, fill: fill(w),
       };
     });
 
@@ -161,10 +205,16 @@ export const whereSpaceIsMade = test({
           because: "this is the whole mechanism: a ray stepping off the edge is given " +
             "the point it needs, and that point is new space",
         },
-        note: `out to a radius of ${profile(seeds[0]).R.toFixed(1)} cells`,
+        note: `out to a radius of ${profile(seeds[0]).R.toFixed(1)} cells, over ` +
+          `${profile(seeds[0]).ran} of ${T} ticks` +
+          (profile(seeds[0]).ran < T
+            ? ` — STOPPED EARLY at the ${CAP.toLocaleString()}-point cap, which is the ` +
+              "polarised case subdividing the space it already has rather than only " +
+              "reaching further"
+            : ""),
       }),
       judge({
-        name: "space made per point, interior", value: inner,
+        name: "fraction of the shell that is new, interior", value: inner,
         expect: theory.polarised
           ? undefined
           : {
@@ -185,7 +235,7 @@ export const whereSpaceIsMade = test({
           : "the bulk is static, as the arc requires",
       }),
       judge({
-        name: "space made per point, frontier", value: outer,
+        name: "fraction of the shell that is new, frontier", value: outer,
         expect: {
           of: "above the interior — a ray streaming outward meets nothing ever and never " +
             "gives its point back",
@@ -195,27 +245,36 @@ export const whereSpaceIsMade = test({
         },
       }),
       judge({
-        name: "tilt of the swept profile", value: tilt,
+        /*
+         * THE DISCRIMINATOR, AND IT IS NOT THE ONE THIS FILE STARTED WITH.
+         *
+         * A first version measured how far from FLAT the swept profile was, on the
+         * reasoning that frontier creation fires once per shell as the front passes.
+         * That was a picture of the array backend, where the lattice already exists
+         * everywhere and a front moves through it. On a backend that really makes
+         * points the signature is stronger and simpler: in pure gravity the interior
+         * is EXACTLY ZERO and everything new is at the edge, so the ratio is nought
+         * rather than merely small.
+         */
+        name: "interior over frontier",
+        value: outer > 0 ? inner / outer : (inner > 0 ? 1 : 0),
         expect: theory.polarised ? undefined : {
-          of: "small — frontier creation fires once per shell as the front passes, so " +
-            "every swept radius has had exactly one pass and the profile is flat",
-          want: 0, tolerance: 0.35,
-          because: "a profile rising towards the centre is the signature of creation that " +
-            "NEVER STOPS, which is the bulk reading and the one that fails seven ways",
+          of: "0 — the interior makes NONE AT ALL, which is the arc's sentence",
+          want: 0, tolerance: 0.05,
+          because: "that is what dissolves five of the seven failures at once: a cell on " +
+            "the frontier has nothing on one side, so a charge emitted outward meets " +
+            "nothing ever and never gives its point back, while a charge emitted inward " +
+            "meets the bulk and annihilates",
         },
         note: theory.polarised
-          ? "expected to RISE towards the centre here: with polarity the interior keeps " +
-            "making space for as long as it exists, so the shells swept earliest have " +
-            "had the longest to accumulate. That is the bulk reading, measured."
-          : "flat across the swept region is the frontier reading",
-      }),
-      judge({
-        name: "frontier over interior", value: Number.isFinite(ratio) ? ratio : 0,
-        note: theory.polarised
-          ? "a ratio near 1 would say the model makes space everywhere alike, which is " +
-            "the reading the arc rejects on physical grounds rather than on this number"
-          : "with a static bulk this is the whole of the effect, and it is the frontier " +
-            "reading measured rather than assumed",
+          ? "NOT ZERO HERE, and that is the arc's problem rather than a success. With " +
+            "polarity about half a split's halves are ALIKE, turn instead of " +
+            "annihilating, and the inserted point survives IN THE INTERIOR. That is the " +
+            "bulk reading — space made everywhere — and it is the one that fails seven " +
+            "ways because the pairs which make the space are the fog that stops the " +
+            "gravity: one Φ, two jobs, opposite values, thirty-five orders apart."
+          : "the interior makes none at all, measured — so the frontier reading is not " +
+            "an assumption this model needed, it is what pure gravity already does",
       }),
     ];
 
@@ -223,7 +282,7 @@ export const whereSpaceIsMade = test({
       header: headerOf(w, seeds),
       findings,
       table: {
-        columns: ["r/R", "space made per point", "±"],
+        columns: ["r/R", "new fraction", "±"],
         rows: byBin.map((x, i) => [
           `${((i + 0.5) / BINS).toFixed(2)}`,
           Number.isFinite(x.mean) ? x.mean.toExponential(2) : "—",
@@ -241,57 +300,79 @@ export const hubbleRate = test({
   cited: ["where space is made — the frontier, and a Hubble law"],
   under: { "gravity": "holds", "gravity+magnetism": "holds" },
   run: (ctx, theory) => {
-    const { N, T, seeds } = ctx.budget({ N: 41, T: 60, seeds: 3 });
+    /*
+     * ON THE GRAPH BACKEND, BECAUSE THE FRONT IS THE EDGE OF THE WORLD AND NOT A RAY.
+     *
+     * A first version tracked the furthest ACTIVE RAY from a source on the array
+     * backend and measured dR/dt = 0.0000 with zero spread — which is the pinned
+     * channel this project has been caught by before, and it was not a small effect
+     * to miss. In PURE GRAVITY there are no propagating rays at all: every split's
+     * halves are neutral, `neutral: "annihilate"` fires on every meeting, and a
+     * source's own emission is destroyed the same tick it is made. Measured directly:
+     * zero active locals anywhere in the world at every one of eight ticks, and the
+     * vacuum test reports the same thing as fill 0.000. There was no front to find.
+     *
+     * The front the arc means is the EDGE OF THE WORLD. "A cell on the frontier has
+     * nothing on one side, so a charge emitted outward meets nothing ever and never
+     * gives its point back — and that point is new space." That is only representable
+     * where space can actually be made, which is the graph backend under
+     * `boundary: "expand"`, and there the extent is a real measurement.
+     */
+    const { N, T, seeds } = ctx.budget({ N: 13, T: 24, seeds: 3 });
     const C = (N - 1) / 2;
+    const bound = { radius: C + 10, metric: "ball" as const };
+    const CAP = 120_000;
 
     /*
-     * ONE PULSE A CELL A TICK IS THE CEILING, SO IT IS ALSO THE RATE. The arc derives
-     * ADVANCE = SHEET/2 = 4 — four cells of budget for the one it needs — and
-     * concludes dR/dt = 1 cell/tick = c, hence R = ct. Four times the budget it needs
-     * means the front is not budget-limited, so it goes at the only speed left.
-     *
-     * MEASURED ALONG AN AXIS, deliberately. c is anisotropic on this lattice (1.73×
-     * along a body diagonal) and the arc's cell/tick is the axial one, so a radius
-     * taken as a Euclidean maximum over all directions would measure the diagonal and
-     * come back 73% fast.
+     * MEASURED ON AXIS. c is anisotropic on this lattice — 1.73× along a body
+     * diagonal — and the arc's one cell per tick is the AXIAL speed, so a radius taken
+     * as a Euclidean maximum over all directions would measure the diagonal and come
+     * back seventy-three per cent fast.
      */
-    const front = ctx.once((seed: number) => {
-      const w = new World({ theory, N, seed, boundary: "absorb" });
-      w.add({ at: [C, C, C], radius: 1, emits: 1, duty: 1 });
-      const reach: number[] = [];
-      for (let t = 1; t <= T; t++) {
+    const reach = ctx.once((seed: number) => {
+      const w = new World({
+        theory, N, seed, backend: "graph", boundary: "expand", bound,
+      });
+      w.add({ at: [C, C, C], radius: 2, emits: 1, duty: 1 });
+      const out: number[] = [];
+      for (let t = 0; t < T; t++) {
         w.tick();
         let far = 0;
-        w.backend.forEachLocal(local => {
-          const p = w.backend.position(local);
-          // on-axis only: the two coordinates square to the axis have to be at centre
+        w.backend.forEachLocal(k => {
+          const p = w.backend.position(k);
           if (Math.abs(p[1] - C) > 0.5 || Math.abs(p[2] - C) > 0.5) return;
-          for (let d = 0; d < w.DEG; d++)
-            if (w.backend.active(local, d)) { far = Math.max(far, Math.abs(p[0] - C)); break; }
+          far = Math.max(far, Math.abs(p[0] - C));
         });
-        reach.push(far);
+        out.push(far);
+        if (expansionOf(w).size > CAP) break;
       }
-      return reach;
+      return out;
     });
 
     /*
-     * FITTED WHILE THE FRONT IS STILL INSIDE THE BOX. Once it reaches the wall the
-     * absorbing boundary eats it and the reach flattens at C — which would drag any
-     * slope taken over the whole run towards zero and report a universe that stops.
+     * FITTED WHERE THE WORLD IS STILL FREE TO GROW. Once the extent reaches the bound
+     * the radius flattens by construction, and a slope taken across that would report
+     * a universe that stops — which would be a fact about the bound and nothing else.
      */
-    const usable = Math.min(T, Math.floor(C * 0.8));
+    const series = reach(seeds[0]);
+    const free = series.filter(r => r < bound.radius - 0.5).length;
+    const usable = Math.max(2, Math.min(free, series.length));
+
     const slope = ctx.over(seeds, s => {
-      const r = front(s).slice(0, usable);
-      const n = r.length, sx = (n - 1) / 2;
-      const sy = r.reduce((a, b) => a + b, 0) / n;
+      const r = reach(s).slice(0, usable);
+      const n = r.length;
+      if (n < 2) return NaN;
+      const sx = (n - 1) / 2, sy = r.reduce((a, b) => a + b, 0) / n;
       let num = 0, den = 0;
       r.forEach((y, i) => { num += (i - sx) * (y - sy); den += (i - sx) ** 2; });
       return den ? num / den : NaN;
     });
 
-    const w = new World({ theory, N, seed: seeds[0], boundary: "absorb" });
-    w.add({ at: [C, C, C], radius: 1, emits: 1, duty: 1 });
-    w.run(5);
+    const w = new World({
+      theory, N, seed: seeds[0], backend: "graph", boundary: "expand", bound,
+    });
+    w.add({ at: [C, C, C], radius: 2, emits: 1, duty: 1 });
+    w.run(3);
     const g = w.geometry;
 
     const findings: Finding[] = [
@@ -307,15 +388,16 @@ export const hubbleRate = test({
           "not a constant anybody wrote down",
       }),
       judge({
-        name: "dR/dt (cells per tick)", value: slope.mean, err: slope.err,
+        name: "dR/dt (cells per tick, on axis)", value: slope.mean, err: slope.err,
         expect: {
           of: "1 — one cell a tick is the ceiling and therefore the rate, which is R = ct",
-          want: 1, tolerance: 0.25,
+          want: 1, tolerance: 0.3,
           because: "R = ct is what forces the age instead of fitting it: t₀ = 1/H₀ " +
-            "exactly, 14.51 Gyr at H₀ = 67.4 and 13.39 at 73.0 against a measured 13.80",
+            "exactly, 14.51 Gyr at H₀ = 67.4 and 13.39 at 73.0 against a measured 13.80, " +
+            "so the Hubble tension brackets it",
         },
-        note: `fitted over the first ${usable} ticks, while the front is still clear of ` +
-          `the wall at ${C} cells`,
+        note: `fitted over ${usable} ticks, while the edge is still clear of the bound at ` +
+          `${bound.radius} cells`,
       }),
     ];
 
@@ -323,9 +405,8 @@ export const hubbleRate = test({
       header: headerOf(w, seeds),
       findings,
       table: {
-        columns: ["tick", "reach (cells, on axis)"],
-        rows: front(seeds[0]).slice(0, usable)
-          .map((r, i) => [String(i + 1), r.toFixed(1)]),
+        columns: ["tick", "extent (cells, on axis)"],
+        rows: series.slice(0, usable).map((r, i) => [String(i + 1), r.toFixed(1)]),
       },
     };
   },

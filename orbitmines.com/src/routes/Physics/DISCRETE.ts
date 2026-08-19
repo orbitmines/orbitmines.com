@@ -434,6 +434,17 @@ const len2 = (v: Vec) => v.reduce((s, x) => s + x * x, 0);
 export const GEOMETRIES: Record<string, Geometry> = {};
 const reg = (s: GeometrySpec) => (GEOMETRIES[s.name] = geometry(s));
 
+/*
+ * THE LINE — two ways out, which is the whole of a one-dimensional lattice.
+ *
+ * It is a real geometry rather than a diagram: the article's clearest statement of the
+ * expansion is the 1D one — every point sends a charge both ways, between two points
+ * they arrive together and annihilate, at each END one arrives alone with nobody to
+ * give the point back to, and that is where the line gets longer. Registering it means
+ * that picture runs the same rules as everything else instead of a drawing of them.
+ */
+reg({ name: "line-2", D: 1, V: [[1], [-1]], note: "the line — two ways out" });
+
 reg({ name: "square-8", D: 2, V: cubic(2, () => true), note: "the plane, all eight ways out" });
 reg({ name: "triangular-6", D: 2, periodic: true, note: "equal steps in the plane",
   V: [[1, 0], [-1, 0], [0.5, Math.sqrt(3) / 2], [-0.5, Math.sqrt(3) / 2],
@@ -1276,8 +1287,28 @@ export class GraphBackend implements Backend {
     return true;
   }
 
+  /**
+   * THE WORLD AS IT WAS WHEN THE PHASE BEGAN, which is what a tick means.
+   *
+   * The bound is taken ONCE. Written as `l < this.pos.length` it is re-read every
+   * iteration, so a point appended during the pass is visited by that same pass — and
+   * since `expand` makes points at the frontier, each new frontier point expanded
+   * again immediately and the world ran to its bound inside a single tick. Measured:
+   * on-axis extent 4 → 60 and 722 → 910,629 points in ONE tick, whatever the bound
+   * was set to.
+   *
+   * That is not a slow measurement, it is an infinite speed of light. The arc's whole
+   * cosmology rests on dR/dt = 1 cell per tick — R = ct, which is what forces the age
+   * of the universe instead of fitting it — and a cascade inside the tick makes that
+   * quantity unmeasurable rather than merely wrong.
+   *
+   * Points created during a phase are simply seen by the NEXT phase, which is what
+   * simultaneity costs and is why the array backend never had this: a fixed grid
+   * cannot append.
+   */
   forEachLocal(f: (l: number) => void) {
-    for (let l = 0; l < this.pos.length; l++) if (this.alive[l]) f(l);
+    const n = this.pos.length;
+    for (let l = 0; l < n; l++) if (this.alive[l]) f(l);
   }
   snapshot() {
     const out = new Uint8Array(this.pos.length * this.DEG);
@@ -2572,6 +2603,31 @@ export const CONSERVING: Theory = {
   note: "NOT A PHYSICAL THEORY. Creation and thinning only, with collisions that turn — " +
     "the medium (1−p)/(2−p) is derived for, kept so the derivation's scope can be measured.",
 };
+
+/**
+ * THE SIGN CONVENTION AS A PARAMETER — the model's one free draw, made explicit.
+ *
+ * (G+M/2) forces WHERE and WHEN a creation fires: wherever a point is neutral, on the
+ * expansion's own beat. The one thing it does not fix is the SIGN, and how widely that
+ * single choice is shared is the whole of the randomness:
+ *
+ *   perNode  one sign for the whole point, into all its axes at once — so the two
+ *            sides of a point get the same sign and it is a coherent go-between
+ *   perAxis  each axis signed on its own, so a point hands out D independent ± pairs
+ *   perRay   every heading signed independently, which BREAKS the ± pair the rule
+ *            states — carried for contrast rather than as a candidate
+ *
+ * `perNode` is the default everywhere because it is what the far field needs; these
+ * exist so a panel or a test can show the three side by side rather than describing
+ * them.
+ */
+export const withSign = (t: Theory, sign: ExpandOptions["sign"]): Theory => ({
+  ...t,
+  name: `${t.name} (${sign})`,
+  rules: () => [expand({ sign }), streamRule(), emitRule(), collide({
+    opposite: "annihilate", alike: DEFLECT.spin(), neutral: "annihilate",
+  }), moveRule()],
+});
 
 export const THEORIES = { GRAVITY, GRAVITY_MAGNETISM, LABELLED, LAYER2, PURE, CONSERVING };
 

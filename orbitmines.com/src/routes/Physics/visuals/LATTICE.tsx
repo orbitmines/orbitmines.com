@@ -20,20 +20,20 @@
 
 import { CanvasView, Surface } from "./CANVAS";
 import { Carousel, Slide } from "./CAROUSEL";
-import { Geometry, GEOMETRIES, Vec, add, dot, norm, scale, unit } from "./DISCRETE";
+import { Geometry, GEOMETRIES, Vec, add, dot, norm, scale, unit } from "../DISCRETE";
 
 // the article's own palette, so these sit beside the other lattice pictures
-const BACK = "#08090d";
-const NEUTRAL = [140, 147, 168], CYAN = [61, 220, 255], AMBER = [255, 122, 69];
-const rgba = (c: number[], a: number) => `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${a})`;
+export const BACK = "#08090d";
+export const NEUTRAL = [140, 147, 168], CYAN = [61, 220, 255], AMBER = [255, 122, 69];
+export const rgba = (c: number[], a: number) => `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${a})`;
 
 /** how far along its connection a boundary is drawn, so the two ends meet with a gap */
-const STUB = 0.42;
+export const STUB = 0.42;
 
-type Cam = { yaw: number; pitch: number; scale: number; cx: number; cy: number };
+export type Cam = { yaw: number; pitch: number; scale: number; cx: number; cy: number };
 
 /** the same orbit camera the lattice views use: yaw, then pitch, then flatten */
-const place = (v: Vec, cam: Cam) => {
+export const place = (v: Vec, cam: Cam) => {
   const [x, y, z] = [v[0] ?? 0, v[1] ?? 0, v[2] ?? 0];
   const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
   const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
@@ -45,7 +45,7 @@ const place = (v: Vec, cam: Cam) => {
 };
 
 /** the points of a patch: every lattice position within `half` of the middle */
-const patch = (g: Geometry, half: number): Vec[] => {
+export const patch = (g: Geometry, half: number): Vec[] => {
   const out: Vec[] = [];
   const walk = (p: number[]) => {
     if (p.length === g.D) { out.push(p.slice()); return; }
@@ -63,7 +63,7 @@ const patch = (g: Geometry, half: number): Vec[] => {
  * of a lattice with something lost in it rather than a picture of something crossing
  * a lattice.
  */
-const strip = (g: Geometry, length: number, across: number): Vec[] => {
+export const strip = (g: Geometry, length: number, across: number): Vec[] => {
   const out: Vec[] = [];
   const walk = (p: number[]) => {
     if (p.length === g.D) { out.push(p.slice()); return; }
@@ -84,7 +84,7 @@ const strip = (g: Geometry, length: number, across: number): Vec[] => {
  * are near each other, but not an event, and drawing it puts a growing web of bright
  * lines over the picture that reads as things happening everywhere at once.
  */
-const connections = (
+export const connections = (
   ctx: CanvasRenderingContext2D, g: Geometry, points: Vec[], cam: Cam,
   alpha = 0.22,
 ) => {
@@ -104,9 +104,9 @@ const connections = (
   ctx.stroke();
 };
 
-const nodes = (
+export const nodes = (
   ctx: CanvasRenderingContext2D, points: Vec[], cam: Cam,
-  colour: (p: Vec) => number[] | undefined, r = 2.4,
+  colour: (p: Vec) => number[] | undefined, r = 2.4, alpha = 1,
 ) => {
   const drawn = points
     .map(p => ({ p, at: place(p, cam) }))
@@ -117,7 +117,7 @@ const nodes = (
     const near = Math.min(Math.max((at.depth + 3) / 6, 0.35), 1);
     ctx.beginPath();
     ctx.arc(at.x, at.y, r * near, 0, Math.PI * 2);
-    ctx.fillStyle = rgba(c, 0.5 + 0.45 * near);
+    ctx.fillStyle = rgba(c, (0.5 + 0.45 * near) * alpha);
     ctx.fill();
   }
 };

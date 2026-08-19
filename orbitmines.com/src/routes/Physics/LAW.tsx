@@ -25,7 +25,7 @@
 
 import { Children, Fragment, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
 
-import { GRAIN, gravitational, massUnit } from "../archive/2026.RayCalculiAndPhysics/gravity";
+import { GRAIN, gravitational, massUnit } from "./todo/UNITS";
 
 /**
  * The law, on the page — and behind each equation, where it came from.
@@ -63,15 +63,15 @@ import { GRAIN, gravitational, massUnit } from "../archive/2026.RayCalculiAndPhy
  * field but the second READING of the count already being taken. See `METRIC`.
  */
 
-const INK = '#c6c9d4';
-const DIM = '#8a8d99';
-const FAINT = '#6c7080';
+export const INK = '#c6c9d4';
+export const DIM = '#8a8d99';
+export const FAINT = '#6c7080';
 const RULE = '#1c1e27';
 const NAMED = '#e0a878';        // a count the lattice fixes
-const DERIVED = '#7fb8d4';      // something that came out
-const BORROWED = '#b58a8a';     // something taken from general relativity
+export const DERIVED = '#7fb8d4';      // something that came out
+export const BORROWED = '#b58a8a';     // something taken from general relativity
 
-const SERIF = 'Georgia, "Times New Roman", serif';
+export const SERIF = 'Georgia, "Times New Roman", serif';
 
 // —— notation ————————————————————————————————————————————————————————————
 
