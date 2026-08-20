@@ -3673,7 +3673,7 @@ alike     + +    (G+M/3)    the space BEHIND     REPEL`}
           <BR/>
 
           <Para>
-            <b>And it takes two channels to see, which the earlier reading of this did not.</b> The metric channel — where space was <i>destroyed</i> — shows the attraction at a clear <M of="electrostatics/charge-in-a-field" is="does the OPPOSITE signal clear the no-gradient control" plain digits={0} /> against its own no-gradient control, and shows the repulsion <i>not at all</i>: the two alike cases come back the size of the control and disagreeing in sign. <b>That is not a weak measurement but the wrong instrument.</b> (G+M/1) destroys space, so an attraction writes a large direct signature into a channel that counts destroyed space; (G+M/3) destroys <i>nothing</i>, so a repulsion writes no direct signature into it at all. Read the momentum the vacuum delivers instead and the alike pair is clean. <span className="bp5-text-muted">(Which is why the two-body sign law reads two channels and not one — the same correction, arriving here from the one-body side.)</span>
+            <b>And it takes two channels to see, which the earlier reading of this did not.</b> The metric channel — where space was <i>destroyed</i> — shows the attraction at a clear <M of="electrostatics/charge-in-a-field" is="does the OPPOSITE signal clear the no-gradient control" plain digits={1} /> against its own no-gradient control, and shows the repulsion <i>not at all</i>: the two alike cases come back the size of the control and disagreeing in sign. <b>That is not a weak measurement but the wrong instrument.</b> (G+M/1) destroys space, so an attraction writes a large direct signature into a channel that counts destroyed space; (G+M/3) destroys <i>nothing</i>, so a repulsion writes no direct signature into it at all. Read the momentum the vacuum delivers instead and the alike pair is clean. <span className="bp5-text-muted">(Which is why the two-body sign law reads two channels and not one — the same correction, arriving here from the one-body side.)</span>
           </Para>
 
           <Para>
@@ -3785,7 +3785,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             Put those together and <b>a lab point is reached by <i>two</i> rays from the same emitter</b> — one that went forward and one that went backward. They left at different times, so they arrive with different phases, and that is an interference pattern nobody put in.
           </Para>
 
-          <Eq note={<>quantum/de-broglie — the two retarded emission times, solved from the light cone rather than asserted, to <M of="quantum/de-broglie" is="worst light-cone residual over both roots, four speeds, five points" plain digits={0} /></>}>
+          <Eq note={<>quantum/de-broglie — the two retarded emission times, solved from the light cone rather than asserted, to <M of="quantum/de-broglie" is="worst light-cone residual over both roots, four speeds, five points" plain digits={1} /></>}>
             <V>t</V><Sub>e</Sub><Sup>→</Sup> = <Frac over={<><V>t</V> − <V>x</V></>} under={<>1 − <V>f</V></>} />
             <span style={{ padding: '0 1.2em' }} />
             <V>t</V><Sub>e</Sub><Sup>←</Sup> = <Frac over={<><V>x</V> + <V>t</V></>} under={<>1 + <V>f</V></>} />
@@ -3812,7 +3812,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
           </Eq>
 
           <Para>
-            A fast Compton carrier under a slow de Broglie envelope — exactly the textbook structure, out of one moving source and two rays. <b>The envelope is 1/<V>f</V> carriers long, to <M of="quantum/de-broglie" is="worst |f · envelope/carrier − 1| over the four speeds" plain digits={0} /></b>, running from a thousand at <V>f</V> = 0.001 to 1.05 at 0.95. <span className="bp5-text-muted">(An earlier reading of this had the two going <i>opposite</i> ways with speed. They do not — both lengths shrink, the carrier as 1/<V>γ</V> and the envelope as 1/<V>γf</V>. What is structural is the <i>ratio</i>, and the separation of the two scales <i>is</i> the slowness.)</span>
+            A fast Compton carrier under a slow de Broglie envelope — exactly the textbook structure, out of one moving source and two rays. <b>The envelope is 1/<V>f</V> carriers long, to <M of="quantum/de-broglie" is="worst |f · envelope/carrier − 1| over the four speeds" plain digits={1} /></b>, running from a thousand at <V>f</V> = 0.001 to 1.05 at 0.95. <span className="bp5-text-muted">(An earlier reading of this had the two going <i>opposite</i> ways with speed. They do not — both lengths shrink, the carrier as 1/<V>γ</V> and the envelope as 1/<V>γf</V>. What is structural is the <i>ratio</i>, and the separation of the two scales <i>is</i> the slowness.)</span>
           </Para>
 
           <BR/>
@@ -4152,7 +4152,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             The table above tests <b>the wrong configuration.</b> Its "static charge" row is an isotropic excess of one polarity with <i>no drift</i> — which has <B>J</B> = 0 because <B>J</B> is a first moment, and which is a charge density with no field rather than a charge. Build the real thing: at a field point near a static charge the rays are <i>streaming outward</i>, so <B>d̂</B> = <B>r̂</B> and <B>J</B> is radial and large.
           </Para>
 
-          <Eq note={<>magnetism/sourcing-obstruction — the same rule, on a background that is actually a static charge; |<B>J</B>|·<V>r</V><Sup>2</Sup> holds to <M of="magnetism/sourcing-obstruction" is="worst |J|·r² − 1 for a properly built static charge" plain digits={0} /> and every one of these sources an axis</>}>
+          <Eq note={<>magnetism/sourcing-obstruction — the same rule, on a background that is actually a static charge; |<B>J</B>|·<V>r</V><Sup>2</Sup> holds to <M of="magnetism/sourcing-obstruction" is="worst |J|·r² − 1 for a properly built static charge" plain digits={1} /> and every one of these sources an axis</>}>
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em' }}>
               [5,0,0]<span style={{ padding: '0 1.2em' }} />|<B>J</B>| = <M of="magnetism/sourcing-obstruction" is="|J| at r = 5, which is also |E|" plain digits={3} /><span style={{ padding: '0 1.2em' }} />NON-ZERO<br />
               [10,0,0]<span style={{ padding: '0 1.2em' }} />|<B>J</B>| = <M of="magnetism/sourcing-obstruction" is="|J| at r = 10, which is also |E|" plain digits={3} /><span style={{ padding: '0 1.2em' }} />NON-ZERO<br />
@@ -4230,7 +4230,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
           <BR/>
 
           <Para>
-            Two conservation facts first, and they pull opposite ways. <b>(G+M/3) preserves |<B>J</B>| pointwise to <M of="magnetism/current-in-vacuum" is="(G+M/3): worst change in |J|, both headings in the plane of the turn" plain digits={0} /> and rotates it</b>, which is the conservation law the picture needs and is exactly what a magnetic field is supposed to do to a current. <b>(G+M/1) destroys it</b>, removing <M of="magnetism/current-in-vacuum" is="(G+M/1): |J| destroyed per head-on annihilation" plain digits={0} /> units an event, because two opposite charges closing head on carry <V>σ</V><B>d̂</B> and (−<V>σ</V>)(−<B>d̂</B>), which are the <i>same</i> vector and <i>add</i> rather than cancel.
+            Two conservation facts first, and they pull opposite ways. <b>(G+M/3) preserves |<B>J</B>| pointwise to <M of="magnetism/current-in-vacuum" is="(G+M/3): worst change in |J|, both headings in the plane of the turn" plain digits={1} /> and rotates it</b>, which is the conservation law the picture needs and is exactly what a magnetic field is supposed to do to a current. <b>(G+M/1) destroys it</b>, removing <M of="magnetism/current-in-vacuum" is="(G+M/1): |J| destroyed per head-on annihilation" plain digits={1} /> units an event, because two opposite charges closing head on carry <V>σ</V><B>d̂</B> and (−<V>σ</V>)(−<B>d̂</B>), which are the <i>same</i> vector and <i>add</i> rather than cancel.
           </Para>
 
           <BR/>
@@ -4282,7 +4282,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
           </Eq>
 
           <Para>
-            <b>The lattice is exact and free emission is only asymptotic.</b> Cubic symmetry makes the second moment isotropic <i>identically</i> at however few directions — the off-diagonal is <M of="magnetism/isotropy-is-exact" is="Σd̂⊗d̂ off-diagonal over the exits, per direction" plain digits={0} /> on the exits and does not shrink so much as never depart; an arbitrary spread gets there slowly. So the lattice is not an approximation to something better — it is the arrangement that gets the isotropy exactly right with the fewest directions, and relaxing costs a little isotropy rather than buying any.
+            <b>The lattice is exact and free emission is only asymptotic.</b> Cubic symmetry makes the second moment isotropic <i>identically</i> at however few directions — the off-diagonal is <M of="magnetism/isotropy-is-exact" is="Σd̂⊗d̂ off-diagonal over the exits, per direction" plain digits={1} /> on the exits and does not shrink so much as never depart; an arbitrary spread gets there slowly. So the lattice is not an approximation to something better — it is the arrangement that gets the isotropy exactly right with the fewest directions, and relaxing costs a little isotropy rather than buying any.
           </Para>
 
           <Head>and then the two bills turn out to be one bill</Head>
@@ -4324,7 +4324,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
           </Eq>
 
           <Para>
-            <b>And it does not buy what the relaxation wanted, which is the result.</b> The force is a <i>sum over the population that meets</i>, so it is linear in how much of that population turned — and Rodrigues' antisymmetric and symmetric terms are diluted by the <i>same</i> factor. <b>The bill is a per-event ratio and the vacuum's knob is a per-path one, and they never touch:</b> the ratio sits at <M of="magnetism/no-free-angle" is="worst |bill − tan(SPIN/2)| across the measured vacuum rates" plain digits={0} /> of tan(<K><Bar>SPIN</Bar></K>/2) across the whole sweep, while the rotation per cell moves by a factor of five over the same rates. <b>What the free angle is good for is the coherence <i>length</i>, which is a per-path quantity — and not for the bill.</b>
+            <b>And it does not buy what the relaxation wanted, which is the result.</b> The force is a <i>sum over the population that meets</i>, so it is linear in how much of that population turned — and Rodrigues' antisymmetric and symmetric terms are diluted by the <i>same</i> factor. <b>The bill is a per-event ratio and the vacuum's knob is a per-path one, and they never touch:</b> the ratio sits at <M of="magnetism/no-free-angle" is="worst |bill − tan(SPIN/2)| across the measured vacuum rates" plain digits={1} /> of tan(<K><Bar>SPIN</Bar></K>/2) across the whole sweep, while the rotation per cell moves by a factor of five over the same rates. <b>What the free angle is good for is the coherence <i>length</i>, which is a per-path quantity — and not for the bill.</b>
           </Para>
 
           <BR/>
@@ -4592,7 +4592,7 @@ the photon               b̂ with independent degrees of freedom to wave`}
             Give a ray one more label: <b>what its emitter was doing when it left.</b> A ray already carries a polarity it did not compute; this carries one more fact from the same place. Then a third vector moment exists, and it is axial where <B>J</B> and <B>F</B> are polar — measured under reflection, not argued.
           </Para>
 
-          <Eq note={<>magnetism/sourcing-obstruction — the parity, measured to <M of="magnetism/sourcing-obstruction" is="departure from AXIAL for the labelled moment W" plain digits={0} />; and <B>W</B> is built from a SINGLE polarity's emission, where <B>J</B>×<B>F</B> is nought</>}>
+          <Eq note={<>magnetism/sourcing-obstruction — the parity, measured to <M of="magnetism/sourcing-obstruction" is="departure from AXIAL for the labelled moment W" plain digits={1} />; and <B>W</B> is built from a SINGLE polarity's emission, where <B>J</B>×<B>F</B> is nought</>}>
             <B>W</B> = <span style={{ fontSize: '1.2em' }}>Σ</span> <V>σ</V> <V>n</V>(<B>d̂</B>,<V>σ</V>,<B>u</B>) (<B>d̂</B> × <B>u</B>)
             <span style={{ padding: '0 1.2em', color: FAINT }}>polar × polar = axial</span>
           </Eq>
@@ -4725,7 +4725,7 @@ relative      5.767e−2   5.760e−2   5.760e−2    5.760e−2`}
           </Eq>
 
           <Para>
-            <b>So an accelerating charge in this model radiates nothing</b> — and the power law understates it. Look at what the Poynting vector even <i>is</i> here: <B>E</B> is along <B>n̂</B> and <B>B</B> is along <B>n̂</B> × <B>u</B>, so <B>E</B> × <B>B</B> ∝ <B>n̂</B>(<B>n̂</B>·<B>u</B>) − <B>u</B>, <b>whose radial part is identically zero.</b> Energy circulates around the source and none of it leaves. <b>This is not a radiation field that is too weak. It is not a radiation field.</b>  <span className="bp5-text-muted">(Measured at <M of="radiation/rays-cannot-radiate" is="radial part of E × B, worst over 200 directions" plain digits={0} /> over two hundred directions — which makes the exponent above unquotable rather than merely bad. The flux left after that cancellation is of order 10<Sup>−20</Sup> against fields of order 10<Sup>−2</Sup>, so it is double precision's floor, and any slope fitted to it is the roundoff's. The verdict rests on the cancellation being exact.)</span>
+            <b>So an accelerating charge in this model radiates nothing</b> — and the power law understates it. Look at what the Poynting vector even <i>is</i> here: <B>E</B> is along <B>n̂</B> and <B>B</B> is along <B>n̂</B> × <B>u</B>, so <B>E</B> × <B>B</B> ∝ <B>n̂</B>(<B>n̂</B>·<B>u</B>) − <B>u</B>, <b>whose radial part is identically zero.</b> Energy circulates around the source and none of it leaves. <b>This is not a radiation field that is too weak. It is not a radiation field.</b>  <span className="bp5-text-muted">(Measured at <M of="radiation/rays-cannot-radiate" is="radial part of E × B, worst over 200 directions" plain digits={1} /> over two hundred directions — which makes the exponent above unquotable rather than merely bad. The flux left after that cancellation is of order 10<Sup>−20</Sup> against fields of order 10<Sup>−2</Sup>, so it is double precision's floor, and any slope fitted to it is the roundoff's. The verdict rests on the cancellation being exact.)</span>
           </Para>
 
           <BR/>
@@ -5306,7 +5306,7 @@ d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
             Every line below is measured on a lattice running the three rules, and each one names what it cost.
           </Para>
 
-          <Eq note={<>electrostatics/continuity — integers, streaming and collision both; worst error <M of="electrostatics/continuity" is="worst |ρ(t+1) − ρ(t) + ∇·J| over every cell and every tick" plain digits={0} /> over a quarter of a million cell-ticks, with <M of="electrostatics/continuity" is="annihilations over the same run, which do NOT break it" plain digits={0} /> annihilations firing</>}>
+          <Eq note={<>electrostatics/continuity — integers, streaming and collision both; worst error <M of="electrostatics/continuity" is="worst |ρ(t+1) − ρ(t) + ∇·J| over every cell and every tick" plain digits={1} /> over a quarter of a million cell-ticks, with <M of="electrostatics/continuity" is="annihilations over the same run, which do NOT break it" plain digits={1} /> annihilations firing</>}>
             <V>ρ</V>(<V>t</V>+1) − <V>ρ</V>(<V>t</V>) + <V>∇</V>·<B>J</B> = 0
             <span style={{ padding: '0 1.2em', color: FAINT }}>with</span>
             <B>J</B> = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>f</V><Sub>d</Sub> <B>D</B><Sub>d</Sub>
@@ -5667,7 +5667,7 @@ spin   opposite attracts once κ > 0.563;  alike still repels while κ <   27.9
           </Eq>
 
           <Para>
-            <b>Two of them work, which was not expected.</b> M2 and M4 both give a pure Lorentz force with <i>no</i> longitudinal component — not a small one, none, at <M of="magnetism/how-a-field-acts" is="worst longitudinal force from the GATE, over 48 headings" plain digits={0} /> and <M of="magnetism/how-a-field-acts" is="worst longitudinal force from the SHEAR, over 48 headings" plain digits={0} />, at every velocity direction tried, and both aligned with <B>v</B>×<B>W</B> to every digit. <span className="bp5-text-muted">(The turn's transverse part is <i>not</i> purely <B>v</B>×<B>W</B> either — 0.9892 here where the other two are 1.0000. The same symmetric term that makes the drag tilts what is left of the Lorentz force out of its plane, which is a second count against it and not a separate one.)</span>
+            <b>Two of them work, which was not expected.</b> M2 and M4 both give a pure Lorentz force with <i>no</i> longitudinal component — not a small one, none, at <M of="magnetism/how-a-field-acts" is="worst longitudinal force from the GATE, over 48 headings" plain digits={1} /> and <M of="magnetism/how-a-field-acts" is="worst longitudinal force from the SHEAR, over 48 headings" plain digits={1} />, at every velocity direction tried, and both aligned with <B>v</B>×<B>W</B> to every digit. <span className="bp5-text-muted">(The turn's transverse part is <i>not</i> purely <B>v</B>×<B>W</B> either — 0.9892 here where the other two are 1.0000. The same symmetric term that makes the drag tilts what is left of the Lorentz force out of its plane, which is a second count against it and not a separate one.)</span>
           </Para>
 
           <Head>and the second one is the first one with a constraint dropped</Head>
@@ -5683,7 +5683,7 @@ spin   opposite attracts once κ > 0.563;  alike still repels while κ <   27.9
           </Eq>
 
           <Para>
-            Deflect the displacement sideways <i>without insisting it stay one cell long</i> and there is no (1 − cos <V>θ</V>) term to carry a drag. <b>And the second-order lengthening does not revive it</b>, which had to be checked rather than assumed: |<B>d̂</B> + <V>κ</V>(<B>d̂</B> × <B>W</B>)|² = 1 + <V>κ</V>²|<B>d̂</B> × <B>W</B>|², and that correction is <i>even</i> in <B>d̂</B> while the displacement is odd, so it cancels over the ±<B>d̂</B> pairs — measured at <M of="magnetism/how-a-field-acts" is="the second-order lengthening summed over the ±d̂ pairs" plain digits={0} />, which is a cancellation and not a residue.
+            Deflect the displacement sideways <i>without insisting it stay one cell long</i> and there is no (1 − cos <V>θ</V>) term to carry a drag. <b>And the second-order lengthening does not revive it</b>, which had to be checked rather than assumed: |<B>d̂</B> + <V>κ</V>(<B>d̂</B> × <B>W</B>)|² = 1 + <V>κ</V>²|<B>d̂</B> × <B>W</B>|², and that correction is <i>even</i> in <B>d̂</B> while the displacement is odd, so it cancels over the ±<B>d̂</B> pairs — measured at <M of="magnetism/how-a-field-acts" is="the second-order lengthening summed over the ±d̂ pairs" plain digits={1} />, which is a cancellation and not a residue.
           </Para>
 
           <BR/>
@@ -6330,7 +6330,7 @@ dipole–dipole model           75.94 %     ← what 1/R⁴ is`}
             (G+M/3) is a sign rather than a detail, and the geometry is the whole of it. <b>Annihilating <i>between</i> two sources shortens the line between them, which is attraction. Annihilating <i>outside</i> them shortens the space behind each, which pushes them apart.</b> So an outcome the earlier files scored as nought is a repulsion, and the coupling runs +1 or −1 where it ran 1 or nought.
           </Para>
 
-          <Eq note={<>magnetism/coupling-has-two-signs — two sided sources, axes swept, bond along +x; the annihilation-only reading has a mean of +0.375 and the three-rule one has <M of="magnetism/coupling-has-two-signs" is="mean of the coupling with all three rules" plain digits={0} /></>}>
+          <Eq note={<>magnetism/coupling-has-two-signs — two sided sources, axes swept, bond along +x; the annihilation-only reading has a mean of +0.375 and the three-rule one has <M of="magnetism/coupling-has-two-signs" is="mean of the coupling with all three rules" plain digits={1} /></>}>
             <Recorded of="magnetism/coupling-has-two-signs" />
           </Eq>
 
@@ -9669,7 +9669,7 @@ an undirected axis returns after CYCLE/2 = 4 steps (π)`}
             The paragraph above is the diagnosis this arc was written on, and it is not quite right, in a direction that makes the case stronger rather than weaker. Take the sided tally seriously as a vector field, <B>B</B> = Σ sgn(<B>n</B>·<B>r̂</B>)·<B>r̂</B>/<V>r</V><Sup>2</Sup>, and measure its flux through spheres around the lump. A monopole would give the enclosed charge, the same at every radius. It gives nothing at every radius — 10<Sup>−14</Sup> at <V>r</V> = 200 and 10<Sup>−13</Sup> at 1600, which is the quadrature error and not a number. <b>There is no monopole. <V>∇</V>·<B>B</B> = 0 holds observationally.</b> So what is the 1/<V>r</V><Sup>2</Sup>?
           </Para>
 
-          <Eq note={<>texture/not-even-a-field — the angular profile of the sided tally, at fixed radius, times <V>r</V><Sup>2</Sup>; the flux through every sphere is <M of="texture/not-even-a-field" is="flux through spheres, worst over r = 200 … 1600" plain digits={0} /></>}>
+          <Eq note={<>texture/not-even-a-field — the angular profile of the sided tally, at fixed radius, times <V>r</V><Sup>2</Sup>; the flux through every sphere is <M of="texture/not-even-a-field" is="flux through spheres, worst over r = 200 … 1600" plain digits={1} /></>}>
             <Recorded of="texture/not-even-a-field" />
           </Eq>
 
@@ -9739,7 +9739,7 @@ perfectly balanced         3.000      all aligned              3.001
             Do not ask where the sign is resolved. Ask what the primitive is. Give each node a polarisation <b>p</b> — which is just "which way this bit of the body is pointed", and is a thing an ordering can plausibly hold — and let the emitted sign be
           </Para>
 
-          <Eq note={<>texture/poles-are-a-divergence — nought wherever p is uniform, and appearing only where the body ends; the net is <M of="texture/poles-are-a-divergence" is="net sign of the whole body, under −∇·p" plain digits={0} /> identically</>}>
+          <Eq note={<>texture/poles-are-a-divergence — nought wherever p is uniform, and appearing only where the body ends; the net is <M of="texture/poles-are-a-divergence" is="net sign of the whole body, under −∇·p" plain digits={1} /> identically</>}>
             <V>s</V> = −<V>∇</V>·<b>p</b>
           </Eq>
 
@@ -9853,7 +9853,7 @@ perfectly balanced         3.000      all aligned              3.001
             Start with what the model actually has when a pulse arrives, which is <i>annihilation</i> and nothing else. <K>rate</K> in <i>physics.ts</i> reads the source's own <K>turning</K> and <K>flips</K> and reads nothing about what has landed on it, so as written no emitter can hear another at all. The natural repair is that annihilation near a source changes its beat. Measured, that repair fails — and it fails structurally rather than numerically.
           </Para>
 
-          <Eq note={<>texture/the-coupling-is-odd — two sided emitters, the annihilation count near the first; even to <M of="texture/the-coupling-is-odd" is="worst |count(+Δβ) − count(−Δβ)| over the count itself" plain digits={0} /></>}>
+          <Eq note={<>texture/the-coupling-is-odd — two sided emitters, the annihilation count near the first; even to <M of="texture/the-coupling-is-odd" is="worst |count(+Δβ) − count(−Δβ)| over the count itself" plain digits={1} /></>}>
             <Recorded of="texture/the-coupling-is-odd" columns={["Δβ", "count"]} />
           </Eq>
 
@@ -9867,7 +9867,7 @@ perfectly balanced         3.000      all aligned              3.001
             But a count is not what rule (G/1) produces. <b>It produces a <i>location</i></b> — space is destroyed at particular cells — and a source with an axis has a front and a back. Take the first moment of the annihilation density about the source's own axis instead of the total, and the evenness goes.
           </Para>
 
-          <Eq note={<>texture/the-coupling-is-odd — the first moment about n's axis, and the same at −Δβ; odd to <M of="texture/the-coupling-is-odd" is="worst |moment(+Δβ) + moment(−Δβ)| over the moment" plain digits={0} /> with a cosine component of <M of="texture/the-coupling-is-odd" is="cosine component of the moment" plain digits={0} /></>}>
+          <Eq note={<>texture/the-coupling-is-odd — the first moment about n's axis, and the same at −Δβ; odd to <M of="texture/the-coupling-is-odd" is="worst |moment(+Δβ) + moment(−Δβ)| over the moment" plain digits={1} /> with a cosine component of <M of="texture/the-coupling-is-odd" is="cosine component of the moment" plain digits={1} /></>}>
             <Recorded of="texture/the-coupling-is-odd" columns={["Δβ", "moment", "at −Δβ"]} />
           </Eq>
 

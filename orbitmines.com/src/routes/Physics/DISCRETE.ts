@@ -2642,6 +2642,22 @@ export type ExpandOptions = {
    * `perRay` draws each ray independently. `neutral` is the gravity theory.
    */
   sign?: "perNode" | "perAxis" | "perRay" | "neutral";
+  /**
+   * WHERE THE SPLIT IS SUPPRESSED, which is the only honest way to block one.
+   *
+   * "This cell does not split" cannot be arranged from outside the rule. Clearing the
+   * cell's rays afterwards does the opposite of what it looks like — an empty cell is
+   * exactly what (G/2) fires on, so destroying a layer's rays where it is meant to be
+   * suppressed makes it DENSER, measured at +93% when it was tried. Undoing the split
+   * after the tick does not work either, since `stream` has already carried the new rays
+   * a cell away.
+   *
+   * So the suppression belongs here, beside the condition it modifies. Returning true
+   * means the point does not split — it is still a neutral point, the rule simply does not
+   * fire on it. This is what `cosmology/blocked-expansion` means by matter being in the
+   * way, and it is what a second layer needs in order to be in the way of anything.
+   */
+  blocks?: (w: World, local: number) => boolean;
 };
 
 /**
@@ -2705,8 +2721,10 @@ export const expand = (o: ExpandOptions = {}): Rule => {
         : 1 + (sign === "perAxis" ? AXES.length : sign === "perRay" ? 2 * AXES.length : 0);
       /* a local that is skipped still pays the stream, which is what `slotUniformRng` is */
       const skip = () => { if (uniform) for (let i = 0; i < draws; i++) rng(); };
+      const blocked = o.blocks;
       b.forEachLocal(local => {
         if (w.isSource(local)) { skip(); return; }
+        if (blocked && blocked(w, local)) { skip(); return; }
         /*
          * A NEUTRAL POINT IS ONE WITH NOTHING ON IT, and that is the rule rather than a
          * reading of it. "On all axis, A NEUTRAL POINT expands into two points" — a point

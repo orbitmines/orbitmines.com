@@ -84,9 +84,24 @@ const Missing = ({ what }: { what: string }) => <span style={{
  */
 const fmt = (v: number | null | undefined, sig = 4) => {
   if (v == null || typeof v !== "number" || !isFinite(v)) return "—";
+  /*
+   * AND THE DIGIT COUNT IS CLAMPED, because `toPrecision` throws outside 1…100 and
+   * `toExponential` outside 0…100 — so a `digits={0}` in the article, meaning "as few as
+   * possible", took the whole page down rather than rendering one figure. A formatter is
+   * the wrong place to be strict: the article asks for a number and should get one.
+   */
+  const d = Math.min(21, Math.max(1, Math.round(sig) || 1));
   const a = Math.abs(v);
-  if (a !== 0 && (a < 1e-3 || a >= 1e5)) return v.toExponential(sig - 1);
-  return v.toPrecision(sig).replace(/\.?0+$/, "");
+  if (a !== 0 && (a < 1e-3 || a >= 1e5)) return v.toExponential(d - 1);
+  /*
+   * TRAILING ZEROS ARE ONLY TRAILING AFTER A DECIMAL POINT, and the version that did not
+   * say so ate digits it had no business touching. `/\.?0+$/` matched the whole of "1000"
+   * after the leading 1 — so a round thousand rendered as "1" — and matched the whole of
+   * "0", so an exact nought rendered as nothing at all. Both were silent: the article
+   * showed a plausible wrong number in one case and an empty span in the other, and the
+   * empty span is what a page full of exact-zero claims made visible.
+   */
+  return v.toPrecision(d).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
 };
 
 /**

@@ -75,6 +75,7 @@ import driftTests from "./tests/drift";
 import harmonyTests from "./tests/harmony";
 import sourcing from "./tests/sourcing";
 import strand from "./tests/strand";
+import layerPair from "./tests/layers";
 import acting from "./tests/acting";
 import radiation from "./tests/radiation";
 import potentials from "./tests/potentials";
@@ -86,7 +87,7 @@ import rangeTests from "./tests/range";
 import ampereForce from "./tests/ampere";
 import conserving from "./tests/conserving";
 
-const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter, ...binding, ...spin, ...structures, ...topology, ...emission, ...species, ...chirality, ...coherence, ...dilation, ...automatonTests, ...medium, ...ceiling, ...neel, ...benchmark, ...anisotropy, ...exchange, ...lorentz, ...turn, ...current, ...relaxation, ...driftTests, ...harmonyTests, ...strand, ...sourcing, ...acting, ...radiation, ...potentials, ...poles, ...textureTests, ...blochTests, ...continuity, ...rangeTests, ...ampereForce, ...conserving];
+const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter, ...binding, ...spin, ...structures, ...topology, ...emission, ...species, ...chirality, ...coherence, ...dilation, ...automatonTests, ...medium, ...ceiling, ...neel, ...benchmark, ...anisotropy, ...exchange, ...lorentz, ...turn, ...current, ...relaxation, ...driftTests, ...harmonyTests, ...strand, ...layerPair, ...sourcing, ...acting, ...radiation, ...potentials, ...poles, ...textureTests, ...blochTests, ...continuity, ...rangeTests, ...ampereForce, ...conserving];
 
 /** the theories by the names the tests declare expectations under */
 const BY_NAME = Object.fromEntries(Object.values(THEORIES).map(t => [t.name, t]));
