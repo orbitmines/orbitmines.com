@@ -76,7 +76,8 @@ export const rotationIsNotGauge = test({
         judge({
           name: "structures where the firing orbit's length varies", value: lenVaries.length,
           expect: {
-            of: "most of them — SO IT IS NOT A PROPERTY OF THE STRUCTURE", want: 4, tolerance: 1,
+            of: "most of them — SO IT IS NOT A PROPERTY OF THE STRUCTURE",
+            want: got.length, atLeast: Math.ceil(got.length / 2),
             because: "mirroring is ONE element of the group of rotation systems, the one that " +
               "reverses every node's order at once. Sweeping the whole group turns 'a structure " +
               "and its mirror disagree' into the sharper complaint that the quantity they " +
@@ -87,7 +88,7 @@ export const rotationIsNotGauge = test({
         judge({
           name: "widest ratio of orbit lengths on one structure", value: worstSpread,
           expect: {
-            of: "> 1 — AND NOT BY A LITTLE", want: 2, tolerance: 1.5,
+            of: "> 1 — AND NOT BY A LITTLE", want: 2, atLeast: 1.5,
             because: "a single graph with a single twist assignment gives a whole RANGE of " +
               "orbit lengths depending on an ordering nothing in the model fixes. A THEORY " +
               "WHOSE PARTICLE MASSES DEPEND ON AN UNFIXED ORDERING DOES NOT PREDICT MASSES AT " +
@@ -105,14 +106,14 @@ export const rotationIsNotGauge = test({
         }),
         judge({
           name: "structures where the face count varies", value: faceVaries.length,
-          expect: { of: "some — so genus is not usable either", want: 3, tolerance: 2,
+          expect: { of: "some — so genus is not usable either", want: 3, atLeast: 1,
             because: "the face count and the genus go the same way as the orbit length, which " +
               "rules out a second candidate observable rather than leaving it open" },
         }),
         judge({
           name: "structures where 'some orbit has holonomy −1' varies", value: negVaries.length,
           expect: {
-            of: "> 0 — WHICH IS WHAT §4 COSTS", want: 2, tolerance: 2,
+            of: "> 0 — WHICH IS WHAT §4 COSTS", want: 2, atLeast: 1,
             because: "the odd-crossing condition — that the firing orbit must cross the twist " +
               "an odd number of times — is a statement about WHERE THE EXITS SIT, and where " +
               "the exits sit IS the rotation system. So the best new result of the structure " +

@@ -25,7 +25,8 @@
  *                `cited` is how a test says what it touches, so a stale entry there is
  *                a test that thinks it is load-bearing and is not.
  *
- *   OWE          what is still measured only by `todo/provenance/`, grouped by the file
+ *   OWE          numbers not yet measured by a claim in `tests/` — empty since the
+ *                provenance folder was retired, and kept to catch a regression
  *                it came from. THIS IS THE DEBT and it is the whole reason the folder
  *                still exists: 165 <Eq note>s once carried a NOT YET RE-MEASURED mark,
  *                and the folder cannot go until the last of them is settled.
@@ -52,7 +53,12 @@ import * as REPORT from "./REPORT.json";
 import { Test } from "./SUITE";
 
 const report = REPORT as unknown as {
-  entries: { id: string; findings: { name: string }[]; table?: unknown }[];
+  entries: {
+    id: string;
+    header: { N: number; ticks: number; fill: number; seeds: unknown[]; theory: string };
+    findings: { name: string; value?: unknown; verdict?: string }[];
+    table?: unknown;
+  }[];
 };
 
 const ARTICLE = process.argv[2] ?? `${__dirname}/../Physics.tsx`;
@@ -70,8 +76,15 @@ const plural = (n: number, one: string, many = one + "s") => `${n} ${n === 1 ? o
  * Kept identical to the article's own lookup on purpose. An audit that resolved
  * citations more generously than the renderer would pass on pages that break.
  */
+/** an entry that only records that the claim could not be asked — no measurement in it */
+const notApplicableEntry = (e: { findings: { value?: unknown }[] }) =>
+  e.findings.length > 0 && e.findings.every(f => f.value === null || f.value === undefined);
+
 const entryOf = (id: string) =>
-  report.entries.find(e => e.id === id) ?? report.entries.find(e => e.id.startsWith(id));
+  report.entries.find(e => e.id === id)
+  /* the same ordering `entryOf` uses: a "not applicable" stub must not shadow a live run */
+  ?? report.entries.find(e => e.id.startsWith(id) && !notApplicableEntry(e))
+  ?? report.entries.find(e => e.id.startsWith(id));
 
 // ─── the citations the article makes ────────────────────────────────────────
 
@@ -136,8 +149,16 @@ const findsAnchor = (cited: string) =>
   cited.split(" — ").map(s => s.trim()).some(p => anchors.has(p));
 
 /**
- * The ids the suite can actually produce — `id · theory` for every theory a test declares.
- * Anything in the report outside this set is an orphan.
+ * The ids the suite can actually produce — `id · theory` for every theory a test declares,
+ * INCLUDING the ones it declares unaskable, because the suite writes a "not applicable"
+ * stub for each of those and those stubs are not orphans.
+ *
+ * A first version of this filtered `under` down to the askable theories, which flagged
+ * every legitimate stub as stale. The shadowing problem that motivated it is real but it
+ * is not here: a citation resolves by PREFIX, so a bare `of="…"` could land on a stub and
+ * lose the live run beneath it. That is fixed where it belongs, in `entryOf` — which now
+ * orders the stubs last — and the check below is what catches a stub that has outlived
+ * the declaration that produced it.
  */
 const producible = new Set(tests.flatMap(t =>
   Object.keys(t.under).map(theory => `${t.id} · ${theory}`)));
@@ -147,7 +168,7 @@ const staleCitations = tests.flatMap(t =>
   (t.cited ?? []).filter(c => !findsAnchor(c)).map(c => ({ id: t.id, cited: c })));
 const uncited = tests.filter(t => !t.cited?.length);
 
-// ─── what is still owed to `todo/provenance/` ───────────────────────────────
+// ─── what is still owed to the retired provenance folder ────────────────────
 
 type Debt = { line: number; file: string; note: string; why?: string };
 
@@ -157,6 +178,11 @@ type Debt = { line: number; file: string; note: string; why?: string };
  *   NOT YET RE-MEASURED   owed. A number the article quotes from a cubic-26 run.
  *   NOT RE-MEASURED —     retired, with the reason following the dash. Something that
  *                         will not be ported because porting it would not be useful.
+ *
+ * OWE IS NOW EMPTY AND `todo/provenance/` IS DELETED, which is what it was counting down
+ * to. The check stays for two reasons: it is what would catch a marker reintroduced by a
+ * later edit, and RETIRED is not a countdown — it is a standing list of the judgement calls
+ * this article rests on, each with the reason at the line that carries it.
  */
 const OWED = "NOT YET RE-MEASURED on DISCRETE.ts";
 const RETIRED = /NOT RE-MEASURED — ([^"·]+)/;
@@ -241,6 +267,54 @@ else {
   for (const id of orphans) console.log(`    ${id}`);
 }
 
+/*
+ * MISSING — the reverse of ORPHAN, and it had no check at all.
+ *
+ * ORPHAN catches an entry with no test behind it. Nothing caught a TEST WITH NO ENTRY,
+ * which is what a filtered run leaves when a `--jobs` worker dies or a declaration is
+ * added and not re-run — and the article does not complain about it, because a citation
+ * that resolves by prefix quietly lands on some other theory's entry instead.
+ */
+const missing = [...producible].filter(id => !report.entries.some(e => e.id === id));
+
+/*
+ * PROVENANCE — a header that is not the box the numbers came from.
+ *
+ * `<Ran>` prints the header as the label a result owes: geometry, theory, occupancy, box,
+ * ticks, seeds. Fifty-three tests build a SECOND world purely to have something to hand
+ * `headerOf`, and where that world is never ticked the label reads "N 5 · 0 ticks · fill
+ * 0.000" under a number measured at N = 41 over 240 ticks. For an `exact` test there is no
+ * box and the stub is honest. For anything else it is a false label, and it is how
+ * `gravity/inverse-square` came to report an empty vacuum for a run that had one.
+ */
+const exactness = new Map(tests.map(t => [t.id, !!t.exact]));
+const measured = (e: { findings: { value?: unknown }[] }) =>
+  e.findings.some(f => typeof f.value === "number" && isFinite(f.value as number));
+const falseHeaders = report.entries.filter(e => {
+  const t = e.id.split(" \u00b7 ")[0];
+  return !exactness.get(t) && e.header && e.header.ticks === 0 && measured(e);
+});
+
+console.log("\n═════ MISSING — declarations with no entry in the report ═════\n");
+if (!missing.length) console.log("  none: every (claim \u00d7 theory) the tests declare is in the report.");
+else {
+  console.log(`  ${plural(missing.length, "unit")} the suite would produce and the report does ` +
+    `not hold.\n  A citation resolves by PREFIX, so a missing entry does not complain — it ` +
+    `lands on a\n  neighbouring theory instead. Re-run without a filter:`);
+  for (const id of missing) console.log(`    ${id}`);
+}
+
+console.log("\n═════ PROVENANCE — headers that are not the run ═════\n");
+if (!falseHeaders.length) console.log("  none: every measured entry carries the box it was measured in.");
+else {
+  console.log(`  ${plural(falseHeaders.length, "entry", "entries")} carry measurements under a ` +
+    `header of 0 ticks, which cannot be\n  where the measurement happened. The test is not ` +
+    "`exact`, so there WAS a box; the\n  header is a second world built to have something to " +
+    "label with:");
+  for (const e of falseHeaders)
+    console.log(`    ${pad(e.id, 52)} N ${e.header.N}, ${e.header.seeds?.length ?? 0} seeds`);
+}
+
 console.log("\n═════ CITE — what the tests say they are quoted by ═════\n");
 if (staleCitations.length) {
   console.log(`  ${plural(staleCitations.length, "stale `cited` entry")} — no such heading:`);
@@ -251,9 +325,10 @@ if (uncited.length) {
   for (const t of uncited) console.log(`    ${t.id}`);
 }
 
-console.log("\n═════ OWE — what is still measured only by todo/provenance/ ═════\n");
+console.log("\n═════ OWE — numbers not yet measured by a claim in tests/ ═════\n");
 if (!debts.length) {
-  console.log("  NOTHING. Every <Eq note> points at a claim in `tests/`, and the folder can go.");
+  console.log("  NOTHING. Every <Eq note> points at a claim in `tests/`;\n" +
+    "  `todo/provenance/` has been deleted.");
 } else {
   console.log(`  ${pad("file", 18)} markers   article lines`);
   console.log("  " + "─".repeat(64));

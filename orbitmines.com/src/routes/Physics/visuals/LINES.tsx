@@ -90,7 +90,7 @@ const run = (l: Side[]): { before: Frame; after: Frame } => {
   const g = GEOMETRIES["line-2"];
   const N = 9, C = 4;
   const w = new World({
-    theory: GRAVITY_MAGNETISM, geometry: g, N, expansion: 0,
+    theory: GRAVITY_MAGNETISM, geometry: g, N,
     backend: "graph", boundary: "expand",
   });
   const at0 = C - Math.floor(l.length / 2);

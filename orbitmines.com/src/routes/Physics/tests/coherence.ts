@@ -40,7 +40,12 @@ import { test, DEFAULT_SEEDS } from "../SUITE";
 
 /** the bound an electron's stability actually places on self-damage */
 const PAULI_BOUND = 1.7e-26;
-/** the vacuum's own expansion rate, per cell per tick — what the old argument divided by */
+/**
+ * WHAT THE OLD ARGUMENT DIVIDED BY, kept as a historical constant rather than as a
+ * parameter. There is no expansion rate — (G/2) fires at every neutral point every tick —
+ * so this is not the vacuum's rate and never was; it is the number the repair calculation
+ * used, and the finding below is how far off it is.
+ */
 const P_VAC = 1e-61;
 
 /** a deterministic stream, so the Monte Carlo row is reproducible */
@@ -79,13 +84,13 @@ export const selfDamageRate = test({
      * medium was doing anyway.
      */
     const rateNear = ctx.over(DEFAULT_SEEDS, seed => {
-      const w = new World({ theory, N, seed, expansion: 0.05, boundary: "absorb" });
+      const w = new World({ theory, N, seed, boundary: "absorb" });
       w.add({ at: [10, 10, 10], radius: 1, emits: 1 });
       for (let t = 0; t < T; t++) w.tick();
       return w.stats.annihilations / w.stats.ticks;
     });
     const rateBare = ctx.over(DEFAULT_SEEDS, seed => {
-      const w = new World({ theory, N, seed, expansion: 0.05, boundary: "absorb" });
+      const w = new World({ theory, N, seed, boundary: "absorb" });
       for (let t = 0; t < T; t++) w.tick();
       return w.stats.annihilations / w.stats.ticks;
     });
@@ -121,7 +126,8 @@ export const selfDamageRate = test({
           value: Math.log10(perCellNear / P_VAC),
           expect: {
             of: "about 60 — AND THAT IS THE WHOLE CORRECTION", want: 60, tolerance: 0.05,
-            because: "the repair calculation divided by p, the vacuum's expansion rate. " +
+            because: "the repair calculation divided by p, which it took for the vacuum's " +
+              "expansion rate — a rate the rules do not have. " +
               "Measured here the rate at a structure is not within sixty orders of it — it is " +
               "an O(1) process, because (G+M/1) fires where two rays meet and an emitter is " +
               "the densest concentration of rays there is. SO THE DUTY FRACTION IS A RATIO OF " +

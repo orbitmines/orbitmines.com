@@ -48,7 +48,7 @@ export const whichMeeting = test({
     /** the vacuum on its own, with nothing in it */
     const vacuum = ctx.once((meeting: Meeting, rate: MeetingRate, seed: number) => {
       const w = new World({
-        theory, N, seed, boundary: "wrap", expansion: 1, meeting, meetingRate: rate,
+        theory, N, seed, boundary: "wrap", meeting, meetingRate: rate,
       });
       w.run(T);
       return { fill: fill(w), scattering: scattering(w) };
@@ -64,7 +64,7 @@ export const whichMeeting = test({
     ) => {
       const sep = 8;
       const w = new World({
-        theory, N, seed, boundary: "absorb", expansion: 1, meeting, meetingRate: rate,
+        theory, N, seed, boundary: "absorb", meeting, meetingRate: rate,
       });
       const body = () => ({
         radius: 2, absorbs: true, duty, emits: 1 as const, propulsion: "none" as const,
@@ -120,7 +120,7 @@ export const whichMeeting = test({
         expect: {
           of: "more than none — a reading in which no force can be measured is not a reading " +
             "of this model",
-          want: READINGS.length, tolerance: READINGS.length,
+          want: READINGS.length, atLeast: 1,
           because: "two bodies drawing together is the one thing every version of this model " +
             "has agreed on, so it is the test a reading of the rules has to pass",
         },
@@ -132,7 +132,7 @@ export const whichMeeting = test({
         name: "the default reading's attraction", value: chosen.pull.mean, err: chosen.pull.err,
         expect: {
           of: "positive and resolved — co-located, one meeting a point a tick",
-          want: Math.abs(chosen.pull.mean), tolerance: 1e9,
+          want: 0, atLeast: Math.abs(chosen.pull.err),
           because: "this is what the article's sentence says: any two rays that arrive together " +
             "have met, and what is left is A SINGLE neutral point",
         },

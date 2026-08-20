@@ -1703,6 +1703,26 @@ export type Theory = {
   name: string;
   /** what a ray carries beyond being active */
   polarised: boolean;
+  /**
+   * THE OCCUPANCY THIS THEORY'S VACUUM SETTLES AT — or `null` where the rule does not fix
+   * one and the LATTICE does.
+   *
+   * (G/2) fires on a neutral point: one with nothing on it. So creation is proportional to
+   * how much of the box is empty and destruction to how much is not, and the balance
+   * between them is where the density sits. Two theories answer that from the rule alone:
+   * a medium that never destroys anything fills and stays full, and pure gravity
+   * annihilates both halves of everything it makes and holds NOTHING.
+   *
+   * A POLARISED VACUUM IS `null`, AND THAT IS THE RESULT RATHER THAN A GAP. Half its edge
+   * meetings are alike and turn, so some of what it creates survives — but how much
+   * depends on how likely a point is to be empty, which is (1−f)^DEG, which is the
+   * lattice's. Measured over 200 ticks: fcc-12 0.2553, cubic-26 0.1780, cubic-18 0.2136,
+   * bcc-8 0.2946, cubic-6 0.3209 — steady in the box to a part in 500 and different on
+   * every tiling. The ½ this book quoted as "the one number nobody chose" was a
+   * consequence of reading (G/2) as a rule that fires everywhere; read as written, the
+   * occupancy is a number the lattice chooses and not one the rules do.
+   */
+  vacuum: number | null;
   channels: (D: number) => Channel[];
   rules: (w: World) => Rule[];
   /** the order the phases run in; the default is the one every test has used */
@@ -1721,8 +1741,6 @@ export type WorldOptions = {
   fold?: Partial<FoldPolicy>;
   meeting?: Meeting;
   meetingRate?: MeetingRate;
-  /** the expansion per tick — the vacuum's own rate */
-  expansion?: number;
   seed?: number;
   /**
    * Draw the random stream for every slot whether or not it is occupied. Costs
@@ -1835,12 +1853,6 @@ export class World {
        */
       meeting: o.meeting ?? "on-edge",
       meetingRate: o.meetingRate ?? "one",
-      /*
-       * ONE. The split is unconditional — see ExpandOptions. A world that runs below
-       * this is one whose space is collapsing, which is worth being able to show and
-       * is not the model.
-       */
-      expansion: o.expansion ?? 1,
       seed: o.seed ?? 20260817,
       slotUniformRng: o.slotUniformRng ?? true,
       fold, channels,
@@ -2381,6 +2393,17 @@ export const collide = (o: CollideOptions = {}): Rule => {
           };
           const dest = w.destroyed;
           const src = chans.find(c => c.name === "source");
+          /*
+           * AND THE TURN COUNT, which this path used to leave alone.
+           *
+           * `turns` is what `scattering` averages, and scattering is the diagnostic
+           * several null results hang on — "if rays are not being turned then nothing
+           * below means anything". Only the CO-LOCATED branch ever wrote it, and every
+           * run in this book meets ON THE EDGE, so the diagnostic read exactly 0.0000
+           * in every header while the same runs were recording twenty-seven thousand
+           * deflections a tick. A test whose guard cannot fire is a test without one.
+           */
+          const trn = chans.find(c => c.name === "turns");
           let ann = 0, defl = 0, created = 0;
           for (let A = 0; A < n; A++) {
             if (sits[A]) continue;
@@ -2428,6 +2451,7 @@ export const collide = (o: CollideOptions = {}): Rule => {
                 b.reverse(A, d); b.reverse(B, o);
                 // it has met something, so it is nobody's own ray any more
                 if (src) { src.a[iA * src.width] = -1; src.a[iB * src.width] = -1; }
+                if (trn) { trn.a[iA * trn.width]++; trn.a[iB * trn.width]++; }
                 defl++;
               }
             }
@@ -2502,6 +2526,10 @@ export const collide = (o: CollideOptions = {}): Rule => {
                   b.setChannel("source", A, d, -1);   // met something: no longer its emitter's
                   b.setChannel("source", B, o, -1);
                 }
+                if (tracksTurns) {
+                  b.setChannel("turns", A, d, b.channelAt("turns", A, d) + 1);
+                  b.setChannel("turns", B, o, b.channelAt("turns", B, o) + 1);
+                }
                 w.stats.deflections++;
               } else {
                 const ca = b.charge(A, d), cb = b.charge(B, o);
@@ -2509,11 +2537,19 @@ export const collide = (o: CollideOptions = {}): Rule => {
                 if (freeA && freeB) {
                   b.clear(A, d); b.clear(B, o);
                   b.put(A, o, ca); b.put(B, d, cb);
+                  if (tracksTurns) {
+                    b.setChannel("turns", A, o, b.channelAt("turns", A, o) + 1);
+                    b.setChannel("turns", B, d, b.channelAt("turns", B, d) + 1);
+                  }
                   w.stats.deflections++;
                 } else if (reflection === "swap") {
                   const oa = b.charge(A, o), ob = b.charge(B, d);
                   b.put(A, o, ca); b.put(A, d, oa);
                   b.put(B, d, cb); b.put(B, o, ob);
+                  if (tracksTurns) {
+                    b.setChannel("turns", A, o, b.channelAt("turns", A, o) + 1);
+                    b.setChannel("turns", B, d, b.channelAt("turns", B, d) + 1);
+                  }
                   w.stats.deflections++;
                 } else w.stats.blocked++;
               }
@@ -2571,22 +2607,32 @@ export const collide = (o: CollideOptions = {}): Rule => {
   };
 };
 
+/**
+ * THERE IS NO RATE HERE, AND THAT IS THE POINT.
+ *
+ * (G/2) is not a rule that fires at a rate. "On all axis, a neutral point expands
+ * into two points" is a statement about EVERY neutral point, EVERY tick: the whole
+ * grid doubles, and each meeting on a shared edge folds two points back into one, so
+ * the count is CONSERVED rather than balanced on average.
+ *
+ * A rate `p` used to be settable, nominally so the collapse below 1 could be shown.
+ * What it was actually used for was sixteen call sites quietly running the vacuum at
+ * p = 0.05, which is a different model — annihilation outruns creation by 1/p, space
+ * collapses, and the occupancy lands wherever the rate puts it. Measured, the whole
+ * difference:
+ *
+ *     p       conserving   gravity   gravity+magnetism
+ *     0.05      0.953        0.179        0.233
+ *     1         1.000        0.000        0.4985
+ *
+ * The half this book quotes as the vacuum's derived occupancy is the RIGHT-HAND
+ * column, and it comes out of the rule as written rather than out of a p → 0 limit
+ * of (1−p)/(2−p). Gravity's own zero is the same rule read straight: both halves of
+ * every inserted point are neutral, they annihilate on the edge, the point collapses,
+ * and pure gravity has NO VACUUM AT ALL. So the knob is gone — it cannot be set,
+ * which is the only way it stops being set.
+ */
 export type ExpandOptions = {
-  /**
-   * HOW OFTEN A NEUTRAL POINT SPLITS — and it is 1, unconditionally.
-   *
-   * (G/2) is not a rate. "On all axis, a neutral point expands into two points" is a
-   * statement about every neutral point, every tick: the whole grid doubles, and each
-   * meeting on a shared edge folds two points back into one, so the count is
-   * CONSERVED rather than balanced on average. Measured on the graph backend, where
-   * a fold genuinely removes a point: at p = 1 the count holds to the integer over
-   * sixty ticks; at any p < 1 annihilation outruns creation by 1/p and space
-   * collapses to about half and never recovers.
-   *
-   * It is left as a parameter only so that the collapse can be shown, since the
-   * measurement that fixes it is the interesting thing. Nothing should run below 1.
-   */
-  p?: number;
   /**
    * What new room is edged with.
    *
@@ -2599,14 +2645,19 @@ export type ExpandOptions = {
 };
 
 /**
- * (G+M/2) AS THE VACUUM SECTIONS DERIVE IT, which is one expansion seen twice:
- * new room is edged on every axis, and the SAME expansion thins what is already
- * there. Those two lines have the fixed point
+ * (G+M/2) AS THE RULE SAYS IT, which is once and not twice.
+ *
+ * The vacuum sections used to read this as one expansion seen twice — new room edged on
+ * every axis, and the SAME expansion thinning what is already there — whose fixed point
  *
  *     f → p + (1−p)f   then   f(1−p)          f* = (1−p)/(2−p) → ½
  *
- * — half full, with the rate cancelling out, which is the one number in this book
- * nobody chose.
+ * gave the half this book quotes, with the rate apparently cancelling out. It does not
+ * cancel: ½ is the p → 0 limit and the same expression is NOUGHT at p = 1. And there is
+ * no p. A split is unconditional, there is no thinning, and what removes a ray is the
+ * meeting on the edge that the split itself created. The half survives all of that and
+ * comes out better for it — see `vacuumFill`, where it is what is left when half the
+ * edge meetings are alike.
  *
  * WHAT THIS IS NOT is "fire in a completely neutral cell", which reads like the
  * rule and self-limits: once a box has any traffic there are almost no fully empty
@@ -2619,74 +2670,118 @@ export const expand = (o: ExpandOptions = {}): Rule => {
   return {
     name: "expand",
     why: "(G+M/2): a neutral point expands into two points with opposite polarity, " +
-      "and the same expansion thins what is already there.",
+      "unconditionally — every neutral point, every tick. Nothing is thinned; what " +
+      "removes a ray is the meeting on the edge.",
     phase: "expand",
     reach: { radius: 0, reads: ["charge"], writes: ["charge", "space"] },
     apply: (w) => {
-      const p = o.p ?? w.opts.expansion;
       const b = w.backend, g = w.geometry;
-      if (p <= 0) return;
       const uniform = w.opts.slotUniformRng;
       const AXES = g.AXES, OPP = g.OPP, DEG = g.DEG;
       const rng = w.rng;
+      /*
+       * WHAT ONE LOCAL COSTS THE RANDOM STREAM, so that a source can pay it without
+       * splitting — and this is `slotUniformRng` finally doing what it says.
+       *
+       * The flag is documented as the thing that makes "the same seed run twice, once
+       * with a source and once without, differ ONLY by the source", which is the whole
+       * basis of every measurement in this book taken as a difference against a lone
+       * control: the force in `gravitationalPull`, the deficit profile, the veins, the
+       * propulsion, the charge in a field. It was read into a dead local and acted on
+       * nothing.
+       *
+       * WHAT THAT COST, measured: two gravity+magnetism worlds on one seed, one with an
+       * absorber and one without, twelve ticks — and 19.7% of the slots OUTSIDE the
+       * body's light cone came back different. The body cannot have reached them; the
+       * difference is the two runs having drawn from the stream in different orders ever
+       * since tick one, because a source local skipped the sign draw that every other
+       * local made. Every such difference carried that as noise, and the noise is
+       * twenty per cent of the board while the signal is a shadow a few per cent deep.
+       *
+       * Under `neutral` there is no sign to draw, so gravity was aligned by accident and
+       * the fault was invisible exactly where the arc looked hardest.
+       */
+      const draws = sign === "neutral" ? 0
+        : 1 + (sign === "perAxis" ? AXES.length : sign === "perRay" ? 2 * AXES.length : 0);
+      /* a local that is skipped still pays the stream, which is what `slotUniformRng` is */
+      const skip = () => { if (uniform) for (let i = 0; i < draws; i++) rng(); };
       b.forEachLocal(local => {
-        if (w.isSource(local)) return;
-        const makes = rng() < p;
-        if (makes) {
+        if (w.isSource(local)) { skip(); return; }
+        /*
+         * A NEUTRAL POINT IS ONE WITH NOTHING ON IT, and that is the rule rather than a
+         * reading of it. "On all axis, A NEUTRAL POINT expands into two points" — a point
+         * carrying an active ray is not neutral, so it does not split.
+         *
+         * THIS FILE ARGUED THE OTHER WAY FOR A LONG TIME, on the grounds that firing only
+         * in empty cells self-limits: once a box has any traffic there are few empty
+         * locals left, so the occupancy tops out near a tenth. That is true and it is not
+         * the objection it looked like. Splitting unconditionally does not merely raise
+         * the density — `put` overwrites, so every exit of every local is rewritten before
+         * `stream` runs and THE LATTICE KEEPS NOTHING. Measured: two worlds with entirely
+         * different contents, same seed, are bit-identical after ONE tick, 0 of 40,500
+         * slots differing. No disturbance can cross a box that is erased every tick, which
+         * is why every force in the report came back as an exact zero with an exact zero
+         * error — `pair − lone` at every separation, the sign law's three configurations
+         * bit-identical, B nowhere.
+         *
+         * The old p < 1 was carrying that: at a rate, most locals were left alone each
+         * tick and information survived in the ones that were. It was not a small
+         * correction to the density, it was the only reason the model had a field at all.
+         */
+        for (let d = 0; d < DEG; d++) if (b.active(local, d)) { skip(); return; }
+        /*
+         * A POINT SPLITS ON ALL AXIS, AND THE PIECES GO TO THE NEIGHBOURS.
+         *
+         * This is the rule and it took getting wrong to see it. (G/2) does not
+         * write rays onto the point it fired at — it SPLITS that point into two
+         * along every axis, and what a split leaves is a charge pointing outward on
+         * each side. The neighbours are splitting at the same moment, so what
+         * arrives at any point comes from its neighbours' splits rather than from
+         * its own.
+         *
+         * A FIRST VERSION PUT ALL l.DEG RAYS ON THE ONE LOCAL, and under co-located
+         * meetings a point holding twenty-six mutually co-located rays annihilates
+         * itself before it ever streams: 85% of everything the expansion made was
+         * destroyed at birth, and the vacuum sat at a fiftieth of its occupancy.
+         * That was not a fact about co-location, which is what it looked like. It
+         * was this.
+         *
+         * AND ON THE BOUNDARY IT IS AN EXPANSION. A split pointing outward where
+         * there is no neighbour yet is what makes new room — which is why empty
+         * space grows and why matter, which is in the way of it, is not merely
+         * absorbing rays but suppressing the split itself.
+         */
+        b.unfold(local);
+        const s: Charge = sign === "neutral" ? 0 : (rng() < 0.5 ? 1 : -1);
+        for (let ai = 0; ai < AXES.length; ai++) {
+          const a = AXES[ai], o2 = OPP[a];
+          const q: Charge = sign === "perRay" || sign === "perAxis" ? (rng() < 0.5 ? 1 : -1) : s;
+          const q2: Charge = (sign === "perAxis" ? -q
+            : sign === "perRay" ? (rng() < 0.5 ? 1 : -1) : q) as Charge;
           /*
-           * A POINT SPLITS ON ALL AXIS, AND THE PIECES GO TO THE NEIGHBOURS.
+           * THE HALVES STAY ON THE POINT THAT SPLIT, heading outward — because a
+           * split puts a new point BETWEEN this one and its neighbour, and a ray at
+           * (local, d) is exactly a thing at `local` on its way to that midpoint.
            *
-           * This is the rule and it took getting wrong to see it. (G/2) does not
-           * write rays onto the point it fired at — it SPLITS that point into two
-           * along every axis, and what a split leaves is a charge pointing outward on
-           * each side. The neighbours are splitting at the same moment, so what
-           * arrives at any point comes from its neighbours' splits rather than from
-           * its own.
+           * The neighbour is splitting at the same moment, so its facing half is at
+           * (B, OPP[d]), and the two are the two halves of the SAME inserted point,
+           * approaching each other across the edge. That is why the meeting is on
+           * the edge, and it is why in pure gravity nothing happens in the bulk:
+           * both halves are neutral, they annihilate, the inserted point collapses,
+           * and the lattice is exactly as it was. With polarity, half those pairs
+           * are ALIKE and turn instead — so that point survives and space has grown
+           * there, which is the whole of why magnetism expands space and gravity
+           * does not.
            *
-           * A FIRST VERSION PUT ALL l.DEG RAYS ON THE ONE LOCAL, and under co-located
-           * meetings a point holding twenty-six mutually co-located rays annihilates
-           * itself before it ever streams: 85% of everything the expansion made was
-           * destroyed at birth, and the vacuum sat at a fiftieth of its occupancy.
-           * That was not a fact about co-location, which is what it looked like. It
-           * was this.
-           *
-           * AND ON THE BOUNDARY IT IS AN EXPANSION. A split pointing outward where
-           * there is no neighbour yet is what makes new room — which is why empty
-           * space grows and why matter, which is in the way of it, is not merely
-           * absorbing rays but suppressing the split itself.
+           * A version of this wrote the halves onto the NEIGHBOURS instead. It put
+           * every ray one step ahead of where it belonged, so the two halves of an
+           * inserted point never faced each other, meetings vanished, and the point
+           * count collapsed to a quarter with nothing to replace it.
            */
-          b.unfold(local);
-          const s: Charge = sign === "neutral" ? 0 : (rng() < 0.5 ? 1 : -1);
-          for (let ai = 0; ai < AXES.length; ai++) {
-            const a = AXES[ai], o2 = OPP[a];
-            const q: Charge = sign === "perRay" || sign === "perAxis" ? (rng() < 0.5 ? 1 : -1) : s;
-            const q2: Charge = (sign === "perAxis" ? -q
-              : sign === "perRay" ? (rng() < 0.5 ? 1 : -1) : q) as Charge;
-            /*
-             * THE HALVES STAY ON THE POINT THAT SPLIT, heading outward — because a
-             * split puts a new point BETWEEN this one and its neighbour, and a ray at
-             * (local, d) is exactly a thing at `local` on its way to that midpoint.
-             *
-             * The neighbour is splitting at the same moment, so its facing half is at
-             * (B, OPP[d]), and the two are the two halves of the SAME inserted point,
-             * approaching each other across the edge. That is why the meeting is on
-             * the edge, and it is why in pure gravity nothing happens in the bulk:
-             * both halves are neutral, they annihilate, the inserted point collapses,
-             * and the lattice is exactly as it was. With polarity, half those pairs
-             * are ALIKE and turn instead — so that point survives and space has grown
-             * there, which is the whole of why magnetism expands space and gravity
-             * does not.
-             *
-             * A version of this wrote the halves onto the NEIGHBOURS instead. It put
-             * every ray one step ahead of where it belonged, so the two halves of an
-             * inserted point never faced each other, meetings vanished, and the point
-             * count collapsed to a quarter with nothing to replace it.
-             */
-            b.put(local, a, q);
-            b.put(local, o2, q2);
-          }
-          w.stats.created++;
+          b.put(local, a, q);
+          b.put(local, o2, q2);
         }
+        w.stats.created++;
         /*
          * AND NOTHING IS THINNED, which is where the old reading of this rule went.
          *
@@ -3287,6 +3382,8 @@ const base = (polarised: boolean, alike: Deflection, sign: ExpandOptions["sign"]
 export const GRAVITY: Theory = {
   name: "gravity",
   polarised: false,
+  /* both halves are neutral and annihilate — pure gravity HAS no vacuum */
+  vacuum: 0,
   channels: () => [CHANNELS.turns(), CHANNELS.source()],
   rules: base(false, DEFLECT.pass(), "neutral"),
   note: "(G/1) annihilation and (G/2) creation. Rays are neutral, which is a charge.",
@@ -3300,6 +3397,8 @@ export const GRAVITY: Theory = {
 export const GRAVITY_MAGNETISM: Theory = {
   name: "gravity+magnetism",
   polarised: true,
+  /* half the edge meetings turn and survive, but how often a point is empty is the lattice's */
+  vacuum: null,
   channels: () => [CHANNELS.turns(), CHANNELS.source()],
   rules: base(true, DEFLECT.spin(), "perNode"),
   note: "(G+M/1) annihilate, (G+M/2) create, (G+M/3) turn.",
@@ -3312,6 +3411,8 @@ export const GRAVITY_MAGNETISM: Theory = {
 export const LABELLED: Theory = {
   name: "labelled",
   polarised: true,
+  /* as gravity+magnetism — a label changes what a ray carries, not what survives a meeting */
+  vacuum: null,
   channels: (D) => [CHANNELS.turns(), CHANNELS.source(), CHANNELS.label(D)],
   rules: base(true, DEFLECT.spin(), "perNode"),
   note: "as gravity+magnetism, with the emitter's velocity carried per ray.",
@@ -3321,6 +3422,8 @@ export const LABELLED: Theory = {
 export const LAYER2: Theory = {
   name: "layer2",
   polarised: true,
+  /* as gravity+magnetism */
+  vacuum: null,
   channels: (D) => [CHANNELS.turns(), CHANNELS.source(), CHANNELS.label(D), CHANNELS.phase()],
   rules: base(true, DEFLECT.spin(), "perNode"),
   note: "the labelled reading with a per-ray phase on the equatorial ring.",
@@ -3335,6 +3438,8 @@ export const LAYER2: Theory = {
 export const PURE: Theory = {
   name: "pure",
   polarised: false,
+  /* `remake` destroys nothing, it redeals — so nothing is removed and the box fills */
+  vacuum: 1,
   channels: () => [],
   order: ["expand", "stream", "emit", "collide", "observe"],
   rules: () => [expand({ sign: "neutral" }), streamRule(), emitRule(), {
@@ -3358,25 +3463,27 @@ export const PURE: Theory = {
 };
 
 /**
- * THE MEDIUM THE VACUUM DERIVATION IS ACTUALLY FOR — collisions that TURN and never
- * destroy, which is what `vacuum` and `signed` model.
+ * A MEDIUM THAT NEVER DESTROYS ANYTHING — collisions that TURN and nothing else, which
+ * is what `vacuum` and `signed` model.
  *
- * It is not one of this book's physical theories and it is not meant to be. It is
- * here because the fixed point (1−p)/(2−p) → ½ is derived for a medium in which the
- * only things happening are creation and thinning — and if annihilation is added,
- * the algebra has no term for it. Running this beside the real theories is what
- * turns "the vacuum's derived occupancy" from an assumption into a measurement with
- * a stated scope.
+ * It is not one of this book's physical theories and it is not meant to be. It is the
+ * third corner of the only comparison that decides the vacuum's density: what happens to
+ * the two halves of an inserted point when they meet. Keep both and the box fills;
+ * annihilate both and there is no vacuum; keep the alike half and there is a half.
+ * Running this beside the real theories is what turns "the vacuum's derived occupancy"
+ * from an assumption into a measurement with a stated scope.
  */
 export const CONSERVING: Theory = {
   name: "conserving",
   polarised: false,
+  /* nothing is ever destroyed, so every empty point that fills stays full */
+  vacuum: 1,
   channels: () => [CHANNELS.turns(), CHANNELS.source()],
   rules: () => [expand({ sign: "neutral" }), streamRule(), emitRule(), collide({
     opposite: "pass", alike: DEFLECT.reverse(), neutral: "pass",
   })],
-  note: "NOT A PHYSICAL THEORY. Creation and thinning only, with collisions that turn — " +
-    "the medium (1−p)/(2−p) is derived for, kept so the derivation's scope can be measured.",
+  note: "NOT A PHYSICAL THEORY. Creation with collisions that turn and never destroy — " +
+    "the saturating corner of the comparison, kept so the density's scope can be measured.",
 };
 
 /**
@@ -3786,7 +3893,6 @@ export type Header = {
   meeting: Meeting;
   meetingRate: MeetingRate;
   bound: Bound;
-  expansion: number;
   N: number;
   ticks: number;
   fill: number;
@@ -3805,7 +3911,7 @@ export const headerOf = (w: World, seeds: number[] = [w.opts.seed]): Header => {
     rules: w.rules.map(r => r.name),
     backend: w.backend.kind, boundary: w.opts.boundary, fold: w.opts.fold,
     meeting: w.opts.meeting, meetingRate: w.opts.meetingRate,
-    bound: w.opts.bound, expansion: w.opts.expansion, N: w.opts.N,
+    bound: w.opts.bound, N: w.opts.N,
     ticks: w.stats.ticks, fill: fill(w), scattering: scattering(w), seeds,
   };
 };
@@ -3815,8 +3921,30 @@ export type Expectation = {
   /** what it is compared against, and why that is the right thing to compare against */
   of: string;
   want: number;
-  /** the band inside which it counts as agreeing, and where the band comes from */
-  tolerance: number;
+  /**
+   * The band inside which it counts as agreeing, RELATIVE TO `want` — except where
+   * `want` is nought, since nothing is relative to nothing, and there it is absolute.
+   *
+   * A BAND WIDER THAN THE THING IT IS ABOUT IS NOT A BAND. At `tolerance` ≥ 1 with a
+   * non-zero `want`, nought is inside the band: a measurement that found nothing at all
+   * passes, and passes in the green the article paints a `within` in. That is not a
+   * hypothetical — thirty findings in this suite carried `tolerance: 1e9`, twenty-one of
+   * them with `want` set to the measured value itself, and among them were a sign law
+   * whose two channels both read exactly 0.000 against "want: positive" and "want:
+   * negative", and an attraction of −0.0217 against "want: positive". All green.
+   *
+   * So `judge` refuses one. A claim about a SIGN or an ORDER of magnitude is not a band
+   * and should not be dressed as one — use `atLeast` / `atMost`, which say the same thing
+   * and can fail. A quantity with no expectation at all should simply carry a `note`.
+   */
+  tolerance?: number;
+  /**
+   * A ONE-SIDED EXPECTATION — "positive", "well above 1", "at least eleven orders" —
+   * which is what most of the vacuous bands were reaching for. `by` reports the relative
+   * shortfall, so a miss still says how far.
+   */
+  atLeast?: number;
+  atMost?: number;
   because: string;
 };
 
@@ -3847,7 +3975,42 @@ export type Entry = {
 
 export const judge = (f: Finding): Finding => {
   if (!f.expect) return f;
-  const { want, tolerance } = f.expect;
+  const { want, tolerance, atLeast, atMost } = f.expect;
+
+  /*
+   * A MEASUREMENT THAT DID NOT RESOLVE IS NOT A MEASUREMENT THAT MISSED.
+   *
+   * NaN reached here as `value - want` = NaN, `rel` = NaN, `NaN <= tolerance` false and
+   * `d > 0` false — so every unresolved quantity came out as "below", by an amount that
+   * serialised to null. A force exponent that could not be fitted was reported as a
+   * failure to be small; `<Claim>` then dropped it for having no finite value, so the
+   * page showed neither the number nor the failure.
+   */
+  if (!Number.isFinite(f.value)) return { ...f, verdict: "unresolved", by: undefined };
+
+  if (atLeast !== undefined || atMost !== undefined) {
+    const lo = atLeast ?? -Infinity, hi = atMost ?? Infinity;
+    const ok = f.value >= lo && f.value <= hi;
+    const miss = f.value < lo ? lo - f.value : f.value - hi;
+    const scale = Math.max(Math.abs(lo === -Infinity ? hi : lo), 1e-12);
+    return { ...f, by: ok ? 0 : miss / scale, verdict: ok ? "within" : f.value < lo ? "below" : "above" };
+  }
+
+  if (tolerance === undefined) throw new Error(
+    `"${f.name}" has an expectation with neither a tolerance nor a bound. Give it a band, ` +
+    `an atLeast/atMost, or no expectation at all.`);
+
+  /*
+   * AND A BAND THAT CANNOT FAIL IS REFUSED HERE rather than discovered in the article.
+   * With a non-zero `want`, a relative tolerance of 1 puts nought inside the band, so
+   * "we measured nothing" and "we measured what we predicted" become the same verdict.
+   */
+  if (Math.abs(want) > 1e-12 && tolerance >= 1) throw new Error(
+    `"${f.name}" wants ${want} within a relative tolerance of ${tolerance}, which admits ` +
+    `zero — a measurement that found nothing at all would pass it. If the claim is about a ` +
+    `sign or an order of magnitude, say so with atLeast/atMost; if there is no expectation, ` +
+    `drop it and keep the note.`);
+
   const d = f.value - want;
   const rel = Math.abs(want) > 1e-12 ? Math.abs(d) / Math.abs(want) : Math.abs(d);
   return {
@@ -3894,7 +4057,7 @@ export class Report {
       console.log(`  ${h.geometry} · DEG ${h.DEG} · SHEET ${h.SHEET} · CYCLE ${h.CYCLE} (${h.SPIN_deg.toFixed(0)}°) · ` +
         `${h.veined ? "veined" : "round"} · c ${h.c_anisotropy.toFixed(2)}×`);
       console.log(`  ${h.theory} · ${h.backend} · ${h.boundary} · fold ${h.fold.mode}/${h.fold.degree} · ` +
-        `meet ${h.meeting} · p ${h.expansion} · N ${h.N} · ${h.ticks} ticks`);
+        `meet ${h.meeting} · N ${h.N} · ${h.ticks} ticks`);
       console.log(`  fill ${h.fill.toFixed(3)} · scattering ${Number.isFinite(h.scattering) ? h.scattering.toFixed(3) : "—"} · seeds ${h.seeds.length}`);
       console.log();
       /*
@@ -3950,52 +4113,119 @@ export const derived = (w: World): Record<string, number | string | boolean> => 
     channels: w.opts.channels.map(c => c.name).join("+"),
     fold_mode: w.opts.fold.mode, fold_degree: w.opts.fold.degree,
     boundary: w.opts.boundary, meeting: w.opts.meeting, meetingRate: w.opts.meetingRate,
-    expansion: w.opts.expansion,
-    /**
-     * The fixed point of the two lines of (G+M/2) — new room edged, the same
-     * expansion thinning — which nobody chose. IT IS THE UNSIGNED PREDICTION and
-     * it is not what a polarised vacuum settles at: (G+M/1) destroys pairs and is
-     * a sink the derivation does not account for, which is `signed`'s result that
-     * a medium which annihilates collides more per charge, seen from the density
-     * side. Use `vacuumFill` to get the measured one beside it.
-     */
-    vacuum_fixedPoint_unsigned: (1 - w.opts.expansion) / (2 - w.opts.expansion),
   };
 };
 
 /**
- * The occupancy a vacuum actually settles at, measured, beside the unsigned
- * prediction — and the gap between them reported rather than glossed.
+ * The occupancy a vacuum actually settles at, measured, beside what the rule says it
+ * should be — and the gap between them reported rather than glossed.
  *
- * This matters more than it looks. Every null result about scattering depends on
- * the vacuum being dense enough to scatter, and a run that assumes ½ and sits at a
- * seventh of it will report that nothing diffuses when the truth is that nothing
- * was there to diffuse against.
+ * This matters more than it looks. Every null result about scattering depends on the
+ * vacuum being dense enough to scatter, and a run that assumes ½ and sits at a
+ * seventh of it will report that nothing diffuses when the truth is that nothing was
+ * there to diffuse against. That is not hypothetical: it is what a p of 0.05 did to
+ * sixteen call sites.
+ *
+ * WHAT THE RULE SAYS, per theory, with no rate in it. (G/2) splits every neutral
+ * point every tick, and each split puts two halves of one inserted point onto the two
+ * ends of a shared edge, facing each other. What happens when they meet is the whole
+ * of the answer:
+ *
+ *   conserving          nothing is ever destroyed, so every inserted point survives
+ *                       and the box fills                                    → 1
+ *   gravity             both halves are neutral, every pair annihilates, every
+ *                       inserted point collapses — pure gravity has no vacuum → 0
+ *   gravity+magnetism   `perNode` gives each split one sign, so the two halves
+ *                       meeting on an edge are alike half the time and TURN, and
+ *                       opposite half the time and annihilate                 → ½
+ *
+ * The half this book has quoted throughout is that last row, and it falls out of the
+ * rule rather than out of the p → 0 limit of (1−p)/(2−p) that used to be quoted for
+ * it. Half the created space survives because half the meetings are alike; that is
+ * the same sentence as "magnetism expands space and gravity does not".
  */
-export const vacuumFill = (o: { theory?: Theory; geometry?: Geometry; N?: number; p?: number; T?: number; seed?: number } = {}) => {
-  const p = o.p ?? 0.05;
+export const vacuumFill = (o: { theory?: Theory; geometry?: Geometry; N?: number; T?: number; seed?: number } = {}) => {
+  const theory = o.theory ?? GRAVITY_MAGNETISM;
   const w = new World({
-    theory: o.theory ?? GRAVITY_MAGNETISM, geometry: o.geometry,
-    N: o.N ?? 21, seed: o.seed ?? 20260817, expansion: p, boundary: "wrap",
+    theory, geometry: o.geometry,
+    N: o.N ?? 21, seed: o.seed ?? 20260817, boundary: "wrap",
   });
   w.run(o.T ?? 120);
   const measured = fill(w);
-  const predicted = (1 - p) / (2 - p);
-  const finding: Finding = judge({
-    name: "vacuum occupancy",
-    value: measured,
-    expect: {
-      of: "(1−p)/(2−p), the fixed point of edging and thinning",
-      want: predicted,
-      tolerance: 0.1,
-      because: "the two lines of (G+M/2) have this fixed point with the rate cancelling out",
-    },
-    note: w.theory.polarised
-      ? "A POLARISED vacuum should sit BELOW it: (G+M/1) destroys pairs and is a sink the " +
-        "unsigned derivation has no term for. Being below is expected; how far below is the result."
-      : undefined,
-  });
+  const predicted = theory.vacuum;
+  /*
+   * JUDGED ONLY WHERE THE RULE FIXES IT. A polarised vacuum's density is the lattice's
+   * (see `Theory.vacuum`), so there is nothing to judge it against that is not circular —
+   * it is reported, and what gets judged instead is that it does not move with the box,
+   * which is the part that makes it a property of the rules at all.
+   */
+  const finding: Finding = predicted === null
+    ? {
+      name: "vacuum occupancy", value: measured,
+      note: `set by the lattice rather than by the rules: (G/2) fires on an EMPTY point, ` +
+        `so creation goes as (1−f)^DEG and the balance lands wherever the tiling puts it. ` +
+        `Measured here on ${w.geometry.name} with DEG ${w.geometry.DEG}.`,
+    }
+    : judge({
+      name: "vacuum occupancy",
+      value: measured,
+      expect: {
+        of: `${predicted} — what this theory leaves of an empty point once it has split ` +
+          `and the halves have met on their shared edges`,
+        want: predicted,
+        tolerance: 0.05,
+        because: "a medium that destroys nothing fills and stays full; pure gravity " +
+          "annihilates both halves of everything it makes and holds nothing. Neither " +
+          "depends on how often a point happens to be empty, so neither depends on the lattice",
+      },
+    });
   return { measured, predicted, mfp: 1 / Math.max(measured, 1e-9), finding, world: w };
+};
+
+/**
+ * A MEDIUM AT A CHOSEN DENSITY, WITH NO CREATION IN IT.
+ *
+ * Density used to be swept by turning the expansion rate down, which is how three
+ * tests reached a range of occupancies. There is no rate any more — (G/2) fires
+ * unconditionally — so each theory has exactly one vacuum density and a sweep over
+ * density has nothing left to turn.
+ *
+ * It also never needed one. "How far does a carrier get in a medium of density n" is
+ * a question about STREAMING AND MEETING, not about where the medium came from: the
+ * premise has to hold at every density or it is not a transport law. So the lattice
+ * is filled to n directly and run with the creation rule taken out — the same
+ * streaming, the same collisions, the same geometry, and n as the independent
+ * variable it always was.
+ *
+ * ONE TICK IS THE MEASUREMENT, and steady state is not wanted here. Without creation
+ * the density decays, which is correct and irrelevant: the events counted are the ones
+ * the seeded population had, and dividing the one by the other is exact rather than
+ * estimated.
+ */
+export const mediumAt = (o: {
+  theory: Theory; geometry?: Geometry; N?: number; fill: number; seed?: number;
+  boundary?: Boundary;
+}) => {
+  const still: Theory = {
+    ...o.theory,
+    name: `${o.theory.name} \u00b7 still`,
+    /* everything the theory does except make new room */
+    rules: (w) => o.theory.rules(w).filter(r => r.name !== "expand"),
+    note: `${o.theory.name} with (G/2) removed, so the density is the seed's and not the rule's`,
+  };
+  const w = new World({
+    theory: still, geometry: o.geometry, N: o.N ?? 25,
+    seed: o.seed ?? 20260817, boundary: o.boundary ?? "wrap",
+  });
+  const g = w.geometry, rng = w.rng, n = Math.min(1, Math.max(0, o.fill));
+  w.backend.forEachLocal(local => {
+    if (w.isSource(local)) return;
+    for (let d = 0; d < g.DEG; d++) {
+      if (rng() >= n) continue;
+      w.backend.put(local, d, (still.polarised ? (rng() < 0.5 ? 1 : -1) : 0) as Charge);
+    }
+  });
+  return w;
 };
 
 /**
@@ -4094,7 +4324,7 @@ export const conform = (make: (backend: "array" | "graph") => World, T = 30) => 
  * Whatever pulls them together is the vacuum.
  */
 export const gravitationalPull = (o: {
-  N?: number; T?: number; seeds?: number[]; separations?: number[]; expansion?: number;
+  N?: number; T?: number; seeds?: number[]; separations?: number[];
   theory?: Theory;
 } = {}) => {
   const N = o.N ?? 41, T = o.T ?? 200;
@@ -4102,13 +4332,25 @@ export const gravitationalPull = (o: {
   const seps = o.separations ?? [6, 8, 10, 14];
   const C = (N - 1) / 2;
 
+  /*
+   * THE WORLD THE NUMBERS CAME OUT OF, KEPT SO IT CAN BE THE LABEL.
+   *
+   * The caller used to build a SECOND world at whatever size was convenient, tick it
+   * twenty times and hand that to `headerOf` — so the article printed "N 41 · 20 ticks ·
+   * fill 0.000" beneath a force measured over 240 ticks in a box that had a vacuum in it.
+   * The zero occupancy was read as evidence the run was empty, which it was not; the
+   * label was simply of a different box. A header is provenance, so it has to be the run.
+   */
+  let ran: World | undefined;
+
   const force = (sep: number, lone: boolean, seed: number) => {
     const w = new World({
-      theory: o.theory ?? GRAVITY, N, seed, boundary: "absorb", expansion: o.expansion ?? 0.05,
+      theory: o.theory ?? GRAVITY, N, seed, boundary: "absorb",
     });
     w.add({ at: [C - sep / 2, C, C], radius: 2, absorbs: true, duty: 0 });
     if (!lone) w.add({ at: [C + sep / 2, C, C], radius: 2, absorbs: true, duty: 0 });
     w.run(T);
+    ran = w;
     return pullOn(w, 0)[0];
   };
 
@@ -4138,7 +4380,7 @@ export const gravitationalPull = (o: {
       value: rows[0].value, err: rows[0].err,
       expect: {
         of: "positive — the partner shadows the vacuum and the far side wins",
-        want: Math.abs(rows[0].value), tolerance: 1e9,
+        want: 0, atLeast: Math.abs(rows[0].err),
         because: "a body is pushed toward whatever is eating the rays that would have hit it",
       },
       note: `${rows[0].sigma.toFixed(1)}σ against a lone body at the same position`,
@@ -4155,7 +4397,7 @@ export const gravitationalPull = (o: {
         (resolved.length < 3 ? " — too few to call, widen the box or run longer" : ""),
     }),
   ];
-  return { rows, exponent: exp, findings, seeds };
+  return { rows, exponent: exp, findings, seeds, header: headerOf(ran!, seeds) };
 };
 
 /**
@@ -4186,10 +4428,13 @@ export const recoversGravity = (o: {
   const C = (N - 1) / 2;
   const centre = [C, C, C];
 
+  /* the world the profile came out of, so the header is the run and not a stand-in */
+  let ran: World | undefined;
+
   /** the deficit a body leaves, differenced against the same box without it */
   const profile = (theory: Theory, alternate: boolean, seed: number) => {
     const mk = (withBody: boolean) => {
-      const w = new World({ theory, N, seed, boundary: "absorb", expansion: 0.05 });
+      const w = new World({ theory, N, seed, boundary: "absorb" });
       if (withBody) w.add({
         at: centre, radius: 2, emits: 1,
         period: alternate ? 2 : 1, dwellTicks: 1,
@@ -4197,6 +4442,7 @@ export const recoversGravity = (o: {
       return w.run(T);
     };
     const b = mk(true), v = mk(false);
+    ran = b;
     return radii.map(r => {
       let s = 0, n = 0;
       b.backend.forEachLocal(k => {
@@ -4218,7 +4464,7 @@ export const recoversGravity = (o: {
    */
   const attraction = (theory: Theory, alternate: boolean, seed: number) => {
     const xL = C - sep / 2;
-    const w = new World({ theory, N, seed, boundary: "absorb", expansion: 0.05 });
+    const w = new World({ theory, N, seed, boundary: "absorb" });
     for (const x of [xL, C + sep / 2]) w.add({
       at: [x, C, C], radius: 2, emits: 1, period: alternate ? 2 : 1, dwellTicks: 1,
     });
@@ -4275,7 +4521,7 @@ export const recoversGravity = (o: {
     judge({
       name: "attraction, gravity", value: g.force.mean, err: g.force.err,
       expect: { of: "positive — space destroyed between two bodies draws them in",
-        want: Math.abs(g.force.mean), tolerance: 1e9,
+        want: 0, atLeast: Math.abs(g.force.err),
         because: "a force in this model is where space shortens" },
     }),
     judge({
@@ -4285,5 +4531,5 @@ export const recoversGravity = (o: {
     }),
   ];
 
-  return { radii, gravity: g, magnetism: m, findings, seeds };
+  return { radii, gravity: g, magnetism: m, findings, seeds, header: headerOf(ran!, seeds) };
 };

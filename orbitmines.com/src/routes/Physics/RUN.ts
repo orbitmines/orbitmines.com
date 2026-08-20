@@ -66,8 +66,27 @@ import ceiling from "./tests/ceiling";
 import neel from "./tests/neel";
 import benchmark from "./tests/benchmark";
 import anisotropy from "./tests/anisotropy";
+import exchange from "./tests/exchange";
+import lorentz from "./tests/lorentz";
+import turn from "./tests/turn";
+import current from "./tests/current";
+import relaxation from "./tests/relaxation";
+import driftTests from "./tests/drift";
+import harmonyTests from "./tests/harmony";
+import sourcing from "./tests/sourcing";
+import strand from "./tests/strand";
+import acting from "./tests/acting";
+import radiation from "./tests/radiation";
+import potentials from "./tests/potentials";
+import poles from "./tests/poles";
+import textureTests from "./tests/texture";
+import blochTests from "./tests/bloch";
+import continuity from "./tests/continuity";
+import rangeTests from "./tests/range";
+import ampereForce from "./tests/ampere";
+import conserving from "./tests/conserving";
 
-const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter, ...binding, ...spin, ...structures, ...topology, ...emission, ...species, ...chirality, ...coherence, ...dilation, ...automatonTests, ...medium, ...ceiling, ...neel, ...benchmark, ...anisotropy];
+const ALL = [...geometry, ...layer2, ...meeting, ...vacuum, ...gravity, ...electrostatics, ...magnetostatics, ...induction, ...propulsion, ...magnetism, ...ordering, ...kernel, ...metric, ...rotation, ...transportPremise, ...suppression, ...rar, ...sparc, ...eht, ...ring, ...latticeStep, ...discs, ...moments, ...wander, ...magneticLaws, ...cosmology, ...matter, ...binding, ...spin, ...structures, ...topology, ...emission, ...species, ...chirality, ...coherence, ...dilation, ...automatonTests, ...medium, ...ceiling, ...neel, ...benchmark, ...anisotropy, ...exchange, ...lorentz, ...turn, ...current, ...relaxation, ...driftTests, ...harmonyTests, ...strand, ...sourcing, ...acting, ...radiation, ...potentials, ...poles, ...textureTests, ...blochTests, ...continuity, ...rangeTests, ...ampereForce, ...conserving];
 
 /** the theories by the names the tests declare expectations under */
 const BY_NAME = Object.fromEntries(Object.values(THEORIES).map(t => [t.name, t]));
@@ -323,7 +342,9 @@ const runShard = async (
     for (const f of o.outside)
       console.log(`      ${f.name}: ` +
         `${Number.isFinite(f.value) ? f.value.toExponential(3) : "—"} ` +
-        `${f.verdict} by ${(100 * (f.by ?? 0)).toFixed(1)}%`);
+        /* "unresolved by 0.0%" reads as a near miss; it is not a miss at all */
+        (f.verdict === "unresolved" ? "DID NOT RESOLVE"
+          : `${f.verdict} by ${(100 * (f.by ?? 0)).toFixed(1)}%`));
   }
   if (soft.length) {
     console.log(`\n  and ${soft.length} unresolved at this budget — re-run without --quick before` +

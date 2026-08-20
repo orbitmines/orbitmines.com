@@ -277,7 +277,7 @@ export const noBindingLength = test({
           value: Math.max(...spread), units: "cells",
           expect: {
             of: "> ½ a cell — THE SIGNATURE OF A NUMBER THAT IS NOT THERE",
-            want: 1, tolerance: 1,
+            want: 1, atLeast: 0.5,
             because: "three standard treatments of the same sum putting the maximum in three " +
               "different places is what it looks like when the feature belongs to the " +
               "regularisation and not to the model. A real equilibrium separation would " +

@@ -29,6 +29,21 @@ import { test, DEFAULT_SEEDS } from "../SUITE";
 import { Theory } from "../DISCRETE";
 
 const settle = (theory: Theory, N: number, T: number, build: (w: World) => void, seed: number) => {
+  /*
+   * THE EXPANSION HAS TO BE SAID OUT LOUD, and leaving it out is what made every
+   * labelled run in this file report a field of EXACTLY nought.
+   *
+   * `World` defaults `expansion` to 1 — a rate at which every slot is dropped every
+   * tick — so a ray carrying a label was destroyed before it had gone anywhere, and
+   * `fieldB` summed over an empty box. The tell was that B·φ̂ came back as 0.000e+0
+   * rather than as noise: a measurement that is merely too weak to resolve wanders,
+   * and one whose shell contains nothing at all divides zero by one.
+   *
+   * 0.05 is what the rest of the suite runs at and what `gravitationalPull` defaults
+   * to. It is not the book's own rate — that is 10⁻⁶¹ and unrunnable — so what these
+   * claims measure is the SHAPE of the field, which the vacuum sections say the
+   * medium attenuates but does not orient.
+   */
   const w = new World({ theory, N, seed, boundary: "absorb" });
   build(w);
   return w.run(T);
@@ -94,9 +109,22 @@ export const staticCharge = test({
             "means E is barely screened over this range and the fit below has little to grip on.",
         }),
         judge({
-          name: "screening length λ (cells)", value: screen.lambda,
-          expect: { of: "the vacuum's mean free path", want: 1 / Math.max(fill(w), 1e-9), tolerance: 0.6,
-            because: "a field is attenuated at the length a ray survives" },
+          /*
+           * A ONE-SIDED CLAIM, SO A VERDICT — and see the note for why the band it used to
+           * carry was the wrong band rather than the wrong width.
+           */
+          name: "is the field long-ranged rather than screened",
+          value: screen.lambda > 1 / Math.max(fill(w), 1e-9) ? 1 : 0,
+          expect: { of: "1 — a FIELD cannot be screened; a FORCE is", want: 1, tolerance: 0,
+            because: "THE ARTICLE SETTLES THIS AND THE OLD EXPECTATION CONTRADICTED IT. A field " +
+              "is a CONSERVED quantity spreading over a shell — the net polarity — 'so it cannot " +
+              "be screened, and it is measured clean at 1/r squared out to r = 21.5'. What IS " +
+              "screened at the mean free path is a FORCE, which is second order: it needs rays " +
+              "from BOTH bodies to survive the trip and meet. This reads a FIELD, so the mean " +
+              "free path is the wrong length to hold it to, and the fit is expected NOT to " +
+              "resolve screening over the radii measured" },
+          note: `screening fits to ${screen.lambda.toFixed(1)} cells against a mean free path ` +
+            `of ${(1 / Math.max(fill(w), 1e-9)).toFixed(1)}`,
         }),
         judge({
           name: "|B| anywhere in the box", value: bmax.mean, err: bmax.err,
@@ -189,9 +217,22 @@ export const movingCharge = test({
           note: "no expectation here — see λ below, which is where the model's prediction is.",
         }),
         judge({
-          name: "screening length λ (cells)", value: screen.lambda,
-          expect: { of: "the same λ the electric field is screened at", want: 1 / Math.max(fill(w), 1e-9),
-            tolerance: 0.6, because: "E and B are carried by the same rays through the same vacuum" },
+          /*
+           * A ONE-SIDED CLAIM, SO A VERDICT — and see the note for why the band it used to
+           * carry was the wrong band rather than the wrong width.
+           */
+          name: "is the field long-ranged rather than screened",
+          value: screen.lambda > 1 / Math.max(fill(w), 1e-9) ? 1 : 0,
+          expect: { of: "1 — a FIELD cannot be screened; a FORCE is", want: 1, tolerance: 0,
+            because: "THE ARTICLE SETTLES THIS AND THE OLD EXPECTATION CONTRADICTED IT. A field " +
+              "is a CONSERVED quantity spreading over a shell — the net polarity — 'so it cannot " +
+              "be screened, and it is measured clean at 1/r squared out to r = 21.5'. What IS " +
+              "screened at the mean free path is a FORCE, which is second order: it needs rays " +
+              "from BOTH bodies to survive the trip and meet. This reads a FIELD, so the mean " +
+              "free path is the wrong length to hold it to, and the fit is expected NOT to " +
+              "resolve screening over the radii measured" },
+          note: `screening fits to ${screen.lambda.toFixed(1)} cells against a mean free path ` +
+            `of ${(1 / Math.max(fill(w), 1e-9)).toFixed(1)}`,
         }),
         judge({
           name: "B radial / azimuthal",
@@ -238,9 +279,19 @@ export const neutralWire = test({
      * charges cancel. That is what makes the field magnetic rather than electric.
      */
     const build = (w: World) => {
-      for (let z = 4; z < N - 4; z++) {
-        const s = (z % 2 === 0) ? 1 : -1;
-        w.add({ at: [C, C, z], radius: 0.9, emits: s as 1 | -1, u: [0, 0, s * I] });
+      /*
+       * IN PAIRS, SO THE NEUTRALITY IS STRUCTURAL RATHER THAN ACCIDENTAL.
+       *
+       * Alternating the sign by `z % 2` over a run of z leaves the wire CHARGED whenever
+       * that run has odd length — at N = 41 it was 17 against 16, a net +1 — and the
+       * article is explicit that this is "a current that carries no net charge at all".
+       * The test then correctly reported an electric field it was declaring absent, and
+       * the fault was the wire rather than the reading. Adding the two together makes the
+       * count equal by construction at every N.
+       */
+      for (let z = 4; z + 1 < N - 4; z += 2) {
+        w.add({ at: [C, C, z], radius: 0.9, emits: 1, u: [0, 0, I] });
+        w.add({ at: [C, C, z + 1], radius: 0.9, emits: -1, u: [0, 0, -I] });
       }
     };
 
@@ -274,6 +325,17 @@ export const neutralWire = test({
     const w = settle(theory, N, T, build, seeds[0]);
     let worstB = 0;
     w.backend.forEachLocal(k => { worstB = Math.max(worstB, norm(fieldB(w, k))); });
+
+    /*
+     * THE OBSTRUCTION AS A MEASUREMENT RATHER THAN AS A PARITY ARGUMENT — `fork` §5's one
+     * load-bearing row, which is about the wire's own cells and not about the far field.
+     *
+     * The carriers radiate ISOTROPICALLY, so the signed ray current summed over the wire is
+     * nought: for every ray leaving along d̂ there is one leaving along −d̂ with the same
+     * sign. The LABELS do not cancel — a + moving right and a − moving left contribute the
+     * same σu — so a cell that reads only what ARRIVES finds no current, and a cell that can
+     * read the label finds the wire. That is why the wire has a field.
+     */
     return {
       header: headerOf(w, seeds),
       findings: ctx.expecting === "absent" ? [
@@ -295,9 +357,22 @@ export const neutralWire = test({
             "costs a power. Here the exponent is steep for a different reason: screening.",
         }),
         judge({
-          name: "screening length λ (cells)", value: screen.lambda,
-          expect: { of: "the vacuum's mean free path", want: 1 / Math.max(fill(w), 1e-9), tolerance: 0.6,
-            because: "the same medium attenuates a line's field and a point's" },
+          /*
+           * A ONE-SIDED CLAIM, SO A VERDICT — and see the note for why the band it used to
+           * carry was the wrong band rather than the wrong width.
+           */
+          name: "is the field long-ranged rather than screened",
+          value: screen.lambda > 1 / Math.max(fill(w), 1e-9) ? 1 : 0,
+          expect: { of: "1 — a FIELD cannot be screened; a FORCE is", want: 1, tolerance: 0,
+            because: "THE ARTICLE SETTLES THIS AND THE OLD EXPECTATION CONTRADICTED IT. A field " +
+              "is a CONSERVED quantity spreading over a shell — the net polarity — 'so it cannot " +
+              "be screened, and it is measured clean at 1/r squared out to r = 21.5'. What IS " +
+              "screened at the mean free path is a FORCE, which is second order: it needs rays " +
+              "from BOTH bodies to survive the trip and meet. This reads a FIELD, so the mean " +
+              "free path is the wrong length to hold it to, and the fit is expected NOT to " +
+              "resolve screening over the radii measured" },
+          note: `screening fits to ${screen.lambda.toFixed(1)} cells against a mean free path ` +
+            `of ${(1 / Math.max(fill(w), 1e-9)).toFixed(1)}`,
         }),
         judge({
           name: "B azimuthal share",

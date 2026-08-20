@@ -41,7 +41,7 @@
  * not do it. It measures the medium, not the traveller.
  */
 
-import { World, DEFAULT_GEOMETRY, GEOMETRIES, Geometry, fill, headerOf, judge, Finding } from "../DISCRETE";
+import { World, DEFAULT_GEOMETRY, GEOMETRIES, Geometry, fill, mediumAt, headerOf, judge, Finding } from "../DISCRETE";
 import { test } from "../SUITE";
 
 /** log–log slope, and how much of the variance it accounts for */
@@ -88,17 +88,19 @@ export const transport = test({
     const geometry = DEFAULT_GEOMETRY;
 
     /*
-     * THE DENSITY IS SWEPT WITH p, and that has to be said plainly: (G/2) is
-     * unconditional, so p = 1 is the rule and everything below it is a medium the
-     * rules do not make. The sweep is legitimate anyway, because the PREMISE is a
-     * claim about how a carrier behaves at a given density — it has to hold at every
-     * density or it is not a transport law. p = 1 is included as the first point.
+     * THE DENSITY IS SET DIRECTLY, which is the only honest way to sweep it now.
+     *
+     * This used to turn the expansion rate down to reach a range of occupancies. There
+     * is no rate any more — (G/2) fires unconditionally, so the theory has exactly one
+     * vacuum density and there is nothing to turn. The premise never needed one: it is
+     * a claim about how a carrier behaves AT a density, so `mediumAt` fills the lattice
+     * to n and runs the same streaming and the same collisions with the creation rule
+     * taken out. The theory's own ½ is included as a point like any other.
      */
-    const rates = [1, 0.5, 0.32, 0.2, 0.12, 0.05, 0.02];
+    const rates = [1, 0.75, 0.5, 0.32, 0.2, 0.12, 0.05];
 
-    const at = ctx.once((p: number, seed: number) => {
-      const w = new World({ theory, geometry, N, seed, boundary: "wrap", expansion: p });
-      w.run(T);
+    const at = ctx.once((n0: number, seed: number) => {
+      const w = mediumAt({ theory, geometry, N, seed, fill: n0 });
       const a0 = w.stats.annihilations, d0 = w.stats.deflections;
       w.tick();
       const ann = w.stats.annihilations - a0, defl = w.stats.deflections - d0;
@@ -111,14 +113,15 @@ export const transport = test({
        * before the tick — and getting that wrong is a factor of two in λ and a whole
        * unit in its exponent.
        *
-       * `expand` runs FIRST: at p = 1 it puts 62,559 fresh rays into a box that held
-       * 93,404, so the events counted afterwards involve a population half again as
-       * large as the one measured. A first version divided the pre-expand count by the
-       * post-expand events and got λ = 0.498 at fill ½ — half a step, which is not a
-       * length a lattice can have. ANNIHILATION IS THE ONLY THING THAT REMOVES A RAY,
-       * so the population at collide is what survived plus what was destroyed, and
-       * that is exact rather than estimated: at p = 1 it comes to 187,500 against
-       * 25³ × 12 = 187,500 slots, and every slot collides.
+       * When creation still ran inside this tick it put 62,559 fresh rays into a box
+       * that held 93,404, so the events counted afterwards involved a population half
+       * again as large as the one measured, and dividing the one by the other gave
+       * λ = 0.498 at fill ½ — half a step, which is not a length a lattice can have.
+       * `mediumAt` removes the creation rule, so that particular trap is gone; the
+       * accounting is kept anyway because it is the exact one. ANNIHILATION IS THE
+       * ONLY THING THAT REMOVES A RAY, so the population at collide is what survived
+       * plus what was destroyed. The check that pins it is n = 1: every slot is full,
+       * every slot collides, and λ must come out at exactly one step.
        */
       const atCollide = after + 2 * ann;
       const pEvent = (2 * ann + 2 * defl) / Math.max(atCollide, 1);
@@ -141,7 +144,7 @@ export const transport = test({
      */
     const front = ctx.once((seed: number) => {
       const mk = () => {
-        const w = new World({ theory, geometry, N, seed, boundary: "wrap", expansion: 0.05 });
+        const w = new World({ theory, geometry, N, seed, boundary: "wrap" });
         w.run(T);
         return w;
       };
@@ -196,8 +199,7 @@ export const transport = test({
     const across = ([DEFAULT_GEOMETRY, GEOMETRIES["cubic-26"], GEOMETRIES["cubic-18"],
       GEOMETRIES["cubic-6"]].filter(Boolean) as Geometry[]).map(gm => {
       const pts = rates.map(p => {
-        const wl = new World({ theory, geometry: gm, N, seed: seeds[0], boundary: "wrap", expansion: p });
-        wl.run(T);
+        const wl = mediumAt({ theory, geometry: gm, N, seed: seeds[0], fill: p });
         const a1 = wl.stats.annihilations, d1 = wl.stats.deflections;
         wl.tick();
         const an = wl.stats.annihilations - a1, df = wl.stats.deflections - d1;

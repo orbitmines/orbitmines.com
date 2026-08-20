@@ -171,7 +171,7 @@ const make = (s: PanelSpec, build: (w: World) => void) => {
      * 0.2449 at p = 0.06. Half the vacuum was missing from every one of these
      * pictures.
      */
-    seed: 20260817, boundary: "absorb", expansion: s.expansion ?? 1,
+    seed: 20260817, boundary: "absorb",
   });
   build(w);
   return w;
@@ -573,7 +573,7 @@ export const Veins = ({ height = 300 }: { height?: number }) => <div>
   {Panel({
     height, note: "a source in an EMPTY box — the collisionless limit, where the lattice's " +
       "grain is the whole picture and a body diagonal covers √3 cells in a tick",
-    theory: GRAVITY_MAGNETISM, N: 121, view: 34, warm: 60, expansion: 0,
+    theory: GRAVITY_MAGNETISM, N: 121, view: 34, warm: 60,
     build: w => {
       const C = (w.opts.N - 1) / 2;
       w.add({ at: at(w, C, C, C), radius: 2, emits: 1 });

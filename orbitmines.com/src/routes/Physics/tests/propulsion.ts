@@ -74,7 +74,7 @@ export const selfPropulsion = test({
      * force worth believing in.
      */
     const force = ctx.once((how: How, conserve: boolean, moves: boolean, seed: number) => {
-      const w = new World({ theory, N, seed, boundary: "wrap", expansion: 1 });
+      const w = new World({ theory, N, seed, boundary: "wrap" });
       const s = w.add({
         at: [C, C, C], radius: 2, emits: 1,
         propulsion: how, toward, bias: 1, conserve, absorbs: true, moves,
@@ -137,7 +137,7 @@ export const selfPropulsion = test({
           value: conserving.mean, err: conserving.err,
           expect: {
             of: "POSITIVE — rays caught and sent out behind, so the recoil is forward",
-            want: Math.abs(conserving.mean), tolerance: 1e9,
+            want: 0, atLeast: Math.abs(conserving.err),
             because: "this row CREATES NOTHING: it emits only as many rays as it caught, so " +
               "whatever pushes it is the vacuum's own momentum, redirected",
           },

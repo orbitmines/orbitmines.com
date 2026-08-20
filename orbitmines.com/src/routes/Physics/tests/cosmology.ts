@@ -201,7 +201,7 @@ export const whereSpaceIsMade = test({
         name: "the world grew by", value: grew.mean, err: grew.err,
         expect: {
           of: "above 1 — a frontier that makes room is a world that gets bigger",
-          want: Math.max(grew.mean, 1), tolerance: 1e9,
+          want: 1, atLeast: 1,
           because: "this is the whole mechanism: a ray stepping off the edge is given " +
             "the point it needs, and that point is new space",
         },
@@ -239,7 +239,7 @@ export const whereSpaceIsMade = test({
         expect: {
           of: "above the interior — a ray streaming outward meets nothing ever and never " +
             "gives its point back",
-          want: Math.abs(outer), tolerance: 1e9,
+          want: inner, atLeast: inner,
           because: "this is where the arc puts all of the creation, and it is the one " +
             "place the rule can fire without a partner to undo it",
         },

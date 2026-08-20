@@ -343,7 +343,7 @@ export const whereTheBiasLives = test({
           name: "how much the PLACE ledger changes over R = 8…16", value: placeSpread,
           expect: {
             of: "large — a force has a range, so it has to change with the separation",
-            want: 1, tolerance: 1e9,
+            want: 1, atLeast: 0.1,
             because: "this is the construction magnetostatics is built on, and the whole " +
               "of its content is that it falls off",
           },

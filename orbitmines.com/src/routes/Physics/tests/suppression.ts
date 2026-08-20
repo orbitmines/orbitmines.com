@@ -57,7 +57,7 @@ export const suppression = test({
 
     const shells = ctx.once((seed: number) => {
       const mk = (src: boolean) => {
-        const w = new World({ theory, geometry: g, N, seed, boundary: "wrap", expansion: 0.05 });
+        const w = new World({ theory, geometry: g, N, seed, boundary: "wrap" });
         w.run(150);
         if (src) w.add({ at: [C, C, C], radius: 2, emits: 1, duty: 1, absorbs: false });
         return w;

@@ -186,7 +186,7 @@ export const ordering = test({
         name: "the winning wavevector beats it", value: sc.best.e,
         expect: {
           of: "below 0 — an ordered state that costs less than the uniform one",
-          want: -Math.abs(sc.best.e), tolerance: 1e9,
+          want: 0, atMost: -1e-9,
           because: "a negative eigenvalue at q ≠ 0 IS the ordering, and it needed no flip " +
             "length, no consumption mechanism and no signed vacuum to appear",
         },

@@ -192,7 +192,7 @@ export const gIsOne = test({
         judge({
           name: "the ring's angular momentum", value: ringL, units: "ħ",
           expect: {
-            of: "under ½ — A RING CAN CARRY ANY L AT ALL", want: 0.5, tolerance: 1,
+            of: "under ½ — A RING CAN CARRY ANY L AT ALL", want: 0.5, atMost: 0.5,
             because: "the fourth failure, and the one that shows the other three are not about " +
               "normalisation: L here is mcr/ħ = r/λ̄_C, the SAME number as the moment in µ_B, " +
               "because a circulation fixes both from the one radius. Nothing sets it to ½",

@@ -190,7 +190,7 @@ export const dipoleCoupling = test({
         name: "separations resolved above 2 sigma", value: resolvedSide.length,
         expect: {
           of: "most of them — a coupling nothing can resolve is not a coupling",
-          want: SEPS.length, tolerance: SEPS.length,
+          want: SEPS.length, atLeast: Math.ceil(SEPS.length / 2),
           because: "J(r) is the input the ordering arc's Luttinger-Tisza sum is built " +
             "from, so it has to be measurable separation by separation before that " +
             "sum means anything",
@@ -201,7 +201,7 @@ export const dipoleCoupling = test({
         name: "polarity dependence flips sign at r (cells)", value: flipSide,
         expect: {
           of: "8 — vacuum's flip length, with no parameter in it",
-          want: 8, tolerance: 4,
+          want: 8, tolerance: 0.5,
           because: "the antiferromagnet is q = (0, pi, pi), and a coupling of one fixed " +
             "sign at every separation orders ferromagnetically or not at all. THIS is " +
             "the measurement the single-separation version could not make.",

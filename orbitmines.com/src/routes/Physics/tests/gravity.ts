@@ -45,11 +45,9 @@ export const inverseSquare = test({
     const { N, T, seeds } = ctx.budget({ N: 41, T: 240, seeds: 5 });
     const C = (N - 1) / 2;
     const r = gravitationalPull({ N, T, seeds, theory });
-    const w = new World({ theory, N, seed: seeds[0], boundary: "absorb" });
-    w.add({ at: [C - 4, C, C], radius: 2, absorbs: true, duty: 0 });
-    w.run(20);
     return {
-      header: headerOf(w, seeds),
+      /* the box the force was measured in, not a stand-in built to be labelled */
+      header: r.header,
       findings: r.findings,
       table: {
         columns: ["sep", "pair − lone", "±", "σ", "× sep²"],
@@ -79,10 +77,8 @@ export const recovery = test({
   run: (ctx, theory) => {
     const { N, T, seeds } = ctx.budget({ N: 25, T: 60, seeds: 3 });
     const r = recoversGravity({ N, T, seeds });
-    const w = new World({ theory, N, seed: r.seeds[0], boundary: "absorb" });
-    w.run(10);
     return {
-      header: headerOf(w, r.seeds),
+      header: r.header,
       findings: r.findings,
       table: {
         columns: ["r", "gravity", "±", "G+M alternating", "±"],

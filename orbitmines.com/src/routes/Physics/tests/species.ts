@@ -107,7 +107,7 @@ export const whichExist = test({
         judge({
           name: "largest |q| the framework permits", value: Math.max(...charges),
           expect: {
-            of: "> 1 — AN OVER-PREDICTION", want: 2, tolerance: 1,
+            of: "> 1 — AN OVER-PREDICTION", want: 2, atLeast: 2,
             because: "nature has no elementary particle of charge two, and permitting particles " +
               "that do not exist is a different and LESS FORGIVING failure than missing ones " +
               "that do. Worth quoting beside the quark result rather than after it",

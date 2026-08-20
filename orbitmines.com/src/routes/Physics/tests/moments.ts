@@ -111,7 +111,7 @@ export const moments = test({
         name: "|µ| for a genuinely sided source", value: Math.hypot(...muSided),
         expect: {
           of: "well above nought — + out of one half and − out of the other IS a side",
-          want: Math.hypot(...muSided), tolerance: 1e9,
+          want: 1, atLeast: 1,
           because: "this is the only one of the three readings that can tell which way a " +
             "source is pointing, and it is what the magnetic arc is about",
         },

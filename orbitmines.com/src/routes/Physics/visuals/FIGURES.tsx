@@ -38,8 +38,30 @@ type Entry = {
 
 const REPORT_TYPED = REPORT as unknown as { title: string; generated: string; entries: Entry[] };
 
+/**
+ * An entry that records only that the claim COULD NOT BE ASKED under some theory — the
+ * suite writes one per declared-unaskable theory, carrying a single "not applicable"
+ * finding and no measurement.
+ */
+const notApplicable = (e: { findings: { value: unknown }[] }) =>
+  e.findings.length > 0 && e.findings.every(f => f.value === null);
+
+/**
+ * A citation resolves EXACTLY first, then by prefix — and the prefix fallback SKIPS the
+ * not-applicable stubs before it will settle for one.
+ *
+ * Without that skip a bare `of="magnetism/no-free-angle"` lands on `· gravity`, which
+ * exists only to record that gravity's rays are neutral so nothing ever turns. It carries
+ * no findings, so every `<M is="…">` under it renders as missing and the live
+ * `· gravity+magnetism` entry is never consulted — the article silently losing a whole
+ * result to an entry whose entire content is "not this one".
+ *
+ * The stubs stay findable, since a section that wants to say a theory cannot be asked
+ * should be able to cite that, so they are ordered LAST rather than filtered out.
+ */
 export const entryOf = (id: string) =>
   REPORT_TYPED.entries.find(e => e.id === id)
+  ?? REPORT_TYPED.entries.find(e => e.id.startsWith(id) && !notApplicable(e))
   ?? REPORT_TYPED.entries.find(e => e.id.startsWith(id));
 
 export const findingOf = (id: string, name: string) => {
@@ -91,8 +113,15 @@ export const Verdict = ({ of, is }: { of: string; is: string }) => {
   if (!f) return <Missing what={`${of} → ${is}`} />;
   if (!f.verdict) return <span style={{ opacity: 0.7 }}>reported without an expectation</span>;
   const good = f.verdict === "within";
-  return <span style={{ color: good ? "#6fd39b" : "#e0b45f" }}>
-    {good ? "within" : `${f.verdict} by ${(100 * (f.by ?? 0)).toFixed(1)}%`}
+  /*
+   * UNRESOLVED IS NOT A MISS AND IT IS CERTAINLY NOT A PASS. A quantity the run could
+   * not resolve — an exponent fitted over no points that cleared 2σ — used to reach
+   * here as "below by 0.0%", which reads as a near miss of a small target.
+   */
+  const unresolved = f.verdict === "unresolved";
+  return <span style={{ color: unresolved ? "#9aa4b2" : good ? "#6fd39b" : "#e0b45f" }}>
+    {unresolved ? "DID NOT RESOLVE"
+      : good ? "within" : `${f.verdict} by ${(100 * (f.by ?? 0)).toFixed(1)}%`}
     {f.expect ? <span style={{ opacity: 0.75 }}>{` of ${fmt(f.expect.want)} — ${f.expect.of}`}</span> : null}
   </span>;
 };
@@ -137,7 +166,7 @@ export const Ran = ({ of }: { of: string }) => {
   return <span style={{ ...MONO, opacity: 0.75, fontSize: "0.76em", whiteSpace: "pre-wrap" }}>
     {`${h.geometry} · DEG ${h.DEG} · SHEET ${h.SHEET} · CYCLE ${h.CYCLE} · ` +
       `${h.veined ? "veined" : "round"} · ${h.theory} · ${h.backend} · ${h.boundary} · ` +
-      `fold ${h.fold?.mode}/${h.fold?.degree} · p ${h.expansion} · N ${h.N} · ` +
+      `fold ${h.fold?.mode}/${h.fold?.degree} · N ${h.N} · ` +
       `${h.ticks} ticks · fill ${num(h.fill)} · ` +
       `scattering ${num(h.scattering)} · ${h.seeds?.length ?? 0} seeds`}
     {quick ? "\n⚠ QUICK RUN — not a quotable number; re-run the suite at full budget" : ""}
@@ -149,10 +178,22 @@ export const Claim = ({ of }: { of: string }) => {
   const e = entryOf(of);
   if (!e) return <Missing what={of} />;
   return <div style={{ margin: "0.8rem 0" }}>
+    {/*
+      * EVERY JUDGED FINDING, INCLUDING THE ONES THAT DID NOT RESOLVE.
+      *
+      * This used to keep only findings with a finite value, which sounds like tidying
+      * and is not: a quantity the run could not measure is exactly the one a reader
+      * needs told about, and three of them — among them the force exponent under both
+      * gravity theories, which is the whole of `gravity/inverse-square` — were failing
+      * their expectation and being dropped from the page for it. A marker line with no
+      * value (a note, a tier stamp) still has nothing to show and is still skipped.
+      */}
     <div style={{ ...MONO, whiteSpace: "pre-wrap", marginBottom: 6 }}>
-      {e.findings.filter(f => f.value != null && isFinite(f.value)).map(f =>
+      {e.findings.filter(f => (f.value != null && isFinite(f.value)) || f.verdict).map(f =>
         `${f.name.padEnd(38)}${fmt(f.value, 5)}${typeof f.err === "number" && isFinite(f.err) ? ` ± ${fmt(f.err, 2)}` : ""}` +
-        `${f.verdict ? `   ${f.verdict === "within" ? "within" : `${f.verdict} by ${(100 * (f.by ?? 0)).toFixed(1)}%`}` : ""}`
+        `${f.verdict ? `   ${f.verdict === "within" ? "within"
+          : f.verdict === "unresolved" ? "DID NOT RESOLVE"
+          : `${f.verdict} by ${(100 * (f.by ?? 0)).toFixed(1)}%`}` : ""}`
       ).join("\n")}
     </div>
     {e.table ? <Recorded of={of} /> : null}
@@ -170,7 +211,9 @@ export const Matrix = () => {
     if (e.findings.some(f => f.name === "not applicable")) return "n/a";
     const judged = e.findings.filter(f => f.verdict);
     if (!judged.length) return "—";
-    return judged.every(f => f.verdict === "within") ? "holds" : "outside";
+    if (judged.every(f => f.verdict === "within")) return "holds";
+    return judged.some(f => f.verdict && f.verdict !== "within" && f.verdict !== "unresolved")
+      ? "outside" : "unresolved";
   };
   const w = Math.max(...ids.map(i => i.length)) + 2;
   return <span style={MONO}>

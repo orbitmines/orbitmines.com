@@ -247,7 +247,7 @@ export const uProfile = test({
             : {
               of: "at least half of them — a u nothing can measure is a u the metric " +
                 "cannot be made of",
-              want: radii.length, tolerance: radii.length / 2,
+              want: radii.length, atLeast: Math.ceil(radii.length / 2),
               because: "the whole claim is that the metric is a COUNT this model produces " +
                 "rather than a formula it was handed, so the count has to be there to read",
             },
@@ -265,7 +265,7 @@ export const uProfile = test({
             }
             : {
               of: "positive — a pulsing mass ADDS annihilations, which adds ways out",
-              want: Math.abs(pts.length ? pts[0].u : 0), tolerance: 1e9,
+              want: 0, atLeast: 0,
               because: "A = e^(−2u) makes a clock run SLOW beside a mass, which needs " +
                 "u > 0. An inert absorber gives the opposite sign because it removes rays " +
                 "rather than adding them — that is the deficit, and it is the other " +

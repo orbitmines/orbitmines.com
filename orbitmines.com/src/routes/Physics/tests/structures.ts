@@ -407,7 +407,7 @@ export const lifetime = test({
           name: "the best life any structure reaches", value: best, units: "years",
           expect: {
             of: "within an order of 1/p — THE CEILING IS STRUCTURE-INDEPENDENT",
-            want: ceiling, tolerance: 1,
+            want: ceiling, atLeast: ceiling / 10, atMost: ceiling * 10,
             because: "damage here is PERMANENT — (G/1) removes a cell and nothing in the three " +
               "rules puts THAT cell back — so after a time 1/p every cell has been hit about " +
               "once and k coincident cuts arrive by (fatal configurations)^(−1/k)/p ≤ 1/p. " +

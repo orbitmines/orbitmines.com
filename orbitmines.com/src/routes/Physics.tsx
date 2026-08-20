@@ -106,12 +106,17 @@ const HALF = <D><Bar>½</Bar></D>;
  * reading its numbers from `constants()` rather than restating them, so there is
  * no second copy to drift. Everything drawn is under `Physics/visuals/`.
  *
- * AND WHAT IS NOT PORTED IS UNDER `Physics/todo/provenance/`, in the open: the
- * test files the article's numbers were ORIGINALLY measured with, each cited by
- * an `<Eq note>` marked `NOT YET RE-MEASURED on DISCRETE.ts`. They ran on cubic
- * 26 and against fifteen different readings of the rules; this book runs on
- * fcc 12 against one. That is the debt, and it is marked at every line that owes
- * it rather than summarised here.
+ * AND THAT DEBT IS NOW PAID. Every number this article quotes comes from a claim
+ * in `Physics/tests/`, measured on fcc 12 against one reading of the rules —
+ * where the originals ran on cubic 26 against fifteen. `Physics/todo/provenance/`
+ * held those originals while they were being ported and is gone; `AUDIT.ts` is
+ * what proved it could go, and it still checks that every `<Eq note>` resolves.
+ *
+ * WHAT WAS NOT RE-MEASURED IS MARKED `NOT RE-MEASURED` WITH ITS REASON, at the
+ * line that carries it rather than summarised here — superseded by a claim that
+ * asks the same question better, or not a measurement at all, or a sweep of a
+ * parameter the model turned out not to have. Those are judgement calls and they
+ * are recorded as such; `AUDIT.ts` lists them under RETIRED.
  */
 const Physics = () => {
   const referenceCounter = useCounter();
@@ -267,7 +272,7 @@ const Physics = () => {
         <Claim of="geometry/sheet-coverage · gravity" />
 
         <Para>
-          <b>It holds on the model's own lattice and on two others, and it fails on two.</b> Cubic 26 is covered completely — all twenty-six exits in one rotation — as are both weighted readings, cubic 18, cubic 6 and the two flat lattices. <b>FCC reaches six of its twelve and the icosahedral ten of its twelve</b>, so on those a rotating sheet sweeps half a space and the derivation does not close.
+          <b>It fails on the model's own lattice, which is the answer nobody wanted.</b> Cubic 26 is covered completely — all twenty-six exits in one rotation — as are both weighted readings, cubic 18, cubic 6 and the two flat lattices. <b>FCC reaches six of its twelve and the icosahedral ten of its twelve</b>, so on those a rotating sheet sweeps half a space and the derivation does not close. <b>And the default this book now runs on IS fcc 12</b>, so the emission law is inherited from a lattice the model is no longer using: on cubic 26 the step is sound, on fcc it is not, and the difference is a fact about the tiling rather than about the rules. <span className="bp5-text-muted">(An earlier version of this paragraph opened "it holds on the model's own lattice", which was true when the model's own lattice was cubic 26 and became false without a word of the sentence changing. That is the whole reason every result in this book now carries the geometry it was measured on.)</span>
         </Para>
 
         <BR/>
@@ -325,10 +330,10 @@ const Physics = () => {
 
         <VacuumAlone />
 
-        <Head>and the occupancy it settles at is not the one this book has been quoting</Head>
+        <Head>and the occupancy it settles at, which is not a half and not the rules' to fix</Head>
 
         <Para>
-          The two lines of (G+M/2) have a fixed point, and the derivation is short enough to state: creation fills a cell with probability <V>p</V>, so <V>f</V> → <V>p</V> + (1−<V>p</V>)<V>f</V>; thinning drops each ray with the same probability, so <V>f</V> → <V>f</V>(1−<V>p</V>). Solve the pair and <b>the rate cancels out</b>.
+          The half was got by treating (G+M/2) as two lines with a rate in them: creation fills a cell with probability <V>p</V>, so <V>f</V> → <V>p</V> + (1−<V>p</V>)<V>f</V>; thinning drops each ray with the same probability, so <V>f</V> → <V>f</V>(1−<V>p</V>). Solve the pair, take <V>p</V> small, and out comes ½ with <b>the rate cancelling out</b> — the one number nobody chose.
         </Para>
           <BR/>
           <Claim of="vacuum/which-meeting · gravity" />
@@ -340,26 +345,38 @@ const Physics = () => {
         </Eq>
 
         <Para>
-          <b>And it is exactly right, for the medium it is a derivation of.</b> Run a vacuum in which collisions <i>turn</i> and nothing is ever destroyed, and it lands on the formula to three decimals across a twelvefold change in the rate.
+          <b>Every step of that is wrong, and so is the answer.</b> The rate does not cancel — (1−<V>p</V>)/(2−<V>p</V>) is ½ only in the limit <V>p</V> → 0, and it is <i>nought</i> at <V>p</V> = 1. And there is no <V>p</V>: nothing in the three rules offers a coin to toss before a point splits. There is no thinning either — the second line was a second reading of the same expansion, and what removes a ray is the meeting on the edge, which the first line already put there.
+        </Para>
+
+        <Para>
+          <b>And the rule fires in fewer places than either reading allowed.</b> (G/2) is about a <i>neutral point</i> — one with nothing on it. A point already carrying a ray is not neutral and does not split. That single word is load-bearing in a way this project spent a long time denying: firing everywhere looks like the stronger reading and is not a reading at all, because a split <i>overwrites</i>, so every exit of every cell is rewritten before anything streams and <b>the lattice keeps nothing from one tick to the next</b>. Two boards with entirely different contents come out bit-identical after one tick, 0 of 40,500 slots differing. No disturbance can cross a box that is erased every tick, and every force in this book measures as an exact zero with an exact zero error.
+        </Para>
+
+        <Para>
+          <b>So run the rule as written and ask what survives.</b> Creation now goes as how much of the box is <i>empty</i>, and destruction as how much is not, and the balance is struck between them. In a medium that only ever turns, nothing is ever given back and the box saturates at 1. Under pure gravity both halves of every inserted point are neutral, every pair annihilates, and <b>pure gravity has no vacuum at all</b> — exactly 0, which is the rule's answer and not a small number. Under gravity+magnetism each split carries one sign, so half the meetings are alike and turn and some of what is made survives.
+        </Para>
+
+        <Para>
+          <b>But how much survives is the lattice's answer and not the rules'.</b> A point splits only when it is empty, and how often a point is empty is (1−<V>f</V>)<Sup><K><Bar>DEG</Bar></K></Sup> — so the balance lands wherever the tiling puts it. Measured over two hundred ticks: <b>0.2553 on the model's own fcc 12, 0.1780 on cubic 26, 0.2136 on cubic 18, 0.2946 on bcc 8, 0.3209 on cubic 6</b>. Steady in the box to a part in five hundred, and different on every lattice. <b>So the half is not the one number nobody chose — it is a number somebody chose a lattice for</b>, and what actually survives as a property of the rules is the weaker and more honest claim that the density does not depend on the box it is measured in.
         </Para>
 
         <Claim of="vacuum/fixed-point · conserving" />
-
-        <Para>
-          <b>But neither of this book's theories is that medium.</b> Gravity annihilates on every head-on meeting; gravity+magnetism annihilates on the opposite half of them. <b>Annihilation is a sink the algebra above has no term for</b> — creation scales with <V>p</V> while destruction scales with how much is already there — so the balance is struck somewhere else, and the rate stops cancelling.
-        </Para>
 
         <Claim of="vacuum/fixed-point · gravity" />
 
         <Claim of="vacuum/fixed-point · gravity+magnetism" />
 
         <Para>
-          <b>So in a box that cannot grow, the vacuum is about a fifth full rather than half full, and its occupancy DEPENDS ON THE EXPANSION RATE</b> — which the fixed point was supposed to have removed. That is a correction to a number this project has been treating as forced, and it is not small in what it touches, because <b>every screening length here is a mean free path</b> — and the path is not 1/fill either, which the rotation section measures: the exponent is nearer <b>−2</b> than −1, because a meeting needs <i>both</i> ends of an edge occupied rather than one. So a screening length is more sensitive to the vacuum's density than this arc has been assuming, not less.
+          <b>What is left of the old claim is the contrast, and the contrast is the whole of the article's thesis.</b> Nought against a quarter against one, in the order of how much each theory destroys — gravity holding nothing, the polarised theory holding a quarter because half its meetings turn instead. That is "magnetism expands space and gravity does not", counted, and it does not need the half to be a half. <span className="bp5-text-muted">(What did not survive is everything measured at <V>p</V> = 0.05. Sixteen call sites ran the vacuum at a twentieth of a rate the rules do not have, and a run that assumes a half and sits at a fifth of it reports that nothing diffuses when the truth is that there was nothing there to diffuse against. The knob is gone rather than defaulted, since a knob that can be set is a knob that gets set.)</span>
+        </Para>
+
+        <Para>
+          <b>And a quarter puts the mean free path at about four cells rather than two.</b> Every screening length in this book is a mean free path — and the path is not 1/fill either, which the rotation section measures: the exponent is nearer <b>−2</b> than −1, because a meeting needs <i>both</i> ends of an edge occupied rather than one. Four Planck lengths is not a Coulomb force any more than two was, so the complaint the electromagnetic sections raise stands — but it is now a complaint about the tiling as much as about the rules, and a lattice with fewer exits holds a denser vacuum and a shorter path still.
         </Para>
 
         <BR/>
 
-        <span className="bp5-text-muted">(Where that lands: the electromagnetic sections argue that the derived half puts the mean free path at about two cells, and that <i>a Coulomb force with a range of two Planck lengths is not a Coulomb force</i>. The measured path is three to seven cells depending on the theory and the rate — which does not rescue the argument, since seven Planck lengths is not a Coulomb force either, but it changes what the constraint is a constraint ON. The vacuum's density is a parameter again, and the observed range of electrostatics bounds it rather than the model fixing it.)</span>
+        <span className="bp5-text-muted">(Where that lands: the electromagnetic sections argue that the derived half puts the mean free path at about two cells, and that <i>a Coulomb force with a range of two Planck lengths is not a Coulomb force</i>. That argument is now the one to answer. An earlier draft of this paragraph reported the measured path as three to seven cells "depending on the theory and the rate" and concluded that the vacuum's density was a free parameter after all, which the observed range of electrostatics could then bound. There is no rate, so there is no such freedom: the density is a half because half the meetings are alike, and the constraint lands where it first did.)</span>
 
         <Head>and then annihilation turns out to FEED the expansion, which is the loop the two rules make</Head>
 
@@ -395,7 +412,7 @@ const Physics = () => {
         <Claim of="vacuum/annihilation-feeds-expansion · gravity" />
 
         <Para>
-          <b>An order of magnitude in the growth, from nothing but how often two rays destroy each other</b> — the bound, the rate and the ticks are identical across the three. And <K>l.DEG</K> stays at the lattice's own twenty-six throughout, which is the check that makes it mean anything: space is being <i>made</i> rather than folded, so this is an expansion and not the bookkeeping of a collapse.
+          <b>An order of magnitude in the growth, from nothing but how often two rays destroy each other</b> — the bound and the ticks are identical across the three, and there is no rate left for them to differ in. And <K>l.DEG</K> stays at the lattice's own twelve throughout, which is the check that makes it mean anything: space is being <i>made</i> rather than folded, so this is an expansion and not the bookkeeping of a collapse.
         </Para>
 
         <Head>which says where space expands fastest, and it is not where the model has been looking</Head>
@@ -413,7 +430,7 @@ const Physics = () => {
         <BR/>
 
         <Para>
-          <b>And it puts the expansion rate somewhere the model has not had it.</b> Throughout this project <V>p</V> has been a free parameter with the comforting property that it cancels — the fixed point does not depend on it, so nothing rests on its value. That comfort was an artefact of a fixed box. <b>In a space that can grow, how fast it grows depends on how much of it is empty, and how much of it is empty depends on how much has been annihilated</b>, so the expansion rate is coupled to the matter content rather than being a constant the universe was handed. <span className="bp5-text-muted">(Whether that coupling has the sign and size cosmology needs is not a question this section can answer, and it should not be read as claiming so. It is a statement that the parameter is not free, which is one more thing this model does not get to choose than it had before.)</span>
+          <b>And it puts the growth rate somewhere the model has not had it.</b> Throughout this project <V>p</V> was a free parameter with the comforting property that it cancelled — the fixed point did not depend on it, so nothing rested on its value. That comfort was doubly misplaced: it was an artefact of a fixed box, and there was never a <V>p</V> to be comforted about, since (G/2) fires unconditionally. What is left is better. <b>In a space that can grow, how fast it grows depends on how much of it is empty, and how much of it is empty depends on how much has been annihilated</b>, so the growth rate is an output of the matter content rather than a constant the universe was handed — and there is no dial to set it with even if one were wanted. <span className="bp5-text-muted">(Whether that coupling has the sign and size cosmology needs is not a question this section can answer, and it should not be read as claiming so. It is a statement that the parameter is not free, which is one more thing this model does not get to choose than it had before.)</span>
         </Para>
 
 
@@ -3280,7 +3297,7 @@ the schedule          none: an order which exit fires when`}
           <Head>the automaton, with nothing standing in for anything</Head>
 
           <Para>
-            Which is enough to run it rather than describe it. Below is the model itself: <b>a grid of cells, each either a spatial point or a gap; charges sitting on cells with a heading among the eight and a polarity; and the three rules firing whenever two charges land together.</b> Every charge moves exactly one cell per tick along its own heading and changes heading only on a collision. There is no damage rate, no flux and no mixing fraction — the only probability anywhere is (G+M/2)'s, which is the vacuum's expansion rate, and it is the one number that comes from outside.
+            Which is enough to run it rather than describe it. Below is the model itself: <b>a grid of cells, each either a spatial point or a gap; charges sitting on cells with a heading among the eight and a polarity; and the three rules firing whenever two charges land together.</b> Every charge moves exactly one cell per tick along its own heading and changes heading only on a collision. There is no damage rate, no flux and no mixing fraction — and, since (G+M/2) fires at every neutral point every tick rather than at a rate, <b>there is no probability anywhere either</b>. The only randomness left is which sign a split carries, and the occupancy does not depend on it.
           </Para>
 
           <Para>
@@ -3633,7 +3650,7 @@ gluon         0     1     colour has no representation     NO`}
             A charge that does not <i>do</i> anything is a label. The thing it owes is that two opposite charges in the same field go opposite ways — and that is decidable from the three rules, because the rules already say what happens when two rays meet, and <b>which rule fires depends on the two signs.</b> That is the only place a sign can enter, so if the force has a sign it comes from here.
           </Para>
 
-          <Eq note="field.ts §1 — this is the feedback sign the book already settled, not a new ingredient · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="electrostatics/charge-in-a-field — this is the feedback sign the book already settled, not a new ingredient, and both rows are measured in the metric channel">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`the two signs    rule       what it shortens     force
 opposite  + −    (G+M/1)    the space BETWEEN    ATTRACT
@@ -3645,20 +3662,18 @@ alike     + +    (G+M/3)    the space BEHIND     REPEL`}
             A <b>field</b>, in these terms, is a background of rays of a definite sign with a <b>density gradient</b>. A structure in it meets more of them on one side than the other, so the shortening is unbalanced and it drifts.
           </Para>
 
-          <Eq note="field.ts §2 — position measured as separations in surviving cells; no velocity is assigned to anything · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`q     background   drift / tick   direction
-+1    +            −0.089410      ← left
-+1    −            +0.090622      → right
-−1    +            +0.089523      → right
-−1    −            −0.091240      ← left
-
-q = +1 against q = −1, same background:   ratio −0.9987`}
-            </span>
+          <Eq note="electrostatics/charge-in-a-field — read in the metric channel, where space was destroyed; the momentum channel is what resolves the alike half">
+            <Recorded of="electrostatics/charge-in-a-field" />
           </Eq>
 
           <Para>
-            <b>They go opposite ways, and the drift reverses again when the background's sign flips</b> — so the force goes as the <i>product</i> of the two signs, which is why a field has a direction and a charge has a sign and only their product is observable. Nothing was arranged to get this: the two charges meet the background under <i>different rules</i>, so the cell that vanishes is in a different place, so the space closes on the other side.
+            <b>They go opposite ways, and the drift reverses again when the background's sign flips</b> — so the force goes as the <i>product</i> of the two signs, which is why a field has a direction and a charge has a sign and only their product is observable. Nothing was arranged to get this: the two charges meet the background under <i>different rules</i>, so the cell that vanishes is in a different place, so the space closes on the other side. <b>The two <i>alike</i> cases agree with each other to <M of="electrostatics/charge-in-a-field" is="gap between the two ALIKE cases in MOMENTUM, over their own scale" plain digits={3} /> and the two <i>opposite</i> ones to <M of="electrostatics/charge-in-a-field" is="gap between the two OPPOSITE cases, over the shared scale" plain digits={2} /></b>, which is the product law as a number rather than as a direction.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And it takes two channels to see, which the earlier reading of this did not.</b> The metric channel — where space was <i>destroyed</i> — shows the attraction at a clear <M of="electrostatics/charge-in-a-field" is="does the OPPOSITE signal clear the no-gradient control" plain digits={0} /> against its own no-gradient control, and shows the repulsion <i>not at all</i>: the two alike cases come back the size of the control and disagreeing in sign. <b>That is not a weak measurement but the wrong instrument.</b> (G+M/1) destroys space, so an attraction writes a large direct signature into a channel that counts destroyed space; (G+M/3) destroys <i>nothing</i>, so a repulsion writes no direct signature into it at all. Read the momentum the vacuum delivers instead and the alike pair is clean. <span className="bp5-text-muted">(Which is why the two-body sign law reads two channels and not one — the same correction, arriving here from the one-body side.)</span>
           </Para>
 
           <Para>
@@ -3683,7 +3698,7 @@ q = +1 against q = −1, same background:   ratio −0.9987`}
             <V>q</V><b>v</b>×<b>B</b> is perpendicular to both the velocity and the field. Nothing in the mechanism above can produce a perpendicular force, and this is an <i>argument</i> rather than a measurement — reporting a simulated zero for an absent variable would be measuring nothing:
           </Para>
 
-          <Eq note="field.ts §5 — why no tuning reaches it · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="field.ts §5 — why no tuning reaches it · NOT RE-MEASURED — not a measurement: the paragraph above says so in as many words, that reporting a simulated zero for an absent variable would be measuring nothing. What the model DOES have to source an axis with is measured by magnetism/current-as-source">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`the meeting rate depends on HOW MUCH background is on each side
    — a density, which is a SCALAR
@@ -3717,7 +3732,7 @@ and a vector parallel to ∇n cannot be perpendicular to v and B`}
 
           <Head>so what the full picture is, and what it is missing</Head>
 
-          <Eq note="field.ts §6 — the whole of Layer 2 as it now stands · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="field.ts §6 — the whole of Layer 2 as it now stands · NOT RE-MEASURED — not a measurement: a status ledger carrying no figure, whose every row is settled by the claim it names and is cited there">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`                              status     from
 spin ½                        HAVE       w₁, one local twist
@@ -3729,7 +3744,7 @@ time dilation                 HAVE       quadrature budget
 de Broglie                    HAVE       retarded ray phases
 the electric force, F = qE    HAVE       the sign of the meeting
 self-maintenance              NO         the VACUUM eats it, not itself
-the magnetic force, qv×B      CONDITIONAL the turn axis — next section
+the magnetic force, qv×B      CONDITIONAL not the turn — see below
 the spin ladder, 0 / 1 / 2    MISSING    w₁ is one bit
 fractional charge             MISSING    winding is an integer
 colour                        MISSING    no representation at all
@@ -3770,7 +3785,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             Put those together and <b>a lab point is reached by <i>two</i> rays from the same emitter</b> — one that went forward and one that went backward. They left at different times, so they arrive with different phases, and that is an interference pattern nobody put in.
           </Para>
 
-          <Eq note="harmony.ts §1 — the two retarded emission times, from lattice kinematics alone · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>quantum/de-broglie — the two retarded emission times, solved from the light cone rather than asserted, to <M of="quantum/de-broglie" is="worst light-cone residual over both roots, four speeds, five points" plain digits={0} /></>}>
             <V>t</V><Sub>e</Sub><Sup>→</Sup> = <Frac over={<><V>t</V> − <V>x</V></>} under={<>1 − <V>f</V></>} />
             <span style={{ padding: '0 1.2em' }} />
             <V>t</V><Sub>e</Sub><Sup>←</Sup> = <Frac over={<><V>x</V> + <V>t</V></>} under={<>1 + <V>f</V></>} />
@@ -3779,31 +3794,25 @@ relativistic dynamics, γm     MISSING    kinematics only`}
           </Eq>
 
           <Para>
-            At rest the two coincide and there is no pattern. <b>Motion is what makes one</b> — already the right shape for a wavelength that depends on momentum. And two counter-propagating waves superpose into a carrier times an envelope, with the <i>sum</i> of the phases carrying the envelope, whose nodes are what has to fit in a box.
+            At rest there is no pattern. <span className="bp5-text-muted">(Not because the two emission times coincide — they are <V>t</V> − <V>x</V> and <V>t</V> + <V>x</V> and differ by 2<V>x</V>. What coincides is that their <i>sum</i> stops depending on <V>x</V> at all, and the sum is what the envelope is built from.)</span> <b>Motion is what makes one</b> — already the right shape for a wavelength that depends on momentum. And two counter-propagating waves superpose into a carrier times an envelope, with the <i>sum</i> of the phases carrying the envelope, whose nodes are what has to fit in a box.
           </Para>
 
-          <Eq note="harmony.ts §2 — measured against π·λ̄/(γf), nothing fitted · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`  f       measured period    λ_dB/2 predicted    ratio
-0.001      3.141591e+3       3.141591e+3    1.0000000000
-0.050      6.275326e+1       6.275326e+1    1.0000000000
-0.500      5.441398e+0       5.441398e+0    1.0000000000
-0.950      1.032592e+0       1.032592e+0    1.0000000000`}
-            </span>
+          <Eq note="quantum/de-broglie — measured against π·λ̄/(γf) by bracketing the phase, nothing fitted and nothing evaluated from the closed form">
+            <Recorded of="quantum/de-broglie" columns={["f", "measured period", "λ_dB/2 predicted", "ratio"]} />
           </Eq>
 
           <Para>
             <b>Exact to ten digits at every speed</b>, from 0.001 to 0.95 — so <V>λ</V> ∝ 1/(<V>γf</V>) = 1/<V>p</V>, which is the whole content of de Broglie's relation, and it arrives already as a <i>half</i> wavelength, which is the form a standing wave needs. And the same construction gives the other length too, which is the check that neither is an accident of the algebra:
           </Para>
 
-          <Eq note="harmony.ts §3 — one construction, two lengths, going opposite ways · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="quantum/de-broglie — one construction, two lengths, and their ratio is 1/f exactly">
             sum → <Frac over={<><V>π</V><V>λ̄</V></>} under={<><V>γf</V></>} /> = <V>λ</V><Sub>dB</Sub>/2
             <span style={{ padding: '0 1.4em' }} />
             difference → <Frac over={<><V>π</V><V>λ̄</V></>} under={<V>γ</V>} /> = the Compton carrier
           </Eq>
 
           <Para>
-            The carrier <i>shrinks</i> with speed where the envelope <i>grows</i> — a fast Compton carrier under a slow de Broglie envelope, which is exactly the textbook structure, out of one moving source and two rays.
+            A fast Compton carrier under a slow de Broglie envelope — exactly the textbook structure, out of one moving source and two rays. <b>The envelope is 1/<V>f</V> carriers long, to <M of="quantum/de-broglie" is="worst |f · envelope/carrier − 1| over the four speeds" plain digits={0} /></b>, running from a thousand at <V>f</V> = 0.001 to 1.05 at 0.95. <span className="bp5-text-muted">(An earlier reading of this had the two going <i>opposite</i> ways with speed. They do not — both lengths shrink, the carrier as 1/<V>γ</V> and the envelope as 1/<V>γf</V>. What is structural is the <i>ratio</i>, and the separation of the two scales <i>is</i> the slowness.)</span>
           </Para>
 
           <BR/>
@@ -3838,7 +3847,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
 
           <Head>what comes out</Head>
 
-          <Eq note="harmony.ts §2 — exact to ten digits from f = 0.001 to 0.95, nothing fitted · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="quantum/de-broglie — exact to ten digits from f = 0.001 to 0.95, nothing fitted">
             <V>λ</V><Sub>dB</Sub> = <Frac over={<>h</>} under={<V>p</V>} />
             <span style={{ padding: '0 1.2em', color: FAINT }}>from</span>
             <V>φ</V><Sub>→</Sub> + <V>φ</V><Sub>←</Sub>
@@ -3894,7 +3903,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             <b>Derived given <V>α</V>.</b> Minimising the budget cost against a 1/<V>r</V> attraction gives the Bohr radius and the Rydberg. And as the coupling grows the duty fraction <i>saturates</i> rather than running away, so the size flattens onto <V>λ̄</V><Sub>C</Sub> — <b>the stability of matter is a budget that cannot be overspent.</b>
           </Para>
 
-          <Eq note="matter/the-atom, and the quantisation of the box mode from harmony.ts §4 · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="matter/the-atom, and the quantisation of the box mode from quantum/de-broglie">
             <V>p</V> = <Frac over={<><V>n</V><V>π</V>ħ</>} under={<V>r</V>} />
             <span style={{ padding: '0 1.2em', color: FAINT }}>from</span>
             <V>r</V> = <V>n</V><V>λ</V><Sub>dB</Sub>/2
@@ -3918,7 +3927,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             <b>Not derived, and not nearly.</b> The model has a <i>wave</i> — a real interference pattern in a real lattice — and that is not a <i>wavefunction</i>. There is no complex amplitude, no superposition of alternatives, no operator algebra and no Born rule. What §2 above produces is a phase pattern with the right wavelength, which is the kinematics; the dynamics that makes it an amplitude is absent.
           </Para>
 
-          <Eq note="ring.ts, moment.ts — and both are refuted for the same reason · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="ring.ts, moment.ts — and both are refuted for the same reason · NOT RE-MEASURED — not a measurement: the row it sits under is NOT DERIVED, and the two files are cited as the attempts that fail rather than for a figure. That the model has a wave and not a wavefunction is quantum/de-broglie's kinematics against an absent dynamics">
             <V>L</V> = <V>n</V>ħ, spin ½
             <span style={{ padding: '0 1.2em', color: FAINT }}>model gives</span>
             <V>L</V> = 0.0794 ħ
@@ -3983,7 +3992,7 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             So ask the question properly: sum the three rules over the <i>whole</i> distribution and see what force it can produce. Opposite meets annihilate and pull the structure towards where the ray came from; alike meets turn and push it away; and the rate of each carries the closing factor (1 − <B>v</B>·<B>d̂</B>). Everything separates.
           </Para>
 
-          <Eq note="magnetic.ts §1 — matching the direct sum over all 52 numbers to 9·10⁻¹⁵, both charges, random velocities · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>electrostatics/lorentz-obstruction — matching the direct sum over all 2·<K><Bar>DEG</Bar></K> numbers to <M of="electrostatics/lorentz-obstruction" is="closed form against the direct sum, worst of 400" plain digits={2} />, both charges, random velocities</>}>
             <B>F</B> = <V>q</V>(<B>J</B> − <B>M</B>·<B>v</B>)
             <span style={{ padding: '0 1.4em' }} />
             <B>J</B><Sub>i</Sub> = <span style={{ fontSize: '1.2em' }}>Σ</span> <V>σ</V> <V>n</V>(<B>d̂</B>,<V>σ</V>) <B>d̂</B><Sub>i</Sub>
@@ -4011,15 +4020,8 @@ relativistic dynamics, γm     MISSING    kinematics only`}
             <b>So the only polarity distribution whose force does no work is the one that exerts no force</b> — a theorem rather than a sweep, and it answers a question worth asking directly. <i>Is the magnetic half just a polarity discrepancy that is strong enough, or localised enough, or met by a large enough charge?</i> <b>No, and not as a matter of degree.</b> <B>F</B> is linear in <V>n</V>, so multiplying a distribution by 10<Sup>6</Sup> multiplies the force by 10<Sup>6</Sup> and leaves its <i>direction</i> exactly where it was.
           </Para>
 
-          <Eq note="magnetic.ts §2 — the worst work fraction over 64 directions on a sphere, and the force it comes with · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`what was varied            best worst-case   |F| there   perpendicular?
-random, 20000 draws        9.57e−1           1.43e+0     NO
-STRONGER, ×1 to ×10⁶       9.59e−1           6.50e+2     NO
-LARGER CHARGE, q = 1, 2    9.55e−1           1.33e+0     NO
-LOCALISED, one exit only   9.84e−1           1.00e+0     NO
-hill-climb on the worst    9.61e−1           1.94e+0     NO`}
-            </span>
+          <Eq note="electrostatics/lorentz-obstruction — the worst work fraction over 64 directions on a sphere, and what each way of varying the distribution buys">
+            <Recorded of="electrostatics/lorentz-obstruction" />
           </Eq>
 
           <Para>
@@ -4038,7 +4040,7 @@ hill-climb on the worst    9.61e−1           1.94e+0     NO`}
             The obstruction is now precise enough to be useful. <B>M</B> is symmetric because the displacement of a meeting is ±<B>d̂</B>, and ±<B>d̂</B> is <B>d̂</B> <i>reflected</i>. So the question is whether anything in the model does something to a direction other than reflect it — and the answer has been in print since the magnetism arc needed a source to come back round.
           </Para>
 
-          <Eq note="lattice.ts, turnRing — and the emphasis is mine · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="lattice.ts, turnRing — and the emphasis is mine · NOT RE-MEASURED — not a measurement: a quotation of the rule, and that it IS a rotation rather than a reflection is what electrostatics/turn-as-lorentz measures the consequences of">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre-wrap' }}>
               {`"A turn is only ever a turn in a plane, and a plane is two
  directions to turn between... so a magnet can come round in the
@@ -4078,34 +4080,22 @@ hill-climb on the worst    9.61e−1           1.94e+0     NO`}
             Now run a structure through a background with <b>no net polarity anywhere</b>, so there is no electric field and everything below is the turn's doing.
           </Para>
 
-          <Eq note="magnetic.ts §4 — and the two columns behave differently, which is the result · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`v                  q     F·(v̂×b̂)      F·v̂        F·b̂
-[1.00,0.00,0.00]   +1    +1.2257       0.5077     0
-[1.00,0.00,0.00]   −1    −1.2257       0.5077     0
-[0.60,0.80,0.00]   +1    +1.2257       0.5077     0
-[0.60,0.80,0.00]   −1    −1.2257       0.5077     0
-[0.50,0.30,0.81]   +1    +0.7161       0.1733     0
-[0.50,0.30,0.81]   −1    −0.7161       0.1733     0
-[0.00,0.00,1.00]   ±1     — v ∥ b̂      0.0000     0
-
-transverse,   worst |F(+q) + F(−q)| / |F|   3.6e−15   REVERSES with q
-longitudinal, worst |F(+q) − F(−q)| / |F|   3.5e−15   INDEPENDENT of q`}
-            </span>
+          <Eq note="electrostatics/turn-as-lorentz — and the two columns behave differently, which is the result">
+            <Recorded of="electrostatics/turn-as-lorentz" />
           </Eq>
 
           <Para>
             <b>The transverse part is a Lorentz force.</b> It lies along <B>v</B>×<B>b̂</B>, it reverses with the charge, it vanishes when the motion is parallel to the axis, and its magnitude obeys the law to every digit measured.
           </Para>
 
-          <Eq note="magnetic.ts §4 — constant to 1.000000× across three speeds and three angles · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>electrostatics/turn-as-lorentz — the law holds to <M of="electrostatics/turn-as-lorentz" is="|F⊥| against q|v||B| sin θ, worst heading" plain digits={2} /> across every speed and angle tried</>}>
             |<B>F</B><Sub>⊥</Sub>| = <V>q</V>|<B>v</B>||<B>B</B>| sin <V>θ</V>
             <span style={{ padding: '0 1.2em', color: FAINT }}>with</span>
-            |<B>B</B>| = <Frac over={<><K><Bar>DEG</Bar></K></>} under={<>3</>} /> sin <K><Bar>SPIN</Bar></K> = 6.128259
+            |<B>B</B>| = <Frac over={<><K><Bar>DEG</Bar></K></>} under={<>3</>} /> sin <K><Bar>SPIN</Bar></K>
           </Eq>
 
           <Para>
-            <b>And the coupling is a lattice constant rather than a fitted one.</b> The <K><Bar>DEG</Bar></K>/3 is worth its own line: Σ<B>d̂</B>⊗<B>d̂</B> over the twenty-six exits comes out (<K><Bar>DEG</Bar></K>/3)·<V>I</V> exactly — diagonal 8.6667, off-diagonal 5.6·10<Sup>−17</Sup> — so although the exits are manifestly not isotropic as a set, their second moment is, the cubic symmetry being enough. <b>No lattice anisotropy leaks into the force</b>, and the law reads the same in every orientation. That is a check this could have failed.
+            <b>And the coupling is a lattice constant rather than a fitted one.</b> The <K><Bar>DEG</Bar></K>/3 is worth its own line: Σ<B>d̂</B>⊗<B>d̂</B> over the exits comes out (<K><Bar>DEG</Bar></K>/3)·<V>I</V> exactly — which is what <i>magnetism/current-as-source</i> reads back as <M of="magnetism/current-as-source" is="|J| of the same charges set drifting" plain digits={4} /> for a drift of <V>I</V> = 0.5 — so although the exits are manifestly not isotropic as a set, their second moment is, the cubic symmetry being enough. <b>No lattice anisotropy leaks into the force</b>, and the law reads the same in every orientation. That is a check this could have failed.
           </Para>
 
           <BR/>
@@ -4114,20 +4104,20 @@ longitudinal, worst |F(+q) − F(−q)| / |F|   3.5e−15   INDEPENDENT of q`}
             Two more properties come with it and are not separate results. <b><B>B</B> is a pseudovector because it <i>is</i> one</b> — it is a rotation axis, and reflecting the lattice reverses a rotation sense — rather than by convention. And <b>∇·<B>B</B> = 0 because a turn axis is a generator and not an amount of anything</b>: there is no quantity of axis at a cell to be a source, which is the no-monopole result arriving from a second direction and for a better reason than the first.
           </Para>
 
-          <Head>and now the bill, which is 41.4% and should not be read past</Head>
+          <Head>and now the bill, which should not be read past</Head>
 
           <Para>
             Rodrigues has three terms and only the middle one is antisymmetric. <b>The (1 − cos <V>θ</V>) term is symmetric and lies along <B>v</B></b>, so what the turn actually gives is a Lorentz force <i>plus</i> a charge-independent longitudinal force — and the two are locked together in a ratio the lattice fixes and nothing can tune.
           </Para>
 
-          <Eq note="magnetic.ts §4 — both measured, neither fitted · NOT YET RE-MEASURED on DISCRETE.ts">
-            <Frac over={<>longitudinal</>} under={<>transverse</>} /> = tan <Frac over={<><K><Bar>SPIN</Bar></K></>} under={<>2</>} /> = √2 − 1 = 0.414214
+          <Eq note="electrostatics/turn-as-lorentz — both measured, neither fitted, and both quoted at v ⊥ b̂ where they are worst">
+            <Frac over={<>longitudinal</>} under={<>transverse</>} /> = tan <Frac over={<><K><Bar>SPIN</Bar></K></>} under={<>2</>} /> = <M of="electrostatics/turn-as-lorentz" is="longitudinal over transverse, at v ⊥ b̂" plain digits={6} />
             <span style={{ padding: '0 1.4em' }} />
-            <Frac over={<>|<B>F</B>·<B>v</B>|</>} under={<>|<B>F</B>||<B>v</B>|</>} /> = sin <Frac over={<><K><Bar>SPIN</Bar></K></>} under={<>2</>} /> = 0.382683
+            <Frac over={<>|<B>F</B>·<B>v</B>|</>} under={<>|<B>F</B>||<B>v</B>|</>} /> = sin <Frac over={<><K><Bar>SPIN</Bar></K></>} under={<>2</>} /> = <M of="electrostatics/turn-as-lorentz" is="work fraction |F·v|/|F||v|, at v ⊥ b̂" plain digits={6} />
           </Eq>
 
           <Para>
-            <b>A charge moving through a magnetised vacuum is predicted to feel a longitudinal force of 41.4% of the magnetic one, independent of its sign.</b> That is not observed and would be conspicuous if it were. It goes on the ledger as a deviation and not as a rounding error. <span className="bp5-text-muted">(And 0.382683 is not a new number here either — it is the threshold <K>latticeStep</K> rounds at in <i>lattice.ts</i>, written there as 0.3827, because a half-eighth-turn is what decides which exit a direction falls onto. The same angle turns up as the size of the defect it causes.)</span>
+            <b>A charge moving through a magnetised vacuum is predicted to feel a longitudinal force of <M of="electrostatics/turn-as-lorentz" is="longitudinal over transverse, at v ⊥ b̂" plain digits={3} /> of the magnetic one, independent of its sign.</b> <span className="bp5-text-muted">(That is the figure at <B>v</B> ⊥ <B>b̂</B>, which is where it is <i>worst</i>: the transverse part goes as sin <V>θ</V> and the longitudinal as sin<Sup>2</Sup><V>θ</V>, so the ratio is tan(<K><Bar>SPIN</Bar></K>/2)·sin <V>θ</V> and falls away for a charge moving obliquely. The ledger entry is an upper bound rather than a flat prediction, and the number is <K><Bar>SPIN</Bar></K>'s — on the cubic 26 this was first measured on it read √2 − 1 = 41.4%.)</span> That is not observed and would be conspicuous if it were. It goes on the ledger as a deviation and not as a rounding error. <span className="bp5-text-muted">(And 0.382683 is not a new number here either — it is the threshold <K>latticeStep</K> rounds at in <i>lattice.ts</i>, written there as 0.3827, because a half-eighth-turn is what decides which exit a direction falls onto. The same angle turns up as the size of the defect it causes.)</span>
           </Para>
 
           <BR/>
@@ -4142,7 +4132,7 @@ longitudinal, worst |F(+q) − F(−q)| / |F|   3.5e−15   INDEPENDENT of q`}
             <B>b̂</B> was handed over above, and that is the one thing assumed, so it has to be paid for. <K>turnRing</K> takes a <i>plane</i>, which is two directions. One of them is the incoming heading, which the meeting supplies. The second has to come from the cell — and the cell has exactly one vector available to it.
           </Para>
 
-          <Eq note="magnetic.ts §5 — and there is no other candidate at a cell · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="electrostatics/turn-as-lorentz — and there is no other candidate at a cell">
             <B>b̂</B> ∝ <B>J</B> = <span style={{ fontSize: '1.2em' }}>Σ</span> <V>σ</V> <V>n</V>(<B>d̂</B>,<V>σ</V>) <B>d̂</B>
           </Eq>
 
@@ -4162,12 +4152,13 @@ longitudinal, worst |F(+q) − F(−q)| / |F|   3.5e−15   INDEPENDENT of q`}
             The table above tests <b>the wrong configuration.</b> Its "static charge" row is an isotropic excess of one polarity with <i>no drift</i> — which has <B>J</B> = 0 because <B>J</B> is a first moment, and which is a charge density with no field rather than a charge. Build the real thing: at a field point near a static charge the rays are <i>streaming outward</i>, so <B>d̂</B> = <B>r̂</B> and <B>J</B> is radial and large.
           </Para>
 
-          <Eq note="faraday.ts §1 — the same rule, on a background that is actually a static charge · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`field point   |J| (= E)    ∠(J, r̂)   b̂ ∝ J      ∠(E, B)
-[5,0,0]       4.000e−2     0.00°      NON-ZERO    0.00°
-[10,0,0]      1.000e−2     0.00°      NON-ZERO    0.00°
-[20,0,0]      2.500e−3     0.00°      NON-ZERO    0.00°`}
+          <Eq note={<>magnetism/sourcing-obstruction — the same rule, on a background that is actually a static charge; |<B>J</B>|·<V>r</V><Sup>2</Sup> holds to <M of="magnetism/sourcing-obstruction" is="worst |J|·r² − 1 for a properly built static charge" plain digits={0} /> and every one of these sources an axis</>}>
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em' }}>
+              [5,0,0]<span style={{ padding: '0 1.2em' }} />|<B>J</B>| = <M of="magnetism/sourcing-obstruction" is="|J| at r = 5, which is also |E|" plain digits={3} /><span style={{ padding: '0 1.2em' }} />NON-ZERO<br />
+              [10,0,0]<span style={{ padding: '0 1.2em' }} />|<B>J</B>| = <M of="magnetism/sourcing-obstruction" is="|J| at r = 10, which is also |E|" plain digits={3} /><span style={{ padding: '0 1.2em' }} />NON-ZERO<br />
+              [20,0,0]<span style={{ padding: '0 1.2em' }} />|<B>J</B>| = <M of="magnetism/sourcing-obstruction" is="|J| at r = 20, which is also |E|" plain digits={3} /><span style={{ padding: '0 1.2em' }} />NON-ZERO<br />
+              <br />
+              ∠(<B>E</B>, <B>B</B>) = <M of="magnetism/sourcing-obstruction" is="∠(E, B) under b̂ ∝ J" plain digits={2} />°<span style={{ padding: '0 1.2em', color: FAINT }}>at every one of them, by construction</span>
             </span>
           </Eq>
 
@@ -4187,14 +4178,8 @@ longitudinal, worst |F(+q) − F(−q)| / |F|   3.5e−15   INDEPENDENT of q`}
             The better fix is <B>b̂</B> ∝ <B>J</B> × <B>F</B> — the signed current crossed with the <i>unsigned</i> flux, which is a genuine local pseudovector built from two different moments of the same rays.
           </Para>
 
-          <Eq note="faraday.ts §2 — and the last row is right, which is what makes the first three fatal · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`source                   ∠(J,F)     |J×F|      ∠(b̂,ẑ)   ∠(b̂,r̂)   verdict
-static charge            0.0000°    0.00e+0      —         —      NOTHING
-moving charge, u = 0.3   0.0000°    0.00e+0      —         —      NOTHING
-moving charge, u = 0.9   0.0000°    0.00e+0      —         —      NOTHING
-neutral line current    90.0000°    3.81e−2    90.00°    90.00°   a field`}
-            </span>
+          <Eq note="magnetism/sourcing-obstruction — and the last row is right, which is what makes the first three fatal">
+            <Recorded of="magnetism/sourcing-obstruction" />
           </Eq>
 
           <Para>
@@ -4219,7 +4204,7 @@ neutral line current    90.0000°    3.81e−2    90.00°    90.00°   a field`}
             <b>The trouble is that there are only two such vectors and they coincide.</b> The distribution offers a scalar <V>ρ</V>, two vectors <B>J</B> and <B>F</B>, and symmetric tensors above them — so <B>J</B> × <B>F</B> is the only pseudovector available, and <B>J</B> and <B>F</B> differ <i>only</i> where the arriving rays carry more than one sign. Emission from a single charge is one sign by construction.
           </Para>
 
-          <Eq note="faraday.ts §3 — the obstruction, stated so it can be attacked · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="magnetism/sourcing-obstruction — the obstruction, stated so it can be attacked">
             the only local pseudovector the model has vanishes for exactly
             <br />the sources that most obviously have magnetic fields
           </Eq>
@@ -4228,22 +4213,12 @@ neutral line current    90.0000°    3.81e−2    90.00°    90.00°   a field`}
             <b>So the turn axis is not a local function of the rays at a cell, and the assumption is withdrawn.</b> It was priced above as cheap — "an argument the rules have always required and have never filled in" — and it is not cheap, because the argument <i>cannot</i> be filled in from what a cell holds. <b>That is a price rise and it is recorded as one.</b> <span className="bp5-text-muted">(None of it touches the theorem, the Lorentz force, the coupling, or the <V>θ</V>-relaxation: those never used how <B>b̂</B> is sourced, only that it exists.)</span>
           </Para>
 
-          <Eq note="magnetic.ts §5 — a line current summed over its own elements, not a formula applied · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`background                        |J|        B?
-static charge (net ρ, no drift)   2e−16      NONE — as it must be
-current along +z                  8.6667     yes
-the same current reversed         8.6667     reversed
-
-r (cells)    |B|        |B|·r      ∠(B,ẑ)   ∠(B,r̂)
-5            4.0000e−1  2.000000   90.00°   90.00°
-20           1.0000e−1  1.999999   90.00°   90.00°
-80           2.5000e−2  1.999984   90.00°   90.00°`}
-            </span>
+          <Eq note="magnetism/current-as-source — a line current summed over its own elements, not a formula applied">
+            <Recorded of="magnetism/current-as-source" />
           </Eq>
 
           <Para>
-            <b>A static charge makes no magnetic field</b>, which it must not, and the reason is that <B>J</B> is a first moment and a net polarity with no drift has none. Set the same charges moving and it has one. <b>Then <B>B</B> ∝ 1/<V>r</V> for a line current, at 90.00° to both the current and the displacement</b> — Ampère's law with the right geometry. <span className="bp5-text-muted">(The 1/<V>R</V><Sup>2</Sup> inside that sum is the emission's own fall-off, which the gravity arc derived and this inherits, so the 1/<V>r</V> is a consequence of a result the book already had rather than a new one.)</span>
+            <b>A static charge makes no magnetic field</b> — |<B>J</B>| comes back <M of="magnetism/current-as-source" is="|J| of a net polarity with no drift" plain digits={1} />, which it must not merely be small — and the reason is that <B>J</B> is a first moment and a net polarity spread evenly over the exits has none, the exits coming in ± pairs. Set the same charges moving and it has one, along the drift, reversing with it. <b>Then <B>B</B> ∝ 1/<V>r</V> for a line current</b> — |<B>B</B>|·<V>r</V> is constant to <M of="magnetism/current-as-source" is="|B|·r over r = 5 … 80, worst ratio" plain digits={4} /> over sixteen-fold in <V>r</V> — <b>at 90° to both the current and the displacement</b>, which is Ampère's law with the right geometry. <span className="bp5-text-muted">(The 1/<V>R</V><Sup>2</Sup> inside that sum is the emission's own fall-off, which the gravity arc derived and this inherits, so the 1/<V>r</V> is a consequence of a result the book already had rather than a new one.)</span>
           </Para>
 
           <Head>and then the vacuum does not let it live, which is the largest hole</Head>
@@ -4255,29 +4230,27 @@ r (cells)    |B|        |B|·r      ∠(B,ẑ)   ∠(B,r̂)
           <BR/>
 
           <Para>
-            Two conservation facts first, and they pull opposite ways. <b>(G+M/3) preserves |<B>J</B>| pointwise to 2·10<Sup>−16</Sup> and rotates it</b>, which is the conservation law the picture needs and is exactly what a magnetic field is supposed to do to a current. <b>(G+M/1) destroys it</b>, because two opposite charges closing head on carry <V>σ</V><B>d̂</B> and (−<V>σ</V>)(−<B>d̂</B>), which <i>add</i> rather than cancel.
-          </Para>
-
-          <Eq note="magnetic.ts §6 — |J|/√n is ≈1 for carriers pointing at random and √n for carriers pointing together · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`current   occupancy  creation  |J|/|J₀|  carriers  |J|/√n  verdict
-charged   0.00       0.000     1.000     625       25.0    COHERENT
-charged   0.30       0.002     0.017     198        0.8    noise
-neutral   0.00       0.000     0.456     285       16.9    COHERENT
-neutral   0.30       0.002     0.014      28        1.7    noise
-
-front speed, first thirty ticks        1.000 cells/tick`}
-            </span>
-          </Eq>
-
-          <Para>
-            <b>It propagates at <K><Bar>c</Bar></K> and it does not survive.</b> The front travels one cell a tick, which is no discovery — a charge advances one cell a tick by definition — but it could have been eaten before it got anywhere and it is not. What fails is everything else. In the model's own vacuum |<B>J</B>| falls to about √<V>n</V>, which is what carriers pointing at <i>random</i> give: after seventy ticks what is left is not a weakened current but noise with the same carrier count.
+            Two conservation facts first, and they pull opposite ways. <b>(G+M/3) preserves |<B>J</B>| pointwise to <M of="magnetism/current-in-vacuum" is="(G+M/3): worst change in |J|, both headings in the plane of the turn" plain digits={0} /> and rotates it</b>, which is the conservation law the picture needs and is exactly what a magnetic field is supposed to do to a current. <b>(G+M/1) destroys it</b>, removing <M of="magnetism/current-in-vacuum" is="(G+M/1): |J| destroyed per head-on annihilation" plain digits={0} /> units an event, because two opposite charges closing head on carry <V>σ</V><B>d̂</B> and (−<V>σ</V>)(−<B>d̂</B>), which are the <i>same</i> vector and <i>add</i> rather than cancel.
           </Para>
 
           <BR/>
 
           <Para>
-            <b>And the rule that does it is the one that cannot destroy it.</b> (G+M/3) conserves |<B>J</B>| pointwise and randomises it anyway, because a carrier that has turned an unrelated number of times is uncorrelated with one that has not. The control row is what separates that from mere attrition: a <i>charged</i> current in genuinely empty space is preserved exactly, so the rules do not destroy a current on their own. A <i>neutral</i> current — a wire, which is what the picture actually wants — eats about half of itself with no vacuum at all, its two halves counter-streaming through each other under (G+M/1), though the survivors of that stay aligned.
+            <span className="bp5-text-muted">(And the first of those is narrower than it was first stated, which running it off the geometry is what showed. It was measured on a lattice of eight exits <i>all lying in the one plane there is</i>, where it cannot fail. A turn in three dimensions has a plane, and the exits outside it are not rotated by it — they are snapped to the nearest one, two of them onto one, and a map that is not injective is not a rotation. So |<B>J</B>| moves by <M of="magnetism/current-in-vacuum" is="(G+M/3): worst change in |J| with a heading OUTSIDE that plane" plain digits={1} /> there. <b>The conservation law is real and it is a law about the ring</b>, and the rest of the exits lose current to the rule that was supposed to be unable to take any.)</span>
+          </Para>
+
+          <Eq note={<>magnetism/current-in-vacuum — |<B>J</B>|/√<V>n</V> is ≈1 for carriers pointing at random and √<V>n</V> for carriers pointing together, and the front goes <M of="magnetism/current-in-vacuum" is="front speed over the first third, in a vacuum of nothing" plain digits={2} /> exits a tick</>}>
+            <Recorded of="magnetism/current-in-vacuum" />
+          </Eq>
+
+          <Para>
+            <b>It propagates at <K><Bar>c</Bar></K> and it does not survive.</b> The front travels one exit a tick, which is no discovery — a charge advances one exit a tick by definition — but it could have been eaten before it got anywhere and it is not. What fails is everything else. In the model's own vacuum |<B>J</B>| falls to about √<V>n</V>, which is what carriers pointing at <i>random</i> give: the |<B>J</B>|/√<V>n</V> column runs from seventeen with no vacuum at all down to order one in a real one, and what is left after sixty ticks is not a weakened current but noise with the same carrier count. <span className="bp5-text-muted">(The sweep knob is the vacuum's <i>own</i> rate rather than an occupancy set by hand: (G+M/2)'s expansion and (G+M/1)'s annihilation settle on a fill between them, and the column reports where. At the thickest of the three there is nothing left to take a ratio of at all.)</span>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the rule that does it is the one that cannot destroy it.</b> (G+M/3) conserves |<B>J</B>| pointwise and randomises it anyway, because a carrier that has turned an unrelated number of times is uncorrelated with one that has not. The control row is what separates that from mere attrition. With no vacuum at all a <i>neutral</i> current — a wire, which is what the picture actually wants — still eats a third of itself, its two halves counter-streaming through each other under (G+M/1); but |<B>J</B>| and the carrier count fall <i>together</i> there, so the survivors of that are still a current. Put it in a real vacuum and |<B>J</B>| falls <i>faster</i> than the count, which is the whole difference between a weakened current and no current.
           </Para>
 
           <BR/>
@@ -4301,40 +4274,28 @@ front speed, first thirty ticks        1.000 cells/tick`}
           <BR/>
 
           <Para>
-            First what does <i>not</i> move, because the relaxation must not be allowed to rescue anything it does not touch. <b>The theorem never used <K><Bar>CYCLE</Bar></K>, the twenty-six exits, or a lattice at all</b> — <B>M</B> is a sum of <B>d̂</B>⊗<B>d̂</B> and that is symmetric whatever the directions are and however many there are of them. And the isotropy of the coupling is not a lattice accident either, though the direction of that result is the opposite of what one would guess.
+            First what does <i>not</i> move, because the relaxation must not be allowed to rescue anything it does not touch. <b>The theorem never used <K><Bar>CYCLE</Bar></K>, the exits, or a lattice at all</b> — <B>M</B> is a sum of <B>d̂</B>⊗<B>d̂</B> and that is symmetric whatever the directions are and however many there are of them. And the isotropy of the coupling is not a lattice accident either, though the direction of that result is the opposite of what one would guess.
           </Para>
 
-          <Eq note="relax.ts §1 — Σd̂⊗d̂ against n/3, for the lattice and for free emission · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`direction set             count   diagonal    off-diag   n/3        isotropic?
-the 26 lattice exits         26    8.6667      5.6e−17    8.6667     YES
-free emission, 64 ways       64   21.3142      5.7e−02   21.3333     approx
-free emission, 1024 ways   1024  341.3335      2.1e−02  341.3333     approx
-free emission, 4096 ways   4096 1365.3331      3.3e−03 1365.3333     approx`}
-            </span>
+          <Eq note="magnetism/isotropy-is-exact — Σd̂⊗d̂ against n/3, for the lattice and for free emission">
+            <Recorded of="magnetism/isotropy-is-exact" />
           </Eq>
 
           <Para>
-            <b>The lattice is exact and free emission is only asymptotic.</b> Cubic symmetry makes the second moment isotropic <i>identically</i> at twenty-six directions; an arbitrary spread gets there slowly. So the lattice is not an approximation to something better — it is the arrangement that gets the isotropy exactly right with the fewest directions, and relaxing costs a little isotropy rather than buying any.
+            <b>The lattice is exact and free emission is only asymptotic.</b> Cubic symmetry makes the second moment isotropic <i>identically</i> at however few directions — the off-diagonal is <M of="magnetism/isotropy-is-exact" is="Σd̂⊗d̂ off-diagonal over the exits, per direction" plain digits={0} /> on the exits and does not shrink so much as never depart; an arbitrary spread gets there slowly. So the lattice is not an approximation to something better — it is the arrangement that gets the isotropy exactly right with the fewest directions, and relaxing costs a little isotropy rather than buying any.
           </Para>
 
           <Head>and then the two bills turn out to be one bill</Head>
 
-          <Eq note="relax.ts §2 — the ratio against tan(θ/2), measured from 90° down to 0.35° · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`CYCLE      θ         transverse    longitudinal   ratio      tan(θ/2)
-    4   90.000°     1.733e+0      1.733e+0    1.000000   1.000000
-    8   45.000°     1.226e+0      5.077e−1    0.414214   0.414214
-   64    5.625°     1.699e−1      8.346e−3    0.049127   0.049127
- 1024    0.352°     1.064e−2      3.263e−5    0.003068   0.003068`}
-            </span>
+          <Eq note="magnetism/one-bill-not-two — the ratio against tan(θ/2), measured from 90° down to 0.35°">
+            <Recorded of="magnetism/one-bill-not-two" columns={["θ", "transverse", "longitudinal", "ratio", "tan(θ/2)"]} />
           </Eq>
 
           <Para>
-            <b>So the 41.4% is a property of the eighth-turn and not of the mechanism</b>, and it goes to zero with <V>θ</V>. But it does not go for free, and this is the part worth having: the transverse coupling goes as sin <V>θ</V>, so it vanishes along with the deviation. Their ratio is an identity.
+            <b>So the bill is a property of the ring step and not of the mechanism</b>, and it goes to zero with <V>θ</V>. But it does not go for free, and this is the part worth having: the transverse coupling goes as sin <V>θ</V>, so it vanishes along with the deviation. Their ratio is an identity.
           </Para>
 
-          <Eq note="relax.ts §2 — 0.5000 to four figures by θ = 10⁻², and exactly ½ in the limit · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>magnetism/one-bill-not-two — <M of="magnetism/one-bill-not-two" is="deviation over COUPLING, tan(θ/2)/sin θ, at θ = 10⁻²" plain digits={4} /> by <V>θ</V> = 10<Sup>−2</Sup>, and exactly ½ in the limit</>}>
             <Frac over={<>deviation</>} under={<>coupling</>} /> =
             <Frac over={<>tan(<V>θ</V>/2)</>} under={<>sin <V>θ</V></>} /> =
             <Frac over={<>1</>} under={<>1 + cos <V>θ</V></>} />
@@ -4346,13 +4307,39 @@ free emission, 4096 ways   4096 1365.3331      3.3e−03 1365.3333     approx`}
             <b>The arc does not get to choose.</b> A weak magnetic coupling and a small longitudinal force are the same statement, and the deviation is half the coupling whatever <V>θ</V> is. This book owes its coupling as <V>α</V> — so if the turn angle were what sets the coupling, the longitudinal force would be <V>α</V>/2 = 0.36% of the magnetic one.
           </Para>
 
+          <Head>except that a lattice cannot turn by a little</Head>
+
+          <Para>
+            <b>And that sweep is not something this model can do</b>, which has to be said before anything is built on it. A ray sits on an exit. A deflection moves it to another exit. So the angle of one turn is one of the lattice's <i>own</i> angles, and there is nothing to send to a direction that is not a node — <b>the relaxation buys a choice of <i>ring</i>, not a choice of angle</b>, and subdividing the ring finer than the exits go is asking the lattice for directions it does not have.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>So where could a free angle come from at all? Only from the vacuum</b>, which is the one thing here with a continuous knob. (G+M/2) fires at a rate, the rate sets the fill, the fill sets how often a carrier meets anything, and <b>the mean rotation per cell travelled is that rate times <K><Bar>SPIN</Bar></K></b> — a continuous quantity built entirely out of quantised events. That is a real answer to the question <V>relax</V> §2 was asking, and it is worth having.
+          </Para>
+
+          <Eq note="magnetism/no-free-angle — the free angle and the bill, against the only continuous knob the model has">
+            <Recorded of="magnetism/no-free-angle" />
+          </Eq>
+
+          <Para>
+            <b>And it does not buy what the relaxation wanted, which is the result.</b> The force is a <i>sum over the population that meets</i>, so it is linear in how much of that population turned — and Rodrigues' antisymmetric and symmetric terms are diluted by the <i>same</i> factor. <b>The bill is a per-event ratio and the vacuum's knob is a per-path one, and they never touch:</b> the ratio sits at <M of="magnetism/no-free-angle" is="worst |bill − tan(SPIN/2)| across the measured vacuum rates" plain digits={0} /> of tan(<K><Bar>SPIN</Bar></K>/2) across the whole sweep, while the rotation per cell moves by a factor of five over the same rates. <b>What the free angle is good for is the coherence <i>length</i>, which is a per-path quantity — and not for the bill.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <span className="bp5-text-muted">(Which means the next section's bound lands somewhere harder than it was aimed. If <V>θ</V> cannot be dialled down, the angle the experiment constrains is the one the lattice actually turns by, and that is of order one radian rather than of order <V>α</V>. The arithmetic below is unchanged; only what it falls on is.)</span>
+          </Para>
+
           <Head>and a storage ring refutes that reading by eleven orders</Head>
 
           <Para>
             <b>Which is a conditional and not a prediction, because it was never checked against an experiment — and it does not survive one.</b> A charge-independent force <i>along</i> <B>v</B> does work, every turn, always in the same direction. That is not a subtle observable, and the experiment is already running.
           </Para>
 
-          <Eq note="relax.ts §6 — and it depends on none of the ring's parameters · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="magnetism/storage-ring-bound — and it depends on none of the ring's parameters">
             <V>F</V><Sub>∥</Sub> = <V>k</V>·<V>qvB</V>
             <span style={{ padding: '0 1em', color: FAINT }}>over a turn</span>
             <Frac over={<>Δ<V>E</V></>} under={<><V>E</V></>} /> = 2<V>π</V><V>k</V>
@@ -4364,51 +4351,52 @@ free emission, 4096 ways   4096 1365.3331      3.3e−03 1365.3333     approx`}
             The cyclotron radius carries the field and the charge out of it entirely — <V>r</V> = <V>γmv</V>/<V>qB</V>, so the work per turn is 2<V>πk</V><V>γmv</V><Sup>2</Sup> and the fractional change is 2<V>πk</V> for anything relativistic. <b>Independent of the ring's size, its field, and the particle in it.</b>
           </Para>
 
-          <Eq note="relax.ts §6 — a LEP-like machine, ~4·10⁷ turns an hour, energy known to 10⁻⁵ by resonant spin depolarisation · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`reading                    k = tan(θ/2)   ΔE/E per turn
-θ = 45°, the locked turn   4.142e−1       2.603e+0
-θ = α, the reading above   3.649e−3       2.293e−2
-
-so per-turn ΔE/E must be under   2.53e−13
-so k is under                    4.02e−14
-so θ is under                    8.04e−14 rad
-and α exceeds that by            9.08e+10`}
+          <Eq note="magnetism/storage-ring-bound — a LEP-like machine, ~4·10⁷ turns an hour, energy known to 10⁻⁵ by resonant spin depolarisation">
+            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em' }}>
+              <V>θ</V> = <K><Bar>SPIN</Bar></K>, the ring step<span style={{ padding: '0 1.2em', color: FAINT }}>ΔE/E per turn</span>3.63e+0<br />
+              <V>θ</V> = <V>α</V>, the reading above<span style={{ padding: '0 1.2em', color: FAINT }}>ΔE/E per turn</span><M of="magnetism/storage-ring-bound" is="ΔE/E per turn at θ = α" digits={3} plain /><br />
+              <br />
+              so per-turn ΔE/E must be under<span style={{ padding: '0 1.2em' }} /><M of="magnetism/storage-ring-bound" is="per-turn ΔE/E the machine's energy calibration permits" digits={2} plain /><br />
+              so <V>k</V> is under<span style={{ padding: '0 1.2em' }} /><M of="magnetism/storage-ring-bound" is="so k = tan(θ/2) is under" digits={2} plain /><br />
+              so <V>θ</V> is under<span style={{ padding: '0 1.2em' }} /><M of="magnetism/storage-ring-bound" is="so θ is under" digits={2} plain /> rad<br />
+              and <V>α</V> exceeds that by<span style={{ padding: '0 1.2em' }} /><M of="magnetism/storage-ring-bound" is="how far α exceeds the bound the machine sets on θ" digits={2} plain />
             </span>
           </Eq>
 
           <Para>
-            <b>A beam gaining 2.3% of its energy every turn is not a small deviation to be charged to discreteness.</b> So <V>θ</V> = <V>α</V> is refuted, and the 0.36% is not an effect to go looking for — it is a number that would have wrecked every storage ring ever built. <b>The error was not the arithmetic but the failure to ask what it implied</b>, and this is what checking a deviation against an experiment rather than admiring its size looks like.
+            <b>A beam gaining <M of="magnetism/storage-ring-bound" is="ΔE/E per turn at θ = α" plain digits={1} /> of its energy every turn is not a small deviation to be charged to discreteness.</b> So <V>θ</V> = <V>α</V> is refuted, and the 0.36% is not an effect to go looking for — it is a number that would have wrecked every storage ring ever built. <b>The error was not the arithmetic but the failure to ask what it implied</b>, and this is what checking a deviation against an experiment rather than admiring its size looks like.
           </Para>
 
           <BR/>
 
           <Para>
-            <b>What this bounds, though, is the <i>turn</i> and not the model</b> — and the sections at the end of this arc find that the longitudinal force is an artefact of writing the deflection as a length-preserving rotation. Two other mechanisms produce the Lorentz force with no longitudinal component whatever, and neither is bounded by any of the above. <b>The number below is what the turn costs, and the turn is not what the model has to use.</b>
+            <b>And with the angle not free, the bound falls on <K><Bar>SPIN</Bar></K> itself, which is worse by two further orders.</b> The lattice turns by <M of="magnetism/no-free-angle" is="how far SPIN itself exceeds the storage ring's bound on the turn angle" plain digits={2} /> times the most the machine permits — at that angle the ledger above says a beam gains <i>several times its own energy in a single lap</i>. <b>So it is not an identification that is refuted, it is the turn.</b> The relaxation could have rescued it and the relaxation is not available.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>What this bounds, though, is the <i>turn</i> and not the model</b> — and the sections at the end of this arc find that the longitudinal force is an artefact of writing the deflection as a length-preserving rotation. Two other mechanisms produce the Lorentz force with no longitudinal component whatever, and neither is bounded by any of the above. <b>The number above is what the turn costs, and the turn is not what the model has to use</b> — which is now load-bearing rather than a remark, since it is the only escape left standing.
           </Para>
 
           <Head>and what survives is most of it, because the ratio and the size are different questions</Head>
 
           <Para>
-            <b>The ratio tan(<V>θ</V>/2) is the deviation over the <i>transverse</i> force, and the transverse force is (<K><Bar>DEG</Bar></K>/3)·sin <V>θ</V>·<V>n</V>, where <V>n</V> is the background density. The ratio does not depend on <V>n</V> and the magnitude does.</b> So a tiny <V>θ</V> with a large <V>n</V> gives a full-strength magnetic force and an invisible longitudinal one. <b>What is refuted is identifying <V>θ</V> with the coupling, not the mechanism.</b>
+            <b>The ratio tan(<V>θ</V>/2) is the deviation over the <i>transverse</i> force, and the transverse force is (<K><Bar>DEG</Bar></K>/3)·sin <V>θ</V>·<V>n</V>, where <V>n</V> is the background density. The ratio does not depend on <V>n</V> and the magnitude does.</b> So a large <V>n</V> buys a full-strength magnetic force at any turn angle — but it does <i>not</i> buy an invisible longitudinal one, because the density it is bought with multiplies both halves alike. <b>That is the same fact as the section above, arriving from the other side: the size is the vacuum's to set and the ratio is not.</b>
           </Para>
 
           <BR/>
 
           <Para>
-            And the two surviving constraints pull the same way, which is the part worth having. A magnet needs a long coherence length, and the coherence length grows as <V>θ</V><Sup>−1.3</Sup>.
+            <b>And what the vacuum <i>does</i> buy is the half that lives on the path.</b> A magnet needs a long coherence length; a carrier decoheres by accumulating turns; so the coherence length is set by the mean rotation <i>per cell</i> — which is exactly the continuous knob the section above found, and it grows as that rotation to the −1.3. <b>So the relaxation was aimed at the wrong half of its own result.</b> Read the table below with <V>θ</V> as a rotation per cell rather than a turn angle, and it is a statement the model can make.
           </Para>
 
-          <Eq note="relax.ts §6 — with a cell at the Planck length · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`requirement               θ under      coherence length    in metres
-storage rings             8.04e−14     6.36e+17 cells      1.03e−17
-a 10 µm magnetic domain   4.82e−23     6.19e+29 cells      1.00e−5`}
-            </span>
+          <Eq note="magnetism/storage-ring-bound — with a cell at the Planck length, and the θ^−1.3 exponent taken from §3 as an input">
+            <Recorded of="magnetism/storage-ring-bound" />
           </Eq>
 
           <Para>
-            <b>The domain requirement is the tighter one, and the two are compatible with nine orders to spare</b> — a <V>θ</V> small enough to give a magnet its range is automatically small enough to hide the longitudinal force. So the picture is consistent at <V>θ</V> ≲ 10<Sup>−23</Sup>, and it was never consistent at <V>θ</V> = <V>α</V>.
+            <b>The domain requirement is the tighter one by nine orders</b>, so a vacuum thin enough to give a magnet its range is comfortably thin enough to satisfy the ring — <i>as a constraint on the coherence length</i>. <span className="bp5-text-muted">(The second column no longer doubles as a bound on the longitudinal force, which is what the previous reading had it do: that force is priced per event at tan(<K><Bar>SPIN</Bar></K>/2) and no rotation-per-cell can touch it. The two constraints stopped being the same constraint when the angle stopped being free.)</span>
           </Para>
 
           <BR/>
@@ -4423,6 +4411,12 @@ a 10 µm magnetic domain   4.82e−23     6.19e+29 cells      1.00e−5`}
             <b>And it does not check out. The escape is closed.</b> The vacuum's density is one of the few numbers in this book nobody chose: expansion drives the occupancy to (1−<V>p</V>)/(2−<V>p</V>) → ½ with the rate cancelling out, measured at 0.55–0.59 across a fourfold change in <V>p</V>. <b>It is of order one per cell and it cannot move by twenty-one orders.</b> So the turn-response coupling really is ~10<Sup>−23</Sup>, and a magnetic force built from it is short by about that much. <span className="bp5-text-muted">(What saves this from being fatal is that the sourcing stops going through the turn at all — see the fork test below, where the field's <i>size</i> comes out free of <V>θ</V> and only the <i>response</i> still carries it.)</span>
           </Para>
 
+          <BR/>
+
+          <Para>
+            <b>And the same closure now reaches the other half, which the free-angle reading had shielded.</b> If the rotation per cell is the vacuum's rate times <K><Bar>SPIN</Bar></K>, then <i>a pinned occupancy pins it too</i>. The rates measured above reach about a tenth of a radian per cell at a fill of a quarter, and the vacuum's own occupancy is <i>thicker</i> than any of them. <b>A carrier turning a tenth of a radian a cell has lost its heading in some tens of cells</b>, which is the coherence length the arc keeps arriving at from every direction and names as its largest hole. The knob is real; its range is not ours to choose.
+          </Para>
+
           <Head>and the coherence, which has to be discrete or it is nothing</Head>
 
           <Para>
@@ -4435,7 +4429,7 @@ a 10 µm magnetic domain   4.82e−23     6.19e+29 cells      1.00e−5`}
             And it is discrete, once <V>θ</V> is free — for the same reason as everything else in this section. The earlier measurement had <i>every</i> meeting deflecting a carrier by a whole eighth, which randomises a heading in a handful of collisions. Run it again with headings as real directions and steps rounded onto the lattice, which is precisely what free emission means discretely, and with nothing averaged anywhere.
           </Para>
 
-          <Eq note="relax.ts §3 — |J| per carrier, four seeds; readings below ~30 surviving carriers suppressed · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="relax.ts §3 — |J| per carrier, four seeds; readings below ~30 surviving carriers suppressed · NOT RE-MEASURED — superseded: every row sweeps CYCLE from 8 to 256, which is a free turn angle, and magnetism/no-free-angle finds the model has none — a ray sits on an exit and a deflection moves it to another exit. The coherence this was measuring is magnetism/current-in-vacuum's, where |J| falls faster than the carrier count at the vacuum's own occupancy">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`CYCLE      θ      t=20    t=40    noise floor   half-life
     8   45.00°   0.104   0.251      0.148           8
@@ -4465,7 +4459,7 @@ coherence half-life ∝ θ^−1.3`}
             One more correction, and it is of the experiment rather than of the model. The section above injected a current once and watched it die. <b>A magnet is not a pulse — it is continuously re-sourced</b>, and for a driven system the question is not how long a disturbance lasts but what profile it holds in the steady state.
           </Para>
 
-          <Eq note="relax.ts §4 — |J| per carrier against radius, open boundary, averaged over the second half of the run · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="relax.ts §4 — |J| per carrier against radius, open boundary, averaged over the second half of the run · NOT RE-MEASURED — superseded for the same reason — its two columns are CYCLE = 8 against CYCLE = 64. The result that survives the parameter going away is the ballistic-versus-diffuse split, which magnetism/current-in-vacuum reads off the deflection count directly">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`r (cells)   CYCLE = 8   carriers    CYCLE = 64   carriers
     0–5       0.3445       2683        0.9847       1435
@@ -4555,7 +4549,7 @@ coherence half-life ∝ θ^−1.3`}
             Which is where the failure above pays for itself, because it says <i>why</i> that step is missing and it is the same why three times over.
           </Para>
 
-          <Eq note="faraday.ts §4 — three debts, one requirement · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="faraday.ts §4 — three debts, one requirement · NOT RE-MEASURED — not a measurement: a mapping of three owed items onto the one requirement they share, carrying no figure. That the requirement cannot be met locally is magnetism/sourcing-obstruction's">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`what was owed            what it needs
 the turn axis, sourced   b̂ from something other than the local rays
@@ -4598,7 +4592,7 @@ the photon               b̂ with independent degrees of freedom to wave`}
             Give a ray one more label: <b>what its emitter was doing when it left.</b> A ray already carries a polarity it did not compute; this carries one more fact from the same place. Then a third vector moment exists, and it is axial where <B>J</B> and <B>F</B> are polar — measured under reflection, not argued.
           </Para>
 
-          <Eq note="fork.ts §1 — the parity, measured; and W is built from a SINGLE polarity's emission · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>magnetism/sourcing-obstruction — the parity, measured to <M of="magnetism/sourcing-obstruction" is="departure from AXIAL for the labelled moment W" plain digits={0} />; and <B>W</B> is built from a SINGLE polarity's emission, where <B>J</B>×<B>F</B> is nought</>}>
             <B>W</B> = <span style={{ fontSize: '1.2em' }}>Σ</span> <V>σ</V> <V>n</V>(<B>d̂</B>,<V>σ</V>,<B>u</B>) (<B>d̂</B> × <B>u</B>)
             <span style={{ padding: '0 1.2em', color: FAINT }}>polar × polar = axial</span>
           </Eq>
@@ -4613,7 +4607,7 @@ the photon               b̂ with independent degrees of freedom to wave`}
             With that, a charge <i>at rest</i> has no magnetic field <b>whatever its orientation</b> — exactly nought, because a source that is not traversing contributes nothing before its orientation is consulted. Which is stronger than needing matter to be unpolarised. And it forces a reading of what spin has to be: <b>not a static labelled source, since there is no such thing here, but a circulating traversal.</b>
           </Para>
 
-          <Eq note="fork.ts §2–4 — every row measured, nothing fitted · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="fork.ts §2–4 — every row measured, nothing fitted · NOT RE-MEASURED — superseded: every row of fork is SUPERPOSITION, as the article says two headings later, and each of its claims is now run on the lattice with the label — a charge at rest by magnetostatics/static-charge, a moving one by magnetostatics/moving-charge, the wire by magnetostatics/neutral-wire and the loop's dipole by magnetism/dipole-coupling">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`source                  what comes out              measured
 charge at rest          no field at all             0.000e+0 exactly
@@ -4649,7 +4643,7 @@ neutral wire            Ampère, 1/r                 |W|r flat to 1.00010×`}
             All of that is superposition, which is the continuum reading. So run the real automaton with everything this arc has established — real headings rounded onto the lattice, free turn angle, the three rules — and with <b>the label turned by the same rule as the heading</b>, since if it is real it rides the dynamics everything else rides.
           </Para>
 
-          <Eq note="fork.ts §5 — a wire emitting isotropically, three seeds, sixty ticks · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="fork.ts §5 — a wire emitting isotropically, three seeds, sixty ticks · NOT RE-MEASURED — cannot be re-measured at the vacuum the rules now settle at, and that is itself the finding. At fill ½ the mean free path is about two cells, so a labelled ray never reaches a measurement radius and |W| reads exactly nought at r = 4 and beyond. The obstruction this table states — that a cell reading only what arrives sees no current where one reading the label sees the wire — is magnetism/sourcing-obstruction's, measured there on the moments directly rather than through a box the vacuum has closed — and it cannot be until the labelled runs reach their measurement radii again: at the rule's own vacuum the mean free path is about two cells, so |W| reads exactly nought at r = 4 and beyond">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`CYCLE      θ      J t=0   J t=60   W t=0   W t=60
     8   45.00°    0.034    0.263   1.000    0.528
@@ -4659,7 +4653,7 @@ neutral wire            Ampère, 1/r                 |W|r flat to 1.00010×`}
           </Eq>
 
           <Para>
-            <b>Read the t = 0 column, because it is the whole argument in one number.</b> The rays are emitted isotropically, so the signed current <i>of the rays</i> is nought — and the labelled moment is one. <b>A cell reading only what arrives sees no current at all; a cell that can read the label sees the wire.</b> That is the obstruction stated as a measurement rather than as a parity argument, and it is why the wire has a field.
+            <b>Read the t = 0 column, because it is the whole argument in one number.</b> The rays are emitted isotropically, so the signed current <i>of the rays</i> cancels over the wire — for every ray leaving along <B>d̂</B> there is one leaving along −<B>d̂</B> with the same sign. The labels do not cancel, because a + moving right and a − moving left contribute the same <V>σ</V><B>u</B>. <b>A cell reading only what arrives sees no current at all; a cell that can read the label sees the wire.</b> That is the obstruction stated as a measurement rather than as a parity argument, and it is why the wire has a field. <span className="bp5-text-muted">(The decay-against-<V>θ</V> half of this table is withdrawn with the turn angle it swept, which was never the lattice's to vary — and the <V>t</V> = 0 column is owed a re-run that the vacuum's own occupancy currently prevents, since at a mean free path of two cells nothing labelled reaches a measurement radius at all.)</span>
           </Para>
 
           <BR/>
@@ -4704,7 +4698,7 @@ neutral wire            Ampère, 1/r                 |W|r flat to 1.00010×`}
             <b>Two of the four hold.</b> ∇·<B>B</B> = 0 at the differencing floor, on a <i>moving</i> source where it could have failed; and ∇·<B>E</B> = 0 in empty space, which is the inverse-square law doing a second job — a radial 1/<V>R</V>² field is divergence-free everywhere but at its source. <span className="bp5-text-muted">(That check earns its place: two earlier versions of the file reported Gauss <i>failing</i>, which was a retarded-time bracket too narrow to contain the root, converging to its own endpoint smoothly and silently. It was caught by a static control, where ∇·<B>E</B> must be exactly nought and came out 0.49. With Gauss passing on the same numerics, a Faraday residual is a statement about the fields rather than the arithmetic.)</span>
           </Para>
 
-          <Eq note="induce.ts §2 — an oscillating charge, residual against the larger of the two terms · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="induce.ts §2 — an oscillating charge, residual against the larger of the two terms · NOT RE-MEASURED — superseded: radiation/all-four-of-maxwell runs the same four residuals on five readings of the same rays and RELOCATES this failure rather than reproducing it — the `counts` row breaks Faraday for the reason given here, and the `moment` row does not, so the residual was in the bookkeeping and not in the fields">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`field point   |∇×E|      |∂B/∂t|    |residual|  relative
 [3,0,0]       1.84e−3    8.44e−3    6.61e−3     7.83e−1
@@ -4726,18 +4720,12 @@ relative      5.767e−2   5.760e−2   5.760e−2    5.760e−2`}
             A charge that is really moving has the Liénard–Wiechert fields, and they carry a piece these do not: an <b>acceleration term that falls as 1/<V>R</V></b>, where everything above falls as 1/<V>R</V>². <b>And the model cannot have one.</b> Every ray thins as 1/<V>R</V>² because a fixed number of them spreads over a shell of 4π<V>R</V>² cells — <i>which is the gravity arc's derivation of the inverse-square law, in the same sentence.</i>
           </Para>
 
-          <Eq note="induce.ts §4 — the Poynting flux through a sphere, against an accelerating charge · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`R      ∮(E×B)·dA     slope
-10     1.328e−4      —
-20     1.656e−5      −3.003
-40     2.069e−6      −3.000
-80     2.587e−7      −3.000        against 0 for a radiating charge`}
-            </span>
+          <Eq note="radiation/rays-cannot-radiate — the Poynting flux through a sphere, against an accelerating charge, and the radial part is exactly zero rather than small">
+            <Recorded of="radiation/rays-cannot-radiate" />
           </Eq>
 
           <Para>
-            <b>So an accelerating charge in this model radiates nothing</b> — and the power law understates it. Look at what the Poynting vector even <i>is</i> here: <B>E</B> is along <B>n̂</B> and <B>B</B> is along <B>n̂</B> × <B>u</B>, so <B>E</B> × <B>B</B> ∝ <B>n̂</B>(<B>n̂</B>·<B>u</B>) − <B>u</B>, <b>whose radial part is identically zero.</b> Energy circulates around the source and none of it leaves. <b>This is not a radiation field that is too weak. It is not a radiation field.</b>
+            <b>So an accelerating charge in this model radiates nothing</b> — and the power law understates it. Look at what the Poynting vector even <i>is</i> here: <B>E</B> is along <B>n̂</B> and <B>B</B> is along <B>n̂</B> × <B>u</B>, so <B>E</B> × <B>B</B> ∝ <B>n̂</B>(<B>n̂</B>·<B>u</B>) − <B>u</B>, <b>whose radial part is identically zero.</b> Energy circulates around the source and none of it leaves. <b>This is not a radiation field that is too weak. It is not a radiation field.</b>  <span className="bp5-text-muted">(Measured at <M of="radiation/rays-cannot-radiate" is="radial part of E × B, worst over 200 directions" plain digits={0} /> over two hundred directions — which makes the exponent above unquotable rather than merely bad. The flux left after that cancellation is of order 10<Sup>−20</Sup> against fields of order 10<Sup>−2</Sup>, so it is double precision's floor, and any slope fitted to it is the roundoff's. The verdict rests on the cancellation being exact.)</span>
           </Para>
 
           <BR/>
@@ -4797,7 +4785,7 @@ relative      5.767e−2   5.760e−2   5.760e−2    5.760e−2`}
             <b>A retarded 1/<V>r</V> potential is what radiation is made of</b>, and the rest is one line of calculus.
           </Para>
 
-          <Eq note="shine.ts §1 — and ∇ acting on S(t − R) gives S′(t − R)·r̂, which loses no power of R · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>radiation/deficit-carries-a-1-over-R — ∇ acting on S(t − R) gives S′(t − R)·r̂, which loses no power of R; the S′ term is measured to fall as 1/R to <M of="radiation/deficit-carries-a-1-over-R" is="R · (the S′ term), worst ratio over R = 50 … 800" plain digits={4} /></>}>
             <D>deficit</D> = <Frac over={<><V>S</V>(<V>t</V> − <V>R</V>)</>} under={<><V>kR</V></>} />
             <span style={{ padding: '0 1.2em', color: FAINT }}>so</span>
             <V>∇</V><D>deficit</D> = −<B>r̂</B> [
@@ -4808,25 +4796,13 @@ relative      5.767e−2   5.760e−2   5.760e−2    5.760e−2`}
           </Eq>
 
           <Para>
-            <b>The gradient of a <i>retarded</i> potential has a term the gradient of a static one does not.</b> The second piece is the 1/<V>R</V>² of Newton and Coulomb; the first is 1/<V>R</V> and is radiation. <b>So the no-radiation theorem is withdrawn</b> — its premise is true of the ray count and false of the deficit, and the deficit is the field.
+            <b>The gradient of a <i>retarded</i> potential has a term the gradient of a static one does not.</b> The second piece is the 1/<V>R</V>² of Newton and Coulomb; the first is 1/<V>R</V> and is radiation. <b>So the no-radiation theorem is withdrawn</b> — its premise is true of the ray count and false of the deficit, and the deficit is the field.  <b>And the far-zone power does not fall off at all</b>, flat to <M of="radiation/deficit-carries-a-1-over-R" is="|∇deficit|²·4πR² in the far zone, worst ratio" plain digits={4} /> — a flux through a sphere independent of the sphere, which is what radiating <i>means</i> rather than a consequence of it.
           </Para>
 
           <Head>and it comes with a near zone and a far zone that nobody asked for</Head>
 
-          <Eq note="shine.ts §2–4 — an oscillating sink, S = 100 + 40 sin(0.05t), so λ = 125.7 cells · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`R       1/R² term    1/R term     ratio       zone
-5       −1.220e+0    5.289e−2     4.33e−2     NEAR — Coulomb
-20      −8.025e−2   −3.143e−3     3.92e−2     NEAR — Coulomb
-100     −1.799e−3    3.858e−3     2.15e+0     FAR — radiation
-2000    −6.152e−6    2.263e−4     3.68e+1     FAR — radiation
-
-R       |∇deficit|·R    power ∝ |∇|²·4πR²   steady sink
-1e+2    0.6897          5.9772e+0           6.641e−1
-1e+3    0.4828          2.9288e+0           6.641e−3
-1e+4    0.4621          2.6831e+0           6.641e−5
-1e+5    0.4600          2.6592e+0           6.641e−7`}
-            </span>
+          <Eq note="radiation/deficit-carries-a-1-over-R — an oscillating sink, S = 100 + 40 sin(0.05t), so λ = 125.7 cells; read at fixed phase so the sinusoid cannot masquerade as a power law">
+            <Recorded of="radiation/deficit-carries-a-1-over-R" />
           </Eq>
 
           <Para>
@@ -4845,14 +4821,8 @@ R       |∇deficit|·R    power ∝ |∇|²·4πR²   steady sink
             A source emitting at a fixed rate in its own time has its rays <i>arrive</i> at a different rate, because it moves between emissions — the factor 1/(1 − <B>n̂</B>·<B>u</B>) that <i>faraday</i> already needed. Forward of a source moving at <V>u</V> that is 1/(1 − <V>u</V>), and <b>at <V>u</V> = <K><Bar>c</Bar></K> it diverges: a source travelling at the speed of its own emission never separates from it</b>, so everything it ever emitted forward is in the same place.
           </Para>
 
-          <Eq note="shine.ts §5 — the forward pile-up, and everything massless here moves at exactly c̄ · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`u         forward 1/(1−u)   backward 1/(1+u)   front : back
-0.0       1.000e+0          1.0000             1.00e+0
-0.9       1.000e+1          0.5263             1.90e+1
-0.99      1.000e+2          0.5025             1.99e+2
-0.9999    1.000e+4          0.5000             2.00e+4`}
-            </span>
+          <Eq note="radiation/forward-pile-up — the forward pile-up, and everything massless here moves at exactly c̄">
+            <Recorded of="radiation/forward-pile-up" />
           </Eq>
 
           <Para>
@@ -4889,7 +4859,7 @@ R       |∇deficit|·R    power ∝ |∇|²·4πR²   steady sink
             The deficit is <K><Bar>DEG</Bar></K> − <D>#active</D>: <i>how many</i> of a cell's rays failed to arrive. That is a count over directions — <b>the zeroth moment of the shortfall.</b> The same shortfall has a first moment, and nobody had read it.
           </Para>
 
-          <Eq note="lorenz.ts §2 — and the second moment is there too, unused · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="lorenz.ts §2 — and the second moment is there too, unused · NOT RE-MEASURED — not a measurement: a mapping of the zeroth and first moments onto φ and A, carrying no figure. That the fields built from them satisfy Maxwell is radiation/all-four-of-maxwell's">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`moment    what it counts                   kind      is
 zeroth    how many rays are missing        scalar    φ, the potential
@@ -4919,31 +4889,18 @@ first     WHICH DIRECTIONS are missing     vector    A, the vector potential`}
             Which puts all the content in the other two. <b>Gauss and Ampère–Maxwell hold only under the Lorenz condition ∇·<B>A</B> + ∂<V>φ</V>/∂<V>t</V> = 0 — which is charge conservation wearing a different hat.</b> So "does this model do electromagnetism" becomes "does this model conserve its source", which is a far better question, and one this book has already answered: Layer 2 makes charge a traversal sense, and a strand has two ends.
           </Para>
 
-          <Eq note="lorenz.ts §5 — five readings of the same rays, all four equations, one point · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`reading   what it is                       Faraday  ∇·B    Gauss   Ampère
-moment    potential, 1/R, with rate        PASS     PASS   PASS    PASS
-norate    potential, 1/R, no rate factor   PASS     PASS   2.4e−2  9.4e−1
-inverse   potential, 1/R² weight           PASS     PASS   9.0e−1  9.9e−1
-scalar    scalar potential only            PASS     PASS   1.5e−1  1.0e+0
-counts    field read off ray counts        1.0e+0   PASS   2.9e−3  1.0e+0`}
-            </span>
+          <Eq note="radiation/all-four-of-maxwell — five readings of the same rays, all four equations, one point; a residual under 10⁻³ of the terms it is made of reads PASS">
+            <Recorded of="radiation/all-four-of-maxwell" />
           </Eq>
 
           <Para>
-            <b>One passes, and the four that fail each fail somewhere different</b> — which is what makes this a pinning-down rather than a lucky guess. <b>It must be a potential</b> or Faraday goes; <b>it must be weighted 1/<V>R</V></b> or Gauss goes; <b>it must carry the arrival-rate factor</b> 1/(1 − <B>n̂</B>·<B>u</B>) or Ampère goes. Each of those is something the model says rather than something chosen to make the answer come out — the last one especially, since it is not a relativistic correction bolted on but <i>what counting arrivals means when the emitter is moving.</i>
+            <b>One passes, and the four that fail each fail somewhere different</b> — which is what makes this a pinning-down rather than a lucky guess. <b>It must be a potential</b> or Faraday goes; <b>it must be weighted 1/<V>R</V></b>; <b>and it must carry the arrival-rate factor</b> 1/(1 − <B>n̂</B>·<B>u</B>) or Ampère goes. <span className="bp5-text-muted">(Re-measured, the middle assignment does not survive: Gauss <i>tolerates</i> the wrong weight and Ampère–Maxwell is what catches it. Each ingredient is still necessary, which is the claim; <i>which</i> equation notices a given omission is not as stable as this table makes it look.)</span> Each of those is something the model says rather than something chosen to make the answer come out — the last one especially, since it is not a relativistic correction bolted on but <i>what counting arrivals means when the emitter is moving.</i>
           </Para>
 
           <Head>and the wave is transverse, which is the thing a scalar could not be</Head>
 
-          <Eq note="lorenz.ts §6 — an oscillating pair, read out along a direction off the dipole axis · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`R       ∠(E, r̂)   ∠(B, r̂)   ∠(E, B)   |E|/|B|   |E|·R
-200      95.28°    90.00°    90.00°    0.9980    1.400e−2
-600      91.95°    90.00°    90.00°    0.9998    1.328e−2
-1800     90.67°    90.00°    90.00°    1.0000    1.304e−2
-5400     90.23°    90.00°    90.00°    1.0000    1.296e−2`}
-            </span>
+          <Eq note="radiation/transverse — an oscillating pair, read out along a direction off the dipole axis, at fixed phase so the amplitude column is a falloff and not the sinusoid">
+            <Recorded of="radiation/transverse" />
           </Eq>
 
           <Para>
@@ -4962,7 +4919,7 @@ counts    field read off ray counts        1.0e+0   PASS   2.9e−3  1.0e+0`}
             <b>Everything in the last two sections is continuum algebra.</b> It establishes that <i>if</i> the deficit is a retarded 1/<V>R</V> potential <i>then</i> its gradient keeps a 1/<V>R</V> term, its first moment satisfies all four of Maxwell, and the far field is transverse. All of it is done with sin, cos and a retarded-time solver, and <b>none of it runs the model.</b> So run the model.
           </Para>
 
-          <Eq note="pulse.ts §2–3 — pure's rule on a 61³ lattice, a body of radius 3, shell-averaged · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="pulse.ts §2–3 — pure's rule on a 61³ lattice, a body of radius 3, shell-averaged · NOT RE-MEASURED — superseded: it measures a first response going as r^1.87 — a diffusion — on `pure`'s remake, and layer2/rules-conserve-momentum shows why that rule cannot give anything else. The remake destroys momentum by up to a whole unit where both of the model's own rules conserve it identically, so the diffusion measured here is the simplification's and not the model's, which is the article's own verdict two headings later">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`r     deficit    × r      first response   t / r    t / r²
 5     11.969     59.84    13               2.60     0.520
@@ -5005,13 +4962,8 @@ first response ∝ r^1.87       a wave gives 1, a diffusion gives 2`}
             A head-on pair carries zero momentum, so every rule can be asked the same question: what does it leave behind?
           </Para>
 
-          <Eq note="sound.ts §2 — for every direction on the lattice, not on average · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`rule                    what it does               worst |Δp|
-(G+M/3) turning         both members reverse       0.0e+0    CONSERVES
-(G+M/1) annihilation    both members go            0.0e+0    CONSERVES
-pure's remake           k in, k out, round-robin    3.000     DESTROYS`}
-            </span>
+          <Eq note="layer2/rules-conserve-momentum — for every direction on the lattice, not on average">
+            <Recorded of="layer2/rules-conserve-momentum" />
           </Eq>
 
           <Para>
@@ -5020,20 +4972,8 @@ pure's remake           k in, k out, round-robin    3.000     DESTROYS`}
 
           <Head>and with momentum kept, it propagates</Head>
 
-          <Eq note="sound.ts §3 — 41³ at fill ½, head-on pairs scattered sideways, phase read between adjacent shells · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`shell pair    lag per cell    amplitude
-4→5           1.214           7.06e−1
-5→6           1.066           4.85e−1
-6→7           1.215           3.49e−1
-7→8           1.083           2.94e−1
-8→9           1.189           2.31e−1
-9→10          1.275           1.81e−1
-10→11         1.050           1.38e−1
-11→12         1.225           1.18e−1
-
-mean 1.165 ticks per cell, spread 0.226, against c̄ = 1`}
-            </span>
+          <Eq note={<>layer2/it-propagates — at fill ½, head-on pairs scattered sideways, phase read between adjacent shells; the lag per cell is flat to <M of="layer2/it-propagates" is="lag per cell, far pairs over near pairs" plain digits={4} /> far against near</>}>
+            <Recorded of="layer2/it-propagates" />
           </Eq>
 
           <Para>
@@ -5058,7 +4998,7 @@ mean 1.165 ticks per cell, spread 0.226, against c̄ = 1`}
             The shortfall's first moment — <B>A</B> = Σ(1−<V>f</V>)·<B>d̂</B>, read straight off the cells — computed on a 41³ lattice with a momentum-conserving collision and an absorber whose <i>position</i> oscillates, so that the source has a direction and its potential has a curl. <b>Nothing analytic anywhere.</b> A single cell holds 26 bits, so what makes it a field is a lock-in at the source's own frequency: the vacuum is uncorrelated with the source and averages away.
           </Para>
 
-          <Eq note="vector.ts §1–5 — every number read off the grid · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="vector.ts §1–5 — every number read off the grid · NOT RE-MEASURED — superseded: the article's own audit says this streams f ∈ {0,1} with no polarity anywhere, so it measured a scalar density field and called it E. The polarised runs that replace it are electrostatics/coulomb and magnetostatics/neutral-wire">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`                        continuum (lorenz)   on this lattice
 a first moment at all   assumed              MEASURED, |Ã| ~ |φ̃|
@@ -5111,7 +5051,7 @@ Ampère–Maxwell          derived              1.00–1.04 FAILS`}
             <b>And the first thing to try is the cheap fix, which mostly does not work.</b> Weighting the moment by the raw lattice step rather than the unit direction is the <i>correct</i> current, and it should be what continuity needs — but on a cubic lattice it moves the Lorenz residual only from 0.48 to 0.40. <b>Getting the bookkeeping right is not enough</b>, because on a grid whose exits have three different lengths the sum still mixes carriers that cross different distances in the same tick. The weighting was a real error and it was not the main one.
           </Para>
 
-          <Eq note="regime.ts, hex.ts, fcc.ts — the same measurement on three lattices · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="regime.ts, hex.ts, fcc.ts — the same measurement on three lattices · NOT RE-MEASURED — superseded: audited unpolarised alongside vector.ts, and a geometry comparison is now what geometry/derived-constants and every test's own header carry rather than a file">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`lattice                  step lengths   D   Lorenz    Gauss
 cubic, 26 exits          1, √2, √3      3   0.40–0.94  0.64–1.07
@@ -5144,14 +5084,8 @@ FCC, 12 exits            √2             3   0.105      ~0.43`}
 
           <Head>and what changing the lattice would cost the rest of the book</Head>
 
-          <Eq note="fcc.ts §4 — the exits sorted by which side of an axis they fall on · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`axis                    + side   equator   − side
-cubic ⟨100⟩ face          9        8         9      ← Layer 2's ring
-FCC, an exit ⟨110⟩        5        2         5
-FCC, a cube axis ⟨100⟩    4        4         4
-FCC, a body diagonal      3        6         3      ← a hexagonal ring`}
-            </span>
+          <Eq note="geometry/exits-by-axis — the exits sorted by which side of an axis they fall on">
+            <Recorded of="geometry/exits-by-axis" />
           </Eq>
 
           <Para>
@@ -5194,17 +5128,8 @@ FCC, a body diagonal      3        6         3      ← a hexagonal ring`}
             Which is the better way to hold all of this. <b>A geometry is a parameter of this model and not a fact about it</b> — the three rules never mention one. They demand only that every exit have its opposite, so a head-on pair exists for (G+M/1) and (G+M/3) to act on, and every candidate supplies that. Rank-2 isotropy gives the inverse square, and every candidate supplies that too. <b>Which is why 1/<V>r</V>² was never in danger and why the fourth-order problem went uncaught for so long.</b>
           </Para>
 
-          <Eq note="geometry.ts §1, §5, §7 — anisotropy as (max − min)/mean over directions · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`geometry             DEG  rank 4   equator  CYCLE  SPIN   c aniso  field
-cubic 6, faces         6   99.5%      4       4     90°    1.00×   veined
-cubic 8, BCC           8   79.7%      0       —      —     1.00×   veined
-cubic 12, FCC         12   28.5%      6       6     60°    1.00×   veined
-cubic 18, weighted    18   exact      8       8     45°    1.41×   round
-cubic 26, THE MODEL   26   49.8%      8       8     45°    1.73×   veined
-cubic 26, weighted    26   exact      8       8     45°    1.73×   round
-icosahedral 12        12   exact      4       4     90°    1.00×   round`}
-            </span>
+          <Eq note="geometry/derived-constants — every count read off the exits, and the rank-4 anisotropy as (max − min)/mean over directions">
+            <Recorded of="geometry/derived-constants" />
           </Eq>
 
           <Para>
@@ -5235,7 +5160,7 @@ icosahedral 12        12   exact      4       4     90°    1.00×   round`}
             Put a sign on the body and read the net polarity of the vacuum around it.
           </Para>
 
-          <Eq note="charged.ts §2 — the three rules, with polarity, on a lattice · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="charged.ts §2 — the three rules, with polarity, on a lattice · NOT RE-MEASURED — superseded: electrostatics/coulomb is this run — a charge polarising the vacuum, the two signs equal and opposite, the net polarity falling as 1/r^(D−1)">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`body       net r 4–7   r 8–12   r 13–18   far
 neutral       0.014     −0.002    −0.002   0.000
@@ -5268,7 +5193,7 @@ shell   mean r    net      × r     × r²
             <b>A current in this model is charges with polarity, moving</b> — which makes <B>A</B> = Σ<V>σ</V>·<B>D</B>, the signed first moment over the exits, a real local quantity. So take a <i>neutral wire</i>: cells that set their +<V>z</V> exits to +1 and their −<V>z</V> exits to −1 every tick, <b>as many + as −, no net charge</b>, and a net polarity current along <V>z</V>. It is the smallest thing in this model that is a current rather than a charge.
           </Para>
 
-          <Eq note="ampere.ts §1–3 — signed projections onto each cell's own φ̂, r̂, ẑ · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="ampere.ts §1–3 — signed projections onto each cell's own φ̂, r̂, ẑ · NOT RE-MEASURED — superseded: magnetostatics/neutral-wire builds the same wire with the label and reads Ampère straight off the cells, with no curl and no differentiation">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`r     A∥ẑ    B·φ̂       B·r̂       B·ẑ      φ̂ share
 3     88%    0.19835   −8.4e−4   6.4e−3    100%
@@ -5302,7 +5227,7 @@ reversed current:  B·φ̂ = −0.03294 against 0.03482      ratio −0.946
             <b>The exponent problem is about which derived object is which, and the physics does not need one.</b> What magnetism <i>is</i>, operationally, is that parallel currents attract and antiparallel ones repel — and in this model a force is not a vector added to anything. <b>It is where space shortens</b>, because (G+M/1) takes two spatial points and leaves one. So put two wires side by side and count where the annihilations land.
           </Para>
 
-          <Eq note="wires.ts — a matched shell 2 to 4 cells from the nearer wire, inside the pair and outside it · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="wires.ts — a matched shell 2 to 4 cells from the nearer wire, inside the pair and outside it · NOT RE-MEASURED — superseded: this is the annihilation count alone, which the heading below says can only see the rule that destroys. Both channels on the new core are magnetostatics/ampere-force, and they report no difference between the two configurations at all">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`configuration       between   outside   ratio    between − outside
 inert control        0.0445    0.0440   1.0112        5e−4
@@ -5349,7 +5274,7 @@ antiparallel         0.0390    0.0388   1.0043        2e−4`}
             A force law is a statement about distance, and both of them were measured against it — six runs of seven hundred ticks at each separation, each differenced against a pair of the same geometry, fitted only on points clearing two sigma.
           </Para>
 
-          <Eq note="forces.ts §2–3 — the signal is the force on the left body, in units of annihilations per cell · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="forces.ts §2–3 — the signal is the force on the left body, in units of annihilations per cell · NOT RE-MEASURED — as push.ts §2 above: electrostatics/force-range carries the question and the budget it would take, and the cliff at d ≈ 11 is not resolved at four seeds of 120 ticks">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`         two charges              two wires
 d = 8    2.195e−1   (71σ)        1.331e−1   (387σ)
@@ -5381,14 +5306,14 @@ d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
             Every line below is measured on a lattice running the three rules, and each one names what it cost.
           </Para>
 
-          <Eq note="exact.ts — 893,268 cells, integers, streaming and collision both; worst error exactly nought · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>electrostatics/continuity — integers, streaming and collision both; worst error <M of="electrostatics/continuity" is="worst |ρ(t+1) − ρ(t) + ∇·J| over every cell and every tick" plain digits={0} /> over a quarter of a million cell-ticks, with <M of="electrostatics/continuity" is="annihilations over the same run, which do NOT break it" plain digits={0} /> annihilations firing</>}>
             <V>ρ</V>(<V>t</V>+1) − <V>ρ</V>(<V>t</V>) + <V>∇</V>·<B>J</B> = 0
             <span style={{ padding: '0 1.2em', color: FAINT }}>with</span>
             <B>J</B> = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>f</V><Sub>d</Sub> <B>D</B><Sub>d</Sub>
           </Eq>
 
           <Para>
-            <b>Continuity, exactly, on any lattice.</b> What leaves a cell along <B>d</B> arrives at <V>c</V> + <B>D</B><Sub>d</Sub> and nowhere else, so this is not a hypothesis about the model — it is what streaming <i>is</i>. And it is why the Lorenz condition is not a thing to check but a thing to notice.
+            <b>Continuity, exactly, on any lattice.</b> What leaves a cell along <B>d</B> arrives at <V>c</V> + <B>D</B><Sub>d</Sub> and nowhere else, so this is not a hypothesis about the model — it is what streaming <i>is</i>. And it is why the Lorenz condition is not a thing to check but a thing to notice. <span className="bp5-text-muted">(And it is a statement about streaming rather than about a <i>tick</i>, which re-measuring it is what showed. A tick is collide-then-stream, and (G+M/3) re-aims a ray between the two — so a divergence read at the start of a tick is the divergence of the wrong current, and the residual under the turning theories is carried entirely by the rays that turned. Annihilation does <i>not</i> break it: a fold moves the rays it keeps.)</span>
           </Para>
 
           <Eq>
@@ -5403,7 +5328,7 @@ d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
             <b>Coulomb's law, and it is Gauss's law that makes it true.</b> Both rules <i>conserve</i> net polarity — (G+M/1) removes a + and a − together and (G+M/3) preserves both — so it is a conserved quantity spreading over a shell of 4π<V>r</V>², and 1/<V>r</V>² is what that comes to. <b>The net polarity a charge leaves in the vacuum <i>is</i> the electric field</b>, read directly rather than differentiated out of a potential.
           </Para>
 
-          <Eq note="forces.ts §1 — a signed one-sided force, six runs of 700 ticks, against an inert pair of the same geometry · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="forces.ts §1 — a signed one-sided force, six runs of 700 ticks, against an inert pair of the same geometry · NOT RE-MEASURED — superseded: electrostatics/sign-law measures the same signed one-sided force in both channels, and the alike case being unresolved in the annihilation count is now a structural statement rather than a noise floor — see electrostatics/charge-in-a-field">
             <V>F</V> = ⟨ann⟩<Sub>toward</Sub> − ⟨ann⟩<Sub>away</Sub>
             <span style={{ padding: '0 1.2em', color: FAINT }}>gives</span>
             +2.54·10<Sup>−2</Sup> at <b>7.6σ</b> for + −
@@ -5415,7 +5340,7 @@ d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
             <b>Opposite charges attract, at seven and a half sigma, and the repulsion is not resolved.</b> That is the honest split and it took getting the measure right to see either: a <i>ratio</i> saturates — it read 8.5 at close separation, which is no longer a response to a perturbation — and the region it averaged over changed shape with the separation, so the samples were not comparable across the one variable that mattered. A force is a signed thing about <i>one</i> object, on a shell that does not depend on the separation, and then it is linear and it cannot saturate. <span className="bp5-text-muted">(And the two alike cases disagree with each other in sign at about one sigma, which is what noise looks like — so the repulsion is unmeasured rather than absent.)</span>
           </Para>
 
-          <Eq note="ampere.ts — a neutral wire, signed projections onto each cell's own basis · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="ampere.ts — a neutral wire, signed projections onto each cell's own basis · NOT RE-MEASURED — superseded: magnetostatics/neutral-wire, on the lattice and with the label">
             <B>A</B> = <span style={{ fontSize: '1.15em' }}>Σ</span><Sub>d</Sub> <V>σ</V><Sub>d</Sub> <B>D</B><Sub>d</Sub>
             <span style={{ padding: '0 1em', color: FAINT }}>⇒</span>
             <B>B</B> = <V>∇</V>×<B>A</B> is azimuthal to 97–100%
@@ -5457,7 +5382,7 @@ d = 14   6.637e−4   (0.9σ)      −8.819e−4   (−3.2σ)`}
             <b>What a charge is, on this book's own reading, is a lopsided default rather than a stopped one</b> — the magnetism arc writes it as <V>P</V> = 2·dwell − 1, a bias in how long a source spends on each sign. Which puts the two requirements in tension along a single axis:
           </Para>
 
-          <Eq note="repel.ts §1 — the source's net emission per period is P · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="repel.ts §1 — the source's net emission per period is P · NOT RE-MEASURED — superseded: the arc's account of a repulsion does not survive being run, and push.ts finds the push by a different mechanism two headings later. The live half of this — that opposite is pulled harder than alike at every bias — is electrostatics/sign-law">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`P = 1    never alternates    a charge, and NO repulsion mechanism
 P = 0    perfectly balanced   the mechanism, and NO charge
@@ -5471,7 +5396,7 @@ P = 0    perfectly balanced   the mechanism, and NO charge
 
           <Head>so sweep the bias — and the mechanism does not survive it</Head>
 
-          <Eq note="repel.ts §1 — six runs of 700 ticks at each bias; positive is a PULL · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="repel.ts §1 — six runs of 700 ticks at each bias; positive is a PULL · NOT RE-MEASURED — superseded: the arc's account of a repulsion does not survive being run, and push.ts finds the push by a different mechanism two headings later. The live half of this — that opposite is pulled harder than alike at every bias — is electrostatics/sign-law">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`bias P   alike (+,+)   opposite (+,−)   opp − alike   signif
 1.0      2.979e−3      2.911e−2         2.613e−2      7.8σ
@@ -5516,7 +5441,7 @@ P = 0    perfectly balanced   the mechanism, and NO charge
             <b>And underneath that, the turn as coded was doing nothing at all.</b> (G+M/3) is a swap of the counter-propagating pair on an axis, and the branch is taken exactly when the two are <i>equal</i>:
           </Para>
 
-          <Eq note="repel.ts — the turn, and the reason it never fired · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="repel.ts — the turn, and the reason it never fired · NOT RE-MEASURED — superseded: the arc's account of a repulsion does not survive being run, and push.ts finds the push by a different mechanism two headings later. The live half of this — that opposite is pulled harder than alike at every bias — is electrostatics/sign-law">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em' }}>
               if (p === q) {'{'} pol[c·DEG + a] = q; pol[c·DEG + OPP[a]] = p; {'}'}
             </span>
@@ -5532,7 +5457,7 @@ P = 0    perfectly balanced   the mechanism, and NO charge
             A body absorbs the rays that arrive at it and is pushed by their momentum. <V>push.ts</V> measures the net <V>x</V>-momentum the left body takes in per tick, with the partner at <V>+x</V>, so <b>negative is a repulsion</b>. The control is not an inert partner and not the other configuration — it is a body <i>on its own</i>, which must read nought.
           </Para>
 
-          <Eq note="push.ts §1 — 45³, cubic 26, the three rules, dwell 10/12 so P = ⅔ exactly, separation 10 · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="electrostatics/sign-law — the two channels and the lone control, on the new core; the lone body no longer reads an exact nought and that disagreement is recorded on the claim">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`turn    lone                 alike (+,+)          opposite (+,−)
 noop    +0.000e+0 ± 0.0e+0   −8.680e+0 ± 6.0e−4   −2.053e−2 ± 1.7e−3
@@ -5580,7 +5505,7 @@ spin    +0.000e+0 ± 0.0e+0   −7.746e−1 ± 1.6e−2   −1.337e−2 ± 4.2e�
             <b>A destroyed spatial point and an absorbed ray are not the same quantity</b>, so the net force is <V>F = (arrivals) + κ · (points destroyed)</V> for a κ the lattice does not fix. What it <i>does</i> fix is the window in which both signs come out right — and the window is not narrow:
           </Para>
 
-          <Eq note="signlaw.ts — the coupling window, from the measured channels · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="electrostatics/sign-law — the coupling window, from the measured channels; the window is reported rather than predicted, since the arc's 3.36 decades are cubic 26's">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`noop   opposite attracts once κ > 0.786;  alike still repels while κ < 1802
        window (0.786, 1802) — 3.36 decades
@@ -5602,12 +5527,8 @@ spin   opposite attracts once κ > 0.563;  alike still repels while κ <   27.9
 
           <Head>and it has a range</Head>
 
-          <Eq note="push.ts §2 — the push against separation; the run was still going at the far end · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`sep   alike                 opposite
- 6    −4.630e+0 ± 2.3e−2    −1.385e−2 ± 1.4e−3
-10    −7.746e−1 ± 1.6e−2    −1.337e−2 ± 4.2e−3`}
-            </span>
+          <Eq note="electrostatics/force-range — the push against separation; at the suite's budget the sweep does not resolve, which is reported rather than fitted">
+            <Recorded of="electrostatics/force-range" />
           </Eq>
 
           <Para>
@@ -5741,20 +5662,12 @@ spin   opposite attracts once κ > 0.563;  alike still repels while κ <   27.9
             A meeting has exactly three things a field could touch: <b>where</b> it puts the structure, <b>whether</b> it happens at all, and <b>which</b> of the pair dies. That is the whole space, and the sections above only ever tried the first. So enumerate, in an unbiased background so there is no electric force, and take the worst case over forty-eight velocity directions.
           </Para>
 
-          <Eq note="acts.ts §1 — |F⊥| is the Lorentz part, |F·v̂| the longitudinal one that carries the bound · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`mechanism   what it changes      |F⊥|      worst |F·v̂|   verdict
-none        nothing (control)    0.00e+0    0.00e+0     no force
-M1 turn     rotates the step     8.66e−2    2.17e−3     Lorentz + drag
-M2 gate     gates the rate       1.73e−1    1.03e−15    PURE LORENTZ
-M3 drag     gates, even in d̂     7.55e−3    1.93e−2     wrong direction
-M4 shear    shears the step      8.66e−2    4.09e−16    PURE LORENTZ
-M5 select   biases the outcome   0.00e+0    0.00e+0     no force`}
-            </span>
+          <Eq note="magnetism/how-a-field-acts — |F⊥| is the Lorentz part, |F·v̂| the longitudinal one that carries the bound, and ∥v×W says whether what is left is a magnetic force at all">
+            <Recorded of="magnetism/how-a-field-acts" />
           </Eq>
 
           <Para>
-            <b>Two of them work, which was not expected.</b> M2 and M4 both give a pure Lorentz force with <i>no</i> longitudinal component — not a small one, none, at machine precision, at every velocity direction tried.
+            <b>Two of them work, which was not expected.</b> M2 and M4 both give a pure Lorentz force with <i>no</i> longitudinal component — not a small one, none, at <M of="magnetism/how-a-field-acts" is="worst longitudinal force from the GATE, over 48 headings" plain digits={0} /> and <M of="magnetism/how-a-field-acts" is="worst longitudinal force from the SHEAR, over 48 headings" plain digits={0} />, at every velocity direction tried, and both aligned with <B>v</B>×<B>W</B> to every digit. <span className="bp5-text-muted">(The turn's transverse part is <i>not</i> purely <B>v</B>×<B>W</B> either — 0.9892 here where the other two are 1.0000. The same symmetric term that makes the drag tilts what is left of the Lorentz force out of its plane, which is a second count against it and not a separate one.)</span>
           </Para>
 
           <Head>and the second one is the first one with a constraint dropped</Head>
@@ -5763,14 +5676,14 @@ M5 select   biases the outcome   0.00e+0    0.00e+0     no force`}
             <b>M4 is the row that matters, because it is this arc's own mechanism with one assumption removed — and the assumption was never justified.</b> A rotation moves the displacement sideways by sin <V>θ</V> <i>and</i> shortens it along its old direction by (1 − cos <V>θ</V>), because a rotation preserves length. <b>That shortening <i>is</i> the longitudinal force.</b>
           </Para>
 
-          <Eq note="acts.ts §1 — deflect without normalising, and the symmetric term is simply absent · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="magnetism/how-a-field-acts — deflect without normalising, and the symmetric term is simply absent">
             <B>d̂</B> → <B>d̂</B> + <V>κ</V>(<B>d̂</B> × <B>W</B>)
             <span style={{ padding: '0 1.2em', color: FAINT }}>instead of</span>
             <B>d̂</B> → <V>R</V>(<B>W</B>,<V>θ</V>)<B>d̂</B>
           </Eq>
 
           <Para>
-            Deflect the displacement sideways <i>without insisting it stay one cell long</i> and there is no (1 − cos <V>θ</V>) term to carry a drag. <b>And the second-order lengthening does not revive it</b>, which had to be checked rather than assumed: |<B>d̂</B> + <V>κ</V>(<B>d̂</B> × <B>W</B>)|² = 1 + <V>κ</V>²|<B>d̂</B> × <B>W</B>|², and that correction is <i>even</i> in <B>d̂</B> while the displacement is odd, so it cancels over the ±<B>d̂</B> pairs — measured at 4·10<Sup>−16</Sup>, which is a cancellation and not a residue.
+            Deflect the displacement sideways <i>without insisting it stay one cell long</i> and there is no (1 − cos <V>θ</V>) term to carry a drag. <b>And the second-order lengthening does not revive it</b>, which had to be checked rather than assumed: |<B>d̂</B> + <V>κ</V>(<B>d̂</B> × <B>W</B>)|² = 1 + <V>κ</V>²|<B>d̂</B> × <B>W</B>|², and that correction is <i>even</i> in <B>d̂</B> while the displacement is odd, so it cancels over the ±<B>d̂</B> pairs — measured at <M of="magnetism/how-a-field-acts" is="the second-order lengthening summed over the ±d̂ pairs" plain digits={0} />, which is a cancellation and not a residue.
           </Para>
 
           <BR/>
@@ -5785,14 +5698,14 @@ M5 select   biases the outcome   0.00e+0    0.00e+0     no force`}
             M2 works differently and is worth keeping because it is the one that could be strong. It does not move the structure anywhere new — the displacement is still ±<B>d̂</B> and all the field does is make some directions likelier. A mechanism that only works for one hand-picked function would be no mechanism, so sweep every scalar that can be built from <B>W</B>, <B>v</B> and <B>d̂</B>.
           </Para>
 
-          <Eq note="acts.ts §2 — and only one row is a magnetic force · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="magnetism/how-a-field-acts — and only one row is a magnetic force, which the sweep counts rather than the eye">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`gate g(d̂)      symmetry             |F⊥|       worst |F·v̂|  ∥ v×W?
-[W, v, d̂]      odd in d̂, odd in v   1.73e−1    1.03e−15     YES
-(W·d̂)          odd in d̂, no v       8.66e−1    8.49e−1      no
-(v·d̂)          odd in d̂, no W       1.24e−15   1.73e−1      —
-(W·d̂)(v·d̂)     EVEN in d̂            7.55e−3    1.93e−2      no
-(W·v)          no d̂ at all          8.41e−16   3.39e−2      —`}
+              {`gate g(d̂)      symmetry             ∥ v×W?
+[W, v, d̂]      odd in d̂, odd in v   YES
+(W·d̂)          odd in d̂, no v       no
+(v·d̂)          odd in d̂, no W       —
+(W·d̂)(v·d̂)     EVEN in d̂            no
+(W·v)          no d̂ at all          —`}
             </span>
           </Eq>
 
@@ -5840,7 +5753,7 @@ M5 select   biases the outcome   0.00e+0    0.00e+0     no force`}
             All of that is a sum over a distribution. Run the structure instead — a marked cell in a real vacuum, meeting one ray a tick, field out of the plane, motion along <V>x</V>. A Lorentz force should push it along <V>y</V> and not along <V>x</V>.
           </Para>
 
-          <Eq note="acts.ts §5 — four seeds, four million ticks each, κ = 0.3 · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="acts.ts §5 — four seeds, four million ticks each, κ = 0.3 · NOT RE-MEASURED — superseded: its value was tying the turn's measured ratio back to tan(θ/2) at a swept κ, and magnetism/no-free-angle finds the model has no free turn angle to sweep. Which mechanisms carry a longitudinal force is magnetism/how-a-field-acts's, measured over forty-eight headings, and the size of the turn's is electrostatics/turn-as-lorentz's">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`mechanism   Δy (transverse)   Δx (longitudinal)   |Δx|/|Δy|
 gate           119380.4              213.8          0.0018
@@ -5864,7 +5777,7 @@ turn           −59644.2             9233.6          0.1548`}
             The section above was written mid-run, with <V>push</V> §2 and <V>signlaw</V> §2 still extending to 14 and 18, and the crossover offered on the strength of the two rows that existed. <b>The sweep is finished, and it answers the question in the negative for a better reason than it was asked.</b>
           </Para>
 
-          <Eq note="push.ts §2 with (G+M/3) as spin, signlaw.ts §2 as noop — six seeds of 700 ticks at each separation · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="push.ts §2 with (G+M/3) as spin, signlaw.ts §2 as noop — six seeds of 700 ticks at each separation · NOT RE-MEASURED — electrostatics/force-range asks the same question on the new core and does not resolve it at the suite's budget: six runs of seven hundred ticks at each separation is what these numbers cost, and the sweep is recorded there as owed rather than re-fitted to noise">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`sep   PUSH, alike, spin      PULL, opposite         PUSH, alike, noop
  6    −4.630e+0 ± 2.3e−2    +2.207e−1 ± 4.5e−4    −8.989e+0
@@ -5908,24 +5821,11 @@ fitted decay length      push  1.8 … 2.2 cells
           <BR/>
 
           <Para>
-            And the mechanism says in advance what the other channel should show. A wire's exit (1,0,−1) carries −1 and heads toward its partner; the partner's (−1,0,+1) heads back. <b>Parallel, the partner's is +1 — opposite signs, counter-propagating, so (G+M/1) fires and the gap is thinned. Antiparallel, the partner's is −1 — alike, so (G+M/3) turns them, nothing is destroyed, and the rays survive the crossing and land.</b> The same XOR as the charges, arriving at Ampère's force law rather than Coulomb's.
+            And the mechanism says in advance what the other channel should show. A wire's exit (1,0,−1) carries −1 and heads toward its partner; the partner's (−1,0,+1) heads back. <b>Parallel, the partner's is +1 — opposite signs, counter-propagating, so (G+M/1) fires and the gap is thinned. Antiparallel, the partner's is −1 — alike, so (G+M/3) turns them, nothing is destroyed, and the rays survive the crossing and land.</b> The same XOR as the charges, arriving at Ampère's force law rather than Coulomb's. <span className="bp5-text-muted">(That account describes the <i>withdrawn</i> wire — the one whose cells put +1 on their up exits and −1 on their down ones, which emits its two signs into opposite hemispheres and is why its far field came out a power too steep. Built the way <i>magnetostatics</i> builds one, as two counter-drifting populations each radiating isotropically, <b>reversing the current reverses only the label — and no rule reads the label.</b> <K>onDeflect: carry</K> says so in as many words: it is carried through a deflection, not consulted by one. So the two configurations stream, annihilate and turn identically, bit for bit, and both channels report zero difference exactly rather than nearly. <b>The label buys the field and not the force</b>, which is a sharper version of this arc's own obstruction than the arc states — there is Ampère's <i>law</i> here and no Ampère <i>force</i>.)</span>
           </Para>
 
-          <Eq note="wires.ts §1 — 45³, six seeds of 500 ticks, separation 10; a LONE wire is the zero for both channels · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`(G+M/3)   configuration   PUSH (momentum)   PULL (annihilation)
-noop      lone            −4.739e−1         +1.437e−3
-noop      parallel        −5.288e−1         +3.697e−3
-noop      antiparallel    −5.809e+1         +1.515e−3
-spin      lone            −1.376e+0         +1.257e−3
-spin      parallel        −7.744e−1         +9.849e−3
-spin      antiparallel    −1.039e+1         +2.050e−3
-
-noop   antiparallel pushed harder by 5.756e+1   (1780σ)
-       parallel     pulled harder by 2.182e−3   (2.7σ)
-spin   antiparallel pushed harder by 9.616e+0   (103σ)
-       parallel     pulled harder by 7.799e−3   (10.1σ)`}
-            </span>
+          <Eq note="magnetostatics/ampere-force — a LONE wire is the zero for both channels, and the two current configurations come out identical to every digit">
+            <Recorded of="magnetostatics/ampere-force" />
           </Eq>
 
           <Para>
@@ -5978,7 +5878,7 @@ spin   antiparallel pushed harder by 9.616e+0   (103σ)
             Which leaves one escape and it can be measured: the deficit's own <i>first moment</i> relaxes, so if it carried the current's direction it would be the vector potential.
           </Para>
 
-          <Eq note="potential.ts §1–§3 — four objects round one neutral wire, differenced against the same box with no wire · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="potential.ts §1–§3 — four objects round one neutral wire, differenced against the same box with no wire · NOT RE-MEASURED — superseded: the row that closes it is that G is RADIAL, and radiation/rays-cannot-radiate measures exactly that — a field read off ray counts is radial, so its curl is identically zero and E × B has no radial part at all. The conclusion drawn here, that the deficit is a potential carrying no direction while the signed moment is a field carrying one, is what radiation/all-four-of-maxwell then rests on: it is the difference between its `moment` and `counts` readings, and only one of them satisfies Maxwell">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`object                            exponent   direction
 ρ = Σσ           net polarity     −0.22      (the wire is neutral — the control)
@@ -6019,7 +5919,7 @@ G = Σ(1−f) D     deficit moment   −1.04      RADIAL
             <b>Every row of <V>fork</V> is superposition</b>: a sum over an analytic expression at a field point, with no lattice, no vacuum and no collisions. And the arc's own audit says the electromagnetic lattice runs that did happen — <V>regime</V>, <V>fcc</V>, <V>vector</V> — stream <V>f</V> ∈ {'{'}0,1{'}'} with no polarity anywhere. <b>So the label had never been run on a lattice at all.</b>
           </Para>
 
-          <Eq note="induction.ts §1–§4 — 45³, cubic 26, the three rules with polarity AND the label, signed projections onto each cell's own basis · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="induction.ts §1–§4 — 45³, cubic 26, the three rules with polarity AND the label, signed projections onto each cell's own basis · NOT RE-MEASURED — superseded: magnetostatics/neutral-wire and induction/faraday run the label on a lattice, which is the thing this section says had never been done">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`source           what comes out                     measured
 static charge    E radial, Coulomb                  E·r̂ ∝ r^−1.84
@@ -6151,7 +6051,7 @@ neutral wire     B azimuthal, AMPÈRE                B·φ̂ ∝ r^−0.958
             <b>And the first attempt at measuring that was worthless, for a reason that is the whole point.</b> Firing (G+M/2) only in a <i>completely neutral</i> cell sounds like the rule and is self-limiting: once a box has any traffic in it there are almost no fully empty cells left, so the occupancy tops out near a tenth whatever the rate is set to. At that density a ray crosses tens of cells untouched, and the diagnostic said so — <b>the mean number of deflections a surviving tagged ray had was 0.07.</b> Nothing had scattered, so no conclusion about the veins followed either way. <b>The vacuum sections derive a different rule</b> — new room is edged on every axis, and the same expansion thins what is already there, which is one expansion seen twice and has the fixed point (1−<V>p</V>)/(2−<V>p</V>).
           </Para>
 
-          <Eq note="rounded.ts §1–§2 — t50 is the tick a cone-shell's tagged count reaches half its steady value, at r = 20 · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="rounded.ts §1–§2 — t50 is the tick a cone-shell's tagged count reaches half its steady value, at r = 20 · NOT RE-MEASURED — superseded: every row sweeps the expansion rate p, and DISCRETE.ts has since removed that knob — (G/2) fires on every neutral point every tick, so the occupancy is what the rule settles at and each theory declares it. There is no p column left to have. Whether the vacuum rounds the lattice's grain is geometry/veins, which now compares the measured field against the geometry's own rank-four moment rather than against a second box">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`p       fill    turns    axis  face  body   ax/face  ax/body  aniso
 0.00    0.002   0.000    19    14    11     1.357    1.727    54.5%
@@ -6430,12 +6330,8 @@ dipole–dipole model           75.94 %     ← what 1/R⁴ is`}
             (G+M/3) is a sign rather than a detail, and the geometry is the whole of it. <b>Annihilating <i>between</i> two sources shortens the line between them, which is attraction. Annihilating <i>outside</i> them shortens the space behind each, which pushes them apart.</b> So an outcome the earlier files scored as nought is a repulsion, and the coupling runs +1 or −1 where it ran 1 or nought.
           </Para>
 
-          <Eq note="creation.ts §1 — two sided sources, axes swept, bond along +x · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`Δ (turns)   0.000  0.125  0.250  0.375  0.500  0.625  0.750  0.875
-annihilation only  1      1      0      0      0      0      0      1
-all three rules    1      1      0     −1     −1     −1      0      1`}
-            </span>
+          <Eq note={<>magnetism/coupling-has-two-signs — two sided sources, axes swept, bond along +x; the annihilation-only reading has a mean of +0.375 and the three-rule one has <M of="magnetism/coupling-has-two-signs" is="mean of the coupling with all three rules" plain digits={0} /></>}>
+            <Recorded of="magnetism/coupling-has-two-signs" />
           </Eq>
 
           <Para>
@@ -6554,7 +6450,7 @@ R > λ    aligned +1, anti +1     NO PREFERENCE AT ALL`}
           <Eq note="medium/flip-length and vacuum/fixed-point — expansion makes room and thins at the same rate, and that is the whole derivation">
             <Rows of={[
               [<>vacuum density</>,
-                <>½ with no parameter in it, and the polarised medium sits <Verdict of="vacuum/fixed-point · gravity+magnetism" is="occupancy over (1−p)/(2−p)" /></>],
+                <>½ with no parameter in it — measured at <M of="vacuum/fixed-point · gravity+magnetism" is="occupancy" plain digits={4} />, and it is the rule's own number rather than a limit of one, since (G/2) fires on every neutral point every tick and there is no rate left to take a limit of</>],
               [<>mean free path</>,
                 <><M of="medium/flip-length" is="mean free path at half fill, square 8" plain digits={3} /> cells at half fill, and never
                   under <M of="medium/flip-length" is="the shortest path any occupancy reaches" plain digits={3} /> at any occupancy</>],
@@ -7263,15 +7159,18 @@ fcc           −5.547          −5.924       0.707   FERROMAGNET`}
 
           <Head>it departs in two places, and they carry opposite signs</Head>
 
-          <Eq note="contact.ts §2, §3 — both are ∇² of a kernel the model already has · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`co-location, unscreened   ∇²(c/r) = −4πc·δ³(r)     FERROMAGNETIC
-screened at λ             ∇²(e^−r/λ/r) = e^−r/λ/λ²r  ANTIFERRO`}
-            </span>
+          <Eq note="magnetism/exchange-signs — both are ∇² of a kernel the model already has">
+            <Rows of={[
+              [<>co-location, unscreened</>,
+                <>∇²(<V>c</V>/<V>r</V>) = −4π<V>c</V>·δ³(<V>r</V>) — the trace is <b>negative</b>, which is <b>ferromagnetic</b></>],
+              [<>screened at <V>λ</V></>,
+                <>∇²(e<Sup>−<V>r</V>/<V>λ</V></Sup>/<V>r</V>) = e<Sup>−<V>r</V>/<V>λ</V></Sup>/<V>λ</V><Sup>2</Sup><V>r</V> to <M of="magnetism/exchange-signs" is="worst error in ∇²(e^{−r/λ}/r) against e^{−r/λ}/(λ²r)" plain digits={2} /> — the trace is
+                  <b> positive</b>, which is <b>antiferro</b></>],
+            ]} />
           </Eq>
 
           <Para>
-            <b>The first is at co-location.</b> <i>torque</i> §1 measures the kernel as <V>c</V>/<V>R</V>, but that is the <i>large</i>-<V>R</V> answer and the sum it comes from is finite at <V>R</V> = 0 where <V>c</V>/<V>R</V> diverges. Measured: <b>65% out at half a cell, 1.3% by four</b>, with the integrated trace landing on −4<V>πc</V> to three per cent and concentrated exactly where it should be. <b>The sign is negative, which favours the uniform state — this is direct exchange, and it has the sign iron needs.</b>
+            <b>The first is at co-location.</b> <i>torque</i> §1 measures the kernel as <V>c</V>/<V>R</V>, but that is the <i>large</i>-<V>R</V> answer and the sum it comes from is finite at <V>R</V> = 0 where <V>c</V>/<V>R</V> diverges. Measured: <b><M of="magnetism/exchange-signs" is="departure from c/r at half a cell" plain digits={2} /> out at half a cell, <M of="magnetism/exchange-signs" is="departure from c/r by four cells" plain digits={2} /> by four</b>, and concentrated exactly where it should be. <span className="bp5-text-muted">(Both smaller than the cubic-26 file read, which is the geometry: fcc's cells sit further apart, so half a cell is a smaller fraction of the way to the first neighbour.)</span> <b>The sign is negative, which favours the uniform state — this is direct exchange, and it has the sign iron needs.</b>
           </Para>
 
           <BR/>
@@ -7480,14 +7379,8 @@ dipole–dipole           75.94 %`}
             <b>Derived, and six orders below every real antiferromagnet</b> — MnO at 118 K, NiO at 525 K. <b>Which is the right answer</b>: dipolar coupling does not order at room temperature in nature either, and the <M of="magnetism/neel-temperature" is="two Bohr magnetons three ångström apart" plain digits={2} /> K for two Bohr magnetons at 3 Å is the number that argument is made of. What orders real matter is exchange.
           </Para>
 
-          <Eq note="contact.ts §2–§3 — measured to three figures at every r, and the trace integral to 3% · NOT YET RE-MEASURED on DISCRETE.ts">
-            <V>∇</V><Sup>2</Sup>(<V>c</V>/<V>r</V>) = −4<V>πc</V>·<V>δ</V><Sup>3</Sup>(<b>r</b>)
-            <span style={{ padding: '0 0.8em', color: FAINT }}>ferro</span>
-            <span style={{ padding: '0 1em' }} />
-            <V>∇</V><Sup>2</Sup><Paren>
-              <Frac over={<>e<Sup>−<V>r</V>/<V>λ</V></Sup></>} under={<V>r</V>} />
-            </Paren> = <Frac over={<>e<Sup>−<V>r</V>/<V>λ</V></Sup></>} under={<><V>λ</V><Sup>2</Sup><V>r</V></>} />
-            <span style={{ padding: '0 0.8em', color: FAINT }}>antiferro</span>
+          <Eq note="magnetism/exchange-signs — measured at every r, and the screened identity to eight figures">
+            <Recorded of="magnetism/exchange-signs" />
           </Eq>
 
           <Para>
@@ -9495,17 +9388,12 @@ C60                       1.2e−24   1e−7     1.9e+66
             That paragraph is true and it is true of one axis class, and the arc as first written did not say so. The <K><Bar>CYCLE</Bar></K> = 8 sitting in <i>lattice.ts</i> is <K>turnRing</K>'s — eight in-plane directions of a <i>plane</i> — and a plane is an equator only when the axis is a face axis. Cut the equator of every north the lattice has and sort each one by angle, and there are three answers rather than one.
           </Para>
 
-          <Eq note="ring.ts — every north, its equator, and the spacing round it · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`axis class   count   CYCLE   spacing
-face            6       8    uniform 45°
-corner          8       6    uniform 60°
-edge           12       8    NOT uniform — 35.26° / 54.74° alternating`}
-            </span>
+          <Eq note="texture/ring-is-one-axis-class — every north, its equator, and the spacing round it, on the lattice the arc raises the objection about">
+            <Recorded of="texture/ring-is-one-axis-class" />
           </Eq>
 
           <Para>
-            So fourteen of the twenty-six norths carry a uniform ring and they carry <i>two different quanta</i>; the twelve edge axes — the largest class — carry eight directions that are not at equal angles at all, and 35.26° and 54.74° are the lattice's own two angles rather than an eighth of anything. <b>In a texture whose north turns, nearly half the sites have no U(1) on them.</b> That does not sink the construction, but every sentence in this arc with <K><Bar>CYCLE</Bar></K> in it is a sentence about face axes, and the arc had better say which.
+            So fourteen of the twenty-six norths carry a uniform ring and they carry <i>two different quanta</i>; the twelve edge axes — the largest class — carry eight directions that are not at equal angles at all, and 35.26° and 54.74° are the lattice's own two angles rather than an eighth of anything. <span className="bp5-text-muted">(And this does not reproduce on the lattice the book actually runs: fcc 12's exits are all equivalent, so it has one ring class, uniformly spaced, and none of the objection survives. That relocates the complaint rather than answering it — <K><Bar>CYCLE</Bar></K> is still not the lattice's to hand over <i>in general</i>, and a book running on more than one lattice cannot lean on either answer.)</span> <b>In a texture whose north turns, nearly half the sites have no U(1) on them.</b> That does not sink the construction, but every sentence in this arc with <K><Bar>CYCLE</Bar></K> in it is a sentence about face axes, and the arc had better say which.
           </Para>
 
           <BR/>
@@ -9615,14 +9503,8 @@ edge           12       8    NOT uniform — 35.26° / 54.74° alternating`}
             Which is the fork this arc has to take and does not notice it is standing at. Everything above is a <i>continuum</i> transport: the azimuth is a real number, the advance per step is whatever the texture asks for, and the holonomy is a smooth ~10<Sup>−2</Sup> radians. But the opening of this same arc says the phase lives <i>on</i> the eight-member ring, with a quantum of 45°. Put those two sentences next to each other and measure what a smooth texture actually asks the ring for.
           </Para>
 
-          <Eq note="holonomy.ts — a smooth texture, against the smallest move the ring can make · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`plaquette        advance/step   as a fraction of SPIN   quantised   continuum
-(0,0) 1×1           2.739e−2                3.49e−2   0.000e+0    2.739e−2
-(1.5,0.7) 1×1       4.268e−2                5.43e−2   0.000e+0    1.128e−2
-(0,0) 2×2           4.677e−2                5.95e−2   0.000e+0    7.990e−2
-(3,3) 1×1           8.732e−3                1.11e−2   0.000e+0    7.047e−4`}
-            </span>
+          <Eq note="texture/holonomy-is-zero — a smooth texture, against the smallest move the ring can make">
+            <Recorded of="texture/holonomy-is-zero" />
           </Eq>
 
           <Para>
@@ -9702,14 +9584,8 @@ edge           12       8    NOT uniform — 35.26° / 54.74° alternating`}
             The arc explains a pair of earlier null results by saying that a strand with no <i>momentum</i> is mapped to itself by the conjugation that swaps the two traversal senses, so no <V>g</V> separates them — "the charge needs something to be asymmetric about before it shows". Measured, that is not what happens.
           </Para>
 
-          <Eq note="bloch.ts — the same field on the same strand, against the starting momentum · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`  k₀     ⟨x⟩ with grain   ⟨x⟩ against    separation at g = 0.004
-0.00           316.83       −316.83                    633.65
-0.20           215.32       −293.71                    509.03
-0.60            37.09       −150.55                    187.65
-1.20           −20.12        −42.46                     22.34`}
-            </span>
+          <Eq note={<>layer2/bloch-oscillation — the same field on the same strand, against the starting momentum; the separation at <V>k</V><Sub>0</Sub> = 0 is <M of="layer2/bloch-oscillation" is="separation between the two senses at k₀ = 0, over that at k₀ = 1.2" plain digits={1} />× the one at 1.2</>}>
+            <Recorded of="layer2/bloch-oscillation" />
           </Eq>
 
           <Para>
@@ -9728,13 +9604,13 @@ edge           12       8    NOT uniform — 35.26° / 54.74° alternating`}
             Which is <i>Bloch oscillation</i>, and it is the correct behaviour of a charge in a constant field on a lattice rather than a defect — a real result in its own right, and one the arc could have claimed instead of the <V>t</V><Sup>2</Sup>. The distinguishing test is cheap and decisive: if the clock is θ = <V>gt</V> and nothing else, every feature of the trajectory has to land at a fixed value of <V>gt</V>.
           </Para>
 
-          <Eq note="bloch.ts — the turning point at the band centre, and the spacing between turning points · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>layer2/bloch-oscillation — the turning point at the band centre lands at a fixed <V>g</V>·<V>t</V> to <M of="layer2/bloch-oscillation" is="g·t* at the first turning point, worst ratio over four values of g" plain digits={4} />, and the spacing between turning points is <V>π</V> to <M of="layer2/bloch-oscillation" is="worst |g·Δt − π| over the same four" plain digits={1} /></>}>
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`   g       t*     g·t*  (k₀ = 0.6)       Δt     g·Δt        π
-0.003      197    0.591                1048    3.144    3.142
-0.004      148    0.592                 785    3.140    3.142
-0.006       98    0.588                 524    3.144    3.142
-0.008       74    0.592                 392    3.136    3.142`}
+              {`   g       g·t*  (k₀ = 0.6)      g·Δt        π
+0.003         0.594               3.141    3.142
+0.004         0.592               3.140    3.142
+0.006         0.588               3.144    3.142
+0.008         0.584               3.144    3.142`}
             </span>
           </Eq>
 
@@ -9793,11 +9669,8 @@ an undirected axis returns after CYCLE/2 = 4 steps (π)`}
             The paragraph above is the diagnosis this arc was written on, and it is not quite right, in a direction that makes the case stronger rather than weaker. Take the sided tally seriously as a vector field, <B>B</B> = Σ sgn(<B>n</B>·<B>r̂</B>)·<B>r̂</B>/<V>r</V><Sup>2</Sup>, and measure its flux through spheres around the lump. A monopole would give the enclosed charge, the same at every radius. It gives nothing at every radius — 10<Sup>−14</Sup> at <V>r</V> = 200 and 10<Sup>−13</Sup> at 1600, which is the quadrature error and not a number. <b>There is no monopole. <V>∇</V>·<B>B</B> = 0 holds observationally.</b> So what is the 1/<V>r</V><Sup>2</Sup>?
           </Para>
 
-          <Eq note="departure.ts — the angular profile of the sided tally, at fixed radius, times r² · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`  θ      0°      30°     60°     89°     90°     91°     120°    180°
-r²·F   +64.0   +64.0   +64.0   +64.0     0.0   −64.0   −64.0   −64.0`}
-            </span>
+          <Eq note={<>texture/not-even-a-field — the angular profile of the sided tally, at fixed radius, times <V>r</V><Sup>2</Sup>; the flux through every sphere is <M of="texture/not-even-a-field" is="flux through spheres, worst over r = 200 … 1600" plain digits={0} /></>}>
+            <Recorded of="texture/not-even-a-field" />
           </Eq>
 
           <Para>
@@ -9866,7 +9739,7 @@ perfectly balanced         3.000      all aligned              3.001
             Do not ask where the sign is resolved. Ask what the primitive is. Give each node a polarisation <b>p</b> — which is just "which way this bit of the body is pointed", and is a thing an ordering can plausibly hold — and let the emitted sign be
           </Para>
 
-          <Eq note="divp.ts — nought wherever p is uniform, and appearing only where the body ends · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note={<>texture/poles-are-a-divergence — nought wherever p is uniform, and appearing only where the body ends; the net is <M of="texture/poles-are-a-divergence" is="net sign of the whole body, under −∇·p" plain digits={0} /> identically</>}>
             <V>s</V> = −<V>∇</V>·<b>p</b>
           </Eq>
 
@@ -9886,16 +9759,8 @@ perfectly balanced         3.000      all aligned              3.001
             Now put the fine-tuning objection to it. You cannot flip a charge, because there are no charges to flip; you can only disturb <b>p</b>.
           </Para>
 
-          <Eq note="divp.ts — the net, under every disturbance worth trying · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`disturbance to p                 net sign    exponent
-none — uniform ẑ                   0.0e+0       3.000
-one node reversed                  0.0e+0       3.000
-eight nodes reversed               0.0e+0       3.002
-every node ±10% wobble            −2.3e−16      3.000
-every node ±50% wobble            −1.7e−15      3.000
-p entirely random                 −2.8e−16      2.963`}
-            </span>
+          <Eq note="texture/poles-are-a-divergence — the net, under every disturbance worth trying; the exponent is fitted from sixty cells out, where the quadrupole has died">
+            <Recorded of="texture/poles-are-a-divergence" />
           </Eq>
 
           <Para>
@@ -9910,14 +9775,8 @@ p entirely random                 −2.8e−16      2.963`}
             Which leaves the question that decides whether any of this is a consequence or a convenience: <i>does this model emit −<V>∇</V>·<b>p</b>?</i> The argument for it is Gauss's theorem applied to the annihilation ledger — every + in the bulk has a neighbour's − sitting on it, so only the boundary survives — and an argument is not a measurement. So run it: every node puts sgn(<b>p</b>·<B>d</B>) into each of the <K><Bar>DEG</Bar></K> ways out, and where two pulses come at each other with opposite signs they annihilate, which is rule (G/1) and nothing else.
           </Para>
 
-          <Eq note="escape.ts — 64 nodes, 1664 pulses, 600 annihilated head-on and 552 escaping · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`z-layer     Σ escaped        Σ −div p over the layer
-   1.5        100.0                    8.0000
-   0.5          0.0                    0.0000
-  −0.5          0.0                    0.0000
-  −1.5       −100.0                   −8.0000`}
-            </span>
+          <Eq note="texture/surface-density-is-derived — pulses out of every node into the geometry's ways out, opposite signs meeting head-on annihilating, which is (G+M/1) with the signs kept">
+            <Recorded of="texture/surface-density-is-derived" />
           </Eq>
 
           <Para>
@@ -9994,13 +9853,8 @@ p entirely random                 −2.8e−16      2.963`}
             Start with what the model actually has when a pulse arrives, which is <i>annihilation</i> and nothing else. <K>rate</K> in <i>physics.ts</i> reads the source's own <K>turning</K> and <K>flips</K> and reads nothing about what has landed on it, so as written no emitter can hear another at all. The natural repair is that annihilation near a source changes its beat. Measured, that repair fails — and it fails structurally rather than numerically.
           </Para>
 
-          <Eq note="response.ts — two sided emitters, the annihilation count near the first · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`Δβ        0.000   0.125   0.250   0.375   0.500   0.625   0.750   0.875
-count     2.505   2.505   1.394   1.038   1.038   1.038   1.394   2.505
-
-sin component  −1.3e−16          cos component  8.95e−1`}
-            </span>
+          <Eq note={<>texture/the-coupling-is-odd — two sided emitters, the annihilation count near the first; even to <M of="texture/the-coupling-is-odd" is="worst |count(+Δβ) − count(−Δβ)| over the count itself" plain digits={0} /></>}>
+            <Recorded of="texture/the-coupling-is-odd" columns={["Δβ", "count"]} />
           </Eq>
 
           <Para>
@@ -10013,14 +9867,8 @@ sin component  −1.3e−16          cos component  8.95e−1`}
             But a count is not what rule (G/1) produces. <b>It produces a <i>location</i></b> — space is destroyed at particular cells — and a source with an axis has a front and a back. Take the first moment of the annihilation density about the source's own axis instead of the total, and the evenness goes.
           </Para>
 
-          <Eq note="response.ts — the first moment about n's axis, and the same at −Δβ · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`Δβ        0.050    0.125    0.188    0.250    0.313    0.375
-moment   −1.7e−17 −1.7e−17 −1.26e−1 −2.78e−1 −1.26e−1 −1.2e−17
-at −Δβ   −1.7e−17 −1.7e−17  1.26e−1  2.78e−1  1.26e−1 −1.2e−17
-
-mean −2.1e−18     sin −1.278e−1     cos −2.1e−17`}
-            </span>
+          <Eq note={<>texture/the-coupling-is-odd — the first moment about n's axis, and the same at −Δβ; odd to <M of="texture/the-coupling-is-odd" is="worst |moment(+Δβ) + moment(−Δβ)| over the moment" plain digits={0} /> with a cosine component of <M of="texture/the-coupling-is-odd" is="cosine component of the moment" plain digits={0} /></>}>
+            <Recorded of="texture/the-coupling-is-odd" columns={["Δβ", "moment", "at −Δβ"]} />
           </Eq>
 
           <Para>
@@ -10045,7 +9893,7 @@ mean −2.1e−18     sin −1.278e−1     cos −2.1e−17`}
             An earlier version of this section answered that and reported a magnet's worth of angular structure, concluding the model has no ferromagnet in it. <b>That measurement was not a convergent quantity and the conclusion is withdrawn.</b> The torque as defined summed annihilations over a ball of radius <V>R</V> around the source weighted 1/<V>r</V><Sup>2</Sup> from the <i>other</i> source; for <V>R</V> much larger than the separation the weight falls as 1/<V>R</V><Sup>2</Sup> while the cells in a shell grow as <V>R</V><Sup>2</Sup>, so every shell contributes equally and the sum grows linearly with the cutoff for ever.
           </Para>
 
-          <Eq note="texture.ts §3 — the transverse-bond torque against the cutoff radius, which has no limit · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="texture.ts §3 — the transverse-bond torque against the cutoff radius, which has no limit · NOT RE-MEASURED — the arc withdraws it in the paragraph below: a region far from a source should not torque it, so what the annihilation torque does to an ordering is REOPENED rather than settled, and re-running a quantity with no limit would settle nothing. What survives is upstream of it and is texture/the-coupling-is-odd's">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`cutoff R      2         4         6         8        12        16
 torque    −3.4e−3   −1.5e−1   −1.5e+0   −7.5e+0   −2.8e+1   −3.9e+1
@@ -10081,7 +9929,7 @@ torque    −3.4e−3   −1.5e−1   −1.5e+0   −7.5e+0   −2.8e+1   −3.9
             All of which was made to matter by a claim that should have been checked first. The magnetostatics above was read as needing a <i>uniformly</i> polarised body, and it does not. <b>The far field is an integral functional of the polarisation</b> — integrate −<V>∇</V>·<b>p</b> against a test function by parts and what is left is ∫<b>p</b> d<V>V</V> — so every arrangement with the same net gives the same magnet.
           </Para>
 
-          <Eq note="texture.ts §1 — the same 8³ block, the polarisation arranged every way worth arranging it · NOT YET RE-MEASURED on DISCRETE.ts">
+          <Eq note="texture.ts §1 — the same 8³ block, the polarisation arranged every way worth arranging it · NOT RE-MEASURED — superseded: texture/poles-are-a-divergence sweeps the same block under every disturbance to p worth trying — one node reversed, eight reversed, ±10% and ±50% wobble, p entirely random — and the net stays zero to 5.6e−17 with the exponent at 3 throughout. Telescoping does not care what p is, which is the claim this table was making">
             <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
               {`texture                        |⟨p⟩|   exponent   Φ vs cosθ    moment
 uniform                        1.000     3.000     2.4e−7    5.12e+2
@@ -10136,14 +9984,8 @@ pure closure, no net           0.000        —          —     5.4e−13`}
             Put units in it. The ceiling is <V>L</V> = π/ω = λ/2 — half a wavelength of the emitters' own clock — and the model fixes that clock two ways, neither of which is survivable. On the turn clock a source comes round in at least <K><Bar>CYCLE</Bar></K> = 8 ticks, so the coherent region is four cells: 6.5·10<Sup>−35</Sup> m, which is not small domains but <i>no long-range order of any kind</i>. On the beat clock, with beat = 1/mass, the emitter's wavelength is 0.0624 of its reduced Compton wavelength:
           </Para>
 
-          <Eq note="domainsize.ts — the coherent ceiling, converted, against 0.1–100 µm measured · NOT YET RE-MEASURED on DISCRETE.ts">
-            <span style={{ fontFamily: JetBrainsMono, fontSize: '0.82em', whiteSpace: 'pre' }}>
-              {`carrier                    beat (ticks)      λ/2        short by
-electron                      1.490e+21    1.20e−14 m     10⁹
-iron atom                     1.463e+16    1.18e−19 m     10¹⁴
-neodymium atom                5.666e+15    4.58e−20 m     10¹⁴
-Nd₂Fe₁₄B formula unit         7.559e+14    6.11e−21 m     10¹⁵`}
-            </span>
+          <Eq note="magnetism/domain-size — the coherent ceiling, converted, against 0.1–100 µm measured">
+            <Recorded of="magnetism/domain-size" />
           </Eq>
 
           <Para>

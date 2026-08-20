@@ -494,7 +494,7 @@ export const calibrateFalloff = (o: {
  * vacuum is rather than of how many ways out a point has.
  */
 export const calibrateMeanFreePath = (o: { p?: number; N?: number; T?: number } = {}): Calibration => {
-  const v = vacuumFill({ p: o.p ?? 0.05, N: o.N ?? 21, T: o.T ?? 120 });
+  const v = vacuumFill({ N: o.N ?? 21, T: o.T ?? 120 });
   const measured = 1 / Math.max(v.measured, 1e-9);
   return {
     name: "mean free path",

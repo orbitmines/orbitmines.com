@@ -2,13 +2,17 @@
  * THE VACUUM — the one number in this book nobody chose, and the scale that comes
  * with it.
  *
- * (G+M/2) is one expansion seen twice: new room is edged on every axis, and the
- * same expansion thins what is already there. Those two lines have a fixed point
+ * (G+M/2) splits every neutral point every tick — unconditionally, with no rate in
+ * it — and puts the two halves of the inserted point on the two ends of one shared
+ * edge, facing each other. What survives that meeting IS the occupancy:
  *
- *     f → p + (1−p)f   then   f(1−p)          f* = (1−p)/(2−p) → ½
+ *     conserving          both halves kept                    → 1
+ *     gravity             both neutral, both annihilate       → 0
+ *     gravity+magnetism   alike half turns, opposite half goes → ½
  *
- * with the rate cancelling out. Nothing was fitted to get it and nothing can be
- * turned to move it.
+ * Nothing was fitted to get that and nothing can be turned to move it. The
+ * (1−p)/(2−p) → ½ this file used to test against is the p → 0 limit of a rate the
+ * rule does not have, and it agreed with the right answer for the wrong reason.
  *
  * AND IT IS LOAD-BEARING FOR EVERY OTHER RESULT, which is why it is tested first
  * rather than assumed. Every claim about screening, about coherence, about whether
@@ -27,107 +31,133 @@ import { test, DEFAULT_SEEDS } from "../SUITE";
 
 export const fixedPoint = test({
   id: "vacuum/fixed-point",
-  claims: "the vacuum settles at (1−p)/(2−p) with the rate cancelling out, and a polarised " +
-    "one settles below it because (G+M/1) is a sink the derivation has no term for",
+  claims: "the vacuum settles at a definite occupancy with no rate in it and no dependence " +
+    "on the box — 1 where nothing is destroyed and 0 under pure gravity, both from the rule; " +
+    "and under gravity+magnetism a number the LATTICE fixes rather than the rules",
   cited: ["Gravity — movement", "Electromagnetism — and the veins"],
   under: {
     /*
-     * THE UNSIGNED DERIVATION IS FOR THE UNSIGNED THEORY, which is what makes this
-     * pair worth running rather than just one. Under gravity every meeting
-     * annihilates, so the fixed point is the one the algebra gives. Under
-     * gravity+magnetism about half of head-on meetings are alike and TURN — but
-     * the other half still destroy, and destruction is a sink the two lines of
-     * (G+M/2) do not account for, so it sits below. Being below is the prediction;
-     * how far below is the measurement.
-     */
-    /*
-     * THE DERIVATION'S OWN MEDIUM, where it should be met exactly.
+     * ALL THREE HOLD, AND WHAT THEY HOLD IS WEAKER THAN THE ½ THIS FILE USED TO ASSERT.
+     *
+     * The old version swept an expansion rate `p` against (1−p)/(2−p), with the two real
+     * theories declared `absent` because they annihilate and the derivation has no sink in
+     * it. All of that is gone. (G/2) does not fire at a rate, and it does not fire
+     * everywhere either — it fires on a NEUTRAL POINT, one with nothing on it. So creation
+     * is proportional to how much of the box is empty, and the balance is struck against
+     * destruction wherever (1−f)^DEG puts it.
+     *
+     * TWO OF THE THREE ARE STILL THE RULE'S. Conserving destroys nothing, so every point
+     * that fills stays full and the box saturates at 1. Pure gravity annihilates both
+     * halves of everything it makes, so it holds exactly 0 and HAS NO VACUUM AT ALL.
+     * Neither of those turns on how often a point is empty, so neither turns on the tiling.
+     *
+     * THE THIRD IS THE LATTICE'S, and that is the correction. A polarised vacuum keeps the
+     * alike half of its meetings, so it holds something — but how much is 0.2553 on fcc-12,
+     * 0.1780 on cubic-26, 0.3209 on cubic-6, steady in the box to a part in five hundred
+     * and different on every tiling. The half was never the rules'. What survives is that
+     * the number does not move with the box, which is what makes it a constant at all.
      */
     "conserving": "holds",
-    /*
-     * AND THE TWO REAL THEORIES, WHERE IT SHOULD NOT BE. Both annihilate — gravity
-     * on every head-on meeting, gravity+magnetism on the opposite half of them —
-     * and annihilation is a sink the two lines of (G+M/2) have no term for. So both
-     * sit BELOW the fixed point, and the interesting question is not whether they
-     * miss it but whether the rate still cancels out when they do.
-     */
-    "gravity": "absent",
-    "gravity+magnetism": "absent",
+    "gravity": "holds",
+    "gravity+magnetism": "holds",
   },
   run: (ctx, theory) => {
     const { N, T, seeds } = ctx.budget({ N: 25, T: 200, seeds: 3 });
-    const rates = [0.02, 0.05, 0.12, 0.25];
 
-    const settled = ctx.once((p: number, seed: number) => {
-      const w = new World({ theory, N, seed, boundary: "wrap", expansion: p });
-      w.run(T);
+    /*
+     * THE SWEEP IS OVER THE BOX, NOT OVER A RATE. There is no rate left to vary, and
+     * the claim that took its place is the stronger one anyway: the occupancy is a
+     * property of the RULE, so it must not move when the box or the run length does.
+     */
+    const boxes: [number, number][] = [
+      [Math.max(9, Math.round(N * 0.4)) | 1, Math.round(T / 4)],
+      [Math.max(11, Math.round(N * 0.7)) | 1, Math.round(T / 2)],
+      [N, T],
+      [N, 2 * T],
+    ];
+
+    const settled = ctx.once((n: number, t: number, seed: number) => {
+      const w = new World({ theory, N: n, seed, boundary: "wrap" });
+      w.run(t);
       return { fill: fill(w), scattering: scattering(w) };
     });
 
-    const measured = rates.map(p => ctx.over(seeds, s => settled(p, s).fill));
-    const predicted = rates.map(p => (1 - p) / (2 - p));
+    const measured = boxes.map(([n, t]) => ctx.over(seeds, s => settled(n, t, s).fill));
+    const predicted = theory.vacuum;
+    const at = measured[measured.length - 1].mean;
 
     /*
-     * THE RATE CANCELS OUT — that is the claim, and it is stronger than any single
-     * value. If the occupancy is a property of the RULE rather than of how fast it
-     * is run, then a fourfold change in p moves it hardly at all.
+     * A SPREAD ABOUT A ZERO IS AN ABSOLUTE SPREAD. Dividing by the mean is how the old
+     * version read, and under gravity the mean is nought — which turns "it does not
+     * move" into a division by zero and then into a fake failure. The occupancies here
+     * all live in [0, 1], so the range is already on the right scale.
      */
-    const spread = (Math.max(...measured.map(m => m.mean)) - Math.min(...measured.map(m => m.mean)))
-      / (measured.reduce((a, m) => a + m.mean, 0) / measured.length);
+    const spread = Math.max(...measured.map(m => m.mean)) - Math.min(...measured.map(m => m.mean));
 
-    const w = new World({ theory, N, seed: seeds[0], boundary: "wrap", expansion: 0.05 });
+    const w = new World({ theory, N, seed: seeds[0], boundary: "wrap" });
     w.run(T);
-    const mid = measured[1].mean;
 
+    const empty = predicted === 0;
     return {
       header: headerOf(w, seeds),
       findings: [
-        judge({
-          name: "spread over a 12× change in the rate", value: spread,
-          expect: {
-            of: ctx.expecting === "holds"
-              ? "small — the rate cancels out of the fixed point"
-              : "LARGE — with a sink in it, the balance depends on how fast the rule is run",
-            want: 0, tolerance: ctx.expecting === "holds" ? 0.35 : 1e9,
-            because: "f → p + (1−p)f then f(1−p) has the rate cancelling; adding annihilation " +
-              "breaks that, because creation scales with p and destruction scales with density",
-          },
-        }),
-        ctx.expecting === "holds"
-          ? judge({
-            name: "occupancy against (1−p)/(2−p)", value: mid,
-            expect: {
-              of: "the fixed point of edging and thinning",
-              want: predicted[1], tolerance: 0.2,
-              because: "with nothing destroying anything, creation and thinning are the whole " +
-                "of what moves the occupancy, and this is their fixed point",
-            },
-          })
+        /*
+         * JUDGED ONLY WHERE THE RULE FIXES IT — see `Theory.vacuum`. Conserving destroys
+         * nothing so it fills; gravity destroys everything it makes so it holds nothing;
+         * neither of those depends on how often a point happens to be empty. A polarised
+         * vacuum does, through (1−f)^DEG, so its density is the lattice's and asserting a
+         * number for it here would be asserting the tiling.
+         */
+        predicted === null
+          ? {
+            name: "occupancy", value: at, err: measured[measured.length - 1].err,
+            note: "SET BY THE LATTICE AND NOT BY THE RULES, which is the correction this " +
+              "claim carries. (G/2) fires on an EMPTY point, so creation goes as (1−f)^DEG " +
+              "and the balance lands where the tiling puts it: 0.2553 on fcc-12, 0.1780 on " +
+              "cubic-26, 0.3209 on cubic-6. The ½ this book quoted as the one number nobody " +
+              "chose came out of reading (G/2) as a rule that fires everywhere.",
+          }
           : judge({
-            name: "occupancy over (1−p)/(2−p)", value: mid / predicted[1],
+            name: "occupancy", value: at,
             expect: {
-              of: "WELL BELOW 1 — this theory annihilates, and the derivation has no term for it",
-              want: 0, tolerance: 0.75,
-              because: "annihilation is a sink f → p + (1−p)f then f(1−p) does not contain, so " +
-                "a theory that destroys cannot sit at the fixed point of one that does not",
+              of: `${predicted} — what this theory is left holding once every empty point ` +
+                `has split and the halves have met on their shared edges`,
+              want: predicted, tolerance: 0.05,
+              because: "a medium that destroys nothing fills and stays full; pure gravity " +
+                "annihilates both halves of everything it makes and holds nothing. Neither " +
+                "turns on how often a point is empty, so neither turns on the lattice",
             },
-            note: "which means the ½ this book quotes as 'the vacuum's derived occupancy' is " +
-              "the occupancy of a medium NEITHER of its theories is — and since every screening " +
-              "length here is a mean free path, that is worth more than a factor of two.",
           }),
         judge({
-          name: "mean free path (cells)", value: 1 / Math.max(mid, 1e-9),
-          note: "1/fill — a ray meets something when it lands where one sits on the opposing " +
-            "exit. EVERY screening length in this book is this number, so it is reported here " +
-            "rather than re-derived wherever it is needed.",
+          name: "how far it moves over a 3× box and a 8× run", value: spread,
+          expect: {
+            of: "nought — a density that is a property of the rules and the tiling cannot " +
+              "also be a property of the box it is run in",
+            want: 0, tolerance: 0.03,
+            because: "THIS IS THE CLAIM THAT SURVIVES, and it is the one that was worth " +
+              "having. The occupancy is not universal — it moves with the lattice — but it " +
+              "does not move with the box or the run length, which is what makes it a " +
+              "constant of the model rather than an artefact of a measurement",
+          },
+        }),
+        judge({
+          name: "mean free path (cells)", value: empty ? NaN : 1 / Math.max(at, 1e-9),
+          note: empty
+            ? "THERE IS NO PATH, because there is nothing to meet. Pure gravity annihilates " +
+              "every point it makes, so a screening length is not small here — it does not " +
+              "exist, and every result in this book that needs a medium needs the polarity."
+            : "1/fill — a ray meets something when it lands where one sits on the opposing " +
+              "exit. EVERY screening length in this book is this number, so it is reported " +
+              "here rather than re-derived wherever it is needed.",
         }),
       ],
       table: {
-        columns: ["p", "measured", "±", "(1−p)/(2−p)", "mfp", "scattering"],
-        rows: rates.map((p, i) => [
-          p, measured[i].mean.toFixed(4), measured[i].err.toFixed(4),
-          predicted[i].toFixed(4), (1 / Math.max(measured[i].mean, 1e-9)).toFixed(2),
-          settled(p, seeds[0]).scattering.toFixed(3),
+        columns: ["N", "ticks", "measured", "±", "the rule says", "mfp", "scattering"],
+        rows: boxes.map(([n, t], i) => [
+          n, t, measured[i].mean.toFixed(4), measured[i].err.toFixed(4),
+          predicted === null ? "the lattice's" : predicted.toFixed(4),
+          measured[i].mean > 0 ? (1 / measured[i].mean).toFixed(2) : "—",
+          settled(n, t, seeds[0]).scattering.toFixed(3),
         ]),
       },
     };
@@ -266,7 +296,7 @@ export const annihilationFeedsExpansion = test({
         : which === "gravity" ? GRAVITY : GRAVITY_MAGNETISM;
       const w = new World({
         theory: th, N, seed, backend: "graph", boundary: "expand",
-        bound: { radius, metric: "box" }, expansion: 1,
+        bound: { radius, metric: "box" },
       });
       const before = w.backend.size();
       w.run(T);
@@ -281,7 +311,7 @@ export const annihilationFeedsExpansion = test({
 
     const w = new World({
       theory, N, seed: seeds[0], backend: "graph", boundary: "expand",
-      bound: { radius, metric: "box" }, expansion: 1,
+      bound: { radius, metric: "box" },
     });
     w.run(5);
 
@@ -303,7 +333,7 @@ export const annihilationFeedsExpansion = test({
           value: grew[2].mean / Math.max(grew[0].mean, 1e-9),
           expect: {
             of: "well above 1 — the loop is a large effect, not a correction",
-            want: 1, tolerance: 1e9,
+            want: 1, atLeast: 1,
             because: "the only difference between those two runs is how often two rays destroy " +
               "each other; the bound, the rate and the ticks are identical",
           },

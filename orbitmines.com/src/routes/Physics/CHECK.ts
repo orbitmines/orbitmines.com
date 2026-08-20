@@ -72,7 +72,7 @@ console.log("  the flat backend's stated approximation, and this is what it cost
 for (const mode of ["none", "destroy"] as const) {
   const c = conform(backend => {
     const w = new World({ theory: GRAVITY_MAGNETISM, N: 9, backend, seed: 7,
-      expansion: 0.05, boundary: "absorb", fold: { mode } });
+      boundary: "absorb", fold: { mode } });
     w.add({ at: [4,4,4], radius: 1, emits: 1 });
     return w;
   }, 12);

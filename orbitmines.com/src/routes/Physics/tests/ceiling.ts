@@ -37,7 +37,11 @@ import { World, headerOf, judge, GEOMETRIES } from "../DISCRETE";
 import { constants } from "../CONTINUOUS";
 import { test } from "../SUITE";
 
+
 const MU0 = 4e-7 * Math.PI, G_N = 6.67430e-11, N_A = 6.02214076e23;
+const HBAR = 1.054571817e-34, C_LIGHT = 2.99792458e8;
+const M_PLANCK = Math.sqrt(HBAR * C_LIGHT / G_N);
+const L_PLANCK = Math.sqrt(HBAR * G_N / (C_LIGHT ** 3));
 const MU_B = 9.2740100783e-24;
 
 /**
@@ -197,4 +201,96 @@ export const magnetisationCeiling = test({
   },
 });
 
-export default [magnetisationCeiling];
+/**
+ * AND THE DOMAIN SIZE, WHICH DOES NOT SURVIVE BEING CONVERTED — the port of
+ * `todo/provenance/domainsize.ts`.
+ *
+ * The coherent ceiling is L = π/ω = λ/2, half a wavelength of the emitters' own clock, and
+ * the model fixes that clock two ways, NEITHER OF WHICH IS SURVIVABLE.
+ *
+ *   THE TURN CLOCK. A source's bearing advances by at most one ring step a tick, so it
+ *     comes round in at least CYCLE ticks and the coherent region is CYCLE/2 cells. With a
+ *     cell at the Planck length that is 10⁻³⁵ m — NOT DOMAINS THAT ARE TOO SMALL, but no
+ *     long-range order of any kind, since neighbouring atoms are 10³⁰ cells apart and could
+ *     never be in the same region.
+ *   THE BEAT CLOCK. `beat = 1/mass` is how often a source lets go, which is the other clock
+ *     the book has. It is enormously slower and still short by nine to fifteen orders.
+ *
+ * THE ARC QUOTES CYCLE = 8, WHICH IS CUBIC 26'S. On fcc 12 it is 6, so the turn-clock
+ * ceiling is smaller still — the conclusion does not turn on it, which is why the row is a
+ * bound rather than a band.
+ */
+export const domainSize = test({
+  id: "magnetism/domain-size",
+  claims: "the coherent ceiling converted into metres is short of a real magnetic domain " +
+    "by nine to fifteen orders on the beat clock, and on the turn clock there is no " +
+    "long-range order of any kind",
+  cited: ["domainsize.ts"],
+  under: { "gravity": "holds" },
+  exact: true,                    // CODATA and one count off the exits
+  run: (_ctx, theory) => {
+    const w = new World({ theory, N: 5 });
+    const g = w.geometry;
+    const k = constants(g);
+
+    /* the turn clock: CYCLE/2 cells, with a cell at the Planck length */
+    const turnCells = g.CYCLE / 2;
+    const turnMetres = turnCells * L_PLANCK;
+
+    /* the beat clock: beat = 1/mass in units of the lattice's own mass unit, which
+       `massUnit` already returns in kilograms — the Planck mass is inside it */
+    const MU = k.massUnit();
+    const beat = (m: number) => MU / m;
+    const halfWave = (m: number) => beat(m) * L_PLANCK / 2;
+
+    const CARRIERS: [string, number][] = [
+      ["electron", 9.1093837015e-31],
+      ["iron atom", 55.845 * 1.66053906660e-27],
+      ["neodymium atom", 144.242 * 1.66053906660e-27],
+      ["Nd₂Fe₁₄B formula unit", 1081.1 * 1.66053906660e-27],
+    ];
+    const DOMAIN = 1e-5;                       // 10 µm, the small end of what is measured
+    const rows = CARRIERS.map(([name, m]) => ({
+      name, beat: beat(m), half: halfWave(m), short: DOMAIN / halfWave(m),
+    }));
+    const bestShortfall = Math.min(...rows.map(r => r.short));
+
+    return {
+      header: headerOf(w),
+      findings: [
+        judge({
+          name: "coherent region on the TURN clock", value: turnMetres, units: "m",
+          expect: {
+            of: "≈ 10⁻³⁵ m — NO LONG-RANGE ORDER OF ANY KIND", want: 0, atMost: 1e-30,
+            because: "the bearing advances by at most one ring step a tick, so a source comes " +
+              "round in at least CYCLE ticks and the coherent region is CYCLE/2 cells. That is " +
+              "not domains that are too small: NEIGHBOURING ATOMS ARE 10³⁰ CELLS APART and " +
+              "could never be in the same region at all. A bound rather than a band because " +
+              "CYCLE moves with the geometry — the arc quotes 8, which is cubic 26's, and " +
+              `${g.name} gives ${g.CYCLE}`,
+          },
+          note: `${turnCells} cells at the Planck length`,
+        }),
+        judge({
+          name: "shortfall of the BEAT clock's ceiling against a 10 µm domain, best carrier",
+          value: bestShortfall,
+          expect: {
+            of: "≫ 1 — short by nine orders at best", want: 0, atLeast: 1e8,
+            because: "`beat = 1/mass` is the other clock the book has, and it is enormously " +
+              "slower than the turn — so it is the generous reading and it still fails. The " +
+              "LIGHTEST carrier does best and the ones a magnet is actually made of do worse " +
+              "by five more orders, which is the wrong direction for a theory of magnets",
+          },
+          note: rows.map(r => `${r.name} short by ${r.short.toExponential(0)}`).join(", "),
+        }),
+      ],
+      table: {
+        columns: ["carrier", "beat (ticks)", "λ/2", "short by"],
+        rows: rows.map(r => [r.name, r.beat.toExponential(3),
+          r.half.toExponential(2) + " m", r.short.toExponential(0)]),
+      },
+    };
+  },
+});
+
+export default [domainSize, magnetisationCeiling];

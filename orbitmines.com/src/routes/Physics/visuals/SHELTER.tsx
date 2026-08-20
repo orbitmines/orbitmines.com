@@ -53,7 +53,7 @@ const make = (qL: 1 | -1 | 0, qR: 1 | -1 | 0, sep: number, theory = GRAVITY_MAGN
      * frame around the whole box, far stronger than anything a body does. It was a
      * picture of the boundary condition. A wrapped box has no edge to be short of.
      */
-    theory, geometry: GEOM, N, seed: 20260817, boundary: "wrap", expansion: 1,
+    theory, geometry: GEOM, N, seed: 20260817, boundary: "wrap",
   });
   /*
    * THE VACUUM SETTLES BEFORE THE BODY ARRIVES, which is what makes the panel a
@@ -431,7 +431,7 @@ export const WanderGravity = ({ height = 300 }: { height?: number } = {}) =>
              * something to be a shortfall IN. Measured, 41% deep at the body.
              */
             theory: GRAVITY_MAGNETISM, geometry: GEOM, N, seed: (Math.random() * 1e9) | 0,
-            boundary: "wrap", expansion: 1,
+            boundary: "wrap",
           });
           bodies = [-GAP_CELLS / 2, GAP_CELLS / 2].map(dx =>
             w.add({ at: [C + dx, C], radius: 2, emits: 0, absorbs: true, duty: 0 }));

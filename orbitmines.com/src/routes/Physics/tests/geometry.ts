@@ -37,17 +37,34 @@ export const veins = test({
   cited: ["Electromagnetism — and the veins"],
   under: {
     "gravity+magnetism": "holds",
-    "gravity": "holds",
+    /*
+     * AND GRAVITY CANNOT BE ASKED ANY MORE, which the expansion rate used to hide.
+     * (G/2) is not a rule that fires at a rate — every neutral point splits every tick —
+     * and under gravity both halves of an inserted point are neutral, so they annihilate
+     * on the edge and the point collapses. Gravity has NO VACUUM AT ALL, `vacuum: 0`,
+     * and a claim about what a medium does to a field has no medium to be about.
+     */
+    "gravity": "cannot be asked — gravity's vacuum is empty by the rule, so there is no " +
+      "medium here to round anything",
   },
   run: (ctx, theory) => {
     const { N, T, seeds } = ctx.budget({ N: 41, T: 120, seeds: 3 });
     const C = (N - 1) / 2, centre = [C, C, C];
     const radii = [6, 10, 14].filter(r => r < C - 2);
 
-    /** the field down a narrow cone about each family, differenced against no body */
-    const spread = ctx.once((expansion: number, seed: number) => {
+    /**
+     * THE FIELD DOWN A NARROW CONE ABOUT EACH FAMILY, differenced against no body.
+     *
+     * THERE IS NO COLLISIONLESS CONTROL RUN, and there does not need to be. What a
+     * control would measure — the shape of a ray that has never met anything — is
+     * exactly the geometry's own rank-four moment, a constant of the neighbour set and
+     * the very number the article's table prints. It used to be reached by setting the
+     * expansion rate to nought, which is not a thing the rules can do; running a second
+     * box to re-measure a constant only put noise on one side of the comparison.
+     */
+    const spread = ctx.once((seed: number) => {
       const mk = (withBody: boolean) => {
-        const w = new World({ theory, N, seed, boundary: "absorb", expansion });
+        const w = new World({ theory, N, seed, boundary: "absorb" });
         if (withBody) w.add({ at: centre, radius: 2, emits: 1 });
         return w.run(T);
       };
@@ -69,47 +86,57 @@ export const veins = test({
       return { byFamily, fill: fill(b), scattering: scattering(b) };
     });
 
-    const anisotropyAt = (expansion: number, ri: number) => ctx.over(seeds, s => {
-      const v = spread(expansion, s).byFamily[ri];
+    const anisotropyAt = (ri: number) => ctx.over(seeds, s => {
+      const v = spread(s).byFamily[ri];
       if (!v || !v.every(isFinite)) return NaN;
-      const mean = v.reduce((a, b2) => a + b2, 0) / v.length;
+      const mean = v.reduce((a2, b2) => a2 + b2, 0) / v.length;
       return Math.abs(mean) < 1e-9 ? NaN : (Math.max(...v) - Math.min(...v)) / Math.abs(mean);
     });
 
     // the middle radius that survives the box — a quick run may keep only one
     const ri = Math.min(1, radii.length - 1);
-    const bare = anisotropyAt(0, ri);
-    const dense = anisotropyAt(0.05, ri);
-    const diag = spread(0.05, seeds[0]);
+    const measured = anisotropyAt(ri);
+    const diag = spread(seeds[0]);
 
     const w = new World({ theory, N, seed: seeds[0], boundary: "absorb" });
     w.add({ at: centre, radius: 2, emits: 1 });
     w.run(T);
+    /* the collisionless limit, which is a property of the exits and not of a run */
+    const bare = w.geometry.moment(4).anisotropy;
 
     const findings: Finding[] = [
       judge({
         name: "deflections per surviving ray", value: diag.scattering,
         expect: {
           of: "well above zero, or nothing below means anything",
-          want: 1, tolerance: 10,
+          want: 1, tolerance: 0.9,
           because: "if rays are not being turned then the front is the collisionless one " +
             "whatever the density says, and no conclusion about the grain follows either way",
         },
         note: "THE DIAGNOSTIC THAT KEEPS A NULL RESULT FROM BEING VACUOUS. An earlier " +
-          "attempt read 0.07 here and its answer was worthless.",
+          "attempt read 0.07 here and its answer was worthless — and then this read " +
+          "0.0000 for a longer while, because the on-edge collision path never wrote " +
+          "the turn count it averages. Its band was ±10 about 1, which cannot fail, so " +
+          "nothing said so. Both are fixed; the band is now one that can.",
       }),
+      {
+        name: "anisotropy of the neighbour set, with nothing in the way", value: bare,
+        note: "the collisionless limit, and it is the geometry's own rank-four moment rather " +
+          "than a second run — see above for why there is no longer a box to measure it in",
+      },
       judge({
-        name: "anisotropy, no vacuum at all", value: bare.mean, err: bare.err,
-        note: "the collisionless limit, which is what the geometry table computes",
-      }),
-      judge({
-        name: "anisotropy, the model's own vacuum", value: dense.mean, err: dense.err,
+        name: "is the field measured through the vacuum ROUNDER than the neighbour set",
+        value: measured.mean < bare ? 1 : 0,
         expect: {
-          of: "smaller than the collisionless one — the medium rounds the field",
-          want: 0, tolerance: Math.max(Math.abs(bare.mean), 1e-9),
+          of: "1 — the medium rounds the field", want: 1, tolerance: 0,
           because: "a ray that has been turned is on a different exit from the one it left on, " +
-            "so the direction a disturbance travels is not the direction any ray travels",
+            "so the direction a disturbance travels is not the direction any ray travels. " +
+            "STATED AS A VERDICT because the claim is a comparison and the two sides are now " +
+            "different kinds of quantity — one measured through a box, one a constant of the " +
+            "lattice — so a band around their difference would be a band around a units mismatch",
         },
+        note: `${(100 * measured.mean).toFixed(1)}% ± ${(100 * measured.err).toFixed(1)} ` +
+          `measured against the neighbour set's ${(100 * bare).toFixed(1)}%`,
       }),
     ];
 
@@ -119,7 +146,7 @@ export const veins = test({
       table: {
         columns: ["r", ...FAMILIES.map(f => f[0]), "spread"],
         rows: radii.map((r, i) => {
-          const v = spread(0.05, seeds[0]).byFamily[i];
+          const v = spread(seeds[0]).byFamily[i];
           if (!v || !v.every(isFinite)) return [r, "—", "—", "—", "—"];
           const mean = v.reduce((a, b2) => a + b2, 0) / v.length;
           return [r, ...v.map(x => x.toExponential(3)),
@@ -219,7 +246,6 @@ export const exits = test({
       return { name, plus, eq, minus, total: plus + eq + minus };
     });
 
-    const face = sorted[0];
     return {
       header: headerOf(w),
       findings: [
@@ -236,25 +262,38 @@ export const exits = test({
             because: "which is the one thing the three rules demand of a geometry, since a " +
               "head-on pair has to exist for them to act on" },
         }),
+        /*
+         * THE RING LIVES ON WHICHEVER AXIS HAS THE LARGEST EQUATOR, and naming a class
+         * instead of that is how this came to fail.
+         *
+         * It used to assert "face-axis equator = SHEET", which is true on cubic 26 and
+         * false on the lattice the model now runs. SHEET is DEFINED as the largest
+         * equator over the admissible axes, and which class achieves it is the tiling's
+         * business: cubic 26 gets its 8 about a ⟨100⟩ face, fcc 12 gets its 6 about a
+         * ⟨111⟩ body diagonal. The Layer-2 arc is written about "the eight vacant
+         * directions of a face axis" and that is a cubic-26 sentence; what is
+         * geometry-agnostic — and what Layer 2 actually needs — is that SOME axis carries
+         * the largest ring and that the geometry can say which.
+         */
         judge({
-          name: "face-axis equator", value: face.eq,
-          expect: { of: "SHEET — the ring the Layer-2 arc is built on", want: g.SHEET, tolerance: 0,
-            because: "the equator of a face axis is every way out with no component along it, " +
-              "which is every way out of a point in one dimension fewer" },
-        }),
-        judge({
-          name: "distinct equator sizes over the axis classes",
-          value: new Set(sorted.map(x => x.eq)).size,
+          name: "the ring axis carries the largest equator", value: g.equator(g.ringAxis).length,
           expect: {
-            of: "2 — a face axis and an edge axis agree, a body diagonal does not",
-            want: 2, tolerance: 0,
-            because: "the arc quotes the face-axis reading and calls it THE equator, which is " +
-              "the one two of the three classes agree on; a source along a body diagonal has a " +
-              "SMALLER ring to put a phase on, so the quantum it carries is not the arc's 45°",
+            of: "SHEET, on every lattice — which is what SHEET means", want: g.SHEET, tolerance: 0,
+            because: "SHEET is the largest equator over the admissible axes and `ringAxis` is " +
+              "the axis achieving it, so this is true by construction on every geometry and " +
+              "false the moment either is computed differently from the other",
           },
-          note: "measured rather than assumed — the first version of this expected three " +
-            "distinct rings, which the lattice does not have",
+          note: `${g.name}: the ring sits on ${g.ringAxis.map(x => x.toFixed(2)).join(", ")} ` +
+            `with ${g.CYCLE} members, a quantum of ${(360 / (g.CYCLE || 1)).toFixed(1)}°`,
         }),
+        {
+          name: "distinct equator sizes over the three cubic classes",
+          value: new Set(sorted.map(x => x.eq)).size,
+          note: "REPORTED AND NOT JUDGED, because how many distinct rings a lattice has is " +
+            "the lattice's answer and not the model's. Cubic 26 gives 2 — a face and an edge " +
+            "agree and a body diagonal does not — and fcc 12 gives 3, all different. A test " +
+            "that asserted 2 was asserting cubic 26.",
+        },
       ],
       table: {
         columns: ["axis", "+ side", "equator", "− side", "total"],
