@@ -4,6 +4,7 @@ import Post, {
   Reference,
   Row,
   Col,
+  Block,
 } from "../lib/post/Post";
 import { PHYSICS } from "./references";
 
@@ -155,7 +156,7 @@ const Physics = () => {
 
   return <Post {...book}>
 
-    <Arc head="2026. ">
+    <Arc head="2026-10-01. G">
       I should probably preface this by saying that I am not a physicist by training. So my writing will likely not inheret the same culture as you would see in say a typical physics paper. My hope is that these ideas are useful enough to forgive those transgressions.
       <BR/>
       So here goes.
@@ -166,62 +167,100 @@ const Physics = () => {
       <BR/>
       The model is essentially this idea taken to an extreme. But it is important to note that the theory for gravity is (mostly) independent on that for magnetism, but later in the magnetism section, they will be equivalenced by means of XOR.
       <BR/>
-      Let's get started with gravity.
+      I will later expand on those ideas to bring them to full fruition, but for now, let's get started with gravity.
 
       <Section head="Gravity">
         Gravity in this model comes down to two essential rules:
         <BR/>
         (G/1) Annihilation: When two rays meet, they annihilate, leaving a single neutral spatial point behind.
 
-        <Lines did="annihilate" polarities={false} height={110} />
+        <Block>TODO VISUALIZATION: G.1</Block>
 
         (G/2) Creation: On all axis, a neutral point expands into two points with oppositely pointing rays.
-
-        <Lines did="annihilate" backwards polarities={false} height={110} />
-
-        Then the other permutations of the rules are just movement rules (like these two).
-
-        <Lines did="move" polarities={false} height={150} />
-
-        This is only to form a basis for the idea. In 2D/3D and when we want to recover magnetism these would of course get a little more complicated, but we can ignore that for now. 2D/3D is more easily understood as the continous model for starters. And this theory of gravity can be (mostly) understood separately from the theory of magnetism; later we'll unify them.
-        
-        <BR/>
-        
-        Instead: Based on these rules we can start extrapolating and start recovering existing ideas of gravity in physics, let's continue to the continuous model for that, and afterwards return to the discrete.
+        <Block>TODO VISUALIZATION: G.2</Block>
+      
+        It is important to grasp how we'll be using these rule definitions in our discrete model, because that will make some things explicit about what the model does, and doesn't assume:
 
         <BR/>
 
-        We build the continuous model, while keeping the discrete version in the back of our mind. Annihilation. Creation.
+        The model doesn't assume a scale at which these rules should apply. This is important: It would say that there can be discretisation effects if you did assume a scale. And those could be very real based on which frame you chose exactly.
 
         <BR/>
 
-        Since we're building on a lattice effectively then, there are some things we can and can't do. Before we dive into the continuous we do need a little discreteness.
+        <span style={{width: '100%', textAlign: 'left'}}>For this reason<span className="bp5-text-muted">, and the added incapability of our contemporary computers for the necessary scale</span>, there is not actually a discrete 'lattice-like' model which we run. Instead we define the rules as discrete rules, and extrapolate from them a continuous version. But it is important to not forget: This will always be an approximation. Scale-invariance will break once you pick your frame.</span>
+        <BR/>
+
+        <span style={{width: '100%', textAlign: 'left'}}>The rules would give us a 'why' to the physics we see. <span className="bp5-text-muted">(I will explore actual possible discrete configurations at a later date in a separate arc/section.)</span></span>
 
         <BR/>
 
-        Let's first imagine something which travels at the speed of light. We can imagine that as something which travels every tick of the universe.
-        <BR/>
-
-        <Beam />
-
-        <span className="bp5-text-muted">(Use the arrows, or wait — the same figure is drawn on every geometry this model can run on, because <b>a geometry is a parameter of this model and not a fact about it</b>. The rules never mention one; they demand only that every exit have its opposite, so that a head-on pair exists for them to act on. Two rays are shown where a lattice's exits are not all the same length, one on the shortest exit and one on the longest, and both moving <i>one exit a tick</i> — which is how a diagram saying "a cell a tick" also says that a body diagonal covers √3 cells in the tick a face step covers one.)</span>
-
-        <BR/>
-        So whatever the maximum speed is any universe we can imagine, it is limited by this property. Something which travels every tick.
+        Then there's the way a ray propegates through space, its movement rule:
 
         <BR/>
 
-        <Para>
-          So since speed of light is '<K>c</K>' in physics, we'll need some way to reference any kind of physics concept in its discrete form. Let's mark them by just putting a line on top of any variable when we want to reference its discrete form. (This will likely create some ambiguities - but at least in the context of this project that will be the case.)
-        </Para>
+        <span style={{width: '100%', textAlign: 'left'}}>(G/c) Movement: [] propagates always at <K><Bar>c</Bar></K></span>
+
+        <Block>TODO VISUALIZATION: G.c</Block>
+
+        <span style={{width: '100%', textAlign: 'left'}}>This <K><Bar>c</Bar></K>, is light speed in discrete terms, again without making an assumption to our SI units. For the equations in the model we'll always use this bar notation above a variable to indicate discrete units (this might create some ambiguities, but it will at least be the case in my writing). Therefore it will always be 1, as the maximum speed in any universe we can imagine. Something which travels every tick of the universe (every discrete time-step).</span>
 
         <Eq>
           <K><Bar>c</Bar></K> = <Frac over={<><K><Bar>STEP</Bar></K> = 1</>} under={<><K><Bar>TICK</Bar></K> = 1</>} /> =
           1 <F>(<Bar>x</Bar>/<Bar>t</Bar>)</F>
         </Eq>
 
-        <span style={{textAlign: 'left', width: '100%'}}>These variables couldn't really be anything other than this, but this elementary thing is pretty important. Speed of light is just phrased as a single lattice step per tick. These don't need any units since we're not comparing them to anything else, but if one really wanted, you could use the <Bar>x</Bar>/<Bar>t</Bar>. <Bar>x</Bar> meaning distance. <Bar>t</Bar> meaning a light tick. <span className="bp5-text-muted">(Notice there's something close to analogous here to <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "Planck units", link: "https://en.wikipedia.org/wiki/Planck_units"}}/>, but here we make no assumption from the size of lattice to the metric system. Just discrete units which we would be able to use outside of a physics model.)</span></span>
+        Which is where the model stops and starts making some assumptions. Specifically on how or why something would emit one of these rays. And why something would move or not move. In the model I call this a 'source'. Always paired with that word will come the following connotation: There could be a version of the model where you properly phrase what it would mean to make those 'decisions' on when to move, when to emit a ray. But a model with a source, is not such a model. This is in essence a simplification, just to show a particular effect, a particular theory. 
+        
+        <BR/>
 
+        (G/S.1) Emission: A source has free rein on whether, and on which spatial connections to neighbours it activates a ray, every tick of the universe.
+
+        <Block>TODO VISUALIZATION: S.1</Block>
+
+        <BR/>
+
+        (G/S.v) Movement: A source has free rein on whether to move, or to stand still, every tick of the universe.
+
+        <Block>TODO VISUALIZATION: S.v</Block>
+
+        <span style={{width: '100%', textAlign: 'left'}}>This leaves us with the following idea of what mass actually is in this model. Since the rays are what causes spatial annihilation which is what influences movement, mass is simply how many of these rays we're able to emit from a source. Specifically, <V><Bar>m</Bar></V>, its discrete mass, would be expressed in how often per tick we would emit a ray.</span>
+
+        <span style={{width: '100%', textAlign: 'left'}}>The things which would influence this, are how many neighbours we have around our spatial point, which we'll refer to as <F>l.</F><K><Bar>DEG</Bar></K> (degree), or I like to call it the local spatial density. "<F>l.</F>" signalling that we mean a local variable here. If we had more of them, we could pulse to more space around us.</span>
+
+        <BR/>
+
+        <span style={{width: '100%', textAlign: 'left'}}>And the other is how often. Which is why at the very least, mass would be proportional to often one emits a ray. We can give this quantity a name. How often a particular direction is activated by the source. Each direction (whether dynamically allocated or not), has this property. It's a number between 0 and <K><Bar>c</Bar></K> as a fraction on how often we spherically emit.</span>
+
+        <Eq>
+          <i><Bar>m</Bar></i><Sub>x</Sub> = <F>% <Bar>t</Bar>
+          <span style={{ padding: '0 1.4em' }} />
+          0 ≤ <V><Bar>m</Bar><Sub>x</Sub></V> ≤ <K><Bar>c</Bar></K></F>
+          <span style={{ padding: '0 1.4em' }} />
+          <i><Bar>m</Bar></i><Sub>x</Sub>.<D>period</D> = <Frac over={<>1</>} under={<><i><Bar>m</Bar></i><Sub>x</Sub></>} /> <F><Bar>t</Bar></F>
+        </Eq>
+
+        <span style={{width: '100%', textAlign: 'left'}} className="bp5-text-muted">Though there's nothing stopping us from defining a source which only emits rays in a particular direction (which would result in directional gravity), we typically assume that on aggregate, something with mass spherically let's its surroundings know about that mass (to which extend that holds on a small scale, I'll once again explore at a later date). Furthermore, there's also no reason to think that this needs to be a perfect period, as long as aggregate behavior is still a particular value. Nor is there a reason to think that this cannot be dynamical and vary slightly over time.</span>
+
+        <span style={{width: '100%', textAlign: 'left'}}>Though that's a useful quantity, that would be a quantity we couldn't compare to other masses which vary in <F>l.</F><K><Bar>DEG</Bar></K>. We could measure the number of rays sent out, but that wouldn't mean anything if we don't know the portion of space it occupies. So we need a measure of effective gravity, across a growing shell (a ball) around the local point the source is located at. Which would be something we could intuit as mass. The only problem with that quantity being, that it depends on spatial structure, which could be dynamic and/or non-trivial.</span>
+
+        <Eq>
+          <i><Bar>m</Bar></i> = <F>% <Bar>t</Bar>
+          <span style={{ padding: '0 1.4em' }} />
+          0 ≤ <V><Bar>m</Bar></V> ≤ <K><Bar>c</Bar></K></F>
+          <span style={{ padding: '0 1.4em' }} />
+          <i><Bar>m</Bar></i>.<D>period</D> = <Frac over={<>1</>} under={<i><Bar>m</Bar></i>} /> <F><Bar>t</Bar></F>
+        </Eq>
+
+        <BR/>
+
+        The model does make a single restriction on the freedoms given to a source. Which is if you move in some direction at some tick in the universe, you cannot also emit a ray in that direction. Likely to be an accurate physics model you wouldn't emit in any direction (though I'll explore that idea in a subsequent post later). Which is like saying, if you're always moving (light), you cannot also let the universe know you have mass (in that direction).
+      </Section>
+
+      <Section head="Gravity OLD">
+        <Lines did="annihilate" polarities={false} height={110} />
+        <Lines did="annihilate" backwards polarities={false} height={110} />
+        <Lines did="move" polarities={false} height={150} />
+        
         <BR/>
 
         <Para>
@@ -521,27 +560,6 @@ const Physics = () => {
           <Eq>
             <D><Bar>½</Bar></D>
           </Eq>
-
-          Alrighty,
-
-          Let's start out building a vocabulary for the continuous model. We'll start by describing aggregate behavior of our discrete pressures.
-
-
-          <Head>Mass</Head>
-
-          If 'gravity-rays' are what cause attraction in this model. How would we intuitively encode what it means to have mass. The answer is: The heavier you are, the more gravity you expect around that thing. So the heavier something is the more often it shoots out these rays.
-
-          <Eq>
-            <i><Bar>m</Bar></i> = <F>% <Bar>t</Bar>
-            <span style={{ padding: '0 1.4em' }} />
-            0 ≤ <V><Bar>m</Bar></V> ≤ <K><Bar>c</Bar></K></F>
-            <span style={{ padding: '0 1.4em' }} />
-            <i><Bar>m</Bar></i>.<D>period</D> = <Frac over={<>1</>} under={<i><Bar>m</Bar></i>} /> <F><Bar>t</Bar></F>
-          </Eq>
-
-          We define a number between 0 and 1 of what percentage of time is spent pulsing. This is its 'discrete mass'. There's of course no need for this to be a perfect period, as long as the average corresponds to a particular number, the mass will be on aggregate a particular value.
-
-          <BR/>
 
           (We'll later discuss what kind of things this implies)
           
@@ -10500,7 +10518,11 @@ local bound   2.000000      Tsirelson   2.828427`}
         </Section>
       </Section>
     </Arc>
-    <Arc head={<span className="bp5-text-disabled">2027.</span>}>
+    <Arc head={<span className="bp5-text-disabled">202X-XX-XX. G^XOR</span>}>
+      <Section head={<span className="bp5-text-disabled">G^XOR: Gravity + Magnetism</span>}></Section>
+    </Arc>
+    <Arc head={<span className="bp5-text-disabled">202X-XX-XX. G^XOR^2</span>}>
+      <Section head={<span className="bp5-text-disabled">G^XOR^2: Electromagnetism</span>}></Section>
     </Arc>
   </Post>;
 };
