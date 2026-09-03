@@ -1485,6 +1485,190 @@ const Physics = () => {
             <span className="bp5-text-muted">(So what this section adds is the mean free path, which was off by a power — and the reminder that the interpolation drawn in both panels above <i>is</i> the derived one. What is still owed is a lattice run of the suppression itself: measuring the free fraction against the field and checking it goes as 1/(1+<V>θ</V>) rather than only checking that it closes algebraically once assumed. The algebra is exact; the mechanism behind it has not been clocked.)</span>
           </Para>
         </Section>
+                <Section head="Galaxy rotation curves 2">
+
+          <Para>
+            The section above was written the way physics is usually written: a law derived by hand, typed into a file, and pointed at a table of numbers that was also typed into a file. Everything below is the same claim with both of those removed. <b>The law is closed off the six rules by machine</b> — nothing in it is written down anywhere as a formula — and <b>the data is fetched from the people who measured it</b>, parsed by the format descriptions their own files carry. What is left when both are taken away is the part worth arguing about.
+          </Para>
+
+          {/* the figure: visuals/galaxy.many/snapshot.png — every measurement the law is
+              judged on, on one pair of axes, with the theory's whole possibility space
+              behind it. Drop the <img> in here. */}
+
+          <Head>the law, and where the scale comes from</Head>
+
+          <Para>
+            One equation, and it is a root rather than an assembly:
+          </Para>
+
+          <Eq>
+            <V>F</V><Sub>g</Sub> = ½<V>g</V><Sub>N</Sub> + √( ¼<V>g</V><Sub>N</Sub><Sup>2</Sup> + <V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub> )
+          </Eq>
+
+          <Para>
+            which is what <V>g</V><Sup>2</Sup> − <V>g</V><V>g</V><Sub>N</Sub> − <V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub> = 0 solves to, and that quadratic is the one place in the whole derivation where anything is <i>solved</i> rather than assembled. Everything else is counting.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Why <V>g</V> appears on both sides.</b> Creation fires only where nothing is going on, and lights every exit — so a point fires, fills, drains and fires: the vacuum pulses with period two. A source either moves or emits, never both. So there are two pulses, and moving shifts the phase between them: an emission <V>r</V> cells out arrives <V>r</V> ticks later, and whether it lands while the vacuum there is lit — and is doused by the meeting rule — is a <i>parity</i>. Each move flips it, and the flip runs opposite ways fore and aft. <b>At constant speed those cancel exactly. Under acceleration they do not</b>, because the rate of flipping keeps changing — and what the body accelerates at is <V>g</V> itself. Nothing else in these rules puts <V>g</V> on the right-hand side.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>Why the correction is a reciprocal.</b> A flip is worth something only while the carrier that would deliver it survives, and annihilation ends that — so the stretch over which mismatch accumulates is one mean free path, <V>λ</V> = 1/<V>σρ</V>. With one cell a tick that length is also the time. In cells and ticks an acceleration is a reciprocal length, so <V>g</V> and <V>λ</V> make <i>exactly one</i> dimensionless combination, <V>gλ</V> — and the enhancement is either it or its reciprocal, with nothing left to choose. <V>gλ</V> gives <V>g</V>(1 − <V>g</V><Sub>N</Sub><V>λ</V>) = <V>g</V><Sub>N</Sub>, which <i>diverges</i>; 1/<V>gλ</V> turns over. That fixes the form.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the scale is reached twice, from two different rules.</b> Read off the space line, <V>a</V><Sub>0</Sub> is the waiting term: a carrier that tries to step and finds the exit taken hands itself back and grows the world by one point instead. No ray made, destroyed or moved, and a point of space where there was none — nothing else in the six rules has that shape. Its rate is <V>σρ</V>. Read off the meeting rule instead, 1/<V>λ</V> is how far a carrier gets before it is doused, which is also <V>σρ</V>. <b>The same number by two routes that were not made to agree</b>, and it is the only scale in the theory that is not a count of the tiling.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The two ends follow with no crossover put in anywhere. <b>Strong field</b>: the body accelerates hard, the phase runs away too fast to accumulate against, and the root returns <V>g</V><Sub>N</Sub> exactly — Newton. <b>Weak field</b>: √(<V>g</V><Sub>N</Sub><V>a</V><Sub>0</Sub>), the geometric mean of what arrives and the rate space is made. Since <V>g</V><Sub>N</Sub> carries the mass linearly, <V>g</V> carries its <b>square root</b> — which is the one thing a two-body force law may not do, and the one thing the measured relation wants. It lives in the transport, not in the source.
+          </Para>
+
+          <Head>what arrives, and its two channels</Head>
+
+          <Para>
+            <V>g</V><Sub>N</Sub> is not put in either. It is a sum of exactly two things and the derivation names them: <b>the vacuum's channel</b> — what a body <i>prevents</i>, since Creation fires only at a point where nothing is going on and a body sitting there stops that firing — and <b>the meetings' channel</b>, the two bodies' own radiation meeting, which is the term carrying both masses. The expansion is <i>not</i> a third: a missing making is read as room that never appeared where nothing is in the way, and as something arriving where there is, and counting both would count one shortfall twice.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            The vacuum's channel is divided by <V>σρ</V> — multiplied by the mean free path. So <V>a</V><Sub>0</Sub> appears twice in the law in opposite roles, once as a rate and once as a length, and that is not an arrangement: it is the same term of the same line read from two ends.
+          </Para>
+
+          <Head>one skin law, two galaxies</Head>
+
+          <Para>
+            What a body sends out is <V>A</V>(1 − (1 − <V>σρ</V>)<Sup><V>m</V>/<V>A</V></Sup>) — a face <V>A</V> and what gets through it. <b>That factor is not linear in the mass</b>, and its two limits are the two things a galaxy can be. Gathered, <V>m</V>/<V>A</V> is huge, the exponential saturates, and the answer depends on the <i>face</i> and not the mass at all. Scattered, it linearises and the answer depends on the <i>mass</i> and not the face. Both fall out of the same expression by taking a limit; neither is written down.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            An earlier pass built the scattered case by cutting a disc into a ring-and-spoke grid and summing sixteen by twenty-four pieces, which is a quadrature and not a derivation — and it had a bug that inflated the answer by roughly √<V>N</V>, because a concave root applied to each star separately and then added is not the root of the sum. <b>Arrivals add; the law applies once.</b> The limit form has no <V>N</V> in it, so how finely the mass is cut cannot change the answer.
+          </Para>
+
+          <Head>the possibility space, which is an area and not a line</Head>
+
+          <Para>
+            A single curve on these axes is a lie of omission: it is the law at <i>one</i> configuration. A galaxy has a mass, a face, a rotation and a surface brightness, and none of them is known in advance. So the region drawn behind the data is the law <b>integrated over the whole configuration space</b> — mass over seven decades, face over five, surface brightness over four, rotation from nought to 0.9<V>c</V> — pushed forward onto the observable plane through the Jacobian |∂log <V>g</V><Sub>N</Sub>/∂log <V>R</V>|, taken symbolically rather than by finite difference.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>It covers 95.0% of SPARC.</b> 40,527 cells of the plane are reachable, and the colour says which freedom each cell <i>needs</i> — found by running the sweep again with one freedom held still and keeping the cells that are lost, so the attribution does not depend on any order they might be added in:
+          </Para>
+
+          <Rows of={[
+            [<>mass alone <span style={{ color: FAINT }}>35%</span></>,
+              <>reachable only because the mass is free — the bulk of the region, and the
+                deep end of it</>],
+            [<>mass + brightness <span style={{ color: FAINT }}>31%</span></>,
+              <>needs both, which is the part of the plane where the skin law is neither
+                saturated nor linear</>],
+            [<>several ways <span style={{ color: FAINT }}>18%</span></>,
+              <>no single freedom is necessary: take any one away and the cell is still
+                reached. This is the ridge the law itself runs along</>],
+            [<>all four <span style={{ color: FAINT }}>5%</span></>,
+              <>the corners, where nothing is redundant</>],
+            [<>face alone <span style={{ color: FAINT }}>4%</span></>,
+              <>the gathered limit, where the mass has stopped mattering</>],
+            [<>rotation alone <span style={{ color: FAINT }}>0%</span></>,
+              <>not one cell in forty thousand needs it. The (1 − <V>β</V>) on the line is
+                real and it is not what makes a galaxy possible</>],
+          ]} />
+
+          <Para>
+            That last row is worth more than the others. <b>A freedom that turns out to be necessary nowhere is a freedom the picture did not need</b>, and this is the kind of thing a fitted model never has to say out loud.
+          </Para>
+
+          <Head>and the floor, which is a genuine problem</Head>
+
+          <Para>
+            136 of the 2,700 points fall outside the region. <b>130 of them are underneath it</b> — under a column of cells the model does fill, at accelerations it can produce, at a <V>g</V><Sub>obs</Sub> lower than anything the law reaches there. They survive every freedom and every widening of the sweep; the ranges are converged, in the sense that opening them by three more decades moves the coverage by 0.1%. So this is not a sampling artefact and not a boundary effect. <b>It looks like a property of the law</b>, and I do not have an account of it.
+          </Para>
+
+          <Head>what the numbers come to</Head>
+
+          <Para>
+            Against the radial acceleration relation, drawn from SPARC's own mass models with the authors' own cuts — quality flag under 3, inclination at least 30°, velocity errors over 10% dropped, which lands on <b>2,700 points in 149 galaxies</b>:
+          </Para>
+
+          <Rows of={[
+            [<>0.1330 dex</>,
+              <>rms of the derived law against the points, with <i>nothing fitted</i> —
+                <V> a</V><Sub>0</Sub> taken at the measured 1.2·10<Sup>−10</Sup> m/s²</>],
+            [<>0.1328 dex</>,
+              <>rms of McGaugh's fitting function, which has a free parameter and was fitted
+                to exactly these points</>],
+            [<>−0.010 dex</>,
+              <>the law's mean offset — it sits a per cent low, systematically rather than
+                scattered</>],
+          ]} />
+
+          <Para>
+            The comparison that matters is the second row. A law with no freedom in it lands two thousandths of a dex behind a curve fitted to the data it is being judged on, and an earlier version of this article compared the two <i>formulae</i> and reported that they agree to 0.029 dex — which is a true statement about two curves and a weak one about the world. A fit is a summary whose residuals have already been thrown away. <b>These are the points.</b>
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Against the baryonic Tully–Fisher relation, taken exactly as Lelli and co. publish it rather than rebuilt — their velocity, their mass, their uncertainties on both — <b>123 galaxies</b>: an orthogonal fit gives <b>slope 3.735</b> with 0.060 dex of scatter, against a predicted 4. And the model's statement here is not a value but an <i>inequality</i>: <V>v</V><Sub>f</Sub> is measured where the gas ran out, not at infinity, and the law sits above its own asymptote everywhere — so the measured normalisation must come out <b>under</b> 1/(<V>G</V><V>a</V><Sub>0</Sub>). It does, by <b>0.112 dex</b>, and the size of that gap says how far from asymptotic the flat parts of real rotation curves actually are.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            Against Genzel's six high-redshift discs, with each galaxy's own published <V>f</V><Sub>DM</Sub> and its own ±2σ rather than one ceiling at 0.2 for all of them: <b>five of six land inside</b>. The sixth, zC 406690, is predicted at 0.106 against a measured upper limit of 0.08 — drawn as a miss rather than absorbed into a band.
+          </Para>
+
+          <Head>where the numbers came from</Head>
+
+          <Para>
+            Every borrowed number now arrives by machine from the address its authors publish it at. SPARC's galaxy sample and Newtonian mass models come from Case Western <Ref of={'Lelli, McGaugh & Schombert, "SPARC: Mass Models for 175 Disk Galaxies with Spitzer Photometry and Accurate Rotation Curves", AJ 152:157'} year="2016" at="https://doi.org/10.3847/0004-6256/152/6/157" />, the Tully–Fisher sample from the paper it is quoted from <Ref of={'Lelli, McGaugh, Schombert, Desmond & Katz, "The baryonic Tully-Fisher relation for different velocity definitions and implications for galaxy angular momentum", MNRAS 484:3267'} year="2019" at="https://doi.org/10.1093/mnras/stz205" />, and Genzel's table out of the authors' own preprint <Ref of={'Genzel et al., "Strongly baryon-dominated disk galaxies at the peak of galaxy formation ten billion years ago", Nature 543:397'} year="2017" at="https://arxiv.org/abs/1703.04310" />, since Nature publishes no machine-readable version of it anywhere.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            This is not tidiness. <b>SPARC's galaxy sample declares byte offsets that are wrong.</b> It says the galaxy name occupies bytes 1–11 and then writes a twelve-wide name field, so every column after it sits one byte right of where the file says it does — and a parser that trusts the declaration returns a Hubble type of 1 for 10, an inclination error where the inclination should be, and a quality flag made of somebody else's decimal. Nothing throws. The first version of the extraction did exactly that and produced a catalogue that looked entirely reasonable.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            So the fetch checks itself before it claims to have worked. The baryonic mass built here out of the sample's photometry is compared against the mass the authors publish for the same galaxy in a different paper — <b>0.0027 dex rms, worst case 0.0050, over 123 galaxies</b> — and the cut applied here is compared against the sample they list, which it reproduces exactly. Both are hard failures. Two numbers that have no reason to agree unless both parses and the recipe are right.
+          </Para>
+
+          <Head>and one thing the picture had to be asked</Head>
+
+          <Para>
+            The diagonal on that figure is labelled <i>Newton + GR</i>, and it was labelled that on the grounds that the relativistic correction is of order <V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup> and therefore invisible — which is almost certainly true and was nowhere checked, on a figure whose entire claim is a departure from Newton. Every point on it is a circular orbit, so the largest <V>v</V><Sup>2</Sup>/<V>c</V><Sup>2</Sup> anywhere in frame bounds how far a relativistic curve could sit from the diagonal. It is <b>2.5·10<Sup>−6</Sup></b>, which is 1.1·10<Sup>−6</Sup> dex, which is <b>1.3·10<Sup>−4</Sup> of a pixel</b> against a line one and a half pixels wide. They are the same line, and the figure now says so with the number rather than with the claim.
+          </Para>
+
+          <Head>what is still owed</Head>
+
+          <Para>
+            <b>The bridge to SI.</b> Everything above is closed off the rules in cells and ticks. Getting to metres per second squared is not. The rules give <V>a</V><Sub>0</Sub> = 0.2159 in lattice units and a recession rate beside it, and their ratio is <b>1.26</b> against a measured <V>a</V><Sub>0</Sub>/<V>cH</V><Sub>0</Sub> of <b>0.183</b> — a factor of seven, in the open rather than absorbed into a constant. The 2π that closes that gap has been written into this article before; nothing in Creation, Annihilation, Movement, Arrival, Emission or Transport has a phase in it, so it cannot be read off them, and pretending otherwise by folding it into a formula is the thing this pass exists to stop.
+          </Para>
+
+          <BR/>
+
+          <Para>
+            <b>And the lattice's own width is put in.</b> DEG = 26 is the Moore neighbourhood of a cube and nothing in the rules picks it. It matters: <V>a</V><Sub>0</Sub> runs from 0.500 at DEG = 4 to 0.105 at DEG = 80, a swing of <b>4.8×</b>. But the <i>ratio</i> to the recession rate runs only 1.60 to 1.12 over the same range — a swing of <b>1.43×</b> — so the gap above is robust to the choice in a way that <V>a</V><Sub>0</Sub> itself is not. <b>The scale problem is not an artefact of the tiling.</b> It is the one real hole, and it is one number wide.
+          </Para>
+
+        </Section>
         <Section head="Black Holes">a</Section>
         <Section head="Expansion">a</Section>
         <Section head="The Discrete Model">
