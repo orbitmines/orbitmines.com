@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@orbitmines/physics": "file:../../physics/languages/.ts",
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.0",

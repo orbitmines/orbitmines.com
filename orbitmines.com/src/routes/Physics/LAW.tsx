@@ -1,29 +1,46 @@
 /**
- * THE NOTATION — the symbols the article is written in, and the derivations behind
- * each equation. Moved here out of `archive/2026.RayCalculiAndPhysics/law.tsx`.
+ * THE DERIVATIONS BEHIND THE EQUATIONS - and the notation, which is no longer here.
  *
- * NOT PHYSICS, WHICH IS WHY IT MOVED FIRST. Nothing in this file measures anything:
- * it is `V`, `K`, `Sub`, `Sup`, `Frac`, `Eq`, `Head`, `Rows` and the sixteen
- * `Derivation` records that sit behind the equations. The article uses these 5,777
- * times, which made it much the largest edge from `Physics.tsx` into the archive and
- * by far the cheapest to cut — a move and an import rewrite, with no measurement
- * touched and no number changed.
+ * WHAT MOVED, AND WHY IT MOVED OUT OF THIS REPOSITORY. `V`, `K`, `Sub`, `Sup`, `Frac`,
+ * `Bar`, `Eq`, `Head`, `Rows` and the rest were written here and are now
+ * `@orbitmines/physics/notation`. They set what that package PROVES: `npm run theorems`
+ * over there closes the rules of `G` and writes out what follows, and the writing needs a
+ * typesetting - one that gets a bar right, that knows `DEG` is a count and not a
+ * quantity, and that a phone can read. Kept in this repository, the prover's own output
+ * could only be set by this website, and a theorem that can only be read on one site is
+ * a theorem published nowhere.
  *
- * WHAT STAYED BEHIND is `Law`, `MagnetismLaw` and `WithoutPolarity` — three page
- * components of about four thousand lines that render the old archive panels. Those
- * are real migration work rather than a move, so they are still in the archive, and
- * the archive now imports its notation FROM HERE. That is the direction the
- * dependency has to point while the rest is ported: new core knows nothing about the
- * archive, the archive leans on the new core.
+ * AND IT COST NOTHING TO IMPORT. The package has no dependencies and names no view
+ * library: `notation(React)` takes the runtime as an argument, which is why a theory that
+ * has to run in a worker can ship the typesetting for its own proofs without carrying
+ * React to do it. The binding is the twelve lines below, and everything they hand back is
+ * re-exported, so `Physics.tsx` imports exactly what it always did from exactly here.
  *
- * THE LAST EDGE IS GONE. `gravitational` and `massUnit` used to come out of the
- * archive's `gravity.ts`, where they were written with a literal 8, a literal 26 and
- * a literal 0.5 in them. They are now `constants()` in `CONTINUOUS.ts`, read off the
- * geometry `DISCRETE.ts` is actually running — so the number on this page follows the
- * lattice instead of standing beside it. Nothing here imports the archive.
+ * WHAT THAT BUYS ON THE PAGE is `<Eq theory="G" theorem="gravity.mass" />`. The line set
+ * is the line the prover concluded, looked up in `PROVED` rather than typed out here, and
+ * clicking it opens the working that same run derived. A transcribed equation is a second
+ * copy of a derived thing and therefore a thing that drifts the next time a rule is
+ * edited; that form cannot, because there is only ever one of it.
+ *
+ * WHAT STAYED IS WHAT IS BELOW: the sixteen `Derivation` records. Those are prose about
+ * this theory - what a line means, why it is the shape it is, what was tried and dropped -
+ * and prose about a theory belongs to the article that argues it, not to the package that
+ * runs it. They are the hand-written twin of what `derivation()` builds out of the
+ * registry, and they are deliberately the same object: a reader should not be able to
+ * tell from the page which panels a person wrote and which a prover did, because they are
+ * the same kind of claim about the same rules.
+ *
+ * THE LAST EDGE IS STILL GONE. `gravitational` and `massUnit` are `constants()` in
+ * `CONTINUOUS.ts`, read off the geometry `DISCRETE.ts` is actually running - so the
+ * number on this page follows the lattice instead of standing beside it.
  */
 
-import { Children, Fragment, isValidElement, ReactNode, useEffect, useRef, useState } from "react";
+import * as React from "react";
+import {
+  notation, type Derivation as Derived,
+  INK, DIM, FAINT, DERIVED, BORROWED, SERIF,
+} from "@orbitmines/physics/notation";
+import { PROVED } from "@orbitmines/physics/theorems";
 
 import { constants } from "./CONTINUOUS";
 
@@ -37,526 +54,37 @@ import { constants } from "./CONTINUOUS";
 const { gravitational, massUnit } = constants();
 
 /**
- * The law, on the page — and behind each equation, where it came from.
+ * THE NOTATION, BOUND TO THIS SITE'S REACT AND TO WHAT THE PROVER PROVED.
  *
- * It is also in the headers of `gravity.ts` and `metric.tsx`, and the reason it
- * is here as well is that a reader of the article is not a reader of the
- * source. `GRAIN` is read from `gravity.ts` rather than restated, so there is
- * no second copy of a number to drift.
- *
- * Set rather than drawn: there is no maths library in this repository and the
- * article has a PDF path, so the notation is built out of flex boxes and a
- * border for the rule. Which is enough — a fraction is a numerator over a
- * denominator with a line between. Variables lean, the lattice's own counts
- * stand upright and are coloured, so a reader can see at a glance which
- * symbols are quantities and which are the model's constants.
- *
- * EVERY DERIVED EQUATION OPENS. Which is the point of the section: a model
- * whose constants are all counts and a model with six fitted parameters look
- * identical once they are drawn, and the only way to tell them apart is to be
- * able to ask any line where it came from and get an answer.
- *
- * THE NUMBERS ON THIS PAGE ARE MEASURED and every one of them is reproducible
- * from `ORBIT.ts` — the sixths, the deflection, the a and e of each orbit — which
- * puts Newton, general relativity and this model through ONE integrator so that
- * what differs between them is the metric and not the arithmetic.
- * They are quoted here rather than computed here, which is a second copy and
- * therefore a thing that can drift; the constants are read off `CONTINUOUS.ts`
- * instead, and the rest would be too if the panels were cheap enough to run at
- * render.
- *
- * WHAT CHANGED, since a reader who saw this page before will notice. It used
- * to end by owning up: a sixth of Mercury's perihelion, half of light's
- * deflection, and the missing part named as a spatial metric "this keeps one
- * number per place, and cannot say it". That was wrong twice over. The one
- * sixth was the FORCE LAW's, not A's — A alone, taken as a metric, gives four
- * sixths — and one number per place says it perfectly well, because the
- * spatial part at this order is a scalar. What was missing was not a second
- * field but the second READING of the count already being taken. See `METRIC`.
+ * Once, here, and imported from here by everything else — which is the arrangement the
+ * package is built for. `notation` takes the runtime rather than importing one, so this
+ * call is what decides there is one React in the tree, and `PROVED` is what makes
+ * `<Eq theorem=…>` resolve. Passing neither would still give a working notation; passing
+ * both is what makes the article able to cite.
  */
+const SET = notation(React, PROVED);
 
-export const INK = '#c6c9d4';
-export const DIM = '#8a8d99';
-export const FAINT = '#6c7080';
-const RULE = '#1c1e27';
-const NAMED = '#e0a878';        // a count the lattice fixes
-export const DERIVED = '#7fb8d4';      // something that came out
-export const BORROWED = '#b58a8a';     // something taken from general relativity
-
-export const SERIF = 'Georgia, "Times New Roman", serif';
-
-// —— notation ————————————————————————————————————————————————————————————
-
-/** A quantity. Leans, as a variable should. */
-export const V = ({ children }: { children: ReactNode }) => (
-  <span style={{ fontStyle: 'italic' }}>{children}</span>
-);
-
-/** One of the lattice's own counts. Upright, and coloured. */
-export const K = ({ children }: { children: ReactNode }) => (
-  <span style={{ color: NAMED, fontStyle: 'normal' }}>{children}</span>
-);
-
-export const R = ({ children }: { children: ReactNode }) => (
-  <span style={{ color: 'indianred', fontStyle: 'normal' }}>{children}</span>
-);
-
-export const F = ({ children }: { children: ReactNode }) => (
-  <span style={{ color: FAINT, fontStyle: 'normal' }}>{children}</span>
-);
-
-export const D = ({ children }: { children: ReactNode }) => (
-  <span style={{ color: DERIVED, fontStyle: 'normal' }}>{children}</span>
-);
-
-/** A vector. Upright and bold, the way a vector is set. */
-export const B = ({ children }: { children: ReactNode }) => (
-  <span style={{ fontWeight: 700, fontStyle: 'normal' }}>{children}</span>
-);
-
-export const Sub = ({ children }: { children: ReactNode }) => (
-  <sub style={{ fontSize: '0.72em', fontStyle: 'italic' }}>{children}</sub>
-);
-
-export const Sup = ({ children }: { children: ReactNode }) => (
-  <sup style={{ fontSize: '0.72em' }}>{children}</sup>
-);
-
-/** A fraction, which is the only thing here that needs building. */
-export const Frac = ({ over, under }: { over: ReactNode, under: ReactNode }) => (
-  <span style={{
-    display: 'inline-flex', flexDirection: 'column', alignItems: 'center',
-    verticalAlign: 'middle', margin: '0 0.35em', lineHeight: 1.25,
-  }}>
-    <span style={{ padding: '0 0.4em' }}>{over}</span>
-    <span style={{
-      borderTop: '1px solid currentColor', padding: '0.12em 0.4em 0',
-      marginTop: '0.12em', width: '100%', textAlign: 'center',
-    }}>{under}</span>
-  </span>
-);
+export const {
+  /* the notation itself — a quantity, a count of the lattice's, and the marks on them */
+  V, K, R, F, D, B, Sub, Sup, Frac, Type, Paren, Hat, Bar,
+  /* a displayed line, and the panel of working that opens beside it */
+  Eq, Panel, Step, Because, Note, Head, Rows,
+  /* and the proofs' own markup, for a line quoted straight out of the prover */
+  Markup, EqMarkup, derivation,
+} = SET;
 
 /**
- * A term with its type set quietly underneath it, the way a signature reads.
+ * WHAT `Physics.tsx` CALLS A DERIVATION — this site's React, filled into the package's.
  *
- * Not a fraction and so no rule line: `of` is the thing, `is` is what it
- * ranges over. Used where a name would otherwise need a sentence after it to
- * say what kind of number comes back.
+ * `Derivation<N>` is generic in the node type for the reason the whole package is: it
+ * names no view library, so its idea of `a thing that can be rendered` has to come from
+ * whoever is rendering. Here that is React, and this is the one line that says so.
  */
-export const Type = ({ of, is }: { of: ReactNode, is: ReactNode }) => (
-  <span style={{
-    display: 'inline-flex', flexDirection: 'column', alignItems: 'center',
-    verticalAlign: 'middle', lineHeight: 1.15, margin: '0 0.15em',
-  }}>
-    <span>{of}</span>
-    <span style={{ fontSize: '0.66em', color: FAINT, fontStyle: 'normal', marginTop: '0.15em' }}>{is}</span>
-  </span>
-);
+export type Derivation = Derived<React.ReactElement>;
 
-/**
- * Brackets big enough for what is inside them.
- *
- * By making the GLYPH bigger, not by stretching one. `scaleY` on a parenthesis
- * smears a small bracket's stroke weight upward — thin at the ends, heavy in
- * the middle, baseline in the wrong place. A larger glyph scales its strokes
- * along with its height, which is what a bigger bracket IS. Centred by flex so
- * it sits on the middle of whatever it contains, however tall that is.
- */
-export const Paren = ({ children }: { children: ReactNode }) => (
-  <span style={{ display: 'inline-flex', alignItems: 'center', verticalAlign: 'middle' }}>
-    <span style={{ fontSize: '2.2em', lineHeight: 0.72, fontStyle: 'normal', fontWeight: 300 }}>(</span>
-    <span style={{ padding: '0 0.12em' }}>{children}</span>
-    <span style={{ fontSize: '2.2em', lineHeight: 0.72, fontStyle: 'normal', fontWeight: 300 }}>)</span>
-  </span>
-);
+/* the colours, which the derivations below set their own asides in */
+export { INK, DIM, FAINT, DERIVED, BORROWED, SERIF };
 
-/** A hat, for a direction. */
-export const Hat = ({ children }: { children: ReactNode }) => (
-  <span style={{ position: 'relative', display: 'inline-block', fontStyle: 'italic' }}>
-    <span style={{
-      position: 'absolute', left: 0, right: 0, top: '-0.62em',
-      textAlign: 'center', fontSize: '0.85em', fontStyle: 'normal',
-    }}>^</span>
-    {children}
-  </span>
-);
-
-/**
- * A bar over the whole of what it covers — the mark that means DISCRETE.
- *
- * Not U+0305. A combining overline is one mark per letter, so a five letter
- * word comes out as five short strokes with the gaps between the letters
- * showing through, each landing wherever that glyph's own metrics put it, and
- * a font without the combining mark drops them on the floor or draws them as
- * dotted boxes. This is one rule, the width of what it covers, at one height —
- * drawn the way the fraction's rule is drawn, since that is all a bar is.
- *
- * IT TAKES NO SPACE. A barred letter in the middle of a paragraph must not
- * push that line of prose any taller than the lines around it, so the rule is
- * positioned out of flow. Which means it needs a height to be positioned AT,
- * and that is measured from the bottom of a box exactly one em tall — the
- * `lineHeight: 1` — rather than from the paragraph's line box, which is
- * whatever the surrounding text asked for and would slide the bar around from
- * one context to the next. A box that tall has its baseline a fixed sliver
- * above its bottom edge in every font here, so `bottom` is effectively a
- * distance above the baseline — and it is set to sit clear of the letters
- * rather than on top of them. A capital reaches about 0.7em and an ascender a
- * little past that, so 1.06em leaves an unmistakable gap under the rule at
- * every size, which is what makes it read as a bar OVER the letters and not as
- * part of them. Any lower and it crowds the caps of `STEP` and `SHEET`.
- */
-export const Bar = ({ children }: { children: ReactNode }) => (
-  <span style={{ position: 'relative', display: 'inline-block', lineHeight: 1 }}>
-    <span aria-hidden style={{
-      position: 'absolute', left: 0, right: 0, bottom: '1.06em',
-      borderTop: '1px solid currentColor',
-    }} />
-    {children}
-  </span>
-);
-
-export const Note = ({ children }: { children: ReactNode }) => (
-  <div style={{ color: DIM, fontSize: '0.88em', lineHeight: 1.6, paddingTop: '0.5em' }}>
-    {children}
-  </div>
-);
-
-/**
- * Where a set line is allowed to break, since a phone is narrower than most of
- * the equations here and a sideways scrollbar is not reading.
- *
- * A line of maths cannot simply be handed to the normal wrapping rules. The
- * spaces in it are wherever the JSX happened to be indented, so `4π r̅²` would
- * come apart between the 4π and the r̅², and a fraction would be left stranded
- * from the thing it divides. So the line stays unbreakable as before, EXCEPT
- * at the two places where a break means something:
- *
- * AFTER A RELATION. `A = B` becomes `A =` over `B`, the sign staying on the
- * line it closes, which is how a two line equation has always been set — never
- * `A` over `= B`.
- *
- * AT A GAP. The empty padded span is what stands two independent statements
- * side by side, so it is exactly the seam between them, and it goes at the end
- * of the line it finishes where its padding costs nothing. A padded span with
- * something IN it — a `⇒`, a `vs`, an aside in FAINT — becomes a piece of its
- * own, free to fall either way.
- *
- * Joined by zero width spaces, so a line that fits is set exactly as it was
- * before; and a single piece too wide for the screen still has the horizontal
- * scroll underneath it as the last resort.
- */
-const RELATION = /([=≈][ \u00a0]*)/;
-
-/** A padded top-level span: 'after' for a bare gap, 'both' for one with a mark in it. */
-const gap = (child: ReactNode): 'after' | 'both' | null => {
-  if (!isValidElement(child) || child.type !== 'span') return null;
-
-  const props = child.props as { style?: { padding?: string }, children?: ReactNode };
-  const pad = props.style?.padding;
-
-  if (typeof pad !== 'string' || !pad.startsWith('0 ')) return null;
-
-  return props.children == null ? 'after' : 'both';
-};
-
-/**
- * The line's own parts, through any fragment wrapped around them.
- *
- * `<Eq>` is handed its children as a list, but `Step`'s line arrives as
- * `eq={<>…</>}` — ONE fragment, whose contents are the equation. Walked into,
- * or a step's line has exactly one piece, cannot break, and scrolls sideways in
- * a panel that is 94vw on a phone. Which is what it did.
- */
-const parts = (children: ReactNode): ReactNode[] => {
-  const kids = Children.toArray(children);
-
-  return kids.length === 1 && isValidElement(kids[0]) && kids[0].type === Fragment
-    ? parts((kids[0].props as { children?: ReactNode }).children)
-    : kids;
-};
-
-const breakable = (children: ReactNode, hanging = false) => {
-  const pieces: ReactNode[][] = [[]];
-  const put = (n: ReactNode) => pieces[pieces.length - 1].push(n);
-  const cut = () => { if (pieces[pieces.length - 1].length) pieces.push([]); };
-
-  /**
-   * Whether we are at the head of a statement that a gap has just started —
-   * and if we are, its own relation is not a place to break.
-   *
-   * THE GAP WINS, which is the whole of this. A line reading `A = 1 [gap]
-   * B = 2` has three places it could come apart, and filling greedily takes
-   * the last one that fits: `A = 1 [gap] B =` on the first line and a lonely
-   * `2` on the second, which splits a statement down the middle while the seam
-   * between the two statements sits unused a few characters to its left. Taking
-   * the second statement's own relation out of the running leaves the gap as
-   * the last opportunity, so a new equation goes to a new line and stays whole
-   * — and a statement long enough to need it can still break at its NEXT
-   * relation, which is the one place a break was going to be necessary anyway.
-   */
-  let heading = false;
-
-  parts(children).forEach((child) => {
-    if (typeof child === 'string') {
-      // Odd indices are the relations themselves, with whatever space followed
-      // them — which travels with the sign, so a wrapped line never starts
-      // indented by it.
-      child.split(RELATION).forEach((bit, i) => {
-        if (!bit) return;
-
-        put(bit);
-        if (!(i % 2)) return;
-
-        if (heading) heading = false;
-        else cut();
-      });
-      return;
-    }
-
-    const at = gap(child);
-
-    if (!at) return put(child);
-    if (at === 'both') cut();
-
-    put(child);
-    cut();
-
-    heading = true;
-  });
-
-  return (
-    <div style={{
-      display: 'inline-block',
-      // Room between the halves of a line that has come apart — set wide,
-      // because what sits above and below in an equation is fractions and
-      // superscripts rather than words, and at reading leading the two lines
-      // touch. `Frac` and `Bar` both fix their own leading, so this reaches
-      // the gap between the lines and nothing inside them. A line that fits
-      // pays for it as a slightly taller box, which is a thing with 1.5em of
-      // margin either side of it and nowhere to collide.
-      lineHeight: 1.95,
-      // What is carried onto the next line is set in from the line it continues
-      // by about the width of a space, which is enough to say `still the same
-      // line` and not enough to look like an indent. Hung, so only the carried
-      // lines take it and the first still starts where it always did. Left off
-      // where the line is centred, since centring already says it.
-      ...(hanging ? { textIndent: '-0.3em', paddingLeft: '0.3em' } : null),
-    }}>
-      {pieces.filter(piece => piece.length).map((piece, i) => (
-        <Fragment key={i}>
-          {i ? '\u200b' : null}
-          <span style={{ whiteSpace: 'nowrap' }}>{piece}</span>
-        </Fragment>
-      ))}
-    </div>
-  );
-};
-
-// —— the derivations, and the panel they open in —————————————————————————
-
-export type Derivation = { title: ReactNode; label: string; body: ReactNode };
-
-/** A step of working: the line, then why. */
-export const Step = ({ eq, children }: { eq?: ReactNode, children: ReactNode }) => (
-  <div style={{ padding: '0 0 1.4em' }}>
-    {eq ? <div style={{
-      fontFamily: SERIF, fontSize: '1.05em', color: INK,
-      overflowX: 'auto', padding: '0.3em 0 0.6em',
-    }}>{breakable(eq, true)}</div> : null}
-    <div style={{ color: DIM, fontSize: '0.87em', lineHeight: 1.62 }}>{children}</div>
-  </div>
-);
-
-export const Because = ({ children }: { children: ReactNode }) => (
-  <div style={{
-    color: FAINT, fontSize: '0.68em', letterSpacing: '0.09em',
-    textTransform: 'uppercase', padding: '0.6em 0 0.5em',
-  }}>{children}</div>
-);
-
-/**
- * The panel itself.
- *
- * Dismissed three ways, because a thing that covers half the screen has to be
- * easy to be rid of: the backdrop, Escape, and a control that says so. Focus
- * moves into it on open and back to whatever opened it on close, so a reader
- * who arrived by keyboard is not stranded at the top of the document.
- */
-export const Panel = ({ of, onClose }: { of: Derivation, onClose: () => void }) => {
-  const panel = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-
-    document.addEventListener('keydown', key);
-    panel.current?.focus();
-
-    return () => document.removeEventListener('keydown', key);
-  }, [onClose]);
-
-  return <>
-    <div
-      onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 60,
-        background: 'rgba(4,5,9,0.6)',
-      }}
-    />
-    <div
-      ref={panel}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Where ${of.label} comes from`}
-      tabIndex={-1}
-      className="law-panel"
-      style={{
-        position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 61,
-        width: 'min(38rem, 94vw)', overflowY: 'auto', outline: 'none',
-        background: '#080910', borderLeft: `1px solid ${RULE}`,
-        boxShadow: '-24px 0 60px rgba(0,0,0,0.5)',
-        padding: '2.2rem 2rem 4rem',
-      }}
-    >
-      <style>{`
-        .law-panel { animation: lawIn 180ms ease-out }
-        @keyframes lawIn { from { transform: translateX(2rem); opacity: 0 } }
-        @media (prefers-reduced-motion: reduce) {
-          .law-panel { animation: none }
-        }
-      `}</style>
-
-      <div style={{
-        display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
-        gap: '1rem', paddingBottom: '1.4rem', borderBottom: `1px solid ${RULE}`,
-        marginBottom: '1.6rem',
-      }}>
-        <div>
-          <div style={{
-            color: FAINT, fontSize: '0.68em', letterSpacing: '0.09em',
-            textTransform: 'uppercase',
-          }}>where it comes from</div>
-          <div style={{
-            fontFamily: SERIF, fontSize: '1.35em', color: INK, paddingTop: '0.25em',
-          }}>{of.title}</div>
-        </div>
-
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          style={{
-            background: 'none', border: `1px solid ${RULE}`, borderRadius: 2,
-            color: DIM, cursor: 'pointer', fontSize: '0.75em',
-            padding: '0.35em 0.7em', flexShrink: 0,
-          }}
-        >esc</button>
-      </div>
-
-      {of.body}
-    </div>
-  </>;
-};
-
-/**
- * A displayed equation. Clickable when there is working behind it, and looking
- * clickable — a derived line and a stated one must not be the same object.
- *
- * IT CARRIES ITS OWN PANEL unless whoever placed it keeps one. `Law` is a page
- * where everything opens, so it holds a single piece of state and passes
- * `open`; a line standing in the prose of a book has nothing above it doing
- * that, and cannot be given one from the top of the article either — a book
- * renders the children of the SELECTED SECTION and nothing else, so a panel
- * hung anywhere but beside its own equation is never rendered at all. Hence the
- * state living here, which is the one place that is always in the tree when the
- * equation a reader just clicked is.
- *
- * Only one is ever open: the panel's backdrop covers the viewport, so a click
- * meant for a second equation closes the first instead.
- */
-export const Eq = (
-  { children, note, derive, open }:
-    { children: ReactNode, note?: ReactNode, derive?: Derivation, open?: (d: Derivation) => void },
-) => {
-  const [shown, setShown] = useState(false);
-  const from = useRef<HTMLElement | null>(null);
-
-  const inner = <>
-    <div style={{
-      overflowX: 'auto', textAlign: 'center', color: INK,
-      fontFamily: SERIF, fontSize: '1.18em', padding: '0.2em 0',
-    }}>
-      {breakable(children)}
-    </div>
-    {note ? <div style={{
-      textAlign: 'center', color: FAINT, fontSize: '0.72em',
-      letterSpacing: '0.04em', paddingTop: '0.5em',
-    }}>{note}</div> : null}
-  </>;
-
-  if (!derive) return <div style={{ margin: '1.5em 0' }}>{inner}</div>;
-
-  return (<>
-    <button
-      onClick={() => {
-        if (open) return open(derive);
-
-        from.current = document.activeElement as HTMLElement;
-        setShown(true);
-      }}
-      style={{
-        display: 'block', width: '100%', margin: '1.5em 0',
-        background: 'none', border: '1px solid transparent', borderRadius: 3,
-        padding: '0.9em 0.5em 0.7em', cursor: 'pointer', font: 'inherit',
-        color: 'inherit', textAlign: 'inherit', position: 'relative',
-        transition: 'background 120ms, border-color 120ms',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.background = 'rgba(127,184,212,0.05)';
-        e.currentTarget.style.borderColor = RULE;
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.background = 'none';
-        e.currentTarget.style.borderColor = 'transparent';
-      }}
-      onFocus={e => { e.currentTarget.style.borderColor = DERIVED; }}
-      onBlur={e => { e.currentTarget.style.borderColor = 'transparent'; }}
-    >
-      {inner}
-      <span style={{
-        position: 'absolute', right: '0.7em', top: '0.45em',
-        color: DERIVED, fontSize: '0.6em', letterSpacing: '0.1em',
-        textTransform: 'uppercase', opacity: 0.75,
-      }}>derived ›</span>
-    </button>
-
-    {shown ? <Panel of={derive} onClose={() => {
-      setShown(false);
-      from.current?.focus();
-    }} /> : null}
-  </>);
-};
-
-export const Head = ({ children }: { children: ReactNode }) => (
-  <div style={{
-    color: FAINT, fontSize: '0.7em', letterSpacing: '0.09em',
-    textTransform: 'uppercase', padding: '2.2em 0 0.1em',
-    borderTop: `1px solid ${RULE}`, marginTop: '2em',
-  }}>{children}</div>
-);
-
-/** symbol → what it is, laid out so the symbols line up down the page. */
-export const Rows = ({ of }: { of: [ReactNode, ReactNode][] }) => (
-  <div style={{
-    display: 'grid', gridTemplateColumns: 'minmax(6.5em, max-content) 1fr',
-    gap: '0.75em 1.4em', alignItems: 'baseline', padding: '1em 0 0.2em',
-  }}>
-    {of.map(([sym, what], i) => <Fragment key={i}>
-      <div style={{
-        fontFamily: SERIF, fontSize: '1.02em', color: INK, whiteSpace: 'nowrap',
-      }}>{sym}</div>
-      <div style={{ color: DIM, fontSize: '0.86em', lineHeight: 1.55 }}>{what}</div>
-    </Fragment>)}
-  </div>
-);
 
 // —— what is behind each line ————————————————————————————————————————————
 

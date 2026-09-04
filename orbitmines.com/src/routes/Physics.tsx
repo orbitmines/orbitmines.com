@@ -222,6 +222,8 @@ const Physics = () => {
         (G/S.v) Movement: A source has free rein on whether to move, or to stand still, every tick of the universe.
 
         <Block>TODO VISUALIZATION: S.v</Block>
+        
+        <Head>Mass</Head>
 
         <span style={{width: '100%', textAlign: 'left'}}>This leaves us with the following idea of what mass actually is in this model. Since the rays are what causes spatial annihilation which is what influences movement, mass is simply how many of these rays we're able to emit from a source. Specifically, <V><Bar>m</Bar></V>, its discrete mass, would be expressed in how often per tick we would emit a ray.</span>
 
@@ -241,19 +243,36 @@ const Physics = () => {
 
         <span style={{width: '100%', textAlign: 'left'}} className="bp5-text-muted">Though there's nothing stopping us from defining a source which only emits rays in a particular direction (which would result in directional gravity), we typically assume that on aggregate, something with mass spherically let's its surroundings know about that mass (to which extend that holds on a small scale, I'll once again explore at a later date). Furthermore, there's also no reason to think that this needs to be a perfect period, as long as aggregate behavior is still a particular value. Nor is there a reason to think that this cannot be dynamical and vary slightly over time.</span>
 
-        <span style={{width: '100%', textAlign: 'left'}}>Though that's a useful quantity, that would be a quantity we couldn't compare to other masses which vary in <F>l.</F><K><Bar>DEG</Bar></K>. We could measure the number of rays sent out, but that wouldn't mean anything if we don't know the portion of space it occupies. So we need a measure of effective gravity, across a growing shell (a ball) around the local point the source is located at. Which would be something we could intuit as mass. The only problem with that quantity being, that it depends on spatial structure, which could be dynamic and/or non-trivial.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>Though that's a useful quantity, that would be a quantity we couldn't compare to other masses which vary in <F>l.</F><K><Bar>DEG</Bar></K>. We could measure the number of rays sent out, but that wouldn't mean anything if we don't know the portion of space it occupies. So we need a measure of effective gravity, across a growing shell (a ball) around the local point the source is located at. Which would be something we could intuit as mass. The only problem with that quantity being, that it depends on spatial structure, which could be dynamic and/or non-trivial. Taking all that into account, we get an equation for mass, looking something like this:</span>
 
-        <Eq>
-          <i><Bar>m</Bar></i> = <F>% <Bar>t</Bar>
-          <span style={{ padding: '0 1.4em' }} />
-          0 ≤ <V><Bar>m</Bar></V> ≤ <K><Bar>c</Bar></K></F>
-          <span style={{ padding: '0 1.4em' }} />
-          <i><Bar>m</Bar></i>.<D>period</D> = <Frac over={<>1</>} under={<i><Bar>m</Bar></i>} /> <F><Bar>t</Bar></F>
-        </Eq>
+        <Eq theory="G" theorem="gravity.mass"/>
+
+        Whenever there's a derived equation you can click on in to see how it's derived! Right now it includes some things I haven't yet explained, which we'll get to, but try it!
 
         <BR/>
 
-        The model does make a single restriction on the freedoms given to a source. Which is if you move in some direction at some tick in the universe, you cannot also emit a ray in that direction. Likely to be an accurate physics model you wouldn't emit in any direction (though I'll explore that idea in a subsequent post later). Which is like saying, if you're always moving (light), you cannot also let the universe know you have mass (in that direction).
+        <span style={{width: '100%', textAlign: 'left'}}>The important pieces to understand being <F>l.</F><K>choose</K>(<i><Bar>m</Bar></i><Sub>x</Sub>·<F>l.</F><K><Bar>DEG</Bar></K>): which is the free parameter we've given to the source which determines which connections (<F>l.</F><K><Bar>DEG</Bar></K>) and how often per connection (<i><Bar>m</Bar></i><Sub>x</Sub>) emission tends to happen. This would be a number between 0 and <F>l.</F><K><Bar>DEG</Bar></K>. And the bottom part <F>l.</F><K>shell</K>(<Bar>R</Bar>), being with respect to the growing shell I mentioned.</span>
+
+        <BR/>
+
+        Though this would be a useful measure of mass, which necessarily depends on the surrounding space, it doesn't quite fit with intuition of what we assume mass to be. Which is why there's the following definition also, which we'll tend to use. By assuming that we have gravity at an instant at infinite range. (Note that this measure of mass does come with the assumption that the spatial structure surrounding the mass is somewhat irrelevant)
+
+        <Eq theory="G" theorem="gravity.saturation"/>
+
+        <Head>Mass/velocity tradeoff</Head>
+
+        Now that you have some inkling of what it means to have mass in this model, I can introduce the next idea:
+
+        <BR/>
+
+        The model does make a single restriction on the freedoms given to a source. Which is if you move in some direction at some tick in the universe, you cannot also emit a ray in that direction. Likely, in an accurate physics model, you wouldn't emit in any direction (though I'll explore that idea in a subsequent post later). Which is like saying, if you're always moving (light), you cannot also let the universe know you have mass (in that direction).
+
+        <BR/>
+
+        Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model.
+        <Section head="The Continuous Model">
+          <Eq theory="G" theorem="gravity.newton"/>
+        </Section>
       </Section>
 
       <Section head="Gravity OLD">
@@ -538,7 +557,7 @@ const Physics = () => {
 
         Let's dive into the continuous model to show you how.
 
-        <Section head="The Continuous Model">
+        <Section head="The Continuous Model 2">
           So putting everything from the previous section together we get (assuming a discrete 3D space):
 
           <Eq>
