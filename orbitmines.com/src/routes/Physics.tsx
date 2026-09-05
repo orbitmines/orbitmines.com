@@ -21,7 +21,7 @@ import { Orbits } from "./Physics/visuals/ORBITS";
 import { Choreographies } from "./Physics/visuals/NBODY";
 import { Spokes } from "./Physics/visuals/SPOKES";
 import {
-  B, Bar, Because, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Frac, FULL, Hat, Head,
+  B, Bar, Because, CEILING, CLOCK, COHERENT, CONSTANTS, D, Eq, F, Film, Frac, FULL, Hat, Head,
   IDENTICAL,
   IGNORANCE, K, LAW, MADE_FROM, MEETINGS, MET, METRIC, Paren, R, REACH, RECORD, Rows,
   SPACE, Sub, Sup, TURNS, Type, V,
@@ -216,12 +216,14 @@ const Physics = () => {
         (G/S.1) Emission: A source has free rein on whether, and on which spatial connections to neighbours it activates a ray, every tick of the universe.
 
         <Block>TODO VISUALIZATION: S.1</Block>
+        <Film id="gravity.rain"/>
 
         <BR/>
 
         (G/S.v) Movement: A source has free rein on whether to move, or to stand still, every tick of the universe.
 
         <Block>TODO VISUALIZATION: S.v</Block>
+        <Film id="gravity.pull"/>
         
         <Head>Mass</Head>
 
@@ -279,6 +281,7 @@ const Physics = () => {
 
         <Section head="The Continuous Model">
           <Eq theory="G" theorem="gravity.newton"/>
+
         </Section>
       </Section>
 

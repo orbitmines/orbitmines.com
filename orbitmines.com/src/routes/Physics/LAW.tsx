@@ -71,6 +71,8 @@ export const {
   Eq, Panel, Step, Because, Note, Head, Rows,
   /* and the proofs' own markup, for a line quoted straight out of the prover */
   Markup, EqMarkup, derivation,
+  /* a rendered visual, which the package ships beside the theory it is a picture of */
+  Film,
 } = SET;
 
 /**
