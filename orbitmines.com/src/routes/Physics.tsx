@@ -251,7 +251,7 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>The important pieces to understand being <F>l.</F><K>choose</K>(<i><Bar>m</Bar></i><Sub>x</Sub>·<F>l.</F><K><Bar>DEG</Bar></K>): which is the free parameter we've given to the source which determines which connections (<F>l.</F><K><Bar>DEG</Bar></K>) and how often per connection (<i><Bar>m</Bar></i><Sub>x</Sub>) emission tends to happen. This would be a number between 0 and <F>l.</F><K><Bar>DEG</Bar></K>. And the bottom part <F>l.</F><K>shell</K>(<Bar>R</Bar>), being with respect to the growing shell I mentioned.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>The important pieces to understand being <F>l.</F><K>choose</K>(<i><Bar>m</Bar></i><Sub>x·<F>l.</F><K><Bar>DEG</Bar></K></Sub>): which is the free parameter we've given to the source which determines which connections (<F>l.</F><K><Bar>DEG</Bar></K>) and how often per connection (<i><Bar>m</Bar></i><Sub>x</Sub>) emission tends to happen. This would be a number between 0 and <F>l.</F><K><Bar>DEG</Bar></K>. And the bottom part <F>l.</F><K>shell</K>(<Bar>R</Bar>), being with respect to the growing shell I mentioned.</span>
 
         <BR/>
 
@@ -269,7 +269,14 @@ const Physics = () => {
 
         <BR/>
 
-        Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model.
+        <span style={{width: '100%', textAlign: 'left'}}>Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model. For now though, I let the <F>l.</F><K>choose</K> term in the mass equation also signals a choice of multiplication with the current velocity, the (1 - <i>β</i>), so that we're aware of this tradeoff. Likely a completely model will make that term more expressive than just a dependency on velocity, so expect that parameter to become more complete at a later date.</span>
+
+        For the purposes of this article we won't need this tradeoff, but it's good to be aware of it.
+
+        <BR/>
+
+        Alrighty, now we have all the building blocks to properly dive into the continuous setup.
+
         <Section head="The Continuous Model">
           <Eq theory="G" theorem="gravity.newton"/>
         </Section>

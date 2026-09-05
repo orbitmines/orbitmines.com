@@ -22,12 +22,13 @@ const nextConfig = {
   // for browser bundles, so the old webpack rules for those are no longer
   // needed.
   turbopack: {
-    // `@orbitmines/physics` is a `file:` dependency during development, so
-    // node_modules/@orbitmines/physics is a symlink pointing at ../../physics —
-    // out of this directory. Turbopack refuses to follow a symlink outside its
-    // filesystem root, so the root is the folder holding BOTH repositories.
-    // Without this the package does not resolve at all, in dev or in build.
-    root: '../..',
+    // No `root` override. `@orbitmines/physics` used to be a symlink out of this
+    // directory, which Turbopack will not follow, so the root had to be the folder
+    // holding both repositories — 322GB across 17 repos, all of which Turbopack then
+    // watched, until the dev server died with `RangeError: Map maximum size exceeded`
+    // out of async_hooks. Next has no watch-ignore for Turbopack, so instead
+    // `scripts/sync-physics.mjs` copies the package into node_modules as real files
+    // and the watched tree is this repository alone. See that file.
 
     resolveAlias: {
       '@blueprintjs/core': BP_LOCAL,

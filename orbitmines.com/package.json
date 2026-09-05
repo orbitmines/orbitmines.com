@@ -36,7 +36,12 @@
     "dev": "next dev",
     "start": "next start",
     "build": "next build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:physics": "node scripts/sync-physics.mjs",
+    "dev:physics": "node scripts/sync-physics.mjs --watch",
+    "predev": "npm run sync:physics",
+    "prebuild": "npm run sync:physics",
+    "postinstall": "npm run sync:physics"
   },
   "browserslist": {
     "production": [
