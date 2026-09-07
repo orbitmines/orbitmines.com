@@ -1,10 +1,14 @@
 # Miscellaneous
 ./external
 
+.panels
+_*.*
+
 # orbitmines.com
 orbitmines.com/.next
 orbitmines.com/node_modules
 orbitmines.com/build
+orbitmines.com/tsconfig.tsbuildinfo
 
 # Environment
 **/.idea

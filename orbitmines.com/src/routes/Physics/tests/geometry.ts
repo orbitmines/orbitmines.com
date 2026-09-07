@@ -1,0 +1,472 @@
+/**
+ * THE GEOMETRY — whether the lattice's grain survives its own vacuum.
+ *
+ * `geometry`'s table calls the model's cubic 26 veined, with a rank-four anisotropy
+ * of 49.7% and light 1.73× faster along a body diagonal — and calls the second a
+ * prediction, and a bad one, since a 73% anisotropy in c̄ is refuted by every
+ * interferometer ever built. Its three repairs all change the LATTICE.
+ *
+ * BUT EVERY ONE OF THOSE NUMBERS IS A PROPERTY OF THE NEIGHBOUR SET ALONE. Σ w c⊗c⊗c⊗c
+ * is the momentum flux of a gas whose carriers stream FOR EVER, and the √3 is the
+ * shape of a ray that has never met anything. In this model a ray does not stream
+ * for ever: it meets something every few cells, and a ray that has been turned is on
+ * a different exit from the one it left on.
+ *
+ * SO IT IS A MEASUREMENT, AND IT IS ONLY A MEASUREMENT IF THE VACUUM SCATTERS. An
+ * earlier attempt at this ran (G+M/2) as "fire only in a completely neutral cell",
+ * which self-limits near a tenth of the derived occupancy — the diagnostic said 0.07
+ * deflections per surviving ray, so nothing had scattered and no conclusion followed
+ * either way. `scattering` is reported here for exactly that reason.
+ */
+
+import {
+  World, GEOMETRIES, l, headerOf, judge, stat, norm, sub, dot, exponent, fill,
+  scattering, Theory, Finding,
+} from "../DISCRETE";
+import { test, DEFAULT_SEEDS } from "../SUITE";
+
+/** the three families of direction on a cubic lattice, which is where a vein shows */
+const FAMILIES: [string, number[]][] = [
+  ["⟨100⟩ axis", [1, 0, 0]], ["⟨110⟩ face", [1, 1, 0]], ["⟨111⟩ body", [1, 1, 1]],
+];
+
+export const veins = test({
+  id: "geometry/veins",
+  claims: "the lattice's grain is a collisionless artefact — a field measured through " +
+    "the model's own vacuum is rounder than the neighbour set is",
+  cited: ["Electromagnetism — and the veins"],
+  under: {
+    "gravity+magnetism": "holds",
+    /*
+     * AND GRAVITY CANNOT BE ASKED ANY MORE, which the expansion rate used to hide.
+     * (G/2) is not a rule that fires at a rate — every neutral point splits every tick —
+     * and under gravity both halves of an inserted point are neutral, so they annihilate
+     * on the edge and the point collapses. Gravity has NO VACUUM AT ALL, `vacuum: 0`,
+     * and a claim about what a medium does to a field has no medium to be about.
+     */
+    "gravity": "cannot be asked — gravity's vacuum is empty by the rule, so there is no " +
+      "medium here to round anything",
+  },
+  run: (ctx, theory) => {
+    const { N, T, seeds } = ctx.budget({ N: 41, T: 120, seeds: 3 });
+    const C = (N - 1) / 2, centre = [C, C, C];
+    const radii = [6, 10, 14].filter(r => r < C - 2);
+
+    /**
+     * THE FIELD DOWN A NARROW CONE ABOUT EACH FAMILY, differenced against no body.
+     *
+     * THERE IS NO COLLISIONLESS CONTROL RUN, and there does not need to be. What a
+     * control would measure — the shape of a ray that has never met anything — is
+     * exactly the geometry's own rank-four moment, a constant of the neighbour set and
+     * the very number the article's table prints. It used to be reached by setting the
+     * expansion rate to nought, which is not a thing the rules can do; running a second
+     * box to re-measure a constant only put noise on one side of the comparison.
+     */
+    const spread = ctx.once((seed: number) => {
+      const mk = (withBody: boolean) => {
+        const w = new World({ theory, N, seed, boundary: "absorb" });
+        if (withBody) w.add({ at: centre, radius: 2, emits: 1 });
+        return w.run(T);
+      };
+      const b = mk(true), v = mk(false);
+      const byFamily = radii.map(r => FAMILIES.map(([, f]) => {
+        const u = f.map(x => x / norm(f));
+        let s = 0, n = 0;
+        b.backend.forEachLocal(k => {
+          if (b.isSource(k)) return;
+          const d = sub(b.backend.position(k), centre), rr = norm(d);
+          if (Math.abs(rr - r) > 0.6 || rr < 1e-9) return;
+          const cs = Math.abs((d[0] * u[0] + d[1] * u[1] + d[2] * u[2]) / rr);
+          if (cs < 0.955) return;
+          // the deficit: how many of a local's rays failed to arrive
+          s += (b.DEG - l.rays(b, k).length) - (v.DEG - l.rays(v, k).length); n++;
+        });
+        return n ? s / n : NaN;
+      }));
+      return { byFamily, fill: fill(b), scattering: scattering(b) };
+    });
+
+    const anisotropyAt = (ri: number) => ctx.over(seeds, s => {
+      const v = spread(s).byFamily[ri];
+      if (!v || !v.every(isFinite)) return NaN;
+      const mean = v.reduce((a2, b2) => a2 + b2, 0) / v.length;
+      return Math.abs(mean) < 1e-9 ? NaN : (Math.max(...v) - Math.min(...v)) / Math.abs(mean);
+    });
+
+    // the middle radius that survives the box — a quick run may keep only one
+    const ri = Math.min(1, radii.length - 1);
+    const measured = anisotropyAt(ri);
+    const diag = spread(seeds[0]);
+
+    const w = new World({ theory, N, seed: seeds[0], boundary: "absorb" });
+    w.add({ at: centre, radius: 2, emits: 1 });
+    w.run(T);
+    /* the collisionless limit, which is a property of the exits and not of a run */
+    const bare = w.geometry.moment(4).anisotropy;
+
+    const findings: Finding[] = [
+      judge({
+        name: "deflections per surviving ray", value: diag.scattering,
+        expect: {
+          of: "well above zero, or nothing below means anything",
+          want: 1, tolerance: 0.9,
+          because: "if rays are not being turned then the front is the collisionless one " +
+            "whatever the density says, and no conclusion about the grain follows either way",
+        },
+        note: "THE DIAGNOSTIC THAT KEEPS A NULL RESULT FROM BEING VACUOUS. An earlier " +
+          "attempt read 0.07 here and its answer was worthless — and then this read " +
+          "0.0000 for a longer while, because the on-edge collision path never wrote " +
+          "the turn count it averages. Its band was ±10 about 1, which cannot fail, so " +
+          "nothing said so. Both are fixed; the band is now one that can.",
+      }),
+      {
+        name: "anisotropy of the neighbour set, with nothing in the way", value: bare,
+        note: "the collisionless limit, and it is the geometry's own rank-four moment rather " +
+          "than a second run — see above for why there is no longer a box to measure it in",
+      },
+      judge({
+        name: "is the field measured through the vacuum ROUNDER than the neighbour set",
+        value: measured.mean < bare ? 1 : 0,
+        expect: {
+          of: "1 — the medium rounds the field", want: 1, tolerance: 0,
+          because: "a ray that has been turned is on a different exit from the one it left on, " +
+            "so the direction a disturbance travels is not the direction any ray travels. " +
+            "STATED AS A VERDICT because the claim is a comparison and the two sides are now " +
+            "different kinds of quantity — one measured through a box, one a constant of the " +
+            "lattice — so a band around their difference would be a band around a units mismatch",
+        },
+        note: `${(100 * measured.mean).toFixed(1)}% ± ${(100 * measured.err).toFixed(1)} ` +
+          `measured against the neighbour set's ${(100 * bare).toFixed(1)}%`,
+      }),
+    ];
+
+    return {
+      header: headerOf(w, seeds),
+      findings,
+      table: {
+        columns: ["r", ...FAMILIES.map(f => f[0]), "spread"],
+        rows: radii.map((r, i) => {
+          const v = spread(seeds[0]).byFamily[i];
+          if (!v || !v.every(isFinite)) return [r, "—", "—", "—", "—"];
+          const mean = v.reduce((a, b2) => a + b2, 0) / v.length;
+          return [r, ...v.map(x => x.toExponential(3)),
+            (100 * (Math.max(...v) - Math.min(...v)) / Math.abs(mean || 1)).toFixed(1) + "%"];
+        }),
+      },
+    };
+  },
+});
+
+/**
+ * The constants themselves, derived rather than written down — which is the whole
+ * point of the geometry object and is worth asserting, because the article's table
+ * was arrived at by hand and any of it could have been wrong.
+ */
+export const constants = test({
+  id: "geometry/derived-constants",
+  claims: "DEG, SHEET, CYCLE, SPIN and the moments come out of the exits rather than " +
+    "being written down, and reproduce the article's table",
+  cited: ["Gravity — movement", "Electromagnetism — the model is not one geometry"],
+  under: { "gravity": "holds" },
+  exact: true,                    // a counting fact: no box, no ticks, no seeds
+  run: (_ctx, theory) => {
+    const rows = Object.values(GEOMETRIES).map(g => [
+      g.name, g.DEG, g.SHEET, g.CYCLE,
+      g.CYCLE ? (360 / g.CYCLE).toFixed(0) + "°" : "—",
+      (100 * g.moment(4).anisotropy).toFixed(1) + "%",
+      g.cAnisotropy.toFixed(2) + "×",
+      g.veined ? "veined" : "round",
+    ]);
+    const cubic = GEOMETRIES["cubic-26"], fcc = GEOMETRIES["fcc-12"], bcc = GEOMETRIES["bcc-8"];
+    const w = new World({ theory, N: 7 });
+    return {
+      header: headerOf(w),
+      findings: [
+        judge({ name: "cubic-26 DEG", value: cubic.DEG,
+          expect: { of: "3^D − 1", want: 26, tolerance: 0, because: "every non-zero offset in {−1,0,1}^D" } }),
+        judge({ name: "cubic-26 SHEET", value: cubic.SHEET,
+          expect: { of: "DEG(D−1) = 3^(D−1) − 1", want: 8, tolerance: 0,
+            because: "the exits perpendicular to a face axis — one dimension fewer" } }),
+        judge({ name: "cubic-26 Σd̂⊗d̂", value: cubic.moment(2).diagUnit,
+          expect: { of: "DEG/D exactly", want: 26 / 3, tolerance: 1e-9,
+            because: "cubic symmetry makes the second moment isotropic identically, which is " +
+              "why the inverse-square law was never in danger on any candidate geometry" } }),
+        judge({ name: "FCC CYCLE", value: fcc.CYCLE,
+          expect: { of: "6 — a hexagonal ring about a body diagonal", want: 6, tolerance: 0,
+            because: "FCC's exit axes have two and its cube axes four, but its body diagonals six" } }),
+        judge({ name: "BCC equator", value: bcc.SHEET,
+          expect: { of: "0 — no ring to put a phase on", want: 0, tolerance: 0,
+            because: "gravity would work on BCC and charge as this book writes it could not exist" },
+          note: `admitting face-diagonal axes would give it ${bcc.alternatives.withFaceDiagonals}, ` +
+            "which is a reading the article does not take and this records rather than hides" }),
+      ],
+      table: {
+        columns: ["geometry", "DEG", "SHEET", "CYCLE", "SPIN", "rank 4", "c aniso", "field"],
+        rows,
+      },
+    };
+  },
+});
+
+/**
+ * THE EXITS SORTED BY A NORTH — which is the counting the Layer-2 arc reads its ring
+ * off, and it is a DIFFERENT ring for each class of axis.
+ *
+ * The article quotes the face-axis reading — nine, eight, nine — and takes the eight
+ * as "the equator". But a cubic lattice has three classes of axis and they sort
+ * their exits differently, so which ring a phase lives on depends on which axis the
+ * source is oriented along. That is a fact about the lattice rather than about the
+ * model, and it is computed here rather than restated.
+ */
+export const exits = test({
+  id: "geometry/exits-by-axis",
+  claims: "the exits of a lattice sort into a +, an equator and a − about any axis, and the " +
+    "equator is a different size for each class of axis",
+  cited: ["Layer 2: Matter", "Gravity — the two counts it is read against"],
+  under: { "gravity": "holds" },
+  exact: true,                    // a counting fact: no box, no ticks, no seeds
+  run: (_ctx, theory) => {
+    const w = new World({ theory, N: 7 });
+    const g = w.geometry;
+
+    /** the three classes of axis on a cubic lattice, by how many components they use */
+    const AXES: [string, number[]][] = [
+      ["⟨100⟩ face", [1, 0, 0]],
+      ["⟨110⟩ edge", [1, 1, 0]],
+      ["⟨111⟩ corner", [1, 1, 1]],
+    ];
+    const sorted = AXES.map(([name, a]) => {
+      const u = a.map(x => x / Math.hypot(...a));
+      let plus = 0, minus = 0;
+      const eq = g.equator(u).length;
+      for (let d = 0; d < g.DEG; d++) {
+        const c = dot(g.U[d], u);
+        if (c > 1e-9) plus++; else if (c < -1e-9) minus++;
+      }
+      return { name, plus, eq, minus, total: plus + eq + minus };
+    });
+
+    return {
+      header: headerOf(w),
+      findings: [
+        judge({
+          name: "every exit is accounted for, every axis",
+          value: sorted.every(x => x.total === g.DEG) ? 1 : 0,
+          expect: { of: "1 — a north sorts the exits into exactly three groups", want: 1, tolerance: 0,
+            because: "an exit is above the plane, in it, or below it, and there is no fourth case" },
+        }),
+        judge({
+          name: "the two hemispheres are equal, every axis",
+          value: sorted.every(x => x.plus === x.minus) ? 1 : 0,
+          expect: { of: "1 — every exit has its opposite", want: 1, tolerance: 0,
+            because: "which is the one thing the three rules demand of a geometry, since a " +
+              "head-on pair has to exist for them to act on" },
+        }),
+        /*
+         * THE RING LIVES ON WHICHEVER AXIS HAS THE LARGEST EQUATOR, and naming a class
+         * instead of that is how this came to fail.
+         *
+         * It used to assert "face-axis equator = SHEET", which is true on cubic 26 and
+         * false on the lattice the model now runs. SHEET is DEFINED as the largest
+         * equator over the admissible axes, and which class achieves it is the tiling's
+         * business: cubic 26 gets its 8 about a ⟨100⟩ face, fcc 12 gets its 6 about a
+         * ⟨111⟩ body diagonal. The Layer-2 arc is written about "the eight vacant
+         * directions of a face axis" and that is a cubic-26 sentence; what is
+         * geometry-agnostic — and what Layer 2 actually needs — is that SOME axis carries
+         * the largest ring and that the geometry can say which.
+         */
+        judge({
+          name: "the ring axis carries the largest equator", value: g.equator(g.ringAxis).length,
+          expect: {
+            of: "SHEET, on every lattice — which is what SHEET means", want: g.SHEET, tolerance: 0,
+            because: "SHEET is the largest equator over the admissible axes and `ringAxis` is " +
+              "the axis achieving it, so this is true by construction on every geometry and " +
+              "false the moment either is computed differently from the other",
+          },
+          note: `${g.name}: the ring sits on ${g.ringAxis.map(x => x.toFixed(2)).join(", ")} ` +
+            `with ${g.CYCLE} members, a quantum of ${(360 / (g.CYCLE || 1)).toFixed(1)}°`,
+        }),
+        {
+          name: "distinct equator sizes over the three cubic classes",
+          value: new Set(sorted.map(x => x.eq)).size,
+          note: "REPORTED AND NOT JUDGED, because how many distinct rings a lattice has is " +
+            "the lattice's answer and not the model's. Cubic 26 gives 2 — a face and an edge " +
+            "agree and a body diagonal does not — and fcc 12 gives 3, all different. A test " +
+            "that asserted 2 was asserting cubic 26.",
+        },
+      ],
+      table: {
+        columns: ["axis", "+ side", "equator", "− side", "total"],
+        rows: sorted.map(x => [x.name, x.plus, x.eq, x.minus, x.total]),
+      },
+    };
+  },
+});
+
+/**
+ * A FIXED COUNT OF CHARGES OVER A SHELL THAT GROWS — which is the whole of the
+ * inverse-square law, and is arithmetic rather than a simulation.
+ *
+ * The article derives 1/R^(D−1) by spreading SHEET rays over a shell. How much shell
+ * there is at radius R is a property of the geometry, and so is how much of it one
+ * ray covers; the law is the ratio. Computing it here means the exponent quoted in
+ * the prose and the exponent the geometry actually has cannot drift apart.
+ */
+export const shells = test({
+  id: "geometry/shells",
+  claims: "a fixed emission over a shell that grows as R^(D−1) gives the inverse-square law, " +
+    "and the exponent is the geometry's rather than a constant",
+  cited: ["Gravity — movement", "Gravity — the two counts it is read against"],
+  under: { "gravity": "holds" },
+  exact: true,                    // a counting fact: no box, no ticks, no seeds
+  run: (_ctx, theory) => {
+    const w = new World({ theory, N: 7 });
+    const g = w.geometry;
+    const radii = [2, 4, 8, 16, 32];
+
+    /** how many locals sit at radius R — the shell, counted rather than assumed */
+    const shellAt = (R: number) => {
+      let n = 0;
+      const lim = Math.ceil(R) + 2;
+      for (let x = -lim; x <= lim; x++) for (let y = -lim; y <= lim; y++)
+        for (let z = -lim; z <= lim; z++) {
+          const r = Math.hypot(x, y, z);
+          if (Math.abs(r - R) <= 0.5) n++;
+        }
+      return n;
+    };
+    const counts = radii.map(shellAt);
+    const exp = exponent(radii, counts);
+
+    return {
+      header: headerOf(w),
+      findings: [
+        judge({
+          name: "shell exponent", value: exp,
+          expect: {
+            of: "D−1 — the surface of a ball in D dimensions", want: g.D - 1, tolerance: 0.1,
+            because: "a shell is a surface, and a surface in D dimensions grows as R^(D−1)",
+          },
+        }),
+        judge({
+          name: "the intensity exponent that follows", value: -exp,
+          expect: {
+            of: "−(D−1) — a fixed emission divided by a growing shell",
+            want: -(g.D - 1), tolerance: 0.1,
+            because: "SHEET rays are sent out however far they go, so what arrives per local " +
+              "is that count over the shell — which IS the inverse-square law in D = 3",
+          },
+        }),
+      ],
+      table: {
+        columns: ["R", "locals on the shell", "per ray", "× R^(D−1)"],
+        rows: radii.map((R, i) => [
+          R, counts[i], (g.SHEET / counts[i]).toExponential(3),
+          ((g.SHEET / counts[i]) * Math.pow(R, g.D - 1)).toFixed(3),
+        ]),
+      },
+    };
+  },
+});
+
+/**
+ * DOES ONE ROTATION OF THE SHEET REACH EVERYWHERE?
+ *
+ * The article's derivation of the inverse-square law rests on a fixed count of rays
+ * spread over a shell, and the reason that count is SHEET rather than l.DEG is that
+ * the sheet TURNS: "in order to cover our whole space, we'll be rotating this sheet
+ * in one more dimension than it's defined". A sheet that reached only part of the
+ * space would be emitting into a cone, and the law it gives would be about that cone
+ * rather than about a sphere.
+ *
+ * SO IT IS A CLAIM AND IT CAN BE COUNTED. Turn the sheet about an axis lying in it —
+ * which is what tilts the plane rather than mapping it onto itself — and see how many
+ * of the lattice's exits are visited over a full cycle. Every admissible axis is
+ * tried and the best is reported, since a geometry should not be failed for a badly
+ * chosen one.
+ */
+export const sheetCoverage = test({
+  id: "geometry/sheet-coverage",
+  claims: "one rotation of the sheet reaches every exit, which is what fixes the emission " +
+    "at SHEET rays rather than at l.DEG",
+  cited: ["Gravity — movement"],
+  under: { "gravity": "holds" },
+  exact: true,                    // a counting fact: no box, no ticks, no seeds
+  run: (_ctx, theory) => {
+    const w = new World({ theory, N: 7 });
+
+    const coverage = (g: typeof w.geometry) => {
+      const base = g.equator(g.sheetAxis);
+      if (!base.length) return { best: 0, axis: "—", sizes: [] as number[] };
+      let best = 0, axis = "—", sizes: number[] = [];
+      // every direction in the sheet is a candidate axis to tilt it about
+      for (const a of base) {
+        const about = g.U[a];
+        const seen = new Set<number>(), each: number[] = [];
+        for (let k = 0; k < Math.max(g.CYCLE, 1); k++) {
+          const lit = new Set<number>();
+          for (const d of base) {
+            let e = d;
+            for (let i = 0; i < k; i++) e = g.turn(e, about);
+            lit.add(e);
+          }
+          each.push(lit.size);
+          for (const e of lit) seen.add(e);
+        }
+        if (seen.size > best) { best = seen.size; axis = `[${g.V[a]}]`; sizes = each; }
+      }
+      return { best, axis, sizes };
+    };
+
+    const rows = Object.values(GEOMETRIES).map(g => {
+      const c = coverage(g);
+      return {
+        g, ...c,
+        /** whether the count stays SHEET all the way round, which it must */
+        steady: c.sizes.length ? c.sizes.every(x => x === g.SHEET) : true,
+      };
+    });
+    const cubic = rows.find(r => r.g.name === "cubic-26")!;
+
+    return {
+      header: headerOf(w),
+      findings: [
+        judge({
+          name: "the sheet keeps its count while turning, every geometry",
+          value: rows.every(r => r.steady) ? 1 : 0,
+          expect: { of: "1 — a source emits SHEET rays and turning moves them", want: 1, tolerance: 0,
+            because: "the count is a property of the source, so it cannot change as it comes round" },
+        }),
+        judge({
+          name: "cubic-26 exits reached in one rotation", value: cubic.best,
+          expect: {
+            of: "l.DEG — one rotation covers the whole space",
+            want: cubic.g.DEG, tolerance: 0,
+            because: "the derivation fixes the emission at SHEET rather than l.DEG precisely " +
+              "BECAUSE one rotation is said to reach everywhere; a sheet that does not is " +
+              "emitting into a cone, and the law it gives is about that cone",
+          },
+          note: `best over every axis lying in the sheet; the best was ${cubic.axis}`,
+        }),
+        judge({
+          name: "geometries where one rotation covers everything",
+          value: rows.filter(r => r.g.SHEET > 0 && r.best === r.g.DEG).length,
+          expect: {
+            of: "all of them that have a sheet at all",
+            want: rows.filter(r => r.g.SHEET > 0).length, tolerance: 0,
+            because: "the derivation is stated for the model rather than for one lattice",
+          },
+        }),
+      ],
+      table: {
+        columns: ["geometry", "SHEET", "CYCLE", "reached", "of l.DEG", "covers?"],
+        rows: rows.map(r => [
+          r.g.name, r.g.SHEET, r.g.CYCLE, r.best, r.g.DEG,
+          r.g.SHEET === 0 ? "no sheet" : r.best === r.g.DEG ? "yes" : `NO — ${r.g.DEG - r.best} missed`,
+        ]),
+      },
+    };
+  },
+});
+
+export default [constants, exits, shells, sheetCoverage, veins];
