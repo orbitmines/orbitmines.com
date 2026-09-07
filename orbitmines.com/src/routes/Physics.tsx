@@ -216,14 +216,21 @@ const Physics = () => {
         (G/S.1) Emission: A source has free rein on whether, and on which spatial connections to neighbours it activates a ray, every tick of the universe.
 
         <Block>TODO VISUALIZATION: S.1</Block>
-        <Film id="gravity.rain"/>
+        <Row center="xs">
+          <Col xs={12} md={9} lg={7}><Film id="gravity.rain"/></Col>
+        </Row>
 
         <BR/>
 
         (G/S.v) Movement: A source has free rein on whether to move, or to stand still, every tick of the universe.
 
         <Block>TODO VISUALIZATION: S.v</Block>
-        <Film id="gravity.pull"/>
+        <Row center="xs">
+          <Col xs={12} md={9} lg={7}><Film id="gravity.pull"/></Col>
+        </Row>
+        <Row center="xs">
+          <Col xs={12} md={9} lg={7}><Film id="solar.inner"/></Col>
+        </Row>
         
         <Head>Mass</Head>
 
@@ -271,7 +278,7 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model. For now though, I let the <F>l.</F><K>choose</K> term in the mass equation also signals a choice of multiplication with the current velocity, the (1 - <i>β</i>), so that we're aware of this tradeoff. Likely a completely model will make that term more expressive than just a dependency on velocity, so expect that parameter to become more complete at a later date.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model. For now though, I let the <F>l.</F><K>choose</K> term in the mass equation also signals a choice of multiplication with the current velocity, the (1 - <i>β</i>), so that we're aware of this tradeoff. Likely a complete model will make that term more expressive than just a dependency on velocity, so expect that parameter to become more complete at a later date.</span>
 
         For the purposes of this article we won't need this tradeoff, but it's good to be aware of it.
 
