@@ -6,11 +6,28 @@ import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib
 import {PROFILES} from "./profiles/profiles";
 import {Button} from "@blueprintjs/core";
 import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
+import {FEATURES} from "../lib/features";
 import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ETHERS_ALMANAC, ORBITMINES_MINECRAFT_ARCHIVE, PHYSICS} from "./references";
 
 
+/** One entry of the home page's booklet list: image on the left, reference on the right. */
+const Booklet = ({image, alt, reference, disabled}: {image: string, alt: string, reference: any, disabled?: boolean}) =>
+  <Row style={{alignItems: 'center', ...(disabled ? {opacity: 0.45, filter: 'grayscale(1)'} : {})}}>
+    <Col xs={3}>
+      <img src={image} alt={alt} style={{width: '100%', maxHeight: '100px', objectFit: 'contain'}} />
+    </Col>
+    <Col xs={9}>
+      <Reference
+        index={0}
+        reference={reference}
+        start="xs"
+        style={{fontSize: '0.8rem'}} target="_self"
+      />
+    </Col>
+  </Row>;
+
 const Minimap = () => {
-  const papers = [ETHERS_ALMANAC.UPDATES[0], PHYSICS, ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [...(FEATURES.ETHER ? [ETHERS_ALMANAC.UPDATES[0]] : []), PHYSICS, ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
@@ -82,19 +99,25 @@ const Minimap = () => {
             <Col xs={12}>
               <Row middle="xs" center="xs">
                 <Col style={{maxWidth: '500px'}}>
-                  <Row style={{alignItems: 'center'}}>
-                    <Col xs={3}>
-                      <img src="/almanac/almanac.png" alt="E" style={{width: '100%', maxHeight: '100px'}} />
-                    </Col>
-                    <Col xs={9}>
-                      <Reference
-                        index={0}
-                        reference={ETHERS_ALMANAC.reference}
-                        start="xs"
-                        style={{fontSize: '0.8rem'}} target="_self"
-                      />
-                    </Col>
-                  </Row>
+                  <Row><span className="bp5-text-disabled" style={{
+                    fontSize: '0.8rem',
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    paddingBottom: "6px",
+                    textAlign: 'left'
+                  }}>
+                    Booklets
+                  </span></Row>
+                  <Booklet image="/2026-09-12_Sun.png" alt="Physics Project" reference={PHYSICS.reference} />
+                  {/* The Almanac stays listed while the Ether is off, as a coming-soon;
+                      once FEATURES.ETHER is on it links through like the others. */}
+                  <Booklet image="/almanac/almanac.png" alt="E"
+                           reference={FEATURES.ETHER ? ETHERS_ALMANAC.reference : {
+                             ...ETHERS_ALMANAC.reference,
+                             title: <span>{ETHERS_ALMANAC.reference.title as any} <span className="bp5-text-disabled">(coming soon)</span></span>,
+                             link: undefined,
+                           }}
+                           disabled={!FEATURES.ETHER} />
                 </Col>
                 <Col style={{maxWidth: '500px'}}>
                   <Reference
@@ -114,6 +137,16 @@ const Minimap = () => {
                         title: <span>/ray <span className="bp5-text-muted">The Ray Programming Language & The Ether</span></span>,
                         organizations: [ORGANIZATIONS.github],
                         link: "https://github.com/orbitmines/ray"
+                      }}
+                      start="xs"
+                      style={{fontSize: '0.8rem'}} target="_blank"
+                    />
+                    <Reference
+                      index={0}
+                      reference={{
+                        title: <span>/physics <span className="bp5-text-muted">OrbitMines: Physics Project</span></span>,
+                        organizations: [ORGANIZATIONS.github],
+                        link: "https://github.com/orbitmines/physics"
                       }}
                       start="xs"
                       style={{fontSize: '0.8rem'}} target="_blank"

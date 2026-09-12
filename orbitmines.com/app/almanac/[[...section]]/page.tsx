@@ -1,4 +1,6 @@
 import type {Metadata} from 'next';
+import {notFound} from 'next/navigation';
+import {FEATURES} from '../../../src/lib/features';
 import fs from 'fs';
 import path from 'path';
 import {sectionSlug} from '../../../src/lib/post/sectionSlug';
@@ -49,5 +51,6 @@ export async function generateMetadata(
 }
 
 export default function Page() {
+  if (!FEATURES.ETHER) notFound();
   return <AlmanacClient />;
 }

@@ -1071,13 +1071,14 @@ export const PaperHeader = (props: PaperProps) => {
     date,
     draft,
     organizations,
-    authors
+    authors,
+    cover
   } = props;
 
-  const profiledOrganizations = (organizations ?? []).filter((organization) => (organization as any).profile);
+  const profiledOrganizations = cover ? [] : (organizations ?? []).filter((organization) => (organization as any).profile);
 
   return <>
-    <Title><Rendered renderable={title}/></Title>
+    {cover ? cover : <Title><Rendered renderable={title}/></Title>}
     {subtitle ? <Subtitle><Rendered renderable={subtitle}/></Subtitle> : <></>}
 
     <Row center="xs" middle="xs">
@@ -1439,6 +1440,9 @@ export type PaperProps = ReferenceProps & {
 
   header?: any //
   head?: any
+  // Replaces the title and the organization logo in the header (subtitle,
+  // authors and date are kept), for a book that wants an actual cover.
+  cover?: any
   book?: boolean,
   pdf: PdfProps,
   exclude_footnotes?: boolean

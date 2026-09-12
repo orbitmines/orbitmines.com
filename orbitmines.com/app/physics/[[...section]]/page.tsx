@@ -4,7 +4,7 @@ import path from 'path';
 import {sectionSlug} from '../../../src/lib/post/sectionSlug';
 import PhysicsClient from './PhysicsClient';
 
-const BOOK_TITLE = 'OrbitMines: Notes on Physics';
+const BOOK_TITLE = 'OrbitMines: Physics Project';
 
 // The same arrangement the Almanac uses: arcs and sections live in the path
 // (/physics/<section-slug>) as client-side shallow routes within the book, and

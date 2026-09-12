@@ -1,4 +1,5 @@
 import {Row} from "../../lib/post/Post";
+import {FEATURES} from "../../lib/features";
 import {Button, Icon} from "@blueprintjs/core";
 import React from "react";
 
@@ -40,7 +41,7 @@ export const download = async () => {
   }
 }
 
-export const DownloadButton = () => os() ? <Button icon="download" text={<Row middle="xs">
+export const DownloadButton = () => FEATURES.ETHER && os() ? <Button icon="download" text={<Row middle="xs">
   Download
   <img src="/Ether.svg" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '50px'}}/>
   <span className="hidden-xs">for {os()}</span>

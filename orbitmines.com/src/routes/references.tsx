@@ -170,7 +170,7 @@ export const ORBITMINES_MINECRAFT_ARCHIVE: Content = {
 
 export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
   title: "Ether's Almanac",
-  subtitle: "Your handbook for anything Ether, Ray & OrbitMines.",
+  subtitle: "Your handbook for anything Ether, The Ray Programming Language & OrbitMines.",
   draft: true,
   date: "Last update: 2026-12-31",
   year: "2026",
@@ -221,7 +221,7 @@ export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
  */
 export const PHYSICS: Content = { reference: {
   title: "OrbitMines: Physics Project",
-  subtitle: "An initial look at a discrete Ray Calculus for physics: specifically for gravity and magnetism, and a continuous model based on ideas of that discrete setup.",
+  subtitle: "An initial look at a collection of my ideas on physics. By extrapolating from discrete rules, a continuous model, to recover theories of gravity and (electro)magnetism.",
   draft: true,
   date: "Last update: 2026-12-31",
   year: "2026",

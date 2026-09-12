@@ -28,6 +28,7 @@ import {
 } from "./Physics/LAW";
 import { constants } from "./Physics/CONTINUOUS";
 import { Ceiling, Ladder } from "./Physics/visuals/SCALE";
+import { Drawn } from "./Physics/visuals/DRAWN";
 
 /** the lattice's own constants, off the geometry the rest of the book runs on */
 const { gravitational, massUnit } = constants();
@@ -38,6 +39,7 @@ import { GenzelDiscs, RadialAcceleration, RotationCurve as MilkyWayCurve, TullyF
 import { DeficitFront, LatticeAttract, LatticeInert, LatticeRepel, VacuumGravity, WanderGravity } from "./Physics/visuals/SHELTER";
 import { Alike, Deficit, Gravity as GravityPanel, MeanOccupancy, MeanPolarity, MovingCharge as MovingChargePanel, NeutralWire, Opposite, PerAxis, PerNode, PerRay, SheetEmission, VacuumAlone, Veins, WiresAnti, WiresParallel } from "./Physics/visuals/RENDER";
 import { Claim, M, Matrix, Ran, Recorded, Verdict } from "./Physics/visuals/FIGURES";
+import ORGANIZATIONS from "src/lib/organizations/ORGANIZATIONS";
 
 /** The colour the rest of the article uses for an aside inside a set line. */
 const FAINT = '#6c7080';
@@ -70,6 +72,44 @@ const Para = ({ children }: { children: React.ReactNode }) =>
  * `HALF` in `field.ts`, and both are this.
  */
 const HALF = <D><Bar>½</Bar></D>;
+
+/**
+ * The booklet's cover: the sun (2026-09-12) behind the OrbitMines logo, with
+ * the project's name underneath the sun in white bold JetBrains Mono.
+ */
+const Cover = () => <Row center="xs">
+  {/* Everything is sized off the wrapper's width (container units), so the
+      logo/sun/title keep their proportions from phone to desktop. */}
+  <div style={{width: '100%', maxWidth: '560px', containerType: 'inline-size', padding: '0 4%'}}>
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      aspectRatio: '1266 / 1186',
+      backgroundImage: 'url(/2026-09-12_Sun.png)',
+      backgroundSize: '78%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <img src="/logo.png" alt="OrbitMines" style={{width: '100%', height: 'auto', display: 'block'}} />
+    </div>
+    <div style={{
+      fontFamily: JetBrainsMono.family,
+      fontSize: '6cqw',
+      fontWeight: 'bold',
+      // Bold is the heaviest JetBrains Mono weight shipped; the stroke
+      // thickens it past that.
+      WebkitTextStroke: '0.35cqw #ffffff',
+      letterSpacing: '0.04em',
+      color: '#ffffff',
+      lineHeight: 1.1,
+      textAlign: 'center',
+      marginTop: '-14cqw',
+    }}>Physics Project</div>
+  </div>
+</Row>;
 
 /**
  * OrbitMines: Notes on Physics — a booklet rather than a paper.
@@ -144,8 +184,8 @@ const Physics = () => {
     title: renderable<React.ReactNode>((PHYSICS.reference.title as any), () => <>
       <Title>OrbitMines: Physics Project</Title>
     </>),
+    cover: <Cover />,
     header: <>
-      <VacuumAlone height={220} />
     </>,
     pdf: {
       fonts: [JetBrainsMono, BlueprintIcons20, BlueprintIcons16],
@@ -169,15 +209,25 @@ const Physics = () => {
       <BR/>
       I will later expand on those ideas to bring them to full fruition, but for now, let's get started with gravity.
 
+      <BR/>
+
+      <span className="bp5-text-muted" style={{width: '100%', textAlign: 'left'}}>
+        Oh, and by the way, everything discussed here you can also find @ <Reference is="reference" simple inline index={referenceCounter()} reference={{organizations: [ORGANIZATIONS.orbitmines_research, ORGANIZATIONS.github], title: "github.com/orbitmines/physics", link: "https://github.com/orbitmines/physics"}}/>.
+      </span>
+
       <Section head="Gravity">
         Gravity in this model comes down to two essential rules:
         <BR/>
         (G/1) Annihilation: When two rays meet, they annihilate, leaving a single neutral spatial point behind.
 
-        <Block>TODO VISUALIZATION: G.1</Block>
+        <Row center="xs">
+          <Col xs={12}><Drawn id="rule.annihilation"/></Col>
+        </Row>
 
         (G/2) Creation: On all axis, a neutral point expands into two points with oppositely pointing rays.
-        <Block>TODO VISUALIZATION: G.2</Block>
+        <Row center="xs">
+          <Col xs={12}><Drawn id="rule.creation"/></Col>
+        </Row>
       
         It is important to grasp how we'll be using these rule definitions in our discrete model, because that will make some things explicit about what the model does, and doesn't assume:
 
@@ -200,7 +250,9 @@ const Physics = () => {
 
         <span style={{width: '100%', textAlign: 'left'}}>(G/c) Movement: [] propagates always at <K><Bar>c</Bar></K></span>
 
-        <Block>TODO VISUALIZATION: G.c</Block>
+        <Row center="xs">
+          <Col xs={12}><Drawn id="rule.movement"/></Col>
+        </Row>
 
         <span style={{width: '100%', textAlign: 'left'}}>This <K><Bar>c</Bar></K>, is light speed in discrete terms, again without making an assumption to our SI units. For the equations in the model we'll always use this bar notation above a variable to indicate discrete units (this might create some ambiguities, but it will at least be the case in my writing). Therefore it will always be 1, as the maximum speed in any universe we can imagine. Something which travels every tick of the universe (every discrete time-step).</span>
 
@@ -231,6 +283,12 @@ const Physics = () => {
         <Row center="xs">
           <Col xs={12} md={9} lg={7}><Film id="solar.inner"/></Col>
         </Row>
+
+        (G/S.2) Attenuation: A source has free rein on deciding what happens to rays which pass through its boundary.
+
+        <BR/>
+
+        Since the source could actually be some region of space where our rays interact in a more complicated way than we currently have with just the vacuum: We don't know what might happen to them as they interact with a source. They could partially move through them, be scattered or bend, or be totally absorbed (which would cause a shadowing effect), or something completely different.
         
         <Head>Mass</Head>
 
