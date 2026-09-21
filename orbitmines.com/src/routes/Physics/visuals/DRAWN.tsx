@@ -96,8 +96,13 @@ export const Painted = ({ of, style }: { of: () => any; style?: React.CSSPropert
   </div>;
 };
 
-/** one of G's visuals by id, drawn live: the rule strips (`rule.annihilation`, `rule.creation`, `rule.movement`) */
+/** the stills G draws by a method of their own rather than as a strip */
+const OWN: Record<string, () => any> = {
+  "gravity.shadow": () => (G as any).shadow,
+};
+
+/** one of G's visuals by id, drawn live: the rule strips (`rule.annihilation`, `rule.creation`, `rule.movement`) and the shadow (`gravity.shadow`) */
 export const Drawn = ({ id, style }: { id: string; style?: React.CSSProperties }) => {
-  const of = useMemo(() => () => (G as any).strip(id), [id]);
+  const of = useMemo(() => OWN[id] ?? (() => (G as any).strip(id)), [id]);
   return <Painted of={of} style={style} />;
 };
