@@ -45,7 +45,7 @@ const Minimap = () => {
 
     <Layer zIndex="0" className="">
       <div style={{height: '100%'}}>
-        <Row style={{height: '100%', minHeight: '100vh'}} center="xs" middle="xs" between="xs">
+        <Row style={{height: '100%', minHeight: '100vh'}} className="phone-vertical-gutter" center="xs" middle="xs" between="xs">
           <Col xs={12}>
             <Col xs={12}>
               <Row center="xs">
@@ -176,7 +176,10 @@ const Minimap = () => {
               </Row>
             </Col>
 
-            <Col xs={12} style={{marginTop: '5%', marginBlock: '5%'}}>
+            {/* Fixed vertical rhythm: percentage margins resolve against the
+                container's *width*, so on large/ultrawide screens they blew this
+                gap up to hundreds of pixels and pushed the page off-centre. */}
+            <Col xs={12} style={{marginBlock: '2.5rem'}}>
               <Author {...PROFILES.fadi_shawki}
                       filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
             </Col>

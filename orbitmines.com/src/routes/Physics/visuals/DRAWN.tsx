@@ -12,7 +12,7 @@
  * a 2D context: the picture is painted in its own coordinates and scaled to the width it is given.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { G, Surface } from "@orbitmines/physics";
 
 class CanvasSurface extends (Surface as any) {
@@ -48,39 +48,56 @@ class CanvasSurface extends (Surface as any) {
   }
 }
 
-/** a Picture painted once onto a canvas at its own size, shown at the width of its container */
-export const Painted = ({ of, style }: { of: () => any; style?: React.CSSProperties }) => {
+/** one canvas, painted once at the picture's (or pane's) own size at device resolution, shown at the width it is given */
+const Canvas = ({ width, height, paint, style }: { width: number; height: number; paint: (s: any) => void; style?: React.CSSProperties }) => {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const picture = of();
-    /* the painter is made once; a zero-argument Ray method is a getter */
-    const painter = picture.painter;
-    painter.start;
     /*
      * PAINTED AT ITS OWN SIZE, at device resolution, and scaled down by CSS. The canvas's size is what
-     * the article's content-sized rows lay out around (see below), so it must not follow the measured
-     * width - the first version did, and the row shrank around the canvas it was meant to size.
+     * the article's content-sized rows lay out around, so it must not follow the measured width - a
+     * first version did, and the row shrank around the canvas it was meant to size.
      */
     const dpr = window.devicePixelRatio || 1;
-    el.width = Math.round(picture.width * dpr);
-    el.height = Math.round(picture.height * dpr);
+    el.width = Math.round(width * dpr);
+    el.height = Math.round(height * dpr);
     const ctx = el.getContext("2d");
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    painter.frame(new CanvasSurface(ctx, picture.width, picture.height), 0);
-  }, [of]);
-  /*
-   * THE CANVAS CARRIES AN INTRINSIC SIZE, like a video does: the article's rows are flex items sized
-   * to their content, so a canvas of no size sat in a column 14 pixels wide. The attributes are the
-   * strips' own size (Strip.ray: 900 wide) until the picture sets its own.
-   */
-  return <div style={{ display: "block", width: "100%", margin: "1.1rem auto", ...(style ?? {}) }}>
-    <canvas ref={ref} width={900} height={70} style={{ display: "block", width: "100%", height: "auto", borderRadius: 3, background: "#08090d" }} />
+    paint(new CanvasSurface(ctx, width, height));
+  }, [width, height, paint]);
+  return <canvas ref={ref} width={width} height={height} style={{ display: "block", width: "100%", height: "auto", borderRadius: 3, background: "#08090d", ...(style ?? {}) }} />;
+};
+
+/*
+ * IN PARTS WHERE THE PICTURE HAS THEM. A strip's before and after are two panes: side by side where
+ * the column is wide enough for each to be legible, one under the other where it is not - and each
+ * then gets the whole width, so a phone sees a bigger lattice than a laptop's half-column did. On a
+ * large screen the row steps out of the text column, since a lattice is not a paragraph.
+ */
+const CSS = `
+.physics-drawn { display: flex; flex-wrap: wrap; gap: 14px 22px; width: 100%; margin: 1.1rem auto; }
+.physics-drawn > canvas { flex: 1 1 440px; min-width: 0; }
+@media (min-width: 1500px) { .physics-drawn { width: 130%; margin-left: -15%; } }
+@media (min-width: 1900px) { .physics-drawn { width: 150%; margin-left: -25%; } }
+`;
+
+/** a Picture drawn in the page: its panes each on a canvas of their own, or the whole where it has none */
+export const Painted = ({ of, style }: { of: () => any; style?: React.CSSProperties }) => {
+  const picture = useMemo(of, [of]);
+  const panes: any[] = picture.panes ?? [];
+  const whole = useMemo(() => (s: any) => { const painter = picture.painter; painter.start; painter.frame(s, 0); }, [picture]);
+  return <div className="physics-drawn" style={style}>
+    <style>{CSS}</style>
+    {panes.length
+      ? panes.map((pane: any) => <Canvas key={pane.name} width={pane.width} height={pane.height} paint={(s) => pane.paints(s)} />)
+      : <Canvas width={picture.width} height={picture.height} paint={whole} />}
   </div>;
 };
 
 /** one of G's visuals by id, drawn live: the rule strips (`rule.annihilation`, `rule.creation`, `rule.movement`) */
-export const Drawn = ({ id, style }: { id: string; style?: React.CSSProperties }) =>
-  <Painted of={() => (G as any).strip(id)} style={style} />;
+export const Drawn = ({ id, style }: { id: string; style?: React.CSSProperties }) => {
+  const of = useMemo(() => () => (G as any).strip(id), [id]);
+  return <Painted of={of} style={style} />;
+};

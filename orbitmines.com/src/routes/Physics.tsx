@@ -248,11 +248,15 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>(G/c) Movement: [] propagates always at <K><Bar>c</Bar></K></span>
+        <span style={{width: '100%', textAlign: 'left'}}>(G/c) Movement: A ray propagates always at <K><Bar>c</Bar></K>. And refracts on a previously annihilated (G/1) point.</span>
 
         <Row center="xs">
           <Col xs={12}><Drawn id="rule.movement"/></Col>
         </Row>
+
+        So it moves every tick of the universe. Default behavior of how it moves depends on the space it currently occupies. If it currently occupies a spatial point on which annihilation (G/1) happened previously, there are more ways out of that point than a point in which annihilation didn't previously happen.
+
+        <BR/>
 
         <span style={{width: '100%', textAlign: 'left'}}>This <K><Bar>c</Bar></K>, is light speed in discrete terms, again without making an assumption to our SI units. For the equations in the model we'll always use this bar notation above a variable to indicate discrete units (this might create some ambiguities, but it will at least be the case in my writing). Therefore it will always be 1, as the maximum speed in any universe we can imagine. Something which travels every tick of the universe (every discrete time-step).</span>
 
@@ -278,7 +282,8 @@ const Physics = () => {
 
         <Block>TODO VISUALIZATION: S.v</Block>
         <Row center="xs">
-          <Col xs={12} md={9} lg={7}><Film id="gravity.pull"/></Col>
+          <Col xs={12} md={8} lg={6}><Film id="gravity.pull"/></Col>
+          <Col xs={12} md={8} lg={6}><Film id="gravity.pass"/></Col>
         </Row>
         <Row center="xs">
           <Col xs={12} md={9} lg={7}><Film id="solar.inner"/></Col>
@@ -289,10 +294,25 @@ const Physics = () => {
         <BR/>
 
         Since the source could actually be some region of space where our rays interact in a more complicated way than we currently have with just the vacuum: We don't know what might happen to them as they interact with a source. They could partially move through them, be scattered or bend, or be totally absorbed (which would cause a shadowing effect), or something completely different.
+
+        <BR/>
+
+        The default (inaccurate) setting is that a source is totally transparent, and its inner body works the exact same as the vacuum.
+
+        <Head>Some things to note</Head>
+
+        Out of these dynamics fall a few important facts which make the whole thing work, and are important for a complete picture:
+
+        <BR/>
+
+        <span style={{width: '100%', textAlign: 'left'}}>(1) An empty vacuum is out of phase with the emitted rays by a source. <span className="bp5-text-muted">On a tick, the vacuum is either creating (G/2) all its points. Or then the next tick annihilating (G/1) all of them. Rays sent out by a source, fall in between that dynamics. Which allows them to propagate instead of directly annihilating with the vacuum at the first tick.</span></span>
+        <BR/>
+
+        <span style={{width: '100%', textAlign: 'left'}}>(2) Rays occupying spatial points, prevent them from handing back annihilated (G/1) space back to the vacuum. <span className="bp5-text-muted">As creation (G/2) defines, rays present on a point prevent it from firing the creation rule. The creation rule would be what slowly returns the annihilated space to the vacuum if there wasn't a ray present. This interaction ensures the space stays annihilated, which causes rays to refract (this refraction is necessary to achieve a spherical gravitational pull in a discrete setting).</span></span>
         
         <Head>Mass</Head>
 
-        <span style={{width: '100%', textAlign: 'left'}}>This leaves us with the following idea of what mass actually is in this model. Since the rays are what causes spatial annihilation which is what influences movement, mass is simply how many of these rays we're able to emit from a source. Specifically, <V><Bar>m</Bar></V>, its discrete mass, would be expressed in how often per tick we would emit a ray.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>These rules leave us with the following idea of what mass actually is in this model. Since the rays are what causes spatial annihilation which is what influences movement, mass is simply how many of these rays we're able to emit from a source. Specifically, <V><Bar>m</Bar></V>, its discrete mass, would be expressed in how often per tick we would emit a ray.</span>
 
         <span style={{width: '100%', textAlign: 'left'}}>The things which would influence this, are how many neighbours we have around our spatial point, which we'll refer to as <F>l.</F><K><Bar>DEG</Bar></K> (degree), or I like to call it the local spatial density. "<F>l.</F>" signalling that we mean a local variable here. If we had more of them, we could pulse to more space around us.</span>
 
@@ -345,9 +365,32 @@ const Physics = () => {
         Alrighty, now we have all the building blocks to properly dive into the continuous setup.
 
         <Section head="The Continuous Model">
-          <Eq theory="G" theorem="gravity.newton"/>
+          This section will be dedicated to combining all the rules previously mentioned into a single equation, which will be the continuous model of those discrete rules; describing the dynamics of a system. This single equation will be the point from which we'll derive our gravitational laws later (and importantly how the model differs from them). Here it is:
+
+          <Eq theory="G" theorem="vacuum.equation"/>
+
+          <span style={{width: '100%', textAlign: 'left'}}>Which reads as: Rays travel in some direction (<V>Δ</V><Sub><Hat>d</Hat></Sub><V>ρ</V><Sub>l</Sub>), those rays refract where annihilated space is the most dense (∇<V>S</V><Sub>l</Sub>) - which sums the effect of all other bodies -. They refract at a rate of (<V>a</V>). If you take all that together, the local vacuum (<F>l.</F><K>balance</K>) can only explain for so much (and settles to 0 far away from mass). The remainder must be the local mass (<F>l.</F><V><Bar>m</Bar></V>).</span>
+          
+          <BR/>
+
+          <Eq theory="G" theorem="vacuum.at"/>
+          <Eq theory="G" theorem="vacuum.following"/>
+          <Eq theory="G" theorem="vacuum.lean"/>
+          <Eq theory="G" theorem="vacuum.record"/>
+          <Eq theory="G" theorem="vacuum.balance"/>
+          <Eq theory="G" theorem="vacuum.settled"/>
 
         </Section>
+        <Section head="Galaxy rotation curves">
+
+        </Section>
+        <Section head="Further Derivations">
+          <Eq theory="G" theorem="gravity.newton"/>
+        </Section>
+      </Section>
+
+      <Section head="What's next? (magnetism)">
+
       </Section>
 
       <Section head="Gravity OLD">
@@ -1529,7 +1572,7 @@ const Physics = () => {
           </Para>
         </Section>
 
-        <Section head="Galaxy rotation curves">
+        <Section head="Galaxy rotation curves x">
           <Para>
             <b>The baryons alone do not do it, and the transport law does</b> — with nothing fitted. The blue curve is Newton on the Milky Way's own stars, gas and bulge: an exponential disc by Freeman's formula, a Hernquist bulge, and no dark matter anywhere. It peaks around 208 km/s and falls to 108 by 30 kpc. The white curve is what is measured — Eilers et al. 2019, Gaia DR2 crossed with APOGEE — solid over the radii it was taken at and dotted where it is being extrapolated.
           </Para>
