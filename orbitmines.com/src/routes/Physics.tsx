@@ -215,7 +215,7 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>For this reason<span className="bp5-text-muted">, and the added incapability of our contemporary computers for the necessary scale</span>, there is not actually a discrete 'lattice-like' model which we run. Instead we define the rules as discrete rules, and extrapolate from them a continuous version. But it is important to not forget: This will always be an approximation. Scale-invariance will break once you pick your frame.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>For this reason<span className="bp5-text-muted">, and the added incapability of our contemporary computers for the necessary scale</span>, there is not actually a discrete 'lattice-like' model which we run. Instead we define the rules as discrete rules, and extrapolate from them a continuous version. But it is important to not forget: This will always be an approximation. Scale-invariance will break once you pick your frame. <span className="bp5-text-muted">(As will additional complications present itself in a pure discrete setting in making the rules work properly)</span></span>
         <BR/>
 
         <span style={{width: '100%', textAlign: 'left'}}>The rules would give us a 'why' to the physics we see. <span className="bp5-text-muted">(I will explore actual possible discrete configurations at a later date in a separate arc/section.)</span></span>
@@ -236,12 +236,14 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>This <K><Bar>c</Bar></K>, is light speed in discrete terms, again without making an assumption to our SI units. For the equations in the model we'll always use this bar notation above a variable to indicate discrete units (this might create some ambiguities, but it will at least be the case in my writing). Therefore it will always be 1, as the maximum speed in any universe we can imagine. Something which travels every tick of the universe (every discrete time-step).</span>
+        <span style={{width: '100%', textAlign: 'left'}}>This <K><Bar>c</Bar></K>, is light speed in discrete terms, without making an assumption to our SI units. For the equations in the model we'll always use this bar notation above a variable to indicate discrete units (this might create some ambiguities, but it will at least be the case in my writing). Therefore it will always be 1, as the maximum speed in any universe we can imagine. Something which travels every tick of the universe (every discrete time-step).</span>
 
         <Eq>
           <K><Bar>c</Bar></K> = <Frac over={<><K><Bar>STEP</Bar></K> = 1</>} under={<><K><Bar>TICK</Bar></K> = 1</>} /> =
           1 <F>(<Bar>x</Bar>/<Bar>t</Bar>)</F>
         </Eq>
+
+        <Head>Sources</Head>
 
         Which is where the model stops and starts making some assumptions. Specifically on how or why something would emit one of these rays. And why something would move or not move. In the model I call this a 'source'. Always paired with that word will come the following connotation: There could be a version of the model where you properly phrase what it would mean to make those 'decisions' on when to move, when to emit a ray. But a model with a source, is not such a model. This is in essence a simplification, just to show a particular effect, a particular theory. 
         
@@ -259,6 +261,11 @@ const Physics = () => {
         (G/S.v) Movement: A source has free rein on whether to move, or to stand still, every tick of the universe.
 
         <Block>TODO VISUALIZATION: S.v</Block>
+
+        <span style={{width: '100%', textAlign: 'left'}}>The default, is that ray movement (G/c) and source movement (G/S.v), are quite similar. But source movement, is more like what aggregate behavior would tend to do. For instance, (1) whereas a ray only remembers where it's heading, a source remembers also its momentum. (2) A ray is refracted by chance <span className="bp5-text-muted">(though there's no reason to think this couldn't just be an occilation in a discrete setting)</span>, while a source is locally steered towards where local space around it is most annihilated. And there are some other differences, we'll get to.</span>
+
+        <span style={{width: '100%', textAlign: 'left'}} className="bp5-text-muted">Here again though, it could be that a source's movement could be derived from dynamics, where momentum and this aggregate behavior fall out. But a model with a source, does not go there.</span>
+
         <Row center="xs">
           <Col xs={12} md={8} lg={6}><Film id="gravity.pull"/></Col>
           <Col xs={12} md={8} lg={6}><Film id="gravity.pass"/></Col>
@@ -287,6 +294,8 @@ const Physics = () => {
         <BR/>
 
         <span style={{width: '100%', textAlign: 'left'}}>(2) Rays occupying spatial points, prevent them from handing back annihilated (G/1) space back to the vacuum. <span className="bp5-text-muted">As creation (G/2) defines, rays present on a point prevent it from firing the creation rule. The creation rule would be what slowly returns the annihilated space to the vacuum if there wasn't a ray present. This interaction ensures the space stays annihilated, which causes rays to refract (this refraction is necessary to achieve a spherical gravitational pull in a discrete setting).</span></span>
+
+        <span style={{width: '100%', textAlign: 'left'}}>(3) Taking those two facts together, a discrepancy in the vacuum spreads at <K><Bar>c</Bar></K>, which we could call gravity.</span>
         
         <Head>Mass</Head>
 
@@ -320,7 +329,7 @@ const Physics = () => {
 
         <BR/>
 
-        Though this would be a useful measure of mass, which necessarily depends on the surrounding space, it doesn't quite fit with intuition of what we assume mass to be. Which is why there's the following definition also, which we'll tend to use. By assuming that we have gravity at an instant at infinite range. (Note that this measure of mass does come with the assumption that the spatial structure surrounding the mass is somewhat irrelevant)
+        <span style={{width: '100%', textAlign: 'left'}}>Though this would be a useful measure of mass, which necessarily depends on the surrounding space, it doesn't quite fit with intuition of what we assume mass to be. Which is why there's the following definition also, which we'll tend to use. By assuming that we have gravity at an instant at infinite range. <span className="bp5-text-muted">Note that this measure of mass does come with the assumption that the spatial structure surrounding the mass is somewhat irrelevant)</span></span>
 
         <Eq theory="G" theorem="gravity.saturation"/>
 
@@ -334,7 +343,7 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model. For now though, I let the <F>l.</F><K>choose</K> term in the mass equation also signals a choice of multiplication with the current velocity, the (1 - <i>β</i>), so that we're aware of this tradeoff. Likely a complete model will make that term more expressive than just a dependency on velocity, so expect that parameter to become more complete at a later date.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>Which means at the very least, there's a tradeoff between 'emitting mass' and velocity (at least in the direction of movement). For the full equation of what that tradeoff will look like, we'd need some notion of what 'not moving nor emitting mass' means - which is kind of an artifact of having the abstraction of sources in our model. For now though, I let the <F>l.</F><K>choose</K> term in the mass equation also signal a choice of multiplication with the current velocity, the (1 - <i>β</i>), so that we're aware of this tradeoff. Likely a complete model will make that term more expressive than just a dependency on velocity, so expect that parameter to become more complete at a later date.</span>
 
         For the purposes of this article we won't need this tradeoff, but it's good to be aware of it.
 
