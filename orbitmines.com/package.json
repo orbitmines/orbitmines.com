@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@orbitmines/physics": "file:../../physics/languages/physics.ts",
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.0",
@@ -32,10 +33,13 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/sync-physics.mjs --watch -- next dev",
     "start": "next start",
     "build": "next build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:physics": "node scripts/sync-physics.mjs",
+    "prebuild": "npm run sync:physics",
+    "postinstall": "npm run sync:physics"
   },
   "browserslist": {
     "production": [

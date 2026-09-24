@@ -3,6 +3,7 @@
 import React from 'react';
 import { HotkeysProvider } from '@blueprintjs/core';
 import { EtherOverlay } from '../src/@ether/UI';
+import { FEATURES } from '../src/lib/features';
 import IEventListener from '../src/@orbitmines/js/react/IEventListener';
 import Modules from '../src/@orbitmines/js/react/Modules';
 
@@ -28,7 +29,7 @@ const Providers: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
       <HotkeysProvider>
         <Modules className="bp5-dark" listeners={[listener]}>
           {children}
-          <EtherOverlay />
+          {FEATURES.ETHER ? <EtherOverlay /> : null}
         </Modules>
       </HotkeysProvider>
     </Metadata>

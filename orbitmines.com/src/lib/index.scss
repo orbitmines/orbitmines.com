@@ -63,3 +63,13 @@ body {
   //font-weight: bold;
   color: rgb(255, 204, 153) !important;
 }
+
+/* Phones only: the home page's content otherwise runs flush against the top and
+   bottom of the viewport. Everything is border-box, so this padding sits inside
+   the 100vh min-height and doesn't introduce a scrollbar on its own. */
+@media (max-width: 767px) {
+  .phone-vertical-gutter {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}

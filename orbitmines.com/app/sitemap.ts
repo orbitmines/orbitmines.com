@@ -2,6 +2,7 @@ import type {MetadataRoute} from 'next';
 import fs from 'fs';
 import path from 'path';
 import {almanacSections} from './almanac/[[...section]]/page';
+import {FEATURES} from '../src/lib/features';
 import {ITEM_SOURCES} from './archive/[item]/page';
 import {PROFILE_NAMES} from './profiles/[profile]/page';
 
@@ -26,12 +27,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {url: SITE, lastModified: '2026-12-31', images: [`${SITE}/logo.png`]},
     {url: 'https://discord.orbitmines.com', lastModified: '2023-10-04'},
 
-    // The Almanac and every prerendered section.
-    {url: `${SITE}/almanac`, lastModified: almanacLastmod, images: [`${SITE}/Ether.svg`]},
-    ...almanacSections().map(({slug}) => ({
-      url: `${SITE}/almanac/${slug}`,
-      lastModified: almanacLastmod,
-    })),
+    // The Almanac and every prerendered section (while the Ether is on).
+    ...(FEATURES.ETHER ? [
+      {url: `${SITE}/almanac`, lastModified: almanacLastmod, images: [`${SITE}/Ether.svg`]},
+      ...almanacSections().map(({slug}) => ({
+        url: `${SITE}/almanac/${slug}`,
+        lastModified: almanacLastmod,
+      })),
+    ] : []),
 
     // Archive items (+ their PDFs).
     ...Object.entries(ITEM_SOURCES).flatMap(([slug, file]) => {
