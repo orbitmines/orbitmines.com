@@ -24,12 +24,18 @@
  * them from `/visuals/<id>/...`, so those two files per visual are copied into `public/visuals/`
  * (gitignored: it is generated output, the source is the `.ray`).
  *
- * IT IS A COPY, SO IT GOES STALE. Run it again after regenerating the package - `npm run
- * sync:physics`, which `predev` and `prebuild` already do - or `npm run dev:physics` to have
- * it re-copied whenever a file there changes.
+ * IT IS A COPY, SO IT WOULD GO STALE - so `npm run dev` never lets it: it runs this with
+ * `--watch -- next dev`, which copies once, starts the dev server, and re-copies whenever
+ * `npx ray gen` (or `npx ray visuals`) writes into ../physics, for as long as the server runs.
+ * `prebuild` copies once before a build. `npm run sync:physics` is the one-off by hand.
+ *
+ * ONLY WHAT CHANGED IS WRITTEN, and only what is gone is removed. The package is never
+ * deleted and put back: a dev server that looks while it is half-copied sees a package with
+ * no `index.ts` and fails the page, and every untouched file rewritten is a recompile of it.
  */
-import { cpSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, watch } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { spawn } from "node:child_process";
+import { copyFileSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, watch } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -53,30 +59,50 @@ const ships = () => [
 /* the files a page plays of a visual: the film and its last frame */
 const PLAYED = ["animation.webm", "snapshot.png"];
 
-const sync = () => {
-  /* a symlink is removed rather than written through, or the copy lands in the other repo */
-  if (existsSync(to) || lstatSync(to, { throwIfNoEntry: false })) rmSync(to, { recursive: true, force: true });
-  mkdirSync(to, { recursive: true });
-  for (const f of ships()) {
-    const src = join(from, f);
-    if (existsSync(src)) cpSync(src, join(to, f), { recursive: true });
-  }
-  console.log(`sync:physics - ${ships().length} entries -> node_modules/@orbitmines/physics`);
+/* every file under `dir`, by its path relative to `root` */
+const files = (dir, root = dir, out = new Map()) => {
+  if (!existsSync(dir)) return out;
+  if (!statSync(dir).isDirectory()) return out.set(relative(root, dir), dir);
+  for (const f of readdirSync(dir)) files(join(dir, f), root, out);
+  return out;
+};
 
-  let films = 0;
-  rmSync(toVisuals, { recursive: true, force: true });
+/* make `to` hold exactly `want` (relative path -> source), writing only what differs */
+const mirror = (want, to) => {
+  /* a symlink is removed rather than written through, or the copy lands in the other repo */
+  if (lstatSync(to, { throwIfNoEntry: false })?.isSymbolicLink()) rmSync(to, { force: true });
+  let wrote = 0, removed = 0;
+  for (const [rel, src] of want) {
+    const dst = join(to, rel);
+    const a = statSync(src), b = statSync(dst, { throwIfNoEntry: false });
+    if (b && a.size === b.size && readFileSync(src).equals(readFileSync(dst))) continue;
+    mkdirSync(dirname(dst), { recursive: true });
+    copyFileSync(src, dst);
+    wrote++;
+  }
+  for (const rel of files(to).keys()) {
+    if (want.has(rel)) continue;
+    rmSync(join(to, rel), { force: true });
+    removed++;
+  }
+  return `${want.size} files, ${wrote} written, ${removed} removed`;
+};
+
+const sync = () => {
+  const pkg = new Map();
+  for (const f of ships()) for (const [rel, src] of files(join(from, f), from)) pkg.set(rel, src);
+  console.log(`sync:physics - node_modules/@orbitmines/physics: ${mirror(pkg, to)}`);
+
+  const films = new Map();
   if (existsSync(visuals)) {
     for (const id of readdirSync(visuals)) {
-      const dir = join(visuals, id);
-      if (!statSync(dir).isDirectory()) continue;
-      const have = PLAYED.filter(f => existsSync(join(dir, f)));
-      if (!have.length) continue;
-      mkdirSync(join(toVisuals, id), { recursive: true });
-      for (const f of have) cpSync(join(dir, f), join(toVisuals, id, f));
-      films++;
+      for (const f of PLAYED) {
+        const src = join(visuals, id, f);
+        if (existsSync(src)) films.set(join(id, f), src);
+      }
     }
   }
-  console.log(`sync:physics - ${films} visuals -> public/visuals`);
+  console.log(`sync:physics - public/visuals: ${mirror(films, toVisuals)}`);
 };
 
 sync();
@@ -84,12 +110,21 @@ sync();
 if (process.argv.includes("--watch")) {
   let queued = null;
   console.log(`sync:physics - watching ${from} and ${visuals}`);
-  for (const dir of [from, visuals]) {
-    if (!existsSync(dir)) continue;
+  const watchers = [from, visuals].filter(existsSync).map(dir =>
     watch(dir, { recursive: true }, (_, file) => {
       if (file?.startsWith("node_modules") || file?.startsWith(".git")) return;
+      /* a generator writes many files in a burst: copy once it has gone quiet */
       clearTimeout(queued);
-      queued = setTimeout(sync, 150);
-    });
+      queued = setTimeout(() => { try { sync(); } catch (e) { console.error(`sync:physics - ${e.message}`); } }, 300);
+    }));
+
+  /* `-- <command>`: run it alongside, and stop watching when it stops */
+  const at = process.argv.indexOf("--");
+  if (at >= 0 && process.argv[at + 1]) {
+    const [cmd, ...args] = process.argv.slice(at + 1);
+    const child = spawn(cmd, args, { stdio: "inherit", shell: process.platform === "win32" });
+    const stop = code => { watchers.forEach(w => w.close()); clearTimeout(queued); process.exit(code ?? 0); };
+    child.on("exit", (code, signal) => stop(code ?? (signal ? 1 : 0)));
+    for (const sig of ["SIGINT", "SIGTERM"]) process.on(sig, () => child.kill(sig));
   }
 }
