@@ -8,9 +8,14 @@ import Post, {
 } from "../lib/post/Post";
 import { PHYSICS } from "./references";
 
-import { Bar, D, Eq, F, Film, Frac, Hat, Head, K, Rows, Sub, Sup, V } from "./Physics/LAW";
-import { Drawn } from "./Physics/visuals/DRAWN";
+import * as React from "react";
+import { notation } from "@orbitmines/physics/notation";
+import { PROVED } from "@orbitmines/physics/theorems";
+import { Drawn } from "./PhysicsDrawn";
 import ORGANIZATIONS from "src/lib/organizations/ORGANIZATIONS";
+
+/** The package's notation, bound to this site's React; `PROVED` makes `<Eq theorem=…>` resolve. */
+const { Bar, D, Eq, F, Film, Frac, Hat, Head, K, Rows, Sub, Sup, V } = notation(React, PROVED);
 
 /** The colour the rest of the article uses for an aside inside a set line. */
 const FAINT = '#6c7080';
@@ -114,28 +119,10 @@ const Cover = () => <Row center="xs">
  * The subsections inside each arc are not written yet; the arcs are the
  * skeleton they will hang from.
  *
- * WHERE THE PARTS LIVE, which is no longer the archive this paragraph used to
- * describe. Nothing in this file decides what an arrangement IS. `DISCRETE.ts`
- * holds the model — the geometry, the world, the rules — and `CONTINUOUS.ts` is
- * the same model read in the limit, with every constant TAKEN FROM the geometry
- * rather than written down beside it, so the two readings cannot drift by
- * redefining a term. `Physics/tests/` measures the claims against them and
- * `REPORT.json` is what those runs recorded. `LAW.tsx` states the model as an
- * equation and says which of its constants are put in and which come out,
- * reading its numbers from `constants()` rather than restating them, so there is
- * no second copy to drift. Everything drawn is under `Physics/visuals/`.
- *
- * AND THAT DEBT IS NOW PAID. Every number this article quotes comes from a claim
- * in `Physics/tests/`, measured on fcc 12 against one reading of the rules —
- * where the originals ran on cubic 26 against fifteen. `Physics/todo/provenance/`
- * held those originals while they were being ported and is gone; `AUDIT.ts` is
- * what proved it could go, and it still checks that every `<Eq note>` resolves.
- *
- * WHAT WAS NOT RE-MEASURED IS MARKED `NOT RE-MEASURED` WITH ITS REASON, at the
- * line that carries it rather than summarised here — superseded by a claim that
- * asks the same question better, or not a measurement at all, or a sweep of a
- * parameter the model turned out not to have. Those are judgement calls and they
- * are recorded as such; `AUDIT.ts` lists them under RETIRED.
+ * WHERE THE PARTS LIVE. The model, its theorems and its visuals are all in
+ * `@orbitmines/physics` (../physics); this file only renders them. The
+ * notation comes from its `notation`, and `PhysicsDrawn.tsx` paints the stills
+ * it declares onto a canvas.
  */
 const Physics = () => {
   const referenceCounter = useCounter();
