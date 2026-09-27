@@ -101,7 +101,7 @@ const OWN: Record<string, () => any> = {
   "gravity.shadow": () => (G as any).shadow,
 };
 
-/** one of G's visuals by id, drawn live: the rule strips (`rule.annihilation`, `rule.creation`, `rule.movement`) and the shadow (`gravity.shadow`) */
+/** one of G's visuals by id, drawn live: the rule strips (`rule.annihilation`, `rule.creation`) and the shadow (`gravity.shadow`) */
 export const Drawn = ({ id, style }: { id: string; style?: React.CSSProperties }) => {
   const of = useMemo(() => OWN[id] ?? (() => (G as any).strip(id)), [id]);
   return <Painted of={of} style={style} />;

@@ -6,7 +6,8 @@ export const FEATURES = {
   /**
    * The Ether: Ether's Almanac (the /almanac route and its card on the home
    * page), the `@me` button at the top of every page together with the
-   * username selection behind it, and the "Download Ether" button.
+   * username selection behind it, the "Download Ether" button, and the
+   * follow/download/chat/PR/settings buttons on user profile pages.
    */
   ETHER: false,
 };

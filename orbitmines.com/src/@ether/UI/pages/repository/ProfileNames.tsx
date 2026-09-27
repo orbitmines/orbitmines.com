@@ -593,7 +593,7 @@ const WorldEditor: React.FC<WorldEditorProps> = ({
   useEffect(() => setPlatform(displayPlatform), [displayPlatform]);
   useEffect(() => setUsername(displayUsername), [displayUsername]);
   return (
-    <>
+    <span className="profile-name-world-editor">
       <span className="profile-name-field-wrap" data-name-platform-wrap>
         <input
           className="profile-name-field"
@@ -624,7 +624,7 @@ const WorldEditor: React.FC<WorldEditorProps> = ({
           }}
         />
       </span>
-    </>
+    </span>
   );
 };
 

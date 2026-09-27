@@ -875,7 +875,16 @@ $line-height: 20px;
   width: 100%;
 }
 
-.profile-names { width: 100%; margin-top: 16px; }
+// One grid shared by every name row (via subgrid) so usernames line up in a
+// single column no matter how wide the platform label before them is.
+// Columns: drag | icon | label | value | verified | remove.
+.profile-names {
+  width: 100%;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: auto 20px max-content minmax(0, 1fr) auto auto;
+  > .profile-names-header, > .profile-name-item { grid-column: 1 / -1; }
+}
 .profile-names-header {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.3);
@@ -1036,9 +1045,9 @@ $line-height: 20px;
 }
 
 .profile-name-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
   margin-bottom: 6px;
   &:hover .profile-name-group-drag { opacity: 1; }
   &.drag-over-top { border-top: 2px solid rgba(255, 255, 255, 0.4); }
@@ -1046,9 +1055,10 @@ $line-height: 20px;
   &.dragging { opacity: 0.3; pointer-events: none; }
 }
 .profile-name-group-row {
-  display: flex;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
   align-items: center;
-  gap: 4px;
   min-height: 24px;
   user-select: none;
   -webkit-user-select: none;
@@ -1072,6 +1082,17 @@ $line-height: 20px;
     &:focus { color: rgba(255, 255, 255, 0.9); }
   }
 }
+.profile-name-group-row > .profile-name-group-drag { grid-column: 1; margin-right: 4px; }
+.profile-name-group-row > .profile-name-group-icon,
+.profile-name-group-row > .profile-name-group-icon-spacer { grid-column: 2; }
+.profile-name-group-row > .profile-name-group-label,
+.profile-name-group-row > .profile-name-group-label-spacer { grid-column: 3; margin-left: 4px; }
+.profile-name-group-row > .profile-name-group-value,
+.profile-name-group-row > .profile-name-field-wrap,
+.profile-name-group-row > .profile-name-world-editor { grid-column: 4; margin-left: 8px; min-width: 0; }
+.profile-name-group-row > .profile-name-verified { grid-column: 5; margin-left: 4px; }
+.profile-name-group-row > .profile-name-entry-remove { grid-column: 6; }
+.profile-name-world-editor { display: flex; align-items: center; gap: 4px; }
 .profile-name-group-drag {
   cursor: grab;
   opacity: 0;

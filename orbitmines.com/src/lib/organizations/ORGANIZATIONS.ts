@@ -29,6 +29,7 @@ const syco_icon = "/organizations/syco/logo.png";
 const cool_worlds_podcast_icon = "/organizations/cool_worlds/channels4_profile.jpg";
 const demystifysci_icon = "/organizations/demystifysci/channels4_profile.jpg";
 const ether_icon = "/E.svg";
+const physics_icon = "/2026-09-12_Sun.png";
 import {ReferenceProps, Renderable} from "../post/Post";
 import {ReactNode} from "react";
 
@@ -112,6 +113,13 @@ const ORGANIZATIONS = {
     name: "Ether",
     assets: {
       icon_png: ether_icon,
+    }
+  },
+  physics: <TOrganization>{
+    key: 'physics',
+    name: "OrbitMines: Physics Project",
+    assets: {
+      icon_png: physics_icon,
     }
   },
   orbitmines_research: <TOrganization>{

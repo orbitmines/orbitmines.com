@@ -3945,6 +3945,14 @@ export const REFERENCES = {
       link: "https://semf.org.es/school2025/"
     }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
   },
+  SEMF_2026: <Content>{
+    reference: {
+      title: "SEMF School of 2026",
+      organizations: [ORGANIZATIONS.semf],
+      year: "2026",
+      link: "https://semf.org.es/school2026/"
+    }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2026"
+  },
 
   URSPRUNG_IV: <Content>{
     reference: {
@@ -4807,6 +4815,7 @@ export const fadi_shawki = <TProfile>{
       REFERENCES.VWO,
     ],
     attended_events: [
+      REFERENCES.SEMF_2026,
       REFERENCES.URSPRUNG_IV,
       REFERENCES.SEMF_2025,
       REFERENCES.INTO_THE_INFORMATION_CONTINUUM_2024_05_04,

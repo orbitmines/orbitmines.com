@@ -57,6 +57,16 @@ const Audit = ({ children }: { children: React.ReactNode }) =>
 const HALF = <D><Bar>½</Bar></D>;
 
 /**
+ * A lattice film that keeps its size on a narrow screen: below `min` pixels it stops shrinking and runs
+ * past the column on both sides, clipped, centred on the middle - the source - so the labels and rays stay
+ * legible and only the far ends of the line are cut off.
+ */
+const WideFilm = ({ id, min = 720 }: { id: string; min?: number }) =>
+  <div style={{ width: '100%', overflow: 'hidden', display: 'flex', justifyContent: 'center' }}>
+    <Film id={id} style={{ minWidth: min, flexShrink: 0 }}/>
+  </div>;
+
+/**
  * The booklet's cover: the sun (2026-09-12) behind the OrbitMines logo, with
  * the project's name underneath the sun in white bold JetBrains Mono.
  */
@@ -216,7 +226,7 @@ const Physics = () => {
         <span style={{width: '100%', textAlign: 'left'}}>(G/c) Movement: A ray propagates always at <K><Bar>c</Bar></K>. And refracts on a previously annihilated (G/1) point.</span>
 
         <Row center="xs">
-          <Col xs={12}><Drawn id="rule.movement"/></Col>
+          <Col xs={12}><WideFilm id="rule.movement"/></Col>
         </Row>
 
         So it moves every tick of the universe. Default behavior of how it moves depends on the space it currently occupies. If it currently occupies a spatial point on which annihilation (G/1) happened previously, there are more ways out of that point than a point in which annihilation didn't previously happen.
@@ -238,7 +248,9 @@ const Physics = () => {
 
         (G/S.1) Emission: A source has free rein on whether, and on which spatial connections to neighbours it activates a ray, every tick of the universe.
 
-        <Block>TODO VISUALIZATION: S.1</Block>
+        <Row center="xs">
+          <Col xs={12}><WideFilm id="rule.emission"/></Col>
+        </Row>
         <Row center="xs">
           <Col xs={12} md={9} lg={7}><Film id="gravity.rain"/></Col>
         </Row>
@@ -247,9 +259,11 @@ const Physics = () => {
 
         (G/S.v) Movement: A source has free rein on whether to move, or to stand still, every tick of the universe.
 
-        <Block>TODO VISUALIZATION: S.v</Block>
+        <Row center="xs">
+          <Col xs={12}><WideFilm id="rule.transport"/></Col>
+        </Row>
 
-        <span style={{width: '100%', textAlign: 'left'}}>The default, is that ray movement (G/c) and source movement (G/S.v), are quite similar. But source movement, is more like what aggregate behavior would tend to do. For instance, (1) whereas a ray only remembers where it's heading, a source remembers also its momentum. (2) A ray is refracted by chance <span className="bp5-text-muted">(though there's no reason to think this couldn't just be an occilation in a discrete setting)</span>, while a source is locally steered towards where local space around it is most annihilated. And there are some other differences, we'll get to.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>The default, is that ray movement (G/c) and source movement (G/S.v), are quite similar. But source movement, is more like what aggregate behavior would tend to do. For instance, (1) whereas a ray only remembers where its heading, a source also remembers its momentum. (2) A ray is refracted by chance <span className="bp5-text-muted">(though there's no reason to think this couldn't just be an occilation in a discrete setting)</span>, while a source is locally steered towards where local space around it is most annihilated. And there are some other differences, we'll get to.</span>
 
         <span style={{width: '100%', textAlign: 'left'}} className="bp5-text-muted">Here again though, it could be that a source's movement could be derived from dynamics, where momentum and this aggregate behavior fall out. But a model with a source, does not go there.</span>
 
@@ -292,7 +306,7 @@ const Physics = () => {
 
         <BR/>
 
-        <span style={{width: '100%', textAlign: 'left'}}>And the other is how often. Which is why at the very least, mass would be proportional to often one emits a ray. We can give this quantity a name. How often a particular direction is activated by the source. Each direction (whether dynamically allocated or not), has this property. It's a number between 0 and <K><Bar>c</Bar></K> as a fraction on how often we spherically emit.</span>
+        <span style={{width: '100%', textAlign: 'left'}}>And the other is how often. Which is why at the very least, mass would be proportional to often one emits a ray. We can give this quantity a name. How often a particular direction is activated by the source. Each direction (whether dynamically allocated or not), has this property. It's a number between 0 and <K><Bar>c</Bar></K> as a fraction on how often we emit.</span>
 
         <Eq>
           <i><Bar>m</Bar></i><Sub>x</Sub> = <F>% <Bar>t</Bar>

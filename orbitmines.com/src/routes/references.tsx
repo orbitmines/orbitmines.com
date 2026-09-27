@@ -219,7 +219,7 @@ export const ETHERS_ALMANAC: Content & { UPDATES: Content[] } = { reference: {
  * carry the same three names in the same order, so a note and its arc are the
  * same thing said in two places.
  */
-export const PHYSICS: Content = { reference: {
+export const PHYSICS: Content & { UPDATES: Content[] } = { reference: {
   title: "OrbitMines: Physics Project",
   subtitle: "An initial look at a collection of my ideas on physics. By extrapolating from discrete rules, a continuous model, to recover theories of gravity and (electro)magnetism.",
   draft: true,
@@ -236,4 +236,25 @@ export const PHYSICS: Content = { reference: {
   published: [ORGANIZATIONS.orbitmines_research],
   link: "https://orbitmines.com/physics"
 }, status: Viewed.VIEWED, found_at: "2026", viewed_at: "December, 2026",
+
+  /** One per arc, named after it: the first is the "2026-10-01. G" arc. */
+  UPDATES: [
+    { reference: {
+      title: "G (OrbitMines: Physics Project)",
+      subtitle: "An initial look at a collection of my ideas on physics. By extrapolating from discrete rules, a continuous model, to recover theories of gravity and (electro)magnetism.",
+      draft: true,
+      date: "2026-10-01",
+      year: "2026",
+      external: {
+        discord: {serverId: '1055502602365845534', channelId: '1463219913044005018', link: () => "https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018"}
+      },
+      organizations: [ORGANIZATIONS.orbitmines_research, ORGANIZATIONS.physics],
+      authors: [{
+        ...PROFILES.fadi_shawki,
+        external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
+      }],
+      published: [ORGANIZATIONS.orbitmines_research],
+      link: "https://orbitmines.com/physics"
+    }, status: Viewed.VIEWED, found_at: "2026", viewed_at: "October, 2026" }
+  ]
 }

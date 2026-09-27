@@ -3960,6 +3960,14 @@ export const REFERENCES = {
       link: "https://semf.org.es/school2025/"
     }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2023"
   },
+  SEMF_2026: <Content>{
+    reference: {
+      title: "SEMF School of 2026",
+      organizations: [ORGANIZATIONS.semf],
+      year: "2026",
+      link: "https://semf.org.es/school2026/"
+    }, status: Viewed.VIEWED, found_at: "July, 2023", viewed_at: "2026"
+  },
 
   URSPRUNG_IV: <Content>{
     reference: {

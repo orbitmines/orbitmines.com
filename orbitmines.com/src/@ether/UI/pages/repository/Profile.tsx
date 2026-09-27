@@ -12,6 +12,7 @@ import {buildBasePath, buildCanonicalPath} from './paths';
 import {findReadmes} from './FileListing';
 import {getCurrentPlayer, loadProfile, saveProfile} from './storage';
 import ProfileNames from './ProfileNames';
+import {FEATURES} from '../../../../lib/features';
 import {getUserContent, getProfileDefaults, externalToSocials, ProfileMeta} from './userDefaults';
 
 interface ProfileProps {
@@ -139,16 +140,18 @@ const Profile: React.FC<ProfileProps> = ({
             }
           />
           <Username effectiveUser={effectiveUser} isOwner={isOwner} displayVersion={displayVersion} />
-          <Breadcrumb
-            displayVersion={displayVersion}
-            items={[]}
-            canonicalPath={clonePath}
-            starPath={rootStarPath}
-            followUser={effectiveUser}
-            pullsUrl={pullsUrl}
-            settingsUrl={settingsUrl}
-            chatUrl={chatUrl}
-          />
+          {FEATURES.ETHER && (
+            <Breadcrumb
+              displayVersion={displayVersion}
+              items={[]}
+              canonicalPath={clonePath}
+              starPath={rootStarPath}
+              followUser={effectiveUser}
+              pullsUrl={pullsUrl}
+              settingsUrl={settingsUrl}
+              chatUrl={chatUrl}
+            />
+          )}
           <ProfileNames user={effectiveUser} isOwner={isOwner} defaults={defaultSocials} />
         </div>
         <div className="profile-readme">
