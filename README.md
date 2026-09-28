@@ -9,7 +9,6 @@
 
 *Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.*
 
-
 </div>
 
 ```sh
