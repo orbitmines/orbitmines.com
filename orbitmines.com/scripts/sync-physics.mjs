@@ -29,6 +29,11 @@
  * `npx ray gen` (or `npx ray visuals`) writes into ../physics, for as long as the server runs.
  * `prebuild` copies once before a build. `npm run sync:physics` is the one-off by hand.
  *
+ * AND WITHOUT ../physics IT IS THE PUBLISHED PACKAGE. `@orbitmines/physics` is a dependency on npm; `npm install`
+ * puts the published version in node_modules and this script then puts the local one over it - when there is a
+ * local one. Without a checkout of ../physics beside this repository (or with `PHYSICS=npm`), the published package
+ * stays as installed, and the visuals are taken from what it ships (`visuals/<id>/...`, its prepack copies them in).
+ *
  * ONLY WHAT CHANGED IS WRITTEN, and only what is gone is removed. The package is never
  * deleted and put back: a dev server that looks while it is half-copied sees a package with
  * no `index.ts` and fails the page, and every untouched file rewritten is a recompile of it.
@@ -45,10 +50,9 @@ const visuals = join(physics, "visuals");
 const to = resolve(here, "../node_modules/@orbitmines/physics");
 const toVisuals = resolve(here, "../public/visuals");
 
-if (!existsSync(from)) {
-  console.error(`sync:physics - no package at ${from} (run \`npx ray gen\` in ../physics)`);
-  process.exit(1);
-}
+/* the local checkout, unless asked for the published package - which is what node_modules holds after `npm install` */
+const local = existsSync(from) && process.env.PHYSICS !== "npm";
+const installed = resolve(here, "../node_modules/@orbitmines/physics");
 
 /* what the package says it ships, plus the manifest that says it */
 const ships = () => [
@@ -89,15 +93,25 @@ const mirror = (want, to) => {
 };
 
 const sync = () => {
-  const pkg = new Map();
-  for (const f of ships()) for (const [rel, src] of files(join(from, f), from)) pkg.set(rel, src);
-  console.log(`sync:physics - node_modules/@orbitmines/physics: ${mirror(pkg, to)}`);
+  if (local) {
+    const pkg = new Map();
+    for (const f of ships()) for (const [rel, src] of files(join(from, f), from)) pkg.set(rel, src);
+    console.log(`sync:physics - node_modules/@orbitmines/physics (local ../physics): ${mirror(pkg, to)}`);
+  } else if (!existsSync(installed)) {
+    console.error("sync:physics - no ../physics beside this repository and no @orbitmines/physics installed: run `npm install`");
+    process.exit(1);
+  } else {
+    const version = JSON.parse(readFileSync(join(installed, "package.json"), "utf8")).version;
+    console.log(`sync:physics - node_modules/@orbitmines/physics: the published ${version}`);
+  }
 
+  /* the films: the local renders, or what the published package ships */
+  const source = local ? visuals : join(installed, "visuals");
   const films = new Map();
-  if (existsSync(visuals)) {
-    for (const id of readdirSync(visuals)) {
+  if (existsSync(source)) {
+    for (const id of readdirSync(source)) {
       for (const f of PLAYED) {
-        const src = join(visuals, id, f);
+        const src = join(source, id, f);
         if (existsSync(src)) films.set(join(id, f), src);
       }
     }
@@ -107,7 +121,16 @@ const sync = () => {
 
 sync();
 
-if (process.argv.includes("--watch")) {
+/* only a local checkout changes under us; the published package does not */
+if (process.argv.includes("--watch") && !local) {
+  const at = process.argv.indexOf("--");
+  if (at >= 0 && process.argv[at + 1]) {
+    const [cmd, ...args] = process.argv.slice(at + 1);
+    const child = spawn(cmd, args, { stdio: "inherit", shell: process.platform === "win32" });
+    child.on("exit", (code, signal) => process.exit(code ?? (signal ? 1 : 0)));
+    for (const sig of ["SIGINT", "SIGTERM"]) process.on(sig, () => child.kill(sig));
+  }
+} else if (process.argv.includes("--watch")) {
   let queued = null;
   console.log(`sync:physics - watching ${from} and ${visuals}`);
   const watchers = [from, visuals].filter(existsSync).map(dir =>
