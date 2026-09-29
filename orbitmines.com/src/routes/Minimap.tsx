@@ -27,7 +27,7 @@ const Booklet = ({image, alt, reference, disabled}: {image: string, alt: string,
   </Row>;
 
 const Minimap = () => {
-  const papers = [...(FEATURES.ETHER ? [ETHERS_ALMANAC.UPDATES[0]] : []), PHYSICS.UPDATES[0], ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [...(FEATURES.ETHER ? [ETHERS_ALMANAC.UPDATES[0]] : []), ...(FEATURES.PHYSICS ? [PHYSICS.UPDATES[0]] : []), ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
@@ -108,9 +108,8 @@ const Minimap = () => {
                   }}>
                     Booklets
                   </span></Row>
-                  <Booklet image="/2026-09-12_Sun.png" alt="Physics Project" reference={PHYSICS.reference} />
-                  {/* The Almanac stays listed while the Ether is off, as a coming-soon;
-                      once FEATURES.ETHER is on it links through like the others. */}
+                  {/* The booklets stay listed while their feature is off, as a coming-soon;
+                      once FEATURES.ETHER / FEATURES.PHYSICS is on they link through. */}
                   <Booklet image="/almanac/almanac.png" alt="E"
                            reference={FEATURES.ETHER ? ETHERS_ALMANAC.reference : {
                              ...ETHERS_ALMANAC.reference,
@@ -118,6 +117,13 @@ const Minimap = () => {
                              link: undefined,
                            }}
                            disabled={!FEATURES.ETHER} />
+                  <Booklet image="/2026-09-12_Sun.png" alt="Physics Project"
+                           reference={FEATURES.PHYSICS ? PHYSICS.reference : {
+                             ...PHYSICS.reference,
+                             title: <span>{PHYSICS.reference.title as any} <span className="bp5-text-disabled">(coming soon)</span></span>,
+                             link: undefined,
+                           }}
+                           disabled={!FEATURES.PHYSICS} />
                 </Col>
                 <Col style={{maxWidth: '500px'}}>
                   <Reference

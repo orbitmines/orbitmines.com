@@ -478,7 +478,7 @@ export const FadiShawkiBody = () => {
             entries={[
                 {when: '2025->', what: <a href="/almanac">The Ray Programming Language</a>},
                 {when: '2026->', what: 'Ether: Ecosystem for the Ray programming language.'},
-                {when: '2026->', what: <a href="/physics">OrbitMines: Physics Project</a>},
+                {when: '2026->', what: FEATURES.PHYSICS ? <a href="/physics">OrbitMines: Physics Project</a> : 'OrbitMines: Physics Project'},
                 {when: '2028->', what: 'The Ether Library Project: The analysis, indexing and interoperating of existing programming languages.'},
                 {when: '2029+?', what: '3D Rendering / Game Engine extension to the Ether Library.'},
                 {when: '2030-2035', what: 'Start research on the gamification of science, engineering and education.'},
@@ -489,9 +489,9 @@ export const FadiShawkiBody = () => {
             heading="Writings"
             groupByYear
             leftHeader={<img src="/logo.png" alt="orbitmines.com" style={{width: '100%', height: 'auto', opacity: 0.9}}/>}
-            entries={[...(FEATURES.ETHER ? [ETHERS_ALMANAC.UPDATES[0]] : []), PHYSICS.UPDATES[0], ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper) => {
-                const icon = paper.reference.organizations?.[0] ? renderOrgIcon(paper.reference.organizations[0], 0) : null;
-                const inner = <>{icon}{paper.reference.title as React.ReactNode}</>;
+            entries={[...(FEATURES.ETHER ? [ETHERS_ALMANAC.UPDATES[0]] : []), ...(FEATURES.PHYSICS ? [PHYSICS.UPDATES[0]] : []), ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY].map((paper) => {
+                const icons = (paper.reference.organizations ?? []).map((o: any, i: number) => renderOrgIcon(o, i));
+                const inner = <>{icons}{paper.reference.title as React.ReactNode}</>;
                 return {
                     when: paper.reference.year ?? '',
                     what: paper.reference.link ? (
