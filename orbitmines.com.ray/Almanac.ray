@@ -1,1 +1,3 @@
-Almanac = Book("almanac")
+Almanac: Book = {
+
+}
