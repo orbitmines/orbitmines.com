@@ -15,7 +15,14 @@ import React, {
   TouchEventHandler, TransitionEventHandler, UIEventHandler,
   useMemo, WheelEventHandler
 } from 'react';
-import _ from "lodash";
+// Three functions, one file each — see the note in `lib/post/Post.tsx`. This
+// one matters most: it is reached from the root layout, so whatever it names
+// is named by every page on the site.
+import entries from "lodash/entries";
+import mergeWith from "lodash/mergeWith";
+import pickBy from "lodash/pickBy";
+
+const _ = {entries, mergeWith, pickBy};
 
 export type IEventHandler<T = Element> = EventHandler<SyntheticEvent<T>>;
 

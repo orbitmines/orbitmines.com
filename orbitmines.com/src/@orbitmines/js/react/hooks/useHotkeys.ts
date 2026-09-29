@@ -2,7 +2,12 @@ import IModule, {useModule} from "../IModule";
 import {HotkeyConfig} from "@blueprintjs/core/src/hooks/hotkeys/hotkeyConfig";
 import {useHotkeys as useBlueprintJSHotkeys} from '@blueprintjs/core';
 import {useState} from "react";
-import _ from "lodash";
+// Three functions, one file each — see the note in `lib/post/Post.tsx`.
+import compact from "lodash/compact";
+import isArray from "lodash/isArray";
+import uniq from "lodash/uniq";
+
+const _ = {compact, isArray, uniq};
 
 export type PressedKeys = string[];
 export type HotkeyEventOptions = { pressed: PressedKeys };

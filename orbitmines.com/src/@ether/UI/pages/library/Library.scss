@@ -1,0 +1,246 @@
+$phosphor: #ffffff;
+
+.lib-page {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
+  color: $phosphor;
+  box-sizing: border-box;
+  background: #0a0a0a;
+}
+
+.lib-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__left { flex-shrink: 0; }
+  &__center { text-align: center; }
+  &__center h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.5), 0 0 11px rgba(255, 255, 255, 0.22);
+  }
+}
+
+.lib-layout-container {
+  width: 100%;
+  height: calc(100vh - 80px);
+  max-width: 1650px;
+  margin: 0 auto;
+  padding-top: 10px;
+  box-sizing: border-box;
+}
+
+// ---- Socials ----
+
+.lib-socials {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.lib-social-link {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-size: 12px;
+
+  &:hover { color: $phosphor; }
+}
+
+// ---- Row utilities ----
+
+.lib-row { display: flex; gap: 6px; }
+.lib-row-middle { align-items: center; }
+.lib-row-between { justify-content: space-between; }
+.lib-inline-row { display: inline-flex; align-items: center; gap: 3px; }
+.lib-indent { padding-left: 20px; }
+.lib-muted { color: rgba(255, 255, 255, 0.45); }
+.lib-disabled { color: rgba(255, 255, 255, 0.3); }
+
+// ---- Selectable entry ----
+
+.lib-selectable {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.1s;
+
+  &:hover { background: rgba(255, 255, 255, 0.05); }
+  &--selected { background: rgba(255, 255, 255, 0.1); }
+}
+
+// ---- Entry view ----
+
+.lib-entry { margin-bottom: 2px; }
+.lib-entry-name { margin-left: 6px; }
+.lib-entry-title { margin: 0; font-size: 16px; }
+.lib-entry-left { flex: 1 1 auto; min-width: 0; padding-left: 6px; }
+.lib-entry-controls { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+.lib-selectors {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+// ---- Buttons ----
+
+.lib-btn {
+  background: none;
+  border: none;
+  color: $phosphor;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  &:hover { background: rgba(255, 255, 255, 0.08); }
+
+  &--icon { padding: 2px; }
+  &--selector { font-size: 13px; }
+  &--lang { font-size: 10px; padding: 1px 4px; }
+  &--back { padding: 6px 10px; font-size: 14px; }
+}
+
+// ---- Snippet ----
+
+.lib-snippet {
+  width: 100%;
+  font-size: 12px;
+  padding: 8px 10px;
+  margin: 4px 0;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+// ---- Dropdown ----
+
+.lib-dropdown {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 0;
+  min-width: 180px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  color: $phosphor;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.1s;
+
+    &:hover { background: rgba(255, 255, 255, 0.08); }
+    &--active { background: rgba(255, 255, 255, 0.05); }
+    &--header {
+      cursor: default;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      &:hover { background: none; }
+    }
+  }
+
+  &-row { display: flex; align-items: center; gap: 6px; width: 100%; }
+  &-tags { margin-left: auto; display: flex; gap: 4px; }
+}
+
+.lib-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-size: 11px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  background: none;
+  font-family: inherit;
+  transition: background 0.1s, border-color 0.1s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  &--active {
+    background: rgba(100, 150, 255, 0.15);
+    border-color: rgba(100, 150, 255, 0.4);
+    color: $phosphor;
+  }
+}
+
+// ---- Settings panel ----
+
+.lib-settings {
+  padding: 8px;
+
+  h3 { margin: 0; font-size: 16px; }
+  &__section { margin-top: 12px; }
+  &__section h4 { margin: 8px 0 4px; font-size: 13px; }
+
+  &__group { margin-bottom: 8px; }
+  &__value {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 6px 8px;
+  }
+  &__edit { margin-left: 8px; opacity: 0.4; }
+  &__divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 12px 0;
+  }
+}
+
+// ---- Display panel ----
+
+.lib-display {
+  padding: 12px;
+
+  h2 { margin: 0; font-size: 22px; }
+  &__socials { padding-left: 30px; margin-top: 8px; }
+}
+
+// ---- Panel icon ----
+
+.lib-panel-icon {
+  display: inline-flex;
+  margin-right: 8px;
+
+  &--lg svg { width: 18px; height: 18px; }
+}
+
+// ---- Project list ----
+
+.lib-project-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.lib-libraries-group {
+  margin-bottom: 2px;
+}

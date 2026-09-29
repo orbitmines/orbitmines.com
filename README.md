@@ -9,11 +9,11 @@
 
 *Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.*
 
-
 </div>
 
 ```sh
 git clone git@github.com:orbitmines/ray.git # The Ray Programming Language & The Ether
+git clone git@github.com:orbitmines/physics.git # Physics Project
 git clone git@github.com:orbitmines/archive.git # Publich research archive
 git clone git@github.com:orbitmines/orbitmines.com.git # Website to the internet
 ```
@@ -33,7 +33,7 @@ git clone git@github.com:orbitmines/orbitmines.com.git # Website to the internet
     npm install
     ```
   - ```
-    npm start
+    npm run dev
     ```
 
 ---

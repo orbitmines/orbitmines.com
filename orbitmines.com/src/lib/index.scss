@@ -1,10 +1,10 @@
-@import "paper/blueprintjs";
-@import "paper/flexbox";
+@import "post/blueprintjs";
+@import "post/flexbox";
 @import "fonts/font";
 
-@import "paper/spacing";
+@import "post/spacing";
 
-@import "~@blueprintjs/core/lib/scss/variables";
+@import "blueprintjs/variables";
 
 * {
   margin: 0;
@@ -15,7 +15,34 @@
 }
 
 body {
-  background-color: $dark-gray1;
+  background-color: rgb(10, 10, 10);
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.bp5-code-block {
+  width: 100%;
+  background: rgba(17, 20, 24, 1) !important;
+}
+
+.bp5-dark .bp5-popover,
+.bp5-popover.bp5-dark {
+  .bp5-popover-content {
+    background: rgb(10, 10, 10) !important;
+  }
+  .bp5-popover-arrow-fill {
+    fill: rgb(10, 10, 10) !important;
+  }
+}
+
+/* md and up (≥ 768px, Blueprint breakpoint) */
+@media (min-width: 768px) {
+  .bp5-code-block {
+    width: 80%;
+  }
 }
 
 // TODO These under the specific theme
@@ -35,4 +62,14 @@ body {
   //color: rgb(108, 103, 131) !important;
   //font-weight: bold;
   color: rgb(255, 204, 153) !important;
+}
+
+/* Phones only: the home page's content otherwise runs flush against the top and
+   bottom of the viewport. Everything is border-box, so this padding sits inside
+   the 100vh min-height and doesn't introduce a scrollbar on its own. */
+@media (max-width: 767px) {
+  .phone-vertical-gutter {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
 }

@@ -1,7 +1,8 @@
+import { TOWARDS_A_UNIVERSAL_LANGUAGE } from "../references";
 import React, {ReactNode} from 'react';
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../../lib/organizations/ORGANIZATIONS";
 import {useNavigate} from "react-router-dom";
-import Paper, {
+import Post, {
   Arc,
   Block,
   BlueprintIcons16,
@@ -16,96 +17,39 @@ import Paper, {
   Row,
   Section,
   useCounter
-} from "../../lib/paper/Paper";
+} from "../../lib/post/Post";
 import {
   add,
   CachedVisualizationCanvas,
   CanvasContainer,
   Continuation,
   Line,
-  ON_ORBITS,
   Ray,
   RenderedRay,
   torus
 } from "./2023.OnOrbits";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../archive/2024.02.OrbitMines_as_a_Game_Project";
+import {ON_ORBITS,_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "../references";
 import {PROFILES} from "../profiles/profiles";
-import {ON_INTELLIGIBILITY} from "./2022.OnIntelligibility";
+import {ON_INTELLIGIBILITY} from "../references";
 import {Highlight, Prism, themes} from "prism-react-renderer";
-
-export const TOWARDS_A_UNIVERSAL_LANGUAGE: Content = {
-  reference: {
-    title: "2025 Progress Update: Towards A Universal Language",
-    subtitle: "An initial look at the text-based Ray programming language and subsequent design notes for its IDE: The Ether.",
-    draft: false,
-    link: 'https://orbitmines.com/archive/towards-a-universal-language',
-    year: "2025",
-    date: "2025-12-31",
-    external: {
-      discord: {
-        serverId: '1055502602365845534',
-        channelId: '1455223851825762475',
-        link: () => "https://discord.com/channels/1055502602365845534/1455223851825762475"
-      }
-    },
-    organizations: [ORGANIZATIONS.orbitmines_research],
-    authors: [{
-      ...PROFILES.fadi_shawki,
-      external: PROFILES.fadi_shawki.external?.filter((profile) => PLATFORMS.includes(profile.organization.key))
-    }],
-  }, status: Viewed.VIEWED, found_at: "2025", viewed_at: "December, 2025"
-}
-
-Prism.languages["ray.txt"] = {
-  'string': {
-    pattern: /"(?:\\.|\{[^{}]*\}|(?!\{)[^\\"])*"/,
-    inside: {
-      'interpolation': {
-        pattern: /\{[^{}]*\}/,
-        inside: {
-          'punctuation': /^\{|\}$/,
-          'expression': {
-            pattern: /[\s\S]+/,
-            inside: null // see below
-          }
-        }
-      }
-    }
-  },
-  'comment': {
-    pattern: /(\/\/.*)|(\/\*.*\*\/)/,
-    greedy: true
-  },
-  'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
-  'bp5-text-muted': /(\\)|(\bas\b)|#|@(?=\s)|%|--|\+\+|\*\*=?|&&=?|x?\|\|=?|[!=]==|<<=?|>>>?=?|x?[-+*/%^!=<>]=?|\.{3}|\?\?=?|\?\.?|~/,
-  'punctuation': /[{}[\],()]|=>|:|[|&.⸨⸩]|[⊣⊢∙⊙]/,
-  'keyword': {
-    pattern: /\b(?:this|static|end|class|namespace|dynamically|internal|none|confidential|managed|assert|read|write|execute)\b|[0-9a-f-]{36}/,
-    greedy: true
-  },
-  'access': {
-    pattern: /@[a-zA-Z0-9_]*/,
-    greedy: true
-  },
-  'builtin': /\b(?:goto|branch|if|elsif|else|assume|boolean|Number|String)\b/,
-  'boolean': /\b(?:false|true)\b/,
-  'class-name': /[A-Z][A-Za-z0-9_]+/,//
-  'variable': /[a-z0-9_]+/,
-};
-// (Prism as any).languages["ray.txt"]['template-string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
-(Prism as any).languages["ray.txt"]['string'].inside['interpolation'].inside['expression'].inside = Prism.languages["ray.txt"];
-
+import "../../lib/prism/ray";
 
 const highlight = (code: string) => (
   // @ts-ignore
   <Highlight prism={Prism} theme={themes.duotoneDark} code={code} language="ray.txt">
     {({className, style, tokens, getLineProps, getTokenProps}) => (
       <>
-        {tokens.map((line, i) => (
-          <div {...getLineProps({line, key: i})}>
-            {line.map((token, key) => <span {...getTokenProps({token, key})} />)}
-          </div>
-        ))}
+        {tokens.map((line, i) => {
+          const lp = getLineProps({line}) as any;
+          return (
+            <div key={i} className={lp.className} style={lp.style}>
+              {line.map((token, ti) => {
+                const tp = getTokenProps({token}) as any;
+                return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
+              })}
+            </div>
+          );
+        })}
       </>
     )}
   </Highlight>
@@ -153,7 +97,7 @@ const TowardsAUniversalLanguage = () => {
     references: referenceCounter
   }
 
-  return <Paper
+  return <Post
     {...paper}
     header={<div style={{height: '250px'}} className="hidden-xs hidden-sm">
       <canvas
@@ -1708,7 +1652,7 @@ const TowardsAUniversalLanguage = () => {
         </Section>
       </Arc>
     </Row>
-  </Paper>
+  </Post>
 }
 
 export default TowardsAUniversalLanguage;

@@ -1,0 +1,198 @@
+$phosphor: #ffffff;
+$screen-bg: #0a0a0a;
+$handle-size: 4px;
+
+.ide-layout {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+
+  // When the layout contains splits, constrain to viewport so each panel
+  // can scroll internally. Single tabgroup at the root uses page scroll.
+  &--contained {
+    height: 100vh;
+    min-height: 0;
+
+    .ide-split,
+    .ide-tabgroup { height: 100%; min-height: 0; }
+
+    .ide-panel-content {
+      overflow-y: auto;
+      min-height: 0;
+      &::-webkit-scrollbar { width: 2px; }
+      &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); }
+    }
+  }
+}
+
+.ide-split {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+
+  &--horizontal { flex-direction: row; }
+  &--vertical   { flex-direction: column; }
+
+  &__child { min-width: 0; min-height: 0; }
+  &__child--v-constrained { overflow: clip; }
+}
+
+.ide-resize-handle {
+  flex: 0 0 $handle-size;
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background-color 0.15s ease;
+
+  &--horizontal {
+    cursor: col-resize;
+    width: $handle-size;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -4px; right: -4px;
+    }
+  }
+
+  &--vertical {
+    cursor: row-resize;
+    height: $handle-size;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      top: -4px; bottom: -4px;
+    }
+  }
+
+  &:hover,
+  &--active { background: $phosphor; }
+}
+
+.ide-tabgroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+    min-height: 0;
+    height: 100%;
+    max-height: 100vh;
+
+    > .ide-panel-content {
+      overflow-y: auto;
+      min-height: 0;
+      &::-webkit-scrollbar { width: 2px; }
+      &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); }
+    }
+  }
+}
+
+.ide-tabbar {
+  display: flex;
+  flex: 0 0 auto;
+  background: $screen-bg;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-height: 32px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  &::-webkit-scrollbar { height: 2px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); }
+}
+
+.ide-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-bottom: 2px solid transparent;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: $screen-bg;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1;
+  font-family: 'Courier New', Courier, monospace;
+  transition: background-color 0.1s ease, color 0.1s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &--active {
+    color: $phosphor;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom-color: $phosphor;
+  }
+
+  &--dragging { opacity: 0.5; }
+
+  &__icon {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    svg { width: 14px; height: 14px; }
+  }
+
+  &__title { flex: 1 1 auto; }
+
+  &__close {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.1s ease, background-color 0.1s ease;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0;
+
+    &:hover { background: rgba(255, 255, 255, 0.15); }
+  }
+
+  &:hover &__close,
+  &--active &__close { opacity: 1; }
+}
+
+.ide-panel-content {
+  flex: 1 1 auto;
+  background: transparent;
+
+  &--hidden { display: none; }
+}
+
+.ide-tab-insert-indicator {
+  flex: 0 0 2px;
+  align-self: stretch;
+  background: $phosphor;
+}
+
+.ide-drop-indicator {
+  position: absolute;
+  pointer-events: none;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.1s ease;
+}

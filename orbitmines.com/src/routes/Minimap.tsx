@@ -1,41 +1,63 @@
 import React from 'react';
-import logo from "../lib/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
+const logo = "/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png";
 import ORGANIZATIONS, {PLATFORMS} from "../lib/organizations/ORGANIZATIONS";
-import {Helmet} from "react-helmet";
-import {ON_INTELLIGIBILITY} from "./archive/2022.OnIntelligibility";
-import {CanvasContainer, ON_ORBITS} from "./archive/2023.OnOrbits";
-import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/paper/Paper";
+import {CanvasContainer} from "./archive/2023.OnOrbits";
+import {Author, Col, CustomIcon, Layer, pageStyles, Reference, Row} from "../lib/post/Post";
 import {PROFILES} from "./profiles/profiles";
-import {_2024_02_ORBITMINES_AS_A_GAME_PROJECT} from "./archive/2024.02.OrbitMines_as_a_Game_Project";
-import {TOWARDS_A_UNIVERSAL_LANGUAGE} from "./archive/2025.TowardsAUniversalLanguage";
-import {ORBITMINES_MINECRAFT_ARCHIVE} from "./archive/2026.MinecraftArchive";
+import {Button} from "@blueprintjs/core";
+import {download, DownloadButton, LoginButton, os} from "../@orbitmines/ether/Ether";
+import {FEATURES} from "../lib/features";
+import {ON_INTELLIGIBILITY, ON_ORBITS, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, TOWARDS_A_UNIVERSAL_LANGUAGE, ETHERS_ALMANAC, ORBITMINES_MINECRAFT_ARCHIVE, PHYSICS} from "./references";
 
+
+/** One entry of the home page's booklet list: image on the left, reference on the right. */
+const Booklet = ({image, alt, reference, disabled}: {image: string, alt: string, reference: any, disabled?: boolean}) =>
+  <Row style={{alignItems: 'center', ...(disabled ? {opacity: 0.45, filter: 'grayscale(1)'} : {})}}>
+    <Col xs={3}>
+      <img src={image} alt={alt} style={{width: '100%', maxHeight: '100px', objectFit: 'contain'}} />
+    </Col>
+    <Col xs={9}>
+      <Reference
+        index={0}
+        reference={reference}
+        start="xs"
+        style={{fontSize: '0.8rem'}} target="_self"
+      />
+    </Col>
+  </Row>;
 
 const Minimap = () => {
-  const papers = [ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
+  const papers = [...(FEATURES.ETHER ? [ETHERS_ALMANAC.UPDATES[0]] : []), ...(FEATURES.PHYSICS ? [PHYSICS.UPDATES[0]] : []), ORBITMINES_MINECRAFT_ARCHIVE, TOWARDS_A_UNIVERSAL_LANGUAGE, _2024_02_ORBITMINES_AS_A_GAME_PROJECT, ON_ORBITS, ON_INTELLIGIBILITY];
 
   const profile = ORGANIZATIONS.orbitmines_research.profile;
 
   return <div style={{
     ...pageStyles
   }}>
-    <Helmet>
-      <title lang="en">OrbitMines Research</title>
+    {/* <title> comes from the root layout's metadata; the description and OG
+        tags for the home page are rendered (and hoisted) here. */}
+    <>
+      <meta name="description" content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:type" content="website"/>
-      <meta name="description"
-            content="Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."/>
       <meta property="og:image" content="https://orbitmines.com/logo.png"/>
       <meta property="og:image:type" content="image/jpeg"/>
-
-    </Helmet>
+    </>
 
     <Layer zIndex="0" className="">
       <div style={{height: '100%'}}>
-        <Row style={{height: '100%', minHeight: '100vh'}} center="xs" middle="xs" between="xs">
+        <Row style={{height: '100%', minHeight: '100vh'}} className="phone-vertical-gutter" center="xs" middle="xs" between="xs">
           <Col xs={12}>
-            <Col xs={12}><Row center="xs"><img src={logo} alt="logo"
-                                               style={{maxWidth: '400px', width: '90%'}}/></Row></Col>
             <Col xs={12}>
+              <Row center="xs">
+                <Col xs={12} style={{maxWidth: '1240px'}}><Row end="xs" middle="xs" className="child-px-5">
+                  <Col><DownloadButton/></Col>
+                </Row></Col>
+              </Row>
+            </Col>
+            <Col xs={12}><Row center="xs">
+              <Col><img src={logo} alt="logo" style={{maxWidth: '400px', width: '90%'}}/></Col>
+            </Row></Col>
+            <Col xs={12} className="pt-5">
               <Row center="xs">
                 <Col xl={4} lg={6} md={8} sm={10} xs={12}>
                   <Row center="xs">
@@ -52,7 +74,7 @@ const Minimap = () => {
                 <Col xs={12}>
                   <Row center="xs" className="child-pt-5 child-px-2">
                     {(profile?.external || []).filter(profile => PLATFORMS.includes(profile.organization.key)).map(profile =>
-                      <Col>
+                      <Col key={profile.organization.key}>
                         <a href={profile.link} target="_blank">
                           <CustomIcon icon={profile.organization.key} size={20}/>
                         </a>
@@ -77,17 +99,33 @@ const Minimap = () => {
             <Col xs={12}>
               <Row middle="xs" center="xs">
                 <Col style={{maxWidth: '500px'}}>
-                  <CanvasContainer style={{height: '140px'}} className="hidden-xs">
-                    <canvas
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url('/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_2.png')`,
-                        backgroundPosition: 'center center',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
-                  </CanvasContainer>
+                  <Row><span className="bp5-text-disabled" style={{
+                    fontSize: '0.8rem',
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    paddingBottom: "6px",
+                    textAlign: 'left'
+                  }}>
+                    Booklets
+                  </span></Row>
+                  {/* The booklets stay listed while their feature is off, as a coming-soon;
+                      once FEATURES.ETHER / FEATURES.PHYSICS is on they link through. */}
+                  <Booklet image="/almanac/almanac.png" alt="E"
+                           reference={FEATURES.ETHER ? ETHERS_ALMANAC.reference : {
+                             ...ETHERS_ALMANAC.reference,
+                             title: <span>{ETHERS_ALMANAC.reference.title as any} <span className="bp5-text-disabled">(coming soon)</span></span>,
+                             link: undefined,
+                           }}
+                           disabled={!FEATURES.ETHER} />
+                  <Booklet image="/2026-09-12_Sun.png" alt="Physics Project"
+                           reference={FEATURES.PHYSICS ? PHYSICS.reference : {
+                             ...PHYSICS.reference,
+                             title: <span>{PHYSICS.reference.title as any} <span className="bp5-text-disabled">(coming soon)</span></span>,
+                             link: undefined,
+                           }}
+                           disabled={!FEATURES.PHYSICS} />
+                </Col>
+                <Col style={{maxWidth: '500px'}}>
                   <Reference
                     index={0}
                     reference={{
@@ -105,6 +143,16 @@ const Minimap = () => {
                         title: <span>/ray <span className="bp5-text-muted">The Ray Programming Language & The Ether</span></span>,
                         organizations: [ORGANIZATIONS.github],
                         link: "https://github.com/orbitmines/ray"
+                      }}
+                      start="xs"
+                      style={{fontSize: '0.8rem'}} target="_blank"
+                    />
+                    <Reference
+                      index={0}
+                      reference={{
+                        title: <span>/physics <span className="bp5-text-muted">OrbitMines: Physics Project</span></span>,
+                        organizations: [ORGANIZATIONS.github],
+                        link: "https://github.com/orbitmines/physics"
                       }}
                       start="xs"
                       style={{fontSize: '0.8rem'}} target="_blank"
@@ -131,46 +179,42 @@ const Minimap = () => {
                     />
                   </div>
                 </Col>
-                <Col style={{maxWidth: '500px'}}>
-                  {/*<Row start="xs">*/}
-                  <Reference
-                    index={0}
-                    reference={{
-                      title: "/updates",
-                      organizations: [ORGANIZATIONS.orbitmines_research]
-                    }}
-                    start="xs"
-                    style={{fontSize: '0.8rem'}} className="bp5-text-muted" target="_blank"
-                  />
-                  {/*</Row>*/}
-
-                  <div className="pl-9">
-                    {papers.map(paper => (
-                      <Reference index={0}
-                                 reference={{...paper.reference, subtitle: undefined, notes: undefined}}
-                                 start="xs"
-                                 style={{fontSize: '0.8rem'}} target="_self"/>
-                    ))}
-                  </div>
-
-                  <CanvasContainer style={{height: '150px'}} className="hidden-xs">
-                    <canvas
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url('/archive/on-orbits-equivalence-and-inconsistencies/images/2_double_expanded_continuation.png')`,
-                        backgroundPosition: 'center center',
-                        backgroundRepeat: 'no-repeat'
-                      }}
-                    />
-                  </CanvasContainer>
-                </Col>
               </Row>
             </Col>
 
-            <Col xs={12} style={{marginTop: '5%', marginBlock: '5%'}}>
+            {/* Fixed vertical rhythm: percentage margins resolve against the
+                container's *width*, so on large/ultrawide screens they blew this
+                gap up to hundreds of pixels and pushed the page off-centre. */}
+            <Col xs={12} style={{marginBlock: '2.5rem'}}>
               <Author {...PROFILES.fadi_shawki}
                       filter={(profile) => PLATFORMS.includes(profile.organization.key)}/>
+            </Col>
+
+            <Col xs={12}>
+              <Row center="xs">
+                <Col style={{maxWidth: '500px'}}> {/*<Row start="xs">*/}
+                  <Row><span className="bp5-text-disabled" style={{
+                    fontSize: '0.8rem',
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    paddingBottom: "6px",
+                    textAlign: 'left'
+                  }}>
+                    /updates
+                  </span></Row>
+                
+                  <div className="pl-9">
+                    {papers.map((paper, i) => (
+                      <Reference key={paper.reference?.link ?? i}
+                                  index={0}
+                                  reference={{...paper.reference, subtitle: undefined, notes: undefined}}
+                                  start="xs"
+                                  dark
+                                  style={{fontSize: '0.8rem'}} target="_self"/>
+                    ))}
+                  </div>
+                </Col>
+              </Row>
             </Col>
           </Col>
         </Row>

@@ -1,0 +1,89 @@
+@use './CRTShell.scss';
+
+.ether-name-input {
+  font-family: 'Courier New', Courier, monospace;
+
+  &__row {
+    display: flex;
+    align-items: baseline;
+    font-size: 18px;
+    line-height: 1.8;
+    white-space: pre;
+    flex-shrink: 0;
+  }
+
+  &__hidden {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 200px;
+    height: 40px;
+    font-size: 16px;
+    opacity: 0;
+    border: none;
+    padding: 0;
+  }
+
+  &__hint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  // ---- History list ----
+
+  &__history {
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+  }
+
+  &__above,
+  &__below {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+  }
+
+  &__above {
+    justify-content: flex-end;
+  }
+
+  &__entry {
+    display: flex;
+    align-items: baseline;
+    font-size: 18px;
+    line-height: 1.8;
+    white-space: pre;
+    color: rgba(255, 255, 255, 0.35);
+    text-shadow: none;
+    cursor: pointer;
+    transition: color 0.15s;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+
+    &:hover { color: rgba(255, 255, 255, 0.55); }
+  }
+
+  &__entry-spacer {
+    visibility: hidden;
+  }
+}
