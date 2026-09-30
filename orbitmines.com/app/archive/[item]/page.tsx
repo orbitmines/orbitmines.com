@@ -4,9 +4,7 @@ import path from 'path';
 import ArchiveClient from './ArchiveClient';
 
 // Each archive slug maps to its source component (mirrors ITEMS in
-// src/routes/Archive.tsx). The page title is read from that file's first
-// `title: "..."` literal at build time, so titles stay in sync with the source
-// rather than being hand-duplicated here.
+// src/routes/Archive.tsx). Used to enumerate the static params.
 export const ITEM_SOURCES: Record<string, string> = {
   '2024-02-orbitmines-as-a-game-project': 'src/routes/archive/2024.02.OrbitMines_as_a_Game_Project.tsx',
   'on-intelligibility': 'src/routes/archive/2022.OnIntelligibility.tsx',
@@ -15,14 +13,18 @@ export const ITEM_SOURCES: Record<string, string> = {
   'the-orbitmines-minecraft-server': 'src/routes/archive/2026.MinecraftArchive.tsx',
 };
 
-// Reads the reference object's `title` literal so the static <title> is owned
-// by Next metadata. The description is rendered by the paper itself (Post),
-// so it isn't duplicated here.
+// The page title is read at build time from the item's reference object in
+// src/routes/references.tsx (the `title` belonging to the reference whose
+// `link` is https://orbitmines.com/archive/<item>), so titles stay in sync
+// with the source rather than being hand-duplicated here. The description is
+// rendered by the paper itself (Post), so it isn't duplicated here.
 function itemTitle(item: string): string | undefined {
-  const source = ITEM_SOURCES[item];
-  if (!source) return undefined;
-  const src = fs.readFileSync(path.join(process.cwd(), source), 'utf8');
-  return src.match(/title:\s*"((?:[^"\\]|\\.)*)"/)?.[1];
+  if (!ITEM_SOURCES[item]) return undefined;
+  const src = fs.readFileSync(path.join(process.cwd(), 'src/routes/references.tsx'), 'utf8');
+  const link = src.search(new RegExp(`link:\\s*["'\`]https://orbitmines\\.com/archive/${item}["'\`]`));
+  if (link < 0) return undefined;
+  const titles = [...src.slice(0, link).matchAll(/\btitle:\s*(["'`])((?:(?!\1)[^\\]|\\.)*)\1/g)];
+  return titles.at(-1)?.[2];
 }
 
 export function generateStaticParams() {
