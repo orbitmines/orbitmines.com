@@ -687,32 +687,6 @@ const Almanac = () => {
           </CodeBlock>
 
           But for that we must turn to the next section to unpack what that means. Starting with what this 'equipped structure' called a Ray is.
-          <CodeBlock>
-            func (a) ={'>'} a + 1<BR/>
-            func(1 & 2) // 2 & 3<BR/>
-            func(1 | 2) // 2 | 3
-          </CodeBlock>
-          <CodeBlock>
-            s (x: boolean) ={'>'} x ? "Y" : "N"<BR/>
-            s(false & true) // "Y" & "N"<BR/>
-            s(boolean) // "Y" | "N"
-          </CodeBlock>
-          <CodeBlock>
-            "A", ("B" | "C") // "AB" | "AC"
-          </CodeBlock>
-          <CodeBlock>
-            true (|| | &&) false // (true || false) | (true && false)
-          </CodeBlock>
-          <CodeBlock>
-            x = true &+ "A"<BR/>
-            x.next // false & "B"<BR/>
-            x = true |+ "A"<BR/>
-            x.next // false | "B"
-          </CodeBlock>
-          <CodeBlock>
-            x - boolean<BR/>
-            x## // ["A", true]
-          </CodeBlock>
         </Section>
         <Section head="§2.2 Rays: Arrays, Trees, Graphs">
           <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
@@ -928,6 +902,16 @@ const Almanac = () => {
             (0 -{'>'} +2)[4] // Accessing the element at index 4 here would be 8.
           </CodeBlock>
 
+          Ranges are similarly shortcuts for creating these recursive structures as familiar from other languages:
+
+          <CodeBlock>
+            1..5 // 1, 2, 3, 4, 5<BR/>
+            1..{'<'}5 // 1, 2, 3, 4<BR/>
+            0..10..20 // through 10, relevant for graphs<BR/>
+            5.. // 5 -{'>'}<BR/>
+            ..5 // {'<'}- 5
+          </CodeBlock>
+
           <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
           <CodeBlock>
             x: Number = [1, 2, 3]<BR/>
@@ -1064,56 +1048,6 @@ const Almanac = () => {
           That however leaves one thing I haven't yet explained about Rays, which is the way booleans and numbers are encoded as Rays.
           <BR/>
           For that we'll turn towards the next section.
-          <CodeBlock>
-            node -{'>'} .parent<BR/>
-            (node -{'>'} .parent).last
-          </CodeBlock>
-          <CodeBlock>
-            1..5 // 1, 2, 3, 4, 5<BR/>
-            1..{'<'}5 // 1, 2, 3, 4<BR/>
-            0..10..20<BR/>
-            5.. // 5 -{'>'}<BR/>
-            ..5 // {'<'}- 5
-          </CodeBlock>
-          <CodeBlock>
-            x: Graph = [false, false | true, true]<BR/>
-            x.map(!) // true, true | false, false
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3].first // 1<BR/>
-            [1, 2, 3].last // 3<BR/>
-            [1, 2, 3].count // 3<BR/>
-            [1, 2, 3].reverse // [3, 2, 1]<BR/>
-            [3, 1, 2].sort // [1, 2, 3]<BR/>
-            [1, 2, 2, 3].unique // [1, 2, 3]<BR/>
-            [[1, 2], [3]].flatten // [1, 2, 3]<BR/>
-            [1, 2] * 3 // [1, 2, 1, 2, 1, 2]
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3].reduce(+) // 6<BR/>
-            [1, 2, 3].every({'>'} 0) // true<BR/>
-            [1, 2, 3].some({'>'} 2) // true<BR/>
-            [1, 2, 3].contains(2) // true
-          </CodeBlock>
-          <CodeBlock>
-            list := [1, 2]<BR/>
-            list.push_back(3) // [1, 2, 3]<BR/>
-            list.push_front(0) // [0, 1, 2, 3]<BR/>
-            list.pop_back // 3
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3] ~~ .push_back(4) // [1, 2, 3]<BR/>
-            [1, 2, 3] -- .push_back(4) // [1, 2, 3, 4]
-          </CodeBlock>
-          <CodeBlock>
-            loop := [1, 2, 3].orbit<BR/>
-            loop[5] // 3
-          </CodeBlock>
-          <CodeBlock>
-            tree.path_to(leaf)<BR/>
-            tree.path_to(leaf).min<BR/>
-            selection.complement
-          </CodeBlock>
         </Section>
         <Section head="§2.3 Numbers">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Numbers, booleans (binary numbers), are simply this visual structure. This would be <span
@@ -1172,13 +1106,53 @@ const Almanac = () => {
             y: i8 = -1110000 // Both a 0/1 or a - gets picked up here.
           </CodeBlock>
 
+          There also explicitely exist these familiar syntax for Hexadecimal and Binary:
+
+          <CodeBlock>
+            0x1F // 31<BR/>
+            0b101 // 5
+          </CodeBlock>
+
           Numbers can in the Ray language also be infinitely generating programs. In the sense of always having a next value in the fraction. This comes with certain restrictions of course if you want to operate with infinities. But for instance without defining that we're using a floating point number as an approximation the following would yield an unbounded Decimal:
 
           <CodeBlock>
             1/3 // 0.333, 3[]∞
+          </CodeBlock>          
+
+          <BR/>
+
+          There's also support for several mathematical symbols:
+
+          <CodeBlock>
+            ∑ [1, 2, 3] // 6<BR/>
+            ∏ [1, 2, 3] // 6
           </CodeBlock>
 
-          
+          As do certain obvious infinities settle to a value. Infinite here is an abstract reference to the terminal of an unbounded object. (That is what I envision the abstraction of infinity to actually be.)
+
+          <CodeBlock>
+            (0 -{'>'}).count // ∞
+          </CodeBlock>
+
+          Unless a specific type is specified, u8 doesn't overflow as expected, it's actually an error if not explicitely mentioned that is expected behavior:          
+          <CodeBlock>
+            x: u8 = 200<BR/>
+            x + 100 // 300<BR/>
+            x = x + 100 // error: 300 is not a u8<BR/>
+            x = (x + 100).mod // 44
+          </CodeBlock>
+
+          Furthermore the platform specific numbers exist through a Compiler setup, we'll get to more later, but it would be defined like this:
+          <CodeBlock>
+            usize := Binary{'{'}length == &language.word_size{'}'}<BR/>
+            program: Program{'{'}O: Compiler.default + Language.x86_64{'}'}
+          </CodeBlock>
+
+          Components also allow you to create complex numbers:
+
+          <CodeBlock>
+            2 + 3i
+          </CodeBlock>
 
           <BR/>
 
@@ -1197,44 +1171,6 @@ const Almanac = () => {
           </CodeBlock>
 
           This bracket syntax for filters is effectively also a type constraint. We'll turn towards the next section for those.
-          <CodeBlock>
-            0x1F // 31<BR/>
-            0b101 // 5
-          </CodeBlock>
-          <CodeBlock>
-            1/3 // 0.333…<BR/>
-            √2<BR/>
-            2^3^2 // 2^9<BR/>
-            5! // 120
-          </CodeBlock>
-          <CodeBlock>
-            ∑ [1, 2, 3] // 6<BR/>
-            ∏ [1, 2, 3] // 6
-          </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'} +1) {'{'}{'<'} 10{'}'} for i ={'>'} print(i)<BR/>
-            (-{'>'}) {'{'}index {'<'} 10{'}'} for ={'>'} print(.index)<BR/>
-            10.times ={'>'} print(.index)
-          </CodeBlock>
-          <CodeBlock>
-            (0.0 -{'>'} +0.1) {'{'}{'<'}= 1.0{'}'} for x ={'>'} print(x)
-          </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'}).count // ∞
-          </CodeBlock>
-          <CodeBlock>
-            x: u8 = 200<BR/>
-            x + 100 // 300<BR/>
-            x = x + 100 // error: 300 is not a u8<BR/>
-            x = (x + 100).mod // 44
-          </CodeBlock>
-          <CodeBlock>
-            USize := Binary{'{'}length == &language.word_size{'}'}<BR/>
-            program: Program{'{'}O: Compiler.default + Language.x86_64{'}'}
-          </CodeBlock>
-          <CodeBlock>
-            2 + 3i
-          </CodeBlock>
         </Section>
         <Section head="§2.4 Types: Patterns">
           Types are incredibly expressive in the Ray programming language. Allowing you to effectively do arbitrary pattern matching on any kind of structure.
@@ -1343,64 +1279,11 @@ const Almanac = () => {
           </CodeBlock>
 
           Onwards to how programs (functions) are actually structured in the Ray programming language!
-          <CodeBlock>
-            "A"[]<BR/>
-            "A", "A", "A"<BR/>
-            "A", "A", "A" ==.instance_of "A"[] // true
-          </CodeBlock>
-          <CodeBlock>
-            first, middle: String[], last := "A", "B", "C", "D"<BR/>
-            middle // "B", "C"
-          </CodeBlock>
-          <CodeBlock>
-            Small := Number{'{'}{'<'} 10{'}'}<BR/>
-            x: Small = 5
-          </CodeBlock>
-          <CodeBlock>
-            xs := [1, 20, 3]<BR/>
-            xs{'{'}.count {'<'} 5{'}'} // [1, 20, 3]<BR/>
-            xs[{'{'}{'<'} 10{'}'}] // [1, 3]<BR/>
-            (0 -{'>'} +1){'{'}{'<'} 10{'}'} // 0 … 9
-          </CodeBlock>
-          <CodeBlock>
-            x: Number & Ordered<BR/>
-            y: Number | String<BR/>
-            z: Number?<BR/>
-            x: class
-          </CodeBlock>
-          <CodeBlock>
-            Positioned := String + Ray<BR/>
-            entry: String + Ray
-          </CodeBlock>
-          <CodeBlock>
-            Addable := Node{'{'}+ (: Number){'}'}
-          </CodeBlock>
-          <CodeBlock>
-            unique: T{'{'}references.count == 1{'}'}<BR/>
-            borrowed: T{'{'}references.count {'<'}= 1{'}'}
-          </CodeBlock>
-          <CodeBlock>
-            if x.instance_of(String) {'{'}<BR/>
-            <></>  x.lowercase<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            d: Date = 2-7<BR/>
-            r: Range = 2-7
-          </CodeBlock>
-          <CodeBlock>
-            Ray{'<'}T = Ray{'>'}<BR/>
-            Example{'<'}field: "A"{'>'}
-          </CodeBlock>
-          <CodeBlock>
-            x: Number<BR/>
-            x + 1 // every Number, plus one<BR/>
-            x: Number = ?
-          </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
           {/* Partial args + can set any var in the func (Can be prevented, which I'll discuss in Access Permissions), Multiline multiple implementations */}
           {/* => overrides, &=> etc.., () doesnt override but = () => does */}
+
           <CodeBlock>
             add (a, b) ={'>'} a + b<BR/>
             add(1, 2) // 3
@@ -1501,6 +1384,10 @@ const Almanac = () => {
           <CodeBlock>
             Node~+
           </CodeBlock>
+          <CodeBlock>
+            unique: T{'{'}references.count == 1{'}'}<BR/>
+            borrowed: T{'{'}references.count {'<'}= 1{'}'}
+          </CodeBlock>
         </Section>
         <Section head="§2.6 Equality & Equivalence">
           {/* Cover default equivalences  */}
@@ -1591,6 +1478,7 @@ const Almanac = () => {
           <CodeBlock>
             Example := class (x: String) {`{`}<BR/>
             <></>  y: String<BR/>
+            <></>  z?: Number<BR/>
             <>{`}`}</><BR/>
             <BR/>
             Example("X", y: "Y")
@@ -1625,71 +1513,14 @@ const Almanac = () => {
             {`}`}
           </CodeBlock>
 
-          <CodeBlock>
-            x: Enum = Enum.A<BR/>
-            x.match<BR/>
-            <></>  A ={'>'} 1<BR/>
-            <></>  var: B ={'>'} var * 2<BR/>
-            <></>  C("A") ={'>'} 3<BR/>
-            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
-            <></>  C(var) ={'>'} var * 5<BR/>
-            <></>  C ={'>'} 6
-          </CodeBlock>
-          <CodeBlock>
-            Example := class {'{'}<BR/>
-            <></>  static Var := 5<BR/>
-            <></>  InnerClass := class {'{'}{'}'}<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            Example := class (x: String) ={'>'} single_line<BR/>
-            Example := class (x: String) {'{'}<BR/>
-            <></>  y: String<BR/>
-            <></>  z?: Number<BR/>
-            {'}'}<BR/>
-            Example("X", y: "Y")
-          </CodeBlock>
-          <CodeBlock>
-            Square := class: Shape {'{'}<BR/>
-            <></>  side: Number<BR/>
-            <></>  area ={'>'} side * side<BR/>
-            {'}'}<BR/>
-            Shape := class {'{'}<BR/>
-            <></>  area ={'>'} TODO<BR/>
-            {'}'}<BR/>
-            Shape() // error: Shape is abstract
-          </CodeBlock>
-          <CodeBlock>
-            Colored := Point + Color
-          </CodeBlock>
-          <CodeBlock>
-            Number += {'{'}<BR/>
-            <></>  squared ={'>'} this * this<BR/>
-            {'}'}<BR/>
-            5.squared // 25
-          </CodeBlock>
-          <CodeBlock>
-            ExampleEnum := enum A | B | C(: String)<BR/>
-            ExampleEnum: A | B | C = class {'{'}<BR/>
-            <></>  A := class {'{'}{'}'}<BR/>
-            <></>  B := class {'{'}{'}'}<BR/>
-            <></>  C := class (: String) {'{'}{'}'}<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            x: ExampleEnum = ExampleEnum.A<BR/>
-            x.match<BR/>
-            <></>  A ={'>'} 1<BR/>
-            <></>  var: B ={'>'} var * 2<BR/>
-            <></>  C("A") ={'>'} 3<BR/>
-            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
-            <></>  C(var) ={'>'} var * 5<BR/>
-            <></>  C ={'>'} 6
-          </CodeBlock>
+          You can also extract stuff out of any object/class by pattern-matching in front of it.
+
           <CodeBlock>
             {'{'} Rational, Irrational {'}'} = Real<BR/>
             {'{'} false, true {'}'} = boolean
           </CodeBlock>
+
+          Which leaves us at how we get stuff others made our project... You should now have enough knowledge to do very basic things to interact with the language so that you can use it like any other language. If you want to interact with stuff others have made we'll have to turn towards the next chapter, to cover Ecosystem-related functionality.
         </Section>
       </Section>
       <Section head="§3. Ecosystem">
@@ -1697,10 +1528,13 @@ const Almanac = () => {
         <CodeBlock>
           Example := class (field = "A")<BR/>
           x := Example()<BR/>
+          <BR/>
           update (var: Example) ={'>'} {'{'}<BR/>
           <></>  var = Example("B")<BR/>
           {'}'}<BR/>
+          <BR/>
           update(x)<BR/>
+          <BR/>
           x.field // Is it "A" or "B" here?
         </CodeBlock>
         Saying it is always "Call by reference" would mean it is "B" here, saying "Call by value" would mean it's always "A" and that it's impossible to modify an object other than returning a new version.
@@ -1737,11 +1571,7 @@ const Almanac = () => {
         </CodeBlock>
 
         Let's start by exploring how these locations work.
-        <CodeBlock>
-          var @ &caller = Example("B")<BR/>
-          var @ -{'>'} = Example("B")<BR/>
-          var @ * = Example("B")
-        </CodeBlock>
+
         <Section head="§3.1 Location & Assignment">
           <CodeBlock>
             x@<BR/>
