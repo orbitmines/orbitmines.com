@@ -1,4 +1,4 @@
-import ORGANIZATIONS, {Content, ExternalProfile, TProfile, Viewed} from '../../../lib/organizations/ORGANIZATIONS';
+import ORGANIZATIONS, { Content, ExternalProfile, TProfile, Viewed } from '../../../lib/organizations/ORGANIZATIONS';
 
 // TODO: Just a crude initi\al setup while the interface is not yet workable
 
@@ -20,204 +20,319 @@ const string = `
 `
 
 export const REFERENCES = {
-  THE_METAVERSE_BUILDING_THE_SPATIAL_INTERNET: <Content>{  
-    reference: {                 title: 'The Metaverse: Building the Spatial Internet',      
-          authors: [{name: 'Matthew Ball'}],      
-          organizations: [],  
-          year: '(2024)',      
-          link: "https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'     
+  STRONGLY_BARYON_DOMINATED_DISK_GALAXIES_AT_THE_PEAK_OF_GALAXY_FORMATION_TEN_BILLION_YEARS_AGO: <Content>{
+    reference: {
+      title: 'Strongly baryon-dominated disk galaxies at the peak of galaxy formation ten billion years ago',
+      authors: [{ name: 'R. Genzel' }, { name: 'N.M. Förster Schreiber' }, { name: 'H. Übler' }, { name: 'P. Lang' }, { name: 'T. Naab' }, { name: 'R. Bender' }, { name: 'L.J. Tacconi' }, { name: 'E. Wisnioski' }, { name: 'S. Wuyts' }, { name: 'T. Alexander' }, { name: 'A. Beifiori' }, { name: 'S. Belli' }, { name: 'G. Brammer' }, { name: 'A. Burkert' }, { name: 'C.M. Carollo' }, { name: 'J. Chan' }, { name: 'R. Davies' }, { name: 'M. Fossati' }, { name: 'A. Galametz' }, { name: 'S. Genel' }, { name: 'O. Gerhard' }, { name: 'D. Lutz' }, { name: 'J.T. Mendel' }, { name: 'I. Momcheva' }, { name: 'E.J. Nelson' }, { name: 'A. Renzini' }, { name: 'R. Saglia' }, { name: 'A. Sternberg' }, { name: 'S. Tacchella' }, { name: 'K. Tadaki' }, { name: 'D. Wilman' }],
+      organizations: [],
+      year: '(2017)',
+      link: "https://arxiv.org/pdf/1703.04310"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  THE_DECOMPILATION_WIKI: <Content>{  
-    reference: {                 title: 'The Decompilation Wiki',      
-          authors: [{name: 'Zion Leonahenahe Basque'}],      
-          organizations: [],  
-          year: '',      
-          link: "https://decompilation.wiki/"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  BIG_SPARC_THE_NEW_SPARC_DATABASE: <Content>{
+    reference: {
+      title: 'BIG-SPARC: The new SPARC database',
+      authors: [{ name: 'Konstantin Haubner' }, { name: 'Federico Lelli' }, { name: 'Enrico Di Teodoro' }, { name: 'Francis Duey' }, { name: 'Stacy McGaugh' }, { name: 'James Schombert' }, { name: 'Kelley M. Hess' }, { name: 'Apertif Team' }],
+      organizations: [],
+      year: '(2024)',
+      link: "https://arxiv.org/pdf/2411.13329"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  DECOMPILING_2024_A_YEAR_OF_RESURGENCE_IN_DECOMPILATION_RESEARCH: <Content>{  
-    reference: {                 title: 'Decompiling 2024: A Year of Resurgence in Decompilation Research',      
-          authors: [{name: 'Zion Leonahenahe Basque'}],      
-          organizations: [],  
-          year: '(2025)',      
-          link: "https://mahaloz.re/dec-progress-2024"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  THE_NEXT_UNIT_OF_SCIENCE_IS_THE_SCIENTIFIC_PAPER_DUE_TO_BE_REPLACED: <Content>{
+    reference: {
+      title: 'The next unit of science: Is the scientific paper due to be replaced?',
+      authors: [{ name: 'Tim Requarth' }],
+      organizations: [],
+      year: '(2026)',
+      link: "https://www.thetransmitter.org/from-bench-to-bot/the-next-unit-of-science-is-the-scientific-paper-due-to-be-replaced/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  _30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_1: <Content>{  
-    reference: {                 title: '30 Years of Decompilation and the Unsolved Structuring Problem: Part 1',      
-          authors: [{name: 'Zion Leonahenahe Basque'}],      
-          organizations: [],  
-          year: '(2024)',      
-          link: "https://mahaloz.re/dec-history-pt1"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  KUNA_DECOMPILER_DEVELOPMENT_IN_THE_AGE_OF_CODING_AGENTS: <Content>{
+    reference: {
+      title: 'Kuna: Decompiler Development in the Age of Coding Agents',
+      authors: [{ name: 'Zion Leonahenahe Basque' }],
+      organizations: [],
+      year: '(2026)',
+      link: "https://noelo.org/blog/kuna-release/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  _30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_2: <Content>{  
-    reference: {                 title: '30 Years of Decompilation and the Unsolved Structuring Problem: Part 2',      
-          authors: [{name: 'Zion Leonahenahe Basque'}],      
-          organizations: [],  
-          year: '(2024)',      
-          link: "https://mahaloz.re/dec-history-pt2"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  COMPLEX_BEHAVIOR_FROM_INTRINSIC_MOTIVATION_TO_OCCUPY_FUTURE_ACTION_STATE_PATH_SPACE: <Content>{
+    reference: {
+      title: 'Complex behavior from intrinsic motivation to occupy future action-state path space',
+      authors: [{ name: 'Jorge Ramírez-Ruiz' }, { name: 'Dmytro Grytskyy' }, { name: 'Chiara Mastrogiuseppe' }, { name: 'Yamen Habib' }, { name: 'Rubén Moreno-Bote' }],
+      organizations: [],
+      year: '(2024)',
+      link: "https://arxiv.org/abs/2205.10316"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  FFMPEG_THE_INCREDIBLE_TECHNOLOGY_BEHIND_VIDEO_ON_THE_INTERNET_496: <Content>{  
-    reference: {                 title: 'FFmpeg: The Incredible Technology Behind Video on the Internet | #496',      
-          authors: [{name: 'Jean-Baptiste Kempf'},{name: 'Kieran Kunhya'},{name: 'Lex Fridman'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=nepKKz-MzFM"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  CO_CREATOR_OF_HASKELL_FUNCTIONAL_PROGRAMMING_THINKING_IN_TYPES_USELESS_LANGUAGES_SIMON_JONES: <Content>{
+    reference: {
+      title: 'Co-Creator of Haskell: Functional Programming, Thinking in Types, Useless Languages | Simon Jones',
+      authors: [{ name: 'Simon Jones' }, { name: 'Ryan Peterman' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=xcB_LF3cdqw&t=3161s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  CREATOR_OF_CPP_BELL_LABS_NEGATIVE_OVERHEAD_ABSTRACTION_MISTAKES_BJARNE_STROUSTRUP: <Content>{  
-    reference: {                 title: 'Creator of C++: Bell Labs, Negative Overhead Abstraction, Mistakes | Bjarne Stroustrup',      
-          authors: [{name: 'Bjarne Stroustrup'},{name: 'Ryan Peterman'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=U46fJ2bJ-co"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  CREATOR_OF_OCAML_FUNCTIONAL_PROGRAMMING_FORMAL_VERIFICATION_PROGRAMMING_LANGUAGES_XAVIER_LEROY: <Content>{
+    reference: {
+      title: 'Creator of OCaml: Functional Programming, Formal Verification, Programming Languages | Xavier Leroy',
+      authors: [{ name: 'Xavier Leroy' }, { name: 'Ryan Peterman' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=9Cswiqrq6So&t=4s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  THE_MAGIC_OF_ARM_W_CASEY_MURATORI: <Content>{  
-    reference: {                 title: 'The Magic Of ARM w/ Casey Muratori',      
-          authors: [{name: 'Casey Muratori'},{name: 'ThePrimeagen'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2024)',      
-          link: "https://www.youtube.com/watch?v=Zr09I5OlOjs"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  TURING_AWARD_WINNER_EARLY_AI_LLM_PREDICTIONS_CAUSALITY_JUDEA_PEARL: <Content>{
+    reference: {
+      title: 'Turing Award Winner: Early AI, LLM Predictions, Causality | Judea Pearl',
+      authors: [{ name: 'Judea Pearl' }, { name: 'Ryan Peterman' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=FleTXB1fAcQ&t=2840s"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  X86_NEEDS_TO_DIE: <Content>{  
-    reference: {                 title: 'X86 Needs To Die',      
-          authors: [{name: 'Casey Muratori'},{name: 'ThePrimeagen'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2024)',      
-          link: "https://www.youtube.com/watch?v=xCBrtopAG80"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  CASEY_MURATORI_THE_ANATOMY_OF_A_35_YEAR_MISTAKE_CLEAN_CODE_HORRIBLE_PERFORMANCE: <Content>{
+    reference: {
+      title: 'Casey Muratori: The Anatomy of a 35-Year Mistake, "Clean Code" Horrible Performance',
+      authors: [{ name: 'Casey Muratori' }, { name: 'Ryan Peterman' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=jHLbL1Eg4gM&pp=0gcJCTMMAYcqIYzv"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  THE_REAL_PROBLEMS_W_GIT: <Content>{  
-    reference: {                 title: 'The Real Problems w/ Git',      
-          authors: [{name: 'ThePrimeagen'},{name: 'Casey Muratori'},{name: 'TJ DeVries'},{name: 'David Begin'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2025)',      
-          link: "https://www.youtube.com/watch?v=t6qL_FbLArk"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
-  },
-  THE_ONLY_UNBREAKABLE_LAW: <Content>{  
-    reference: {                 title: 'The Only Unbreakable Law',      
-          authors: [{name: 'Casey Muratori'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2022)',      
-          link: "https://www.youtube.com/watch?v=5IUj1EZwpJY"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  DHH_FUTURE_OF_PROGRAMMING_AI_AGENTIC_ENGINEERING_VIBE_CODING_LINUX_501: <Content>{
+    reference: {
+      title: 'DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux | #501',
+      authors: [{ name: 'David Heinemeier Hansson' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=NYFGCESmikA&t=4s&pp=0gcJCTMMAYcqIYzv"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
 
-  AN_INFINITY_OF_WORLDS_COSMIC_INFLATION_AND_THE_BEGINNING_OF_THE_UNIVERSE: <Content>{  
-    reference: {                 title: 'An Infinity of Worlds: Cosmic Inflation and the Beginning of the Universe',      
-          authors: [{name: 'Will Kinney'}],      
-          organizations: [],  
-          year: '(2022)',      
-          link: "https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y"
+  THE_METAVERSE_BUILDING_THE_SPATIAL_INTERNET: <Content>{
+    reference: {
+      title: 'The Metaverse: Building the Spatial Internet',
+      authors: [{ name: 'Matthew Ball' }],
+      organizations: [],
+      year: '(2024)',
+      link: "https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ"
     }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
-  STATE_OF_AI_IN_2026_LLMS_CODING_SCALING_LAWS_CHINA_AGENTS_GPUS_AGI_490: <Content>{  
-    reference: {                 title: 'State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | #490',      
-          authors: [{name: 'Nathan Lambert'},{name: 'Sebastian Raschka'},{name: 'Lex Fridman'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=EV7WhVT270Q"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  THE_DECOMPILATION_WIKI: <Content>{
+    reference: {
+      title: 'The Decompilation Wiki',
+      authors: [{ name: 'Zion Leonahenahe Basque' }],
+      organizations: [],
+      year: '',
+      link: "https://decompilation.wiki/"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  OPENCLAW_THE_VIRAL_AI_AGENT_THAT_BROKE_THE_INTERNET___PETER_STEINBERGER_491: <Content>{  
-    reference: {                 title: 'OpenClaw: The Viral AI Agent that Broke the Internet - Peter Steinberger | #491',      
-          authors: [{name: 'Peter Steinberger'},{name: 'Lex Fridman'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=YFjfBk8HI5o"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  DECOMPILING_2024_A_YEAR_OF_RESURGENCE_IN_DECOMPILATION_RESEARCH: <Content>{
+    reference: {
+      title: 'Decompiling 2024: A Year of Resurgence in Decompilation Research',
+      authors: [{ name: 'Zion Leonahenahe Basque' }],
+      organizations: [],
+      year: '(2025)',
+      link: "https://mahaloz.re/dec-progress-2024"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  JEFF_KAPLAN_WORLD_OF_WARCRAFT_OVERWATCH_BLIZZARD_AND_FUTURE_OF_GAMING_493: <Content>{  
-    reference: {                 title: 'Jeff Kaplan: World of Warcraft, Overwatch, Blizzard, and Future of Gaming | #493',      
-          authors: [{name: 'Jeff Kaplan'},{name: 'Lex Fridman'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=H9rF1CSSh-w"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  _30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_1: <Content>{
+    reference: {
+      title: '30 Years of Decompilation and the Unsolved Structuring Problem: Part 1',
+      authors: [{ name: 'Zion Leonahenahe Basque' }],
+      organizations: [],
+      year: '(2024)',
+      link: "https://mahaloz.re/dec-history-pt1"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  JENSEN_HUANG_NVIDIA___THE_4_TRILLION_COMPANY_THE_AI_REVOLUTION_494: <Content>{  
-    reference: {                 title: 'Jensen Huang: NVIDIA - The $4 Trillion Company & the AI Revolution | #494',      
-          authors: [{name: 'Jensen Huang'},{name: 'Lex Fridman'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=vif8NQcjVf0"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  _30_YEARS_OF_DECOMPILATION_AND_THE_UNSOLVED_STRUCTURING_PROBLEM_PART_2: <Content>{
+    reference: {
+      title: '30 Years of Decompilation and the Unsolved Structuring Problem: Part 2',
+      authors: [{ name: 'Zion Leonahenahe Basque' }],
+      organizations: [],
+      year: '(2024)',
+      link: "https://mahaloz.re/dec-history-pt2"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  VIKINGS_RAGNAR_BERSERKERS_VALHALLA_THE_WARRIORS_OF_THE_VIKING_AGE_495: <Content>{  
-    reference: {                 title: 'Vikings, Ragnar, Berserkers, Valhalla & the Warriors of the Viking Age | #495',      
-          authors: [{name: 'Lars Brownworth'},{name: 'Lex Fridman'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.lex_fridman_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=iKx3gAODybU"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  FFMPEG_THE_INCREDIBLE_TECHNOLOGY_BEHIND_VIDEO_ON_THE_INTERNET_496: <Content>{
+    reference: {
+      title: 'FFmpeg: The Incredible Technology Behind Video on the Internet | #496',
+      authors: [{ name: 'Jean-Baptiste Kempf' }, { name: 'Kieran Kunhya' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=nepKKz-MzFM"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  _31_JOSHUA_WINN___EXOPLANET_NEW_DISCOVERIES_HISTORY_AND_FUTURE: <Content>{  
-    reference: {                 title: '#31 Joshua Winn - Exoplanet New Discoveries, History and Future',      
-          authors: [{name: 'Joshua Winn'},{name: 'David Kipping'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.cool_worlds_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=ISZHVwY5YjE"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  CREATOR_OF_CPP_BELL_LABS_NEGATIVE_OVERHEAD_ABSTRACTION_MISTAKES_BJARNE_STROUSTRUP: <Content>{
+    reference: {
+      title: 'Creator of C++: Bell Labs, Negative Overhead Abstraction, Mistakes | Bjarne Stroustrup',
+      authors: [{ name: 'Bjarne Stroustrup' }, { name: 'Ryan Peterman' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=U46fJ2bJ-co"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  _32_CHRIS_LINTOTT___TECHNOSIGNATURES_CITIZEN_SCIENCE_SCICOMM: <Content>{  
-    reference: {                 title: '#32 Chris Lintott - Technosignatures, Citizen Science, Scicomm',      
-          authors: [{name: 'Chris Lintott'},{name: 'David Kipping'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.cool_worlds_podcast],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=qI3DAXM0-do"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  THE_MAGIC_OF_ARM_W_CASEY_MURATORI: <Content>{
+    reference: {
+      title: 'The Magic Of ARM w/ Casey Muratori',
+      authors: [{ name: 'Casey Muratori' }, { name: 'ThePrimeagen' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=Zr09I5OlOjs"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  DAN_GHICA_DESIGNING_AND_DEVELOPING_AN_INDUSTRIAL_STRENGTH_PROGRAMMING_LANGUAGE: <Content>{  
-    reference: {                 title: 'Dan Ghica: Designing and developing an industrial-strength programming language',      
-          authors: [{name: 'Dan Ghica'}],      
-          organizations: [ORGANIZATIONS.youtube,ORGANIZATIONS.topos_institute],  
-          year: '(2026)',      
-          link: "https://www.youtube.com/watch?v=oFGc4hGJRJQ"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  X86_NEEDS_TO_DIE: <Content>{
+    reference: {
+      title: 'X86 Needs To Die',
+      authors: [{ name: 'Casey Muratori' }, { name: 'ThePrimeagen' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2024)',
+      link: "https://www.youtube.com/watch?v=xCBrtopAG80"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  WHERE_WE_RE_GOING_WE_DON_T_NEED_ROWS_COLUMNAR_DATA_CONNECTIVITY_WITH_APACHE_ARROW_ADBC: <Content>{  
-    reference: {                 title: 'Where We\'re Going, We Don\'t Need Rows: Columnar Data Connectivity with Apache Arrow ADBC',      
-          authors: [{name: 'Ian Cook'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2025)',      
-          link: "https://www.youtube.com/watch?v=TjlmNGNx77E"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  THE_REAL_PROBLEMS_W_GIT: <Content>{
+    reference: {
+      title: 'The Real Problems w/ Git',
+      authors: [{ name: 'ThePrimeagen' }, { name: 'Casey Muratori' }, { name: 'TJ DeVries' }, { name: 'David Begin' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=t6qL_FbLArk"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  VORTEX_LLVM_FOR_FILE_FORMATS: <Content>{  
-    reference: {                 title: 'Vortex: LLVM for File Formats',      
-          authors: [{name: 'Will Manning'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2025)',      
-          link: "https://www.youtube.com/watch?v=zyn_T5uragA"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  THE_ONLY_UNBREAKABLE_LAW: <Content>{
+    reference: {
+      title: 'The Only Unbreakable Law',
+      authors: [{ name: 'Casey Muratori' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2022)',
+      link: "https://www.youtube.com/watch?v=5IUj1EZwpJY"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
-  DUCKLAKE_LEARNING_FROM_CLOUD_DATA_WAREHOUSES_TO_BUILD_A_ROBUST_LAKEHOUSE: <Content>{  
-    reference: {                 title: 'DuckLake: Learning from Cloud Data Warehouses to Build a Robust “Lakehouse”',      
-          authors: [{name: 'Jordan Tigani'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2025)',      
-          link: "https://www.youtube.com/watch?v=z2GhznqtIz0"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+
+  AN_INFINITY_OF_WORLDS_COSMIC_INFLATION_AND_THE_BEGINNING_OF_THE_UNIVERSE: <Content>{
+    reference: {
+      title: 'An Infinity of Worlds: Cosmic Inflation and the Beginning of the Universe',
+      authors: [{ name: 'Will Kinney' }],
+      organizations: [],
+      year: '(2022)',
+      link: "https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December", type: 'book'
   },
-  AN_EXTREMELY_TECHNICAL_OVERVIEW_OF_HOW_APACHE_ICEBERG_PLANNING_ACTUALLY_WORKS: <Content>{  
-    reference: {                 title: 'An Extremely Technical Overview of How Apache Iceberg Planning Actually Works',      
-          authors: [{name: 'Russell Spitzer'}],      
-          organizations: [ORGANIZATIONS.youtube],  
-          year: '(2025)',      
-          link: "https://www.youtube.com/watch?v=kJaD0WuQ1Bg"      
-    }, status: Viewed.VIEWED, viewed_at: "2023, December"     
+  STATE_OF_AI_IN_2026_LLMS_CODING_SCALING_LAWS_CHINA_AGENTS_GPUS_AGI_490: <Content>{
+    reference: {
+      title: 'State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | #490',
+      authors: [{ name: 'Nathan Lambert' }, { name: 'Sebastian Raschka' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=EV7WhVT270Q"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  OPENCLAW_THE_VIRAL_AI_AGENT_THAT_BROKE_THE_INTERNET___PETER_STEINBERGER_491: <Content>{
+    reference: {
+      title: 'OpenClaw: The Viral AI Agent that Broke the Internet - Peter Steinberger | #491',
+      authors: [{ name: 'Peter Steinberger' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=YFjfBk8HI5o"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  JEFF_KAPLAN_WORLD_OF_WARCRAFT_OVERWATCH_BLIZZARD_AND_FUTURE_OF_GAMING_493: <Content>{
+    reference: {
+      title: 'Jeff Kaplan: World of Warcraft, Overwatch, Blizzard, and Future of Gaming | #493',
+      authors: [{ name: 'Jeff Kaplan' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=H9rF1CSSh-w"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  JENSEN_HUANG_NVIDIA___THE_4_TRILLION_COMPANY_THE_AI_REVOLUTION_494: <Content>{
+    reference: {
+      title: 'Jensen Huang: NVIDIA - The $4 Trillion Company & the AI Revolution | #494',
+      authors: [{ name: 'Jensen Huang' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=vif8NQcjVf0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  VIKINGS_RAGNAR_BERSERKERS_VALHALLA_THE_WARRIORS_OF_THE_VIKING_AGE_495: <Content>{
+    reference: {
+      title: 'Vikings, Ragnar, Berserkers, Valhalla & the Warriors of the Viking Age | #495',
+      authors: [{ name: 'Lars Brownworth' }, { name: 'Lex Fridman' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=iKx3gAODybU"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _31_JOSHUA_WINN___EXOPLANET_NEW_DISCOVERIES_HISTORY_AND_FUTURE: <Content>{
+    reference: {
+      title: '#31 Joshua Winn - Exoplanet New Discoveries, History and Future',
+      authors: [{ name: 'Joshua Winn' }, { name: 'David Kipping' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=ISZHVwY5YjE"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  _32_CHRIS_LINTOTT___TECHNOSIGNATURES_CITIZEN_SCIENCE_SCICOMM: <Content>{
+    reference: {
+      title: '#32 Chris Lintott - Technosignatures, Citizen Science, Scicomm',
+      authors: [{ name: 'Chris Lintott' }, { name: 'David Kipping' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=qI3DAXM0-do"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DAN_GHICA_DESIGNING_AND_DEVELOPING_AN_INDUSTRIAL_STRENGTH_PROGRAMMING_LANGUAGE: <Content>{
+    reference: {
+      title: 'Dan Ghica: Designing and developing an industrial-strength programming language',
+      authors: [{ name: 'Dan Ghica' }],
+      organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
+      year: '(2026)',
+      link: "https://www.youtube.com/watch?v=oFGc4hGJRJQ"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  WHERE_WE_RE_GOING_WE_DON_T_NEED_ROWS_COLUMNAR_DATA_CONNECTIVITY_WITH_APACHE_ARROW_ADBC: <Content>{
+    reference: {
+      title: 'Where We\'re Going, We Don\'t Need Rows: Columnar Data Connectivity with Apache Arrow ADBC',
+      authors: [{ name: 'Ian Cook' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=TjlmNGNx77E"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  VORTEX_LLVM_FOR_FILE_FORMATS: <Content>{
+    reference: {
+      title: 'Vortex: LLVM for File Formats',
+      authors: [{ name: 'Will Manning' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=zyn_T5uragA"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  DUCKLAKE_LEARNING_FROM_CLOUD_DATA_WAREHOUSES_TO_BUILD_A_ROBUST_LAKEHOUSE: <Content>{
+    reference: {
+      title: 'DuckLake: Learning from Cloud Data Warehouses to Build a Robust “Lakehouse”',
+      authors: [{ name: 'Jordan Tigani' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=z2GhznqtIz0"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
+  },
+  AN_EXTREMELY_TECHNICAL_OVERVIEW_OF_HOW_APACHE_ICEBERG_PLANNING_ACTUALLY_WORKS: <Content>{
+    reference: {
+      title: 'An Extremely Technical Overview of How Apache Iceberg Planning Actually Works',
+      authors: [{ name: 'Russell Spitzer' }],
+      organizations: [ORGANIZATIONS.youtube],
+      year: '(2025)',
+      link: "https://www.youtube.com/watch?v=kJaD0WuQ1Bg"
+    }, status: Viewed.VIEWED, viewed_at: "2023, December"
   },
 
   THE_STRANGEST_MAN: <Content>{
     reference: {
       title: 'The Strangest Man',
-      authors: [{name: 'Graham Farmelo'}],
+      authors: [{ name: 'Graham Farmelo' }],
       organizations: [],
       year: '(2009)',
       link: "https://en.wikipedia.org/wiki/The_Strangest_Man"
@@ -226,7 +341,7 @@ export const REFERENCES = {
   ECCE_HOMO: <Content>{
     reference: {
       title: 'Ecce Homo',
-      authors: [{name: 'Friedrich Nietzsche'}],
+      authors: [{ name: 'Friedrich Nietzsche' }],
       organizations: [],
       year: '(1908)',
       link: "https://en.wikipedia.org/wiki/Ecce_Homo_(book)"
@@ -235,7 +350,7 @@ export const REFERENCES = {
   THE_THREE_BODY_PROBLEM: <Content>{
     reference: {
       title: 'The Three-Body Problem',
-      authors: [{name: 'Liu Cixin'}],
+      authors: [{ name: 'Liu Cixin' }],
       organizations: [],
       year: '(2008)',
       link: "https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)"
@@ -244,7 +359,7 @@ export const REFERENCES = {
   WOOL: <Content>{
     reference: {
       title: 'Wool',
-      authors: [{name: 'Hugh Howey'}],
+      authors: [{ name: 'Hugh Howey' }],
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Silo_(series)"
@@ -253,7 +368,7 @@ export const REFERENCES = {
   SHIFT: <Content>{
     reference: {
       title: 'Shift',
-      authors: [{name: 'Hugh Howey'}],
+      authors: [{ name: 'Hugh Howey' }],
       organizations: [],
       year: '(2013)',
       link: "https://en.wikipedia.org/wiki/Silo_(series)"
@@ -262,7 +377,7 @@ export const REFERENCES = {
   HARRY_POTTER_1_7: <Content>{
     reference: {
       title: 'Harry Potter 1-7',
-      authors: [{name: 'J. K. Rowling'}],
+      authors: [{ name: 'J. K. Rowling' }],
       organizations: [],
       year: '(1997-2007)',
       link: "https://en.wikipedia.org/wiki/Harry_Potter"
@@ -271,7 +386,7 @@ export const REFERENCES = {
   PROPOSITIONS_AS_TYPES: <Content>{
     reference: {
       title: '"Propositions as Types"',
-      authors: [{name: 'Philip Wadler'}],
+      authors: [{ name: 'Philip Wadler' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '(2015)',
       link: "https://www.youtube.com/watch?v=IOiZatlZtGU"
@@ -280,7 +395,7 @@ export const REFERENCES = {
   PROGRAMMING_DISTRIBUTED_SYSTEMS: <Content>{
     reference: {
       title: '"Programming Distributed Systems"',
-      authors: [{name: 'Mae Milano'}],
+      authors: [{ name: 'Mae Milano' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=Mc3tTRkjCvE"
@@ -289,7 +404,7 @@ export const REFERENCES = {
   DAN_HOUSER_GTA_RED_DEAD_REDEMPTION_ROCKSTAR_ABSURD_FUTURE_OF_GAMING_484: <Content>{
     reference: {
       title: 'Dan Houser: GTA, Red Dead Redemption, Rockstar, Absurd & Future of Gaming | #484',
-      authors: [{name: 'Dan Houser'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Dan Houser' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=o3gbXDjNWyI"
@@ -298,7 +413,7 @@ export const REFERENCES = {
   DECIPHERING_SECRETS_OF_ANCIENT_CIVILIZATIONS_NOAHS_ARK_AND_FLOOD_MYTHS_487: <Content>{
     reference: {
       title: 'Deciphering Secrets of Ancient Civilizations, Noah\'s Ark, and Flood Myths | #487',
-      authors: [{name: 'Irving Finkel'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Irving Finkel' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=_bBRVNkAfkQ&pp=0gcJCYcKAYcqIYzv"
@@ -307,7 +422,7 @@ export const REFERENCES = {
   PAVEL_DUROV_TELEGRAM_FREEDOM_CENSORSHIP_MONEY_POWER_HUMAN_NATURE_482: <Content>{
     reference: {
       title: 'Pavel Durov: Telegram, Freedom, Censorship, Money, Power & Human Nature | #482',
-      authors: [{name: 'Pavel Durov'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Pavel Durov' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=qjPH9njnaVU"
@@ -316,7 +431,7 @@ export const REFERENCES = {
   DAVID_KIRTLEY_NUCLEAR_FUSION_PLASMA_PHYSICS_AND_THE_FUTURE_OF_ENERGY_485: <Content>{
     reference: {
       title: 'David Kirtley: Nuclear Fusion, Plasma Physics, and the Future of Energy | #485',
-      authors: [{name: 'David Kirtley'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'David Kirtley' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=m_CFCyc2Shs"
@@ -325,7 +440,7 @@ export const REFERENCES = {
   INFINITY_PARADOXES_GÖDEL_INCOMPLETENESS_THE_MATHEMATICAL_MULTIVERSE_488: <Content>{
     reference: {
       title: 'Infinity, Paradoxes, Gödel Incompleteness & the Mathematical Multiverse | #488',
-      authors: [{name: 'Joel David Hamkins'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Joel David Hamkins' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=14OPT6CcsH4"
@@ -334,7 +449,7 @@ export const REFERENCES = {
   PAUL_ROSOLIE_UNCONTACTED_TRIBES_IN_THE_AMAZON_JUNGLE_489: <Content>{
     reference: {
       title: 'Paul Rosolie: Uncontacted Tribes in the Amazon Jungle | #489',
-      authors: [{name: 'Paul Rosolie'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Paul Rosolie' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2026)',
       link: "https://www.youtube.com/watch?v=Z-FRe5AKmCU"
@@ -343,7 +458,7 @@ export const REFERENCES = {
   _26_WILL_KINNEY___BEFORE_THE_BIG_BANG_INFLATION_INFINITY_OF_WORLDS: <Content>{
     reference: {
       title: '#26 Will Kinney - Before the Big Bang, Inflation, Infinity of Worlds',
-      authors: [{name: 'Will Kinney'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Will Kinney' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=HSZtn0yKPBI"
@@ -352,7 +467,7 @@ export const REFERENCES = {
   _27_JASON_STEFFEN___KEPLER_MISSION_LEGACY_PARTICLE_PHYSICS_OPTIMAL_PLANE_BOARDING: <Content>{
     reference: {
       title: '#27 Jason Steffen - Kepler Mission Legacy, Particle Physics, Optimal Plane Boarding',
-      authors: [{name: 'Jason Steffen'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Jason Steffen' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=vaqgPzT8PXA"
@@ -361,7 +476,7 @@ export const REFERENCES = {
   _28_NÉSTOR_ESPINOZA___JWST_EXOPLANET_ATMOSPHERES_MOLECULE_DETECTION: <Content>{
     reference: {
       title: '#28 Néstor Espinoza - JWST, Exoplanet Atmospheres, Molecule Detection',
-      authors: [{name: 'Néstor Espinoza'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Néstor Espinoza' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=bZ7Hge0OUTE"
@@ -370,7 +485,7 @@ export const REFERENCES = {
   CRAFTING_INTERPRETERS: <Content>{
     reference: {
       title: 'Crafting Interpreters',
-      authors: [{name: 'Robert Nystrom'}],
+      authors: [{ name: 'Robert Nystrom' }],
       organizations: [],
       year: '(2021)',
       link: "https://www.craftinginterpreters.com/"
@@ -379,7 +494,7 @@ export const REFERENCES = {
   FUNCTIONAL_PROGRAMMING_IN_LEAN: <Content>{
     reference: {
       title: 'Functional Programming in Lean',
-      authors: [{name: 'David Thrane Christiansen'}],
+      authors: [{ name: 'David Thrane Christiansen' }],
       organizations: [],
       year: '(2023)',
       link: "https://lean-lang.org/functional_programming_in_lean/"
@@ -388,7 +503,7 @@ export const REFERENCES = {
   REFLECTIONS_ON_EQUALITY: <Content>{
     reference: {
       title: 'Reflections on Equality',
-      authors: [{name: 'Amélia Liao'}],
+      authors: [{ name: 'Amélia Liao' }],
       organizations: [],
       year: '(2020)',
       link: "https://amelia.how/posts/reflections-on-equality.html"
@@ -397,7 +512,7 @@ export const REFERENCES = {
   CUBICAL_TYPE_THEORY: <Content>{
     reference: {
       title: 'Cubical Type Theory',
-      authors: [{name: 'Amélia Liao'}],
+      authors: [{ name: 'Amélia Liao' }],
       organizations: [],
       year: '(2021)',
       link: "https://amelia.how/posts/cubical-type-theory.html"
@@ -406,7 +521,7 @@ export const REFERENCES = {
   ABSTRACT_INTERPRETATION_IN_A_NUTSHELL: <Content>{
     reference: {
       title: 'Abstract Interpretation in a Nutshell',
-      authors: [{name: 'Patrick Cousot'}],
+      authors: [{ name: 'Patrick Cousot' }],
       organizations: [],
       year: '(2005)',
       link: "https://www.di.ens.fr/~cousot/AI/IntroAbsInt.html"
@@ -415,7 +530,7 @@ export const REFERENCES = {
   ABSTRACT_INTERPRETATION_A_UNIFIED_LATTICE_MODEL_FOR_STATIC_ANALYSIS_OF_PROGRAMS_BY_CONSTRUCTION_OR_APPROXIMATION_OF_FIXPOINTS: <Content>{
     reference: {
       title: 'Abstract interpretation: a unified lattice model for static analysis of programs by construction or approximation of fixpoints',
-      authors: [{name: 'Patrick Cousot'}, {name: 'Radhia Cousot'}],
+      authors: [{ name: 'Patrick Cousot' }, { name: 'Radhia Cousot' }],
       organizations: [],
       year: '(1977)',
       link: "https://dl.acm.org/doi/pdf/10.1145/512950.512973"
@@ -424,7 +539,7 @@ export const REFERENCES = {
   LEVIATHAN_WAKES: <Content>{
     reference: {
       title: 'Leviathan Wakes',
-      authors: [{name: 'James S. A. Corey'}],
+      authors: [{ name: 'James S. A. Corey' }],
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Leviathan_Wakes"
@@ -433,7 +548,7 @@ export const REFERENCES = {
   CUBICAL_TYPES_FOR_THE_WORKING_FORMALIZER: <Content>{
     reference: {
       title: '"Cubical types for the working formalizer"',
-      authors: [{name: 'Amélia Liao'}],
+      authors: [{ name: 'Amélia Liao' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=rhZAkHDo-r4&t=1s"
@@ -442,7 +557,7 @@ export const REFERENCES = {
   EASY_ABSTRACT_INTERPRETATION_WITH_SPARTA: <Content>{
     reference: {
       title: '"Easy Abstract Interpretation with SPARTA"',
-      authors: [{name: 'Arnaud Venet'}, {name: 'Jez Ng'}],
+      authors: [{ name: 'Arnaud Venet' }, { name: 'Jez Ng' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '(2019)',
       link: "https://www.youtube.com/watch?v=_fA7vkVJhF8&t=2s"
@@ -451,7 +566,7 @@ export const REFERENCES = {
   A_LITTLE_TASTE_OF_DEPENDENT_TYPES: <Content>{
     reference: {
       title: 'A Little Taste of Dependent Types',
-      authors: [{name: 'David Thrane Christiansen'}],
+      authors: [{ name: 'David Thrane Christiansen' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '(2018)',
       link: "https://www.youtube.com/watch?v=VxINoKFm-S4&ab_channel=StrangeLoopConference"
@@ -460,7 +575,7 @@ export const REFERENCES = {
   _24___MODERN_COSMOLOGY_HUBBLE_TENSION_EXOTIC_PHYSICS: <Content>{
     reference: {
       title: '#24 - Modern Cosmology, Hubble Tension, Exotic Physics',
-      authors: [{name: 'Colin Hill'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Colin Hill' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=FkC-kVC2IRA"
@@ -469,7 +584,7 @@ export const REFERENCES = {
   _25___PBS_SPACETIME_SCIENCE_ON_YOUTUBE_QUASARS: <Content>{
     reference: {
       title: '#25 - PBS Spacetime, Science on YouTube, Quasars',
-      authors: [{name: 'Matt O\'Dowd'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Matt O\'Dowd' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=V7QjrsadlKQ&t=5327s"
@@ -478,7 +593,7 @@ export const REFERENCES = {
   DAVE_PLUMMER_PROGRAMMING_AUTISM_AND_OLD_SCHOOL_MICROSOFT_STORIES_479: <Content>{
     reference: {
       title: 'Dave Plummer: Programming, Autism, and Old-School Microsoft Stories | #479',
-      authors: [{name: 'Dave Plummer'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Dave Plummer' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=HsLgZzgpz9Y"
@@ -487,7 +602,7 @@ export const REFERENCES = {
   DAVE_HONE_T_REX_DINOSAURS_EXTINCTION_EVOLUTION_AND_JURASSIC_PARK_480: <Content>{
     reference: {
       title: 'Dave Hone: T-Rex, Dinosaurs, Extinction, Evolution, and Jurassic Park | #480',
-      authors: [{name: 'Dave Hone'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Dave Hone' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=-Qm1_On71Oo"
@@ -496,7 +611,7 @@ export const REFERENCES = {
   TIM_SWEENEY_FORTNITE_UNREAL_ENGINE_AND_THE_FUTURE_OF_GAMING_467: <Content>{
     reference: {
       title: 'Tim Sweeney: Fortnite, Unreal Engine, and the Future of Gaming | #467',
-      authors: [{name: 'Tim Sweeney'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Tim Sweeney' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=477qF6QNSvc&t=14990s"
@@ -505,7 +620,7 @@ export const REFERENCES = {
   QUANTUM_THEORY_AS_A_NEW_KIND_OF_STOCHASTIC_PROCESS: <Content>{
     reference: {
       title: 'Quantum Theory as a New Kind of Stochastic Process',
-      authors: [{name: 'Jacob Barandes'}],
+      authors: [{ name: 'Jacob Barandes' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=JsmX3YxiUj0&t=4288s"
@@ -514,7 +629,7 @@ export const REFERENCES = {
   KEYNOTE_HIGHER_INDUCTIVE_TYPES_IN_HOMOTOPY_TYPE_THEORY: <Content>{
     reference: {
       title: 'Keynote: Higher Inductive Types in Homotopy Type Theory',
-      authors: [{name: 'Kristina Sojakova'}],
+      authors: [{ name: 'Kristina Sojakova' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2019)',
       link: "https://www.youtube.com/watch?v=AMJIsEBS-zk"
@@ -523,7 +638,7 @@ export const REFERENCES = {
   THE_VERSE_PROGRAMMING_LANGUAGE_GDC_2023: <Content>{
     reference: {
       title: 'The Verse Programming Language | GDC 2023',
-      authors: [{name: 'Tim Sweeney'}, {name: 'Phil Pizlo'}, {name: 'Tim TIllotson'}],
+      authors: [{ name: 'Tim Sweeney' }, { name: 'Phil Pizlo' }, { name: 'Tim TIllotson' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=5prkKOIilJg&t=1517s"
@@ -533,7 +648,7 @@ export const REFERENCES = {
   READY_PLAYER_ONE: <Content>{
     reference: {
       title: 'Ready Player One',
-      authors: [{name: 'Ernest Cline'}],
+      authors: [{ name: 'Ernest Cline' }],
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Ready_Player_One"
@@ -542,7 +657,7 @@ export const REFERENCES = {
   READY_PLAYER_TWO: <Content>{
     reference: {
       title: 'Ready Player Two',
-      authors: [{name: 'Ernest Cline'}],
+      authors: [{ name: 'Ernest Cline' }],
       organizations: [],
       year: '(2020)',
       link: "https://en.wikipedia.org/wiki/Ready_Player_Two"
@@ -551,7 +666,7 @@ export const REFERENCES = {
   MSP_101_GENERALISATION_IN_LLMS_PETAR_VELIČKOVIĆ: <Content>{
     reference: {
       title: 'MSP 101: Generalisation in LLMs (Petar Veličković)',
-      authors: [{name: 'Petar Veličković'}],
+      authors: [{ name: 'Petar Veličković' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=7Z144Ymohd0"
@@ -560,7 +675,7 @@ export const REFERENCES = {
   SUNDAR_PICHAI_CEO_OF_GOOGLE_AND_ALPHABET_471: <Content>{
     reference: {
       title: 'Sundar Pichai: CEO of Google and Alphabet | #471',
-      authors: [{name: 'Sundar Pichai'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Sundar Pichai' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=9V6tWC4CdFQ"
@@ -569,7 +684,7 @@ export const REFERENCES = {
   TERENCE_TAO_HARDEST_PROBLEMS_IN_MATHEMATICS_PHYSICS_THE_FUTURE_OF_AI_472: <Content>{
     reference: {
       title: 'Terence Tao: Hardest Problems in Mathematics, Physics & the Future of AI | #472',
-      authors: [{name: 'Terence Tao'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Terence Tao' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=HUkBz-cdB-k"
@@ -578,7 +693,7 @@ export const REFERENCES = {
   DHH_FUTURE_OF_PROGRAMMING_AI_RUBY_ON_RAILS_PRODUCTIVITY_PARENTING_474: <Content>{
     reference: {
       title: 'DHH: Future of Programming, AI, Ruby on Rails, Productivity & Parenting | #474',
-      authors: [{name: 'David Heinemeier Hansson'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'David Heinemeier Hansson' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=vagyIcmIGOQ"
@@ -587,7 +702,7 @@ export const REFERENCES = {
   DEMIS_HASSABIS_FUTURE_OF_AI_SIMULATING_REALITY_PHYSICS_AND_VIDEO_GAMES_475: <Content>{
     reference: {
       title: 'Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games | #475',
-      authors: [{name: 'Demis Hassabis'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Demis Hassabis' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=-HzgcbRXUK8&t=8677s"
@@ -596,7 +711,7 @@ export const REFERENCES = {
   MINDSCAPE_323_JACOB_BARANDES_ON_INDIVISIBLE_STOCHASTIC_QUANTUM_MECHANICS: <Content>{
     reference: {
       title: 'Mindscape 323 | Jacob Barandes on Indivisible Stochastic Quantum Mechanics',
-      authors: [{name: 'Jacob Barandes'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Jacob Barandes' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=gINYis8BgSY"
@@ -605,7 +720,7 @@ export const REFERENCES = {
   _23___FINE_TUNING_MULTIVERSE_COSMOLOGICAL_TENSIONS: <Content>{
     reference: {
       title: '#23 - Fine-Tuning, Multiverse, Cosmological Tensions',
-      authors: [{name: 'Geraint Lewis'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Geraint Lewis' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=OejwZqh-F9U&t=29s"
@@ -614,7 +729,7 @@ export const REFERENCES = {
   STRING_DIAGRAM_REWRITE_THEORY_III_CONFLUENCE_WITH_AND_WITHOUT_FROBENIUS: <Content>{
     reference: {
       title: 'String diagram rewrite theory III: Confluence with and without Frobenius',
-      authors: [{name: 'Filippo Bonchi'}, {name: 'Fabio Gadducci'}, {name: 'Aleks Kissinger'}, {name: 'Pawel Sobocinski'}, {name: 'Fabio Zanasi'}],
+      authors: [{ name: 'Filippo Bonchi' }, { name: 'Fabio Gadducci' }, { name: 'Aleks Kissinger' }, { name: 'Pawel Sobocinski' }, { name: 'Fabio Zanasi' }],
       organizations: [],
       year: '(2022)',
       link: "https://arxiv.org/abs/2109.06049"
@@ -623,7 +738,7 @@ export const REFERENCES = {
   INFLUENCE_OF_TEMPORAL_INFORMATION_GAPS_ON_DECISION_MAKING_DESCRIBING_THE_DYNAMICS_OF_WORKING_MEMORY: <Content>{
     reference: {
       title: 'Influence of temporal information gaps on decision making: describing the dynamics of working memory',
-      authors: [{name: 'Alejandro Sospedra'}, {name: 'Santiago Canals'}, {name: 'Encarni Marcos'}],
+      authors: [{ name: 'Alejandro Sospedra' }, { name: 'Santiago Canals' }, { name: 'Encarni Marcos' }],
       organizations: [],
       year: '(2024)',
       link: "https://www.biorxiv.org/content/10.1101/2024.07.17.603868v1"
@@ -632,7 +747,7 @@ export const REFERENCES = {
   BLACK_HOLES_WORMHOLES_ALIENS_PARADOXES_EXTRA_DIMENSIONS_468: <Content>{
     reference: {
       title: 'Black Holes, Wormholes, Aliens, Paradoxes & Extra Dimensions | #468',
-      authors: [{name: 'Janna Levin'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Janna Levin' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=A6m4iJIw_84"
@@ -641,7 +756,7 @@ export const REFERENCES = {
   _19___INFLATION_B_MODES_AND_LOSING_THE_NOBEL_PRIZE: <Content>{
     reference: {
       title: '#19 - Inflation, B Modes and Losing the Nobel Prize',
-      authors: [{name: 'Brian Keating'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Brian Keating' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=L5MDDTFbpfU&t=3s"
@@ -650,7 +765,7 @@ export const REFERENCES = {
   _20___KEPLER_MISSION_EXOPLANETS_WITH_JWST_FUTURE_IMAGERS: <Content>{
     reference: {
       title: '#20 - Kepler Mission, Exoplanets with JWST, Future Imagers',
-      authors: [{name: 'Natalie Batalha'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Natalie Batalha' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=BCWd7NuTIcY&t=4s"
@@ -659,7 +774,7 @@ export const REFERENCES = {
   _21___EARLY_MARS_TERRAFORMINGSETTLING_MARS: <Content>{
     reference: {
       title: '#21 - Early Mars, Terraforming/Settling Mars',
-      authors: [{name: 'Edwin Kite'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Edwin Kite' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=-DaeWdIaMZE"
@@ -668,7 +783,7 @@ export const REFERENCES = {
   _22___ORIGIN_OF_LIFE_ASSEMBLY_THEORY_BIOSIGNATURES: <Content>{
     reference: {
       title: '#22 - Origin of Life, Assembly Theory, Biosignatures',
-      authors: [{name: 'Sara Walker'}, {name: 'David Kipping'}],
+      authors: [{ name: 'Sara Walker' }, { name: 'David Kipping' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.cool_worlds_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=W2duMnWYhDY"
@@ -677,7 +792,7 @@ export const REFERENCES = {
   RULES_THAT_REALITY_PLAYS_BY___343: <Content>{
     reference: {
       title: 'Rules that Reality Plays By - #343',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Anastasia Bendebury'}, {name: 'Michael Shilo DeLay'}],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Anastasia Bendebury' }, { name: 'Michael Shilo DeLay' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.demystifysci],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=aQCT_kboi8A"
@@ -686,7 +801,7 @@ export const REFERENCES = {
   MISTAKING_THE_MAP_FOR_THE_TERRITORY_IN_PHYSICS___344: <Content>{
     reference: {
       title: 'Mistaking the Map for the Territory in Physics - #344',
-      authors: [{name: 'Jacob Barandes'}, {name: 'Anastasia Bendebury'}, {name: 'Michael Shilo DeLay'}],
+      authors: [{ name: 'Jacob Barandes' }, { name: 'Anastasia Bendebury' }, { name: 'Michael Shilo DeLay' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.demystifysci],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=9068pS75Uds&t=2s"
@@ -696,7 +811,7 @@ export const REFERENCES = {
   THE_EQUIVALENCE_BETWEEN_GEOMETRICAL_STRUCTURES_AND_ENTROPY: <Content>{
     reference: {
       title: 'The equivalence between geometrical structures and entropy',
-      authors: [{name: 'Gabriele Carcassi'}],
+      authors: [{ name: 'Gabriele Carcassi' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=lp0RgZ6kQF8"
@@ -705,7 +820,7 @@ export const REFERENCES = {
   DEEPSEEK_CHINA_OPENAI_NVIDIA_XAI_TSMC_STARGATE_AND_AI_MEGACLUSTERS_459: <Content>{
     reference: {
       title: 'DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters | #459',
-      authors: [{name: 'Dylan Patel'}, {name: 'Nathan Lambert'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Dylan Patel' }, { name: 'Nathan Lambert' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=_1f-o0nqpEI"
@@ -714,7 +829,7 @@ export const REFERENCES = {
   WHY_PHYSICS_WITHOUT_PHILOSOPHY_IS_DEEPLY_BROKEN_PART_2: <Content>{
     reference: {
       title: 'Why Physics Without Philosophy Is Deeply Broken... [Part 2]',
-      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Jacob Barandes' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=YaS1usLeXQM"
@@ -723,7 +838,7 @@ export const REFERENCES = {
   HARVARD_SCIENTIST_THERE_IS_NO_QUANTUM_MULTIVERSE_PART_3: <Content>{
     reference: {
       title: 'Harvard Scientist: "There is No Quantum Multiverse" [Part 3]',
-      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Jacob Barandes' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=wrUvtqr4wOs"
@@ -732,7 +847,7 @@ export const REFERENCES = {
   HARVARD_PHYSICIST_DEBUNKS_PARTICLE_SUPERPOSITION: <Content>{
     reference: {
       title: 'Harvard Physicist Debunks Particle Superposition',
-      authors: [{name: 'Jacob Barandes'}, {name: 'Manolis Kellis'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Jacob Barandes' }, { name: 'Manolis Kellis' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=MTD8xkbiGis&t=11s"
@@ -741,7 +856,7 @@ export const REFERENCES = {
   TOP_AI_SCIENTIST_UNIFIES_WOLFRAM_LEIBNIZ_CONSCIOUSNESS: <Content>{
     reference: {
       title: 'Top AI Scientist Unifies Wolfram, Leibniz, & Consciousness',
-      authors: [{name: 'William Hahn'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'William Hahn' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=3fkg0uTA3qU"
@@ -750,7 +865,7 @@ export const REFERENCES = {
   THE_THEORY_THAT_EXPLAINS_YOU_FREE_ENERGY_PRINCIPLE: <Content>{
     reference: {
       title: 'The Theory That Explains YOU... (Free Energy Principle)',
-      authors: [{name: 'Michael Levin'}, {name: 'Karl Friston'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Michael Levin' }, { name: 'Karl Friston' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=0yOV9Pzk2zw"
@@ -759,7 +874,7 @@ export const REFERENCES = {
   EINSTEIN_HIS_LIFE_AND_UNIVERSE: <Content>{
     reference: {
       title: 'Einstein: His Life and Universe',
-      authors: [{name: 'Walter Isaacson'}],
+      authors: [{ name: 'Walter Isaacson' }],
       organizations: [],
       year: '(2007)',
       link: "https://en.wikipedia.org/wiki/Einstein:_His_Life_and_Universe"
@@ -768,7 +883,7 @@ export const REFERENCES = {
   THE_FUTURE_OF_BRAIN_EMULATION_IS_LOOKING_SPIKY: <Content>{
     reference: {
       title: 'The future of brain emulation is looking spiky',
-      authors: [{name: 'Andy McKenzie'}],
+      authors: [{ name: 'Andy McKenzie' }],
       organizations: [],
       year: '(2025)',
       link: "https://neurobiology.substack.com/p/the-future-of-brain-emulation-is"
@@ -777,7 +892,7 @@ export const REFERENCES = {
   WHY_THE_GODFATHER_OF_AI_NOW_FEARS_HIS_OWN_CREATION: <Content>{
     reference: {
       title: 'Why The "Godfather of AI" Now Fears His Own Creation',
-      authors: [{name: 'Geoffrey Hinton'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Geoffrey Hinton' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=b_DUft-BdIE&ab_channel=CurtJaimungal"
@@ -786,7 +901,7 @@ export const REFERENCES = {
   THE_MAJOR_FLAWS_IN_FUNDAMENTAL_PHYSICS: <Content>{
     reference: {
       title: 'The Major Flaws in Fundamental Physics',
-      authors: [{name: 'Sabine Hossenfelder'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Sabine Hossenfelder' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=E3y-Z0pgupg&ab_channel=CurtJaimungal"
@@ -795,7 +910,7 @@ export const REFERENCES = {
   THE_CRISIS_IN_STRING_THEORY_IS_WORSE_THAN_YOU_THINK: <Content>{
     reference: {
       title: 'The Crisis in String Theory is Worse Than You Think',
-      authors: [{name: 'Leonard Susskind'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Leonard Susskind' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=2p_Hlm6aCok&ab_channel=CurtJaimungal"
@@ -804,7 +919,7 @@ export const REFERENCES = {
   MATH_HAS_CHANGED_FOREVER: <Content>{
     reference: {
       title: 'Math Has Changed Forever…',
-      authors: [{name: 'Yang-Hui He'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Yang-Hui He' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2025)',
       link: "https://www.youtube.com/watch?v=wbP0KjWm0pw&ab_channel=CurtJaimungal"
@@ -814,7 +929,7 @@ export const REFERENCES = {
   APPLIED_CATEGORY_THEORY_IN_CHEMISTRY_COMPUTING_AND_SOCIAL_NETWORKS: <Content>{
     reference: {
       title: 'Applied Category Theory in Chemistry, Computing, and Social Networks',
-      authors: [{name: 'John Baez'}, {name: 'Simon Cho'}, {name: 'Daniel Cicala'}, {name: 'Nina Otter'}, {name: 'Valeria de Paiva'}],
+      authors: [{ name: 'John Baez' }, { name: 'Simon Cho' }, { name: 'Daniel Cicala' }, { name: 'Nina Otter' }, { name: 'Valeria de Paiva' }],
       organizations: [],
       year: '(2022)',
       link: "https://math.ucr.edu/home/baez/mrc_2022.pdf"
@@ -823,7 +938,7 @@ export const REFERENCES = {
   UNIQUENESS_TREES_A_POSSIBLE_POLYNOMIAL_APPROACH_TO_THE_GRAPH_ISOMORPHISM_PROBLEM: <Content>{
     reference: {
       title: 'Uniqueness Trees: A Possible Polynomial Approach to the Graph Isomorphism Problem',
-      authors: [{name: 'Jonathan Gorard'}],
+      authors: [{ name: 'Jonathan Gorard' }],
       organizations: [],
       year: '(2016)',
       link: "https://arxiv.org/pdf/1606.06399"
@@ -832,7 +947,7 @@ export const REFERENCES = {
   ALIEN_CIVILIZATIONS_AND_THE_SEARCH_FOR_EXTRATERRESTRIAL_LIFE_LEX_FRIDMAN_PODCAST_455: <Content>{
     reference: {
       title: 'Alien Civilizations and the Search for Extraterrestrial Life | Lex Fridman Podcast #455',
-      authors: [{name: 'Adam Frank'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Adam Frank' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=yhZAXXI83-4&ab_channel=LexFridman"
@@ -841,7 +956,7 @@ export const REFERENCES = {
   THERES_NO_WAVE_FUNCTION: <Content>{
     reference: {
       title: 'There’s No Wave Function?',
-      authors: [{name: 'Jacob Barandes'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Jacob Barandes' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=7oWip00iXbo&ab_channel=CurtJaimungal"
@@ -850,7 +965,7 @@ export const REFERENCES = {
   THE_POTENTIAL_OF_THE_HUMAN_BRAIN: <Content>{
     reference: {
       title: 'The Potential of the Human Brain',
-      authors: [{name: 'Iain McGilchrist'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Iain McGilchrist' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=Q9sBKCd2HD0&ab_channel=CurtJaimungal"
@@ -859,7 +974,7 @@ export const REFERENCES = {
   THE_UNIVERSE_WRITES_ITSELF_INTO_EXISTENCE_MOMENT_BY_MOMENT: <Content>{
     reference: {
       title: 'The Universe Writes Itself Into Existence Moment by Moment',
-      authors: [{name: 'Avshalom Elitzur'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Avshalom Elitzur' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=pWRAaimQT1E&ab_channel=CurtJaimungal"
@@ -869,7 +984,7 @@ export const REFERENCES = {
   HUNTERS_OF_DUNE: <Content>{
     reference: {
       title: 'Hunters of Dune',
-      authors: [{name: 'Brian Herbert'}, {name: 'Kevin J. Anderson'}],
+      authors: [{ name: 'Brian Herbert' }, { name: 'Kevin J. Anderson' }],
       organizations: [],
       year: '(2006)',
       link: "https://en.wikipedia.org/wiki/Hunters_of_Dune"
@@ -878,7 +993,7 @@ export const REFERENCES = {
   THE_LITTLE_BOOK_OF_DEEP_LEARNING: <Content>{
     reference: {
       title: 'The Little Book of Deep Learning',
-      authors: [{name: 'François Fleuret'}],
+      authors: [{ name: 'François Fleuret' }],
       organizations: [],
       year: '(2023)',
       link: "https://fleuret.org/public/lbdl.pdf"
@@ -887,7 +1002,7 @@ export const REFERENCES = {
   PREFACE_WHAT_IS_OPENGL: <Content>{
     reference: {
       title: 'Preface: What is OpenGL?',
-      authors: [{name: 'Eddy Luten'}],
+      authors: [{ name: 'Eddy Luten' }],
       organizations: [],
       year: '(2014)',
       link: "https://openglbook.com/chapter-0-preface-what-is-opengl.html#:~:text=On%20the%20most%20fundamental%20level,the%20finer%20details%20of%20OpenGL."
@@ -896,7 +1011,7 @@ export const REFERENCES = {
   FOUNDATIONS_OF_BIDIRECTIONAL_PROGRAMMING_I_WELL_TYPED_SUBSTRUCTURAL_LANGUAGES: <Content>{
     reference: {
       title: 'Foundations of Bidirectional Programming I: Well-Typed Substructural Languages',
-      authors: [{name: 'Jules Hedges'}],
+      authors: [{ name: 'Jules Hedges' }],
       organizations: [],
       year: '(2024)',
       link: "https://cybercat.institute/2024/08/26/bidirectional-programming-i/"
@@ -905,7 +1020,7 @@ export const REFERENCES = {
   FOUNDATIONS_OF_BIDIRECTIONAL_PROGRAMMING_II_NEGATIVE_TYPES: <Content>{
     reference: {
       title: 'Foundations of Bidirectional Programming II: Negative Types',
-      authors: [{name: 'Jules Hedges'}],
+      authors: [{ name: 'Jules Hedges' }],
       organizations: [],
       year: '(2024)',
       link: "https://cybercat.institute/2024/09/05/bidirectional-programming-ii/"
@@ -914,7 +1029,7 @@ export const REFERENCES = {
   THE_YOGA_OF_CONTEXTS_I: <Content>{
     reference: {
       title: 'The Yoga of Contexts I',
-      authors: [{name: 'Jules Hedges'}],
+      authors: [{ name: 'Jules Hedges' }],
       organizations: [],
       year: '(2024)',
       link: "https://cybercat.institute/2024/06/28/yoga-contexts/"
@@ -923,7 +1038,7 @@ export const REFERENCES = {
   WHY_DOES_BIOLOGICAL_EVOLUTION_WORK_A_MINIMAL_MODEL_FOR_BIOLOGICAL_EVOLUTION_AND_OTHER_ADAPTIVE_PROCESSES: <Content>{
     reference: {
       title: 'Why Does Biological Evolution Work? A Minimal Model for Biological Evolution and Other Adaptive Processes',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       organizations: [ORGANIZATIONS.wolfram],
       year: '(2024)',
       link: "https://writings.stephenwolfram.com/2024/05/why-does-biological-evolution-work-a-minimal-model-for-biological-evolution-and-other-adaptive-processes/"
@@ -932,7 +1047,7 @@ export const REFERENCES = {
   _20TH_CENTURY_S_GREATEST_LIVING_SCIENTIST_SIR_ROGER_PENROSE: <Content>{
     reference: {
       title: '20th Century’s Greatest Living Scientist | Sir Roger Penrose',
-      authors: [{name: 'Roger Penrose'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Roger Penrose' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=sGm505TFMbU"
@@ -941,7 +1056,7 @@ export const REFERENCES = {
   THE_QUANTUM_HERETIC_A_NEW_THEORY_OF_EVERYTHING: <Content>{
     reference: {
       title: 'The Quantum Heretic: A New Theory of Everything?',
-      authors: [{name: 'Jonathan Oppenheim'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Jonathan Oppenheim' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=6Z_p3viqW1g"
@@ -950,7 +1065,7 @@ export const REFERENCES = {
   MAYA_AZTEC_INCA_AND_LOST_CIVILIZATIONS_OF_SOUTH_AMERICA_LEX_FRIDMAN_PODCAST_446: <Content>{
     reference: {
       title: 'Maya, Aztec, Inca, and Lost Civilizations of South America | Lex Fridman Podcast #446',
-      authors: [{name: 'Ed Barnhart'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Ed Barnhart' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=AzzE7GOvYz8"
@@ -959,7 +1074,7 @@ export const REFERENCES = {
   THE_ROMAN_EMPIRE___RISE_AND_FALL_OF_ANCIENT_ROME_LEX_FRIDMAN_PODCAST_443: <Content>{
     reference: {
       title: 'The Roman Empire - Rise and Fall of Ancient Rome | Lex Fridman Podcast #443',
-      authors: [{name: 'Gregory Aldrete'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Gregory Aldrete' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=DyoVVSggPjY"
@@ -968,7 +1083,7 @@ export const REFERENCES = {
   MINDSCAPE_289_THE_NEXT_GENERATION_OF_PARTICLE_EXPERIMENTS: <Content>{
     reference: {
       title: 'Mindscape 289 | The Next Generation of Particle Experiments',
-      authors: [{name: 'Cari Cesarotti'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Cari Cesarotti' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=ELe3fvuTsdE"
@@ -977,7 +1092,7 @@ export const REFERENCES = {
   MINDSCAPE_291_THE_BIOLOGY_OF_DEATH_AND_AGING: <Content>{
     reference: {
       title: 'Mindscape 291 | The Biology of Death and Aging',
-      authors: [{name: 'Venki Ramakrishnan'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Venki Ramakrishnan' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=aNqwamgxNiU"
@@ -986,7 +1101,7 @@ export const REFERENCES = {
   MATHS_OF_QUANTUM_MECHANICS: <Content>{
     reference: {
       title: 'Maths of Quantum Mechanics',
-      authors: [{name: 'Brandon Sandoval'}],
+      authors: [{ name: 'Brandon Sandoval' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=3nvbBEzfmE8&list=PL8ER5-vAoiHAWm1UcZsiauUGPlJChgNXC"
@@ -996,7 +1111,7 @@ export const REFERENCES = {
   COMPUTING_MACHINERY_AND_INTELLIGENCE: <Content>{
     reference: {
       title: 'Computing Machinery and Intelligence',
-      authors: [{name: 'Alan M. Turing'}],
+      authors: [{ name: 'Alan M. Turing' }],
       organizations: [],
       year: '(1950)',
       link: "https://academic.oup.com/mind/article/LIX/236/433/986238?url=http://szyxflb.com&login=false"
@@ -1005,7 +1120,7 @@ export const REFERENCES = {
   VON_NEUMANN_AND_LATTICE_THEORY: <Content>{
     reference: {
       title: 'Von Neumann and Lattice Theory',
-      authors: [{name: 'Garrett Birkhoff'}],
+      authors: [{ name: 'Garrett Birkhoff' }],
       organizations: [],
       year: '(1958)',
       link: "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-64/issue-3.P2/Von-Neumann-and-lattice-theory/bams/1183522370.pdf"
@@ -1014,7 +1129,7 @@ export const REFERENCES = {
   WHEN_EXACTLY_WILL_THE_ECLIPSE_HAPPEN_A_MULTIMILLENNIUM_TALE_OF_COMPUTATION: <Content>{
     reference: {
       title: 'When Exactly Will the Eclipse Happen? A Multimillennium Tale of Computation',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       organizations: [ORGANIZATIONS.wolfram],
       year: '(2024)',
       link: "https://writings.stephenwolfram.com/2024/03/when-exactly-will-the-eclipse-happen-a-multimillennium-tale-of-computation/"
@@ -1023,7 +1138,7 @@ export const REFERENCES = {
   ARE_ALL_FISH_THE_SAME_SHAPE_IF_YOU_STRETCH_THEM_THE_VICTORIAN_TALE_OF_ON_GROWTH_AND_FORM: <Content>{
     reference: {
       title: 'Are All Fish the Same Shape if You Stretch Them? The Victorian Tale of On Growth and Form',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       organizations: [ORGANIZATIONS.wolfram],
       year: '(2017)',
       link: "https://writings.stephenwolfram.com/2017/10/are-all-fish-the-same-shape-if-you-stretch-them-the-victorian-tale-of-on-growth-and-form/"
@@ -1032,7 +1147,7 @@ export const REFERENCES = {
   WHATS_REALLY_GOING_ON_IN_MACHINE_LEARNING_SOME_MINIMAL_MODELS: <Content>{
     reference: {
       title: 'What’s Really Going On in Machine Learning? Some Minimal Models',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       organizations: [ORGANIZATIONS.wolfram],
       year: '(2024)',
       link: "https://writings.stephenwolfram.com/2024/08/whats-really-going-on-in-machine-learning-some-minimal-models/"
@@ -1041,7 +1156,7 @@ export const REFERENCES = {
   THE_HYDROGEN_ATOM_INTRO_TO_QUANTUM: <Content>{
     reference: {
       title: 'The Hydrogen Atom: Intro to Quantum Physics',
-      authors: [{name: 'Richard Behiel'}],
+      authors: [{ name: 'Richard Behiel' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=-Y0XL-K0jy0"
@@ -1050,7 +1165,7 @@ export const REFERENCES = {
   MINDSCAPE_287_INSTITUTIONS_AND_THE_LEGACY_OF: <Content>{
     reference: {
       title: 'Mindscape 287 | Institutions and the Legacy of History',
-      authors: [{name: 'Jean-Paul Faguet'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Jean-Paul Faguet' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '2024',
       link: "https://www.youtube.com/watch?v=FKVmYeU11y0"
@@ -1059,7 +1174,7 @@ export const REFERENCES = {
   LIVE_SCIENCE_SPINAL_GRAPHS_HYPERGRAPH_CONFLUENCE_SYMMETRY_AND: <Content>{
     reference: {
       title: 'Live Science | Spinal Graphs | Hypergraph Confluence, Symmetry and Efficiency',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '2024',
       link: "https://www.youtube.com/watch?v=uZkqNDIOQLs"
@@ -1068,7 +1183,7 @@ export const REFERENCES = {
   LIVE_SCIENCE_INFRAGEOMETRY_CORRESPONDENCES_DIFFERENTIAL_GEOMETRY_HYPERGRAPH: <Content>{
     reference: {
       title: 'Live Science | Infrageometry: Correspondences | Differential Geometry, Hypergraph Rewriting',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '2024',
       link: "https://www.youtube.com/watch?v=Mr1zfZtoFX0"
@@ -1077,7 +1192,7 @@ export const REFERENCES = {
   LIVE_SCIENCE_QUANTUM_PARADOXES_DELAYED_CHOICE_QUANTUM_ERASER_CHSH_GAME: <Content>{
     reference: {
       title: 'Live Science | Quantum Paradoxes | Delayed Choice Quantum Eraser, CHSH Game, Quasiprobabilities',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '2024',
       link: "https://www.youtube.com/watch?v=rTKSWObWtNE"
@@ -1086,7 +1201,7 @@ export const REFERENCES = {
   CONSCIOUSNESS_BIOLOGY_UNIVERSAL_MIND_EMERGENCE_CANCER: <Content>{
     reference: {
       title: 'Consciousness, Biology, Universal Mind, Emergence, Cancer Research',
-      authors: [{name: 'Michael Levin'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Michael Levin' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '2024',
       link: "https://www.youtube.com/watch?v=c8iFtaltX-s"
@@ -1095,7 +1210,7 @@ export const REFERENCES = {
   THE_CRISIS_IN_FUNDAMENTAL_PHYSICS_IS_WORSE_THAN_YOU: <Content>{
     reference: {
       title: 'The Crisis in (Fundamental) Physics is Worse Than You Think...',
-      authors: [{name: 'Sean Carroll'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Sean Carroll' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '2024',
       link: "https://www.youtube.com/watch?v=9AoRxtYZrZo"
@@ -1104,7 +1219,7 @@ export const REFERENCES = {
   NEURALINK_AND_THE_FUTURE_OF_HUMANITY_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
       title: 'Neuralink and the Future of Humanity | Lex Fridman Podcast #438',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '2024',
       link: "https://www.youtube.com/watch?v=Kbk9BiPhm7o"
@@ -1113,7 +1228,7 @@ export const REFERENCES = {
   PHYSICS_OF_LIFE_TIME_COMPLEXITY_AND_ALIENS_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
       title: 'Physics of Life, Time, Complexity, and Aliens | Lex Fridman Podcast #433',
-      authors: [{name: 'Sara Walker'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Sara Walker' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '2024',
       link: "https://www.youtube.com/watch?v=wwhTfyX9J34"
@@ -1122,7 +1237,7 @@ export const REFERENCES = {
   PLURALISTIC_THE_DISENSHITTIFIED_INTERNET_STARTS_WITH_LOYAL_USER_AGENTS: <Content>{
     reference: {
       title: 'Pluralistic: The disenshittified internet starts with loyal "user agents"',
-      authors: [{name: 'Cory Doctorow'}],
+      authors: [{ name: 'Cory Doctorow' }],
       organizations: [],
       year: '(2024)',
       link: "https://pluralistic.net/2024/05/07/treacherous-computing/"
@@ -1131,7 +1246,7 @@ export const REFERENCES = {
   ELON_MUSK: <Content>{
     reference: {
       title: 'Elon Musk',
-      authors: [{name: 'Walter Isaacson'}],
+      authors: [{ name: 'Walter Isaacson' }],
       organizations: [],
       year: '(2023)',
       link: "https://en.wikipedia.org/wiki/Elon_Musk_(Isaacson_book)"
@@ -1140,7 +1255,7 @@ export const REFERENCES = {
   FUN_RAISING_FUNDING_SCHOOL_QA_SEMF: <Content>{
     reference: {
       title: 'Fun Raising | Funding & School Q&A + SEMF Social',
-      authors: [{name: 'Fadi Shawki'}, {name: 'Álvaro Moreno Vallori'}, {name: 'Alejandro Sospedra Orellano'}, {name: 'Elena Isasi Theus'}, {name: 'Anmol Agrawal'}, {name: 'Carlos Zapata Carratalá'}],
+      authors: [{ name: 'Fadi Shawki' }, { name: 'Álvaro Moreno Vallori' }, { name: 'Alejandro Sospedra Orellano' }, { name: 'Elena Isasi Theus' }, { name: 'Anmol Agrawal' }, { name: 'Carlos Zapata Carratalá' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '2024',
       link: "https://www.youtube.com/watch?v=FL8zNDbrAR0"
@@ -1149,7 +1264,7 @@ export const REFERENCES = {
   HUMAN_MEMORY_IMAGINATION_DEJA_VU_AND_FALSE_MEMORIES_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
       title: 'Human Memory, Imagination, Deja Vu, and False Memories | Lex Fridman Podcast #430',
-      authors: [{name: 'Charan Ranganath'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Charan Ranganath' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '2024',
       link: "https://www.youtube.com/watch?v=4iuepdI3wCU"
@@ -1158,7 +1273,7 @@ export const REFERENCES = {
   JUNGLE_APEX_PREDATORS_ALIENS_UNCONTACTED_TRIBES_AND_GOD_LEX_FRIDMAN_PODCAST: <Content>{
     reference: {
       title: 'Jungle, Apex Predators, Aliens, Uncontacted Tribes, and God | Lex Fridman Podcast #429',
-      authors: [{name: 'Paul Rosolie'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Paul Rosolie' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '2024',
       link: "https://www.youtube.com/watch?v=pwN8u6HFH8U"
@@ -1167,7 +1282,7 @@ export const REFERENCES = {
   LONGEVITY_MEDITATION_PHILOSOPHIES_CONSCIOUSNESS_NATURE_OF: <Content>{
     reference: {
       title: 'Longevity, Meditation, Philosophies, Consciousness, Nature of Reality',
-      authors: [{name: 'Bryan Johnson'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Bryan Johnson' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '2024',
       link: "https://www.youtube.com/watch?v=PXkhhHPUud4"
@@ -1177,7 +1292,7 @@ export const REFERENCES = {
   REVERSE_ENGINEERING_SAME_THING_WE_DO_EVERY_WEEKEND_DOCUMENTING_THE_AMD_7900XTX_PART2: <Content>{
     reference: {
       title: 'Reverse engineering | same thing we do every weekend documenting the AMD 7900XTX Part2',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=Z04xTlLdZnc"
@@ -1186,7 +1301,7 @@ export const REFERENCES = {
   RESEARCHING_DOCUMENTING_THE_AMD_7900XTX_SO_WE_CAN_UNDERSTAND_WHY_IT_CRASHES_RDNA_3: <Content>{
     reference: {
       title: 'Researching | documenting the AMD 7900XTX so we can understand why it crashes | RDNA 3',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=Y-0yZ1AHb0s"
@@ -1195,7 +1310,7 @@ export const REFERENCES = {
   WHAT_MAKES_HIGH_DIMENSIONAL_NETWORKS_PRODUCE_LOW_DIM_ACTIVITY: <Content>{
     reference: {
       title: 'What makes high-dimensional networks produce low-dim. activity?',
-      authors: [{name: 'Eric Shea-Brown'}],
+      authors: [{ name: 'Eric Shea-Brown' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2019)',
       link: "https://www.youtube.com/watch?v=toeX2mGWDbI"
@@ -1204,7 +1319,7 @@ export const REFERENCES = {
   LISA_RANDALL_DARK_MATTER_THEORETICAL_PHYSICS_AND_EXTINCTION_EVENTS_LEX_FRIDMAN_PODCAST_403: <Content>{
     reference: {
       title: 'Lisa Randall: Dark Matter, Theoretical Physics, and Extinction Events | Lex Fridman Podcast #403',
-      authors: [{name: 'Lisa Randall'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Lisa Randall' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=VPaOy3G1-2A"
@@ -1213,7 +1328,7 @@ export const REFERENCES = {
   REALITY_IS_A_PARADOX___MATHEMATICS_PHYSICS_TRUTH_LOVE_LEX_FRIDMAN_PODCAST_370: <Content>{
     reference: {
       title: 'Reality is a Paradox - Mathematics, Physics, Truth & Love | Lex Fridman Podcast #370',
-      authors: [{name: 'Edward Frenkel'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Edward Frenkel' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=Osh0-J3T2nY"
@@ -1222,7 +1337,7 @@ export const REFERENCES = {
   THE_LANGLANDS_PROGRAM___NUMBERPHILE: <Content>{
     reference: {
       title: 'The Langlands Program - Numberphile',
-      authors: [{name: 'Edward Frenkel'}],
+      authors: [{ name: 'Edward Frenkel' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=4dyytPboqvE"
@@ -1231,7 +1346,7 @@ export const REFERENCES = {
   TIME_AND_QUANTUM_MECHANICS_SOLVED_LEE_SMOLIN: <Content>{
     reference: {
       title: 'Time and Quantum Mechanics SOLVED? | Lee Smolin',
-      authors: [{name: 'Lee Smolin'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Lee Smolin' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=uOKOodQXjhc"
@@ -1240,7 +1355,7 @@ export const REFERENCES = {
   EDWARD_FRENKEL_INFINITY_AI_STRING_THEORY_DEATH_THE_SELF: <Content>{
     reference: {
       title: 'Edward Frenkel: Infinity, Ai, String Theory, Death, The Self',
-      authors: [{name: 'Edward Frenkel'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Edward Frenkel' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=n_oPMcvHbAc"
@@ -1249,7 +1364,7 @@ export const REFERENCES = {
   LIVE_SCIENCE_INFRAGEOMETRY_CORE_DEFINITIONS_DIFFERENTIAL_GEOMETRY_TANGENT_BUNDLES_FUNCTIONS: <Content>{
     reference: {
       title: 'Live Science | Infrageometry: Core Definitions | Differential Geometry, Tangent Bundles, Functions',
-      authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}, {name: 'Utkarsh Bajaj'}],
+      authors: [{ name: 'Nikolay Murzin' }, { name: 'Carlos Zapata-Carratalá' }, { name: 'James Wiles' }, { name: 'Utkarsh Bajaj' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=QxtG4tr6VY0"
@@ -1258,7 +1373,7 @@ export const REFERENCES = {
   LIVE_SCIENCE_INFRAGEOMETRY_WORKING_SESSION_FUNCTIONS_EDGES_PLACES_BIPARTITE_GRAPHS: <Content>{
     reference: {
       title: 'Live Science | Infrageometry: Working Session | Functions, Edges-Places, Bipartite Graphs',
-      authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}, {name: 'Utkarsh Bajaj'}],
+      authors: [{ name: 'Nikolay Murzin' }, { name: 'Carlos Zapata-Carratalá' }, { name: 'James Wiles' }, { name: 'Utkarsh Bajaj' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=pdPBzPyJqcE"
@@ -1267,7 +1382,7 @@ export const REFERENCES = {
   FELLOW_FOCUS_RICHARD_ASSAR_METAMETAVERSE_ALIEN_MINDS_MACHINE_LEARNING_CELLULAR_AUTOMATA: <Content>{
     reference: {
       title: 'Fellow Focus | Richard Assar | MetaMetaverse, Alien Minds, Machine Learning Cellular Automata',
-      authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
+      authors: [{ name: 'Nikolay Murzin' }, { name: 'Carlos Zapata-Carratalá' }, { name: 'James Wiles' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=xg9pAx4bupk"
@@ -1276,7 +1391,7 @@ export const REFERENCES = {
   FELLOW_FOCUS_NIK_MURZIN_QUANTUM_FRAMEWORK: <Content>{
     reference: {
       title: 'Fellow Focus | Nik Murzin | Quantum Framework',
-      authors: [{name: 'Nikolay Murzin'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
+      authors: [{ name: 'Nikolay Murzin' }, { name: 'Carlos Zapata-Carratalá' }, { name: 'James Wiles' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=eG6d8_2GuCw"
@@ -1285,7 +1400,7 @@ export const REFERENCES = {
   EXPLORE_LEARN_THE_MAP_OF_INSTITUTE_RESEARCH_QUANTUM_PROBABILITIES_MULTICOMPUTATION_CAUSALITY: <Content>{
     reference: {
       title: 'Explore & Learn | The Map of Institute Research | Quantum Probabilities, Multicomputation, Causality',
-      authors: [{name: 'Nikolay Murzin'}, {name: 'James Wiles'}],
+      authors: [{ name: 'Nikolay Murzin' }, { name: 'James Wiles' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=OKHrPZ6tT6M"
@@ -1294,7 +1409,7 @@ export const REFERENCES = {
   EXPLORE_LEARN_THE_MAP_OF_INSTITUTE_RESEARCH_MULTICOMPUTATION_INFRAGEOMETRY_RULIAD: <Content>{
     reference: {
       title: 'Explore & Learn | The Map of Institute Research | Multicomputation, Infrageometry, Ruliad',
-      authors: [{name: 'Carlos Zapata-Carratalá'}, {name: 'James Wiles'}],
+      authors: [{ name: 'Carlos Zapata-Carratalá' }, { name: 'James Wiles' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=8F9YL887Bck"
@@ -1303,7 +1418,7 @@ export const REFERENCES = {
   EXPLORE_LEARN_FUNDAMENTALS_WHATS_HYPE_ABOUT_HYPERGRAPHS_GRAPH_THEORY_HYPERMATRIX_ARITY: <Content>{
     reference: {
       title: 'Explore & Learn | Fundamentals: What\'s hype about Hypergraphs? | Graph Theory, Hypermatrix, Arity',
-      authors: [{name: 'Carlos Zapata-Carratalá'}, {name: 'Richard Assar'}, {name: 'James Wiles'}],
+      authors: [{ name: 'Carlos Zapata-Carratalá' }, { name: 'Richard Assar' }, { name: 'James Wiles' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=N3vGEp1uLvk"
@@ -1312,7 +1427,7 @@ export const REFERENCES = {
   MINDSCAPE_274_GIZEM_GUMUSKAYA_ON_BUILDING_ROBOTS_FROM_HUMAN_CELLS: <Content>{
     reference: {
       title: 'Mindscape 274 | Gizem Gumuskaya on Building Robots from Human Cells',
-      authors: [{name: 'Gizem Gumuskaya'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Gizem Gumuskaya' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=jwaOzmW3xfs"
@@ -1321,7 +1436,7 @@ export const REFERENCES = {
   COMMUNITY_LIVESTREAM_DATA_DIMENSIONALITY: <Content>{
     reference: {
       title: 'Community Livestream | Data & Dimensionality',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=zBV1nLw2WuM"
@@ -1330,7 +1445,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E173: <Content>{
     reference: {
       title: 'All-In Podcast E173',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=z3Zzlgo-xZM"
@@ -1339,7 +1454,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E174: <Content>{
     reference: {
       title: 'All-In Podcast E174',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=hZp80SYIRlY"
@@ -1348,7 +1463,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E175: <Content>{
     reference: {
       title: 'All-In Podcast E175',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=HKtlezdPNAI"
@@ -1357,7 +1472,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E176: <Content>{
     reference: {
       title: 'All-In Podcast E176',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=1ZQ33OnGFWE"
@@ -1366,7 +1481,7 @@ export const REFERENCES = {
   CALCULUS_RATIOCINATOR_VS_CHARACTERISTICA_UNIVERSALIS_THE_TWO_TRADITIONS_IN_LOGIC_REVISITED: <Content>{
     reference: {
       title: 'Calculus Ratiocinator vs. Characteristica Universalis? The Two Traditions in Logic, Revisited',
-      authors: [{name: 'Volker Peckhaus'}],
+      authors: [{ name: 'Volker Peckhaus' }],
       organizations: [],
       year: '(2004)',
       link: "https://www.researchgate.net/publication/22838cus`6287_Calculus_Ratiocinator_vs_Characteristica_Universalis_The_two_traditions_in_logic_revisited"
@@ -1375,7 +1490,7 @@ export const REFERENCES = {
   CARGO_CULT_SCIENCE: <Content>{
     reference: {
       title: 'Cargo Cult Science',
-      authors: [{name: 'Richard P. Feynman'}],
+      authors: [{ name: 'Richard P. Feynman' }],
       organizations: [],
       year: '(1974)',
       link: "https://calteches.library.caltech.edu/51/2/CargoCult.htm"
@@ -1384,7 +1499,7 @@ export const REFERENCES = {
   MILLIONS_OF_CHILDREN_LEARN_ONLY_VERY_LITTLE_HOW_CAN_THE_WORLD_PROVIDE_A_BETTER_EDUCATION_TO_THE_NEXT_GENERATION: <Content>{
     reference: {
       title: 'Millions of children learn only very little. How can the world provide a better education to the next generation?',
-      authors: [{name: 'Max Roser'}],
+      authors: [{ name: 'Max Roser' }],
       organizations: [],
       year: '(2022)',
       link: "https://ourworldindata.org/better-learning"
@@ -1393,7 +1508,7 @@ export const REFERENCES = {
   STRIPES_2023_ANNUAL_LETTER: <Content>{
     reference: {
       title: 'Stripe\'s 2023 annual letter',
-      authors: [{name: 'Patrick Collison'}, {name: 'John Collison'}],
+      authors: [{ name: 'Patrick Collison' }, { name: 'John Collison' }],
       organizations: [],
       year: '(2024)',
       link: "https://stripe.com/en-nl/annual-updates/2023"
@@ -1402,7 +1517,7 @@ export const REFERENCES = {
   PLAYING_VALUING_AND_LIVING_EXAMINING_NIETZSCHES_PLAYFUL_RESPONSE_TO_NIHILISM: <Content>{
     reference: {
       title: 'Playing, Valuing, and Living: Examining Nietzsche’s Playful Response to Nihilism',
-      authors: [{name: 'Aaron Harper'}],
+      authors: [{ name: 'Aaron Harper' }],
       organizations: [],
       year: '(2015)',
       link: "https://philpapers.org/rec/HARPVA-2"
@@ -1411,7 +1526,7 @@ export const REFERENCES = {
   THE_BUILD_YOUR_OWN_OPEN_GAMES_ENGINE_BOOTCAMP_PART_I_LENSES: <Content>{
     reference: {
       title: 'The Build Your Own Open Games Engine Bootcamp — Part I: Lenses',
-      authors: [{name: 'Daniele Palombi'}],
+      authors: [{ name: 'Daniele Palombi' }],
       organizations: [],
       year: '(2024)',
       link: "https://blog.20squares.xyz/open-games-bootcamp-i/"
@@ -1420,7 +1535,7 @@ export const REFERENCES = {
   CAN_AI_SOLVE_SCIENCE: <Content>{
     reference: {
       title: 'Can AI Solve Science?',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Richard Assar'}, {name: 'Nik Murzin'}],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Richard Assar' }, { name: 'Nik Murzin' }],
       organizations: [ORGANIZATIONS.wolfram],
       year: '(2024)',
       link: "https://writings.stephenwolfram.com/2024/03/can-ai-solve-science/"
@@ -1429,7 +1544,7 @@ export const REFERENCES = {
   COMMUNITY_LIVESTREAM_BIOELECTRICITY: <Content>{
     reference: {
       title: 'Community Livestream | Bioelectricity',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=XBNh3Yoxei0"
@@ -1438,7 +1553,7 @@ export const REFERENCES = {
   QUANTUM_GRAVITY_WOLFRAM_PHYSICS_PROJECT: <Content>{
     reference: {
       title: 'Quantum Gravity & Wolfram Physics Project',
-      authors: [{name: 'Jonathan Gorard'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Jonathan Gorard' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=ioXwL-c1RXQ"
@@ -1447,7 +1562,7 @@ export const REFERENCES = {
   PARADIGM_SHIFT_GHOST_PARTICLES_CONSTRUCTOR_THEORY: <Content>{
     reference: {
       title: 'Paradigm Shift, Ghost Particles, Constructor Theory',
-      authors: [{name: 'Chiara Marletto'}, {name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Chiara Marletto' }, { name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=40CB12cj_aM&t=6443s"
@@ -1456,7 +1571,7 @@ export const REFERENCES = {
   THE_STRING_THEORY_ICEBERG_EXPLAINED: <Content>{
     reference: {
       title: 'The String Theory Iceberg EXPLAINED',
-      authors: [{name: 'Curt Jaimungal'}],
+      authors: [{ name: 'Curt Jaimungal' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.toe],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=X4PdPnQuwjY&t=9496s"
@@ -1465,7 +1580,7 @@ export const REFERENCES = {
   EXPLORING_SNIFFING_NVIDIAS_IOCTLS_OPEN_GPU_KERNEL_MODULES_DEBUG_PTX_CUDA: <Content>{
     reference: {
       title: 'Exploring | sniffing NVIDIA\'s ioctls | open-gpu-kernel-modules | DEBUG | PTX | CUDA',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=rUsx1b7rQ8Q&t=9910s"
@@ -1474,7 +1589,7 @@ export const REFERENCES = {
   PROGRAMMING_WRITING_A_FUZZER_AND_NOT_GETTING_TRIGGERED_WHEN_THE_AMD_GPU_CRASHES_UMR: <Content>{
     reference: {
       title: 'Programming | writing a fuzzer and not getting triggered when the AMD GPU crashes UMR',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=BCnTXwhzzxA&t=9780s"
@@ -1483,7 +1598,7 @@ export const REFERENCES = {
   PROGRAMMING_RIPPING_OUT_ALL_OF_AMDS_USERSPACE_AMDGPU_IOCTLS_GPU_MEMORY_HSA_KFD: <Content>{
     reference: {
       title: 'Programming | ripping out all of AMD\'s userspace, AMDGPU ioctls | GPU memory | HSA KFD',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=-iH5wvFnsKs"
@@ -1492,7 +1607,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E169: <Content>{
     reference: {
       title: 'All-In Podcast E169',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=snbTCWL6rxo"
@@ -1501,7 +1616,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E170: <Content>{
     reference: {
       title: 'All-In Podcast E170',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=uMajFsCkzxY"
@@ -1510,7 +1625,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E171: <Content>{
     reference: {
       title: 'All-In Podcast E171',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=3tEcLAud7Nc"
@@ -1519,7 +1634,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E172: <Content>{
     reference: {
       title: 'All-In Podcast E172',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=4t4YkHSTZbw"
@@ -1528,7 +1643,7 @@ export const REFERENCES = {
   SHANNON_LUMINARY_LECTURE_SERIES___STEPHEN_FRY: <Content>{
     reference: {
       title: 'Shannon Luminary Lecture Series - Stephen Fry',
-      authors: [{name: 'Stephen Fry'}],
+      authors: [{ name: 'Stephen Fry' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2017)',
       link: "https://www.youtube.com/watch?v=24F6C1KfbjM"
@@ -1537,7 +1652,7 @@ export const REFERENCES = {
   CONTAINERS_FOR_COMPILER_ARCHITECTURE: <Content>{
     reference: {
       title: 'Containers for compiler architecture',
-      authors: [{name: 'Andre Videla'}],
+      authors: [{ name: 'Andre Videla' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=BnzAxT-O0Y8"
@@ -1546,7 +1661,7 @@ export const REFERENCES = {
   WHY_IT_WAS_ALMOST_IMPOSSIBLE_TO_MAKE_THE_BLUE_LED: <Content>{
     reference: {
       title: 'Why It Was Almost Impossible to Make the Blue LED',
-      authors: [{name: '@Veritasium'}],
+      authors: [{ name: '@Veritasium' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=AF8d72mA41M"
@@ -1555,7 +1670,7 @@ export const REFERENCES = {
   COMPOSITIONAL_GAME_THEORY_TOWARDS_INCENTIVES_MODELLING_AT_SCALE: <Content>{
     reference: {
       title: 'Compositional Game Theory – Towards Incentives Modelling at Scale',
-      authors: [{name: 'Jules Hedges'}],
+      authors: [{ name: 'Jules Hedges' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=2b4hxOP7g9I"
@@ -1564,7 +1679,7 @@ export const REFERENCES = {
   MINDSCAPE_268_MATT_STRASSLER_ON_RELATIVITY_FIELDS_AND_THE_LANGUAGE_OF_REALITY: <Content>{
     reference: {
       title: 'Mindscape 268 | Matt Strassler on Relativity, Fields, and the Language of Reality',
-      authors: [{name: 'Matt Strassler'}],
+      authors: [{ name: 'Matt Strassler' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=kCpELmx425w"
@@ -1573,7 +1688,7 @@ export const REFERENCES = {
   ACTINF_MATHSTREAM_0091_JONATHAN_GORARD_A_COMPUTATIONAL_PERSPECTIVE_ON_OBSERVATION_AND_COGNITION: <Content>{
     reference: {
       title: 'ActInf MathStream 009.1 ~ Jonathan Gorard: A computational perspective on observation and cognition',
-      authors: [{name: 'Jonathan Gorard'}],
+      authors: [{ name: 'Jonathan Gorard' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.active_inference_institute],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=I3rhsT-8isk"
@@ -1582,7 +1697,7 @@ export const REFERENCES = {
   A_CONVERSATION_WITH_MARK_ZUCKERBERG_PATRICK_COLLISON_AND_TYLER_COWEN: <Content>{
     reference: {
       title: 'A Conversation with Mark Zuckerberg, Patrick Collison and Tyler Cowen',
-      authors: [{name: 'Mark Zuckerberg'}, {name: 'Patrick Collison'}, {name: 'Tyler Cowen'}],
+      authors: [{ name: 'Mark Zuckerberg' }, { name: 'Patrick Collison' }, { name: 'Tyler Cowen' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2019)',
       link: "https://about.fb.com/news/2019/11/a-conversation-with-mark-zuckerberg-patrick-collison-and-tyler-cowen/"
@@ -1591,7 +1706,7 @@ export const REFERENCES = {
   SOLVING_SAT_VIA_POSITIVE_SUPERCOMPILATION: <Content>{
     reference: {
       title: 'Solving SAT via Positive Supercompilation',
-      authors: [{name: 'Tima Kinsart (Hirrolot)'}],
+      authors: [{ name: 'Tima Kinsart (Hirrolot)' }],
       organizations: [],
       year: '(2024)',
       link: "https://hirrolot.github.io/posts/sat-supercompilation.html) ; *Tima Kinsart (Hirrolot"
@@ -1600,7 +1715,7 @@ export const REFERENCES = {
   NAVIGATING_COGNITION_SPATIAL_CODES_FOR_HUMAN_THINKING: <Content>{
     reference: {
       title: 'Navigating cognition: Spatial codes for human thinking',
-      authors: [{name: 'Jacob L. S. Bellmund'}, {name: 'Peter Gärdenfors'}, {name: 'Edvard I. Moser'}, {name: 'Christian F. Doeller'}],
+      authors: [{ name: 'Jacob L. S. Bellmund' }, { name: 'Peter Gärdenfors' }, { name: 'Edvard I. Moser' }, { name: 'Christian F. Doeller' }],
       organizations: [],
       year: '(2018)',
       link: "https://www.science.org/doi/10.1126/science.aat6766"
@@ -1609,7 +1724,7 @@ export const REFERENCES = {
   TOWARDS_A_STRUCTURAL_TURN_IN_CONSCIOUSNESS_SCIENCE: <Content>{
     reference: {
       title: 'Towards a structural turn in consciousness science',
-      authors: [{name: 'Johannes Kleiner'}],
+      authors: [{ name: 'Johannes Kleiner' }],
       organizations: [],
       year: '(2024)',
       link: "https://pubmed.ncbi.nlm.nih.gov/38422757/"
@@ -1618,7 +1733,7 @@ export const REFERENCES = {
   THE_GLASS_BEAD_GAME: <Content>{
     reference: {
       title: 'The Glass Bead Game',
-      authors: [{name: 'Ralph Freedman'}],
+      authors: [{ name: 'Ralph Freedman' }],
       organizations: [],
       year: '(1970)',
       link: "https://www.nytimes.com/1970/01/04/archives/the-glass-bead-game-glass-bead.html"
@@ -1627,7 +1742,7 @@ export const REFERENCES = {
   AN_INTRODUCTION_TO_HIGHER_ARITY_SCIENCE: <Content>{
     reference: {
       title: 'An Introduction to Higher Arity Science',
-      authors: [{name: 'Carlos Zapata-Carratalá'}],
+      authors: [{ name: 'Carlos Zapata-Carratalá' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2021)',
       link: "https://www.youtube.com/watch?v=62UFbGsj5Jg"
@@ -1636,7 +1751,7 @@ export const REFERENCES = {
   HISTORY_OF_SCIENCE_AND_TECHNOLOGY_QA_FEBRUARY_28: <Content>{
     reference: {
       title: 'History of Science and Technology Q&A (February 28,',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2024)',
       link: "https://www.youtube.com/watch?v=kNXXksujIHM"
@@ -1645,7 +1760,7 @@ export const REFERENCES = {
   GRETA_SEMINAR_HIGHER_ARITY_ALGEBRA_VIA_HYPERGRAPH_REWRITING: <Content>{
     reference: {
       title: 'GReTA seminar: Higher-Arity Algebra via Hypergraph Rewriting',
-      authors: [{name: 'Carlos Zapata-Carratalá'}],
+      authors: [{ name: 'Carlos Zapata-Carratalá' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=ZBjagJvNEn8"
@@ -1654,7 +1769,7 @@ export const REFERENCES = {
   WORKSHOP_AXIOMATIC_CREATION: <Content>{
     reference: {
       title: 'Workshop | Axiomatic Creation',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=StNfdknDQ9c"
@@ -1663,7 +1778,7 @@ export const REFERENCES = {
   COMMUNITY_LIVESTREAM_AXIOMS_CREATIVITY: <Content>{
     reference: {
       title: 'Community Livestream | Axioms & Creativity',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=9ddJAJaYk_E"
@@ -1672,7 +1787,7 @@ export const REFERENCES = {
   CONCEPT_COLLIDER_GEOMETRY_OF_DATA_AND_NEURAL_CORRELATES: <Content>{
     reference: {
       title: 'Concept Collider | Geometry of Data and Neural Correlates',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=mROz1U4VkGY"
@@ -1681,7 +1796,7 @@ export const REFERENCES = {
   WOLFRAM_PHYSICS_PROJECT_WORKING_SESSION___CAUSAL_MULTIWAY_SYSTEMS: <Content>{
     reference: {
       title: 'Wolfram Physics Project: Working Session - Causal Multiway Systems',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Jonathan Gorard' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '(2020)',
       link: "https://www.youtube.com/watch?v=OXSE6KhRUF4"
@@ -1690,7 +1805,7 @@ export const REFERENCES = {
   SCIENCE_RESEARCH_SESSION_HYPORULIAD: <Content>{
     reference: {
       title: 'Science Research Session: Hyporuliad',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Jonathan Gorard' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '(2023)',
       link: "https://www.youtube.com/watch?v=lZaBjuHk7Ms"
@@ -1699,7 +1814,7 @@ export const REFERENCES = {
   A_CONVERSATION_BETWEEN_BOB_COECKE_AND_STEPHEN_WOLFRAM: <Content>{
     reference: {
       title: 'A conversation between Bob Coecke and Stephen Wolfram',
-      authors: [{name: 'Bob Coecke'}, {name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Bob Coecke' }, { name: 'Stephen Wolfram' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '(2021)',
       link: "https://www.youtube.com/watch?v=8CUTXaGqvSQ"
@@ -1708,7 +1823,7 @@ export const REFERENCES = {
   STEVE_JOBS: <Content>{
     reference: {
       title: 'Steve Jobs',
-      authors: [{name: 'Walter Isaacson'}],
+      authors: [{ name: 'Walter Isaacson' }],
       organizations: [],
       year: '(2011)',
       link: "https://en.wikipedia.org/wiki/Steve_Jobs_(book)"
@@ -1717,7 +1832,7 @@ export const REFERENCES = {
   JOHN_CLEESE_ON_CREATIVITY_IN_MANAGEMENT: <Content>{
     reference: {
       title: 'John Cleese on Creativity In Management',
-      authors: [{name: 'John Cleese'}],
+      authors: [{ name: 'John Cleese' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2017)',
       link: "https://www.youtube.com/watch?v=Pb5oIIPO62g"
@@ -1726,7 +1841,7 @@ export const REFERENCES = {
   THE_TRILLION_DOLLAR_EQUATION: <Content>{
     reference: {
       title: 'The Trillion Dollar Equation',
-      authors: [{name: '@Veritasium'}],
+      authors: [{ name: '@Veritasium' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(Veritasium)',
       link: "https://www.youtube.com/watch?v=A5w-dEgIU1M"
@@ -1735,7 +1850,7 @@ export const REFERENCES = {
   STEVE_JOBS_PRESIDENT_CEO_NEXT_COMPUTER_CORP_AND_APPLE_MIT_SLOAN_DISTINGUISHED_SPEAKER_SERIES: <Content>{
     reference: {
       title: 'Steve Jobs President & CEO, NeXT Computer Corp and Apple. MIT Sloan Distinguished Speaker Series',
-      authors: [{name: 'Steve Jobs'}],
+      authors: [{ name: 'Steve Jobs' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(1992)',
       link: "https://www.youtube.com/watch?v=Gk-9Fd2mEnI"
@@ -1744,7 +1859,7 @@ export const REFERENCES = {
   CARL_SAGAN_AT_MIT___MANAGEMENT_IN_THE_YEAR_2000_SLOAN_SCHOOL_SYMPOSIUM: <Content>{
     reference: {
       title: 'Carl Sagan at MIT - Management in the Year 2000: Sloan School Symposium',
-      authors: [{name: 'Carl Sagan'}],
+      authors: [{ name: 'Carl Sagan' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(1987)',
       link: "https://www.youtube.com/watch?v=gLOZsTMuars"
@@ -1753,7 +1868,7 @@ export const REFERENCES = {
   CHAMATH_PALIHAPITIYA_SOCIALCAPITAL_STARTUP_GRIND: <Content>{
     reference: {
       title: 'Chamath Palihapitiya (SocialCapital) @ Startup Grind',
-      authors: [{name: 'Chamath Palihapitiya'}],
+      authors: [{ name: 'Chamath Palihapitiya' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2015)',
       link: "https://www.youtube.com/watch?v=ncjum-bkW98"
@@ -1762,7 +1877,7 @@ export const REFERENCES = {
   CHAMATH_PALIHAPITIYA_SPEAKING_AT_WATERLOO_INNOVATION_SUMMIT: <Content>{
     reference: {
       title: 'Chamath Palihapitiya speaking at Waterloo Innovation Summit',
-      authors: [{name: 'Chamath Palihapitiya'}],
+      authors: [{ name: 'Chamath Palihapitiya' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '(2016)',
       link: "https://www.youtube.com/watch?v=D82_ppT2iic"
@@ -1771,7 +1886,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E165: <Content>{
     reference: {
       title: 'All-In Podcast E165',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=FHO4hoXc75k"
@@ -1780,7 +1895,7 @@ export const REFERENCES = {
   ALL_IN_PODCAST_E164: <Content>{
     reference: {
       title: 'All-In Podcast E164',
-      authors: [{name: 'Chamath Palihapitiya'}, {name: 'Jason Calacanis'}, {name: 'David Friedberg'}, {name: 'David O. Sacks'}],
+      authors: [{ name: 'Chamath Palihapitiya' }, { name: 'Jason Calacanis' }, { name: 'David Friedberg' }, { name: 'David O. Sacks' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.all_in],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=bUuEE2jmP2c"
@@ -1789,7 +1904,7 @@ export const REFERENCES = {
   CONCEPT_COLLIDER_MATHEMATICAL_PHYSICS_ACTIVE_INFERENCE_FREE_ENERGY_ENTROPY: <Content>{
     reference: {
       title: 'Concept Collider | Mathematical Physics + Active Inference, Free Energy & Entropy',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '(2024)',
       link: "https://www.youtube.com/watch?v=GwbLOCCI2yE"
@@ -1798,7 +1913,7 @@ export const REFERENCES = {
   CRDTS_GO_BRRR: <Content>{
     reference: {
       title: 'CRDTs go brrr',
-      authors: [{name: 'Seph Gentle'}],
+      authors: [{ name: 'Seph Gentle' }],
       organizations: [],
       year: '2021',
       link: "https://josephg.com/blog/crdts-go-brrr/"
@@ -1807,7 +1922,7 @@ export const REFERENCES = {
   THIS_WEEKS_FINDS_18_CATEGORIFYING_THE_QUANTUM_HARMONIC_OSCILLATOR: <Content>{
     reference: {
       title: 'This Week\'s Finds 18: categorifying the quantum harmonic oscillator',
-      authors: [{name: 'John Baez'}],
+      authors: [{ name: 'John Baez' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=pvVm3L92pdc"
@@ -1816,7 +1931,7 @@ export const REFERENCES = {
   WOLFRAM_PHYSICS_PROJECT_WORKING_SESSION_QUANTUM_BLACK_HOLES_AND_OTHER_THINGS: <Content>{
     reference: {
       title: 'Wolfram Physics Project Working Session: Quantum Black Holes and Other Things',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Jonathan Gorard'}],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Jonathan Gorard' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram],
       year: '2023',
       link: "https://www.youtube.com/watch?v=fFEVq76_Pu0"
@@ -1825,7 +1940,7 @@ export const REFERENCES = {
   CAUSAL_INVARIANCE_VERSUS_CONFLUENCE: <Content>{
     reference: {
       title: 'Causal invariance versus confluence',
-      authors: [{name: 'Jonathan Gorard'}, {name: 'Mark Jeffery'}],
+      authors: [{ name: 'Jonathan Gorard' }, { name: 'Mark Jeffery' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=LYFzm_xSWXw"
@@ -1834,7 +1949,7 @@ export const REFERENCES = {
   CRDTS_THE_HARD_PARTS: <Content>{
     reference: {
       title: 'CRDTs: The Hard Parts',
-      authors: [{name: 'Martin Kleppmann'}],
+      authors: [{ name: 'Martin Kleppmann' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2020',
       link: "https://www.youtube.com/watch?v=x7drE24geUw"
@@ -1843,7 +1958,7 @@ export const REFERENCES = {
   RIAK_DYNAMO_FIVE_YEARS_LATER_PRESENTED: <Content>{
     reference: {
       title: 'Riak & Dynamo, Five Years Later Presented',
-      authors: [{name: 'Andy Gross'}],
+      authors: [{ name: 'Andy Gross' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2013',
       link: "https://www.youtube.com/watch?v=AxG9DROsnqg"
@@ -1852,7 +1967,7 @@ export const REFERENCES = {
   RIAK_CORE___AN_ERLANG_DISTRIBUTED_SYSTEMS_TOOLKIT: <Content>{
     reference: {
       title: 'Riak Core - An Erlang Distributed Systems Toolkit',
-      authors: [{name: 'Andy Gross'}],
+      authors: [{ name: 'Andy Gross' }],
       organizations: [],
       year: '2011',
       link: "https://vimeo.com/21772889"
@@ -1861,7 +1976,7 @@ export const REFERENCES = {
   ZXLIVE___AN_INTERACTIVE_GUI_FOR_THE_ZX_CALCULUS___RAZIN_A_SHAIKH: <Content>{
     reference: {
       title: 'ZXLive - An Interactive GUI for the ZX Calculus - Razin A. Shaikh',
-      authors: [{name: 'Razin A. Shaikh'}],
+      authors: [{ name: 'Razin A. Shaikh' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.zx_calculus],
       year: '2023',
       link: "https://www.youtube.com/watch?v=J--c2q-KOc8"
@@ -1870,7 +1985,7 @@ export const REFERENCES = {
   GRAPHICAL_CSS_CODE_TRANSFORMATION_USING_ZX_CALCULUS: <Content>{
     reference: {
       title: 'Graphical CSS Code Transformation Using ZX Calculus',
-      authors: [{name: 'Jiaxin Huang'}],
+      authors: [{ name: 'Jiaxin Huang' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.zx_calculus],
       year: '2023',
       link: "https://www.youtube.com/watch?v=ZhfQxdjodNs"
@@ -1879,7 +1994,7 @@ export const REFERENCES = {
   THE_ZETA_CALCULUS: <Content>{
     reference: {
       title: 'The Zeta Calculus',
-      authors: [{name: 'Nicklas Botö'}],
+      authors: [{ name: 'Nicklas Botö' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.zx_calculus],
       year: '2023',
       link: "https://www.youtube.com/watch?v=iUHEy3PZCso"
@@ -1888,7 +2003,7 @@ export const REFERENCES = {
   HOW_TO_TAKE_THE_FACTORIAL_OF_ANY_NUMBER: <Content>{
     reference: {
       title: 'How to Take the Factorial of Any Number',
-      authors: [{name: '@Lines That Connect'}],
+      authors: [{ name: '@Lines That Connect' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2022',
       link: "https://www.youtube.com/watch?v=v_HeaeUUOnc"
@@ -1897,7 +2012,7 @@ export const REFERENCES = {
   JEFF_BEZOS_AMAZON_AND_BLUE_ORIGIN_LEX_FRIDMAN_PODCAST_405: <Content>{
     reference: {
       title: 'Jeff Bezos: Amazon and Blue Origin | Lex Fridman Podcast #405',
-      authors: [{name: 'Jeff Bezos'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Jeff Bezos' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '2023',
       link: "https://www.youtube.com/watch?v=DcWqzZ3I2cY"
@@ -1906,7 +2021,7 @@ export const REFERENCES = {
   HR_TALK_INTRO_TO_LARGE_LANGUAGE_MODELS: <Content>{
     reference: {
       title: '[1hr Talk] Intro to Large Language Models',
-      authors: [{name: 'Andrej Karpathy'}],
+      authors: [{ name: 'Andrej Karpathy' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=zjkBMFhNj_g"
@@ -1915,7 +2030,7 @@ export const REFERENCES = {
   STREAM_0_WHY_ALL_VIDEO_GAME_PROGRAMMERS_SHOULD_LEARN_GEOMETRIC_ALGEBRA: <Content>{
     reference: {
       title: 'Stream #0: Why all video game programmers should learn geometric algebra',
-      authors: [{name: 'Hamish Todd'}],
+      authors: [{ name: 'Hamish Todd' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=pHKOdxgr5lE"
@@ -1924,7 +2039,7 @@ export const REFERENCES = {
   THE_PERIODIC_TABLE_OF_GEOMETRIC_ALGEBRAS___CL301_DOES_ALL_3D_GAME_MATH_SO_WHAT_DOES_CLPQR_D: <Content>{
     reference: {
       title: 'The Periodic Table of Geometric Algebras - CL(3,0,1) does all 3D game math, so what does CL(p,q,r) d',
-      authors: [{name: 'Hamish Todd'}],
+      authors: [{ name: 'Hamish Todd' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=oXcp3gA8erQ"
@@ -1933,7 +2048,7 @@ export const REFERENCES = {
   GEOMETRIC_ALGEBRA_AS_A_TOOL_IN_TECHNICAL_COMMUNICATION: <Content>{
     reference: {
       title: 'Geometric Algebra as a tool in technical communication',
-      authors: [{name: 'Hamish Todd'}],
+      authors: [{ name: 'Hamish Todd' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2020',
       link: "https://www.youtube.com/watch?v=hR-MQm3c13Q"
@@ -1942,7 +2057,7 @@ export const REFERENCES = {
   MINDSCAPE_260_RICARD_SOLE_ON_THE_SPACE_OF_COGNITIONS: <Content>{
     reference: {
       title: 'Mindscape 260 | Ricard Solé on the Space of Cognitions',
-      authors: [{name: 'Ricard Solé'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Ricard Solé' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '2024',
       link: "https://www.youtube.com/watch?v=lJltHIlUHvQ"
@@ -1951,7 +2066,7 @@ export const REFERENCES = {
   MINDSCAPE_261_SANJANA_CURTIS_ON_THE_ORIGINS_OF_THE_ELEMENTS: <Content>{
     reference: {
       title: 'Mindscape 261 | Sanjana Curtis on the Origins of the Elements',
-      authors: [{name: 'Sanjana Curtis'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Sanjana Curtis' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '2024',
       link: "https://www.youtube.com/watch?v=V28YdLuYnjk"
@@ -1960,7 +2075,7 @@ export const REFERENCES = {
   MINDSCAPE_264_SABINE_STANLEY_ON_WHATS_INSIDE_PLANETS: <Content>{
     reference: {
       title: 'Mindscape 264 | Sabine Stanley on What\'s Inside Planets',
-      authors: [{name: 'Sabine Stanley'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Sabine Stanley' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '2024',
       link: "https://www.youtube.com/watch?v=myU8GNdpPjU"
@@ -1969,7 +2084,7 @@ export const REFERENCES = {
   MINDSCAPE_263_CHRIS_QUIGG_ON_SYMMETRY_AND_THE_BIRTH_OF_THE_STANDARD_MODEL: <Content>{
     reference: {
       title: 'Mindscape 263 | Chris Quigg on Symmetry and the Birth of the Standard Model',
-      authors: [{name: 'Chris Quigg'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Chris Quigg' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '2024',
       link: "https://www.youtube.com/watch?v=-q-HBIBiTQ0"
@@ -1978,7 +2093,7 @@ export const REFERENCES = {
   MINDSCAPE_262_ERIC_SCHWITZGEBEL_ON_THE_WEIRDNESS_OF_THE_WORLD: <Content>{
     reference: {
       title: 'Mindscape 262 | Eric Schwitzgebel on the Weirdness of the World',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mindscape],
       year: '2024',
       link: "https://www.youtube.com/watch?v=V0evRaWV_HU"
@@ -1987,7 +2102,7 @@ export const REFERENCES = {
   JUST_CHATTING_TECHNO_OPTIMISM_WINNING_OVER_NATURE_PROGRESSIVE_ACCELERATION: <Content>{
     reference: {
       title: 'Just Chatting | techno optimism | Winning over nature | Progressive | Acceleration',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2023',
       link: "https://www.youtube.com/watch?v=WS5wGal3ukw"
@@ -1996,7 +2111,7 @@ export const REFERENCES = {
   PROGRAMMING_DECISION_TRANSFORMER_REINFORCEMENT_LEARNING_RL_LUNARLANDER_PART_1: <Content>{
     reference: {
       title: 'Programming | Decision Transformer Reinforcement Learning (RL) | LunarLander | Part 1',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2024',
       link: "https://www.youtube.com/watch?v=8U8kK3SpLTU"
@@ -2005,7 +2120,7 @@ export const REFERENCES = {
   PROGRAMMING_RL_IS_DUMB_AND_DOESNT_WORK_REINFORCEMENT_LEARNING_LUNARLANDER_PART_2: <Content>{
     reference: {
       title: 'Programming | RL is dumb and doesn\'t work | Reinforcement Learning LunarLander Part 2',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2024',
       link: "https://www.youtube.com/watch?v=-tZkb0vgaDk"
@@ -2014,7 +2129,7 @@ export const REFERENCES = {
   RESEARCHING_RL_IS_DUMB_AND_DOESNT_WORK_THEORY_REINFORCEMENT_LEARNING_PART_3: <Content>{
     reference: {
       title: 'Researching | RL is dumb and doesn\'t work (theory) | Reinforcement Learning | Part 3',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2024',
       link: "https://www.youtube.com/watch?v=Ul5-NKOP8RQ"
@@ -2023,7 +2138,7 @@ export const REFERENCES = {
   RESEARCHING_MULTIGPU_WITH_HIP_OR_MAYBE_WITHOUT_HIP_HSA_HIP_GRAPH_PART_1: <Content>{
     reference: {
       title: 'Researching | multiGPU with HIP (or maybe without HIP) | HSA | HIP Graph | Part 1',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2024',
       link: "https://www.youtube.com/watch?v=X4J_GUhp9jI"
@@ -2032,7 +2147,7 @@ export const REFERENCES = {
   PROGRAMMING_MULTIGPU_WITH_HIP_OR_MAYBE_WITHOUT_HIP_HSA_DISABLE_CACHE1_PART_2: <Content>{
     reference: {
       title: 'Programming | multiGPU with HIP (or maybe without HIP) | HSA_DISABLE_CACHE=1 | Part 2',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2024',
       link: "https://www.youtube.com/watch?v=kh2z9J_gXWg"
@@ -2041,7 +2156,7 @@ export const REFERENCES = {
   STRING_DIAGRAM_REWRITE_THEORY_II_REWRITING_WITH_SYMMETRIC_MONOIDAL_STRUCTURE: <Content>{
     reference: {
       title: 'String Diagram Rewrite Theory II: Rewriting with Symmetric Monoidal Structure',
-      authors: [{name: 'Filippo Bonchi'}, {name: 'Fabio Gadducci'}, {name: 'Aleks Kissinger'}, {name: 'Pawel Sobocinski'}, {name: 'Fabio Zanasi'}],
+      authors: [{ name: 'Filippo Bonchi' }, { name: 'Fabio Gadducci' }, { name: 'Aleks Kissinger' }, { name: 'Pawel Sobocinski' }, { name: 'Fabio Zanasi' }],
       organizations: [],
       year: '2022',
       link: "https://arxiv.org/abs/2104.14686"
@@ -2050,7 +2165,7 @@ export const REFERENCES = {
   CHYP_COMPOSING_HYPERGRAPHS_PROVING_THEOREMS: <Content>{
     reference: {
       title: 'Chyp: Composing Hypergraphs, Proving Theorems',
-      authors: [{name: 'Aleks Kissinger'}],
+      authors: [{ name: 'Aleks Kissinger' }],
       organizations: [],
       year: '2023',
       link: "https://act2023.github.io/papers/paper25.pdf"
@@ -2059,7 +2174,7 @@ export const REFERENCES = {
   OBSERVER_THEORY: <Content>{
     reference: {
       title: 'Observer Theory',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       organizations: [],
       year: '2023',
       link: "https://writings.stephenwolfram.com/2023/12/observer-theory/"
@@ -2068,7 +2183,7 @@ export const REFERENCES = {
   WASM_SPECTEC_ENGINEERING_A_FORMAL_LANGUAGE_STANDARD: <Content>{
     reference: {
       title: 'Wasm SpecTec: Engineering a Formal Language Standard',
-      authors: [{name: 'Joachim Breitner'}, {name: 'Philippa Gardner'}, {name: 'Jaehyun Lee'}, {name: 'Sam Lindley'}, {name: 'Matija Pretnar'}, {name: 'Xiaojia Rao'}, {name: 'Andreas Rossberg'}, {name: 'Sukyoung Ryu'}, {name: 'Wonho Shin'}, {name: 'Conrad Watt'}, {name: 'Dongjun Youn'}],
+      authors: [{ name: 'Joachim Breitner' }, { name: 'Philippa Gardner' }, { name: 'Jaehyun Lee' }, { name: 'Sam Lindley' }, { name: 'Matija Pretnar' }, { name: 'Xiaojia Rao' }, { name: 'Andreas Rossberg' }, { name: 'Sukyoung Ryu' }, { name: 'Wonho Shin' }, { name: 'Conrad Watt' }, { name: 'Dongjun Youn' }],
       organizations: [ORGANIZATIONS.wasm],
       year: '2023',
       link: "https://arxiv.org/pdf/2311.07223.pdf"
@@ -2077,7 +2192,7 @@ export const REFERENCES = {
   MINDSCAPE_259_ADAM_FRANK_ON_WHAT_ALIENS_MIGHT_BE_LIKE: <Content>{
     reference: {
       title: 'Mindscape 259 | Adam Frank on What Aliens Might Be Like',
-      authors: [{name: 'Adam Frank'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Adam Frank' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.preposterous_universe],
       year: '2023',
       link: "https://www.youtube.com/watch?v=UzmlA3g2nRE"
@@ -2086,7 +2201,7 @@ export const REFERENCES = {
   ANIMATION_VS_PHYSICS: <Content>{
     reference: {
       title: 'Animation vs. Physics',
-      authors: [{name: 'Alan Becker + Team'}],
+      authors: [{ name: 'Alan Becker + Team' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=ErMSHiQRnc8"
@@ -2095,7 +2210,7 @@ export const REFERENCES = {
   WHY_LIGHT_CAN_SLOW_DOWN_AND_WHY_IT_DEPENDS_ON_COLOR_OPTICS_PUZZLES: <Content>{
     reference: {
       title: 'Why light can “slow down”, and why it depends on color | Optics puzzles',
-      authors: [{name: '3Blue1Brown'}],
+      authors: [{ name: '3Blue1Brown' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=KTzGBJPuJwM"
@@ -2104,7 +2219,7 @@ export const REFERENCES = {
   LEE_CRONIN_CONTROVERSIAL_NATURE_PAPER_ON_EVOLUTION_OF_LIFE_AND_UNIVERSE_LEX_FRIDMAN_PODCAST_404: <Content>{
     reference: {
       title: 'Lee Cronin: Controversial Nature Paper on Evolution of Life and Universe | Lex Fridman Podcast #404',
-      authors: [{name: 'Lee Cronin'}, {name: 'Lex Fridman'}],
+      authors: [{ name: 'Lee Cronin' }, { name: 'Lex Fridman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.lex_fridman_podcast],
       year: '2023',
       link: "https://www.youtube.com/watch?v=CGiDqhSdLHk"
@@ -2113,7 +2228,7 @@ export const REFERENCES = {
   BERKELEY_SEMINAR_DAVID_JAZ_MYERS_872023: <Content>{
     reference: {
       title: 'Berkeley Seminar: David Jaz Myers, 8/7/2023',
-      authors: [{name: 'David Jaz Myers'}],
+      authors: [{ name: 'David Jaz Myers' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
       year: '2023',
       link: "https://www.youtube.com/watch?v=WvniD62U_W4"
@@ -2122,7 +2237,7 @@ export const REFERENCES = {
   YUGOSLAVIAS_DIGITAL_TWIN: <Content>{
     reference: {
       title: 'Yugoslavia’s Digital Twin',
-      authors: [{name: 'Kaloyan Kolev'}],
+      authors: [{ name: 'Kaloyan Kolev' }],
       organizations: [],
       year: '2023',
       link: "https://www.thedial.world/issue-9/yugolsav-wars-yu-domain-history-icann"
@@ -2131,7 +2246,7 @@ export const REFERENCES = {
   PHYSICS_EXPLAINS_WHY_THERE_IS_NO_INFORMATION_ON_SOCIAL_MEDIA: <Content>{
     reference: {
       title: 'Physics explains why there is no information on social media',
-      authors: [{name: 'Tiernan Ray'}],
+      authors: [{ name: 'Tiernan Ray' }],
       organizations: [],
       year: '2021',
       link: "https://www.zdnet.com/article/physics-explains-why-there-is-no-information-on-social-media/"
@@ -2140,7 +2255,7 @@ export const REFERENCES = {
   HOW_TO_ASK_QUESTIONS_THE_SMART_WAY: <Content>{
     reference: {
       title: 'How To Ask Questions The Smart Way',
-      authors: [{name: 'Eric S. Raymond'}, {name: 'Rick Moen'}],
+      authors: [{ name: 'Eric S. Raymond' }, { name: 'Rick Moen' }],
       organizations: [],
       year: '2001-2014',
       link: "http://www.catb.org/~esr/faqs/smart-questions.html"
@@ -2149,7 +2264,7 @@ export const REFERENCES = {
   COMPLEXITY_MATHEMATICS_COMMUNITY_LIVESTREAM: <Content>{
     reference: {
       title: 'Complexity & Mathematics | Community Livestream',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '2023',
       link: "https://www.youtube.com/watch?v=MWQ7XFjkOhs"
@@ -2158,7 +2273,7 @@ export const REFERENCES = {
   HOLIDAY_SPECIAL_LIVESTREAM: <Content>{
     reference: {
       title: 'Holiday Special Livestream',
-      authors: [{name: ''}],
+      authors: [{ name: '' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.semf],
       year: '2023',
       link: "https://www.youtube.com/watch?v=m_rATW4Nrqk"
@@ -2167,7 +2282,7 @@ export const REFERENCES = {
   JUST_CHATTING_TESLA_AI_DAY_2022_SCIENCE_TECHNOLOGY: <Content>{
     reference: {
       title: 'Just Chatting | Tesla AI Day 2022 | Science & Technology',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2022',
       link: "https://www.youtube.com/watch?v=lSXwIzww6Us"
@@ -2176,7 +2291,7 @@ export const REFERENCES = {
   PROGRAMMING_MISTRAL_MIXTRAL_ON_A_TINYBOX_AMD_P2P_MULTI_GPU_MIXTRAL_8X7B_32KSEQLEN: <Content>{
     reference: {
       title: 'Programming | Mistral mixtral on a tinybox | AMD P2P multi-GPU mixtral-8x7b-32kseqlen',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=H40QRJFzThQ"
@@ -2185,7 +2300,7 @@ export const REFERENCES = {
   PROGRAMMING_WHAT_IS_THE_Q_ALGORITHM_OPENAI_Q_STAR_ALGORITHM_MISTRAL_7B_PRM800K: <Content>{
     reference: {
       title: 'Programming | what is the Q* algorithm? OpenAI Q Star Algorithm | Mistral 7B | PRM800K',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=2QO3vzwHXhg"
@@ -2194,7 +2309,7 @@ export const REFERENCES = {
   JUST_CHATTING_EFFECTIVE_ACCELERATIONISM_EACC_TECHNO_PESSIMISM_DECELERATION: <Content>{
     reference: {
       title: 'Just Chatting | effective accelerationism | e/acc | Techno-pessimism | Deceleration',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=YrWEDOQQ8pw"
@@ -2203,7 +2318,7 @@ export const REFERENCES = {
   SCIENCE_THERMODYNAMICS_IS_TO_ENERGY_AS_IS_TO_INTELLIGENCE: <Content>{
     reference: {
       title: 'Science | Thermodynamics is to Energy as ??? is to Intelligence',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=vn9Dq24RDn8"
@@ -2212,7 +2327,7 @@ export const REFERENCES = {
   SCIENCE_THERMODYNAMICS_IS_TO_ENERGY_AS_ENTROPICS_IS_TO_INTELLIGENCE_PART_2: <Content>{
     reference: {
       title: 'Science | Thermodynamics is to Energy as Entropics is to Intelligence | Part 2',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=mEoiQ_PZNTE"
@@ -2221,7 +2336,7 @@ export const REFERENCES = {
   PROGRAMMING_A_TINY_TOUR_THROUGH_TINYGRAD_NOOB_LESSON: <Content>{
     reference: {
       title: 'Programming | a tiny tour through tinygrad (noob lesson)',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2023',
       link: "https://www.youtube.com/watch?v=-MhwhiReY-s"
@@ -2230,7 +2345,7 @@ export const REFERENCES = {
   PROGRAMMING_TINYGRAD_WRITING_TUTORIALS_FOR_NOOBS: <Content>{
     reference: {
       title: 'Programming | tinygrad: writing tutorials for noobs',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2023',
       link: "https://www.youtube.com/watch?v=Sk35MKtCXfQ"
@@ -2239,7 +2354,7 @@ export const REFERENCES = {
   RANT_COMPLAINING_ABOUT_HOW_TERRIBLE_QUALCOMM_IS_THE_BUSINESS_WORLD: <Content>{
     reference: {
       title: 'Rant | Complaining about how terrible Qualcomm is | The business world',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2023',
       link: "https://www.youtube.com/watch?v=rzb2cuT9vaY"
@@ -2248,7 +2363,7 @@ export const REFERENCES = {
   CHATTING_CHALLENGES_HIRING_PEOPLE_VISION_BUILDING_A_COMPANY_TINY_CORP_TINYGRADORG: <Content>{
     reference: {
       title: 'Chatting | challenges hiring people, vision, building a company tiny corp tinygrad.org',
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2023',
       link: "https://www.youtube.com/watch?v=4_6eY-8dibI"
@@ -2257,7 +2372,7 @@ export const REFERENCES = {
   READING_TALKING_LETS_READ_ML_PAPERS: <Content>{
     reference: {
       title: `Reading & Talking | let's read ML papers`,
-      authors: [{name: 'George Hotz'}],
+      authors: [{ name: 'George Hotz' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.tinycorp],
       year: '2023',
       link: "https://www.youtube.com/watch?v=YrWEDOQQ8pw"
@@ -2267,7 +2382,7 @@ export const REFERENCES = {
   STRING_DIAGRAM_REWRITE_THEORY_I: <Content>{
     reference: {
       title: 'String Diagram Rewrite Theory I: Rewriting with Frobenius Structure',
-      authors: [{name: 'Filippo Bonchi'}, {name: 'Fabio Gadducci'}, {name: 'Aleks Kissinger'}, {name: 'Pawel Sobocinski'}, {name: 'Fabio Zanasi'},],
+      authors: [{ name: 'Filippo Bonchi' }, { name: 'Fabio Gadducci' }, { name: 'Aleks Kissinger' }, { name: 'Pawel Sobocinski' }, { name: 'Fabio Zanasi' },],
       year: '2023',
       link: "https://arxiv.org/abs/2012.01847"
     }, status: Viewed.VIEWED, viewed_at: "2023, November"
@@ -2276,7 +2391,7 @@ export const REFERENCES = {
   REPTAR: <Content>{
     reference: {
       title: 'Reptar',
-      authors: [{name: 'Tavis Ormandy'}],
+      authors: [{ name: 'Tavis Ormandy' }],
       year: '2023',
       link: "https://lock.cmpxchg8b.com/reptar.html"
     }, status: Viewed.VIEWED, viewed_at: "2023, November"
@@ -2285,7 +2400,7 @@ export const REFERENCES = {
   AGGREGATION_AND_TILING_AS_MULTICOMPUTATIONAL_PROCESSES: <Content>{
     reference: {
       title: 'Aggregation and Tiling as Multicomputational Processes',
-      authors: [{name: 'Stephen Wolfram'}],
+      authors: [{ name: 'Stephen Wolfram' }],
       year: '2023',
       link: "https://writings.stephenwolfram.com/2023/11/aggregation-and-tiling-as-multicomputational-processes/"
     }, status: Viewed.VIEWED, viewed_at: "2023, November"
@@ -2304,7 +2419,7 @@ export const REFERENCES = {
   WOLFRAM_INSTITUTES_INFRAGEOMETRY_LIVESTREAMS: <Content>{
     reference: {
       title: 'Wolfram Institute\'s Infrageometry Project Livestreams',
-      authors: [{name: 'Jonathan Gorard'}, {name: 'Carlos Zapata-Carratalá'}, {name: 'Nikolay Murzin'}, {name: 'Utkarsh Bajaj'},],
+      authors: [{ name: 'Jonathan Gorard' }, { name: 'Carlos Zapata-Carratalá' }, { name: 'Nikolay Murzin' }, { name: 'Utkarsh Bajaj' },],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '2023',
       link: "https://www.youtube.com/playlist?list=PLtbvsohNkWeVO_PMxoZfDEiiY8tuYOjgf"
@@ -2314,7 +2429,7 @@ export const REFERENCES = {
   HYPERMATRIX_WORKSHOP: <Content>{
     reference: {
       title: 'HyperMatrix Workshop',
-      authors: [{name: 'Edinah Koffi Gnang'}, {name: 'Richard Kerner'}, {name: 'Luke Oeding'}, {name: 'Joshua Grochow'}, {name: 'Harm Derksen'}, {name: 'Tali Beynon'}, {name: 'Michel Rausch'}, {name: 'Carlos Zapata-Carratalá'},],
+      authors: [{ name: 'Edinah Koffi Gnang' }, { name: 'Richard Kerner' }, { name: 'Luke Oeding' }, { name: 'Joshua Grochow' }, { name: 'Harm Derksen' }, { name: 'Tali Beynon' }, { name: 'Michel Rausch' }, { name: 'Carlos Zapata-Carratalá' },],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.wolfram_institute],
       year: '2023',
       link: "https://www.youtube.com/watch?v=E8s9Daqy_2A"
@@ -2324,7 +2439,7 @@ export const REFERENCES = {
   WOLFRAM_PHYSICS_PROJECT_RELATIONS_TO_CATEGORY_THEORY: <Content>{
     reference: {
       title: 'Wolfram Physics Project: Relations to Category Theory',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Fabrizio Remano Genovese'}, {name: 'Matteo Capucci'}, {name: 'Jonathan Gorard'}, {name: 'Tali Beynon'},],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Fabrizio Remano Genovese' }, { name: 'Matteo Capucci' }, { name: 'Jonathan Gorard' }, { name: 'Tali Beynon' },],
       organizations: [ORGANIZATIONS.youtube],
       year: '2020',
       link: "https://www.youtube.com/watch?v=0LAtNXo9rbE"
@@ -2334,7 +2449,7 @@ export const REFERENCES = {
   ALL_CONCEPTS_ARE_CAT_SHARP: <Content>{
     reference: {
       title: 'All Concepts are Cat#',
-      authors: [{name: 'David Spivak'}],
+      authors: [{ name: 'David Spivak' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
       year: '2023',
       link: "https://www.youtube.com/watch?v=_1-rueSZMGc"
@@ -2344,7 +2459,7 @@ export const REFERENCES = {
   HIGHER_CATEGORY_THEORY_IN_CAT_SHARP: <Content>{
     reference: {
       title: '(Higher) category theory in Cat^#',
-      authors: [{name: 'Brandon Shapiro'}],
+      authors: [{ name: 'Brandon Shapiro' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
       year: '2023',
       link: "https://www.youtube.com/watch?v=AKyHHykroWg"
@@ -2354,7 +2469,7 @@ export const REFERENCES = {
   ABSTRACTION_ENGINEERING_WITH_THE_PVS: <Content>{
     reference: {
       title: 'Abstraction Engineering with the Prototype Verification System (PVS)',
-      authors: [{name: 'Nat Shankar'}],
+      authors: [{ name: 'Nat Shankar' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
       year: '2023',
       link: "https://www.youtube.com/watch?v=MHf07noO9KA"
@@ -2364,7 +2479,7 @@ export const REFERENCES = {
   CAUSAL_VS_ACAUSAL_MODELING_BY_EXAMPLE: <Content>{
     reference: {
       title: 'Causal vs Acausal Modeling By Example: Why Julia ModelingToolkit.jl Scales',
-      authors: [{name: 'Chris Rackauckas'}],
+      authors: [{ name: 'Chris Rackauckas' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=ZYkojUozeC4"
@@ -2374,7 +2489,7 @@ export const REFERENCES = {
   RP_159: <Content>{
     reference: {
       title: 'Entropic Gravity, Black Holes, and the Holographic Principle | RP#159',
-      authors: [{name: 'Erik Verlinde'}, {name: 'Robinson Erhardt'}],
+      authors: [{ name: 'Erik Verlinde' }, { name: 'Robinson Erhardt' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=TgQg1Oy37r0"
@@ -2384,7 +2499,7 @@ export const REFERENCES = {
   RP_118: <Content>{
     reference: {
       title: 'Quantum Physics, the Multiverse, and Time Travel | RP #118',
-      authors: [{name: 'Slavoj Žižek'}, {name: 'Sean Carroll'}, {name: 'Robinson Erhardt'}],
+      authors: [{ name: 'Slavoj Žižek' }, { name: 'Sean Carroll' }, { name: 'Robinson Erhardt' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=735mYcl3Lrg"
@@ -2394,7 +2509,7 @@ export const REFERENCES = {
   MINDSCAPE_256: <Content>{
     reference: {
       title: 'Mindscape 256 | Kelly & Zach Weinersmith on Building Cities on the Moon and Mars',
-      authors: [{name: 'Kelly & Zach Weinersmith'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'Kelly & Zach Weinersmith' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.preposterous_universe],
       year: '2023',
       link: "https://www.youtube.com/watch?v=dJqr_cCi9tM"
@@ -2404,7 +2519,7 @@ export const REFERENCES = {
   THIS_WEEKS_FINDS_15: <Content>{
     reference: {
       title: 'This Week\'s Finds 15: combinatorics, groupoid cardinality and species',
-      authors: [{name: 'John Baez'}],
+      authors: [{ name: 'John Baez' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=yLtgs7Fz8aw"
@@ -2414,7 +2529,7 @@ export const REFERENCES = {
   THIS_WEEKS_FINDS_14: <Content>{
     reference: {
       title: 'This Week\'s Finds 14: the 3-strand braid group',
-      authors: [{name: 'John Baez'}],
+      authors: [{ name: 'John Baez' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=MnS4hduP5xg"
@@ -2424,7 +2539,7 @@ export const REFERENCES = {
   SCALES_AND_SCIENCE_FICTION_WITH_BIOLOGIST_MICHAEL_LEVIN: <Content>{
     reference: {
       title: 'Scales and Science Fiction with Biologist Michael Levin',
-      authors: [{name: 'Michael Levi'}, {name: 'Andrea Hiott'}],
+      authors: [{ name: 'Michael Levi' }, { name: 'Andrea Hiott' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=n15xS4YcyG0"
@@ -2434,7 +2549,7 @@ export const REFERENCES = {
   DELIMITED_CONTINUATIONS_FOR_EVERYONE: <Content>{
     reference: {
       title: 'Delimited Continuations for Everyone',
-      authors: [{name: 'Kenichi Asai'}],
+      authors: [{ name: 'Kenichi Asai' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.papers_we_love],
       year: '2017',
       link: "https://www.youtube.com/watch?v=QNM-njddhIw"
@@ -2444,7 +2559,7 @@ export const REFERENCES = {
   HOMOTOPY_TYPE_THEORY_101: <Content>{
     reference: {
       title: 'Homotopy Type Theory 101',
-      authors: [{name: 'Carlo Angiuli'}],
+      authors: [{ name: 'Carlo Angiuli' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=VMqF06fDljU"
@@ -2454,7 +2569,7 @@ export const REFERENCES = {
   FROM_CATEGORICAL_SYSTEMS_THEORY_TO_CATEGORICAL_CYBERNETICS: <Content>{
     reference: {
       title: 'From categorical systems theory to categorical cybernetics',
-      authors: [{name: 'Matteo Capucci'}],
+      authors: [{ name: 'Matteo Capucci' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2022',
       link: "https://www.youtube.com/watch?v=wtgfyjFIHBQ"
@@ -2464,7 +2579,7 @@ export const REFERENCES = {
   THE_SEARCH_FOR_THE_PERFECT_DOOR: <Content>{
     reference: {
       title: 'The Search for the Perfect Door',
-      authors: [{name: 'Deviant Ollam'}],
+      authors: [{ name: 'Deviant Ollam' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2016',
       link: "https://www.youtube.com/watch?v=4YYvBLAF4T8"
@@ -2474,7 +2589,7 @@ export const REFERENCES = {
   EVOLVING_BRAINS_SOLID_LIQUID_AND_SYNTHETIC: <Content>{
     reference: {
       title: 'Evolving Brains: Solid, Liquid and Synthetic',
-      authors: [{name: 'Ricard Solé'}],
+      authors: [{ name: 'Ricard Solé' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.santa_fe_institute],
       year: '2023',
       link: "https://www.youtube.com/watch?v=EIb5-LJbcIM"
@@ -2484,7 +2599,7 @@ export const REFERENCES = {
   CRITICAL_THINKING_1: <Content>{
     reference: {
       title: 'Critical Thinking - Episode 1: Introductions, Bug Bounty Reports, and BB Tips',
-      authors: [{name: 'Joel Margolis'}, {name: 'Justin Gardner'}],
+      authors: [{ name: 'Joel Margolis' }, { name: 'Justin Gardner' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.criticalthinkingpodcast.io/episode-1-introductions-bug-bounty-reports-and-bb-tips/"
@@ -2494,7 +2609,7 @@ export const REFERENCES = {
   MINDSCAPE_253: <Content>{
     reference: {
       title: 'Mindscape 253 | David Deutsch on Science, Complexity, and Explanation',
-      authors: [{name: 'David Deutsch'}, {name: 'Sean Carroll'}],
+      authors: [{ name: 'David Deutsch' }, { name: 'Sean Carroll' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=ldgK7EhEnto"
@@ -2504,7 +2619,7 @@ export const REFERENCES = {
   PAST_PRESENT_AND_FUTURE_OF_MATHEMATICS: <Content>{
     reference: {
       title: 'Past, Present, & Future of Mathematics',
-      authors: [{name: 'Grant Sanderson'}, {name: 'Dwarkesh Patel'}],
+      authors: [{ name: 'Grant Sanderson' }, { name: 'Dwarkesh Patel' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=oDyviiN4NVo"
@@ -2514,7 +2629,7 @@ export const REFERENCES = {
   GOD_MODE_UNLOCKED_HARDWARE_BACKDOORS_IN_X86_CPUS: <Content>{
     reference: {
       title: 'GOD MODE UNLOCKED - Hardware Backdoors in x86 CPUs',
-      authors: [{name: 'Christopher Domas'}],
+      authors: [{ name: 'Christopher Domas' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2018',
       link: "https://www.youtube.com/watch?v=_eSAF_qT_FY"
@@ -2524,7 +2639,7 @@ export const REFERENCES = {
   BREAKING_THE_X86_INSTRUCTION_SET: <Content>{
     reference: {
       title: 'Breaking the x86 Instruction Set',
-      authors: [{name: 'Christopher Domas'}],
+      authors: [{ name: 'Christopher Domas' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2017',
       link: "https://www.youtube.com/watch?v=KrksBdWcZgQ"
@@ -2534,7 +2649,7 @@ export const REFERENCES = {
   REDUCTIO_AD_ABSURDUM: <Content>{
     reference: {
       title: 'reductio ad absurdum',
-      authors: [{name: 'Christopher Domas'}],
+      authors: [{ name: 'Christopher Domas' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2017',
       link: "https://www.youtube.com/watch?v=NmWwRmvjAE8"
@@ -2544,7 +2659,7 @@ export const REFERENCES = {
   THE_RING_0_FACADE_AWAKENING_THE_PROCESSORS_INNER_DEMONS: <Content>{
     reference: {
       title: 'The Ring 0 Facade Awakening the Processors Inner Demons',
-      authors: [{name: 'Christopher Domas'}],
+      authors: [{ name: 'Christopher Domas' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2018',
       link: "https://www.youtube.com/watch?v=XH0F9r0siTI"
@@ -2554,7 +2669,7 @@ export const REFERENCES = {
   THE_DISCOVER_OF_ZENBLEED: <Content>{
     reference: {
       title: 'The Discovery of Zenbleed',
-      authors: [{name: 'Tavis Ormandy'}, {name: ' Fabian Faessler (LiveOverflow)'}],
+      authors: [{ name: 'Tavis Ormandy' }, { name: ' Fabian Faessler (LiveOverflow)' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=neWc0H1k2Lc"
@@ -2564,7 +2679,7 @@ export const REFERENCES = {
   HIGHER_ORDER_COMPANY_ORIGINS_OF_THE_HVM: <Content>{
     reference: {
       title: 'Higher Order Company - Origins of the HVM',
-      authors: [{name: 'Victor Taelin'}],
+      authors: [{ name: 'Victor Taelin' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=UQNNs77SpXA"
@@ -2574,7 +2689,7 @@ export const REFERENCES = {
   MLST_OBSERVERS: <Content>{
     reference: {
       title: 'MLST - Observers',
-      authors: [{name: 'Stephen Wolfram'}, {name: 'Karl Friston'}, {name: 'Keith Duggar'}],
+      authors: [{ name: 'Stephen Wolfram' }, { name: 'Karl Friston' }, { name: 'Keith Duggar' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.mlst],
       year: '2023',
       link: "https://www.youtube.com/watch?v=6iaT-0Dvhnc"
@@ -2584,7 +2699,7 @@ export const REFERENCES = {
   COMPOSITIONAL_INTELLIGENCE: <Content>{
     reference: {
       title: 'Compositional Intelligence',
-      authors: [{name: 'Bob Coecke'}],
+      authors: [{ name: 'Bob Coecke' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.topos_institute],
       year: '2022',
       link: "https://www.youtube.com/watch?v=03ZPDyj8TtM"
@@ -2594,7 +2709,7 @@ export const REFERENCES = {
   MODERNIZING_COMPILER_DESIGN_FOR_CARBON_TOOLCHAIN: <Content>{
     reference: {
       title: 'Modernizing Compiler Design for Carbon Toolchain',
-      authors: [{name: 'Chandler Carruth'}],
+      authors: [{ name: 'Chandler Carruth' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=ZI198eFghJk"
@@ -2604,7 +2719,7 @@ export const REFERENCES = {
   YASP_EPISODE_2: <Content>{
     reference: {
       title: 'Automated Reasoning, SMT Solvers, Artificial Intelligence • YASP #2',
-      authors: [{name: 'Clark Barrett'}],
+      authors: [{ name: 'Clark Barrett' }],
       organizations: [ORGANIZATIONS.youtube],
       year: '2023',
       link: "https://www.youtube.com/watch?v=RVjQkUI0kcw"
@@ -2614,7 +2729,7 @@ export const REFERENCES = {
   CURSORLESS_A_SPOKEN_LANGUAGE_FOR_EDITING_CODE: <Content>{
     reference: {
       title: 'Cursorless: A spoken language for editing code',
-      authors: [{name: 'Pokey Rule'}],
+      authors: [{ name: 'Pokey Rule' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=NcUJnmBqHTY"
@@ -2624,7 +2739,7 @@ export const REFERENCES = {
   COMPUTATIONAL_PHSYICS_BEYOND_THE_GLASS: <Content>{
     reference: {
       title: 'Computational Physics, Beyond the Glass',
-      authors: [{name: 'Sam Ritchie'}],
+      authors: [{ name: 'Sam Ritchie' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=Jv2JgzAl5yU"
@@ -2634,7 +2749,7 @@ export const REFERENCES = {
   AN_APPROACH_TO_COMPUTING_AND_SUSTAINABILITY_INSPIRED_FROM_PERMACULTURE: <Content>{
     reference: {
       title: 'An approach to computing and sustainability inspired from permaculture',
-      authors: [{name: 'Devine Lu Linvega'}],
+      authors: [{ name: 'Devine Lu Linvega' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=T3u7bGgVspM"
@@ -2644,7 +2759,7 @@ export const REFERENCES = {
   THE_ECONOMICS_OF_PROGRAMMING_LANGUAGES: <Content>{
     reference: {
       title: 'The Economics of Programming Languages',
-      authors: [{name: 'Evan Czaplicki'}],
+      authors: [{ name: 'Evan Czaplicki' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=XZ3w_jec1v8"
@@ -2654,7 +2769,7 @@ export const REFERENCES = {
   WAR_TIME_PROOFS_AND_FUTURISTIC_PROGRAMS: <Content>{
     reference: {
       title: 'War Time Proofs and Futuristic Programs',
-      authors: [{name: 'Valeria de Paiva'}],
+      authors: [{ name: 'Valeria de Paiva' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=4_6uboxUYR8"
@@ -2664,7 +2779,7 @@ export const REFERENCES = {
   FROM_GEOMETRY_TO_ALGEBRA_AND_BACK_AGAIN_4000_YEARS_OF_PAPERS: <Content>{
     reference: {
       title: 'From Geometry to Algebra and Back Again: 4000 Years of Papers',
-      authors: [{name: 'Jack Rusher'}],
+      authors: [{ name: 'Jack Rusher' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=1cRFfYQYGxE"
@@ -2674,7 +2789,7 @@ export const REFERENCES = {
   WE_REALLY_DONT_KNOW_HOW_TO_COMPUTE: <Content>{
     reference: {
       title: 'We Really Don\'t Know How to Compute!',
-      authors: [{name: 'Gerald Sussman'}],
+      authors: [{ name: 'Gerald Sussman' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=HB5TrK7A4pI"
@@ -2683,7 +2798,7 @@ export const REFERENCES = {
   WHY_PROGRAMMING_LANGUAGES_MATTER: <Content>{
     reference: {
       title: 'Why Programming Languages Matter',
-      authors: [{name: 'Andrew Black'}],
+      authors: [{ name: 'Andrew Black' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop],
       year: '2023',
       link: "https://www.youtube.com/watch?v=JqYCt9rTG8g"
@@ -2692,7 +2807,7 @@ export const REFERENCES = {
   IPVM_SEAMLESS_SERVICES_FOR_AN_OPEN_WORLD: <Content>{
     reference: {
       title: 'IPVM: Seamless Services for an Open World',
-      authors: [{name: 'Brooklyn Zelenka'}],
+      authors: [{ name: 'Brooklyn Zelenka' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop, ORGANIZATIONS.wasm],
       year: '2023',
       link: "https://www.youtube.com/watch?v=Z5U8JQZXABs"
@@ -2701,7 +2816,7 @@ export const REFERENCES = {
   INSIDE_THE_WIZARD_RESEARCH_ENGINE: <Content>{
     reference: {
       title: 'Inside the Wizard Research Engine',
-      authors: [{name: 'Ben L. Titzer'}],
+      authors: [{ name: 'Ben L. Titzer' }],
       organizations: [ORGANIZATIONS.youtube, ORGANIZATIONS.strangeloop, ORGANIZATIONS.wasm],
       year: '2023',
       link: "https://www.youtube.com/watch?v=43ENxjq2Vhc"
@@ -2710,7 +2825,7 @@ export const REFERENCES = {
   CURRY_HOWARD_IS_OVERRATED: <Content>{
     reference: {
       title: 'Curry-Howard is overrated',
-      authors: [{name: 'Simon Cruanes'}],
+      authors: [{ name: 'Simon Cruanes' }],
       year: '2021',
       link: "https://blag.cedeela.fr/curry-howard-scam/"
     }, status: Viewed.VIEWED, viewed_at: "2023, October"
@@ -2718,8 +2833,8 @@ export const REFERENCES = {
   DUNE: <Content>{
     reference: {
       title: 'Dune',
-      authors: [{name: 'Herbert, Frank'}],
-      published: [{name: 'Ace Books'}],
+      authors: [{ name: 'Herbert, Frank' }],
+      published: [{ name: 'Ace Books' }],
       year: '1965',
       link: "https://en.wikipedia.org/wiki/Dune_(novel)"
     }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
@@ -2727,8 +2842,8 @@ export const REFERENCES = {
   DUNE_MESSIAH: <Content>{
     reference: {
       title: 'Dune Messiah',
-      authors: [{name: 'Herbert, Frank'}],
-      published: [{name: 'Ace Books'}],
+      authors: [{ name: 'Herbert, Frank' }],
+      published: [{ name: 'Ace Books' }],
       year: '1969',
       link: 'https://en.wikipedia.org/wiki/Dune_Messiah'
     }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
@@ -2736,8 +2851,8 @@ export const REFERENCES = {
   CHILDREN_OF_DUNE: <Content>{
     reference: {
       title: "Children of Dune",
-      authors: [{name: "Herbert, Frank"}],
-      published: [{name: "Ace Books"}],
+      authors: [{ name: "Herbert, Frank" }],
+      published: [{ name: "Ace Books" }],
       year: "1976",
       link: "https://en.wikipedia.org/wiki/Children_of_Dune"
     }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
@@ -2745,8 +2860,8 @@ export const REFERENCES = {
   GOD_EMPEROR_OF_DUNE: <Content>{
     reference: {
       title: "God Emperor of Dune",
-      authors: [{name: "Herbert, Frank"}],
-      published: [{name: "Ace Books"}],
+      authors: [{ name: "Herbert, Frank" }],
+      published: [{ name: "Ace Books" }],
       year: "1981",
       link: "https://en.wikipedia.org/wiki/God_Emperor_of_Dune",
     }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2022", type: 'book'
@@ -2754,8 +2869,8 @@ export const REFERENCES = {
   HERETICS_OF_DUNE: <Content>{
     reference: {
       title: "Heretics of Dune",
-      authors: [{name: "Herbert, Frank"}],
-      published: [{name: "Ace Books"}],
+      authors: [{ name: "Herbert, Frank" }],
+      published: [{ name: "Ace Books" }],
       year: "1984",
       link: "https://en.wikipedia.org/wiki/Heretics_of_Dune"
     }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2022", type: 'book'
@@ -2763,8 +2878,8 @@ export const REFERENCES = {
   CHAPTERHOUSE_DUNE: <Content>{
     reference: {
       title: "Chapterhouse: Dune",
-      authors: [{name: "Herbert, Frank"}],
-      published: [{name: "Ace Books"}],
+      authors: [{ name: "Herbert, Frank" }],
+      published: [{ name: "Ace Books" }],
       year: "1985",
       link: "https://en.wikipedia.org/wiki/Chapterhouse:_Dune"
     }, status: Viewed.IN_PROGRESS, found_at: "2021", viewed_at: "2022 - ", type: 'book'
@@ -2773,8 +2888,8 @@ export const REFERENCES = {
   FLUID_CONCEPTS_AND_CREATIVE_ANALOGIES: <Content>{
     reference: {
       title: "Fluid concepts and creative analogies: Computer models of the fundamental mechanisms of thought",
-      authors: [{name: "Hofstadter, Douglas R"}],
-      published: [{name: "Basic books"}],
+      authors: [{ name: "Hofstadter, Douglas R" }],
+      published: [{ name: "Basic books" }],
       year: "1995",
       link: "https://en.wikipedia.org/wiki/Fluid_Concepts_and_Creative_Analogies",
     }, status: Viewed.VIEWED, found_at: "January, 2022", viewed_at: "January, 2022 - May, 2022", type: 'book'
@@ -2783,8 +2898,8 @@ export const REFERENCES = {
   GODEL_ESCHER_BACH: <Content>{
     reference: {
       title: "Gödel, escher, bach",
-      authors: [{name: "Hofstadter, Douglas R"}],
-      published: [{name: "New York: Basic books"}],
+      authors: [{ name: "Hofstadter, Douglas R" }],
+      published: [{ name: "New York: Basic books" }],
       year: "1979",
       link: "https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach",
     }, status: Viewed.IN_PROGRESS, found_at: "March, 2022", viewed_at: "March, 2022 - ", type: 'book'
@@ -2793,8 +2908,8 @@ export const REFERENCES = {
   QUANTUM_EINSTEIN_BOHR_AND_THE_GREAT_DEBATE_ABOUT_THE_NATURE_OF_REALITY: <Content>{
     reference: {
       title: "Quantum: Einstein, Bohr and the great debate about the nature of reality",
-      authors: [{name: "Kumar, Manjit"}],
-      published: [{name: "Icon Books Ltd"}],
+      authors: [{ name: "Kumar, Manjit" }],
+      published: [{ name: "Icon Books Ltd" }],
       year: "2008",
       link: "https://en.wikipedia.org/wiki/Quantum_(book)",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "2022 - October, 2022", type: 'book'
@@ -2803,8 +2918,8 @@ export const REFERENCES = {
   THE_ART_OF_WAR: <Content>{
     reference: {
       title: "The Art of War / Sun Tzu",
-      authors: [{name: "Cleary, Thomas"}],
-      published: [{name: "Thomas Clearly translation. Shambhala Publications"}],
+      authors: [{ name: "Cleary, Thomas" }],
+      published: [{ name: "Thomas Clearly translation. Shambhala Publications" }],
       year: "6th cent. B.C.",
       link: "https://en.wikipedia.org/wiki/Thomas_Cleary",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "2022", archived: true, type: 'book'
@@ -2813,8 +2928,8 @@ export const REFERENCES = {
   _1984: <Content>{
     reference: {
       title: "1984",
-      authors: [{name: "Orwell, George"}],
-      published: [{name: "Secker & Warburg"}],
+      authors: [{ name: "Orwell, George" }],
+      published: [{ name: "Secker & Warburg" }],
       year: "1949",
       link: "https://en.wikipedia.org/wiki/Nineteen_Eighty-Four",
     }, status: Viewed.VIEWED, found_at: "2021", viewed_at: "2021", type: 'book'
@@ -2823,8 +2938,8 @@ export const REFERENCES = {
   ANIMAL_FARM: <Content>{
     reference: {
       title: "Animal Farm",
-      authors: [{name: "Orwell, George"}],
-      published: [{name: "Secker & Warburg"}],
+      authors: [{ name: "Orwell, George" }],
+      published: [{ name: "Secker & Warburg" }],
       year: "1945",
       link: "https://en.wikipedia.org/wiki/Animal_Farm",
     }, status: Viewed.IN_PROGRESS, found_at: "2021", viewed_at: "2021", archived: true
@@ -2833,8 +2948,8 @@ export const REFERENCES = {
   THE_FUTURE_OF_HUMANITY: <Content>{
     reference: {
       title: "The Future of Humanity: Terraforming Mars, Interstellar Travel, Immortality, and Our Destiny Beyond Earth",
-      authors: [{name: "Kaku, Michio"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Kaku, Michio" }],
+      published: [{ name: "Doubleday" }],
       year: "2018",
       link: "https://en.wikipedia.org/wiki/The_Future_of_Humanity",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "November, 2022"
@@ -2843,8 +2958,8 @@ export const REFERENCES = {
   FOUNDATION: <Content>{
     reference: {
       title: "Foundation",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Gnome Press"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Gnome Press" }],
       year: "1951",
       link: "https://en.wikipedia.org/wiki/Foundation_(Asimov_novel)",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October, 2022", type: 'book'
@@ -2853,8 +2968,8 @@ export const REFERENCES = {
   SECOND_FOUNDATION: <Content>{
     reference: {
       title: "Second Foundation",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Gnome Press"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Gnome Press" }],
       year: "1953",
       link: "https://en.wikipedia.org/wiki/Second_Foundation",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October, 2022 - January, 2023", type: 'book'
@@ -2863,8 +2978,8 @@ export const REFERENCES = {
   FOUNDATION_AND_EMPIRE: <Content>{
     reference: {
       title: "Foundation and Empire",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Gnome Press"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Gnome Press" }],
       year: "1952",
       link: "https://en.wikipedia.org/wiki/Foundation_and_Empire",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "January, 2023", type: 'book'
@@ -2873,8 +2988,8 @@ export const REFERENCES = {
   PRELUDE_TO_FOUNDATION: <Content>{
     reference: {
       title: "Prelude to Foundation",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1988",
       link: "https://en.wikipedia.org/wiki/Prelude_to_Foundation",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "April, 2023", type: 'book'
@@ -2883,8 +2998,8 @@ export const REFERENCES = {
   FOUNDATIONS_EDGE: <Content>{
     reference: {
       title: "Foundation's Edge",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1982",
       link: "https://en.wikipedia.org/wiki/Foundation%27s_Edge",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "March, 2023", type: 'book'
@@ -2893,8 +3008,8 @@ export const REFERENCES = {
   FOUNDATION_AND_EARTH: <Content>{
     reference: {
       title: "Foundation and Earth",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1986",
       link: "https://en.wikipedia.org/wiki/Foundation_and_Earth",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "March, 2023", type: 'book'
@@ -2903,8 +3018,8 @@ export const REFERENCES = {
   FORWARD_THE_FOUNDATION: <Content>{
     reference: {
       title: "Forward the Foundation",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1993",
       link: "https://en.wikipedia.org/wiki/Forward_the_Foundation",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May, 2023", type: 'book'
@@ -2913,8 +3028,8 @@ export const REFERENCES = {
   I_ROBOT: <Content>{
     reference: {
       title: "I, Robot",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Gnome Press"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Gnome Press" }],
       year: "1950",
       link: "https://en.wikipedia.org/wiki/I,_Robot",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "April, 2023", type: 'book'
@@ -2923,8 +3038,8 @@ export const REFERENCES = {
   THE_REST_OF_THE_ROBOTS: <Content>{
     reference: {
       title: "The Rest of the Robots",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1964",
       link: "https://en.wikipedia.org/wiki/The_Rest_of_the_Robots",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May, 2023", type: 'book'
@@ -2933,8 +3048,8 @@ export const REFERENCES = {
   THE_COMPLETE_ROBOT: <Content>{
     reference: {
       title: "The Complete Robot",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1982",
       link: "https://en.wikipedia.org/wiki/The_Complete_Robot",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "June, 2023", type: 'book'
@@ -2943,8 +3058,8 @@ export const REFERENCES = {
   THE_CAVES_OF_STEEL: <Content>{
     reference: {
       title: "The Caves of Steel",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1954",
       link: "https://en.wikipedia.org/wiki/The_Caves_of_Steel",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023", type: 'book'
@@ -2953,8 +3068,8 @@ export const REFERENCES = {
   THE_NAKED_SUN: <Content>{
     reference: {
       title: "The Naked Sun",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1957",
       link: "https://en.wikipedia.org/wiki/The_Naked_Sun",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "August, 2023", type: 'book'
@@ -2963,8 +3078,8 @@ export const REFERENCES = {
   THE_ROBOTS_OF_DAWN: <Content>{
     reference: {
       title: "The Robots of Dawn",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1983",
       link: "https://en.wikipedia.org/wiki/The_Robots_of_Dawn",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "September, 2023", type: 'book'
@@ -2973,8 +3088,8 @@ export const REFERENCES = {
   ROBOTS_AND_EMPIRE: <Content>{
     reference: {
       title: "Robots and Empire",
-      authors: [{name: "Asimov, Isaac"}],
-      published: [{name: "Doubleday"}],
+      authors: [{ name: "Asimov, Isaac" }],
+      published: [{ name: "Doubleday" }],
       year: "1985",
       link: "https://en.wikipedia.org/wiki/Robots_and_Empire",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "October, 2023", type: 'book'
@@ -2983,8 +3098,8 @@ export const REFERENCES = {
   THE_RISE_AND_FALL_OF_THE_THIRD_REICH: <Content>{
     reference: {
       title: "The Rise and Fall of the Third Reich",
-      authors: [{name: "Shirer, William L"}],
-      published: [{name: "Simon & Schuster"}],
+      authors: [{ name: "Shirer, William L" }],
+      published: [{ name: "Simon & Schuster" }],
       year: "1960",
       link: "https://en.wikipedia.org/wiki/The_Rise_and_Fall_of_the_Third_Reich",
     }, status: Viewed.IN_PROGRESS, found_at: "July, 2022", viewed_at: "September, 2022 - ", type: 'book'
@@ -2993,8 +3108,8 @@ export const REFERENCES = {
   A_NEW_KIND_OF_SCIENCE: <Content>{
     reference: {
       title: "A new kind of science?",
-      authors: [{name: "Wolfram, Stephen"}, {name: "M. Gad-el-Hak"}],
-      published: [{name: "Appl. Mech. Rev. 56.2"}],
+      authors: [{ name: "Wolfram, Stephen" }, { name: "M. Gad-el-Hak" }],
+      published: [{ name: "Appl. Mech. Rev. 56.2" }],
       year: "2003",
       link: "https://www.wolframscience.com/nks/",
     }, status: Viewed.IN_PROGRESS,
@@ -3003,8 +3118,8 @@ export const REFERENCES = {
   A_PROJECT_TO_FIND_THE_FUNDAMENTAL_THEORY_OF_PHYSICS: <Content>{
     reference: {
       title: "A Project to Find the Fundamental Theory of Physics",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: "Wolfram Media, Inc."}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "Wolfram Media, Inc." }],
       year: "2020",
       link: "https://www.wolframphysics.org/",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "December, 2022 - ", type: 'book'
@@ -3013,8 +3128,8 @@ export const REFERENCES = {
   COMBINATORS_A_CENTENNIAL_VIEW: <Content>{
     reference: {
       title: "Combinators, A Centennial View",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: "Wolfram Media, Inc."}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "Wolfram Media, Inc." }],
       year: "2021",
       link: "https://arxiv.org/pdf/2103.12811.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December, 2022 - January, 2023", type: 'book'
@@ -3023,8 +3138,8 @@ export const REFERENCES = {
   METAMATHEMATICS: <Content>{
     reference: {
       title: "Metamathematics: Foundations & Physicalization",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: "Wolfram Media, Inc."}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "Wolfram Media, Inc." }],
       year: "2022",
       link: "https://arxiv.org/abs/2204.05123",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "May, 2023", type: 'book'
@@ -3033,8 +3148,8 @@ export const REFERENCES = {
   TWENTY_YEARS_NKS: <Content>{
     reference: {
       title: "Twenty Years of a New Kind of Science",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: "Wolfram Media, Inc."}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "Wolfram Media, Inc." }],
       year: "2022",
       link: "https://www.wolfram-media.com/products/twenty-years-of-a-new-kind-of-science/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June, 2023", type: 'book'
@@ -3043,8 +3158,8 @@ export const REFERENCES = {
   THE_SELFISH_GENE: <Content>{
     reference: {
       title: "The Selfish Gene",
-      authors: [{name: "Dawkins, Richard"}],
-      published: [{name: "Oxford University Press"}],
+      authors: [{ name: "Dawkins, Richard" }],
+      published: [{ name: "Oxford University Press" }],
       year: "1976",
       link: "https://en.wikipedia.org/wiki/The_Selfish_Gene",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "February 2023 - ", type: 'book'
@@ -3053,8 +3168,8 @@ export const REFERENCES = {
   TRANSFORMER: <Content>{
     reference: {
       title: "Transformer: The Deep Chemistry of Life and Death",
-      authors: [{name: "Lane, Nick"}],
-      published: [{name: "W.W. Norton & Company"}],
+      authors: [{ name: "Lane, Nick" }],
+      published: [{ name: "W.W. Norton & Company" }],
       year: "2022",
       link: "https://en.wikipedia.org/wiki/Nick_Lane",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "May 2023 - "
@@ -3063,8 +3178,8 @@ export const REFERENCES = {
   THE_VITAL_QUESTION: <Content>{
     reference: {
       title: "The Vital Question: Why Is Life The Way It Is?",
-      authors: [{name: "Lane, Nick"}],
-      published: [{name: "Profile Books"}],
+      authors: [{ name: "Lane, Nick" }],
+      published: [{ name: "Profile Books" }],
       year: "2015",
       link: "https://en.wikipedia.org/wiki/Nick_Lane",
     }, status: Viewed.IN_PROGRESS, found_at: "2022", viewed_at: "May 2023 - "
@@ -3073,8 +3188,8 @@ export const REFERENCES = {
   A_THOUSAND_BRAINS: <Content>{
     reference: {
       title: "A Thousand Brains: A New Theory of Intelligence",
-      authors: [{name: "Hawkins, Jeff"}],
-      published: [{name: ""}],
+      authors: [{ name: "Hawkins, Jeff" }],
+      published: [{ name: "" }],
       year: "2021",
       link: "https://www.numenta.com/resources/books/a-thousand-brains-by-jeff-hawkins/",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022", type: 'book'
@@ -3083,8 +3198,8 @@ export const REFERENCES = {
   REASONING_WITH_BELIEF_FUNCTIONS: <Content>{
     reference: {
       title: "Reasoning with belief functions: An analysis of compatibility",
-      authors: [{name: "Pearl, Judea"}],
-      published: [{name: "International Journal of Approximate Reasoning"}],
+      authors: [{ name: "Pearl, Judea" }],
+      published: [{ name: "International Journal of Approximate Reasoning" }],
       year: "1990",
       link: "https://www.sciencedirect.com/science/article/pii/0888613X9090013R/pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October 2022"
@@ -3093,8 +3208,8 @@ export const REFERENCES = {
   CONTEXT_AWARE_COMPUTING_APPLICATIONS: <Content>{
     reference: {
       title: "Context-Aware Computing Applications",
-      authors: [{name: "Schilit, Bill, Norman Adams, and Roy Want"}],
-      published: [{name: "first workshop on mobile computing systems and applications. IEEE"}],
+      authors: [{ name: "Schilit, Bill, Norman Adams, and Roy Want" }],
+      published: [{ name: "first workshop on mobile computing systems and applications. IEEE" }],
       year: "1994",
       link: "https://www.cs.cmu.edu/~./jasonh/courses/ubicomp-sp2007/papers/12-wmc-94-schilit.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3103,8 +3218,8 @@ export const REFERENCES = {
   IS_REALISM_COMPATIBLE_WITH_TRUE_RANDOMNESS: <Content>{
     reference: {
       title: "Is realism compatible with true randomness?",
-      authors: [{name: "Gisin, Nicolas"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Gisin, Nicolas" }],
+      published: [{ name: "arXiv" }],
       year: "2010",
       link: "https://arxiv.org/pdf/1012.2536",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "September 2022"
@@ -3113,8 +3228,8 @@ export const REFERENCES = {
   WHAT_IS_A_KNOWLEDGE_REPRESENTATION: <Content>{
     reference: {
       title: "What Is a Knowledge Representation?",
-      authors: [{name: "Davis, Randall, Howard Shrobe, and Peter Szolovits"}],
-      published: [{name: "AI magazine 14.1"}],
+      authors: [{ name: "Davis, Randall, Howard Shrobe, and Peter Szolovits" }],
+      published: [{ name: "AI magazine 14.1" }],
       year: "1993",
       link: "https://ojs.aaai.org/index.php/aimagazine/article/download/1029/947",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3123,8 +3238,8 @@ export const REFERENCES = {
   LEARNING_TO_REPRESENT_PROGRAMS_WITH_GRAPHS: <Content>{
     reference: {
       title: "Learning to Represent Programs with Graphs",
-      authors: [{name: "Allamanis, Miltiadis, Marc Brockschmidt, and Mahmoud Khademi"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Allamanis, Miltiadis, Marc Brockschmidt, and Mahmoud Khademi" }],
+      published: [{ name: "arXiv" }],
       year: "2017",
       link: "https://arxiv.org/pdf/1711.00740",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3133,8 +3248,8 @@ export const REFERENCES = {
   A_THEORY_OF_INCREMENTAL_COMPRESSION: <Content>{
     reference: {
       title: "A theory of incremental compression",
-      authors: [{name: "Franz, Arthur, Oleksandr Antonenko, and Roman Soletskyi"}],
-      published: [{name: "Information Sciences 547"}],
+      authors: [{ name: "Franz, Arthur, Oleksandr Antonenko, and Roman Soletskyi" }],
+      published: [{ name: "Information Sciences 547" }],
       year: "2021",
       link: "https://arxiv.org/pdf/1908.03781",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "August 2022"
@@ -3143,8 +3258,8 @@ export const REFERENCES = {
   ON_THE_MEASURE_OF_INTELLIGENCE: <Content>{
     reference: {
       title: "On the Measure of Intelligence",
-      authors: [{name: "Chollet, François"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Chollet, François" }],
+      published: [{ name: "arXiv" }],
       year: "2019",
       link: "https://arxiv.org/pdf/1911.01547",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December 2022"
@@ -3153,8 +3268,8 @@ export const REFERENCES = {
   EMPIRICISM_SEMANTICS_AND_ONTOLOGY: <Content>{
     reference: {
       title: "Empiricism, Semantics, and Ontology",
-      authors: [{name: "Carnap, Rudolf"}],
-      published: [{name: "Revue internationale de philosophie"}],
+      authors: [{ name: "Carnap, Rudolf" }],
+      published: [{ name: "Revue internationale de philosophie" }],
       year: "1950",
       link: "https://authortomharper.com/wp-content/uploads/2022/04/1950-Empiricism-Semantics-and-Ontology-Carnap.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October 2022"
@@ -3163,7 +3278,7 @@ export const REFERENCES = {
   HUTTER_PRIZE: <Content>{
     reference: {
       title: "Hutter Prize",
-      authors: [{name: "Hutter, Marcus"}],
+      authors: [{ name: "Hutter, Marcus" }],
       link: "https://en.wikipedia.org/wiki/Hutter_Prize",
     }, status: Viewed.VIEWED
   },
@@ -3171,8 +3286,8 @@ export const REFERENCES = {
   GOING_BEYOND_THE_POINT_NEURON: <Content>{
     reference: {
       title: "Going Beyond the Point Neuron: Active Dendrites and Sparse Representations for Continual Learning",
-      authors: [{name: "Grewal, Karan, et al."}],
-      published: [{name: "bioRxiv"}],
+      authors: [{ name: "Grewal, Karan, et al." }],
+      published: [{ name: "bioRxiv" }],
       year: "2021",
       link: "https://www.biorxiv.org/content/biorxiv/early/2021/10/26/2021.10.25.465651.full.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "September 2022"
@@ -3181,8 +3296,8 @@ export const REFERENCES = {
   THE_GENERAL_THEORY_OF_GENERAL_INTELLIGENCE: <Content>{
     reference: {
       title: "The General Theory of General Intelligence: A Pragmatic Patternist Perspective",
-      authors: [{name: "Goertzel, Ben"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Goertzel, Ben" }],
+      published: [{ name: "arXiv" }],
       year: "2021",
       link: "https://arxiv.org/pdf/2103.15100",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "September 2022"
@@ -3191,8 +3306,8 @@ export const REFERENCES = {
   EMBODIED_SITUATED_AND_GROUNDED_INTELLIGENCE: <Content>{
     reference: {
       title: "Embodied, Situated, and Grounded Intelligence: Implications for AI",
-      authors: [{name: "Millhouse, Tyler, Melanie Moses, and Melanie Mitchell"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Millhouse, Tyler, Melanie Moses, and Melanie Mitchell" }],
+      published: [{ name: "arXiv" }],
       year: "2022",
       link: "https://arxiv.org/pdf/2210.13589",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "October 2022"
@@ -3201,8 +3316,8 @@ export const REFERENCES = {
   THE_DEBATE_OVER_UNDERSTANDING_IN_AI_LARGE_LANGUAGE_MODELS: <Content>{
     reference: {
       title: "The Debate Over Understanding in AI’s Large Language Models",
-      authors: [{name: "Mitchell, Melanie, and David C. Krakauer"}],
-      published: [{name: "Proceedings of the National Academy of Sciences 120.13"}],
+      authors: [{ name: "Mitchell, Melanie, and David C. Krakauer" }],
+      published: [{ name: "Proceedings of the National Academy of Sciences 120.13" }],
       year: "2023",
       link: "https://www.pnas.org/doi/full/10.1073/pnas.2215907120",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "November 2022"
@@ -3211,8 +3326,8 @@ export const REFERENCES = {
   BEYOND_PROGRAMMING_LANGUAGES: <Content>{
     reference: {
       title: "Beyond Programming Languages",
-      authors: [{name: "Winograd, Terry"}],
-      published: [{name: "Communications of the ACM 22.7"}],
+      authors: [{ name: "Winograd, Terry" }],
+      published: [{ name: "Communications of the ACM 22.7" }],
       year: "1979",
       link: "https://dl.acm.org/doi/pdf/10.1145/359131.359133",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3221,8 +3336,8 @@ export const REFERENCES = {
   DATA_COMPRESSION_EXPLAINED: <Content>{
     reference: {
       title: "Data Compression Explained",
-      authors: [{name: "Mahoney, Matt"}],
-      published: [{name: "Mahoney, Matt"}],
+      authors: [{ name: "Mahoney, Matt" }],
+      published: [{ name: "Mahoney, Matt" }],
       year: "2010",
       link: "https://mattmahoney.net/dc/dce.html",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "June 2022"
@@ -3231,8 +3346,8 @@ export const REFERENCES = {
   IPFS_FAN_A_FUNCTION_ADDRESSABLE_COMPUTATION_NETWORK: <Content>{
     reference: {
       title: "IPFS-FAN: A Function-Addressable Computation Network",
-      authors: [{name: "de la Rocha, Alfonso, Yiannis Psaras, and David Dias"}],
-      published: [{name: "IFIP Networking Conference (IFIP Networking). IEEE"}],
+      authors: [{ name: "de la Rocha, Alfonso, Yiannis Psaras, and David Dias" }],
+      published: [{ name: "IFIP Networking Conference (IFIP Networking). IEEE" }],
       year: "2021",
       link: "http://opendl.ifip-tc6.org/db/conf/networking/networking2021/1570713481.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December 2022"
@@ -3241,8 +3356,8 @@ export const REFERENCES = {
   AVOIDING_CATASTROPHE_ACTIVE_DENDRITES_ENABLE_MULTI_TASK_LEARNING_IN_DYNAMICS_ENVIRONMENTS: <Content>{
     reference: {
       title: "Avoiding Catastrophe: Active Dendrites Enable Multi-Task Learning in Dynamic Environments",
-      authors: [{name: "Iyer, Abhiram, et al."}],
-      published: [{name: "Frontiers in neurorobotics 16"}],
+      authors: [{ name: "Iyer, Abhiram, et al." }],
+      published: [{ name: "Frontiers in neurorobotics 16" }],
       year: "2022",
       link: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9100780/",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: " 2022"
@@ -3251,8 +3366,8 @@ export const REFERENCES = {
   GAMES_AND_PUZZLES_AS_MULTICOMPUTATIONAL_SYSTEMS: <Content>{
     reference: {
       title: "Games and Puzzles as Multicomputational Systems",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2022",
       link: "https://writings.stephenwolfram.com/2022/06/games-and-puzzles-as-multicomputational-systems/",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "November 2022"
@@ -3261,8 +3376,8 @@ export const REFERENCES = {
   A_THOUSAND_BRAINS_TOWARD_BIOLOGICALLY_CONSTRAINED_AI: <Content>{
     reference: {
       title: "A thousand brains: toward biologically constrained AI",
-      authors: [{name: "Hole, Kjell Jørgen, and Subutai Ahmad"}],
-      published: [{name: "SN Applied Sciences 3.8"}],
+      authors: [{ name: "Hole, Kjell Jørgen, and Subutai Ahmad" }],
+      published: [{ name: "SN Applied Sciences 3.8" }],
       year: "2021",
       link: "https://link.springer.com/article/10.1007/s42452-021-04715-0",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3271,8 +3386,8 @@ export const REFERENCES = {
   IS_PROBABILITY_THEORY_RELEVANT_FOR_UNCERTAINTY: <Content>{
     reference: {
       title: "Is Probability Theory Relevant for Uncertainty? A Post Keynesian Perspective",
-      authors: [{name: "Davidson, Paul"}],
-      published: [{name: "Journal of Economic Perspectives 5.1"}],
+      authors: [{ name: "Davidson, Paul" }],
+      published: [{ name: "Journal of Economic Perspectives 5.1" }],
       year: "1991",
       link: "https://pubs.aeaweb.org/doi/pdf/10.1257/jep.5.1.129",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: " 2022"
@@ -3281,8 +3396,8 @@ export const REFERENCES = {
   MULTICOMPUTATION_A_FOURTH_PARADIGM_FOR_THEORETICAL_SCIENCE: <Content>{
     reference: {
       title: "Multicomputation: A Fourth Paradigm for Theoretical Science",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2021",
       link: "https://writings.stephenwolfram.com/2021/09/multicomputation-a-fourth-paradigm-for-theoretical-science/",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December 2022"
@@ -3291,8 +3406,8 @@ export const REFERENCES = {
   ATTENTION_IS_ALL_YOU_NEED: <Content>{
     reference: {
       title: "Attention Is All You Need",
-      authors: [{name: "Vaswani, Ashish, et al."}],
-      published: [{name: "Advances in neural information processing systems 30"}],
+      authors: [{ name: "Vaswani, Ashish, et al." }],
+      published: [{ name: "Advances in neural information processing systems 30" }],
       year: "2017",
       link: "https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "November 2022"
@@ -3301,8 +3416,8 @@ export const REFERENCES = {
   ON_THE_EINSTEIN_PODOLSKY_ROSEN_PARADOX: <Content>{
     reference: {
       title: "On the Einstein Podolsky Rosen Paradox",
-      authors: [{name: "Bell, John S."}],
-      published: [{name: "Physics Physique Fizika 1.3 "}],
+      authors: [{ name: "Bell, John S." }],
+      published: [{ name: "Physics Physique Fizika 1.3 " }],
       year: "1964",
       link: "https://link.aps.org/pdf/10.1103/PhysicsPhysiqueFizika.1.195",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "June 2022"
@@ -3311,8 +3426,8 @@ export const REFERENCES = {
   THE_ALGORITHMIC_ORIGINS_OF_LIFE: <Content>{
     reference: {
       title: "The algorithmic origins of life",
-      authors: [{name: "Walker, Sara Imari, and Paul CW Davies"}],
-      published: [{name: "Journal of the Royal Society Interface 10.79"}],
+      authors: [{ name: "Walker, Sara Imari, and Paul CW Davies" }],
+      published: [{ name: "Journal of the Royal Society Interface 10.79" }],
       year: "2013",
       link: "https://royalsocietypublishing.org/doi/full/10.1098/rsif.2012.0869",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "November 2022"
@@ -3321,8 +3436,8 @@ export const REFERENCES = {
   THE_COMPUTER_FOR_THE_21ST_CENTURY: <Content>{
     reference: {
       title: "The computer for the 21st century",
-      authors: [{name: "Weiser, Mark"}],
-      published: [{name: "Scientific american 265.3 "}],
+      authors: [{ name: "Weiser, Mark" }],
+      published: [{ name: "Scientific american 265.3 " }],
       year: "1991",
       link: "https://www.academia.edu/download/50943771/scientificamerican0991-9420161217-28996-1rvsbxf.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3331,8 +3446,8 @@ export const REFERENCES = {
   SOK_SANITIZING_FOR_SECURITY: <Content>{
     reference: {
       title: "SoK: Sanitizing for Security",
-      authors: [{name: "Song, Dokyung, et al."}],
-      published: [{name: "IEEE Symposium on Security and Privacy (SP). IEEE"}],
+      authors: [{ name: "Song, Dokyung, et al." }],
+      published: [{ name: "IEEE Symposium on Security and Privacy (SP). IEEE" }],
       year: "2019",
       link: "https://arxiv.org/pdf/1806.04355",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "May 2022"
@@ -3341,8 +3456,8 @@ export const REFERENCES = {
   UNCERTAINTY_BELIEF_AND_PROBABILITY: <Content>{
     reference: {
       title: "Uncertainty, belief, and probability",
-      authors: [{name: "Fagin, Ronald, and Joseph Y. Halpern"}],
-      published: [{name: "Computational Intelligence 7.3"}],
+      authors: [{ name: "Fagin, Ronald, and Joseph Y. Halpern" }],
+      published: [{ name: "Computational Intelligence 7.3" }],
       year: "1991",
       link: "https://s3.us.cloud-object-storage.appdomain.cloud/res-files/500-comint91.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "September 2022"
@@ -3351,8 +3466,8 @@ export const REFERENCES = {
   ON_DEFINING_ARTIFICAL_INTELLIGENCE: <Content>{
     reference: {
       title: "On Defining Artificial Intelligence",
-      authors: [{name: "Wang, Pei"}],
-      published: [{name: "Journal of Artificial General Intelligence 10.2"}],
+      authors: [{ name: "Wang, Pei" }],
+      published: [{ name: "Journal of Artificial General Intelligence 10.2" }],
       year: "2019",
       link: "https://sciendo.com/downloadpdf/journals/jagi/10/2/article-p1.pdf",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "August 2022"
@@ -3361,22 +3476,22 @@ export const REFERENCES = {
   ROBUST_SPEECH_RECOGNITION_VIA_LARGE_SCALE_WEAK_SUPERVISION: <Content>{
     reference: {
       title: "Robust Speech Recognition via Large-Scale Weak Supervision",
-      authors: [{name: "Radford, Alec, et al."}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Radford, Alec, et al." }],
+      published: [{ name: "arXiv" }],
       year: "2022",
       link: "https://arxiv.org/pdf/2212.04356",
     }, status: Viewed.VIEWED, found_at: "2022", viewed_at: "December 2022"
   },
 
 
-//
+  //
 
 
   INTERACTION_COMBINATORS: <Content>{
     reference: {
       title: "Interaction Combinators",
-      authors: [{name: "Lafont, Yves."}],
-      published: [{name: "Information and Computation 137.1"}],
+      authors: [{ name: "Lafont, Yves." }],
+      published: [{ name: "Information and Computation 137.1" }],
       year: "1997",
       link: "https://www.sciencedirect.com/science/article/pii/S0890540197926432/pdf?md5=30965cec6dd7605a865bbec4076f65e4&pid=1-s2.0-S0890540197926432-main.pdf",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3385,8 +3500,8 @@ export const REFERENCES = {
   VON_NEUMANNS_IMPOSSIBILITY_PROOF_MATHEMATICS_IN_THE_SERVICE_OF_RHETORICS: <Content>{
     reference: {
       title: "Von Neumann’s Impossibility Proof: Mathematics in the Service of Rhetorics",
-      authors: [{name: "Dieks, Dennis"}],
-      published: [{name: "Studies in History and Philosophy of Science Part B: Studies in History and Philosophy of Modern Physics 60"}],
+      authors: [{ name: "Dieks, Dennis" }],
+      published: [{ name: "Studies in History and Philosophy of Science Part B: Studies in History and Philosophy of Modern Physics 60" }],
       year: "2017",
       link: "https://arxiv.org/pdf/1801.09305",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "February 2023"
@@ -3395,8 +3510,8 @@ export const REFERENCES = {
   PERFECTLY_SECURE_STEGANOGRAPHY_USING_MINIMUM_ENTROPY_COUPLING: <Content>{
     reference: {
       title: "Perfectly Secure Steganography Using Minimum Entropy Coupling",
-      authors: [{name: "de Witt, Christian Schroeder, et al."}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "de Witt, Christian Schroeder, et al." }],
+      published: [{ name: "arXiv" }],
       year: "2022",
       link: "https://arxiv.org/pdf/2210.14889",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3405,8 +3520,8 @@ export const REFERENCES = {
   GENERAL_INTELLIGENCE_REQUIRES_RETHINKING_EXPLORATION: <Content>{
     reference: {
       title: "General Intelligence Requires Rethinking Exploration",
-      authors: [{name: "Jiang, Minqi, Tim Rocktäschel, and Edward Grefenstette"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Jiang, Minqi, Tim Rocktäschel, and Edward Grefenstette" }],
+      published: [{ name: "arXiv" }],
       year: "2022",
       link: "https://arxiv.org/pdf/2211.07819",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3415,8 +3530,8 @@ export const REFERENCES = {
   DENSEPOSE_FROM_WIFI: <Content>{
     reference: {
       title: "DensePose From WiFi",
-      authors: [{name: "Geng, Jiaqi, Dong Huang, and Fernando De la Torre"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Geng, Jiaqi, Dong Huang, and Fernando De la Torre" }],
+      published: [{ name: "arXiv" }],
       year: "2022",
       link: "https://arxiv.org/pdf/2301.00250",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "February 2023"
@@ -3425,8 +3540,8 @@ export const REFERENCES = {
   A_MECHANIZED_FORMALIZATION_OF_THE_WEBASSEMBLY_SPECIFICATION_IN_COQ: <Content>{
     reference: {
       title: "A Mechanized Formalization of the WebAssembly Specification in Coq",
-      authors: [{name: "Huang, Xuan"}],
-      published: [{name: "RIT Computer Science"}],
+      authors: [{ name: "Huang, Xuan" }],
+      published: [{ name: "RIT Computer Science" }],
       year: "2019",
       link: "https://www.semanticscholar.org/paper/A-Mechanized-Formalization-of-the-WebAssembly-in-Huang/2fde569f52c37fe8e45ebf05268e1b4341b58cbf",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "May 2023"
@@ -3435,8 +3550,8 @@ export const REFERENCES = {
   A_DENOTATIONAL_SEMANTICS_FOR_THE_SYMMETRIC_INTERACTION_COMBINATORS: <Content>{
     reference: {
       title: "A Denotational Semantics for the Symmetric Interaction Combinators",
-      authors: [{name: "Mazza, Damian"}],
-      published: [{name: "Mathematical Structures in Computer Science 17.3 "}],
+      authors: [{ name: "Mazza, Damian" }],
+      published: [{ name: "Mathematical Structures in Computer Science 17.3 " }],
       year: "2007",
       link: "https://www.researchgate.net/profile/Damiano-Mazza/publication/220173732_A_denotational_semantics_for_the_symmetric_interaction_combinators/links/0912f50f4273696c14000000/A-denotational-semantics-for-the-symmetric-interaction-combinators.pdf",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3445,8 +3560,8 @@ export const REFERENCES = {
   DEEP_SELF_MODELING_AS_A_FUNDAMENTAL_PRINCIPLE_IN_THE_DESIGN_OF_INTELLIGENT_SYSTEMS: <Content>{
     reference: {
       title: "Deep self-modeling as a fundamental principle in the design of intelligent systems",
-      authors: [{name: "Dean, George"}],
-      published: [{name: "Lab42"}],
+      authors: [{ name: "Dean, George" }],
+      published: [{ name: "Lab42" }],
       year: "2022",
       link: "https://lab42.global/past-challenges/essay-intelligence/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3454,8 +3569,8 @@ export const REFERENCES = {
   AI_ARTIFICIAL_INTELLIGENCE_OR_ARTIFICAL_IGNORANCE: <Content>{
     reference: {
       title: "A.I. (Artificial Intelligence or Artificial Ignorance?",
-      authors: [{name: "Pavan, Massimiliano"}],
-      published: [{name: "Lab42"}],
+      authors: [{ name: "Pavan, Massimiliano" }],
+      published: [{ name: "Lab42" }],
       year: "2022",
       link: "https://lab42.global/past-challenges/essay-intelligence/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3463,8 +3578,8 @@ export const REFERENCES = {
   FROM_HUME_TO_HUMAN_AI_A_RETURN_TO_THE_FOUNDATIONS_AND_RESTRICTIONS_OF_HUMEAN_REASONING: <Content>{
     reference: {
       title: "From Hume to Human AI: A return to the foundations and restrictions of hum(e)an reasoning",
-      authors: [{name: "Burke, Cassidy, Maura"}],
-      published: [{name: "Lab42"}],
+      authors: [{ name: "Burke, Cassidy, Maura" }],
+      published: [{ name: "Lab42" }],
       year: "2022",
       link: "https://lab42.global/past-challenges/essay-intelligence/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3472,8 +3587,8 @@ export const REFERENCES = {
   BUILDING_HUMAN_LIKE_INTELLIGENCE_AN_EVOLUTIONARY_PERSPECTIVE: <Content>{
     reference: {
       title: "Building human-like intelligence: an evolutionary perspective",
-      authors: [{name: "Ouellette, Simon"}],
-      published: [{name: "Lab42"}],
+      authors: [{ name: "Ouellette, Simon" }],
+      published: [{ name: "Lab42" }],
       year: "2022",
       link: "https://lab42.global/past-challenges/essay-intelligence/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3481,8 +3596,8 @@ export const REFERENCES = {
   A_CASE_FOR_COMPUTATIONAL_INTELLIGENCE_AS_RECURSIVE_ABSTRACTION_AND_GOAL_ORIENTED_SYNTHESIS: <Content>{
     reference: {
       title: "A Case for Computational Intelligence as Recursive Abstraction and Goal-Oriented Synthesis",
-      authors: [{name: "Song, Yiding"}],
-      published: [{name: "Lab42"}],
+      authors: [{ name: "Song, Yiding" }],
+      published: [{ name: "Lab42" }],
       year: "2022",
       link: "https://lab42.global/past-challenges/essay-intelligence/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "January 2023"
@@ -3491,8 +3606,8 @@ export const REFERENCES = {
   REVERSE_ENGINEERING_WEBASSEMBLY: <Content>{
     reference: {
       title: "Reverse Engineering WebAssembly",
-      authors: [{name: "Falliere, Nicolas"}],
-      published: [{name: "PNF Software"}],
+      authors: [{ name: "Falliere, Nicolas" }],
+      published: [{ name: "PNF Software" }],
       year: "2018",
       link: "https://www.pnfsoftware.com/reversing-wasm.pdf",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "May 2023"
@@ -3501,8 +3616,8 @@ export const REFERENCES = {
   TOROIDAL_TOPOLOGY_OF_POPULATION_ACTIVITY_IN_GRID_CELLS: <Content>{
     reference: {
       title: "Toroidal topology of population activity in grid cells",
-      authors: [{name: "Gardner, Richard J., et al."}],
-      published: [{name: "Nature 602.7895"}],
+      authors: [{ name: "Gardner, Richard J., et al." }],
+      published: [{ name: "Nature 602.7895" }],
       year: "2022",
       link: "https://www.nature.com/articles/s41586-021-04268-7",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3511,8 +3626,8 @@ export const REFERENCES = {
   A_50_YEAR_QUEST_MY_PERSONAL_JOURNEY_WITH_THE_SECOND_LAW_OF_THERMODYNAMICS: <Content>{
     reference: {
       title: "A 50-Year Quest: My Personal Journey with the Second Law of Thermodynamics",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://writings.stephenwolfram.com/2023/02/a-50-year-quest-my-personal-journey-with-the-second-law-of-thermodynamics/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3520,8 +3635,8 @@ export const REFERENCES = {
   ALIEN_INTELLIGENCE_AND_THE_CONCEPT_OF_TECHNOLOGY: <Content>{
     reference: {
       title: "Alien Intelligence and the Concept of Technology",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2022",
       link: "https://writings.stephenwolfram.com/2022/06/alien-intelligence-and-the-concept-of-technology/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3529,8 +3644,8 @@ export const REFERENCES = {
   CHATGPT_GETS_ITS_WOLFRAM_SUPERPOWERS: <Content>{
     reference: {
       title: "ChatGPT Gets Its “Wolfram Superpowers”!",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3538,8 +3653,8 @@ export const REFERENCES = {
   COMPUTATIONAL_FOUNDATIONS_FOR_THE_SECOND_LAW_OF_THERMODYNAMICS: <Content>{
     reference: {
       title: "Computational Foundations for the Second Law of Thermodynamics",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://writings.stephenwolfram.com/2023/02/computational-foundations-for-the-second-law-of-thermodynamics/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3547,8 +3662,8 @@ export const REFERENCES = {
   FASTER_THAN_LIGHT_IN_OUR_MODEL_OF_PHYSICS_SOME_PRELIMINARY_THOUGHTS: <Content>{
     reference: {
       title: "Faster than Light in Our Model of Physics: Some Preliminary Thoughts",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2020",
       link: "https://writings.stephenwolfram.com/2020/10/faster-than-light-in-our-model-of-physics-some-preliminary-thoughts/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3556,8 +3671,8 @@ export const REFERENCES = {
   HOW_DID_WE_GET_HERE_THE_TANGLED_HISTORY_OF_THE_SECOND_LAW_OF_THERMODYNAMICS: <Content>{
     reference: {
       title: "How Did We Get Here? The Tangled History of the Second Law of Thermodynamics",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://writings.stephenwolfram.com/2023/01/how-did-we-get-here-the-tangled-history-of-the-second-law-of-thermodynamics/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3565,8 +3680,8 @@ export const REFERENCES = {
   MULTICOMPUTATIONAL_IRREDUCIBILITY: <Content>{
     reference: {
       title: "Multicomputational Irreducibility",
-      authors: [{name: "Boyd, James"}],
-      published: [{name: "Wolfram Institute"}],
+      authors: [{ name: "Boyd, James" }],
+      published: [{ name: "Wolfram Institute" }],
       year: "2022",
       link: "https://www.wolframphysics.org/bulletins/2022/06/multicomputational-irreducibility/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "March 2023"
@@ -3575,8 +3690,8 @@ export const REFERENCES = {
   ZX_CALCULUS_AND_EXTENDED_HYPERGRAPH_REWRITING_SYSTEMS_I: <Content>{
     reference: {
       title: "ZX-Calculus and Extended Hypergraph Rewriting Systems I: A Multiway Approach to Categorical Quantum Information Theory",
-      authors: [{name: "Gorard, Jonathan, Manojna Namuduri, and Xerxes D. Arsiwalla"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Gorard, Jonathan, Manojna Namuduri, and Xerxes D. Arsiwalla" }],
+      published: [{ name: "arXiv" }],
       year: "2020",
       link: "https://arxiv.org/pdf/2010.02752",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June 2023"
@@ -3585,8 +3700,8 @@ export const REFERENCES = {
   FAST_AUTOMATED_REASONING_OVER_STRING_DIAGRAMS_USING_MULTIWAY_CAUSAL_STRUCTURE: <Content>{
     reference: {
       title: "Fast Automated Reasoning over String Diagrams using Multiway Causal Structure",
-      authors: [{name: "Gorard, Jonathan, Manojna Namuduri, and Xerxes D. Arsiwalla"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Gorard, Jonathan, Manojna Namuduri, and Xerxes D. Arsiwalla" }],
+      published: [{ name: "arXiv" }],
       year: "2021",
       link: "https://arxiv.org/pdf/2105.04057",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June 2023"
@@ -3595,8 +3710,8 @@ export const REFERENCES = {
   LAGRANGIAN_NEURAL_NETWORKS: <Content>{
     reference: {
       title: "Lagrangian Neural Networks",
-      authors: [{name: "Cranmer, Miles, et al"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Cranmer, Miles, et al" }],
+      published: [{ name: "arXiv" }],
       year: "2020",
       link: "https://arxiv.org/pdf/2003.04630",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June 2023"
@@ -3605,8 +3720,8 @@ export const REFERENCES = {
   QUANTOMATRIC_A_PROOF_ASSISTANT_FOR_DIAGRAMMATIC_REASONING: <Content>{
     reference: {
       title: "Quantomatic: A proof assistant for diagrammatic reasoning",
-      authors: [{name: "Kissinger, Aleks, and Vladimir Zamdzhiev"}],
-      published: [{name: "Automated Deduction-CADE-25: 25th International Conference on Automated Deduction, Berlin, Germany"}],
+      authors: [{ name: "Kissinger, Aleks, and Vladimir Zamdzhiev" }],
+      published: [{ name: "Automated Deduction-CADE-25: 25th International Conference on Automated Deduction, Berlin, Germany" }],
       year: "2015",
       link: "https://arxiv.org/pdf/1503.01034",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June 2023"
@@ -3615,8 +3730,8 @@ export const REFERENCES = {
   THE_SEMANTIC_CONCEPTION_OF_TRUTH_AND_THE_FOUNDATIONS_OF_SEMANTICS: <Content>{
     reference: {
       title: "The semantic conception of truth: and the foundations of semantics",
-      authors: [{name: "Tarski, Alfred"}],
-      published: [{name: "The semantic conception of truth: and the foundations of semantics"}],
+      authors: [{ name: "Tarski, Alfred" }],
+      published: [{ name: "The semantic conception of truth: and the foundations of semantics" }],
       year: "1944",
       link: "https://sites.google.com/site/filosofiaetc/histfil/Tarski_SCT_1944.pdf",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "June 2023"
@@ -3625,8 +3740,8 @@ export const REFERENCES = {
   RESIDUALITY_THEORY_RANDOM_SIMULATION_AND_ATTRACTOR_NETWORKS: <Content>{
     reference: {
       title: "Residuality Theory, random simulation, and attractor networks",
-      authors: [{name: "O’Reilly, Barry M."}],
-      published: [{name: "Procedia Computer Science 201"}],
+      authors: [{ name: "O’Reilly, Barry M." }],
+      published: [{ name: "Procedia Computer Science 201" }],
       pointer: '639-645',
       year: "2022",
       link: "https://www.sciencedirect.com/science/article/pii/S1877050922004975/pdf?md5=faa21ad837ec9eba6fac3beb2cd93f9f&pid=1-s2.0-S1877050922004975-main.pdf",
@@ -3636,8 +3751,8 @@ export const REFERENCES = {
   A_FUNCTORIAL_PERSPECTIVE_ON_MULTICOMPUTATIONAL_IRREDUCIBILITY: <Content>{
     reference: {
       title: "A Functorial Perspective on (Multi)computational Irreducibility",
-      authors: [{name: "Gorard, Jonathan"}],
-      published: [{name: "arXiv"}],
+      authors: [{ name: "Gorard, Jonathan" }],
+      published: [{ name: "arXiv" }],
       year: "2022",
       link: "https://arxiv.org/pdf/2301.04690",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3646,8 +3761,8 @@ export const REFERENCES = {
   BIOELECTRIC_NETWORKS_THE_COGNITIVE_GLUE_ENABLING_EVOLUTIONARY_SCALING_FROM_PHYSIOLOGY_TO_MIND: <Content>{
     reference: {
       title: "Bioelectric networks: the cognitive glue enabling evolutionary scaling from physiology to mind",
-      authors: [{name: "Levin, Michael"}],
-      published: [{name: "Animal Cognition"}],
+      authors: [{ name: "Levin, Michael" }],
+      published: [{ name: "Animal Cognition" }],
       year: "2023",
       link: "https://link.springer.com/article/10.1007/s10071-023-01780-3",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3656,9 +3771,9 @@ export const REFERENCES = {
   COMPETENCY_IN_NAVIGATING_ARBITRARY_SPACES_AS_AN_INVARIANT_FOR_ANALYZING_COGNITION_IN_DIVERSE_EMBODIMENTS: <Content>{
     reference: {
       title: "Competency in Navigating Arbitrary Spaces as an Invariant for Analyzing Cognition in Diverse Embodiments",
-      authors: [{name: "Fields, Chris, and Levin, Michael"}],
+      authors: [{ name: "Fields, Chris, and Levin, Michael" }],
       pointer: '819',
-      published: [{name: "Entropy 24.6"}],
+      published: [{ name: "Entropy 24.6" }],
       year: "2022",
       link: "https://www.mdpi.com/1099-4300/24/6/819",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3667,8 +3782,8 @@ export const REFERENCES = {
   CHROME_SHIPS_WEBGPU: <Content>{
     reference: {
       title: "Chrome ships WebGPU",
-      authors: [{name: "Beaufort, François and Wallez, Corentin"}],
-      published: [{name: "Chrome Developers Blog"}],
+      authors: [{ name: "Beaufort, François and Wallez, Corentin" }],
+      published: [{ name: "Chrome Developers Blog" }],
       year: "2023",
       link: "https://developer.chrome.com/blog/webgpu-release/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3677,8 +3792,8 @@ export const REFERENCES = {
   GET_STARTED_WITH_GPU_COMPUTE_ON_THE_WEB: <Content>{
     reference: {
       title: "Get started with GPU Compute on the web",
-      authors: [{name: "Beaufort, François"}],
-      published: [{name: "Chrome Developers Blog"}],
+      authors: [{ name: "Beaufort, François" }],
+      published: [{ name: "Chrome Developers Blog" }],
       year: "2023",
       link: "https://developer.chrome.com/articles/gpu-compute/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3687,8 +3802,8 @@ export const REFERENCES = {
   SPAWNING_A_WASI_THREAD_WITH_RAW_WEBASSEMBLY: <Content>{
     reference: {
       title: "Spawning a WASI Thread with raw WebAssembly",
-      authors: [{name: "Das Surma"}],
-      published: [{name: "surma.dev"}],
+      authors: [{ name: "Das Surma" }],
+      published: [{ name: "surma.dev" }],
       year: "2023",
       link: "https://surma.dev/postits/wasi-threads/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3697,8 +3812,8 @@ export const REFERENCES = {
   WEBGPU_ALL_OF_THE_CORES_NONE_OF_THE_CANVAS: <Content>{
     reference: {
       title: "WebGPU — All of the cores, none of the canvas",
-      authors: [{name: "Das Surma"}],
-      published: [{name: "surma.dev"}],
+      authors: [{ name: "Das Surma" }],
+      published: [{ name: "surma.dev" }],
       year: "2022",
       link: "https://surma.dev/things/webgpu/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "July 2023"
@@ -3707,8 +3822,8 @@ export const REFERENCES = {
   REMEMBERING_THE_IMPROBABLE_LIFE_OF_ED_FREDKIN: <Content>{
     reference: {
       title: "Remembering the Improbable Life of Ed Fredkin (1934–2023) and His World of Ideas and Stories",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://writings.stephenwolfram.com/2023/08/remembering-the-improbable-life-of-ed-fredkin-1934-2023-and-his-world-of-ideas-and-stories/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023"
@@ -3717,8 +3832,8 @@ export const REFERENCES = {
   REMEMBERING_DOUG_LENAT: <Content>{
     reference: {
       title: "Remembering Doug Lenat (1950–2023) and His Quest to Capture the World with Logic",
-      authors: [{name: "Wolfram, Stephen"}],
-      published: [{name: ""}],
+      authors: [{ name: "Wolfram, Stephen" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://writings.stephenwolfram.com/2023/09/remembering-doug-lenat-1950-2023-and-his-quest-to-capture-the-world-with-logic/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"
@@ -3727,8 +3842,8 @@ export const REFERENCES = {
   THE_ALEXANDRIA_PROJECT_WHAT_HAS_BEEN_ACCOMPLISHED: <Content>{
     reference: {
       title: "The ALEXANDRIA Project: what has been accomplished?",
-      authors: [{name: "Paulson, Lawrence C."}],
-      published: [{name: ""}],
+      authors: [{ name: "Paulson, Lawrence C." }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://lawrencecpaulson.github.io/2023/04/27/ALEXANDRIA_outcomes.html",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"
@@ -3736,8 +3851,8 @@ export const REFERENCES = {
   THE_END_OF_THE_ALEXANDRIA_PROJECT: <Content>{
     reference: {
       title: "The End (?) of the ALEXANDRIA Project",
-      authors: [{name: "Paulson, Lawrence C."}],
-      published: [{name: ""}],
+      authors: [{ name: "Paulson, Lawrence C." }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://lawrencecpaulson.github.io/2023/08/31/ALEXANDRIA_finished.html",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"
@@ -3745,8 +3860,8 @@ export const REFERENCES = {
   WHEN_IS_A_COMPUTER_PROOF_A_PROOF: <Content>{
     reference: {
       title: "When is a computer proof a proof?",
-      authors: [{name: "Paulson, Lawrence C."}],
-      published: [{name: ""}],
+      authors: [{ name: "Paulson, Lawrence C." }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://lawrencecpaulson.github.io/2023/08/09/computer_proof.html",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"
@@ -3754,8 +3869,8 @@ export const REFERENCES = {
   ALEXANDRIA_LARGE_SCALE_FORMAL_PROOF_FOR_THE_WORKING_MATHEMATICIAN: <Content>{
     reference: {
       title: "ALEXANDRIA: Large-Scale Formal Proof for the Working Mathematician",
-      authors: [{name: "Paulson, Lawrence C."}],
-      published: [{name: ""}],
+      authors: [{ name: "Paulson, Lawrence C." }],
+      published: [{ name: "" }],
       year: "2021",
       link: "https://lawrencecpaulson.github.io/2021/12/08/ALEXANDRIA.html",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"
@@ -3763,8 +3878,8 @@ export const REFERENCES = {
   THE_ORIGINS_AND_MOTIVATIONS_OF_UNIVALENT_FOUNDATIONS: <Content>{
     reference: {
       title: "The Origins and Motivations of Univalent Foundations",
-      authors: [{name: "Voevodsky, Vladimir"}],
-      published: [{name: ""}],
+      authors: [{ name: "Voevodsky, Vladimir" }],
+      published: [{ name: "" }],
       year: "2014",
       link: "https://www.ias.edu/ideas/2014/voevodsky-origins",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "September, 2023"
@@ -3773,8 +3888,8 @@ export const REFERENCES = {
   ZENBLEED: <Content>{
     reference: {
       title: "Zenbleed",
-      authors: [{name: "Ormandy, Tavis"}],
-      published: [{name: ""}],
+      authors: [{ name: "Ormandy, Tavis" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://lock.cmpxchg8b.com/zenbleed.html",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "October, 2023"
@@ -3782,8 +3897,8 @@ export const REFERENCES = {
   DOWNFALL: <Content>{
     reference: {
       title: "Downfall: Exploiting Speculative Data Gathering",
-      authors: [{name: "Moghimi, Daniel"}],
-      published: [{name: ""}],
+      authors: [{ name: "Moghimi, Daniel" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://downfall.page/media/downfall.pdf",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "October, 2023"
@@ -3791,8 +3906,8 @@ export const REFERENCES = {
   ASSEMBLY_THEORY_EXPLAINS_AND_QUANTIFIES_SELECTION_AND_EVOLUTION: <Content>{
     reference: {
       title: "Assembly theory explains and quantifies selection and evolution",
-      authors: [{name: "Abhishek Sharma, Dániel Czégel, Michael Lachmann, Christopher P. Kempes, Sara I. Walker and Leroy Cronin"}],
-      published: [{name: ""}],
+      authors: [{ name: "Abhishek Sharma, Dániel Czégel, Michael Lachmann, Christopher P. Kempes, Sara I. Walker and Leroy Cronin" }],
+      published: [{ name: "" }],
       year: "2023",
       link: "https://www.nature.com/articles/s41586-023-06600-9",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "October, 2023"
@@ -3801,8 +3916,8 @@ export const REFERENCES = {
   WILL_COMPUTERS_REDEFINE_THE_ROOTS_OF_MATH: <Content>{
     reference: {
       title: "Will Computers Redefine the Roots of Math?",
-      authors: [{name: "Hartnett, Kevin"}],
-      published: [{name: ""}],
+      authors: [{ name: "Hartnett, Kevin" }],
+      published: [{ name: "" }],
       year: "2015",
       link: "https://www.quantamagazine.org/will-computers-redefine-the-roots-of-math-20150519/",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023"
@@ -3811,8 +3926,8 @@ export const REFERENCES = {
   QUANTUM_IN_PICTURES: <Content>{
     reference: {
       title: "Quantum in Pictures",
-      authors: [{name: "Coecke, Bob and Gogioso, Stefano"}],
-      published: [{name: "Quantinuum"}],
+      authors: [{ name: "Coecke, Bob and Gogioso, Stefano" }],
+      published: [{ name: "Quantinuum" }],
       year: "2023",
       link: "https://www.quantinuum.com/news/quantum-in-pictures",
     }, status: Viewed.VIEWED, found_at: "2023", viewed_at: "August, 2023", type: 'book'
@@ -3821,7 +3936,7 @@ export const REFERENCES = {
   CATEGORY_THEORY_I: <Content>{
     reference: {
       title: "Category Theory I",
-      authors: [{name: "Milewski, Bartosz"}],
+      authors: [{ name: "Milewski, Bartosz" }],
       organizations: [ORGANIZATIONS.youtube],
       year: "2016",
       link: "https://www.youtube.com/watch?v=I8LbkfSSR58&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_",
@@ -3830,7 +3945,7 @@ export const REFERENCES = {
   CATEGORY_THEORY_II: <Content>{
     reference: {
       title: "Category Theory II",
-      authors: [{name: "Milewski, Bartosz"}],
+      authors: [{ name: "Milewski, Bartosz" }],
       organizations: [ORGANIZATIONS.youtube],
       year: "2017",
       link: "https://www.youtube.com/watch?v=3XTQSx1A3x8&list=PLbgaMIhjbmElia1eCEZNvsVscFef9m0dm",
@@ -3839,7 +3954,7 @@ export const REFERENCES = {
   CATEGORY_THEORY_III: <Content>{
     reference: {
       title: "Category Theory III",
-      authors: [{name: "Milewski, Bartosz"}],
+      authors: [{ name: "Milewski, Bartosz" }],
       organizations: [ORGANIZATIONS.youtube],
       year: "2018",
       link: "https://www.youtube.com/watch?v=F5uEpKwHqdk&list=PLbgaMIhjbmEn64WVX4B08B4h2rOtueWIL",
@@ -3849,7 +3964,7 @@ export const REFERENCES = {
   DIHEAPS_A_NEW_SPECIES_OF_ALGEBRAIC_STRUCTURE: <Content>{
     reference: {
       title: "Diheaps: a new species of algebraic structure",
-      authors: [{name: "Zapata, Carlos"}],
+      authors: [{ name: "Zapata, Carlos" }],
       organizations: [ORGANIZATIONS.youtube],
       year: "2023",
       link: "https://www.youtube.com/watch?v=YOfIXwBHPFU",
@@ -3859,7 +3974,7 @@ export const REFERENCES = {
   HACKENBUSH_A_WINDOW_TO_A_NEW_WORLD_OF_MATH: <Content>{
     reference: {
       title: "HACKENBUSH: a window to a new world of math\n",
-      authors: [{name: "Maitzen, Owen"}],
+      authors: [{ name: "Maitzen, Owen" }],
       organizations: [ORGANIZATIONS.youtube],
       year: "2021",
       link: "https://www.youtube.com/watch?v=ZYj4NkeGPdM",
@@ -3877,7 +3992,7 @@ export const REFERENCES = {
   SOFTWARE_DEVELOPER_AT_BREACHLOCK_INC: <Content>{
     reference: {
       title: "Software Developer - BreachLock Inc.",
-      organizations: [{name: "BreachLock Inc."}],
+      organizations: [{ name: "BreachLock Inc." }],
       year: "November, 2021 - May, 2022",
       link: "https://www.linkedin.com/company/breachlock/"
     }, status: Viewed.VIEWED, viewed_at: "November, 2021 - May, 2022"
@@ -3885,7 +4000,7 @@ export const REFERENCES = {
   CONTRACTOR_AT_MARTI_ORBAK_SOFTWARE: <Content>{
     reference: {
       title: "Contractor - MartiOrbak Software",
-      organizations: [{name: "MartiOrbak Software"}],
+      organizations: [{ name: "MartiOrbak Software" }],
       year: "November, 2020 - March 2021",
       link: "https://www.linkedin.com/company/marti-orbak-software/"
     }, status: Viewed.VIEWED, viewed_at: "November, 2020 - March 2021"
@@ -3893,7 +4008,7 @@ export const REFERENCES = {
   BACKEND_DEVELOPER_AT_MOBIEL_NL: <Content>{
     reference: {
       title: "Backend Developer - Mobiel.nl",
-      organizations: [{name: "Mobiel.nl"}],
+      organizations: [{ name: "Mobiel.nl" }],
       year: "November, 2018 - August, 2019",
       link: "https://www.linkedin.com/company/mobiel.nl/",
     },
@@ -3917,7 +4032,7 @@ export const REFERENCES = {
   LEIDEN_UNIVERSITY: <Content>{
     reference: {
       title: "(Unfinished) Computer Science (BSc)",
-      published: [{name: "Leiden University"}],
+      published: [{ name: "Leiden University" }],
       year: "2020: I stop attending Leiden University. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest",
     }, status: Viewed.IN_PROGRESS, viewed_at: "September, 2019 - December, 2020", archived: true
   },
@@ -3999,94 +4114,94 @@ export const REFERENCES = {
   },
 
   RUST: <Content>{
-    reference: {title: "Rust", link: "https://en.wikipedia.org/wiki/Rust_(programming_language)"},
+    reference: { title: "Rust", link: "https://en.wikipedia.org/wiki/Rust_(programming_language)" },
     status: Viewed.VIEWED
   },
   JAVA: <Content>{
-    reference: {title: "Java", link: "https://en.wikipedia.org/wiki/Java_(programming_language)"},
+    reference: { title: "Java", link: "https://en.wikipedia.org/wiki/Java_(programming_language)" },
     status: Viewed.VIEWED,
     archived: true
   },
   KOTLIN: <Content>{
-    reference: {title: "Kotlin", link: "https://en.wikipedia.org/wiki/Kotlin_(programming_language)"},
+    reference: { title: "Kotlin", link: "https://en.wikipedia.org/wiki/Kotlin_(programming_language)" },
     status: Viewed.VIEWED,
     archived: true
   },
   RUBY_ON_RAILS: <Content>{
-    reference: {title: "Ruby (on Rails)", link: "https://en.wikipedia.org/wiki/Ruby_on_Rails"},
+    reference: { title: "Ruby (on Rails)", link: "https://en.wikipedia.org/wiki/Ruby_on_Rails" },
     status: Viewed.VIEWED,
     archived: true
   },
   C_SHARP: <Content>{
-    reference: {title: "C#", link: "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)"},
+    reference: { title: "C#", link: "https://en.wikipedia.org/wiki/C_Sharp_(programming_language)" },
     status: Viewed.VIEWED,
     archived: true
   },
   DOT_NET: <Content>{
-    reference: {title: ".NET", link: "https://en.wikipedia.org/wiki/.NET"},
+    reference: { title: ".NET", link: "https://en.wikipedia.org/wiki/.NET" },
     status: Viewed.VIEWED,
     archived: true
   },
   BLAZOR: <Content>{
-    reference: {title: "Blazor", link: "https://en.wikipedia.org/wiki/Blazor"},
+    reference: { title: "Blazor", link: "https://en.wikipedia.org/wiki/Blazor" },
     status: Viewed.VIEWED,
     archived: true
   },
   JAVASCRIPT: <Content>{
-    reference: {title: "JavaScript", link: "https://en.wikipedia.org/wiki/JavaScript"},
+    reference: { title: "JavaScript", link: "https://en.wikipedia.org/wiki/JavaScript" },
     status: Viewed.VIEWED
   },
-  CSS: <Content>{reference: {title: "CSS", link: "https://en.wikipedia.org/wiki/CSS"}, status: Viewed.VIEWED},
+  CSS: <Content>{ reference: { title: "CSS", link: "https://en.wikipedia.org/wiki/CSS" }, status: Viewed.VIEWED },
   SASS: <Content>{
-    reference: {title: "SASS", link: "https://en.wikipedia.org/wiki/Sass_(stylesheet_language)"},
+    reference: { title: "SASS", link: "https://en.wikipedia.org/wiki/Sass_(stylesheet_language)" },
     status: Viewed.VIEWED
   },
-  HTML: <Content>{reference: {title: "HTML", link: "https://en.wikipedia.org/wiki/HTML"}, status: Viewed.VIEWED},
-  WEBPACK: <Content>{reference: {title: "Webpack", link: "https://webpack.js.org/"}, status: Viewed.VIEWED},
+  HTML: <Content>{ reference: { title: "HTML", link: "https://en.wikipedia.org/wiki/HTML" }, status: Viewed.VIEWED },
+  WEBPACK: <Content>{ reference: { title: "Webpack", link: "https://webpack.js.org/" }, status: Viewed.VIEWED },
   TYPESCRIPT: <Content>{
-    reference: {title: "TypeScript", link: "https://en.wikipedia.org/wiki/TypeScript"},
+    reference: { title: "TypeScript", link: "https://en.wikipedia.org/wiki/TypeScript" },
     status: Viewed.VIEWED
   },
   REACT: <Content>{
-    reference: {title: "React", link: "https://en.wikipedia.org/wiki/React_(JavaScript_library)"},
+    reference: { title: "React", link: "https://en.wikipedia.org/wiki/React_(JavaScript_library)" },
     status: Viewed.VIEWED
   },
   BLUEPRINT_JS: <Content>{
-    reference: {title: "Blueprint.js", link: "https://github.com/palantir/blueprint"},
+    reference: { title: "Blueprint.js", link: "https://github.com/palantir/blueprint" },
     status: Viewed.VIEWED
   },
   SLATE: <Content>{
-    reference: {title: "Slate", link: "https://github.com/ianstormtaylor/slate"},
+    reference: { title: "Slate", link: "https://github.com/ianstormtaylor/slate" },
     status: Viewed.IN_PROGRESS
   },
   THREEJS: <Content>{
-    reference: {title: "Three.js", link: "https://github.com/mrdoob/three.js/"},
+    reference: { title: "Three.js", link: "https://github.com/mrdoob/three.js/" },
     status: Viewed.IN_PROGRESS
   },
   NEXTJS: <Content>{
-    reference: {title: "Next.js", link: "https://nextjs.org/"},
+    reference: { title: "Next.js", link: "https://nextjs.org/" },
     status: Viewed.IN_PROGRESS
   },
-  DREI: <Content>{reference: {title: "drei", link: "https://github.com/pmndrs/drei"}, status: Viewed.IN_PROGRESS},
+  DREI: <Content>{ reference: { title: "drei", link: "https://github.com/pmndrs/drei" }, status: Viewed.IN_PROGRESS },
   WASM: <Content>{
-    reference: {title: "WebAssembly", link: "https://en.wikipedia.org/wiki/WebAssembly"},
+    reference: { title: "WebAssembly", link: "https://en.wikipedia.org/wiki/WebAssembly" },
     status: Viewed.IN_PROGRESS
   },
   ASSEMBLY_SCRIPT: <Content>{
-    reference: {title: "AssemblyScript", link: "https://en.wikipedia.org/wiki/AssemblyScript"},
+    reference: { title: "AssemblyScript", link: "https://en.wikipedia.org/wiki/AssemblyScript" },
     status: Viewed.IN_PROGRESS
   },
-  CPP: <Content>{reference: {title: "C++", link: "https://en.wikipedia.org/wiki/C%2B%2B"}, status: Viewed.VIEWED},
+  CPP: <Content>{ reference: { title: "C++", link: "https://en.wikipedia.org/wiki/C%2B%2B" }, status: Viewed.VIEWED },
   PYTHON: <Content>{
-    reference: {title: "Python", link: "https://en.wikipedia.org/wiki/Python_(programming_language)"},
+    reference: { title: "Python", link: "https://en.wikipedia.org/wiki/Python_(programming_language)" },
     status: Viewed.VIEWED
   },
   GO: <Content>{
-    reference: {title: "Go", link: "https://en.wikipedia.org/wiki/Go_(programming_language)"},
+    reference: { title: "Go", link: "https://en.wikipedia.org/wiki/Go_(programming_language)" },
     status: Viewed.VIEWED
   },
   HASKELL: <Content>{
-    reference: {title: "Haskell", link: "https://en.wikipedia.org/wiki/Haskell"},
+    reference: { title: "Haskell", link: "https://en.wikipedia.org/wiki/Haskell" },
     status: Viewed.VIEWED
   },
   WOLFRAM_LANGUAGE: <Content>{
@@ -4095,147 +4210,147 @@ export const REFERENCES = {
       link: "https://en.wikipedia.org/wiki/Wolfram_Language"
     }, status: Viewed.VIEWED
   },
-  LLVM: <Content>{reference: {title: "LLVM", link: "https://en.wikipedia.org/wiki/LLVM"}, status: Viewed.IN_PROGRESS},
+  LLVM: <Content>{ reference: { title: "LLVM", link: "https://en.wikipedia.org/wiki/LLVM" }, status: Viewed.IN_PROGRESS },
   IPFS: <Content>{
-    reference: {title: "IPFS", link: "https://en.wikipedia.org/wiki/InterPlanetary_File_System"},
+    reference: { title: "IPFS", link: "https://en.wikipedia.org/wiki/InterPlanetary_File_System" },
     status: Viewed.VIEWED
   },
-  IPVM: <Content>{reference: {title: "IPVM", link: "https://github.com/ipvm-wg"}, status: Viewed.VIEWED},
+  IPVM: <Content>{ reference: { title: "IPVM", link: "https://github.com/ipvm-wg" }, status: Viewed.VIEWED },
   SQL: <Content>{
-    reference: {title: "SQL", link: "https://en.wikipedia.org/wiki/SQL"},
+    reference: { title: "SQL", link: "https://en.wikipedia.org/wiki/SQL" },
     status: Viewed.VIEWED,
     archived: true
   },
   MYSQL: <Content>{
-    reference: {title: "MySQL", link: "https://en.wikipedia.org/wiki/MySQL"},
+    reference: { title: "MySQL", link: "https://en.wikipedia.org/wiki/MySQL" },
     status: Viewed.VIEWED,
     archived: true
   },
   POSTGRESQL: <Content>{
-    reference: {title: "PostgreSQL", link: "https://en.wikipedia.org/wiki/PostgreSQL"},
+    reference: { title: "PostgreSQL", link: "https://en.wikipedia.org/wiki/PostgreSQL" },
     status: Viewed.VIEWED,
     archived: true
   },
   MONGO_DB: <Content>{
-    reference: {title: "MongoDB", link: "https://en.wikipedia.org/wiki/MongoDB"},
+    reference: { title: "MongoDB", link: "https://en.wikipedia.org/wiki/MongoDB" },
     status: Viewed.VIEWED,
     archived: true
   },
   REDIS: <Content>{
-    reference: {title: "Redis", link: "https://en.wikipedia.org/wiki/Redis"},
+    reference: { title: "Redis", link: "https://en.wikipedia.org/wiki/Redis" },
     status: Viewed.VIEWED,
     archived: true
   },
   RABBIT_MQ: <Content>{
-    reference: {title: "RabbitMQ", link: "https://en.wikipedia.org/wiki/RabbitMQ"},
+    reference: { title: "RabbitMQ", link: "https://en.wikipedia.org/wiki/RabbitMQ" },
     status: Viewed.VIEWED,
     archived: true
   },
-  GIT: <Content>{reference: {title: "Git", link: "https://en.wikipedia.org/wiki/Git"}, status: Viewed.VIEWED},
+  GIT: <Content>{ reference: { title: "Git", link: "https://en.wikipedia.org/wiki/Git" }, status: Viewed.VIEWED },
   GITLAB: <Content>{
-    reference: {title: "GitLab", link: "https://en.wikipedia.org/wiki/GitLab"},
+    reference: { title: "GitLab", link: "https://en.wikipedia.org/wiki/GitLab" },
     status: Viewed.VIEWED
   },
   GITHUB: <Content>{
-    reference: {title: "GitHub", link: "https://en.wikipedia.org/wiki/GitHub"},
+    reference: { title: "GitHub", link: "https://en.wikipedia.org/wiki/GitHub" },
     status: Viewed.VIEWED
   },
   BITBUCKET: <Content>{
-    reference: {title: "Bitbucket", link: "https://en.wikipedia.org/wiki/Bitbucket"},
+    reference: { title: "Bitbucket", link: "https://en.wikipedia.org/wiki/Bitbucket" },
     status: Viewed.VIEWED,
     archived: true
   },
   DOCKER: <Content>{
-    reference: {title: "Docker", link: "https://en.wikipedia.org/wiki/Docker_(software)"},
+    reference: { title: "Docker", link: "https://en.wikipedia.org/wiki/Docker_(software)" },
     status: Viewed.VIEWED
   },
   KUBERNETES: <Content>{
-    reference: {title: "Kubernetes", link: "https://en.wikipedia.org/wiki/Kubernetes"},
+    reference: { title: "Kubernetes", link: "https://en.wikipedia.org/wiki/Kubernetes" },
     status: Viewed.VIEWED,
     archived: true
   },
-  NGINX: <Content>{reference: {title: "NGINX", link: "https://en.wikipedia.org/wiki/Nginx"}, status: Viewed.VIEWED},
+  NGINX: <Content>{ reference: { title: "NGINX", link: "https://en.wikipedia.org/wiki/Nginx" }, status: Viewed.VIEWED },
   NPM: <Content>{
-    reference: {title: "NPM", link: "https://en.wikipedia.org/wiki/Npm_(software)"},
+    reference: { title: "NPM", link: "https://en.wikipedia.org/wiki/Npm_(software)" },
     status: Viewed.VIEWED
   },
   MAVEN: <Content>{
-    reference: {title: "Maven", link: "https://en.wikipedia.org/wiki/Apache_Maven"},
+    reference: { title: "Maven", link: "https://en.wikipedia.org/wiki/Apache_Maven" },
     status: Viewed.VIEWED,
     archived: true
   },
-  LINUX: <Content>{reference: {title: "Linux", link: "https://en.wikipedia.org/wiki/Linux"}, status: Viewed.VIEWED},
+  LINUX: <Content>{ reference: { title: "Linux", link: "https://en.wikipedia.org/wiki/Linux" }, status: Viewed.VIEWED },
   ANDROID: <Content>{
-    reference: {title: "Android", link: "https://en.wikipedia.org/wiki/Android_(operating_system)"},
+    reference: { title: "Android", link: "https://en.wikipedia.org/wiki/Android_(operating_system)" },
     status: Viewed.VIEWED
   },
   GCP: <Content>{
-    reference: {title: "GCP", link: "https://en.wikipedia.org/wiki/Google_Cloud_Platform"},
+    reference: { title: "GCP", link: "https://en.wikipedia.org/wiki/Google_Cloud_Platform" },
     status: Viewed.VIEWED,
     archived: true
   },
   AZURE: <Content>{
-    reference: {title: "Azure", link: "https://en.wikipedia.org/wiki/Microsoft_Azure"},
+    reference: { title: "Azure", link: "https://en.wikipedia.org/wiki/Microsoft_Azure" },
     status: Viewed.VIEWED,
     archived: true
   },
   AWS: <Content>{
-    reference: {title: "AWS", link: "https://en.wikipedia.org/wiki/Amazon_Web_Services"},
+    reference: { title: "AWS", link: "https://en.wikipedia.org/wiki/Amazon_Web_Services" },
     status: Viewed.VIEWED,
     archived: true
   },
   SPIGOT_MC: <Content>{
-    reference: {title: "SpigotMC", link: "https://www.spigotmc.org/"},
+    reference: { title: "SpigotMC", link: "https://www.spigotmc.org/" },
     status: Viewed.VIEWED,
     archived: true
   },
   BUNGEE_CORD: <Content>{
-    reference: {title: "BungeeCord", link: "https://www.spigotmc.org/"},
+    reference: { title: "BungeeCord", link: "https://www.spigotmc.org/" },
     status: Viewed.VIEWED,
     archived: true
   },
   BUKKIT: <Content>{
-    reference: {title: "Bukkit", link: "https://dev.bukkit.org/"},
+    reference: { title: "Bukkit", link: "https://dev.bukkit.org/" },
     status: Viewed.VIEWED,
     archived: true
   },
   FLATPAK: <Content>{
-    reference: {title: "Flatpak", link: "https://en.wikipedia.org/wiki/Flatpak"},
+    reference: { title: "Flatpak", link: "https://en.wikipedia.org/wiki/Flatpak" },
     status: Viewed.VIEWED,
     archived: false
   },
   OBS: <Content>{
-    reference: {title: "OBS Studio", link: "https://en.wikipedia.org/wiki/OBS_Studio"},
+    reference: { title: "OBS Studio", link: "https://en.wikipedia.org/wiki/OBS_Studio" },
     status: Viewed.VIEWED,
     archived: false
   },
   CLOUDFLARE: <Content>{
-    reference: {title: "Cloudflare", link: "https://en.wikipedia.org/wiki/Cloudflare"},
+    reference: { title: "Cloudflare", link: "https://en.wikipedia.org/wiki/Cloudflare" },
     status: Viewed.VIEWED,
     archived: false
   },
   CHYP: <Content>{
-    reference: {title: "Chyp", link: "https://github.com/akissinger/chyp"},
+    reference: { title: "Chyp", link: "https://github.com/akissinger/chyp" },
     status: Viewed.VIEWED,
     archived: false
   },
   WEBGPU: <Content>{
-    reference: {title: "WebGPU", link: "https://github.com/gpuweb/gpuweb"},
+    reference: { title: "WebGPU", link: "https://github.com/gpuweb/gpuweb" },
     status: Viewed.VIEWED,
     archived: false
   },
   INTELLI_J: <Content>{
-    reference: {title: "IntelliJ", link: "https://github.com/JetBrains/intellij-community"},
+    reference: { title: "IntelliJ", link: "https://github.com/JetBrains/intellij-community" },
     status: Viewed.VIEWED,
     archived: false
   },
   VS_CODE: <Content>{
-    reference: {title: "VS Code", link: "https://github.com/microsoft/vscode"},
+    reference: { title: "VS Code", link: "https://github.com/microsoft/vscode" },
     status: Viewed.VIEWED,
     archived: false
   },
   ECLIPSE: <Content>{
-    reference: {title: "Eclipse", link: "https://github.com/eclipse-platform/eclipse.platform"},
+    reference: { title: "Eclipse", link: "https://github.com/eclipse-platform/eclipse.platform" },
     status: Viewed.VIEWED,
     archived: false
   },
@@ -4244,6 +4359,17 @@ export const REFERENCES = {
 export default REFERENCES;
 
 export const ARTICLES_2026: Content[] = [
+  REFERENCES.STRONGLY_BARYON_DOMINATED_DISK_GALAXIES_AT_THE_PEAK_OF_GALAXY_FORMATION_TEN_BILLION_YEARS_AGO,
+  REFERENCES.BIG_SPARC_THE_NEW_SPARC_DATABASE,
+  REFERENCES.THE_NEXT_UNIT_OF_SCIENCE_IS_THE_SCIENTIFIC_PAPER_DUE_TO_BE_REPLACED,
+  REFERENCES.KUNA_DECOMPILER_DEVELOPMENT_IN_THE_AGE_OF_CODING_AGENTS,
+  REFERENCES.COMPLEX_BEHAVIOR_FROM_INTRINSIC_MOTIVATION_TO_OCCUPY_FUTURE_ACTION_STATE_PATH_SPACE,
+  REFERENCES.CO_CREATOR_OF_HASKELL_FUNCTIONAL_PROGRAMMING_THINKING_IN_TYPES_USELESS_LANGUAGES_SIMON_JONES,
+  REFERENCES.CREATOR_OF_OCAML_FUNCTIONAL_PROGRAMMING_FORMAL_VERIFICATION_PROGRAMMING_LANGUAGES_XAVIER_LEROY,
+  REFERENCES.TURING_AWARD_WINNER_EARLY_AI_LLM_PREDICTIONS_CAUSALITY_JUDEA_PEARL,
+  REFERENCES.CASEY_MURATORI_THE_ANATOMY_OF_A_35_YEAR_MISTAKE_CLEAN_CODE_HORRIBLE_PERFORMANCE,
+  REFERENCES.DHH_FUTURE_OF_PROGRAMMING_AI_AGENTIC_ENGINEERING_VIBE_CODING_LINUX_501,
+
   REFERENCES.THE_METAVERSE_BUILDING_THE_SPATIAL_INTERNET,
   REFERENCES.THE_DECOMPILATION_WIKI,
   REFERENCES.DECOMPILING_2024_A_YEAR_OF_RESURGENCE_IN_DECOMPILATION_RESEARCH,
@@ -4829,14 +4955,14 @@ export const fadi_shawki = <TProfile>{
   orcid: '0009-0009-9288-992X',
 
   external: <ExternalProfile[]>[
-    {organization: ORGANIZATIONS.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com'},
-    {organization: ORGANIZATIONS.github, display: 'FadiShawki', link: 'https://github.com/FadiShawki'},
-    {organization: ORGANIZATIONS.twitter, display: '@_FadiShawki', link: 'https://twitter.com/_FadiShawki'},
-    {organization: ORGANIZATIONS.gitlab, display: '@FadiShawki', link: 'https://gitlab.com/FadiShawki'},
-    {organization: ORGANIZATIONS.instagram, display: '@f._shawki', link: 'https://www.instagram.com/f._shawki/'},
-    {organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki'},
-    {organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki'},
-    {organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/'},
+    { organization: ORGANIZATIONS.discord, display: 'fadishawki', link: 'https://discord.orbitmines.com' },
+    { organization: ORGANIZATIONS.github, display: 'FadiShawki', link: 'https://github.com/FadiShawki' },
+    { organization: ORGANIZATIONS.twitter, display: '@_FadiShawki', link: 'https://twitter.com/_FadiShawki' },
+    { organization: ORGANIZATIONS.gitlab, display: '@FadiShawki', link: 'https://gitlab.com/FadiShawki' },
+    { organization: ORGANIZATIONS.instagram, display: '@f._shawki', link: 'https://www.instagram.com/f._shawki/' },
+    { organization: ORGANIZATIONS.youtube, display: '@FadiShawki', link: 'https://www.youtube.com/@FadiShawki' },
+    { organization: ORGANIZATIONS.twitch, display: '@fadishawki', link: 'https://www.twitch.tv/fadishawki' },
+    { organization: ORGANIZATIONS.linkedin, display: 'fadishawki', link: 'https://www.linkedin.com/in/fadishawki/' },
     // {
     //   organization: ORGANIZATIONS.mastodon,
     //   display: '@fadishawki',
