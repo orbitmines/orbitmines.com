@@ -28,6 +28,7 @@ import { add, CachedVisualizationCanvas, CanvasContainer, Continuation, Line, Ra
 import REFERENCES from "./profiles/fadi-shawki/fadi_shawki";
 import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "./references";
 import { Center, Html, Text } from "@react-three/drei";
+import { Para } from "./Physics";
 
 
 
@@ -1281,113 +1282,141 @@ const Almanac = () => {
           Onwards to how programs (functions) are actually structured in the Ray programming language!
         </Section>
         <Section head="§2.5 Programs/Functions">
-          {/* Partial args + can set any var in the func (Can be prevented, which I'll discuss in Access Permissions), Multiline multiple implementations */}
-          {/* => overrides, &=> etc.., () doesnt override but = () => does */}
-
+          Functions have a pretty straightforward way of being defined:
           <CodeBlock>
             add (a, b) ={'>'} a + b<BR/>
             add(1, 2) // 3
           </CodeBlock>
-          <CodeBlock>
-            increment := add(1)<BR/>
-            increment(5) // 6<BR/>
-            add(b: 2)(1) // 3
-          </CodeBlock>
-          <CodeBlock>
-            varargs (a: String, b: Number[], c: String[]) ={'>'} b.count<BR/>
-            part: String[] = "c1", "c2"<BR/>
-            varargs("a", 1, 2, 3, part, "c3") // 3
-          </CodeBlock>
-          <CodeBlock>
-            Ball(radius: 5m, "red", border: 1m, "solid")
-          </CodeBlock>
-          <CodeBlock>
-            (x) ={'>'} x * 2<BR/>
-            [1, 2, 3].map((x) ={'>'} x * 2) // [2, 4, 6]<BR/>
-            [1, 2, 3].map(* 2) // [2, 4, 6]
-          </CodeBlock>
-          <CodeBlock>
-            double | twice (x) ={'>'} x * 2<BR/>
-            twice(4) // 8
-          </CodeBlock>
+          Where you can use any string of text as long as it doesn't contain whitespace as the name of a function. The ={'>'} at the end marks it as a function definition.
+
+          <BR/>
+
+          Superposing also works with functions, where it is works as aliases:
+
           <CodeBlock>
             a | a1 (: boolean) ={'>'} "X"<BR/>
-            a | a2 (: Number) ={'>'} "Y"<BR/>
+            a | a2 (: Number) ={'>'} "Y"
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Or as <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'multiple dispatch', link: 'https://en.wikipedia.org/wiki/Multiple_dispatch'}} />:</span>
+
+          <CodeBlock>
             a(boolean) // "X"<BR/>
             a(Number) // "Y"
           </CodeBlock>
+
+          You can also put it on the other side of the function definition, starting a definition with |, marks it as: I have multiple implementations, let the compiler (or specific references) choose which one. For instance the NOT operator on boolean can be implemented in several ways (using NAND, NOR, XOR, ...).
+
           <CodeBlock>
-            !{'{'}x{'}'}<BR/>
+            !{'{'}x{'}'} ={'>'}<BR/>
             <></>  | x !&& x<BR/>
             <></>  | x !|| x<BR/>
             <></>  | x x|| true
           </CodeBlock>
-          <CodeBlock>
-            Animal := class {'{'}<BR/>
-            <></>  sound ={'>'} "..."<BR/>
-            {'}'}<BR/>
-            Dog := class: Animal {'{'}<BR/>
-            <></>  sound ={'>'} "Woof"<BR/>
-            {'}'}<BR/>
-            Loud := class: Dog {'{'}<BR/>
-            <></>  sound &={'>'} "WOOF"<BR/>
-            {'}'}<BR/>
-            Loud().sound // "Woof" & "WOOF"
-          </CodeBlock>
+
+          Other than superposing values there also exist several other useful library features. For instance recurring the current function in place as in a typical recursive call:
+
           <CodeBlock>
             countdown (n) ={'>'} (<BR/>
             <></>  return n if n == 0<BR/>
             <></>  recur(n - 1)<BR/>
             )
           </CodeBlock>
+
+          Or full recursion which is useful in certain mathematical equations (which is an infinitely generating program, but in this case limiting):
+
           <CodeBlock>
-            forever () ={'>'} Never<BR/>
-            stop () ={'>'} {'{'}<BR/>
-            <></>  cleanup()<BR/>
+            limited (x) ={'>'} x + 1/recur
+          </CodeBlock>
+
+          Then like the 'dynamically assert' of types, the opposite of that is 'never', which can also be used as a return value:
+
+          <CodeBlock>
+            forever (): never ={'>'} loop {'{'} {'}'}
+          </CodeBlock>
+
+          Or to be used match certain program patterns which must never happen in this function:
+
+          <CodeBlock>
+            forever () ={'>'} {'{'}<BR/>
             <></>  never return<BR/>
-            {'}'}<BR/>
-            never x {'<'} 0
+            <></>  loop {'{'}<BR/>
+            <></>    return if A // ERROR if A is possible.<BR/>
+            <></>  {'}'}<BR/>
+            {'}'}
           </CodeBlock>
+
+          It - like dynamically assert - also accepts predicates:
+
           <CodeBlock>
-            area ={'>'} width * height
+            x: Number<BR/>
+            never x == 0<BR/>
+            <BR/>
+            x = 0 // ERROR
           </CodeBlock>
+
+          <Para>Then many additional functionalities are optionally available to the runtime (which wouldn't be in most programming languages). Like where in the program this function is possibly referenced. The function's context (whether currently executing or not - more on that in <SectionButton section="§4.9 Concurrency" rightIcon="arrow-right" text="§4.9 Concurrency" minimal outlined />).</Para>
+
           <CodeBlock>
-            f**<BR/>
-            f**.expand<BR/>
-            f**.variables<BR/>
-            f**.usages<BR/>
+            var = A + 5<BR/>
+            f = var** // function that needs to run to fill var<BR/>
+            <BR/>
+            f.context.A<BR/>
+            f.references<BR/>
             f.injective
           </CodeBlock>
+          
+          The way all this functionality works brings us to how programs are structured. The only functional primitive which exists is a conditional goto; a conditional edge effectively in graph terms. This is the most foundational thing: Conditional dependence on some state. It is enough to build all familiar programming language concepts. Whether boolean arithmetic, control-flow. Anything.
+
+          <Para><span className="bp5-text-muted">(And goto's themselves are just conditional alterations of the control-flow graph. Which is how they would be implemented was that your base language.)</span></Para>
+
+          <BR/>
+
+          Like most programming languages which allow you to use gotos you can label things in the language. Though in the Ray programming language you can label anywhere, and reference a label anywhere!
+
           <CodeBlock>
-            label1\ A (label2\ + B)<BR/>
-            label2<BR/>
-            &next<BR/>
-            goto (program: Program) ={'>'} &caller.push(program)
+            label1\ x: A (label2\ + B)<BR/>
+            line2\ x == 5<BR/>
+            <BR/>
+            line2 // ref it anywhere
+            goto label1
           </CodeBlock>
+
+          It just resolves to a pointer somewhere in the program. Which itself is a nested iterable structure of statements. So things like this would work:
+
           <CodeBlock>
-            Ball := class {'{'}<BR/>
-            <></>  radius: Number<BR/>
-            <></>  profile\<BR/>
-            <></>    center radius<BR/>
-            <></>  "Profile Name"\<BR/>
-            <></>    center radius<BR/>
-            {'}'}<BR/>
-            Ball~default()<BR/>
-            Ball~profile(radius: 5)<BR/>
-            Ball~"Profile Name"()<BR/>
-            Ball~2()
+            label1.next == line2
           </CodeBlock>
+
+          For instance, without any compiler optimizations, this would be (approximately) how a NAND gate would be defined:
+
           <CodeBlock>
-            Ball = Ball~profile<BR/>
-            with Ball = Ball~profile
+            <></>nand (a, b) ={'>'} {'{'}<BR/>
+            <></>  goto second if a<BR/>
+            <></>  return true<BR/>
+            <></>second\<BR/>
+            <></>  goto 0 if b<BR/>
+            <></>  return true<BR/>
+            <></>0\<BR/>
+            <></>  return false<BR/>
+            <></>{'}'}
           </CodeBlock>
+
+          To access the current function that is running, you can simple use the context operator (&) inside a function, which is just a pointer to where in the program we're currently at:
+
           <CodeBlock>
-            Node~+
+            &<BR/>
+            &.context == local<BR/>
+            &.next // iterate through the future steps of the program
           </CodeBlock>
+        
+          <Para>It's also good to note that <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "precedence", link: "https://en.wikipedia.org/wiki/Order_of_operations"}}/>, is the order in which functions are defined. Sometimes it's useful to therefore reference that you want something defined between or after other operators. This is why function names themselves are also treated as labels! And you can reference them in the following way:</Para>
+
           <CodeBlock>
-            unique: T{'{'}references.count == 1{'}'}<BR/>
-            borrowed: T{'{'}references.count {'<'}= 1{'}'}
+            Number~+
           </CodeBlock>
+
+          That should about cover most things functions/programs. Except one important feature of the Ray programming language. Comparing functions for their equivalence... And in general how equivalence works!          
         </Section>
         <Section head="§2.6 Equality & Equivalence">
           {/* Cover default equivalences  */}
