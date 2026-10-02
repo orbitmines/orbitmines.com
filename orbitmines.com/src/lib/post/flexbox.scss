@@ -80,6 +80,13 @@ $xl-viewport: 1200px;
     //margin-left: var(--gutter-compensation, -08px);
 }
 
+// Flex items default to min-width: auto, i.e. they can't shrink below their
+// content's min-content width (a code block's longest line, a long word). The
+// row's overflow: hidden then clips them on small screens - let them shrink.
+.row > * {
+    min-width: 0;
+}
+
 .row.reverse {
     flex-direction: row-reverse;
 }

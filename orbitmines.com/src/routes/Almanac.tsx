@@ -1,7 +1,7 @@
 import { ETHERS_ALMANAC, ON_ORBITS } from "./references";
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "./profiles/profiles";
-import React, {HTMLAttributes, ReactNode, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, ReactNode, useState} from "react";
 import Post, {
   Arc, Block,
   BlueprintIcons16,
@@ -32,120 +32,84 @@ import { Para } from "./Physics";
 
 
 
-const Highlighted = (props: { code: string, scroll?: boolean }) => {
-  const { scroll = true } = props;
-  const textareaRef = useRef(null);
-  const measureRef = useRef<HTMLSpanElement | null>(null);
+// Keyed on the code: switching pages reuses this component at the same tree
+// position, and the editable copy below is only seeded from props once - without
+// the key a block would keep showing the code of the page it was first drawn on.
+const Highlighted = (props: { code: string, wrap?: boolean }) =>
+  <EditableHighlighted key={props.code} {...props}/>
 
+const EditableHighlighted = (props: { code: string, wrap?: boolean }) => {
+  const { wrap = true } = props;
   const [code, setCode] = useState(props.code);
 
-  const [height, setHeight] = useState(`${props.code.split('\n').length * 1.5}rem`);
-
-  const resize = () => {
-    if (textareaRef.current && measureRef.current) {
-      textareaRef.current.style.height = "auto";
-
-      let height = textareaRef.current.scrollHeight
-      if (code.split('\n').length === 1 && textareaRef.current.getBoundingClientRect().width - measureRef.current.getBoundingClientRect().width >= 20)
-        height = '22' // could be better, but works for now
-      textareaRef.current.style.height = `${height}px`;
-      setHeight(height)
-    }
+  // The textarea (editable, transparent text) and the highlighted <pre> share one
+  // grid cell, so both are sized by the code itself in the same font - no JS
+  // measuring that can drift out of sync on resize and leave stray scrollbars.
+  // Long lines wrap (identically in both layers) instead of scrolling sideways;
+  // `wrap={false}` is for tiny inline labels that may overhang their column.
+  const layer: React.CSSProperties = {
+    gridArea: '1 / 1',
+    margin: 0,
+    padding: 0,
+    border: 'none',
+    font: 'inherit',
+    lineHeight: 'inherit',
+    whiteSpace: wrap ? 'pre-wrap' : 'pre',
+    wordBreak: 'normal',
+    overflowWrap: wrap ? 'anywhere' : 'normal',
+    overflow: 'hidden',
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCode(e.target.value);
-    resize()
-  };
+  return <div style={{ fontSize: '1.1rem', lineHeight: 1.4, width: '100%' }}>
+    <div style={{ display: 'grid', ...(wrap ? { width: '100%' } : { width: 'max-content', minWidth: '100%' }) }}>
+      <Highlight prism={ReactPrism} theme={themes.duotoneDark} code={code} language="ray.txt">
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre
+            className={className}
+            aria-hidden="true"
+            style={{
+              ...style,
+              ...layer,
+              pointerEvents: "none",
+              background: "transparent",
+            }}
+          >
+          {tokens.map((line, i) => {
+            const lp = getLineProps({ line }) as any;
+            return (
+              <div key={i} className={lp.className} style={lp.style}>
+                {line.map((token, ti) => {
+                  const tp = getTokenProps({ token }) as any;
+                  return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
+                })}
+              </div>
+            );
+          })}
+        </pre>
+        )}
+      </Highlight>
 
-  useLayoutEffect(() => {
-    resize();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, [code]);
-  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%", overflowX: scroll ? "auto" : "visible" }}>
-    <span
-      ref={measureRef}
-      style={{
-        position: "absolute",
-        visibility: "hidden",
-        whiteSpace: "pre",
-        fontFamily: "monospace",
-        fontSize: "1.1rem",
-        lineHeight: "1.4",
-        padding: 0,
-        margin: 0,
-      }}
-    >
-      {code}
-    </span>
-
-    <textarea
-      ref={textareaRef}
-      value={code}
-      onChange={handleChange}
-      spellCheck={false}
-      wrap="off"
-      style={{
-        lineHeight: "1.4",
-        position: "relative",
-        width: "100%",
-        height: height,
-        maxHeight: '100%',
-        fontSize: '1.1rem',
-        padding: 0,
-        background: "transparent",
-        color: "transparent",
-        caretColor: "#fff",
-        textShadow: "0 0 0 transparent",
-        resize: "none",
-        fontFamily: "monospace",
-        whiteSpace: "pre",
-        overflow: "hidden",
-        border: "none",
-        wordBreak: 'normal',
-        overflowWrap: 'normal'
-      }}
-    />
-
-    <Highlight prism={ReactPrism} theme={themes.duotoneDark} code={code} language="ray.txt">
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={className}
-          aria-hidden="true"
-          style={{
-            ...style,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            pointerEvents: "none",
-            whiteSpace: "pre",
-            background: "transparent",
-            width: "max-content",
-            minWidth: "100%",
-            height: height,
-            overflow: "hidden",
-            wordBreak: 'normal',
-            overflowWrap: 'normal'
-          }}
-        >
-        {tokens.map((line, i) => {
-          const lp = getLineProps({ line }) as any;
-          return (
-            <div key={i} className={lp.className} style={lp.style}>
-              {line.map((token, ti) => {
-                const tp = getTokenProps({ token }) as any;
-                return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
-              })}
-            </div>
-          );
-        })}
-      </pre>
-      )}
-    </Highlight>
+      <textarea
+        value={code}
+        onChange={e => setCode(e.target.value)}
+        spellCheck={false}
+        wrap={wrap ? "soft" : "off"}
+        rows={1}
+        style={{
+          ...layer,
+          // Stretch over the <pre> (which sets the cell's size) rather than size it:
+          // a textarea's default width (its `cols`) would otherwise widen the cell.
+          width: 0,
+          minWidth: '100%',
+          height: '100%',
+          minHeight: 0,
+          background: "transparent",
+          color: "transparent",
+          caretColor: "#fff",
+          resize: "none",
+        }}
+      />
+    </div>
   </div>
 }
 
@@ -165,7 +129,7 @@ const string = (node: ReactNode): string => {
 }
 
 const Shell = ({children}: Children) => {
-  return <Block>
+  return <Block style={{whiteSpace: 'pre-wrap', overflowWrap: 'anywhere'}}>
     <span style={{textAlign: 'left'}}>
       <Highlight prism={ReactPrism} theme={themes.oneDark} code={string(children)} language="bash">
       {({className, style, tokens, getLineProps, getTokenProps}) => (
@@ -391,9 +355,9 @@ const Almanac = () => {
             <Col md={6} xs={9}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" scroll={false}/></Col>
-                   <Col style={{width: '10px'}}><Highlighted code="B" scroll={false}/></Col>
-                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" wrap={false}/></Col>
+                   <Col style={{width: '10px'}}><Highlighted code="B" wrap={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" wrap={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '85.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -425,9 +389,9 @@ const Almanac = () => {
             <Col md={6} xs={12}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" scroll={false}/></Col>
-                   <Col style={{width: '25px'}}><Highlighted code="E1" scroll={false}/></Col>
-                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" wrap={false}/></Col>
+                   <Col style={{width: '25px'}}><Highlighted code="E1" wrap={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" wrap={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '93.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -462,7 +426,7 @@ const Almanac = () => {
                   </group>
                 </CachedVisualizationCanvas>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" scroll={false}/></Col>
+                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" wrap={false}/></Col>
                 </Row>
               </Block>
             </Col>
