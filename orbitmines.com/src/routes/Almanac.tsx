@@ -1,7 +1,7 @@
 import { ETHERS_ALMANAC, ON_ORBITS } from "./references";
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "./profiles/profiles";
-import React, {HTMLAttributes, ReactNode, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, ReactNode, useState} from "react";
 import Post, {
   Arc, Block,
   BlueprintIcons16,
@@ -28,123 +28,88 @@ import { add, CachedVisualizationCanvas, CanvasContainer, Continuation, Line, Ra
 import REFERENCES from "./profiles/fadi-shawki/fadi_shawki";
 import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "./references";
 import { Center, Html, Text } from "@react-three/drei";
+import { Para } from "./Physics";
 
 
 
-const Highlighted = (props: { code: string, scroll?: boolean }) => {
-  const { scroll = true } = props;
-  const textareaRef = useRef(null);
-  const measureRef = useRef<HTMLSpanElement | null>(null);
+// Keyed on the code: switching pages reuses this component at the same tree
+// position, and the editable copy below is only seeded from props once - without
+// the key a block would keep showing the code of the page it was first drawn on.
+const Highlighted = (props: { code: string, wrap?: boolean }) =>
+  <EditableHighlighted key={props.code} {...props}/>
 
+const EditableHighlighted = (props: { code: string, wrap?: boolean }) => {
+  const { wrap = true } = props;
   const [code, setCode] = useState(props.code);
 
-  const [height, setHeight] = useState(`${props.code.split('\n').length * 1.5}rem`);
-
-  const resize = () => {
-    if (textareaRef.current && measureRef.current) {
-      textareaRef.current.style.height = "auto";
-
-      let height = textareaRef.current.scrollHeight
-      if (code.split('\n').length === 1 && textareaRef.current.getBoundingClientRect().width - measureRef.current.getBoundingClientRect().width >= 20)
-        height = '22' // could be better, but works for now
-      textareaRef.current.style.height = `${height}px`;
-      setHeight(height)
-    }
+  // The textarea (editable, transparent text) and the highlighted <pre> share one
+  // grid cell, so both are sized by the code itself in the same font - no JS
+  // measuring that can drift out of sync on resize and leave stray scrollbars.
+  // Long lines wrap (identically in both layers) instead of scrolling sideways;
+  // `wrap={false}` is for tiny inline labels that may overhang their column.
+  const layer: React.CSSProperties = {
+    gridArea: '1 / 1',
+    margin: 0,
+    padding: 0,
+    border: 'none',
+    font: 'inherit',
+    lineHeight: 'inherit',
+    whiteSpace: wrap ? 'pre-wrap' : 'pre',
+    wordBreak: 'normal',
+    overflowWrap: wrap ? 'anywhere' : 'normal',
+    overflow: 'hidden',
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCode(e.target.value);
-    resize()
-  };
+  return <div style={{ fontSize: '1.1rem', lineHeight: 1.4, width: '100%' }}>
+    <div style={{ display: 'grid', ...(wrap ? { width: '100%' } : { width: 'max-content', minWidth: '100%' }) }}>
+      <Highlight prism={ReactPrism} theme={themes.duotoneDark} code={code} language="ray.txt">
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre
+            className={className}
+            aria-hidden="true"
+            style={{
+              ...style,
+              ...layer,
+              pointerEvents: "none",
+              background: "transparent",
+            }}
+          >
+          {tokens.map((line, i) => {
+            const lp = getLineProps({ line }) as any;
+            return (
+              <div key={i} className={lp.className} style={lp.style}>
+                {line.map((token, ti) => {
+                  const tp = getTokenProps({ token }) as any;
+                  return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
+                })}
+              </div>
+            );
+          })}
+        </pre>
+        )}
+      </Highlight>
 
-  useLayoutEffect(() => {
-    resize();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, [code]);
-  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%", overflowX: scroll ? "auto" : "visible" }}>
-    <span
-      ref={measureRef}
-      style={{
-        position: "absolute",
-        visibility: "hidden",
-        whiteSpace: "pre",
-        fontFamily: "monospace",
-        fontSize: "1.1rem",
-        lineHeight: "1.4",
-        padding: 0,
-        margin: 0,
-      }}
-    >
-      {code}
-    </span>
-
-    <textarea
-      ref={textareaRef}
-      value={code}
-      onChange={handleChange}
-      spellCheck={false}
-      wrap="off"
-      style={{
-        lineHeight: "1.4",
-        position: "relative",
-        width: "100%",
-        height: height,
-        maxHeight: '100%',
-        fontSize: '1.1rem',
-        padding: 0,
-        background: "transparent",
-        color: "transparent",
-        caretColor: "#fff",
-        textShadow: "0 0 0 transparent",
-        resize: "none",
-        fontFamily: "monospace",
-        whiteSpace: "pre",
-        overflow: "hidden",
-        border: "none",
-        wordBreak: 'normal',
-        overflowWrap: 'normal'
-      }}
-    />
-
-    <Highlight prism={ReactPrism} theme={themes.duotoneDark} code={code} language="ray.txt">
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={className}
-          aria-hidden="true"
-          style={{
-            ...style,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            pointerEvents: "none",
-            whiteSpace: "pre",
-            background: "transparent",
-            width: "max-content",
-            minWidth: "100%",
-            height: height,
-            overflow: "hidden",
-            wordBreak: 'normal',
-            overflowWrap: 'normal'
-          }}
-        >
-        {tokens.map((line, i) => {
-          const lp = getLineProps({ line }) as any;
-          return (
-            <div key={i} className={lp.className} style={lp.style}>
-              {line.map((token, ti) => {
-                const tp = getTokenProps({ token }) as any;
-                return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
-              })}
-            </div>
-          );
-        })}
-      </pre>
-      )}
-    </Highlight>
+      <textarea
+        value={code}
+        onChange={e => setCode(e.target.value)}
+        spellCheck={false}
+        wrap={wrap ? "soft" : "off"}
+        rows={1}
+        style={{
+          ...layer,
+          // Stretch over the <pre> (which sets the cell's size) rather than size it:
+          // a textarea's default width (its `cols`) would otherwise widen the cell.
+          width: 0,
+          minWidth: '100%',
+          height: '100%',
+          minHeight: 0,
+          background: "transparent",
+          color: "transparent",
+          caretColor: "#fff",
+          resize: "none",
+        }}
+      />
+    </div>
   </div>
 }
 
@@ -164,7 +129,7 @@ const string = (node: ReactNode): string => {
 }
 
 const Shell = ({children}: Children) => {
-  return <Block>
+  return <Block style={{whiteSpace: 'pre-wrap', overflowWrap: 'anywhere'}}>
     <span style={{textAlign: 'left'}}>
       <Highlight prism={ReactPrism} theme={themes.oneDark} code={string(children)} language="bash">
       {({className, style, tokens, getLineProps, getTokenProps}) => (
@@ -390,9 +355,9 @@ const Almanac = () => {
             <Col md={6} xs={9}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" scroll={false}/></Col>
-                   <Col style={{width: '10px'}}><Highlighted code="B" scroll={false}/></Col>
-                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" wrap={false}/></Col>
+                   <Col style={{width: '10px'}}><Highlighted code="B" wrap={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" wrap={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '85.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -424,9 +389,9 @@ const Almanac = () => {
             <Col md={6} xs={12}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" scroll={false}/></Col>
-                   <Col style={{width: '25px'}}><Highlighted code="E1" scroll={false}/></Col>
-                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" wrap={false}/></Col>
+                   <Col style={{width: '25px'}}><Highlighted code="E1" wrap={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" wrap={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '93.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -461,7 +426,7 @@ const Almanac = () => {
                   </group>
                 </CachedVisualizationCanvas>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" scroll={false}/></Col>
+                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" wrap={false}/></Col>
                 </Row>
               </Block>
             </Col>
@@ -687,32 +652,6 @@ const Almanac = () => {
           </CodeBlock>
 
           But for that we must turn to the next section to unpack what that means. Starting with what this 'equipped structure' called a Ray is.
-          <CodeBlock>
-            func (a) ={'>'} a + 1<BR/>
-            func(1 & 2) // 2 & 3<BR/>
-            func(1 | 2) // 2 | 3
-          </CodeBlock>
-          <CodeBlock>
-            s (x: boolean) ={'>'} x ? "Y" : "N"<BR/>
-            s(false & true) // "Y" & "N"<BR/>
-            s(boolean) // "Y" | "N"
-          </CodeBlock>
-          <CodeBlock>
-            "A", ("B" | "C") // "AB" | "AC"
-          </CodeBlock>
-          <CodeBlock>
-            true (|| | &&) false // (true || false) | (true && false)
-          </CodeBlock>
-          <CodeBlock>
-            x = true &+ "A"<BR/>
-            x.next // false & "B"<BR/>
-            x = true |+ "A"<BR/>
-            x.next // false | "B"
-          </CodeBlock>
-          <CodeBlock>
-            x - boolean<BR/>
-            x## // ["A", true]
-          </CodeBlock>
         </Section>
         <Section head="§2.2 Rays: Arrays, Trees, Graphs">
           <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
@@ -928,6 +867,16 @@ const Almanac = () => {
             (0 -{'>'} +2)[4] // Accessing the element at index 4 here would be 8.
           </CodeBlock>
 
+          Ranges are similarly shortcuts for creating these recursive structures as familiar from other languages:
+
+          <CodeBlock>
+            1..5 // 1, 2, 3, 4, 5<BR/>
+            1..{'<'}5 // 1, 2, 3, 4<BR/>
+            0..10..20 // through 10, relevant for graphs<BR/>
+            5.. // 5 -{'>'}<BR/>
+            ..5 // {'<'}- 5
+          </CodeBlock>
+
           <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
           <CodeBlock>
             x: Number = [1, 2, 3]<BR/>
@@ -1064,56 +1013,6 @@ const Almanac = () => {
           That however leaves one thing I haven't yet explained about Rays, which is the way booleans and numbers are encoded as Rays.
           <BR/>
           For that we'll turn towards the next section.
-          <CodeBlock>
-            node -{'>'} .parent<BR/>
-            (node -{'>'} .parent).last
-          </CodeBlock>
-          <CodeBlock>
-            1..5 // 1, 2, 3, 4, 5<BR/>
-            1..{'<'}5 // 1, 2, 3, 4<BR/>
-            0..10..20<BR/>
-            5.. // 5 -{'>'}<BR/>
-            ..5 // {'<'}- 5
-          </CodeBlock>
-          <CodeBlock>
-            x: Graph = [false, false | true, true]<BR/>
-            x.map(!) // true, true | false, false
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3].first // 1<BR/>
-            [1, 2, 3].last // 3<BR/>
-            [1, 2, 3].count // 3<BR/>
-            [1, 2, 3].reverse // [3, 2, 1]<BR/>
-            [3, 1, 2].sort // [1, 2, 3]<BR/>
-            [1, 2, 2, 3].unique // [1, 2, 3]<BR/>
-            [[1, 2], [3]].flatten // [1, 2, 3]<BR/>
-            [1, 2] * 3 // [1, 2, 1, 2, 1, 2]
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3].reduce(+) // 6<BR/>
-            [1, 2, 3].every({'>'} 0) // true<BR/>
-            [1, 2, 3].some({'>'} 2) // true<BR/>
-            [1, 2, 3].contains(2) // true
-          </CodeBlock>
-          <CodeBlock>
-            list := [1, 2]<BR/>
-            list.push_back(3) // [1, 2, 3]<BR/>
-            list.push_front(0) // [0, 1, 2, 3]<BR/>
-            list.pop_back // 3
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3] ~~ .push_back(4) // [1, 2, 3]<BR/>
-            [1, 2, 3] -- .push_back(4) // [1, 2, 3, 4]
-          </CodeBlock>
-          <CodeBlock>
-            loop := [1, 2, 3].orbit<BR/>
-            loop[5] // 3
-          </CodeBlock>
-          <CodeBlock>
-            tree.path_to(leaf)<BR/>
-            tree.path_to(leaf).min<BR/>
-            selection.complement
-          </CodeBlock>
         </Section>
         <Section head="§2.3 Numbers">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Numbers, booleans (binary numbers), are simply this visual structure. This would be <span
@@ -1172,13 +1071,53 @@ const Almanac = () => {
             y: i8 = -1110000 // Both a 0/1 or a - gets picked up here.
           </CodeBlock>
 
+          There also explicitely exist these familiar syntax for Hexadecimal and Binary:
+
+          <CodeBlock>
+            0x1F // 31<BR/>
+            0b101 // 5
+          </CodeBlock>
+
           Numbers can in the Ray language also be infinitely generating programs. In the sense of always having a next value in the fraction. This comes with certain restrictions of course if you want to operate with infinities. But for instance without defining that we're using a floating point number as an approximation the following would yield an unbounded Decimal:
 
           <CodeBlock>
             1/3 // 0.333, 3[]∞
+          </CodeBlock>          
+
+          <BR/>
+
+          There's also support for several mathematical symbols:
+
+          <CodeBlock>
+            ∑ [1, 2, 3] // 6<BR/>
+            ∏ [1, 2, 3] // 6
           </CodeBlock>
 
-          
+          As do certain obvious infinities settle to a value. Infinite here is an abstract reference to the terminal of an unbounded object. (That is what I envision the abstraction of infinity to actually be.)
+
+          <CodeBlock>
+            (0 -{'>'}).count // ∞
+          </CodeBlock>
+
+          Unless a specific type is specified, u8 doesn't overflow as expected, it's actually an error if not explicitely mentioned that is expected behavior:          
+          <CodeBlock>
+            x: u8 = 200<BR/>
+            x + 100 // 300<BR/>
+            x = x + 100 // error: 300 is not a u8<BR/>
+            x = (x + 100).mod // 44
+          </CodeBlock>
+
+          Furthermore the platform specific numbers exist through a Compiler setup, we'll get to more later, but it would be defined like this:
+          <CodeBlock>
+            usize := Binary{'{'}length == &language.word_size{'}'}<BR/>
+            program: Program{'{'}O: Compiler.default + Language.x86_64{'}'}
+          </CodeBlock>
+
+          Components also allow you to create complex numbers:
+
+          <CodeBlock>
+            2 + 3i
+          </CodeBlock>
 
           <BR/>
 
@@ -1197,44 +1136,6 @@ const Almanac = () => {
           </CodeBlock>
 
           This bracket syntax for filters is effectively also a type constraint. We'll turn towards the next section for those.
-          <CodeBlock>
-            0x1F // 31<BR/>
-            0b101 // 5
-          </CodeBlock>
-          <CodeBlock>
-            1/3 // 0.333…<BR/>
-            √2<BR/>
-            2^3^2 // 2^9<BR/>
-            5! // 120
-          </CodeBlock>
-          <CodeBlock>
-            ∑ [1, 2, 3] // 6<BR/>
-            ∏ [1, 2, 3] // 6
-          </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'} +1) {'{'}{'<'} 10{'}'} for i ={'>'} print(i)<BR/>
-            (-{'>'}) {'{'}index {'<'} 10{'}'} for ={'>'} print(.index)<BR/>
-            10.times ={'>'} print(.index)
-          </CodeBlock>
-          <CodeBlock>
-            (0.0 -{'>'} +0.1) {'{'}{'<'}= 1.0{'}'} for x ={'>'} print(x)
-          </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'}).count // ∞
-          </CodeBlock>
-          <CodeBlock>
-            x: u8 = 200<BR/>
-            x + 100 // 300<BR/>
-            x = x + 100 // error: 300 is not a u8<BR/>
-            x = (x + 100).mod // 44
-          </CodeBlock>
-          <CodeBlock>
-            USize := Binary{'{'}length == &language.word_size{'}'}<BR/>
-            program: Program{'{'}O: Compiler.default + Language.x86_64{'}'}
-          </CodeBlock>
-          <CodeBlock>
-            2 + 3i
-          </CodeBlock>
         </Section>
         <Section head="§2.4 Types: Patterns">
           Types are incredibly expressive in the Ray programming language. Allowing you to effectively do arbitrary pattern matching on any kind of structure.
@@ -1343,164 +1244,143 @@ const Almanac = () => {
           </CodeBlock>
 
           Onwards to how programs (functions) are actually structured in the Ray programming language!
-          <CodeBlock>
-            "A"[]<BR/>
-            "A", "A", "A"<BR/>
-            "A", "A", "A" ==.instance_of "A"[] // true
-          </CodeBlock>
-          <CodeBlock>
-            first, middle: String[], last := "A", "B", "C", "D"<BR/>
-            middle // "B", "C"
-          </CodeBlock>
-          <CodeBlock>
-            Small := Number{'{'}{'<'} 10{'}'}<BR/>
-            x: Small = 5
-          </CodeBlock>
-          <CodeBlock>
-            xs := [1, 20, 3]<BR/>
-            xs{'{'}.count {'<'} 5{'}'} // [1, 20, 3]<BR/>
-            xs[{'{'}{'<'} 10{'}'}] // [1, 3]<BR/>
-            (0 -{'>'} +1){'{'}{'<'} 10{'}'} // 0 … 9
-          </CodeBlock>
-          <CodeBlock>
-            x: Number & Ordered<BR/>
-            y: Number | String<BR/>
-            z: Number?<BR/>
-            x: class
-          </CodeBlock>
-          <CodeBlock>
-            Positioned := String + Ray<BR/>
-            entry: String + Ray
-          </CodeBlock>
-          <CodeBlock>
-            Addable := Node{'{'}+ (: Number){'}'}
-          </CodeBlock>
-          <CodeBlock>
-            unique: T{'{'}references.count == 1{'}'}<BR/>
-            borrowed: T{'{'}references.count {'<'}= 1{'}'}
-          </CodeBlock>
-          <CodeBlock>
-            if x.instance_of(String) {'{'}<BR/>
-            <></>  x.lowercase<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            d: Date = 2-7<BR/>
-            r: Range = 2-7
-          </CodeBlock>
-          <CodeBlock>
-            Ray{'<'}T = Ray{'>'}<BR/>
-            Example{'<'}field: "A"{'>'}
-          </CodeBlock>
-          <CodeBlock>
-            x: Number<BR/>
-            x + 1 // every Number, plus one<BR/>
-            x: Number = ?
-          </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
-          {/* Partial args + can set any var in the func (Can be prevented, which I'll discuss in Access Permissions), Multiline multiple implementations */}
-          {/* => overrides, &=> etc.., () doesnt override but = () => does */}
+          Functions have a pretty straightforward way of being defined:
           <CodeBlock>
             add (a, b) ={'>'} a + b<BR/>
             add(1, 2) // 3
           </CodeBlock>
-          <CodeBlock>
-            increment := add(1)<BR/>
-            increment(5) // 6<BR/>
-            add(b: 2)(1) // 3
-          </CodeBlock>
-          <CodeBlock>
-            varargs (a: String, b: Number[], c: String[]) ={'>'} b.count<BR/>
-            part: String[] = "c1", "c2"<BR/>
-            varargs("a", 1, 2, 3, part, "c3") // 3
-          </CodeBlock>
-          <CodeBlock>
-            Ball(radius: 5m, "red", border: 1m, "solid")
-          </CodeBlock>
-          <CodeBlock>
-            (x) ={'>'} x * 2<BR/>
-            [1, 2, 3].map((x) ={'>'} x * 2) // [2, 4, 6]<BR/>
-            [1, 2, 3].map(* 2) // [2, 4, 6]
-          </CodeBlock>
-          <CodeBlock>
-            double | twice (x) ={'>'} x * 2<BR/>
-            twice(4) // 8
-          </CodeBlock>
+          Where you can use any string of text as long as it doesn't contain whitespace as the name of a function. The ={'>'} at the end marks it as a function definition.
+
+          <BR/>
+
+          Superposing also works with functions, where it is works as aliases:
+
           <CodeBlock>
             a | a1 (: boolean) ={'>'} "X"<BR/>
-            a | a2 (: Number) ={'>'} "Y"<BR/>
+            a | a2 (: Number) ={'>'} "Y"
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Or as <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'multiple dispatch', link: 'https://en.wikipedia.org/wiki/Multiple_dispatch'}} />:</span>
+
+          <CodeBlock>
             a(boolean) // "X"<BR/>
             a(Number) // "Y"
           </CodeBlock>
+
+          You can also put it on the other side of the function definition, starting a definition with |, marks it as: I have multiple implementations, let the compiler (or specific references) choose which one. For instance the NOT operator on boolean can be implemented in several ways (using NAND, NOR, XOR, ...).
+
           <CodeBlock>
-            !{'{'}x{'}'}<BR/>
+            !{'{'}x{'}'} ={'>'}<BR/>
             <></>  | x !&& x<BR/>
             <></>  | x !|| x<BR/>
             <></>  | x x|| true
           </CodeBlock>
-          <CodeBlock>
-            Animal := class {'{'}<BR/>
-            <></>  sound ={'>'} "..."<BR/>
-            {'}'}<BR/>
-            Dog := class: Animal {'{'}<BR/>
-            <></>  sound ={'>'} "Woof"<BR/>
-            {'}'}<BR/>
-            Loud := class: Dog {'{'}<BR/>
-            <></>  sound &={'>'} "WOOF"<BR/>
-            {'}'}<BR/>
-            Loud().sound // "Woof" & "WOOF"
-          </CodeBlock>
+
+          Other than superposing values there also exist several other useful library features. For instance recurring the current function in place as in a typical recursive call:
+
           <CodeBlock>
             countdown (n) ={'>'} (<BR/>
             <></>  return n if n == 0<BR/>
             <></>  recur(n - 1)<BR/>
             )
           </CodeBlock>
+
+          Or full recursion which is useful in certain mathematical equations (which is an infinitely generating program, but in this case limiting):
+
           <CodeBlock>
-            forever () ={'>'} Never<BR/>
-            stop () ={'>'} {'{'}<BR/>
-            <></>  cleanup()<BR/>
+            limited (x) ={'>'} x + 1/recur
+          </CodeBlock>
+
+          Then like the 'dynamically assert' of types, the opposite of that is 'never', which can also be used as a return value:
+
+          <CodeBlock>
+            forever (): never ={'>'} loop {'{'} {'}'}
+          </CodeBlock>
+
+          Or to be used match certain program patterns which must never happen in this function:
+
+          <CodeBlock>
+            forever () ={'>'} {'{'}<BR/>
             <></>  never return<BR/>
-            {'}'}<BR/>
-            never x {'<'} 0
+            <></>  loop {'{'}<BR/>
+            <></>    return if A // ERROR if A is possible.<BR/>
+            <></>  {'}'}<BR/>
+            {'}'}
           </CodeBlock>
+
+          It - like dynamically assert - also accepts predicates:
+
           <CodeBlock>
-            area ={'>'} width * height
+            x: Number<BR/>
+            never x == 0<BR/>
+            <BR/>
+            x = 0 // ERROR
           </CodeBlock>
+
+          <Para>Then many additional functionalities are optionally available to the runtime (which wouldn't be in most programming languages). Like where in the program this function is possibly referenced. The function's context (whether currently executing or not - more on that in <SectionButton section="§4.9 Concurrency" rightIcon="arrow-right" text="§4.9 Concurrency" minimal outlined />).</Para>
+
           <CodeBlock>
-            f**<BR/>
-            f**.expand<BR/>
-            f**.variables<BR/>
-            f**.usages<BR/>
+            var = A + 5<BR/>
+            f = var** // function that needs to run to fill var<BR/>
+            <BR/>
+            f.context.A<BR/>
+            f.references<BR/>
             f.injective
           </CodeBlock>
+          
+          The way all this functionality works brings us to how programs are structured. The only functional primitive which exists is a conditional goto; a conditional edge effectively in graph terms. This is the most foundational thing: Conditional dependence on some state. It is enough to build all familiar programming language concepts. Whether boolean arithmetic, control-flow. Anything.
+
+          <Para><span className="bp5-text-muted">(And goto's themselves are just conditional alterations of the control-flow graph. Which is how they would be implemented was that your base language.)</span></Para>
+
+          <BR/>
+
+          Like most programming languages which allow you to use gotos you can label things in the language. Though in the Ray programming language you can label anywhere, and reference a label anywhere!
+
           <CodeBlock>
-            label1\ A (label2\ + B)<BR/>
-            label2<BR/>
-            &next<BR/>
-            goto (program: Program) ={'>'} &caller.push(program)
+            label1\ x: A (label2\ + B)<BR/>
+            line2\ x == 5<BR/>
+            <BR/>
+            line2 // ref it anywhere
+            goto label1
           </CodeBlock>
+
+          It just resolves to a pointer somewhere in the program. Which itself is a nested iterable structure of statements. So things like this would work:
+
           <CodeBlock>
-            Ball := class {'{'}<BR/>
-            <></>  radius: Number<BR/>
-            <></>  profile\<BR/>
-            <></>    center radius<BR/>
-            <></>  "Profile Name"\<BR/>
-            <></>    center radius<BR/>
-            {'}'}<BR/>
-            Ball~default()<BR/>
-            Ball~profile(radius: 5)<BR/>
-            Ball~"Profile Name"()<BR/>
-            Ball~2()
+            label1.next == line2
           </CodeBlock>
+
+          For instance, without any compiler optimizations, this would be (approximately) how a NAND gate would be defined:
+
           <CodeBlock>
-            Ball = Ball~profile<BR/>
-            with Ball = Ball~profile
+            <></>nand (a, b) ={'>'} {'{'}<BR/>
+            <></>  goto second if a<BR/>
+            <></>  return true<BR/>
+            <></>second\<BR/>
+            <></>  goto 0 if b<BR/>
+            <></>  return true<BR/>
+            <></>0\<BR/>
+            <></>  return false<BR/>
+            <></>{'}'}
           </CodeBlock>
+
+          To access the current function that is running, you can simple use the context operator (&) inside a function, which is just a pointer to where in the program we're currently at:
+
           <CodeBlock>
-            Node~+
+            &<BR/>
+            &.context == local<BR/>
+            &.next // iterate through the future steps of the program
           </CodeBlock>
+        
+          <Para>It's also good to note that <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "precedence", link: "https://en.wikipedia.org/wiki/Order_of_operations"}}/>, is the order in which functions are defined. Sometimes it's useful to therefore reference that you want something defined between or after other operators. This is why function names themselves are also treated as labels! And you can reference them in the following way:</Para>
+
+          <CodeBlock>
+            Number~+
+          </CodeBlock>
+
+          That should about cover most things functions/programs. Except one important feature of the Ray programming language. Comparing functions for their equivalence... And in general how equivalence works!          
         </Section>
         <Section head="§2.6 Equality & Equivalence">
           {/* Cover default equivalences  */}
@@ -1591,6 +1471,7 @@ const Almanac = () => {
           <CodeBlock>
             Example := class (x: String) {`{`}<BR/>
             <></>  y: String<BR/>
+            <></>  z?: Number<BR/>
             <>{`}`}</><BR/>
             <BR/>
             Example("X", y: "Y")
@@ -1625,71 +1506,14 @@ const Almanac = () => {
             {`}`}
           </CodeBlock>
 
-          <CodeBlock>
-            x: Enum = Enum.A<BR/>
-            x.match<BR/>
-            <></>  A ={'>'} 1<BR/>
-            <></>  var: B ={'>'} var * 2<BR/>
-            <></>  C("A") ={'>'} 3<BR/>
-            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
-            <></>  C(var) ={'>'} var * 5<BR/>
-            <></>  C ={'>'} 6
-          </CodeBlock>
-          <CodeBlock>
-            Example := class {'{'}<BR/>
-            <></>  static Var := 5<BR/>
-            <></>  InnerClass := class {'{'}{'}'}<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            Example := class (x: String) ={'>'} single_line<BR/>
-            Example := class (x: String) {'{'}<BR/>
-            <></>  y: String<BR/>
-            <></>  z?: Number<BR/>
-            {'}'}<BR/>
-            Example("X", y: "Y")
-          </CodeBlock>
-          <CodeBlock>
-            Square := class: Shape {'{'}<BR/>
-            <></>  side: Number<BR/>
-            <></>  area ={'>'} side * side<BR/>
-            {'}'}<BR/>
-            Shape := class {'{'}<BR/>
-            <></>  area ={'>'} TODO<BR/>
-            {'}'}<BR/>
-            Shape() // error: Shape is abstract
-          </CodeBlock>
-          <CodeBlock>
-            Colored := Point + Color
-          </CodeBlock>
-          <CodeBlock>
-            Number += {'{'}<BR/>
-            <></>  squared ={'>'} this * this<BR/>
-            {'}'}<BR/>
-            5.squared // 25
-          </CodeBlock>
-          <CodeBlock>
-            ExampleEnum := enum A | B | C(: String)<BR/>
-            ExampleEnum: A | B | C = class {'{'}<BR/>
-            <></>  A := class {'{'}{'}'}<BR/>
-            <></>  B := class {'{'}{'}'}<BR/>
-            <></>  C := class (: String) {'{'}{'}'}<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            x: ExampleEnum = ExampleEnum.A<BR/>
-            x.match<BR/>
-            <></>  A ={'>'} 1<BR/>
-            <></>  var: B ={'>'} var * 2<BR/>
-            <></>  C("A") ={'>'} 3<BR/>
-            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
-            <></>  C(var) ={'>'} var * 5<BR/>
-            <></>  C ={'>'} 6
-          </CodeBlock>
+          You can also extract stuff out of any object/class by pattern-matching in front of it.
+
           <CodeBlock>
             {'{'} Rational, Irrational {'}'} = Real<BR/>
             {'{'} false, true {'}'} = boolean
           </CodeBlock>
+
+          Which leaves us at how we get stuff others made our project... You should now have enough knowledge to do very basic things to interact with the language so that you can use it like any other language. If you want to interact with stuff others have made we'll have to turn towards the next chapter, to cover Ecosystem-related functionality.
         </Section>
       </Section>
       <Section head="§3. Ecosystem">
@@ -1697,10 +1521,13 @@ const Almanac = () => {
         <CodeBlock>
           Example := class (field = "A")<BR/>
           x := Example()<BR/>
+          <BR/>
           update (var: Example) ={'>'} {'{'}<BR/>
           <></>  var = Example("B")<BR/>
           {'}'}<BR/>
+          <BR/>
           update(x)<BR/>
+          <BR/>
           x.field // Is it "A" or "B" here?
         </CodeBlock>
         Saying it is always "Call by reference" would mean it is "B" here, saying "Call by value" would mean it's always "A" and that it's impossible to modify an object other than returning a new version.
@@ -1737,11 +1564,7 @@ const Almanac = () => {
         </CodeBlock>
 
         Let's start by exploring how these locations work.
-        <CodeBlock>
-          var @ &caller = Example("B")<BR/>
-          var @ -{'>'} = Example("B")<BR/>
-          var @ * = Example("B")
-        </CodeBlock>
+
         <Section head="§3.1 Location & Assignment">
           <CodeBlock>
             x@<BR/>
