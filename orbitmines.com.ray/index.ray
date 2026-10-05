@@ -1,7 +1,7 @@
 // What running the site does is the level in scope (F-A1, F-D2):
-//   Program(code: { orbitmines.com }).rendered($.web.level).write(@./dist)       the static package: index.html, style.css, app.js, assets
-//   Program(code: { orbitmines.com }).run($.web, $.web.DOM())             the development runtime in the browser
-//   Program(code: { orbitmines.com }).run($.tui, $.tui.Target())          the same site, interactive in a terminal
+//   Program(code: { orbitmines.com }).rendered(UI.HTML.level).write(@./dist)    the static package: index.html, style.css, app.js, assets
+//   Program(code: { orbitmines.com }).run(UI.HTML, UI.HTML.DOM())          the development runtime in the browser
+//   Program(code: { orbitmines.com }).run(UI.TUI, UI.TUI.Target())         the same site, interactive in a terminal
 orbitmines.com() if &entrypoint
 
 orbitmines.com := class {

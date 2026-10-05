@@ -1540,9 +1540,9 @@ Almanac: Book = {
           orbitmines.com() if &entrypoint
         `
         @ray`
-          page.rendered($.web.level)
-          page.rendered($.tui.level)
-          page.rendered($.html.level + $.css.level + $.js.level)
+          page.rendered(UI.HTML.level)
+          page.rendered(UI.TUI.level)
+          page.rendered(UI.HTML.Markup.level + UI.HTML.Style.level + UI.HTML.Script.level)
         `
       }
     }
