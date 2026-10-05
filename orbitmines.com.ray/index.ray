@@ -1,83 +1,56 @@
+// What running the site does is the level in scope (F-A1, F-D2):
+//   Program(code: { orbitmines.com }).rendered(Language.Web.level).write(@./dist)       the static package: index.html, style.css, app.js, assets
+//   Program(code: { orbitmines.com }).run(Language.Web, Language.Web.DOM())             the development runtime in the browser
+//   Program(code: { orbitmines.com }).run(Language.TUI, Language.TUI.Target())          the same site, interactive in a terminal
 orbitmines.com() if &entrypoint
 
-// equivalent code (classes defined elsewhere)
-orbitmines.com := {
-  profiles: Profile$ // maps to /profiles/<id> through Location.url where superposed ones match to an identifier (doesnt have to be unique, result can be a superposition)
-  archive: Article$ // maps to /archive/<id>
-  almanac = Almanac
+orbitmines.com := class {
+  profiles: Profile$ @ /@
+  profile_redirects: (handle => UI.at = /@ + handle) @ /profiles/
+  archive: Article$ @ /archive/
+  paper_redirects: (rest => UI.at = /archive/ + rest) @ /papers/
+  almanac: Almanac @ /almanac if Features.ether
+  physics: physics @ /physics if Features.physics
+  thumbnail: Thumbnail @ /thumbnail
   {*}: Index
-}
 
-orbitmines.com := {
-  Profile @ /profiles/ x: Profile$ {
-  
-  }
-  Archive @ /archive/ x: Article$ {
+  title: "OrbitMines Research"
+  description: "Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame."
+  image: @https://orbitmines.com/logo.png
+  icon: @../orbitmines.com/public/favicon.png
+  meta: [(name: "og:site_name", content: "OrbitMines"), (name: "twitter:site", content: "@OrbitMines"), (name: "og:type", content: "website"), (name: "og:image", content: image as String), (name: "og:image:type", content: "image/jpeg"), (name: "theme-color", content: "#000000")]
+  manifest: @../orbitmines.com/public/manifest.json
+  apple_icon: @../orbitmines.com/public/logo192.png
 
-  }
-  Almanac @ /almanac {
-
-  }
-
-  Index @ / {
-    articles: Article[] =
-      "towards-a-universal-language",
-      "2024-02-orbitmines-as-a-game-project",
-      "on-orbits-equivalence-and-inconsistencies",
-      "on-intelligibility"
-
-    center {
-      100% * center{width <= 1240px} {
-        Right(DownloadButton, LoginButton()).map(& px 5)
-      }
-      100% * center Image{width <= 400px}(./lib/organizations/orbitmines/logo.png, width: 90%)
-      // equivalent to, because .png suggests Image already, no need to do so expliceitely.
-      1 * center @./lib/organizations/orbitmines/logo.png{width: 90% & <= 400px}
-      1.0 * center
-        (xl 4/12 lg 6/12 md 8/12 sm 10/12 xs 12/12) * center "Once a Minecraft server, now the building of a world where engineering, science, education are all an exploratory videogame.".italic
-      100% * center + pt 5 (@orbitmines.avatars.map => Link .location{: URL} => .platform.profile_picture).map(& px 2)
-      100% * center Image{height == 120px} ./archive/on-orbits-equivalence-and-inconsistencies/images/header.png
-      100% * center
-        X{width <= 500px}
-        X{width <= 500px}
-      100% * Author(@fadi, margin.top: 5%)
+  Index\
+  {width == 100% & width <= 100vw & height >= 100vh} py (xs 12 -> md 0) middle center .map(100% * center * .) <- {
+    center {width <= 1240px} {
+      end middle .map(&+ px 5) <- DownloadButton
     }
-
-    center .map(100% * center * .) <- {
-      {width <= 1240px} {
-        Right .map(& px 5) <- {
-          DownloadButton, LoginButton
+    center @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png{width == 90% & width <= 400px} ~~ .alt = "logo"
+    pt 5 center (xs 12/12 -> sm 10/12 -> md 8/12 -> lg 6/12 -> xl 4/12) center .description ^italic
+    center py 2 px 2 .map(&+ pt 5 px 2) <- @orbitmines.avatars{Platforms.shown.contains(.platform)}.map(.platform.icon(size: 20px) @ .location{window == new})
+    {width == 100% & height == 120px, overflow == clip} middle center @../orbitmines.com/public/archive/on-orbits-equivalence-and-inconsistencies/images/header.png
+    middle center .map(,) <- {
+      {width <= 500px} {
+        Label("Booklets")
+        Booklet(@../orbitmines.com/public/almanac/almanac.png, "E", Almanac, disabled: !Features.ether)
+        Booklet(@../orbitmines.com/public/2026-09-12_Sun.png, "Physics Project", physics, disabled: !Features.physics)
+      }
+      {width <= 500px} {
+        pb 4 .map(&+ mr 3) <- (@github.icon(size: 16px), "github.com/orbitmines") ^muted @ @https://github.com/orbitmines{window == new}
+        pl 9 {
+          Repository("/ray", "The Ray Programming Language & The Ether")
+          Repository("/physics", "OrbitMines: Physics Project")
+          Repository("/archive", "Public research archive")
+          Repository("/orbitmines.com", "Website to the internet")
         }
       }
-      Image{width <= 400px}(./lib/organizations/orbitmines/logo.png, width: 90%)
-      // equivalent to, because .png suggests Image already, no need to do so expliceitely.
-      @./lib/organizations/orbitmines/logo.png{width: 90% & <= 400px}
-
-      // Better controls for this instead of always defining xl/xs, but smooth transition how?
-      (xl 4/12 -> xs 12/12) "Once a Minecraft server ..."
-      pt 5 .map(& px 2) <- (@orbitmines.avatars.map => .location{: URL}.platform.profile_picture)
-      mage{height == 120px} ./archive/on-orbits-equivalence-and-inconsistencies/images/header.png
-      {
-        X{width <= 500px}
-        X{width <= 500px}
-      }
-      @fadi as Author {margin.top: 5%}
-      mt 5 @fadi as Author
-      mt 5 { @fadi as Author }
     }
-    
-    // equiv to this.
-    center {}.map(100% * center * .)
+    {margin.(Geometry.vertical) == 2.5rem} @fadi as Author
+    center {width <= 500px} {
+      Label("/updates")
+      pl 9 writings.map((. ~~ (.window = same))~entry)
+    }
   }
-}
-
-// div becomes a span
-.map(,) <- {
-  SomethingThatWouldBeADiv
-  SomethingThatWouldBeADiv
-}
-// span becomes a div with .map(\n)
-
-Author: Player = {
-
 }

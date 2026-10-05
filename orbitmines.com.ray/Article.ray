@@ -1,8 +1,384 @@
-class Article (name: String) < name
+Viewed := enum found | in_progress | viewed
+Exposure := enum book | video | article
 
-class Book < Article
+Reference &+= {
+  date: (Time | String)?
+  discussion: None
+  status: Viewed.viewed
+  found_at: None
+  viewed_at: None
+  description: None
+  kind: None
+  archived: false
+  window: None
 
-class Profile < Article
+  named_authors => .authors.map(.name).join(", ")
+  journal => published.first?.name
+  icons => .organizations.map(.profile_picture{height == 1em})
+  year => .date is Time ? .date.year : .date
+  dated => (.date as String) + "." if .date
+  away => .location{window == .window ?? new}
 
-class Author
+  citation\
+  (named_authors + "." if authors.nonempty, "\"" + title + "\"" if title, journal, "(" + (year as String) + ")" if year, pointer){!= None}.join(" ") @ away
 
+  simple\
+  (.title, (" (" + (.year as String) + ")" if .year)) @ .away
+
+  card\
+  pb 4 .map(,) <- {
+    {width == (.notes.nonempty ? (xs 12/12 -> sm 6/12) : 100%)} {
+      .map(&+ mr 3) <- (.icons, .title) @ .away
+      (.dated, .named_authors){!= None}.join(" ") ^muted
+      pt 3.2 .subtitle ^smaller ^italic if .subtitle
+    }
+    {width == (xs 12/12 -> sm 6/12)} .notes.map(pb 3 . as Note) if .notes.nonempty
+  }
+
+  entry\
+  pb 4 {
+    .map(&+ mr 3) <- (.icons, .title ^link) @ .away
+    (.dated, .named_authors){!= None}.join(" ") ^disabled
+  }
+}
+
+Note := class {
+  note: History.Commit
+  note.value ^muted ^smallest
+  end pt 1 "(Note written: " + (note.when as String) + ")" ^disabled ^smallest
+}
+
+Article := class: Reference {
+  name: String
+
+  id => .name
+  draft: false
+  head: None
+  header: None
+  heading: None
+  cover: None
+  footnoted: true
+  code (literal: String{language}) => CodeBlock(literal)
+
+  numbered => (.subtitle, .children).flatten{==.instance_of Footnote || ==.instance_of Reference}.unique
+  footnotes => numbered{==.instance_of Footnote}
+  shown_footnotes => footnotes
+  sections => .children.flatten{==.instance_of Section}
+  images => @../orbitmines.com/public/ location.path /images/
+
+  iso => (.date as String ~= (*, iso: (Decimal{length == 4}, "-", Decimal{length == 2}, "-", Decimal{length == 2}), *))?.iso
+  page_title => .title as String
+  page_description => .subtitle as String
+  meta => [
+    (name: "og:type", content: "article"), (name: "og:title", content: page_title), (name: "og:url", content: .location as String), (name: "og:description", content: page_description),
+    (name: "og:image", content: (.location as String) + ".jpeg"), (name: "og:image:type", content: "image/jpeg"), (name: "og:image:alt", content: page_description),
+    (name: "og:article:published_time", content: iso), (name: "og:article:modified_time", content: iso),
+    .authors.map((name: "og:article:author", content: .formal_citation_name)),
+    (name: "twitter:card", content: "summary_large_image"), (name: "twitter:creator", content: "@_FadiShawki"), (name: "twitter:title", content: page_title), (name: "twitter:description", content: page_description), (name: "twitter:image", content: (.location as String) + ".jpeg"),
+    (name: "citation_publisher", content: "OrbitMines"), (name: "citation_journal_title", content: "OrbitMines"), (name: "citation_public_url", content: .location as String), (name: "citation_pdf_url", content: (.location as String) + ".pdf"), (name: "citation_title", content: .title as String),
+    .authors.map((name: "citation_author", content: .formal_citation_name)), .authors.map((name: "citation_author_email", content: .email as String)), .authors.map((name: "citation_author_orcid", content: .orcid)),
+    (name: "citation_date", content: iso), (name: "citation_online_date", content: iso), (name: "citation_publication_date", content: iso),
+    (name: "dc.title", content: .title as String), (name: "dc.publisher", content: "OrbitMines"), (name: "dc.date", content: iso), .authors.map((name: "dc.contributor", content: .formal_citation_name)),
+    (name: "prism.title", content: .title as String), (name: "prism.publicationDate", content: iso), (name: "prism.url", content: .location as String),
+    (name: "eprints.title", content: .title as String), (name: "eprints.date", content: iso), (name: "eprints.official_url", content: .location as String), .authors.map((name: "eprints.creators_name", content: .formal_citation_name))
+  ].flatten(1){.content != None}
+  structured => [
+    (type: "Article", author: .authors.map((type: "Person", name: .name, email: .email, givenName: .first_name, familyName: .last_name, url: @https://orbitmines.com/@ (.profile.name), image: .profile_picture)),
+      publisher: (name: "OrbitMines", url: @https://orbitmines.com), dateModified: iso, datePublished: iso, headline: .title as String, image: (.location as String) + ".jpeg"),
+    (type: "Organization", url: @https://orbitmines.com, logo: @https://orbitmines.com/logo.png),
+    (type: "BreadcrumbList", itemListElement: [(position: 1, name: "Papers", item: @https://orbitmines.com), (position: 2, name: .title as String)])
+  ]
+  presented => UI.page = (title: page_title, description: page_description, image: .location + ".jpeg", meta: meta, structured: structured, icon: UI.page?.icon, apple_icon: UI.page?.apple_icon, manifest: UI.page?.manifest)
+
+  static current := None
+
+  with Article.current = this, presented {
+    Exports(this)
+    {width <= 1650px} .map(,) <- {width <= 1240px} py 35 px (xs 0 -> lg 50) .map(&+ pb 15) <- {
+      .head ? (.head, .children) : (
+        Header(this),
+        Discussion(.discussion) if .discussion,
+        .header ?? Divider,
+        .children,
+        Divider
+      )
+      Footnotes(this) if footnoted && shown_footnotes.nonempty
+    } ^article
+  }
+}
+
+Profile := class: Article {
+  character: Character
+  footnoted: false
+
+  authors: .character
+  title: .title ?? .character.name
+
+  meta => [
+    (name: "og:type", content: "profile"), (name: "og:title", content: page_title), (name: "og:url", content: .location as String), (name: "og:description", content: page_description),
+    (name: "og:image", content: .character.profile_picture as String), (name: "og:image:type", content: "image/jpeg"), (name: "og:image:alt", content: "Profile picture"),
+    (name: "og:profile:first_name", content: .character.first_name), (name: "og:profile:last_name", content: .character.last_name), (name: "og:profile:username", content: .character.profile.name),
+    (name: "twitter:card", content: "summary_large_image"), (name: "twitter:creator", content: "@_FadiShawki"), (name: "twitter:title", content: page_title), (name: "twitter:description", content: page_description), (name: "twitter:image", content: .character.profile_picture as String)
+  ]{.content != None}
+  structured => [
+    (type: "Person", name: .character.name, email: .character.email, givenName: .character.first_name, familyName: .character.last_name, url: @https://orbitmines.com/@ (.character.profile.name), image: .character.profile_picture),
+    (type: "Organization", url: @https://orbitmines.com, logo: @https://www.example.com/images/logo.png),
+    (type: "BreadcrumbList", itemListElement: [(position: 1, name: "Profiles", item: @https://orbitmines.com/profiles), (position: 2, name: .character.name)])
+  ]
+  presented => UI.page = (title: page_title, description: page_description, image: .character.profile_picture, meta: meta, structured: structured, icon: UI.page?.icon, apple_icon: UI.page?.apple_icon, manifest: UI.page?.manifest)
+}
+
+Exports := class {
+  article: Article
+  search = Search(article) if article ==.instance_of Book
+  center between middle py 10 px 15 .map(,) <- {
+    Button(icon: "arrow-left") @ /
+    .map(,) <- {
+      search if search
+      Button(icon: "media", text: ".jpeg") @ ((UI.at.path + ".jpeg") as Location){window == new}
+      Button(icon: "document", text: ".pdf") @ ((UI.at.path + ".pdf") as Location){window == new}
+    }
+  }
+}
+
+Search := class {
+  book: Book
+  query: Choice = Choice(type: String, value: book.search, placeholder: "Search")
+  changed_at: Time?
+  edited => query.value != book.search
+  due => edited && (changed_at && now - changed_at >= 350 ms || UI.focus.some(.content === query) && @me/device/keyboard/Enter.pulsed)
+  commit => UI.at = UI.at.with(search: query.value.nonempty ? query.value : None)
+  with (changed_at = now) when query.value changes, commit if due, (query.value = book.search) when book.search changes {
+    middle .map(,) <- (Icon("search") ^icon, query)
+  }
+}
+
+Book := class: Article {
+  updates: Article[]
+
+  arcs => .children{==.instance_of Arc}
+  sections => arcs.map(arc => [arc, arc.sections.map(section => [section, section.sections]).flatten]).flatten{!.disabled}
+  slug => UI.at.segments.last
+  chosen => sections{.slug == ⊢.slug}.first
+  started => chosen != None
+  search => UI.at.parameter("search") ?? ""
+  highlight => UI.at.parameter("highlight")
+  searching => search.nonempty
+  first => sections.first
+  next => sections[sections.index_of(chosen) + 1] if started
+  previous => sections[sections.index_of(chosen) - 1] if started && sections.index_of(chosen) > 0
+  page_title => started ? (.title as String) + " - " + chosen.name : .title as String
+  page_description => started ? chosen.paragraph ?? .subtitle : .subtitle
+  shown_footnotes => started && !searching ? footnotes{chosen.content.flatten.contains(.)} : []
+
+  phone => UI.scene.size.x <= 575px
+  drawer: UI.Drawer = UI.Drawer(children: [Navigation(this, bordered: false, then: () => drawer.open = false)])
+  pinned => UI.at.parameter("navigation") != "false"
+  navigation => phone ? drawer.open : pinned
+  sidebar => navigation && !phone && !@me/device/printing
+
+  scrolled: (slug: String, at: Length)[] = []
+  before_search: (slug: String?, at: Length)?
+
+  go (section, highlight: String? = None) => UI.at = (.location + ("/" + section.slug if section)).with(navigation: UI.at.parameter("navigation"), highlight: highlight)
+  toggle => phone ? (drawer.open = !drawer.open) : (UI.at = UI.at.with(navigation: pinned ? "false" : None))
+  back => go(sections{.slug == before_search?.slug}.first) -- (UI.scene.scrolled = Vector(0px, before_search?.at ?? 0px)) -- (before_search = None)
+
+  swiped => UI.pointer.swipe -- (swipe => swipe if swipe && swipe.duration <= 700 ms && swipe.distance.x.abs >= 60px && swipe.distance.x.abs >= swipe.distance.y.abs * 1.5 && UI.scene.reachable{(.styles.contains("code") || .flow == grid) && .contains(swipe.from.position - .at)}.empty)
+  remembered => scrolled{.slug == ⊢.slug}.last?.at ?? 0px
+
+  with Article.current = this, presented,
+    (scrolled.push (slug, UI.scene.scrolled.y)) when UI.scene.scrolled changes,
+    (UI.scene.scrolled = Vector(0px, remembered)) when slug changes unless highlight,
+    (before_search = (chosen?.slug, UI.scene.scrolled.y)) when searching becomes true,
+    (drawer.open = false) when phone becomes true,
+    (UI.focus = UI.scene{content === exports.search.query}) -- UI.scene{content === exports.search.query}.select if @me/device/keyboard.pressed("f", modifier: Keyboard.Modifier.control | Keyboard.Modifier.meta),
+    (swiped.distance.x < 0 ? go(next) if next : go(previous) if previous) if swiped && started && !searching,
+    ((UI.at = UI.at.with(highlight: None)) after 6 s) if highlight && !searching {
+    exports = Exports(this)
+    {width <= 1650px} center .map(,) <- {
+      drawer ^background if phone && started && !@me/device/printing
+      {width == (sm 5/12 -> md 4/12), position.kind == sticky, inset.top == 0px, height == 100vh, overflow == scroll, scrollbar == hidden} Navigation(this) if sidebar
+      {width == (sidebar ? (sm 7/12 -> md 8/12) : 100%)} center {width <= 1240px} pb 35 .map(&+ pb 15 if !started) <- {
+        (started || searching) ? (
+          {position.kind == sticky, inset.top == 0px, layer == 10} middle between py 3 .map(,) <- {
+            {width == 1/12} Button(icon: navigation ? "shorten-text" : "lengthen-text"){font.size == 18px} ~~ activate => toggle
+            {width == 11/12, height == 40px} middle between .map(,) <- {
+              .heading ?? .title
+              Button(text: next.name, right_icon: "arrow-right"){font.size == 18px} ~~ activate => go(next) if next
+            }
+          } ^background,
+          searching ? Results(this) : Reading(this)
+        ) : (
+          Header(this),
+          Discussion(.discussion) if .discussion,
+          .header,
+          end Button(text: "Start Reading", right_icon: "arrow-right"){font.size == 18px, stroke == Stroke("#EAB832" as Color)} ~~ activate => go(first)
+        )
+        Navigation(this, bordered: false) if !started && !searching && phone && !@me/device/printing
+        Footnotes(this) if shown_footnotes.nonempty
+      } ^article
+    }
+  }
+
+  printed\
+  {
+    Navigation(this)
+    Divider
+    sections.map(section => (Section(section.name) + section.content, Divider))
+  }
+}
+
+Reading := class {
+  book: Book
+  {
+    marked(Section(book.chosen.name) + book.chosen.content, book.highlight) ~~ (UI.scene.reveal(.reachable{^mark}.first, align: center, smooth: true) if book.highlight)
+    Divider
+    between .map(,) <- {
+      {width <= 50%} Button(icon: "arrow-left", text: book.previous.name){font.size == 18px} ~~ activate => book.go(book.previous) if book.previous && UI.scene.size.x >= 768px
+      {width <= 50%} Button(text: book.next.name, right_icon: "arrow-right"){font.size == 18px} ~~ activate => book.go(book.next) if book.next
+    }
+  }
+}
+
+Results := class {
+  book: Book
+  around = 5
+  found => book.sections.map(section => (section, section.content.indices{section.content[.].text.lowercase.contains(book.search.lowercase)}))
+    {.1.nonempty}
+    .map((section, hits) => hits.map((. - around max 0)..(. + around min section.content.count - 1)).merged.map((section, section.content[.])))
+    .flatten(1)
+
+  {
+    between middle pb 10 .map(,) <- {
+      Button(icon: "arrow-left", text: "Back"){font.size == 16px} ~~ activate => book.back
+      (found.count, " result", "s" if found.count != 1, " for '", book.search, "'") ^muted {font.size == 14px}
+    }
+    found.empty
+      ? center py 20 "No results found." ^muted {font.size == 16px}
+      : found.map((section, content) => {
+        Divider if .index > 0
+        between middle py 3 .map(,) <- {
+          section.name ^muted {font.size == 13px}
+          Button(text: "Keep reading", right_icon: "arrow-right", small: true){font.size == 13px} ~~ activate => book.go(section, highlight: book.search)
+        }
+        start marked(content, book.search)
+      })
+  }
+}
+
+marked := (content, query: String?) => query ? content.texts.map(.split_around(query, ignoring: case).map(.matched ? . ^mark : .)) : content
+
+Navigation := class {
+  book: Book
+  bordered: boolean = true
+  then: Program?
+
+  entry (section, depth: Number) => {
+    start ml (depth * 5) section.name ^muted ^{book.chosen === section ? "selected" : "none"}
+      ~~ activate => book.go(section) -- then?() unless section.disabled
+  }
+
+  with this.parent.reveal(this.reachable{^selected}.first, align: center) when book.chosen changes {
+    {height >= (bordered ? 100% : 0)} pl 10 py 20 .map(&+ py 3) <- book.arcs.map(arc => {
+      entry(arc, 0)
+      arc.sections.map(section => {
+        pt 3 entry(section, 1)
+        section.sections.map(entry(., 2))
+      })
+    }) ^{bordered && !@me/device/printing ? "sidebar" : "none"}
+  }
+}
+
+Section := class {
+  name: *
+  sub: None
+
+  id => .name
+  slug => (.name as String).slug
+  disabled => .name !=.instance_of String || .name ==.instance_of String ^disabled
+  sections => .children{==.instance_of Section}
+  content => .children{!=.instance_of Section}
+  paragraph => content.split_at(Break){.text.trimmed.nonempty}.first?.text.squeezed ~~ (.length > 280 ? .[..<280].before_last(" ") + "…" : .)
+
+  center mt 12 pb 3 {
+    .name ^h4
+    .sub ^h6 ^muted if .sub
+  }
+  Paragraph(.children)
+}
+
+Arc := class: Section {
+  divided: true
+
+  center mt 12 pb 3 .name ^h3 ^muted
+  Paragraph(.children)
+  Divider if .divided
+}
+
+Paragraph := class (children) => children.map(py 2 (.inline ? start . : center .))
+
+Node &+= {
+  inline => this ==.instance_of (String | Reference | Footnote) || this ==.instance_of , && components.every(.inline)
+  right-to-left section (name: String) => Section(name) + this
+  right-to-left arc (name: String) => Arc(name) + this
+}
+
+Footnote := class {
+  content: Node
+  article: Article.current
+
+  number => .article.numbered.index_of(this) + 1
+  reference => content ==.instance_of Reference ? content : None
+
+  marker\
+  {font.size == 12px} ("[" + (.number as String), (.reference.icons.map(" ", .) @ .reference.away if .reference?.location), "]") ^muted ^bold
+
+  cited = .marker
+  {width <= 400px} UI.Popover(position: Anchored(anchor: cited, side: Geometry.bottom), children: [p 10 px 4 py 4 ("[" + (.number as String) + "] " ^muted, content ==.instance_of Reference ? () : content, .reference~card if .reference)]) ^popover
+
+  full\
+  p 4 p 4 {
+    ("[" + (.number as String) + "] ") ^muted ~~ activate => UI.scene.reveal(this, offset: -100px, smooth: true) -- (UI.selection = this.paragraph_up_to_here)
+    content ==.instance_of Reference ? content~citation : content
+  }
+}
+
+Footnotes := class {
+  article: Article
+  section "Footnotes & References" {
+    article.shown_footnotes.map(.~full)
+  }
+}
+
+Discussion := class {
+  channel: Node
+  center middle px 10 TagLink(channel, icon: @discord, name: "Discussion Channel", intent: "primary")
+}
+
+Divider := {
+  center {width == 80%} "" ^divider
+  ""
+}
+
+Header := class {
+  article: Article
+  affiliations => article.cover ? [] : article.organizations{.avatars.nonempty}
+
+  center .map(,) <- {
+    article.cover ?? article.heading ?? center (article.title ^h1)
+    center {width <= 80%} article.subtitle ^h4 ^muted if article.subtitle
+    center middle .map(,) <- {
+      affiliations.map({width == (xs 12/12 -> xl 5/12)} . as Affiliation)
+      article.authors.map({width == (xs 12/12 -> xl (affiliations.nonempty ? 5/12 : 12/12))} . as Author)
+    }
+    center middle .map(&+ px 10) .map(,) <- {
+      article.date.long ^h3 if article.date
+      "DRAFT: POSSIBLY IMPRACTICALLY VAGUE" ^tag ^danger_tag {font.size == 1.1rem, height >= 20px} if article.draft
+    }
+  }
+}
+
+String &+= {
+  slug => #lowercase.trimmed.map(. ==.instance_of (Char.Letter | Char.Digit) ? . : "-").squeeze.trimmed("-") as String
+}

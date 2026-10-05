@@ -1,0 +1,258 @@
+on-orbits-equivalence-and-inconsistencies: Article = {
+  title: "On Orbits, Equivalence and Inconsistencies"
+  subtitle: "A preliminary exploration through the world of possible inconsistencies. Originally intended as a more technical continuation of earlier thoughts on intelligibility ", Footnote(on-intelligibility), "."
+  draft: false
+  location: @https://orbitmines.com/archive/on-orbits-equivalence-and-inconsistencies
+  date: 2023-12-31
+  discussion: @https://discord.com/channels/1055502602365845534/1190719376085766195/1190719376085766195
+  organizations: @orbitmines
+  authors: @fadi
+  viewed_at: "December, 2023"
+  found_at: "2023"
+  header: Visualization("header", framed: false){height == 140px & width <= 100vw}
+
+  section "A quick gently introduction" {
+    "It begins with a slightly unusual way of (visual) thinking. Usually, when one wants to describe some ", ("single thing, node, vertex, ..., point" ^muted), ", this is done against some assumed background, to draw one's attention to that single thing."
+    Visualization("naked_point")
+    "Clear enough, this could represent any (single) thing. Quite useful, like any abstraction, but there's something incredibly easy to ignore - or miss, that it could be a possible question to ask."
+    "Imagine a line going from your eyes through this point. Now I could say that the point is no longer the point it was before, it has become part of another structure: The line you just imagined. The easy thing to miss being, that this was already the case. In order to - point out - this point, you had already constructed this line. It was simply ignored, it was simply deemed irrelevant."
+    Visualization("empty_vertex")
+    "This is in short, what this string of text is about. Things, ignored context, and a slightly different way of thinking about them."
+    "It's quite likely that these ideas are the culmination of having abstracted so far, - blurred together so many concepts -, that it might not be too obvious why thinking along these lines could be useful. Allow me to take you through this wilderness, and perhaps we might discover something of interest:"
+    "For the more inexperienced reader: The important thing in this text, are the visuals. If you understand the visuals, you understand what I'm trying to say. It's perfectly fine not to understand all the sentences in detail." ^disabled
+  }
+
+  arc "Arc: A Visual Introduction to Rays" {
+    "Let's slowly take apart why that example might be a gateway into an incredibly complicated world. Take for instance, that point, but visualized in this unusual way."
+    Visualization("empty_vertex")
+    "From the perspective of the visualization, you could think of it this way: I don't know exactly what this point is or how I know about it, but I have a way to 'point' to it. But this isn't quite enough. You might like to say more about its structure - or what that thing is."
+
+    Section("On Continuations", sub: "Constructing Continuations - Continuations as Equivalence") + {
+      "Consider the following: If I have a way of pointing to some node. I could take that pointer and ask: What if there were more points in that direction? This could mean quite a few things. ", ("Whether there's additional points behind the point, or between my eyes and the point. Whether I mean a(n) array, set, line, path, hyperedge, collection, ..., list." ^muted), " As a way of saying: \"Whenever I have 'one' of something, I can always say: What if I had more of that thing?\"."
+      Visualization("3")
+      "This raises several questions. (1) How do you even construct a continuation like that? (2) What does it mean for a continuation to go in a loop? (3) What does it mean to have something in between two points?, ..."
+      "There's already something we could say about continuing a line, even without much rigor on how to actually construct it. Say we have two points,"
+      Visualization("two_vertices")
+      "In order to connect them together we simply say that the \"end\" of one point, is the same as the \"beginning\" of the other point ", Footnote("This is, in essence, category theory."), "."
+      Visualization("2_horizontal_binary")
+      "But it's not entirely obvious what one even means by that. Let's already assume I have something with which I can construct a line like that. I could say that the two points I'm interested in regarding as \"the same\" are on a line."
+      Visualization("2_vertical_pink"){height == 140px}
+      "If I add my two '", ("ends, extremes, ..., boundaries" ^muted), "', which I want to regard as \"the same\" to this line,"
+      Visualization("2_expanded_continuation"){height == 140px}
+      "Alright, this is already showing something interesting. Imagine this: ", ("Tilt, ignore, collapse ..., superpose" ^muted), " the line to a point, and we're back at the line. I could rephrase this problem as a shift in perspective. One yields the line, the other the structure above ", Footnote("(It's not yet obvious how you make this rigorous just yet, but we'll return to that later)"), "."
+      "We could keep ", ("expanding, growing, adding, ..., equivalencing continuations" ^muted), ", like we did here,"
+      Visualization("2_double_expanded_continuation"){height == 120px}
+      "or keep doing the same thing by adding to the line,"
+      Visualization("3_expanded_continuation"){height == 140px}
+      "which would correspond to this line,"
+      Visualization("3_tertiary")
+      "but it doesn't necessarily get us anywhere on its own ", ("(Since we can just keep making the line bigger)" ^muted), ". So let's ignore those expansions for now."
+      "A more interesting thing we can do, is instead to continue the line which defines what we're seeing as possible ", ("continuations, merges, ..., branches" ^muted), "."
+      Visualization("branch_expanded"){height == 200px}
+      "This more abstractly, is just the same thing as we did above. We're just adding equivalences on continuations. What makes it different is the context defined around it. Hence, we get something which looks more like branching, even though they can be abstractly realized as the same kind of thing."
+      Visualization("branch"){height == 90px}
+    }
+
+    Section("On Combinatorics", sub: "Constructing Combinatorics - Combinatorics as Equivalence") + {
+      "Before we continue elaborating on what kind of exotic things we can do with the continuations. Let's take a quick step back. Since we'd like to be able to describe anything we might find at each of these points, we'll quickly turn to that first."
+      "If we'd like to construct things like ", ("numbers, symbols, names, labels, tokens, combinations, ..., permutations" ^muted), ". We'll need some way to select a particular value (; point) from a collection of points. For that, we don't actually need anything other than what we've already seen ", Footnote("Which might show that it's pretty much the same thing to describe the structures themselves. And saying something like 'only concerns itself with connectivity' - just means that one is ignoring certain kinds of structures, and not others."), "."
+      "If we take our simple example of two points,"
+      Visualization("2_vertical_binary"){height == 140px}
+      "we only need to put another direction on one of them, in order to select between the two."
+      Visualization("2_select_1"){height == 140px}
+      "Or selecting the other point,"
+      Visualization("2_select_0"){height == 140px}
+      "And suddenly we have a binary number. Note that we can't actually construct what a binary number is, without defining both ", ("our \"red\" point and our \"blue point\", ..., or 0/1" ^muted), ". We need to define additional context, in order to differentiate between the two."
+      "Actually, we could put arbitrarily complicated ", ("graphs, categories, states, ..., structures" ^muted), " at each of the points like this, simply by creating arbitrary continuations. And then again at each of those points define even more arbitrary structures."
+      "One of them could even be putting both our points on our selection, as a sort of ", ("binary superposition, self-loop, identity, boolean, ..., type" ^muted), "."
+      Visualization("2_superposition"){height == 80px}
+      "Or something interesting like this."
+      Visualization("2_edge"){height == 140px}
+      "Though, it's not necessarily obvious how to interpret what it means when one finds additional structure at each of the points."
+    }
+  }
+
+  arc "Arc: Theoretics" {
+    "This next arc will try to elaborate a bit further on some more abstract concepts. Hopefully you'll have gained a slight intuition of these visualizations, so that they'll serve as a guide."
+
+    section "On Equivalences & Inconsistencies" {
+      "Though there's much not to like about the way I wrote down some thoughts on intelligibility a year ago ", Footnote(on-intelligibility), ". There's one thing in particular that stands out. If I have one thing and I make a perfect copy. Surely I now have two things which are perfectly \"the same\", right? The idea being that, if you can even point and say that there are \"two things\" and you can distinguish between them. That shows exactly at least one way in which they are not the same. And if you'd like to be able to say they are \"the same\" - you need to ignore that difference."
+      "Alright, that's all well and good. But what does that actually usefully mean without being so vague?"
+      "Let's take two copies of our binary number."
+      Visualization("2_2"){height == 140px}
+      "Are they the same? Well - no, not really. Clearly they're different with respect to the yellow direction. Are they different? Well - no, not really that different. Only on the yellow direction."
+      "If I couldn't see a difference between \"the two\", I would just see this ", Footnote("You could say the same for differences in color perception (e.g. color blindness), different ways of perceiving spatial information, non-distinguishability between some dimension say left/right, ..., generalized to any kind of distinguishability."), "."
+      Visualization("2_select_0"){height == 140px}
+      "Alright, this might start to give you an impression. But let's keep expanding on this kind of idea. What I'm basically saying here, is that in order to point out some ", ("symmetry, invariance, ..., equivalence" ^muted), ", I need access to some ", ("asymmetry, variance, ..., inconsistency" ^muted), ". Or again this thing of, in order to point out some way in which they're the same, I need access to some way in which they're not. Or slightly rephrased; if I cannot see a difference, it will look the same to me."
+      "An example of this might be a tautology. A tautology doesn't generally hold up. In setting up a tautology, there must be an asymmetry in order for me to point out which two things are supposed to represent the same thing. The reason why that doesn't matter for most things considered tautologies, is that this inconsistency is just deemed an irrelevant detail. This asymmetry can be ignored. And hence, if we allow for the ignorance of this difference, a tautology holds: \"of course they are the same\" - if you ignore the difference, that is." ^muted
+      "It's quite easy (in general) from either perspective, to ask what it would mean to change perspective, as it were. Since changing perspective is just ", ("adding, removing, ..., changing" ^muted), " structure. From the perspective which only sees a binary number, we could ask: \"What if I saw this thing as three possible options?\""
+      Visualization("3_select_0"){height == 200px}
+      "The ", ("consequences, accuracy, implementing, ..., finding" ^muted), " (of) such a change however - for some other thing one is interested in, is not at all trivial. Why is that the case?"
+      "Take again, the example of two points ", ("without structure, whose structure we don't have access to, ..., whose structure we're ignorant of" ^muted), "."
+      Visualization("2_orange"){height == 30px}
+      "From this perspective it seems simple to ", ("equivalence, assume (simultaneity, ..., invariance), ..., ignore the difference between" ^muted), " the two. The only thing we need to destroy is one connection, and we get:"
+      Visualization("empty_vertex")
+      "Similarly, from this perspective it seems quite simple to grow back to the other structure. We only need to introduce some ", ("inconsistency, assumption of (non-simultaneity, ..., variance), ..., difference" ^muted), "."
+      Visualization("2_orange"){height == 30px}
+      "These two perspective are obviously already possibly inconsistent with each other. But why this is a hard problem, is because one might find ", ("additional structure, ..., ignored structure" ^muted), " at each of the points. And it's not necessarily obvious what to do with that."
+      "Say we wanted to assume some equivalency between these two."
+      Visualization("0_1"){height == 200px}
+      "There are many things I could mean or want to do with that."
+      "I could still have access to this same structure, but only accessible from a different perspective."
+      Visualization("0_1_tilted"){height == 110px}
+      "I could say, \"oh, the one is red, the other is blue\", and they must be *the same kind* of red and blue. And so surely, if we ignore the difference between the two, that could be interpreted as a superposition."
+      Visualization("2_superposition"){height == 80px}
+      "I could just destroy one of them completely, as I would have done from the perspective of being ignorant of additional structure. ", ("(The two yellow points above, which I just merged to one)" ^disabled)
+      Visualization("2_select_1"){height == 140px}
+      "This could frankly be anything. If it can be constructed, this is valid way of equivalencing the two. So this, is a perfectly reasonable way of equivalencing our red and blue points:"
+      Visualization("some_structure"){height == 140px}
+      "Another way of thinking about this, is that an equivalence and an inconsistency aren't actually different things at all. And that concepts like ", ("equivalence, ignorance, ", Reference~simple(title: "renormalization", location: @https://en.wikipedia.org/wiki/Renormalization), ", ", Reference~simple(title: "coarse-graining", location: @https://en.wikipedia.org/wiki/Coarse-grained_modeling), ", ..., inconsistency") ^muted, " can all be used somewhat interchangeably. And I need additional structure to distinguish between them. They don't generally hold up. This might fly a bit in the face of how you usually use words, but let's entertain it for a moment, and see if we can disentangle what I could possible mean by that - without descending into vague madness."
+    }
+
+    Section("On Orbits", sub: "Infinities, Loops, Self-Reference, Fixed Points, Halting, ..., Abstractions") + {
+      "If I wanted to phrase that something was ", ("consistent, equivalent, ..., invariant" ^muted), " - in general -. One way of doing that, is saying that irrespective of some direction, it will always stay the same. Or in other words, there is some loop. There is some way in which it holds, infinitely."
+      "Take a simple point."
+      Visualization("empty_vertex_green")
+      "Make its beginning and end equivalent by acknowledging an inconsistency."
+      Visualization("1_loop_expanded"){height == 60px}
+      "And there we have it, an ", ("infinity, loop, ..., orbit" ^muted), "  if we ignore the difference."
+      Visualization("1_loop"){height == 60px}
+      "The problem with a loop being, that in order to remain consistent. Anything found at the point must never change. You cannot distinguish between each iteration of the loop - there must be no asymmetry on each iteration."
+      "But it's much worse than that. Take for instance an infinite line of a selected binary number."
+      Visualization("1_loop_2_select_1"){height == 170px}
+      "There is no possible way for me to distinguish between each iteration. The only ways to do so, is to introduce some difference,"
+      Visualization("2_loop_2_select_1"){height == 170px}
+      "which would break the consistency of the loop."
+      "Or for the loop to be ignorant of my introduced variance - which means it's back to this."
+      Visualization("1_loop_2_select_1"){height == 170px}
+      "In which case, the loop isn't perfectly repeating, but merely an ignorant one."
+      "Or in other words: Whenever you have an ", ("infinity, loop, ..., orbit" ^muted), ", either you actually have a loop, and there's nothing you can do about it. Or you are ", ("ignoring, ..., missing" ^muted), " the information on how it's not one."
+      "This is I think, a good definition of an abstraction."
+      "Another example of this is reversibility. The only way to construct perfect reversibility, is if there's no distinguishability between the iteration 'before' and 'after' the reversing. And that practically, when one thinks about reversibility (say for instance a number line, ..., or some dimension), one is only interested in a particular kind of consistency, ..., reversibility. Consistency, ..., Reversibility after ignoring some difference." ^disabled
+      "Take for instance, the abstraction of two possible values."
+      Visualization("2_horizontal_binary")
+      "What does it mean to say, that it's *just* this structure? And nothing more defined around it? How, for example, do I know it's two, and not more?"
+      "Quite similarly to the loops, I could be ignorant of additional structure by assuming it's not there."
+      "And if I wanted to guarantee it's *just* this structure, I would need to assume some consistency of it, infinitely. ", ("\"It never changes\", \"There will never be anything additional to find here\", ..., \"It halts here\"" ^muted), ". And I could do such a thing anywhere on the structure."
+      Visualization("2_horizontal_binary_loops"){height == 50px}
+      "And similarly, that would actually be the case. Or I'm again, ", ("ignoring, ..., missing" ^muted), " some structure. I can't actually give a guarantee that any direction will ", ("halt, ..., continue" ^muted), ". I can only assume it's the case."
+    }
+
+    section "On Assumptions & Assumption Violation" {
+      "One might as well - more practically - say that some ", ("consistency, ..., well-defined property" ^muted), " could be more vaguely restated as: ", ("\"Can rely on some assumptions without the/much need to correct them if they are violated\", ... \"Even though I'm not actually accurate, it might not matter for this other thing.\"" ^muted), ". Where violated just means some inconsistency with respect to what was expected according to that assumption."
+      "Whenever you have an assumption like that. You don't necessarily need to draw conclusions as to its ", ("usefulness, ..., correctness" ^muted), ". If it can evidently be constructed and can persist however fleetingly, that is enough."
+      "Basically: it's not whether \"2 + 2 = 4\". It's whether you can notice if that, in the process of wanting to calculate '2 + 2'. That the result does(/ not) match your more abstract idea of what addition should look like. If it doesn't - which you could say was inconsistent according to your (ignorant) abstract model - will you notice? Could you understand its effects, ..., consequences if it doesn't? Even if you do, can you find out why? - This seems a much harder problem. One which is much easier to ignore, practically." ^disabled
+      "Note that it then wouldn't be entirely obvious what would happen. Both from the perspective of the abstraction, or that of the inconsistency. Perhaps you could draw some loose analogies between acceleration/gravity in a case like this, but again, this isn't obvious at all - and probably a hard problem. Possibly arbitrary complexity might follow after some assumption is violated - you need to know more about a system in order to answer a thing like this."
+      "Any abstraction, or just one of the ray visualizations shown here, is more accurately phrased by throwing some ", ("vagueness, ..., ambiguity" ^muted), " in the mix. By saying, that 'this would be the case', if 'all these assumptions hold'. This way you allow for some possible uncertainty. And allow one to abstractly hook into any step of the ", ("visualization, computation, ..., process" ^muted), ", and ask: \"What if this wasn't the case?\" - \"What if that didn't actually happen?\". "
+    }
+
+    Section("On Fractals", sub: "Transduction, Reducing, Super-, Sub-, ..., Fractions") + {
+      "All of this is essentially saying, that an idea like self-reference can only be maintained abstractly by ignoring aspects which would make each iteration of self-reference different."
+      Divider
+      "What if we wanted a way to describe what was in between two points? We already have a way of connecting them together."
+      Visualization("2_horizontal_binary")
+      "There are probably many ways of doing this, one could be adding structure on the connection."
+      Visualization("2_expanded_continuation_selected"){height == 200px}
+      "Which could basically be this thing we've seen before."
+      Visualization("2_edge"){height == 140px}
+      "Another could be simply saying, there's a different way of looking at this thing, which includes something in the middle."
+      Visualization("3_fractal")
+      "But like this, we don't really have access to say the added point is \"in between\" our other two points, we just have three points. One way of thinking about it, is that we want two ways of describing the same thing. One which means our usual two points, and the other, us asking what's \"in between\" them."
+      Visualization("2_edge_3_fractal"){height == 90px}
+      "Among the many possible ways of doing this, one could be to draw equivalences between points (and depending on perspective, possibly continuations)."
+      Visualization("2_edge_3_fractal_with_equivs"){height == 120px}
+      "Which could be phrased as:"
+      Visualization("2_edge_3_fractal_equived"){height == 60px}
+      "A simple way of phrasing this, is one path takes you from 0 to 1. Another path takes you from 0 to 0.5 to 1. And just like any structure, we can put another direction on it as a possible way to select '0.5'." ^muted
+      Visualization("2_edge_3_fractal_equived_selected"){height == 200px}
+      "This then also being one of the ways in which one can both have the original structure in tact, and describe existing continuations in another 'layer'."
+      "This sort of thing gives rise to many interesting cases: ", ("inconsistently describing continuations after some infinity in between as 'bigger infinities', ..., arbitrary additional complexity which happens in between two points (which one is possibly ignorant of)" ^muted), ". You could even leap to something interesting of phrasing abstraction with more structure/complexity, as being bigger infinities."
+      Divider
+      "Probably the reason why one usually doesn't ask what's between two fractions, is that this question is already self-referentially answered. And deemed \"not interesting\". As a way of saying: \"You can always keep asking what is between two points, and that answer is always the same.\" ", Footnote("Though, you could say something interesting as, the first 100 decimals places are this kind of fractal expansion, the next 60 this kind, and any arbitrary thing that follows this other kind. - Quite funky constructions can be made, but are probably usually ignored for a simpler pattern like this."), ". Which is an example of how a simple pattern, which likely inconsistently is assumed to infinitely hold, takes preference."
+      "Again, what one means by saying that \"following both paths end up at the same point\". Is that this can only actually be the case, if one can ignore/ignores which path is taken." ^disabled
+      "Note that this is the idea behind something continuous/continuity. A simple, likely inconsistent loop which holds, or merely the inability to even ask the question of what's in between two things, infinitely."
+    }
+
+    section "On Movement & Teleporting" {
+      "Quite similar to fractals (or any concept really). We could say that movement and teleporting are the same kind of thing. But I need both concepts in order to tell the difference between them."
+      "Take our fractal example, for instance:"
+      Visualization("2_edge_3_fractal_equived"){height == 60px}
+      "Where the shorter path could be considered teleporting. If I knew only how to teleport, I would just see this:"
+      Visualization("2_horizontal_binary")
+      "If I only knew how to move:"
+      Visualization("3_fractal")
+      "I need to be able to say from the perspective of teleporting: This would've been the slower path. And from the perspective of moving: This teleported me across the distance I otherwise needed to slowly move through. - If I can't, they're the same thing."
+      "But either way, they're more abstractly just the same thing. We're just moving along some (possibly more complicated) path."
+      "This concept is quite generalizable. We can say the same thing for ", ("local/non-local, linear/non-linear, close/distant, ..., trivial/non-trivial" ^muted), ". This is just an extension of the idea: They're not generally some way, it depends on the other context one is able to access."
+      "Say I had some selection,"
+      Visualization("2_edge_3_fractal_equived_select_0"){height == 80px}
+      "And I wanted to teleport that over,"
+      Visualization("2_edge_3_fractal_equived_select_0_teleporting"){height == 160px}
+      "The only way to actually do that, is to introduce some inconsistency along some direction. Or: have some structure (our selection in this case), travel across that direction."
+      Visualization("2_edge_3_fractal_equived_select_1_teleporting"){height == 160px}
+      "Or in other words, some equivalent structure needs to be inconsistent in some way. Or: We draw an equivalency which needs to be ignorant in the direction in which it's drawn."
+      Visualization("2_edge_3_fractal_equived_select_1"){height == 80px}
+      "Similarly, ", ("traversal, rewriting, computation, equivalences, ..., functions, and pretty much every concept" ^muted), " can be categorized as this. More usefully: How much do I need to change/ignore before they're the same to me?"
+    }
+
+    section "On Compression" {
+      "The task with compression - or any equivalence really - is that necessarily you need to recover structural information. Without structure, you cannot point to ", ("\"two things\", a sequence of things, probability of things, ..., arbitrarily structured things" ^muted), "."
+      "A simple example of this could be the difference between 4 bits in sequence,"
+      Visualization("4_bits"){height == 80px}
+      "4 bits whose structure I've ignored through another layer of abstraction (Or basically any unordered structure)"
+      Visualization("4_bits_unordered"){height == 80px}
+      "(in a slightly less clustered rendering)" ^disabled
+      Visualization("4_bits_seperated"){height == 80px}
+      "or something like 4 bits in a grid"
+      Visualization("4_bits_grid"){height == 140px}
+      "Quite obviously, if I didn't know which one, I would need additional information to distinguish between them."
+      "Suddenly a concept like entropy becomes entirely clear: Just visualize the compressor and possibly the order (or more generally: the structure) in which information is received, as additional structure. Necessarily, that (relative) structure is additional information. Necessarily, certain things are easier with, or easier without those structures."
+      Divider
+      "And then, depending on the compressor. You can have interesting things like ", ("locally, spatially, ..., temporally" ^muted), " forgetting structures. Which would rely on strategies like easy re-discoverability for things forgotten. Such expectations however, as a prediction relying on some invariance. Is an assumption at risk of being violated. And the mode of rediscovering itself, is subject to being forgotten (and then perhaps rediscovered)."
+    }
+  }
+
+  arc "Arc: OrbitMines Explorer: The Project" {
+    TagLink(@https://github.com/orbitmines/orbitmines.com/pull/1, icon: @github, name: ("OrbitMines Explorer - ", ("WIP" ^tag ^warning_tag){font.size == 1rem, padding.(Geometry.vertical) == 0px, height >= 20px}, " Preliminary Technical Implementation/Exploration"))
+  }
+
+  arc "Wrapping up" {
+    "What I think this will turn out to be; Is that in the process of trying to understand programming languages, compilation and compression. That I ended up abstracting so far away from them. That aided by having some intuitive notion of hyperedges, I stumbled upon this formulation of Ray."
+    "Which is likely either a rediscovery of concepts in category theory, or an even more general, possibly more easily programmable and reprogrammable (; possibly homoiconic) variant of its ideas. Being this general, quite certainly concepts from all kinds of fields should be phrase-able in this (possibly) more visually intuitive way of manipulating concepts."
+    "Though this current setup is quite intuitive to me, I still need to link a lot of it to existing concepts. And quite deliberately, I've not necessarily gone into the details of any particular interpretation/implementation. As this thing is incredibly flexible - and it's not yet at all obvious to me what the resulting implementation will look like."
+
+    section "Future inquiries" {
+      "One thing that has become quite clear to me. Is that the best solutions in this line of projects, will necessarily be the interface with which someone interacts with abstract ideas. ", ("This could be a language, ..., something of the tooling around such a language (which itself might be conceptualized as another language)" ^muted), ". Which one, doesn't actually really matter much. Understanding the details of specific kinds of languages, don't matter much. Constructing a ", ("platform, language, ..., interface" ^muted), ", as general as possible so that others have a way of implementing theirs as conveniently as possible. That is an important idea in this project."
+      "There are many projects I'm currently expecting to ", ("implement, ..., encounter" ^muted), " within this framing. I expect I'll be able provide more detail on these throughout 2024."
+      Divider
+      "As a simple concrete example:"
+      "- (1) ", Reference~simple(title: "CHYP (Cospans of HYPergraphs)", location: @https://github.com/akissinger/chyp, authors: @"Aleks Kissinger")
+      "As a practical handle on the world's ecosystem:"
+      "- (2) ", Reference~simple(title: "WebAssembly", location: @https://webassembly.github.io/spec/core/), ", (3) ", Reference~simple(title: "Tinygrad", location: @https://github.com/tinygrad/tinygrad)
+      "As a handle on more abstract mathematics and computer science:"
+      "- (4) ", Reference~simple(title: "Category Theory", location: @https://ncatlab.org/nlab/show/category+theory), ", (5) ", Reference~simple(title: "Homotopy Type Theory", location: @https://homotopytypetheory.org/)
+      "As a handle on physics:"
+      "- (6) ", Reference~simple(title: "ZX-calculus", location: @https://zxcalculus.com/)
+      "I expect to along the way encounter a wide range of other projects: ", ("Programming Languages, Theorem Provers, ..., Theories" ^muted), ". I might publish a long list of those I'm interested in 2024. To keep this list short I've only mentioned the ones I'm more certain of."
+      Divider
+      "Additionally, currently the Wolfram Institute's Infrageometry project ", Footnote(wolfram_institutes_infrageometry_livestreams), " is going through a lot of similar-looking ideas. Though its current goals - as far as I understand it - are quite different from mine (", Reference~citation(title: "Possible connections to the Wolfram Institute's Infrageometry project", date: 2023-11-25, location: @https://discord.com/channels/1055502602365845534/1177982001979064340, organizations: (@discord, @orbitmines, @wolfram_institute)), ")."
+      "Clearly, I'm trying to be a little far-reaching and extend into any field I could possibly imagine which manages to peak my curiosity. There is much to explore - if only I now had some better tools to apply to everything."
+    }
+
+    Section("On self-publishing and referencing", sub: "Edited personal journeys/histories/... and literary exposure") + {
+      "I suspect that this sort of self-(reporting/publishing), necessitates the highlighting of its possible adversarial/game-theoretic properties. With myself and my archives possibly being forgetful or deceitful players, this certainly makes for an interesting dynamic. Consider this quick paragraph as an acknowledgement that I am aware of that, and that I think my attempts aim for accuracy - whether that's actually successful or not -."
+      "Similarly, it's worth admitting that I do not necessarily understand/have access to how certain interactions come together in my explorations. I document how I find certain kinds of information in some detail, though this is likely far from exhaustive."
+      "I might also fail to mention relevant works (or personal interactions) which have either had impact on my line of thinking more non-trivially, or whose ideas aren't mentioned here, or in my other writing, directly. My current practical approach to this has therefore been to publish many kinds of information I expose myself to (during the time I'm working on these projects). Which hopefully support the more explicit referencing done here. I hope to further expand on this concept in future works."
+    }
+
+    section "On language and my bending of it" {
+      "In my - albeit limited - number of orbits around our particular sun, I have found that I myself am (and likely by extension others are) quite inconsistent. Quite regularly I would like to rephrase certain (historical) expressions, dissatisfied by their vagueness or inaccuracy. Or to make the conceptual leap and guess that the only way my memory is even slightly functional is the apparent ability to infer or remember by resolving pointers from context somewhat consistently. A form of permeating uncertain caution seems appropriate when thinking through these abstract concepts: This could be interpreted as a reference carried forward in time with the potential to modify any particular assumption."
+      "Additionally, I'm quite certain that my use of language contains a style which is unusual. Likely containing seemingly duplicated word sequences, possibly overly cautious /or not at all, and quite certainly seemingly (possibly on purpose) contradictory in many instances."
+      "In this sense, I don't necessarily care about the accuracy of any particular sentence. Whether in this language, or one it's translated to. I care whether the more abstract pattern of ideas which I'm trying to communicate is sufficiently transferred through that language. And the ability to - through time, through correction -, adjust the ideas as deemed by me/you as particularly inconsistent to warrant its change."
+    }
+
+    section "A yearly excerpt of thoughts" {
+      "In some sense, several aspects of these arcs could be considered as generalizations of many ideas I've exposed myself to. I've noticed it's incredibly easy to confidently name/(talk/think about) something, without having properly understood or built them; either my own or others' thoughts. In a struggle to understand their/those inconsistencies, I think I found - or am starting to find - a proper language to do so."
+    }
+  }
+}
