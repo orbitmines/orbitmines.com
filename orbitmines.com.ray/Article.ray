@@ -127,7 +127,7 @@ Article := class: Reference {
     }
     center middle .map(&+ px 10) .map(,) <- {
       .date.long ^h3 if .date
-      "DRAFT: POSSIBLY IMPRACTICALLY VAGUE" ^tag ^danger_tag {font.size == 1.1rem, height >= 20px} if .draft
+      "DRAFT: POSSIBLY IMPRACTICALLY VAGUE" ^tag ^danger_tag {font.size == 1.1rem} if .draft
     }
   }
 
@@ -163,7 +163,7 @@ Profile := class: Article {
 
 Search := class {
   book: Book
-  field: Geometry.Shape = Geometry.Box(content: Choice(type: String, value: book.search, placeholder: "Search"))
+  field: Geometry.Shape = Geometry.Box(content: Choice(type: String{search}, value: book.search, placeholder: "Search"))
 
   query => field.content.value
   edited => query != book.search

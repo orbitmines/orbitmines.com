@@ -529,7 +529,7 @@ fadi-shawki: Profile = {
   Timeline("Writings") + {
     grouped: true
     leading: @../orbitmines.com/public/logo.png{width == 100%, effects == [Filter(opacity, 0.9)], alt: "orbitmines.com"}
-    entries: writings.map(paper => Timeline.Entry(paper.year as String, (paper.organizations.map(OrgIcon(.)), paper.title) @ paper.location, description: ((paper.date as String) + ". " if paper.date, paper.subtitle as String)))
+    entries: writings.map(paper => Timeline.Entry(paper.year as String, (paper.organizations.map(.org_icon), paper.title) @ paper.location, description: ((paper.date as String) + ". " if paper.date, paper.subtitle as String)))
   }
 
   Arc("", divided: false) + {
@@ -539,7 +539,7 @@ fadi-shawki: Profile = {
   Timeline("Formal History") + {
     title: "Projects, Education & Attended Events"
     grouped: true
-    entries: (.history, .formal_education, .attended_events).map(item => Timeline.Entry(item.year as String, (OrgIcon(item.organizations.first ?? item.published.first), item.title) @ item.location{window == new}, description: item.description ?? item.subtitle))
+    entries: (.history, .formal_education, .attended_events).map(item => Timeline.Entry(item.year as String, ((item.organizations.first ?? item.published.first)?.org_icon, item.title) @ item.location{window == new}, description: item.description ?? item.subtitle))
   }
 
   backdrop(@../orbitmines.com/public/archive/on-orbits-equivalence-and-inconsistencies/images/2_edge_3_fractal_with_equivs.png, 150px)

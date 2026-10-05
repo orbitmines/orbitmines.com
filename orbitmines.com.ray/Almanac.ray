@@ -36,7 +36,7 @@ Almanac: Book = {
   updates: ethers-almanac-2026
   code (literal: String{language}) => literal.language == "sh" ? CodeBlock(literal, palette: ONE_DARK) : CodeBlock(literal, palette: DUOTONE_DARK, editable: true, wrapped: true)
   heading: center {
-    @../orbitmines.com/public/almanac/almanac.png{width <= 100% & height == 250px}
+    @../orbitmines.com/public/almanac/almanac.png{width <= 100% & height <= 100% & height == 250px}
     "Ether's Almanac" ^h1
   }
 
@@ -1115,7 +1115,7 @@ Almanac: Book = {
           }
         `
         @ray`%1 -> %2 (old) => Example(title: old.name)`
-        @ray`with O = Compiler.default + Compiler.logic`
+        @ray`with O = Compiler.default + Compiler.memoised`
       }
     }
     section "§4. Extended Fundamentals" {

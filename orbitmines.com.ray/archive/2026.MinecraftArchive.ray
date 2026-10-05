@@ -39,7 +39,7 @@ the-orbitmines-minecraft-server: Article = {
       "I spammed out this message on the internet, which like usual spam seems to have actually worked for some people as I have records of several players asking about it afterwards."
       "The launch however was a complete disaster, the gamemode wasn't fun, there were too many incomplete things, and most of all, a game like that needs active players."
       "Unfortunately no working version of that gamemode survived, though we do have the worlds which were used for it. We also have an ", "old video" @ https://www.youtube.com/watch?v=nI8c6yNnbbI , " of what it was like from the 5th of November that year."
-      pt 4 (@https://www.youtube.com/embed/nI8c6yNnbbI?si=UrRKcI2b6qI0SpuP){width <= 560px & height == 315px & alt: "YouTube video player"}
+      pt 4 @https://www.youtube.com/embed/nI8c6yNnbbI?si=UrRKcI2b6qI0SpuP{width == 560px & width <= 100% & height == 315px & alt: "YouTube video player"}
       pt 4 "Here are some more pictures of those worlds:"
     }
     Gallery(caption: "OrbitMines PvP Worlds (2013)", shuffle: 13) + {
@@ -184,7 +184,7 @@ the-orbitmines-minecraft-server: Article = {
       pt 4 "We actually managed to convince the principal at my high school to broadcast the Minecraft server on the screens which usually displayed the schedule updates. After a few days I remember someone calling it the \"Groene Hart Minecraft server\", \"Groene Hart\" being the name of the high school. I don't remember exactly how long it was up there (It must've at least been a week or two), but we got many new players for that. Nor do I remember exactly when this was, it must've been around March; there doesn't exist a backup of the what it looked like on the website. (I made and sent it using school equipment at the time). But it's a fun story nonetheless."
       "Around April we also introduced Pixelmon & Factions, the gamemodes didn't really take off for us, Survival was much more popular."
       "Around May we released the first trailer we made for OrbitMines. I remember having to use my brother's PC for this, since mine wasn't powerful enough for recording at the time. With it, you get some additional feeling of what it was like then, but it's staggering just how much churning had already happened by that time."
-      pt 4 (@https://www.youtube.com/embed/1jVDb_Uw6qg?si=aH5zKfSgR_awCOdt){width <= 560px & height == 315px & alt: "YouTube video player"}
+      pt 4 @https://www.youtube.com/embed/1jVDb_Uw6qg?si=aH5zKfSgR_awCOdt{width == 560px & width <= 100% & height == 315px & alt: "YouTube video player"}
     }
   }
   arc "Arc: Programming (2014-2015)" {
@@ -273,14 +273,14 @@ the-orbitmines-minecraft-server: Article = {
     }
     Section("") + {
       "Towards the end of the year we made our second trailer, which did really well and showcases the server in its 2015 September-form quite perfectly:"
-      pt 4 (@https://www.youtube.com/embed/j3ginrMO6p8?si=IHfShKC1N5bI-uye){width <= 560px & height == 315px & alt: "YouTube video player"}
+      pt 4 @https://www.youtube.com/embed/j3ginrMO6p8?si=IHfShKC1N5bI-uye{width == 560px & width <= 100% & height == 315px & alt: "YouTube video player"}
     }
   }
   arc "Arc: Stability (2016-2017)" {
     "After this period the server became quite stable. There were times where I worked less on the server, which were times where the playercount slowly dropped, and there were times where I was active again."
     "Examples of what happened during this period was switching to Discord instead of Skype, creating our signature Discord-Minecraft chat bridge which added much to the community."
     "During this period we tried to bring back the Fractals of the Galaxy (FoG) gamemode, which is what we renamed OrbitMines PvP to. Unfortunately backups from this period were not recoverable, but we do have a small video of what those worlds looked like:"
-    pt 4 (@https://www.youtube.com/embed/-kR-AFvjlYw?si=S69g5-RZvOspIg0C){width <= 560px & height == 315px & alt: "YouTube video player"}
+    pt 4 @https://www.youtube.com/embed/-kR-AFvjlYw?si=S69g5-RZvOspIg0C{width == 560px & width <= 100% & height == 315px & alt: "YouTube video player"}
     pt 4 "I tried my hand and making plugins to sell on ", "Spigot" @ https://www.spigotmc.org/members/fadidev.49372/ , ". Which we tested and had on display on the server. One was a popular gamemode Spleef, the other was a version of ", "Splatoon" @ https://en.wikipedia.org/wiki/Splatoon , " in Minecraft. I also made a fairly popular free plugin called ", "BungeeMSG" @ https://www.spigotmc.org/resources/bungeemsg.4512/ , " during this time."
   }
   arc "Arc: The last Chapter (2018-2019)" {
@@ -311,9 +311,9 @@ the-orbitmines-minecraft-server: Article = {
     }
     Section("") + {
       "New plugins, new logos and also new lobbies:"
-      pt 4 (@https://www.youtube.com/embed/xr8CpLhICkk?si=UE2pr5FdigurUow0){width <= 560px & height == 315px & alt: "YouTube video player"}
+      pt 4 @https://www.youtube.com/embed/xr8CpLhICkk?si=UE2pr5FdigurUow0{width == 560px & width <= 100% & height == 315px & alt: "YouTube video player"}
       pt 4 "The relaunch of OrbitMines was highly anticipated, we had over 30 people ready at its release to join. We hyped up the release with constant teasers, one of which was another 'trailer' of our history:"
-      pt 4 (@https://www.youtube.com/embed/jIi7L9o7MRk?si=_4-3v65v_2e_xlJI){width <= 560px & height == 315px & alt: "YouTube video player"}
+      pt 4 @https://www.youtube.com/embed/jIi7L9o7MRk?si=_4-3v65v_2e_xlJI{width == 560px & width <= 100% & height == 315px & alt: "YouTube video player"}
       pt 4 "Then, of course, the release went completely bad, we were one of the first servers to be on Minecraft 1.13 just 4 days after its release (22 July 2018) thanks to us setting up a custom Minecraft server runnable which worked for 1.13. And this caused some issues which we needed an extra day to resolve. Luckily all those players were patient with us, and were right back again the next day for the actual release!"
       "We were growing fast again, like back in 2014, just with a minimal set of gamemodes with a steady playerbase."
       "We announced KitPvP re-release again as the 5th anniversary of OrbitMines neared in 2018."

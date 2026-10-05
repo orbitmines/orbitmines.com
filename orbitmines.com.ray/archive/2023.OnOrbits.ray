@@ -213,7 +213,7 @@ on-orbits-equivalence-and-inconsistencies: Article = {
   }
 
   arc "Arc: OrbitMines Explorer: The Project" {
-    TagLink(@https://github.com/orbitmines/orbitmines.com/pull/1, icon: @github, name: ("OrbitMines Explorer - ", ("WIP" ^tag ^warning_tag){font.size == 1rem, padding.(Geometry.vertical) == 0px, height >= 20px}, " Preliminary Technical Implementation/Exploration"))
+    TagLink(@https://github.com/orbitmines/orbitmines.com/pull/1, icon: @github, name: ("OrbitMines Explorer - ", ("WIP" ^tag ^warning_tag){font.size == 1rem, padding.(Geometry.vertical) == 0px}, " Preliminary Technical Implementation/Exploration"))
   }
 
   arc "Wrapping up" {

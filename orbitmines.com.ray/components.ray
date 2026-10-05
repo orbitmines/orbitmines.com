@@ -17,7 +17,7 @@ Button := class {
   outlined: boolean = false
   small: boolean = false
 
-  middle center {height >= (small ? 24px : 30px) & width >= (small ? 24px : 30px)} .map(,) <- (
+  middle center .map(,) <- (
     Icon(icon, color: icon_color, size: icon_size) ^icon if icon,
     text if text,
     Icon(right_icon) ^icon if right_icon
@@ -25,7 +25,7 @@ Button := class {
 }
 
 DownloadButton := class {
-  os = (@me/device/os/name){windows | macos | linux} unless @me/device/handheld
+  os = @me/device/os/name{windows | macos | linux} unless @me/device/handheld
   shown => os.match
     windows => "Windows"
     macos => "MacOS"
@@ -53,7 +53,7 @@ TagLink := class {
   name: *?
   intent: String?
 
-  middle {height >= 20px} .map(,) <- (icon.icon(color: intent ? UI.Theme[intent + "_tag"].color : None, size: 20px), px 5 (name ?? (to as String).replace("https://", "")){font.size == 1.1rem})
+  middle .map(,) <- (icon.icon(color: intent ? UI.Theme[intent + "_tag"].color : None, size: 20px), px 5 (name ?? (to as String).replace("https://", "")){font.size == 1.1rem})
     ^tag ^{intent ? intent + "_tag" : "none"} ^{hovered ? (intent ? intent + "_tag_hovered" : "tag_hovered") : "none"} @ to{window == new}
 }
 
@@ -99,8 +99,6 @@ Repository := class {
   about: String
   Reference(title: (path, " ", about ^muted), organizations: @github, location: @https://github.com/orbitmines/ path[1..])~card
 }
-
-OrgIcon := (organization: Organization?) => (organization.profile_picture ?? organization.logo){width == 18px & height == 18px, margin.right == 6px, fit: contain, alt: organization.name} if organization?.profile_picture ?? organization?.logo
 
 Timeline := class {
   heading: *
@@ -199,7 +197,7 @@ LiteraryExposure := class {
       },
       entries: filtered.map((year, item) => Timeline.Entry(
         year as String,
-        (item.organizations.map(OrgIcon(.)), item.title) @ item.location{window == new},
+        (item.organizations.map(.org_icon), item.title) @ item.location{window == new},
         description: item.named_authors.nonempty ? (item.named_authors, (" " + (item.year as String)) if item.year, (". ", item.description) if item.description) : item.description
       ))
     )
@@ -319,4 +317,5 @@ Thumbnail := class {
 
 Organization &+= {
   icon (color: Color? = None, size: Length = 16px) => .profile_picture{height == size, fill == color ?? currentColor}
+  org_icon => (profile_picture ?? logo){width == 18px & height == 18px, margin.right == 6px, fit: contain, alt: name} if profile_picture ?? logo
 }
