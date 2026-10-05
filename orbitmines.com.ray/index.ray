@@ -27,15 +27,15 @@ orbitmines.com := class {
     center {width <= 1240px} {
       end middle .map(&+ px 5) <- DownloadButton
     }
-    center @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png{width == 90% & width <= 400px} ~~ .alt = "logo"
+    center @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png{width == 90% & width <= 400px, alt: "logo"}
     pt 5 center (xs 12/12 -> sm 10/12 -> md 8/12 -> lg 6/12 -> xl 4/12) center .description ^italic
-    center py 2 px 2 .map(&+ pt 5 px 2) <- @orbitmines.avatars{Platforms.shown.contains(.platform)}.map(.platform.icon(size: 20px) @ .location{window == new})
+    center py 2 px 2 .map(&+ pt 5 px 2) <- @orbitmines.avatars#{.platform is Platform.shown}.map(.platform.icon(size: 20px) @ .location{window == new})
     {width == 100% & height == 120px, overflow == clip} middle center @../orbitmines.com/public/archive/on-orbits-equivalence-and-inconsistencies/images/header.png
     middle center .map(,) <- {
       {width <= 500px} {
-        Label("Booklets")
-        Booklet(@../orbitmines.com/public/almanac/almanac.png, "E", Almanac, disabled: !Features.ether)
-        Booklet(@../orbitmines.com/public/2026-09-12_Sun.png, "Physics Project", physics, disabled: !Features.physics)
+        "Booklets" ^label ^disabled
+        Booklet(@../orbitmines.com/public/almanac/almanac.png{alt: "E"}, Almanac, disabled: !Features.ether)
+        Booklet(@../orbitmines.com/public/2026-09-12_Sun.png{alt: "Physics Project"}, physics, disabled: !Features.physics)
       }
       {width <= 500px} {
         pb 4 .map(&+ mr 3) <- (@github.icon(size: 16px), "github.com/orbitmines") ^muted @ @https://github.com/orbitmines{window == new}
@@ -47,9 +47,9 @@ orbitmines.com := class {
         }
       }
     }
-    {margin.(Geometry.vertical) == 2.5rem} @fadi as Author
+    my 2.5rem @fadi as Author
     center {width <= 500px} {
-      Label("/updates")
+      "/updates" ^label ^disabled
       pl 9 writings.map((. ~~ (.window = same))~entry)
     }
   }

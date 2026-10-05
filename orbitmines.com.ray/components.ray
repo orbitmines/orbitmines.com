@@ -4,9 +4,9 @@ Features := class {
 }
 
 // Windows downloads the installer; Linux and macOS show the install command on hover and copy it on click; phones and tablets show nothing (Ether.tsx).
-INSTALL = "curl -fsSL https://ether.orbitmines.com/install.sh | bash"
-WINDOWS_EXECUTABLE = @https://github.com/orbitmines/ray/releases/latest/download/ether-x86_64-pc-windows-msvc.exe
-ETHER = @../orbitmines.com/public/Ether.svg
+INSTALL := "curl -fsSL https://ether.orbitmines.com/install.sh | bash"
+WINDOWS_EXECUTABLE := @https://github.com/orbitmines/ray/releases/latest/download/ether-x86_64-pc-windows-msvc.exe
+ETHER := @../orbitmines.com/public/Ether.svg
 
 Button := class {
   icon: String?
@@ -30,20 +30,15 @@ DownloadButton := class {
     windows => "Windows"
     macos => "MacOS"
     linux => "Linux"
-  label (verb: String) => middle .map(,) <- (verb, ETHER{width <= 100% & height <= 50px} ~~ .alt = "Ether's Almanac", "for " + shown if UI.scene.size.x > 575px)
+  label (verb: String) => middle .map(,) <- (verb, ETHER{width <= 100% & height <= 50px, alt: "Ether's Almanac"}, "for " + shown if UI.scene.size.x > 575px)
 
-  copied_at: Time?
-  copied => copied_at && now - copied_at < 1.2 s
-  activate => os == windows ? (UI.at = WINDOWS_EXECUTABLE) : (@me/device/clipboard = INSTALL) -- (copied_at = now)
+  copied => @me/device/clipboard.history.last -- (. && .value == INSTALL && Time.now - .when < 1.2 s)
+  activate => os == windows ? (UI.at = WINDOWS_EXECUTABLE) : (@me/device/clipboard = INSTALL)
 
   (os == windows
     ? Button(icon: "download", text: label("Download"))
     : Button(icon: hovered ? (copied ? "tick" : "duplicate") : "console", text: {height >= 50px} middle (hovered ? ("$ " + INSTALL) ^code ^nowrap : label("Install")))
   ){font.size == 18px} ^underline if Features.ether && os
-}
-
-LoginButton := class {
-  Button(icon: "link", icon_color: "#EAB832" as Color, icon_size: 20px, outlined: true)
 }
 
 // Blueprint's icons, as the site uses them, kept in the repository; a terminal shows the glyph instead.
@@ -66,41 +61,35 @@ Author := class {
   character: Character
 
   center middle .map(&+ px 2) .map(,) <- {
-    character.profile_picture{width <= 32px} ~~ .alt = "Profile picture" ^circle
+    character.profile_picture{width <= 32px, alt: "Profile picture"} ^circle
     {
       character.name ^h3 @ character.profile.location
       start "@" + character.profile.name ^muted ^small @ character.profile.location
     }
   }
   center character.email ^h4 @ character.email{window == new}
-  center .map(&+ px 2) .map(,) <- character.avatars{Platforms.shown.contains(.platform)}.map(.platform.icon(size: 16px) @ .location{window == new})
+  center .map(&+ px 2) .map(,) <- character.avatars#{.platform is Platform.shown}.map(.platform.icon(size: 16px) @ .location{window == new})
 }
 
 Affiliation := class {
   organization: Organization
 
   center middle .map(&+ px 2) .map(,) <- {
-    organization.logo{width <= 150px} ~~ .alt = organization.name
-    start "@" + organization.handle ^muted ^small @ "/@" + organization.handle
+    organization.logo{width <= 150px, alt: organization.name}
+    start "@" + organization.handle ^muted ^small @ /@ + organization.handle
   }
-  center .map(&+ px 2) .map(,) <- organization.avatars.map(.platform.icon(size: 16px) @ .location{window == new})
-}
-
-Label := class {
-  text: String
-  text ^label ^disabled
+  center .map(&+ px 2) .map(,) <- organization.avatars#.map(.platform.icon(size: 16px) @ .location{window == new})
 }
 
 Booklet := class {
   image: Location{language === Language.Image}
-  alt: String
   reference: Reference
   disabled: boolean = false
 
   shown => (disabled ? reference ~~ (.title = (reference.title, " (coming soon)" ^disabled)) ~~ (.location = None) : reference) ~~ (.window = same)
 
   middle .map(,) <- {
-    {width == 3/12} image{width == 100% & height <= 100px} ~~ (.fit = contain) ~~ (.alt = alt)
+    {width == 3/12} image{width == 100% & height <= 100px, fit: contain}
     {width == 9/12} start shown~card
   } ^{disabled ? "faded" : "none"}
 }
@@ -111,7 +100,7 @@ Repository := class {
   Reference(title: (path, " ", about ^muted), organizations: @github, location: @https://github.com/orbitmines/ path[1..])~card
 }
 
-OrgIcon := (organization: Organization?) => (organization.profile_picture ?? organization.logo){width == 18px & height == 18px, margin.right == 6px} ~~ (.fit = contain) ~~ (.alt = organization.name) if organization?.profile_picture ?? organization?.logo
+OrgIcon := (organization: Organization?) => (organization.profile_picture ?? organization.logo){width == 18px & height == 18px, margin.right == 6px, fit: contain, alt: organization.name} if organization?.profile_picture ?? organization?.logo
 
 Timeline := class {
   heading: *
@@ -132,7 +121,7 @@ Timeline := class {
 
   small => UI.scene.size.x <= 640px
   ordered => grouped ? entries.sort_by(-(.year ?? 0)) : entries
-  repeated (entry) => grouped && entry.year && entry.index > 0 && ordered[entry.index - 1].year == entry.year
+  repeated (entry) => grouped && entry.year && entry.previous?.year == entry.year
   label (entry) => grouped ? (entry.year as String ?? entry.when) : entry.when
   specific (entry) => grouped && entry.year && entry.when.trimmed != entry.year as String
   detail (entry) => ((mr (entry.description ? 4 : 0) (entry.when, "." if entry.description)) if specific(entry), entry.description) ^muted {font.size == (compact ? 0.7rem : 0.9rem)} if entry.description || specific(entry)
@@ -147,9 +136,9 @@ Timeline := class {
     }
     mb 6 below if below
     pl (small ? 0 : 11) layered {
-      {position.kind == absolute, inset.left == 6px, inset.top == 6px, inset.bottom == 6px, width == 2px} "" {fill == "#ffffff2e" as Color} unless small
+      {position.kind == absolute, inset == Edges(6px, None, 6px, 6px), width == 2px} "" {fill == "#ffffff2e" as Color} unless small
       ordered.map(entry => py (compact ? 1.5 : 4) {color == (entry.future ? "#ffffff66" : "#e6e6e6") as Color} layered {
-        {position.kind == absolute, inset.left == -22px, inset.top == (compact ? 7px : 14px), width == 14px, height == 14px} "" ^circle
+        {position.kind == absolute, inset == Edges((compact ? 7px : 14px), None, None, -22px), width == 14px, height == 14px} "" ^circle
           {fill == (entry.future ? "#5c6370" : "#abb3bf") as Color, stroke == Stroke("#0a0a0a" as Color, width: 2px)} unless repeated(entry) || small
         small ? {
           label(entry) ^{entry.future ? "disabled" : "marker"} unless repeated(entry)
@@ -170,43 +159,42 @@ Timeline := class {
 // what the user types, and whether it is focused, are variables the page reads (F-D6).
 LiteraryExposure := class {
   by_year: (year: Number, references: Reference[])[]
-  query: Choice = Choice(type: String, value: "", placeholder: "filter — try: type:video  person:\"Isaac Asimov\"  org:youtube  after:2024")
-  cursor: Number = 0
-  unfiltered_height: Length?
+  field: Geometry.Shape = Geometry.Box(content: Choice(type: String, value: "", placeholder: "filter — try: type:video  person:\"Isaac Asimov\"  org:youtube  after:2024"))
 
+  query => field.content.value
   items => by_year.map(pair => pair.references.map((pair.year, .))).flatten
-  filters => Query(query)
+  filters => query as Query
   filtered => items{filters.admits(.1, .0)}
+  unfiltered_height => this.size.history{.value.y > 0px}.first?.value.y
 
   authors => items.1.authors.name.flatten.unique.sort
   organizations => items.1.organizations.flatten.unique.sort_by(.key)
   years => items.0.unique.sort.reverse
 
-  typed => (query ~= (*, " "?, last: (!" ")[]) ⊣).last ?? ""
-  suggestions => typed.lowercase ~= (key: *, ":", value: *)
-    ? .key.match
-      "type" => ["book", "article", "video"]{.starts_with(.value)}.map(("type:" + ., "type:" + .))
-      "person" => authors{.lowercase.contains(.value)}.take(8).map(("person:\"" + . + "\"", "person: " + .))
-      "organization" | "org" => organizations{.key.lowercase.contains(.value) || .name.lowercase.contains(.value)}.take(8).map((.key + ":" + ⊢.key, .key + ": " + ⊢.name))
-      "after" | "before" | "since" | "year" => years{. as String ~= ⊢.value}.take(12).map((.key + ":" + ., .key + ":" + .))
+  typed => (query ~= (*, " "?, last: (!" ")[]) ⊣)?.last ?? ""
+  typing => typed.lowercase ~= (key: (!":")[], ":", value: *)
+  suggestions => typing ? typing.key.match
+      "type" => ["book", "article", "video"]{.starts_with(typing.value)}.map(("type:" + ., "type:" + .))
+      "person" => authors{.lowercase.contains(typing.value)}.take(8).map(("person:\"" + . + "\"", "person: " + .))
+      "organization" | "org" => organizations{.key.lowercase.contains(typing.value) || (.name.nonempty ? .name : .key).lowercase.contains(typing.value)}.take(8)
+        .map((typing.key + ":" + .key, typing.key + ": " + (.name.nonempty ? .name : .key)))
+      "after" | "before" | "since" | "year" => years{(. as String).starts_with(typing.value)}.take(12).map((typing.key + ":" + ., typing.key + ":" + .))
       * => []
-    : Query.keys{.starts_with(typed.lowercase)}.map((. + ":", . + ":"))
-  completion => suggestions[cursor]?.0 ~~ (.lowercase.starts_with(typed.lowercase) ? .[typed.length..] : "") ?? ""
-  insert (suggestion) => query.value = (query.value ~= (before: *, (!" ")[] ⊣)).before ~~ (. + (" " if .nonempty && !.ends_with(" "))) + suggestion.0 + " "
+    : Query.keys#{.starts_with(typed.lowercase)}.map((. + ":", . + ":"))
+  completion => suggestions.first?.0 -- (.lowercase.starts_with(typed.lowercase) ? .[typed.length..] : "") ?? ""
+  insert (suggestion) => field.content.value = (query ~= (before: *, (!" ")[] ⊣)).before -- (. + (" " if .nonempty && !.ends_with(" "))) + suggestion.0 + " "
 
-  with (cursor = 0) when query.value changes,
-    (unfiltered_height = this.size.y) if query.value.empty && !unfiltered_height,
-    insert(suggestions[cursor]) if UI.focus.some(.content === query) && @me/device/keyboard/Tab.pulsed && suggestions.nonempty {
+  with insert(suggestions.first) if field.focused && @me/device/keyboard/Tab.pulsed && suggestions.nonempty {
     {height >= unfiltered_height} Timeline("Literary Exposure",
       grouped: true,
       compact: true,
       below: {width <= 720px} mb 4 {
         layered {
-          query ^code {font.size == 0.9rem, padding == Edges(8px, 12px, 8px, 12px), fill == None, stroke == Stroke("#ffffff1f" as Color), radius == [4px], color == "#e6e6e6" as Color, layer == 1}
-          {padding == Edges(8px, 12px, 8px, 12px), font.size == 0.9rem, white_space == WhiteSpace.pre, overflow == clip} (query.value {visible == false}, completion {color == "#ffffff40" as Color}) if completion
+          field ^code {font.size == 0.9rem, padding == Edges(8px, 12px, 8px, 12px), fill == None, stroke == Stroke("#ffffff1f" as Color), radius == [4px], color == "#e6e6e6" as Color, layer == 1}
+          {padding == Edges(8px, 12px, 8px, 12px), font.size == 0.9rem, white_space == WhiteSpace.pre, overflow == clip} (query {visible == false}, completion {color == "#ffffff40" as Color}) if completion
         }
-        {height >= 22px} mt 2 {font.size == 0.8rem, gap == Vector(6px, 6px)} inline wrap .map(,) <- (UI.focus.some(.content === query) && suggestions.nonempty
-          ? suggestions.map((suggestion, i) => px 1 suggestion.1 ^{i == cursor ? "none" : "disabled"} {color == ("#ffffff99" as Color if i == cursor)} ~~ activate => insert(suggestion))
+        {height >= 22px} mt 2 {font.size == 0.8rem, gap == Vector(6px, 6px)} inline wrap .map(,) <- (field.focused && suggestions.nonempty
+          ? suggestions.map(suggestion => px 1 suggestion.1 ^{suggestion.index == 0 ? "none" : "disabled"} {color == ("#ffffff99" as Color if suggestion.index == 0)} ~~ activate => insert(suggestion))
           : [(filtered.count, " of ", items.count) ^disabled])
       },
       entries: filtered.map((year, item) => Timeline.Entry(
@@ -217,29 +205,26 @@ LiteraryExposure := class {
     )
   }
 
-  static Query := class (text: String) => {
-    static keys = ["type", "person", "organization", "org", "after", "before", "since", "year"]
-
-    tokens => text ~= ((Letter[], ":", "\"", (!"\"")[], "\"") | (Letter[], ":", (!" ")[]) | ("\"", (!"\"")[], "\"") | (!" ")[])[]
-    keyed => tokens{.contains(":") && keys.contains(.before(":").lowercase)}
-    values (key: String) => keyed{.before(":").lowercase == key}.map(.after(":").trimmed("\"").lowercase)
-    number (key: String) => values(key).last as Decimal
-    words => tokens{!keyed.contains(.)}.map(.trimmed("\"").lowercase)
-
-    kind (item: Reference) => item.kind ?? (item.organizations.some(.key == "youtube") ? Exposure.video : Exposure.article)
-
-    admits (item: Reference, year: Number) => {
-      names = item.authors.name.lowercase
-      shown = ((item.title ==.instance_of String ? item.title.lowercase : ""), year, names).join(" ")
-      (values("type").empty || values("type").contains(kind(item) as String))
-        && values("person").every(person => names.some(.contains(person)))
-        && (values("organization"), values("org")).every(org => item.organizations.some(.key.lowercase.contains(org) || .name.lowercase.contains(org)))
-        && (values("year").empty || year == number("year"))
-        && (values("after").empty || year > number("after"))
-        && (values("before").empty || year < number("before"))
-        && (values("since").empty || year >= number("since"))
-        && words.every(shown.contains(.))
+  static Query := class (Char.Blank[], terms: (Term, Char.Blank[])[]) {
+    static keys := "type" | "person" | "organization" | "org" | "after" | "before" | "since" | "year"
+    static Term := class ((key: Char.Letter[], ":")?, value: ("\"", (!"\"")[], "\"") | (!Char.Blank)[]) {
+      keyed => key && key.lowercase is Query.keys
+      text => (keyed || !key ? value : key + ":" + value).trimmed("\"").lowercase
     }
+
+    values (key) => terms{.keyed && .key.lowercase is key}.text
+    number (key: String) => values(key).last as Decimal
+    words => terms{!.keyed}.text
+
+    admits (item: Reference, year: Number) => item.authors.name.lowercase -- (names =>
+      (values("type").empty || values("type") ∋ (item.exposure as String))
+      && values("person").every(person => names.some(.contains(person)))
+      && values("organization" | "org").every(org => item.organizations.some(.key.lowercase.contains(org) || .name.lowercase.contains(org)))
+      && (values("year").empty || year == number("year"))
+      && (values("after").empty || year > number("after"))
+      && (values("before").empty || year < number("before"))
+      && (values("since").empty || year >= number("since"))
+      && words.every([item.title is String ? item.title.lowercase : "", year as String, names].flatten.join(" ").contains(.)))
   }
 }
 
@@ -257,31 +242,34 @@ Gallery := class {
 
   at: Number = 0
   go (index: Number) => at = index max 0 min (shown.count - 1)
-  wheeled_at: Time?
-  scrolled => UI.pointer.wheel.y || UI.pointer.wheel.x
-  drag: (from: Length, offset: Length, moved: boolean, velocity: Number)?
-  dragged_offset: Length?
   phone => UI.scene.size.x <= 767px
   items => track.children.first.children
   centre_of (index: Number) => items[index].origin.x + items[index].size.x / 2 - track.size.x / 2
-  nearest => shown.indices.min_by((centre_of(.) - (dragged_offset ?? centre_of(at))).abs)
-  pulled => UI.pointer.position.x - drag.from
 
-  with (drag = (from: UI.pointer.position.x, offset: centre_of(at), moved: false, velocity: 0)) if track.pressed && !drag && !(UI.focus.first is Button),
-    (drag.moved = drag.moved || pulled.abs > 5px) -- (dragged_offset = drag.offset - pulled if drag.moved) -- (drag.velocity = UI.pointer.velocity.x) when UI.pointer.position changes if drag,
-    (go(at + (scrolled > 0 ? 1 : -1)) -- (wheeled_at = now)) if track.hovered && scrolled.abs >= 5 && !(wheeled_at && now - wheeled_at < 350 ms),
-    (drag.moved ? (drag.velocity.abs > 0.05 ? go(at + (drag.velocity < 0 ? 1 : -1)) : go(nearest)) -- (drag = None) -- (dragged_offset = None)) when UI.pointer.released becomes true if drag {
+  press => UI.pointer.history{from pressed}.last
+  dragging => (UI.pointer.pressed || UI.pointer.released) && press && track.contains(press.first.position - track.at)
+    && !track.reachable{.styles.contains("nav")}.some(.contains(press.first.position - .at))
+  moved => dragging && press.some((.position.x - press.first.position.x).abs > 5px)
+  pulled => UI.pointer.position.x - press.first.position.x
+  flick => press{.pressed}[-2..] -- (.count == 2 ? (.last.position.x - .first.position.x) * (1 / ((.last.when - .first.when) as ms)) : 0px)
+  offset => moved ? centre_of(at) - pulled : centre_of(at)
+  nearest => shown.indices.min_by((centre_of(.) - offset).abs)
+  scrolled => UI.pointer.wheel.y || UI.pointer.wheel.x
+  wheeled => at.history.last -- (. && Time.now - .when < 350 ms)
+
+  with go(at + (scrolled > 0 ? 1 : -1)) if track.hovered && scrolled.abs >= 5 && !wheeled,
+    (flick.abs > 0.05px ? go(at + (flick < 0 ? 1 : -1)) : go(nearest)) when UI.pointer.released becomes true if moved {
     {width == 100%} {
       center caption ^muted ^smaller if caption
       track = {overflow == clip, cursor == grab, touch == pan_y} {
-        inline py 8 {gap == Vector(12px, 12px)} {transform == Transform.translate(Vector(-(dragged_offset ?? centre_of(at))))} {transition == (drag ? None : Transition(0.4 s, ease))} .map(,) <- shown.map((image, i) => {
+        inline py 8 {gap == Vector(12px, 12px)} {transform == Transform.translate(Vector(-offset))} {transition == (dragging && UI.pointer.pressed ? None : Transition(0.4 s, ease))} .map(,) <- shown.map((image, i) => {
           item = {radius == [6px], overflow == clip, transition == Transition(0.3 s, ease), transform == Transform.scale(i == at ? 1 : 0.85)} layered {
-            image{aspect == 16/9, height == (phone ? None : height), width == (phone ? 85vw : None)} ~~ (.fit = cover) ~~ (.alt = image.alt ?? "")
-            {position.kind == absolute, inset.top == 8px, inset.right == 8px} ((i + 1) as String, " / ", shown.count as String) ^nav_badge if i == at
-            {position.kind == absolute, inset.top == 0px, inset.bottom == 0px, inset.left == 0px, width == 48px} "‹" ^nav ^{hovered ? "nav_hovered" : "none"} ~~ activate => go(at - 1) if i == at && at > 0 && item.hovered
-            {position.kind == absolute, inset.top == 0px, inset.bottom == 0px, inset.right == 0px, width == 48px} "›" ^nav ^{hovered ? "nav_hovered" : "none"} ~~ activate => go(at + 1) if i == at && at < shown.count - 1 && item.hovered
+            image{aspect == 16/9, height == (phone ? None : height), width == (phone ? 85vw : None), fit: cover, alt: image.alt ?? ""}
+            {position.kind == absolute, inset == Edges(8px, 8px, None, None)} ((i + 1) as String, " / ", shown.count as String) ^nav_badge if i == at
+            {position.kind == absolute, inset == Edges(0px, None, 0px, 0px), width == 48px} "‹" ^nav ^{hovered ? "nav_hovered" : "none"} ~~ activate => go(at - 1) if i == at && at > 0 && item.hovered
+            {position.kind == absolute, inset == Edges(0px, 0px, 0px, None), width == 48px} "›" ^nav ^{hovered ? "nav_hovered" : "none"} ~~ activate => go(at + 1) if i == at && at < shown.count - 1 && item.hovered
           } + Filter(opacity, i == at ? 1 : 0.5) + (Shadow(Vector(0, 4px), blur: 24px, color: "#0000004d" as Color) if i == at)
-            ~~ activate => go(i) unless drag?.moved
+            ~~ activate => go(i) unless moved
         })
       }
     }
@@ -310,39 +298,25 @@ UI.Scene &+= {
   {code: String{language}} => Article.current?.code(code) ?? CodeBlock(code)
 }
 
-Scene := class {
-  source: *
-  source ^code
-}
-
 SectionButton := class {
   section: String
   text: String = section
   Button(text: text, right_icon: "arrow-right", outlined: true) ~~ activate => Article.current.go(Article.current.sections{.name == section}.first)
 }
 
-TODO := class {
-  text: *
-  start ("TODO: [", text, "]") ^muted
-}
-
 Thumbnail := class {
-  title: String = UI.at.parameter("title") ?? "OrbitMines - Stream"
-  subtitle: String = UI.at.parameter("subtitle") ?? ""
-  date: String = UI.at.parameter("date") ?? (Time.now.date as String)
-  width: Length = (UI.at.parameter("width") ?? "1920") as Decimal * 1px
-  height: Length = (UI.at.parameter("height") ?? "1080") as Decimal * 1px
+  title: String = UI.at.query.title ?? "OrbitMines - Stream"
+  subtitle: String = UI.at.query.subtitle ?? ""
+  date: String = UI.at.query.date ?? (Time.now.date as String)
+  width: Length = (UI.at.query.width ?? "1920") as Decimal * 1px
+  height: Length = (UI.at.query.height ?? "1080") as Decimal * 1px
 
   {width == width, height == height, transform == Transform.scale(width / 1240px * 1.1)} middle center {
-    pt 35 px (xs 0 -> lg 50) .map(&+ pb 15) <- {width <= 1240px} Header(Article(title: title, subtitle: subtitle, date: date, organizations: @orbitmines, authors: @fadi, draft: false)) ^article
+    pt 35 px (xs 0 -> lg 50) .map(&+ pb 15) <- {width <= 1240px} Article(title: title, subtitle: subtitle, date: date, organizations: @orbitmines, authors: @fadi, draft: false)~titled ^article
     {height == 140px} middle center @../orbitmines.com/public/archive/on-orbits-equivalence-and-inconsistencies/images/header.png
   }
 }
 
 Organization &+= {
   icon (color: Color? = None, size: Length = 16px) => .profile_picture{height == size, fill == color ?? currentColor}
-}
-
-Location &+= {
-  parameter (name: String) => query?.pairs{.name == name && (.value ?? "").nonempty}.last?.value
 }

@@ -1,19 +1,11 @@
 Character &+= {
-  first_name: None
-  last_name: None
   formal_citation_name: None
-  email: None
   orcid: None
-  profile_picture: None
-  profile: None
   handle => .name
 }
 
 Organization &+= {
-  handle => .name
   key => .handle
-  logo: None
-  website: None
 }
 
 Avatar &+= {
@@ -115,9 +107,7 @@ Platform := class: Organization {
   profile_picture: @../orbitmines.com/public/organizations/icons/fission.svg
 }
 
-Platforms := class {
-  static shown := | @github | @x | @discord | @linkedin | @orcid | @instagram | @youtube | @twitch | @facebook
-}
+Platform.shown := @github | @x | @discord | @linkedin | @orcid | @instagram | @youtube | @twitch | @facebook
 
 @orbitmines: Organization = {
   name: "OrbitMines Research"

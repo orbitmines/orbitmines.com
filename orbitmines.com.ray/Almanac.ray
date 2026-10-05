@@ -141,13 +141,13 @@ Almanac: Book = {
               {width == 10px} @ray`B` ^nowrap
               {width == 10px} ml 50px @ray`C` ^nowrap
             }
-            mt -60px Visualization("graph"){height == 85.6px} + Scene(@tsx`
+            mt -60px Visualization("graph"){height == 85.6px} + (@tsx`
                 <group scale={1.5}>
                 <RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} color="orange"/>
                 <RenderedRay reference={Ray.size(1)} position={[0, 0, 0]} scale={1.5} color="orange"/>
                 <RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} color="orange"/>
                 </group>
-              `)
+              ` ^code)
           } ^block
           (xs 3/12 -> md 6/12) @ray`
               A
@@ -169,7 +169,7 @@ Almanac: Book = {
               {width == 25px} @ray`E1` ^nowrap
               {width == 10px} ml 45px mt 15px @ray`F` ^nowrap
             }
-            mt -60px Visualization("graph"){height == 93.6px} + Scene(@tsx`
+            mt -60px Visualization("graph"){height == 93.6px} + (@tsx`
                 <group scale={1.5}>
                 <Continuation position={[-60, 0, 0]} color="orange"/>
                 <Continuation position={[60, 0, 0]} color="orange"/>
@@ -198,7 +198,7 @@ Almanac: Book = {
                 <Vertex position={[0, 10, 0]} color="orange"/>
                 <Vertex position={[0, -10, 0]} color="orange"/>
                 </group>
-              `)
+              ` ^code)
             center .map(,) <- {
               {width == 60px} mt -5px @ray`E2` ^nowrap
             }
@@ -466,7 +466,7 @@ Almanac: Book = {
         "It's worth noting that mapping, retains structure. So if we for instance have the following graph."
         {
           @ray`x: Graph = [false, false | true, true]`
-          Visualization("graph"){height == 130px} + Scene(@tsx`
+          Visualization("graph"){height == 130px} + (@tsx`
             <group scale={1.5}>
             <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
             <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
@@ -511,13 +511,13 @@ Almanac: Book = {
             <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
             <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
             </group>
-          `)
+          ` ^code)
         } ^block
         "And we map it:"
         @ray`x.map(!) // true, true | false, false`
         "Structure is retained (see that the underlying graph structure didnt move, only the intersecting lines moved up/down):"
         {
-          Visualization("graph"){height == 100px} + Scene(@tsx`
+          Visualization("graph"){height == 100px} + (@tsx`
             <group scale={1.5}>
             <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
             <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
@@ -562,7 +562,7 @@ Almanac: Book = {
             <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
             <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
             </group>
-          `)
+          ` ^code)
         } ^block
         "That however leaves one thing I haven't yet explained about Rays, which is the way booleans and numbers are encoded as Rays."
         "For that we'll turn towards the next section."
@@ -570,7 +570,7 @@ Almanac: Book = {
       section "§2.3 Numbers" {
         "Numbers, booleans (binary numbers), are simply this visual structure. This would be ", "00" ^red, ". If the blue colors would be selected it would be ", "11" ^blue, ". Where the yellow structure, is simply our array: A number is an array of selected numbers according to some base."
         {
-          Visualization("2_2"){height == 140px} + Scene(@tsx`
+          Visualization("2_2"){height == 140px} + (@tsx`
             <Center>
             <group>
             <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
@@ -591,7 +591,7 @@ Almanac: Book = {
             </group>
             </group>
             </Center>
-          `)
+          ` ^code)
         } ^block
         "2 in the case of a binary number. Of course our more familiar decimal numbers would be 10. A number therefore by default is also encoded as a Decimal in this way! This way of structurally thinking about numbers might seem a little alien at first, but it is naturally how our numbers work. And it is how I want you to think about them; structurally."
         "The number library therefore defines number in any kind of base representation. And they can be initialized in their own base:"

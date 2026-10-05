@@ -88,7 +88,7 @@ the_metaverse_building_the_spatial_internet: Reference = {
   authors: @"Matthew Ball"
   date: "(2024)"
   location: @https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -182,7 +182,7 @@ an_infinity_of_worlds_cosmic_inflation_and_the_beginning_of_the_universe: Refere
   authors: @"Will Kinney"
   date: "(2022)"
   location: @https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -299,7 +299,7 @@ the_strangest_man: Reference = {
   authors: @"Graham Farmelo"
   date: "(2009)"
   location: @https://en.wikipedia.org/wiki/The_Strangest_Man
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -308,7 +308,7 @@ ecce_homo: Reference = {
   authors: @"Friedrich Nietzsche"
   date: "(1908)"
   location: @https://en.wikipedia.org/wiki/Ecce_Homo_(book)
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -317,7 +317,7 @@ the_three_body_problem: Reference = {
   authors: @"Liu Cixin"
   date: "(2008)"
   location: @https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -326,7 +326,7 @@ wool: Reference = {
   authors: @"Hugh Howey"
   date: "(2011)"
   location: @https://en.wikipedia.org/wiki/Silo_(series)
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -335,7 +335,7 @@ shift: Reference = {
   authors: @"Hugh Howey"
   date: "(2013)"
   location: @https://en.wikipedia.org/wiki/Silo_(series)
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -344,7 +344,7 @@ harry_potter_1_7: Reference = {
   authors: @"J. K. Rowling"
   date: "(1997-2007)"
   location: @https://en.wikipedia.org/wiki/Harry_Potter
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -452,7 +452,7 @@ crafting_interpreters: Reference = {
   authors: @"Robert Nystrom"
   date: "(2021)"
   location: @https://www.craftinginterpreters.com/
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -461,7 +461,7 @@ functional_programming_in_lean: Reference = {
   authors: @"David Thrane Christiansen"
   date: "(2023)"
   location: @https://lean-lang.org/functional_programming_in_lean/
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -502,7 +502,7 @@ leviathan_wakes: Reference = {
   authors: @"James S. A. Corey"
   date: "(2011)"
   location: @https://en.wikipedia.org/wiki/Leviathan_Wakes
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -610,7 +610,7 @@ ready_player_one: Reference = {
   authors: @"Ernest Cline"
   date: "(2011)"
   location: @https://en.wikipedia.org/wiki/Ready_Player_One
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -619,7 +619,7 @@ ready_player_two: Reference = {
   authors: @"Ernest Cline"
   date: "(2020)"
   location: @https://en.wikipedia.org/wiki/Ready_Player_Two
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -833,7 +833,7 @@ einstein_his_life_and_universe: Reference = {
   authors: @"Walter Isaacson"
   date: "(2007)"
   location: @https://en.wikipedia.org/wiki/Einstein:_His_Life_and_Universe
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -938,7 +938,7 @@ hunters_of_dune: Reference = {
   authors: @"Brian Herbert", @"Kevin J. Anderson"
   date: "(2006)"
   location: @https://en.wikipedia.org/wiki/Hunters_of_Dune
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -1191,7 +1191,7 @@ elon_musk: Reference = {
   authors: @"Walter Isaacson"
   date: "(2023)"
   location: @https://en.wikipedia.org/wiki/Elon_Musk_(Isaacson_book)
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -1757,7 +1757,7 @@ steve_jobs: Reference = {
   authors: @"Walter Isaacson"
   date: "(2011)"
   location: @https://en.wikipedia.org/wiki/Steve_Jobs_(book)
-  kind: Exposure.book
+  kind: book
   viewed_at: "2023, December"
 }
 
@@ -2717,7 +2717,7 @@ dune: Reference = {
   published: @"Ace Books"
   date: 1965
   location: @https://en.wikipedia.org/wiki/Dune_(novel)
-  kind: Exposure.book
+  kind: book
   found_at: "2021"
   viewed_at: "2021"
 }
@@ -2728,7 +2728,7 @@ dune_messiah: Reference = {
   published: @"Ace Books"
   date: 1969
   location: @https://en.wikipedia.org/wiki/Dune_Messiah
-  kind: Exposure.book
+  kind: book
   found_at: "2021"
   viewed_at: "2021"
 }
@@ -2739,7 +2739,7 @@ children_of_dune: Reference = {
   published: @"Ace Books"
   date: 1976
   location: @https://en.wikipedia.org/wiki/Children_of_Dune
-  kind: Exposure.book
+  kind: book
   found_at: "2021"
   viewed_at: "2021"
 }
@@ -2750,7 +2750,7 @@ god_emperor_of_dune: Reference = {
   published: @"Ace Books"
   date: 1981
   location: @https://en.wikipedia.org/wiki/God_Emperor_of_Dune
-  kind: Exposure.book
+  kind: book
   found_at: "2021"
   viewed_at: "2022"
 }
@@ -2761,7 +2761,7 @@ heretics_of_dune: Reference = {
   published: @"Ace Books"
   date: 1984
   location: @https://en.wikipedia.org/wiki/Heretics_of_Dune
-  kind: Exposure.book
+  kind: book
   found_at: "2021"
   viewed_at: "2022"
 }
@@ -2772,8 +2772,8 @@ chapterhouse_dune: Reference = {
   published: @"Ace Books"
   date: 1985
   location: @https://en.wikipedia.org/wiki/Chapterhouse:_Dune
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2021"
   viewed_at: "2022 - "
 }
@@ -2784,7 +2784,7 @@ fluid_concepts_and_creative_analogies: Reference = {
   published: @"Basic books"
   date: 1995
   location: @https://en.wikipedia.org/wiki/Fluid_Concepts_and_Creative_Analogies
-  kind: Exposure.book
+  kind: book
   found_at: "January, 2022"
   viewed_at: "January, 2022 - May, 2022"
 }
@@ -2795,8 +2795,8 @@ godel_escher_bach: Reference = {
   published: @"New York: Basic books"
   date: 1979
   location: @https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "March, 2022"
   viewed_at: "March, 2022 - "
 }
@@ -2807,7 +2807,7 @@ quantum_einstein_bohr_and_the_great_debate_about_the_nature_of_reality: Referenc
   published: @"Icon Books Ltd"
   date: 2008
   location: @https://en.wikipedia.org/wiki/Quantum_(book)
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "2022 - October, 2022"
 }
@@ -2818,8 +2818,8 @@ the_art_of_war: Reference = {
   published: @"Thomas Clearly translation. Shambhala Publications"
   date: "6th cent. B.C."
   location: @https://en.wikipedia.org/wiki/Thomas_Cleary
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "2022"
   archived: true
@@ -2831,7 +2831,7 @@ _1984: Reference = {
   published: @"Secker & Warburg"
   date: 1949
   location: @https://en.wikipedia.org/wiki/Nineteen_Eighty-Four
-  kind: Exposure.book
+  kind: book
   found_at: "2021"
   viewed_at: "2021"
 }
@@ -2842,7 +2842,7 @@ animal_farm: Reference = {
   published: @"Secker & Warburg"
   date: 1945
   location: @https://en.wikipedia.org/wiki/Animal_Farm
-  status: Viewed.in_progress
+  status: in_progress
   found_at: "2021"
   viewed_at: "2021"
   archived: true
@@ -2864,7 +2864,7 @@ foundation: Reference = {
   published: @"Gnome Press"
   date: 1951
   location: @https://en.wikipedia.org/wiki/Foundation_(Asimov_novel)
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "October, 2022"
 }
@@ -2875,7 +2875,7 @@ second_foundation: Reference = {
   published: @"Gnome Press"
   date: 1953
   location: @https://en.wikipedia.org/wiki/Second_Foundation
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "October, 2022 - January, 2023"
 }
@@ -2886,7 +2886,7 @@ foundation_and_empire: Reference = {
   published: @"Gnome Press"
   date: 1952
   location: @https://en.wikipedia.org/wiki/Foundation_and_Empire
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "January, 2023"
 }
@@ -2897,7 +2897,7 @@ prelude_to_foundation: Reference = {
   published: @"Doubleday"
   date: 1988
   location: @https://en.wikipedia.org/wiki/Prelude_to_Foundation
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "April, 2023"
 }
@@ -2908,7 +2908,7 @@ foundations_edge: Reference = {
   published: @"Doubleday"
   date: 1982
   location: @https://en.wikipedia.org/wiki/Foundation%27s_Edge
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "March, 2023"
 }
@@ -2919,7 +2919,7 @@ foundation_and_earth: Reference = {
   published: @"Doubleday"
   date: 1986
   location: @https://en.wikipedia.org/wiki/Foundation_and_Earth
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "March, 2023"
 }
@@ -2930,7 +2930,7 @@ forward_the_foundation: Reference = {
   published: @"Doubleday"
   date: 1993
   location: @https://en.wikipedia.org/wiki/Forward_the_Foundation
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "May, 2023"
 }
@@ -2941,7 +2941,7 @@ i_robot: Reference = {
   published: @"Gnome Press"
   date: 1950
   location: @https://en.wikipedia.org/wiki/I,_Robot
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "April, 2023"
 }
@@ -2952,7 +2952,7 @@ the_rest_of_the_robots: Reference = {
   published: @"Doubleday"
   date: 1964
   location: @https://en.wikipedia.org/wiki/The_Rest_of_the_Robots
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "May, 2023"
 }
@@ -2963,8 +2963,8 @@ the_complete_robot: Reference = {
   published: @"Doubleday"
   date: 1982
   location: @https://en.wikipedia.org/wiki/The_Complete_Robot
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "June, 2023"
 }
@@ -2975,8 +2975,8 @@ the_caves_of_steel: Reference = {
   published: @"Doubleday"
   date: 1954
   location: @https://en.wikipedia.org/wiki/The_Caves_of_Steel
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "August, 2023"
 }
@@ -2987,8 +2987,8 @@ the_naked_sun: Reference = {
   published: @"Doubleday"
   date: 1957
   location: @https://en.wikipedia.org/wiki/The_Naked_Sun
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "August, 2023"
 }
@@ -2999,8 +2999,8 @@ the_robots_of_dawn: Reference = {
   published: @"Doubleday"
   date: 1983
   location: @https://en.wikipedia.org/wiki/The_Robots_of_Dawn
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "September, 2023"
 }
@@ -3011,8 +3011,8 @@ robots_and_empire: Reference = {
   published: @"Doubleday"
   date: 1985
   location: @https://en.wikipedia.org/wiki/Robots_and_Empire
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "October, 2023"
 }
@@ -3023,8 +3023,8 @@ the_rise_and_fall_of_the_third_reich: Reference = {
   published: @"Simon & Schuster"
   date: 1960
   location: @https://en.wikipedia.org/wiki/The_Rise_and_Fall_of_the_Third_Reich
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "July, 2022"
   viewed_at: "September, 2022 - "
 }
@@ -3035,7 +3035,7 @@ a_new_kind_of_science: Reference = {
   published: @"Appl. Mech. Rev. 56.2"
   date: 2003
   location: @https://www.wolframscience.com/nks/
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 a_project_to_find_the_fundamental_theory_of_physics: Reference = {
@@ -3044,8 +3044,8 @@ a_project_to_find_the_fundamental_theory_of_physics: Reference = {
   published: @"Wolfram Media, Inc."
   date: 2020
   location: @https://www.wolframphysics.org/
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "December, 2022 - "
 }
@@ -3056,7 +3056,7 @@ combinators_a_centennial_view: Reference = {
   published: @"Wolfram Media, Inc."
   date: 2021
   location: @https://arxiv.org/pdf/2103.12811.pdf
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "December, 2022 - January, 2023"
 }
@@ -3067,7 +3067,7 @@ metamathematics: Reference = {
   published: @"Wolfram Media, Inc."
   date: 2022
   location: @https://arxiv.org/abs/2204.05123
-  kind: Exposure.book
+  kind: book
   found_at: "2023"
   viewed_at: "May, 2023"
 }
@@ -3078,7 +3078,7 @@ twenty_years_nks: Reference = {
   published: @"Wolfram Media, Inc."
   date: 2022
   location: @https://www.wolfram-media.com/products/twenty-years-of-a-new-kind-of-science/
-  kind: Exposure.book
+  kind: book
   found_at: "2023"
   viewed_at: "June, 2023"
 }
@@ -3089,8 +3089,8 @@ the_selfish_gene: Reference = {
   published: @"Oxford University Press"
   date: 1976
   location: @https://en.wikipedia.org/wiki/The_Selfish_Gene
-  kind: Exposure.book
-  status: Viewed.in_progress
+  kind: book
+  status: in_progress
   found_at: "2022"
   viewed_at: "February 2023 - "
 }
@@ -3101,7 +3101,7 @@ transformer: Reference = {
   published: @"W.W. Norton & Company"
   date: 2022
   location: @https://en.wikipedia.org/wiki/Nick_Lane
-  status: Viewed.in_progress
+  status: in_progress
   found_at: "2022"
   viewed_at: "May 2023 - "
 }
@@ -3112,7 +3112,7 @@ the_vital_question: Reference = {
   published: @"Profile Books"
   date: 2015
   location: @https://en.wikipedia.org/wiki/Nick_Lane
-  status: Viewed.in_progress
+  status: in_progress
   found_at: "2022"
   viewed_at: "May 2023 - "
 }
@@ -3122,7 +3122,7 @@ a_thousand_brains: Reference = {
   authors: @"Hawkins, Jeff"
   date: 2021
   location: @https://www.numenta.com/resources/books/a-thousand-brains-by-jeff-hawkins/
-  kind: Exposure.book
+  kind: book
   found_at: "2022"
   viewed_at: "May 2022"
 }
@@ -3852,7 +3852,7 @@ quantum_in_pictures: Reference = {
   published: @"Quantinuum"
   date: 2023
   location: @https://www.quantinuum.com/news/quantum-in-pictures
-  kind: Exposure.book
+  kind: book
   found_at: "2023"
   viewed_at: "August, 2023"
 }
@@ -3954,7 +3954,7 @@ leiden_university: Reference = {
   title: "(Unfinished) Computer Science (BSc)"
   published: @"Leiden University"
   date: "2020: I stop attending Leiden University. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest"
-  status: Viewed.in_progress
+  status: in_progress
   viewed_at: "September, 2019 - December, 2020"
   archived: true
 }
@@ -4121,37 +4121,37 @@ blueprint_js: Reference = {
 slate: Reference = {
   title: "Slate"
   location: @https://github.com/ianstormtaylor/slate
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 threejs: Reference = {
   title: "Three.js"
   location: @https://github.com/mrdoob/three.js/
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 nextjs: Reference = {
   title: "Next.js"
   location: @https://nextjs.org/
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 drei: Reference = {
   title: "drei"
   location: @https://github.com/pmndrs/drei
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 wasm: Reference = {
   title: "WebAssembly"
   location: @https://en.wikipedia.org/wiki/WebAssembly
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 assembly_script: Reference = {
   title: "AssemblyScript"
   location: @https://en.wikipedia.org/wiki/AssemblyScript
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 cpp: Reference = {
@@ -4182,7 +4182,7 @@ wolfram_language: Reference = {
 llvm: Reference = {
   title: "LLVM"
   location: @https://en.wikipedia.org/wiki/LLVM
-  status: Viewed.in_progress
+  status: in_progress
 }
 
 ipfs: Reference = {

@@ -1,14 +1,11 @@
-Viewed := enum found | in_progress | viewed
-Exposure := enum book | video | article
-
 Reference &+= {
   date: (Time | String)?
   discussion: None
-  status: Viewed.viewed
+  status: found | in_progress | viewed = viewed
   found_at: None
   viewed_at: None
   description: None
-  kind: None
+  kind: (book | video | article)? = None
   archived: false
   window: None
 
@@ -18,6 +15,7 @@ Reference &+= {
   year => .date is Time ? .date.year : .date
   dated => (.date as String) + "." if .date
   away => .location{window == .window ?? new}
+  exposure => .kind ?? (.organizations.some(.key == "youtube") ? video : article)
 
   citation\
   (named_authors + "." if authors.nonempty, "\"" + title + "\"" if title, journal, "(" + (year as String) + ")" if year, pointer){!= None}.join(" ") @ away
@@ -58,17 +56,20 @@ Article := class: Reference {
   heading: None
   cover: None
   footnoted: true
+  finder: None
   code (literal: String{language}) => CodeBlock(literal)
 
-  numbered => (.subtitle, .children).flatten{==.instance_of Footnote || ==.instance_of Reference}.unique
-  footnotes => numbered{==.instance_of Footnote}
+  numbered => (.subtitle, .children).flatten{. is Footnote | Reference}.unique
+  footnotes => numbered{. is Footnote}
   shown_footnotes => footnotes
-  sections => .children.flatten{==.instance_of Section}
+  sections => .children.flatten{. is Section}
+  affiliations => .cover ? [] : .organizations{.avatars != None}
   images => @../orbitmines.com/public/ location.path /images/
 
   iso => (.date as String ~= (*, iso: (Decimal{length == 4}, "-", Decimal{length == 2}, "-", Decimal{length == 2}), *))?.iso
   page_title => .title as String
   page_description => .subtitle as String
+  page_image => .location + ".jpeg"
   meta => [
     (name: "og:type", content: "article"), (name: "og:title", content: page_title), (name: "og:url", content: .location as String), (name: "og:description", content: page_description),
     (name: "og:image", content: (.location as String) + ".jpeg"), (name: "og:image:type", content: "image/jpeg"), (name: "og:image:alt", content: page_description),
@@ -88,22 +89,54 @@ Article := class: Reference {
     (type: "Organization", url: @https://orbitmines.com, logo: @https://orbitmines.com/logo.png),
     (type: "BreadcrumbList", itemListElement: [(position: 1, name: "Papers", item: @https://orbitmines.com), (position: 2, name: .title as String)])
   ]
-  presented => UI.page = (title: page_title, description: page_description, image: .location + ".jpeg", meta: meta, structured: structured, icon: UI.page?.icon, apple_icon: UI.page?.apple_icon, manifest: UI.page?.manifest)
+  presented => UI.page = (title: page_title, description: page_description, image: page_image, meta: meta, structured: structured, icon: UI.page?.icon, apple_icon: UI.page?.apple_icon, manifest: UI.page?.manifest)
 
   static current := None
 
   with Article.current = this, presented {
-    Exports(this)
+    this~exported
     {width <= 1650px} .map(,) <- {width <= 1240px} py 35 px (xs 0 -> lg 50) .map(&+ pb 15) <- {
       .head ? (.head, .children) : (
-        Header(this),
-        Discussion(.discussion) if .discussion,
+        this~titled,
+        this~discussed if .discussion,
         .header ?? Divider,
         .children,
         Divider
       )
-      Footnotes(this) if footnoted && shown_footnotes.nonempty
+      this~referenced if footnoted && shown_footnotes.nonempty
     } ^article
+  }
+
+  exported\
+  center between middle py 10 px 15 .map(,) <- {
+    Button(icon: "arrow-left") @ /
+    .map(,) <- {
+      .finder if .finder
+      Button(icon: "media", text: ".jpeg") @ ((UI.at.path + ".jpeg") as Location){window == new}
+      Button(icon: "document", text: ".pdf") @ ((UI.at.path + ".pdf") as Location){window == new}
+    }
+  }
+
+  titled\
+  center .map(,) <- {
+    .cover ?? .heading ?? center (.title ^h1)
+    center {width <= 80%} .subtitle ^h4 ^muted if .subtitle
+    center middle .map(,) <- {
+      affiliations.map({width == (xs 12/12 -> xl 5/12)} . as Affiliation)
+      .authors.map({width == (xs 12/12 -> xl (affiliations.nonempty ? 5/12 : 12/12))} . as Author)
+    }
+    center middle .map(&+ px 10) .map(,) <- {
+      .date.long ^h3 if .date
+      "DRAFT: POSSIBLY IMPRACTICALLY VAGUE" ^tag ^danger_tag {font.size == 1.1rem, height >= 20px} if .draft
+    }
+  }
+
+  discussed\
+  center middle px 10 TagLink(.discussion, icon: @discord, name: "Discussion Channel", intent: "primary")
+
+  referenced\
+  section "Footnotes & References" {
+    shown_footnotes.map(.~full)
   }
 }
 
@@ -113,6 +146,7 @@ Profile := class: Article {
 
   authors: .character
   title: .title ?? .character.name
+  page_image => .character.profile_picture
 
   meta => [
     (name: "og:type", content: "profile"), (name: "og:title", content: page_title), (name: "og:url", content: .location as String), (name: "og:description", content: page_description),
@@ -125,44 +159,31 @@ Profile := class: Article {
     (type: "Organization", url: @https://orbitmines.com, logo: @https://www.example.com/images/logo.png),
     (type: "BreadcrumbList", itemListElement: [(position: 1, name: "Profiles", item: @https://orbitmines.com/profiles), (position: 2, name: .character.name)])
   ]
-  presented => UI.page = (title: page_title, description: page_description, image: .character.profile_picture, meta: meta, structured: structured, icon: UI.page?.icon, apple_icon: UI.page?.apple_icon, manifest: UI.page?.manifest)
-}
-
-Exports := class {
-  article: Article
-  search = Search(article) if article ==.instance_of Book
-  center between middle py 10 px 15 .map(,) <- {
-    Button(icon: "arrow-left") @ /
-    .map(,) <- {
-      search if search
-      Button(icon: "media", text: ".jpeg") @ ((UI.at.path + ".jpeg") as Location){window == new}
-      Button(icon: "document", text: ".pdf") @ ((UI.at.path + ".pdf") as Location){window == new}
-    }
-  }
 }
 
 Search := class {
   book: Book
-  query: Choice = Choice(type: String, value: book.search, placeholder: "Search")
-  changed_at: Time?
-  edited => query.value != book.search
-  due => edited && (changed_at && now - changed_at >= 350 ms || UI.focus.some(.content === query) && @me/device/keyboard/Enter.pulsed)
-  commit => UI.at = UI.at.with(search: query.value.nonempty ? query.value : None)
-  with (changed_at = now) when query.value changes, commit if due, (query.value = book.search) when book.search changes {
-    middle .map(,) <- (Icon("search") ^icon, query)
+  field: Geometry.Shape = Geometry.Box(content: Choice(type: String, value: book.search, placeholder: "Search"))
+
+  query => field.content.value
+  edited => query != book.search
+  due => edited && (Time.now - field.content.value.history.last.when >= 350 ms || field.focused && @me/device/keyboard/Enter.pulsed)
+  commit => UI.at = UI.at.with(search: query.nonempty ? query : None)
+  with commit if due, (field.content.value = book.search) when book.search changes {
+    middle .map(,) <- (Icon("search") ^icon, field)
   }
 }
 
 Book := class: Article {
   updates: Article[]
 
-  arcs => .children{==.instance_of Arc}
+  arcs => .children{. is Arc}
   sections => arcs.map(arc => [arc, arc.sections.map(section => [section, section.sections]).flatten]).flatten{!.disabled}
   slug => UI.at.segments.last
   chosen => sections{.slug == ⊢.slug}.first
   started => chosen != None
-  search => UI.at.parameter("search") ?? ""
-  highlight => UI.at.parameter("highlight")
+  search => UI.at.query.search ?? ""
+  highlight => UI.at.query.highlight
   searching => search.nonempty
   first => sections.first
   next => sections[sections.index_of(chosen) + 1] if started
@@ -170,32 +191,34 @@ Book := class: Article {
   page_title => started ? (.title as String) + " - " + chosen.name : .title as String
   page_description => started ? chosen.paragraph ?? .subtitle : .subtitle
   shown_footnotes => started && !searching ? footnotes{chosen.content.flatten.contains(.)} : []
+  found => sections.map(section => (section, section.content.indices{section.content[.].text.lowercase.contains(search.lowercase)}))
+    {.1.nonempty}
+    .map((section, hits) => hits.map((. - 5 max 0)..(. + 5 min section.content.count - 1)).merged.map((section, section.content[.])))
+    .flatten(1)
 
   phone => UI.scene.size.x <= 575px
   drawer: UI.Drawer = UI.Drawer(children: [Navigation(this, bordered: false, then: () => drawer.open = false)])
-  pinned => UI.at.parameter("navigation") != "false"
+  finder: Search = Search(this)
+  pinned => UI.at.query.navigation != "false"
   navigation => phone ? drawer.open : pinned
   sidebar => navigation && !phone && !@me/device/printing
 
-  scrolled: (slug: String, at: Length)[] = []
-  before_search: (slug: String?, at: Length)?
-
-  go (section, highlight: String? = None) => UI.at = (.location + ("/" + section.slug if section)).with(navigation: UI.at.parameter("navigation"), highlight: highlight)
+  go (section, highlight: String? = None) => UI.at = (.location + ("/" + section.slug if section)).with(navigation: UI.at.query.navigation, highlight: highlight)
   toggle => phone ? (drawer.open = !drawer.open) : (UI.at = UI.at.with(navigation: pinned ? "false" : None))
-  back => go(sections{.slug == before_search?.slug}.first) -- (UI.scene.scrolled = Vector(0px, before_search?.at ?? 0px)) -- (before_search = None)
+  crossed (leaving: Program, entering: Program) => UI.at.history -- .zip(.rest){leaving(.0.value) && entering(.1.value)}.last
+  scrolled_before (moment: Time) => UI.scene.scrolled.history{.when < moment}.last?.value ?? Vector(0px, 0px)
+  remembered => crossed(.segments.last == slug, .segments.last != slug) -- (. ? scrolled_before(.1.when).y : 0px)
+  back => crossed((.query.search ?? "").empty, (.query.search ?? "").nonempty) -- (entered => go(sections{.slug == entered?.0.value.segments.last}.first) -- (UI.scene.scrolled = scrolled_before(entered?.1.when ?? Time.now)))
 
   swiped => UI.pointer.swipe -- (swipe => swipe if swipe && swipe.duration <= 700 ms && swipe.distance.x.abs >= 60px && swipe.distance.x.abs >= swipe.distance.y.abs * 1.5 && UI.scene.reachable{(.styles.contains("code") || .flow == grid) && .contains(swipe.from.position - .at)}.empty)
-  remembered => scrolled{.slug == ⊢.slug}.last?.at ?? 0px
 
   with Article.current = this, presented,
-    (scrolled.push (slug, UI.scene.scrolled.y)) when UI.scene.scrolled changes,
     (UI.scene.scrolled = Vector(0px, remembered)) when slug changes unless highlight,
-    (before_search = (chosen?.slug, UI.scene.scrolled.y)) when searching becomes true,
     (drawer.open = false) when phone becomes true,
-    (UI.focus = UI.scene{content === exports.search.query}) -- UI.scene{content === exports.search.query}.select if @me/device/keyboard.pressed("f", modifier: Keyboard.Modifier.control | Keyboard.Modifier.meta),
+    (UI.focus = finder.field) -- finder.field.select if @me/device/keyboard.pressed("f", modifier: Keyboard.Modifier.control | Keyboard.Modifier.meta),
     (swiped.distance.x < 0 ? go(next) if next : go(previous) if previous) if swiped && started && !searching,
     ((UI.at = UI.at.with(highlight: None)) after 6 s) if highlight && !searching {
-    exports = Exports(this)
+    this~exported
     {width <= 1650px} center .map(,) <- {
       drawer ^background if phone && started && !@me/device/printing
       {width == (sm 5/12 -> md 4/12), position.kind == sticky, inset.top == 0px, height == 100vh, overflow == scroll, scrollbar == hidden} Navigation(this) if sidebar
@@ -208,15 +231,15 @@ Book := class: Article {
               Button(text: next.name, right_icon: "arrow-right"){font.size == 18px} ~~ activate => go(next) if next
             }
           } ^background,
-          searching ? Results(this) : Reading(this)
+          searching ? this~results : this~reading
         ) : (
-          Header(this),
-          Discussion(.discussion) if .discussion,
+          this~titled,
+          this~discussed if .discussion,
           .header,
           end Button(text: "Start Reading", right_icon: "arrow-right"){font.size == 18px, stroke == Stroke("#EAB832" as Color)} ~~ activate => go(first)
         )
         Navigation(this, bordered: false) if !started && !searching && phone && !@me/device/printing
-        Footnotes(this) if shown_footnotes.nonempty
+        this~referenced if shown_footnotes.nonempty
       } ^article
     }
   }
@@ -227,32 +250,22 @@ Book := class: Article {
     Divider
     sections.map(section => (Section(section.name) + section.content, Divider))
   }
-}
 
-Reading := class {
-  book: Book
+  reading\
   {
-    marked(Section(book.chosen.name) + book.chosen.content, book.highlight) ~~ (UI.scene.reveal(.reachable{^mark}.first, align: center, smooth: true) if book.highlight)
+    (Section(chosen.name) + chosen.content).marking(highlight) ~~ (UI.scene.reveal(.reachable{^mark}.first, align: center, smooth: true) if highlight)
     Divider
     between .map(,) <- {
-      {width <= 50%} Button(icon: "arrow-left", text: book.previous.name){font.size == 18px} ~~ activate => book.go(book.previous) if book.previous && UI.scene.size.x >= 768px
-      {width <= 50%} Button(text: book.next.name, right_icon: "arrow-right"){font.size == 18px} ~~ activate => book.go(book.next) if book.next
+      {width <= 50%} Button(icon: "arrow-left", text: previous.name){font.size == 18px} ~~ activate => go(previous) if previous && UI.scene.size.x >= 768px
+      {width <= 50%} Button(text: next.name, right_icon: "arrow-right"){font.size == 18px} ~~ activate => go(next) if next
     }
   }
-}
 
-Results := class {
-  book: Book
-  around = 5
-  found => book.sections.map(section => (section, section.content.indices{section.content[.].text.lowercase.contains(book.search.lowercase)}))
-    {.1.nonempty}
-    .map((section, hits) => hits.map((. - around max 0)..(. + around min section.content.count - 1)).merged.map((section, section.content[.])))
-    .flatten(1)
-
+  results\
   {
     between middle pb 10 .map(,) <- {
-      Button(icon: "arrow-left", text: "Back"){font.size == 16px} ~~ activate => book.back
-      (found.count, " result", "s" if found.count != 1, " for '", book.search, "'") ^muted {font.size == 14px}
+      Button(icon: "arrow-left", text: "Back"){font.size == 16px} ~~ activate => back
+      (found.count, " result", "s" if found.count != 1, " for '", search, "'") ^muted {font.size == 14px}
     }
     found.empty
       ? center py 20 "No results found." ^muted {font.size == 16px}
@@ -260,14 +273,12 @@ Results := class {
         Divider if .index > 0
         between middle py 3 .map(,) <- {
           section.name ^muted {font.size == 13px}
-          Button(text: "Keep reading", right_icon: "arrow-right", small: true){font.size == 13px} ~~ activate => book.go(section, highlight: book.search)
+          Button(text: "Keep reading", right_icon: "arrow-right", small: true){font.size == 13px} ~~ activate => go(section, highlight: search)
         }
-        start marked(content, book.search)
+        start content.marking(search)
       })
   }
 }
-
-marked := (content, query: String?) => query ? content.texts.map(.split_around(query, ignoring: case).map(.matched ? . ^mark : .)) : content
 
 Navigation := class {
   book: Book
@@ -296,30 +307,30 @@ Section := class {
 
   id => .name
   slug => (.name as String).slug
-  disabled => .name !=.instance_of String || .name ==.instance_of String ^disabled
-  sections => .children{==.instance_of Section}
-  content => .children{!=.instance_of Section}
-  paragraph => content.split_at(Break){.text.trimmed.nonempty}.first?.text.squeezed ~~ (.length > 280 ? .[..<280].before_last(" ") + "…" : .)
+  disabled => !(.name is String) || .name.whole_marks{.style == "disabled"}.nonempty
+  sections => .children{. is Section}
+  content => .children{!(. is Section)}
+  paragraph => content.split_at(Break){.text.trimmed.nonempty}.first?.text.squeezed -- (.length > 280 ? .[..<280].before_last(" ") + "…" : .)
+  paragraphs => .children.map(py 2 (.inline ? start . : center .))
 
   center mt 12 pb 3 {
     .name ^h4
     .sub ^h6 ^muted if .sub
   }
-  Paragraph(.children)
+  .paragraphs
 }
 
 Arc := class: Section {
   divided: true
 
   center mt 12 pb 3 .name ^h3 ^muted
-  Paragraph(.children)
+  .paragraphs
   Divider if .divided
 }
 
-Paragraph := class (children) => children.map(py 2 (.inline ? start . : center .))
-
 Node &+= {
-  inline => this ==.instance_of (String | Reference | Footnote) || this ==.instance_of , && components.every(.inline)
+  inline => this is (String | Reference | Footnote) || (this is ,) && components.every(.inline)
+  marking (query: String?) => query ? texts.map(.split_around(query, ignoring: case).map(.matched ? . ^mark : .)) : this
   right-to-left section (name: String) => Section(name) + this
   right-to-left arc (name: String) => Arc(name) + this
 }
@@ -329,31 +340,19 @@ Footnote := class {
   article: Article.current
 
   number => .article.numbered.index_of(this) + 1
-  reference => content ==.instance_of Reference ? content : None
+  reference => content is Reference ? content : None
 
   marker\
   {font.size == 12px} ("[" + (.number as String), (.reference.icons.map(" ", .) @ .reference.away if .reference?.location), "]") ^muted ^bold
 
   cited = .marker
-  {width <= 400px} UI.Popover(position: Anchored(anchor: cited, side: Geometry.bottom), children: [p 10 px 4 py 4 ("[" + (.number as String) + "] " ^muted, content ==.instance_of Reference ? () : content, .reference~card if .reference)]) ^popover
+  {width <= 400px} UI.Popover(position: Anchored(anchor: cited, side: Geometry.bottom), children: [p 10 px 4 py 4 ("[" + (.number as String) + "] " ^muted, content is Reference ? () : content, .reference~card if .reference)]) ^popover
 
   full\
   p 4 p 4 {
     ("[" + (.number as String) + "] ") ^muted ~~ activate => UI.scene.reveal(this, offset: -100px, smooth: true) -- (UI.selection = this.paragraph_up_to_here)
-    content ==.instance_of Reference ? content~citation : content
+    content is Reference ? content~citation : content
   }
-}
-
-Footnotes := class {
-  article: Article
-  section "Footnotes & References" {
-    article.shown_footnotes.map(.~full)
-  }
-}
-
-Discussion := class {
-  channel: Node
-  center middle px 10 TagLink(channel, icon: @discord, name: "Discussion Channel", intent: "primary")
 }
 
 Divider := {
@@ -361,24 +360,6 @@ Divider := {
   ""
 }
 
-Header := class {
-  article: Article
-  affiliations => article.cover ? [] : article.organizations{.avatars.nonempty}
-
-  center .map(,) <- {
-    article.cover ?? article.heading ?? center (article.title ^h1)
-    center {width <= 80%} article.subtitle ^h4 ^muted if article.subtitle
-    center middle .map(,) <- {
-      affiliations.map({width == (xs 12/12 -> xl 5/12)} . as Affiliation)
-      article.authors.map({width == (xs 12/12 -> xl (affiliations.nonempty ? 5/12 : 12/12))} . as Author)
-    }
-    center middle .map(&+ px 10) .map(,) <- {
-      article.date.long ^h3 if article.date
-      "DRAFT: POSSIBLY IMPRACTICALLY VAGUE" ^tag ^danger_tag {font.size == 1.1rem, height >= 20px} if article.draft
-    }
-  }
-}
-
 String &+= {
-  slug => #lowercase.trimmed.map(. ==.instance_of (Char.Letter | Char.Digit) ? . : "-").squeeze.trimmed("-") as String
+  slug => #lowercase.trimmed.map(. is (Char.Letter | Char.Digit) ? . : "-").squeeze.trimmed("-") as String
 }
