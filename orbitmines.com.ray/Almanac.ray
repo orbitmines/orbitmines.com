@@ -311,10 +311,10 @@ Almanac: Book = {
       "- (1) You can download Ether, which includes the Ray programming language by following this link:"
       DownloadButton
       "- (2) or running:"
-      @sh`curl -fsSL https://ether.orbitmines.com/install.sh | bash`
+      @ray`curl -fsSL https://ether.orbitmines.com/install.sh | bash`
       "- (3) You can otherwise go to the ", "GitHub Releases" @ https://github.com/orbitmines/ray/releases , " and download the relevant installer of the latest version."
       "- (4) Or manually clone and build the application"
-      @sh`
+      @ray`
         git clone git@github.com:orbitmines/ray.git
         cd ray && ./install.sh --compile
       `
