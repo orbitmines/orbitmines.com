@@ -1461,7 +1461,7 @@ Almanac: Book = {
           "Important" ^italic
           "Important".marked("italic")
         `
-        @ray`keyword ^keyword := external global`
+        @ray`keyword ^keyword := global`
         "@js`const x = 2`".ray
       }
       section "§5.3 Theorem Proving" {

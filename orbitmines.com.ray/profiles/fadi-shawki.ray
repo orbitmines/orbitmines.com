@@ -516,7 +516,7 @@ fadi-shawki: Profile = {
 
   Timeline("Timeline") + {
     title: "Ongoing & Planned Projects"
-    leading: @../orbitmines.com/public/Ether.svg{width == 100%, effects == [Filter(opacity, 0.9)], alt: "Ether"}
+    leading: @../orbitmines.com/public/Ether.svg{width == 100%, effects == [Opacity(0.9)], alt: "Ether"}
     entries:
       Timeline.Entry("2025->", "The Ray Programming Language" @ /almanac),
       Timeline.Entry("2026->", "Ether: Ecosystem for the Ray programming language."),
@@ -528,7 +528,7 @@ fadi-shawki: Profile = {
 
   Timeline("Writings") + {
     grouped: true
-    leading: @../orbitmines.com/public/logo.png{width == 100%, effects == [Filter(opacity, 0.9)], alt: "orbitmines.com"}
+    leading: @../orbitmines.com/public/logo.png{width == 100%, effects == [Opacity(0.9)], alt: "orbitmines.com"}
     entries: writings.map(paper => Timeline.Entry(paper.year as String, (paper.organizations.map(.org_icon), paper.title) @ paper.location, description: ((paper.date as String) + ". " if paper.date, paper.subtitle as String)))
   }
 

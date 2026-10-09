@@ -266,7 +266,7 @@ Gallery := class {
             {position.kind == absolute, inset == Edges(8px, 8px, None, None)} ((i + 1) as String, " / ", shown.count as String) ^nav_badge if i == at
             {position.kind == absolute, inset == Edges(0px, None, 0px, 0px), width == 48px} "‹" ^nav ^{hovered ? "nav_hovered" : "none"} ~~ activate => go(at - 1) if i == at && at > 0 && item.hovered
             {position.kind == absolute, inset == Edges(0px, 0px, 0px, None), width == 48px} "›" ^nav ^{hovered ? "nav_hovered" : "none"} ~~ activate => go(at + 1) if i == at && at < shown.count - 1 && item.hovered
-          } + Filter(opacity, i == at ? 1 : 0.5) + (Shadow(Vector(0, 4px), blur: 24px, color: "#0000004d" as Color) if i == at)
+          } + Opacity(i == at ? 1 : 0.5) + (Shadow(Vector(0, 4px), blur: 24px, color: "#0000004d" as Color) if i == at)
             ~~ activate => go(i) unless moved
         })
       }

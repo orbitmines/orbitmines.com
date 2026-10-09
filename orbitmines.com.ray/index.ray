@@ -2,7 +2,7 @@
 //   Program(code: { orbitmines.com }).rendered(UI.HTML.level).write(@./dist)    the static package: index.html, style.css, app.js, assets
 //   Program(code: { orbitmines.com }).run(UI.HTML, UI.HTML.DOM())          the development runtime in the browser
 //   Program(code: { orbitmines.com }).run(UI.TUI, UI.TUI.Target())         the same site, interactive in a terminal
-orbitmines.com() if &entrypoint
+(dynamically if @me/development?) orbitmines.com() if &entrypoint
 
 orbitmines.com := class {
   profiles: Profile$ @ /@

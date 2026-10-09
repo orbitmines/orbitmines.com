@@ -89,11 +89,10 @@ Article := class: Reference {
     (type: "Organization", url: @https://orbitmines.com, logo: @https://orbitmines.com/logo.png),
     (type: "BreadcrumbList", itemListElement: [(position: 1, name: "Papers", item: @https://orbitmines.com), (position: 2, name: .title as String)])
   ]
-  presented => UI.page = (title: page_title, description: page_description, image: page_image, meta: meta, structured: structured, icon: UI.page?.icon, apple_icon: UI.page?.apple_icon, manifest: UI.page?.manifest)
 
   static current := None
 
-  with Article.current = this, presented {
+  with Article.current = this {
     this~exported
     {width <= 1650px} .map(,) <- {width <= 1240px} py 35 px (xs 0 -> lg 50) .map(&+ pb 15) <- {
       .head ? (.head, .children) : (
@@ -212,7 +211,7 @@ Book := class: Article {
 
   swiped => UI.pointer.swipe -- (swipe => swipe if swipe && swipe.duration <= 700 ms && swipe.distance.x.abs >= 60px && swipe.distance.x.abs >= swipe.distance.y.abs * 1.5 && UI.scene.reachable{(.styles.contains("code") || .flow == grid) && .contains(swipe.from.position - .at)}.empty)
 
-  with Article.current = this, presented,
+  with Article.current = this,
     (UI.scene.scrolled = Vector(0px, remembered)) when slug changes unless highlight,
     (drawer.open = false) when phone becomes true,
     (UI.focus = finder.field) -- finder.field.select if @me/device/keyboard.pressed("f", modifier: Keyboard.Modifier.control | Keyboard.Modifier.meta),
