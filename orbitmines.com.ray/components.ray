@@ -1,6 +1,6 @@
 Features := class {
-  static ether = true
-  static physics = false
+  static ether := true
+  static physics := false
 }
 
 // Windows downloads the installer; Linux and macOS show the install command on hover and copy it on click; phones and tablets show nothing (Ether.tsx).

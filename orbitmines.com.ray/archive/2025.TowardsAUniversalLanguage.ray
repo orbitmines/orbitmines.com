@@ -114,7 +114,7 @@ x#.count // == 2`
   defined_segments: Segment[] =>
     left, right, embedded_ipv4 as Binary
 
-  static Segment = Hexadecimal{length <= 4}`
+  static Segment := Hexadecimal{length <= 4}`
       ("The additional constraints of what all the different segments of a valid address must be are then implemented with asserts. If you're interested in seeing that implementation, ", "look here" @ https://github.com/orbitmines/ray/blob/main/Ether/Network.ray , ".") ^muted
     }
     Section("", sub: "Every variable... is a Lazy Expression/Program") + {
