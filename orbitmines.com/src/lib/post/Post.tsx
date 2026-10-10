@@ -778,7 +778,10 @@ export const Exports = (
         </Row>
       </Col>
     </Row>
-    <div ref={ref} style={paper.book ? {width: '100%'} : undefined}>
+    {/* Full width, and allowed to shrink below its content's min-content width
+        (flex items default to min-width: auto), so a long word can't push the
+        page wider than a small screen. */}
+    <div ref={ref} style={{width: '100%', minWidth: 0}}>
       {children}
     </div>
   </Row>
@@ -1181,10 +1184,10 @@ export const PaperContent = (props: PaperProps) => {
   const util = new BookUtil(props, currentSlug)
 
   const Content = book && (!isStartPage || isSearching) ? <>
-    <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: 'rgb(10, 10, 10)'}}>
+    <Row between="xs" style={{alignItems: 'center', position: 'sticky', top: 0, zIndex: 10, background: 'rgb(10, 10, 10)', padding: '6px 0'}}>
       <Col xs={1}><Button icon={navigation ? "shorten-text" : "lengthen-text"} minimal style={{fontSize: '18px'}} onClick={toggleNavigation} /></Col>
       <Col xs={11}>
-        <Row between="xs" style={{height: '80px', alignItems: 'center'}}>
+        <Row between="xs" style={{height: '40px', alignItems: 'center'}}>
           <Rendered renderable={props.title}/>
           {util.next() ? <Button rightIcon="arrow-right" text={util.nextSection()} minimal style={{fontSize: '18px'}} onClick={() => navigateSection(util.nextSection())} /> : null}
         </Row>
@@ -1225,7 +1228,8 @@ export const PaperContent = (props: PaperProps) => {
 
   return <SectionNavContext.Provider value={navigateSection}>
     {/* Book layout is capped at 1650px, so center it; non-book posts fill the
-        viewport via a 100vw inner Grid and must stay left-anchored. */}
+        page width and stay left-anchored. (Not 100vw: that includes the
+        vertical scrollbar, so the page would scroll sideways on desktop.) */}
     <Row style={{maxWidth: '1650px', overflow: 'visible', ...(book ? {margin: '0 auto'} : {})}}>
       {book && !isStartPage && isMobile && mobileNavExpanded && notGenerate ? <>
         <div onClick={() => setMobileNavExpanded(false)} style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 19}} />
@@ -1244,7 +1248,10 @@ export const PaperContent = (props: PaperProps) => {
           //     height={1754} width={1240}
           maxWidth: '1240px',
           fontSize: '1.1rem',
-          width: book ? '100%' : '100vw'
+          width: '100%',
+          // Break a word only when it can't fit on its own line (an email, a long
+          // path) - otherwise it sets a min width that the flex rows clip on small screens.
+          overflowWrap: 'anywhere',
         }}>
           {Content}
 

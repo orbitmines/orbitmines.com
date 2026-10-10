@@ -1,0 +1,4366 @@
+strongly_baryon_dominated_disk_galaxies_at_the_peak_of_galaxy_formation_ten_billion_years_ago: Reference = {
+  title: "Strongly baryon-dominated disk galaxies at the peak of galaxy formation ten billion years ago"
+  authors: @"R. Genzel", @"N.M. Förster Schreiber", @"H. Übler", @"P. Lang", @"T. Naab", @"R. Bender", @"L.J. Tacconi", @"E. Wisnioski", @"S. Wuyts", @"T. Alexander", @"A. Beifiori", @"S. Belli", @"G. Brammer", @"A. Burkert", @"C.M. Carollo", @"J. Chan", @"R. Davies", @"M. Fossati", @"A. Galametz", @"S. Genel", @"O. Gerhard", @"D. Lutz", @"J.T. Mendel", @"I. Momcheva", @"E.J. Nelson", @"A. Renzini", @"R. Saglia", @"A. Sternberg", @"S. Tacchella", @"K. Tadaki", @"D. Wilman"
+  date: "(2017)"
+  location: @https://arxiv.org/pdf/1703.04310
+  viewed_at: "2023, December"
+}
+
+big_sparc_the_new_sparc_database: Reference = {
+  title: "BIG-SPARC: The new SPARC database"
+  authors: @"Konstantin Haubner", @"Federico Lelli", @"Enrico Di Teodoro", @"Francis Duey", @"Stacy McGaugh", @"James Schombert", @"Kelley M. Hess", @"Apertif Team"
+  date: "(2024)"
+  location: @https://arxiv.org/pdf/2411.13329
+  viewed_at: "2023, December"
+}
+
+the_next_unit_of_science_is_the_scientific_paper_due_to_be_replaced: Reference = {
+  title: "The next unit of science: Is the scientific paper due to be replaced?"
+  authors: @"Tim Requarth"
+  date: "(2026)"
+  location: @https://www.thetransmitter.org/from-bench-to-bot/the-next-unit-of-science-is-the-scientific-paper-due-to-be-replaced/
+  viewed_at: "2023, December"
+}
+
+kuna_decompiler_development_in_the_age_of_coding_agents: Reference = {
+  title: "Kuna: Decompiler Development in the Age of Coding Agents"
+  authors: @"Zion Leonahenahe Basque"
+  date: "(2026)"
+  location: @https://noelo.org/blog/kuna-release/
+  viewed_at: "2023, December"
+}
+
+complex_behavior_from_intrinsic_motivation_to_occupy_future_action_state_path_space: Reference = {
+  title: "Complex behavior from intrinsic motivation to occupy future action-state path space"
+  authors: @"Jorge Ramírez-Ruiz", @"Dmytro Grytskyy", @"Chiara Mastrogiuseppe", @"Yamen Habib", @"Rubén Moreno-Bote"
+  date: "(2024)"
+  location: @https://arxiv.org/abs/2205.10316
+  viewed_at: "2023, December"
+}
+
+co_creator_of_haskell_functional_programming_thinking_in_types_useless_languages_simon_jones: Reference = {
+  title: "Co-Creator of Haskell: Functional Programming, Thinking in Types, Useless Languages | Simon Jones"
+  authors: @"Simon Jones", @"Ryan Peterman"
+  organizations: @youtube
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=xcB_LF3cdqw&t=3161s
+  viewed_at: "2023, December"
+}
+
+creator_of_ocaml_functional_programming_formal_verification_programming_languages_xavier_leroy: Reference = {
+  title: "Creator of OCaml: Functional Programming, Formal Verification, Programming Languages | Xavier Leroy"
+  authors: @"Xavier Leroy", @"Ryan Peterman"
+  organizations: @youtube
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=9Cswiqrq6So&t=4s
+  viewed_at: "2023, December"
+}
+
+turing_award_winner_early_ai_llm_predictions_causality_judea_pearl: Reference = {
+  title: "Turing Award Winner: Early AI, LLM Predictions, Causality | Judea Pearl"
+  authors: @"Judea Pearl", @"Ryan Peterman"
+  organizations: @youtube
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=FleTXB1fAcQ&t=2840s
+  viewed_at: "2023, December"
+}
+
+casey_muratori_the_anatomy_of_a_35_year_mistake_clean_code_horrible_performance: Reference = {
+  title: "Casey Muratori: The Anatomy of a 35-Year Mistake, \"Clean Code\" Horrible Performance"
+  authors: @"Casey Muratori", @"Ryan Peterman"
+  organizations: @youtube
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=jHLbL1Eg4gM&pp=0gcJCTMMAYcqIYzv
+  viewed_at: "2023, December"
+}
+
+dhh_future_of_programming_ai_agentic_engineering_vibe_coding_linux_501: Reference = {
+  title: "DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding & Linux | #501"
+  authors: @"David Heinemeier Hansson", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=NYFGCESmikA&t=4s&pp=0gcJCTMMAYcqIYzv
+  viewed_at: "2023, December"
+}
+
+the_metaverse_building_the_spatial_internet: Reference = {
+  title: "The Metaverse: Building the Spatial Internet"
+  authors: @"Matthew Ball"
+  date: "(2024)"
+  location: @https://books.google.nl/books/about/The_Metaverse.html?id=BirjEAAAQBAJ
+  kind: book
+  viewed_at: "2023, December"
+}
+
+the_decompilation_wiki: Reference = {
+  title: "The Decompilation Wiki"
+  authors: @"Zion Leonahenahe Basque"
+  location: @https://decompilation.wiki/
+  viewed_at: "2023, December"
+}
+
+decompiling_2024_a_year_of_resurgence_in_decompilation_research: Reference = {
+  title: "Decompiling 2024: A Year of Resurgence in Decompilation Research"
+  authors: @"Zion Leonahenahe Basque"
+  date: "(2025)"
+  location: @https://mahaloz.re/dec-progress-2024
+  viewed_at: "2023, December"
+}
+
+_30_years_of_decompilation_and_the_unsolved_structuring_problem_part_1: Reference = {
+  title: "30 Years of Decompilation and the Unsolved Structuring Problem: Part 1"
+  authors: @"Zion Leonahenahe Basque"
+  date: "(2024)"
+  location: @https://mahaloz.re/dec-history-pt1
+  viewed_at: "2023, December"
+}
+
+_30_years_of_decompilation_and_the_unsolved_structuring_problem_part_2: Reference = {
+  title: "30 Years of Decompilation and the Unsolved Structuring Problem: Part 2"
+  authors: @"Zion Leonahenahe Basque"
+  date: "(2024)"
+  location: @https://mahaloz.re/dec-history-pt2
+  viewed_at: "2023, December"
+}
+
+ffmpeg_the_incredible_technology_behind_video_on_the_internet_496: Reference = {
+  title: "FFmpeg: The Incredible Technology Behind Video on the Internet | #496"
+  authors: @"Jean-Baptiste Kempf", @"Kieran Kunhya", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=nepKKz-MzFM
+  viewed_at: "2023, December"
+}
+
+creator_of_cpp_bell_labs_negative_overhead_abstraction_mistakes_bjarne_stroustrup: Reference = {
+  title: "Creator of C++: Bell Labs, Negative Overhead Abstraction, Mistakes | Bjarne Stroustrup"
+  authors: @"Bjarne Stroustrup", @"Ryan Peterman"
+  organizations: @youtube
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=U46fJ2bJ-co
+  viewed_at: "2023, December"
+}
+
+the_magic_of_arm_w_casey_muratori: Reference = {
+  title: "The Magic Of ARM w/ Casey Muratori"
+  authors: @"Casey Muratori", @"ThePrimeagen"
+  organizations: @youtube
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=Zr09I5OlOjs
+  viewed_at: "2023, December"
+}
+
+x86_needs_to_die: Reference = {
+  title: "X86 Needs To Die"
+  authors: @"Casey Muratori", @"ThePrimeagen"
+  organizations: @youtube
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=xCBrtopAG80
+  viewed_at: "2023, December"
+}
+
+the_real_problems_w_git: Reference = {
+  title: "The Real Problems w/ Git"
+  authors: @"ThePrimeagen", @"Casey Muratori", @"TJ DeVries", @"David Begin"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=t6qL_FbLArk
+  viewed_at: "2023, December"
+}
+
+the_only_unbreakable_law: Reference = {
+  title: "The Only Unbreakable Law"
+  authors: @"Casey Muratori"
+  organizations: @youtube
+  date: "(2022)"
+  location: @https://www.youtube.com/watch?v=5IUj1EZwpJY
+  viewed_at: "2023, December"
+}
+
+an_infinity_of_worlds_cosmic_inflation_and_the_beginning_of_the_universe: Reference = {
+  title: "An Infinity of Worlds: Cosmic Inflation and the Beginning of the Universe"
+  authors: @"Will Kinney"
+  date: "(2022)"
+  location: @https://books.google.nl/books/about/An_Infinity_of_Worlds.html?id=G3aMEAAAQBAJ&source=kp_book_description&redir_esc=y
+  kind: book
+  viewed_at: "2023, December"
+}
+
+state_of_ai_in_2026_llms_coding_scaling_laws_china_agents_gpus_agi_490: Reference = {
+  title: "State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI | #490"
+  authors: @"Nathan Lambert", @"Sebastian Raschka", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=EV7WhVT270Q
+  viewed_at: "2023, December"
+}
+
+openclaw_the_viral_ai_agent_that_broke_the_internet___peter_steinberger_491: Reference = {
+  title: "OpenClaw: The Viral AI Agent that Broke the Internet - Peter Steinberger | #491"
+  authors: @"Peter Steinberger", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=YFjfBk8HI5o
+  viewed_at: "2023, December"
+}
+
+jeff_kaplan_world_of_warcraft_overwatch_blizzard_and_future_of_gaming_493: Reference = {
+  title: "Jeff Kaplan: World of Warcraft, Overwatch, Blizzard, and Future of Gaming | #493"
+  authors: @"Jeff Kaplan", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=H9rF1CSSh-w
+  viewed_at: "2023, December"
+}
+
+jensen_huang_nvidia___the_4_trillion_company_the_ai_revolution_494: Reference = {
+  title: "Jensen Huang: NVIDIA - The $4 Trillion Company & the AI Revolution | #494"
+  authors: @"Jensen Huang", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=vif8NQcjVf0
+  viewed_at: "2023, December"
+}
+
+vikings_ragnar_berserkers_valhalla_the_warriors_of_the_viking_age_495: Reference = {
+  title: "Vikings, Ragnar, Berserkers, Valhalla & the Warriors of the Viking Age | #495"
+  authors: @"Lars Brownworth", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=iKx3gAODybU
+  viewed_at: "2023, December"
+}
+
+_31_joshua_winn___exoplanet_new_discoveries_history_and_future: Reference = {
+  title: "#31 Joshua Winn - Exoplanet New Discoveries, History and Future"
+  authors: @"Joshua Winn", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=ISZHVwY5YjE
+  viewed_at: "2023, December"
+}
+
+_32_chris_lintott___technosignatures_citizen_science_scicomm: Reference = {
+  title: "#32 Chris Lintott - Technosignatures, Citizen Science, Scicomm"
+  authors: @"Chris Lintott", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=qI3DAXM0-do
+  viewed_at: "2023, December"
+}
+
+dan_ghica_designing_and_developing_an_industrial_strength_programming_language: Reference = {
+  title: "Dan Ghica: Designing and developing an industrial-strength programming language"
+  authors: @"Dan Ghica"
+  organizations: @youtube, @topos_institute
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=oFGc4hGJRJQ
+  viewed_at: "2023, December"
+}
+
+where_we_re_going_we_don_t_need_rows_columnar_data_connectivity_with_apache_arrow_adbc: Reference = {
+  title: "Where We're Going, We Don't Need Rows: Columnar Data Connectivity with Apache Arrow ADBC"
+  authors: @"Ian Cook"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=TjlmNGNx77E
+  viewed_at: "2023, December"
+}
+
+vortex_llvm_for_file_formats: Reference = {
+  title: "Vortex: LLVM for File Formats"
+  authors: @"Will Manning"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=zyn_T5uragA
+  viewed_at: "2023, December"
+}
+
+ducklake_learning_from_cloud_data_warehouses_to_build_a_robust_lakehouse: Reference = {
+  title: "DuckLake: Learning from Cloud Data Warehouses to Build a Robust “Lakehouse”"
+  authors: @"Jordan Tigani"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=z2GhznqtIz0
+  viewed_at: "2023, December"
+}
+
+an_extremely_technical_overview_of_how_apache_iceberg_planning_actually_works: Reference = {
+  title: "An Extremely Technical Overview of How Apache Iceberg Planning Actually Works"
+  authors: @"Russell Spitzer"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=kJaD0WuQ1Bg
+  viewed_at: "2023, December"
+}
+
+the_strangest_man: Reference = {
+  title: "The Strangest Man"
+  authors: @"Graham Farmelo"
+  date: "(2009)"
+  location: @https://en.wikipedia.org/wiki/The_Strangest_Man
+  kind: book
+  viewed_at: "2023, December"
+}
+
+ecce_homo: Reference = {
+  title: "Ecce Homo"
+  authors: @"Friedrich Nietzsche"
+  date: "(1908)"
+  location: @https://en.wikipedia.org/wiki/Ecce_Homo_(book)
+  kind: book
+  viewed_at: "2023, December"
+}
+
+the_three_body_problem: Reference = {
+  title: "The Three-Body Problem"
+  authors: @"Liu Cixin"
+  date: "(2008)"
+  location: @https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)
+  kind: book
+  viewed_at: "2023, December"
+}
+
+wool: Reference = {
+  title: "Wool"
+  authors: @"Hugh Howey"
+  date: "(2011)"
+  location: @https://en.wikipedia.org/wiki/Silo_(series)
+  kind: book
+  viewed_at: "2023, December"
+}
+
+shift: Reference = {
+  title: "Shift"
+  authors: @"Hugh Howey"
+  date: "(2013)"
+  location: @https://en.wikipedia.org/wiki/Silo_(series)
+  kind: book
+  viewed_at: "2023, December"
+}
+
+harry_potter_1_7: Reference = {
+  title: "Harry Potter 1-7"
+  authors: @"J. K. Rowling"
+  date: "(1997-2007)"
+  location: @https://en.wikipedia.org/wiki/Harry_Potter
+  kind: book
+  viewed_at: "2023, December"
+}
+
+propositions_as_types: Reference = {
+  title: "\"Propositions as Types\""
+  authors: @"Philip Wadler"
+  organizations: @youtube, @strangeloop
+  date: "(2015)"
+  location: @https://www.youtube.com/watch?v=IOiZatlZtGU
+  viewed_at: "2023, December"
+}
+
+programming_distributed_systems: Reference = {
+  title: "\"Programming Distributed Systems\""
+  authors: @"Mae Milano"
+  organizations: @youtube, @strangeloop
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=Mc3tTRkjCvE
+  viewed_at: "2023, December"
+}
+
+dan_houser_gta_red_dead_redemption_rockstar_absurd_future_of_gaming_484: Reference = {
+  title: "Dan Houser: GTA, Red Dead Redemption, Rockstar, Absurd & Future of Gaming | #484"
+  authors: @"Dan Houser", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=o3gbXDjNWyI
+  viewed_at: "2023, December"
+}
+
+deciphering_secrets_of_ancient_civilizations_noahs_ark_and_flood_myths_487: Reference = {
+  title: "Deciphering Secrets of Ancient Civilizations, Noah's Ark, and Flood Myths | #487"
+  authors: @"Irving Finkel", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=_bBRVNkAfkQ&pp=0gcJCYcKAYcqIYzv
+  viewed_at: "2023, December"
+}
+
+pavel_durov_telegram_freedom_censorship_money_power_human_nature_482: Reference = {
+  title: "Pavel Durov: Telegram, Freedom, Censorship, Money, Power & Human Nature | #482"
+  authors: @"Pavel Durov", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=qjPH9njnaVU
+  viewed_at: "2023, December"
+}
+
+david_kirtley_nuclear_fusion_plasma_physics_and_the_future_of_energy_485: Reference = {
+  title: "David Kirtley: Nuclear Fusion, Plasma Physics, and the Future of Energy | #485"
+  authors: @"David Kirtley", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=m_CFCyc2Shs
+  viewed_at: "2023, December"
+}
+
+infinity_paradoxes_gödel_incompleteness_the_mathematical_multiverse_488: Reference = {
+  title: "Infinity, Paradoxes, Gödel Incompleteness & the Mathematical Multiverse | #488"
+  authors: @"Joel David Hamkins", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=14OPT6CcsH4
+  viewed_at: "2023, December"
+}
+
+paul_rosolie_uncontacted_tribes_in_the_amazon_jungle_489: Reference = {
+  title: "Paul Rosolie: Uncontacted Tribes in the Amazon Jungle | #489"
+  authors: @"Paul Rosolie", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2026)"
+  location: @https://www.youtube.com/watch?v=Z-FRe5AKmCU
+  viewed_at: "2023, December"
+}
+
+_26_will_kinney___before_the_big_bang_inflation_infinity_of_worlds: Reference = {
+  title: "#26 Will Kinney - Before the Big Bang, Inflation, Infinity of Worlds"
+  authors: @"Will Kinney", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=HSZtn0yKPBI
+  viewed_at: "2023, December"
+}
+
+_27_jason_steffen___kepler_mission_legacy_particle_physics_optimal_plane_boarding: Reference = {
+  title: "#27 Jason Steffen - Kepler Mission Legacy, Particle Physics, Optimal Plane Boarding"
+  authors: @"Jason Steffen", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=vaqgPzT8PXA
+  viewed_at: "2023, December"
+}
+
+_28_néstor_espinoza___jwst_exoplanet_atmospheres_molecule_detection: Reference = {
+  title: "#28 Néstor Espinoza - JWST, Exoplanet Atmospheres, Molecule Detection"
+  authors: @"Néstor Espinoza", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=bZ7Hge0OUTE
+  viewed_at: "2023, December"
+}
+
+crafting_interpreters: Reference = {
+  title: "Crafting Interpreters"
+  authors: @"Robert Nystrom"
+  date: "(2021)"
+  location: @https://www.craftinginterpreters.com/
+  kind: book
+  viewed_at: "2023, December"
+}
+
+functional_programming_in_lean: Reference = {
+  title: "Functional Programming in Lean"
+  authors: @"David Thrane Christiansen"
+  date: "(2023)"
+  location: @https://lean-lang.org/functional_programming_in_lean/
+  kind: book
+  viewed_at: "2023, December"
+}
+
+reflections_on_equality: Reference = {
+  title: "Reflections on Equality"
+  authors: @"Amélia Liao"
+  date: "(2020)"
+  location: @https://amelia.how/posts/reflections-on-equality.html
+  viewed_at: "2023, December"
+}
+
+cubical_type_theory: Reference = {
+  title: "Cubical Type Theory"
+  authors: @"Amélia Liao"
+  date: "(2021)"
+  location: @https://amelia.how/posts/cubical-type-theory.html
+  viewed_at: "2023, December"
+}
+
+abstract_interpretation_in_a_nutshell: Reference = {
+  title: "Abstract Interpretation in a Nutshell"
+  authors: @"Patrick Cousot"
+  date: "(2005)"
+  location: @https://www.di.ens.fr/~cousot/AI/IntroAbsInt.html
+  viewed_at: "2023, December"
+}
+
+abstract_interpretation_a_unified_lattice_model_for_static_analysis_of_programs_by_construction_or_approximation_of_fixpoints: Reference = {
+  title: "Abstract interpretation: a unified lattice model for static analysis of programs by construction or approximation of fixpoints"
+  authors: @"Patrick Cousot", @"Radhia Cousot"
+  date: "(1977)"
+  location: @https://dl.acm.org/doi/pdf/10.1145/512950.512973
+  viewed_at: "2023, December"
+}
+
+leviathan_wakes: Reference = {
+  title: "Leviathan Wakes"
+  authors: @"James S. A. Corey"
+  date: "(2011)"
+  location: @https://en.wikipedia.org/wiki/Leviathan_Wakes
+  kind: book
+  viewed_at: "2023, December"
+}
+
+cubical_types_for_the_working_formalizer: Reference = {
+  title: "\"Cubical types for the working formalizer\""
+  authors: @"Amélia Liao"
+  organizations: @youtube, @topos_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=rhZAkHDo-r4&t=1s
+  viewed_at: "2023, December"
+}
+
+easy_abstract_interpretation_with_sparta: Reference = {
+  title: "\"Easy Abstract Interpretation with SPARTA\""
+  authors: @"Arnaud Venet", @"Jez Ng"
+  organizations: @youtube, @strangeloop
+  date: "(2019)"
+  location: @https://www.youtube.com/watch?v=_fA7vkVJhF8&t=2s
+  viewed_at: "2023, December"
+}
+
+a_little_taste_of_dependent_types: Reference = {
+  title: "A Little Taste of Dependent Types"
+  authors: @"David Thrane Christiansen"
+  organizations: @youtube, @strangeloop
+  date: "(2018)"
+  location: @https://www.youtube.com/watch?v=VxINoKFm-S4&ab_channel=StrangeLoopConference
+  viewed_at: "2023, December"
+}
+
+_24___modern_cosmology_hubble_tension_exotic_physics: Reference = {
+  title: "#24 - Modern Cosmology, Hubble Tension, Exotic Physics"
+  authors: @"Colin Hill", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=FkC-kVC2IRA
+  viewed_at: "2023, December"
+}
+
+_25___pbs_spacetime_science_on_youtube_quasars: Reference = {
+  title: "#25 - PBS Spacetime, Science on YouTube, Quasars"
+  authors: @"Matt O'Dowd", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=V7QjrsadlKQ&t=5327s
+  viewed_at: "2023, December"
+}
+
+dave_plummer_programming_autism_and_old_school_microsoft_stories_479: Reference = {
+  title: "Dave Plummer: Programming, Autism, and Old-School Microsoft Stories | #479"
+  authors: @"Dave Plummer", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=HsLgZzgpz9Y
+  viewed_at: "2023, December"
+}
+
+dave_hone_t_rex_dinosaurs_extinction_evolution_and_jurassic_park_480: Reference = {
+  title: "Dave Hone: T-Rex, Dinosaurs, Extinction, Evolution, and Jurassic Park | #480"
+  authors: @"Dave Hone", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=-Qm1_On71Oo
+  viewed_at: "2023, December"
+}
+
+tim_sweeney_fortnite_unreal_engine_and_the_future_of_gaming_467: Reference = {
+  title: "Tim Sweeney: Fortnite, Unreal Engine, and the Future of Gaming | #467"
+  authors: @"Tim Sweeney", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=477qF6QNSvc&t=14990s
+  viewed_at: "2023, December"
+}
+
+quantum_theory_as_a_new_kind_of_stochastic_process: Reference = {
+  title: "Quantum Theory as a New Kind of Stochastic Process"
+  authors: @"Jacob Barandes"
+  organizations: @youtube, @wolfram_institute
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=JsmX3YxiUj0&t=4288s
+  viewed_at: "2023, December"
+}
+
+keynote_higher_inductive_types_in_homotopy_type_theory: Reference = {
+  title: "Keynote: Higher Inductive Types in Homotopy Type Theory"
+  authors: @"Kristina Sojakova"
+  organizations: @youtube
+  date: "(2019)"
+  location: @https://www.youtube.com/watch?v=AMJIsEBS-zk
+  viewed_at: "2023, December"
+}
+
+the_verse_programming_language_gdc_2023: Reference = {
+  title: "The Verse Programming Language | GDC 2023"
+  authors: @"Tim Sweeney", @"Phil Pizlo", @"Tim TIllotson"
+  organizations: @youtube
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=5prkKOIilJg&t=1517s
+  viewed_at: "2023, December"
+}
+
+ready_player_one: Reference = {
+  title: "Ready Player One"
+  authors: @"Ernest Cline"
+  date: "(2011)"
+  location: @https://en.wikipedia.org/wiki/Ready_Player_One
+  kind: book
+  viewed_at: "2023, December"
+}
+
+ready_player_two: Reference = {
+  title: "Ready Player Two"
+  authors: @"Ernest Cline"
+  date: "(2020)"
+  location: @https://en.wikipedia.org/wiki/Ready_Player_Two
+  kind: book
+  viewed_at: "2023, December"
+}
+
+msp_101_generalisation_in_llms_petar_veličković: Reference = {
+  title: "MSP 101: Generalisation in LLMs (Petar Veličković)"
+  authors: @"Petar Veličković"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=7Z144Ymohd0
+  viewed_at: "2023, December"
+}
+
+sundar_pichai_ceo_of_google_and_alphabet_471: Reference = {
+  title: "Sundar Pichai: CEO of Google and Alphabet | #471"
+  authors: @"Sundar Pichai", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=9V6tWC4CdFQ
+  viewed_at: "2023, December"
+}
+
+terence_tao_hardest_problems_in_mathematics_physics_the_future_of_ai_472: Reference = {
+  title: "Terence Tao: Hardest Problems in Mathematics, Physics & the Future of AI | #472"
+  authors: @"Terence Tao", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=HUkBz-cdB-k
+  viewed_at: "2023, December"
+}
+
+dhh_future_of_programming_ai_ruby_on_rails_productivity_parenting_474: Reference = {
+  title: "DHH: Future of Programming, AI, Ruby on Rails, Productivity & Parenting | #474"
+  authors: @"David Heinemeier Hansson", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=vagyIcmIGOQ
+  viewed_at: "2023, December"
+}
+
+demis_hassabis_future_of_ai_simulating_reality_physics_and_video_games_475: Reference = {
+  title: "Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games | #475"
+  authors: @"Demis Hassabis", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=-HzgcbRXUK8&t=8677s
+  viewed_at: "2023, December"
+}
+
+mindscape_323_jacob_barandes_on_indivisible_stochastic_quantum_mechanics: Reference = {
+  title: "Mindscape 323 | Jacob Barandes on Indivisible Stochastic Quantum Mechanics"
+  authors: @"Jacob Barandes", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=gINYis8BgSY
+  viewed_at: "2023, December"
+}
+
+_23___fine_tuning_multiverse_cosmological_tensions: Reference = {
+  title: "#23 - Fine-Tuning, Multiverse, Cosmological Tensions"
+  authors: @"Geraint Lewis", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=OejwZqh-F9U&t=29s
+  viewed_at: "2023, December"
+}
+
+string_diagram_rewrite_theory_iii_confluence_with_and_without_frobenius: Reference = {
+  title: "String diagram rewrite theory III: Confluence with and without Frobenius"
+  authors: @"Filippo Bonchi", @"Fabio Gadducci", @"Aleks Kissinger", @"Pawel Sobocinski", @"Fabio Zanasi"
+  date: "(2022)"
+  location: @https://arxiv.org/abs/2109.06049
+  viewed_at: "2023, December"
+}
+
+influence_of_temporal_information_gaps_on_decision_making_describing_the_dynamics_of_working_memory: Reference = {
+  title: "Influence of temporal information gaps on decision making: describing the dynamics of working memory"
+  authors: @"Alejandro Sospedra", @"Santiago Canals", @"Encarni Marcos"
+  date: "(2024)"
+  location: @https://www.biorxiv.org/content/10.1101/2024.07.17.603868v1
+  viewed_at: "2023, December"
+}
+
+black_holes_wormholes_aliens_paradoxes_extra_dimensions_468: Reference = {
+  title: "Black Holes, Wormholes, Aliens, Paradoxes & Extra Dimensions | #468"
+  authors: @"Janna Levin", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=A6m4iJIw_84
+  viewed_at: "2023, December"
+}
+
+_19___inflation_b_modes_and_losing_the_nobel_prize: Reference = {
+  title: "#19 - Inflation, B Modes and Losing the Nobel Prize"
+  authors: @"Brian Keating", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=L5MDDTFbpfU&t=3s
+  viewed_at: "2023, December"
+}
+
+_20___kepler_mission_exoplanets_with_jwst_future_imagers: Reference = {
+  title: "#20 - Kepler Mission, Exoplanets with JWST, Future Imagers"
+  authors: @"Natalie Batalha", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=BCWd7NuTIcY&t=4s
+  viewed_at: "2023, December"
+}
+
+_21___early_mars_terraformingsettling_mars: Reference = {
+  title: "#21 - Early Mars, Terraforming/Settling Mars"
+  authors: @"Edwin Kite", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=-DaeWdIaMZE
+  viewed_at: "2023, December"
+}
+
+_22___origin_of_life_assembly_theory_biosignatures: Reference = {
+  title: "#22 - Origin of Life, Assembly Theory, Biosignatures"
+  authors: @"Sara Walker", @"David Kipping"
+  organizations: @youtube, @cool_worlds_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=W2duMnWYhDY
+  viewed_at: "2023, December"
+}
+
+rules_that_reality_plays_by___343: Reference = {
+  title: "Rules that Reality Plays By - #343"
+  authors: @"Stephen Wolfram", @"Anastasia Bendebury", @"Michael Shilo DeLay"
+  organizations: @youtube, @demystifysci
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=aQCT_kboi8A
+  viewed_at: "2023, December"
+}
+
+mistaking_the_map_for_the_territory_in_physics___344: Reference = {
+  title: "Mistaking the Map for the Territory in Physics - #344"
+  authors: @"Jacob Barandes", @"Anastasia Bendebury", @"Michael Shilo DeLay"
+  organizations: @youtube, @demystifysci
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=9068pS75Uds&t=2s
+  viewed_at: "2023, December"
+}
+
+the_equivalence_between_geometrical_structures_and_entropy: Reference = {
+  title: "The equivalence between geometrical structures and entropy"
+  authors: @"Gabriele Carcassi"
+  organizations: @youtube
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=lp0RgZ6kQF8
+  viewed_at: "2023, December"
+}
+
+deepseek_china_openai_nvidia_xai_tsmc_stargate_and_ai_megaclusters_459: Reference = {
+  title: "DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters | #459"
+  authors: @"Dylan Patel", @"Nathan Lambert", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=_1f-o0nqpEI
+  viewed_at: "2023, December"
+}
+
+why_physics_without_philosophy_is_deeply_broken_part_2: Reference = {
+  title: "Why Physics Without Philosophy Is Deeply Broken... [Part 2]"
+  authors: @"Jacob Barandes", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=YaS1usLeXQM
+  viewed_at: "2023, December"
+}
+
+harvard_scientist_there_is_no_quantum_multiverse_part_3: Reference = {
+  title: "Harvard Scientist: \"There is No Quantum Multiverse\" [Part 3]"
+  authors: @"Jacob Barandes", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=wrUvtqr4wOs
+  viewed_at: "2023, December"
+}
+
+harvard_physicist_debunks_particle_superposition: Reference = {
+  title: "Harvard Physicist Debunks Particle Superposition"
+  authors: @"Jacob Barandes", @"Manolis Kellis", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=MTD8xkbiGis&t=11s
+  viewed_at: "2023, December"
+}
+
+top_ai_scientist_unifies_wolfram_leibniz_consciousness: Reference = {
+  title: "Top AI Scientist Unifies Wolfram, Leibniz, & Consciousness"
+  authors: @"William Hahn", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=3fkg0uTA3qU
+  viewed_at: "2023, December"
+}
+
+the_theory_that_explains_you_free_energy_principle: Reference = {
+  title: "The Theory That Explains YOU... (Free Energy Principle)"
+  authors: @"Michael Levin", @"Karl Friston", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=0yOV9Pzk2zw
+  viewed_at: "2023, December"
+}
+
+einstein_his_life_and_universe: Reference = {
+  title: "Einstein: His Life and Universe"
+  authors: @"Walter Isaacson"
+  date: "(2007)"
+  location: @https://en.wikipedia.org/wiki/Einstein:_His_Life_and_Universe
+  kind: book
+  viewed_at: "2023, December"
+}
+
+the_future_of_brain_emulation_is_looking_spiky: Reference = {
+  title: "The future of brain emulation is looking spiky"
+  authors: @"Andy McKenzie"
+  date: "(2025)"
+  location: @https://neurobiology.substack.com/p/the-future-of-brain-emulation-is
+  viewed_at: "2023, December"
+}
+
+why_the_godfather_of_ai_now_fears_his_own_creation: Reference = {
+  title: "Why The \"Godfather of AI\" Now Fears His Own Creation"
+  authors: @"Geoffrey Hinton", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=b_DUft-BdIE&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+the_major_flaws_in_fundamental_physics: Reference = {
+  title: "The Major Flaws in Fundamental Physics"
+  authors: @"Sabine Hossenfelder", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=E3y-Z0pgupg&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+the_crisis_in_string_theory_is_worse_than_you_think: Reference = {
+  title: "The Crisis in String Theory is Worse Than You Think"
+  authors: @"Leonard Susskind", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=2p_Hlm6aCok&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+math_has_changed_forever: Reference = {
+  title: "Math Has Changed Forever…"
+  authors: @"Yang-Hui He", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2025)"
+  location: @https://www.youtube.com/watch?v=wbP0KjWm0pw&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+applied_category_theory_in_chemistry_computing_and_social_networks: Reference = {
+  title: "Applied Category Theory in Chemistry, Computing, and Social Networks"
+  authors: @"John Baez", @"Simon Cho", @"Daniel Cicala", @"Nina Otter", @"Valeria de Paiva"
+  date: "(2022)"
+  location: @https://math.ucr.edu/home/baez/mrc_2022.pdf
+  viewed_at: "2023, December"
+}
+
+uniqueness_trees_a_possible_polynomial_approach_to_the_graph_isomorphism_problem: Reference = {
+  title: "Uniqueness Trees: A Possible Polynomial Approach to the Graph Isomorphism Problem"
+  authors: @"Jonathan Gorard"
+  date: "(2016)"
+  location: @https://arxiv.org/pdf/1606.06399
+  viewed_at: "2023, December"
+}
+
+alien_civilizations_and_the_search_for_extraterrestrial_life_lex_fridman_podcast_455: Reference = {
+  title: "Alien Civilizations and the Search for Extraterrestrial Life | Lex Fridman Podcast #455"
+  authors: @"Adam Frank", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=yhZAXXI83-4&ab_channel=LexFridman
+  viewed_at: "2023, December"
+}
+
+theres_no_wave_function: Reference = {
+  title: "There’s No Wave Function?"
+  authors: @"Jacob Barandes", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=7oWip00iXbo&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+the_potential_of_the_human_brain: Reference = {
+  title: "The Potential of the Human Brain"
+  authors: @"Iain McGilchrist", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=Q9sBKCd2HD0&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+the_universe_writes_itself_into_existence_moment_by_moment: Reference = {
+  title: "The Universe Writes Itself Into Existence Moment by Moment"
+  authors: @"Avshalom Elitzur", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=pWRAaimQT1E&ab_channel=CurtJaimungal
+  viewed_at: "2023, December"
+}
+
+hunters_of_dune: Reference = {
+  title: "Hunters of Dune"
+  authors: @"Brian Herbert", @"Kevin J. Anderson"
+  date: "(2006)"
+  location: @https://en.wikipedia.org/wiki/Hunters_of_Dune
+  kind: book
+  viewed_at: "2023, December"
+}
+
+the_little_book_of_deep_learning: Reference = {
+  title: "The Little Book of Deep Learning"
+  authors: @"François Fleuret"
+  date: "(2023)"
+  location: @https://fleuret.org/public/lbdl.pdf
+  viewed_at: "2023, December"
+}
+
+preface_what_is_opengl: Reference = {
+  title: "Preface: What is OpenGL?"
+  authors: @"Eddy Luten"
+  date: "(2014)"
+  location: @https://openglbook.com/chapter-0-preface-what-is-opengl.html#:~:text=On%20the%20most%20fundamental%20level,the%20finer%20details%20of%20OpenGL.
+  viewed_at: "2023, December"
+}
+
+foundations_of_bidirectional_programming_i_well_typed_substructural_languages: Reference = {
+  title: "Foundations of Bidirectional Programming I: Well-Typed Substructural Languages"
+  authors: @"Jules Hedges"
+  date: "(2024)"
+  location: @https://cybercat.institute/2024/08/26/bidirectional-programming-i/
+  viewed_at: "2023, December"
+}
+
+foundations_of_bidirectional_programming_ii_negative_types: Reference = {
+  title: "Foundations of Bidirectional Programming II: Negative Types"
+  authors: @"Jules Hedges"
+  date: "(2024)"
+  location: @https://cybercat.institute/2024/09/05/bidirectional-programming-ii/
+  viewed_at: "2023, December"
+}
+
+the_yoga_of_contexts_i: Reference = {
+  title: "The Yoga of Contexts I"
+  authors: @"Jules Hedges"
+  date: "(2024)"
+  location: @https://cybercat.institute/2024/06/28/yoga-contexts/
+  viewed_at: "2023, December"
+}
+
+why_does_biological_evolution_work_a_minimal_model_for_biological_evolution_and_other_adaptive_processes: Reference = {
+  title: "Why Does Biological Evolution Work? A Minimal Model for Biological Evolution and Other Adaptive Processes"
+  authors: @"Stephen Wolfram"
+  organizations: @wolfram
+  date: "(2024)"
+  location: @https://writings.stephenwolfram.com/2024/05/why-does-biological-evolution-work-a-minimal-model-for-biological-evolution-and-other-adaptive-processes/
+  viewed_at: "2023, December"
+}
+
+_20th_century_s_greatest_living_scientist_sir_roger_penrose: Reference = {
+  title: "20th Century’s Greatest Living Scientist | Sir Roger Penrose"
+  authors: @"Roger Penrose", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=sGm505TFMbU
+  viewed_at: "2023, December"
+}
+
+the_quantum_heretic_a_new_theory_of_everything: Reference = {
+  title: "The Quantum Heretic: A New Theory of Everything?"
+  authors: @"Jonathan Oppenheim", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=6Z_p3viqW1g
+  viewed_at: "2023, December"
+}
+
+maya_aztec_inca_and_lost_civilizations_of_south_america_lex_fridman_podcast_446: Reference = {
+  title: "Maya, Aztec, Inca, and Lost Civilizations of South America | Lex Fridman Podcast #446"
+  authors: @"Ed Barnhart", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=AzzE7GOvYz8
+  viewed_at: "2023, December"
+}
+
+the_roman_empire___rise_and_fall_of_ancient_rome_lex_fridman_podcast_443: Reference = {
+  title: "The Roman Empire - Rise and Fall of Ancient Rome | Lex Fridman Podcast #443"
+  authors: @"Gregory Aldrete", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=DyoVVSggPjY
+  viewed_at: "2023, December"
+}
+
+mindscape_289_the_next_generation_of_particle_experiments: Reference = {
+  title: "Mindscape 289 | The Next Generation of Particle Experiments"
+  authors: @"Cari Cesarotti", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=ELe3fvuTsdE
+  viewed_at: "2023, December"
+}
+
+mindscape_291_the_biology_of_death_and_aging: Reference = {
+  title: "Mindscape 291 | The Biology of Death and Aging"
+  authors: @"Venki Ramakrishnan", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=aNqwamgxNiU
+  viewed_at: "2023, December"
+}
+
+maths_of_quantum_mechanics: Reference = {
+  title: "Maths of Quantum Mechanics"
+  authors: @"Brandon Sandoval"
+  organizations: @youtube
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=3nvbBEzfmE8&list=PL8ER5-vAoiHAWm1UcZsiauUGPlJChgNXC
+  viewed_at: "2023, December"
+}
+
+computing_machinery_and_intelligence: Reference = {
+  title: "Computing Machinery and Intelligence"
+  authors: @"Alan M. Turing"
+  date: "(1950)"
+  location: @https://academic.oup.com/mind/article/LIX/236/433/986238?url=http://szyxflb.com&login=false
+  viewed_at: "2023, December"
+}
+
+von_neumann_and_lattice_theory: Reference = {
+  title: "Von Neumann and Lattice Theory"
+  authors: @"Garrett Birkhoff"
+  date: "(1958)"
+  location: @https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-64/issue-3.P2/Von-Neumann-and-lattice-theory/bams/1183522370.pdf
+  viewed_at: "2023, December"
+}
+
+when_exactly_will_the_eclipse_happen_a_multimillennium_tale_of_computation: Reference = {
+  title: "When Exactly Will the Eclipse Happen? A Multimillennium Tale of Computation"
+  authors: @"Stephen Wolfram"
+  organizations: @wolfram
+  date: "(2024)"
+  location: @https://writings.stephenwolfram.com/2024/03/when-exactly-will-the-eclipse-happen-a-multimillennium-tale-of-computation/
+  viewed_at: "2023, December"
+}
+
+are_all_fish_the_same_shape_if_you_stretch_them_the_victorian_tale_of_on_growth_and_form: Reference = {
+  title: "Are All Fish the Same Shape if You Stretch Them? The Victorian Tale of On Growth and Form"
+  authors: @"Stephen Wolfram"
+  organizations: @wolfram
+  date: "(2017)"
+  location: @https://writings.stephenwolfram.com/2017/10/are-all-fish-the-same-shape-if-you-stretch-them-the-victorian-tale-of-on-growth-and-form/
+  viewed_at: "2023, December"
+}
+
+whats_really_going_on_in_machine_learning_some_minimal_models: Reference = {
+  title: "What’s Really Going On in Machine Learning? Some Minimal Models"
+  authors: @"Stephen Wolfram"
+  organizations: @wolfram
+  date: "(2024)"
+  location: @https://writings.stephenwolfram.com/2024/08/whats-really-going-on-in-machine-learning-some-minimal-models/
+  viewed_at: "2023, December"
+}
+
+the_hydrogen_atom_intro_to_quantum: Reference = {
+  title: "The Hydrogen Atom: Intro to Quantum Physics"
+  authors: @"Richard Behiel"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=-Y0XL-K0jy0
+  viewed_at: "2023, December"
+}
+
+mindscape_287_institutions_and_the_legacy_of: Reference = {
+  title: "Mindscape 287 | Institutions and the Legacy of History"
+  authors: @"Jean-Paul Faguet", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: 2024
+  location: @https://www.youtube.com/watch?v=FKVmYeU11y0
+  viewed_at: "2023, December"
+}
+
+live_science_spinal_graphs_hypergraph_confluence_symmetry_and: Reference = {
+  title: "Live Science | Spinal Graphs | Hypergraph Confluence, Symmetry and Efficiency"
+  authors: @""
+  organizations: @youtube, @wolfram_institute
+  date: 2024
+  location: @https://www.youtube.com/watch?v=uZkqNDIOQLs
+  viewed_at: "2023, December"
+}
+
+live_science_infrageometry_correspondences_differential_geometry_hypergraph: Reference = {
+  title: "Live Science | Infrageometry: Correspondences | Differential Geometry, Hypergraph Rewriting"
+  authors: @""
+  organizations: @youtube, @wolfram_institute
+  date: 2024
+  location: @https://www.youtube.com/watch?v=Mr1zfZtoFX0
+  viewed_at: "2023, December"
+}
+
+live_science_quantum_paradoxes_delayed_choice_quantum_eraser_chsh_game: Reference = {
+  title: "Live Science | Quantum Paradoxes | Delayed Choice Quantum Eraser, CHSH Game, Quasiprobabilities"
+  authors: @""
+  organizations: @youtube, @wolfram_institute
+  date: 2024
+  location: @https://www.youtube.com/watch?v=rTKSWObWtNE
+  viewed_at: "2023, December"
+}
+
+consciousness_biology_universal_mind_emergence_cancer: Reference = {
+  title: "Consciousness, Biology, Universal Mind, Emergence, Cancer Research"
+  authors: @"Michael Levin", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: 2024
+  location: @https://www.youtube.com/watch?v=c8iFtaltX-s
+  viewed_at: "2023, December"
+}
+
+the_crisis_in_fundamental_physics_is_worse_than_you: Reference = {
+  title: "The Crisis in (Fundamental) Physics is Worse Than You Think..."
+  authors: @"Sean Carroll", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: 2024
+  location: @https://www.youtube.com/watch?v=9AoRxtYZrZo
+  viewed_at: "2023, December"
+}
+
+neuralink_and_the_future_of_humanity_lex_fridman_podcast: Reference = {
+  title: "Neuralink and the Future of Humanity | Lex Fridman Podcast #438"
+  authors: @""
+  organizations: @youtube, @lex_fridman_podcast
+  date: 2024
+  location: @https://www.youtube.com/watch?v=Kbk9BiPhm7o
+  viewed_at: "2023, December"
+}
+
+physics_of_life_time_complexity_and_aliens_lex_fridman_podcast: Reference = {
+  title: "Physics of Life, Time, Complexity, and Aliens | Lex Fridman Podcast #433"
+  authors: @"Sara Walker", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: 2024
+  location: @https://www.youtube.com/watch?v=wwhTfyX9J34
+  viewed_at: "2023, December"
+}
+
+pluralistic_the_disenshittified_internet_starts_with_loyal_user_agents: Reference = {
+  title: "Pluralistic: The disenshittified internet starts with loyal \"user agents\""
+  authors: @"Cory Doctorow"
+  date: "(2024)"
+  location: @https://pluralistic.net/2024/05/07/treacherous-computing/
+  viewed_at: "2023, December"
+}
+
+elon_musk: Reference = {
+  title: "Elon Musk"
+  authors: @"Walter Isaacson"
+  date: "(2023)"
+  location: @https://en.wikipedia.org/wiki/Elon_Musk_(Isaacson_book)
+  kind: book
+  viewed_at: "2023, December"
+}
+
+fun_raising_funding_school_qa_semf: Reference = {
+  title: "Fun Raising | Funding & School Q&A + SEMF Social"
+  authors: @"Fadi Shawki", @"Álvaro Moreno Vallori", @"Alejandro Sospedra Orellano", @"Elena Isasi Theus", @"Anmol Agrawal", @"Carlos Zapata Carratalá"
+  organizations: @youtube, @semf
+  date: 2024
+  location: @https://www.youtube.com/watch?v=FL8zNDbrAR0
+  viewed_at: "2023, December"
+}
+
+human_memory_imagination_deja_vu_and_false_memories_lex_fridman_podcast: Reference = {
+  title: "Human Memory, Imagination, Deja Vu, and False Memories | Lex Fridman Podcast #430"
+  authors: @"Charan Ranganath", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: 2024
+  location: @https://www.youtube.com/watch?v=4iuepdI3wCU
+  viewed_at: "2023, December"
+}
+
+jungle_apex_predators_aliens_uncontacted_tribes_and_god_lex_fridman_podcast: Reference = {
+  title: "Jungle, Apex Predators, Aliens, Uncontacted Tribes, and God | Lex Fridman Podcast #429"
+  authors: @"Paul Rosolie", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: 2024
+  location: @https://www.youtube.com/watch?v=pwN8u6HFH8U
+  viewed_at: "2023, December"
+}
+
+longevity_meditation_philosophies_consciousness_nature_of: Reference = {
+  title: "Longevity, Meditation, Philosophies, Consciousness, Nature of Reality"
+  authors: @"Bryan Johnson", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: 2024
+  location: @https://www.youtube.com/watch?v=PXkhhHPUud4
+  viewed_at: "2023, December"
+}
+
+reverse_engineering_same_thing_we_do_every_weekend_documenting_the_amd_7900xtx_part2: Reference = {
+  title: "Reverse engineering | same thing we do every weekend documenting the AMD 7900XTX Part2"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=Z04xTlLdZnc
+  viewed_at: "2023, December"
+}
+
+researching_documenting_the_amd_7900xtx_so_we_can_understand_why_it_crashes_rdna_3: Reference = {
+  title: "Researching | documenting the AMD 7900XTX so we can understand why it crashes | RDNA 3"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=Y-0yZ1AHb0s
+  viewed_at: "2023, December"
+}
+
+what_makes_high_dimensional_networks_produce_low_dim_activity: Reference = {
+  title: "What makes high-dimensional networks produce low-dim. activity?"
+  authors: @"Eric Shea-Brown"
+  organizations: @youtube
+  date: "(2019)"
+  location: @https://www.youtube.com/watch?v=toeX2mGWDbI
+  viewed_at: "2023, December"
+}
+
+lisa_randall_dark_matter_theoretical_physics_and_extinction_events_lex_fridman_podcast_403: Reference = {
+  title: "Lisa Randall: Dark Matter, Theoretical Physics, and Extinction Events | Lex Fridman Podcast #403"
+  authors: @"Lisa Randall", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=VPaOy3G1-2A
+  viewed_at: "2023, December"
+}
+
+reality_is_a_paradox___mathematics_physics_truth_love_lex_fridman_podcast_370: Reference = {
+  title: "Reality is a Paradox - Mathematics, Physics, Truth & Love | Lex Fridman Podcast #370"
+  authors: @"Edward Frenkel", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=Osh0-J3T2nY
+  viewed_at: "2023, December"
+}
+
+the_langlands_program___numberphile: Reference = {
+  title: "The Langlands Program - Numberphile"
+  authors: @"Edward Frenkel"
+  organizations: @youtube
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=4dyytPboqvE
+  viewed_at: "2023, December"
+}
+
+time_and_quantum_mechanics_solved_lee_smolin: Reference = {
+  title: "Time and Quantum Mechanics SOLVED? | Lee Smolin"
+  authors: @"Lee Smolin", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=uOKOodQXjhc
+  viewed_at: "2023, December"
+}
+
+edward_frenkel_infinity_ai_string_theory_death_the_self: Reference = {
+  title: "Edward Frenkel: Infinity, Ai, String Theory, Death, The Self"
+  authors: @"Edward Frenkel", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=n_oPMcvHbAc
+  viewed_at: "2023, December"
+}
+
+live_science_infrageometry_core_definitions_differential_geometry_tangent_bundles_functions: Reference = {
+  title: "Live Science | Infrageometry: Core Definitions | Differential Geometry, Tangent Bundles, Functions"
+  authors: @"Nikolay Murzin", @"Carlos Zapata-Carratalá", @"James Wiles", @"Utkarsh Bajaj"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=QxtG4tr6VY0
+  viewed_at: "2023, December"
+}
+
+live_science_infrageometry_working_session_functions_edges_places_bipartite_graphs: Reference = {
+  title: "Live Science | Infrageometry: Working Session | Functions, Edges-Places, Bipartite Graphs"
+  authors: @"Nikolay Murzin", @"Carlos Zapata-Carratalá", @"James Wiles", @"Utkarsh Bajaj"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=pdPBzPyJqcE
+  viewed_at: "2023, December"
+}
+
+fellow_focus_richard_assar_metametaverse_alien_minds_machine_learning_cellular_automata: Reference = {
+  title: "Fellow Focus | Richard Assar | MetaMetaverse, Alien Minds, Machine Learning Cellular Automata"
+  authors: @"Nikolay Murzin", @"Carlos Zapata-Carratalá", @"James Wiles"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=xg9pAx4bupk
+  viewed_at: "2023, December"
+}
+
+fellow_focus_nik_murzin_quantum_framework: Reference = {
+  title: "Fellow Focus | Nik Murzin | Quantum Framework"
+  authors: @"Nikolay Murzin", @"Carlos Zapata-Carratalá", @"James Wiles"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=eG6d8_2GuCw
+  viewed_at: "2023, December"
+}
+
+explore_learn_the_map_of_institute_research_quantum_probabilities_multicomputation_causality: Reference = {
+  title: "Explore & Learn | The Map of Institute Research | Quantum Probabilities, Multicomputation, Causality"
+  authors: @"Nikolay Murzin", @"James Wiles"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=OKHrPZ6tT6M
+  viewed_at: "2023, December"
+}
+
+explore_learn_the_map_of_institute_research_multicomputation_infrageometry_ruliad: Reference = {
+  title: "Explore & Learn | The Map of Institute Research | Multicomputation, Infrageometry, Ruliad"
+  authors: @"Carlos Zapata-Carratalá", @"James Wiles"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=8F9YL887Bck
+  viewed_at: "2023, December"
+}
+
+explore_learn_fundamentals_whats_hype_about_hypergraphs_graph_theory_hypermatrix_arity: Reference = {
+  title: "Explore & Learn | Fundamentals: What's hype about Hypergraphs? | Graph Theory, Hypermatrix, Arity"
+  authors: @"Carlos Zapata-Carratalá", @"Richard Assar", @"James Wiles"
+  organizations: @youtube, @wolfram_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=N3vGEp1uLvk
+  viewed_at: "2023, December"
+}
+
+mindscape_274_gizem_gumuskaya_on_building_robots_from_human_cells: Reference = {
+  title: "Mindscape 274 | Gizem Gumuskaya on Building Robots from Human Cells"
+  authors: @"Gizem Gumuskaya", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=jwaOzmW3xfs
+  viewed_at: "2023, December"
+}
+
+community_livestream_data_dimensionality: Reference = {
+  title: "Community Livestream | Data & Dimensionality"
+  authors: @""
+  organizations: @youtube, @semf
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=zBV1nLw2WuM
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e173: Reference = {
+  title: "All-In Podcast E173"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=z3Zzlgo-xZM
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e174: Reference = {
+  title: "All-In Podcast E174"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=hZp80SYIRlY
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e175: Reference = {
+  title: "All-In Podcast E175"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=HKtlezdPNAI
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e176: Reference = {
+  title: "All-In Podcast E176"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=1ZQ33OnGFWE
+  viewed_at: "2023, December"
+}
+
+calculus_ratiocinator_vs_characteristica_universalis_the_two_traditions_in_logic_revisited: Reference = {
+  title: "Calculus Ratiocinator vs. Characteristica Universalis? The Two Traditions in Logic, Revisited"
+  authors: @"Volker Peckhaus"
+  date: "(2004)"
+  location: @https://www.researchgate.net/publication/228386287_Calculus_Ratiocinator_vs_Characteristica_Universalis_The_two_traditions_in_logic_revisited
+  viewed_at: "2023, December"
+}
+
+cargo_cult_science: Reference = {
+  title: "Cargo Cult Science"
+  authors: @"Richard P. Feynman"
+  date: "(1974)"
+  location: @https://calteches.library.caltech.edu/51/2/CargoCult.htm
+  viewed_at: "2023, December"
+}
+
+millions_of_children_learn_only_very_little_how_can_the_world_provide_a_better_education_to_the_next_generation: Reference = {
+  title: "Millions of children learn only very little. How can the world provide a better education to the next generation?"
+  authors: @"Max Roser"
+  date: "(2022)"
+  location: @https://ourworldindata.org/better-learning
+  viewed_at: "2023, December"
+}
+
+stripes_2023_annual_letter: Reference = {
+  title: "Stripe's 2023 annual letter"
+  authors: @"Patrick Collison", @"John Collison"
+  date: "(2024)"
+  location: @https://stripe.com/en-nl/annual-updates/2023
+  viewed_at: "2023, December"
+}
+
+playing_valuing_and_living_examining_nietzsches_playful_response_to_nihilism: Reference = {
+  title: "Playing, Valuing, and Living: Examining Nietzsche’s Playful Response to Nihilism"
+  authors: @"Aaron Harper"
+  date: "(2015)"
+  location: @https://philpapers.org/rec/HARPVA-2
+  viewed_at: "2023, December"
+}
+
+the_build_your_own_open_games_engine_bootcamp_part_i_lenses: Reference = {
+  title: "The Build Your Own Open Games Engine Bootcamp — Part I: Lenses"
+  authors: @"Daniele Palombi"
+  date: "(2024)"
+  location: @https://blog.20squares.xyz/open-games-bootcamp-i/
+  viewed_at: "2023, December"
+}
+
+can_ai_solve_science: Reference = {
+  title: "Can AI Solve Science?"
+  authors: @"Stephen Wolfram", @"Richard Assar", @"Nik Murzin"
+  organizations: @wolfram
+  date: "(2024)"
+  location: @https://writings.stephenwolfram.com/2024/03/can-ai-solve-science/
+  viewed_at: "2023, December"
+}
+
+community_livestream_bioelectricity: Reference = {
+  title: "Community Livestream | Bioelectricity"
+  authors: @""
+  organizations: @youtube, @semf
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=XBNh3Yoxei0
+  viewed_at: "2023, December"
+}
+
+quantum_gravity_wolfram_physics_project: Reference = {
+  title: "Quantum Gravity & Wolfram Physics Project"
+  authors: @"Jonathan Gorard", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=ioXwL-c1RXQ
+  viewed_at: "2023, December"
+}
+
+paradigm_shift_ghost_particles_constructor_theory: Reference = {
+  title: "Paradigm Shift, Ghost Particles, Constructor Theory"
+  authors: @"Chiara Marletto", @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=40CB12cj_aM&t=6443s
+  viewed_at: "2023, December"
+}
+
+the_string_theory_iceberg_explained: Reference = {
+  title: "The String Theory Iceberg EXPLAINED"
+  authors: @"Curt Jaimungal"
+  organizations: @youtube, @toe
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=X4PdPnQuwjY&t=9496s
+  viewed_at: "2023, December"
+}
+
+exploring_sniffing_nvidias_ioctls_open_gpu_kernel_modules_debug_ptx_cuda: Reference = {
+  title: "Exploring | sniffing NVIDIA's ioctls | open-gpu-kernel-modules | DEBUG | PTX | CUDA"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=rUsx1b7rQ8Q&t=9910s
+  viewed_at: "2023, December"
+}
+
+programming_writing_a_fuzzer_and_not_getting_triggered_when_the_amd_gpu_crashes_umr: Reference = {
+  title: "Programming | writing a fuzzer and not getting triggered when the AMD GPU crashes UMR"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=BCnTXwhzzxA&t=9780s
+  viewed_at: "2023, December"
+}
+
+programming_ripping_out_all_of_amds_userspace_amdgpu_ioctls_gpu_memory_hsa_kfd: Reference = {
+  title: "Programming | ripping out all of AMD's userspace, AMDGPU ioctls | GPU memory | HSA KFD"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=-iH5wvFnsKs
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e169: Reference = {
+  title: "All-In Podcast E169"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=snbTCWL6rxo
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e170: Reference = {
+  title: "All-In Podcast E170"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=uMajFsCkzxY
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e171: Reference = {
+  title: "All-In Podcast E171"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=3tEcLAud7Nc
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e172: Reference = {
+  title: "All-In Podcast E172"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=4t4YkHSTZbw
+  viewed_at: "2023, December"
+}
+
+shannon_luminary_lecture_series___stephen_fry: Reference = {
+  title: "Shannon Luminary Lecture Series - Stephen Fry"
+  authors: @"Stephen Fry"
+  organizations: @youtube
+  date: "(2017)"
+  location: @https://www.youtube.com/watch?v=24F6C1KfbjM
+  viewed_at: "2023, December"
+}
+
+containers_for_compiler_architecture: Reference = {
+  title: "Containers for compiler architecture"
+  authors: @"Andre Videla"
+  organizations: @youtube
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=BnzAxT-O0Y8
+  viewed_at: "2023, December"
+}
+
+why_it_was_almost_impossible_to_make_the_blue_led: Reference = {
+  title: "Why It Was Almost Impossible to Make the Blue LED"
+  authors: @"@Veritasium"
+  organizations: @youtube
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=AF8d72mA41M
+  viewed_at: "2023, December"
+}
+
+compositional_game_theory_towards_incentives_modelling_at_scale: Reference = {
+  title: "Compositional Game Theory – Towards Incentives Modelling at Scale"
+  authors: @"Jules Hedges"
+  organizations: @youtube
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=2b4hxOP7g9I
+  viewed_at: "2023, December"
+}
+
+mindscape_268_matt_strassler_on_relativity_fields_and_the_language_of_reality: Reference = {
+  title: "Mindscape 268 | Matt Strassler on Relativity, Fields, and the Language of Reality"
+  authors: @"Matt Strassler"
+  organizations: @youtube, @mindscape
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=kCpELmx425w
+  viewed_at: "2023, December"
+}
+
+actinf_mathstream_0091_jonathan_gorard_a_computational_perspective_on_observation_and_cognition: Reference = {
+  title: "ActInf MathStream 009.1 ~ Jonathan Gorard: A computational perspective on observation and cognition"
+  authors: @"Jonathan Gorard"
+  organizations: @youtube, @active_inference_institute
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=I3rhsT-8isk
+  viewed_at: "2023, December"
+}
+
+a_conversation_with_mark_zuckerberg_patrick_collison_and_tyler_cowen: Reference = {
+  title: "A Conversation with Mark Zuckerberg, Patrick Collison and Tyler Cowen"
+  authors: @"Mark Zuckerberg", @"Patrick Collison", @"Tyler Cowen"
+  organizations: @youtube
+  date: "(2019)"
+  location: @https://about.fb.com/news/2019/11/a-conversation-with-mark-zuckerberg-patrick-collison-and-tyler-cowen/
+  viewed_at: "2023, December"
+}
+
+solving_sat_via_positive_supercompilation: Reference = {
+  title: "Solving SAT via Positive Supercompilation"
+  authors: @"Tima Kinsart (Hirrolot)"
+  date: "(2024)"
+  location: @https://hirrolot.github.io/posts/sat-supercompilation.html
+  viewed_at: "2023, December"
+}
+
+navigating_cognition_spatial_codes_for_human_thinking: Reference = {
+  title: "Navigating cognition: Spatial codes for human thinking"
+  authors: @"Jacob L. S. Bellmund", @"Peter Gärdenfors", @"Edvard I. Moser", @"Christian F. Doeller"
+  date: "(2018)"
+  location: @https://www.science.org/doi/10.1126/science.aat6766
+  viewed_at: "2023, December"
+}
+
+towards_a_structural_turn_in_consciousness_science: Reference = {
+  title: "Towards a structural turn in consciousness science"
+  authors: @"Johannes Kleiner"
+  date: "(2024)"
+  location: @https://pubmed.ncbi.nlm.nih.gov/38422757/
+  viewed_at: "2023, December"
+}
+
+the_glass_bead_game: Reference = {
+  title: "The Glass Bead Game"
+  authors: @"Ralph Freedman"
+  date: "(1970)"
+  location: @https://www.nytimes.com/1970/01/04/archives/the-glass-bead-game-glass-bead.html
+  viewed_at: "2023, December"
+}
+
+an_introduction_to_higher_arity_science: Reference = {
+  title: "An Introduction to Higher Arity Science"
+  authors: @"Carlos Zapata-Carratalá"
+  organizations: @youtube
+  date: "(2021)"
+  location: @https://www.youtube.com/watch?v=62UFbGsj5Jg
+  viewed_at: "2023, December"
+}
+
+history_of_science_and_technology_qa_february_28: Reference = {
+  title: "History of Science and Technology Q&A (February 28,"
+  authors: @"Stephen Wolfram"
+  organizations: @youtube
+  date: "2024)"
+  location: @https://www.youtube.com/watch?v=kNXXksujIHM
+  viewed_at: "2023, December"
+}
+
+greta_seminar_higher_arity_algebra_via_hypergraph_rewriting: Reference = {
+  title: "GReTA seminar: Higher-Arity Algebra via Hypergraph Rewriting"
+  authors: @"Carlos Zapata-Carratalá"
+  organizations: @youtube
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=ZBjagJvNEn8
+  viewed_at: "2023, December"
+}
+
+workshop_axiomatic_creation: Reference = {
+  title: "Workshop | Axiomatic Creation"
+  authors: @""
+  organizations: @youtube, @semf
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=StNfdknDQ9c
+  viewed_at: "2023, December"
+}
+
+community_livestream_axioms_creativity: Reference = {
+  title: "Community Livestream | Axioms & Creativity"
+  authors: @""
+  organizations: @youtube, @semf
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=9ddJAJaYk_E
+  viewed_at: "2023, December"
+}
+
+concept_collider_geometry_of_data_and_neural_correlates: Reference = {
+  title: "Concept Collider | Geometry of Data and Neural Correlates"
+  authors: @""
+  organizations: @youtube, @semf
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=mROz1U4VkGY
+  viewed_at: "2023, December"
+}
+
+wolfram_physics_project_working_session___causal_multiway_systems: Reference = {
+  title: "Wolfram Physics Project: Working Session - Causal Multiway Systems"
+  authors: @"Stephen Wolfram", @"Jonathan Gorard"
+  organizations: @youtube, @wolfram
+  date: "(2020)"
+  location: @https://www.youtube.com/watch?v=OXSE6KhRUF4
+  viewed_at: "2023, December"
+}
+
+science_research_session_hyporuliad: Reference = {
+  title: "Science Research Session: Hyporuliad"
+  authors: @"Stephen Wolfram", @"Jonathan Gorard"
+  organizations: @youtube, @wolfram
+  date: "(2023)"
+  location: @https://www.youtube.com/watch?v=lZaBjuHk7Ms
+  viewed_at: "2023, December"
+}
+
+a_conversation_between_bob_coecke_and_stephen_wolfram: Reference = {
+  title: "A conversation between Bob Coecke and Stephen Wolfram"
+  authors: @"Bob Coecke", @"Stephen Wolfram"
+  organizations: @youtube, @wolfram
+  date: "(2021)"
+  location: @https://www.youtube.com/watch?v=8CUTXaGqvSQ
+  viewed_at: "2023, December"
+}
+
+steve_jobs: Reference = {
+  title: "Steve Jobs"
+  authors: @"Walter Isaacson"
+  date: "(2011)"
+  location: @https://en.wikipedia.org/wiki/Steve_Jobs_(book)
+  kind: book
+  viewed_at: "2023, December"
+}
+
+john_cleese_on_creativity_in_management: Reference = {
+  title: "John Cleese on Creativity In Management"
+  authors: @"John Cleese"
+  organizations: @youtube
+  date: "(2017)"
+  location: @https://www.youtube.com/watch?v=Pb5oIIPO62g
+  viewed_at: "2023, December"
+}
+
+the_trillion_dollar_equation: Reference = {
+  title: "The Trillion Dollar Equation"
+  authors: @"@Veritasium"
+  organizations: @youtube
+  date: "(Veritasium)"
+  location: @https://www.youtube.com/watch?v=A5w-dEgIU1M
+  viewed_at: "2023, December"
+}
+
+steve_jobs_president_ceo_next_computer_corp_and_apple_mit_sloan_distinguished_speaker_series: Reference = {
+  title: "Steve Jobs President & CEO, NeXT Computer Corp and Apple. MIT Sloan Distinguished Speaker Series"
+  authors: @"Steve Jobs"
+  organizations: @youtube
+  date: "(1992)"
+  location: @https://www.youtube.com/watch?v=Gk-9Fd2mEnI
+  viewed_at: "2023, December"
+}
+
+carl_sagan_at_mit___management_in_the_year_2000_sloan_school_symposium: Reference = {
+  title: "Carl Sagan at MIT - Management in the Year 2000: Sloan School Symposium"
+  authors: @"Carl Sagan"
+  organizations: @youtube
+  date: "(1987)"
+  location: @https://www.youtube.com/watch?v=gLOZsTMuars
+  viewed_at: "2023, December"
+}
+
+chamath_palihapitiya_socialcapital_startup_grind: Reference = {
+  title: "Chamath Palihapitiya (SocialCapital) @ Startup Grind"
+  authors: @"Chamath Palihapitiya"
+  organizations: @youtube
+  date: "(2015)"
+  location: @https://www.youtube.com/watch?v=ncjum-bkW98
+  viewed_at: "2023, December"
+}
+
+chamath_palihapitiya_speaking_at_waterloo_innovation_summit: Reference = {
+  title: "Chamath Palihapitiya speaking at Waterloo Innovation Summit"
+  authors: @"Chamath Palihapitiya"
+  organizations: @youtube
+  date: "(2016)"
+  location: @https://www.youtube.com/watch?v=D82_ppT2iic
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e165: Reference = {
+  title: "All-In Podcast E165"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=FHO4hoXc75k
+  viewed_at: "2023, December"
+}
+
+all_in_podcast_e164: Reference = {
+  title: "All-In Podcast E164"
+  authors: @"Chamath Palihapitiya", @"Jason Calacanis", @"David Friedberg", @"David O. Sacks"
+  organizations: @youtube, @all_in
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=bUuEE2jmP2c
+  viewed_at: "2023, December"
+}
+
+concept_collider_mathematical_physics_active_inference_free_energy_entropy: Reference = {
+  title: "Concept Collider | Mathematical Physics + Active Inference, Free Energy & Entropy"
+  authors: @""
+  organizations: @youtube, @semf
+  date: "(2024)"
+  location: @https://www.youtube.com/watch?v=GwbLOCCI2yE
+  viewed_at: "2023, December"
+}
+
+crdts_go_brrr: Reference = {
+  title: "CRDTs go brrr"
+  authors: @"Seph Gentle"
+  date: 2021
+  location: @https://josephg.com/blog/crdts-go-brrr/
+  viewed_at: "2023, December"
+}
+
+this_weeks_finds_18_categorifying_the_quantum_harmonic_oscillator: Reference = {
+  title: "This Week's Finds 18: categorifying the quantum harmonic oscillator"
+  authors: @"John Baez"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=pvVm3L92pdc
+  viewed_at: "2023, December"
+}
+
+wolfram_physics_project_working_session_quantum_black_holes_and_other_things: Reference = {
+  title: "Wolfram Physics Project Working Session: Quantum Black Holes and Other Things"
+  authors: @"Stephen Wolfram", @"Jonathan Gorard"
+  organizations: @youtube, @wolfram
+  date: 2023
+  location: @https://www.youtube.com/watch?v=fFEVq76_Pu0
+  viewed_at: "2023, December"
+}
+
+causal_invariance_versus_confluence: Reference = {
+  title: "Causal invariance versus confluence"
+  authors: @"Jonathan Gorard", @"Mark Jeffery"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=LYFzm_xSWXw
+  viewed_at: "2023, December"
+}
+
+crdts_the_hard_parts: Reference = {
+  title: "CRDTs: The Hard Parts"
+  authors: @"Martin Kleppmann"
+  organizations: @youtube
+  date: 2020
+  location: @https://www.youtube.com/watch?v=x7drE24geUw
+  viewed_at: "2023, December"
+}
+
+riak_dynamo_five_years_later_presented: Reference = {
+  title: "Riak & Dynamo, Five Years Later Presented"
+  authors: @"Andy Gross"
+  organizations: @youtube
+  date: 2013
+  location: @https://www.youtube.com/watch?v=AxG9DROsnqg
+  viewed_at: "2023, December"
+}
+
+riak_core___an_erlang_distributed_systems_toolkit: Reference = {
+  title: "Riak Core - An Erlang Distributed Systems Toolkit"
+  authors: @"Andy Gross"
+  date: 2011
+  location: @https://vimeo.com/21772889
+  viewed_at: "2023, December"
+}
+
+zxlive___an_interactive_gui_for_the_zx_calculus___razin_a_shaikh: Reference = {
+  title: "ZXLive - An Interactive GUI for the ZX Calculus - Razin A. Shaikh"
+  authors: @"Razin A. Shaikh"
+  organizations: @youtube, @zx_calculus
+  date: 2023
+  location: @https://www.youtube.com/watch?v=J--c2q-KOc8
+  viewed_at: "2023, December"
+}
+
+graphical_css_code_transformation_using_zx_calculus: Reference = {
+  title: "Graphical CSS Code Transformation Using ZX Calculus"
+  authors: @"Jiaxin Huang"
+  organizations: @youtube, @zx_calculus
+  date: 2023
+  location: @https://www.youtube.com/watch?v=ZhfQxdjodNs
+  viewed_at: "2023, December"
+}
+
+the_zeta_calculus: Reference = {
+  title: "The Zeta Calculus"
+  authors: @"Nicklas Botö"
+  organizations: @youtube, @zx_calculus
+  date: 2023
+  location: @https://www.youtube.com/watch?v=iUHEy3PZCso
+  viewed_at: "2023, December"
+}
+
+how_to_take_the_factorial_of_any_number: Reference = {
+  title: "How to Take the Factorial of Any Number"
+  authors: @"@Lines That Connect"
+  organizations: @youtube
+  date: 2022
+  location: @https://www.youtube.com/watch?v=v_HeaeUUOnc
+  viewed_at: "2023, December"
+}
+
+jeff_bezos_amazon_and_blue_origin_lex_fridman_podcast_405: Reference = {
+  title: "Jeff Bezos: Amazon and Blue Origin | Lex Fridman Podcast #405"
+  authors: @"Jeff Bezos", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: 2023
+  location: @https://www.youtube.com/watch?v=DcWqzZ3I2cY
+  viewed_at: "2023, December"
+}
+
+hr_talk_intro_to_large_language_models: Reference = {
+  title: "[1hr Talk] Intro to Large Language Models"
+  authors: @"Andrej Karpathy"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=zjkBMFhNj_g
+  viewed_at: "2023, December"
+}
+
+stream_0_why_all_video_game_programmers_should_learn_geometric_algebra: Reference = {
+  title: "Stream #0: Why all video game programmers should learn geometric algebra"
+  authors: @"Hamish Todd"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=pHKOdxgr5lE
+  viewed_at: "2023, December"
+}
+
+the_periodic_table_of_geometric_algebras___cl301_does_all_3d_game_math_so_what_does_clpqr_d: Reference = {
+  title: "The Periodic Table of Geometric Algebras - CL(3,0,1) does all 3D game math, so what does CL(p,q,r) d"
+  authors: @"Hamish Todd"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=oXcp3gA8erQ
+  viewed_at: "2023, December"
+}
+
+geometric_algebra_as_a_tool_in_technical_communication: Reference = {
+  title: "Geometric Algebra as a tool in technical communication"
+  authors: @"Hamish Todd"
+  organizations: @youtube
+  date: 2020
+  location: @https://www.youtube.com/watch?v=hR-MQm3c13Q
+  viewed_at: "2023, December"
+}
+
+mindscape_260_ricard_sole_on_the_space_of_cognitions: Reference = {
+  title: "Mindscape 260 | Ricard Solé on the Space of Cognitions"
+  authors: @"Ricard Solé", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: 2024
+  location: @https://www.youtube.com/watch?v=lJltHIlUHvQ
+  viewed_at: "2023, December"
+}
+
+mindscape_261_sanjana_curtis_on_the_origins_of_the_elements: Reference = {
+  title: "Mindscape 261 | Sanjana Curtis on the Origins of the Elements"
+  authors: @"Sanjana Curtis", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: 2024
+  location: @https://www.youtube.com/watch?v=V28YdLuYnjk
+  viewed_at: "2023, December"
+}
+
+mindscape_264_sabine_stanley_on_whats_inside_planets: Reference = {
+  title: "Mindscape 264 | Sabine Stanley on What's Inside Planets"
+  authors: @"Sabine Stanley", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: 2024
+  location: @https://www.youtube.com/watch?v=myU8GNdpPjU
+  viewed_at: "2023, December"
+}
+
+mindscape_263_chris_quigg_on_symmetry_and_the_birth_of_the_standard_model: Reference = {
+  title: "Mindscape 263 | Chris Quigg on Symmetry and the Birth of the Standard Model"
+  authors: @"Chris Quigg", @"Sean Carroll"
+  organizations: @youtube, @mindscape
+  date: 2024
+  location: @https://www.youtube.com/watch?v=-q-HBIBiTQ0
+  viewed_at: "2023, December"
+}
+
+mindscape_262_eric_schwitzgebel_on_the_weirdness_of_the_world: Reference = {
+  title: "Mindscape 262 | Eric Schwitzgebel on the Weirdness of the World"
+  authors: @""
+  organizations: @youtube, @mindscape
+  date: 2024
+  location: @https://www.youtube.com/watch?v=V0evRaWV_HU
+  viewed_at: "2023, December"
+}
+
+just_chatting_techno_optimism_winning_over_nature_progressive_acceleration: Reference = {
+  title: "Just Chatting | techno optimism | Winning over nature | Progressive | Acceleration"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2023
+  location: @https://www.youtube.com/watch?v=WS5wGal3ukw
+  viewed_at: "2023, December"
+}
+
+programming_decision_transformer_reinforcement_learning_rl_lunarlander_part_1: Reference = {
+  title: "Programming | Decision Transformer Reinforcement Learning (RL) | LunarLander | Part 1"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2024
+  location: @https://www.youtube.com/watch?v=8U8kK3SpLTU
+  viewed_at: "2023, December"
+}
+
+programming_rl_is_dumb_and_doesnt_work_reinforcement_learning_lunarlander_part_2: Reference = {
+  title: "Programming | RL is dumb and doesn't work | Reinforcement Learning LunarLander Part 2"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2024
+  location: @https://www.youtube.com/watch?v=-tZkb0vgaDk
+  viewed_at: "2023, December"
+}
+
+researching_rl_is_dumb_and_doesnt_work_theory_reinforcement_learning_part_3: Reference = {
+  title: "Researching | RL is dumb and doesn't work (theory) | Reinforcement Learning | Part 3"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2024
+  location: @https://www.youtube.com/watch?v=Ul5-NKOP8RQ
+  viewed_at: "2023, December"
+}
+
+researching_multigpu_with_hip_or_maybe_without_hip_hsa_hip_graph_part_1: Reference = {
+  title: "Researching | multiGPU with HIP (or maybe without HIP) | HSA | HIP Graph | Part 1"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2024
+  location: @https://www.youtube.com/watch?v=X4J_GUhp9jI
+  viewed_at: "2023, December"
+}
+
+programming_multigpu_with_hip_or_maybe_without_hip_hsa_disable_cache1_part_2: Reference = {
+  title: "Programming | multiGPU with HIP (or maybe without HIP) | HSA_DISABLE_CACHE=1 | Part 2"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2024
+  location: @https://www.youtube.com/watch?v=kh2z9J_gXWg
+  viewed_at: "2023, December"
+}
+
+string_diagram_rewrite_theory_ii_rewriting_with_symmetric_monoidal_structure: Reference = {
+  title: "String Diagram Rewrite Theory II: Rewriting with Symmetric Monoidal Structure"
+  authors: @"Filippo Bonchi", @"Fabio Gadducci", @"Aleks Kissinger", @"Pawel Sobocinski", @"Fabio Zanasi"
+  date: 2022
+  location: @https://arxiv.org/abs/2104.14686
+  viewed_at: "2023, December"
+}
+
+chyp_composing_hypergraphs_proving_theorems: Reference = {
+  title: "Chyp: Composing Hypergraphs, Proving Theorems"
+  authors: @"Aleks Kissinger"
+  date: 2023
+  location: @https://act2023.github.io/papers/paper25.pdf
+  viewed_at: "2023, December"
+}
+
+observer_theory: Reference = {
+  title: "Observer Theory"
+  authors: @"Stephen Wolfram"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/12/observer-theory/
+  viewed_at: "2023, December"
+}
+
+wasm_spectec_engineering_a_formal_language_standard: Reference = {
+  title: "Wasm SpecTec: Engineering a Formal Language Standard"
+  authors: @"Joachim Breitner", @"Philippa Gardner", @"Jaehyun Lee", @"Sam Lindley", @"Matija Pretnar", @"Xiaojia Rao", @"Andreas Rossberg", @"Sukyoung Ryu", @"Wonho Shin", @"Conrad Watt", @"Dongjun Youn"
+  organizations: @wasm
+  date: 2023
+  location: @https://arxiv.org/pdf/2311.07223.pdf
+  viewed_at: "2023, December"
+}
+
+mindscape_259_adam_frank_on_what_aliens_might_be_like: Reference = {
+  title: "Mindscape 259 | Adam Frank on What Aliens Might Be Like"
+  authors: @"Adam Frank", @"Sean Carroll"
+  organizations: @youtube, @preposterous_universe
+  date: 2023
+  location: @https://www.youtube.com/watch?v=UzmlA3g2nRE
+  viewed_at: "2023, December"
+}
+
+animation_vs_physics: Reference = {
+  title: "Animation vs. Physics"
+  authors: @"Alan Becker + Team"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=ErMSHiQRnc8
+  viewed_at: "2023, December"
+}
+
+why_light_can_slow_down_and_why_it_depends_on_color_optics_puzzles: Reference = {
+  title: "Why light can “slow down”, and why it depends on color | Optics puzzles"
+  authors: @"3Blue1Brown"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=KTzGBJPuJwM
+  viewed_at: "2023, December"
+}
+
+lee_cronin_controversial_nature_paper_on_evolution_of_life_and_universe_lex_fridman_podcast_404: Reference = {
+  title: "Lee Cronin: Controversial Nature Paper on Evolution of Life and Universe | Lex Fridman Podcast #404"
+  authors: @"Lee Cronin", @"Lex Fridman"
+  organizations: @youtube, @lex_fridman_podcast
+  date: 2023
+  location: @https://www.youtube.com/watch?v=CGiDqhSdLHk
+  viewed_at: "2023, December"
+}
+
+berkeley_seminar_david_jaz_myers_872023: Reference = {
+  title: "Berkeley Seminar: David Jaz Myers, 8/7/2023"
+  authors: @"David Jaz Myers"
+  organizations: @youtube, @topos_institute
+  date: 2023
+  location: @https://www.youtube.com/watch?v=WvniD62U_W4
+  viewed_at: "2023, December"
+}
+
+yugoslavias_digital_twin: Reference = {
+  title: "Yugoslavia’s Digital Twin"
+  authors: @"Kaloyan Kolev"
+  date: 2023
+  location: @https://www.thedial.world/issue-9/yugolsav-wars-yu-domain-history-icann
+  viewed_at: "2023, December"
+}
+
+physics_explains_why_there_is_no_information_on_social_media: Reference = {
+  title: "Physics explains why there is no information on social media"
+  authors: @"Tiernan Ray"
+  date: 2021
+  location: @https://www.zdnet.com/article/physics-explains-why-there-is-no-information-on-social-media/
+  viewed_at: "2023, December"
+}
+
+how_to_ask_questions_the_smart_way: Reference = {
+  title: "How To Ask Questions The Smart Way"
+  authors: @"Eric S. Raymond", @"Rick Moen"
+  date: "2001-2014"
+  location: @http://www.catb.org/~esr/faqs/smart-questions.html
+  viewed_at: "2023, December"
+}
+
+complexity_mathematics_community_livestream: Reference = {
+  title: "Complexity & Mathematics | Community Livestream"
+  authors: @""
+  organizations: @youtube, @semf
+  date: 2023
+  location: @https://www.youtube.com/watch?v=MWQ7XFjkOhs
+  viewed_at: "2023, December"
+}
+
+holiday_special_livestream: Reference = {
+  title: "Holiday Special Livestream"
+  authors: @""
+  organizations: @youtube, @semf
+  date: 2023
+  location: @https://www.youtube.com/watch?v=m_rATW4Nrqk
+  viewed_at: "2023, December"
+}
+
+just_chatting_tesla_ai_day_2022_science_technology: Reference = {
+  title: "Just Chatting | Tesla AI Day 2022 | Science & Technology"
+  authors: @"George Hotz"
+  organizations: @youtube
+  date: 2022
+  location: @https://www.youtube.com/watch?v=lSXwIzww6Us
+  viewed_at: "2023, December"
+}
+
+programming_mistral_mixtral_on_a_tinybox_amd_p2p_multi_gpu_mixtral_8x7b_32kseqlen: Reference = {
+  title: "Programming | Mistral mixtral on a tinybox | AMD P2P multi-GPU mixtral-8x7b-32kseqlen"
+  authors: @"George Hotz"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=H40QRJFzThQ
+  viewed_at: "2023, December"
+}
+
+programming_what_is_the_q_algorithm_openai_q_star_algorithm_mistral_7b_prm800k: Reference = {
+  title: "Programming | what is the Q* algorithm? OpenAI Q Star Algorithm | Mistral 7B | PRM800K"
+  authors: @"George Hotz"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=2QO3vzwHXhg
+  viewed_at: "2023, December"
+}
+
+just_chatting_effective_accelerationism_eacc_techno_pessimism_deceleration: Reference = {
+  title: "Just Chatting | effective accelerationism | e/acc | Techno-pessimism | Deceleration"
+  authors: @"George Hotz"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=YrWEDOQQ8pw
+  viewed_at: "2023, December"
+}
+
+science_thermodynamics_is_to_energy_as_is_to_intelligence: Reference = {
+  title: "Science | Thermodynamics is to Energy as ??? is to Intelligence"
+  authors: @"George Hotz"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=vn9Dq24RDn8
+  viewed_at: "2023, December"
+}
+
+science_thermodynamics_is_to_energy_as_entropics_is_to_intelligence_part_2: Reference = {
+  title: "Science | Thermodynamics is to Energy as Entropics is to Intelligence | Part 2"
+  authors: @"George Hotz"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=mEoiQ_PZNTE
+  viewed_at: "2023, December"
+}
+
+programming_a_tiny_tour_through_tinygrad_noob_lesson: Reference = {
+  title: "Programming | a tiny tour through tinygrad (noob lesson)"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2023
+  location: @https://www.youtube.com/watch?v=-MhwhiReY-s
+  viewed_at: "2023, December"
+}
+
+programming_tinygrad_writing_tutorials_for_noobs: Reference = {
+  title: "Programming | tinygrad: writing tutorials for noobs"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2023
+  location: @https://www.youtube.com/watch?v=Sk35MKtCXfQ
+  viewed_at: "2023, December"
+}
+
+rant_complaining_about_how_terrible_qualcomm_is_the_business_world: Reference = {
+  title: "Rant | Complaining about how terrible Qualcomm is | The business world"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2023
+  location: @https://www.youtube.com/watch?v=rzb2cuT9vaY
+  viewed_at: "2023, December"
+}
+
+chatting_challenges_hiring_people_vision_building_a_company_tiny_corp_tinygradorg: Reference = {
+  title: "Chatting | challenges hiring people, vision, building a company tiny corp tinygrad.org"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2023
+  location: @https://www.youtube.com/watch?v=4_6eY-8dibI
+  viewed_at: "2023, December"
+}
+
+reading_talking_lets_read_ml_papers: Reference = {
+  title: "Reading & Talking | let's read ML papers"
+  authors: @"George Hotz"
+  organizations: @youtube, @tinycorp
+  date: 2023
+  location: @https://www.youtube.com/watch?v=YrWEDOQQ8pw
+  viewed_at: "2023, December"
+}
+
+string_diagram_rewrite_theory_i: Reference = {
+  title: "String Diagram Rewrite Theory I: Rewriting with Frobenius Structure"
+  authors: @"Filippo Bonchi", @"Fabio Gadducci", @"Aleks Kissinger", @"Pawel Sobocinski", @"Fabio Zanasi"
+  date: 2023
+  location: @https://arxiv.org/abs/2012.01847
+  viewed_at: "2023, November"
+}
+
+reptar: Reference = {
+  title: "Reptar"
+  authors: @"Tavis Ormandy"
+  date: 2023
+  location: @https://lock.cmpxchg8b.com/reptar.html
+  viewed_at: "2023, November"
+}
+
+aggregation_and_tiling_as_multicomputational_processes: Reference = {
+  title: "Aggregation and Tiling as Multicomputational Processes"
+  authors: @"Stephen Wolfram"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/11/aggregation-and-tiling-as-multicomputational-processes/
+  viewed_at: "2023, November"
+}
+
+physics_and_economics_semf_community_livestream: Reference = {
+  title: "Physics & Economics | SEMF Community Livestream"
+  organizations: @youtube, @semf
+  date: 2023
+  location: @https://www.youtube.com/watch?v=enR68VVQPtY
+  viewed_at: "2023, November"
+}
+
+wolfram_institutes_infrageometry_livestreams: Reference = {
+  title: "Wolfram Institute's Infrageometry Project Livestreams"
+  authors: @"Jonathan Gorard", @"Carlos Zapata-Carratalá", @"Nikolay Murzin", @"Utkarsh Bajaj"
+  organizations: @youtube, @wolfram_institute
+  date: 2023
+  location: @https://www.youtube.com/playlist?list=PLtbvsohNkWeVO_PMxoZfDEiiY8tuYOjgf
+  viewed_at: "2023, November"
+}
+
+hypermatrix_workshop: Reference = {
+  title: "HyperMatrix Workshop"
+  authors: @"Edinah Koffi Gnang", @"Richard Kerner", @"Luke Oeding", @"Joshua Grochow", @"Harm Derksen", @"Tali Beynon", @"Michel Rausch", @"Carlos Zapata-Carratalá"
+  organizations: @youtube, @wolfram_institute
+  date: 2023
+  location: @https://www.youtube.com/watch?v=E8s9Daqy_2A
+  viewed_at: "2023, November"
+}
+
+wolfram_physics_project_relations_to_category_theory: Reference = {
+  title: "Wolfram Physics Project: Relations to Category Theory"
+  authors: @"Stephen Wolfram", @"Fabrizio Remano Genovese", @"Matteo Capucci", @"Jonathan Gorard", @"Tali Beynon"
+  organizations: @youtube
+  date: 2020
+  location: @https://www.youtube.com/watch?v=0LAtNXo9rbE
+  viewed_at: "2023, November"
+}
+
+all_concepts_are_cat_sharp: Reference = {
+  title: "All Concepts are Cat#"
+  authors: @"David Spivak"
+  organizations: @youtube, @topos_institute
+  date: 2023
+  location: @https://www.youtube.com/watch?v=_1-rueSZMGc
+  viewed_at: "2023, November"
+}
+
+higher_category_theory_in_cat_sharp: Reference = {
+  title: "(Higher) category theory in Cat^#"
+  authors: @"Brandon Shapiro"
+  organizations: @youtube, @topos_institute
+  date: 2023
+  location: @https://www.youtube.com/watch?v=AKyHHykroWg
+  viewed_at: "2023, November"
+}
+
+abstraction_engineering_with_the_pvs: Reference = {
+  title: "Abstraction Engineering with the Prototype Verification System (PVS)"
+  authors: @"Nat Shankar"
+  organizations: @youtube, @topos_institute
+  date: 2023
+  location: @https://www.youtube.com/watch?v=MHf07noO9KA
+  viewed_at: "2023, November"
+}
+
+causal_vs_acausal_modeling_by_example: Reference = {
+  title: "Causal vs Acausal Modeling By Example: Why Julia ModelingToolkit.jl Scales"
+  authors: @"Chris Rackauckas"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=ZYkojUozeC4
+  viewed_at: "2023, November"
+}
+
+rp_159: Reference = {
+  title: "Entropic Gravity, Black Holes, and the Holographic Principle | RP#159"
+  authors: @"Erik Verlinde", @"Robinson Erhardt"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=TgQg1Oy37r0
+  viewed_at: "2023, November"
+}
+
+rp_118: Reference = {
+  title: "Quantum Physics, the Multiverse, and Time Travel | RP #118"
+  authors: @"Slavoj Žižek", @"Sean Carroll", @"Robinson Erhardt"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=735mYcl3Lrg
+  viewed_at: "2023, November"
+}
+
+mindscape_256: Reference = {
+  title: "Mindscape 256 | Kelly & Zach Weinersmith on Building Cities on the Moon and Mars"
+  authors: @"Kelly & Zach Weinersmith", @"Sean Carroll"
+  organizations: @youtube, @preposterous_universe
+  date: 2023
+  location: @https://www.youtube.com/watch?v=dJqr_cCi9tM
+  viewed_at: "2023, November"
+}
+
+this_weeks_finds_15: Reference = {
+  title: "This Week's Finds 15: combinatorics, groupoid cardinality and species"
+  authors: @"John Baez"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=yLtgs7Fz8aw
+  viewed_at: "2023, November"
+}
+
+this_weeks_finds_14: Reference = {
+  title: "This Week's Finds 14: the 3-strand braid group"
+  authors: @"John Baez"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=MnS4hduP5xg
+  viewed_at: "2023, November"
+}
+
+scales_and_science_fiction_with_biologist_michael_levin: Reference = {
+  title: "Scales and Science Fiction with Biologist Michael Levin"
+  authors: @"Michael Levi", @"Andrea Hiott"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=n15xS4YcyG0
+  viewed_at: "2023, November"
+}
+
+delimited_continuations_for_everyone: Reference = {
+  title: "Delimited Continuations for Everyone"
+  authors: @"Kenichi Asai"
+  organizations: @youtube, @papers_we_love
+  date: 2017
+  location: @https://www.youtube.com/watch?v=QNM-njddhIw
+  viewed_at: "2023, November"
+}
+
+homotopy_type_theory_101: Reference = {
+  title: "Homotopy Type Theory 101"
+  authors: @"Carlo Angiuli"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=VMqF06fDljU
+  viewed_at: "2023, November"
+}
+
+from_categorical_systems_theory_to_categorical_cybernetics: Reference = {
+  title: "From categorical systems theory to categorical cybernetics"
+  authors: @"Matteo Capucci"
+  organizations: @youtube
+  date: 2022
+  location: @https://www.youtube.com/watch?v=wtgfyjFIHBQ
+  viewed_at: "2023, November"
+}
+
+the_search_for_the_perfect_door: Reference = {
+  title: "The Search for the Perfect Door"
+  authors: @"Deviant Ollam"
+  organizations: @youtube
+  date: 2016
+  location: @https://www.youtube.com/watch?v=4YYvBLAF4T8
+  viewed_at: "2023, November"
+}
+
+evolving_brains_solid_liquid_and_synthetic: Reference = {
+  title: "Evolving Brains: Solid, Liquid and Synthetic"
+  authors: @"Ricard Solé"
+  organizations: @youtube, @santa_fe_institute
+  date: 2023
+  location: @https://www.youtube.com/watch?v=EIb5-LJbcIM
+  viewed_at: "2023, November"
+}
+
+critical_thinking_1: Reference = {
+  title: "Critical Thinking - Episode 1: Introductions, Bug Bounty Reports, and BB Tips"
+  authors: @"Joel Margolis", @"Justin Gardner"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.criticalthinkingpodcast.io/episode-1-introductions-bug-bounty-reports-and-bb-tips/
+  viewed_at: "2023, October"
+}
+
+mindscape_253: Reference = {
+  title: "Mindscape 253 | David Deutsch on Science, Complexity, and Explanation"
+  authors: @"David Deutsch", @"Sean Carroll"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=ldgK7EhEnto
+  viewed_at: "2023, October"
+}
+
+past_present_and_future_of_mathematics: Reference = {
+  title: "Past, Present, & Future of Mathematics"
+  authors: @"Grant Sanderson", @"Dwarkesh Patel"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=oDyviiN4NVo
+  viewed_at: "2023, October"
+}
+
+god_mode_unlocked_hardware_backdoors_in_x86_cpus: Reference = {
+  title: "GOD MODE UNLOCKED - Hardware Backdoors in x86 CPUs"
+  authors: @"Christopher Domas"
+  organizations: @youtube
+  date: 2018
+  location: @https://www.youtube.com/watch?v=_eSAF_qT_FY
+  viewed_at: "2023, October"
+}
+
+breaking_the_x86_instruction_set: Reference = {
+  title: "Breaking the x86 Instruction Set"
+  authors: @"Christopher Domas"
+  organizations: @youtube
+  date: 2017
+  location: @https://www.youtube.com/watch?v=KrksBdWcZgQ
+  viewed_at: "2023, October"
+}
+
+reductio_ad_absurdum: Reference = {
+  title: "reductio ad absurdum"
+  authors: @"Christopher Domas"
+  organizations: @youtube
+  date: 2017
+  location: @https://www.youtube.com/watch?v=NmWwRmvjAE8
+  viewed_at: "2023, October"
+}
+
+the_ring_0_facade_awakening_the_processors_inner_demons: Reference = {
+  title: "The Ring 0 Facade Awakening the Processors Inner Demons"
+  authors: @"Christopher Domas"
+  organizations: @youtube
+  date: 2018
+  location: @https://www.youtube.com/watch?v=XH0F9r0siTI
+  viewed_at: "2023, October"
+}
+
+the_discover_of_zenbleed: Reference = {
+  title: "The Discovery of Zenbleed"
+  authors: @"Tavis Ormandy", @" Fabian Faessler (LiveOverflow)"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=neWc0H1k2Lc
+  viewed_at: "2023, October"
+}
+
+higher_order_company_origins_of_the_hvm: Reference = {
+  title: "Higher Order Company - Origins of the HVM"
+  authors: @"Victor Taelin"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=UQNNs77SpXA
+  viewed_at: "2023, October"
+}
+
+mlst_observers: Reference = {
+  title: "MLST - Observers"
+  authors: @"Stephen Wolfram", @"Karl Friston", @"Keith Duggar"
+  organizations: @youtube, @mlst
+  date: 2023
+  location: @https://www.youtube.com/watch?v=6iaT-0Dvhnc
+  viewed_at: "2023, October"
+}
+
+compositional_intelligence: Reference = {
+  title: "Compositional Intelligence"
+  authors: @"Bob Coecke"
+  organizations: @youtube, @topos_institute
+  date: 2022
+  location: @https://www.youtube.com/watch?v=03ZPDyj8TtM
+  viewed_at: "2023, October"
+}
+
+modernizing_compiler_design_for_carbon_toolchain: Reference = {
+  title: "Modernizing Compiler Design for Carbon Toolchain"
+  authors: @"Chandler Carruth"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=ZI198eFghJk
+  viewed_at: "2023, October"
+}
+
+yasp_episode_2: Reference = {
+  title: "Automated Reasoning, SMT Solvers, Artificial Intelligence • YASP #2"
+  authors: @"Clark Barrett"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=RVjQkUI0kcw
+  viewed_at: "2023, October"
+}
+
+cursorless_a_spoken_language_for_editing_code: Reference = {
+  title: "Cursorless: A spoken language for editing code"
+  authors: @"Pokey Rule"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=NcUJnmBqHTY
+  viewed_at: "2023, October"
+}
+
+computational_phsyics_beyond_the_glass: Reference = {
+  title: "Computational Physics, Beyond the Glass"
+  authors: @"Sam Ritchie"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=Jv2JgzAl5yU
+  viewed_at: "2023, October"
+}
+
+an_approach_to_computing_and_sustainability_inspired_from_permaculture: Reference = {
+  title: "An approach to computing and sustainability inspired from permaculture"
+  authors: @"Devine Lu Linvega"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=T3u7bGgVspM
+  viewed_at: "2023, October"
+}
+
+the_economics_of_programming_languages: Reference = {
+  title: "The Economics of Programming Languages"
+  authors: @"Evan Czaplicki"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=XZ3w_jec1v8
+  viewed_at: "2023, October"
+}
+
+war_time_proofs_and_futuristic_programs: Reference = {
+  title: "War Time Proofs and Futuristic Programs"
+  authors: @"Valeria de Paiva"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=4_6uboxUYR8
+  viewed_at: "2023, October"
+}
+
+from_geometry_to_algebra_and_back_again_4000_years_of_papers: Reference = {
+  title: "From Geometry to Algebra and Back Again: 4000 Years of Papers"
+  authors: @"Jack Rusher"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=1cRFfYQYGxE
+  viewed_at: "2023, October"
+}
+
+we_really_dont_know_how_to_compute: Reference = {
+  title: "We Really Don't Know How to Compute!"
+  authors: @"Gerald Sussman"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=HB5TrK7A4pI
+  viewed_at: "2023, October"
+}
+
+why_programming_languages_matter: Reference = {
+  title: "Why Programming Languages Matter"
+  authors: @"Andrew Black"
+  organizations: @youtube, @strangeloop
+  date: 2023
+  location: @https://www.youtube.com/watch?v=JqYCt9rTG8g
+  viewed_at: "2023, October"
+}
+
+ipvm_seamless_services_for_an_open_world: Reference = {
+  title: "IPVM: Seamless Services for an Open World"
+  authors: @"Brooklyn Zelenka"
+  organizations: @youtube, @strangeloop, @wasm
+  date: 2023
+  location: @https://www.youtube.com/watch?v=Z5U8JQZXABs
+  viewed_at: "2023, October"
+}
+
+inside_the_wizard_research_engine: Reference = {
+  title: "Inside the Wizard Research Engine"
+  authors: @"Ben L. Titzer"
+  organizations: @youtube, @strangeloop, @wasm
+  date: 2023
+  location: @https://www.youtube.com/watch?v=43ENxjq2Vhc
+  viewed_at: "2023, October"
+}
+
+curry_howard_is_overrated: Reference = {
+  title: "Curry-Howard is overrated"
+  authors: @"Simon Cruanes"
+  date: 2021
+  location: @https://blag.cedeela.fr/curry-howard-scam/
+  viewed_at: "2023, October"
+}
+
+dune: Reference = {
+  title: "Dune"
+  authors: @"Herbert, Frank"
+  published: @"Ace Books"
+  date: 1965
+  location: @https://en.wikipedia.org/wiki/Dune_(novel)
+  kind: book
+  found_at: "2021"
+  viewed_at: "2021"
+}
+
+dune_messiah: Reference = {
+  title: "Dune Messiah"
+  authors: @"Herbert, Frank"
+  published: @"Ace Books"
+  date: 1969
+  location: @https://en.wikipedia.org/wiki/Dune_Messiah
+  kind: book
+  found_at: "2021"
+  viewed_at: "2021"
+}
+
+children_of_dune: Reference = {
+  title: "Children of Dune"
+  authors: @"Herbert, Frank"
+  published: @"Ace Books"
+  date: 1976
+  location: @https://en.wikipedia.org/wiki/Children_of_Dune
+  kind: book
+  found_at: "2021"
+  viewed_at: "2021"
+}
+
+god_emperor_of_dune: Reference = {
+  title: "God Emperor of Dune"
+  authors: @"Herbert, Frank"
+  published: @"Ace Books"
+  date: 1981
+  location: @https://en.wikipedia.org/wiki/God_Emperor_of_Dune
+  kind: book
+  found_at: "2021"
+  viewed_at: "2022"
+}
+
+heretics_of_dune: Reference = {
+  title: "Heretics of Dune"
+  authors: @"Herbert, Frank"
+  published: @"Ace Books"
+  date: 1984
+  location: @https://en.wikipedia.org/wiki/Heretics_of_Dune
+  kind: book
+  found_at: "2021"
+  viewed_at: "2022"
+}
+
+chapterhouse_dune: Reference = {
+  title: "Chapterhouse: Dune"
+  authors: @"Herbert, Frank"
+  published: @"Ace Books"
+  date: 1985
+  location: @https://en.wikipedia.org/wiki/Chapterhouse:_Dune
+  kind: book
+  status: in_progress
+  found_at: "2021"
+  viewed_at: "2022 - "
+}
+
+fluid_concepts_and_creative_analogies: Reference = {
+  title: "Fluid concepts and creative analogies: Computer models of the fundamental mechanisms of thought"
+  authors: @"Hofstadter, Douglas R"
+  published: @"Basic books"
+  date: 1995
+  location: @https://en.wikipedia.org/wiki/Fluid_Concepts_and_Creative_Analogies
+  kind: book
+  found_at: "January, 2022"
+  viewed_at: "January, 2022 - May, 2022"
+}
+
+godel_escher_bach: Reference = {
+  title: "Gödel, escher, bach"
+  authors: @"Hofstadter, Douglas R"
+  published: @"New York: Basic books"
+  date: 1979
+  location: @https://en.wikipedia.org/wiki/G%C3%B6del,_Escher,_Bach
+  kind: book
+  status: in_progress
+  found_at: "March, 2022"
+  viewed_at: "March, 2022 - "
+}
+
+quantum_einstein_bohr_and_the_great_debate_about_the_nature_of_reality: Reference = {
+  title: "Quantum: Einstein, Bohr and the great debate about the nature of reality"
+  authors: @"Kumar, Manjit"
+  published: @"Icon Books Ltd"
+  date: 2008
+  location: @https://en.wikipedia.org/wiki/Quantum_(book)
+  kind: book
+  found_at: "2022"
+  viewed_at: "2022 - October, 2022"
+}
+
+the_art_of_war: Reference = {
+  title: "The Art of War / Sun Tzu"
+  authors: @"Cleary, Thomas"
+  published: @"Thomas Clearly translation. Shambhala Publications"
+  date: "6th cent. B.C."
+  location: @https://en.wikipedia.org/wiki/Thomas_Cleary
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "2022"
+  archived: true
+}
+
+_1984: Reference = {
+  title: "1984"
+  authors: @"Orwell, George"
+  published: @"Secker & Warburg"
+  date: 1949
+  location: @https://en.wikipedia.org/wiki/Nineteen_Eighty-Four
+  kind: book
+  found_at: "2021"
+  viewed_at: "2021"
+}
+
+animal_farm: Reference = {
+  title: "Animal Farm"
+  authors: @"Orwell, George"
+  published: @"Secker & Warburg"
+  date: 1945
+  location: @https://en.wikipedia.org/wiki/Animal_Farm
+  status: in_progress
+  found_at: "2021"
+  viewed_at: "2021"
+  archived: true
+}
+
+the_future_of_humanity: Reference = {
+  title: "The Future of Humanity: Terraforming Mars, Interstellar Travel, Immortality, and Our Destiny Beyond Earth"
+  authors: @"Kaku, Michio"
+  published: @"Doubleday"
+  date: 2018
+  location: @https://en.wikipedia.org/wiki/The_Future_of_Humanity
+  found_at: "2022"
+  viewed_at: "November, 2022"
+}
+
+foundation: Reference = {
+  title: "Foundation"
+  authors: @"Asimov, Isaac"
+  published: @"Gnome Press"
+  date: 1951
+  location: @https://en.wikipedia.org/wiki/Foundation_(Asimov_novel)
+  kind: book
+  found_at: "2022"
+  viewed_at: "October, 2022"
+}
+
+second_foundation: Reference = {
+  title: "Second Foundation"
+  authors: @"Asimov, Isaac"
+  published: @"Gnome Press"
+  date: 1953
+  location: @https://en.wikipedia.org/wiki/Second_Foundation
+  kind: book
+  found_at: "2022"
+  viewed_at: "October, 2022 - January, 2023"
+}
+
+foundation_and_empire: Reference = {
+  title: "Foundation and Empire"
+  authors: @"Asimov, Isaac"
+  published: @"Gnome Press"
+  date: 1952
+  location: @https://en.wikipedia.org/wiki/Foundation_and_Empire
+  kind: book
+  found_at: "2022"
+  viewed_at: "January, 2023"
+}
+
+prelude_to_foundation: Reference = {
+  title: "Prelude to Foundation"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1988
+  location: @https://en.wikipedia.org/wiki/Prelude_to_Foundation
+  kind: book
+  found_at: "2022"
+  viewed_at: "April, 2023"
+}
+
+foundations_edge: Reference = {
+  title: "Foundation's Edge"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1982
+  location: @https://en.wikipedia.org/wiki/Foundation%27s_Edge
+  kind: book
+  found_at: "2022"
+  viewed_at: "March, 2023"
+}
+
+foundation_and_earth: Reference = {
+  title: "Foundation and Earth"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1986
+  location: @https://en.wikipedia.org/wiki/Foundation_and_Earth
+  kind: book
+  found_at: "2022"
+  viewed_at: "March, 2023"
+}
+
+forward_the_foundation: Reference = {
+  title: "Forward the Foundation"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1993
+  location: @https://en.wikipedia.org/wiki/Forward_the_Foundation
+  kind: book
+  found_at: "2022"
+  viewed_at: "May, 2023"
+}
+
+i_robot: Reference = {
+  title: "I, Robot"
+  authors: @"Asimov, Isaac"
+  published: @"Gnome Press"
+  date: 1950
+  location: @https://en.wikipedia.org/wiki/I,_Robot
+  kind: book
+  found_at: "2022"
+  viewed_at: "April, 2023"
+}
+
+the_rest_of_the_robots: Reference = {
+  title: "The Rest of the Robots"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1964
+  location: @https://en.wikipedia.org/wiki/The_Rest_of_the_Robots
+  kind: book
+  found_at: "2022"
+  viewed_at: "May, 2023"
+}
+
+the_complete_robot: Reference = {
+  title: "The Complete Robot"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1982
+  location: @https://en.wikipedia.org/wiki/The_Complete_Robot
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "June, 2023"
+}
+
+the_caves_of_steel: Reference = {
+  title: "The Caves of Steel"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1954
+  location: @https://en.wikipedia.org/wiki/The_Caves_of_Steel
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "August, 2023"
+}
+
+the_naked_sun: Reference = {
+  title: "The Naked Sun"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1957
+  location: @https://en.wikipedia.org/wiki/The_Naked_Sun
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "August, 2023"
+}
+
+the_robots_of_dawn: Reference = {
+  title: "The Robots of Dawn"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1983
+  location: @https://en.wikipedia.org/wiki/The_Robots_of_Dawn
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "September, 2023"
+}
+
+robots_and_empire: Reference = {
+  title: "Robots and Empire"
+  authors: @"Asimov, Isaac"
+  published: @"Doubleday"
+  date: 1985
+  location: @https://en.wikipedia.org/wiki/Robots_and_Empire
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "October, 2023"
+}
+
+the_rise_and_fall_of_the_third_reich: Reference = {
+  title: "The Rise and Fall of the Third Reich"
+  authors: @"Shirer, William L"
+  published: @"Simon & Schuster"
+  date: 1960
+  location: @https://en.wikipedia.org/wiki/The_Rise_and_Fall_of_the_Third_Reich
+  kind: book
+  status: in_progress
+  found_at: "July, 2022"
+  viewed_at: "September, 2022 - "
+}
+
+a_new_kind_of_science: Reference = {
+  title: "A new kind of science?"
+  authors: @"Wolfram, Stephen", @"M. Gad-el-Hak"
+  published: @"Appl. Mech. Rev. 56.2"
+  date: 2003
+  location: @https://www.wolframscience.com/nks/
+  status: in_progress
+}
+
+a_project_to_find_the_fundamental_theory_of_physics: Reference = {
+  title: "A Project to Find the Fundamental Theory of Physics"
+  authors: @"Wolfram, Stephen"
+  published: @"Wolfram Media, Inc."
+  date: 2020
+  location: @https://www.wolframphysics.org/
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "December, 2022 - "
+}
+
+combinators_a_centennial_view: Reference = {
+  title: "Combinators, A Centennial View"
+  authors: @"Wolfram, Stephen"
+  published: @"Wolfram Media, Inc."
+  date: 2021
+  location: @https://arxiv.org/pdf/2103.12811.pdf
+  kind: book
+  found_at: "2022"
+  viewed_at: "December, 2022 - January, 2023"
+}
+
+metamathematics: Reference = {
+  title: "Metamathematics: Foundations & Physicalization"
+  authors: @"Wolfram, Stephen"
+  published: @"Wolfram Media, Inc."
+  date: 2022
+  location: @https://arxiv.org/abs/2204.05123
+  kind: book
+  found_at: "2023"
+  viewed_at: "May, 2023"
+}
+
+twenty_years_nks: Reference = {
+  title: "Twenty Years of a New Kind of Science"
+  authors: @"Wolfram, Stephen"
+  published: @"Wolfram Media, Inc."
+  date: 2022
+  location: @https://www.wolfram-media.com/products/twenty-years-of-a-new-kind-of-science/
+  kind: book
+  found_at: "2023"
+  viewed_at: "June, 2023"
+}
+
+the_selfish_gene: Reference = {
+  title: "The Selfish Gene"
+  authors: @"Dawkins, Richard"
+  published: @"Oxford University Press"
+  date: 1976
+  location: @https://en.wikipedia.org/wiki/The_Selfish_Gene
+  kind: book
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "February 2023 - "
+}
+
+transformer: Reference = {
+  title: "Transformer: The Deep Chemistry of Life and Death"
+  authors: @"Lane, Nick"
+  published: @"W.W. Norton & Company"
+  date: 2022
+  location: @https://en.wikipedia.org/wiki/Nick_Lane
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "May 2023 - "
+}
+
+the_vital_question: Reference = {
+  title: "The Vital Question: Why Is Life The Way It Is?"
+  authors: @"Lane, Nick"
+  published: @"Profile Books"
+  date: 2015
+  location: @https://en.wikipedia.org/wiki/Nick_Lane
+  status: in_progress
+  found_at: "2022"
+  viewed_at: "May 2023 - "
+}
+
+a_thousand_brains: Reference = {
+  title: "A Thousand Brains: A New Theory of Intelligence"
+  authors: @"Hawkins, Jeff"
+  date: 2021
+  location: @https://www.numenta.com/resources/books/a-thousand-brains-by-jeff-hawkins/
+  kind: book
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+reasoning_with_belief_functions: Reference = {
+  title: "Reasoning with belief functions: An analysis of compatibility"
+  authors: @"Pearl, Judea"
+  published: @"International Journal of Approximate Reasoning"
+  date: 1990
+  location: @https://www.sciencedirect.com/science/article/pii/0888613X9090013R/pdf
+  found_at: "2022"
+  viewed_at: "October 2022"
+}
+
+context_aware_computing_applications: Reference = {
+  title: "Context-Aware Computing Applications"
+  authors: @"Schilit, Bill, Norman Adams, and Roy Want"
+  published: @"first workshop on mobile computing systems and applications. IEEE"
+  date: 1994
+  location: @https://www.cs.cmu.edu/~./jasonh/courses/ubicomp-sp2007/papers/12-wmc-94-schilit.pdf
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+is_realism_compatible_with_true_randomness: Reference = {
+  title: "Is realism compatible with true randomness?"
+  authors: @"Gisin, Nicolas"
+  published: @"arXiv"
+  date: 2010
+  location: @https://arxiv.org/pdf/1012.2536
+  found_at: "2022"
+  viewed_at: "September 2022"
+}
+
+what_is_a_knowledge_representation: Reference = {
+  title: "What Is a Knowledge Representation?"
+  authors: @"Davis, Randall, Howard Shrobe, and Peter Szolovits"
+  published: @"AI magazine 14.1"
+  date: 1993
+  location: @https://ojs.aaai.org/index.php/aimagazine/article/download/1029/947
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+learning_to_represent_programs_with_graphs: Reference = {
+  title: "Learning to Represent Programs with Graphs"
+  authors: @"Allamanis, Miltiadis, Marc Brockschmidt, and Mahmoud Khademi"
+  published: @"arXiv"
+  date: 2017
+  location: @https://arxiv.org/pdf/1711.00740
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+a_theory_of_incremental_compression: Reference = {
+  title: "A theory of incremental compression"
+  authors: @"Franz, Arthur, Oleksandr Antonenko, and Roman Soletskyi"
+  published: @"Information Sciences 547"
+  date: 2021
+  location: @https://arxiv.org/pdf/1908.03781
+  found_at: "2022"
+  viewed_at: "August 2022"
+}
+
+on_the_measure_of_intelligence: Reference = {
+  title: "On the Measure of Intelligence"
+  authors: @"Chollet, François"
+  published: @"arXiv"
+  date: 2019
+  location: @https://arxiv.org/pdf/1911.01547
+  found_at: "2022"
+  viewed_at: "December 2022"
+}
+
+empiricism_semantics_and_ontology: Reference = {
+  title: "Empiricism, Semantics, and Ontology"
+  authors: @"Carnap, Rudolf"
+  published: @"Revue internationale de philosophie"
+  date: 1950
+  location: @https://authortomharper.com/wp-content/uploads/2022/04/1950-Empiricism-Semantics-and-Ontology-Carnap.pdf
+  found_at: "2022"
+  viewed_at: "October 2022"
+}
+
+hutter_prize: Reference = {
+  title: "Hutter Prize"
+  authors: @"Hutter, Marcus"
+  location: @https://en.wikipedia.org/wiki/Hutter_Prize
+}
+
+going_beyond_the_point_neuron: Reference = {
+  title: "Going Beyond the Point Neuron: Active Dendrites and Sparse Representations for Continual Learning"
+  authors: @"Grewal, Karan, et al."
+  published: @"bioRxiv"
+  date: 2021
+  location: @https://www.biorxiv.org/content/biorxiv/early/2021/10/26/2021.10.25.465651.full.pdf
+  found_at: "2022"
+  viewed_at: "September 2022"
+}
+
+the_general_theory_of_general_intelligence: Reference = {
+  title: "The General Theory of General Intelligence: A Pragmatic Patternist Perspective"
+  authors: @"Goertzel, Ben"
+  published: @"arXiv"
+  date: 2021
+  location: @https://arxiv.org/pdf/2103.15100
+  found_at: "2022"
+  viewed_at: "September 2022"
+}
+
+embodied_situated_and_grounded_intelligence: Reference = {
+  title: "Embodied, Situated, and Grounded Intelligence: Implications for AI"
+  authors: @"Millhouse, Tyler, Melanie Moses, and Melanie Mitchell"
+  published: @"arXiv"
+  date: 2022
+  location: @https://arxiv.org/pdf/2210.13589
+  found_at: "2022"
+  viewed_at: "October 2022"
+}
+
+the_debate_over_understanding_in_ai_large_language_models: Reference = {
+  title: "The Debate Over Understanding in AI’s Large Language Models"
+  authors: @"Mitchell, Melanie, and David C. Krakauer"
+  published: @"Proceedings of the National Academy of Sciences 120.13"
+  date: 2023
+  location: @https://www.pnas.org/doi/full/10.1073/pnas.2215907120
+  found_at: "2022"
+  viewed_at: "November 2022"
+}
+
+beyond_programming_languages: Reference = {
+  title: "Beyond Programming Languages"
+  authors: @"Winograd, Terry"
+  published: @"Communications of the ACM 22.7"
+  date: 1979
+  location: @https://dl.acm.org/doi/pdf/10.1145/359131.359133
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+data_compression_explained: Reference = {
+  title: "Data Compression Explained"
+  authors: @"Mahoney, Matt"
+  published: @"Mahoney, Matt"
+  date: 2010
+  location: @https://mattmahoney.net/dc/dce.html
+  found_at: "2022"
+  viewed_at: "June 2022"
+}
+
+ipfs_fan_a_function_addressable_computation_network: Reference = {
+  title: "IPFS-FAN: A Function-Addressable Computation Network"
+  authors: @"de la Rocha, Alfonso, Yiannis Psaras, and David Dias"
+  published: @"IFIP Networking Conference (IFIP Networking). IEEE"
+  date: 2021
+  location: @http://opendl.ifip-tc6.org/db/conf/networking/networking2021/1570713481.pdf
+  found_at: "2022"
+  viewed_at: "December 2022"
+}
+
+avoiding_catastrophe_active_dendrites_enable_multi_task_learning_in_dynamics_environments: Reference = {
+  title: "Avoiding Catastrophe: Active Dendrites Enable Multi-Task Learning in Dynamic Environments"
+  authors: @"Iyer, Abhiram, et al."
+  published: @"Frontiers in neurorobotics 16"
+  date: 2022
+  location: @https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9100780/
+  found_at: "2022"
+  viewed_at: " 2022"
+}
+
+games_and_puzzles_as_multicomputational_systems: Reference = {
+  title: "Games and Puzzles as Multicomputational Systems"
+  authors: @"Wolfram, Stephen"
+  date: 2022
+  location: @https://writings.stephenwolfram.com/2022/06/games-and-puzzles-as-multicomputational-systems/
+  found_at: "2022"
+  viewed_at: "November 2022"
+}
+
+a_thousand_brains_toward_biologically_constrained_ai: Reference = {
+  title: "A thousand brains: toward biologically constrained AI"
+  authors: @"Hole, Kjell Jørgen, and Subutai Ahmad"
+  published: @"SN Applied Sciences 3.8"
+  date: 2021
+  location: @https://link.springer.com/article/10.1007/s42452-021-04715-0
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+is_probability_theory_relevant_for_uncertainty: Reference = {
+  title: "Is Probability Theory Relevant for Uncertainty? A Post Keynesian Perspective"
+  authors: @"Davidson, Paul"
+  published: @"Journal of Economic Perspectives 5.1"
+  date: 1991
+  location: @https://pubs.aeaweb.org/doi/pdf/10.1257/jep.5.1.129
+  found_at: "2022"
+  viewed_at: " 2022"
+}
+
+multicomputation_a_fourth_paradigm_for_theoretical_science: Reference = {
+  title: "Multicomputation: A Fourth Paradigm for Theoretical Science"
+  authors: @"Wolfram, Stephen"
+  date: 2021
+  location: @https://writings.stephenwolfram.com/2021/09/multicomputation-a-fourth-paradigm-for-theoretical-science/
+  found_at: "2022"
+  viewed_at: "December 2022"
+}
+
+attention_is_all_you_need: Reference = {
+  title: "Attention Is All You Need"
+  authors: @"Vaswani, Ashish, et al."
+  published: @"Advances in neural information processing systems 30"
+  date: 2017
+  location: @https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf
+  found_at: "2022"
+  viewed_at: "November 2022"
+}
+
+on_the_einstein_podolsky_rosen_paradox: Reference = {
+  title: "On the Einstein Podolsky Rosen Paradox"
+  authors: @"Bell, John S."
+  published: @"Physics Physique Fizika 1.3 "
+  date: 1964
+  location: @https://link.aps.org/pdf/10.1103/PhysicsPhysiqueFizika.1.195
+  found_at: "2022"
+  viewed_at: "June 2022"
+}
+
+the_algorithmic_origins_of_life: Reference = {
+  title: "The algorithmic origins of life"
+  authors: @"Walker, Sara Imari, and Paul CW Davies"
+  published: @"Journal of the Royal Society Interface 10.79"
+  date: 2013
+  location: @https://royalsocietypublishing.org/doi/full/10.1098/rsif.2012.0869
+  found_at: "2022"
+  viewed_at: "November 2022"
+}
+
+the_computer_for_the_21st_century: Reference = {
+  title: "The computer for the 21st century"
+  authors: @"Weiser, Mark"
+  published: @"Scientific american 265.3 "
+  date: 1991
+  location: @https://www.academia.edu/download/50943771/scientificamerican0991-9420161217-28996-1rvsbxf.pdf
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+sok_sanitizing_for_security: Reference = {
+  title: "SoK: Sanitizing for Security"
+  authors: @"Song, Dokyung, et al."
+  published: @"IEEE Symposium on Security and Privacy (SP). IEEE"
+  date: 2019
+  location: @https://arxiv.org/pdf/1806.04355
+  found_at: "2022"
+  viewed_at: "May 2022"
+}
+
+uncertainty_belief_and_probability: Reference = {
+  title: "Uncertainty, belief, and probability"
+  authors: @"Fagin, Ronald, and Joseph Y. Halpern"
+  published: @"Computational Intelligence 7.3"
+  date: 1991
+  location: @https://s3.us.cloud-object-storage.appdomain.cloud/res-files/500-comint91.pdf
+  found_at: "2022"
+  viewed_at: "September 2022"
+}
+
+on_defining_artifical_intelligence: Reference = {
+  title: "On Defining Artificial Intelligence"
+  authors: @"Wang, Pei"
+  published: @"Journal of Artificial General Intelligence 10.2"
+  date: 2019
+  location: @https://sciendo.com/downloadpdf/journals/jagi/10/2/article-p1.pdf
+  found_at: "2022"
+  viewed_at: "August 2022"
+}
+
+robust_speech_recognition_via_large_scale_weak_supervision: Reference = {
+  title: "Robust Speech Recognition via Large-Scale Weak Supervision"
+  authors: @"Radford, Alec, et al."
+  published: @"arXiv"
+  date: 2022
+  location: @https://arxiv.org/pdf/2212.04356
+  found_at: "2022"
+  viewed_at: "December 2022"
+}
+
+interaction_combinators: Reference = {
+  title: "Interaction Combinators"
+  authors: @"Lafont, Yves."
+  published: @"Information and Computation 137.1"
+  date: 1997
+  location: @https://www.sciencedirect.com/science/article/pii/S0890540197926432/pdf?md5=30965cec6dd7605a865bbec4076f65e4&pid=1-s2.0-S0890540197926432-main.pdf
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+von_neumanns_impossibility_proof_mathematics_in_the_service_of_rhetorics: Reference = {
+  title: "Von Neumann’s Impossibility Proof: Mathematics in the Service of Rhetorics"
+  authors: @"Dieks, Dennis"
+  published: @"Studies in History and Philosophy of Science Part B: Studies in History and Philosophy of Modern Physics 60"
+  date: 2017
+  location: @https://arxiv.org/pdf/1801.09305
+  found_at: "2023"
+  viewed_at: "February 2023"
+}
+
+perfectly_secure_steganography_using_minimum_entropy_coupling: Reference = {
+  title: "Perfectly Secure Steganography Using Minimum Entropy Coupling"
+  authors: @"de Witt, Christian Schroeder, et al."
+  published: @"arXiv"
+  date: 2022
+  location: @https://arxiv.org/pdf/2210.14889
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+general_intelligence_requires_rethinking_exploration: Reference = {
+  title: "General Intelligence Requires Rethinking Exploration"
+  authors: @"Jiang, Minqi, Tim Rocktäschel, and Edward Grefenstette"
+  published: @"arXiv"
+  date: 2022
+  location: @https://arxiv.org/pdf/2211.07819
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+densepose_from_wifi: Reference = {
+  title: "DensePose From WiFi"
+  authors: @"Geng, Jiaqi, Dong Huang, and Fernando De la Torre"
+  published: @"arXiv"
+  date: 2022
+  location: @https://arxiv.org/pdf/2301.00250
+  found_at: "2023"
+  viewed_at: "February 2023"
+}
+
+a_mechanized_formalization_of_the_webassembly_specification_in_coq: Reference = {
+  title: "A Mechanized Formalization of the WebAssembly Specification in Coq"
+  authors: @"Huang, Xuan"
+  published: @"RIT Computer Science"
+  date: 2019
+  location: @https://www.semanticscholar.org/paper/A-Mechanized-Formalization-of-the-WebAssembly-in-Huang/2fde569f52c37fe8e45ebf05268e1b4341b58cbf
+  found_at: "2023"
+  viewed_at: "May 2023"
+}
+
+a_denotational_semantics_for_the_symmetric_interaction_combinators: Reference = {
+  title: "A Denotational Semantics for the Symmetric Interaction Combinators"
+  authors: @"Mazza, Damian"
+  published: @"Mathematical Structures in Computer Science 17.3 "
+  date: 2007
+  location: @https://www.researchgate.net/profile/Damiano-Mazza/publication/220173732_A_denotational_semantics_for_the_symmetric_interaction_combinators/links/0912f50f4273696c14000000/A-denotational-semantics-for-the-symmetric-interaction-combinators.pdf
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+deep_self_modeling_as_a_fundamental_principle_in_the_design_of_intelligent_systems: Reference = {
+  title: "Deep self-modeling as a fundamental principle in the design of intelligent systems"
+  authors: @"Dean, George"
+  published: @"Lab42"
+  date: 2022
+  location: @https://lab42.global/past-challenges/essay-intelligence/
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+ai_artificial_intelligence_or_artifical_ignorance: Reference = {
+  title: "A.I. (Artificial Intelligence or Artificial Ignorance?"
+  authors: @"Pavan, Massimiliano"
+  published: @"Lab42"
+  date: 2022
+  location: @https://lab42.global/past-challenges/essay-intelligence/
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+from_hume_to_human_ai_a_return_to_the_foundations_and_restrictions_of_humean_reasoning: Reference = {
+  title: "From Hume to Human AI: A return to the foundations and restrictions of hum(e)an reasoning"
+  authors: @"Burke, Cassidy, Maura"
+  published: @"Lab42"
+  date: 2022
+  location: @https://lab42.global/past-challenges/essay-intelligence/
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+building_human_like_intelligence_an_evolutionary_perspective: Reference = {
+  title: "Building human-like intelligence: an evolutionary perspective"
+  authors: @"Ouellette, Simon"
+  published: @"Lab42"
+  date: 2022
+  location: @https://lab42.global/past-challenges/essay-intelligence/
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+a_case_for_computational_intelligence_as_recursive_abstraction_and_goal_oriented_synthesis: Reference = {
+  title: "A Case for Computational Intelligence as Recursive Abstraction and Goal-Oriented Synthesis"
+  authors: @"Song, Yiding"
+  published: @"Lab42"
+  date: 2022
+  location: @https://lab42.global/past-challenges/essay-intelligence/
+  found_at: "2023"
+  viewed_at: "January 2023"
+}
+
+reverse_engineering_webassembly: Reference = {
+  title: "Reverse Engineering WebAssembly"
+  authors: @"Falliere, Nicolas"
+  published: @"PNF Software"
+  date: 2018
+  location: @https://www.pnfsoftware.com/reversing-wasm.pdf
+  found_at: "2023"
+  viewed_at: "May 2023"
+}
+
+toroidal_topology_of_population_activity_in_grid_cells: Reference = {
+  title: "Toroidal topology of population activity in grid cells"
+  authors: @"Gardner, Richard J., et al."
+  published: @"Nature 602.7895"
+  date: 2022
+  location: @https://www.nature.com/articles/s41586-021-04268-7
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+a_50_year_quest_my_personal_journey_with_the_second_law_of_thermodynamics: Reference = {
+  title: "A 50-Year Quest: My Personal Journey with the Second Law of Thermodynamics"
+  authors: @"Wolfram, Stephen"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/02/a-50-year-quest-my-personal-journey-with-the-second-law-of-thermodynamics/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+alien_intelligence_and_the_concept_of_technology: Reference = {
+  title: "Alien Intelligence and the Concept of Technology"
+  authors: @"Wolfram, Stephen"
+  date: 2022
+  location: @https://writings.stephenwolfram.com/2022/06/alien-intelligence-and-the-concept-of-technology/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+chatgpt_gets_its_wolfram_superpowers: Reference = {
+  title: "ChatGPT Gets Its “Wolfram Superpowers”!"
+  authors: @"Wolfram, Stephen"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/03/chatgpt-gets-its-wolfram-superpowers/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+computational_foundations_for_the_second_law_of_thermodynamics: Reference = {
+  title: "Computational Foundations for the Second Law of Thermodynamics"
+  authors: @"Wolfram, Stephen"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/02/computational-foundations-for-the-second-law-of-thermodynamics/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+faster_than_light_in_our_model_of_physics_some_preliminary_thoughts: Reference = {
+  title: "Faster than Light in Our Model of Physics: Some Preliminary Thoughts"
+  authors: @"Wolfram, Stephen"
+  date: 2020
+  location: @https://writings.stephenwolfram.com/2020/10/faster-than-light-in-our-model-of-physics-some-preliminary-thoughts/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+how_did_we_get_here_the_tangled_history_of_the_second_law_of_thermodynamics: Reference = {
+  title: "How Did We Get Here? The Tangled History of the Second Law of Thermodynamics"
+  authors: @"Wolfram, Stephen"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/01/how-did-we-get-here-the-tangled-history-of-the-second-law-of-thermodynamics/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+multicomputational_irreducibility: Reference = {
+  title: "Multicomputational Irreducibility"
+  authors: @"Boyd, James"
+  published: @"Wolfram Institute"
+  date: 2022
+  location: @https://www.wolframphysics.org/bulletins/2022/06/multicomputational-irreducibility/
+  found_at: "2023"
+  viewed_at: "March 2023"
+}
+
+zx_calculus_and_extended_hypergraph_rewriting_systems_i: Reference = {
+  title: "ZX-Calculus and Extended Hypergraph Rewriting Systems I: A Multiway Approach to Categorical Quantum Information Theory"
+  authors: @"Gorard, Jonathan, Manojna Namuduri, and Xerxes D. Arsiwalla"
+  published: @"arXiv"
+  date: 2020
+  location: @https://arxiv.org/pdf/2010.02752
+  found_at: "2023"
+  viewed_at: "June 2023"
+}
+
+fast_automated_reasoning_over_string_diagrams_using_multiway_causal_structure: Reference = {
+  title: "Fast Automated Reasoning over String Diagrams using Multiway Causal Structure"
+  authors: @"Gorard, Jonathan, Manojna Namuduri, and Xerxes D. Arsiwalla"
+  published: @"arXiv"
+  date: 2021
+  location: @https://arxiv.org/pdf/2105.04057
+  found_at: "2023"
+  viewed_at: "June 2023"
+}
+
+lagrangian_neural_networks: Reference = {
+  title: "Lagrangian Neural Networks"
+  authors: @"Cranmer, Miles, et al"
+  published: @"arXiv"
+  date: 2020
+  location: @https://arxiv.org/pdf/2003.04630
+  found_at: "2023"
+  viewed_at: "June 2023"
+}
+
+quantomatric_a_proof_assistant_for_diagrammatic_reasoning: Reference = {
+  title: "Quantomatic: A proof assistant for diagrammatic reasoning"
+  authors: @"Kissinger, Aleks, and Vladimir Zamdzhiev"
+  published: @"Automated Deduction-CADE-25: 25th International Conference on Automated Deduction, Berlin, Germany"
+  date: 2015
+  location: @https://arxiv.org/pdf/1503.01034
+  found_at: "2023"
+  viewed_at: "June 2023"
+}
+
+the_semantic_conception_of_truth_and_the_foundations_of_semantics: Reference = {
+  title: "The semantic conception of truth: and the foundations of semantics"
+  authors: @"Tarski, Alfred"
+  published: @"The semantic conception of truth: and the foundations of semantics"
+  date: 1944
+  location: @https://sites.google.com/site/filosofiaetc/histfil/Tarski_SCT_1944.pdf
+  found_at: "2023"
+  viewed_at: "June 2023"
+}
+
+residuality_theory_random_simulation_and_attractor_networks: Reference = {
+  title: "Residuality Theory, random simulation, and attractor networks"
+  authors: @"O’Reilly, Barry M."
+  published: @"Procedia Computer Science 201"
+  date: 2022
+  pointer: "639-645"
+  location: @https://www.sciencedirect.com/science/article/pii/S1877050922004975/pdf?md5=faa21ad837ec9eba6fac3beb2cd93f9f&pid=1-s2.0-S1877050922004975-main.pdf
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+a_functorial_perspective_on_multicomputational_irreducibility: Reference = {
+  title: "A Functorial Perspective on (Multi)computational Irreducibility"
+  authors: @"Gorard, Jonathan"
+  published: @"arXiv"
+  date: 2022
+  location: @https://arxiv.org/pdf/2301.04690
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+bioelectric_networks_the_cognitive_glue_enabling_evolutionary_scaling_from_physiology_to_mind: Reference = {
+  title: "Bioelectric networks: the cognitive glue enabling evolutionary scaling from physiology to mind"
+  authors: @"Levin, Michael"
+  published: @"Animal Cognition"
+  date: 2023
+  location: @https://link.springer.com/article/10.1007/s10071-023-01780-3
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+competency_in_navigating_arbitrary_spaces_as_an_invariant_for_analyzing_cognition_in_diverse_embodiments: Reference = {
+  title: "Competency in Navigating Arbitrary Spaces as an Invariant for Analyzing Cognition in Diverse Embodiments"
+  authors: @"Fields, Chris, and Levin, Michael"
+  published: @"Entropy 24.6"
+  date: 2022
+  pointer: "819"
+  location: @https://www.mdpi.com/1099-4300/24/6/819
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+chrome_ships_webgpu: Reference = {
+  title: "Chrome ships WebGPU"
+  authors: @"Beaufort, François and Wallez, Corentin"
+  published: @"Chrome Developers Blog"
+  date: 2023
+  location: @https://developer.chrome.com/blog/webgpu-release/
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+get_started_with_gpu_compute_on_the_web: Reference = {
+  title: "Get started with GPU Compute on the web"
+  authors: @"Beaufort, François"
+  published: @"Chrome Developers Blog"
+  date: 2023
+  location: @https://developer.chrome.com/articles/gpu-compute/
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+spawning_a_wasi_thread_with_raw_webassembly: Reference = {
+  title: "Spawning a WASI Thread with raw WebAssembly"
+  authors: @"Das Surma"
+  published: @"surma.dev"
+  date: 2023
+  location: @https://surma.dev/postits/wasi-threads/
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+webgpu_all_of_the_cores_none_of_the_canvas: Reference = {
+  title: "WebGPU — All of the cores, none of the canvas"
+  authors: @"Das Surma"
+  published: @"surma.dev"
+  date: 2022
+  location: @https://surma.dev/things/webgpu/
+  found_at: "2023"
+  viewed_at: "July 2023"
+}
+
+remembering_the_improbable_life_of_ed_fredkin: Reference = {
+  title: "Remembering the Improbable Life of Ed Fredkin (1934–2023) and His World of Ideas and Stories"
+  authors: @"Wolfram, Stephen"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/08/remembering-the-improbable-life-of-ed-fredkin-1934-2023-and-his-world-of-ideas-and-stories/
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+remembering_doug_lenat: Reference = {
+  title: "Remembering Doug Lenat (1950–2023) and His Quest to Capture the World with Logic"
+  authors: @"Wolfram, Stephen"
+  date: 2023
+  location: @https://writings.stephenwolfram.com/2023/09/remembering-doug-lenat-1950-2023-and-his-quest-to-capture-the-world-with-logic/
+  found_at: "2023"
+  viewed_at: "September, 2023"
+}
+
+the_alexandria_project_what_has_been_accomplished: Reference = {
+  title: "The ALEXANDRIA Project: what has been accomplished?"
+  authors: @"Paulson, Lawrence C."
+  date: 2023
+  location: @https://lawrencecpaulson.github.io/2023/04/27/ALEXANDRIA_outcomes.html
+  found_at: "2023"
+  viewed_at: "September, 2023"
+}
+
+the_end_of_the_alexandria_project: Reference = {
+  title: "The End (?) of the ALEXANDRIA Project"
+  authors: @"Paulson, Lawrence C."
+  date: 2023
+  location: @https://lawrencecpaulson.github.io/2023/08/31/ALEXANDRIA_finished.html
+  found_at: "2023"
+  viewed_at: "September, 2023"
+}
+
+when_is_a_computer_proof_a_proof: Reference = {
+  title: "When is a computer proof a proof?"
+  authors: @"Paulson, Lawrence C."
+  date: 2023
+  location: @https://lawrencecpaulson.github.io/2023/08/09/computer_proof.html
+  found_at: "2023"
+  viewed_at: "September, 2023"
+}
+
+alexandria_large_scale_formal_proof_for_the_working_mathematician: Reference = {
+  title: "ALEXANDRIA: Large-Scale Formal Proof for the Working Mathematician"
+  authors: @"Paulson, Lawrence C."
+  date: 2021
+  location: @https://lawrencecpaulson.github.io/2021/12/08/ALEXANDRIA.html
+  found_at: "2023"
+  viewed_at: "September, 2023"
+}
+
+the_origins_and_motivations_of_univalent_foundations: Reference = {
+  title: "The Origins and Motivations of Univalent Foundations"
+  authors: @"Voevodsky, Vladimir"
+  date: 2014
+  location: @https://www.ias.edu/ideas/2014/voevodsky-origins
+  found_at: "2023"
+  viewed_at: "September, 2023"
+}
+
+zenbleed: Reference = {
+  title: "Zenbleed"
+  authors: @"Ormandy, Tavis"
+  date: 2023
+  location: @https://lock.cmpxchg8b.com/zenbleed.html
+  found_at: "2023"
+  viewed_at: "October, 2023"
+}
+
+downfall: Reference = {
+  title: "Downfall: Exploiting Speculative Data Gathering"
+  authors: @"Moghimi, Daniel"
+  date: 2023
+  location: @https://downfall.page/media/downfall.pdf
+  found_at: "2023"
+  viewed_at: "October, 2023"
+}
+
+assembly_theory_explains_and_quantifies_selection_and_evolution: Reference = {
+  title: "Assembly theory explains and quantifies selection and evolution"
+  authors: @"Abhishek Sharma, Dániel Czégel, Michael Lachmann, Christopher P. Kempes, Sara I. Walker and Leroy Cronin"
+  date: 2023
+  location: @https://www.nature.com/articles/s41586-023-06600-9
+  found_at: "2023"
+  viewed_at: "October, 2023"
+}
+
+will_computers_redefine_the_roots_of_math: Reference = {
+  title: "Will Computers Redefine the Roots of Math?"
+  authors: @"Hartnett, Kevin"
+  date: 2015
+  location: @https://www.quantamagazine.org/will-computers-redefine-the-roots-of-math-20150519/
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+quantum_in_pictures: Reference = {
+  title: "Quantum in Pictures"
+  authors: @"Coecke, Bob and Gogioso, Stefano"
+  published: @"Quantinuum"
+  date: 2023
+  location: @https://www.quantinuum.com/news/quantum-in-pictures
+  kind: book
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+category_theory_i: Reference = {
+  title: "Category Theory I"
+  authors: @"Milewski, Bartosz"
+  organizations: @youtube
+  date: 2016
+  location: @https://www.youtube.com/watch?v=I8LbkfSSR58&list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+category_theory_ii: Reference = {
+  title: "Category Theory II"
+  authors: @"Milewski, Bartosz"
+  organizations: @youtube
+  date: 2017
+  location: @https://www.youtube.com/watch?v=3XTQSx1A3x8&list=PLbgaMIhjbmElia1eCEZNvsVscFef9m0dm
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+category_theory_iii: Reference = {
+  title: "Category Theory III"
+  authors: @"Milewski, Bartosz"
+  organizations: @youtube
+  date: 2018
+  location: @https://www.youtube.com/watch?v=F5uEpKwHqdk&list=PLbgaMIhjbmEn64WVX4B08B4h2rOtueWIL
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+diheaps_a_new_species_of_algebraic_structure: Reference = {
+  title: "Diheaps: a new species of algebraic structure"
+  authors: @"Zapata, Carlos"
+  organizations: @youtube
+  date: 2023
+  location: @https://www.youtube.com/watch?v=YOfIXwBHPFU
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+hackenbush_a_window_to_a_new_world_of_math: Reference = {
+  title: "HACKENBUSH: a window to a new world of math
+"
+  authors: @"Maitzen, Owen"
+  organizations: @youtube
+  date: 2021
+  location: @https://www.youtube.com/watch?v=ZYj4NkeGPdM
+  found_at: "2023"
+  viewed_at: "August, 2023"
+}
+
+explorer_orbitmines_research: Reference = {
+  title: "Independent Researcher - OrbitMines Research"
+  organizations: @orbitmines
+  date: "July, 2022 - Present"
+  location: @https://orbitmines.com/
+  viewed_at: "July, 2022 - Present"
+}
+
+software_developer_at_breachlock_inc: Reference = {
+  title: "Software Developer - BreachLock Inc."
+  organizations: @"BreachLock Inc."
+  date: "November, 2021 - May, 2022"
+  location: @https://www.linkedin.com/company/breachlock/
+  viewed_at: "November, 2021 - May, 2022"
+}
+
+contractor_at_marti_orbak_software: Reference = {
+  title: "Contractor - MartiOrbak Software"
+  organizations: @"MartiOrbak Software"
+  date: "November, 2020 - March 2021"
+  location: @https://www.linkedin.com/company/marti-orbak-software/
+  viewed_at: "November, 2020 - March 2021"
+}
+
+backend_developer_at_mobiel_nl: Reference = {
+  title: "Backend Developer - Mobiel.nl"
+  organizations: @"Mobiel.nl"
+  date: "November, 2018 - August, 2019"
+  location: @https://www.linkedin.com/company/mobiel.nl/
+  description: "My first interaction working at a SME."
+  viewed_at: "November, 2018 - August, 2019"
+}
+
+founder_at_orbitmines_minecraft: Reference = {
+  title: "Founder - OrbitMines (Minecraft)"
+  organizations: @orbitmines
+  date: "October, 2013 - May, 2019"
+  location: @https://www.youtube.com/@OrbitMines/videos
+  description: "I introduced myself to software engineering during this period by designing and maintaining my own Minecraft game server, which had a small community of concurrent players."
+  viewed_at: "October, 2013 - May, 2019"
+}
+
+leiden_university: Reference = {
+  title: "(Unfinished) Computer Science (BSc)"
+  published: @"Leiden University"
+  date: "2020: I stop attending Leiden University. If you could call what I did there as attending in the first place. Perhaps more of an (immature) severe disinterest"
+  status: in_progress
+  viewed_at: "September, 2019 - December, 2020"
+  archived: true
+}
+
+vwo: Reference = {
+  title: "VWO / Science & Engineering"
+  date: "2012 - 2019"
+  viewed_at: "2012 - 2019"
+}
+
+semf_2023: Reference = {
+  title: "SEMF School of 2023"
+  organizations: @semf
+  date: 2023
+  location: @https://semf.org.es/school2023/
+  found_at: "July, 2023"
+  viewed_at: "2023"
+}
+
+semf_2025: Reference = {
+  title: "SEMF School of 2025"
+  organizations: @semf
+  date: 2025
+  location: @https://semf.org.es/school2025/
+  found_at: "July, 2023"
+  viewed_at: "2023"
+}
+
+semf_2026: Reference = {
+  title: "SEMF School of 2026"
+  organizations: @semf
+  date: 2026
+  location: @https://semf.org.es/school2026/
+  found_at: "July, 2023"
+  viewed_at: "2026"
+}
+
+ursprung_iv: Reference = {
+  title: "Ursprung IV"
+  organizations: @ursprung
+  date: 2026
+  location: @https://ursprung.community/
+  found_at: "July, 2026"
+  viewed_at: "2026"
+}
+
+syco_12: Reference = {
+  title: "Twelfth Symposium on Compositional Structures (SYCO 12)"
+  organizations: @syco
+  date: "2024 @ Birmingham, UK"
+  location: @https://www.cl.cam.ac.uk/events/syco/12/
+  found_at: "2024"
+  viewed_at: "2024"
+}
+
+into_the_information_continuum_2024_03_09: Reference = {
+  title: "In-Person Workshop | Into the Information Continuum"
+  organizations: @semf
+  date: "2024, 9 March @ Amsterdam"
+  location: @https://www.youtube.com/watch?v=KM97bUcVPDE&t=2786s
+  found_at: "2024"
+  viewed_at: "2024"
+}
+
+into_the_information_continuum_2024_05_04: Reference = {
+  title: "In-Person Workshop | Into the Information Continuum"
+  organizations: @semf
+  date: "2024, 4 May @ Amsterdam"
+  location: @https://www.youtube.com/watch?v=KM97bUcVPDE&t=2786s
+  found_at: "2024"
+  viewed_at: "2024"
+}
+
+ngi_forum_2023: Reference = {
+  title: "NGI FORUM 2023"
+  organizations: @ngi
+  date: 2023
+  location: @https://www.ngi.eu/event/ngi-forum-2023/
+  found_at: "July, 2023"
+  viewed_at: "2023"
+}
+
+rust: Reference = {
+  title: "Rust"
+  location: @https://en.wikipedia.org/wiki/Rust_(programming_language)
+}
+
+java: Reference = {
+  title: "Java"
+  location: @https://en.wikipedia.org/wiki/Java_(programming_language)
+  archived: true
+}
+
+kotlin: Reference = {
+  title: "Kotlin"
+  location: @https://en.wikipedia.org/wiki/Kotlin_(programming_language)
+  archived: true
+}
+
+ruby_on_rails: Reference = {
+  title: "Ruby (on Rails)"
+  location: @https://en.wikipedia.org/wiki/Ruby_on_Rails
+  archived: true
+}
+
+c_sharp: Reference = {
+  title: "C#"
+  location: @https://en.wikipedia.org/wiki/C_Sharp_(programming_language)
+  archived: true
+}
+
+dot_net: Reference = {
+  title: ".NET"
+  location: @https://en.wikipedia.org/wiki/.NET
+  archived: true
+}
+
+blazor: Reference = {
+  title: "Blazor"
+  location: @https://en.wikipedia.org/wiki/Blazor
+  archived: true
+}
+
+javascript: Reference = {
+  title: "JavaScript"
+  location: @https://en.wikipedia.org/wiki/JavaScript
+}
+
+css: Reference = {
+  title: "CSS"
+  location: @https://en.wikipedia.org/wiki/CSS
+}
+
+sass: Reference = {
+  title: "SASS"
+  location: @https://en.wikipedia.org/wiki/Sass_(stylesheet_language)
+}
+
+html: Reference = {
+  title: "HTML"
+  location: @https://en.wikipedia.org/wiki/HTML
+}
+
+webpack: Reference = {
+  title: "Webpack"
+  location: @https://webpack.js.org/
+}
+
+typescript: Reference = {
+  title: "TypeScript"
+  location: @https://en.wikipedia.org/wiki/TypeScript
+}
+
+react: Reference = {
+  title: "React"
+  location: @https://en.wikipedia.org/wiki/React_(JavaScript_library)
+}
+
+blueprint_js: Reference = {
+  title: "Blueprint.js"
+  location: @https://github.com/palantir/blueprint
+}
+
+slate: Reference = {
+  title: "Slate"
+  location: @https://github.com/ianstormtaylor/slate
+  status: in_progress
+}
+
+threejs: Reference = {
+  title: "Three.js"
+  location: @https://github.com/mrdoob/three.js/
+  status: in_progress
+}
+
+nextjs: Reference = {
+  title: "Next.js"
+  location: @https://nextjs.org/
+  status: in_progress
+}
+
+drei: Reference = {
+  title: "drei"
+  location: @https://github.com/pmndrs/drei
+  status: in_progress
+}
+
+wasm: Reference = {
+  title: "WebAssembly"
+  location: @https://en.wikipedia.org/wiki/WebAssembly
+  status: in_progress
+}
+
+assembly_script: Reference = {
+  title: "AssemblyScript"
+  location: @https://en.wikipedia.org/wiki/AssemblyScript
+  status: in_progress
+}
+
+cpp: Reference = {
+  title: "C++"
+  location: @https://en.wikipedia.org/wiki/C%2B%2B
+}
+
+python: Reference = {
+  title: "Python"
+  location: @https://en.wikipedia.org/wiki/Python_(programming_language)
+}
+
+go: Reference = {
+  title: "Go"
+  location: @https://en.wikipedia.org/wiki/Go_(programming_language)
+}
+
+haskell: Reference = {
+  title: "Haskell"
+  location: @https://en.wikipedia.org/wiki/Haskell
+}
+
+wolfram_language: Reference = {
+  title: "Wolfram Language"
+  location: @https://en.wikipedia.org/wiki/Wolfram_Language
+}
+
+llvm: Reference = {
+  title: "LLVM"
+  location: @https://en.wikipedia.org/wiki/LLVM
+  status: in_progress
+}
+
+ipfs: Reference = {
+  title: "IPFS"
+  location: @https://en.wikipedia.org/wiki/InterPlanetary_File_System
+}
+
+ipvm: Reference = {
+  title: "IPVM"
+  location: @https://github.com/ipvm-wg
+}
+
+sql: Reference = {
+  title: "SQL"
+  location: @https://en.wikipedia.org/wiki/SQL
+  archived: true
+}
+
+mysql: Reference = {
+  title: "MySQL"
+  location: @https://en.wikipedia.org/wiki/MySQL
+  archived: true
+}
+
+postgresql: Reference = {
+  title: "PostgreSQL"
+  location: @https://en.wikipedia.org/wiki/PostgreSQL
+  archived: true
+}
+
+mongo_db: Reference = {
+  title: "MongoDB"
+  location: @https://en.wikipedia.org/wiki/MongoDB
+  archived: true
+}
+
+redis: Reference = {
+  title: "Redis"
+  location: @https://en.wikipedia.org/wiki/Redis
+  archived: true
+}
+
+rabbit_mq: Reference = {
+  title: "RabbitMQ"
+  location: @https://en.wikipedia.org/wiki/RabbitMQ
+  archived: true
+}
+
+git: Reference = {
+  title: "Git"
+  location: @https://en.wikipedia.org/wiki/Git
+}
+
+gitlab: Reference = {
+  title: "GitLab"
+  location: @https://en.wikipedia.org/wiki/GitLab
+}
+
+github: Reference = {
+  title: "GitHub"
+  location: @https://en.wikipedia.org/wiki/GitHub
+}
+
+bitbucket: Reference = {
+  title: "Bitbucket"
+  location: @https://en.wikipedia.org/wiki/Bitbucket
+  archived: true
+}
+
+docker: Reference = {
+  title: "Docker"
+  location: @https://en.wikipedia.org/wiki/Docker_(software)
+}
+
+kubernetes: Reference = {
+  title: "Kubernetes"
+  location: @https://en.wikipedia.org/wiki/Kubernetes
+  archived: true
+}
+
+nginx: Reference = {
+  title: "NGINX"
+  location: @https://en.wikipedia.org/wiki/Nginx
+}
+
+npm: Reference = {
+  title: "NPM"
+  location: @https://en.wikipedia.org/wiki/Npm_(software)
+}
+
+maven: Reference = {
+  title: "Maven"
+  location: @https://en.wikipedia.org/wiki/Apache_Maven
+  archived: true
+}
+
+linux: Reference = {
+  title: "Linux"
+  location: @https://en.wikipedia.org/wiki/Linux
+}
+
+android: Reference = {
+  title: "Android"
+  location: @https://en.wikipedia.org/wiki/Android_(operating_system)
+}
+
+gcp: Reference = {
+  title: "GCP"
+  location: @https://en.wikipedia.org/wiki/Google_Cloud_Platform
+  archived: true
+}
+
+azure: Reference = {
+  title: "Azure"
+  location: @https://en.wikipedia.org/wiki/Microsoft_Azure
+  archived: true
+}
+
+aws: Reference = {
+  title: "AWS"
+  location: @https://en.wikipedia.org/wiki/Amazon_Web_Services
+  archived: true
+}
+
+spigot_mc: Reference = {
+  title: "SpigotMC"
+  location: @https://www.spigotmc.org/
+  archived: true
+}
+
+bungee_cord: Reference = {
+  title: "BungeeCord"
+  location: @https://www.spigotmc.org/
+  archived: true
+}
+
+bukkit: Reference = {
+  title: "Bukkit"
+  location: @https://dev.bukkit.org/
+  archived: true
+}
+
+flatpak: Reference = {
+  title: "Flatpak"
+  location: @https://en.wikipedia.org/wiki/Flatpak
+}
+
+obs: Reference = {
+  title: "OBS Studio"
+  location: @https://en.wikipedia.org/wiki/OBS_Studio
+}
+
+cloudflare: Reference = {
+  title: "Cloudflare"
+  location: @https://en.wikipedia.org/wiki/Cloudflare
+}
+
+chyp: Reference = {
+  title: "Chyp"
+  location: @https://github.com/akissinger/chyp
+}
+
+webgpu: Reference = {
+  title: "WebGPU"
+  location: @https://github.com/gpuweb/gpuweb
+}
+
+intelli_j: Reference = {
+  title: "IntelliJ"
+  location: @https://github.com/JetBrains/intellij-community
+}
+
+vs_code: Reference = {
+  title: "VS Code"
+  location: @https://github.com/microsoft/vscode
+}
+
+eclipse: Reference = {
+  title: "Eclipse"
+  location: @https://github.com/eclipse-platform/eclipse.platform
+}
