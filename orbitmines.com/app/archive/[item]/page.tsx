@@ -11,6 +11,7 @@ export const ITEM_SOURCES: Record<string, string> = {
   'on-orbits-equivalence-and-inconsistencies': 'src/routes/archive/2023.OnOrbits.tsx',
   'towards-a-universal-language': 'src/routes/archive/2025.TowardsAUniversalLanguage.tsx',
   'the-orbitmines-minecraft-server': 'src/routes/archive/2026.MinecraftArchive.tsx',
+  '2027-ngi-grant-4': 'src/routes/archive/2027.NGI.Grant.4.tsx',
 };
 
 // The page title is read at build time from the item's reference object in

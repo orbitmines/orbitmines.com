@@ -63,6 +63,12 @@ const ARTICLES: Article[] = [
     fileName: '2026.minecraft-archive',
     modified: '2026',
   },
+  {
+    slug: '2027-ngi-grant-4',
+    title: '2027 - NGI Grant Proposal: Ether\'s Deccompiler',
+    fileName: '2027.ngi-grant-4',
+    modified: '2027',
+  },
 ];
 
 export function archiveTree(): TreeEntry[] {
