@@ -1693,7 +1693,7 @@ const Almanac = () => {
             @me == &caller
           </CodeBlock>
 
-          This equivalence check if character has a lot of moving machinary underneath. Since it will be the entire security model of who can run code where. If I for instance wanted to equate two characters, one my local one, and the other a remote version of my character:
+          This equivalence check has a lot of moving machinary underneath. Since it will be the entire security model of who can run code where. If I for instance wanted to equate two characters, one my local one, and the other a remote version of my character:
 
           <CodeBlock>
             @me == @me @ @remote // true<BR/>
