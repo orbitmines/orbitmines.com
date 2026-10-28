@@ -1761,9 +1761,9 @@ const Almanac = () => {
           <CodeBlock>
             @me/status = Online<BR/>
             @me/status = Invisible<BR/>
-            @me/status = Online & Broadcast<BR/>
+            @me/status = Online & Broadcasting<BR/>
             @me/status = Online & Hosting // Hosting, but through the central @ether server<BR/>
-            @me/status = Online & Broadcast & Hosting<BR/>
+            @me/status = Online & Broadcasting & Hosting<BR/>
           </CodeBlock>
         </Section>
         <Section head="§3.3 Version Control">
