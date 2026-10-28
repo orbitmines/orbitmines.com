@@ -347,7 +347,7 @@ const Almanac = () => {
         <BR/>
         I'll start off assuming that even the smallest bit of code looks alien to you. I won't even assume knowledge of much mathematics. And see if we can start to build up a vocabulary which will enable you to do this great thing that is programming!
         <Section head="§0.1 Variables">
-          Let's set a goal for ourselves. A lot of learning about programming languages is getting comfortable with abstract knowledge. This book for instance lists a lot of tools, without really explaining what you could use them for. The fun thing about programming is that it is a sandbox, the complexity of the things you can do come from you, not necessarily from the language. Whether that's a website or something as complicated as a videogame. So... a simple example. Let's say we wanted to build a calculator. The language already gives you a lot of tools to do the complicated stuff for that, but you don't necessarily know how to use them yet. How would we go about doing that? 
+          A lot of learning about programming languages is getting comfortable with abstract knowledge. This book for instance lists a lot of tools, without really explaining what you could use them for. The fun thing about programming is that it is a sandbox, the complexity of the things you can do come from you, not necessarily from the language. Whether that's a website or something as complicated as a videogame. To me, it helps greatly if I know something I want to build, then it's just a matter of figuring out how I can make that a reality.
           <BR/>
 
           Where to begin... Perhaps with a temporal and spatial intuition! A program is just a set of steps the computers follows. A long line of things to do essentially. Because programs are typically written in text we read that line from top to bottom. (First we do A, then B, then C.)
@@ -474,76 +474,115 @@ const Almanac = () => {
           Now that you know that you'd be suprised what kind of things you can already do! Essentially you now have a (primitive) calculator at your fingertips, just in text form.
         </Section>
         <Section head="§0.2 Data Types">
+          Then there are all kinds of different data types, which I'll also cover to a greater extend outside of this section. But for now it's useful to know there are different kinds of data we operate with.
+
+          These should feel pretty natural. Just as we in natural language can refer to things like numbers, whether something is on or off, whether we refer to having the concept of nothing at all!
           <CodeBlock>
             count := 5<BR/>
-            enabled := true<BR/>
+            on := true<BR/>
+            off := false<BR/>
             nothing := None
           </CodeBlock>
+          Then of course we also have a way of saying a bit of text. Which are always inside two ("). (This is to separate it from other code!)
           <CodeBlock>
-            letter := "A" // a Char<BR/>
-            name := "Ada" // a String
+            letter := "A" // a character<BR/>
+            name := "Ada" // text, which we refer to as a String
           </CodeBlock>
+          Then there also exist structural things. This is necessary for things like "a list of things". Or something like all the pixels in your screen: a 2d grid of pixels! A list, we can create in the following way, just like a string we surround it with two characters, but this time with brackets: ([ ]). And commas between each item, which just notes the end of some item.
           <CodeBlock>
-            numbers := 1, 2, 3<BR/>
-            list := [1, 2, 3]<BR/>
-            list[0] // 1
+            list := [2, 3, 4]
           </CodeBlock>
+          Then taking a particular entry out of this list, we can do using the brackets again, but this time with an index; a position. Which typically start at 0.
+          <CodeBlock>
+            list[0] // 2<BR/>
+            list[2] // 4
+          </CodeBlock>
+          These "Types" as they are called, we can also force on our variables, our names, beforehand. This is a useful concept languages use to differentiate what kind of information is allowed. <BR/>
+
+          See if you can intuit the meanings here:
           <CodeBlock>
             x: Number = 5<BR/>
             y: String = "hello"<BR/>
             maybe: Number? = None
           </CodeBlock>
-          <CodeBlock>
-            maybe ?? 0 // 0<BR/>
-            enabled ? "on" : "off" // "on"
-          </CodeBlock>
+          Two new concepts: We split the (:=) into a (:) and (=). Where one says this is the type of this variable, while the other sets the value of it.
+          <BR/>
+          Then there's the (?) after (Number?), which just says: It might be a number, it might be nothing.
+
+          <BR/>
+
+          Ok. If that makes sense, we can move to the next concept. Which is effectively how we manage and group functionality: functions.
         </Section>
         <Section head="§0.3 Functions">
+          Now to actually make useful things happen, and to make it bearable to deal with. We need to hack our program into pieces to manage it properly. And added to that, we need to do more complicated things than just setting variables! We need to do conditional logic: "Do this if that, otherwise do something else." - that sort of thing.
+
+          <BR/>
+
+          First things first, grouping something in a named variable we can later reuse: We denote that in the following way: 
           <CodeBlock>
             double (x) ={'>'} x * 2<BR/>
             double(4) // 8<BR/>
             double 4 // 8
           </CodeBlock>
+          See that we used a variable, called (double). Attached to it another name (x), which we then multiple by (2). This is how it's grouped and used. The (={'>'}) notation defines it, like (:=) does for normal values. And we can then use that same structure to use it as shown below. Both use, but don't require parenthesis '()'. They are used to make it make it clearer what belongs to what.
+
+          <BR/>
+
+          Of course that example isn't really worth making a separate function for. It's too simple, some things we'll do will require more than one line, in that case we wrap them in these brackets {'{}'}.
+
           <CodeBlock>
-            greet (name: String) ={'>'} "Hello {'{'}name{'}'}!"<BR/>
-            greet("Ada") // "Hello Ada!"
-          </CodeBlock>
-          <CodeBlock>
-            area (width: Number, height: Number) ={'>'} (<BR/>
+            area (width: Number, height: Number) ={'>'} {`{`}<BR/>
             <></>  size := width * height<BR/>
             <></>  size<BR/>
-            )<BR/>
+            {`}`}<BR/>
             area(2, 3) // 6
           </CodeBlock>
+
+          See here that I reused some concepts from earlier. Now the names inside the function (width/height) have a type associated with them with (:).
+
+          <BR/>
+
+          That should cover the basis for functions. Now let's very briefly go over one more concept you need to know to get started with actually programming something you want.
+
+          <BR/>
+
+          Remember the branching of a graph? Here is where that comes in. Incredibly common in code is that there's a dependence on some variable to do one thing or another. Since it's pretty much natural language this should be intuitive:
+
           <CodeBlock>
-            if (count {'>'} 3) {'{'}<BR/>
+            if count {'>'} 3 {'{'} // greater than<BR/>
             <></>  "many"<BR/>
-            {'}'} elsif (count {'>'} 0) {'{'}<BR/>
+            {'}'} elsif count {'>'} 0 {'{'}<BR/>
             <></>  "some"<BR/>
             {'}'} else {'{'}<BR/>
             <></>  "none"<BR/>
             {'}'}
           </CodeBlock>
+
+          We use here again the {`{}`} brackets for allowing us to write things on multiple lines. Then with stuff inside on what to do on each possible branch!
+
+          <BR/>
+
+          Then two more concepts are looping: Repeating something constantly. Like writing the pixels on your screen for a videogame!
+
+          <BR/>
+
+          We can do that with a list of things using (for) on a list. This will do everything to the right side for each entry in the list from left to right! First (print(1)) then (print(2)) then (print(3)).
+
           <CodeBlock>
-            unless enabled {'{'}<BR/>
-            <></>  "off"<BR/>
-            {'}'}
+            [1, 2, 3] for x ={'>'} print(x)
           </CodeBlock>
+
+          We can also do this with some condition in a loop, as we would for rendering your screen for instance:
+
           <CodeBlock>
             n := 0<BR/>
-            while (n {'<'} 3) {'{'}<BR/>
+            while n {'<'} 3 {'{'}<BR/>
             <></>  n = n + 1<BR/>
             {'}'}<BR/>
             n // 3
           </CodeBlock>
-          <CodeBlock>
-            do {'{'}<BR/>
-            <></>  n = n - 1<BR/>
-            {'}'} while (n {'>'} 0)
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3] for x ={'>'} print(x)
-          </CodeBlock>
+
+          Ok if you were able to decipher all of that, let's get the language on your machine so you can play with it directly! After the installation setup I'll be throwing you into the deep end, but the idea is that you can very slowly introduce yourself to more concepts as you go.
         </Section>
       </Section>
       <Section head="§1. How to Install">
