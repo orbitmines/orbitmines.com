@@ -864,9 +864,9 @@ const Almanac = () => {
           hierarchy):
 
           <CodeBlock>
-            Array ==.instance_of Tree // true<BR/>
-            Array ==.instance_of Graph // true<BR/>
-            Array ==.instance_of Hypergraph // true
+            Array is Tree // true<BR/>
+            Array is Graph // true<BR/>
+            Array is Hypergraph // true
           </CodeBlock>
 
           Since we're working in text, we're limited to a rather linear expression of ideas, but for simple structures, it's nice to know it's possible to instantiate a linear version quite easily using the (,) operator.
@@ -1193,12 +1193,12 @@ const Almanac = () => {
           The way nesting works might take some getting used to, that it's effectively flattened one step, but it makes those expressive types possible.
 
           <CodeBlock>
-            "A", "B", "B"     ==.instance_of "A", "B"[]<BR/>
-            "A", ["B"], ["B"] ==.instance_of "A", ["B"][]<BR/>
-            "A", ["B", "B"]   ==.instance_of "A", ["B"[]]
+            "A", "B", "B"     is "A", "B"[]<BR/>
+            "A", ["B"], ["B"] is "A", ["B"][]<BR/>
+            "A", ["B", "B"]   is "A", ["B"[]]
           </CodeBlock>
 
-          We can also shorten the ==.instance_of to just 'is':
+          We can also shorten the is to just 'is':
 
           <CodeBlock>
             "A", "A", "A" is "A"[]
@@ -1422,56 +1422,106 @@ const Almanac = () => {
           That should about cover most things functions/programs. Except one important feature of the Ray programming language. Comparing functions for their equivalence... And in general how equivalence works!          
         </Section>
         <Section head="§2.6 Equality & Equivalence">
-          {/* Cover default equivalences  */}
-
-          One of the equivalences which exists in the language, is for instance that a String is equivalent to String[] when concatenated together, such that:
+          <span style={{textAlign: 'left', width: '100%'}}>For equality (==), which is automatically implemented for all structures, it is by default a structural check. If two structures are instantiated differently but with equivalent variables, they are still considered the same. <span className="bp5-text-muted">A concept I'll intoduce in <SectionButton section="§3.1 Location & Assignment" rightIcon="arrow-right" text="§3.1 Location & Assignment" minimal outlined />. Will cover a way to say they must be equated using some location identifier. Whether that is memory location, its location in a function or something other.</span></span>
           <CodeBlock>
-            "ABC" == "A", "B", "C"<BR/>
-            <BR/>
-            x: String = "A", "B", "C"
+            Point(x: 0, y: 0) == Point(x: 0, y: 0) // true<BR/>
+            "ABC" == ("A", "B", "C") // true
           </CodeBlock>
+
+          A location like that is the only thing that is ignored for equivalence when including the location with (@==).
           <CodeBlock>
             2 == 2 // true<BR/>
-            2 === 2 // false<BR/>
+            2 @== 2 // false<BR/>
+            <BR/>
             x := 2<BR/>
-            x === x // true
+            x @== x // true
           </CodeBlock>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>("x @== x" also talks about the variable in two different places. But for equality to make any sense, at least that difference is ignored)</span>
+          
+          You can alter the default equivalence graph by introducing those equivalences by defining (as) on objects. One way of doing that would be:
           <CodeBlock>
-            Point(x: 0, y: 0) == Point(x: 0, y: 0) // true
-          </CodeBlock>
-          <CodeBlock>
-            Node{'{'}== 1{'}'} as (== String) ={'>'} "A"<BR/>
+            Node{'{'}== 1{'}'} as (=== String) ={'>'} "A"<BR/>
             1 == "A" // true
           </CodeBlock>
+
+          But this equivalence graph is effectively just a bunch of implicit type conversions, you might not always want that. In that case you can use the (===) operator for equivalence of the objects without an equivalence graph.
+
           <CodeBlock>
-            A =={'<'}in: -{'>'} convert(.){'>'} B<BR/>
-            A =={'<'}in: None{'>'} B<BR/>
-            Example(field: "A") =={'<'}Number{'>'} Example(field: "B")
+            false === 0 // false
           </CodeBlock>
+
+          Which is just an alias for:
+
           <CodeBlock>
-            "ABC" ==.instance_of String<BR/>
-            [1, 2] ==.isomorphic [3, 4]
+            false =={'<'}in: None{'>'} 0
           </CodeBlock>
+
+          There exist several other types of equivalence checks.
+
+          <BR/>
+
+          There is the idea of isomorphic (same shape) checks. But of course as you now know everything is just a Ray structure. So what that actually means is just that we're ignoring certain structures, while not others. The operator to check for this. So ignoring the intersection values at each nodes in some structure, is the following:
+
+          <CodeBlock>
+            [1, 2, 3] ~== [4, 5, 6]
+          </CodeBlock>
+
+          There is also the familiar typecheck of languages. Which is a more complicated, but essentially still an equivalence relation.
+
+          <CodeBlock>
+            false is boolean<BR/>
+            "Hi" is String
+          </CodeBlock>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Note that all equality operators (or rather functions returning boooleans in general) have their inverse defined by prefixing it with a (!). So (!@==) or (!==) or (!is).</span>
+
+          <span style={{textAlign: 'left', width: '100%'}}>One of the types of equality which is often unsupported, for good reasons, is functional equality. There are two versions <Reference is="reference" simple inline index={referenceCounter()} reference={{
+            title: "extensional equality",
+            link: "https://ncatlab.org/nlab/show/function+extensionality"
+          }}/> (equality of input/output relations). And intensional equality (equality of source code effectively).</span>
+
+          <span style={{textAlign: 'left', width: '100%'}}>The problem with function extensionality, is that we might not be able to check for it or it is really complicated to do so. But it can be expressed as the following way, though it is not certain whether it will terminate. (I'll cover this later in <SectionButton section="§4.3 Undecidability & Assumptions" rightIcon="arrow-right" text="§4.3 Undecidability & Assumptions" minimal outlined />). It is checked the following way:</span>
+
+          <CodeBlock>
+            f ∀== g
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>There is a version in the ray programming language which is the same principle, but only that it has historically yielded that value. Where how far that history goes is something I'll discuss in <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined />. As we'll discover later (%) means a version operator, so here it would be:</span>
+
+          <CodeBlock>
+            f %== g
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Then the to me much more interesting one of equality of source code. This is something we'll discuss further in <SectionButton section="§4.4 Program Types" rightIcon="arrow-right" text="§4.4 Program Types" minimal outlined />. But for now it's good to know that the relevant question to ask is, equivalent source code? According to which frame of reference? By which I mean in which layer of the stack: In your high-level language, in what it compiles to, in its intermediate layers, or in any of the above? This is a complicated equivalence graph, but it will be available to you in the Ray programming language.</span>
+          
+          <BR/>
+
+          Later we'll go into details of this, but it's important to know we can define such a compiler optimization in our code to say at which level this should apply:
+
+          <BR/>
+
+          <CodeBlock>
+            f *== g with O = @wasm
+          </CodeBlock>
+
+          Then besides these there is partial equivalence/matching, whether used for graph rewriting or whether something starts or ends with certain values. It is expressed the following way: 
+
           <CodeBlock>
             "12" ~= "0123"<BR/>
-            "ABC" ~= ⊢"AB"<BR/>
-            "ABC" ~= "BC"⊣
+            "ABC" ~= ⊢"AB" // at the initial boundary<BR/>
+            "ABC" ~= "BC"⊣ // at the terminal boundary
           </CodeBlock>
+
+          As I said you can use it for graph rewriting, you can for instead replace or remove matches too instead of just checking it to a boolean:
           <CodeBlock>
-            @me == @me @ @remote // true<BR/>
-            @me === @me @ @remote // false
+            text := "ABCA"<BR/>
+            (text ~= "B").remove<BR/>
+            text ~= ⊢"A" = "D"<BR/>
+            <BR/>
+            text // "DCA"
           </CodeBlock>
-          <CodeBlock>
-            f ==.extensional g<BR/>
-            f ==.historical g<BR/>
-            (2 + 2)** == (2 + 2)**
-          </CodeBlock>
-          <CodeBlock>
-            Temperature := class {'{'}<BR/>
-            <></>  normalizer = .rounded<BR/>
-            {'}'}<BR/>
-            t.canonical
-          </CodeBlock>
+
         </Section>
         <Section head="§2.7 Classes & Enums">
           Classes are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the language itself!
@@ -1605,176 +1655,189 @@ const Almanac = () => {
         Let's start by exploring how these locations work.
 
         <Section head="§3.1 Location & Assignment">
+          Locations are written with (@) both accessing them and defining them:
           <CodeBlock>
-            x@<BR/>
-            x @ @remote<BR/>
-            x @remote<BR/>
-            x @ Example
-          </CodeBlock>
-          <CodeBlock>
-            @ loc {'{'}<BR/>
-            <></>  x = 5<BR/>
-            {'}'}
+            x@ // x's location(s)
           </CodeBlock>
           <CodeBlock>
             @https://orbitmines.com<BR/>
-            @"a location with spaces"<BR/>
+            @/etc/hosts<BR/>
             @./lib/logo.png<BR/>
-            @../shared/config.cfg.ray
+            @../shared/settings.cfg.ray<BR/>
+            @C:/Windows/System32<BR/>
+            @"With a space"
           </CodeBlock>
+
+          Wildcards can be done in several ways:
           <CodeBlock>
-            Location := Ray<BR/>
-            loc.parent<BR/>
-            loc.children<BR/>
-            A {'<'}.hierarchy B
+            @./some/path/ *<BR/>
+            x: Location = (@./some/path/, String)
           </CodeBlock>
+          
+          Remotely executing code at some location, is as simple as passing a block to a location,
+          <CodeBlock>
+            @remote {'{'}<BR/>
+            <></>  x = 5 // this block runs at loc<BR/>
+            {'}'}
+          </CodeBlock>
+          but for that we're going to need a model of dealing with access permissions.
         </Section>
         <Section head="§3.2 Player Instances & Networking">
+          Characters, are the generalized concept of an instance running code. With permission levels defined as which character has access. The same syntax for referencing a location, is used to reference a character.
+
+          <BR/>
+
+          Top-level (@me) is reserved for whoever is currently running the code. That is why for instance (&caller) answers instead of a parent Program at top-level, the Character running the code.
+
           <CodeBlock>
-            @me<BR/>
-            &caller // @me at the top level
+            @me == &caller
           </CodeBlock>
+
+          This equivalence check if character has a lot of moving machinary underneath. Since it will be the entire security model of who can run code where. If I for instance wanted to equate two characters, one my local one, and the other a remote version of my character:
+
           <CodeBlock>
-            @me.status = Online & Hosted & Idle<BR/>
-            @me.status = Online & Broadcast<BR/>
-            @ether.@USERNAME = @me<BR/>
-            @google.@ada = @someone
+            @me == @me @ @remote // true<BR/>
+            @me @== @me @ @remote // false
           </CodeBlock>
+
+          Then I'd need a way verifying that I am actually that character. That is why there's an actual handshake going on whether to (cryptographically) verify that you are indeed authorized by the owner of that character name to execute code on their behalf.
+
+          <BR/>
+
+          Some names are reserved for standard usecases.
           <CodeBlock>
-            @orbitmines: Organization = {'{'}<BR/>
-            <></>  avatars:<BR/>
-            <></>    | @github.@orbitmines<BR/>
-            <></>    | @x.@OrbitMines<BR/>
-            <></>  profile_picture: ./lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png<BR/>
-            {'}'}<BR/>
-            @github.@orbitmines == @https://github.com/orbitmines
+            @ether ={'>'} @ether.orbitmines.com:37839<BR/>
+            @localhost ={'>'} @127.0.0.1
           </CodeBlock>
+
+          You can reserve your character's name by running the following:
           <CodeBlock>
-            @"orbitmines.com" // port 37839<BR/>
-            url: URL = @https://orbitmines.com/archive<BR/>
-            url.host // "orbitmines.com"<BR/>
-            url.port // 443<BR/>
-            Port := Decimal{'{'}{'<'} 2^16{'}'}
+            @ether.@USERNAME = @me
           </CodeBlock>
+
+          Which under the hood does all the handshaking functionality for you. If you then start hosting stuff on the central ether's servers, like your projects as we'll discuss soon, people will be able to refer to your code by your handle.
+
+          <BR/>
+
+          Each character can itself also define characters in its userspace, which others can recursively access as well. An example of how this would work:
+
+          <BR/>
+
           <CodeBlock>
-            proxy @ether {'{'}<BR/>
-            <></>  fetch(@https://example.com)<BR/>
+            @me == @github.@FadiShawki & @x.@_FadiShawki & @youtube.@FadiShawki
+          </CodeBlock>
+
+          Then using remote code execution we can do things like effectively proxying:
+
+          <CodeBlock>
+            page := @ether {'{'}<BR/>
+            <></>  return @https://orbitmines.com<BR/>
             {'}'}
+          </CodeBlock>
+
+          Before anything can reach your instance, you'd have to able networking. If you're using the CLI tool (ether) the networking package is automatically put inside the code. If you're using the (ray) CLI tool you'd have to include it explicitely, by just including at the top-level somewhere:
+
+          <CodeBlock>
+            @ether/network
+          </CodeBlock>
+
+          After that is enabled, you can then start by setting your status, which defines whether your accessible on the network. There are the following features you can enable:
+
+          <CodeBlock>
+            // Your character shows up as 'Online'<BR/>
+            Online := () ={'>'} @public.read @me/status<BR/>
+            // Your character shows up as 'Offline'<BR/>
+            Offline := !Online<BR/>
+            // Your character shows up as 'Online' to the central @ether server, but offline to everyone else. (We'll handle access permissions soon)<BR/>
+            Invisible := @ether Online & @public Offline<BR/>
+            // Your instance's IP is publically readable and people can go to your instance directly instead of routing through the central @ether server.<BR/>
+            Broadcasting := () ={'>'} @public.read @me/device as IP<BR/>
+            // A port is opened on your machine for anyone you gave permission to remotely execute certain kinds of code.<BR/>
+            Hosting := (port: Port = 37839) ={'>'} @me |= @"localhost:{'{'}port{'}'}"
+          </CodeBlock>
+
+          Then you can combine these as your status:
+
+          <CodeBlock>
+            @me/status = Online<BR/>
+            @me/status = Invisible<BR/>
+            @me/status = Online & Broadcast<BR/>
+            @me/status = Online & Hosting // Hosting, but through the central @ether server<BR/>
+            @me/status = Online & Broadcast & Hosting<BR/>
           </CodeBlock>
         </Section>
         <Section head="§3.3 Version Control">
+          Every variable holds its history. (Or at least, it's available should you want to use it. Keeping and storing every bit of every variable change is of course way too expensive.) You access it with (%):
           <CodeBlock>
-            var = A, B, C = "ABC"<BR/>
+            var = (A, B, C) = "ABC"<BR/>
             B = "2" // var == "A2C"<BR/>
             C = "3" // var == "A23"<BR/>
-            B% == "B", \"2"\<BR/>
-            var% == B%, \C%\
+            B% == ("B", \"2"\)<BR/>
+            var% == (B%, \C%\)
           </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>(\x\) selects where in the Ray you've got something selected.</span>
+          
+          You can reference different versions of certain concepts in the programming language as follows.
           <CodeBlock>
-            x%<BR/>
-            x.field% // empty while it follows the default
+            Example %0.0.1 // the latest revision of version 3<BR/>
+            Example %0.0.1'2 // its second revision<BR/>
+            Example %0.1.4-E2027.0A.4<BR/>
+            Example %0.1.4-E2027.0A.4'2<BR/>
+            beta := Example %[0.1.4-E2027.0A.4..{'<'}1.0.0-E2028.0A.1] // up to version 1.0.0
           </CodeBlock>
-          <CodeBlock>
-            Example %3<BR/>
-            Example %3'2<BR/>
-            title %1..5: String
-          </CodeBlock>
-          <CodeBlock>
-            %4 -{'>'} %5 (old) ={'>'} Example(title: old.name)<BR/>
-            %5 -{'>'} %4 = (%4 -{'>'} %5)⁻¹
-          </CodeBlock>
+          
+          [TODO] All the familiar operations, are then just operations on that history:
           <CodeBlock>
             history.squash<BR/>
             history.cherry_pick(commits)<BR/>
-            history.from_here
+            history.from_here<BR/>
+            history += other // rebase<BR/>
+            history |= other // merge<BR/>
+            @me/fork = x
           </CodeBlock>
-          <CodeBlock>
-            @local changes // staged, not yet published
-          </CodeBlock>
+          
+          History is just a program. Which can define arbitrarily how it mutates the data through time. So whether that's a git-based system locally for some files, or something more elaborate.
         </Section>
         <Section head="§3.4 Access Permissions">
-          <CodeBlock>
-            Example := class {'{'}<BR/>
-            <></>  internal secret := 5<BR/>
-            {'}'}<BR/>
-            Example := class {'{'}<BR/>
-            <></>  Node{'{'}==.instance_of Example{'}'} secret := 5<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            @public variable<BR/>
-            @local variable<BR/>
-            @localhost variable<BR/>
-            @private variable<BR/>
-            @private.managed variable<BR/>
-            @private.confidential variable
-          </CodeBlock>
+          One of the requirements of the language, is to be able to communicate as a database. Whether that is to function as a version control system, a networked file system, or to serve packages, game files or anything else you can think of. Which means that every variable needs access permissions. As I've already hinted at in a previous section.
+          <BR/>
+          Just like operating systems, you can have different access for reading, writing and executing. Unlike operating systems however, you can be a lot more specific than that. We might for instance only want to expose a +1 operation publicly:
           <CodeBlock>
             @public.read @public.execute API_METHOD<BR/>
             @public.read NUMBER := 0<BR/>
-            @public.execute NUMBER.+= (== 1)
+            @public NUMBER.+= (== 1) // only +1 is exposed
           </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Note that (.read)/(.write)/(.execute) on a access permission are just syntax sugar. They are essentially always defined on some location: (=) for write and '()' for execute.</span>
+         
+          There's a single character associated with a runtime. We might want to say only that character, and only on this local machine, is allowed access. Or anyone on the same machine. Or only this character, but on any machine running it; which would include the central Ether server and any private servers you might have backing up your data. Or the same, but excluding the central server:
           <CodeBlock>
-            @private {'{'}<BR/>
-            <></>  notes := "..."<BR/>
-            <></>  drafts := "..."<BR/>
+            @none.read secret // no one<BR/>
+            @local variable // me, on this machine<BR/>
+            @localhost variable // anyone on this machine<BR/>
+            @private.managed variable // me, only on my own servers<BR/>
+            @private variable // me, anywhere<BR/>
+            @public variable
+          </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Then there's (@confidential), which follows your default privacy policy, but never goes wider than (@private.managed), whatever that policy says. Anything you haven't given a visibility inherits its parent's, and at the very top, your policy. Which is private until you set it.</span>
+
+          <CodeBlock>
+            @confidential ={'>'} @me/policy & @private.managed
+          </CodeBlock>
+          
+          You can colapse a character to a boolean, if that is the current user, so things like this would work:
+          <CodeBlock>
+            if @public {'{'}<BR/>
+            <></>  /* what everyone sees */<BR/>
+            {'}'} elsif @me {'{'}<BR/>
+            <></>  /* what only I see */<BR/>
             {'}'}
           </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Then there's also the usual private/protected/public shenanigans of a programming language. In Ray we simply use (internal), which makes something visible only inside the context declaring it:</span>
           <CodeBlock>
-            @public.read f**
-          </CodeBlock>
-          <CodeBlock>
-            @company may network @https://api.company.com
-          </CodeBlock>
-        </Section>
-        <Section head="§3.5 IO">
-          <CodeBlock>
-            notes := IO /notes.txt as String<BR/>
-            IO /notes.txt = "Remember the milk"
-          </CodeBlock>
-          <CodeBlock>
-            IO /settings // settings.ray, then settings/, then the file settings<BR/>
-            settings := IO /settings.cfg.ray
-          </CodeBlock>
-          <CodeBlock>
-            confidential IO.os /home/me/Documents
-          </CodeBlock>
-        </Section>
-        <Section head="§3.6 Hosted Variables & Packages">
-          <CodeBlock>
-            {'<'} @ether/.ts<BR/>
-            {'<'} @"https://orbitmines.com"/package<BR/>
-            {'<'} @ether/package {'<'}&6ba7b810-9dad-11d1-80b4-00c04fd430c8{'>'}<BR/>
-            {'<'} @ray %3
-          </CodeBlock>
-          <CodeBlock>
-            "A1", "A2" @ @me.managed, "A3" @ @ether, "A4" @ @"192.168.1.254"
-          </CodeBlock>
-          <CodeBlock>
-            Point$<BR/>
-            Point$ @ @remote<BR/>
-            Point{'{'}x {'>'} 0{'}'}$ = @me.managed<BR/>
-            persistent score := 0
-          </CodeBlock>
-          <CodeBlock>
-            $.ray<BR/>
-            $.c++<BR/>
-            $.png<BR/>
-            logo := @./logo.png // an Image, because $.png reads it
-          </CodeBlock>
-        </Section>
-        <Section head="§3.7 Hot-reloading Stateful Programs">
-          <CodeBlock>
-            counter := 0<BR/>
-            loop {'{'}<BR/>
-            <></>  counter += 1<BR/>
+            Example := class {'{'}<BR/>
+            <></>  internal isolated_value := 5<BR/>
             {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            %1 -{'>'} %2 (old) ={'>'} Example(title: old.name)
-          </CodeBlock>
-          <CodeBlock>
-            with O = Compiler.default + Compiler.memoised
           </CodeBlock>
         </Section>
       </Section>
@@ -1844,8 +1907,8 @@ const Almanac = () => {
           <CodeBlock>
             IPv6 := class {'{'}<BR/>
             <></>  as (== String) ={'>'} this<BR/>
-            <></>    -- .embed_ipv4 if ==.instance_of "::ffff:0.0.0.0/96"<BR/>
-            <></>    -- .embed_ipv4 if ==.instance_of "64:ff9b::/96"<BR/>
+            <></>    -- .embed_ipv4 if is "::ffff:0.0.0.0/96"<BR/>
+            <></>    -- .embed_ipv4 if is "64:ff9b::/96"<BR/>
             <></>    .compress_zeros<BR/>
             <></>    .lowercase<BR/>
             {'}'}
@@ -1853,83 +1916,32 @@ const Almanac = () => {
 
           Then there is the (~~) operator, which does the exact same thing, but returns the original thing you call the successive functions on. Which is useful for creating one-liners like:
           <CodeBlock>
-            mac_address: Binary⁴⁸ =<BR/>
-            <></>  secure Binary⁴⁷.random ~~ .[6].push_after(1)
+            mac_address: Binary₄₈ =<BR/>
+            <></>  secure Binary₄₇.random ~~ .[6].push_after(1)
           </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'} +2) {'{'}{'<'} 10{'}'}.for(i ={'>'} print(i))<BR/>
-            (0 -{'>'} +2) {'{'}{'<'} 10{'}'}.for i ={'>'} print(i)<BR/>
-            (0 -{'>'} +2) {'{'}{'<'} 10{'}'} for i ={'>'} print(i)
-          </CodeBlock>
+          Multiple expressions on a single line using (;) as typical.
           <CodeBlock>
             a := 1; b := 2
           </CodeBlock>
+          A line can also continue the one above it. Either because it starts with an operator, because the line above ends with one, or because it starts with a (.):
           <CodeBlock>
             value := 5<BR/>
             <></>  + 3<BR/>
-            <></>  + 2 // 10
-          </CodeBlock>
-          <CodeBlock>
+            <></>  + 2 // 10<BR/>
+            <BR/>
             total := first +<BR/>
-            <></>  second
-          </CodeBlock>
-          <CodeBlock>
+            <></>  second<BR/>
+            <BR/>
             obj<BR/>
             <></>  .first<BR/>
             <></>  .second
           </CodeBlock>
-          <CodeBlock>
-            return x if x {'>'} 10<BR/>
-            print("small") unless x {'>'} 10
-          </CodeBlock>
-          <CodeBlock>
-            a [x] b<BR/>
-            a (+ | *) b
-          </CodeBlock>
-          <CodeBlock>
-            f - x<BR/>
-            f(-x)
-          </CodeBlock>
-          <CodeBlock>
-            // a comment<BR/>
-            /* a /* nested */ comment */
-          </CodeBlock>
-          <CodeBlock>
-            "tab:\t newline:\n"<BR/>
-            "\u{'{'}1F525{'}'}"<BR/>
-            U+1F525<BR/>
-            `raw {'{'}text{'}'}`
-          </CodeBlock>
-          <CodeBlock>
-            PATH/ *<BR/>
-            PATH/ * /file.ray<BR/>
-            file*.ray // one name
-          </CodeBlock>
         </Section>
         <Section head="§4.2 Transactions & Reversibility">
-          {/* dynamically */}
-          {/* Automatic isomorphisms */}
-          <CodeBlock>
-            double (x) ={'>'} x * 2<BR/>
-            double⁻¹ (y) ={'>'} y / 2<BR/>
-            double!(8) // 4<BR/>
-            double^-1(8) // 4
-          </CodeBlock>
-          <CodeBlock>
-            ! + -
-          </CodeBlock>
-          <CodeBlock>
-            transaction {'{'}<BR/>
-            <></>  from.balance -= 10<BR/>
-            <></>  to.balance += 10<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            change.revert
-          </CodeBlock>
+          
         </Section>
         <Section head="§4.3 Undecidability & Assumptions">
-          {/* assume, circularity */}
+        
           <CodeBlock>
             if assume graph.last {'{'}<BR/>
             <></>  A()<BR/>
@@ -1937,96 +1949,57 @@ const Almanac = () => {
             <></>  B()<BR/>
             {'}'}
           </CodeBlock>
-          <CodeBlock>
-            with Time.timezone = UTC + 2h<BR/>
-            assume Time.timezone = UTC + 2h<BR/>
-            with {'{'}<BR/>
-            <></>  Time.YEAR = 2024<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            x := compute()<BR/>
-            dynamically total := x + 1<BR/>
-            dynamically assert total {'<'} 100
-          </CodeBlock>
+          
         </Section>
         <Section head="§4.4 Program Types">
+          
           <CodeBlock>
-            Terminating := Program{'{'}∀ path ∈ .paths: path.length {'<'} ∞{'}'}<BR/>
-            increment: Terminating = (x) ={'>'} x + 1
+            Terminating := Program{'{'}∀path is .paths: path.length {'<'} ∞{'}'}<BR/>
+            increment: Terminating (x) ={'>'} x + 1
           </CodeBlock>
+
           <CodeBlock>
-            x := compute()<BR/>
-            x**<BR/>
-            x**.&.acc<BR/>
-            x**.is_terminal<BR/>
-            x**.next
+            f.effects<BR/>
+            Pure := Program{'{'}.effects.empty{'}'}<BR/>
+            g: Program{'{'}effects ⊆ @local{'}'}
           </CodeBlock>
+
           <CodeBlock>
             f(?) // f over every possible input
           </CodeBlock>
+          
           <CodeBlock>
             fast: Program{'{'}O: Compiler.default{'}'} = f**<BR/>
             slow: Program{'{'}O: Compiler.none{'}'} = f**
           </CodeBlock>
-          <CodeBlock>
-            settings.cfg.ray // halts, no side effects<BR/>
-            script.js.ray // JS read over Ray
-          </CodeBlock>
+          
         </Section>
         <Section head="§4.5 Optimizations">
-          <CodeBlock>
-            Compiler.default += {'{'}<BR/>
-            <></>  {'{'}a{'}'} * 2 ={'>'} a + a<BR/>
-            <></>  {'{'}a{'}'} + 0 ={'>'} a<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            with O = Compiler.default + Debug.timed<BR/>
-            Debug.timed := {'{'}<BR/>
-            <></>  {'{'}s: Statement{'}'} ={'>'} s; timer.tick<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            optimize time_elapsed<BR/>
-            minimize space_used<BR/>
-            prefer minimize y if x {'>'} 100<BR/>
-            allow network<BR/>
-            dynamically assert x + y {'<'}= 10
-          </CodeBlock>
-          <CodeBlock>
-            Style.mathematics<BR/>
-            inline Style.mathematics
-          </CodeBlock>
+       
         </Section>
         <Section head="§4.6 Probability">
-        {/* if 0.5 =>, 0.3 =>  */}
+          Since we're working with superposed values already, a natural extension of the concept is to that of probabilities. Where by default, if we'd have some superposed values OR'ed, there's a uniform probability:
           <CodeBlock>
             x = "A" | "B"<BR/>
             x#.random // "A" or "B", 50% each
           </CodeBlock>
+          We can assign probabilities in two ways. Where any probabilities which aren't covered default to None, if the variable is optional. (If it isn't optional, all cases need to be covered.)
           <CodeBlock>
             x: String? = 0.2("A") | 0.5("B")<BR/>
             x: String? =<BR/>
             <></>  0.2 ={'>'} "A"<BR/>
             <></>  0.5 ={'>'} "B"
           </CodeBlock>
+          Nested probabilities, are of course supported. Note that only OR's are evaluated this way, an AND isn't affected. So the second line here, is two separate probabilities, both evaluated:
           <CodeBlock>
             0.5(0.5("A") | 0.5("B")) | "C"<BR/>
             0.5("A") & 0.5(0.3("B") | 0.7("C"))
           </CodeBlock>
+          And calling a function with them, keeps the probabilities around:
           <CodeBlock>
             n (== "A") ={'>'} 1<BR/>
             n (== "B") ={'>'} 2<BR/>
             n 0.3("A") | 0.7("B") // 0.3(1) | 0.7(2)
-          </CodeBlock>
-          <CodeBlock>
-            Binary{'{'}-{'>'} .next == 0.5(?.random){'}'}<BR/>
-            Binary{'{'}-{'>'} .next == 0.5(?.random){'}'}.length
-          </CodeBlock>
-          <CodeBlock>
-            secure Number{'{'}{'<'} 100{'}'}.random<BR/>
-            with Random.seed = 42
           </CodeBlock>
         </Section>
         <Section head="§4.7 Choice">
@@ -2051,7 +2024,7 @@ const Almanac = () => {
             func(choose, choose) // Choose two variables, the second can be a Number[] or a String
           </CodeBlock>
 
-          Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
+          Note that choose, uses the (@==) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (@==), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
 
           {/* TODO Should be var @ * to edit it everywhere explicitly? */}
 
@@ -2075,50 +2048,9 @@ const Almanac = () => {
           <CodeBlock>
             @me.choose String
           </CodeBlock>
-
-          {/* How tto define which algorithm chooses */}
-          <CodeBlock>
-            choose 1 Number<BR/>
-            choose 50% ("A" | "B" | "C" | "D")<BR/>
-            choose{'{'}unique{'}'} UUID<BR/>
-            Number{'{'}{'>'} 5{'}'}()
-          </CodeBlock>
-          <CodeBlock>
-            Room := class {'{'}<BR/>
-            <></>  4 Wall{'{'}a Door, 50% Window{'}'}<BR/>
-            <></>  1..3 Bookshelf<BR/>
-            <></>  a Table<BR/>
-            {'}'}<BR/>
-            choose Room
-          </CodeBlock>
         </Section>
-        <Section head="§4.8 Coroutines">
-          <CodeBlock>
-            branch download()<BR/>
-            defer cleanup()<BR/>
-            result := await request()
-          </CodeBlock>
-          <CodeBlock>
-            sync {'{'}<BR/>
-            <></>  fetch(a)<BR/>
-            <></>  fetch(b)<BR/>
-            {'}'}<BR/>
-            race {'{'}<BR/>
-            <></>  fetch(mirror1)<BR/>
-            <></>  fetch(mirror2)<BR/>
-            {'}'}<BR/>
-            rush {'{'}<BR/>
-            <></>  fetch(mirror1)<BR/>
-            <></>  fetch(mirror2)<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            loop {'{'}<BR/>
-            <></>  tick()<BR/>
-            {'}'}
-          </CodeBlock>
-        </Section>
-        <Section head="§4.9 Concurrency">
+        <Section head="§4.8 Concurrency">
+          
           <CodeBlock>
             x = 0<BR/>
             branch {'{'}<BR/>
@@ -2129,11 +2061,11 @@ const Almanac = () => {
             {'}'}<BR/>
             x // 1 | 2
           </CodeBlock>
+          
           <CodeBlock>
             A\ branch {'{'}<BR/>
             <></>  pending count := graph.count<BR/>
             {'}'}<BR/>
-            count @ A<BR/>
             while A {'{'}<BR/>
             <></>  print(count @ A)<BR/>
             {'}'}
@@ -2141,134 +2073,92 @@ const Almanac = () => {
           <CodeBlock>
             &# // the branches running here
           </CodeBlock>
+        
         </Section>
-        <Section head="§4.10 Graph Rewriting">
+        <Section head="§4.9 Units">
+          There's support for all kinds of units in the language:
+          <CodeBlock>
+            1m + 50cm // 1.5 m<BR/>
+            1.5 m<BR/>
+            3 GB/s<BR/>
+            2/10m<BR/>
+            25.years<BR/>
+            1k // 1000
+          </CodeBlock>
+          They can be normalized or structured after one another if of the same type.
+          <CodeBlock>
+            1d 10h 10m 30s<BR/>
+            10000000s as days hours minutes seconds // 115d 17h 46m 40s
+          </CodeBlock>
+          Some are ambiguous and thus resolved through further type restrictions:
+          <CodeBlock>
+            8m // 8 meter | 8 minute<BR/>
+            d: Quantity.Temporal = 8m // 8 minute
+          </CodeBlock>
 
+          We can for instance also get the number type from a particular unit this way:
+          <CodeBlock>
+            4 B as Binary // Binary₃₂
+          </CodeBlock>
+
+          Also there are things for noting time, which are just Time instances with the date as an (unknown) superposition:
+          <CodeBlock>
+            12:00 == 12 hours<BR/>
+            12:00:30 == 12 hours 30 seconds
+          </CodeBlock>
+          You can access specific calendar years like this
+          <CodeBlock>
+            February.days with Time.YEAR = 2024 // 29
+          </CodeBlock>
         </Section>
       </Section>
       <Section head="§5. Playerfacing">
         <Section head="§5.1 Error Handling">
+          
           <CodeBlock>
-            f() $<BR/>
-            f() $ DEFAULT<BR/>
-            f() $ None<BR/>
-            f() $ return X<BR/>
-            f() $ ERROR[kind] `Failed: {'{'}.{'}'}`<BR/>
-            f() $?<BR/>
-            f() $? DEFAULT<BR/>
-            f() $!<BR/>
-            f() $?!
+            ERROR@Path `there is no path from a to b`<BR/>
+            FATAL@Disk `the disk is full`<BR/>
+            ERROR `something went wrong`
           </CodeBlock>
+         
+          <BR/>
+
+          <CodeBlock>
+            f() $ // pass the error up<BR/>
+            f() $ DEFAULT // on error, the call is DEFAULT<BR/>
+            f() $ None<BR/>
+            f() $ return X // on error, return X from this function<BR/>
+            f() $ ERROR[kind] `Failed: {'{'}.{'}'}` // wrap it, and raise it again<BR/>
+            f() $? // None on error (and not fatal)<BR/>
+            f() $? DEFAULT // the same as: f() $? ?? DEFAULT<BR/>
+            f() $! // escalate: any error is fatal<BR/>
+            f() $?! // catch even a fatal one
+          </CodeBlock>
+         
           <CodeBlock>
             f() $ {'{'}<BR/>
             <></>  print(.)<BR/>
             {'}'}
           </CodeBlock>
+
           <CodeBlock>
             f()<BR/>
             <></>  $specific.error return X<BR/>
             <></>  $a.error | $b.error return Y
           </CodeBlock>
-          <CodeBlock>
-            errors &:= f() $
-          </CodeBlock>
+
         </Section>
         <Section head="§5.2 Syntax Highlighting">
-          <CodeBlock>
-            "Important" ^italic<BR/>
-            "Important".italic
-          </CodeBlock>
-          <CodeBlock>
-            keyword ^keyword := external global
-          </CodeBlock>
-          <CodeBlock>
-            `const x = 2`.js
-          </CodeBlock>
+          
         </Section>
         <Section head="§5.3 Theorem Proving">
-          <CodeBlock>
-            theorem commutative (a: Number, b: Number) ={'>'} a + b == b + a
-          </CodeBlock>
-          <CodeBlock>
-            ∃x: Binary x * x == 25
-          </CodeBlock>
-          <CodeBlock>
-            if assume commutative {'{'}<BR/>
-            <></>  simplify(expression)<BR/>
-            {'}'}
-          </CodeBlock>
+          
         </Section>
         <Section head="§5.4 Geometry">
-          <CodeBlock>
-            Point = Ray<BR/>
-            Loop = Array.Unbounded.loop<BR/>
-            Circle := class {'{'}<BR/>
-            <></>  outline: Loop{'{'}map(to centre -- #.min.length).reduce(==){'}'}<BR/>
-            <></>  centre: Point<BR/>
-            <></>  radius ={'>'} outline to centre -- #.min.length<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            Ball(radius: 10m) + Padding.right(10m)<BR/>
-            pt 5 Ball(radius: 1m)
-          </CodeBlock>
-          <CodeBlock>
-            2D := class: 1D {'{'}<BR/>
-            <></>  under | bottom : static {'<'}{'<'}- down: static {'<'}- vertical | y -{'>'} up: static -{'>'}{'>'} above | top : static<BR/>
-            {'}'}<BR/>
-            pos[y: 5]
-          </CodeBlock>
+
         </Section>
-        <Section head="§5.4 UI">
-          <CodeBlock>
-            center {'{'}<BR/>
-            <></>  right .map(&+ px 5) {'<'}- {'{'}<BR/>
-            <></>    DownloadButton, LoginButton<BR/>
-            <></>  {'}'}<BR/>
-            <></>  @./lib/organizations/orbitmines/logo.png{'{'}width: 90% & {'<'}= 400px{'}'}<BR/>
-            <></>  (xl 4/12 -{'>'} xs 12/12) "Once a Minecraft server ..." ^italic<BR/>
-            <></>  pt 5 @fadi as Author<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            {'{'}<BR/>
-            <></>  A<BR/>
-            <></>  B<BR/>
-            {'}'}.map(,)<BR/>
-            (A, B).map(\n)
-          </CodeBlock>
-          <CodeBlock>
-            4/12 * center Card<BR/>
-            100% * center Card
-          </CodeBlock>
-          <CodeBlock>
-            Profile := class {'{'}<BR/>
-            <></>  card\<BR/>
-            <></>    center (.picture, .name)<BR/>
-            <></>  page\<BR/>
-            <></>    .name, .articles<BR/>
-            {'}'}<BR/>
-            Profile~card(@fadi)
-          </CodeBlock>
-          <CodeBlock>
-            dynamically if Keyboard.f2.toggled {'{'}<BR/>
-            <></>  selection = selection.next<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            orbitmines.com := {'{'}<BR/>
-            <></>  profiles: Profile$ @ /profiles/<BR/>
-            <></>  archive: Article$ @ /archive/<BR/>
-            <></>  almanac := Almanac<BR/>
-            <></>  {'{'}*{'}'}: Index<BR/>
-            {'}'}<BR/>
-            orbitmines.com() if &entrypoint
-          </CodeBlock>
-          <CodeBlock>
-            page: Program{'{'}O: Render.HTML{'}'}<BR/>
-            page: Program{'{'}O: Render.TUI{'}'}<BR/>
-            page: Program{'{'}O: Render.HTML + Render.JS + Render.React{'}'}
-          </CodeBlock>
+        <Section head="§5.5 UI">
+         
         </Section>
       </Section>
       <Section head="§6. The v0 Runtime & Compiler">
@@ -2293,117 +2183,24 @@ const Almanac = () => {
             `An example` // Valid syntax
           </CodeBlock>
           Let's get started on the definition of expressions in the language to understand how that works:
-          <CodeBlock>
-            {'{'}a{'}'} [x: chainable] {'{'}b{'}'} [y: chainable] {'{'}c{'}'} ={'>'} (a [x] b) & (b [y] c)<BR/>
-            1 {'<'} 2 {'<'} 3 // true
-          </CodeBlock>
-          <CodeBlock>
-            chainable {'<'} (other) ={'>'} other {'>'} this<BR/>
-            compounds + (addend) ={'>'} add(this, addend)
-          </CodeBlock>
-          <CodeBlock>
-            x ~~ .method
-          </CodeBlock>
+         
         </Section>
       </Section>
-      <Section head="§7. Other Features">
-        <Section head="§7.1 (Unicode) Strings">
+      <Section head="§7 Examples">
+        <Section head="§7.1 Chat through Version Control">
           <CodeBlock>
-            "A"<BR/>
-            "ABC"<BR/>
-            U+1F525 // 🔥
-          </CodeBlock>
-          <CodeBlock>
-            "ABC" == "A", "B", "C"<BR/>
-            "Hello {'{'}name{'}'}!"
-          </CodeBlock>
-          <CodeBlock>
-            "ABC".lowercase // "abc"<BR/>
-            "abc".uppercase // "ABC"<BR/>
-            "hello world".title_case // "Hello World"<BR/>
-            "hello world".snake_case // "hello_world"<BR/>
-            "hello world".camel_case // "helloWorld"
-          </CodeBlock>
-          <CodeBlock>
-            "a,b,c".split(",") // "a", "b", "c"<BR/>
-            ("a", "b", "c").join(", ") // "a, b, c"<BR/>
-            "abc".reverse // "cba"
-          </CodeBlock>
-          <CodeBlock>
-            "A".next // "B"<BR/>
-            "A" as Number // 65
-          </CodeBlock>
-          <CodeBlock>
-            text: Unicode %15 = "…"
+            Channel := Program + History<BR/>
+            Chat := Channel{'{'}Pure & Terminating{'}'}<BR/>
+            <BR/>
+            room := Chat()<BR/>
+            room |= Program(code: {'{'} "hi" {'}'})<BR/>
+            room |= Program(code: {'{'} while true {'{'} {'}'} {'}'}) // refused: it doesn't terminate
           </CodeBlock>
         </Section>
-        <Section head="§7.2 Units">
-          <CodeBlock>
-            1m + 50cm // 1.5 m<BR/>
-            1.5 m<BR/>
-            3 GB/s<BR/>
-            2/10m
-          </CodeBlock>
-          <CodeBlock>
-            1d 10h 10m 30s<BR/>
-            10000000s as days hours minutes seconds
-          </CodeBlock>
-          <CodeBlock>
-            8m // 8 meter | 8 minute<BR/>
-            d: Quantity.Temporal = 8m // 8 minute
-          </CodeBlock>
-          <CodeBlock>
-            1 KB // 1000 B<BR/>
-            1 KiB // 1024 B<BR/>
-            1k // 1000
-          </CodeBlock>
+        <Section head="§7.2 Hot-reloadable HTML website">
+
         </Section>
-        <Section head="§7.3 Time">
-          <CodeBlock>
-            Time.now<BR/>
-            12:00<BR/>
-            "2025-01-01"
-          </CodeBlock>
-          <CodeBlock>
-            Time("2025-01-01", epoch: "2000-01-01") == 25 years
-          </CodeBlock>
-          <CodeBlock>
-            with Time.YEAR = 2024 {'{'}<BR/>
-            <></>  February.days // 29<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            t.round(seconds)<BR/>
-            Calendar#
-          </CodeBlock>
-        </Section>
-        <Section head="§7.4 UUID">
-          <CodeBlock>
-            id := UUID.v4()<BR/>
-            id: UUID = 6ba7b810-9dad-11d1-80b4-00c04fd430c8<BR/>
-            id.version // 1
-          </CodeBlock>
-          <CodeBlock>
-            choose{'{'}unique{'}'} UUID.v1
-          </CodeBlock>
-        </Section>
-        <Section head="§7.6 IP addresses">
-          <CodeBlock>
-            ip: IPv4 = 192.168.1.1<BR/>
-            ip + 1 // 192.168.1.2<BR/>
-            ip / 24 // 192.168.1.0/24<BR/>
-            v6: IPv6 = ::ffff:192.168.1.1
-          </CodeBlock>
-        </Section>
-        <Section head="§7.5 Roman numerals">
-          <CodeBlock>
-            "XIV" as Number // 14<BR/>
-            14 as Roman // "XIV"<BR/>
-            with Roman.normalizer = Additive {'{'}<BR/>
-            <></>  4 as Roman // "IIII"<BR/>
-            {'}'}
-          </CodeBlock>
-        </Section>
+
       </Section>
     </Arc>
 
