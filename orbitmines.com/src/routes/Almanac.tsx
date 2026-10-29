@@ -1493,7 +1493,7 @@ const Almanac = () => {
             f %== g
           </CodeBlock>
 
-          <span style={{textAlign: 'left', width: '100%'}}>Then the to me much more interesting one of equality of source code. This is something we'll discuss further in <SectionButton section="§4.4 Program Types" rightIcon="arrow-right" text="§4.4 Program Types" minimal outlined />. But for now it's good to know that the relevant question to ask is, equivalent source code? According to which frame of reference? By which I mean in which layer of the stack: In your high-level language, in what it compiles to, in its intermediate layers, or in any of the above? This is a complicated equivalence graph, but it will be available to you in the Ray programming language.</span>
+          <span style={{textAlign: 'left', width: '100%'}}>Then the to me much more interesting one of equality of source code, which the default for functions. This is something we'll discuss further in <SectionButton section="§4.4 Program Types" rightIcon="arrow-right" text="§4.4 Program Types" minimal outlined />. But for now it's good to know that the relevant question to ask is, equivalent source code? According to which frame of reference? By which I mean in which layer of the stack: In your high-level language, in what it compiles to, in its intermediate layers, or in any of the above? This is a complicated equivalence graph, but it will be available to you in the Ray programming language.</span>
           
           <BR/>
 
@@ -1502,7 +1502,7 @@ const Almanac = () => {
           <BR/>
 
           <CodeBlock>
-            f *== g with O = @wasm
+            f == g with O = @wasm
           </CodeBlock>
 
           Then besides these there is partial equivalence/matching, whether used for graph rewriting or whether something starts or ends with certain values. It is expressed the following way: 
