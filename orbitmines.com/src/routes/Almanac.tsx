@@ -189,7 +189,7 @@ const Almanac = () => {
       <BR/>
       - (1) Develop the Ray programming language, as a placeholder to build out infrastructure for the future.
       <BR/>
-      - (2) Build an ecosystem around Ray which will allow us to go beyond what a typical programming language does. A new <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined /> with programmable <SectionButton section="§3.4 Access Permissions" rightIcon="arrow-right" text="§3.4 Access Permissions" minimal outlined />. And a reprogrammable visual interface (an IDE) - which will later become the Ether.
+      - (2) Build an ecosystem around Ray which will allow us to go beyond what a typical programming language does. A new <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined /> with programmable <SectionButton section="§3.4 Access Permissions" rightIcon="arrow-right" text="§3.4 Access Permissions" minimal outlined />.
       <BR/>
       - (3) Build tools within that interface for analyzing, comparing and cherry-picking features of ALL existing (programming) languages and their libraries: The Ether Library Project.
       <BR/>
