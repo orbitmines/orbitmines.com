@@ -1474,7 +1474,7 @@ const Almanac = () => {
             "Hi" is String
           </CodeBlock>
 
-          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Note that all equality operators (or rather functions returning boooleans in general) have their inverse defined by prefixing it with a (!). So (!@==) or (!==) or (!is).</span>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Note that all equality operators (or rather functions returning booleans in general) have their inverse defined by prefixing it with a (!). So (!@==) or (!==) or (!is).</span>
 
           <span style={{textAlign: 'left', width: '100%'}}>One of the types of equality which is often unsupported, for good reasons, is functional equality. There are two versions <Reference is="reference" simple inline index={referenceCounter()} reference={{
             title: "extensional equality",
