@@ -1,7 +1,7 @@
 import { ETHERS_ALMANAC, ON_ORBITS } from "./references";
 import ORGANIZATIONS, {Content, PLATFORMS, Viewed} from "../lib/organizations/ORGANIZATIONS";
 import {PROFILES} from "./profiles/profiles";
-import React, {HTMLAttributes, ReactNode, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {HTMLAttributes, ReactNode, useState} from "react";
 import Post, {
   Arc, Block,
   BlueprintIcons16,
@@ -28,123 +28,88 @@ import { add, CachedVisualizationCanvas, CanvasContainer, Continuation, Line, Ra
 import REFERENCES from "./profiles/fadi-shawki/fadi_shawki";
 import { _2024_02_ORBITMINES_AS_A_GAME_PROJECT } from "./references";
 import { Center, Html, Text } from "@react-three/drei";
+import { Para } from "./Physics";
 
 
 
-const Highlighted = (props: { code: string, scroll?: boolean }) => {
-  const { scroll = true } = props;
-  const textareaRef = useRef(null);
-  const measureRef = useRef<HTMLSpanElement | null>(null);
+// Keyed on the code: switching pages reuses this component at the same tree
+// position, and the editable copy below is only seeded from props once - without
+// the key a block would keep showing the code of the page it was first drawn on.
+const Highlighted = (props: { code: string, wrap?: boolean }) =>
+  <EditableHighlighted key={props.code} {...props}/>
 
+const EditableHighlighted = (props: { code: string, wrap?: boolean }) => {
+  const { wrap = true } = props;
   const [code, setCode] = useState(props.code);
 
-  const [height, setHeight] = useState(`${props.code.split('\n').length * 1.5}rem`);
-
-  const resize = () => {
-    if (textareaRef.current && measureRef.current) {
-      textareaRef.current.style.height = "auto";
-
-      let height = textareaRef.current.scrollHeight
-      if (code.split('\n').length === 1 && textareaRef.current.getBoundingClientRect().width - measureRef.current.getBoundingClientRect().width >= 20)
-        height = '22' // could be better, but works for now
-      textareaRef.current.style.height = `${height}px`;
-      setHeight(height)
-    }
+  // The textarea (editable, transparent text) and the highlighted <pre> share one
+  // grid cell, so both are sized by the code itself in the same font - no JS
+  // measuring that can drift out of sync on resize and leave stray scrollbars.
+  // Long lines wrap (identically in both layers) instead of scrolling sideways;
+  // `wrap={false}` is for tiny inline labels that may overhang their column.
+  const layer: React.CSSProperties = {
+    gridArea: '1 / 1',
+    margin: 0,
+    padding: 0,
+    border: 'none',
+    font: 'inherit',
+    lineHeight: 'inherit',
+    whiteSpace: wrap ? 'pre-wrap' : 'pre',
+    wordBreak: 'normal',
+    overflowWrap: wrap ? 'anywhere' : 'normal',
+    overflow: 'hidden',
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCode(e.target.value);
-    resize()
-  };
+  return <div style={{ fontSize: '1.1rem', lineHeight: 1.4, width: '100%' }}>
+    <div style={{ display: 'grid', ...(wrap ? { width: '100%' } : { width: 'max-content', minWidth: '100%' }) }}>
+      <Highlight prism={ReactPrism} theme={themes.duotoneDark} code={code} language="ray.txt">
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre
+            className={className}
+            aria-hidden="true"
+            style={{
+              ...style,
+              ...layer,
+              pointerEvents: "none",
+              background: "transparent",
+            }}
+          >
+          {tokens.map((line, i) => {
+            const lp = getLineProps({ line }) as any;
+            return (
+              <div key={i} className={lp.className} style={lp.style}>
+                {line.map((token, ti) => {
+                  const tp = getTokenProps({ token }) as any;
+                  return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
+                })}
+              </div>
+            );
+          })}
+        </pre>
+        )}
+      </Highlight>
 
-  useLayoutEffect(() => {
-    resize();
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, [code]);
-  return <div style={{ position: "relative", fontFamily: "monospace", width: "100%", overflowX: scroll ? "auto" : "visible" }}>
-    <span
-      ref={measureRef}
-      style={{
-        position: "absolute",
-        visibility: "hidden",
-        whiteSpace: "pre",
-        fontFamily: "monospace",
-        fontSize: "1.1rem",
-        lineHeight: "1.4",
-        padding: 0,
-        margin: 0,
-      }}
-    >
-      {code}
-    </span>
-
-    <textarea
-      ref={textareaRef}
-      value={code}
-      onChange={handleChange}
-      spellCheck={false}
-      wrap="off"
-      style={{
-        lineHeight: "1.4",
-        position: "relative",
-        width: "100%",
-        height: height,
-        maxHeight: '100%',
-        fontSize: '1.1rem',
-        padding: 0,
-        background: "transparent",
-        color: "transparent",
-        caretColor: "#fff",
-        textShadow: "0 0 0 transparent",
-        resize: "none",
-        fontFamily: "monospace",
-        whiteSpace: "pre",
-        overflow: "hidden",
-        border: "none",
-        wordBreak: 'normal',
-        overflowWrap: 'normal'
-      }}
-    />
-
-    <Highlight prism={ReactPrism} theme={themes.duotoneDark} code={code} language="ray.txt">
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={className}
-          aria-hidden="true"
-          style={{
-            ...style,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            pointerEvents: "none",
-            whiteSpace: "pre",
-            background: "transparent",
-            width: "max-content",
-            minWidth: "100%",
-            height: height,
-            overflow: "hidden",
-            wordBreak: 'normal',
-            overflowWrap: 'normal'
-          }}
-        >
-        {tokens.map((line, i) => {
-          const lp = getLineProps({ line }) as any;
-          return (
-            <div key={i} className={lp.className} style={lp.style}>
-              {line.map((token, ti) => {
-                const tp = getTokenProps({ token }) as any;
-                return <span key={ti} className={tp.className} style={tp.style}>{tp.children}</span>;
-              })}
-            </div>
-          );
-        })}
-      </pre>
-      )}
-    </Highlight>
+      <textarea
+        value={code}
+        onChange={e => setCode(e.target.value)}
+        spellCheck={false}
+        wrap={wrap ? "soft" : "off"}
+        rows={1}
+        style={{
+          ...layer,
+          // Stretch over the <pre> (which sets the cell's size) rather than size it:
+          // a textarea's default width (its `cols`) would otherwise widen the cell.
+          width: 0,
+          minWidth: '100%',
+          height: '100%',
+          minHeight: 0,
+          background: "transparent",
+          color: "transparent",
+          caretColor: "#fff",
+          resize: "none",
+        }}
+      />
+    </div>
   </div>
 }
 
@@ -164,7 +129,7 @@ const string = (node: ReactNode): string => {
 }
 
 const Shell = ({children}: Children) => {
-  return <Block>
+  return <Block style={{whiteSpace: 'pre-wrap', overflowWrap: 'anywhere'}}>
     <span style={{textAlign: 'left'}}>
       <Highlight prism={ReactPrism} theme={themes.oneDark} code={string(children)} language="bash">
       {({className, style, tokens, getLineProps, getTokenProps}) => (
@@ -224,7 +189,7 @@ const Almanac = () => {
       <BR/>
       - (1) Develop the Ray programming language, as a placeholder to build out infrastructure for the future.
       <BR/>
-      - (2) Build an ecosystem around Ray which will allow us to go beyond what a typical programming language does. A new <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined /> with programmable <SectionButton section="§3.4 Access Permissions" rightIcon="arrow-right" text="§3.4 Access Permissions" minimal outlined />. And a reprogrammable visual interface (an IDE) - which will later become the Ether.
+      - (2) Build an ecosystem around Ray which will allow us to go beyond what a typical programming language does. A new <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined /> with programmable <SectionButton section="§3.4 Access Permissions" rightIcon="arrow-right" text="§3.4 Access Permissions" minimal outlined />.
       <BR/>
       - (3) Build tools within that interface for analyzing, comparing and cherry-picking features of ALL existing (programming) languages and their libraries: The Ether Library Project.
       <BR/>
@@ -382,7 +347,7 @@ const Almanac = () => {
         <BR/>
         I'll start off assuming that even the smallest bit of code looks alien to you. I won't even assume knowledge of much mathematics. And see if we can start to build up a vocabulary which will enable you to do this great thing that is programming!
         <Section head="§0.1 Variables">
-          Let's set a goal for ourselves. A lot of learning about programming languages is getting comfortable with abstract knowledge. This book for instance lists a lot of tools, without really explaining what you could use them for. The fun thing about programming is that it is a sandbox, the complexity of the things you can do come from you, not necessarily from the language. Whether that's a website or something as complicated as a videogame. So... a simple example. Let's say we wanted to build a calculator. The language already gives you a lot of tools to do the complicated stuff for that, but you don't necessarily know how to use them yet. How would we go about doing that? 
+          A lot of learning about programming languages is getting comfortable with abstract knowledge. This book for instance lists a lot of tools, without really explaining what you could use them for. The fun thing about programming is that it is a sandbox, the complexity of the things you can do come from you, not necessarily from the language. Whether that's a website or something as complicated as a videogame. To me, it helps greatly if I know something I want to build, then it's just a matter of figuring out how I can make that a reality.
           <BR/>
 
           Where to begin... Perhaps with a temporal and spatial intuition! A program is just a set of steps the computers follows. A long line of things to do essentially. Because programs are typically written in text we read that line from top to bottom. (First we do A, then B, then C.)
@@ -390,9 +355,9 @@ const Almanac = () => {
             <Col md={6} xs={9}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" scroll={false}/></Col>
-                   <Col style={{width: '10px'}}><Highlighted code="B" scroll={false}/></Col>
-                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginRight: '50px'}}><Highlighted code="A" wrap={false}/></Col>
+                   <Col style={{width: '10px'}}><Highlighted code="B" wrap={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '50px'}}><Highlighted code="C" wrap={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '85.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -424,9 +389,9 @@ const Almanac = () => {
             <Col md={6} xs={12}>
               <Block style={{width: '100%'}}>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" scroll={false}/></Col>
-                   <Col style={{width: '25px'}}><Highlighted code="E1" scroll={false}/></Col>
-                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" scroll={false}/></Col>
+                   <Col style={{width: '10px', marginRight: '45px', marginTop: '15px'}}><Highlighted code="D" wrap={false}/></Col>
+                   <Col style={{width: '25px'}}><Highlighted code="E1" wrap={false}/></Col>
+                   <Col style={{width: '10px', marginLeft: '45px', marginTop: '15px'}}><Highlighted code="F" wrap={false}/></Col>
                 </Row>
                 <CachedVisualizationCanvas alt="graph" context={book} style={{height: '93.6px', marginTop: '-60px'}}>
                   <group scale={1.5}>
@@ -461,7 +426,7 @@ const Almanac = () => {
                   </group>
                 </CachedVisualizationCanvas>
                 <Row center="xs" style={{flexDirection: 'row'}}>
-                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" scroll={false}/></Col>
+                   <Col style={{width: '60px', marginTop: '-5px'}}><Highlighted code="E2" wrap={false}/></Col>
                 </Row>
               </Block>
             </Col>
@@ -509,76 +474,115 @@ const Almanac = () => {
           Now that you know that you'd be suprised what kind of things you can already do! Essentially you now have a (primitive) calculator at your fingertips, just in text form.
         </Section>
         <Section head="§0.2 Data Types">
+          Then there are all kinds of different data types, which I'll also cover to a greater extend outside of this section. But for now it's useful to know there are different kinds of data we operate with.
+
+          These should feel pretty natural. Just as we in natural language can refer to things like numbers, whether something is on or off, whether we refer to having the concept of nothing at all!
           <CodeBlock>
             count := 5<BR/>
-            enabled := true<BR/>
+            on := true<BR/>
+            off := false<BR/>
             nothing := None
           </CodeBlock>
+          Then of course we also have a way of saying a bit of text. Which are always inside two ("). (This is to separate it from other code!)
           <CodeBlock>
-            letter := "A" // a Char<BR/>
-            name := "Ada" // a String
+            letter := "A" // a character<BR/>
+            name := "Ada" // text, which we refer to as a String
           </CodeBlock>
+          Then there also exist structural things. This is necessary for things like "a list of things". Or something like all the pixels in your screen: a 2d grid of pixels! A list, we can create in the following way, just like a string we surround it with two characters, but this time with brackets: ([ ]). And commas between each item, which just notes the end of some item.
           <CodeBlock>
-            numbers := 1, 2, 3<BR/>
-            list := [1, 2, 3]<BR/>
-            list[0] // 1
+            list := [2, 3, 4]
           </CodeBlock>
+          Then taking a particular entry out of this list, we can do using the brackets again, but this time with an index; a position. Which typically start at 0.
+          <CodeBlock>
+            list[0] // 2<BR/>
+            list[2] // 4
+          </CodeBlock>
+          These "Types" as they are called, we can also force on our variables, our names, beforehand. This is a useful concept languages use to differentiate what kind of information is allowed. <BR/>
+
+          See if you can intuit the meanings here:
           <CodeBlock>
             x: Number = 5<BR/>
             y: String = "hello"<BR/>
             maybe: Number? = None
           </CodeBlock>
-          <CodeBlock>
-            maybe ?? 0 // 0<BR/>
-            enabled ? "on" : "off" // "on"
-          </CodeBlock>
+          Two new concepts: We split the (:=) into a (:) and (=). Where one says this is the type of this variable, while the other sets the value of it.
+          <BR/>
+          Then there's the (?) after (Number?), which just says: It might be a number, it might be nothing.
+
+          <BR/>
+
+          Ok. If that makes sense, we can move to the next concept. Which is effectively how we manage and group functionality: functions.
         </Section>
         <Section head="§0.3 Functions">
+          Now to actually make useful things happen, and to make it bearable to deal with. We need to hack our program into pieces to manage it properly. And added to that, we need to do more complicated things than just setting variables! We need to do conditional logic: "Do this if that, otherwise do something else." - that sort of thing.
+
+          <BR/>
+
+          First things first, grouping something in a named variable we can later reuse: We denote that in the following way: 
           <CodeBlock>
             double (x) ={'>'} x * 2<BR/>
             double(4) // 8<BR/>
             double 4 // 8
           </CodeBlock>
+          See that we used a variable, called (double). Attached to it another name (x), which we then multiple by (2). This is how it's grouped and used. The (={'>'}) notation defines it, like (:=) does for normal values. And we can then use that same structure to use it as shown below. Both use, but don't require parenthesis '()'. They are used to make it make it clearer what belongs to what.
+
+          <BR/>
+
+          Of course that example isn't really worth making a separate function for. It's too simple, some things we'll do will require more than one line, in that case we wrap them in these brackets {'{}'}.
+
           <CodeBlock>
-            greet (name: String) ={'>'} "Hello {'{'}name{'}'}!"<BR/>
-            greet("Ada") // "Hello Ada!"
-          </CodeBlock>
-          <CodeBlock>
-            area (width: Number, height: Number) ={'>'} (<BR/>
+            area (width: Number, height: Number) ={'>'} {`{`}<BR/>
             <></>  size := width * height<BR/>
             <></>  size<BR/>
-            )<BR/>
+            {`}`}<BR/>
             area(2, 3) // 6
           </CodeBlock>
+
+          See here that I reused some concepts from earlier. Now the names inside the function (width/height) have a type associated with them with (:).
+
+          <BR/>
+
+          That should cover the basis for functions. Now let's very briefly go over one more concept you need to know to get started with actually programming something you want.
+
+          <BR/>
+
+          Remember the branching of a graph? Here is where that comes in. Incredibly common in code is that there's a dependence on some variable to do one thing or another. Since it's pretty much natural language this should be intuitive:
+
           <CodeBlock>
-            if (count {'>'} 3) {'{'}<BR/>
+            if count {'>'} 3 {'{'} // greater than<BR/>
             <></>  "many"<BR/>
-            {'}'} elsif (count {'>'} 0) {'{'}<BR/>
+            {'}'} elsif count {'>'} 0 {'{'}<BR/>
             <></>  "some"<BR/>
             {'}'} else {'{'}<BR/>
             <></>  "none"<BR/>
             {'}'}
           </CodeBlock>
+
+          We use here again the {`{}`} brackets for allowing us to write things on multiple lines. Then with stuff inside on what to do on each possible branch!
+
+          <BR/>
+
+          Then two more concepts are looping: Repeating something constantly. Like writing the pixels on your screen for a videogame!
+
+          <BR/>
+
+          We can do that with a list of things using (for) on a list. This will do everything to the right side for each entry in the list from left to right! First (print(1)) then (print(2)) then (print(3)).
+
           <CodeBlock>
-            unless enabled {'{'}<BR/>
-            <></>  "off"<BR/>
-            {'}'}
+            [1, 2, 3] for x ={'>'} print(x)
           </CodeBlock>
+
+          We can also do this with some condition in a loop, as we would for rendering your screen for instance:
+
           <CodeBlock>
             n := 0<BR/>
-            while (n {'<'} 3) {'{'}<BR/>
+            while n {'<'} 3 {'{'}<BR/>
             <></>  n = n + 1<BR/>
             {'}'}<BR/>
             n // 3
           </CodeBlock>
-          <CodeBlock>
-            do {'{'}<BR/>
-            <></>  n = n - 1<BR/>
-            {'}'} while (n {'>'} 0)
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3] for x ={'>'} print(x)
-          </CodeBlock>
+
+          Ok if you were able to decipher all of that, let's get the language on your machine so you can play with it directly! After the installation setup I'll be throwing you into the deep end, but the idea is that you can very slowly introduce yourself to more concepts as you go.
         </Section>
       </Section>
       <Section head="§1. How to Install">
@@ -687,32 +691,6 @@ const Almanac = () => {
           </CodeBlock>
 
           But for that we must turn to the next section to unpack what that means. Starting with what this 'equipped structure' called a Ray is.
-          <CodeBlock>
-            func (a) ={'>'} a + 1<BR/>
-            func(1 & 2) // 2 & 3<BR/>
-            func(1 | 2) // 2 | 3
-          </CodeBlock>
-          <CodeBlock>
-            s (x: boolean) ={'>'} x ? "Y" : "N"<BR/>
-            s(false & true) // "Y" & "N"<BR/>
-            s(boolean) // "Y" | "N"
-          </CodeBlock>
-          <CodeBlock>
-            "A", ("B" | "C") // "AB" | "AC"
-          </CodeBlock>
-          <CodeBlock>
-            true (|| | &&) false // (true || false) | (true && false)
-          </CodeBlock>
-          <CodeBlock>
-            x = true &+ "A"<BR/>
-            x.next // false & "B"<BR/>
-            x = true |+ "A"<BR/>
-            x.next // false | "B"
-          </CodeBlock>
-          <CodeBlock>
-            x - boolean<BR/>
-            x## // ["A", true]
-          </CodeBlock>
         </Section>
         <Section head="§2.2 Rays: Arrays, Trees, Graphs">
           <span style={{textAlign: 'left'}}>The Ray programming language is a rather high-level programming language: <span className="bp5-text-muted">though it allows you to define pretty low-level stuff</span>! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "compiler", link: "https://en.wikipedia.org/wiki/Compiler"}} /> to sort out what is appropriate and efficient.</span>
@@ -886,9 +864,9 @@ const Almanac = () => {
           hierarchy):
 
           <CodeBlock>
-            Array ==.instance_of Tree // true<BR/>
-            Array ==.instance_of Graph // true<BR/>
-            Array ==.instance_of Hypergraph // true
+            Array is Tree // true<BR/>
+            Array is Graph // true<BR/>
+            Array is Hypergraph // true
           </CodeBlock>
 
           Since we're working in text, we're limited to a rather linear expression of ideas, but for simple structures, it's nice to know it's possible to instantiate a linear version quite easily using the (,) operator.
@@ -926,6 +904,16 @@ const Almanac = () => {
 
           <CodeBlock>
             (0 -{'>'} +2)[4] // Accessing the element at index 4 here would be 8.
+          </CodeBlock>
+
+          Ranges are similarly shortcuts for creating these recursive structures as familiar from other languages:
+
+          <CodeBlock>
+            1..5 // 1, 2, 3, 4, 5<BR/>
+            1..{'<'}5 // 1, 2, 3, 4<BR/>
+            0..10..20 // through 10, relevant for graphs<BR/>
+            5.. // 5 -{'>'}<BR/>
+            ..5 // {'<'}- 5
           </CodeBlock>
 
           <span style={{textAlign: 'left'}}>Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it <span className="bp5-text-muted">(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):</span></span>
@@ -1064,56 +1052,6 @@ const Almanac = () => {
           That however leaves one thing I haven't yet explained about Rays, which is the way booleans and numbers are encoded as Rays.
           <BR/>
           For that we'll turn towards the next section.
-          <CodeBlock>
-            node -{'>'} .parent<BR/>
-            (node -{'>'} .parent).last
-          </CodeBlock>
-          <CodeBlock>
-            1..5 // 1, 2, 3, 4, 5<BR/>
-            1..{'<'}5 // 1, 2, 3, 4<BR/>
-            0..10..20<BR/>
-            5.. // 5 -{'>'}<BR/>
-            ..5 // {'<'}- 5
-          </CodeBlock>
-          <CodeBlock>
-            x: Graph = [false, false | true, true]<BR/>
-            x.map(!) // true, true | false, false
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3].first // 1<BR/>
-            [1, 2, 3].last // 3<BR/>
-            [1, 2, 3].count // 3<BR/>
-            [1, 2, 3].reverse // [3, 2, 1]<BR/>
-            [3, 1, 2].sort // [1, 2, 3]<BR/>
-            [1, 2, 2, 3].unique // [1, 2, 3]<BR/>
-            [[1, 2], [3]].flatten // [1, 2, 3]<BR/>
-            [1, 2] * 3 // [1, 2, 1, 2, 1, 2]
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3].reduce(+) // 6<BR/>
-            [1, 2, 3].every({'>'} 0) // true<BR/>
-            [1, 2, 3].some({'>'} 2) // true<BR/>
-            [1, 2, 3].contains(2) // true
-          </CodeBlock>
-          <CodeBlock>
-            list := [1, 2]<BR/>
-            list.push_back(3) // [1, 2, 3]<BR/>
-            list.push_front(0) // [0, 1, 2, 3]<BR/>
-            list.pop_back // 3
-          </CodeBlock>
-          <CodeBlock>
-            [1, 2, 3] ~~ .push_back(4) // [1, 2, 3]<BR/>
-            [1, 2, 3] -- .push_back(4) // [1, 2, 3, 4]
-          </CodeBlock>
-          <CodeBlock>
-            loop := [1, 2, 3].orbit<BR/>
-            loop[5] // 3
-          </CodeBlock>
-          <CodeBlock>
-            tree.path_to(leaf)<BR/>
-            tree.path_to(leaf).min<BR/>
-            selection.complement
-          </CodeBlock>
         </Section>
         <Section head="§2.3 Numbers">
           <span style={{textAlign: 'left', minWidth: '100%'}}>Numbers, booleans (binary numbers), are simply this visual structure. This would be <span
@@ -1172,13 +1110,53 @@ const Almanac = () => {
             y: i8 = -1110000 // Both a 0/1 or a - gets picked up here.
           </CodeBlock>
 
+          There also explicitely exist these familiar syntax for Hexadecimal and Binary:
+
+          <CodeBlock>
+            0x1F // 31<BR/>
+            0b101 // 5
+          </CodeBlock>
+
           Numbers can in the Ray language also be infinitely generating programs. In the sense of always having a next value in the fraction. This comes with certain restrictions of course if you want to operate with infinities. But for instance without defining that we're using a floating point number as an approximation the following would yield an unbounded Decimal:
 
           <CodeBlock>
             1/3 // 0.333, 3[]∞
+          </CodeBlock>          
+
+          <BR/>
+
+          There's also support for several mathematical symbols:
+
+          <CodeBlock>
+            ∑ [1, 2, 3] // 6<BR/>
+            ∏ [1, 2, 3] // 6
           </CodeBlock>
 
-          
+          As do certain obvious infinities settle to a value. Infinite here is an abstract reference to the terminal of an unbounded object. (That is what I envision the abstraction of infinity to actually be.)
+
+          <CodeBlock>
+            (0 -{'>'}).count // ∞
+          </CodeBlock>
+
+          Unless a specific type is specified, u8 doesn't overflow as expected, it's actually an error if not explicitely mentioned that is expected behavior:          
+          <CodeBlock>
+            x: u8 = 200<BR/>
+            x + 100 // 300<BR/>
+            x = x + 100 // error: 300 is not a u8<BR/>
+            x = (x + 100).mod // 44
+          </CodeBlock>
+
+          Furthermore the platform specific numbers exist through a Compiler setup, we'll get to more later, but it would be defined like this:
+          <CodeBlock>
+            usize := Binary{'{'}length == &language.word_size{'}'}<BR/>
+            program: Program{'{'}O: Compiler.default + Language.x86_64{'}'}
+          </CodeBlock>
+
+          Components also allow you to create complex numbers:
+
+          <CodeBlock>
+            2 + 3i
+          </CodeBlock>
 
           <BR/>
 
@@ -1197,44 +1175,6 @@ const Almanac = () => {
           </CodeBlock>
 
           This bracket syntax for filters is effectively also a type constraint. We'll turn towards the next section for those.
-          <CodeBlock>
-            0x1F // 31<BR/>
-            0b101 // 5
-          </CodeBlock>
-          <CodeBlock>
-            1/3 // 0.333…<BR/>
-            √2<BR/>
-            2^3^2 // 2^9<BR/>
-            5! // 120
-          </CodeBlock>
-          <CodeBlock>
-            ∑ [1, 2, 3] // 6<BR/>
-            ∏ [1, 2, 3] // 6
-          </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'} +1) {'{'}{'<'} 10{'}'} for i ={'>'} print(i)<BR/>
-            (-{'>'}) {'{'}index {'<'} 10{'}'} for ={'>'} print(.index)<BR/>
-            10.times ={'>'} print(.index)
-          </CodeBlock>
-          <CodeBlock>
-            (0.0 -{'>'} +0.1) {'{'}{'<'}= 1.0{'}'} for x ={'>'} print(x)
-          </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'}).count // ∞
-          </CodeBlock>
-          <CodeBlock>
-            x: u8 = 200<BR/>
-            x + 100 // 300<BR/>
-            x = x + 100 // error: 300 is not a u8<BR/>
-            x = (x + 100).mod // 44
-          </CodeBlock>
-          <CodeBlock>
-            USize := Binary{'{'}length == &language.word_size{'}'}<BR/>
-            program: Program{'{'}O: Compiler.default + Language.x86_64{'}'}
-          </CodeBlock>
-          <CodeBlock>
-            2 + 3i
-          </CodeBlock>
         </Section>
         <Section head="§2.4 Types: Patterns">
           Types are incredibly expressive in the Ray programming language. Allowing you to effectively do arbitrary pattern matching on any kind of structure.
@@ -1253,12 +1193,12 @@ const Almanac = () => {
           The way nesting works might take some getting used to, that it's effectively flattened one step, but it makes those expressive types possible.
 
           <CodeBlock>
-            "A", "B", "B"     ==.instance_of "A", "B"[]<BR/>
-            "A", ["B"], ["B"] ==.instance_of "A", ["B"][]<BR/>
-            "A", ["B", "B"]   ==.instance_of "A", ["B"[]]
+            "A", "B", "B"     is "A", "B"[]<BR/>
+            "A", ["B"], ["B"] is "A", ["B"][]<BR/>
+            "A", ["B", "B"]   is "A", ["B"[]]
           </CodeBlock>
 
-          We can also shorten the ==.instance_of to just 'is':
+          We can also shorten the is to just 'is':
 
           <CodeBlock>
             "A", "A", "A" is "A"[]
@@ -1343,216 +1283,245 @@ const Almanac = () => {
           </CodeBlock>
 
           Onwards to how programs (functions) are actually structured in the Ray programming language!
-          <CodeBlock>
-            "A"[]<BR/>
-            "A", "A", "A"<BR/>
-            "A", "A", "A" ==.instance_of "A"[] // true
-          </CodeBlock>
-          <CodeBlock>
-            first, middle: String[], last := "A", "B", "C", "D"<BR/>
-            middle // "B", "C"
-          </CodeBlock>
-          <CodeBlock>
-            Small := Number{'{'}{'<'} 10{'}'}<BR/>
-            x: Small = 5
-          </CodeBlock>
-          <CodeBlock>
-            xs := [1, 20, 3]<BR/>
-            xs{'{'}.count {'<'} 5{'}'} // [1, 20, 3]<BR/>
-            xs[{'{'}{'<'} 10{'}'}] // [1, 3]<BR/>
-            (0 -{'>'} +1){'{'}{'<'} 10{'}'} // 0 … 9
-          </CodeBlock>
-          <CodeBlock>
-            x: Number & Ordered<BR/>
-            y: Number | String<BR/>
-            z: Number?<BR/>
-            x: class
-          </CodeBlock>
-          <CodeBlock>
-            Positioned := String + Ray<BR/>
-            entry: String + Ray
-          </CodeBlock>
-          <CodeBlock>
-            Addable := Node{'{'}+ (: Number){'}'}
-          </CodeBlock>
-          <CodeBlock>
-            unique: T{'{'}references.count == 1{'}'}<BR/>
-            borrowed: T{'{'}references.count {'<'}= 1{'}'}
-          </CodeBlock>
-          <CodeBlock>
-            if x.instance_of(String) {'{'}<BR/>
-            <></>  x.lowercase<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            d: Date = 2-7<BR/>
-            r: Range = 2-7
-          </CodeBlock>
-          <CodeBlock>
-            Ray{'<'}T = Ray{'>'}<BR/>
-            Example{'<'}field: "A"{'>'}
-          </CodeBlock>
-          <CodeBlock>
-            x: Number<BR/>
-            x + 1 // every Number, plus one<BR/>
-            x: Number = ?
-          </CodeBlock>
         </Section>
         <Section head="§2.5 Programs/Functions">
-          {/* Partial args + can set any var in the func (Can be prevented, which I'll discuss in Access Permissions), Multiline multiple implementations */}
-          {/* => overrides, &=> etc.., () doesnt override but = () => does */}
+          Functions have a pretty straightforward way of being defined:
           <CodeBlock>
             add (a, b) ={'>'} a + b<BR/>
             add(1, 2) // 3
           </CodeBlock>
-          <CodeBlock>
-            increment := add(1)<BR/>
-            increment(5) // 6<BR/>
-            add(b: 2)(1) // 3
-          </CodeBlock>
-          <CodeBlock>
-            varargs (a: String, b: Number[], c: String[]) ={'>'} b.count<BR/>
-            part: String[] = "c1", "c2"<BR/>
-            varargs("a", 1, 2, 3, part, "c3") // 3
-          </CodeBlock>
-          <CodeBlock>
-            Ball(radius: 5m, "red", border: 1m, "solid")
-          </CodeBlock>
-          <CodeBlock>
-            (x) ={'>'} x * 2<BR/>
-            [1, 2, 3].map((x) ={'>'} x * 2) // [2, 4, 6]<BR/>
-            [1, 2, 3].map(* 2) // [2, 4, 6]
-          </CodeBlock>
-          <CodeBlock>
-            double | twice (x) ={'>'} x * 2<BR/>
-            twice(4) // 8
-          </CodeBlock>
+          Where you can use any string of text as long as it doesn't contain whitespace as the name of a function. The ={'>'} at the end marks it as a function definition.
+
+          <BR/>
+
+          Superposing also works with functions, where it is works as aliases:
+
           <CodeBlock>
             a | a1 (: boolean) ={'>'} "X"<BR/>
-            a | a2 (: Number) ={'>'} "Y"<BR/>
+            a | a2 (: Number) ={'>'} "Y"
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Or as <Reference is="reference" simple inline index={referenceCounter()} reference={{title: 'multiple dispatch', link: 'https://en.wikipedia.org/wiki/Multiple_dispatch'}} />:</span>
+
+          <CodeBlock>
             a(boolean) // "X"<BR/>
             a(Number) // "Y"
           </CodeBlock>
+
+          You can also put it on the other side of the function definition, starting a definition with |, marks it as: I have multiple implementations, let the compiler (or specific references) choose which one. For instance the NOT operator on boolean can be implemented in several ways (using NAND, NOR, XOR, ...).
+
           <CodeBlock>
-            !{'{'}x{'}'}<BR/>
+            !{'{'}x{'}'} ={'>'}<BR/>
             <></>  | x !&& x<BR/>
             <></>  | x !|| x<BR/>
             <></>  | x x|| true
           </CodeBlock>
-          <CodeBlock>
-            Animal := class {'{'}<BR/>
-            <></>  sound ={'>'} "..."<BR/>
-            {'}'}<BR/>
-            Dog := class: Animal {'{'}<BR/>
-            <></>  sound ={'>'} "Woof"<BR/>
-            {'}'}<BR/>
-            Loud := class: Dog {'{'}<BR/>
-            <></>  sound &={'>'} "WOOF"<BR/>
-            {'}'}<BR/>
-            Loud().sound // "Woof" & "WOOF"
-          </CodeBlock>
+
+          Other than superposing values there also exist several other useful library features. For instance recurring the current function in place as in a typical recursive call:
+
           <CodeBlock>
             countdown (n) ={'>'} (<BR/>
             <></>  return n if n == 0<BR/>
             <></>  recur(n - 1)<BR/>
             )
           </CodeBlock>
+
+          Or full recursion which is useful in certain mathematical equations (which is an infinitely generating program, but in this case limiting):
+
           <CodeBlock>
-            forever () ={'>'} Never<BR/>
-            stop () ={'>'} {'{'}<BR/>
-            <></>  cleanup()<BR/>
+            limited (x) ={'>'} x + 1/recur
+          </CodeBlock>
+
+          Then like the 'dynamically assert' of types, the opposite of that is 'never', which can also be used as a return value:
+
+          <CodeBlock>
+            forever (): never ={'>'} loop {'{'} {'}'}
+          </CodeBlock>
+
+          Or to be used match certain program patterns which must never happen in this function:
+
+          <CodeBlock>
+            forever () ={'>'} {'{'}<BR/>
             <></>  never return<BR/>
-            {'}'}<BR/>
-            never x {'<'} 0
+            <></>  loop {'{'}<BR/>
+            <></>    return if A // ERROR if A is possible.<BR/>
+            <></>  {'}'}<BR/>
+            {'}'}
           </CodeBlock>
+
+          It - like dynamically assert - also accepts predicates:
+
           <CodeBlock>
-            area ={'>'} width * height
+            x: Number<BR/>
+            never x == 0<BR/>
+            <BR/>
+            x = 0 // ERROR
           </CodeBlock>
+
+          <Para>Then many additional functionalities are optionally available to the runtime (which wouldn't be in most programming languages). Like where in the program this function is possibly referenced. The function's context (whether currently executing or not - more on that in <SectionButton section="§4.9 Concurrency" rightIcon="arrow-right" text="§4.9 Concurrency" minimal outlined />).</Para>
+
           <CodeBlock>
-            f**<BR/>
-            f**.expand<BR/>
-            f**.variables<BR/>
-            f**.usages<BR/>
+            var = A + 5<BR/>
+            f = var** // function that needs to run to fill var<BR/>
+            <BR/>
+            f.context.A<BR/>
+            f.references<BR/>
             f.injective
           </CodeBlock>
+          
+          The way all this functionality works brings us to how programs are structured. The only functional primitive which exists is a conditional goto; a conditional edge effectively in graph terms. This is the most foundational thing: Conditional dependence on some state. It is enough to build all familiar programming language concepts. Whether boolean arithmetic, control-flow. Anything.
+
+          <Para><span className="bp5-text-muted">(And goto's themselves are just conditional alterations of the control-flow graph. Which is how they would be implemented was that your base language.)</span></Para>
+
+          <BR/>
+
+          Like most programming languages which allow you to use gotos you can label things in the language. Though in the Ray programming language you can label anywhere, and reference a label anywhere!
+
           <CodeBlock>
-            label1\ A (label2\ + B)<BR/>
-            label2<BR/>
-            &next<BR/>
-            goto (program: Program) ={'>'} &caller.push(program)
+            label1\ x: A (label2\ + B)<BR/>
+            line2\ x == 5<BR/>
+            <BR/>
+            line2 // ref it anywhere
+            goto label1
           </CodeBlock>
+
+          It just resolves to a pointer somewhere in the program. Which itself is a nested iterable structure of statements. So things like this would work:
+
           <CodeBlock>
-            Ball := class {'{'}<BR/>
-            <></>  radius: Number<BR/>
-            <></>  profile\<BR/>
-            <></>    center radius<BR/>
-            <></>  "Profile Name"\<BR/>
-            <></>    center radius<BR/>
-            {'}'}<BR/>
-            Ball~default()<BR/>
-            Ball~profile(radius: 5)<BR/>
-            Ball~"Profile Name"()<BR/>
-            Ball~2()
+            label1.next == line2
           </CodeBlock>
+
+          For instance, without any compiler optimizations, this would be (approximately) how a NAND gate would be defined:
+
           <CodeBlock>
-            Ball = Ball~profile<BR/>
-            with Ball = Ball~profile
+            <></>nand (a, b) ={'>'} {'{'}<BR/>
+            <></>  goto second if a<BR/>
+            <></>  return true<BR/>
+            <></>second\<BR/>
+            <></>  goto 0 if b<BR/>
+            <></>  return true<BR/>
+            <></>0\<BR/>
+            <></>  return false<BR/>
+            <></>{'}'}
           </CodeBlock>
+
+          To access the current function that is running, you can simple use the context operator (&) inside a function, which is just a pointer to where in the program we're currently at:
+
           <CodeBlock>
-            Node~+
+            &<BR/>
+            &.context == local<BR/>
+            &.next // iterate through the future steps of the program
           </CodeBlock>
+        
+          <Para>It's also good to note that <Reference is="reference" simple inline index={referenceCounter()} reference={{title: "precedence", link: "https://en.wikipedia.org/wiki/Order_of_operations"}}/>, is the order in which functions are defined. Sometimes it's useful to therefore reference that you want something defined between or after other operators. This is why function names themselves are also treated as labels! And you can reference them in the following way:</Para>
+
+          <CodeBlock>
+            Number~+
+          </CodeBlock>
+
+          That should about cover most things functions/programs. Except one important feature of the Ray programming language. Comparing functions for their equivalence... And in general how equivalence works!          
         </Section>
         <Section head="§2.6 Equality & Equivalence">
-          {/* Cover default equivalences  */}
-
-          One of the equivalences which exists in the language, is for instance that a String is equivalent to String[] when concatenated together, such that:
+          <span style={{textAlign: 'left', width: '100%'}}>For equality (==), which is automatically implemented for all structures, it is by default a structural check. If two structures are instantiated differently but with equivalent variables, they are still considered the same. <span className="bp5-text-muted">A concept I'll intoduce in <SectionButton section="§3.1 Location & Assignment" rightIcon="arrow-right" text="§3.1 Location & Assignment" minimal outlined />. Will cover a way to say they must be equated using some location identifier. Whether that is memory location, its location in a function or something other.</span></span>
           <CodeBlock>
-            "ABC" == "A", "B", "C"<BR/>
-            <BR/>
-            x: String = "A", "B", "C"
+            Point(x: 0, y: 0) == Point(x: 0, y: 0) // true<BR/>
+            "ABC" == ("A", "B", "C") // true
           </CodeBlock>
+
+          A location like that is the only thing that is ignored for equivalence when including the location with (@==).
           <CodeBlock>
             2 == 2 // true<BR/>
-            2 === 2 // false<BR/>
+            2 @== 2 // false<BR/>
+            <BR/>
             x := 2<BR/>
-            x === x // true
+            x @== x // true
           </CodeBlock>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>("x @== x" also talks about the variable in two different places. But for equality to make any sense, at least that difference is ignored)</span>
+          
+          You can alter the default equivalence graph by introducing those equivalences by defining (as) on objects. One way of doing that would be:
           <CodeBlock>
-            Point(x: 0, y: 0) == Point(x: 0, y: 0) // true
-          </CodeBlock>
-          <CodeBlock>
-            Node{'{'}== 1{'}'} as (== String) ={'>'} "A"<BR/>
+            Node{'{'}== 1{'}'} as (=== String) ={'>'} "A"<BR/>
             1 == "A" // true
           </CodeBlock>
+
+          But this equivalence graph is effectively just a bunch of implicit type conversions, you might not always want that. In that case you can use the (===) operator for equivalence of the objects without an equivalence graph.
+
           <CodeBlock>
-            A =={'<'}in: -{'>'} convert(.){'>'} B<BR/>
-            A =={'<'}in: None{'>'} B<BR/>
-            Example(field: "A") =={'<'}Number{'>'} Example(field: "B")
+            false === 0 // false
           </CodeBlock>
+
+          Which is just an alias for:
+
           <CodeBlock>
-            "ABC" ==.instance_of String<BR/>
-            [1, 2] ==.isomorphic [3, 4]
+            false =={'<'}in: None{'>'} 0
           </CodeBlock>
+
+          There exist several other types of equivalence checks.
+
+          <BR/>
+
+          There is the idea of isomorphic (same shape) checks. But of course as you now know everything is just a Ray structure. So what that actually means is just that we're ignoring certain structures, while not others. The operator to check for this. So ignoring the intersection values at each nodes in some structure, is the following:
+
+          <CodeBlock>
+            [1, 2, 3] ~== [4, 5, 6]
+          </CodeBlock>
+
+          There is also the familiar typecheck of languages. Which is a more complicated, but essentially still an equivalence relation.
+
+          <CodeBlock>
+            false is boolean<BR/>
+            "Hi" is String
+          </CodeBlock>
+
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Note that all equality operators (or rather functions returning booleans in general) have their inverse defined by prefixing it with a (!). So (!@==) or (!==) or (!is).</span>
+
+          <span style={{textAlign: 'left', width: '100%'}}>One of the types of equality which is often unsupported, for good reasons, is functional equality. There are two versions <Reference is="reference" simple inline index={referenceCounter()} reference={{
+            title: "extensional equality",
+            link: "https://ncatlab.org/nlab/show/function+extensionality"
+          }}/> (equality of input/output relations). And intensional equality (equality of source code effectively).</span>
+
+          <span style={{textAlign: 'left', width: '100%'}}>The problem with function extensionality, is that we might not be able to check for it or it is really complicated to do so. But it can be expressed as the following way, though it is not certain whether it will terminate. (I'll cover this later in <SectionButton section="§4.3 Undecidability & Assumptions" rightIcon="arrow-right" text="§4.3 Undecidability & Assumptions" minimal outlined />). It is checked the following way:</span>
+
+          <CodeBlock>
+            f ∀== g
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>There is a version in the ray programming language which is the same principle, but only that it has historically yielded that value. Where how far that history goes is something I'll discuss in <SectionButton section="§3.3 Version Control" rightIcon="arrow-right" text="§3.3 Version Control" minimal outlined />. As we'll discover later (%) means a version operator, so here it would be:</span>
+
+          <CodeBlock>
+            f %== g
+          </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Then the to me much more interesting one of equality of source code, which the default for functions. This is something we'll discuss further in <SectionButton section="§4.4 Program Types" rightIcon="arrow-right" text="§4.4 Program Types" minimal outlined />. But for now it's good to know that the relevant question to ask is, equivalent source code? According to which frame of reference? By which I mean in which layer of the stack: In your high-level language, in what it compiles to, in its intermediate layers, or in any of the above? This is a complicated equivalence graph, but it will be available to you in the Ray programming language.</span>
+          
+          <BR/>
+
+          Later we'll go into details of this, but it's important to know we can define such a compiler optimization in our code to say at which level this should apply:
+
+          <BR/>
+
+          <CodeBlock>
+            f == g with O = @wasm
+          </CodeBlock>
+
+          Then besides these there is partial equivalence/matching, whether used for graph rewriting or whether something starts or ends with certain values. It is expressed the following way: 
+
           <CodeBlock>
             "12" ~= "0123"<BR/>
-            "ABC" ~= ⊢"AB"<BR/>
-            "ABC" ~= "BC"⊣
+            "ABC" ~= ⊢"AB" // at the initial boundary<BR/>
+            "ABC" ~= "BC"⊣ // at the terminal boundary
           </CodeBlock>
+
+          As I said you can use it for graph rewriting, you can for instead replace or remove matches too instead of just checking it to a boolean:
           <CodeBlock>
-            @me == @me @ @remote // true<BR/>
-            @me === @me @ @remote // false
+            text := "ABCA"<BR/>
+            (text ~= "B").remove<BR/>
+            text ~= ⊢"A" = "D"<BR/>
+            <BR/>
+            text // "DCA"
           </CodeBlock>
-          <CodeBlock>
-            f ==.extensional g<BR/>
-            f ==.historical g<BR/>
-            (2 + 2)** == (2 + 2)**
-          </CodeBlock>
-          <CodeBlock>
-            Temperature := class {'{'}<BR/>
-            <></>  normalizer = .rounded<BR/>
-            {'}'}<BR/>
-            t.canonical
-          </CodeBlock>
+
         </Section>
         <Section head="§2.7 Classes & Enums">
           Classes are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the language itself!
@@ -1591,6 +1560,7 @@ const Almanac = () => {
           <CodeBlock>
             Example := class (x: String) {`{`}<BR/>
             <></>  y: String<BR/>
+            <></>  z?: Number<BR/>
             <>{`}`}</><BR/>
             <BR/>
             Example("X", y: "Y")
@@ -1625,71 +1595,14 @@ const Almanac = () => {
             {`}`}
           </CodeBlock>
 
-          <CodeBlock>
-            x: Enum = Enum.A<BR/>
-            x.match<BR/>
-            <></>  A ={'>'} 1<BR/>
-            <></>  var: B ={'>'} var * 2<BR/>
-            <></>  C("A") ={'>'} 3<BR/>
-            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
-            <></>  C(var) ={'>'} var * 5<BR/>
-            <></>  C ={'>'} 6
-          </CodeBlock>
-          <CodeBlock>
-            Example := class {'{'}<BR/>
-            <></>  static Var := 5<BR/>
-            <></>  InnerClass := class {'{'}{'}'}<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            Example := class (x: String) ={'>'} single_line<BR/>
-            Example := class (x: String) {'{'}<BR/>
-            <></>  y: String<BR/>
-            <></>  z?: Number<BR/>
-            {'}'}<BR/>
-            Example("X", y: "Y")
-          </CodeBlock>
-          <CodeBlock>
-            Square := class: Shape {'{'}<BR/>
-            <></>  side: Number<BR/>
-            <></>  area ={'>'} side * side<BR/>
-            {'}'}<BR/>
-            Shape := class {'{'}<BR/>
-            <></>  area ={'>'} TODO<BR/>
-            {'}'}<BR/>
-            Shape() // error: Shape is abstract
-          </CodeBlock>
-          <CodeBlock>
-            Colored := Point + Color
-          </CodeBlock>
-          <CodeBlock>
-            Number += {'{'}<BR/>
-            <></>  squared ={'>'} this * this<BR/>
-            {'}'}<BR/>
-            5.squared // 25
-          </CodeBlock>
-          <CodeBlock>
-            ExampleEnum := enum A | B | C(: String)<BR/>
-            ExampleEnum: A | B | C = class {'{'}<BR/>
-            <></>  A := class {'{'}{'}'}<BR/>
-            <></>  B := class {'{'}{'}'}<BR/>
-            <></>  C := class (: String) {'{'}{'}'}<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            x: ExampleEnum = ExampleEnum.A<BR/>
-            x.match<BR/>
-            <></>  A ={'>'} 1<BR/>
-            <></>  var: B ={'>'} var * 2<BR/>
-            <></>  C("A") ={'>'} 3<BR/>
-            <></>  C{'<'}var: "B"{'>'} ={'>'} 4<BR/>
-            <></>  C(var) ={'>'} var * 5<BR/>
-            <></>  C ={'>'} 6
-          </CodeBlock>
+          You can also extract stuff out of any object/class by pattern-matching in front of it.
+
           <CodeBlock>
             {'{'} Rational, Irrational {'}'} = Real<BR/>
             {'{'} false, true {'}'} = boolean
           </CodeBlock>
+
+          Which leaves us at how we get stuff others made our project... You should now have enough knowledge to do very basic things to interact with the language so that you can use it like any other language. If you want to interact with stuff others have made we'll have to turn towards the next chapter, to cover Ecosystem-related functionality.
         </Section>
       </Section>
       <Section head="§3. Ecosystem">
@@ -1697,10 +1610,13 @@ const Almanac = () => {
         <CodeBlock>
           Example := class (field = "A")<BR/>
           x := Example()<BR/>
+          <BR/>
           update (var: Example) ={'>'} {'{'}<BR/>
           <></>  var = Example("B")<BR/>
           {'}'}<BR/>
+          <BR/>
           update(x)<BR/>
+          <BR/>
           x.field // Is it "A" or "B" here?
         </CodeBlock>
         Saying it is always "Call by reference" would mean it is "B" here, saying "Call by value" would mean it's always "A" and that it's impossible to modify an object other than returning a new version.
@@ -1737,182 +1653,191 @@ const Almanac = () => {
         </CodeBlock>
 
         Let's start by exploring how these locations work.
-        <CodeBlock>
-          var @ &caller = Example("B")<BR/>
-          var @ -{'>'} = Example("B")<BR/>
-          var @ * = Example("B")
-        </CodeBlock>
+
         <Section head="§3.1 Location & Assignment">
+          Locations are written with (@) both accessing them and defining them:
           <CodeBlock>
-            x@<BR/>
-            x @ @remote<BR/>
-            x @remote<BR/>
-            x @ Example
-          </CodeBlock>
-          <CodeBlock>
-            @ loc {'{'}<BR/>
-            <></>  x = 5<BR/>
-            {'}'}
+            x@ // x's location(s)
           </CodeBlock>
           <CodeBlock>
             @https://orbitmines.com<BR/>
-            @"a location with spaces"<BR/>
+            @/etc/hosts<BR/>
             @./lib/logo.png<BR/>
-            @../shared/config.cfg.ray
+            @../shared/settings.cfg.ray<BR/>
+            @C:/Windows/System32<BR/>
+            @"With a space"
           </CodeBlock>
+
+          Wildcards can be done in several ways:
           <CodeBlock>
-            Location := Ray<BR/>
-            loc.parent<BR/>
-            loc.children<BR/>
-            A {'<'}.hierarchy B
+            @./some/path/ *<BR/>
+            x: Location = (@./some/path/, String)
           </CodeBlock>
+          
+          Remotely executing code at some location, is as simple as passing a block to a location,
+          <CodeBlock>
+            @remote {'{'}<BR/>
+            <></>  x = 5 // this block runs at loc<BR/>
+            {'}'}
+          </CodeBlock>
+          but for that we're going to need a model of dealing with access permissions.
         </Section>
         <Section head="§3.2 Player Instances & Networking">
+          Characters, are the generalized concept of an instance running code. With permission levels defined as which character has access. The same syntax for referencing a location, is used to reference a character.
+
+          <BR/>
+
+          Top-level (@me) is reserved for whoever is currently running the code. That is why for instance (&caller) answers instead of a parent Program at top-level, the Character running the code.
+
           <CodeBlock>
-            @me<BR/>
-            &caller // @me at the top level
+            @me == &caller
           </CodeBlock>
+
+          This equivalence check has a lot of moving machinary underneath. Since it will be the entire security model of who can run code where. If I for instance wanted to equate two characters, one my local one, and the other a remote version of my character:
+
           <CodeBlock>
-            @me.status = Online & Hosted & Idle<BR/>
-            @me.status = Online & Broadcast<BR/>
-            @ether.@USERNAME = @me<BR/>
-            @google.@ada = @someone
+            @me == @me @ @remote // true<BR/>
+            @me @== @me @ @remote // false
           </CodeBlock>
+
+          Then I'd need a way verifying that I am actually that character. That is why there's an actual handshake going on whether to (cryptographically) verify that you are indeed authorized by the owner of that character name to execute code on their behalf.
+
+          <BR/>
+
+          Some names are reserved for standard usecases.
           <CodeBlock>
-            @orbitmines: Organization = {'{'}<BR/>
-            <></>  avatars:<BR/>
-            <></>    | @github.@orbitmines<BR/>
-            <></>    | @x.@OrbitMines<BR/>
-            <></>  profile_picture: ./lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png<BR/>
-            {'}'}<BR/>
-            @github.@orbitmines == @https://github.com/orbitmines
+            @ether ={'>'} @ether.orbitmines.com:37839<BR/>
+            @localhost ={'>'} @127.0.0.1
           </CodeBlock>
+
+          You can reserve your character's name by running the following:
           <CodeBlock>
-            @"orbitmines.com" // port 37839<BR/>
-            url: URL = @https://orbitmines.com/archive<BR/>
-            url.host // "orbitmines.com"<BR/>
-            url.port // 443<BR/>
-            Port := Decimal{'{'}{'<'} 2^16{'}'}
+            @ether.@USERNAME = @me
           </CodeBlock>
+
+          Which under the hood does all the handshaking functionality for you. If you then start hosting stuff on the central ether's servers, like your projects as we'll discuss soon, people will be able to refer to your code by your handle.
+
+          <BR/>
+
+          Each character can itself also define characters in its userspace, which others can recursively access as well. An example of how this would work:
+
+          <BR/>
+
           <CodeBlock>
-            proxy @ether {'{'}<BR/>
-            <></>  fetch(@https://example.com)<BR/>
+            @me == @github.@FadiShawki & @x.@_FadiShawki & @youtube.@FadiShawki
+          </CodeBlock>
+
+          Then using remote code execution we can do things like effectively proxying:
+
+          <CodeBlock>
+            page := @ether {'{'}<BR/>
+            <></>  return @https://orbitmines.com<BR/>
             {'}'}
+          </CodeBlock>
+
+          Before anything can reach your instance, you'd have to able networking. If you're using the CLI tool (ether) the networking package is automatically put inside the code. If you're using the (ray) CLI tool you'd have to include it explicitely, by just including at the top-level somewhere:
+
+          <CodeBlock>
+            @ether/network
+          </CodeBlock>
+
+          After that is enabled, you can then start by setting your status, which defines whether your accessible on the network. There are the following features you can enable:
+
+          <CodeBlock>
+            // Your character shows up as 'Online'<BR/>
+            Online := () ={'>'} @public.read @me/status<BR/>
+            // Your character shows up as 'Offline'<BR/>
+            Offline := !Online<BR/>
+            // Your character shows up as 'Online' to the central @ether server, but offline to everyone else. (We'll handle access permissions soon)<BR/>
+            Invisible := @ether Online & @public Offline<BR/>
+            // Your instance's IP is publically readable and people can go to your instance directly instead of routing through the central @ether server.<BR/>
+            Broadcasting := () ={'>'} @public.read @me/device as IP<BR/>
+            // A port is opened on your machine for anyone you gave permission to remotely execute certain kinds of code.<BR/>
+            Hosting := (port: Port = 37839) ={'>'} @me |= @"localhost:{'{'}port{'}'}"
+          </CodeBlock>
+
+          Then you can combine these as your status:
+
+          <CodeBlock>
+            @me/status = Online<BR/>
+            @me/status = Invisible<BR/>
+            @me/status = Online & Broadcasting<BR/>
+            @me/status = Online & Hosting // Hosting, but through the central @ether server<BR/>
+            @me/status = Online & Broadcasting & Hosting
           </CodeBlock>
         </Section>
         <Section head="§3.3 Version Control">
+          Every variable holds its history. (Or at least, it's available should you want to use it. Keeping and storing every bit of every variable change is of course way too expensive.) You access it with (%):
           <CodeBlock>
-            var = A, B, C = "ABC"<BR/>
+            var = (A, B, C) = "ABC"<BR/>
             B = "2" // var == "A2C"<BR/>
             C = "3" // var == "A23"<BR/>
-            B% == "B", \"2"\<BR/>
-            var% == B%, \C%\
+            B% == ("B", \"2"\)<BR/>
+            var% == (B%, \C%\)
           </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>(\x\) selects where in the Ray you've got something selected.</span>
+          
+          You can reference different versions of certain concepts in the programming language as follows.
           <CodeBlock>
-            x%<BR/>
-            x.field% // empty while it follows the default
+            Example %0.0.1 // the latest revision of version 3<BR/>
+            Example %0.0.1'2 // its second revision<BR/>
+            Example %0.1.4-E2027.0A.4<BR/>
+            Example %0.1.4-E2027.0A.4'2<BR/>
+            beta := Example %[0.1.4-E2027.0A.4..{'<'}1.0.0-E2028.0A.1] // up to version 1.0.0
           </CodeBlock>
-          <CodeBlock>
-            Example %3<BR/>
-            Example %3'2<BR/>
-            title %1..5: String
-          </CodeBlock>
-          <CodeBlock>
-            %4 -{'>'} %5 (old) ={'>'} Example(title: old.name)<BR/>
-            %5 -{'>'} %4 = (%4 -{'>'} %5)⁻¹
-          </CodeBlock>
+          
+          [TODO] All the familiar operations, are then just operations on that history:
           <CodeBlock>
             history.squash<BR/>
             history.cherry_pick(commits)<BR/>
-            history.from_here
+            history.from_here<BR/>
+            history += other // rebase<BR/>
+            history |= other // merge<BR/>
+            @me/fork = x
           </CodeBlock>
-          <CodeBlock>
-            @local changes // staged, not yet published
-          </CodeBlock>
+          
+          History is just a program. Which can define arbitrarily how it mutates the data through time. So whether that's a git-based system locally for some files, or something more elaborate.
         </Section>
         <Section head="§3.4 Access Permissions">
-          <CodeBlock>
-            Example := class {'{'}<BR/>
-            <></>  internal secret := 5<BR/>
-            {'}'}<BR/>
-            Example := class {'{'}<BR/>
-            <></>  Node{'{'}==.instance_of Example{'}'} secret := 5<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            @public variable<BR/>
-            @local variable<BR/>
-            @localhost variable<BR/>
-            @private variable<BR/>
-            @private.managed variable<BR/>
-            @private.confidential variable
-          </CodeBlock>
+          One of the requirements of the language, is to be able to communicate as a database. Whether that is to function as a version control system, a networked file system, or to serve packages, game files or anything else you can think of. Which means that every variable needs access permissions. As I've already hinted at in a previous section.
+          <BR/>
+          Just like operating systems, you can have different access for reading, writing and executing. Unlike operating systems however, you can be a lot more specific than that. We might for instance only want to expose a +1 operation publicly:
           <CodeBlock>
             @public.read @public.execute API_METHOD<BR/>
             @public.read NUMBER := 0<BR/>
-            @public.execute NUMBER.+= (== 1)
+            @public NUMBER.+= (== 1) // only +1 is exposed
           </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Note that (.read)/(.write)/(.execute) on a access permission are just syntax sugar. They are essentially always defined on some location: (=) for write and '()' for execute.</span>
+         
+          There's a single character associated with a runtime. We might want to say only that character, and only on this local machine, is allowed access. Or anyone on the same machine. Or only this character, but on any machine running it; which would include the central Ether server and any private servers you might have backing up your data. Or the same, but excluding the central server:
           <CodeBlock>
-            @private {'{'}<BR/>
-            <></>  notes := "..."<BR/>
-            <></>  drafts := "..."<BR/>
+            @none.read secret // no one<BR/>
+            @local variable // me, on this machine<BR/>
+            @localhost variable // anyone on this machine<BR/>
+            @private.managed variable // me, only on my own servers<BR/>
+            @private variable // me, anywhere<BR/>
+            @public variable
+          </CodeBlock>
+          <span className="bp5-text-muted" style={{textAlign: 'left', width: '100%'}}>Then there's (@confidential), which follows your default privacy policy, but never goes wider than (@private.managed), whatever that policy says. Anything you haven't given a visibility inherits its parent's, and at the very top, your policy. Which is private until you set it.</span>
+
+          <CodeBlock>
+            @confidential ={'>'} @me/policy & @private.managed
+          </CodeBlock>
+          
+          You can colapse a character to a boolean, if that is the current user, so things like this would work:
+          <CodeBlock>
+            if @public {'{'}<BR/>
+            <></>  /* what everyone sees */<BR/>
+            {'}'} elsif @me {'{'}<BR/>
+            <></>  /* what only I see */<BR/>
             {'}'}
           </CodeBlock>
+
+          <span style={{textAlign: 'left', width: '100%'}}>Then there's also the usual private/protected/public shenanigans of a programming language. In Ray we simply use (internal), which makes something visible only inside the context declaring it:</span>
           <CodeBlock>
-            @public.read f**
-          </CodeBlock>
-          <CodeBlock>
-            @company may network @https://api.company.com
-          </CodeBlock>
-        </Section>
-        <Section head="§3.5 IO">
-          <CodeBlock>
-            notes := IO /notes.txt as String<BR/>
-            IO /notes.txt = "Remember the milk"
-          </CodeBlock>
-          <CodeBlock>
-            IO /settings // settings.ray, then settings/, then the file settings<BR/>
-            settings := IO /settings.cfg.ray
-          </CodeBlock>
-          <CodeBlock>
-            confidential IO.os /home/me/Documents
-          </CodeBlock>
-        </Section>
-        <Section head="§3.6 Hosted Variables & Packages">
-          <CodeBlock>
-            {'<'} @ether/.ts<BR/>
-            {'<'} @"https://orbitmines.com"/package<BR/>
-            {'<'} @ether/package {'<'}&6ba7b810-9dad-11d1-80b4-00c04fd430c8{'>'}<BR/>
-            {'<'} @ray %3
-          </CodeBlock>
-          <CodeBlock>
-            "A1", "A2" @ @me.managed, "A3" @ @ether, "A4" @ @"192.168.1.254"
-          </CodeBlock>
-          <CodeBlock>
-            Point$<BR/>
-            Point$ @ @remote<BR/>
-            Point{'{'}x {'>'} 0{'}'}$ = @me.managed<BR/>
-            persistent score := 0
-          </CodeBlock>
-          <CodeBlock>
-            $.ray<BR/>
-            $.c++<BR/>
-            $.png<BR/>
-            logo := @./logo.png // an Image, because $.png reads it
-          </CodeBlock>
-        </Section>
-        <Section head="§3.7 Hot-reloading Stateful Programs">
-          <CodeBlock>
-            counter := 0<BR/>
-            loop {'{'}<BR/>
-            <></>  counter += 1<BR/>
+            Example := class {'{'}<BR/>
+            <></>  internal isolated_value := 5<BR/>
             {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            %1 -{'>'} %2 (old) ={'>'} Example(title: old.name)
-          </CodeBlock>
-          <CodeBlock>
-            with O = Compiler.default + Compiler.memoised
           </CodeBlock>
         </Section>
       </Section>
@@ -1982,8 +1907,8 @@ const Almanac = () => {
           <CodeBlock>
             IPv6 := class {'{'}<BR/>
             <></>  as (== String) ={'>'} this<BR/>
-            <></>    -- .embed_ipv4 if ==.instance_of "::ffff:0.0.0.0/96"<BR/>
-            <></>    -- .embed_ipv4 if ==.instance_of "64:ff9b::/96"<BR/>
+            <></>    -- .embed_ipv4 if is "::ffff:0.0.0.0/96"<BR/>
+            <></>    -- .embed_ipv4 if is "64:ff9b::/96"<BR/>
             <></>    .compress_zeros<BR/>
             <></>    .lowercase<BR/>
             {'}'}
@@ -1991,83 +1916,32 @@ const Almanac = () => {
 
           Then there is the (~~) operator, which does the exact same thing, but returns the original thing you call the successive functions on. Which is useful for creating one-liners like:
           <CodeBlock>
-            mac_address: Binary⁴⁸ =<BR/>
-            <></>  secure Binary⁴⁷.random ~~ .[6].push_after(1)
+            mac_address: Binary₄₈ =<BR/>
+            <></>  secure Binary₄₇.random ~~ .[6].push_after(1)
           </CodeBlock>
-          <CodeBlock>
-            (0 -{'>'} +2) {'{'}{'<'} 10{'}'}.for(i ={'>'} print(i))<BR/>
-            (0 -{'>'} +2) {'{'}{'<'} 10{'}'}.for i ={'>'} print(i)<BR/>
-            (0 -{'>'} +2) {'{'}{'<'} 10{'}'} for i ={'>'} print(i)
-          </CodeBlock>
+          Multiple expressions on a single line using (;) as typical.
           <CodeBlock>
             a := 1; b := 2
           </CodeBlock>
+          A line can also continue the one above it. Either because it starts with an operator, because the line above ends with one, or because it starts with a (.):
           <CodeBlock>
             value := 5<BR/>
             <></>  + 3<BR/>
-            <></>  + 2 // 10
-          </CodeBlock>
-          <CodeBlock>
+            <></>  + 2 // 10<BR/>
+            <BR/>
             total := first +<BR/>
-            <></>  second
-          </CodeBlock>
-          <CodeBlock>
+            <></>  second<BR/>
+            <BR/>
             obj<BR/>
             <></>  .first<BR/>
             <></>  .second
           </CodeBlock>
-          <CodeBlock>
-            return x if x {'>'} 10<BR/>
-            print("small") unless x {'>'} 10
-          </CodeBlock>
-          <CodeBlock>
-            a [x] b<BR/>
-            a (+ | *) b
-          </CodeBlock>
-          <CodeBlock>
-            f - x<BR/>
-            f(-x)
-          </CodeBlock>
-          <CodeBlock>
-            // a comment<BR/>
-            /* a /* nested */ comment */
-          </CodeBlock>
-          <CodeBlock>
-            "tab:\t newline:\n"<BR/>
-            "\u{'{'}1F525{'}'}"<BR/>
-            U+1F525<BR/>
-            `raw {'{'}text{'}'}`
-          </CodeBlock>
-          <CodeBlock>
-            PATH/ *<BR/>
-            PATH/ * /file.ray<BR/>
-            file*.ray // one name
-          </CodeBlock>
         </Section>
         <Section head="§4.2 Transactions & Reversibility">
-          {/* dynamically */}
-          {/* Automatic isomorphisms */}
-          <CodeBlock>
-            double (x) ={'>'} x * 2<BR/>
-            double⁻¹ (y) ={'>'} y / 2<BR/>
-            double!(8) // 4<BR/>
-            double^-1(8) // 4
-          </CodeBlock>
-          <CodeBlock>
-            ! + -
-          </CodeBlock>
-          <CodeBlock>
-            transaction {'{'}<BR/>
-            <></>  from.balance -= 10<BR/>
-            <></>  to.balance += 10<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            change.revert
-          </CodeBlock>
+          
         </Section>
         <Section head="§4.3 Undecidability & Assumptions">
-          {/* assume, circularity */}
+        
           <CodeBlock>
             if assume graph.last {'{'}<BR/>
             <></>  A()<BR/>
@@ -2075,96 +1949,57 @@ const Almanac = () => {
             <></>  B()<BR/>
             {'}'}
           </CodeBlock>
-          <CodeBlock>
-            with Time.timezone = UTC + 2h<BR/>
-            assume Time.timezone = UTC + 2h<BR/>
-            with {'{'}<BR/>
-            <></>  Time.YEAR = 2024<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            x := compute()<BR/>
-            dynamically total := x + 1<BR/>
-            dynamically assert total {'<'} 100
-          </CodeBlock>
+          
         </Section>
         <Section head="§4.4 Program Types">
+          
           <CodeBlock>
-            Terminating := Program{'{'}∀ path ∈ .paths: path.length {'<'} ∞{'}'}<BR/>
-            increment: Terminating = (x) ={'>'} x + 1
+            Terminating := Program{'{'}∀path is .paths: path.length {'<'} ∞{'}'}<BR/>
+            increment: Terminating (x) ={'>'} x + 1
           </CodeBlock>
+
           <CodeBlock>
-            x := compute()<BR/>
-            x**<BR/>
-            x**.&.acc<BR/>
-            x**.is_terminal<BR/>
-            x**.next
+            f.effects<BR/>
+            Pure := Program{'{'}.effects.empty{'}'}<BR/>
+            g: Program{'{'}effects ⊆ @local{'}'}
           </CodeBlock>
+
           <CodeBlock>
             f(?) // f over every possible input
           </CodeBlock>
+          
           <CodeBlock>
             fast: Program{'{'}O: Compiler.default{'}'} = f**<BR/>
             slow: Program{'{'}O: Compiler.none{'}'} = f**
           </CodeBlock>
-          <CodeBlock>
-            settings.cfg.ray // halts, no side effects<BR/>
-            script.js.ray // JS read over Ray
-          </CodeBlock>
+          
         </Section>
         <Section head="§4.5 Optimizations">
-          <CodeBlock>
-            Compiler.default += {'{'}<BR/>
-            <></>  {'{'}a{'}'} * 2 ={'>'} a + a<BR/>
-            <></>  {'{'}a{'}'} + 0 ={'>'} a<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            with O = Compiler.default + Debug.timed<BR/>
-            Debug.timed := {'{'}<BR/>
-            <></>  {'{'}s: Statement{'}'} ={'>'} s; timer.tick<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            optimize time_elapsed<BR/>
-            minimize space_used<BR/>
-            prefer minimize y if x {'>'} 100<BR/>
-            allow network<BR/>
-            dynamically assert x + y {'<'}= 10
-          </CodeBlock>
-          <CodeBlock>
-            Style.mathematics<BR/>
-            inline Style.mathematics
-          </CodeBlock>
+       
         </Section>
         <Section head="§4.6 Probability">
-        {/* if 0.5 =>, 0.3 =>  */}
+          Since we're working with superposed values already, a natural extension of the concept is to that of probabilities. Where by default, if we'd have some superposed values OR'ed, there's a uniform probability:
           <CodeBlock>
             x = "A" | "B"<BR/>
             x#.random // "A" or "B", 50% each
           </CodeBlock>
+          We can assign probabilities in two ways. Where any probabilities which aren't covered default to None, if the variable is optional. (If it isn't optional, all cases need to be covered.)
           <CodeBlock>
             x: String? = 0.2("A") | 0.5("B")<BR/>
             x: String? =<BR/>
             <></>  0.2 ={'>'} "A"<BR/>
             <></>  0.5 ={'>'} "B"
           </CodeBlock>
+          Nested probabilities, are of course supported. Note that only OR's are evaluated this way, an AND isn't affected. So the second line here, is two separate probabilities, both evaluated:
           <CodeBlock>
             0.5(0.5("A") | 0.5("B")) | "C"<BR/>
             0.5("A") & 0.5(0.3("B") | 0.7("C"))
           </CodeBlock>
+          And calling a function with them, keeps the probabilities around:
           <CodeBlock>
             n (== "A") ={'>'} 1<BR/>
             n (== "B") ={'>'} 2<BR/>
             n 0.3("A") | 0.7("B") // 0.3(1) | 0.7(2)
-          </CodeBlock>
-          <CodeBlock>
-            Binary{'{'}-{'>'} .next == 0.5(?.random){'}'}<BR/>
-            Binary{'{'}-{'>'} .next == 0.5(?.random){'}'}.length
-          </CodeBlock>
-          <CodeBlock>
-            secure Number{'{'}{'<'} 100{'}'}.random<BR/>
-            with Random.seed = 42
           </CodeBlock>
         </Section>
         <Section head="§4.7 Choice">
@@ -2189,7 +2024,7 @@ const Almanac = () => {
             func(choose, choose) // Choose two variables, the second can be a Number[] or a String
           </CodeBlock>
 
-          Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
+          Note that choose, uses the (@==) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (@==), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately.
 
           {/* TODO Should be var @ * to edit it everywhere explicitly? */}
 
@@ -2213,50 +2048,9 @@ const Almanac = () => {
           <CodeBlock>
             @me.choose String
           </CodeBlock>
-
-          {/* How tto define which algorithm chooses */}
-          <CodeBlock>
-            choose 1 Number<BR/>
-            choose 50% ("A" | "B" | "C" | "D")<BR/>
-            choose{'{'}unique{'}'} UUID<BR/>
-            Number{'{'}{'>'} 5{'}'}()
-          </CodeBlock>
-          <CodeBlock>
-            Room := class {'{'}<BR/>
-            <></>  4 Wall{'{'}a Door, 50% Window{'}'}<BR/>
-            <></>  1..3 Bookshelf<BR/>
-            <></>  a Table<BR/>
-            {'}'}<BR/>
-            choose Room
-          </CodeBlock>
         </Section>
-        <Section head="§4.8 Coroutines">
-          <CodeBlock>
-            branch download()<BR/>
-            defer cleanup()<BR/>
-            result := await request()
-          </CodeBlock>
-          <CodeBlock>
-            sync {'{'}<BR/>
-            <></>  fetch(a)<BR/>
-            <></>  fetch(b)<BR/>
-            {'}'}<BR/>
-            race {'{'}<BR/>
-            <></>  fetch(mirror1)<BR/>
-            <></>  fetch(mirror2)<BR/>
-            {'}'}<BR/>
-            rush {'{'}<BR/>
-            <></>  fetch(mirror1)<BR/>
-            <></>  fetch(mirror2)<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            loop {'{'}<BR/>
-            <></>  tick()<BR/>
-            {'}'}
-          </CodeBlock>
-        </Section>
-        <Section head="§4.9 Concurrency">
+        <Section head="§4.8 Concurrency">
+          
           <CodeBlock>
             x = 0<BR/>
             branch {'{'}<BR/>
@@ -2267,11 +2061,11 @@ const Almanac = () => {
             {'}'}<BR/>
             x // 1 | 2
           </CodeBlock>
+          
           <CodeBlock>
             A\ branch {'{'}<BR/>
             <></>  pending count := graph.count<BR/>
             {'}'}<BR/>
-            count @ A<BR/>
             while A {'{'}<BR/>
             <></>  print(count @ A)<BR/>
             {'}'}
@@ -2279,134 +2073,92 @@ const Almanac = () => {
           <CodeBlock>
             &# // the branches running here
           </CodeBlock>
+        
         </Section>
-        <Section head="§4.10 Graph Rewriting">
+        <Section head="§4.9 Units">
+          There's support for all kinds of units in the language:
+          <CodeBlock>
+            1m + 50cm // 1.5 m<BR/>
+            1.5 m<BR/>
+            3 GB/s<BR/>
+            2/10m<BR/>
+            25.years<BR/>
+            1k // 1000
+          </CodeBlock>
+          They can be normalized or structured after one another if of the same type.
+          <CodeBlock>
+            1d 10h 10m 30s<BR/>
+            10000000s as days hours minutes seconds // 115d 17h 46m 40s
+          </CodeBlock>
+          Some are ambiguous and thus resolved through further type restrictions:
+          <CodeBlock>
+            8m // 8 meter | 8 minute<BR/>
+            d: Quantity.Temporal = 8m // 8 minute
+          </CodeBlock>
 
+          We can for instance also get the number type from a particular unit this way:
+          <CodeBlock>
+            4 B as Binary // Binary₃₂
+          </CodeBlock>
+
+          Also there are things for noting time, which are just Time instances with the date as an (unknown) superposition:
+          <CodeBlock>
+            12:00 == 12 hours<BR/>
+            12:00:30 == 12 hours 30 seconds
+          </CodeBlock>
+          You can access specific calendar years like this
+          <CodeBlock>
+            February.days with Time.YEAR = 2024 // 29
+          </CodeBlock>
         </Section>
       </Section>
       <Section head="§5. Playerfacing">
         <Section head="§5.1 Error Handling">
+          
           <CodeBlock>
-            f() $<BR/>
-            f() $ DEFAULT<BR/>
-            f() $ None<BR/>
-            f() $ return X<BR/>
-            f() $ ERROR[kind] `Failed: {'{'}.{'}'}`<BR/>
-            f() $?<BR/>
-            f() $? DEFAULT<BR/>
-            f() $!<BR/>
-            f() $?!
+            ERROR@Path `there is no path from a to b`<BR/>
+            FATAL@Disk `the disk is full`<BR/>
+            ERROR `something went wrong`
           </CodeBlock>
+         
+          <BR/>
+
+          <CodeBlock>
+            f() $ // pass the error up<BR/>
+            f() $ DEFAULT // on error, the call is DEFAULT<BR/>
+            f() $ None<BR/>
+            f() $ return X // on error, return X from this function<BR/>
+            f() $ ERROR[kind] `Failed: {'{'}.{'}'}` // wrap it, and raise it again<BR/>
+            f() $? // None on error (and not fatal)<BR/>
+            f() $? DEFAULT // the same as: f() $? ?? DEFAULT<BR/>
+            f() $! // escalate: any error is fatal<BR/>
+            f() $?! // catch even a fatal one
+          </CodeBlock>
+         
           <CodeBlock>
             f() $ {'{'}<BR/>
             <></>  print(.)<BR/>
             {'}'}
           </CodeBlock>
+
           <CodeBlock>
             f()<BR/>
             <></>  $specific.error return X<BR/>
             <></>  $a.error | $b.error return Y
           </CodeBlock>
-          <CodeBlock>
-            errors &:= f() $
-          </CodeBlock>
+
         </Section>
         <Section head="§5.2 Syntax Highlighting">
-          <CodeBlock>
-            "Important" ^italic<BR/>
-            "Important".italic
-          </CodeBlock>
-          <CodeBlock>
-            keyword ^keyword := external global
-          </CodeBlock>
-          <CodeBlock>
-            `const x = 2`.js
-          </CodeBlock>
+          
         </Section>
         <Section head="§5.3 Theorem Proving">
-          <CodeBlock>
-            theorem commutative (a: Number, b: Number) ={'>'} a + b == b + a
-          </CodeBlock>
-          <CodeBlock>
-            ∃x: Binary x * x == 25
-          </CodeBlock>
-          <CodeBlock>
-            if assume commutative {'{'}<BR/>
-            <></>  simplify(expression)<BR/>
-            {'}'}
-          </CodeBlock>
+          
         </Section>
         <Section head="§5.4 Geometry">
-          <CodeBlock>
-            Point = Ray<BR/>
-            Loop = Array.Unbounded.loop<BR/>
-            Circle := class {'{'}<BR/>
-            <></>  outline: Loop{'{'}map(to centre -- #.min.length).reduce(==){'}'}<BR/>
-            <></>  centre: Point<BR/>
-            <></>  radius ={'>'} outline to centre -- #.min.length<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            Ball(radius: 10m) + Padding.right(10m)<BR/>
-            pt 5 Ball(radius: 1m)
-          </CodeBlock>
-          <CodeBlock>
-            2D := class: 1D {'{'}<BR/>
-            <></>  under | bottom : static {'<'}{'<'}- down: static {'<'}- vertical | y -{'>'} up: static -{'>'}{'>'} above | top : static<BR/>
-            {'}'}<BR/>
-            pos[y: 5]
-          </CodeBlock>
+
         </Section>
-        <Section head="§5.4 UI">
-          <CodeBlock>
-            center {'{'}<BR/>
-            <></>  right .map(&+ px 5) {'<'}- {'{'}<BR/>
-            <></>    DownloadButton, LoginButton<BR/>
-            <></>  {'}'}<BR/>
-            <></>  @./lib/organizations/orbitmines/logo.png{'{'}width: 90% & {'<'}= 400px{'}'}<BR/>
-            <></>  (xl 4/12 -{'>'} xs 12/12) "Once a Minecraft server ..." ^italic<BR/>
-            <></>  pt 5 @fadi as Author<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            {'{'}<BR/>
-            <></>  A<BR/>
-            <></>  B<BR/>
-            {'}'}.map(,)<BR/>
-            (A, B).map(\n)
-          </CodeBlock>
-          <CodeBlock>
-            4/12 * center Card<BR/>
-            100% * center Card
-          </CodeBlock>
-          <CodeBlock>
-            Profile := class {'{'}<BR/>
-            <></>  card\<BR/>
-            <></>    center (.picture, .name)<BR/>
-            <></>  page\<BR/>
-            <></>    .name, .articles<BR/>
-            {'}'}<BR/>
-            Profile~card(@fadi)
-          </CodeBlock>
-          <CodeBlock>
-            dynamically if Keyboard.f2.toggled {'{'}<BR/>
-            <></>  selection = selection.next<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            orbitmines.com := {'{'}<BR/>
-            <></>  profiles: Profile$ @ /profiles/<BR/>
-            <></>  archive: Article$ @ /archive/<BR/>
-            <></>  almanac := Almanac<BR/>
-            <></>  {'{'}*{'}'}: Index<BR/>
-            {'}'}<BR/>
-            orbitmines.com() if &entrypoint
-          </CodeBlock>
-          <CodeBlock>
-            page: Program{'{'}O: Render.HTML{'}'}<BR/>
-            page: Program{'{'}O: Render.TUI{'}'}<BR/>
-            page: Program{'{'}O: Render.HTML + Render.JS + Render.React{'}'}
-          </CodeBlock>
+        <Section head="§5.5 UI">
+         
         </Section>
       </Section>
       <Section head="§6. The v0 Runtime & Compiler">
@@ -2431,117 +2183,24 @@ const Almanac = () => {
             `An example` // Valid syntax
           </CodeBlock>
           Let's get started on the definition of expressions in the language to understand how that works:
-          <CodeBlock>
-            {'{'}a{'}'} [x: chainable] {'{'}b{'}'} [y: chainable] {'{'}c{'}'} ={'>'} (a [x] b) & (b [y] c)<BR/>
-            1 {'<'} 2 {'<'} 3 // true
-          </CodeBlock>
-          <CodeBlock>
-            chainable {'<'} (other) ={'>'} other {'>'} this<BR/>
-            compounds + (addend) ={'>'} add(this, addend)
-          </CodeBlock>
-          <CodeBlock>
-            x ~~ .method
-          </CodeBlock>
+         
         </Section>
       </Section>
-      <Section head="§7. Other Features">
-        <Section head="§7.1 (Unicode) Strings">
+      <Section head="§7 Examples">
+        <Section head="§7.1 Chat through Version Control">
           <CodeBlock>
-            "A"<BR/>
-            "ABC"<BR/>
-            U+1F525 // 🔥
-          </CodeBlock>
-          <CodeBlock>
-            "ABC" == "A", "B", "C"<BR/>
-            "Hello {'{'}name{'}'}!"
-          </CodeBlock>
-          <CodeBlock>
-            "ABC".lowercase // "abc"<BR/>
-            "abc".uppercase // "ABC"<BR/>
-            "hello world".title_case // "Hello World"<BR/>
-            "hello world".snake_case // "hello_world"<BR/>
-            "hello world".camel_case // "helloWorld"
-          </CodeBlock>
-          <CodeBlock>
-            "a,b,c".split(",") // "a", "b", "c"<BR/>
-            ("a", "b", "c").join(", ") // "a, b, c"<BR/>
-            "abc".reverse // "cba"
-          </CodeBlock>
-          <CodeBlock>
-            "A".next // "B"<BR/>
-            "A" as Number // 65
-          </CodeBlock>
-          <CodeBlock>
-            text: Unicode %15 = "…"
+            Channel := Program + History<BR/>
+            Chat := Channel{'{'}Pure & Terminating{'}'}<BR/>
+            <BR/>
+            room := Chat()<BR/>
+            room |= Program(code: {'{'} "hi" {'}'})<BR/>
+            room |= Program(code: {'{'} while true {'{'} {'}'} {'}'}) // refused: it doesn't terminate
           </CodeBlock>
         </Section>
-        <Section head="§7.2 Units">
-          <CodeBlock>
-            1m + 50cm // 1.5 m<BR/>
-            1.5 m<BR/>
-            3 GB/s<BR/>
-            2/10m
-          </CodeBlock>
-          <CodeBlock>
-            1d 10h 10m 30s<BR/>
-            10000000s as days hours minutes seconds
-          </CodeBlock>
-          <CodeBlock>
-            8m // 8 meter | 8 minute<BR/>
-            d: Quantity.Temporal = 8m // 8 minute
-          </CodeBlock>
-          <CodeBlock>
-            1 KB // 1000 B<BR/>
-            1 KiB // 1024 B<BR/>
-            1k // 1000
-          </CodeBlock>
+        <Section head="§7.2 Hot-reloadable HTML website">
+
         </Section>
-        <Section head="§7.3 Time">
-          <CodeBlock>
-            Time.now<BR/>
-            12:00<BR/>
-            "2025-01-01"
-          </CodeBlock>
-          <CodeBlock>
-            Time("2025-01-01", epoch: "2000-01-01") == 25 years
-          </CodeBlock>
-          <CodeBlock>
-            with Time.YEAR = 2024 {'{'}<BR/>
-            <></>  February.days // 29<BR/>
-            {'}'}
-          </CodeBlock>
-          <CodeBlock>
-            t.round(seconds)<BR/>
-            Calendar#
-          </CodeBlock>
-        </Section>
-        <Section head="§7.4 UUID">
-          <CodeBlock>
-            id := UUID.v4()<BR/>
-            id: UUID = 6ba7b810-9dad-11d1-80b4-00c04fd430c8<BR/>
-            id.version // 1
-          </CodeBlock>
-          <CodeBlock>
-            choose{'{'}unique{'}'} UUID.v1
-          </CodeBlock>
-        </Section>
-        <Section head="§7.6 IP addresses">
-          <CodeBlock>
-            ip: IPv4 = 192.168.1.1<BR/>
-            ip + 1 // 192.168.1.2<BR/>
-            ip / 24 // 192.168.1.0/24<BR/>
-            v6: IPv6 = ::ffff:192.168.1.1
-          </CodeBlock>
-        </Section>
-        <Section head="§7.5 Roman numerals">
-          <CodeBlock>
-            "XIV" as Number // 14<BR/>
-            14 as Roman // "XIV"<BR/>
-            with Roman.normalizer = Additive {'{'}<BR/>
-            <></>  4 as Roman // "IIII"<BR/>
-            {'}'}
-          </CodeBlock>
-        </Section>
+
       </Section>
     </Arc>
 

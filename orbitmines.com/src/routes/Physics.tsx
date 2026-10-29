@@ -29,7 +29,7 @@ const FAINT = '#6c7080';
  * is the same left-aligned span the sections above already write out by hand,
  * named once instead of repeated.
  */
-const Para = ({ children }: { children: React.ReactNode }) =>
+export const Para = ({ children }: { children: React.ReactNode }) =>
   <span style={{ textAlign: 'left', width: '100%' }}>{children}</span>;
 
 /**

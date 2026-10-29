@@ -1,3 +1,1676 @@
-Almanac: Book = {
+what-is-orbitmines-implementing-aleks-kissingers-chyp-and-maybe-looking-at-tinygrad: Reference = {
+  title: "What is OrbitMines?, Implementing Aleks Kissinger's Chyp and maybe looking at Tinygrad"
+  draft: false
+  location: @https://www.youtube.com/watch?v=O6v_gzlI1kY
+  date: 2024-01-04
+  organizations: @orbitmines, @youtube
+  authors: @fadi
+}
 
+ethers-almanac-2026: Reference = {
+  title: "2026 Ether's Almanac: The v0 specification runtime for the Ray programming language"
+  subtitle: "The first release of the Ether's Almanac, containing instructions on how to get started with the Ray programming language."
+  draft: true
+  date: 2026-12-31
+  discussion: @https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018
+  organizations: @orbitmines, @ether
+  authors: @fadi
+  published: @orbitmines
+  location: @https://orbitmines.com/almanac
+  found_at: "2026"
+  viewed_at: "December, 2026"
+}
+
+Almanac: Book = {
+  title: "Ether's Almanac"
+  subtitle: "Your handbook for anything Ether, The Ray Programming Language & OrbitMines."
+  draft: true
+  date: "Last update: 2026-12-31"
+  discussion: @https://discord.com/channels/1055502602365845534/1463219913044005018/1463219913044005018
+  organizations: @orbitmines, @ether
+  authors: @fadi
+  published: @orbitmines
+  location: @https://orbitmines.com/almanac
+  found_at: "2026"
+  viewed_at: "December, 2026"
+  updates: ethers-almanac-2026
+  code (literal: String{language}) => literal.language == "sh" ? CodeBlock(literal, palette: ONE_DARK) : CodeBlock(literal, palette: DUOTONE_DARK, editable: true, wrapped: true)
+  heading: center {
+    @../orbitmines.com/public/almanac/almanac.png{width <= 100% & height <= 100% & height == 250px}
+    "Ether's Almanac" ^h1
+  }
+
+  arc "Introduction" {
+    "Greetings! This is the Ether's Almanac! Anything OrbitMines-related you may need like using the Ether and the Ray programming language is contained in it. We'll update the almanac regularly, expect larger updates at the end of each year."
+    "Ether is a collective name for projects at OrbitMines. OrbitMines' goal is to eventually do research on the gamification of science, engineering and education: literally turning them into a sandbox videogame! But my judgement is that this in practice turns out to be a particularly difficult problem to think about. So instead (for the moment) we turn ourselves to a more practical problem: Programming infrastructure. If it is such a difficult problem to think about, why not advance the very tools with which we do our thinking! In the hopes of stimulating future thought towards this hard problem."
+    "Currently, the plan is as follows:"
+    "- (1) Develop the Ray programming language, as a placeholder to build out infrastructure for the future."
+    "- (2) Build an ecosystem around Ray which will allow us to go beyond what a typical programming language does. A new ", SectionButton("§3.3 Version Control"), " with programmable ", SectionButton("§3.4 Access Permissions"), ". And a reprogrammable visual interface (an IDE) - which will later become the Ether."
+    "- (3) Build tools within that interface for analyzing, comparing and cherry-picking features of ALL existing (programming) languages and their libraries: The Ether Library Project."
+    "- (4) Do the same for rendering/physics/visual/game engines."
+    "- (5a) By the time this is all set in motion, have thought of an idea to get started with gamification."
+    "- (5b) Alongside gamification, attack the problem of the adaptive interface: Ether; An interface which interoperates with all applications ever made."
+    "If you're interesting in following along with these projects, or even contributing!, join ", (@discord.profile_picture{height == 20px}, " Our Discord") @ https://discord.orbitmines.com , "."
+    "If you're here to learn more, then let me, without (much) further ado, get you started on ", SectionButton("A. The Ray Programming Language"), "!"
+    "If it's more ado you're after - and if you want to understand the *why* first - then let me expand on that short introduction with a more general mission statement:"
+  }
+  arc "Why?: Extended Introduction" {
+    "Ok... Ignoring previous attempts " ^muted, Footnote(2024-02-orbitmines-as-a-game-project), " " ^muted, Footnote(what-is-orbitmines-implementing-aleks-kissingers-chyp-and-maybe-looking-at-tinygrad), ". The *why* of OrbitMines, of Ether, of Ray:" ^muted
+    "Whenever I account a problem, my tendency seems to be: \"But how do I solve the more general problem?\". Naturally in the software space, you end up thinking about programming infrastructure and tools themselves. Whether it's their shortcomings, stagnation, fragmentation or inherent complexity. And the burning question becomes:"
+    "How does one advance the way software is made and interacted with?"
+    "Over the years, this line of thinking has brought me to two distinct ideas for the future of tool use. These two things are definitely distinct; they don't depend on one another, but they do complement eachother. Eventually I could see the world going in the direction of these two ideas, but I have seen no serious attempts at them. The two ideas are as follows:"
+    pl 30px {
+      "- (1) Interoperability: An interface which interoperates with all applications ever made. Interactively adapts itself to you. Knows what tools you know, shows only what you've learned so far and combines and equivalences similar applications into one."
+      "- (2) Gamification: The gamification of tool use, enabling education and the citizen scientist through a sandbox videogame."
+    }
+    "Starting with interoperability; Let me first divide this into several subproblems:"
+    pl 30px {
+      "- (1a) A high-level (cultural) universal language: A language capable of expression all other programming language's semantics."
+    }
+    "You must be able to compare semantics of widly different things. Now when I say universal language, I mean that in the sense that it is always a cultural one. If culturally everything is expressed in that language, it therefore operates as one."
+    "And they do in fact already exist. The semantics of pretty much all compilers (still in use) are expressed through a single universal language. Or rather a collection of universal languages which all differ slightly: ", "Assembly Languages" @ https://en.wikipedia.org/wiki/Assembly_language , ". But what we need is a way of doing what assembly currently is, in a high-level language. A language which can operate as an assembly language, a systems language or even a high-level interpreted language."
+    "This is what ", SectionButton("A. The Ray Programming Language"), " is supposed to be."
+    "It's worth noting here that due to the nature of the grammar, it being a very minimal " ^muted, SectionButton("§6.1 Self-modifying Types"){text: "§6.1 Self-modifying Type"}, ". That it is possible that the language will be, if setup properly for a stable release, " ^muted, "forwards-compatible" @ https://en.wikipedia.org/wiki/Forward_compatibility , ". Not just merely compatible, but also able to directly support all new features. All that would be required would be partially providing the source of the language definitions you've designed your system against alongside your applications code. This is an unachievable standard for any other way of maintaining a programming language. I'm not yet saying that I'm committing to it being so. But the possibility, especially if you'd want to consider using it as a standard for future web-like technologies " ^muted, Footnote("You could also design future systems against a state-machine like WebAssembly, but having it in a high-level language has its own merits."), " (since we're talking interoperability), is intruiging." ^muted
+    pl 30px {
+      "- (1b) Compile existing low-level universal languages to this new high-level universal language."
+    }
+    "Instead of expecting to create a language, or standard that everyone will use, expecting to make the previous thing obsolete (as if that ever happens in software). Take what they're already using and just work with that: Instead of creating backends to all the compilers in existance, you could (de)compile the backends they are already targeting instead."
+    "There are of course challenges to that idea. Compilation is lossy, (de)compilation is hard, especially if we're talking many different compilers. But possible is all we need here."
+    "(The actual way this would probably happen is by implementing the assembly inside the new language, where assembly is just valid syntax in the new language. And then we have program equivalences to bring something seemingly low-level up to something higher-level, as long as it's written in this language.)"
+    pl 30px {
+      "- (1c) Language interoperability"
+    }
+    "All that before is just required infrastructure for the thing we were actually after: interoperability. But interoperability of applications is way too hard a problem to just attack directly. So to make our lives easier, we first make languages themselves interopable."
+    "I want to be able to say: Take any compiler, as long as it's written in one of the (universal) assembly languages we already support. And then use that compiler to gain access to the semantics of other programming languages. And compile the compiler into a new version which supports interoperability."
+    "There are also challenges to this idea, but you could see a future where you pick and choose features and what to do when you cross language boundaries. (I) Use libraries written in other programming languages without having access to a shared library. (II) Choose a particular language's memory model across language boundaries. (III) Or simply define what it means for shared access to a kind of structure, without having to communicate it over a channel. (IV) Mixed-language code in a single, or across multiple files."
+    "(1b) and (1c) are the Ether Library Project."
+    pl 30px {
+      "- (1d) The Ether: The adaptive interface; Interoperability of applications."
+    }
+    "If this can be achieved, the next frontier would be the interoperability of apps. I foresee a future then, where the idea of platforms dissappears. Instead you have people focussing on infrastructure (servers, networking etc.), optimization (databases, dataformats etc.) and look (representations, UI etc.). And they all interoperate with eachother because they will be forced to by the usefulness of the adaptive interface."
+    "But there is again another challenging problem: Their semantics are much more varied and complex than programming languages, overlap less, and act on wildly different kinds of structures for which one would have to find equivalences. But it is a problem we can formulate, and definite steps can be made towards this goal."
+    pl 30px {
+      "- (2) Gamification"
+    }
+    "Then there is to me the wilder problem. Though easier to explain, it's hard to properly grasp what it would mean, it just doesn't exist: The gamification of tools and by extension education, science and engineering."
+    "It's probably useful to come out of the gate and say that certain problems probably can't or resist being gamified. It's the conflict of the fact that problems, are often open problems, and that games are often very constrained closed environments."
+    "This is why this is an open research problem to me, one which I hopefully will properly attack once I've attempted the other one. My current thinking is that perhaps optimization problems might lend themselves to be the kind of problem which might deliver the feedback loops required for a game. But you'd need some form of interpretability of the thing doing the optimization. And it's then a whole different ballgame to make it *fun*."
+    "This is why we need an example. We need a working example that shows promise of being fun-to-play. While being an actual practical tool."
+    "But first, let us focus on the thing at hand, a language made for solving these problems:"
+  }
+  arc "A. The Ray Programming Language" {
+    "If you're a beginner and have never looked at a programming language before, no worries, we got you covered! But especially for those who are already familiar with a programming language, let me right out of the gate throw some code at you to look at, without having explained anything yet about the programming language. Perhaps that might already give you quite some information."
+    @ray`
+      Unicode := class {
+        CodePoint := Hexadecimal{length == 1..6}
+        Scalar := class: CodePoint {
+          dynamically assert this < 0x110000 && !(0xD800 <= this <= 0xDFFF)
+        }
+        UTF-8 := class: TF, sequence: (
+          prefix: 1[]{length == 0..4},
+          U0: Binary{length == 8 - prefix.length}{⊢0},
+          (10₂, U1: Binary⁶) if prefix ⊢11₂
+          (10₂, U2: Binary⁶) if prefix ⊢111₂
+          (10₂, U3: Binary⁶) if prefix ⊢1111₂
+        )[] {
+          as (== CodePoint[]) => sequence.map(.U0, .U1, .U2, .U3)
+        }
+      }
+
+      U+{codepoint: Unicode.CodePoint} => codepoint as Unicode.Scalar
+
+      U+1F525 // 🔥
+    `
+    "Note that all the codeblocks in this book are executable and editable! Try for instance changing the hexadecimal codepoint to another unicode character!" ^muted
+    "The Ray programming language hopefully should feel somewhat familiar, somewhat alien to anyone with a programming language background. While it has many characteristics of a usual programming language, it deviates from the typical in quite a few ways, as you'll see."
+    "The hope is that the language is particularly useful for modelling the semantics of other (programming) languages, whether low-level or high-level. One of the main goals of the language is to enable interoperability with other programming languages. With that comes the additional complexity of being able to express everything that they do", ", and hopefully better." ^muted, " ", "Expressivity" @ https://en.wikipedia.org/wiki/Expressive_power_(computer_science) , ", is therefore a key driver."
+    "Aesthetically, the aim is to minimize verbosity while maximizing clarity. Of course there will be a certain know-how required to feel completely comfortable with a programming language. But especially if you're used to existing programming languages, hopefully working with the Ray programming language feels very freeing."
+    "Its general nature makes it applicable in pretty much any area of programming. So whether you're interested in developing web applications, compilers", ", (future) game programming" ^muted, " or formalizing mathematics. This should be for you!"
+    section "§0. For Beginners" {
+      "If you're starting out learning a programming language for the first time, great! This section is for you. If not ", SectionButton("§1. How to Install"){text: "Skip ahead to §1"}, "."
+      "Though there are probably better ways to starting out with a programming language for the first time, I did want to attempt at making something for complete beginners. There was this instance where I was explaining programming language concepts to someone, and it struck me how much knowledge I just assumed should be obvious about my writing. It's likely that if you continue to read the rest of this book on the Ray programming language, that you'll get stuck on terminology that I use."
+      "I want to be able to give this section of the book to anyone; As long as they're a little curious about programming languages. If you get through this section and are able to create something simple, I'd consider that a win. But you'll likely hit a steeper learning curve after this section. I do approach each problem from the ground up, but there are a lot of throwaway comments which may fly over your head - and that is fine."
+      "I'll start off assuming that even the smallest bit of code looks alien to you. I won't even assume knowledge of much mathematics. And see if we can start to build up a vocabulary which will enable you to do this great thing that is programming!"
+      section "§0.1 Variables" {
+        "Let's set a goal for ourselves. A lot of learning about programming languages is getting comfortable with abstract knowledge. This book for instance lists a lot of tools, without really explaining what you could use them for. The fun thing about programming is that it is a sandbox, the complexity of the things you can do come from you, not necessarily from the language. Whether that's a website or something as complicated as a videogame. So... a simple example. Let's say we wanted to build a calculator. The language already gives you a lot of tools to do the complicated stuff for that, but you don't necessarily know how to use them yet. How would we go about doing that?"
+        "Where to begin... Perhaps with a temporal and spatial intuition! A program is just a set of steps the computers follows. A long line of things to do essentially. Because programs are typically written in text we read that line from top to bottom. (First we do A, then B, then C.)"
+        start .map(,) <- {
+          (xs 9/12 -> md 6/12) {
+            center .map(,) <- {
+              {width == 10px} mr 50px @ray`A` ^nowrap
+              {width == 10px} @ray`B` ^nowrap
+              {width == 10px} ml 50px @ray`C` ^nowrap
+            }
+            mt -60px Visualization("graph"){height == 85.6px} + (@tsx`
+                <group scale={1.5}>
+                <RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} color="orange"/>
+                <RenderedRay reference={Ray.size(1)} position={[0, 0, 0]} scale={1.5} color="orange"/>
+                <RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} color="orange"/>
+                </group>
+              ` ^code)
+          } ^block
+          (xs 3/12 -> md 6/12) @ray`
+              A
+              B
+              C
+            `
+          (xs 9/12 -> md 6/12) center .map(,) <- {
+            "Graph (read left-to-right)" ^muted
+          }
+          (xs 3/12 -> md 6/12) center .map(,) <- {
+            "Program" ^muted if UI.scene.size.x > 575px
+          }
+        }
+        "Sometimes that road has junctions in it. Sometimes there's a highway and there are many parallel paths."
+        start .map(,) <- {
+          (xs 12/12 -> md 6/12) {
+            center .map(,) <- {
+              {width == 10px} mr 45px mt 15px @ray`D` ^nowrap
+              {width == 25px} @ray`E1` ^nowrap
+              {width == 10px} ml 45px mt 15px @ray`F` ^nowrap
+            }
+            mt -60px Visualization("graph"){height == 93.6px} + (@tsx`
+                <group scale={1.5}>
+                <Continuation position={[-60, 0, 0]} color="orange"/>
+                <Continuation position={[60, 0, 0]} color="orange"/>
+                </group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} renderContinuations={false} color="orange"/></group>
+                <group scale={1.5}>
+                <Continuation position={[-20, 0, 0]} color="orange"/>
+                <Line start={add([-20, 0, 0], [-torus.radius, 0, 0])} end={add([-20, 0, 0], [-20, 0, 0])} scale={1.5}
+                color="orange"/>
+                <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                color="orange"/>
+                <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                color="orange"/>
+                </group>
+                <group scale={1.5}>
+                <Continuation position={[20, 0, 0]} color="orange"/>
+                <Line start={add([20, 0, 0], [torus.radius, 0, 0])} end={add([20, 0, 0], [20, 0, 0])} scale={1.5}
+                color="orange"/>
+                <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+                color="orange"/>
+                <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+                color="orange"/>
+                </group>
+                <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} renderContinuations={false} color="orange"/></group>
+                <group scale={1.5}>
+                <Vertex position={[0, 10, 0]} color="orange"/>
+                <Vertex position={[0, -10, 0]} color="orange"/>
+                </group>
+              ` ^code)
+            center .map(,) <- {
+              {width == 60px} mt -5px @ray`E2` ^nowrap
+            }
+          } ^block
+          (xs 12/12 -> md 6/12) {height == 100%} middle {
+            @ray`
+                D
+                branch E1
+                branch E2
+                F
+              `
+          }
+        }
+        "We call something like that road a graph."
+        "The graphs on the left, are simply to give you an intuition on how to read through code. To introduce the fact that there is a flow of the program, and there are things in the program that tell you what happens next. The specifics of what, is something we'll get to."
+        "Let's zoom into one of the lines: one of the steps. And see what we can do in one of those steps."
+        "The first idea you're always introduced to is the idea of variables ", Footnote("Or in a different context they're sometimes called parameters. But we'll get to that later."), ". They are essentially names we attach to things, so that we can then use those names to refer to them. It would be difficult if I had to refer to you by describing what you looked like each time, or I could just refer to you by your name."
+        "So when I want to call something by its name I just type that name! In Ray this can be any bit of text as long as there's no spaces in it. ", "(In other languages this is often more restrictive.)" ^muted
+        @ray`a`
+        "Of course there's the problem that we haven't called anything 'a' yet. Like grammar in our natural languages, there is syntax in a programming language which says how I can interact with a name - variable - like that. In ray that looks like the following:"
+        @ray`a := 2`
+        "We're giving a thing, in this case a number 2, the name 'a'! ", "(The syntax ':=' essentially says, initialize a new variable with a given value)" ^muted
+        "Now whenever we refer to 'a'. We get the number 2 back."
+        @ray`a`
+        "We can then do things, since it's a number, like adding:"
+        @ray`a + 5`
+        "Or multiply with star:"
+        @ray`a * 5`
+        "Just like the ':=' syntax, there is all kinds of syntax to interact with a number."
+        "You can even use the variable more than once:"
+        @ray`a + a`
+        "We can also change a variable with a new value in a single line by setting it with '='."
+        @ray`a = a + a`
+        "Now anytime I refer to after this line, it's no longer 2, it's 2 + 2, so 4."
+        "Now that you know that you'd be suprised what kind of things you can already do! Essentially you now have a (primitive) calculator at your fingertips, just in text form."
+      }
+      section "§0.2 Data Types" {
+        @ray`
+          count := 5
+          enabled := true
+          nothing := None
+        `
+        @ray`
+          letter := "A" // a String of length 1, so it can be used as a Char: "A" as Char
+          name := "Ada" // a String
+        `
+        @ray`
+          numbers := 1, 2, 3
+          list := [1, 2, 3]
+          list[0] // 1
+        `
+        @ray`
+          x: Number = 5
+          y: String = "hello"
+          maybe: Number? = None
+        `
+        @ray`
+          maybe ?? 0 // 0
+          enabled ? "on" : "off" // "on"
+        `
+      }
+      section "§0.3 Functions" {
+        @ray`
+          double (x) => x * 2
+          double(4) // 8
+          double 4 // 8
+        `
+        @ray`
+          greet (name: String) => "Hello {name}!"
+          greet("Ada") // "Hello Ada!"
+        `
+        @ray`
+          area (width: Number, height: Number) => (
+            size := width * height
+            size
+          )
+          area(2, 3) // 6
+        `
+        @ray`
+          if (count > 3) {
+            "many"
+          } elsif (count > 0) {
+            "some"
+          } else {
+            "none"
+          }
+        `
+        @ray`
+          unless enabled {
+            "off"
+          }
+        `
+        @ray`
+          n := 0
+          while (n < 3) {
+            n = n + 1
+          }
+          n // 3
+        `
+        @ray`
+          do {
+            n = n - 1
+          } while (n > 0)
+        `
+        @ray`[1, 2, 3] for x => print(x)`
+      }
+    }
+    section "§1. How to Install" {
+      "There are several ways of installing the Ray programming language:"
+      "- (1) You can download Ether, which includes the Ray programming language by following this link:"
+      DownloadButton
+      "- (2) or running:"
+      @ray`curl -fsSL https://ether.orbitmines.com/install.sh | bash`
+      "- (3) You can otherwise go to the ", "GitHub Releases" @ https://github.com/orbitmines/ray/releases , " and download the relevant installer of the latest version."
+      "- (4) Or manually clone and build the application"
+      @ray`
+        git clone git@github.com:orbitmines/ray.git
+        cd ray && ./install.sh --compile
+      `
+      "Note that there is also a plugin available for " ^muted, "IntelliJ" @ https://plugins.jetbrains.com/plugin/29452-ether , " and " ^muted, "VS Code" @ https://marketplace.visualstudio.com/items?itemName=orbitmines.ether-ray , ", you can find them in their respective marketplaces under the name 'Ether.ray'." ^muted
+    }
+    section "§2. Programming Fundamentals" {
+      "Let's start with a bunch of important things many programming languages cover! And importantly, how the Ray programming language differs from the usual approach. Though plenty should feel familiar regardless of your programming language background."
+      "The goal of this chapter is to give you the minimal set of tools to get you started with the language. Any other fundamentals, will be handled in ", SectionButton("§4. Extended Fundamentals"), "."
+      section "§2.1 Superposing Variables" {
+        "One of the cornerstones of most programming languages, even if that isn't often explicit, is their ability to superpose variables. Usually this is done in a language's ", "type system" @ https://en.wikipedia.org/wiki/Type_system , " if it has one. Even if it doesn't, it's almost always the case that the language's compiler does so under the hood, by for instance, the means of ", "abstract interpretation" @ https://en.wikipedia.org/wiki/Abstract_interpretation , "; essentially reasoning about what kinds of values a particular variable might hold. (Or sometimes at runtime through something called an ", "'Ambiguous Operator'" @ https://rosettacode.org/wiki/Amb , ".)"
+        "Typically in a language however, there exists a clear boundary between its runtime and its type system, or the runtime and its compiler. When you would have the ability to say something is A or B:"
+        @ray`"A" | "B"`
+        "Or similarly that the binary:"
+        @ray`boolean == false | true`
+        "It would be the case that this would be restricted to the type system, or the compiler's reasoning about a program. In Ray, this boundary does not exist. And you can create and access, at runtime, the possible values of such a superposed variable. Every variable has the (#) operator defined for this reason, we can for instance iterate over, or count the possible values:"
+        @ray`boolean#.count // 2`
+        "In essence we're simply saying that instead of just a single value, every variable can hold any number of values, or rather; an arbitrary graph of values. But we're getting ahead of ourselves. Let's first explore this idea of superposed variables a little further. Semantically for a type system, you typically only have the ability to say its A or B; you're summing possibilities. But this could in principle be any kind of relationship; whether that's a complicated structure, or just another binary relation like 'or'. Take for instance the ability to say it's A and B! At the same time!"
+        @ray`"A" & "B"`
+        "It's hard to talk about programming language features from the ground up without mentioning functions. And I'll dedicate a whole section to it later, but it's useful to understand what kind of things this allows you to do. Typically in a programming language you could do something like:" ^muted
+        @ray`[1, 2].map(+1) // [2, 3]`
+        "Or a little more verbose:" ^muted
+        @ray`
+          func (a) => a + 1
+          [1, 2].map(func) // [2, 3]
+        `
+        "With superposed variables in Ray however, you can syntactically get rid of the fact that you're working with an iterable, since every variable is potentially an iterable. And you can do this:" ^muted
+        @ray`(1 & 2) + 1 // 2 & 3`
+        "or you can call functions with it:" ^muted
+        @ray`
+          func (a) => a + 1
+          func(1 & 2) // 2 & 3
+        `
+        "So that's the core of superposed variables, it's a very simple but powerful idea! It originated out of the idea that you can always ask the simple question: \"What instead of one, you had many of them?\". And typically, at least for software related issues, that tends to be a useful question or feature to have: What if I could have one or more accounts? One or more devices? One or more locations? One or more node-edge-relations? Typically this question leads to generalization, as we'll explore later. For now let's move on to another place you can ask that question: components."
+        "What if instead out of one part, an object was made out of multiple parts? Now of course most programming languages already have this concept in some way, using ", "inheritance" @ https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming) , ". Where there is a hierarchy of parts which make up an object. This kind of 'class component' is also available in Ray as we'll discuss later, but this notion is extended slightly. Before getting to types, I want to introduce this notion first, as a simpler but more general kind of component."
+        "I can say I want to combine A and B, and everything from B should override A. That is the simple addition of two objects:"
+        @ray`A + B`
+        "If for instance I had the following:"
+        @ray`
+          "A".next // "B"
+          true.next // false
+        `
+        "And I chose to combine these two components into a single object:"
+        @ray`
+          x = "A" + true
+          x.next // == false
+        `
+        "You'd notice that even though the same kind of functionality the (.next) exists on (\"A\") as well as on (true). We take the one defined on true here, if we did it the other way around, we'd get (\"B\"), in other words this (+) is non-commutative."
+        "Now the thing that you can do with these components, is superpose them and everything in them. With the following operators:"
+        @ray`
+          A &+ B
+          A |+ B
+        `
+        "For the two superposing methods (|) and (&) respectively. Doing that in our example gives the following:"
+        @ray`
+          x = true &+ "A"
+          x.next // == false & "B"
+        `
+        "One of the ways these components are used, besides ", "inheritance" @ https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming) , ", is by equipping structure on something which might itself also be a structure. I mean for instance, the fact that an iterable string might find itself in some other structure, the iterator itself:"
+        @ray`
+          ["A", "B", "C"].map(entry => entry.index) // [0, 1, 2]
+          ["A", "B", "C"].map(entry: - Ray => entry.index) // [41, 42, 43] (Unicode)
+        `
+        "But for that we must turn to the next section to unpack what that means. Starting with what this 'equipped structure' called a Ray is."
+      }
+      section "§2.2 Rays: Arrays, Trees, Graphs" {
+        "The Ray programming language is a rather high-level programming language: ", "though it allows you to define pretty low-level stuff" ^muted, "! In its own abstractions it ignores how datastructures are usually encoded in computers and it ignores what is supposedly the 'more efficient' approach when dealing with our current hardware. Instead it relies heavily on its ", "compiler" @ https://en.wikipedia.org/wiki/Compiler , " to sort out what is appropriate and efficient."
+        "It uses the most fundamental data structure to the Ray programming language - and with that the only: - the Ray ", "(; hence the name)" ^muted, ". All datastructures are made from it: ", "Objects " ^muted, "(; called Nodes in Ray)" ^muted ^disabled, ", Numbers, Types, Arrays, Trees, (Hyper)Graphs, Functions" ^muted, ": everything. We'll cover each of them separately, so strap in!"
+        "Let's start with the simplest structure, a single ", "point, ..., vertex" ^orange, ". When we call it a Ray, is when that node has information on what's in front of it, and behind it. If we visualize that point like this:"
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/empty_vertex.png{height == 20px}
+        } ^block
+        "To complete the definition, we need to define boundaries of said structure, in front and behind; an ", "initial" ^red, " and ", "terminal" ^blue, " boundary:"
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/empty_vertex_with_expanded_boundaries.png{height == 40px}
+        } ^block
+        "This is the simplest structure we can have."
+        "Each boundary then in turn optionally defines other boundaries, together they make an ", "edge" ^blue @ https://en.wikipedia.org/wiki/Edge_(graph_theory) , ". (And if there's no additional boundaries defined, it's a ", "dangling edge" ^red, "; or an actual boundary of the structure.)"
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/empty_vertex_with_edge.png{height == 40px}
+        } ^block
+        "Then of course, at that boundary, another ", "vertex" ^orange, " is defined."
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/2_expanded.png{height == 40px}
+        } ^block
+        "You can keep repeating that and here we have the familiar structure of an Array. Which is simply defined as a line (of points). ", "Note that what I said earlier, we ignore the fact that this is currently potentially a " ^muted, "doubly linked list" @ https://en.wikipedia.org/wiki/Doubly_linked_list , ". We will entrust that the compiler will take care of optimizing that structure if we do not use the facilities of a (.next) or (.previous), and even when we do, to optimize the way in which that happens. In Ray, we don't want to consider the exact way the data is encoded if we can avoid it, we're operating at an abstraction layer after all. Only when we consider " ^muted, SectionButton("§4.5 Optimizations"), " will we be confronted with details." ^muted
+        "Where of course it gets just a little more complicated, is when we take into account what I said earlier: In that every variable is potentially an iterable number of values. You'll see in this case, that instead of an Array, that the ideas of ", "graphs" @ https://en.wikipedia.org/wiki/Graph_(discrete_mathematics) , " and ", "hypergraphs" @ https://en.wikipedia.org/wiki/Hypergraph , " fall naturally out of that definition. There are 4 places where we are defining variables here, namely:"
+        "(1 & 2) Each ", "point" ^orange, " has many ", "initial" ^red, " and ", "terminal" ^blue, " boundaries. Or in other words, they define many ", "edges" @ https://en.wikipedia.org/wiki/Edge_(graph_theory) , ". This upgrades our Array to the definition of a ", "Graph" @ https://en.wikipedia.org/wiki/Graph_(discrete_mathematics) , "."
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/empty_vertex_with_many_expanded_boundaries.png{height == 40px}
+        } ^block
+        "Then the next two, are ways of upgrading our ", "Graph" @ https://en.wikipedia.org/wiki/Graph_(discrete_mathematics) , " into a ", "Hypergraph" @ https://en.wikipedia.org/wiki/Hypergraph , ". By turning the ", "edges" @ https://en.wikipedia.org/wiki/Edge_(graph_theory) , " into ", "hyperedges" @ https://en.wikipedia.org/wiki/Hypergraph , ". Note that 'hyper-', might as well stand for 'Many'."
+        "(3) Each boundary defines ", "many other boundaries" ^blue, ". (Which is the typical definition of a hyperedge)"
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_1.png{height == 50px}
+        } ^block
+        "And (4) each boundary is connected to ", "many vertices" ^orange, "."
+        {
+          center @../orbitmines.com/public/archive/towards-a-universal-language/images/empty_vertex_with_hyperedge_2.png{height == 65px}
+        } ^block
+        "Because the only differences between Arrays, Trees, Graphs & Hypergraphs is what kind of edges are defined on the boundaries, we get the following property in Ray (without explicitly creating an object hierarchy):"
+        @ray`
+          Array ==.instance_of Tree // true
+          Array ==.instance_of Graph // true
+          Array ==.instance_of Hypergraph // true
+        `
+        "Since we're working in text, we're limited to a rather linear expression of ideas, but for simple structures, it's nice to know it's possible to instantiate a linear version quite easily using the (,) operator."
+        @ray`
+          x: Hypergraph = [1, 2, 3]
+          x: Graph      = [1, 2, 3]
+          x: Tree       = [1, 2, 3]
+          x: Array      = [1, 2, 3]
+        `
+        "I say that (,) is an operator, because it actually is one in Ray! It is essentially the thing that composes (or concatenates) structures. It also potentially accepts closures on what it does based on the previous element. So we can have things like:"
+        @ray`
+          1, +2, +3, +4
+          // 1, 3, 6, 10
+        `
+        "The (,) operator is always interchangable with (&) and (|). Since those operators are essentially just semantic decorators on what such an edge between nodes mean."
+        @ray`
+          1 | +2 | +3 | +4
+          // 1 | 3 | 6 | 10
+        `
+        "You can recursively define such a Ray, with arrows (-> & <-). They basically say, in this direction keep applying this operation to define a structure. Say for instance a line of characters:"
+        @ray`-1 <- x: "A" -> +1`
+        "Or a more natural way of thinking about it a numberline:"
+        @ray`-1 <- 0 -> +1`
+        "Such a structure is effectively equipped on some value. This equipping is done through components. It is just an iterable structure you can access like anything else:"
+        @ray`(0 -> +2)[4] // Accessing the element at index 4 here would be 8.`
+        "Ranges are similarly shortcuts for creating these recursive structures as familiar from other languages:"
+        @ray`
+          1..5 // 1, 2, 3, 4, 5
+          1..<5 // 1, 2, 3, 4
+          0..10..20 // through 10, relevant for graphs
+          5.. // 5 ->
+          ..5 // <- 5
+        `
+        "Usually in a programming language, the structure which we're mapping over isn't available to the mapping function, but it is for the Ray programming language. Whenever you map over a structure, each entry also optionally has the equipped Ray alongside it ", "(it's a component which overrides the original entry (+). This is necessary as certain things, like Numbers, already have structure equipped; a number line for example. As we'll discuss in the following section):" ^muted
+        @ray`
+          x: Number = [1, 2, 3]
+          x.map(entry => entry + entry.index) // [1 + 0, 2 + 1, 3 + 2]
+
+          // With '- Ray' .index is the same as the integer value:
+          x.map(entry: - Ray => entry.index) // [1, 2, 3]
+        `
+        "The mapping function can also include a filter which decides which entries should be mapped. ", "(In " ^muted, "category theory" @ https://en.wikipedia.org/wiki/Category_theory , " I believe this is referred to as a " ^muted, "lens" @ https://ncatlab.org/nlab/show/lens+%28in+computer+science%29 , ".)" ^muted, " This filter is applied just like any type filter, but instead on the mapping function."
+        @ray`[1, 2, 3].map{.index == 2}(*10) // [1, 2, 30]`
+        "The initialization of a structure does assume superposed values when OR (|)'ed are on separate branches, like so:"
+        @ray`x: Graph = [1, "2a" | "2b", 3]`
+        "It's worth noting that mapping, retains structure. So if we for instance have the following graph."
+        {
+          @ray`x: Graph = [false, false | true, true]`
+          Visualization("graph"){height == 130px} + (@tsx`
+            <group scale={1.5}>
+            <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
+            <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
+            </group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+            <group scale={1.5}>
+            <Continuation position={[-20, 0, 0]} color="#5f6b7c"/>
+            <Line start={add([-20, 0, 0], [-torus.radius, 0, 0])} end={add([-20, 0, 0], [-20, 0, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            </group>
+            <group scale={1.5}>
+            <Continuation position={[20, 0, 0]} color="#5f6b7c"/>
+            <Line start={add([20, 0, 0], [torus.radius, 0, 0])} end={add([20, 0, 0], [20, 0, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            </group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+            <group scale={1.5}>
+            <Vertex position={[0, 10, 0]} color="#5f6b7c"/>
+            <Vertex position={[0, -10, 0]} color="#5f6b7c"/>
+            </group>
+            <group scale={0.5} position={[-60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+            <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+            </group>
+            <group scale={0.5} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+            </group>
+            <group scale={0.5} position={[0, -15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+            </group>
+            <group scale={0.5} position={[0, 15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+            <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+            </group>
+          ` ^code)
+        } ^block
+        "And we map it:"
+        @ray`x.map(!) // true, true | false, false`
+        "Structure is retained (see that the underlying graph structure didnt move, only the intersecting lines moved up/down):"
+        {
+          Visualization("graph"){height == 100px} + (@tsx`
+            <group scale={1.5}>
+            <Continuation position={[-60, 0, 0]} color="#5f6b7c"/>
+            <Continuation position={[60, 0, 0]} color="#5f6b7c"/>
+            </group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[-40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+            <group scale={1.5}>
+            <Continuation position={[-20, 0, 0]} color="#5f6b7c"/>
+            <Line start={add([-20, 0, 0], [-torus.radius, 0, 0])} end={add([-20, 0, 0], [-20, 0, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([-20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            </group>
+            <group scale={1.5}>
+            <Continuation position={[20, 0, 0]} color="#5f6b7c"/>
+            <Line start={add([20, 0, 0], [torus.radius, 0, 0])} end={add([20, 0, 0], [20, 0, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, 10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            <Line start={add([-20, -10, 0], [20, 0, 0])} end={add([20, 0, 0], [0, -torus.radius, 0])} scale={1.5}
+            color="#5f6b7c"/>
+            </group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} position={[40, 0, 0]} scale={1.5} renderContinuations={false} color="#5f6b7c"/></group>
+            <group scale={1.5}>
+            <Vertex position={[0, 10, 0]} color="#5f6b7c"/>
+            <Vertex position={[0, -10, 0]} color="#5f6b7c"/>
+            </group>
+            <group scale={0.5} position={[-60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+            <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+            </group>
+            <group scale={0.5} position={[60, 0, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+            <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+            </group>
+            <group scale={0.5} position={[0, -15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="gray"/></group>
+            <group scale={1.5} position={[60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+            </group>
+            <group scale={0.5} position={[0, 15, 0]} rotation={[0, 0, Math.PI / 2.5]}>
+            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}color="#FF5555"/></group>
+            <group scale={1.5} position={[0, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5} color="gray"/></group>
+            </group>
+          ` ^code)
+        } ^block
+        "That however leaves one thing I haven't yet explained about Rays, which is the way booleans and numbers are encoded as Rays."
+        "For that we'll turn towards the next section."
+      }
+      section "§2.3 Numbers" {
+        "Numbers, booleans (binary numbers), are simply this visual structure. This would be ", "00" ^red, ". If the blue colors would be selected it would be ", "11" ^blue, ". Where the yellow structure, is simply our array: A number is an array of selected numbers according to some base."
+        {
+          Visualization("2_2"){height == 140px} + (@tsx`
+            <Center>
+            <group>
+            <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
+            <group rotation={[0, 0, Math.PI / 2]}>
+            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
+            color="#FF5555"/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+            <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+            </group>
+            </group>
+            <group position={[60, 0, 0]}>
+            <group scale={1.5}><RenderedRay position={[0, -40, 0]} reference={Ray.size(1)} scale={1.5}/></group>
+            <group rotation={[0, 0, Math.PI / 2]}>
+            <group scale={1.5} position={[-60, 0, 0]}><RenderedRay reference={Ray.size(1)} scale={1.5}
+            color="#FF5555"/></group>
+            <group scale={1.5}><RenderedRay reference={Ray.size(1)} scale={1.5} color="#5555FF"/></group>
+            <group scale={1.5}><Continuation position={[-20, 0, 0]} color="#FF55FF"/></group>
+            </group>
+            </group>
+            </Center>
+          ` ^code)
+        } ^block
+        "2 in the case of a binary number. Of course our more familiar decimal numbers would be 10. A number therefore by default is also encoded as a Decimal in this way! This way of structurally thinking about numbers might seem a little alien at first, but it is naturally how our numbers work. And it is how I want you to think about them; structurally."
+        "The number library therefore defines number in any kind of base representation. And they can be initialized in their own base:"
+        @ray`
+          base2: Binary = 10 // Base 10 that means: 2.
+          base3: Ternary = 10 // Base 10 that means: 3
+          base10: Decimal = 10 // 10.
+        `
+        "All the numbers have their Signed variants and Real variants."
+        @ray`
+          x: Decimal.Signed = -10
+          x: Decimal.Real = 5.4
+          x: Decimal.Real.Signed = -3.2
+        `
+        "And of course a familiar setup is available for Binary:"
+        @ray`
+          x: u8 = 11110000
+          y: i8 = -1110000 // Both a 0/1 or a - gets picked up here.
+        `
+        "There also explicitely exist these familiar syntax for Hexadecimal and Binary:"
+        @ray`
+          0x1F // 31
+          0b101 // 5
+        `
+        "Numbers can in the Ray language also be infinitely generating programs. In the sense of always having a next value in the fraction. This comes with certain restrictions of course if you want to operate with infinities. But for instance without defining that we're using a floating point number as an approximation the following would yield an unbounded Decimal:"
+        @ray`1/3 // 0.333, 3[]∞`
+        "There's also support for several mathematical symbols:"
+        @ray`
+          ∑ [1, 2, 3] // 6
+          ∏ [1, 2, 3] // 6
+        `
+        "As do certain obvious infinities settle to a value. Infinite here is an abstract reference to the terminal of an unbounded object. (That is what I envision the abstraction of infinity to actually be.)"
+        @ray`(0 ->).count // ∞`
+        "Unless a specific type is specified, u8 doesn't overflow as expected, it's actually an error if not explicitely mentioned that is expected behavior:"
+        @ray`
+          x: u8 = 200
+          x + 100 // 300
+          x = x + 100 // error: 300 is not a u8
+          x = (x + 100).mod // 44
+        `
+        "Furthermore the platform specific numbers exist through a Compiler setup, we'll get to more later, but it would be defined like this:"
+        @ray`
+          usize := Binary{length == &language.word_size}
+          program: Program{O: Compiler.default + Language.x86_64}
+        `
+        "Components also allow you to create complex numbers:"
+        @ray`2 + 3i`
+        "Like other languages, there are for loops in the language to iterate over a number of things in some iterable. Although the syntax is slightly different, in Ray it is just treated like any other definition."
+        "In the following example, (~) is just a filter over the iterable. And anything in the following block get's executed for each entry."
+        @ray`(0 -> +1) {< 10} for i => /* */`
+        "Or you can use the following equivalent code, using (->), which means an infinitely generating iterable, without any structure/values defined on it. (But you do get access to the structure that is the iterable):"
+        @ray`(->) {index < 10} for => /* Use .index here */`
+        "Another equivalence would be:"
+        @ray`10.times => /* .index is also available here */`
+        "This bracket syntax for filters is effectively also a type constraint. We'll turn towards the next section for those."
+      }
+      section "§2.4 Types: Patterns" {
+        "Types are incredibly expressive in the Ray programming language. Allowing you to effectively do arbitrary pattern matching on any kind of structure."
+        "For instance, an array of A's:"
+        @ray`"A"[]`
+        @ray`"A", "A", "A"`
+        "The way nesting works might take some getting used to, that it's effectively flattened one step, but it makes those expressive types possible."
+        @ray`
+          "A", "B", "B"     ==.instance_of "A", "B"[]
+          "A", ["B"], ["B"] ==.instance_of "A", ["B"][]
+          "A", ["B", "B"]   ==.instance_of "A", ["B"[]]
+        `
+        "We can also shorten the ==.instance_of to just 'is':"
+        @ray`"A", "A", "A" is "A"[]`
+        "In many languages you have a spread operator if you want to pattern match to an array. So typically that would mean:"
+        @ray`first, middle: String[], last := "A", "B", "C", "D"`
+        "The middle here, matching to both \"B\" and \"C\"." ^muted
+        "Then for convenience, this spread operator is defined:"
+        @ray`first, ...middle, last := "A", "B", "C", "D"`
+        "Which is just alternative syntax for defining an array ([]). So any place you have ([]), you can also use the prefix (...)"
+        "This for instance would also work:"
+        @ray`first, middle: ...String, last := "A", "B", "C", "D"`
+        "Instead of breaking up a structure out of several parts and match to then, we can also compose them into other types. (We can also constrain the types of a variable's methods/properties using the filter we've seen before.)"
+        @ray`x: Binary{length == 32} = Binary{length == 8}[]{length == 4}`
+        "Because the length check is quite common, there's a cleaner looking equivalence using superscripts:"
+        @ray`x: Binary³² = Binary⁸[]⁴`
+        "Under the hood it uses the (^) operator. So equivalent code is:"
+        @ray`x: Binary^32 = Binary^8[]^4`
+        "Notice that there's a slight ambiguity here, the (^) operator is also in use by a Number (Meaning exponentiation), which would be usually overwritten by the type Binary for instance. But as long as you access the base type like Binary, they prefer to use this interpretation of length of the Number. The moment you alter the base type, they default to exponentiation, for instance:" ^muted
+        @ray`Binary{== 1..4}² // == 2 | 4 | 8 | 16, != 1..4[]{length == 2}`
+        "One of the things you might want to do, since every variable is potentially a large number of superposed variables. Is say: I only want a single instance of that object."
+        @ray`x: 1 Number`
+        "Which under the hood, simply is a type filter:"
+        @ray`Number{#.count == 1}`
+        "Or if you have an object with a finite number of ", "permutations" @ https://en.wikipedia.org/wiki/Permutation , "; when there's a finite number of possibilities that can fill that type." ^disabled, " (Like a Number of finite length) You can then say: I want a percentage of the possible objects."
+        @ray`
+          50% ("A" | "B" | "C" | "D")
+          1/2 Binary³²
+          0.5 "A" | "B" // Is the same as 1 ("A" | "B")
+        `
+        "We'll cover that more later in ", SectionButton("§4.6 Probability"), "."
+        "We can do incredibly rich things which all this functionality. Like for instance defining an encoding just with this, in a previous example, which you should now be able decode more effectively:"
+        @ray`
+            UTF-8 := sequence: (
+              prefix: 1[]{length == 0..4},
+              U0: Binary{length == 8 - prefix.length}{⊢0},
+              (10₂, U1: Binary⁶) if prefix ⊢11₂
+              (10₂, U2: Binary⁶) if prefix ⊢111₂
+              (10₂, U3: Binary⁶) if prefix ⊢1111₂
+            )[]
+        `
+        "We effectively just define the whole thing as a pattern; a type, which we match to."
+        "Variadic functions" @ https://en.wikipedia.org/wiki/Variadic_function , " (a function with a variable number of arguments) work in effectively the same way, they're just a pattern which we match to. So given the following function:"
+        @ray`varargs (a: String, b: Number[], c: String[]) => b.count`
+        "We actually have, like all functions, only a single argument, it's just that it is described structurally by the variables a, b & c, in sequence. ", "In a future version of the language which isn't just text-based, you can imagine that this 'single' argument which is described structurally, doesn't just need to be an Array. It could be some Graph for instance." ^disabled
+        "We can call it with a variable number of arguments, whether they originate from other arrays or not."
+        @ray`
+          part: String[] = "c1", "c2"
+          varargs("a", 1, 2, 3, part, "c3")
+        `
+        "Onwards to how programs (functions) are actually structured in the Ray programming language!"
+      }
+      section "§2.5 Programs/Functions" {
+        "Functions have a pretty straightforward way of being defined:"
+        @ray`
+          add (a, b) => a + b
+          add(1, 2) // 3
+        `
+        "Where you can use any string of text as long as it doesn't contain whitespace as the name of a function. The => at the end marks it as a function definition."
+        "Superposing also works with functions, where it is works as aliases:"
+        @ray`
+          a | a1 (: boolean) => "X"
+          a | a2 (: Number) => "Y"
+        `
+        "Or as ", "multiple dispatch" @ https://en.wikipedia.org/wiki/Multiple_dispatch , ":"
+        @ray`
+          a(boolean) // "X"
+          a(Number) // "Y"
+        `
+        "You can also put it on the other side of the function definition, starting a definition with |, marks it as: I have multiple implementations, let the compiler (or specific references) choose which one. For instance the NOT operator on boolean can be implemented in several ways (using NAND, NOR, XOR, ...)."
+        @ray`
+          !{x} =>
+            | x !&& x
+            | x !|| x
+            | x x|| true
+        `
+        "Other than superposing values there also exist several other useful library features. For instance recurring the current function in place as in a typical recursive call:"
+        @ray`
+          countdown (n) => (
+            return n if n == 0
+            recur(n - 1)
+          )
+        `
+        "Or full recursion which is useful in certain mathematical equations (which is an infinitely generating program, but in this case limiting):"
+        @ray`limited (x) => x + 1/recur`
+        "Then like the 'dynamically assert' of types, the opposite of that is 'never', which can also be used as a return value:"
+        @ray`forever (): never => loop { }`
+        "Or to be used match certain program patterns which must never happen in this function:"
+        @ray`
+          forever () => {
+            never return
+            loop {
+              return if A // ERROR if A is possible.
+            }
+          }
+        `
+        "It - like dynamically assert - also accepts predicates:"
+        @ray`
+          x: Number
+          never x == 0
+
+          x = 0 // ERROR
+        `
+        "Then many additional functionalities are optionally available to the runtime (which wouldn't be in most programming languages). Like where in the program this function is possibly referenced. The function's context (whether currently executing or not - more on that in ", SectionButton("§4.9 Concurrency"), ")."
+        @ray`
+          var = A + 5
+          f = var** // function that needs to run to fill var
+
+          f.context.A
+          f.references
+          f.injective
+        `
+        "The way all this functionality works brings us to how programs are structured. The only functional primitive which exists is a conditional goto; a conditional edge effectively in graph terms. This is the most foundational thing: Conditional dependence on some state. It is enough to build all familiar programming language concepts. Whether boolean arithmetic, control-flow. Anything."
+        "(And goto's themselves are just conditional alterations of the control-flow graph. Which is how they would be implemented was that your base language.)" ^muted
+        "Like most programming languages which allow you to use gotos you can label things in the language. Though in the Ray programming language you can label anywhere, and reference a label anywhere!"
+        @ray`
+          label1\ x: A (label2\ + B)
+          line2\ x == 5
+
+          line2 // ref it anywhere goto label1
+        `
+        "It just resolves to a pointer somewhere in the program. Which itself is a nested iterable structure of statements. So things like this would work:"
+        @ray`label1.next == line2`
+        "For instance, without any compiler optimizations, this would be (approximately) how a NAND gate would be defined:"
+        @ray`
+          nand (a, b) => {
+            goto second if a
+            return true
+          second\
+            goto 0 if b
+            return true
+          0\
+            return false
+          }
+        `
+        "To access the current function that is running, you can simple use the context operator (&) inside a function, which is just a pointer to where in the program we're currently at:"
+        @ray`
+          &
+          &.context == local
+          &.next // iterate through the future steps of the program
+        `
+        "It's also good to note that ", "precedence" @ https://en.wikipedia.org/wiki/Order_of_operations , ", is the order in which functions are defined. Sometimes it's useful to therefore reference that you want something defined between or after other operators. This is why function names themselves are also treated as labels! And you can reference them in the following way:"
+        @ray`Number~+`
+        "That should about cover most things functions/programs. Except one important feature of the Ray programming language. Comparing functions for their equivalence... And in general how equivalence works!"
+      }
+      section "§2.6 Equality & Equivalence" {
+        "One of the equivalences which exists in the language, is for instance that a String is equivalent to String[] when concatenated together, such that:"
+        @ray`
+          "ABC" == "A", "B", "C"
+
+          x: String = "A", "B", "C"
+        `
+        @ray`
+          2 == 2 // true
+          2 === 2 // false
+          x := 2
+          x === x // true
+        `
+        @ray`Point(x: 0, y: 0) == Point(x: 0, y: 0) // true`
+        @ray`
+          Node{== 1} as (== String) => "A"
+          1 == "A" // true
+        `
+        @ray`
+          A ==<in: -> convert(.)> B
+          A ==<in: None> B
+          Example(field: "A") ==<Number> Example(field: "B")
+        `
+        @ray`
+          "ABC" ==.instance_of String
+          [1, 2] ==.isomorphic [3, 4]
+        `
+        @ray`
+          "12" ~= "0123"
+          "ABC" ~= ⊢"AB"
+          "ABC" ~= "BC"⊣
+        `
+        @ray`
+          @me == @me @ @remote // true
+          @me === @me @ @remote // false
+        `
+        @ray`
+          f ==.extensional g
+          f ==.historical g
+          (2 + 2)** == (2 + 2)**
+        `
+        @ray`
+          Temperature := class {
+            normalizer = .rounded
+          }
+          t.canonical
+        `
+      }
+      section "§2.7 Classes & Enums" {
+        "Classes are a typical way of grouping a bunch of stuff together in a single entity. (They are not actually primitives in the Ray language like most other languages). Like the if/else functionality and other coroutines, they are defined within the language itself!"
+        "They are created by binding a function's context and defining some variables on it. Unlike other languages, the entire body of the class is the default constructor, so you don't specify one explicitly."
+        "Anything called on static which doesn't depend on an instance's parameters or which wouldn't be effected by getting called multiple times, gets taken out of the constructor if possible. So the following things aren't actually in the constructor:"
+        @ray`
+          Example := class {
+            static Var := 5
+
+            InnerClass := class {}
+          }
+        `
+        "Things like this (+1) would be part of the constructor:"
+        @ray`
+          Example := class {
+            static Var := 5
+
+            Var += 1
+          }
+        `
+        "If you want you can accept any positional argument like a function definition:"
+        @ray`
+          Example := class (x: String) => single_line
+          Example := class {
+            x: String
+            multi_line
+          }
+        `
+        "Any variable defined on the type is automatically also part of the constructor, by passing it named to the constructor:"
+        @ray`
+          Example := class {
+            x: String
+            y: String
+            z?: Number
+          }
+
+          Example("X", y: "Y")
+        `
+        "You'll find that you won't need different constructors as often, as you have access to a very expressive syntax for defining different possible types which match the constructor."
+        "If for sake of code clarity you still want to separate the constructors, you can by overriding the static constructor (you can omit (super) in it, in which case it will run before your defined constructor):"
+        @ray`
+          Example := class {
+            static () => this // is available in this context.
+
+            static (a: String) => {
+              super(property: a)
+            }
+          }
+        `
+        @ray`ExampleEnum := enum A | B | C(: String)`
+        "or equivalently:"
+        @ray`
+          ExampleEnum: A | B | C = class {
+            A := class {}
+            B := class {}
+            C := class {
+              : String
+            }
+          }
+        `
+        "You can also extract stuff out of any object/class by pattern-matching in front of it."
+        @ray`
+          { Rational, Irrational } = Real
+          { false, true } = boolean
+        `
+        "Which leaves us at how we get stuff others made our project... You should now have enough knowledge to do very basic things to interact with the language so that you can use it like any other language. If you want to interact with stuff others have made we'll have to turn towards the next chapter, to cover Ecosystem-related functionality."
+      }
+    }
+    section "§3. Ecosystem" {
+      "One of the difficult design decisions, was what to do with the whole 'Call by value vs reference' ordeal. By which I mean, should in the following example, (x) get updated:"
+      @ray`
+        Example := class (field = "A")
+        x := Example()
+
+        update (var: Example) => {
+          var = Example("B")
+        }
+
+        update(x)
+
+        x.field // Is it "A" or "B" here?
+      `
+      "Saying it is always \"Call by reference\" would mean it is \"B\" here, saying \"Call by value\" would mean it's always \"A\" and that it's impossible to modify an object other than returning a new version."
+      "In most modern programming languages it is: Assignment, so (=), is actually reassignment of that variable in scope: And shouldn't effect the variable out of scope. But then suddenly other mutations of that object don't qualify under this distinction.", " In the Ray programming language, any mutation is an assignment (=) somewhere in the structure." ^muted
+      "To me it seems kind of arbitrary that one is a more dangerous ground for bugs than the other."
+      "Whatever the reason, there currently exists a certain expectation of what kind of mutation should apply out of scope, and which shouldn't. Going for the option of making everything \"Call by reference\" would surely lead to many bugs in the language; Another approach is required."
+      ""
+      ""
+      ""
+      ""
+      "Instead we default to \"Always call by value\", and in this chapter we introduce the idea of variable versions, and variable locations. As one of its uses you can determine to which version and location the mutation should apply."
+      "Which in the above example would be done with the location (@) operator combined with (<-) as to indicate that it should be updated in the whole callstack which led to this function and its own context:"
+      @ray`
+        update (var: Example) => {
+          var @ <- = Example("B")
+        }
+      `
+      "You can also put this on the parameters, with the same effect:"
+      @ray`
+        update (var @ <-: Example) => {
+          var = Example("B")
+        }
+      `
+      "Note that in a concurrent setting, you can also turn that arrow around (->) to view & edit the variable in any thread you gave the variable to." ^disabled
+      "Or if we want to only update the caller's context."
+      @ray`var @ &caller = Example("B")`
+      "Or, as we'll introduce later in this chapter, we might even want to update it in all locations, whether that is some remote location like a database or mirror of that data. We can use (*) to select all locations:"
+      @ray`var @ * = Example("B")`
+      "Let's start by exploring how these locations work."
+      section "§3.1 Location & Assignment" {
+        @ray`
+          x@
+          x @ @remote
+          x @remote
+          x @ Example
+        `
+        @ray`
+          @ loc {
+            x = 5
+          }
+        `
+        @ray`
+          @https://orbitmines.com
+          @"a location with spaces"
+          @./lib/logo.png
+          @../shared/config.cfg.ray
+        `
+        @ray`
+          Location := Ray
+          loc.parent
+          loc.children
+          A <.hierarchy B
+        `
+      }
+      section "§3.2 Player Instances & Networking" {
+        @ray`
+          @me
+          &caller // @me at the top level
+        `
+        @ray`
+          @me.status = Online & Hosted & Idle
+          @me.status = Online & Broadcast
+          @ether.@USERNAME = @me
+          @google.@ada = @someone
+        `
+        @ray`
+          @orbitmines: Organization = {
+            avatars:
+              | @github.@orbitmines
+              | @x.@OrbitMines
+            profile_picture: ./lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png
+          }
+          @github.@orbitmines == @https://github.com/orbitmines
+        `
+        @ray`
+          @"orbitmines.com" // port 37839
+          url: URL = @https://orbitmines.com/archive
+          url.host // "orbitmines.com"
+          url.port // 443
+          Port := Decimal{< 2^16}
+        `
+        @ray`
+          proxy @ether {
+            fetch(@https://example.com)
+          }
+        `
+      }
+      section "§3.3 Version Control" {
+        @ray`
+          var = A, B, C = "ABC"
+          B = "2" // var == "A2C"
+          C = "3" // var == "A23"
+          B% == "B", \"2"\
+          var% == B%, \C%\
+        `
+        @ray`
+          x%
+          x.field% // empty while it follows the default
+        `
+        @ray`
+          Example %3
+          Example %3'2
+          title %[1..5]: String
+        `
+        @ray`
+          %4 -> %5 (old) => Example(title: old.name)
+          %5 -> %4 = (%4 -> %5)⁻¹
+        `
+        @ray`
+          history.squash
+          history.cherry_pick(commits)
+          history.from_here
+        `
+        @ray`@local changes // staged, not yet published`
+      }
+      section "§3.4 Access Permissions" {
+        @ray`
+          Example := class {
+            internal secret := 5
+          }
+          Example := class {
+            Node{==.instance_of Example} secret := 5
+          }
+        `
+        @ray`
+          @public variable
+          @local variable
+          @localhost variable
+          @private variable
+          @private.managed variable
+          @private.confidential variable
+        `
+        @ray`
+          @public.read @public.execute API_METHOD
+          @public.read NUMBER := 0
+          @public.execute NUMBER.+= (== 1)
+        `
+        @ray`
+          @private {
+            notes := "..."
+            drafts := "..."
+          }
+        `
+        @ray`@public.read f**`
+        @ray`@company may network @https://api.company.com`
+      }
+      section "§3.5 IO" {
+        @ray`
+          notes := IO /notes.txt as String
+          IO /notes.txt = "Remember the milk"
+        `
+        @ray`
+          IO /settings // settings.ray, then settings/, then the file settings
+          settings := IO /settings.cfg.ray
+        `
+        @ray`confidential @me/device/os /home/me/Documents`
+      }
+      section "§3.6 Hosted Variables & Packages" {
+        @ray`
+          < @ether/.ts
+          < @https://orbitmines.com/package
+          < @ether/package <&6ba7b810-9dad-11d1-80b4-00c04fd430c8>
+          < @ray %3
+        `
+        @ray`"A1", "A2" @ @me.managed, "A3" @ @ether, "A4" @ @"192.168.1.254"`
+        @ray`
+          Point$
+          Point$ @ @remote
+          Point{x > 0}$ = @me.managed
+          persistent score := 0
+        `
+        @ray`
+          $.ray
+          $.c++
+          $.png
+          logo := @./logo.png // an Image, because $.png reads it
+        `
+      }
+      section "§3.7 Hot-reloading Stateful Programs" {
+        @ray`
+          counter := 0
+          loop {
+            counter += 1
+          }
+        `
+        @ray`%1 -> %2 (old) => Example(title: old.name)`
+        @ray`with O = Compiler.default + Compiler.memoised`
+      }
+    }
+    section "§4. Extended Fundamentals" {
+      section "§4.1 Syntax & Punctuation" {
+        "The familiar parenthesis () are used to group certain kinds of operations, to prefer a particular interpretation over another. The Ray programming language extends this notion a little further than most programming languages. Where you're allowed to introduce parenthesis pretty much anywhere, and there's a valid interpretation of what that means."
+        "So instead of doing the following:"
+        @ray`condition ? var == 5 : var <= 5`
+        "You might do this:"
+        @ray`var (condition ? == 5 : <= 5)`
+        "Or even:"
+        @ray`var (condition ? == : <=) 5`
+        "The same can be done with property getters, so you can have things like:"
+        @ray`Symbol: Char = Unicode.GeneralCategory.(punctuation | symbol)`
+        "Which superposes both properties with the (|) operator."
+        "Note that anything within parenthesis is always a " ^muted, "closure" @ https://en.wikipedia.org/wiki/Closure_(computer_programming) , ". In it, the entire variable you're accessing is loaded in the context. So if it defines a (.next) method, and your scope also has a (.next) method, the .next from the object is used!" ^muted
+        ""
+        ""
+        ""
+        "The Ray programming language is also pretty lenient in it's omittance of parenthesis and allowance for spaces as punctuation."
+        "After a superposed variable, you can omit parenthesis by using a space to go straight to its type or call any other method on it:"
+        @ray`
+          A | B : String
+          A | B .method
+          A | B {length == 2}
+        `
+        "You can omit the use of (.) in favor for a space, as is usually already the case for special character operators, but in Ray you can also do this with any property:"
+        @ray`
+          "A".lowercase
+          "A" lowercase
+        `
+        "With those two things we can choose between these sorts of syntax, whichever one seems clearer to you:"
+        @ray`
+          (0 -> +2) {< 10}.for(i => /* */)
+          (0 -> +2) {< 10}.for i => /* */
+          (0 -> +2) {< 10} for i => /* */
+        `
+        "There is also the (--) operator which wraps the whole line before it."
+        @ray`1, 2 -- .map(+1) // 2, 3`
+        "Additionally it can also be used after newlines and with if statements which optionally wrap the line."
+        @ray`
+          IPv6 := class {
+            as (== String) => this
+              -- .embed_ipv4 if ==.instance_of "::ffff:0.0.0.0/96"
+              -- .embed_ipv4 if ==.instance_of "64:ff9b::/96"
+              .compress_zeros
+              .lowercase
+          }
+        `
+        "Then there is the (~~) operator, which does the exact same thing, but returns the original thing you call the successive functions on. Which is useful for creating one-liners like:"
+        @ray`
+          mac_address: Binary⁴⁸ =
+            secure Binary⁴⁷.random ~~ .[6].push_after(1)
+        `
+        @ray`
+          (0 -> +2) {< 10}.for(i => print(i))
+          (0 -> +2) {< 10}.for i => print(i)
+          (0 -> +2) {< 10} for i => print(i)
+        `
+        @ray`a := 1; b := 2`
+        @ray`
+          value := 5
+            + 3
+            + 2 // 10
+        `
+        @ray`
+          total := first +
+            second
+        `
+        @ray`
+          obj
+            .first
+            .second
+        `
+        @ray`
+          return x if x > 10
+          print("small") unless x > 10
+        `
+        @ray`
+          a [x] b
+          a (+ | *) b
+        `
+        @ray`
+          f - x
+          f(-x)
+        `
+        @ray`
+          // a comment
+          /* a /* nested */ comment */
+        `
+        "
+          \"tab:\\t newline:\\n\"
+          \"\\u\{1F525}\"
+          U+1F525
+          `raw \{text}`
+        ".ray
+        @ray`
+          PATH/ *
+          PATH/ * /file.ray
+          file*.ray // one name
+        `
+      }
+      section "§4.2 Transactions & Reversibility" {
+        @ray`
+          double (x) => x * 2
+          double⁻¹ (y) => y / 2
+          double!(8) // 4
+          double^-1(8) // 4
+        `
+        @ray`! + -`
+        @ray`
+          transaction {
+            from.balance -= 10
+            to.balance += 10
+          }
+        `
+        @ray`change.revert`
+      }
+      section "§4.3 Undecidability & Assumptions" {
+        @ray`
+          if assume graph.last {
+            A()
+          } else assume {
+            B()
+          }
+        `
+        @ray`
+          with Time.timezone = UTC + 2h
+          assume Time.timezone = UTC + 2h
+          with {
+            Time.YEAR = 2024
+          }
+        `
+        @ray`
+          x := compute()
+          dynamically total := x + 1
+          dynamically assert total < 100
+        `
+      }
+      section "§4.4 Program Types" {
+        @ray`
+          Terminating := Program{∀ path ∈ .paths: path.length < ∞}
+          increment: Terminating = (x) => x + 1
+        `
+        @ray`
+          x := compute()
+          x**
+          x**.&.acc
+          x**.is_terminal
+          x**.next
+        `
+        @ray`f(?) // f over every possible input`
+        @ray`
+          fast: Program{O: Compiler.default} = f**
+          slow: Program{O: Compiler.none} = f**
+        `
+        @ray`
+          settings.cfg.ray // halts, no side effects
+          script.js.ray // JS read over Ray
+        `
+      }
+      section "§4.5 Optimizations" {
+        @ray`
+          Compiler.default += {
+            {a} * 2 => a + a
+            {a} + 0 => a
+          }
+        `
+        @ray`
+          with O = Compiler.default + Debug.timed
+          Debug.timed := {
+            {s: Statement} => s; timer.tick
+          }
+        `
+        @ray`
+          optimize time_elapsed
+          minimize space_used
+          prefer minimize y if x > 100
+          allow network
+          dynamically assert x + y <= 10
+        `
+        @ray`
+          Style.mathematics
+          inline Style.mathematics
+        `
+      }
+      section "§4.6 Probability" {
+        @ray`
+          x = "A" | "B"
+          x#.random // "A" or "B", 50% each
+        `
+        @ray`
+          x: String? = 0.2("A") | 0.5("B")
+          x: String? =
+            0.2 => "A"
+            0.5 => "B"
+        `
+        @ray`
+          0.5(0.5("A") | 0.5("B")) | "C"
+          0.5("A") & 0.5(0.3("B") | 0.7("C"))
+        `
+        @ray`
+          n (== "A") => 1
+          n (== "B") => 2
+          n 0.3("A") | 0.7("B") // 0.3(1) | 0.7(2)
+        `
+        @ray`
+          Binary{-> .next == 0.5(?.random)}
+          Binary{-> .next == 0.5(?.random)}.length
+        `
+        @ray`
+          secure Number{< 100}.random
+          with Random.seed = 42
+        `
+      }
+      section "§4.7 Choice" {
+        "While randomization is a useful abstraction, sometimes you might want a slightly different concept. Which is where choice comes in. To flag that a required value can be chosen arbitrarily (by the runtime or even the Player)."
+        "Unlike a random variable which can't be picked uniformly for infinitely generating structures, choice works just fine: There can be a preference or tendency for a certain kind of object. Choice is simply saying: we don't care about this information."
+        "We can use it in filters:"
+        @ray`
+          [1, 2, 3].map{choose 1}(*10) // [10, 2, 3] | [1, 20, 3] | [1, 2, 30]
+
+          Number{choose 5}
+        `
+        "Call it directly:"
+        @ray`
+          choose 1 Number
+          choose 50% ("A" | "B" | "C" | "D")
+        `
+        "Or pass it to any function which will fill the type automatically (the choice having to disambiguate where necessary)."
+        @ray`
+          func (a: String, b: Number[], c: String) => a
+          func(choose, choose) // Choose two variables, the second can be a Number[] or a String
+        `
+        "Note that choose, uses the (===) operator, so you might expect that if a variable is used more than once, it can only get chosen once. But that is not the default behavior, it does use (===), but each location the variable finds itself in, is separately equipped with a Ray (forming a new composed variable). Meaning where it is in the structure. And that structure, is not the same in both locations, and thus the two variables are differentiated as separate, and can be chosen separately."
+        @ray`
+          var = 2
+          [1, var, var].map{choose 1}(*10) // [10, 2, 2] | [1, 20, 20]
+          var = 2
+          [1, var, var].map{choose 2}(*10) // [10, 20, 20] | [1, 200, 200]
+        `
+        "An example of where (choose) is used, is in a function defined on Iterable, the (unordered) function. Which says: I don't care about the order, or even what kind of structure yields the values, I just want it to yield them."
+        @ray`
+          Iterable := class {
+            unordered => choose Iterable{.every(this.contains(.)) && .count == count}
+          }
+        `
+        "Which can be useful because certain compiler optimizations might work when order doesn't matter."
+        "We can also force a player to make that arbitrary choice:"
+        @ray`@me.choose String`
+        @ray`
+          choose 1 Number
+          choose 50% ("A" | "B" | "C" | "D")
+          choose UUID{unique}
+          Number{> 5}()
+        `
+        @ray`
+          Room := class {
+            4 Wall{a Door, 50% Window}
+            1..3 Bookshelf
+            a Table
+          }
+          choose Room
+        `
+      }
+      section "§4.8 Coroutines" {
+        @ray`
+          branch download()
+          defer cleanup()
+          result := await request()
+        `
+        @ray`
+          sync {
+            fetch(a)
+            fetch(b)
+          }
+          race {
+            fetch(mirror1)
+            fetch(mirror2)
+          }
+          rush {
+            fetch(mirror1)
+            fetch(mirror2)
+          }
+        `
+        @ray`
+          loop {
+            tick()
+          }
+        `
+      }
+      section "§4.9 Concurrency" {
+        @ray`
+          x = 0
+          branch {
+            x = 1
+          }
+          branch {
+            x = 2
+          }
+          x // 1 | 2
+        `
+        @ray`
+          A\ branch {
+            pending count := graph.count
+          }
+          count @ A
+          while A {
+            print(count @ A)
+          }
+        `
+        @ray`&# // the branches running here`
+      }
+      section "§4.10 Graph Rewriting" {
+      }
+    }
+    section "§5. Playerfacing" {
+      section "§5.1 Error Handling" {
+        "
+          f() $
+          f() $ DEFAULT
+          f() $ None
+          f() $ return X
+          f() $ ERROR[kind] `Failed: \{.}`
+          f() $?
+          f() $? DEFAULT
+          f() $!
+          f() $?!
+        ".ray
+        @ray`
+          f() $ {
+            print(.)
+          }
+        `
+        @ray`
+          f()
+            $specific.error return X
+            $a.error | $b.error return Y
+        `
+        @ray`errors &:= f() $`
+      }
+      section "§5.2 Syntax Highlighting" {
+        @ray`
+          "Important" ^italic
+          "Important".marked("italic")
+        `
+        @ray`keyword ^keyword := global`
+        "@js`const x = 2`".ray
+      }
+      section "§5.3 Theorem Proving" {
+        @ray`theorem commutative (a: Number, b: Number) => a + b == b + a`
+        @ray`∃x: Binary x * x == 25`
+        @ray`
+          if assume commutative {
+            simplify(expression)
+          }
+        `
+      }
+      section "§5.4 Geometry" {
+        @ray`
+          Point = Ray
+          Loop = Array.Unbounded.loop
+          Circle := class {
+            outline: Loop{map(to centre -- #.min.length).reduce(==)}
+            centre: Point
+            radius => outline to centre -- #.min.length
+          }
+        `
+        @ray`
+          Ball(size: Vector(20m, 20m)) + pr 10m
+          pt 5 Ball(size: Vector(2m, 2m))
+        `
+        @ray`
+          2D := class: 1D {
+            under | bottom : static <<- down: static <- vertical | y -> up: static ->> above | top : static
+          }
+          pos[y: 5]
+        `
+      }
+      section "§5.4 UI" {
+        @ray`
+          center {
+            end .map(&+ px 5) <- {
+              DownloadButton, LoginButton
+            }
+            @./lib/organizations/orbitmines/logo.png{width: 90% & <= 400px}
+            (xl 4/12 -> xs 12/12) "Once a Minecraft server ..." ^italic
+            pt 5 @fadi as Author
+          }
+        `
+        @ray`
+          {
+            A
+            B
+          }.map(,)
+          (A, B).map(\n)
+        `
+        @ray`
+          4/12 * center Card
+          100% * center Card
+        `
+        @ray`
+          Profile := class {
+            card\
+              center (.picture, .name)
+            page\
+              .name, .articles
+          }
+          Profile~card(@fadi)
+        `
+        @ray`
+          dynamically if @me/device/keyboard/F2.toggled {
+            selection = selection.next
+          }
+        `
+        @ray`
+          orbitmines.com := {
+            profiles: Profile$ @ /profiles/
+            archive: Article$ @ /archive/
+            almanac := Almanac
+            {*}: Index
+          }
+          orbitmines.com() if &entrypoint
+        `
+        @ray`
+          page.rendered(UI.HTML.level)
+          page.rendered(UI.TUI.level)
+          page.rendered(UI.HTML.Markup.level + UI.HTML.Style.level + UI.HTML.Script.level)
+        `
+      }
+    }
+    section "§6. The v0 Runtime & Compiler" {
+      section "§6.1 Self-modifying Types" {
+        "In order to understand the runtime, we must first extend the fundamentals with one more concept; a further generalization of types: self-modifying types."
+        "While dependent types are incredibly useful, in both looking ahead or behind in a pattern, there is one thing that they typically can't do. Which is to express a pattern which arbitrarily modifies itself."
+        "The idea is simple enough to understand: Something is found in the pattern, which changes the pattern arbitrarily: How should one interpret what happens next?; Should you reinterpret the whole thing? Should you only reinterpret what comes next? That's the question we explore in this section."
+        "This concept is pretty general and can be applied to everything (like for instance our self-modifying functions which alter its own control-flow). In the context of languages, this self-modifying behavior is known as an " ^muted, "Adaptive grammar" @ https://en.wikipedia.org/wiki/Adaptive_grammar , ". And I'm here equivalencing the meaning of a pattern/type/grammar." ^muted
+        "The Ray programming language uses such an adaptive grammar (or self-modifying type), and usual type matching also supports it!"
+        "Throughout the language you might find definitions for additional syntax like:"
+        "
+          `An example` // Can also be used in front of definitions
+
+          `\{string: String}` => string
+
+          `An example` // Valid syntax
+        ".ray
+        "Let's get started on the definition of expressions in the language to understand how that works:"
+        @ray`
+          {a} [x: chainable] {b} [y: chainable] {c} => (a [x] b) & (b [y] c)
+          1 < 2 < 3 // true
+        `
+        @ray`
+          chainable < (other) => other > this
+          compounds + (addend) => add(this, addend)
+        `
+        @ray`x ~~ .method`
+      }
+    }
+    section "§7. Other Features" {
+      section "§7.1 (Unicode) Strings" {
+        @ray`
+          "A"
+          "ABC"
+          U+1F525 // 🔥
+        `
+        @ray`
+          "ABC" == "A", "B", "C"
+          "Hello {name}!"
+        `
+        @ray`
+          "ABC".lowercase // "abc"
+          "abc".uppercase // "ABC"
+          "hello world".title_case // "Hello World"
+          "hello world".snake_case // "hello_world"
+          "hello world".camel_case // "helloWorld"
+        `
+        @ray`
+          "a,b,c".split(",") // "a", "b", "c"
+          ("a", "b", "c").join(", ") // "a, b, c"
+          "abc".reverse // "cba"
+        `
+        @ray`
+          "A".next // "B"
+          "A" as Number // 65
+        `
+        @ray`text: Unicode %15 = "…"`
+      }
+      section "§7.2 Units" {
+        @ray`
+          1m + 50cm // 1.5 m
+          1.5 m
+          3 GB/s
+          2/10m
+        `
+        @ray`
+          1d 10h 10m 30s
+          10000000s as days hours minutes seconds
+        `
+        @ray`
+          8m // 8 meter | 8 minute
+          d: Quantity.Temporal = 8m // 8 minute
+        `
+        @ray`
+          1 kB // 1000 B
+          1 KiB // 1024 B
+          1k // 1000
+        `
+      }
+      section "§7.3 Time" {
+        @ray`
+          Time.now
+          12:00
+          "2025-01-01"
+        `
+        @ray`Time("2025-01-01", epoch: "2000-01-01") == 25 years`
+        @ray`
+          (
+            with Time.YEAR = 2024
+            February.days // 29
+          )
+        `
+        @ray`
+          t.round(seconds)
+          Calendar#
+        `
+      }
+      section "§7.4 UUID" {
+        @ray`
+          id := UUID.v4()
+          id: UUID = 6ba7b810-9dad-11d1-80b4-00c04fd430c8
+          id.version // 1
+        `
+        @ray`choose UUID.v1{unique}`
+      }
+      section "§7.6 IP addresses" {
+        @ray`
+          ip: IPv4 = 192.168.1.1
+          ip + 1 // 192.168.1.2
+          ip / 24 // 192.168.1.0/24
+          v6: IPv6 = ::ffff:192.168.1.1
+        `
+      }
+      section "§7.5 Roman numerals" {
+        @ray`
+          "XIV" as Number // 14
+          14 as Roman // "XIV"
+          (
+            with Roman.normalizer = Additive
+            4 as Roman // "IIII"
+          )
+        `
+      }
+    }
+  }
+  Arc("B. The Ether (Planned for 2027)" ^disabled) + {}
+  Arc("C. Ether Library Project (Planned for 2028)" ^disabled) + {}
+  Arc("D. Physics & Game Engine (Planned for 2029)" ^disabled) + {}
+  arc "Wrapping up" {}
 }

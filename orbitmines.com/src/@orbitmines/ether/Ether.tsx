@@ -1,51 +1,56 @@
 import {Row} from "../../lib/post/Post";
 import {FEATURES} from "../../lib/features";
 import {Button, Icon} from "@blueprintjs/core";
-import React from "react";
+import React, {useState} from "react";
 
-type OS = "Windows" | "MacOS" | "Linux"// | "iOS" | "Android"
+type OS = "Windows" | "MacOS" | "Linux"
 
-const OS_ASSET_MATCH: Record<OS, RegExp> = {
-  "Windows": /\.exe$/,
-  "MacOS": /\.dmg$/,
-  "Linux": /\.deb$/,
-  // "Android": /\.apk$/,
-  // "iOS": /\.ipa$/,
-};
+export const INSTALL = "curl -fsSL https://ether.orbitmines.com/install.sh | bash";
+export const WINDOWS_EXECUTABLE = "https://github.com/orbitmines/ray/releases/latest/download/ether-x86_64-pc-windows-msvc.exe";
 
 export const os = (): OS | undefined => {
   if (typeof navigator === 'undefined') return undefined;
-  const platform = navigator.userAgent.toLowerCase();
+  const agent = navigator.userAgent.toLowerCase();
 
-  // if (platform.includes("iphone") || platform.includes("ipad") || platform.includes("ipod")) return "iOS";
-  // if (platform.includes("android")) return "Android";
-  if (platform.includes("win")) return "Windows";
-  if (platform.includes("mac")) return "MacOS";
-  if (platform.includes("linux")) return "Linux";
+  if (/iphone|ipad|ipod|android/.test(agent)) return undefined;
+  if (agent.includes("macintosh") && navigator.maxTouchPoints > 1) return undefined;
+  if (agent.includes("windows")) return "Windows";
+  if (agent.includes("mac")) return "MacOS";
+  if (agent.includes("linux") && !agent.includes("cros")) return "Linux";
 
   return undefined;
 }
 
-export const download = async () => {
-  const detected = os();
-  if (!detected) return;
+export const download = () => { window.location.href = WINDOWS_EXECUTABLE; }
 
-  const response = await fetch("https://api.github.com/repos/orbitmines/ray/releases/latest");
-  const release = await response.json();
-  const asset = release.assets?.find((a: any) => OS_ASSET_MATCH[detected].test(a.name));
+const Install = ({detected}: { detected: OS }) => {
+  const [hovered, setHovered] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const copy = () => navigator.clipboard.writeText(INSTALL).then(() => {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
+  });
 
-  if (asset) {
-    window.open(asset.browser_download_url, "_blank");
-  } else {
-    window.open("https://github.com/orbitmines/ray/releases/latest", "_blank");
-  }
+  return <span onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <Button icon={hovered ? (copied ? "tick" : "duplicate") : "console"} text={<Row middle="xs" style={{minHeight: '50px'}}>
+      {hovered
+        ? <span style={{fontFamily: 'monospace', whiteSpace: 'nowrap'}}>$ {INSTALL}</span>
+        : <>Install<img src="/Ether.svg" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '50px'}}/><span className="hidden-xs">for {detected}</span></>}
+    </Row>} minimal style={{fontSize: '18px', borderBottom: '1px solid #5F6B7C99'}} onClick={copy}/>
+  </span>
 }
 
-export const DownloadButton = () => FEATURES.ETHER && os() ? <Button icon="download" text={<Row middle="xs">
-  Download
-  <img src="/Ether.svg" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '50px'}}/>
-  <span className="hidden-xs">for {os()}</span>
-</Row>} minimal style={{fontSize: '18px', borderBottom: '1px solid #5F6B7C99'}} onClick={download}/> : null
+export const DownloadButton = () => {
+  const detected = os();
+  if (!FEATURES.ETHER || !detected) return null;
+  if (detected !== "Windows") return <Install detected={detected}/>;
+
+  return <Button icon="download" text={<Row middle="xs">
+    Download
+    <img src="/Ether.svg" alt="Ether's Almanac" style={{maxWidth: '100%', maxHeight: '50px'}}/>
+    <span className="hidden-xs">for {detected}</span>
+  </Row>} minimal style={{fontSize: '18px', borderBottom: '1px solid #5F6B7C99'}} onClick={download}/>;
+}
 
 export const LoginButton = () => {
 

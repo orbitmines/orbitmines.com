@@ -1,0 +1,21 @@
+@fadi: Player = {
+  name: "Fadi Shawki"
+  first_name: "Fadi"
+  last_name: "Shawki"
+  formal_citation_name: "Shawki, Fadi"
+  email: @"mailto:fadi.shawki@orbitmines.com"
+  orcid: "0009-0009-9288-992X"
+  profile: fadi-shawki
+  profile_picture: @../orbitmines.com/public/profiles/fadi-shawki/profile-picture.png
+  avatars:
+    | @discord.@fadishawki @ https://discord.orbitmines.com
+    | @github.@FadiShawki
+    | @x.@_FadiShawki @ https://twitter.com/_FadiShawki
+    | @gitlab.@FadiShawki
+    | @instagram.@f._shawki
+    | @youtube.@FadiShawki
+    | @twitch.@fadishawki
+    | @linkedin.@fadishawki
+    | @facebook.@"Fadi Shawki" @ https://www.facebook.com/profile.php?id=100094496444130
+    | @orcid.@"0009-0009-9288-992X"
+}

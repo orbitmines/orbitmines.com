@@ -9,7 +9,7 @@ export const FEATURES = {
    * username selection behind it, the "Download Ether" button, and the
    * follow/download/chat/PR/settings buttons on user profile pages.
    */
-  ETHER: false,
+  ETHER: true,
   /**
    * The Physics Project: the /physics route, its booklet card on the home
    * page, and its entry in the writings lists (home page and profile).

@@ -1,37 +1,303 @@
+Character &+= {
+  formal_citation_name: None
+  orcid: None
+  handle => .name
+}
 
-@orbitmines = Organization(
-  avatars:
-    // These two would have to be registered under the orbitmines organization
-    | @"fadi.shawki@orbitmines.com" = Avatar()
-    | @"discord.orbitmines.com" = Avatar(@: "https://discord.orbitmines.com")
+Organization &+= {
+  key => .handle
+}
 
-    | @github.@orbitmines = Avatar(@: "https://github.com/orbitmines")
-    | @x.@OrbitMines = Avatar(@: "https://x.com/OrbitMines")
-    | @instagram.@orbitmines = Avatar(@: "https://www.instagram.com/orbitmines/")
-    | @youtube.@OrbitMines = Avatar(@: "https://www.youtube.com/@OrbitMines")
-    | @twitch.@orbitmines = Avatar(@: "https://www.twitch.tv/orbitmines")
-    | @linkedin.@orbitmines = Avatar(@: "https://www.linkedin.com/company/orbitmines/")
-    //| @gitlab.@orbitmines = Avatar(@: "https://gitlab.com/orbitmines") //TODO This would be set to private since it's not in use
-    | @facebook.@OrbitMines = Avatar(@: "https://www.facebook.com/profile.php?id=61550528503885")
-  profile_picture: ./lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png
-)
+Avatar &+= {
+  location: .platform.at(.name)
+}
 
-// The organizations have their URL alises derived always as a superposition when referencing @github.orbitmines, you're automatically deferred to @https://github.com/orbitmines
+Platform := class: Organization {
+  prefix: Node
+  suffix: ""
+
+  at (handle: String) => .prefix + (handle + .suffix)
+  .@{handle} => Avatar(name: handle, platform: this)
+}
+
+@github: Platform = {
+  name: "GitHub"
+  prefix: @https://github.com/
+  profile_picture: @../orbitmines.com/public/organizations/icons/github.svg
+}
+
+@x: Platform = {
+  name: "Twitter"
+  prefix: @https://x.com/
+  profile_picture: @../orbitmines.com/public/organizations/icons/twitter.svg
+}
+
+@discord: Platform = {
+  name: "Discord"
+  prefix: @https://discord.com/users/
+  profile_picture: @../orbitmines.com/public/organizations/icons/discord.svg
+}
+
+@linkedin: Platform = {
+  name: "LinkedIn"
+  prefix: @https://www.linkedin.com/in/
+  suffix: "/"
+  profile_picture: @../orbitmines.com/public/organizations/icons/linkedin.svg
+}
+
+@orcid: Platform = {
+  name: "ORCID"
+  prefix: @https://orcid.org/
+  profile_picture: @../orbitmines.com/public/organizations/icons/orcid.svg
+}
+
+@instagram: Platform = {
+  name: "Instagram"
+  prefix: @https://www.instagram.com/
+  suffix: "/"
+  profile_picture: @../orbitmines.com/public/organizations/icons/instagram.svg
+}
+
+@youtube: Platform = {
+  name: "YouTube"
+  prefix: @https://www.youtube.com/@
+  profile_picture: @../orbitmines.com/public/organizations/icons/youtube.svg
+}
+
+@twitch: Platform = {
+  name: "Twitch"
+  prefix: @https://www.twitch.tv/
+  profile_picture: @../orbitmines.com/public/organizations/icons/twitch.svg
+}
+
+@facebook: Platform = {
+  name: "Facebook"
+  prefix: @https://www.facebook.com/
+  profile_picture: @../orbitmines.com/public/organizations/icons/facebook.svg
+}
+
+@gitlab: Platform = {
+  name: "Gitlab"
+  prefix: @https://gitlab.com/
+  profile_picture: @../orbitmines.com/public/organizations/icons/gitlab.svg
+}
+
+@mastodon: Platform = {
+  name: "Mastodon"
+  prefix: @https://mastodon.orbitmines.com/@
+  profile_picture: @../orbitmines.com/public/organizations/icons/mastodon.svg
+}
+
+@ipfs: Platform = {
+  name: "IPFS"
+  prefix: @https://discuss.ipfs.tech/u/
+  profile_picture: @../orbitmines.com/public/organizations/icons/ipfs.svg
+}
+
+@nixos: Platform = {
+  name: "NixOS"
+  prefix: @https://discourse.nixos.org/u/
+  profile_picture: @../orbitmines.com/public/organizations/icons/nixos.svg
+}
+
+@fission: Platform = {
+  name: "Fission"
+  prefix: @https://talk.fission.codes/u/
+  suffix: "/"
+  profile_picture: @../orbitmines.com/public/organizations/icons/fission.svg
+}
+
+Platform.shown := @github | @x | @discord | @linkedin | @orcid | @instagram | @youtube | @twitch | @facebook
+
 @orbitmines: Organization = {
+  name: "OrbitMines Research"
+  key: "orbitmines-research"
+  handle: "orbitmines"
+  email: @"mailto:fadi.shawki@orbitmines.com"
+  website: @https://orbitmines.com
   avatars:
-    // These two would have to be registered under the orbitmines organization
-    | @"fadi.shawki@orbitmines.com"
-    | @"discord.orbitmines.com"
-
+    | @discord.@"discord.orbitmines.com" @ https://discord.orbitmines.com
     | @github.@orbitmines
-    | @x.@OrbitMines
+    | @x.@OrbitMines @ https://twitter.com/OrbitMines
     | @instagram.@orbitmines
     | @youtube.@OrbitMines
     | @twitch.@orbitmines
-    | @linkedin.@orbitmines
-    //| @gitlab.@orbitmines //TODO This would be set to private since it's not in use
-    | @facebook.@OrbitMines
-  profile_picture: ./lib/organizations/orbitmines/icon/orbitmines.icon.650x650.png
+    | @linkedin.@orbitmines @ https://www.linkedin.com/company/orbitmines/
+    | @facebook.@OrbitMines @ https://www.facebook.com/profile.php?id=61550528503885
+  logo: @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png
+  profile_picture: @../orbitmines.com/public/organizations/orbitmines/icon/orbitmines.icon.650x650.png
 }
 
-// TODO All the organizations
+@ether: Organization = {
+  name: "Ether"
+  profile_picture: @../orbitmines.com/public/E.svg
+}
+
+@physics: Organization = {
+  name: "OrbitMines: Physics Project"
+  key: "physics"
+  profile_picture: @../orbitmines.com/public/2026-09-12_Sun.png
+}
+
+@orbitmines-minecraft-prison: Organization = {
+  name: ""
+  key: "orbitmines-minecraft-prison"
+  profile_picture: @../orbitmines.com/public/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.prison.1000x1000.png
+}
+
+@orbitmines-minecraft-creative: Organization = {
+  name: ""
+  key: "orbitmines-minecraft-creative"
+  profile_picture: @../orbitmines.com/public/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.creative.1000x1000.png
+}
+
+@orbitmines-minecraft-minigames: Organization = {
+  name: ""
+  key: "orbitmines-minecraft-minigames"
+  profile_picture: @../orbitmines.com/public/organizations/orbitmines/minecraft/server/icon/orbitmines.minecraft.server.icon.minigames.1000x1000.png
+}
+
+@demystifysci: Organization = {
+  name: "demystifysci"
+  profile_picture: @../orbitmines.com/public/organizations/demystifysci/channels4_profile.jpg
+}
+
+@cool_worlds_podcast: Organization = {
+  name: "cool_worlds_podcast"
+  profile_picture: @../orbitmines.com/public/organizations/cool_worlds/channels4_profile.jpg
+}
+
+@syco: Organization = {
+  name: "syco"
+  profile_picture: @../orbitmines.com/public/organizations/syco/logo.png
+}
+
+@toe: Organization = {
+  name: "toe"
+  profile_picture: @../orbitmines.com/public/organizations/toe/toe.jpg
+}
+
+@active_inference_institute: Organization = {
+  name: "active_inference_institute"
+  profile_picture: @../orbitmines.com/public/organizations/active-inference-institute/channels4_profile.jpg
+}
+
+@all_in: Organization = {
+  name: "all_in"
+  profile_picture: @../orbitmines.com/public/organizations/all-in/icon.jpeg
+}
+
+@zx_calculus: Organization = {
+  name: "zx_calculus"
+  profile_picture: @../orbitmines.com/public/organizations/zx/icon.png
+}
+
+@wolfram: Organization = {
+  name: "wolfram"
+  profile_picture: @../orbitmines.com/public/organizations/wolfram-research/logo.png
+}
+
+@lex_fridman_podcast: Organization = {
+  name: "lex_fridman_podcast"
+  logo: @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png
+  profile_picture: @../orbitmines.com/public/organizations/lexfridman-podcast/download.jpeg
+}
+
+@tinycorp: Organization = {
+  name: "tinycorp"
+  logo: @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png
+  profile_picture: @../orbitmines.com/public/organizations/tinycorp/132956020.jpeg
+}
+
+@3b1b: Organization = {
+  name: "3b1b"
+  logo: @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png
+  profile_picture: @../orbitmines.com/public/organizations/3b1b/3B1B_Logo.svg.png
+}
+
+@chyp: Organization = {
+  name: "chyp"
+  key: "chypr"
+  logo: @../orbitmines.com/public/organizations/akissinger/881183.png
+  profile_picture: @../orbitmines.com/public/organizations/akissinger/881183.png
+}
+
+@ursprung: Organization = {
+  name: "Ursprung"
+  profile_picture: @../orbitmines.com/public/organizations/ursprung/ursprung_icon.png
+}
+
+@semf: Organization = {
+  name: "SEMF"
+  logo: @../orbitmines.com/public/organizations/orbitmines/logo/orbitmines.logo.3000x1000.png
+  profile_picture: @../orbitmines.com/public/organizations/semf/semf_icon.jpg
+}
+
+@ngi: Organization = {
+  name: "NGI"
+  profile_picture: @../orbitmines.com/public/organizations/ngi/Logo-NGI_Icon-circle-NGI-rgb.png
+}
+
+@strangeloop: Organization = {
+  name: "Strange Loop"
+  key: "strangeloop"
+  profile_picture: @../orbitmines.com/public/organizations/strange-loop/strange_loop_logo_final_color_no_year_square2.png
+}
+
+@wasm: Organization = {
+  name: "WebAssembly"
+  key: "wasm"
+  profile_picture: @../orbitmines.com/public/organizations/wasm/webassembly-icon.png
+}
+
+@topos_institute: Organization = {
+  name: "Topos Institute"
+  key: "topos_institute"
+  profile_picture: @../orbitmines.com/public/organizations/topos.institute/topos_favicon.ico
+}
+
+@mlst: Organization = {
+  name: "MLST"
+  profile_picture: @../orbitmines.com/public/organizations/mlst/channels4_profile.jpg
+}
+
+@hoc: Organization = {
+  name: "Higher Order Company"
+  key: "hoc"
+  profile_picture: @../orbitmines.com/public/organizations/hoc/92327702.png
+}
+
+@mindscape: Organization = {
+  name: "Mindscape"
+  profile_picture: @../orbitmines.com/public/organizations/preposterous-universe/download.jpeg
+}
+
+@preposterous_universe: Organization = {
+  name: "Preposterous Universe"
+  key: "preposterous_universe"
+  profile_picture: @../orbitmines.com/public/organizations/preposterous-universe/download.jpeg
+}
+
+@criticalthinkingpodcast: Organization = {
+  name: "Critical Thinking Podcast"
+  key: "criticalthinkingpodcast"
+  profile_picture: @../orbitmines.com/public/organizations/critical-thinking/https___s3.us-west-1.amazonaws.com_redwood-labs_showpage_uploads_images_403b35d6-ec76-4cd9-a70d-bd1c5d825460.png
+}
+
+@santa_fe_institute: Organization = {
+  name: "Santa Fe Institute"
+  key: "santa_fe_institute"
+  profile_picture: @../orbitmines.com/public/organizations/santa-fe-institute/0_OgRM7UU-SsqK46La.png
+}
+
+@papers_we_love: Organization = {
+  name: "Papers we love"
+  key: "papers_we_love"
+  profile_picture: @../orbitmines.com/public/organizations/papers-we-love/6187757.png
+}
+
+@wolfram_institute: Organization = {
+  name: "Wolfram Institute"
+  key: "wolfram_institute"
+  profile_picture: @../orbitmines.com/public/organizations/wolfram-institute/channels4_profile.jpg
+}

@@ -1,0 +1,95 @@
+// A style is a partial shape: what `^name` narrows the styled value to. The web level writes it as CSS,
+// the terminal level as cell attributes and colours; neither is spelled here (F-C2, F-D3).
+UI.Theme.spacing = 0.125rem
+UI.Theme.background := Geometry.Shape{fill == "#0a0a0a" as Color, color == "#f6f7f9" as Color, font.family == ["JetBrainsMono", "monospace"], font.size == 14px, font.line_height == 1.28581}
+UI.Theme.article := Geometry.Shape{font.size == 1.1rem, white_space == WhiteSpace(lines: true, wraps: anywhere)}
+UI.Theme.anchor := Geometry.Shape{color == "#8abbff" as Color}
+UI.Theme.muted := Geometry.Shape{color == "#abb3bf" as Color}
+UI.Theme.disabled := Geometry.Shape{color == "#abb3bf99" as Color}
+UI.Theme.faded := Geometry.Shape{effects == [Opacity(0.45), Grayscale(1)]}
+UI.Theme.small := Geometry.Shape{font.size == 0.8rem}
+UI.Theme.smaller := Geometry.Shape{font.size == 0.7rem}
+UI.Theme.smallest := Geometry.Shape{font.size == 0.6rem}
+UI.Theme.large := Geometry.Shape{font.size == 1.4rem, font.line_height == 1.2}
+UI.Theme.label := Geometry.Shape{font.size == 0.8rem, font.tracking == 1px, case == (text => text.upper_case), align == start, spacing == [pb 3]}
+UI.Theme.marker := Geometry.Shape{color == "#abb3bf" as Color}
+UI.Theme.h1 := Geometry.Shape{font.size == 36px, font.weight == 600, font.line_height == 40 / 36}
+UI.Theme.h3 := Geometry.Shape{font.size == 22px, font.weight == 600, font.line_height == 25 / 22}
+UI.Theme.h4 := Geometry.Shape{font.size == 18px, font.weight == 600, font.line_height == 21 / 18}
+UI.Theme.h6 := Geometry.Shape{font.size == 14px, font.weight == 600, font.line_height == 16 / 14}
+UI.Theme.underline := Geometry.Shape{stroke == Stroke("#5F6B7C99" as Color, sides: Geometry.bottom)}
+UI.Theme.button := Geometry.Shape{height >= 30px, width >= 30px, spacing == [py 2.5 &+ px 5], radius == [2px], gap == Vector(7px), font.size == 14px, color == "#ffffff" as Color}
+UI.Theme.small_button := Geometry.Shape{height >= 24px, width >= 24px, spacing == [px 3.5]}
+UI.Theme.hovered := Geometry.Shape{fill == "#8f99a826" as Color}
+UI.Theme.pressed := Geometry.Shape{fill == "#8f99a84d" as Color}
+UI.Theme.icon := Geometry.Shape{color == "#abb3bf" as Color}
+UI.Theme.minimal := Geometry.Shape{fill == None, stroke == None}
+UI.Theme.outlined := Geometry.Shape{stroke == Stroke("#ffffff66" as Color)}
+UI.Theme.circle := Geometry.Shape{radius == [50%]}
+UI.Theme.tag := Geometry.Shape{height >= 20px, spacing == [px 3 &+ py 1], radius == [2px], gap == Vector(4px), fill == "#8f99a826" as Color, font.size == 12px, font.line_height == 16 / 12}
+UI.Theme.tag_hovered := Geometry.Shape{fill == "#8f99a84d" as Color}
+UI.Theme.primary_tag := Geometry.Shape{fill == "#2d72d233" as Color, color == "#8abbff" as Color}
+UI.Theme.primary_tag_hovered := Geometry.Shape{fill == "#2d72d24d" as Color, color == "#99c4ff" as Color}
+UI.Theme.warning_tag := Geometry.Shape{fill == "#c8761933" as Color, color == "#fbb360" as Color}
+UI.Theme.danger_tag := Geometry.Shape{fill == "#cd424633" as Color, color == "#fa999c" as Color}
+UI.Theme.block := Geometry.Shape{width <= 100%, spacing == [pt 6.5 &+ pr 7.5 &+ pb 6 &+ pl 7.5, my 5], radius == [2px], fill == "#111418" as Color, color == "#f6f7f9" as Color,
+  font.family == ["monospace"], font.size == 1.1rem, font.line_height == 1.4, white_space == WhiteSpace.pre, overflow == scroll, width == (xs 1 -> md 8/10)}
+UI.Theme.code := Geometry.Shape{font.family == ["monospace"]}
+UI.Theme.nowrap := Geometry.Shape{white_space == WhiteSpace.nowrap}
+UI.Theme.divider := Geometry.Shape{stroke == Stroke("#ffffff33" as Color, sides: Geometry.bottom), spacing == [m 2.5]}
+UI.Theme.link := Geometry.Shape{color == "#5d7eac" as Color}
+UI.Theme.primary := Geometry.Shape{color == "#4c90f0" as Color}
+UI.Theme.warning := Geometry.Shape{color == "#EAB832" as Color}
+UI.Theme.danger := Geometry.Shape{color == "#e76a6e" as Color}
+UI.Theme.selected := Geometry.Shape{color == "#FFA500" as Color}
+UI.Theme.mark := Geometry.Shape{fill == "#ffb3474d" as Color, spacing == [py 0.5 &+ px 1], radius == [2px]}
+UI.Theme.sidebar := Geometry.Shape{stroke == Stroke("#6c6783" as Color, sides: Geometry.right)}
+UI.Theme.overlay := Geometry.Shape{fill == "#00000080" as Color}
+UI.Theme.popover := Geometry.Shape{fill == "#0a0a0a" as Color, radius == [2px], layer == 20, effects == [Shadow(Vector(), spread: 1px, color: "#1114181a" as Color),
+  Shadow(Vector(0, 2px), blur: 4px, color: "#11141833" as Color), Shadow(Vector(0, 8px), blur: 24px, color: "#11141833" as Color)]}
+UI.Theme.nav := Geometry.Shape{color == "#ffffff" as Color, font.size == 28px, align == center}
+UI.Theme.nav_hovered := Geometry.Shape{fill == "#00000066" as Color}
+UI.Theme.nav_badge := Geometry.Shape{fill == "#00000099" as Color, color == "#ffffff" as Color, spacing == [py 1 &+ px 4], radius == [4px], font.size == 0.75rem}
+UI.Theme.orange := Geometry.Shape{color == "#FFA500" as Color}
+UI.Theme.red := Geometry.Shape{color == "#FF5555" as Color}
+UI.Theme.blue := Geometry.Shape{color == "#5555FF" as Color}
+UI.Theme.pink := Geometry.Shape{color == "#FF55FF" as Color}
+UI.Theme.kinds = {
+  {link: Geometry.Shape{location}} => link ^anchor
+}
+
+DRACULA := theme `Dracula` {
+  ^keyword = ^ #BD93F9
+  ^variable = ^ #BD93F9
+  ^function = ^ #50FA7B
+  ^method = ^ #50FA7B
+  ^string = ^ #FF79C6
+  ^character = ^ #FF79C6
+  ^comment = ^ #6272A4
+  ^punctuation = ^ #F8F8F2
+}
+DUOTONE_DARK := theme `Duotone Dark` {
+  ^comment = ^ #6C6783
+  ^punctuation = ^ #6C6783
+  ^operator = ^ #E09142
+  ^number = ^ #E09142
+  ^property = ^ #9A86FD
+  ^function = ^ #9A86FD
+  ^method = ^ #9A86FD
+  ^string = ^ #FFCC99
+  ^keyword = ^ #FFCC99
+  ^variable = ^ #FFCC99
+}
+ONE_DARK := theme `One Dark` {
+  ^comment = ^ #5C6370
+  ^punctuation = ^ #ABB2BF
+  ^class = ^ #D19A66
+  ^number = ^ #D19A66
+  ^keyword = ^ #C678DD
+  ^property = ^ #E06C75
+  ^string = ^ #98C379
+  ^character = ^ #98C379
+  ^variable = ^ #61AFEF
+  ^operator = ^ #61AFEF
+  ^function = ^ #61AFEF
+}

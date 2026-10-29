@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@orbitmines/physics": "^0.0.1-test.2",
+    "@orbitmines/ether.ray": "^0.1.2-E2027.0A.2",
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.0",
